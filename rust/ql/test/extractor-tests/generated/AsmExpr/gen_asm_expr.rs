@@ -3,6 +3,7 @@
 fn test_asm_expr() -> () {
     // An inline assembly expression. For example:
     unsafe {
-        builtin # asm(_);
+        #[inline(always)]
+        builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
     }
 }

@@ -20,9 +20,11 @@ import codeql.rust.elements.TokenTree
  */
 module Generated {
   /**
-   * A MacroCall. For example:
+   * A macro invocation.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * println!("Hello, world!");
    * ```
    * INTERNAL: Do not reference the `Generated::MacroCall` class directly.
    * Use the subclass `MacroCall`, where the following predicates are available.

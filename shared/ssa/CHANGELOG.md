@@ -1,3 +1,13 @@
+## 2.0.1
+
+No user-facing changes.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Adjusted the Guards interface in the SSA data flow integration to distinguish `hasBranchEdge` from `controlsBranchEdge`. Any breakage can be fixed by implementing one with the other as a reasonable fallback solution.
+
 ## 1.1.2
 
 No user-facing changes.

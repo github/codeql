@@ -7,9 +7,12 @@ private import internal.NameImpl
 import codeql.rust.elements.AstNode
 
 /**
- * A Name. For example:
+ * An identifier name.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let foo = 1;
+ * //  ^^^
  * ```
  */
 final class Name = Impl::Name;

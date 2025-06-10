@@ -14,9 +14,12 @@ import codeql.rust.elements.internal.TypeReprImpl::Impl as TypeReprImpl
  */
 module Generated {
   /**
-   * A NeverTypeRepr. For example:
+   * The never type `!`.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo() -> ! { panic!() }
+   * //          ^
    * ```
    * INTERNAL: Do not reference the `Generated::NeverTypeRepr` class directly.
    * Use the subclass `NeverTypeRepr`, where the following predicates are available.

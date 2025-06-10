@@ -12,5 +12,15 @@ private import codeql.rust.elements.internal.generated.AsmOperandNamed
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A named operand in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("mov {0:x}, {input:x}", out(reg) x, input = in(reg) y);
+   * //                           ^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^
+   * ```
+   */
   class AsmOperandNamed extends Generated::AsmOperandNamed { }
 }

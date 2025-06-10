@@ -15,9 +15,11 @@ module Impl {
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A Enum. For example:
+   * An enum declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * enum E {A, B(i32), C {x: i32}}
    * ```
    */
   class Enum extends Generated::Enum {
