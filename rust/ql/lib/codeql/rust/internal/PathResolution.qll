@@ -988,6 +988,7 @@ private predicate sourceFileEdge(SourceFile f, string name, ItemNode item) {
 }
 
 /** Holds if `f` is available as `mod name;` inside `folder`. */
+pragma[nomagic]
 private predicate fileModule(SourceFile f, string name, Folder folder) {
   exists(File file | file = f.getFile() |
     file.getBaseName() = name + ".rs" and
@@ -1000,6 +1001,12 @@ private predicate fileModule(SourceFile f, string name, Folder folder) {
       folder = encl.getParentContainer()
     )
   )
+}
+
+bindingset[name, folder]
+pragma[inline_late]
+private predicate fileModuleInlineLate(SourceFile f, string name, Folder folder) {
+  fileModule(f, name, folder)
 }
 
 /**
@@ -1084,7 +1091,7 @@ pragma[nomagic]
 predicate fileImport(Module m, SourceFile f) {
   exists(string name, Folder parent |
     modImport0(m, name, _) and
-    fileModule(f, name, parent)
+    fileModuleInlineLate(f, name, parent)
   |
     // `m` is not inside a nested module
     modImport0(m, name, parent) and
