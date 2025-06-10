@@ -181,7 +181,7 @@ predicate hasNoEffect(Expr e) {
   // exclude expressions that are part of a conditional expression
   not exists(ConditionalExpr cond | e.getParent() = cond |
     e instanceof NullLiteral or
-    e instanceof GlobalVarAccess or
+    e.(GlobalVarAccess).getName() = "undefined" or
     e.(NumberLiteral).getIntValue() = 0 or
     e.(UnaryExpr).getOperator() = "void"
   ) and
