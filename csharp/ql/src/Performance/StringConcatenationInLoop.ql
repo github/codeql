@@ -7,6 +7,7 @@
  * @id cs/string-concatenation-in-loop
  * @tags efficiency
  *       maintainability
+ *       quality
  */
 
 import csharp
