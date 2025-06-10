@@ -183,7 +183,7 @@ predicate hasNoEffect(Expr e) {
     e instanceof NullLiteral or
     e.(GlobalVarAccess).getName() = "undefined" or
     e.(NumberLiteral).getIntValue() = 0 or
-    e.(UnaryExpr).getOperator() = "void"
+    e instanceof VoidExpr
   ) and
   // exclude the first statement of a try block
   not e = any(TryStmt stmt).getBody().getStmt(0).(ExprStmt).getExpr() and
