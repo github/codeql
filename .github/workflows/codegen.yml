@@ -27,7 +27,7 @@ jobs:
       - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
         name: Check that python code is properly formatted
         with:
-          extra_args: autopep8 --all-files
+          extra_args: black --all-files
       - name: Run codegen tests
         shell: bash
         run: |
