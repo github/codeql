@@ -352,7 +352,7 @@ class SelfTypeParameter extends TypeParameter, TSelfTypeParameter {
 class ImplTraitTypeTypeParameter extends ImplTraitType, TypeParameter {
   private Function function;
 
-  ImplTraitTypeTypeParameter() { impl = function.getParamList().getAParam().getTypeRepr() }
+  ImplTraitTypeTypeParameter() { impl = function.getAParam().getTypeRepr() }
 
   override Function getFunction() { result = function }
 
