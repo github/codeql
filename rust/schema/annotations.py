@@ -226,7 +226,6 @@ class CallExprBase(Expr):
     """
     arg_list: optional["ArgList"] | child
     attrs: list["Attr"] | child
-    args: list["Expr"] | synth
 
 
 @annotate(CallExpr, replace_bases={Expr: CallExprBase}, cfg=True)

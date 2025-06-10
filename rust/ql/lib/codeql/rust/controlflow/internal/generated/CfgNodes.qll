@@ -722,21 +722,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Gets the number of attrs of this call expression base.
        */
       int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
-
-      /**
-       * Gets the `index`th argument of this call expression base (0-based).
-       */
-      Expr getArg(int index) { result = node.getArg(index) }
-
-      /**
-       * Gets any of the arguments of this call expression base.
-       */
-      Expr getAnArg() { result = this.getArg(_) }
-
-      /**
-       * Gets the number of arguments of this call expression base.
-       */
-      int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
     }
 
     final private class ParentCastExpr extends ParentAstNode, CastExpr {

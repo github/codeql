@@ -8,7 +8,6 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.ArgList
 import codeql.rust.elements.Attr
-import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
 /**
@@ -56,20 +55,5 @@ module Generated {
      * Gets the number of attrs of this call expression base.
      */
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
-
-    /**
-     * Gets the `index`th argument of this call expression base (0-based).
-     */
-    Expr getArg(int index) { none() }
-
-    /**
-     * Gets any of the arguments of this call expression base.
-     */
-    final Expr getAnArg() { result = this.getArg(_) }
-
-    /**
-     * Gets the number of arguments of this call expression base.
-     */
-    final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
   }
 }
