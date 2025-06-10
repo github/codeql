@@ -312,12 +312,12 @@ module NameResolution {
      */
     private predicate storeToVariable(Expr value, string prop, LocalVariableLike target) {
       exists(AssignExpr assign |
-        // exports.name = value
+        // target.name = value
         assign.getLhs().(PropAccess).accesses(target.getAnAccess(), prop) and
         value = assign.getRhs()
       )
       or
-      // exports = { name: value }
+      // target = { name: value }
       value = target.getAnAssignedExpr().(ObjectExpr).getPropertyByName(prop).getInit()
     }
 
