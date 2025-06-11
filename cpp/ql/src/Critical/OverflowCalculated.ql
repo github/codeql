@@ -2,6 +2,7 @@
  * @name Buffer overflow from insufficient space or incorrect size calculation
  * @description A buffer allocated using 'malloc' may not have enough space for a string being copied into it, or wide character functions may receive incorrect size parameters causing buffer overrun. Make sure that buffers contain enough room for strings (including zero terminator) and that size parameters are correctly calculated.
  * @kind problem
+ * @precision medium
  * @id cpp/overflow-calculated
  * @problem.severity warning
  * @security-severity 9.8
