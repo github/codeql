@@ -766,9 +766,9 @@ pub fn test_macros() {
 	my_macro1!();
 	my_macro1!();
 
-	let ptr = my_macro2!(); // $ SPURIOUS: Source[rust/access-after-lifetime-ended]=ptr
+	let ptr = my_macro2!();
 	unsafe {
-		let v = *ptr; // $ SPURIOUS: Alert[rust/access-after-lifetime-ended]=ptr
+		let v = *ptr;
 		println!("	v = {v}");
 	}
 }
