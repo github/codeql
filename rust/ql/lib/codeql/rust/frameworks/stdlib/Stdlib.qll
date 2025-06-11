@@ -65,3 +65,12 @@ class FutureTrait extends Trait {
     result.getName().getText() = "Output"
   }
 }
+
+/**
+ * The [`String` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/string/struct.String.html
+ */
+class StringStruct extends Struct {
+  StringStruct() { this.getCanonicalPath() = "alloc::string::String" }
+}

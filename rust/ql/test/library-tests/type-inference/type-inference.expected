@@ -1413,7 +1413,11 @@ inferType
 | main.rs:1111:13:1111:14 | x9 |  | {EXTERNAL LOCATION} | String |
 | main.rs:1111:27:1111:33 | "Hello" |  | {EXTERNAL LOCATION} | str |
 | main.rs:1111:27:1111:45 | "Hello".to_string() |  | {EXTERNAL LOCATION} | String |
+| main.rs:1114:13:1114:13 | u |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1114:13:1114:13 | u | T | {EXTERNAL LOCATION} | u32 |
 | main.rs:1114:17:1114:18 | x9 |  | {EXTERNAL LOCATION} | String |
+| main.rs:1114:17:1114:33 | x9.parse() |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1114:17:1114:33 | x9.parse() | T | {EXTERNAL LOCATION} | u32 |
 | main.rs:1121:16:1121:20 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1121:16:1121:20 | SelfParam | &T | main.rs:1119:5:1127:5 | Self [trait MyTrait] |
 | main.rs:1124:16:1124:20 | SelfParam |  | file://:0:0:0:0 | & |

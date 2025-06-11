@@ -780,12 +780,18 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
           not (path0.isEmpty() and result = TRefType()) and
           path = TypePath::cons(TRefTypeParameter(), path0)
         else (
-          not path0.isCons(TRefTypeParameter(), _) and
-          not (path0.isEmpty() and result = TRefType()) and
-          path = path0
-          or
-          // adjust for implicit borrow
-          path0.isCons(TRefTypeParameter(), path)
+          not (
+            receiverType.(StructType).asItemNode() instanceof StringStruct and
+            result.(StructType).asItemNode() instanceof Builtins::Str
+          ) and
+          (
+            not path0.isCons(TRefTypeParameter(), _) and
+            not (path0.isEmpty() and result = TRefType()) and
+            path = path0
+            or
+            // adjust for implicit borrow
+            path0.isCons(TRefTypeParameter(), path)
+          )
         )
       )
     else path = path0
@@ -1130,12 +1136,27 @@ final class MethodCall extends Call {
   Type getTypeAt(TypePath path) {
     if this.receiverImplicitlyBorrowed()
     then
-      exists(TypePath path0 | result = inferType(super.getReceiver(), path0) |
-        path0.isCons(TRefTypeParameter(), path)
+      exists(TypePath path0, Type t0 |
+        t0 = inferType(super.getReceiver(), path0) and
+        (
+          path0.isCons(TRefTypeParameter(), path)
+          or
+          not path0.isCons(TRefTypeParameter(), _) and
+          not (path0.isEmpty() and result = TRefType()) and
+          path = path0
+        )
+      |
+        result = t0
         or
-        not path0.isCons(TRefTypeParameter(), _) and
-        not (path0.isEmpty() and result = TRefType()) and
-        path = path0
+        // We do not yet model the `Deref` trait, so we hard-code the fact that
+        // `String` dereferences to `str` here. This allows us e.g. to resolve
+        // `x.parse::<usize>()` to the function `<core::str>::parse` when `x` has
+        // type `String`.
+        //
+        // See also https://doc.rust-lang.org/reference/expressions/method-call-expr.html#r-expr.method.autoref-deref
+        path.isEmpty() and
+        t0.(StructType).asItemNode() instanceof StringStruct and
+        result.(StructType).asItemNode() instanceof Builtins::Str
       )
     else result = inferType(super.getReceiver(), path)
   }

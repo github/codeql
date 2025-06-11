@@ -962,6 +962,8 @@ readStep
 | main.rs:442:25:442:29 | names | file://:0:0:0:0 | element | main.rs:442:9:442:20 | TuplePat |
 | main.rs:444:41:444:67 | [post] \|...\| ... | main.rs:441:9:441:20 | captured default_name | main.rs:444:41:444:67 | [post] default_name |
 | main.rs:444:44:444:55 | this | main.rs:441:9:441:20 | captured default_name | main.rs:444:44:444:55 | default_name |
+| main.rs:469:13:469:13 | [post] receiver for b | file://:0:0:0:0 | &ref | main.rs:469:13:469:13 | [post] b |
+| main.rs:470:19:470:19 | [post] receiver for b | file://:0:0:0:0 | &ref | main.rs:470:19:470:19 | [post] b |
 | main.rs:481:10:481:11 | vs | file://:0:0:0:0 | element | main.rs:481:10:481:14 | vs[0] |
 | main.rs:482:11:482:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:482:10:482:35 | * ... |
 | main.rs:483:11:483:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:483:10:483:35 | * ... |
@@ -1058,6 +1060,8 @@ storeStep
 | main.rs:429:30:429:30 | 3 | file://:0:0:0:0 | element | main.rs:429:23:429:31 | [...] |
 | main.rs:432:18:432:27 | source(...) | file://:0:0:0:0 | element | main.rs:432:5:432:11 | [post] mut_arr |
 | main.rs:444:41:444:67 | default_name | main.rs:441:9:441:20 | captured default_name | main.rs:444:41:444:67 | \|...\| ... |
+| main.rs:469:13:469:13 | b | file://:0:0:0:0 | &ref | main.rs:469:13:469:13 | receiver for b |
+| main.rs:470:19:470:19 | b | file://:0:0:0:0 | &ref | main.rs:470:19:470:19 | receiver for b |
 | main.rs:479:15:479:24 | source(...) | file://:0:0:0:0 | element | main.rs:479:14:479:34 | [...] |
 | main.rs:479:27:479:27 | 2 | file://:0:0:0:0 | element | main.rs:479:14:479:34 | [...] |
 | main.rs:479:30:479:30 | 3 | file://:0:0:0:0 | element | main.rs:479:14:479:34 | [...] |
