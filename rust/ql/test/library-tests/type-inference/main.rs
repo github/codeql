@@ -1191,13 +1191,13 @@ mod borrowed_typed {
         x.f2(); // $ method=f2
         S::f3(&x);
 
-        let n = **&&true; // $ MISSING: type=n:bool
+        let n = **&&true; // $ type=n:bool
 
         // In this example the type of `flag` must be inferred at the call to
         // `flip` and flow through the borrow in the argument.
         let mut flag = Default::default();
         MyFlag::flip(&mut flag);
-        println!("{:?}", flag); // $ MISSING: type=flag:MyFlag
+        println!("{:?}", flag); // $ type=flag:MyFlag
     }
 }
 
