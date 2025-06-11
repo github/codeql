@@ -374,6 +374,9 @@ class CrateItemNode extends ItemNode instanceof Crate {
       not file = child.(SourceFileItemNode).getSuper() and
       file = super.getSourceFile()
     )
+    or
+    this.getName() = "core" and
+    child instanceof Builtins::BuiltinType
   }
 
   override string getCanonicalPath(Crate c) { c = this and result = Crate.super.getName() }
