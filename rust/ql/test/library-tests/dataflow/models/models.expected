@@ -1,25 +1,25 @@
 models
-| 1 | Sink: repo::test; <crate::MyFieldEnum>::sink; test-sink; Argument[self].Field[crate::MyFieldEnum::D::field_d] |
-| 2 | Sink: repo::test; crate::enum_sink; test-sink; Argument[0].Field[crate::MyFieldEnum::C::field_c] |
+| 1 | Sink: repo::test; <crate::MyFieldEnum>::sink; test-sink; Argument[self].Field[test::MyFieldEnum::D::field_d] |
+| 2 | Sink: repo::test; crate::enum_sink; test-sink; Argument[0].Field[test::MyFieldEnum::C::field_c] |
 | 3 | Sink: repo::test; crate::simple_sink; test-sink; Argument[0] |
-| 4 | Source: repo::test; <crate::MyFieldEnum>::source; test-source; ReturnValue.Field[crate::MyFieldEnum::C::field_c] |
+| 4 | Source: repo::test; <crate::MyFieldEnum>::source; test-source; ReturnValue.Field[test::MyFieldEnum::C::field_c] |
 | 5 | Source: repo::test; crate::arg_source; test-source; Argument[0] |
-| 6 | Source: repo::test; crate::enum_source; test-source; ReturnValue.Field[crate::MyFieldEnum::D::field_d] |
+| 6 | Source: repo::test; crate::enum_source; test-source; ReturnValue.Field[test::MyFieldEnum::D::field_d] |
 | 7 | Source: repo::test; crate::simple_source; test-source; ReturnValue |
 | 8 | Summary: repo::test; crate::apply; Argument[0]; Argument[1].Parameter[0]; value |
 | 9 | Summary: repo::test; crate::apply; Argument[1].ReturnValue; ReturnValue; value |
 | 10 | Summary: repo::test; crate::coerce; Argument[0]; ReturnValue; taint |
 | 11 | Summary: repo::test; crate::get_array_element; Argument[0].Element; ReturnValue; value |
 | 12 | Summary: repo::test; crate::get_async_number; Argument[0]; ReturnValue.Future; value |
-| 13 | Summary: repo::test; crate::get_struct_field; Argument[0].Field[crate::MyStruct::field1]; ReturnValue; value |
+| 13 | Summary: repo::test; crate::get_struct_field; Argument[0].Field[test::MyStruct::field1]; ReturnValue; value |
 | 14 | Summary: repo::test; crate::get_tuple_element; Argument[0].Field[0]; ReturnValue; value |
-| 15 | Summary: repo::test; crate::get_var_field; Argument[0].Field[crate::MyFieldEnum::C::field_c]; ReturnValue; value |
-| 16 | Summary: repo::test; crate::get_var_pos; Argument[0].Field[crate::MyPosEnum::A(0)]; ReturnValue; value |
+| 15 | Summary: repo::test; crate::get_var_field; Argument[0].Field[test::MyFieldEnum::C::field_c]; ReturnValue; value |
+| 16 | Summary: repo::test; crate::get_var_pos; Argument[0].Field[test::MyPosEnum::A(0)]; ReturnValue; value |
 | 17 | Summary: repo::test; crate::set_array_element; Argument[0]; ReturnValue.Element; value |
-| 18 | Summary: repo::test; crate::set_struct_field; Argument[0]; ReturnValue.Field[crate::MyStruct::field2]; value |
+| 18 | Summary: repo::test; crate::set_struct_field; Argument[0]; ReturnValue.Field[test::MyStruct::field2]; value |
 | 19 | Summary: repo::test; crate::set_tuple_element; Argument[0]; ReturnValue.Field[1]; value |
-| 20 | Summary: repo::test; crate::set_var_field; Argument[0]; ReturnValue.Field[crate::MyFieldEnum::D::field_d]; value |
-| 21 | Summary: repo::test; crate::set_var_pos; Argument[0]; ReturnValue.Field[crate::MyPosEnum::B(0)]; value |
+| 20 | Summary: repo::test; crate::set_var_field; Argument[0]; ReturnValue.Field[test::MyFieldEnum::D::field_d]; value |
+| 21 | Summary: repo::test; crate::set_var_pos; Argument[0]; ReturnValue.Field[test::MyPosEnum::B(0)]; value |
 edges
 | main.rs:15:9:15:9 | s | main.rs:16:19:16:19 | s | provenance |  |
 | main.rs:15:9:15:9 | s | main.rs:16:19:16:19 | s | provenance |  |
