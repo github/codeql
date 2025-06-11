@@ -1051,7 +1051,11 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     digestLength = 512 // TODO: verify
   }
 
-  abstract private class KeyCreationOperationInstance extends OperationInstance {
+  /**
+   * Users should not extend this class directly, but instead use
+   * `KeyCreationOperationInstance` or `KeyDerivationOperationInstance`.
+   */
+  abstract class KeyCreationOperationInstance extends OperationInstance {
     abstract string getKeyCreationTypeDescription();
 
     /**
@@ -1731,6 +1735,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override LocatableElement asElement() { result = instance }
 
     override string getInternalType() { result = instance.getKeyCreationTypeDescription() }
+
+    NodeBase getAKeySizeSource() {
+      result = instance.getKeySizeConsumer().getConsumer().getAGenericSourceNode()
+      or
+      result = instance.getKeySizeConsumer().getConsumer().getAKnownSourceNode()
+    }
 
     /**
      * Gets the key artifact produced by this operation.

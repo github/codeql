@@ -1,5 +1,6 @@
 private import experimental.quantum.Language
 private import experimental.quantum.OpenSSL.CtxFlow
+private import experimental.quantum.OpenSSL.KeyFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 // Importing these intializers here to ensure the are part of any model that is
 // using OpenSSLOperationBase. This futher ensures that initializers are tied to opeartions
@@ -63,13 +64,29 @@ abstract class EvpAlgorithmInitializer extends EvpInitializer {
 }
 
 abstract class EvpKeyInitializer extends EvpInitializer {
-  //, EvpAlgorithmInitializer {
   abstract Expr getKeyArg();
-  // /**
-  //  * Any key arg can potentially be traced to find the algorithm used to generate the key.
-  //  */
-  // override Expr getAlgorithmArg(){
-  // }
+}
+
+/**
+ * Any key initializer may initialize the algorithm and the key size through
+ * the key. Extend any instance of key initializer provide initialization
+ * of the algorithm and key size from the key.
+ */
+class EvpInitializerThroughKey extends EvpAlgorithmInitializer, EvpKeySizeInitializer instanceof EvpKeyInitializer
+{
+  //TODO: charpred that traces from creation to key arg, grab creator
+  override CtxPointerSource getContextArg() { result = EvpKeyInitializer.super.getContextArg() }
+
+  override Expr getAlgorithmArg() {
+    result =
+      getSourceKeyCreationInstanceFromArg(this.getKeyArg()).(OpenSSLOperation).getAlgorithmArg()
+  }
+
+  override Expr getKeySizeArg() {
+    result = getSourceKeyCreationInstanceFromArg(this.getKeyArg()).getKeySizeConsumer().asExpr()
+  }
+
+  Expr getKeyArg() { result = EvpKeyInitializer.super.getKeyArg() }
 }
 
 abstract class EvpIVInitializer extends EvpInitializer {
