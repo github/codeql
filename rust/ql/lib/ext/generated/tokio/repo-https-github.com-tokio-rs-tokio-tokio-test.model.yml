@@ -4,8 +4,7 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "<crate::io::Builder>::build", "Argument[self].Field[tokio_test::io::Builder::actions].Reference", "ReturnValue.Field[tokio_test::io::Mock::inner].Field[tokio_test::io::Inner::actions]", "value", "dfc-generated"]
-      - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "<crate::io::Builder>::build", "Argument[self].Field[tokio_test::io::Builder::name].Reference", "ReturnValue.Field[tokio_test::io::Mock::inner].Field[tokio_test::io::Inner::name]", "value", "dfc-generated"]
+      - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "<crate::io::Builder>::build", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "<crate::io::Builder>::name", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "<crate::io::Builder>::read", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "<crate::io::Builder>::read_error", "Argument[self]", "ReturnValue", "value", "dfc-generated"]

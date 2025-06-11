@@ -1,3 +1,15 @@
+## 2.6.5
+
+### Minor Analysis Improvements
+
+* Added taint flow through the `URL` constructor from the `url` package, improving the identification of SSRF vulnerabilities.
+
+## 2.6.4
+
+### Minor Analysis Improvements
+
+* Improved analysis for `ES6 classes` mixed with `function prototypes`, leading to more accurate call graph resolution.
+
 ## 2.6.3
 
 ### Minor Analysis Improvements

@@ -8,35 +8,64 @@ class BashShellScript extends ShellScript {
     )
   }
 
-  private string lineProducer(int i) {
-    result = this.getRawScript().regexpReplaceAll("\\\\\\s*\n", "").splitAt("\n", i)
+  /**
+   * Gets the line at 0-based index `lineIndex` within this shell script,
+   * assuming newlines as separators.
+   */
+  private string lineProducer(int lineIndex) {
+    result = this.getRawScript().regexpReplaceAll("\\\\\\s*\n", "").splitAt("\n", lineIndex)
   }
 
-  private predicate cmdSubstitutionReplacement(string cmdSubs, string id, int k) {
-    exists(string line | line = this.lineProducer(k) |
-      exists(int i, int j |
-        cmdSubs =
-          // $() cmd substitution
-          line.regexpFind("\\$\\((?:[^()]+|\\((?:[^()]+|\\([^()]*\\))*\\))*\\)", i, j)
-              .regexpReplaceAll("^\\$\\(", "")
-              .regexpReplaceAll("\\)$", "") and
-        id = "cmdsubs:" + k + ":" + i + ":" + j
-      )
-      or
-      exists(int i, int j |
-        // `...` cmd substitution
-        cmdSubs =
-          line.regexpFind("\\`[^\\`]+\\`", i, j)
-              .regexpReplaceAll("^\\`", "")
-              .regexpReplaceAll("\\`$", "") and
-        id = "cmd:" + k + ":" + i + ":" + j
-      )
+  private predicate cmdSubstitutionReplacement(string command, string id, int lineIndex) {
+    this.commandInSubstitution(lineIndex, command, id)
+    or
+    this.commandInBackticks(lineIndex, command, id)
+  }
+
+  /**
+   * Holds if there is a command substitution `$(command)` in
+   * the line at `lineIndex` in the shell script,
+   * and `id` is a unique identifier for this command.
+   */
+  private predicate commandInSubstitution(int lineIndex, string command, string id) {
+    exists(int occurrenceIndex, int occurrenceOffset |
+      command =
+        // Look for the command inside a $(...) command substitution
+        this.lineProducer(lineIndex)
+            .regexpFind("\\$\\((?:[^()]+|\\((?:[^()]+|\\([^()]*\\))*\\))*\\)", occurrenceIndex,
+              occurrenceOffset)
+            // trim starting $( - TODO do this in first regex
+            .regexpReplaceAll("^\\$\\(", "")
+            // trim ending ) - TODO do this in first regex
+            .regexpReplaceAll("\\)$", "") and
+      id = "cmdsubs:" + lineIndex + ":" + occurrenceIndex + ":" + occurrenceOffset
     )
   }
 
-  private predicate rankedCmdSubstitutionReplacements(int i, string old, string new) {
-    old = rank[i](string old2 | this.cmdSubstitutionReplacement(old2, _, _) | old2) and
-    this.cmdSubstitutionReplacement(old, new, _)
+  /**
+   * Holds if `command` is a command in backticks `` `...` `` in
+   * the line at `lineIndex` in the shell script,
+   * and `id` is a unique identifier for this command.
+   */
+  private predicate commandInBackticks(int lineIndex, string command, string id) {
+    exists(int occurrenceIndex, int occurrenceOffset |
+      command =
+        this.lineProducer(lineIndex)
+            .regexpFind("\\`[^\\`]+\\`", occurrenceIndex, occurrenceOffset)
+            // trim leading backtick - TODO do this in first regex
+            .regexpReplaceAll("^\\`", "")
+            // trim trailing backtick - TODO do this in first regex
+            .regexpReplaceAll("\\`$", "") and
+      id = "cmd:" + lineIndex + ":" + occurrenceIndex + ":" + occurrenceOffset
+    )
+  }
+
+  private predicate rankedCmdSubstitutionReplacements(int i, string command, string commandId) {
+    // rank commands by their unique IDs
+    commandId = rank[i](string c, string id | this.cmdSubstitutionReplacement(c, id, _) | id) and
+    // since we cannot output (command, ID) tuples from the rank operation,
+    // we need to work out the specific command associated with the resulting ID
+    this.cmdSubstitutionReplacement(command, commandId, _)
   }
 
   private predicate doReplaceCmdSubstitutions(int line, int round, string old, string new) {
@@ -64,31 +93,56 @@ class BashShellScript extends ShellScript {
     this.cmdSubstitutionReplacement(result, _, i)
   }
 
+  /**
+   * Holds if `quotedStr` is a string in double quotes in
+   * the line at `lineIndex` in the shell script,
+   * and `id` is a unique identifier for this quoted string.
+   */
+  private predicate doubleQuotedString(int lineIndex, string quotedStr, string id) {
+    exists(int occurrenceIndex, int occurrenceOffset |
+      // double quoted string
+      quotedStr =
+        this.cmdSubstitutedLineProducer(lineIndex)
+            .regexpFind("\"((?:[^\"\\\\]|\\\\.)*)\"", occurrenceIndex, occurrenceOffset) and
+      id =
+        "qstr:" + lineIndex + ":" + occurrenceIndex + ":" + occurrenceOffset + ":" +
+          quotedStr.length() + ":" + quotedStr.regexpReplaceAll("[^a-zA-Z0-9]", "")
+    )
+  }
+
+  /**
+   * Holds if `quotedStr` is a string in single quotes in
+   * the line at `lineIndex` in the shell script,
+   * and `id` is a unique identifier for this quoted string.
+   */
+  private predicate singleQuotedString(int lineIndex, string quotedStr, string id) {
+    exists(int occurrenceIndex, int occurrenceOffset |
+      // single quoted string
+      quotedStr =
+        this.cmdSubstitutedLineProducer(lineIndex)
+            .regexpFind("'((?:\\\\.|[^'\\\\])*)'", occurrenceIndex, occurrenceOffset) and
+      id =
+        "qstr:" + lineIndex + ":" + occurrenceIndex + ":" + occurrenceOffset + ":" +
+          quotedStr.length() + ":" + quotedStr.regexpReplaceAll("[^a-zA-Z0-9]", "")
+    )
+  }
+
   private predicate quotedStringReplacement(string quotedStr, string id) {
-    exists(string line, int k | line = this.cmdSubstitutedLineProducer(k) |
-      exists(int i, int j |
-        // double quoted string
-        quotedStr = line.regexpFind("\"((?:[^\"\\\\]|\\\\.)*)\"", i, j) and
-        id =
-          "qstr:" + k + ":" + i + ":" + j + ":" + quotedStr.length() + ":" +
-            quotedStr.regexpReplaceAll("[^a-zA-Z0-9]", "")
-      )
+    exists(int lineIndex |
+      this.doubleQuotedString(lineIndex, quotedStr, id)
       or
-      exists(int i, int j |
-        // single quoted string
-        quotedStr = line.regexpFind("'((?:\\\\.|[^'\\\\])*)'", i, j) and
-        id =
-          "qstr:" + k + ":" + i + ":" + j + ":" + quotedStr.length() + ":" +
-            quotedStr.regexpReplaceAll("[^a-zA-Z0-9]", "")
-      )
+      this.singleQuotedString(lineIndex, quotedStr, id)
     ) and
     // Only do this for strings that might otherwise disrupt subsequent parsing
     quotedStr.regexpMatch("[\"'].*[$\n\r'\"" + Bash::separator() + "].*[\"']")
   }
 
-  private predicate rankedQuotedStringReplacements(int i, string old, string new) {
-    old = rank[i](string old2 | this.quotedStringReplacement(old2, _) | old2) and
-    this.quotedStringReplacement(old, new)
+  private predicate rankedQuotedStringReplacements(int i, string quotedString, string quotedStringId) {
+    // rank quoted strings by their nearly-unique IDs
+    quotedStringId = rank[i](string s, string id | this.quotedStringReplacement(s, id) | id) and
+    // since we cannot output (string, ID) tuples from the rank operation,
+    // we need to work out the specific string associated with the resulting ID
+    this.quotedStringReplacement(quotedString, quotedStringId)
   }
 
   private predicate doReplaceQuotedStrings(int line, int round, string old, string new) {

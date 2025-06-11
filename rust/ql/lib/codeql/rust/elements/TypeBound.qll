@@ -10,9 +10,12 @@ import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.UseBoundGenericArgs
 
 /**
- * A TypeBound. For example:
+ * A type bound in a trait or generic parameter.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn foo<T: Debug>(t: T) {}
+ * //        ^^^^^
  * ```
  */
 final class TypeBound = Impl::TypeBound;

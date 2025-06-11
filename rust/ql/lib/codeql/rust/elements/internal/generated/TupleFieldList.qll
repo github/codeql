@@ -15,9 +15,12 @@ import codeql.rust.elements.TupleField
  */
 module Generated {
   /**
-   * A TupleFieldList. For example:
+   * A list of fields in a tuple struct or tuple enum variant.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct S(i32, String);
+   * //      ^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::TupleFieldList` class directly.
    * Use the subclass `TupleFieldList`, where the following predicates are available.

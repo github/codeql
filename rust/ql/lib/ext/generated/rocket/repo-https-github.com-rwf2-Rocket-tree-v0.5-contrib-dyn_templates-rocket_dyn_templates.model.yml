@@ -19,6 +19,8 @@ extensions:
       extensible: sinkModel
     data:
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::environment::Environment as crate::engine::Engine>::render", "Argument[0]", "log-injection", "df-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::metadata::Metadata>::render", "Argument[self]", "log-injection", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::registry::Registry as crate::engine::Engine>::init", "Argument[0]", "log-injection", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::registry::Registry as crate::engine::Engine>::render", "Argument[0]", "log-injection", "df-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::template::Template>::finalize", "Argument[0]", "log-injection", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::tera::Tera as crate::engine::Engine>::render", "Argument[0]", "log-injection", "df-generated"]

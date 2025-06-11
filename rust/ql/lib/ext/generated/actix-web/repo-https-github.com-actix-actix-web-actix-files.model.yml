@@ -4,6 +4,8 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
+      - ["repo:https://github.com/actix/actix-web:actix-files", "<crate::chunked::ChunkedReadFile>::project", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-files", "<crate::chunked::ChunkedReadFile>::project_ref", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-files", "<crate::directory::Directory>::new", "Argument[0]", "ReturnValue.Field[actix_files::directory::Directory::base]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-files", "<crate::directory::Directory>::new", "Argument[1]", "ReturnValue.Field[actix_files::directory::Directory::path]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-files", "<crate::files::Files as crate::ServiceFactory>::new_service", "Argument[self]", "ReturnValue", "taint", "df-generated"]
@@ -62,3 +64,11 @@ extensions:
       - ["repo:https://github.com/actix/actix-web:actix-files", "crate::chunked::new_chunked_read", "Argument[1]", "ReturnValue.Field[actix_files::chunked::ChunkedReadFile::offset]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-files", "crate::directory::directory_listing", "Argument[1].Reference", "ReturnValue.Field[core::result::Result::Ok(0)].Field[actix_web::service::ServiceResponse::request]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-files", "crate::encoding::equiv_utf8_text", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["repo:https://github.com/actix/actix-web:actix-files", "<crate::named::NamedFile as crate::response::responder::Responder>::respond_to", "Argument[self]", "pointer-access", "df-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-files", "<crate::named::NamedFile>::into_response", "Argument[self]", "pointer-access", "df-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-files", "<crate::named::NamedFile>::last_modified", "Argument[self]", "pointer-access", "df-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-files", "crate::directory::directory_listing", "Argument[0]", "path-injection", "df-generated"]

@@ -13,3 +13,7 @@ multiplePathResolutions
 | main.rs:223:13:223:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |
 | main.rs:224:13:224:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |
 | main.rs:224:13:224:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |
+| main.rs:229:13:229:37 | ...::with_capacity | file://:0:0:0:0 | fn with_capacity |
+| main.rs:229:13:229:37 | ...::with_capacity | file://:0:0:0:0 | fn with_capacity |
+| main.rs:233:18:233:42 | ...::with_capacity | file://:0:0:0:0 | fn with_capacity |
+| main.rs:233:18:233:42 | ...::with_capacity | file://:0:0:0:0 | fn with_capacity |

@@ -22,6 +22,12 @@ import codeql.rust.elements.TypeRepr
 module Generated {
   /**
    * A path segment, which is one part of a whole path.
+   * For example:
+   * - `HashMap`
+   * - `HashMap<K, V>`
+   * - `Fn(i32) -> i32`
+   * - `widgets(..)`
+   * - `<T as Iterator>`
    * INTERNAL: Do not reference the `Generated::PathSegment` class directly.
    * Use the subclass `PathSegment`, where the following predicates are available.
    */

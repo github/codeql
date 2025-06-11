@@ -285,7 +285,7 @@ mod m13 {
     pub struct f {} // I72
 
     mod m14 {
-        use crate::m13::f; // $ item=I71 item=I72
+        use zelf::m13::f; // $ item=I71 item=I72
 
         #[rustfmt::skip]
         fn g(x: f) { // $ item=I72
@@ -621,6 +621,8 @@ mod m24 {
     } // I121
 }
 
+extern crate self as zelf;
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
@@ -650,4 +652,5 @@ fn main() {
     m18::m19::m20::g(); // $ item=I103
     m23::f(); // $ item=I108
     m24::f(); // $ item=I121
+    zelf::h(); // $ item=I25
 }

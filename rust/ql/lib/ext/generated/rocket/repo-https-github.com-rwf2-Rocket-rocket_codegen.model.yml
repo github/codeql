@@ -38,6 +38,7 @@ extensions:
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::attribute::param::parse::Error>::source", "Argument[1]", "Argument[self].Field[rocket_codegen::attribute::param::parse::Error::source_span]", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::attribute::param::parse::Error>::source", "Argument[1]", "ReturnValue.Field[rocket_codegen::attribute::param::parse::Error::source_span]", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::attribute::param::parse::Error>::source", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::attribute::param::parse::ErrorKind as crate::fmt::Display>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::attribute::route::parse::Route>::from", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)].Field[rocket_codegen::attribute::route::parse::Route::attr]", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::attribute::route::parse::Route>::from", "Argument[1]", "ReturnValue.Field[core::result::Result::Ok(0)].Field[rocket_codegen::attribute::route::parse::Route::handler]", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::attribute::route::parse::Route>::upgrade_dynamic", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)].Field[rocket_codegen::attribute::param::Guard::source]", "value", "dfc-generated"]
@@ -50,7 +51,9 @@ extensions:
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::derive::form_field::FieldName as crate::ops::deref::Deref>::deref", "Argument[self].Field[rocket_codegen::derive::form_field::FieldName::Cased(0)]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::derive::form_field::FieldName as crate::ops::deref::Deref>::deref", "Argument[self].Field[rocket_codegen::derive::form_field::FieldName::Uncased(0)]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::exports::StaticPath>::respanned", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::http_codegen::ContentType as crate::from_meta::FromMeta>::from_meta", "Argument[0]", "ReturnValue.Field[core::result::Result::Err(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::name::Name as crate::convert::AsRef>::as_ref", "Argument[self].Field[rocket_codegen::name::Name::value]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::name::Name as crate::fmt::Display>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::name::Name as crate::ops::deref::Deref>::deref", "Argument[self].Field[rocket_codegen::name::Name::value]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::name::Name>::as_str", "Argument[self].Field[rocket_codegen::name::Name::value]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::name::Name>::new", "Argument[1]", "ReturnValue.Field[rocket_codegen::name::Name::span]", "value", "dfc-generated"]
@@ -59,7 +62,13 @@ extensions:
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::proc_macro_ext::Diagnostics>::head_err_or", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::proc_macro_ext::StringLit as crate::ops::deref::Deref>::deref", "Argument[self].Field[0]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::proc_macro_ext::StringLit as crate::ops::deref::Deref>::deref", "Argument[self].Field[rocket_codegen::proc_macro_ext::StringLit(0)]", "ReturnValue.Reference", "value", "dfc-generated"]
-      - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::syn_ext::Child as crate::ext::IntoOwned>::into_owned", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::syn_ext::Child as crate::ext::IntoOwned>::into_owned", "Argument[self].Field[rocket_codegen::syn_ext::Child::ty].Field[alloc::borrow::Cow::Owned(0)]", "ReturnValue.Field[rocket_codegen::syn_ext::Child::ty].Field[alloc::borrow::Cow::Owned(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::syn_ext::Child as crate::ops::deref::Deref>::deref", "Argument[self].Field[rocket_codegen::syn_ext::Child::ty]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::ty::ReturnType as crate::syn_ext::ReturnTypeExt>::ty", "Argument[self].Field[syn::ty::ReturnType::Type(1)]", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "crate::derive::form_field::first_duplicate", "Argument[0].Element", "Argument[1].Parameter[0].Reference", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::attribute::route::parse::Route>::from", "Argument[0]", "pointer-access", "df-generated"]
+      - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::syn_ext::Child as crate::ext::IntoOwned>::into_owned", "Argument[self]", "pointer-access", "df-generated"]

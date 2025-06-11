@@ -15,6 +15,7 @@ newtype TType =
   TTrait(Trait t) or
   TArrayType() or // todo: add size?
   TRefType() or // todo: add mut?
+  TImplTraitType(ImplTraitTypeRepr impl) or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
   TRefTypeParameter() or
@@ -115,6 +116,9 @@ class TraitType extends Type, TTrait {
 
   TraitType() { this = TTrait(trait) }
 
+  /** Gets the underlying trait. */
+  Trait getTrait() { result = trait }
+
   override StructField getStructField(string name) { none() }
 
   override TupleField getTupleField(int i) { none() }
@@ -176,6 +180,53 @@ class RefType extends Type, TRefType {
   override Location getLocation() { result instanceof EmptyLocation }
 }
 
+/**
+ * An [impl Trait][1] type.
+ *
+ * Each syntactic `impl Trait` type gives rise to its own type, even if
+ * two `impl Trait` types have the same bounds.
+ *
+ * [1]: https://doc.rust-lang.org/reference/types/impl-trait.html
+ */
+class ImplTraitType extends Type, TImplTraitType {
+  ImplTraitTypeRepr impl;
+
+  ImplTraitType() { this = TImplTraitType(impl) }
+
+  /** Gets the underlying AST node. */
+  ImplTraitTypeRepr getImplTraitTypeRepr() { result = impl }
+
+  /** Gets the function that this `impl Trait` belongs to. */
+  abstract Function getFunction();
+
+  override StructField getStructField(string name) { none() }
+
+  override TupleField getTupleField(int i) { none() }
+
+  override TypeParameter getTypeParameter(int i) { none() }
+
+  override string toString() { result = impl.toString() }
+
+  override Location getLocation() { result = impl.getLocation() }
+}
+
+/**
+ * An [impl Trait in return position][1] type, for example:
+ *
+ * ```rust
+ * fn foo() -> impl Trait
+ * ```
+ *
+ * [1]: https://doc.rust-lang.org/reference/types/impl-trait.html#r-type.impl-trait.return
+ */
+class ImplTraitReturnType extends ImplTraitType {
+  private Function function;
+
+  ImplTraitReturnType() { impl = function.getRetType().getTypeRepr() }
+
+  override Function getFunction() { result = function }
+}
+
 /** A type parameter. */
 abstract class TypeParameter extends Type {
   override StructField getStructField(string name) { none() }
@@ -185,7 +236,7 @@ abstract class TypeParameter extends Type {
   override TypeParameter getTypeParameter(int i) { none() }
 }
 
-private class RawTypeParameter = @type_param or @trait or @type_alias;
+private class RawTypeParameter = @type_param or @trait or @type_alias or @impl_trait_type_repr;
 
 private predicate id(RawTypeParameter x, RawTypeParameter y) { x = y }
 
@@ -282,6 +333,37 @@ class SelfTypeParameter extends TypeParameter, TSelfTypeParameter {
 }
 
 /**
+ * An [impl Trait in argument position][1] type, for example:
+ *
+ * ```rust
+ * fn foo(arg: impl Trait)
+ * ```
+ *
+ * Such types are syntactic sugar for type parameters, that is
+ *
+ * ```rust
+ * fn foo<T: Trait>(arg: T)
+ * ```
+ *
+ * so we model them as type parameters.
+ *
+ * [1]: https://doc.rust-lang.org/reference/types/impl-trait.html#r-type.impl-trait.param
+ */
+class ImplTraitTypeTypeParameter extends ImplTraitType, TypeParameter {
+  private Function function;
+
+  ImplTraitTypeTypeParameter() { impl = function.getAParam().getTypeRepr() }
+
+  override Function getFunction() { result = function }
+
+  override StructField getStructField(string name) { none() }
+
+  override TupleField getTupleField(int i) { none() }
+
+  override TypeParameter getTypeParameter(int i) { none() }
+}
+
+/**
  * A type abstraction. I.e., a place in the program where type variables are
  * introduced.
  *
@@ -314,5 +396,9 @@ final class TypeBoundTypeAbstraction extends TypeAbstraction, TypeBound {
 final class SelfTypeBoundTypeAbstraction extends TypeAbstraction, Name {
   SelfTypeBoundTypeAbstraction() { any(Trait trait).getName() = this }
 
+  override TypeParamTypeParameter getATypeParameter() { none() }
+}
+
+final class ImplTraitTypeReprAbstraction extends TypeAbstraction, ImplTraitTypeRepr {
   override TypeParamTypeParameter getATypeParameter() { none() }
 }

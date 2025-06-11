@@ -45,8 +45,6 @@ extensions:
       - ["repo:https://github.com/serde-rs/serde:serde_derive", "<crate::internals::case::RenameRule>::or", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/serde-rs/serde:serde_derive", "<crate::internals::name::MultiName>::deserialize_aliases", "Argument[self].Field[serde_derive::internals::name::MultiName::deserialize_aliases]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/serde-rs/serde:serde_derive", "<crate::internals::name::MultiName>::deserialize_name", "Argument[self].Field[serde_derive::internals::name::MultiName::deserialize]", "ReturnValue.Reference", "value", "dfc-generated"]
-      - ["repo:https://github.com/serde-rs/serde:serde_derive", "<crate::internals::name::MultiName>::from_attrs", "Argument[0].Reference", "ReturnValue.Field[serde_derive::internals::name::MultiName::serialize]", "value", "dfc-generated"]
-      - ["repo:https://github.com/serde-rs/serde:serde_derive", "<crate::internals::name::MultiName>::from_attrs", "Argument[0]", "ReturnValue.Field[serde_derive::internals::name::MultiName::deserialize]", "value", "dfc-generated"]
       - ["repo:https://github.com/serde-rs/serde:serde_derive", "<crate::internals::name::MultiName>::serialize_name", "Argument[self].Field[serde_derive::internals::name::MultiName::serialize]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/serde-rs/serde:serde_derive", "<crate::internals::name::Name as crate::convert::From>::from", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/serde-rs/serde:serde_derive", "crate::bound::with_bound", "Argument[1].Reference", "ReturnValue", "value", "dfc-generated"]

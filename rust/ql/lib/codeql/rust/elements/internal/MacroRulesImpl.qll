@@ -13,9 +13,13 @@ private import codeql.rust.elements.internal.generated.MacroRules
  */
 module Impl {
   /**
-   * A MacroRules. For example:
+   * A macro definition using the `macro_rules!` syntax.
    * ```rust
-   * todo!()
+   * macro_rules! my_macro {
+   *     () => {
+   *         println!("This is a macro!");
+   *     };
+   * }
    * ```
    */
   class MacroRules extends Generated::MacroRules { }
