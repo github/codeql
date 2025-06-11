@@ -17,3 +17,4 @@ dataExtensions:
   - codeql/ruby/frameworks/**/model.yml
   - codeql/ruby/frameworks/**/*.model.yml
 warnOnImplicitThis: true
+compileForOverlayEval: true
