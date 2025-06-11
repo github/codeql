@@ -1109,9 +1109,9 @@ mod method_call_type_conversion {
         println!("{:?}", x7);
 
         let x9 : String = "Hello".to_string(); // $ type=x9:String
-        // Implicit `String` -> `str` conversion happense via the `Deref` trait:
+        // Implicit `String` -> `str` conversion happens via the `Deref` trait:
         // https://doc.rust-lang.org/std/string/struct.String.html#deref.
-        let u = x9.parse::<u32>(); // $ MISSING: method=parse type=u:T.u32
+        let u = x9.parse::<u32>(); // $ method=parse type=u:T.u32
     }
 }
 
