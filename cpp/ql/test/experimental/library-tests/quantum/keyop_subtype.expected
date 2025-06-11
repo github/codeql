@@ -1,3 +1,0 @@
-| openssl_basic.c:40:13:40:31 | EncryptOperation | Encrypt |
-| openssl_basic.c:90:11:90:29 | DecryptOperation | Decrypt |
-| openssl_pkey.c:64:9:64:24 | EncryptOperation | Encrypt |

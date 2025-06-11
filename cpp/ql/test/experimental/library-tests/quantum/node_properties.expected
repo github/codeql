@@ -1,0 +1,66 @@
+| openssl_basic.c:23:37:23:51 | KeyOperationAlgorithm | KeySize | 256 | openssl_basic.c:23:37:23:51 | openssl_basic.c:23:37:23:51 |
+| openssl_basic.c:23:37:23:51 | KeyOperationAlgorithm | Name | AES | openssl_basic.c:23:37:23:51 | openssl_basic.c:23:37:23:51 |
+| openssl_basic.c:23:37:23:51 | KeyOperationAlgorithm | RawName | EVP_aes_256_gcm | openssl_basic.c:23:37:23:51 | openssl_basic.c:23:37:23:51 |
+| openssl_basic.c:23:37:23:51 | KeyOperationAlgorithm | Structure | Block | openssl_basic.c:23:37:23:51 | openssl_basic.c:23:37:23:51 |
+| openssl_basic.c:23:37:23:51 | ModeOfOperation | Name | GCM | openssl_basic.c:23:37:23:51 | openssl_basic.c:23:37:23:51 |
+| openssl_basic.c:23:37:23:51 | ModeOfOperation | RawName | EVP_aes_256_gcm | openssl_basic.c:23:37:23:51 | openssl_basic.c:23:37:23:51 |
+| openssl_basic.c:23:62:23:65 | Key | KeyType | Unknown | openssl_basic.c:23:62:23:65 | openssl_basic.c:23:62:23:65 |
+| openssl_basic.c:31:49:31:51 | Key | KeyType | Unknown | openssl_basic.c:31:49:31:51 | openssl_basic.c:31:49:31:51 |
+| openssl_basic.c:40:13:40:31 | EncryptOperation | KeyOperationSubtype | Encrypt | openssl_basic.c:40:13:40:31 | openssl_basic.c:40:13:40:31 |
+| openssl_basic.c:69:33:69:47 | KeyOperationAlgorithm | KeySize | 256 | openssl_basic.c:69:33:69:47 | openssl_basic.c:69:33:69:47 |
+| openssl_basic.c:69:33:69:47 | KeyOperationAlgorithm | Name | AES | openssl_basic.c:69:33:69:47 | openssl_basic.c:69:33:69:47 |
+| openssl_basic.c:69:33:69:47 | KeyOperationAlgorithm | RawName | EVP_aes_256_gcm | openssl_basic.c:69:33:69:47 | openssl_basic.c:69:33:69:47 |
+| openssl_basic.c:69:33:69:47 | KeyOperationAlgorithm | Structure | Block | openssl_basic.c:69:33:69:47 | openssl_basic.c:69:33:69:47 |
+| openssl_basic.c:69:33:69:47 | ModeOfOperation | Name | GCM | openssl_basic.c:69:33:69:47 | openssl_basic.c:69:33:69:47 |
+| openssl_basic.c:69:33:69:47 | ModeOfOperation | RawName | EVP_aes_256_gcm | openssl_basic.c:69:33:69:47 | openssl_basic.c:69:33:69:47 |
+| openssl_basic.c:69:58:69:61 | Key | KeyType | Unknown | openssl_basic.c:69:58:69:61 | openssl_basic.c:69:58:69:61 |
+| openssl_basic.c:77:45:77:47 | Key | KeyType | Unknown | openssl_basic.c:77:45:77:47 | openssl_basic.c:77:45:77:47 |
+| openssl_basic.c:90:11:90:29 | DecryptOperation | KeyOperationSubtype | Decrypt | openssl_basic.c:90:11:90:29 | openssl_basic.c:90:11:90:29 |
+| openssl_basic.c:116:38:116:47 | HashAlgorithm | DigestSize | 256 | openssl_basic.c:116:38:116:47 | openssl_basic.c:116:38:116:47 |
+| openssl_basic.c:116:38:116:47 | HashAlgorithm | Name | SHA2 | openssl_basic.c:116:38:116:47 | openssl_basic.c:116:38:116:47 |
+| openssl_basic.c:116:38:116:47 | HashAlgorithm | RawName | EVP_sha256 | openssl_basic.c:116:38:116:47 | openssl_basic.c:116:38:116:47 |
+| openssl_basic.c:144:67:144:73 | HashAlgorithm | DigestSize | 128 | openssl_basic.c:144:67:144:73 | openssl_basic.c:144:67:144:73 |
+| openssl_basic.c:144:67:144:73 | HashAlgorithm | Name | MD5 | openssl_basic.c:144:67:144:73 | openssl_basic.c:144:67:144:73 |
+| openssl_basic.c:144:67:144:73 | HashAlgorithm | RawName | EVP_md5 | openssl_basic.c:144:67:144:73 | openssl_basic.c:144:67:144:73 |
+| openssl_basic.c:155:43:155:55 | Constant | Description | 855 | openssl_basic.c:155:43:155:55 | openssl_basic.c:155:43:155:55 |
+| openssl_basic.c:160:39:160:48 | HashAlgorithm | DigestSize | 256 | openssl_basic.c:160:39:160:48 | openssl_basic.c:160:39:160:48 |
+| openssl_basic.c:160:39:160:48 | HashAlgorithm | Name | SHA2 | openssl_basic.c:160:39:160:48 | openssl_basic.c:160:39:160:48 |
+| openssl_basic.c:160:39:160:48 | HashAlgorithm | RawName | EVP_sha256 | openssl_basic.c:160:39:160:48 | openssl_basic.c:160:39:160:48 |
+| openssl_basic.c:179:43:179:76 | Constant | Description | 01234567890123456789012345678901 | openssl_basic.c:179:43:179:76 | openssl_basic.c:179:43:179:76 |
+| openssl_basic.c:180:42:180:59 | Constant | Description | 0123456789012345 | openssl_basic.c:180:42:180:59 | openssl_basic.c:180:42:180:59 |
+| openssl_basic.c:181:49:181:87 | Constant | Description | This is a test message for encryption | openssl_basic.c:181:49:181:87 | openssl_basic.c:181:49:181:87 |
+| openssl_pkey.c:21:10:21:28 | KeyOperationAlgorithm | Name | RSA | openssl_pkey.c:21:10:21:28 | openssl_pkey.c:21:10:21:28 |
+| openssl_pkey.c:21:10:21:28 | KeyOperationAlgorithm | RawName | RSA_generate_key_ex | openssl_pkey.c:21:10:21:28 | openssl_pkey.c:21:10:21:28 |
+| openssl_pkey.c:45:49:45:65 | Constant | Description | Hello, OpenSSL! | openssl_pkey.c:45:49:45:65 | openssl_pkey.c:45:49:45:65 |
+| openssl_pkey.c:50:31:50:42 | KeyOperationAlgorithm | Name | RSA | openssl_pkey.c:50:31:50:42 | openssl_pkey.c:50:31:50:42 |
+| openssl_pkey.c:50:31:50:42 | KeyOperationAlgorithm | RawName | 6 | openssl_pkey.c:50:31:50:42 | openssl_pkey.c:50:31:50:42 |
+| openssl_pkey.c:54:47:54:50 | Constant | Description | 2048 | openssl_pkey.c:54:47:54:50 | openssl_pkey.c:54:47:54:50 |
+| openssl_pkey.c:55:30:55:34 | Key | KeyType | Asymmetric | openssl_pkey.c:55:30:55:34 | openssl_pkey.c:55:30:55:34 |
+| openssl_pkey.c:60:28:60:31 | Key | KeyType | Unknown | openssl_pkey.c:60:28:60:31 | openssl_pkey.c:60:28:60:31 |
+| openssl_pkey.c:64:9:64:24 | EncryptOperation | KeyOperationSubtype | Encrypt | openssl_pkey.c:64:9:64:24 | openssl_pkey.c:64:9:64:24 |
+| openssl_signature.c:521:46:521:66 | PaddingAlgorithm | Name | PSS | openssl_signature.c:521:46:521:66 | openssl_signature.c:521:46:521:66 |
+| openssl_signature.c:521:46:521:66 | PaddingAlgorithm | RawName | 6 | openssl_signature.c:521:46:521:66 | openssl_signature.c:521:46:521:66 |
+| openssl_signature.c:543:35:543:46 | KeyOperationAlgorithm | Name | RSA | openssl_signature.c:543:35:543:46 | openssl_signature.c:543:35:543:46 |
+| openssl_signature.c:543:35:543:46 | KeyOperationAlgorithm | RawName | 6 | openssl_signature.c:543:35:543:46 | openssl_signature.c:543:35:543:46 |
+| openssl_signature.c:547:51:547:54 | Constant | Description | 2048 | openssl_signature.c:547:51:547:54 | openssl_signature.c:547:51:547:54 |
+| openssl_signature.c:548:34:548:37 | Key | KeyType | Asymmetric | openssl_signature.c:548:34:548:37 | openssl_signature.c:548:34:548:37 |
+| openssl_signature.c:565:50:565:54 | KeyOperationAlgorithm | Name | DSA | openssl_signature.c:565:50:565:54 | openssl_signature.c:565:50:565:54 |
+| openssl_signature.c:565:50:565:54 | KeyOperationAlgorithm | RawName | dsa | openssl_signature.c:565:50:565:54 | openssl_signature.c:565:50:565:54 |
+| openssl_signature.c:569:55:569:58 | Constant | Description | 2048 | openssl_signature.c:569:55:569:58 | openssl_signature.c:569:55:569:58 |
+| openssl_signature.c:578:34:578:37 | Key | KeyType | Asymmetric | openssl_signature.c:578:34:578:37 | openssl_signature.c:578:34:578:37 |
+| openssl_signature.c:602:37:602:77 | Constant | Description | Test message for OpenSSL signature APIs | openssl_signature.c:602:37:602:77 | openssl_signature.c:602:37:602:77 |
+| openssl_signature.c:684:24:684:33 | HashAlgorithm | DigestSize | 256 | openssl_signature.c:684:24:684:33 | openssl_signature.c:684:24:684:33 |
+| openssl_signature.c:684:24:684:33 | HashAlgorithm | Name | SHA2 | openssl_signature.c:684:24:684:33 | openssl_signature.c:684:24:684:33 |
+| openssl_signature.c:684:24:684:33 | HashAlgorithm | RawName | EVP_sha256 | openssl_signature.c:684:24:684:33 | openssl_signature.c:684:24:684:33 |
+| openssl_signature.c:685:37:685:77 | Constant | Description | Test message for OpenSSL signature APIs | openssl_signature.c:685:37:685:77 | openssl_signature.c:685:37:685:77 |
+| openssl_signature.c:702:60:702:71 | HashAlgorithm | DigestSize | 256 | openssl_signature.c:702:60:702:71 | openssl_signature.c:702:60:702:71 |
+| openssl_signature.c:702:60:702:71 | HashAlgorithm | Name | SHA2 | openssl_signature.c:702:60:702:71 | openssl_signature.c:702:60:702:71 |
+| openssl_signature.c:702:60:702:71 | HashAlgorithm | RawName | RSA-SHA256 | openssl_signature.c:702:60:702:71 | openssl_signature.c:702:60:702:71 |
+| openssl_signature.c:702:60:702:71 | KeyOperationAlgorithm | Name | RSA | openssl_signature.c:702:60:702:71 | openssl_signature.c:702:60:702:71 |
+| openssl_signature.c:702:60:702:71 | KeyOperationAlgorithm | RawName | RSA-SHA256 | openssl_signature.c:702:60:702:71 | openssl_signature.c:702:60:702:71 |
+| openssl_signature.c:740:24:740:33 | HashAlgorithm | DigestSize | 256 | openssl_signature.c:740:24:740:33 | openssl_signature.c:740:24:740:33 |
+| openssl_signature.c:740:24:740:33 | HashAlgorithm | Name | SHA2 | openssl_signature.c:740:24:740:33 | openssl_signature.c:740:24:740:33 |
+| openssl_signature.c:740:24:740:33 | HashAlgorithm | RawName | EVP_sha256 | openssl_signature.c:740:24:740:33 | openssl_signature.c:740:24:740:33 |
+| openssl_signature.c:741:37:741:77 | Constant | Description | Test message for OpenSSL signature APIs | openssl_signature.c:741:37:741:77 | openssl_signature.c:741:37:741:77 |
+| openssl_signature.c:758:60:758:64 | KeyOperationAlgorithm | Name | DSA | openssl_signature.c:758:60:758:64 | openssl_signature.c:758:60:758:64 |
+| openssl_signature.c:758:60:758:64 | KeyOperationAlgorithm | RawName | dsa | openssl_signature.c:758:60:758:64 | openssl_signature.c:758:60:758:64 |

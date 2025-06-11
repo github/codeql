@@ -2142,6 +2142,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       key = "Key" and
       if exists(this.getAKey()) then result = this.getAKey() else result = this
     }
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      key = "KeyOperationSubtype" and
+      value = this.getKeyOperationSubtype().toString() and
+      location = this.getLocation()
+    }
   }
 
   class CipherOperationNode extends KeyOperationNode {

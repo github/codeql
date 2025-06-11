@@ -1,4 +1,0 @@
-| openssl_basic.c:40:13:40:31 | EncryptOperation | openssl_basic.c:23:68:23:71 | Nonce |
-| openssl_basic.c:40:13:40:31 | EncryptOperation | openssl_basic.c:31:54:31:55 | Nonce |
-| openssl_basic.c:90:11:90:29 | DecryptOperation | openssl_basic.c:69:64:69:67 | Nonce |
-| openssl_basic.c:90:11:90:29 | DecryptOperation | openssl_basic.c:77:50:77:51 | Nonce |

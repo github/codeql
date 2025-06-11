@@ -1,5 +1,5 @@
 import cpp
 import experimental.quantum.Language
 
-from Crypto::AlgorithmNode n
+from Crypto::NodeBase n
 select n
