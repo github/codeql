@@ -257,6 +257,10 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     )
   )
   or
+  n1 = n2.(RefExpr).getExpr() and
+  prefix1.isEmpty() and
+  prefix2 = TypePath::singleton(TRefTypeParameter())
+  or
   n1 = n2.(DerefExpr).getExpr() and
   prefix1 = TypePath::singleton(TRefTypeParameter()) and
   prefix2.isEmpty()
@@ -973,43 +977,9 @@ private Type inferFieldExprType(AstNode n, TypePath path) {
   )
 }
 
-/**
- * Gets the type of `n` at `path`, where `n` is either a reference expression
- * `& x` or an expression `x` inside a reference expression `& x`.
- */
+/** Gets the root type of the reference expression `re`. */
 pragma[nomagic]
-private Type inferRefExprType(Expr e, TypePath path) {
-  exists(RefExpr re |
-    e = re and
-    path.isEmpty() and
-    result = TRefType()
-    or
-    e = re and
-    exists(TypePath exprPath | result = inferType(re.getExpr(), exprPath) |
-      if exprPath.isCons(TRefTypeParameter(), _)
-      then
-        // `&x` simply means `x` when `x` already has reference type
-        path = exprPath
-      else (
-        path = TypePath::cons(TRefTypeParameter(), exprPath) and
-        not (exprPath.isEmpty() and result = TRefType())
-      )
-    )
-    or
-    e = re.getExpr() and
-    exists(TypePath exprPath, TypePath refPath, Type exprType |
-      result = inferType(re, exprPath) and
-      exprPath.isCons(TRefTypeParameter(), refPath) and
-      exprType = inferType(e)
-    |
-      if exprType = TRefType()
-      then
-        // `&x` simply means `x` when `x` already has reference type
-        path = exprPath
-      else path = refPath
-    )
-  )
-}
+private Type inferRefExprType(RefExpr re) { exists(re) and result = TRefType() }
 
 pragma[nomagic]
 private Type inferTryExprType(TryExpr te, TypePath path) {
@@ -1505,7 +1475,8 @@ private module Cached {
     or
     result = inferFieldExprType(n, path)
     or
-    result = inferRefExprType(n, path)
+    result = inferRefExprType(n) and
+    path.isEmpty()
     or
     result = inferTryExprType(n, path)
     or

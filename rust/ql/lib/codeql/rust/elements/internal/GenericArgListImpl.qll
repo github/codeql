@@ -26,6 +26,7 @@ module Impl {
     override string toAbbreviatedString() { result = "<...>" }
 
     /** Gets the `i`th type argument of this list. */
+    pragma[nomagic]
     TypeRepr getTypeArg(int i) {
       result =
         rank[i + 1](TypeRepr res, int j |
