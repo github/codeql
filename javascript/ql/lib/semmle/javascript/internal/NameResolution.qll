@@ -271,6 +271,32 @@ module NameResolution {
    */
   module TypeFlow = FlowImpl<TypeConfig>;
 
+  /**
+   * Generates a directed graph for tracking type names or value names back toward their definition.
+   * The ultimate definition might not be in the database, but the graph lets us track as far as we can.
+   *
+   * The module parameter determines whether types or values should be tracked.
+   *
+   * The example below illustrates the need for two separate instantiations of this module.
+   * When tracking through the nodes corresponding to `X`, we need to remember whether a type or value was tracked.
+   *
+   * ```ts
+   * // lib.ts
+   * class C1 {}
+   * class C2 {}
+   *
+   * const X = C1;
+   * type X = C2;
+   *
+   * export { X }
+   *
+   * // use.ts
+   * import { X } from "./lib"
+   *
+   * var x1 = X // should refer to C1
+   * var x2: X; // should refer to C2
+   * ```
+   */
   private module FlowImpl<TypeResolutionInputSig S> {
     /**
      * Gets the exported member of `mod` named `name`.
