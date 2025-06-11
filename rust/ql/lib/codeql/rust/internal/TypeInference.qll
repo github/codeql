@@ -675,12 +675,13 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     apos = dpos
   }
 
-  bindingset[apos, target, path, t]
+  bindingset[a, apos, target, path, t]
   pragma[inline_late]
   predicate adjustAccessType(
-    AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
+    Access a, AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj,
+    Type tAdj
   ) {
-    if apos.isSelf()
+    if apos.isSelf() and a.receiverImplicitlyBorrowed()
     then
       exists(Type selfParamType |
         selfParamType = target.getParameterType(TSelfDeclarationPosition(), TypePath::nil())
@@ -844,11 +845,13 @@ private module FieldExprMatchingInput implements MatchingInputSig {
     apos = dpos
   }
 
-  bindingset[apos, target, path, t]
+  bindingset[a, apos, target, path, t]
   pragma[inline_late]
   predicate adjustAccessType(
-    AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
+    Access a, AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj,
+    Type tAdj
   ) {
+    exists(a) and
     exists(target) and
     if apos.isSelf()
     then
