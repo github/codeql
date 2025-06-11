@@ -1,4 +1,10 @@
 uniqueEnclosingCallable
+| builtin.c:14:3:14:16 | ... * ... | Node should have one enclosing callable but has 0. |
+| builtin.c:14:3:14:16 | sizeof(int) | Node should have one enclosing callable but has 0. |
+| builtin.c:14:10:14:10 | 4 | Node should have one enclosing callable but has 0. |
+| builtin.c:15:3:15:16 | ... * ... | Node should have one enclosing callable but has 0. |
+| builtin.c:15:3:15:16 | sizeof(int) | Node should have one enclosing callable but has 0. |
+| builtin.c:15:10:15:10 | 4 | Node should have one enclosing callable but has 0. |
 | enum.c:2:6:2:6 | 1 | Node should have one enclosing callable but has 0. |
 | enum.c:2:6:2:10 | ... + ... | Node should have one enclosing callable but has 0. |
 | enum.c:2:10:2:10 | 1 | Node should have one enclosing callable but has 0. |

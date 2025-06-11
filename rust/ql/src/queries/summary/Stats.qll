@@ -35,7 +35,7 @@ int getLinesOfCode() { result = sum(File f | f.fromSource() | f.getNumberOfLines
  * Gets a count of the total number of lines of code from the source code directory in the database.
  */
 int getLinesOfUserCode() {
-  result = sum(File f | exists(f.getRelativePath()) | f.getNumberOfLinesOfCode())
+  result = sum(ExtractedFile f | exists(f.getRelativePath()) | f.getNumberOfLinesOfCode())
 }
 
 /**

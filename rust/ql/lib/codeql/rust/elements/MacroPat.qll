@@ -8,9 +8,20 @@ import codeql.rust.elements.MacroCall
 import codeql.rust.elements.Pat
 
 /**
- * A MacroPat. For example:
+ * A macro pattern, representing the invocation of a macro that produces a pattern.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * macro_rules! my_macro {
+ *     () => {
+ *         Ok(_)
+ *     };
+ * }
+ * match x {
+ *     my_macro!() => "matched",
+ * //  ^^^^^^^^^^^
+ *     _ => "not matched",
+ * }
  * ```
  */
 final class MacroPat = Impl::MacroPat;

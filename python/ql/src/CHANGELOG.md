@@ -1,3 +1,9 @@
+## 1.5.2
+
+### Minor Analysis Improvements
+
+* Added SQL injection models from the `pandas` PyPI package.
+
 ## 1.5.1
 
 ### Minor Analysis Improvements

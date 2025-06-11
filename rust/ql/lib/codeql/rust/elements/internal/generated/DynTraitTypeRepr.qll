@@ -15,9 +15,12 @@ import codeql.rust.elements.internal.TypeReprImpl::Impl as TypeReprImpl
  */
 module Generated {
   /**
-   * A DynTraitTypeRepr. For example:
+   * A dynamic trait object type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let x: &dyn Debug;
+   * //      ^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::DynTraitTypeRepr` class directly.
    * Use the subclass `DynTraitTypeRepr`, where the following predicates are available.

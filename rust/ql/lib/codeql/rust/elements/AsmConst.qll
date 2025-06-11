@@ -7,4 +7,14 @@ private import internal.AsmConstImpl
 import codeql.rust.elements.AsmOperand
 import codeql.rust.elements.Expr
 
+/**
+ * A constant operand in an inline assembly block.
+ *
+ * For example:
+ * ```rust
+ * use core::arch::asm;
+ * asm!("mov eax, {const}", const 42);
+ * //                       ^^^^^^^
+ * ```
+ */
 final class AsmConst = Impl::AsmConst;

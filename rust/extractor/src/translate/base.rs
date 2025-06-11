@@ -25,7 +25,9 @@ use ra_ap_syntax::{
 #[macro_export]
 macro_rules! pre_emit {
     (Item, $self:ident, $node:ident) => {
-        $self.setup_item_expansion($node);
+        if let Some(label) = $self.prepare_item_expansion($node) {
+            return Some(label);
+        }
     };
     ($($_:tt)*) => {};
 }
@@ -687,6 +689,9 @@ impl<'a> Translator<'a> {
             {
                 return true;
             }
+            if syntax.kind() == SyntaxKind::TOKEN_TREE {
+                return true;
+            }
         }
         false
     }
@@ -723,52 +728,75 @@ impl<'a> Translator<'a> {
         }
     }
 
-    pub(crate) fn setup_item_expansion(&mut self, node: &ast::Item) {
-        if self.semantics.is_some_and(|s| {
-            let file = s.hir_file_for(node.syntax());
-            let node = InFile::new(file, node);
-            s.is_attr_macro_call(node)
-        }) {
+    pub(crate) fn prepare_item_expansion(
+        &mut self,
+        node: &ast::Item,
+    ) -> Option<Label<generated::Item>> {
+        if self.source_kind == SourceKind::Library {
+            // if the item expands via an attribute macro, we want to only emit the expansion
+            if let Some(expanded) = self.emit_attribute_macro_expansion(node) {
+                // we wrap it in a dummy MacroCall to get a single Item label that can replace
+                // the original Item
+                let label = self.trap.emit(generated::MacroCall {
+                    id: TrapId::Star,
+                    attrs: vec![],
+                    path: None,
+                    token_tree: None,
+                });
+                generated::MacroCall::emit_macro_call_expansion(
+                    label,
+                    expanded.into(),
+                    &mut self.trap.writer,
+                );
+                return Some(label.into());
+            }
+        }
+        let semantics = self.semantics.as_ref()?;
+        let file = semantics.hir_file_for(node.syntax());
+        let node = InFile::new(file, node);
+        if semantics.is_attr_macro_call(node) {
             self.macro_context_depth += 1;
         }
+        None
+    }
+
+    fn emit_attribute_macro_expansion(
+        &mut self,
+        node: &ast::Item,
+    ) -> Option<Label<generated::MacroItems>> {
+        let semantics = self.semantics?;
+        let file = semantics.hir_file_for(node.syntax());
+        let infile_node = InFile::new(file, node);
+        if !semantics.is_attr_macro_call(infile_node) {
+            return None;
+        }
+        self.macro_context_depth -= 1;
+        if self.macro_context_depth > 0 {
+            // only expand the outermost attribute macro
+            return None;
+        }
+        let ExpandResult {
+            value: expanded, ..
+        } = semantics.expand_attr_macro(node)?;
+        self.emit_macro_expansion_parse_errors(node, &expanded);
+        let macro_items = ast::MacroItems::cast(expanded).or_else(|| {
+            let message = "attribute macro expansion cannot be cast to MacroItems".to_owned();
+            let location = self.location_for_node(node);
+            self.emit_diagnostic(
+                DiagnosticSeverity::Warning,
+                "item_expansion".to_owned(),
+                message.clone(),
+                message,
+                location.unwrap_or(UNKNOWN_LOCATION),
+            );
+            None
+        })?;
+        self.emit_macro_items(&macro_items)
     }
 
     pub(crate) fn emit_item_expansion(&mut self, node: &ast::Item, label: Label<generated::Item>) {
-        // TODO: remove this after fixing exponential expansion on libraries like funty-2.0.0
-        if self.source_kind == SourceKind::Library {
-            return;
-        }
-        (|| {
-            let semantics = self.semantics?;
-            let file = semantics.hir_file_for(node.syntax());
-            let infile_node = InFile::new(file, node);
-            if !semantics.is_attr_macro_call(infile_node) {
-                return None;
-            }
-            self.macro_context_depth -= 1;
-            if self.macro_context_depth > 0 {
-                // only expand the outermost attribute macro
-                return None;
-            }
-            let ExpandResult {
-                value: expanded, ..
-            } = semantics.expand_attr_macro(node)?;
-            self.emit_macro_expansion_parse_errors(node, &expanded);
-            let macro_items = ast::MacroItems::cast(expanded).or_else(|| {
-                let message = "attribute macro expansion cannot be cast to MacroItems".to_owned();
-                let location = self.location_for_node(node);
-                self.emit_diagnostic(
-                    DiagnosticSeverity::Warning,
-                    "item_expansion".to_owned(),
-                    message.clone(),
-                    message,
-                    location.unwrap_or(UNKNOWN_LOCATION),
-                );
-                None
-            })?;
-            let expanded = self.emit_macro_items(&macro_items)?;
+        if let Some(expanded) = self.emit_attribute_macro_expansion(node) {
             generated::Item::emit_attribute_macro_expansion(label, expanded, &mut self.trap.writer);
-            Some(())
-        })();
+        }
     }
 }

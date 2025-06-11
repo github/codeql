@@ -1,5 +1,5 @@
 name: codeql/threat-models
-version: 1.0.24
+version: 1.0.25
 library: true
 groups: shared
 dataExtensions:

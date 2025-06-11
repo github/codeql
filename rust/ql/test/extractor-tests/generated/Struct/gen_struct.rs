@@ -2,5 +2,8 @@
 
 fn test_struct() -> () {
     // A Struct. For example:
-    todo!()
+    struct Point {
+        x: i32,
+        y: i32,
+    }
 }
