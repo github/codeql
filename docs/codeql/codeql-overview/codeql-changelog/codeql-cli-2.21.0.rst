@@ -207,5 +207,5 @@ JavaScript/TypeScript
 
     *   Intersection :code:`&&`
     *   Subtraction :code:`--`
-    *   :code:`\\q` quoted string
+    *   :code:`\q` quoted string
     
