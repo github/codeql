@@ -737,7 +737,7 @@ pub fn test_enum_members() {
 
 // --- macros ---
 
-macro_rules! my_macro {
+macro_rules! my_macro1 {
 	() => {
 		let ptr: *const i64;
 		{
@@ -752,9 +752,25 @@ macro_rules! my_macro {
 	}
 }
 
+macro_rules! my_macro2 {
+	() => {
+		{
+			let val: i64 = 1;
+			let ptr: *const i64 = &val;
+			ptr
+		}
+	}
+}
+
 pub fn test_macros() {
-	my_macro!();
-	my_macro!();
+	my_macro1!();
+	my_macro1!();
+
+	let ptr = my_macro2!(); // $ SPURIOUS: Source[rust/access-after-lifetime-ended]=ptr
+	unsafe {
+		let v = *ptr; // $ SPURIOUS: Alert[rust/access-after-lifetime-ended]=ptr
+		println!("	v = {v}");
+	}
 }
 
 // --- examples from qhelp ---
