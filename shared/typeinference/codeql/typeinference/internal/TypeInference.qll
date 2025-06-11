@@ -985,17 +985,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       private module AccessConstraint {
         predicate relevantAccessConstraint(
-          Access a, AccessPosition apos, TypePath path, Type constraint
+          Access a, Declaration target, AccessPosition apos, TypePath path, Type constraint
         ) {
           exists(DeclarationPosition dpos |
             accessDeclarationPositionMatch(apos, dpos) and
-            typeParameterConstraintHasTypeParameter(a.getTarget(), dpos, path, _, constraint, _, _)
+            target = a.getTarget() and
+            typeParameterConstraintHasTypeParameter(target, dpos, path, _, constraint, _, _)
           )
         }
 
         private newtype TRelevantAccess =
-          MkRelevantAccess(Access a, AccessPosition apos, TypePath path) {
-            relevantAccessConstraint(a, apos, path, _)
+          MkRelevantAccess(Access a, Declaration target, AccessPosition apos, TypePath path) {
+            relevantAccessConstraint(a, target, apos, path, _)
           }
 
         /**
@@ -1004,19 +1005,20 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          */
         private class RelevantAccess extends MkRelevantAccess {
           Access a;
+          Declaration target;
           AccessPosition apos;
           TypePath path;
 
-          RelevantAccess() { this = MkRelevantAccess(a, apos, path) }
+          RelevantAccess() { this = MkRelevantAccess(a, target, apos, path) }
 
           Type getTypeAt(TypePath suffix) {
-            a.getInferredType(apos, path.appendInverse(suffix)) = result
+            adjustedAccessType(a, apos, target, path.appendInverse(suffix), result)
           }
 
           /** Holds if this relevant access has the type `type` and should satisfy `constraint`. */
           predicate hasTypeConstraint(Type type, Type constraint) {
-            type = a.getInferredType(apos, path) and
-            relevantAccessConstraint(a, apos, path, constraint)
+            adjustedAccessType(a, apos, target, path, type) and
+            relevantAccessConstraint(a, target, apos, path, constraint)
           }
 
           string toString() {
@@ -1076,7 +1078,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           TypeAbstraction abs, TypeMention sub, TypePath path, Type t
         ) {
           exists(TypeMention constraintMention |
-            at = MkRelevantAccess(a, apos, prefix) and
+            at = MkRelevantAccess(a, _, apos, prefix) and
             hasConstraintMention(at, abs, sub, constraint, constraintMention) and
             conditionSatisfiesConstraintTypeAt(abs, sub, constraintMention, path, t)
           )

@@ -778,6 +778,9 @@ inferType
 | main.rs:697:33:697:33 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:700:18:700:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
 | main.rs:700:26:700:27 | x3 |  | main.rs:619:5:620:13 | S |
+| main.rs:700:26:700:40 | x3.putTwo(...) |  | main.rs:568:5:571:5 | Wrapper |
+| main.rs:700:26:700:40 | x3.putTwo(...) | A | main.rs:639:36:639:50 | AssociatedParam |
+| main.rs:700:26:700:49 | ... .unwrap() |  | main.rs:639:36:639:50 | AssociatedParam |
 | main.rs:700:36:700:36 | 2 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:700:39:700:39 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:702:20:702:20 | S |  | main.rs:619:5:620:13 | S |
