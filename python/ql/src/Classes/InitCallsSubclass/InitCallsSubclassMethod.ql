@@ -15,22 +15,13 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 
-predicate initSelfCall(Function init, DataFlow::MethodCallNode call) {
-  init.isInitMethod() and
-  call.getScope() = init and
-  exists(DataFlow::Node self, DataFlow::ParameterNode selfArg |
-    call.calls(self, _) and
-    selfArg.getParameter() = init.getArg(0) and
-    DataFlow::localFlow(selfArg, self)
-  )
-}
-
 predicate initSelfCallOverridden(
-  Function init, DataFlow::MethodCallNode call, Function target, Function override
+  Function init, DataFlow::Node self, DataFlow::MethodCallNode call, Function target,
+  Function override
 ) {
   init.isInitMethod() and
   call.getScope() = init and
-  exists(Class superclass, Class subclass, DataFlow::Node self, DataFlow::ParameterNode selfArg |
+  exists(Class superclass, Class subclass, DataFlow::ParameterNode selfArg |
     superclass = init.getScope() and
     subclass = override.getScope() and
     subclass = getADirectSubclass+(superclass) and
@@ -38,8 +29,7 @@ predicate initSelfCallOverridden(
     DataFlow::localFlow(selfArg, self) and
     call.calls(self, override.getName()) and
     target = superclass.getAMethod() and
-    target.getName() = override.getName() and
-    not lastUse(self)
+    target.getName() = override.getName()
   )
 }
 
@@ -58,10 +48,14 @@ predicate readsFromSelf(Function method) {
   )
 }
 
-from Function init, DataFlow::MethodCallNode call, Function target, Function override
+from
+  Function init, DataFlow::Node self, DataFlow::MethodCallNode call, Function target,
+  Function override
 where
-  initSelfCallOverridden(init, call, target, override) and
+  initSelfCallOverridden(init, self, call, target, override) and
   readsFromSelf(override) and
-  not isClassmethod(override)
+  not isClassmethod(override) and
+  not lastUse(self) and
+  not target.getName().matches("\\_%")
 select call, "This call to $@ in an initialization method is overridden by $@.", target,
   target.getQualifiedName(), override, override.getQualifiedName()
