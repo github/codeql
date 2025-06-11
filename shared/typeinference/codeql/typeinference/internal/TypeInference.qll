@@ -1036,6 +1036,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         /**
          * Holds if `at` satisfies `constraint` through `abs`, `sub`, and `constraintMention`.
          */
+        pragma[nomagic]
         private predicate hasConstraintMention(
           RelevantAccess at, TypeAbstraction abs, TypeMention sub, Type constraint,
           TypeMention constraintMention
@@ -1059,6 +1060,30 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           )
         }
 
+        pragma[nomagic]
+        predicate satisfiesConstraintTypeMention0(
+          RelevantAccess at, Access a, AccessPosition apos, TypePath prefix, Type constraint,
+          TypeAbstraction abs, TypeMention sub, TypePath path, Type t
+        ) {
+          exists(TypeMention constraintMention |
+            at = MkRelevantAccess(a, apos, prefix) and
+            hasConstraintMention(at, abs, sub, constraint, constraintMention) and
+            conditionSatisfiesConstraintTypeAt(abs, sub, constraintMention, path, t)
+          )
+        }
+
+        pragma[nomagic]
+        predicate satisfiesConstraintTypeMention1(
+          RelevantAccess at, Access a, AccessPosition apos, TypePath prefix, Type constraint,
+          TypePath path, TypePath pathToTypeParamInSub
+        ) {
+          exists(TypeAbstraction abs, TypeMention sub, TypeParameter tp |
+            satisfiesConstraintTypeMention0(at, a, apos, prefix, constraint, abs, sub, path, tp) and
+            tp = abs.getATypeParameter() and
+            sub.resolveTypeAt(pathToTypeParamInSub) = tp
+          )
+        }
+
         /**
          * Holds if the type at `a`, `apos`, and `path` satisfies the constraint
          * `constraint` with the type `t` at `path`.
@@ -1067,22 +1092,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         predicate satisfiesConstraintTypeMention(
           Access a, AccessPosition apos, TypePath prefix, Type constraint, TypePath path, Type t
         ) {
+          exists(TypeAbstraction abs |
+            satisfiesConstraintTypeMention0(_, a, apos, prefix, constraint, abs, _, path, t) and
+            not t = abs.getATypeParameter()
+          )
+          or
           exists(
-            RelevantAccess at, TypeAbstraction abs, TypeMention sub, Type t0, TypePath prefix0,
-            TypeMention constraintMention
+            RelevantAccess at, TypePath prefix0, TypePath pathToTypeParamInSub, TypePath suffix
           |
-            at = MkRelevantAccess(a, apos, prefix) and
-            hasConstraintMention(at, abs, sub, constraint, constraintMention) and
-            conditionSatisfiesConstraintTypeAt(abs, sub, constraintMention, prefix0, t0)
-          |
-            not t0 = abs.getATypeParameter() and t = t0 and path = prefix0
-            or
-            t0 = abs.getATypeParameter() and
-            exists(TypePath path3, TypePath suffix |
-              sub.resolveTypeAt(path3) = t0 and
-              at.getTypeAt(path3.appendInverse(suffix)) = t and
-              path = prefix0.append(suffix)
-            )
+            satisfiesConstraintTypeMention1(at, a, apos, prefix, constraint, prefix0,
+              pathToTypeParamInSub) and
+            at.getTypeAt(pathToTypeParamInSub.appendInverse(suffix)) = t and
+            path = prefix0.append(suffix)
           )
         }
       }
