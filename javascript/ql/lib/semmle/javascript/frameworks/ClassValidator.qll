@@ -50,7 +50,7 @@ module ClassValidator {
 
   pragma[noinline]
   private ClassDefinition getClassReferencedByPropRead(DataFlow::PropRead read) {
-    read.getBase().asExpr().getType().unfold().(ClassType).getClass() = result
+    read.getBase().asExpr().getTypeBinding().getAnUnderlyingClass().getAstNode() = result
   }
 
   /**
