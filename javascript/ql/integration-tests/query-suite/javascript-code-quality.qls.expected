@@ -1,4 +1,5 @@
 ql/javascript/ql/src/Declarations/IneffectiveParameterType.ql
+ql/javascript/ql/src/Declarations/SuspiciousMethodNameDeclaration.ql
 ql/javascript/ql/src/Expressions/ExprHasNoEffect.ql
 ql/javascript/ql/src/Expressions/MissingAwait.ql
 ql/javascript/ql/src/LanguageFeatures/SpuriousArguments.ql
