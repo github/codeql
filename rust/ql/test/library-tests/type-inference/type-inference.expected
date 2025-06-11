@@ -1429,1042 +1429,1061 @@ inferType
 | main.rs:1152:9:1152:15 | x.foo() |  | file://:0:0:0:0 | & |
 | main.rs:1152:9:1152:15 | x.foo() | &T | main.rs:1142:5:1142:26 | MyStruct |
 | main.rs:1152:9:1152:15 | x.foo() | &T.T | main.rs:1140:5:1140:13 | S |
-| main.rs:1160:15:1160:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1160:15:1160:19 | SelfParam | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1160:31:1162:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:1160:31:1162:9 | { ... } | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1161:13:1161:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:1161:13:1161:19 | &... | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1161:14:1161:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:1161:14:1161:19 | &... | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1161:15:1161:19 | &self |  | file://:0:0:0:0 | & |
-| main.rs:1161:15:1161:19 | &self | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1161:16:1161:19 | self |  | file://:0:0:0:0 | & |
-| main.rs:1161:16:1161:19 | self | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1164:15:1164:25 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1164:15:1164:25 | SelfParam | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1164:37:1166:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:1164:37:1166:9 | { ... } | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1165:13:1165:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:1165:13:1165:19 | &... | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1165:14:1165:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:1165:14:1165:19 | &... | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1165:15:1165:19 | &self |  | file://:0:0:0:0 | & |
-| main.rs:1165:15:1165:19 | &self | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1165:16:1165:19 | self |  | file://:0:0:0:0 | & |
-| main.rs:1165:16:1165:19 | self | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1168:15:1168:15 | x |  | file://:0:0:0:0 | & |
-| main.rs:1168:15:1168:15 | x | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1168:34:1170:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:1168:34:1170:9 | { ... } | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1169:13:1169:13 | x |  | file://:0:0:0:0 | & |
-| main.rs:1169:13:1169:13 | x | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1172:15:1172:15 | x |  | file://:0:0:0:0 | & |
-| main.rs:1172:15:1172:15 | x | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1172:34:1174:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:1172:34:1174:9 | { ... } | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1173:13:1173:16 | &... |  | file://:0:0:0:0 | & |
-| main.rs:1173:13:1173:16 | &... | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1173:14:1173:16 | &... |  | file://:0:0:0:0 | & |
-| main.rs:1173:14:1173:16 | &... | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1173:15:1173:16 | &x |  | file://:0:0:0:0 | & |
-| main.rs:1173:15:1173:16 | &x | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1173:16:1173:16 | x |  | file://:0:0:0:0 | & |
-| main.rs:1173:16:1173:16 | x | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1178:13:1178:13 | x |  | main.rs:1157:5:1157:13 | S |
-| main.rs:1178:17:1178:20 | S {...} |  | main.rs:1157:5:1157:13 | S |
-| main.rs:1179:9:1179:9 | x |  | main.rs:1157:5:1157:13 | S |
-| main.rs:1179:9:1179:14 | x.f1() |  | file://:0:0:0:0 | & |
-| main.rs:1179:9:1179:14 | x.f1() | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1180:9:1180:9 | x |  | main.rs:1157:5:1157:13 | S |
-| main.rs:1180:9:1180:14 | x.f2() |  | file://:0:0:0:0 | & |
-| main.rs:1180:9:1180:14 | x.f2() | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1181:9:1181:17 | ...::f3(...) |  | file://:0:0:0:0 | & |
-| main.rs:1181:9:1181:17 | ...::f3(...) | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1181:15:1181:16 | &x |  | file://:0:0:0:0 | & |
-| main.rs:1181:15:1181:16 | &x | &T | main.rs:1157:5:1157:13 | S |
-| main.rs:1181:16:1181:16 | x |  | main.rs:1157:5:1157:13 | S |
-| main.rs:1195:43:1198:5 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1195:43:1198:5 | { ... } | E | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1195:43:1198:5 | { ... } | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1196:13:1196:13 | x |  | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1196:17:1196:30 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1196:17:1196:30 | ...::Ok(...) | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1196:17:1196:31 | TryExpr |  | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1196:28:1196:29 | S1 |  | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1197:9:1197:22 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1197:9:1197:22 | ...::Ok(...) | E | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1197:9:1197:22 | ...::Ok(...) | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1197:20:1197:21 | S1 |  | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1201:46:1205:5 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1201:46:1205:5 | { ... } | E | main.rs:1191:5:1192:14 | S2 |
-| main.rs:1201:46:1205:5 | { ... } | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1202:13:1202:13 | x |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1202:13:1202:13 | x | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1202:17:1202:30 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1202:17:1202:30 | ...::Ok(...) | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1202:28:1202:29 | S1 |  | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1203:13:1203:13 | y |  | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1203:17:1203:17 | x |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1203:17:1203:17 | x | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1203:17:1203:18 | TryExpr |  | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1204:9:1204:22 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1204:9:1204:22 | ...::Ok(...) | E | main.rs:1191:5:1192:14 | S2 |
-| main.rs:1204:9:1204:22 | ...::Ok(...) | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1204:20:1204:21 | S1 |  | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1208:40:1213:5 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1208:40:1213:5 | { ... } | E | main.rs:1191:5:1192:14 | S2 |
-| main.rs:1208:40:1213:5 | { ... } | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1209:13:1209:13 | x |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1209:13:1209:13 | x | T | {EXTERNAL LOCATION} | Result |
-| main.rs:1209:13:1209:13 | x | T.T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1209:17:1209:42 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1209:17:1209:42 | ...::Ok(...) | T | {EXTERNAL LOCATION} | Result |
-| main.rs:1209:17:1209:42 | ...::Ok(...) | T.T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1209:28:1209:41 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1209:28:1209:41 | ...::Ok(...) | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1209:39:1209:40 | S1 |  | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1211:17:1211:17 | x |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1211:17:1211:17 | x | T | {EXTERNAL LOCATION} | Result |
-| main.rs:1211:17:1211:17 | x | T.T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1211:17:1211:18 | TryExpr |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1211:17:1211:18 | TryExpr | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1211:17:1211:29 | ... .map(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1212:9:1212:22 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1212:9:1212:22 | ...::Ok(...) | E | main.rs:1191:5:1192:14 | S2 |
-| main.rs:1212:9:1212:22 | ...::Ok(...) | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1212:20:1212:21 | S1 |  | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1216:30:1216:34 | input |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1216:30:1216:34 | input | E | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1216:30:1216:34 | input | T | main.rs:1216:20:1216:27 | T |
-| main.rs:1216:69:1223:5 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1216:69:1223:5 | { ... } | E | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1216:69:1223:5 | { ... } | T | main.rs:1216:20:1216:27 | T |
-| main.rs:1217:13:1217:17 | value |  | main.rs:1216:20:1216:27 | T |
-| main.rs:1217:21:1217:25 | input |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1217:21:1217:25 | input | E | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1217:21:1217:25 | input | T | main.rs:1216:20:1216:27 | T |
-| main.rs:1217:21:1217:26 | TryExpr |  | main.rs:1216:20:1216:27 | T |
-| main.rs:1218:22:1218:38 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1218:22:1218:38 | ...::Ok(...) | T | main.rs:1216:20:1216:27 | T |
-| main.rs:1218:22:1221:10 | ... .and_then(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1218:33:1218:37 | value |  | main.rs:1216:20:1216:27 | T |
-| main.rs:1218:53:1221:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1218:53:1221:9 | { ... } | E | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1219:22:1219:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1220:13:1220:34 | ...::Ok::<...>(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1220:13:1220:34 | ...::Ok::<...>(...) | E | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1222:9:1222:23 | ...::Err(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1222:9:1222:23 | ...::Err(...) | E | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1222:9:1222:23 | ...::Err(...) | T | main.rs:1216:20:1216:27 | T |
-| main.rs:1222:21:1222:22 | S1 |  | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1226:37:1226:52 | try_same_error(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1226:37:1226:52 | try_same_error(...) | E | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1226:37:1226:52 | try_same_error(...) | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1227:22:1227:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1230:37:1230:55 | try_convert_error(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1230:37:1230:55 | try_convert_error(...) | E | main.rs:1191:5:1192:14 | S2 |
-| main.rs:1230:37:1230:55 | try_convert_error(...) | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1231:22:1231:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1234:37:1234:49 | try_chained(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1234:37:1234:49 | try_chained(...) | E | main.rs:1191:5:1192:14 | S2 |
-| main.rs:1234:37:1234:49 | try_chained(...) | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1235:22:1235:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1238:37:1238:63 | try_complex(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1238:37:1238:63 | try_complex(...) | E | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1238:37:1238:63 | try_complex(...) | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1238:49:1238:62 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1238:49:1238:62 | ...::Ok(...) | E | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1238:49:1238:62 | ...::Ok(...) | T | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1238:60:1238:61 | S1 |  | main.rs:1188:5:1189:14 | S1 |
-| main.rs:1239:22:1239:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1246:13:1246:13 | x |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1246:22:1246:22 | 1 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1247:13:1247:13 | y |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1247:17:1247:17 | 2 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1248:13:1248:13 | z |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1248:17:1248:17 | x |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1248:17:1248:21 | ... + ... |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1248:21:1248:21 | y |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1249:13:1249:13 | z |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1249:17:1249:17 | x |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1249:17:1249:23 | x.abs() |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1250:13:1250:13 | c |  | {EXTERNAL LOCATION} | char |
-| main.rs:1250:17:1250:19 | 'c' |  | {EXTERNAL LOCATION} | char |
-| main.rs:1251:13:1251:17 | hello |  | {EXTERNAL LOCATION} | str |
-| main.rs:1251:21:1251:27 | "Hello" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1252:13:1252:13 | f |  | {EXTERNAL LOCATION} | f64 |
-| main.rs:1252:17:1252:24 | 123.0f64 |  | {EXTERNAL LOCATION} | f64 |
-| main.rs:1253:13:1253:13 | t |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1253:17:1253:20 | true |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1254:13:1254:13 | f |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1254:17:1254:21 | false |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1261:13:1261:13 | x |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1261:17:1261:20 | true |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1261:17:1261:29 | ... && ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1261:25:1261:29 | false |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1262:13:1262:13 | y |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1262:17:1262:20 | true |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1262:17:1262:29 | ... \|\| ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1262:25:1262:29 | false |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1264:13:1264:17 | mut a |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1265:13:1265:16 | cond |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1265:20:1265:21 | 34 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1265:20:1265:27 | ... == ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1265:26:1265:27 | 33 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1266:12:1266:15 | cond |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1267:17:1267:17 | z |  | file://:0:0:0:0 | () |
-| main.rs:1267:21:1267:27 | (...) |  | file://:0:0:0:0 | () |
-| main.rs:1267:22:1267:22 | a |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1267:22:1267:26 | ... = ... |  | file://:0:0:0:0 | () |
-| main.rs:1267:26:1267:26 | 1 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1269:13:1269:13 | a |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1269:13:1269:17 | ... = ... |  | file://:0:0:0:0 | () |
-| main.rs:1269:17:1269:17 | 2 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1271:9:1271:9 | a |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1288:16:1288:19 | SelfParam |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1288:22:1288:24 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1288:41:1293:9 | { ... } |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1289:13:1292:13 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1290:20:1290:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1290:20:1290:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1290:20:1290:33 | ... + ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1290:29:1290:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1290:29:1290:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1291:20:1291:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1291:20:1291:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1291:20:1291:33 | ... + ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1291:29:1291:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1291:29:1291:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1298:23:1298:31 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1298:23:1298:31 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1298:34:1298:36 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1299:13:1299:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1299:13:1299:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1299:13:1299:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1299:13:1299:27 | ... += ... |  | file://:0:0:0:0 | () |
-| main.rs:1299:23:1299:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1299:23:1299:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1300:13:1300:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1300:13:1300:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1300:13:1300:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1300:13:1300:27 | ... += ... |  | file://:0:0:0:0 | () |
-| main.rs:1300:23:1300:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1300:23:1300:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1306:16:1306:19 | SelfParam |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1306:22:1306:24 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1306:41:1311:9 | { ... } |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1307:13:1310:13 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1308:20:1308:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1308:20:1308:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1308:20:1308:33 | ... - ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1308:29:1308:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1308:29:1308:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1309:20:1309:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1309:20:1309:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1309:20:1309:33 | ... - ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1309:29:1309:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1309:29:1309:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1316:23:1316:31 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1316:23:1316:31 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1316:34:1316:36 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1317:13:1317:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1317:13:1317:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1317:13:1317:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1317:13:1317:27 | ... -= ... |  | file://:0:0:0:0 | () |
-| main.rs:1317:23:1317:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1317:23:1317:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1163:17:1163:25 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1163:17:1163:25 | SelfParam | &T | main.rs:1157:5:1160:5 | MyFlag |
+| main.rs:1164:13:1164:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1164:13:1164:16 | self | &T | main.rs:1157:5:1160:5 | MyFlag |
+| main.rs:1164:13:1164:21 | self.bool |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1164:13:1164:34 | ... = ... |  | file://:0:0:0:0 | () |
+| main.rs:1164:25:1164:34 | ! ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1164:26:1164:29 | self |  | file://:0:0:0:0 | & |
+| main.rs:1164:26:1164:29 | self | &T | main.rs:1157:5:1160:5 | MyFlag |
+| main.rs:1164:26:1164:34 | self.bool |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1171:15:1171:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1171:15:1171:19 | SelfParam | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1171:31:1173:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:1171:31:1173:9 | { ... } | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1172:13:1172:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:1172:13:1172:19 | &... | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1172:14:1172:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:1172:14:1172:19 | &... | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1172:15:1172:19 | &self |  | file://:0:0:0:0 | & |
+| main.rs:1172:15:1172:19 | &self | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1172:16:1172:19 | self |  | file://:0:0:0:0 | & |
+| main.rs:1172:16:1172:19 | self | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1175:15:1175:25 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1175:15:1175:25 | SelfParam | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1175:37:1177:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:1175:37:1177:9 | { ... } | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1176:13:1176:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:1176:13:1176:19 | &... | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1176:14:1176:19 | &... |  | file://:0:0:0:0 | & |
+| main.rs:1176:14:1176:19 | &... | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1176:15:1176:19 | &self |  | file://:0:0:0:0 | & |
+| main.rs:1176:15:1176:19 | &self | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1176:16:1176:19 | self |  | file://:0:0:0:0 | & |
+| main.rs:1176:16:1176:19 | self | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1179:15:1179:15 | x |  | file://:0:0:0:0 | & |
+| main.rs:1179:15:1179:15 | x | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1179:34:1181:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:1179:34:1181:9 | { ... } | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1180:13:1180:13 | x |  | file://:0:0:0:0 | & |
+| main.rs:1180:13:1180:13 | x | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1183:15:1183:15 | x |  | file://:0:0:0:0 | & |
+| main.rs:1183:15:1183:15 | x | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1183:34:1185:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:1183:34:1185:9 | { ... } | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1184:13:1184:16 | &... |  | file://:0:0:0:0 | & |
+| main.rs:1184:13:1184:16 | &... | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1184:14:1184:16 | &... |  | file://:0:0:0:0 | & |
+| main.rs:1184:14:1184:16 | &... | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1184:15:1184:16 | &x |  | file://:0:0:0:0 | & |
+| main.rs:1184:15:1184:16 | &x | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1184:16:1184:16 | x |  | file://:0:0:0:0 | & |
+| main.rs:1184:16:1184:16 | x | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1189:13:1189:13 | x |  | main.rs:1168:5:1168:13 | S |
+| main.rs:1189:17:1189:20 | S {...} |  | main.rs:1168:5:1168:13 | S |
+| main.rs:1190:9:1190:9 | x |  | main.rs:1168:5:1168:13 | S |
+| main.rs:1190:9:1190:14 | x.f1() |  | file://:0:0:0:0 | & |
+| main.rs:1190:9:1190:14 | x.f1() | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1191:9:1191:9 | x |  | main.rs:1168:5:1168:13 | S |
+| main.rs:1191:9:1191:14 | x.f2() |  | file://:0:0:0:0 | & |
+| main.rs:1191:9:1191:14 | x.f2() | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1192:9:1192:17 | ...::f3(...) |  | file://:0:0:0:0 | & |
+| main.rs:1192:9:1192:17 | ...::f3(...) | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1192:15:1192:16 | &x |  | file://:0:0:0:0 | & |
+| main.rs:1192:15:1192:16 | &x | &T | main.rs:1168:5:1168:13 | S |
+| main.rs:1192:16:1192:16 | x |  | main.rs:1168:5:1168:13 | S |
+| main.rs:1194:18:1194:24 | * ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1194:19:1194:24 | &... |  | file://:0:0:0:0 | & |
+| main.rs:1194:19:1194:24 | &... | &T | {EXTERNAL LOCATION} | bool |
+| main.rs:1194:20:1194:24 | &true |  | file://:0:0:0:0 | & |
+| main.rs:1194:20:1194:24 | &true | &T | {EXTERNAL LOCATION} | bool |
+| main.rs:1194:21:1194:24 | true |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1199:22:1199:30 | &mut flag |  | file://:0:0:0:0 | & |
+| main.rs:1199:22:1199:30 | &mut flag | &T | main.rs:1157:5:1160:5 | MyFlag |
+| main.rs:1200:18:1200:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1214:43:1217:5 | { ... } |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1214:43:1217:5 | { ... } | E | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1214:43:1217:5 | { ... } | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1215:13:1215:13 | x |  | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1215:17:1215:30 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1215:17:1215:30 | ...::Ok(...) | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1215:17:1215:31 | TryExpr |  | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1215:28:1215:29 | S1 |  | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1216:9:1216:22 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1216:9:1216:22 | ...::Ok(...) | E | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1216:9:1216:22 | ...::Ok(...) | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1216:20:1216:21 | S1 |  | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1220:46:1224:5 | { ... } |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1220:46:1224:5 | { ... } | E | main.rs:1210:5:1211:14 | S2 |
+| main.rs:1220:46:1224:5 | { ... } | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1221:13:1221:13 | x |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1221:13:1221:13 | x | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1221:17:1221:30 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1221:17:1221:30 | ...::Ok(...) | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1221:28:1221:29 | S1 |  | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1222:13:1222:13 | y |  | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1222:17:1222:17 | x |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1222:17:1222:17 | x | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1222:17:1222:18 | TryExpr |  | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1223:9:1223:22 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1223:9:1223:22 | ...::Ok(...) | E | main.rs:1210:5:1211:14 | S2 |
+| main.rs:1223:9:1223:22 | ...::Ok(...) | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1223:20:1223:21 | S1 |  | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1227:40:1232:5 | { ... } |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1227:40:1232:5 | { ... } | E | main.rs:1210:5:1211:14 | S2 |
+| main.rs:1227:40:1232:5 | { ... } | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1228:13:1228:13 | x |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1228:13:1228:13 | x | T | {EXTERNAL LOCATION} | Result |
+| main.rs:1228:13:1228:13 | x | T.T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1228:17:1228:42 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1228:17:1228:42 | ...::Ok(...) | T | {EXTERNAL LOCATION} | Result |
+| main.rs:1228:17:1228:42 | ...::Ok(...) | T.T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1228:28:1228:41 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1228:28:1228:41 | ...::Ok(...) | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1228:39:1228:40 | S1 |  | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1230:17:1230:17 | x |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1230:17:1230:17 | x | T | {EXTERNAL LOCATION} | Result |
+| main.rs:1230:17:1230:17 | x | T.T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1230:17:1230:18 | TryExpr |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1230:17:1230:18 | TryExpr | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1230:17:1230:29 | ... .map(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1231:9:1231:22 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1231:9:1231:22 | ...::Ok(...) | E | main.rs:1210:5:1211:14 | S2 |
+| main.rs:1231:9:1231:22 | ...::Ok(...) | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1231:20:1231:21 | S1 |  | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1235:30:1235:34 | input |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1235:30:1235:34 | input | E | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1235:30:1235:34 | input | T | main.rs:1235:20:1235:27 | T |
+| main.rs:1235:69:1242:5 | { ... } |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1235:69:1242:5 | { ... } | E | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1235:69:1242:5 | { ... } | T | main.rs:1235:20:1235:27 | T |
+| main.rs:1236:13:1236:17 | value |  | main.rs:1235:20:1235:27 | T |
+| main.rs:1236:21:1236:25 | input |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1236:21:1236:25 | input | E | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1236:21:1236:25 | input | T | main.rs:1235:20:1235:27 | T |
+| main.rs:1236:21:1236:26 | TryExpr |  | main.rs:1235:20:1235:27 | T |
+| main.rs:1237:22:1237:38 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1237:22:1237:38 | ...::Ok(...) | T | main.rs:1235:20:1235:27 | T |
+| main.rs:1237:22:1240:10 | ... .and_then(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1237:33:1237:37 | value |  | main.rs:1235:20:1235:27 | T |
+| main.rs:1237:53:1240:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1237:53:1240:9 | { ... } | E | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1238:22:1238:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1239:13:1239:34 | ...::Ok::<...>(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1239:13:1239:34 | ...::Ok::<...>(...) | E | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1241:9:1241:23 | ...::Err(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1241:9:1241:23 | ...::Err(...) | E | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1241:9:1241:23 | ...::Err(...) | T | main.rs:1235:20:1235:27 | T |
+| main.rs:1241:21:1241:22 | S1 |  | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1245:37:1245:52 | try_same_error(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1245:37:1245:52 | try_same_error(...) | E | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1245:37:1245:52 | try_same_error(...) | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1246:22:1246:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1249:37:1249:55 | try_convert_error(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1249:37:1249:55 | try_convert_error(...) | E | main.rs:1210:5:1211:14 | S2 |
+| main.rs:1249:37:1249:55 | try_convert_error(...) | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1250:22:1250:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1253:37:1253:49 | try_chained(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1253:37:1253:49 | try_chained(...) | E | main.rs:1210:5:1211:14 | S2 |
+| main.rs:1253:37:1253:49 | try_chained(...) | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1254:22:1254:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1257:37:1257:63 | try_complex(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1257:37:1257:63 | try_complex(...) | E | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1257:37:1257:63 | try_complex(...) | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1257:49:1257:62 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1257:49:1257:62 | ...::Ok(...) | E | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1257:49:1257:62 | ...::Ok(...) | T | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1257:60:1257:61 | S1 |  | main.rs:1207:5:1208:14 | S1 |
+| main.rs:1258:22:1258:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1265:13:1265:13 | x |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1265:22:1265:22 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1266:13:1266:13 | y |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1266:17:1266:17 | 2 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1267:13:1267:13 | z |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1267:17:1267:17 | x |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1267:17:1267:21 | ... + ... |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1267:21:1267:21 | y |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1268:13:1268:13 | z |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1268:17:1268:17 | x |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1268:17:1268:23 | x.abs() |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1269:13:1269:13 | c |  | {EXTERNAL LOCATION} | char |
+| main.rs:1269:17:1269:19 | 'c' |  | {EXTERNAL LOCATION} | char |
+| main.rs:1270:13:1270:17 | hello |  | {EXTERNAL LOCATION} | str |
+| main.rs:1270:21:1270:27 | "Hello" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1271:13:1271:13 | f |  | {EXTERNAL LOCATION} | f64 |
+| main.rs:1271:17:1271:24 | 123.0f64 |  | {EXTERNAL LOCATION} | f64 |
+| main.rs:1272:13:1272:13 | t |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1272:17:1272:20 | true |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1273:13:1273:13 | f |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1273:17:1273:21 | false |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1280:13:1280:13 | x |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1280:17:1280:20 | true |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1280:17:1280:29 | ... && ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1280:25:1280:29 | false |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1281:13:1281:13 | y |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1281:17:1281:20 | true |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1281:17:1281:29 | ... \|\| ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1281:25:1281:29 | false |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1283:13:1283:17 | mut a |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1284:13:1284:16 | cond |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1284:20:1284:21 | 34 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1284:20:1284:27 | ... == ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1284:26:1284:27 | 33 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1285:12:1285:15 | cond |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1286:17:1286:17 | z |  | file://:0:0:0:0 | () |
+| main.rs:1286:21:1286:27 | (...) |  | file://:0:0:0:0 | () |
+| main.rs:1286:22:1286:22 | a |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1286:22:1286:26 | ... = ... |  | file://:0:0:0:0 | () |
+| main.rs:1286:26:1286:26 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1288:13:1288:13 | a |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1288:13:1288:17 | ... = ... |  | file://:0:0:0:0 | () |
+| main.rs:1288:17:1288:17 | 2 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1290:9:1290:9 | a |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1307:16:1307:19 | SelfParam |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1307:22:1307:24 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1307:41:1312:9 | { ... } |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1308:13:1311:13 | Vec2 {...} |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1309:20:1309:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1309:20:1309:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1309:20:1309:33 | ... + ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1309:29:1309:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1309:29:1309:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1310:20:1310:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1310:20:1310:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1310:20:1310:33 | ... + ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1310:29:1310:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1310:29:1310:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1317:23:1317:31 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1317:23:1317:31 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1317:34:1317:36 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
 | main.rs:1318:13:1318:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1318:13:1318:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1318:13:1318:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1318:13:1318:27 | ... -= ... |  | file://:0:0:0:0 | () |
-| main.rs:1318:23:1318:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1318:23:1318:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1324:16:1324:19 | SelfParam |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1324:22:1324:24 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1324:41:1329:9 | { ... } |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1325:13:1328:13 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1326:20:1326:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1326:20:1326:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1326:20:1326:33 | ... * ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1326:29:1326:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1326:29:1326:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1327:20:1327:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1327:20:1327:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1327:20:1327:33 | ... * ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1327:29:1327:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1327:29:1327:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1333:23:1333:31 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1333:23:1333:31 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1333:34:1333:36 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1334:13:1334:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1334:13:1334:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1334:13:1334:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1334:13:1334:27 | ... *= ... |  | file://:0:0:0:0 | () |
-| main.rs:1334:23:1334:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1334:23:1334:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1335:13:1335:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1335:13:1335:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1335:13:1335:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1335:13:1335:27 | ... *= ... |  | file://:0:0:0:0 | () |
-| main.rs:1335:23:1335:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1335:23:1335:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1341:16:1341:19 | SelfParam |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1341:22:1341:24 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1341:41:1346:9 | { ... } |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1342:13:1345:13 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1343:20:1343:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1343:20:1343:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1343:20:1343:33 | ... / ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1343:29:1343:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1343:29:1343:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1344:20:1344:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1344:20:1344:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1344:20:1344:33 | ... / ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1344:29:1344:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1344:29:1344:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1350:23:1350:31 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1350:23:1350:31 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1350:34:1350:36 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1351:13:1351:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1351:13:1351:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1351:13:1351:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1351:13:1351:27 | ... /= ... |  | file://:0:0:0:0 | () |
-| main.rs:1351:23:1351:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1351:23:1351:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1352:13:1352:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1352:13:1352:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1352:13:1352:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1352:13:1352:27 | ... /= ... |  | file://:0:0:0:0 | () |
-| main.rs:1352:23:1352:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1352:23:1352:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1358:16:1358:19 | SelfParam |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1358:22:1358:24 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1358:41:1363:9 | { ... } |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1359:13:1362:13 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1360:20:1360:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1360:20:1360:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1360:20:1360:33 | ... % ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1360:29:1360:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1360:29:1360:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1361:20:1361:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1361:20:1361:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1361:20:1361:33 | ... % ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1361:29:1361:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1361:29:1361:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1367:23:1367:31 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1367:23:1367:31 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1367:34:1367:36 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1368:13:1368:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1368:13:1368:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1368:13:1368:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1368:13:1368:27 | ... %= ... |  | file://:0:0:0:0 | () |
-| main.rs:1368:23:1368:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1368:23:1368:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1369:13:1369:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1369:13:1369:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1369:13:1369:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1369:13:1369:27 | ... %= ... |  | file://:0:0:0:0 | () |
-| main.rs:1369:23:1369:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1369:23:1369:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1375:19:1375:22 | SelfParam |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1375:25:1375:27 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1375:44:1380:9 | { ... } |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1376:13:1379:13 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1377:20:1377:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1377:20:1377:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1377:20:1377:33 | ... & ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1377:29:1377:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1377:29:1377:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1378:20:1378:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1378:20:1378:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1378:20:1378:33 | ... & ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1378:29:1378:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1378:29:1378:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1384:26:1384:34 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1384:26:1384:34 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1384:37:1384:39 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1385:13:1385:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1385:13:1385:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1385:13:1385:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1385:13:1385:27 | ... &= ... |  | file://:0:0:0:0 | () |
-| main.rs:1385:23:1385:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1385:23:1385:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1386:13:1386:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1386:13:1386:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1386:13:1386:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1386:13:1386:27 | ... &= ... |  | file://:0:0:0:0 | () |
-| main.rs:1386:23:1386:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1386:23:1386:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1392:18:1392:21 | SelfParam |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1392:24:1392:26 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1392:43:1397:9 | { ... } |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1393:13:1396:13 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1394:20:1394:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1394:20:1394:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1394:20:1394:33 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1394:29:1394:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1394:29:1394:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1395:20:1395:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1395:20:1395:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1395:20:1395:33 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1395:29:1395:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1395:29:1395:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1401:25:1401:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1401:25:1401:33 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1401:36:1401:38 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1402:13:1402:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1402:13:1402:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1402:13:1402:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1402:13:1402:27 | ... \|= ... |  | file://:0:0:0:0 | () |
-| main.rs:1402:23:1402:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1402:23:1402:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1403:13:1403:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1403:13:1403:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1403:13:1403:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1403:13:1403:27 | ... \|= ... |  | file://:0:0:0:0 | () |
-| main.rs:1403:23:1403:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1403:23:1403:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1409:19:1409:22 | SelfParam |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1409:25:1409:27 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1409:44:1414:9 | { ... } |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1410:13:1413:13 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1411:20:1411:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1411:20:1411:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1411:20:1411:33 | ... ^ ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1411:29:1411:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1411:29:1411:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1412:20:1412:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1412:20:1412:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1412:20:1412:33 | ... ^ ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1412:29:1412:31 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1412:29:1412:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1418:26:1418:34 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1418:26:1418:34 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1418:37:1418:39 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1419:13:1419:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1419:13:1419:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1419:13:1419:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1419:13:1419:27 | ... ^= ... |  | file://:0:0:0:0 | () |
-| main.rs:1419:23:1419:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1419:23:1419:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1420:13:1420:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1420:13:1420:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1420:13:1420:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1420:13:1420:27 | ... ^= ... |  | file://:0:0:0:0 | () |
-| main.rs:1420:23:1420:25 | rhs |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1420:23:1420:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1426:16:1426:19 | SelfParam |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1426:22:1426:24 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1426:40:1431:9 | { ... } |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1427:13:1430:13 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1428:20:1428:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1428:20:1428:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1428:20:1428:32 | ... << ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1428:30:1428:32 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1429:20:1429:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1429:20:1429:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1429:20:1429:32 | ... << ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1429:30:1429:32 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1435:23:1435:31 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1435:23:1435:31 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1435:34:1435:36 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1436:13:1436:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1436:13:1436:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1436:13:1436:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1436:13:1436:26 | ... <<= ... |  | file://:0:0:0:0 | () |
-| main.rs:1436:24:1436:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1437:13:1437:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1437:13:1437:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1437:13:1437:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1437:13:1437:26 | ... <<= ... |  | file://:0:0:0:0 | () |
-| main.rs:1437:24:1437:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1443:16:1443:19 | SelfParam |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1443:22:1443:24 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1443:40:1448:9 | { ... } |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1444:13:1447:13 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1445:20:1445:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1445:20:1445:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1445:20:1445:32 | ... >> ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1445:30:1445:32 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1446:20:1446:23 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1446:20:1446:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1446:20:1446:32 | ... >> ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1446:30:1446:32 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1452:23:1452:31 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1452:23:1452:31 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1452:34:1452:36 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1453:13:1453:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1453:13:1453:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1453:13:1453:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1453:13:1453:26 | ... >>= ... |  | file://:0:0:0:0 | () |
-| main.rs:1453:24:1453:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1454:13:1454:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1454:13:1454:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1454:13:1454:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1454:13:1454:26 | ... >>= ... |  | file://:0:0:0:0 | () |
-| main.rs:1454:24:1454:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1460:16:1460:19 | SelfParam |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1460:30:1465:9 | { ... } |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1461:13:1464:13 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1462:20:1462:26 | - ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1462:21:1462:24 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1462:21:1462:26 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1463:20:1463:26 | - ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1463:21:1463:24 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1463:21:1463:26 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1470:16:1470:19 | SelfParam |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1470:30:1475:9 | { ... } |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1471:13:1474:13 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1472:20:1472:26 | ! ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1472:21:1472:24 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1472:21:1472:26 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1473:20:1473:26 | ! ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1473:21:1473:24 | self |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1473:21:1473:26 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1479:15:1479:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1479:15:1479:19 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1479:22:1479:26 | other |  | file://:0:0:0:0 | & |
-| main.rs:1479:22:1479:26 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1479:44:1481:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1480:13:1480:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1480:13:1480:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1480:13:1480:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1480:13:1480:29 | ... == ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1480:13:1480:50 | ... && ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1480:23:1480:27 | other |  | file://:0:0:0:0 | & |
-| main.rs:1480:23:1480:27 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1480:23:1480:29 | other.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1480:34:1480:37 | self |  | file://:0:0:0:0 | & |
-| main.rs:1480:34:1480:37 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1480:34:1480:39 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1480:34:1480:50 | ... == ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1480:44:1480:48 | other |  | file://:0:0:0:0 | & |
-| main.rs:1480:44:1480:48 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1480:44:1480:50 | other.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1483:15:1483:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1483:15:1483:19 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1483:22:1483:26 | other |  | file://:0:0:0:0 | & |
-| main.rs:1483:22:1483:26 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1483:44:1485:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1484:13:1484:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1484:13:1484:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1484:13:1484:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1484:13:1484:29 | ... != ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1484:13:1484:50 | ... \|\| ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1484:23:1484:27 | other |  | file://:0:0:0:0 | & |
-| main.rs:1484:23:1484:27 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1484:23:1484:29 | other.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1484:34:1484:37 | self |  | file://:0:0:0:0 | & |
-| main.rs:1484:34:1484:37 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1484:34:1484:39 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1484:34:1484:50 | ... != ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1484:44:1484:48 | other |  | file://:0:0:0:0 | & |
-| main.rs:1484:44:1484:48 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1484:44:1484:50 | other.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1489:24:1489:28 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1489:24:1489:28 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1489:31:1489:35 | other |  | file://:0:0:0:0 | & |
-| main.rs:1489:31:1489:35 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1489:75:1491:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
-| main.rs:1489:75:1491:9 | { ... } | T | {EXTERNAL LOCATION} | Ordering |
-| main.rs:1490:13:1490:29 | (...) |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1490:13:1490:63 | ... .partial_cmp(...) |  | {EXTERNAL LOCATION} | Option |
-| main.rs:1490:13:1490:63 | ... .partial_cmp(...) | T | {EXTERNAL LOCATION} | Ordering |
-| main.rs:1490:14:1490:17 | self |  | file://:0:0:0:0 | & |
-| main.rs:1490:14:1490:17 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1490:14:1490:19 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1490:14:1490:28 | ... + ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1490:23:1490:26 | self |  | file://:0:0:0:0 | & |
-| main.rs:1490:23:1490:26 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1490:23:1490:28 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1490:43:1490:62 | &... |  | file://:0:0:0:0 | & |
-| main.rs:1490:43:1490:62 | &... | &T | {EXTERNAL LOCATION} | i64 |
-| main.rs:1490:44:1490:62 | (...) |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1490:45:1490:49 | other |  | file://:0:0:0:0 | & |
-| main.rs:1490:45:1490:49 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1490:45:1490:51 | other.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1490:45:1490:61 | ... + ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1490:55:1490:59 | other |  | file://:0:0:0:0 | & |
-| main.rs:1490:55:1490:59 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1490:55:1490:61 | other.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1493:15:1493:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1493:15:1493:19 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1493:22:1493:26 | other |  | file://:0:0:0:0 | & |
-| main.rs:1493:22:1493:26 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1493:44:1495:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1494:13:1494:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1494:13:1494:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1494:13:1494:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1494:13:1494:28 | ... < ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1494:13:1494:48 | ... && ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1494:22:1494:26 | other |  | file://:0:0:0:0 | & |
-| main.rs:1494:22:1494:26 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1494:22:1494:28 | other.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1494:33:1494:36 | self |  | file://:0:0:0:0 | & |
-| main.rs:1494:33:1494:36 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1494:33:1494:38 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1494:33:1494:48 | ... < ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1494:42:1494:46 | other |  | file://:0:0:0:0 | & |
-| main.rs:1494:42:1494:46 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1494:42:1494:48 | other.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1497:15:1497:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1497:15:1497:19 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1497:22:1497:26 | other |  | file://:0:0:0:0 | & |
-| main.rs:1497:22:1497:26 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1497:44:1499:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1498:13:1498:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1498:13:1498:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1498:13:1498:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1498:13:1498:29 | ... <= ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1498:13:1498:50 | ... && ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1498:23:1498:27 | other |  | file://:0:0:0:0 | & |
-| main.rs:1498:23:1498:27 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1498:23:1498:29 | other.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1498:34:1498:37 | self |  | file://:0:0:0:0 | & |
-| main.rs:1498:34:1498:37 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1498:34:1498:39 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1498:34:1498:50 | ... <= ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1498:44:1498:48 | other |  | file://:0:0:0:0 | & |
-| main.rs:1498:44:1498:48 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1498:44:1498:50 | other.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1501:15:1501:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1501:15:1501:19 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1501:22:1501:26 | other |  | file://:0:0:0:0 | & |
-| main.rs:1501:22:1501:26 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1501:44:1503:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1502:13:1502:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1502:13:1502:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1502:13:1502:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1502:13:1502:28 | ... > ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1502:13:1502:48 | ... && ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1318:13:1318:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1318:13:1318:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1318:13:1318:27 | ... += ... |  | file://:0:0:0:0 | () |
+| main.rs:1318:23:1318:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1318:23:1318:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1319:13:1319:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1319:13:1319:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1319:13:1319:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1319:13:1319:27 | ... += ... |  | file://:0:0:0:0 | () |
+| main.rs:1319:23:1319:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1319:23:1319:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1325:16:1325:19 | SelfParam |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1325:22:1325:24 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1325:41:1330:9 | { ... } |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1326:13:1329:13 | Vec2 {...} |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1327:20:1327:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1327:20:1327:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1327:20:1327:33 | ... - ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1327:29:1327:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1327:29:1327:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1328:20:1328:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1328:20:1328:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1328:20:1328:33 | ... - ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1328:29:1328:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1328:29:1328:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1335:23:1335:31 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1335:23:1335:31 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1335:34:1335:36 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1336:13:1336:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1336:13:1336:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1336:13:1336:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1336:13:1336:27 | ... -= ... |  | file://:0:0:0:0 | () |
+| main.rs:1336:23:1336:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1336:23:1336:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1337:13:1337:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1337:13:1337:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1337:13:1337:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1337:13:1337:27 | ... -= ... |  | file://:0:0:0:0 | () |
+| main.rs:1337:23:1337:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1337:23:1337:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1343:16:1343:19 | SelfParam |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1343:22:1343:24 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1343:41:1348:9 | { ... } |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1344:13:1347:13 | Vec2 {...} |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1345:20:1345:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1345:20:1345:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1345:20:1345:33 | ... * ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1345:29:1345:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1345:29:1345:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1346:20:1346:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1346:20:1346:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1346:20:1346:33 | ... * ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1346:29:1346:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1346:29:1346:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1352:23:1352:31 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1352:23:1352:31 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1352:34:1352:36 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1353:13:1353:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1353:13:1353:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1353:13:1353:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1353:13:1353:27 | ... *= ... |  | file://:0:0:0:0 | () |
+| main.rs:1353:23:1353:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1353:23:1353:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1354:13:1354:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1354:13:1354:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1354:13:1354:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1354:13:1354:27 | ... *= ... |  | file://:0:0:0:0 | () |
+| main.rs:1354:23:1354:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1354:23:1354:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1360:16:1360:19 | SelfParam |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1360:22:1360:24 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1360:41:1365:9 | { ... } |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1361:13:1364:13 | Vec2 {...} |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1362:20:1362:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1362:20:1362:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1362:20:1362:33 | ... / ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1362:29:1362:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1362:29:1362:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1363:20:1363:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1363:20:1363:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1363:20:1363:33 | ... / ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1363:29:1363:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1363:29:1363:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1369:23:1369:31 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1369:23:1369:31 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1369:34:1369:36 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1370:13:1370:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1370:13:1370:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1370:13:1370:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1370:13:1370:27 | ... /= ... |  | file://:0:0:0:0 | () |
+| main.rs:1370:23:1370:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1370:23:1370:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1371:13:1371:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1371:13:1371:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1371:13:1371:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1371:13:1371:27 | ... /= ... |  | file://:0:0:0:0 | () |
+| main.rs:1371:23:1371:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1371:23:1371:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1377:16:1377:19 | SelfParam |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1377:22:1377:24 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1377:41:1382:9 | { ... } |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1378:13:1381:13 | Vec2 {...} |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1379:20:1379:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1379:20:1379:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1379:20:1379:33 | ... % ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1379:29:1379:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1379:29:1379:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1380:20:1380:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1380:20:1380:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1380:20:1380:33 | ... % ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1380:29:1380:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1380:29:1380:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1386:23:1386:31 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1386:23:1386:31 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1386:34:1386:36 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1387:13:1387:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1387:13:1387:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1387:13:1387:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1387:13:1387:27 | ... %= ... |  | file://:0:0:0:0 | () |
+| main.rs:1387:23:1387:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1387:23:1387:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1388:13:1388:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1388:13:1388:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1388:13:1388:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1388:13:1388:27 | ... %= ... |  | file://:0:0:0:0 | () |
+| main.rs:1388:23:1388:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1388:23:1388:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1394:19:1394:22 | SelfParam |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1394:25:1394:27 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1394:44:1399:9 | { ... } |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1395:13:1398:13 | Vec2 {...} |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1396:20:1396:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1396:20:1396:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1396:20:1396:33 | ... & ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1396:29:1396:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1396:29:1396:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1397:20:1397:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1397:20:1397:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1397:20:1397:33 | ... & ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1397:29:1397:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1397:29:1397:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1403:26:1403:34 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1403:26:1403:34 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1403:37:1403:39 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1404:13:1404:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1404:13:1404:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1404:13:1404:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1404:13:1404:27 | ... &= ... |  | file://:0:0:0:0 | () |
+| main.rs:1404:23:1404:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1404:23:1404:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1405:13:1405:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1405:13:1405:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1405:13:1405:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1405:13:1405:27 | ... &= ... |  | file://:0:0:0:0 | () |
+| main.rs:1405:23:1405:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1405:23:1405:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1411:18:1411:21 | SelfParam |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1411:24:1411:26 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1411:43:1416:9 | { ... } |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1412:13:1415:13 | Vec2 {...} |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1413:20:1413:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1413:20:1413:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1413:20:1413:33 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1413:29:1413:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1413:29:1413:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1414:20:1414:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1414:20:1414:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1414:20:1414:33 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1414:29:1414:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1414:29:1414:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1420:25:1420:33 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1420:25:1420:33 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1420:36:1420:38 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1421:13:1421:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1421:13:1421:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1421:13:1421:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1421:13:1421:27 | ... \|= ... |  | file://:0:0:0:0 | () |
+| main.rs:1421:23:1421:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1421:23:1421:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1422:13:1422:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1422:13:1422:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1422:13:1422:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1422:13:1422:27 | ... \|= ... |  | file://:0:0:0:0 | () |
+| main.rs:1422:23:1422:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1422:23:1422:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1428:19:1428:22 | SelfParam |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1428:25:1428:27 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1428:44:1433:9 | { ... } |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1429:13:1432:13 | Vec2 {...} |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1430:20:1430:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1430:20:1430:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1430:20:1430:33 | ... ^ ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1430:29:1430:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1430:29:1430:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1431:20:1431:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1431:20:1431:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1431:20:1431:33 | ... ^ ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1431:29:1431:31 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1431:29:1431:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1437:26:1437:34 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1437:26:1437:34 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1437:37:1437:39 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1438:13:1438:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1438:13:1438:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1438:13:1438:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1438:13:1438:27 | ... ^= ... |  | file://:0:0:0:0 | () |
+| main.rs:1438:23:1438:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1438:23:1438:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1439:13:1439:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1439:13:1439:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1439:13:1439:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1439:13:1439:27 | ... ^= ... |  | file://:0:0:0:0 | () |
+| main.rs:1439:23:1439:25 | rhs |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1439:23:1439:27 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1445:16:1445:19 | SelfParam |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1445:22:1445:24 | rhs |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1445:40:1450:9 | { ... } |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1446:13:1449:13 | Vec2 {...} |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1447:20:1447:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1447:20:1447:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1447:20:1447:32 | ... << ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1447:30:1447:32 | rhs |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1448:20:1448:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1448:20:1448:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1448:20:1448:32 | ... << ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1448:30:1448:32 | rhs |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1454:23:1454:31 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1454:23:1454:31 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1454:34:1454:36 | rhs |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1455:13:1455:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1455:13:1455:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1455:13:1455:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1455:13:1455:26 | ... <<= ... |  | file://:0:0:0:0 | () |
+| main.rs:1455:24:1455:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1456:13:1456:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1456:13:1456:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1456:13:1456:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1456:13:1456:26 | ... <<= ... |  | file://:0:0:0:0 | () |
+| main.rs:1456:24:1456:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1462:16:1462:19 | SelfParam |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1462:22:1462:24 | rhs |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1462:40:1467:9 | { ... } |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1463:13:1466:13 | Vec2 {...} |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1464:20:1464:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1464:20:1464:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1464:20:1464:32 | ... >> ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1464:30:1464:32 | rhs |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1465:20:1465:23 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1465:20:1465:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1465:20:1465:32 | ... >> ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1465:30:1465:32 | rhs |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1471:23:1471:31 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1471:23:1471:31 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1471:34:1471:36 | rhs |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1472:13:1472:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1472:13:1472:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1472:13:1472:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1472:13:1472:26 | ... >>= ... |  | file://:0:0:0:0 | () |
+| main.rs:1472:24:1472:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1473:13:1473:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1473:13:1473:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1473:13:1473:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1473:13:1473:26 | ... >>= ... |  | file://:0:0:0:0 | () |
+| main.rs:1473:24:1473:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1479:16:1479:19 | SelfParam |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1479:30:1484:9 | { ... } |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1480:13:1483:13 | Vec2 {...} |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1481:20:1481:26 | - ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1481:21:1481:24 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1481:21:1481:26 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1482:20:1482:26 | - ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1482:21:1482:24 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1482:21:1482:26 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1489:16:1489:19 | SelfParam |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1489:30:1494:9 | { ... } |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1490:13:1493:13 | Vec2 {...} |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1491:20:1491:26 | ! ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1491:21:1491:24 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1491:21:1491:26 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1492:20:1492:26 | ! ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1492:21:1492:24 | self |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1492:21:1492:26 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1498:15:1498:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1498:15:1498:19 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1498:22:1498:26 | other |  | file://:0:0:0:0 | & |
+| main.rs:1498:22:1498:26 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1498:44:1500:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1499:13:1499:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1499:13:1499:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1499:13:1499:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1499:13:1499:29 | ... == ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1499:13:1499:50 | ... && ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1499:23:1499:27 | other |  | file://:0:0:0:0 | & |
+| main.rs:1499:23:1499:27 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1499:23:1499:29 | other.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1499:34:1499:37 | self |  | file://:0:0:0:0 | & |
+| main.rs:1499:34:1499:37 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1499:34:1499:39 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1499:34:1499:50 | ... == ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1499:44:1499:48 | other |  | file://:0:0:0:0 | & |
+| main.rs:1499:44:1499:48 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1499:44:1499:50 | other.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1502:15:1502:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1502:15:1502:19 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
 | main.rs:1502:22:1502:26 | other |  | file://:0:0:0:0 | & |
-| main.rs:1502:22:1502:26 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1502:22:1502:28 | other.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1502:33:1502:36 | self |  | file://:0:0:0:0 | & |
-| main.rs:1502:33:1502:36 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1502:33:1502:38 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1502:33:1502:48 | ... > ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1502:42:1502:46 | other |  | file://:0:0:0:0 | & |
-| main.rs:1502:42:1502:46 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1502:42:1502:48 | other.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1505:15:1505:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1505:15:1505:19 | SelfParam | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1505:22:1505:26 | other |  | file://:0:0:0:0 | & |
-| main.rs:1505:22:1505:26 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1505:44:1507:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1506:13:1506:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:1506:13:1506:16 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1506:13:1506:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1506:13:1506:29 | ... >= ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1506:13:1506:50 | ... && ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1506:23:1506:27 | other |  | file://:0:0:0:0 | & |
-| main.rs:1506:23:1506:27 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1506:23:1506:29 | other.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1506:34:1506:37 | self |  | file://:0:0:0:0 | & |
-| main.rs:1506:34:1506:37 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1506:34:1506:39 | self.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1506:34:1506:50 | ... >= ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1506:44:1506:48 | other |  | file://:0:0:0:0 | & |
-| main.rs:1506:44:1506:48 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1506:44:1506:50 | other.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1513:13:1513:18 | i64_eq |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1513:22:1513:35 | (...) |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1513:23:1513:26 | 1i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1513:23:1513:34 | ... == ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1513:31:1513:34 | 2i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1514:13:1514:18 | i64_ne |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1514:22:1514:35 | (...) |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1514:23:1514:26 | 3i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1514:23:1514:34 | ... != ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1514:31:1514:34 | 4i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1515:13:1515:18 | i64_lt |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1515:22:1515:34 | (...) |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1515:23:1515:26 | 5i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1515:23:1515:33 | ... < ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1515:30:1515:33 | 6i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1516:13:1516:18 | i64_le |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1516:22:1516:35 | (...) |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1516:23:1516:26 | 7i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1516:23:1516:34 | ... <= ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1516:31:1516:34 | 8i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1517:13:1517:18 | i64_gt |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1517:22:1517:35 | (...) |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1517:23:1517:26 | 9i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1517:23:1517:34 | ... > ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1517:30:1517:34 | 10i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1518:13:1518:18 | i64_ge |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1518:22:1518:37 | (...) |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1518:23:1518:27 | 11i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1518:23:1518:36 | ... >= ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1518:32:1518:36 | 12i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1521:13:1521:19 | i64_add |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1521:23:1521:27 | 13i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1521:23:1521:35 | ... + ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1521:31:1521:35 | 14i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1522:13:1522:19 | i64_sub |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1522:23:1522:27 | 15i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1522:23:1522:35 | ... - ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1522:31:1522:35 | 16i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1523:13:1523:19 | i64_mul |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1523:23:1523:27 | 17i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1523:23:1523:35 | ... * ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1523:31:1523:35 | 18i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1524:13:1524:19 | i64_div |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1524:23:1524:27 | 19i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1524:23:1524:35 | ... / ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1524:31:1524:35 | 20i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1525:13:1525:19 | i64_rem |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1525:23:1525:27 | 21i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1525:23:1525:35 | ... % ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1525:31:1525:35 | 22i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1528:13:1528:30 | mut i64_add_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1528:34:1528:38 | 23i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1529:9:1529:22 | i64_add_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1529:9:1529:31 | ... += ... |  | file://:0:0:0:0 | () |
-| main.rs:1529:27:1529:31 | 24i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1531:13:1531:30 | mut i64_sub_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1531:34:1531:38 | 25i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1532:9:1532:22 | i64_sub_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1532:9:1532:31 | ... -= ... |  | file://:0:0:0:0 | () |
-| main.rs:1532:27:1532:31 | 26i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1534:13:1534:30 | mut i64_mul_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1534:34:1534:38 | 27i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1535:9:1535:22 | i64_mul_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1535:9:1535:31 | ... *= ... |  | file://:0:0:0:0 | () |
-| main.rs:1535:27:1535:31 | 28i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1537:13:1537:30 | mut i64_div_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1537:34:1537:38 | 29i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1538:9:1538:22 | i64_div_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1538:9:1538:31 | ... /= ... |  | file://:0:0:0:0 | () |
-| main.rs:1538:27:1538:31 | 30i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1540:13:1540:30 | mut i64_rem_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1540:34:1540:38 | 31i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1541:9:1541:22 | i64_rem_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1541:9:1541:31 | ... %= ... |  | file://:0:0:0:0 | () |
-| main.rs:1541:27:1541:31 | 32i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1544:13:1544:22 | i64_bitand |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1544:26:1544:30 | 33i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1544:26:1544:38 | ... & ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1544:34:1544:38 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1545:13:1545:21 | i64_bitor |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1545:25:1545:29 | 35i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1545:25:1545:37 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1545:33:1545:37 | 36i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1546:13:1546:22 | i64_bitxor |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1546:26:1546:30 | 37i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1546:26:1546:38 | ... ^ ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1546:34:1546:38 | 38i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1547:13:1547:19 | i64_shl |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1547:23:1547:27 | 39i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1547:23:1547:36 | ... << ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1547:32:1547:36 | 40i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1548:13:1548:19 | i64_shr |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1548:23:1548:27 | 41i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1548:23:1548:36 | ... >> ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1548:32:1548:36 | 42i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1551:13:1551:33 | mut i64_bitand_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1551:37:1551:41 | 43i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1552:9:1552:25 | i64_bitand_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1552:9:1552:34 | ... &= ... |  | file://:0:0:0:0 | () |
-| main.rs:1552:30:1552:34 | 44i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1554:13:1554:32 | mut i64_bitor_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1554:36:1554:40 | 45i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1555:9:1555:24 | i64_bitor_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1555:9:1555:33 | ... \|= ... |  | file://:0:0:0:0 | () |
-| main.rs:1555:29:1555:33 | 46i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1557:13:1557:33 | mut i64_bitxor_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1557:37:1557:41 | 47i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1558:9:1558:25 | i64_bitxor_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1558:9:1558:34 | ... ^= ... |  | file://:0:0:0:0 | () |
-| main.rs:1558:30:1558:34 | 48i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1560:13:1560:30 | mut i64_shl_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1560:34:1560:38 | 49i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1561:9:1561:22 | i64_shl_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1561:9:1561:32 | ... <<= ... |  | file://:0:0:0:0 | () |
-| main.rs:1561:28:1561:32 | 50i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1563:13:1563:30 | mut i64_shr_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1563:34:1563:38 | 51i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1564:9:1564:22 | i64_shr_assign |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1564:9:1564:32 | ... >>= ... |  | file://:0:0:0:0 | () |
-| main.rs:1564:28:1564:32 | 52i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1566:13:1566:19 | i64_neg |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1566:23:1566:28 | - ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1566:24:1566:28 | 53i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1567:13:1567:19 | i64_not |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1567:23:1567:28 | ! ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1567:24:1567:28 | 54i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1570:13:1570:14 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1570:18:1570:36 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1570:28:1570:28 | 1 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1570:28:1570:28 | 1 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1570:34:1570:34 | 2 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1570:34:1570:34 | 2 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1571:13:1571:14 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1571:13:1571:14 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1571:13:1571:14 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1571:18:1571:36 | Vec2 {...} |  | file://:0:0:0:0 | & |
-| main.rs:1571:18:1571:36 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1571:18:1571:36 | Vec2 {...} | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1571:28:1571:28 | 3 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1571:28:1571:28 | 3 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1571:34:1571:34 | 4 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1571:34:1571:34 | 4 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1574:13:1574:19 | vec2_eq |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1574:23:1574:24 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1574:23:1574:30 | ... == ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1574:29:1574:30 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1574:29:1574:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1574:29:1574:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1575:13:1575:19 | vec2_ne |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1575:23:1575:24 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1575:23:1575:30 | ... != ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1575:29:1575:30 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1575:29:1575:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1575:29:1575:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1576:13:1576:19 | vec2_lt |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1576:23:1576:24 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1576:23:1576:29 | ... < ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1576:28:1576:29 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1576:28:1576:29 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1576:28:1576:29 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1577:13:1577:19 | vec2_le |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1577:23:1577:24 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1577:23:1577:30 | ... <= ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1577:29:1577:30 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1577:29:1577:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1577:29:1577:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1578:13:1578:19 | vec2_gt |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1578:23:1578:24 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1578:23:1578:29 | ... > ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1578:28:1578:29 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1578:28:1578:29 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1578:28:1578:29 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1579:13:1579:19 | vec2_ge |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1579:23:1579:24 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1579:23:1579:30 | ... >= ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1579:29:1579:30 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1579:29:1579:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1579:29:1579:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1582:13:1582:20 | vec2_add |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1582:24:1582:25 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1582:24:1582:30 | ... + ... |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1582:29:1582:30 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1582:29:1582:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1582:29:1582:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1583:13:1583:20 | vec2_sub |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1583:24:1583:25 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1583:24:1583:30 | ... - ... |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1583:29:1583:30 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1583:29:1583:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1583:29:1583:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1584:13:1584:20 | vec2_mul |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1584:24:1584:25 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1584:24:1584:30 | ... * ... |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1584:29:1584:30 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1584:29:1584:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1584:29:1584:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1585:13:1585:20 | vec2_div |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1585:24:1585:25 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1585:24:1585:30 | ... / ... |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1585:29:1585:30 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1585:29:1585:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1585:29:1585:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1586:13:1586:20 | vec2_rem |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1586:24:1586:25 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1586:24:1586:30 | ... % ... |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1586:29:1586:30 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1586:29:1586:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1586:29:1586:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1589:13:1589:31 | mut vec2_add_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1589:35:1589:36 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1590:9:1590:23 | vec2_add_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1590:9:1590:29 | ... += ... |  | file://:0:0:0:0 | () |
-| main.rs:1590:28:1590:29 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1590:28:1590:29 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1590:28:1590:29 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1592:13:1592:31 | mut vec2_sub_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1592:35:1592:36 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1593:9:1593:23 | vec2_sub_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1593:9:1593:29 | ... -= ... |  | file://:0:0:0:0 | () |
-| main.rs:1593:28:1593:29 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1593:28:1593:29 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1593:28:1593:29 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1595:13:1595:31 | mut vec2_mul_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1595:35:1595:36 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1596:9:1596:23 | vec2_mul_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1596:9:1596:29 | ... *= ... |  | file://:0:0:0:0 | () |
-| main.rs:1596:28:1596:29 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1596:28:1596:29 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1596:28:1596:29 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1598:13:1598:31 | mut vec2_div_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1598:35:1598:36 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1599:9:1599:23 | vec2_div_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1599:9:1599:29 | ... /= ... |  | file://:0:0:0:0 | () |
-| main.rs:1599:28:1599:29 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1599:28:1599:29 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1599:28:1599:29 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1601:13:1601:31 | mut vec2_rem_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1601:35:1601:36 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1602:9:1602:23 | vec2_rem_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1602:9:1602:29 | ... %= ... |  | file://:0:0:0:0 | () |
-| main.rs:1602:28:1602:29 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1602:28:1602:29 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1602:28:1602:29 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1605:13:1605:23 | vec2_bitand |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1605:27:1605:28 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1605:27:1605:33 | ... & ... |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1605:32:1605:33 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1605:32:1605:33 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1605:32:1605:33 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1606:13:1606:22 | vec2_bitor |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1606:26:1606:27 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1606:26:1606:32 | ... \| ... |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1606:31:1606:32 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1606:31:1606:32 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1606:31:1606:32 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1607:13:1607:23 | vec2_bitxor |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1607:27:1607:28 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1607:27:1607:33 | ... ^ ... |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1607:32:1607:33 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1607:32:1607:33 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1607:32:1607:33 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1608:13:1608:20 | vec2_shl |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1608:24:1608:25 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1608:24:1608:33 | ... << ... |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1608:30:1608:33 | 1u32 |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1609:13:1609:20 | vec2_shr |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1609:24:1609:25 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1609:24:1609:33 | ... >> ... |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1609:30:1609:33 | 1u32 |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1612:13:1612:34 | mut vec2_bitand_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1612:38:1612:39 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1613:9:1613:26 | vec2_bitand_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1613:9:1613:32 | ... &= ... |  | file://:0:0:0:0 | () |
-| main.rs:1613:31:1613:32 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1613:31:1613:32 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1613:31:1613:32 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1615:13:1615:33 | mut vec2_bitor_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1615:37:1615:38 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1616:9:1616:25 | vec2_bitor_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1616:9:1616:31 | ... \|= ... |  | file://:0:0:0:0 | () |
-| main.rs:1616:30:1616:31 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1616:30:1616:31 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1616:30:1616:31 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1618:13:1618:34 | mut vec2_bitxor_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1618:38:1618:39 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1619:9:1619:26 | vec2_bitxor_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1619:9:1619:32 | ... ^= ... |  | file://:0:0:0:0 | () |
-| main.rs:1619:31:1619:32 | v2 |  | file://:0:0:0:0 | & |
-| main.rs:1619:31:1619:32 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1619:31:1619:32 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1621:13:1621:31 | mut vec2_shl_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1621:35:1621:36 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1622:9:1622:23 | vec2_shl_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1622:9:1622:32 | ... <<= ... |  | file://:0:0:0:0 | () |
-| main.rs:1622:29:1622:32 | 1u32 |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1624:13:1624:31 | mut vec2_shr_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1624:35:1624:36 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1625:9:1625:23 | vec2_shr_assign |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1625:9:1625:32 | ... >>= ... |  | file://:0:0:0:0 | () |
-| main.rs:1625:29:1625:32 | 1u32 |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:1628:13:1628:20 | vec2_neg |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1628:24:1628:26 | - ... |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1628:25:1628:26 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1629:13:1629:20 | vec2_not |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1629:24:1629:26 | ! ... |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1629:25:1629:26 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1639:18:1639:21 | SelfParam |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1642:25:1644:5 | { ... } |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1643:9:1643:10 | S1 |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1646:41:1650:5 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1646:41:1650:5 | { ... } |  | main.rs:1646:16:1646:39 | ImplTraitTypeRepr |
-| main.rs:1646:41:1650:5 | { ... } | Output | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1647:9:1649:9 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1647:9:1649:9 | { ... } |  | main.rs:1646:16:1646:39 | ImplTraitTypeRepr |
-| main.rs:1647:9:1649:9 | { ... } | Output | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1648:13:1648:14 | S1 |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1657:17:1657:46 | SelfParam |  | {EXTERNAL LOCATION} | Pin |
-| main.rs:1657:17:1657:46 | SelfParam | Ptr | file://:0:0:0:0 | & |
-| main.rs:1657:17:1657:46 | SelfParam | Ptr.&T | main.rs:1652:5:1652:14 | S2 |
-| main.rs:1657:49:1657:51 | _cx |  | file://:0:0:0:0 | & |
-| main.rs:1657:49:1657:51 | _cx | &T | {EXTERNAL LOCATION} | Context |
-| main.rs:1657:116:1659:9 | { ... } |  | {EXTERNAL LOCATION} | Poll |
-| main.rs:1657:116:1659:9 | { ... } | T | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1658:13:1658:38 | ...::Ready(...) |  | {EXTERNAL LOCATION} | Poll |
-| main.rs:1658:13:1658:38 | ...::Ready(...) | T | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1658:36:1658:37 | S1 |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1662:41:1664:5 | { ... } |  | main.rs:1652:5:1652:14 | S2 |
-| main.rs:1662:41:1664:5 | { ... } |  | main.rs:1662:16:1662:39 | ImplTraitTypeRepr |
-| main.rs:1663:9:1663:10 | S2 |  | main.rs:1652:5:1652:14 | S2 |
-| main.rs:1663:9:1663:10 | S2 |  | main.rs:1662:16:1662:39 | ImplTraitTypeRepr |
-| main.rs:1667:9:1667:12 | f1(...) |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1667:9:1667:12 | f1(...) | Output | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1667:9:1667:18 | await ... |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1668:9:1668:12 | f2(...) |  | main.rs:1646:16:1646:39 | ImplTraitTypeRepr |
-| main.rs:1668:9:1668:18 | await ... |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1669:9:1669:12 | f3(...) |  | main.rs:1662:16:1662:39 | ImplTraitTypeRepr |
-| main.rs:1669:9:1669:18 | await ... |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1670:9:1670:10 | S2 |  | main.rs:1652:5:1652:14 | S2 |
-| main.rs:1670:9:1670:16 | await S2 |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1671:13:1671:13 | b |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1671:13:1671:13 | b | Output | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1671:17:1673:9 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1671:17:1673:9 | { ... } | Output | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1672:13:1672:14 | S1 |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1674:9:1674:9 | b |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1674:9:1674:9 | b | Output | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1674:9:1674:15 | await b |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1684:15:1684:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1684:15:1684:19 | SelfParam | &T | main.rs:1683:5:1685:5 | Self [trait Trait1] |
-| main.rs:1688:15:1688:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1688:15:1688:19 | SelfParam | &T | main.rs:1687:5:1689:5 | Self [trait Trait2] |
-| main.rs:1692:15:1692:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1692:15:1692:19 | SelfParam | &T | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1696:15:1696:19 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1696:15:1696:19 | SelfParam | &T | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1699:37:1701:5 | { ... } |  | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1699:37:1701:5 | { ... } |  | main.rs:1699:16:1699:35 | ImplTraitTypeRepr |
-| main.rs:1700:9:1700:10 | S1 |  | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1700:9:1700:10 | S1 |  | main.rs:1699:16:1699:35 | ImplTraitTypeRepr |
-| main.rs:1704:18:1704:22 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1704:18:1704:22 | SelfParam | &T | main.rs:1703:5:1705:5 | Self [trait MyTrait] |
-| main.rs:1708:18:1708:22 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1708:18:1708:22 | SelfParam | &T | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1708:31:1710:9 | { ... } |  | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1709:13:1709:14 | S2 |  | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1713:45:1715:5 | { ... } |  | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1713:45:1715:5 | { ... } |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
-| main.rs:1714:9:1714:10 | S1 |  | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1714:9:1714:10 | S1 |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
-| main.rs:1717:41:1717:41 | t |  | main.rs:1717:26:1717:38 | B |
-| main.rs:1717:52:1719:5 | { ... } |  | main.rs:1717:23:1717:23 | A |
-| main.rs:1718:9:1718:9 | t |  | main.rs:1717:26:1717:38 | B |
-| main.rs:1718:9:1718:17 | t.get_a() |  | main.rs:1717:23:1717:23 | A |
-| main.rs:1721:26:1721:26 | t |  | main.rs:1721:29:1721:43 | ImplTraitTypeRepr |
-| main.rs:1721:51:1723:5 | { ... } |  | main.rs:1721:23:1721:23 | A |
-| main.rs:1722:9:1722:9 | t |  | main.rs:1721:29:1721:43 | ImplTraitTypeRepr |
-| main.rs:1722:9:1722:17 | t.get_a() |  | main.rs:1721:23:1721:23 | A |
-| main.rs:1726:13:1726:13 | x |  | main.rs:1699:16:1699:35 | ImplTraitTypeRepr |
-| main.rs:1726:17:1726:20 | f1(...) |  | main.rs:1699:16:1699:35 | ImplTraitTypeRepr |
-| main.rs:1727:9:1727:9 | x |  | main.rs:1699:16:1699:35 | ImplTraitTypeRepr |
-| main.rs:1728:9:1728:9 | x |  | main.rs:1699:16:1699:35 | ImplTraitTypeRepr |
-| main.rs:1729:13:1729:13 | a |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
-| main.rs:1729:17:1729:32 | get_a_my_trait(...) |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
-| main.rs:1730:13:1730:13 | b |  | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1730:17:1730:33 | uses_my_trait1(...) |  | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1730:32:1730:32 | a |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
-| main.rs:1731:13:1731:13 | a |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
-| main.rs:1731:17:1731:32 | get_a_my_trait(...) |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
-| main.rs:1732:13:1732:13 | c |  | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1732:17:1732:33 | uses_my_trait2(...) |  | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1732:32:1732:32 | a |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
-| main.rs:1733:13:1733:13 | d |  | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1733:17:1733:34 | uses_my_trait2(...) |  | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1733:32:1733:33 | S1 |  | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1739:5:1739:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1740:5:1740:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1740:20:1740:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1740:41:1740:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1756:5:1756:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1502:22:1502:26 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1502:44:1504:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1503:13:1503:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1503:13:1503:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1503:13:1503:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1503:13:1503:29 | ... != ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1503:13:1503:50 | ... \|\| ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1503:23:1503:27 | other |  | file://:0:0:0:0 | & |
+| main.rs:1503:23:1503:27 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1503:23:1503:29 | other.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1503:34:1503:37 | self |  | file://:0:0:0:0 | & |
+| main.rs:1503:34:1503:37 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1503:34:1503:39 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1503:34:1503:50 | ... != ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1503:44:1503:48 | other |  | file://:0:0:0:0 | & |
+| main.rs:1503:44:1503:48 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1503:44:1503:50 | other.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1508:24:1508:28 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1508:24:1508:28 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1508:31:1508:35 | other |  | file://:0:0:0:0 | & |
+| main.rs:1508:31:1508:35 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1508:75:1510:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
+| main.rs:1508:75:1510:9 | { ... } | T | {EXTERNAL LOCATION} | Ordering |
+| main.rs:1509:13:1509:29 | (...) |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1509:13:1509:63 | ... .partial_cmp(...) |  | {EXTERNAL LOCATION} | Option |
+| main.rs:1509:13:1509:63 | ... .partial_cmp(...) | T | {EXTERNAL LOCATION} | Ordering |
+| main.rs:1509:14:1509:17 | self |  | file://:0:0:0:0 | & |
+| main.rs:1509:14:1509:17 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1509:14:1509:19 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1509:14:1509:28 | ... + ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1509:23:1509:26 | self |  | file://:0:0:0:0 | & |
+| main.rs:1509:23:1509:26 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1509:23:1509:28 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1509:43:1509:62 | &... |  | file://:0:0:0:0 | & |
+| main.rs:1509:43:1509:62 | &... | &T | {EXTERNAL LOCATION} | i64 |
+| main.rs:1509:44:1509:62 | (...) |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1509:45:1509:49 | other |  | file://:0:0:0:0 | & |
+| main.rs:1509:45:1509:49 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1509:45:1509:51 | other.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1509:45:1509:61 | ... + ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1509:55:1509:59 | other |  | file://:0:0:0:0 | & |
+| main.rs:1509:55:1509:59 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1509:55:1509:61 | other.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1512:15:1512:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1512:15:1512:19 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1512:22:1512:26 | other |  | file://:0:0:0:0 | & |
+| main.rs:1512:22:1512:26 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1512:44:1514:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1513:13:1513:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1513:13:1513:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1513:13:1513:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1513:13:1513:28 | ... < ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1513:13:1513:48 | ... && ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1513:22:1513:26 | other |  | file://:0:0:0:0 | & |
+| main.rs:1513:22:1513:26 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1513:22:1513:28 | other.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1513:33:1513:36 | self |  | file://:0:0:0:0 | & |
+| main.rs:1513:33:1513:36 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1513:33:1513:38 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1513:33:1513:48 | ... < ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1513:42:1513:46 | other |  | file://:0:0:0:0 | & |
+| main.rs:1513:42:1513:46 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1513:42:1513:48 | other.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1516:15:1516:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1516:15:1516:19 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1516:22:1516:26 | other |  | file://:0:0:0:0 | & |
+| main.rs:1516:22:1516:26 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1516:44:1518:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1517:13:1517:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1517:13:1517:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1517:13:1517:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1517:13:1517:29 | ... <= ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1517:13:1517:50 | ... && ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1517:23:1517:27 | other |  | file://:0:0:0:0 | & |
+| main.rs:1517:23:1517:27 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1517:23:1517:29 | other.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1517:34:1517:37 | self |  | file://:0:0:0:0 | & |
+| main.rs:1517:34:1517:37 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1517:34:1517:39 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1517:34:1517:50 | ... <= ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1517:44:1517:48 | other |  | file://:0:0:0:0 | & |
+| main.rs:1517:44:1517:48 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1517:44:1517:50 | other.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1520:15:1520:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1520:15:1520:19 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1520:22:1520:26 | other |  | file://:0:0:0:0 | & |
+| main.rs:1520:22:1520:26 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1520:44:1522:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1521:13:1521:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1521:13:1521:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1521:13:1521:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1521:13:1521:28 | ... > ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1521:13:1521:48 | ... && ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1521:22:1521:26 | other |  | file://:0:0:0:0 | & |
+| main.rs:1521:22:1521:26 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1521:22:1521:28 | other.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1521:33:1521:36 | self |  | file://:0:0:0:0 | & |
+| main.rs:1521:33:1521:36 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1521:33:1521:38 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1521:33:1521:48 | ... > ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1521:42:1521:46 | other |  | file://:0:0:0:0 | & |
+| main.rs:1521:42:1521:46 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1521:42:1521:48 | other.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1524:15:1524:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1524:15:1524:19 | SelfParam | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1524:22:1524:26 | other |  | file://:0:0:0:0 | & |
+| main.rs:1524:22:1524:26 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1524:44:1526:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1525:13:1525:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1525:13:1525:16 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1525:13:1525:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1525:13:1525:29 | ... >= ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1525:13:1525:50 | ... && ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1525:23:1525:27 | other |  | file://:0:0:0:0 | & |
+| main.rs:1525:23:1525:27 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1525:23:1525:29 | other.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1525:34:1525:37 | self |  | file://:0:0:0:0 | & |
+| main.rs:1525:34:1525:37 | self | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1525:34:1525:39 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1525:34:1525:50 | ... >= ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1525:44:1525:48 | other |  | file://:0:0:0:0 | & |
+| main.rs:1525:44:1525:48 | other | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1525:44:1525:50 | other.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1532:13:1532:18 | i64_eq |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1532:22:1532:35 | (...) |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1532:23:1532:26 | 1i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1532:23:1532:34 | ... == ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1532:31:1532:34 | 2i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1533:13:1533:18 | i64_ne |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1533:22:1533:35 | (...) |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1533:23:1533:26 | 3i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1533:23:1533:34 | ... != ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1533:31:1533:34 | 4i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1534:13:1534:18 | i64_lt |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1534:22:1534:34 | (...) |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1534:23:1534:26 | 5i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1534:23:1534:33 | ... < ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1534:30:1534:33 | 6i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1535:13:1535:18 | i64_le |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1535:22:1535:35 | (...) |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1535:23:1535:26 | 7i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1535:23:1535:34 | ... <= ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1535:31:1535:34 | 8i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1536:13:1536:18 | i64_gt |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1536:22:1536:35 | (...) |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1536:23:1536:26 | 9i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1536:23:1536:34 | ... > ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1536:30:1536:34 | 10i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1537:13:1537:18 | i64_ge |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1537:22:1537:37 | (...) |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1537:23:1537:27 | 11i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1537:23:1537:36 | ... >= ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1537:32:1537:36 | 12i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1540:13:1540:19 | i64_add |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1540:23:1540:27 | 13i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1540:23:1540:35 | ... + ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1540:31:1540:35 | 14i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1541:13:1541:19 | i64_sub |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1541:23:1541:27 | 15i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1541:23:1541:35 | ... - ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1541:31:1541:35 | 16i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1542:13:1542:19 | i64_mul |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1542:23:1542:27 | 17i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1542:23:1542:35 | ... * ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1542:31:1542:35 | 18i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1543:13:1543:19 | i64_div |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1543:23:1543:27 | 19i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1543:23:1543:35 | ... / ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1543:31:1543:35 | 20i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1544:13:1544:19 | i64_rem |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1544:23:1544:27 | 21i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1544:23:1544:35 | ... % ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1544:31:1544:35 | 22i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1547:13:1547:30 | mut i64_add_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1547:34:1547:38 | 23i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1548:9:1548:22 | i64_add_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1548:9:1548:31 | ... += ... |  | file://:0:0:0:0 | () |
+| main.rs:1548:27:1548:31 | 24i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1550:13:1550:30 | mut i64_sub_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1550:34:1550:38 | 25i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1551:9:1551:22 | i64_sub_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1551:9:1551:31 | ... -= ... |  | file://:0:0:0:0 | () |
+| main.rs:1551:27:1551:31 | 26i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1553:13:1553:30 | mut i64_mul_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1553:34:1553:38 | 27i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1554:9:1554:22 | i64_mul_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1554:9:1554:31 | ... *= ... |  | file://:0:0:0:0 | () |
+| main.rs:1554:27:1554:31 | 28i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1556:13:1556:30 | mut i64_div_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1556:34:1556:38 | 29i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1557:9:1557:22 | i64_div_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1557:9:1557:31 | ... /= ... |  | file://:0:0:0:0 | () |
+| main.rs:1557:27:1557:31 | 30i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1559:13:1559:30 | mut i64_rem_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1559:34:1559:38 | 31i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1560:9:1560:22 | i64_rem_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1560:9:1560:31 | ... %= ... |  | file://:0:0:0:0 | () |
+| main.rs:1560:27:1560:31 | 32i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1563:13:1563:22 | i64_bitand |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1563:26:1563:30 | 33i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1563:26:1563:38 | ... & ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1563:34:1563:38 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1564:13:1564:21 | i64_bitor |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1564:25:1564:29 | 35i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1564:25:1564:37 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1564:33:1564:37 | 36i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1565:13:1565:22 | i64_bitxor |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1565:26:1565:30 | 37i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1565:26:1565:38 | ... ^ ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1565:34:1565:38 | 38i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1566:13:1566:19 | i64_shl |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1566:23:1566:27 | 39i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1566:23:1566:36 | ... << ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1566:32:1566:36 | 40i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1567:13:1567:19 | i64_shr |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1567:23:1567:27 | 41i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1567:23:1567:36 | ... >> ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1567:32:1567:36 | 42i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1570:13:1570:33 | mut i64_bitand_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1570:37:1570:41 | 43i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1571:9:1571:25 | i64_bitand_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1571:9:1571:34 | ... &= ... |  | file://:0:0:0:0 | () |
+| main.rs:1571:30:1571:34 | 44i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1573:13:1573:32 | mut i64_bitor_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1573:36:1573:40 | 45i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1574:9:1574:24 | i64_bitor_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1574:9:1574:33 | ... \|= ... |  | file://:0:0:0:0 | () |
+| main.rs:1574:29:1574:33 | 46i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1576:13:1576:33 | mut i64_bitxor_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1576:37:1576:41 | 47i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1577:9:1577:25 | i64_bitxor_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1577:9:1577:34 | ... ^= ... |  | file://:0:0:0:0 | () |
+| main.rs:1577:30:1577:34 | 48i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1579:13:1579:30 | mut i64_shl_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1579:34:1579:38 | 49i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1580:9:1580:22 | i64_shl_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1580:9:1580:32 | ... <<= ... |  | file://:0:0:0:0 | () |
+| main.rs:1580:28:1580:32 | 50i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1582:13:1582:30 | mut i64_shr_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1582:34:1582:38 | 51i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1583:9:1583:22 | i64_shr_assign |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1583:9:1583:32 | ... >>= ... |  | file://:0:0:0:0 | () |
+| main.rs:1583:28:1583:32 | 52i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1585:13:1585:19 | i64_neg |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1585:23:1585:28 | - ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1585:24:1585:28 | 53i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1586:13:1586:19 | i64_not |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1586:23:1586:28 | ! ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1586:24:1586:28 | 54i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1589:13:1589:14 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1589:18:1589:36 | Vec2 {...} |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1589:28:1589:28 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1589:28:1589:28 | 1 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1589:34:1589:34 | 2 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1589:34:1589:34 | 2 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1590:13:1590:14 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1590:13:1590:14 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1590:13:1590:14 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1590:18:1590:36 | Vec2 {...} |  | file://:0:0:0:0 | & |
+| main.rs:1590:18:1590:36 | Vec2 {...} |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1590:18:1590:36 | Vec2 {...} | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1590:28:1590:28 | 3 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1590:28:1590:28 | 3 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1590:34:1590:34 | 4 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1590:34:1590:34 | 4 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1593:13:1593:19 | vec2_eq |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1593:23:1593:24 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1593:23:1593:30 | ... == ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1593:29:1593:30 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1593:29:1593:30 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1593:29:1593:30 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1594:13:1594:19 | vec2_ne |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1594:23:1594:24 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1594:23:1594:30 | ... != ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1594:29:1594:30 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1594:29:1594:30 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1594:29:1594:30 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1595:13:1595:19 | vec2_lt |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1595:23:1595:24 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1595:23:1595:29 | ... < ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1595:28:1595:29 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1595:28:1595:29 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1595:28:1595:29 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1596:13:1596:19 | vec2_le |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1596:23:1596:24 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1596:23:1596:30 | ... <= ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1596:29:1596:30 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1596:29:1596:30 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1596:29:1596:30 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1597:13:1597:19 | vec2_gt |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1597:23:1597:24 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1597:23:1597:29 | ... > ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1597:28:1597:29 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1597:28:1597:29 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1597:28:1597:29 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1598:13:1598:19 | vec2_ge |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1598:23:1598:24 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1598:23:1598:30 | ... >= ... |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1598:29:1598:30 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1598:29:1598:30 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1598:29:1598:30 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1601:13:1601:20 | vec2_add |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1601:24:1601:25 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1601:24:1601:30 | ... + ... |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1601:29:1601:30 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1601:29:1601:30 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1601:29:1601:30 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1602:13:1602:20 | vec2_sub |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1602:24:1602:25 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1602:24:1602:30 | ... - ... |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1602:29:1602:30 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1602:29:1602:30 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1602:29:1602:30 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1603:13:1603:20 | vec2_mul |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1603:24:1603:25 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1603:24:1603:30 | ... * ... |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1603:29:1603:30 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1603:29:1603:30 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1603:29:1603:30 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1604:13:1604:20 | vec2_div |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1604:24:1604:25 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1604:24:1604:30 | ... / ... |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1604:29:1604:30 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1604:29:1604:30 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1604:29:1604:30 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1605:13:1605:20 | vec2_rem |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1605:24:1605:25 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1605:24:1605:30 | ... % ... |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1605:29:1605:30 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1605:29:1605:30 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1605:29:1605:30 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1608:13:1608:31 | mut vec2_add_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1608:35:1608:36 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1609:9:1609:23 | vec2_add_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1609:9:1609:29 | ... += ... |  | file://:0:0:0:0 | () |
+| main.rs:1609:28:1609:29 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1609:28:1609:29 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1609:28:1609:29 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1611:13:1611:31 | mut vec2_sub_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1611:35:1611:36 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1612:9:1612:23 | vec2_sub_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1612:9:1612:29 | ... -= ... |  | file://:0:0:0:0 | () |
+| main.rs:1612:28:1612:29 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1612:28:1612:29 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1612:28:1612:29 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1614:13:1614:31 | mut vec2_mul_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1614:35:1614:36 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1615:9:1615:23 | vec2_mul_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1615:9:1615:29 | ... *= ... |  | file://:0:0:0:0 | () |
+| main.rs:1615:28:1615:29 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1615:28:1615:29 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1615:28:1615:29 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1617:13:1617:31 | mut vec2_div_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1617:35:1617:36 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1618:9:1618:23 | vec2_div_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1618:9:1618:29 | ... /= ... |  | file://:0:0:0:0 | () |
+| main.rs:1618:28:1618:29 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1618:28:1618:29 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1618:28:1618:29 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1620:13:1620:31 | mut vec2_rem_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1620:35:1620:36 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1621:9:1621:23 | vec2_rem_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1621:9:1621:29 | ... %= ... |  | file://:0:0:0:0 | () |
+| main.rs:1621:28:1621:29 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1621:28:1621:29 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1621:28:1621:29 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1624:13:1624:23 | vec2_bitand |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1624:27:1624:28 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1624:27:1624:33 | ... & ... |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1624:32:1624:33 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1624:32:1624:33 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1624:32:1624:33 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1625:13:1625:22 | vec2_bitor |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1625:26:1625:27 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1625:26:1625:32 | ... \| ... |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1625:31:1625:32 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1625:31:1625:32 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1625:31:1625:32 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1626:13:1626:23 | vec2_bitxor |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1626:27:1626:28 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1626:27:1626:33 | ... ^ ... |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1626:32:1626:33 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1626:32:1626:33 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1626:32:1626:33 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1627:13:1627:20 | vec2_shl |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1627:24:1627:25 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1627:24:1627:33 | ... << ... |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1627:30:1627:33 | 1u32 |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1628:13:1628:20 | vec2_shr |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1628:24:1628:25 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1628:24:1628:33 | ... >> ... |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1628:30:1628:33 | 1u32 |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1631:13:1631:34 | mut vec2_bitand_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1631:38:1631:39 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1632:9:1632:26 | vec2_bitand_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1632:9:1632:32 | ... &= ... |  | file://:0:0:0:0 | () |
+| main.rs:1632:31:1632:32 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1632:31:1632:32 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1632:31:1632:32 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1634:13:1634:33 | mut vec2_bitor_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1634:37:1634:38 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1635:9:1635:25 | vec2_bitor_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1635:9:1635:31 | ... \|= ... |  | file://:0:0:0:0 | () |
+| main.rs:1635:30:1635:31 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1635:30:1635:31 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1635:30:1635:31 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1637:13:1637:34 | mut vec2_bitxor_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1637:38:1637:39 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1638:9:1638:26 | vec2_bitxor_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1638:9:1638:32 | ... ^= ... |  | file://:0:0:0:0 | () |
+| main.rs:1638:31:1638:32 | v2 |  | file://:0:0:0:0 | & |
+| main.rs:1638:31:1638:32 | v2 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1638:31:1638:32 | v2 | &T | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1640:13:1640:31 | mut vec2_shl_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1640:35:1640:36 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1641:9:1641:23 | vec2_shl_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1641:9:1641:32 | ... <<= ... |  | file://:0:0:0:0 | () |
+| main.rs:1641:29:1641:32 | 1u32 |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1643:13:1643:31 | mut vec2_shr_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1643:35:1643:36 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1644:9:1644:23 | vec2_shr_assign |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1644:9:1644:32 | ... >>= ... |  | file://:0:0:0:0 | () |
+| main.rs:1644:29:1644:32 | 1u32 |  | {EXTERNAL LOCATION} | u32 |
+| main.rs:1647:13:1647:20 | vec2_neg |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1647:24:1647:26 | - ... |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1647:25:1647:26 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1648:13:1648:20 | vec2_not |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1648:24:1648:26 | ! ... |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1648:25:1648:26 | v1 |  | main.rs:1297:5:1302:5 | Vec2 |
+| main.rs:1658:18:1658:21 | SelfParam |  | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1661:25:1663:5 | { ... } |  | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1662:9:1662:10 | S1 |  | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1665:41:1669:5 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1665:41:1669:5 | { ... } |  | main.rs:1665:16:1665:39 | ImplTraitTypeRepr |
+| main.rs:1665:41:1669:5 | { ... } | Output | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1666:9:1668:9 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1666:9:1668:9 | { ... } |  | main.rs:1665:16:1665:39 | ImplTraitTypeRepr |
+| main.rs:1666:9:1668:9 | { ... } | Output | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1667:13:1667:14 | S1 |  | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1676:17:1676:46 | SelfParam |  | {EXTERNAL LOCATION} | Pin |
+| main.rs:1676:17:1676:46 | SelfParam | Ptr | file://:0:0:0:0 | & |
+| main.rs:1676:17:1676:46 | SelfParam | Ptr.&T | main.rs:1671:5:1671:14 | S2 |
+| main.rs:1676:49:1676:51 | _cx |  | file://:0:0:0:0 | & |
+| main.rs:1676:49:1676:51 | _cx | &T | {EXTERNAL LOCATION} | Context |
+| main.rs:1676:116:1678:9 | { ... } |  | {EXTERNAL LOCATION} | Poll |
+| main.rs:1676:116:1678:9 | { ... } | T | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1677:13:1677:38 | ...::Ready(...) |  | {EXTERNAL LOCATION} | Poll |
+| main.rs:1677:13:1677:38 | ...::Ready(...) | T | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1677:36:1677:37 | S1 |  | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1681:41:1683:5 | { ... } |  | main.rs:1671:5:1671:14 | S2 |
+| main.rs:1681:41:1683:5 | { ... } |  | main.rs:1681:16:1681:39 | ImplTraitTypeRepr |
+| main.rs:1682:9:1682:10 | S2 |  | main.rs:1671:5:1671:14 | S2 |
+| main.rs:1682:9:1682:10 | S2 |  | main.rs:1681:16:1681:39 | ImplTraitTypeRepr |
+| main.rs:1686:9:1686:12 | f1(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1686:9:1686:12 | f1(...) | Output | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1686:9:1686:18 | await ... |  | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1687:9:1687:12 | f2(...) |  | main.rs:1665:16:1665:39 | ImplTraitTypeRepr |
+| main.rs:1687:9:1687:18 | await ... |  | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1688:9:1688:12 | f3(...) |  | main.rs:1681:16:1681:39 | ImplTraitTypeRepr |
+| main.rs:1688:9:1688:18 | await ... |  | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1689:9:1689:10 | S2 |  | main.rs:1671:5:1671:14 | S2 |
+| main.rs:1689:9:1689:16 | await S2 |  | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1690:13:1690:13 | b |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1690:13:1690:13 | b | Output | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1690:17:1692:9 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1690:17:1692:9 | { ... } | Output | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1691:13:1691:14 | S1 |  | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1693:9:1693:9 | b |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1693:9:1693:9 | b | Output | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1693:9:1693:15 | await b |  | main.rs:1655:5:1655:14 | S1 |
+| main.rs:1703:15:1703:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1703:15:1703:19 | SelfParam | &T | main.rs:1702:5:1704:5 | Self [trait Trait1] |
+| main.rs:1707:15:1707:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1707:15:1707:19 | SelfParam | &T | main.rs:1706:5:1708:5 | Self [trait Trait2] |
+| main.rs:1711:15:1711:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1711:15:1711:19 | SelfParam | &T | main.rs:1699:5:1699:14 | S1 |
+| main.rs:1715:15:1715:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1715:15:1715:19 | SelfParam | &T | main.rs:1699:5:1699:14 | S1 |
+| main.rs:1718:37:1720:5 | { ... } |  | main.rs:1699:5:1699:14 | S1 |
+| main.rs:1718:37:1720:5 | { ... } |  | main.rs:1718:16:1718:35 | ImplTraitTypeRepr |
+| main.rs:1719:9:1719:10 | S1 |  | main.rs:1699:5:1699:14 | S1 |
+| main.rs:1719:9:1719:10 | S1 |  | main.rs:1718:16:1718:35 | ImplTraitTypeRepr |
+| main.rs:1723:18:1723:22 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1723:18:1723:22 | SelfParam | &T | main.rs:1722:5:1724:5 | Self [trait MyTrait] |
+| main.rs:1727:18:1727:22 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1727:18:1727:22 | SelfParam | &T | main.rs:1699:5:1699:14 | S1 |
+| main.rs:1727:31:1729:9 | { ... } |  | main.rs:1700:5:1700:14 | S2 |
+| main.rs:1728:13:1728:14 | S2 |  | main.rs:1700:5:1700:14 | S2 |
+| main.rs:1732:45:1734:5 | { ... } |  | main.rs:1699:5:1699:14 | S1 |
+| main.rs:1732:45:1734:5 | { ... } |  | main.rs:1732:28:1732:43 | ImplTraitTypeRepr |
+| main.rs:1733:9:1733:10 | S1 |  | main.rs:1699:5:1699:14 | S1 |
+| main.rs:1733:9:1733:10 | S1 |  | main.rs:1732:28:1732:43 | ImplTraitTypeRepr |
+| main.rs:1736:41:1736:41 | t |  | main.rs:1736:26:1736:38 | B |
+| main.rs:1736:52:1738:5 | { ... } |  | main.rs:1736:23:1736:23 | A |
+| main.rs:1737:9:1737:9 | t |  | main.rs:1736:26:1736:38 | B |
+| main.rs:1737:9:1737:17 | t.get_a() |  | main.rs:1736:23:1736:23 | A |
+| main.rs:1740:26:1740:26 | t |  | main.rs:1740:29:1740:43 | ImplTraitTypeRepr |
+| main.rs:1740:51:1742:5 | { ... } |  | main.rs:1740:23:1740:23 | A |
+| main.rs:1741:9:1741:9 | t |  | main.rs:1740:29:1740:43 | ImplTraitTypeRepr |
+| main.rs:1741:9:1741:17 | t.get_a() |  | main.rs:1740:23:1740:23 | A |
+| main.rs:1745:13:1745:13 | x |  | main.rs:1718:16:1718:35 | ImplTraitTypeRepr |
+| main.rs:1745:17:1745:20 | f1(...) |  | main.rs:1718:16:1718:35 | ImplTraitTypeRepr |
+| main.rs:1746:9:1746:9 | x |  | main.rs:1718:16:1718:35 | ImplTraitTypeRepr |
+| main.rs:1747:9:1747:9 | x |  | main.rs:1718:16:1718:35 | ImplTraitTypeRepr |
+| main.rs:1748:13:1748:13 | a |  | main.rs:1732:28:1732:43 | ImplTraitTypeRepr |
+| main.rs:1748:17:1748:32 | get_a_my_trait(...) |  | main.rs:1732:28:1732:43 | ImplTraitTypeRepr |
+| main.rs:1749:13:1749:13 | b |  | main.rs:1700:5:1700:14 | S2 |
+| main.rs:1749:17:1749:33 | uses_my_trait1(...) |  | main.rs:1700:5:1700:14 | S2 |
+| main.rs:1749:32:1749:32 | a |  | main.rs:1732:28:1732:43 | ImplTraitTypeRepr |
+| main.rs:1750:13:1750:13 | a |  | main.rs:1732:28:1732:43 | ImplTraitTypeRepr |
+| main.rs:1750:17:1750:32 | get_a_my_trait(...) |  | main.rs:1732:28:1732:43 | ImplTraitTypeRepr |
+| main.rs:1751:13:1751:13 | c |  | main.rs:1700:5:1700:14 | S2 |
+| main.rs:1751:17:1751:33 | uses_my_trait2(...) |  | main.rs:1700:5:1700:14 | S2 |
+| main.rs:1751:32:1751:32 | a |  | main.rs:1732:28:1732:43 | ImplTraitTypeRepr |
+| main.rs:1752:13:1752:13 | d |  | main.rs:1700:5:1700:14 | S2 |
+| main.rs:1752:17:1752:34 | uses_my_trait2(...) |  | main.rs:1700:5:1700:14 | S2 |
+| main.rs:1752:32:1752:33 | S1 |  | main.rs:1699:5:1699:14 | S1 |
+| main.rs:1758:5:1758:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1759:5:1759:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1759:20:1759:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1759:41:1759:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1775:5:1775:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
 testFailures

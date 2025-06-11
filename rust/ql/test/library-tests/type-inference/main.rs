@@ -1154,6 +1154,17 @@ mod implicit_self_borrow {
 }
 
 mod borrowed_typed {
+    #[derive(Debug, Copy, Clone, Default)]
+    struct MyFlag {
+        bool: bool,
+    }
+
+    impl MyFlag {
+        fn flip(&mut self) {
+            self.bool = !self.bool; // $ fieldof=MyFlag method=not
+        }
+    }
+
     struct S;
 
     impl S {
@@ -1179,6 +1190,14 @@ mod borrowed_typed {
         x.f1(); // $ method=f1
         x.f2(); // $ method=f2
         S::f3(&x);
+
+        let n = **&&true; // $ MISSING: type=n:bool
+
+        // In this example the type of `flag` must be inferred at the call to
+        // `flip` and flow through the borrow in the argument.
+        let mut flag = Default::default();
+        MyFlag::flip(&mut flag);
+        println!("{:?}", flag); // $ MISSING: type=flag:MyFlag
     }
 }
 
