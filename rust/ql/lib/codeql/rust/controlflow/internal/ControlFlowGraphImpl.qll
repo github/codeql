@@ -87,7 +87,7 @@ class CallableScopeTree extends StandardTree, PreOrderTree, PostOrderTree, Scope
     i = 0 and
     result = this.getParamList().getSelfParam()
     or
-    result = this.getParamList().getParam(i - 1)
+    result = this.getParam(i - 1)
     or
     i = this.getParamList().getNumberOfParams() + 1 and
     result = this.getBody()
@@ -143,6 +143,8 @@ class LetStmtTree extends PreOrderTree, LetStmt {
 }
 
 class MacroCallTree extends StandardPostOrderTree, MacroCall {
+  MacroCallTree() { not this.getParentNode() instanceof MacroPat }
+
   override AstNode getChildNode(int i) { i = 0 and result = this.getMacroCallExpansion() }
 }
 
@@ -541,7 +543,7 @@ module ExprTrees {
 
   class MethodCallExprTree extends StandardPostOrderTree, MethodCallExpr {
     override AstNode getChildNode(int i) {
-      if i = 0 then result = this.getReceiver() else result = this.getArgList().getArg(i - 1)
+      if i = 0 then result = this.getReceiver() else result = this.getArg(i - 1)
     }
   }
 

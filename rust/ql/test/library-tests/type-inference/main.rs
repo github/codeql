@@ -1630,6 +1630,110 @@ mod overloadable_operators {
     }
 }
 
+mod async_ {
+    use std::future::Future;
+
+    struct S1;
+
+    impl S1 {
+        pub fn f(self) {} // S1f
+    }
+
+    async fn f1() -> S1 {
+        S1
+    }
+
+    fn f2() -> impl Future<Output = S1> {
+        async {
+            S1
+        }
+    }
+
+    struct S2;
+
+    impl Future for S2 {
+        type Output = S1;
+
+        fn poll(self: std::pin::Pin<&mut Self>, _cx: &mut std::task::Context<'_>) -> std::task::Poll<Self::Output> {
+            std::task::Poll::Ready(S1)
+        }
+    }
+
+    fn f3() -> impl Future<Output = S1> {
+        S2
+    }
+
+    pub async fn f() {
+        f1().await.f(); // $ method=S1f
+        f2().await.f(); // $ method=S1f
+        f3().await.f(); // $ method=S1f
+        S2.await.f(); // $ method=S1f
+        let b = async {
+            S1
+        };
+        b.await.f(); // $ method=S1f
+    }
+}
+
+
+mod impl_trait {
+    struct S1;
+    struct S2;
+
+    trait Trait1 {
+        fn f1(&self) {} // Trait1f1
+    }
+
+    trait Trait2 {
+        fn f2(&self) {} // Trait2f2
+    }
+
+    impl Trait1 for S1 {
+        fn f1(&self) {} // S1f1
+    }
+
+    impl Trait2 for S1 {
+        fn f2(&self) {} // S1f2
+    }
+
+    fn f1() -> impl Trait1 + Trait2 {
+        S1
+    }
+
+    trait MyTrait<A> {
+        fn get_a(&self) -> A; // MyTrait::get_a
+    }
+
+    impl MyTrait<S2> for S1 {
+        fn get_a(&self) -> S2 {
+            S2
+        }
+    }
+
+    fn get_a_my_trait() -> impl MyTrait<S2> {
+        S1
+    }
+
+    fn uses_my_trait1<A, B: MyTrait<A>>(t: B) -> A {
+        t.get_a() // $ method=MyTrait::get_a
+    }
+
+    fn uses_my_trait2<A>(t: impl MyTrait<A>) -> A {
+        t.get_a() // $ method=MyTrait::get_a
+    }
+
+    pub fn f() {
+        let x = f1();
+        x.f1(); // $ method=Trait1f1
+        x.f2(); // $ method=Trait2f2
+        let a = get_a_my_trait();
+        let b = uses_my_trait1(a); // $ type=b:S2
+        let a = get_a_my_trait();
+        let c = uses_my_trait2(a); // $ type=c:S2
+        let d = uses_my_trait2(S1); // $ type=d:S2
+    }
+}
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -1649,4 +1753,6 @@ fn main() {
     try_expressions::f();
     builtins::f();
     operators::f();
+    async_::f();
+    impl_trait::f();
 }

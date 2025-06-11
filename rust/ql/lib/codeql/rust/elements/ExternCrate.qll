@@ -11,9 +11,11 @@ import codeql.rust.elements.Rename
 import codeql.rust.elements.Visibility
 
 /**
- * A ExternCrate. For example:
+ * An extern crate declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * extern crate serde;
  * ```
  */
 final class ExternCrate = Impl::ExternCrate;

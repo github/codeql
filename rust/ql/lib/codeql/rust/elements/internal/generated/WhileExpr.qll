@@ -16,9 +16,13 @@ import codeql.rust.elements.internal.LoopingExprImpl::Impl as LoopingExprImpl
  */
 module Generated {
   /**
-   * A WhileExpr. For example:
+   * A while loop expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * while x < 10 {
+   *     x += 1;
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::WhileExpr` class directly.
    * Use the subclass `WhileExpr`, where the following predicates are available.

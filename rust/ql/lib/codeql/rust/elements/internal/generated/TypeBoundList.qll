@@ -15,9 +15,12 @@ import codeql.rust.elements.TypeBound
  */
 module Generated {
   /**
-   * A TypeBoundList. For example:
+   * A list of type bounds.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T: Debug + Clone>(t: T) {}
+   * //        ^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::TypeBoundList` class directly.
    * Use the subclass `TypeBoundList`, where the following predicates are available.

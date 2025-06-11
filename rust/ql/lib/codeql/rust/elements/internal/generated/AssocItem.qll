@@ -14,9 +14,12 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
-   * A AssocItem. For example:
+   * An associated item in a `Trait` or `Impl`.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * trait T {fn foo(&self);}
+   * //       ^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::AssocItem` class directly.
    * Use the subclass `AssocItem`, where the following predicates are available.

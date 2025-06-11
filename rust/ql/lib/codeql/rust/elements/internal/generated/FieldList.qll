@@ -14,9 +14,14 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
-   * A field of a variant. For example:
+   * A list of fields in a struct or enum variant.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct S {x: i32, y: i32}
+   * //       ^^^^^^^^^^^^^^^^
+   * enum E {A(i32, i32)}
+   * //     ^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::FieldList` class directly.
    * Use the subclass `FieldList`, where the following predicates are available.

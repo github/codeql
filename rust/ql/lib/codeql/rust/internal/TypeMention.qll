@@ -15,7 +15,7 @@ abstract class TypeMention extends AstNode {
 
   /** Gets the sub mention at `path`. */
   pragma[nomagic]
-  private TypeMention getMentionAt(TypePath path) {
+  TypeMention getMentionAt(TypePath path) {
     path.isEmpty() and
     result = this
     or
@@ -55,6 +55,29 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
   }
 
   ItemNode getResolved() { result = resolved }
+
+  pragma[nomagic]
+  private TypeAlias getResolvedTraitAlias(string name) {
+    exists(TraitItemNode trait |
+      trait = resolvePath(path) and
+      result = trait.getAnAssocItem() and
+      name = result.getName().getText()
+    )
+  }
+
+  pragma[nomagic]
+  private TypeRepr getAssocTypeArg(string name) {
+    result = path.getSegment().getGenericArgList().getAssocTypeArg(name)
+  }
+
+  /** Gets the type argument for the associated type `alias`, if any. */
+  pragma[nomagic]
+  private TypeRepr getAnAssocTypeArgument(TypeAlias alias) {
+    exists(string name |
+      alias = this.getResolvedTraitAlias(name) and
+      result = this.getAssocTypeArg(name)
+    )
+  }
 
   override TypeMention getTypeArgument(int i) {
     result = path.getSegment().getGenericArgList().getTypeArg(i)
@@ -96,12 +119,18 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
       result = alias.getTypeRepr() and
       param.getIndex() = i
     )
+    or
+    exists(TypeAlias alias |
+      result = this.getAnAssocTypeArgument(alias) and
+      traitAliasIndex(_, i, alias)
+    )
   }
 
   /**
    * Holds if this path resolved to a type alias with a rhs. that has the
    * resulting type at `typePath`.
    */
+  pragma[nomagic]
   Type aliasResolveTypeAt(TypePath typePath) {
     exists(TypeAlias alias, TypeMention rhs | alias = resolved and rhs = alias.getTypeRepr() |
       result = rhs.resolveTypeAt(typePath) and
@@ -150,6 +179,12 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
     not exists(resolved.(TypeAlias).getTypeRepr()) and
     result = super.resolveTypeAt(typePath)
   }
+}
+
+class ImplTraitTypeReprMention extends TypeMention instanceof ImplTraitTypeRepr {
+  override TypeMention getTypeArgument(int i) { none() }
+
+  override ImplTraitType resolveType() { result.getImplTraitTypeRepr() = this }
 }
 
 private TypeParameter pathGetTypeParameter(TypeAlias alias, int i) {
