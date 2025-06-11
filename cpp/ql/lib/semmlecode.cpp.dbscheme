@@ -2213,6 +2213,7 @@ case @stmt.kind of
 |  37 = @stmt_co_return
 |  38 = @stmt_consteval_if
 |  39 = @stmt_not_consteval_if
+|  40 = @stmt_leave
 ;
 
 type_vla(
@@ -2349,7 +2350,7 @@ blockscope(
     int enclosing: @parameterized_element ref
 );
 
-@jump = @stmt_goto | @stmt_break | @stmt_continue;
+@jump = @stmt_goto | @stmt_break | @stmt_continue | @stmt_leave;
 
 @jumporlabel = @jump | @stmt_label | @literal;
 
