@@ -672,13 +672,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   }
 
   predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
-    apos.isSelf() and
-    dpos.isSelf()
-    or
-    apos.asPosition() = dpos.asPosition()
-    or
-    apos.isReturn() and
-    dpos.isReturn()
+    apos = dpos
   }
 
   bindingset[apos, target, path, t]
