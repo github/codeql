@@ -14,7 +14,7 @@
  * Type inferType(AstNode n, TypePath path)
  * ```
  *
- * for recursivelly inferring the type-path-indexed types of AST nodes. For example,
+ * for recursively inferring the type-path-indexed types of AST nodes. For example,
  * one may have a base case for literals like
  *
  * ```ql
