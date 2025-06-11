@@ -1516,4 +1516,15 @@ private module Debug {
     mce = getRelevantLocatable() and
     result = resolveMethodCallTarget(mce)
   }
+
+  pragma[nomagic]
+  private int countTypes(AstNode n, TypePath path, Type t) {
+    t = inferType(n, path) and
+    result = strictcount(Type t0 | t0 = inferType(n, path))
+  }
+
+  predicate maxTypes(AstNode n, TypePath path, Type t, int c) {
+    c = countTypes(n, path, t) and
+    c = max(countTypes(_, _, _))
+  }
 }
