@@ -1,10 +1,8 @@
-# Use of Actions with known vulnerabilities
-
-## Description
+## Overview
 
 The security of the workflow and the repository could be compromised by GitHub Actions workflows that utilize GitHub Actions with known vulnerabilities.
 
-## Recommendations
+## Recommendation
 
 Either remove the component from the workflow or upgrade it to a version that is not vulnerable.
 

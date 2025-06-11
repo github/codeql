@@ -1,14 +1,12 @@
-# Unpinned tag for 3rd party Action in workflow
-
-## Description
+## Overview
 
 Using a tag for a 3rd party Action that is not pinned to a commit can lead to executing an untrusted Action through a supply chain attack.
 
-## Recommendations
+## Recommendation
 
 Pinning an action to a full length commit SHA is currently the only way to use a non-immutable action as an immutable release. Pinning to a particular SHA helps mitigate the risk of a bad actor adding a backdoor to the action's repository, as they would need to generate a SHA-1 collision for a valid Git object payload. When selecting a SHA, you should verify it is from the action's repository and not a repository fork.
 
-## Examples
+## Example
 
 ### Incorrect Usage
 

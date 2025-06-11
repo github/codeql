@@ -1,16 +1,14 @@
-# Artifact poisoning
-
-## Description
+## Overview
 
 The workflow downloads artifacts that may be poisoned by an attacker in previously triggered workflows. If the contents of these artifacts are not correctly extracted, stored and verified, they may lead to repository compromise if untrusted code gets executed in a privileged job.
 
-## Recommendations
+## Recommendation
 
 - Always consider artifacts content as untrusted.
 - Extract the contents of artifacts to a temporary folder so they cannot override existing files.
 - Verify the contents of the artifacts downloaded. If an artifact is expected to contain a numeric value, verify it before using it.
 
-## Examples
+## Example
 
 ### Incorrect Usage
 

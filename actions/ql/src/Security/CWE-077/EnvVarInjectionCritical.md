@@ -1,6 +1,4 @@
-# Environment Variable Injection
-
-## Description
+## Overview
 
 GitHub Actions allow to define environment variables by writing to a file pointed to by the `GITHUB_ENV` environment variable:
 
@@ -37,7 +35,7 @@ steps:
 
 If an attacker can control the values assigned to environment variables and there is no sanitization in place, the attacker will be able to inject additional variables by injecting new lines or `{delimiters}`.
 
-## Recommendations
+## Recommendation
 
 1. **Do not allow untrusted data to influence environment variables**:
 
@@ -64,7 +62,7 @@ If an attacker can control the values assigned to environment variables and ther
           } >> "$GITHUB_ENV"
     ```
 
-## Examples
+## Example
 
 ### Example of Vulnerability
 

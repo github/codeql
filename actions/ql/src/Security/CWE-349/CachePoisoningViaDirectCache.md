@@ -1,6 +1,4 @@
-# Cache Poisoning in GitHub Actions
-
-## Description
+## Overview
 
 GitHub Actions cache poisoning is a technique that allows an attacker to inject malicious content into the Action's cache from unprivileged workflow, potentially leading to code execution in privileged workflows.
 
@@ -23,7 +21,7 @@ In GitHub Actions, cache scopes are primarily determined by the branch structure
 
 Due to the above design, if something is cached in the context of the default branch (e.g., `main`), it becomes accessible to any feature branch derived from `main`.
 
-## Recommendations
+## Recommendation
 
 1. Avoid using caching in workflows that handle sensitive operations like releases.
 2. If caching must be used:
@@ -34,7 +32,7 @@ Due to the above design, if something is cached in the context of the default br
 4. Never run untrusted code in the context of the default branch.
 5. Sign the cache value cryptographically and verify the signature before usage.
 
-## Examples
+## Example
 
 ### Incorrect Usage
 

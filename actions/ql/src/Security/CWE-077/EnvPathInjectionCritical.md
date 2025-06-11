@@ -1,6 +1,4 @@
-# Environment Path Injection
-
-## Description
+## Overview
 
 GitHub Actions allow to define the system PATH variable by writing to a file pointed to by the `GITHUB_PATH` environment variable. Writing to this file appends a directory to the system PATH variable and automatically makes it available to all subsequent actions in the current job.
 
@@ -12,11 +10,11 @@ echo "$HOME/.local/bin" >> $GITHUB_PATH
 
 If an attacker can control the contents of the system PATH, they are able to influence what commands are run in subsequent steps of the same job.
 
-## Recommendations
+## Recommendation
 
 Do not allow untrusted data to influence the system PATH: Avoid using untrusted data sources (e.g., artifact content) to define the system PATH.
 
-## Examples
+## Example
 
 ### Incorrect Usage
 

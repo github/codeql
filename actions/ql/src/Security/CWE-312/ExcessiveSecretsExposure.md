@@ -1,14 +1,12 @@
-# Excessive Secrets Exposure
-
-## Description
+## Overview
 
 When the workflow runner cannot determine what secrets are needed to run the workflow, it will pass all the available secrets to the runner including organization and repository secrets. This violates the least privileged principle and increases the impact of a potential vulnerability affecting the workflow.
 
-## Recommendations
+## Recommendation
 
 Only pass those secrets that are needed by the workflow. Avoid using expressions such as `toJSON(secrets)` or dynamically accessed secrets such as `secrets[format('GH_PAT_%s', matrix.env)]` since the workflow will need to receive all secrets to decide at runtime which one needs to be used.
 
-## Examples
+## Example
 
 ### Incorrect Usage
 

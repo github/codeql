@@ -1,6 +1,4 @@
-# Storage of sensitive information in GitHub Actions artifact
-
-## Description
+## Overview
 
 Sensitive information included in a GitHub Actions artifact can allow an attacker to access the sensitive information if the artifact is published.
 

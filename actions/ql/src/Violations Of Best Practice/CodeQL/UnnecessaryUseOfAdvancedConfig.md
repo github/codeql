@@ -1,10 +1,8 @@
-# Unneccesary use of advanced configuration
-
-## Description
+## Overview
 
 The CodeQL workflow does not use any custom settings and could be simplified by switching to the CodeQL default setup.
 
-## Recommendations
+## Recommendation
 
 If there is no reason to have a custom configuration switch to the CodeQL default setup.
 
