@@ -225,7 +225,7 @@ def build_database(
     return database_dir
 
 
-def generate_models(config, project: Project, database_dir: str) -> None:
+def generate_models(config, args, project: Project, database_dir: str) -> None:
     """
     Generate models for a project.
 
@@ -243,6 +243,8 @@ def generate_models(config, project: Project, database_dir: str) -> None:
     generator.generateSources = should_generate_sources(project)
     generator.generateSummaries = should_generate_summaries(project)
     generator.setenvironment(database=database_dir, folder=name)
+    generator.threads = args.codeql_threads
+    generator.ram = args.codeql_ram
     generator.run()
 
 
@@ -333,43 +335,44 @@ def pretty_name_from_artifact_name(artifact_name: str) -> str:
 
 def download_dca_databases(
     language: str,
-    experiment_name: str,
+    experiment_names: list[str],
     pat: str,
     projects: List[Project],
 ) -> List[tuple[Project, str | None]]:
     """
     Download databases from a DCA experiment.
     Args:
-        experiment_name: The name of the DCA experiment to download databases from.
+        experiment_names: The names of the DCA experiments to download databases from.
         pat: Personal Access Token for GitHub API authentication.
         projects: List of projects to download databases for.
     Returns:
         List of (project_name, database_dir) pairs, where database_dir is None if the download failed.
     """
     print("\n=== Finding projects ===")
-    response = get_json_from_github(
-        f"https://raw.githubusercontent.com/github/codeql-dca-main/data/{experiment_name}/reports/downloads.json",
-        pat,
-    )
-    targets = response["targets"]
     project_map = {project["name"]: project for project in projects}
     analyzed_databases = {}
-    for data in targets.values():
-        downloads = data["downloads"]
-        analyzed_database = downloads["analyzed_database"]
-        artifact_name = analyzed_database["artifact_name"]
-        pretty_name = pretty_name_from_artifact_name(artifact_name)
+    for experiment_name in experiment_names:
+        response = get_json_from_github(
+            f"https://raw.githubusercontent.com/github/codeql-dca-main/data/{experiment_name}/reports/downloads.json",
+            pat,
+        )
+        targets = response["targets"]
+        for data in targets.values():
+            downloads = data["downloads"]
+            analyzed_database = downloads["analyzed_database"]
+            artifact_name = analyzed_database["artifact_name"]
+            pretty_name = pretty_name_from_artifact_name(artifact_name)
 
-        if not pretty_name in project_map:
-            print(f"Skipping {pretty_name} as it is not in the list of projects")
-            continue
+            if not pretty_name in project_map:
+                print(f"Skipping {pretty_name} as it is not in the list of projects")
+                continue
 
-        if pretty_name in analyzed_databases:
-            print(
-                f"Skipping previous database {analyzed_databases[pretty_name]['artifact_name']} for {pretty_name}"
-            )
+            if pretty_name in analyzed_databases:
+                print(
+                    f"Skipping previous database {analyzed_databases[pretty_name]['artifact_name']} for {pretty_name}"
+                )
 
-        analyzed_databases[pretty_name] = analyzed_database
+            analyzed_databases[pretty_name] = analyzed_database
 
     def download_and_decompress(analyzed_database: dict) -> str:
         artifact_name = analyzed_database["artifact_name"]
@@ -450,23 +453,6 @@ def main(config, args) -> None:
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
 
-    # Check if any of the MaD directories contain working directory changes in git
-    for project in projects:
-        mad_dir = get_mad_destination_for_project(config, project["name"])
-        if os.path.exists(mad_dir):
-            git_status_output = subprocess.check_output(
-                ["git", "status", "-s", mad_dir], text=True
-            ).strip()
-            if git_status_output:
-                print(
-                    f"""ERROR: Working directory changes detected in {mad_dir}.
-
-Before generating new models, the existing models are deleted.
-
-To avoid loss of data, please commit your changes."""
-                )
-                sys.exit(1)
-
     database_results = []
     match get_strategy(config):
         case "repo":
@@ -477,8 +463,8 @@ To avoid loss of data, please commit your changes."""
                 projects,
             )
         case "dca":
-            experiment_name = args.dca
-            if experiment_name is None:
+            experiment_names = args.dca
+            if experiment_names is None:
                 print("ERROR: --dca argument is required for DCA strategy")
                 sys.exit(1)
 
@@ -492,7 +478,7 @@ To avoid loss of data, please commit your changes."""
                 pat = f.read().strip()
                 database_results = download_dca_databases(
                     language,
-                    experiment_name,
+                    experiment_names,
                     pat,
                     projects,
                 )
@@ -518,7 +504,7 @@ To avoid loss of data, please commit your changes."""
 
     for project, database_dir in database_results:
         if database_dir is not None:
-            generate_models(config, project, database_dir)
+            generate_models(config, args, project, database_dir)
 
 
 if __name__ == "__main__":
@@ -529,14 +515,26 @@ if __name__ == "__main__":
     parser.add_argument(
         "--dca",
         type=str,
-        help="Name of a DCA run that built all the projects",
-        required=False,
+        help="Name of a DCA run that built all the projects. Can be repeated, with sources taken from all provided runs, "
+             "the last provided ones having priority",
+        action="append",
     )
     parser.add_argument(
         "--pat",
         type=str,
         help="Path to a file containing the PAT token required to grab DCA databases (the same as the one you use for DCA)",
-        required=False,
+    )
+    parser.add_argument(
+        "--codeql-ram",
+        type=int,
+        help="What `--ram` value to pass to `codeql` while generating models (by default the flag is not passed)",
+        default=None,
+    )
+    parser.add_argument(
+        "--codeql-threads",
+        type=int,
+        help="What `--threads` value to pass to `codeql` (default %(default)s)",
+        default=0,
     )
     args = parser.parse_args()
 
