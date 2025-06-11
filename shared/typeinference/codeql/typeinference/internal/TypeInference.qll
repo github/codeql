@@ -463,24 +463,34 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * Gets the path to the `i`th occurrence of `tp` within `tm` per some
        * arbitrary order, if any.
        */
+      pragma[nomagic]
       private TypePath getNthTypeParameterPath(TypeMention tm, TypeParameter tp, int i) {
         result =
           rank[i + 1](TypePath path | tp = tm.resolveTypeAt(path) and relevantTypeMention(tm) | path)
       }
 
       pragma[nomagic]
+      private predicate typeParametersEqualFromIndexBase(
+        App app, TypeAbstraction abs, TypeMention tm, TypeParameter tp, TypePath path
+      ) {
+        path = getNthTypeParameterPath(tm, tp, 0) and
+        satisfiesConcreteTypes(app, abs, tm) and
+        // no need to compute this predicate if there is only one path
+        exists(getNthTypeParameterPath(tm, tp, 1))
+      }
+
+      pragma[nomagic]
       private predicate typeParametersEqualFromIndex(
         App app, TypeAbstraction abs, TypeMention tm, TypeParameter tp, Type t, int i
       ) {
-        satisfiesConcreteTypes(app, abs, tm) and
         exists(TypePath path |
-          path = getNthTypeParameterPath(tm, tp, i) and
           t = app.getTypeAt(path) and
           if i = 0
-          then
-            // no need to compute this predicate if there is only one path
-            exists(getNthTypeParameterPath(tm, tp, 1))
-          else typeParametersEqualFromIndex(app, abs, tm, tp, t, i - 1)
+          then typeParametersEqualFromIndexBase(app, abs, tm, tp, path)
+          else (
+            typeParametersEqualFromIndex(app, abs, tm, tp, t, i - 1) and
+            path = getNthTypeParameterPath(tm, tp, i)
+          )
         )
       }
 
