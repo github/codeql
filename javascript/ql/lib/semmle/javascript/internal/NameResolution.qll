@@ -65,6 +65,8 @@ module NameResolution {
 
   /**
    * Holds if values/namespaces/types in `node1` can flow to values/namespaces/types in `node2`.
+   *
+   * May also include some type-specific steps in cases where this is harmless when tracking values.
    */
   private predicate commonStep(Node node1, Node node2) {
     // Import paths are part of the graph and has an incoming edge from the imported module, if found.
