@@ -5,7 +5,10 @@
  * @problem.severity warning
  * @id js/template-syntax-in-string-literal
  * @precision high
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       language-features
  */
 
 import javascript
