@@ -1180,6 +1180,20 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
   )
 }
 
+pragma[nomagic]
+private Type inferForLoopExprType(AstNode n, TypePath path) {
+  // type of iterable -> type of pattern (loop variable)
+  exists(ForExpr fe, Type iterableType, TypePath iterablePath |
+    n = fe.getPat() and
+    iterableType = inferType(fe.getIterable(), iterablePath) and
+    (
+      iterablePath.isCons(any(ArrayTypeParameter tp), path) and
+      result = iterableType
+      // TODO: iterables (containers, ranges etc)
+    )
+  )
+}
+
 private module MethodCall {
   /** An expression that calls a method. */
   abstract private class MethodCallImpl extends Expr {
@@ -1541,6 +1555,8 @@ private module Cached {
     result = inferAwaitExprType(n, path)
     or
     result = inferIndexExprType(n, path)
+    or
+    result = inferForLoopExprType(n, path)
   }
 }
 

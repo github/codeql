@@ -1833,10 +1833,10 @@ mod loops {
         for u in vals2 { } // $ MISSING: type=u:u16
 
         let vals3: [u32; 3] = [1, 2, 3]; // $ MISSING: type=vals3:[u32; 3]
-        for u in vals3 { } // $ MISSING: type=u:u32
+        for u in vals3 { } // $ type=u:u32
 
         let vals4: [u64; 3] = [1; 3]; // $ MISSING: type=vals4:[u64; 3]
-        for u in vals4 { } // $ MISSING: type=u:u64
+        for u in vals4 { } // $ type=u:u64
 
         let mut strings1 = ["foo", "bar", "baz"]; // $ MISSING: type=strings1:[&str; 3]
         for s in &strings1 { } // $ MISSING: type=s:&str
