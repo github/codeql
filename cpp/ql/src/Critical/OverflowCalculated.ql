@@ -42,9 +42,7 @@ predicate spaceProblem(FunctionCall append, string msg) {
 }
 
 predicate wideCharSizeofProblem(FunctionCall call, string msg) {
-  exists(
-    Variable buffer, SizeofExprOperator sizeofOp
-  |
+  exists(Variable buffer, SizeofExprOperator sizeofOp |
     // Function call is to wcsftime
     call.getTarget().hasGlobalOrStdName("wcsftime") and
     // Second argument (count parameter) is a sizeof operation
@@ -57,8 +55,9 @@ predicate wideCharSizeofProblem(FunctionCall call, string msg) {
         arrayType = buffer.getType() and
         arrayType.getBaseType().hasName("wchar_t") and
         msg =
-          "Using sizeof(" + buffer.getName() + ") passes byte count instead of wchar_t element count to wcsftime. " +
-          "Use sizeof(" + buffer.getName() + ")/sizeof(wchar_t) or array length instead."
+          "Using sizeof(" + buffer.getName() +
+            ") passes byte count instead of wchar_t element count to wcsftime. " + "Use sizeof(" +
+            buffer.getName() + ")/sizeof(wchar_t) or array length instead."
       )
       or
       // Case 2: Pointer to wchar_t - sizeof gives pointer size, which is completely wrong
@@ -66,8 +65,9 @@ predicate wideCharSizeofProblem(FunctionCall call, string msg) {
         ptrType = buffer.getType() and
         ptrType.getBaseType().hasName("wchar_t") and
         msg =
-          "Using sizeof(" + buffer.getName() + ") passes pointer size instead of buffer size to wcsftime. " +
-          "Pass the actual element count or use a length variable instead."
+          "Using sizeof(" + buffer.getName() +
+            ") passes pointer size instead of buffer size to wcsftime. " +
+            "Pass the actual element count or use a length variable instead."
       )
     )
   )
