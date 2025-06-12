@@ -3,5 +3,3 @@
 | TemplateSyntaxInStringLiteral.js:19:11:19:36 | 'global ... alVar}' | This string is not a template literal, but appears to reference the variable $@. | TemplateSyntaxInStringLiteral.js:14:5:14:13 | globalVar | globalVar |
 | TemplateSyntaxInStringLiteral.js:28:15:28:21 | "${x} " | This string is not a template literal, but appears to reference the variable $@. | TemplateSyntaxInStringLiteral.js:25:14:25:14 | x | x |
 | TemplateSyntaxInStringLiteral.js:42:17:42:57 | "Name:  ... oobar}" | This string is not a template literal, but appears to reference the variable $@. | TemplateSyntaxInStringLiteral.js:37:11:37:16 | foobar | foobar |
-| TemplateSyntaxInStringLiteral.js:62:15:62:29 | "Name: ${name}" | This string is not a template literal, but appears to reference the variable $@. | TemplateSyntaxInStringLiteral.js:61:30:61:33 | name | name |
-| TemplateSyntaxInStringLiteral.js:66:11:66:44 | "Name:  ... {name}" | This string is not a template literal, but appears to reference the variable $@. | TemplateSyntaxInStringLiteral.js:61:30:61:33 | name | name |

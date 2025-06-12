@@ -95,12 +95,36 @@ VarDecl getDeclIn(Variable v, Scope scope, string name, CandidateTopLevel tl) {
   result.getTopLevel() = tl
 }
 
+/**
+ * Tracks data flow from a string literal that may flow to a replace operation.
+ */
+DataFlow::SourceNode trackString(CandidateStringLiteral lit, DataFlow::TypeTracker t) {
+  t.start() and result = lit.flow()
+  or
+  exists(DataFlow::TypeTracker t2 | result = trackString(lit, t2).track(t2, t))
+}
+
+/**
+ * Gets a string literal that flows to a replace operation.
+ */
+DataFlow::SourceNode trackString(CandidateStringLiteral lit) {
+  result = trackString(lit, DataFlow::TypeTracker::end())
+}
+
+/**
+ * Holds if the string literal flows to a replace method call.
+ */
+predicate hasReplaceMethodCall(CandidateStringLiteral lit) {
+  trackString(lit).getAMethodCall() instanceof StringReplaceCall
+}
+
 from CandidateStringLiteral lit, Variable v, Scope s, string name, VarDecl decl
 where
   decl = getDeclIn(v, s, name, lit.getTopLevel()) and
   lit.getAReferencedVariable() = name and
   lit.isInScope(s) and
   not hasObjectProvidingTemplateVariables(lit) and
-  not lit.getStringValue() = "${" + name + "}"
+  not lit.getStringValue() = "${" + name + "}" and
+  not hasReplaceMethodCall(lit)
 select lit, "This string is not a template literal, but appears to reference the variable $@.",
   decl, v.getName()

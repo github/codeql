@@ -59,11 +59,11 @@ function replacerAll(str, name) {
 }
 
 function manualInterpolation(name) {
-    let str = "Name: ${name}"; // $SPURIOUS:Alert
+    let str = "Name: ${name}";
     let result1 = replacer(str, name);
     console.log(result1); 
 
-    str = "Name: ${name} and again: ${name}"; // $SPURIOUS:Alert
+    str = "Name: ${name} and again: ${name}";
     let result2 = replacerAll(str, name);
     console.log(result2);
 }
