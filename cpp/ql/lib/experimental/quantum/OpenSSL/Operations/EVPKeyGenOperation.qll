@@ -23,7 +23,7 @@ class EVPKeyGenInitialize extends EvpPrimaryAlgorithmInitializer {
   override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
 }
 
-class EVPKeyGenOperation extends EVPFinal, Crypto::KeyGenerationOperationInstance {
+class EVPKeyGenOperation extends EvpOperation, Crypto::KeyGenerationOperationInstance {
   DataFlow::Node keyResultNode;
 
   EVPKeyGenOperation() {
@@ -47,7 +47,7 @@ class EVPKeyGenOperation extends EVPFinal, Crypto::KeyGenerationOperationInstanc
 
   override Expr getInputArg() { none() }
 
-  override Expr getOutputArg() { result = this.(Call).getArgument(1) }
+  override Expr getOutputArg() { result = keyResultNode.asExpr() }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputKeyArtifact() { result = keyResultNode }
 
@@ -65,3 +65,32 @@ class EVPKeyGenOperation extends EVPFinal, Crypto::KeyGenerationOperationInstanc
     result = DataFlow::exprNode(this.getInitCall().(EvpKeySizeInitializer).getKeySizeArg())
   }
 }
+
+/**
+ * Calls to `EVP_PKEY_new_mac_key` create a new MAC key.
+ * EVP_PKEY *EVP_PKEY_new_mac_key(int type, ENGINE *e, const unsigned char *key, int keylen);
+ */
+class EvpNewMacKey extends EvpOperation, Crypto::KeyGenerationOperationInstance {
+  DataFlow::Node keyResultNode;
+
+  EvpNewMacKey() {
+    this.(Call).getTarget().getName() = "EVP_PKEY_new_mac_key" and keyResultNode.asExpr() = this
+  }
+
+  override CtxPointerSource getContext() { none() }
+
+  override Crypto::KeyArtifactType getOutputKeyType() { result = Crypto::TSymmetricKeyType() }
+
+  override Expr getOutputArg() { result = keyResultNode.asExpr() }
+
+  override Crypto::ArtifactOutputDataFlowNode getOutputKeyArtifact() { result = keyResultNode }
+
+  override Expr getInputArg() { none() }
+
+  override Expr getAlgorithmArg() { result = this.(Call).getArgument(0) }
+
+  override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
+    result = DataFlow::exprNode(this.(Call).getArgument(3))
+  }
+}
+/// TODO: https://docs.openssl.org/3.0/man3/EVP_PKEY_new/#synopsis

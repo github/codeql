@@ -1,3 +1,0 @@
-| openssl_basic.c:40:13:40:31 | EncryptOperation | openssl_basic.c:31:49:31:51 | Key | openssl_basic.c:179:43:179:76 | Constant |
-| openssl_basic.c:90:11:90:29 | DecryptOperation | openssl_basic.c:77:45:77:47 | Key | openssl_basic.c:179:43:179:76 | Constant |
-| openssl_pkey.c:64:9:64:24 | EncryptOperation | openssl_pkey.c:60:28:60:31 | Key | openssl_pkey.c:55:30:55:34 | Key |

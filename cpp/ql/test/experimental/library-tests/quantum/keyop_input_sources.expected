@@ -1,2 +1,0 @@
-| openssl_basic.c:40:13:40:31 | EncryptOperation | openssl_basic.c:35:54:35:62 | Message | openssl_basic.c:181:49:181:87 | Constant |
-| openssl_pkey.c:64:9:64:24 | EncryptOperation | openssl_pkey.c:64:58:64:66 | Message | openssl_pkey.c:45:49:45:65 | Constant |

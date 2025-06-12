@@ -1,3 +1,0 @@
-| openssl_pkey.c:55:9:55:23 | KeyGeneration | openssl_pkey.c:54:47:54:50 | Constant | openssl_pkey.c:54:47:54:50 | 2048 |
-| openssl_signature.c:548:9:548:23 | KeyGeneration | openssl_signature.c:547:51:547:54 | Constant | openssl_signature.c:547:51:547:54 | 2048 |
-| openssl_signature.c:578:9:578:23 | KeyGeneration | openssl_signature.c:569:55:569:58 | Constant | openssl_signature.c:569:55:569:58 | 2048 |

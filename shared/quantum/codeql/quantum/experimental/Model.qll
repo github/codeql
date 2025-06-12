@@ -801,6 +801,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * verification operation.
      */
     abstract ConsumerInputDataFlowNode getSignatureConsumer();
+
+    /**
+     * Gets the consumer of a hash algorithm.
+     * This is intended for signature operations they are explicitly configured
+     * with a hash algorithm. If a signature is not configured with an explicit
+     * hash algorithm, users do not need to provide a consumer (set none()).
+     */
+    abstract AlgorithmValueConsumer getHashAlgorithmValueConsumer();
   }
 
   /**
@@ -2192,15 +2200,25 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result.asElement() = instance.getSignatureConsumer().getConsumer()
     }
 
+    HashAlgorithmNode getHashAlgorithm() {
+      result = instance.getHashAlgorithmValueConsumer().getAKnownSourceNode()
+    }
+
     override NodeBase getChild(string key) {
       result = super.getChild(key)
       or
       // [KNOWN_OR_UNKNOWN] - only if we know the type is verify
       this.getKeyOperationSubtype() = TVerifyMode() and
       key = "Signature" and
-      if exists(this.getASignatureArtifact())
-      then result = this.getASignatureArtifact()
-      else result = this
+      (
+        if exists(this.getASignatureArtifact())
+        then result = this.getASignatureArtifact()
+        else result = this
+      )
+      or
+      // [KNOWN_OR_UNKNOWN]
+      key = "HashAlgorithm" and
+      (if exists(this.getHashAlgorithm()) then result = this.getHashAlgorithm() else result = this)
     }
   }
 

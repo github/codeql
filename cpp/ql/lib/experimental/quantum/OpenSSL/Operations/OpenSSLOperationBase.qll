@@ -20,6 +20,22 @@ module EncValToInitEncArgConfig implements DataFlow::ConfigSig {
 
 module EncValToInitEncArgFlow = DataFlow::Global<EncValToInitEncArgConfig>;
 
+private predicate argToAVC(Expr arg, Crypto::AlgorithmValueConsumer avc) {
+  // NOTE: because we trace through keys to their sources we must consider that the arg is an avc
+  // Consider this example:
+  //      EVP_PKEY *pkey = EVP_PKEY_new_mac_key(EVP_PKEY_HMAC, NULL, key, key_len);
+  // The key may trace into a signing operation. Tracing through the key we will get the arg taking `EVP_PKEY_HMAC`
+  // as the algorithm value consumer (the input node of the AVC). The output node of this AVC
+  // is the call return of `EVP_PKEY_new_mac_key`. If we trace from the AVC result to
+  // the input argument this will not be possible (from the return to the call argument is a backwards flow).
+  // Therefore, we must consider the input node of the AVC as the argument.
+  // This should only occur due to tracing through keys to find configuration data.
+  avc.getInputNode().asExpr() = arg
+  or
+  AvcToCallArgFlow::flow(avc.(OpenSSLAlgorithmValueConsumer).getResultNode(),
+    DataFlow::exprNode(arg))
+}
+
 /**
  * A class for all OpenSSL operations.
  */
@@ -37,8 +53,7 @@ abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Cal
    * Algorithm is specified in initialization call or is implicitly established by the key.
    */
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-    AvcToCallArgFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
-      DataFlow::exprNode(this.getAlgorithmArg()))
+    argToAVC(this.getAlgorithmArg(), result)
   }
 }
 
@@ -100,8 +115,7 @@ abstract class EvpPrimaryAlgorithmInitializer extends EvpInitializer {
   abstract Expr getAlgorithmArg();
 
   Crypto::AlgorithmValueConsumer getAlgorithmValueConsumer() {
-    AvcToCallArgFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
-      DataFlow::exprNode(this.getAlgorithmArg()))
+    argToAVC(this.getAlgorithmArg(), result)
   }
 }
 
@@ -155,8 +169,7 @@ abstract class EvpHashAlgorithmInitializer extends EvpInitializer {
   abstract Expr getHashAlgorithmArg();
 
   Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
-    AvcToCallArgFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
-      DataFlow::exprNode(this.getHashAlgorithmArg()))
+    argToAVC(this.getHashAlgorithmArg(), result)
   }
 }
 
