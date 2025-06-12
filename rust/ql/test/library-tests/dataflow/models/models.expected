@@ -1,4 +1,3 @@
-WARNING: unused predicate 'foo' (models.ql:21,11-14)
 models
 | 1 | Sink: repo::test; <crate::MyFieldEnum>::sink; test-sink; Argument[self].Field[main::MyFieldEnum::D::field_d] |
 | 2 | Sink: repo::test; crate::enum_sink; test-sink; Argument[0].Field[main::MyFieldEnum::C::field_c] |
