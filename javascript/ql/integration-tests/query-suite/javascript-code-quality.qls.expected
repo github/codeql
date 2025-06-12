@@ -5,3 +5,4 @@ ql/javascript/ql/src/LanguageFeatures/SpuriousArguments.ql
 ql/javascript/ql/src/Quality/UnhandledErrorInStreamPipeline.ql
 ql/javascript/ql/src/RegExp/DuplicateCharacterInCharacterClass.ql
 ql/javascript/ql/src/RegExp/RegExpAlwaysMatches.ql
+ql/javascript/ql/src/Statements/LoopIterationSkippedDueToShifting.ql

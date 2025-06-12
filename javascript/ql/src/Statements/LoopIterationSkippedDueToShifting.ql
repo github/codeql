@@ -5,7 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/loop-iteration-skipped-due-to-shifting
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  * @precision high
  */
 
