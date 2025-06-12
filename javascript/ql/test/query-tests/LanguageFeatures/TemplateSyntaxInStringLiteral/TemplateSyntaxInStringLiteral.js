@@ -41,3 +41,29 @@ function foo1() {
 
     writer.emit("Name: ${name}, Date: ${date}, ${foobar}", data); // $ Alert - `foobar` is not in `data`.
 }
+
+function a(actual, expected, description) {
+    assert(false, "a", description, "expected (" +
+        typeof expected + ") ${expected} but got (" + typeof actual + ") ${actual}", { // $SPURIOUS:Alert
+            expected: expected,
+            actual: actual
+        });
+}
+
+function replacer(str, name) {
+    return str.replace("${name}", name);
+}
+
+function replacerAll(str, name) {
+    return str.replaceAll("${name}", name);
+}
+
+function manualInterpolation(name) {
+    let str = "Name: ${name}"; // $SPURIOUS:Alert
+    let result1 = replacer(str, name);
+    console.log(result1); 
+
+    str = "Name: ${name} and again: ${name}"; // $SPURIOUS:Alert
+    let result2 = replacerAll(str, name);
+    console.log(result2);
+}
