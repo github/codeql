@@ -97,24 +97,26 @@ VarDecl getDeclIn(Variable v, Scope scope, string name, CandidateTopLevel tl) {
 /**
  * Tracks data flow from a string literal that may flow to a replace operation.
  */
-DataFlow::SourceNode trackString(CandidateStringLiteral lit, DataFlow::TypeTracker t) {
-  t.start() and result = lit.flow()
+DataFlow::SourceNode trackStringWithTemplateSyntax(
+  CandidateStringLiteral lit, DataFlow::TypeTracker t
+) {
+  t.start() and result = lit.flow() and exists(lit.getAReferencedVariable())
   or
-  exists(DataFlow::TypeTracker t2 | result = trackString(lit, t2).track(t2, t))
+  exists(DataFlow::TypeTracker t2 | result = trackStringWithTemplateSyntax(lit, t2).track(t2, t))
 }
 
 /**
  * Gets a string literal that flows to a replace operation.
  */
-DataFlow::SourceNode trackString(CandidateStringLiteral lit) {
-  result = trackString(lit, DataFlow::TypeTracker::end())
+DataFlow::SourceNode trackStringWithTemplateSyntax(CandidateStringLiteral lit) {
+  result = trackStringWithTemplateSyntax(lit, DataFlow::TypeTracker::end())
 }
 
 /**
  * Holds if the string literal flows to a replace method call.
  */
 predicate hasReplaceMethodCall(CandidateStringLiteral lit) {
-  trackString(lit).getAMethodCall() instanceof StringReplaceCall
+  trackStringWithTemplateSyntax(lit).getAMethodCall() instanceof StringReplaceCall
 }
 
 from CandidateStringLiteral lit, Variable v, Scope s, string name, VarDecl decl
