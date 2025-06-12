@@ -1805,6 +1805,94 @@ mod indexers {
     }
 }
 
+mod loops {
+    struct MyCallable {
+    }
+
+    impl MyCallable {
+        fn new() -> Self {
+            MyCallable {}
+        }
+
+        fn call(&self) -> i64 {
+            1
+        }
+    }
+
+    pub fn f() {
+        // for loops with arrays
+
+        for i in [1, 2, 3] { } // $ MISSING: type=i:i32
+        for i in [1, 2, 3].map(|x| x + 1) { } // $ MISSING: type=i:i32
+        for i in [1, 2, 3].into_iter() { } // $ MISSING: type=i:i32
+
+        let vals1 = [1u8, 2, 3]; // $ MISSING: type=vals1:[u8; 3]
+        for u in vals1 { } // $ MISSING: type=u:u8
+
+        let vals2 = [1u16; 3]; // $ MISSING: type=vals2:[u16; 3]
+        for u in vals2 { } // $ MISSING: type=u:u16
+
+        let vals3: [u32; 3] = [1, 2, 3]; // $ MISSING: type=vals3:[u32; 3]
+        for u in vals3 { } // $ MISSING: type=u:u32
+
+        let vals4: [u64; 3] = [1; 3]; // $ MISSING: type=vals4:[u64; 3]
+        for u in vals4 { } // $ MISSING: type=u:u64
+
+        let mut strings1 = ["foo", "bar", "baz"]; // $ MISSING: type=strings1:[&str; 3]
+        for s in &strings1 { } // $ MISSING: type=s:&str
+        for s in &mut strings1 { } // $ MISSING: type=s:&str
+        for s in strings1 { } // $ MISSING: type=s:str
+
+        let strings2 = [String::from("foo"), String::from("bar"), String::from("baz")]; // $ MISSING: type=strings2:[String; 3]
+        for s in strings2 { } // $ MISSING: type=s:String
+
+        let strings3 = &[String::from("foo"), String::from("bar"), String::from("baz")]; // $ MISSING: type=strings3:&[String; 3]
+        for s in strings3 { } // $ MISSING: type=s:String
+
+        let callables = [MyCallable::new(), MyCallable::new(), MyCallable::new()]; // $ MISSING: type=callables:[MyCallable; 3]
+        for c in callables { // $ MISSING: type=c:MyCallable
+            let result = c.call(); // $ MISSING: type=result:i64 method=call
+        }
+
+        // for loops with ranges
+
+        for i in 0..10 { } // $ MISSING: type=i:i32
+        for u in [0u8 .. 10] { } // $ MISSING: type=u:u8
+
+        let range1 = std::ops::Range { start: 0u16, end: 10u16 }; // $ MISSING: type=range:std::ops::Range<u16>
+        for u in range1 { } // $ MISSING: type=i:u16
+
+        // for loops with containers
+
+        let vals3 = vec![1, 2, 3]; // MISSING: type=vals:Vec<i32>
+        for i in vals3 { } // $ MISSING: type=i:i32
+
+        let vals4 : Vec<&u64> = [1u64, 2, 3].iter().collect();
+        for u in vals4 { } // $ MISSING: type=u:&u64
+
+        let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ MISSING: type=vals5:Vec<Vec<i32>>
+        for row in matrix1 { // $ MISSING: type=row:Vec<i32>
+            for cell in row { // $ MISSING: type=cell:i32
+            }
+        }
+
+        let mut map1 = std::collections::HashMap::new(); // $ MISSING: type=map1:std::collections::HashMap<_, _>
+        map1.insert(1, Box::new("one")); // $ method=insert
+        map1.insert(2, Box::new("two")); // $ method=insert
+        for key in map1.keys() { } // $ method=keys MISSING: type=key:i32
+        for value in map1.values() { } // $ method=values MISSING: type=value:Box<&str>
+        for (key, value) in map1.iter() { } // $ method=iter MISSING: type=key:i32 type=value:Box<&str>
+        for (key, value) in &map1 { } // $ MISSING: type=key:i32 type=value:Box<&str>
+
+        // while loops
+
+        let mut a: i64 = 0; // $ type=a:i64
+        while a < 10 { // $ method=lt MISSING: type=a:i64m
+            a += 1; // $ type=a:i64 method=add_assign
+        }
+    }
+}
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -1827,4 +1915,5 @@ fn main() {
     async_::f();
     impl_trait::f();
     indexers::f();
+    loops::f();
 }
