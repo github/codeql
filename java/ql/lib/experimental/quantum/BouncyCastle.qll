@@ -1,2 +1,3 @@
-import java
 import BouncyCastle.OperationInstances
+import BouncyCastle.AlgorithmInstances
+import BouncyCastle.AlgorithmValueConsumers

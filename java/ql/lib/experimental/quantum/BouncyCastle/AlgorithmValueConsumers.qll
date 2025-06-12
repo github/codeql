@@ -1,5 +1,7 @@
-import java
-import AlgorithmInstances
+private import java
+private import experimental.quantum.Language
+private import AlgorithmValueConsumers
+private import AlgorithmInstances
 
 abstract class EllipticCurveAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer { }
 

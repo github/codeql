@@ -1,6 +1,8 @@
-import java
-import OperationInstances
-import FlowAnalysis
+private import java
+private import experimental.quantum.Language
+private import AlgorithmValueConsumers
+private import OperationInstances
+private import FlowAnalysis
 
 /**
  * A string literal that represents an elliptic curve name.
@@ -194,27 +196,9 @@ class StatefulSignatureAlgorithmInstance extends SignatureAlgorithmInstance inst
  * A key generation algorithm where the algorithm is implicitly defined by the
  * type.
  */
-abstract class KeyGenerationAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance,
+abstract class KeyGenerationAlgorithmInstance extends Crypto::AlgorithmInstance,
   KeyGenerationAlgorithmValueConsumer instanceof ClassInstanceExpr
 {
-  override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
-
-  override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
-
-  override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
-
-  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
-    generatorNameToKeySizeAndAlgorithmMapping(this.getRawAlgorithmName(), _, result)
-  }
-
-  override int getKeySizeFixed() {
-    generatorNameToKeySizeAndAlgorithmMapping(this.getRawAlgorithmName(), result, _)
-  }
-
-  override string getRawAlgorithmName() {
-    typeNameToRawAlgorithmNameMapping(super.getConstructedType().getName(), result)
-  }
-
   // Used for data flow from elliptic curve string literals to the algorithm
   // instance.
   DataFlow::Node getParametersInput() { none() }
@@ -222,6 +206,14 @@ abstract class KeyGenerationAlgorithmInstance extends Crypto::KeyOperationAlgori
   // Used for data flow from elliptic curve string literals to the algorithm
   // instance.
   DataFlow::Node getEllipticCurveInput() { none() }
+
+  string getRawAlgorithmName() {
+    typeNameToRawAlgorithmNameMapping(super.getConstructedType().getName(), result)
+  }
+
+  int getKeySizeFixed() {
+    generatorNameToKeySizeAndAlgorithmMapping(this.getRawAlgorithmName(), result, _)
+  }
 }
 
 /**
@@ -267,22 +259,6 @@ class GenericEllipticCurveKeyGenerationAlgorithmInstance extends KeyGenerationAl
     super.getConstructedType().getName().matches("EC%")
   }
 
-  override string getRawAlgorithmName() {
-    // TODO: The generator constructs an elliptic curve key pair. The curve used
-    // is determined using data flow. If this fails we would like to report
-    // something useful, so we use "UnknownCurve". However, this should probably
-    // be handled at the node layer.
-    if exists(this.getConsumedEllipticCurve())
-    then result = this.getConsumedEllipticCurve().getRawEllipticCurveName()
-    else result = "UnknownCurve"
-  }
-
-  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
-    // TODO: There is currently to algorithm type for elliptic curve key
-    // generation.
-    result = Crypto::KeyOpAlg::TUnknownKeyOperationAlgorithmType()
-  }
-
   override Crypto::AlgorithmValueConsumer getEllipticCurveConsumer() {
     // The elliptic curve is resolved recursively from the parameters passed to
     // the `init()` call.
@@ -307,18 +283,6 @@ class StatefulSignatureKeyGenerationAlgorithmInstance extends KeyGenerationAlgor
   StatefulSignatureKeyGenerationAlgorithmInstance() {
     super.getConstructedType() instanceof Generators::KeyGenerator and
     super.getConstructedType().getName().matches(["LMS%", "HSS%"])
-  }
-
-  override string getRawAlgorithmName() {
-    typeNameToRawAlgorithmNameMapping(super.getConstructedType().getName(), result)
-  }
-
-  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
-    super.getConstructedType().getName().matches("LMS%") and
-    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::LMS())
-    or
-    super.getConstructedType().getName().matches("HSS%") and
-    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::HSS())
   }
 }
 

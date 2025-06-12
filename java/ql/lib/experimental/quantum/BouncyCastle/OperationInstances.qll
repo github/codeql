@@ -1,9 +1,9 @@
-import java
+private import java
+private import experimental.quantum.Language
+private import FlowAnalysis
+private import AlgorithmInstances
 
 module Params {
-  import FlowAnalysis
-  import AlgorithmInstances
-
   /**
    * A model of the `Parameters` class in Bouncy Castle.
    */
@@ -17,15 +17,15 @@ module Params {
 
   class Curve extends Class {
     Curve() {
-      this.getPackage().getName() = "org.bouncycastle.math.ec" and
-      this.getName().matches("ECCurve")
+      this.getPackage().hasName("org.bouncycastle.math.ec") and
+      this.hasName("ECCurve")
     }
   }
 
   class KeyParameters extends Parameters {
     KeyParameters() {
-      this.getPackage().getName() =
-        ["org.bouncycastle.crypto.params", "org.bouncycastle.pqc.crypto.lms"] and
+      this.getPackage()
+          .hasName(["org.bouncycastle.crypto.params", "org.bouncycastle.pqc.crypto.lms"]) and
       this.getName().matches(["%KeyParameter", "%KeyParameters"])
     }
   }
@@ -95,7 +95,7 @@ module Params {
   }
 
   /**
-   * The named elliptic curve passed to `X9ECParameters.getCurve()`.
+   * A named elliptic curve passed to `X9ECParameters.getCurve()`.
    */
   class X9ECParametersInstantiation extends ParametersInstantiation {
     X9ECParametersInstantiation() { this.(Expr).getType().getName() = "X9ECParameters" }
@@ -108,7 +108,7 @@ module Params {
   }
 
   /**
-   * The named elliptic curve passed to `ECNamedCurveTable.getParameterSpec()`.
+   * A named elliptic curve passed to `ECNamedCurveTable.getParameterSpec()`.
    */
   class ECNamedCurveParameterSpecInstantiation extends ParametersInstantiation {
     ECNamedCurveParameterSpecInstantiation() {
@@ -135,6 +135,11 @@ module Params {
     override Expr getNonceArg() { result = this.(ConstructorCall).getArgument(2) }
   }
 
+  /**
+   * A `ParametersWithIV` instantiation.
+   *
+   * This type is used to model data flow from a nonce to a cipher operation.
+   */
   class ParametersWithIvInstantiation extends ParametersInstantiation {
     ParametersWithIvInstantiation() {
       this.(ConstructorCall).getConstructedType().getName() = "ParametersWithIV"
@@ -161,9 +166,6 @@ module Params {
  * Models for the signature algorithms defined by the `org.bouncycastle.crypto.signers` package.
  */
 module Signers {
-  import FlowAnalysis
-  import AlgorithmInstances
-
   /**
    * A model of the `Signer` class in Bouncy Castle.
    *
@@ -207,8 +209,8 @@ module Signers {
   }
 
   /**
-   * This class represents signers with a one shot API (where the entire message
-   * is passed to either `generateSignature()` or `verifySignature`.).
+   * A signer with a one shot API (where the entire message is passed to either
+   * `generateSignature()` or `verifySignature`.).
    */
   class OneShotSigner extends Signer {
     OneShotSigner() { this.getName().matches(["DSASigner", "ECDSA%", "LMS%", "HSS%"]) }
@@ -335,9 +337,6 @@ module Signers {
  * Models for the key generation algorithms defined by the `org.bouncycastle.crypto.generators` package.
  */
 module Generators {
-  import FlowAnalysis
-  import AlgorithmInstances
-
   /**
    * A model of the `KeyGenerator` and `KeyPairGenerator` classes in Bouncy Castle.
    */
@@ -366,6 +365,8 @@ module Generators {
   }
 
   /**
+   * An asymmetric key pair.
+   *
    * This type is used to model data flow from a key pair to the private and
    * public components of the key pair.
    */
@@ -391,13 +392,13 @@ module Generators {
   private class KeyGeneratorNewCall = KeyGenerationAlgorithmInstance;
 
   /**
+   * A call to a key generator `init()` method.
+   *
    * The type is instantiated by a constructor call and initialized by a call to
    * `init()` which takes a single `KeyGenerationParameters` argument.
    */
   private class KeyGeneratorInitCall extends MethodCall {
-    KeyGenerator gen;
-
-    KeyGeneratorInitCall() { this = gen.getAnInitCall() }
+    KeyGeneratorInitCall() { this = any(KeyGenerator gen).getAnInitCall() }
 
     Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
 
@@ -435,7 +436,8 @@ module Generators {
   class KeyGenerationOperationInstance extends Crypto::KeyGenerationOperationInstance instanceof KeyGeneratorUseCall
   {
     override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-      // The algorithm is implicitly defined by the key generator type
+      // The algorithm is implicitly defined by the key generator type, which is
+      // determined by the constructor call.
       result = KeyGeneratorFlow::getNewFromUse(this, _, _)
     }
 
@@ -529,6 +531,9 @@ module Modes {
     }
   }
 
+  /**
+   * A block cipher engine, like `AESEngine`.
+   */
   class BlockCipher extends Class {
     BlockCipher() {
       this.getPackage().getName() = "org.bouncycastle.crypto.engines" and
@@ -605,9 +610,7 @@ module Modes {
    * decrypt data.
    */
   private class BlockCipherModeUseCall extends MethodCall {
-    BlockCipherMode mode;
-
-    BlockCipherModeUseCall() { this = mode.getAUseCall() }
+    BlockCipherModeUseCall() { this = any(BlockCipherMode mode).getAUseCall() }
 
     predicate isIntermediate() { not this.getCallee().getName() = "doFinal" }
 

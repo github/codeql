@@ -1,7 +1,7 @@
-import java
-import semmle.code.java.dataflow.DataFlow
-import experimental.quantum.Language
-import AlgorithmValueConsumers
+private import java
+private import semmle.code.java.dataflow.DataFlow
+private import experimental.quantum.Language
+private import AlgorithmValueConsumers
 
 /**
  * A signature for the `getInstance()` method calls used in JCA, or direct
@@ -46,24 +46,25 @@ signature class UseCallSig instanceof MethodCall {
  * ```
  */
 module NewToInitToUseFlow<NewCallSig New, InitCallSig Init, UseCallSig Use> {
-  newtype TFlowState =
+  private newtype TFlowState =
     TUninitialized() or
     TInitialized(Init call) or
     TIntermediateUse(Use call)
 
-  abstract class InitFlowState extends TFlowState {
+  abstract private class InitFlowState extends TFlowState {
     string toString() {
       this = TUninitialized() and result = "Uninitialized"
       or
       this = TInitialized(_) and result = "Initialized"
-      // TODO: add intermediate use
+      or
+      this = TIntermediateUse(_) and result = "Intermediate"
     }
   }
 
   // The flow state is uninitialized if the `init` call is not yet made.
-  class UninitializedFlowState extends InitFlowState, TUninitialized { }
+  private class UninitializedFlowState extends InitFlowState, TUninitialized { }
 
-  class InitializedFlowState extends InitFlowState, TInitialized {
+  private class InitializedFlowState extends InitFlowState, TInitialized {
     Init call;
     DataFlow::Node node1;
     DataFlow::Node node2; // The receiver of the `init` call
@@ -82,7 +83,7 @@ module NewToInitToUseFlow<NewCallSig New, InitCallSig Init, UseCallSig Use> {
     DataFlow::Node getSndNode() { result = node2 }
   }
 
-  class IntermediateUseState extends InitFlowState, TIntermediateUse {
+  private class IntermediateUseState extends InitFlowState, TIntermediateUse {
     Use call;
     DataFlow::Node node1; // The receiver of the method call
     DataFlow::Node node2;
@@ -101,19 +102,21 @@ module NewToInitToUseFlow<NewCallSig New, InitCallSig Init, UseCallSig Use> {
     DataFlow::Node getSndNode() { result = node2 }
   }
 
-  module NewToInitToUseConfig implements DataFlow::StateConfigSig {
+  private module NewToInitToUseConfig implements DataFlow::StateConfigSig {
     class FlowState = InitFlowState;
 
     predicate isSource(DataFlow::Node src, FlowState state) {
       state instanceof UninitializedFlowState and
       src.asExpr() instanceof New
       or
+      // Needed to determine the init call from a (final) use.
       src = state.(InitializedFlowState).getSndNode()
       or
+      // Needed to determine all intermediate uses from a (final) use.
       src = state.(IntermediateUseState).getSndNode()
     }
 
-    // TODO: document this, but this is intentional (avoid cross products?)
+    // TODO: Document this, but this is intentional (to avoid cross products).
     predicate isSink(DataFlow::Node sink, FlowState state) { none() }
 
     predicate isSink(DataFlow::Node sink) {
@@ -138,7 +141,7 @@ module NewToInitToUseFlow<NewCallSig New, InitCallSig Init, UseCallSig Use> {
     predicate isBarrier(DataFlow::Node node, FlowState state) {
       exists(Init call | node.asExpr() = call.(MethodCall).getQualifier() |
         // Ensures that the receiver of a call to `init` is tracked as initialized.
-        state instanceof UninitializedFlowState
+        not state instanceof InitializedFlowState
         or
         // Ensures that call tracked by the state is the last call to `init`.
         state.(InitializedFlowState).getInitCall() != call
@@ -146,7 +149,7 @@ module NewToInitToUseFlow<NewCallSig New, InitCallSig Init, UseCallSig Use> {
     }
   }
 
-  module NewToInitToUseFlow = DataFlow::GlobalWithState<NewToInitToUseConfig>;
+  private module NewToInitToUseFlow = DataFlow::GlobalWithState<NewToInitToUseConfig>;
 
   New getNewFromUse(Use use, NewToInitToUseFlow::PathNode src, NewToInitToUseFlow::PathNode sink) {
     src.getNode().asExpr() = result and
@@ -222,7 +225,7 @@ module ParametersToInitFlow<NewCallSig New, InitCallSig Init> {
     predicate isSink(DataFlow::Node sink) { exists(Init init | sink = init.getParametersInput()) }
 
     /**
-     * A flow step for parameters created from other parameters.
+     * Holds for parameters created from other parameters.
      *
      * As an example, below we want to track the flow from the `X9ECParameters`
      * constructor call to the `keyPairGenerator.init()` call to be able to
