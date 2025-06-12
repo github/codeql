@@ -611,7 +611,7 @@ module Modes {
 
     predicate isIntermediate() { not this.getCallee().getName() = "doFinal" }
 
-    Expr getInput() { result = this.getArgument(0) }
+    Expr getInput() { result = this.getArgument(0) and this.isIntermediate() }
 
     Expr getOutput() {
       this.getCallee().getName() = "processBlock" and
@@ -625,6 +625,9 @@ module Modes {
       or
       this.getCallee().getName() = "returnByte" and
       result = this // The return value.
+      or
+      this.getCallee().getName() = "doFinal" and
+      result = this.getArgument(0) // The `out` byte array argument.
     }
   }
 
