@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["repo::manual_routes", "<crate::CustomHandler as crate::route::handler::Handler>::handle", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo::manual_routes", "<crate::CustomHandler as crate::route::handler::Handler>::handle", "Argument[1]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo::manual_routes", "<crate::CustomHandler as crate::route::handler::Handler>::handle", "Argument[self]", "ReturnValue.Reference", "value", "dfc-generated"]

@@ -10,9 +10,9 @@ mod poem_test {
 
     #[handler]
     fn my_poem_handler_1(Path(a): Path<String>) -> String { // $ Alert[rust/summary/taint-sources]
-        sink(a.as_str()); // $ MISSING: hasTaintFlow
-        sink(a.as_bytes()); // $ MISSING: hasTaintFlow
-        sink(a); // $ MISSING: hasTaintFlow
+        sink(a.as_str()); // $ hasTaintFlow
+        sink(a.as_bytes()); // $ hasTaintFlow
+        sink(a); // $ hasTaintFlow
 
         "".to_string()
     }
@@ -59,7 +59,7 @@ mod poem_test {
     fn my_poem_handler_6(
         Query(a): Query<String>, // $ Alert[rust/summary/taint-sources]
     ) -> String {
-        sink(a); // $ MISSING: hasTaintFlow
+        sink(a); // $ hasTaintFlow
 
         "".to_string()
     }

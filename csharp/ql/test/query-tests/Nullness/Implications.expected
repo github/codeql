@@ -1305,6 +1305,10 @@
 | E.cs:442:13:442:29 | ... is ... | true | E.cs:442:13:442:13 | access to parameter s | non-null |
 | E.cs:447:13:447:25 | ... is ... | true | E.cs:447:13:447:13 | access to parameter s | non-null |
 | E.cs:452:13:452:23 | ... is ... | true | E.cs:452:13:452:13 | access to parameter s | non-null |
+| F.cs:8:9:8:9 | access to local variable o | non-null | F.cs:7:20:7:23 | null | non-null |
+| F.cs:8:9:8:9 | access to local variable o | null | F.cs:7:20:7:23 | null | null |
+| F.cs:14:9:14:9 | access to local variable o | non-null | F.cs:13:21:13:24 | null | non-null |
+| F.cs:14:9:14:9 | access to local variable o | null | F.cs:13:21:13:24 | null | null |
 | Forwarding.cs:9:13:9:30 | !... | false | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | true |
 | Forwarding.cs:9:13:9:30 | !... | true | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | false |
 | Forwarding.cs:9:14:9:14 | access to local variable s | empty | Forwarding.cs:7:20:7:23 | null | empty |
