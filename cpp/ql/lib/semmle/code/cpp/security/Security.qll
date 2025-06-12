@@ -43,58 +43,6 @@ class SecurityOptions extends string {
   }
 
   /**
-   * The argument of the given function is filled in from user input.
-   */
-  deprecated predicate userInputArgument(FunctionCall functionCall, int arg) {
-    exists(string fname |
-      functionCall.getTarget().hasGlobalOrStdName(fname) and
-      exists(functionCall.getArgument(arg)) and
-      (
-        fname = ["fread", "fgets", "fgetws", "gets"] and arg = 0
-        or
-        fname = "scanf" and arg >= 1
-        or
-        fname = "fscanf" and arg >= 2
-      )
-      or
-      functionCall.getTarget().hasGlobalName(fname) and
-      exists(functionCall.getArgument(arg)) and
-      fname = "getaddrinfo" and
-      arg = 3
-    )
-    or
-    exists(RemoteFlowSourceFunction remote, FunctionOutput output |
-      functionCall.getTarget() = remote and
-      output.isParameterDerefOrQualifierObject(arg) and
-      remote.hasRemoteFlowSource(output, _)
-    )
-  }
-
-  /**
-   * The return value of the given function is filled in from user input.
-   */
-  deprecated predicate userInputReturned(FunctionCall functionCall) {
-    exists(string fname |
-      functionCall.getTarget().getName() = fname and
-      (
-        fname = ["fgets", "gets"] or
-        this.userInputReturn(fname)
-      )
-    )
-    or
-    exists(RemoteFlowSourceFunction remote, FunctionOutput output |
-      functionCall.getTarget() = remote and
-      (output.isReturnValue() or output.isReturnValueDeref()) and
-      remote.hasRemoteFlowSource(output, _)
-    )
-  }
-
-  /**
-   * DEPRECATED: Users should override `userInputReturned()` instead.
-   */
-  deprecated predicate userInputReturn(string function) { none() }
-
-  /**
    * The argument of the given function is used for running a process or loading
    * a library.
    */
@@ -106,29 +54,6 @@ class SecurityOptions extends string {
     or
     // Windows
     function = ["LoadLibrary", "LoadLibraryA", "LoadLibraryW"] and arg = 0
-  }
-
-  /**
-   * This predicate should hold if the expression is directly
-   * computed from user input. Such expressions are treated as
-   * sources of taint.
-   */
-  deprecated predicate isUserInput(Expr expr, string cause) {
-    exists(FunctionCall fc, int i |
-      this.userInputArgument(fc, i) and
-      expr = fc.getArgument(i) and
-      cause = fc.getTarget().getName()
-    )
-    or
-    exists(FunctionCall fc |
-      this.userInputReturned(fc) and
-      expr = fc and
-      cause = fc.getTarget().getName()
-    )
-    or
-    commandLineArg(expr) and cause = "argv"
-    or
-    expr.(EnvironmentRead).getSourceDescription() = cause
   }
 
   /**
@@ -152,16 +77,6 @@ class SecurityOptions extends string {
   }
 }
 
-/**
- * An access to the argv argument to main().
- */
-private predicate commandLineArg(Expr e) {
-  exists(Parameter argv |
-    argv(argv) and
-    argv.getAnAccess() = e
-  )
-}
-
 /** The argv parameter to the main function */
 predicate argv(Parameter argv) {
   exists(Function f |
@@ -172,21 +87,6 @@ predicate argv(Parameter argv) {
 
 /** Convenience accessor for SecurityOptions.isPureFunction */
 predicate isPureFunction(string name) { exists(SecurityOptions opts | opts.isPureFunction(name)) }
-
-/** Convenience accessor for SecurityOptions.userInputArgument */
-deprecated predicate userInputArgument(FunctionCall functionCall, int arg) {
-  exists(SecurityOptions opts | opts.userInputArgument(functionCall, arg))
-}
-
-/** Convenience accessor for SecurityOptions.userInputReturn */
-deprecated predicate userInputReturned(FunctionCall functionCall) {
-  exists(SecurityOptions opts | opts.userInputReturned(functionCall))
-}
-
-/** Convenience accessor for SecurityOptions.isUserInput */
-deprecated predicate isUserInput(Expr expr, string cause) {
-  exists(SecurityOptions opts | opts.isUserInput(expr, cause))
-}
 
 /** Convenience accessor for SecurityOptions.isProcessOperationArgument */
 predicate isProcessOperationArgument(string function, int arg) {

@@ -76,7 +76,14 @@ module Impl {
   /**
    * A number literal.
    */
-  abstract class NumberLiteralExpr extends LiteralExpr { }
+  abstract class NumberLiteralExpr extends LiteralExpr {
+    /**
+     * Get the suffix of this number literal, if any.
+     *
+     * For example, `42u8` has the suffix `u8`.
+     */
+    abstract string getSuffix();
+  }
 
   // https://doc.rust-lang.org/reference/tokens.html#integer-literals
   private module IntegerLiteralRegexs {
@@ -126,12 +133,7 @@ module Impl {
   class IntegerLiteralExpr extends NumberLiteralExpr {
     IntegerLiteralExpr() { this.getTextValue().regexpMatch(IntegerLiteralRegexs::integerLiteral()) }
 
-    /**
-     * Get the suffix of this integer literal, if any.
-     *
-     * For example, `42u8` has the suffix `u8`.
-     */
-    string getSuffix() {
+    override string getSuffix() {
       exists(string s, string reg |
         s = this.getTextValue() and
         reg = IntegerLiteralRegexs::integerLiteral() and
@@ -193,12 +195,7 @@ module Impl {
       not this instanceof IntegerLiteralExpr
     }
 
-    /**
-     * Get the suffix of this floating-point literal, if any.
-     *
-     * For example, `42.0f32` has the suffix `f32`.
-     */
-    string getSuffix() {
+    override string getSuffix() {
       exists(string s, string reg |
         reg =
           IntegerLiteralRegexs::paren(FloatLiteralRegexs::floatLiteralSuffix1()) + "|" +

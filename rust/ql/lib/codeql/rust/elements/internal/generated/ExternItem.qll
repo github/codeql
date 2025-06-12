@@ -14,9 +14,14 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
-   * A ExternItem. For example:
+   * An item inside an extern block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * extern "C" {
+   *     fn foo();
+   *     static BAR: i32;
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::ExternItem` class directly.
    * Use the subclass `ExternItem`, where the following predicates are available.

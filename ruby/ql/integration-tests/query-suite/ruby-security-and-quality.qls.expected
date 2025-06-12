@@ -41,7 +41,6 @@ ql/ruby/ql/src/queries/security/cwe-598/SensitiveGetQuery.ql
 ql/ruby/ql/src/queries/security/cwe-601/UrlRedirect.ql
 ql/ruby/ql/src/queries/security/cwe-611/Xxe.ql
 ql/ruby/ql/src/queries/security/cwe-732/WeakCookieConfiguration.ql
-ql/ruby/ql/src/queries/security/cwe-798/HardcodedCredentials.ql
 ql/ruby/ql/src/queries/security/cwe-829/InsecureDownload.ql
 ql/ruby/ql/src/queries/security/cwe-912/HttpToFileAccess.ql
 ql/ruby/ql/src/queries/security/cwe-915/MassAssignment.ql

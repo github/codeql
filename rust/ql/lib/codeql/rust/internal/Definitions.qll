@@ -3,6 +3,7 @@
  * in the code viewer.
  */
 
+private import rust
 private import codeql.rust.elements.Variable
 private import codeql.rust.elements.Locatable
 private import codeql.rust.elements.FormatArgsExpr
@@ -12,9 +13,12 @@ private import codeql.rust.elements.MacroCall
 private import codeql.rust.elements.NamedFormatArgument
 private import codeql.rust.elements.PositionalFormatArgument
 private import codeql.Locations
+private import codeql.rust.internal.PathResolution
 
 /** An element with an associated definition. */
 abstract class Use extends Locatable {
+  Use() { not this.(AstNode).isFromMacroExpansion() }
+
   /** Gets the definition associated with this element. */
   abstract Definition getDefinition();
 
@@ -30,7 +34,8 @@ private module Cached {
   newtype TDef =
     TVariable(Variable v) or
     TFormatArgsArgName(Name name) { name = any(FormatArgsArg a).getName() } or
-    TFormatArgsArgIndex(Expr e) { e = any(FormatArgsArg a).getExpr() }
+    TFormatArgsArgIndex(Expr e) { e = any(FormatArgsArg a).getExpr() } or
+    TItemNode(ItemNode i)
 
   /**
    * Gets an element, of kind `kind`, that element `use` uses, if any.
@@ -51,7 +56,8 @@ class Definition extends Cached::TDef {
   Location getLocation() {
     result = this.asVariable().getLocation() or
     result = this.asName().getLocation() or
-    result = this.asExpr().getLocation()
+    result = this.asExpr().getLocation() or
+    result = this.asItemNode().getLocation()
   }
 
   /** Gets this definition as a `Variable` */
@@ -63,11 +69,15 @@ class Definition extends Cached::TDef {
   /** Gets this definition as an `Expr` */
   Expr asExpr() { this = Cached::TFormatArgsArgIndex(result) }
 
+  /** Gets this definition as an `ItemNode` */
+  ItemNode asItemNode() { this = Cached::TItemNode(result) }
+
   /** Gets the string representation of this element. */
   string toString() {
     result = this.asExpr().toString() or
     result = this.asVariable().toString() or
-    result = this.asName().getText()
+    result = this.asName().getText() or
+    result = this.asItemNode().toString()
   }
 }
 
@@ -123,4 +133,21 @@ private class PositionalFormatArgumentUse extends Use instanceof PositionalForma
   override Definition getDefinition() { result.asExpr() = def }
 
   override string getUseType() { result = "format argument" }
+}
+
+private class PathUse extends Use instanceof Path {
+  override Definition getDefinition() { result.asItemNode() = resolvePath(this) }
+
+  override string getUseType() { result = "path" }
+}
+
+private class FileUse extends Use instanceof Name {
+  override Definition getDefinition() {
+    exists(Module m |
+      this = m.getName() and
+      fileImport(m, result.asItemNode())
+    )
+  }
+
+  override string getUseType() { result = "file" }
 }

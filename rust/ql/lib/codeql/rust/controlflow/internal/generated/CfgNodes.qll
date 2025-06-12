@@ -198,7 +198,8 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
      * An inline assembly expression. For example:
      * ```rust
      * unsafe {
-     *     builtin # asm(_);
+     *     #[inline(always)]
+     *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
      * }
      * ```
      */
@@ -968,9 +969,13 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
-     * A ForExpr. For example:
+     * A for loop expression.
+     *
+     * For example:
      * ```rust
-     * todo!()
+     * for x in 0..10 {
+     *     println!("{}", x);
+     * }
      * ```
      */
     final class ForExprCfgNode extends CfgNodeFinal, LoopingExprCfgNode {
@@ -1823,9 +1828,11 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
-     * A MacroCall. For example:
+     * A macro invocation.
+     *
+     * For example:
      * ```rust
-     * todo!()
+     * println!("Hello, world!");
      * ```
      */
     final class MacroCallCfgNode extends CfgNodeFinal {
@@ -1872,14 +1879,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasTokenTree() { exists(this.getTokenTree()) }
 
       /**
-       * Gets the expanded of this macro call, if it exists.
+       * Gets the macro call expansion of this macro call, if it exists.
        */
-      AstNode getExpanded() { result = node.getExpanded() }
+      AstNode getMacroCallExpansion() { result = node.getMacroCallExpansion() }
 
       /**
-       * Holds if `getExpanded()` exists.
+       * Holds if `getMacroCallExpansion()` exists.
        */
-      predicate hasExpanded() { exists(this.getExpanded()) }
+      predicate hasMacroCallExpansion() { exists(this.getMacroCallExpansion()) }
     }
 
     final private class ParentMacroExpr extends ParentAstNode, MacroExpr {
@@ -1891,9 +1898,11 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
-     * A MacroExpr. For example:
+     * A macro expression, representing the invocation of a macro that produces an expression.
+     *
+     * For example:
      * ```rust
-     * todo!()
+     * let y = vec![1, 2, 3];
      * ```
      */
     final class MacroExprCfgNode extends CfgNodeFinal, ExprCfgNode {
@@ -1926,9 +1935,20 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
-     * A MacroPat. For example:
+     * A macro pattern, representing the invocation of a macro that produces a pattern.
+     *
+     * For example:
      * ```rust
-     * todo!()
+     * macro_rules! my_macro {
+     *     () => {
+     *         Ok(_)
+     *     };
+     * }
+     * match x {
+     *     my_macro!() => "matched",
+     * //  ^^^^^^^^^^^
+     *     _ => "not matched",
+     * }
      * ```
      */
     final class MacroPatCfgNode extends CfgNodeFinal, PatCfgNode {
@@ -2082,9 +2102,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
-     * A Name. For example:
+     * An identifier name.
+     *
+     * For example:
      * ```rust
-     * todo!()
+     * let foo = 1;
+     * //  ^^^
      * ```
      */
     final class NameCfgNode extends CfgNodeFinal {
@@ -2696,9 +2719,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
-     * A RestPat. For example:
+     * A rest pattern (`..`) in a tuple, slice, or struct pattern.
+     *
+     * For example:
      * ```rust
-     * todo!()
+     * let (a, .., z) = (1, 2, 3);
+     * //      ^^
      * ```
      */
     final class RestPatCfgNode extends CfgNodeFinal, PatCfgNode {
@@ -2961,9 +2987,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
-     * A TryExpr. For example:
+     * A try expression using the `?` operator.
+     *
+     * For example:
      * ```rust
-     * todo!()
+     * let x = foo()?;
+     * //           ^
      * ```
      */
     final class TryExprCfgNode extends CfgNodeFinal, ExprCfgNode {
@@ -3186,9 +3215,13 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
-     * A WhileExpr. For example:
+     * A while loop expression.
+     *
+     * For example:
      * ```rust
-     * todo!()
+     * while x < 10 {
+     *     x += 1;
+     * }
      * ```
      */
     final class WhileExprCfgNode extends CfgNodeFinal, LoopingExprCfgNode {

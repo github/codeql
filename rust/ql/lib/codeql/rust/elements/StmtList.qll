@@ -10,9 +10,15 @@ import codeql.rust.elements.Expr
 import codeql.rust.elements.Stmt
 
 /**
- * A StmtList. For example:
+ * A list of statements in a block.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * {
+ *     let x = 1;
+ *     let y = 2;
+ * }
+ * //  ^^^^^^^^^
  * ```
  */
 final class StmtList = Impl::StmtList;

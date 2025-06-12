@@ -154,7 +154,6 @@ pub struct Crate {
     pub id: trap::TrapId<Crate>,
     pub name: Option<String>,
     pub version: Option<String>,
-    pub module: Option<trap::Label<Module>>,
     pub cfg_options: Vec<String>,
     pub named_dependencies: Vec<trap::Label<NamedCrate>>,
 }
@@ -171,9 +170,6 @@ impl trap::TrapEntry for Crate {
         }
         if let Some(v) = self.version {
             out.add_tuple("crate_versions", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.module {
-            out.add_tuple("crate_modules", vec![id.into(), v.into()]);
         }
         for (i, v) in self.cfg_options.into_iter().enumerate() {
             out.add_tuple("crate_cfg_options", vec![id.into(), i.into(), v.into()]);
@@ -5764,6 +5760,12 @@ pub struct Item {
     _unused: ()
 }
 
+impl Item {
+    pub fn emit_attribute_macro_expansion(id: trap::Label<Self>, value: trap::Label<MacroItems>, out: &mut trap::Writer) {
+        out.add_tuple("item_attribute_macro_expansions", vec![id.into(), value.into()]);
+    }
+}
+
 impl trap::TrapClass for Item {
     fn class_name() -> &'static str { "Item" }
 }
@@ -9775,8 +9777,8 @@ impl trap::TrapEntry for MacroCall {
 }
 
 impl MacroCall {
-    pub fn emit_expanded(id: trap::Label<Self>, value: trap::Label<AstNode>, out: &mut trap::Writer) {
-        out.add_tuple("macro_call_expandeds", vec![id.into(), value.into()]);
+    pub fn emit_macro_call_expansion(id: trap::Label<Self>, value: trap::Label<AstNode>, out: &mut trap::Writer) {
+        out.add_tuple("macro_call_macro_call_expansions", vec![id.into(), value.into()]);
     }
 }
 

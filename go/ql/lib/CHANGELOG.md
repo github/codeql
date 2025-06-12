@@ -1,3 +1,13 @@
+## 4.2.7
+
+### Minor Analysis Improvements
+
+* The first argument of `Client.Query` in `cloud.google.com/go/bigquery` is now recognized as a SQL injection sink.
+
+## 4.2.6
+
+No user-facing changes.
+
 ## 4.2.5
 
 No user-facing changes.
@@ -30,10 +40,6 @@ No user-facing changes.
 
 * The member predicate `hasLocationInfo` has been deprecated on the following classes: `BasicBlock`, `Callable`, `Content`, `ContentSet`, `ControlFlow::Node`, `DataFlowCallable`, `DataFlow::Node`, `Entity`, `GVN`, `HtmlTemplate::TemplateStmt`, `IR:WriteTarget`, `SourceSinkInterpretationInput::SourceOrSinkElement`, `SourceSinkInterpretationInput::InterpretNode`, `SsaVariable`, `SsaDefinition`, `SsaWithFields`, `StringOps::ConcatenationElement`, `Type`, and `VariableWithFields`. Use `getLocation()` instead.
 
-### Major Analysis Improvements
-
-* Go 1.24 is now supported. This includes the new language feature of generic type aliases.
-
 ### Minor Analysis Improvements
 
 * The location info for the following classes has been changed slightly to match a location that is in the database: `BasicBlock`, `ControlFlow::EntryNode`, `ControlFlow::ExitNode`, `ControlFlow::ConditionGuardNode`, `IR::ImplicitLiteralElementIndexInstruction`, `IR::EvalImplicitTrueInstruction`, `SsaImplicitDefinition`, `SsaPhiNode`.
@@ -47,6 +53,10 @@ No user-facing changes.
 * The class `NamedType` has been deprecated. Use the new class `DefinedType` instead. This better matches the terminology used in the Go language specification, which was changed in Go 1.9.
 * The member predicate `getNamedType` on `GoMicro::ServiceInterfaceType` has been deprecated. Use the new member predicate `getDefinedType` instead.
 * The member predicate `getNamedType` on `Twirp::ServiceInterfaceType` has been deprecated. Use the new member predicate `getDefinedType` instead.
+
+### Major Analysis Improvements
+
+* Go 1.24 is now supported. This includes the new language feature of generic type aliases.
 
 ### Minor Analysis Improvements
 

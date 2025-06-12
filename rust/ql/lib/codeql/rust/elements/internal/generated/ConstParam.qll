@@ -18,9 +18,12 @@ import codeql.rust.elements.TypeRepr
  */
 module Generated {
   /**
-   * A ConstParam. For example:
+   * A constant parameter in a generic parameter list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct Foo <const N: usize>;
+   * //          ^^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::ConstParam` class directly.
    * Use the subclass `ConstParam`, where the following predicates are available.

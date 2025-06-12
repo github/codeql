@@ -1,13 +1,14 @@
 import cpp
-import experimental.quantum.Language
-import OpenSSLAlgorithmInstanceBase
-import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
-import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
-import AlgToAVCFlow
+private import experimental.quantum.Language
+private import OpenSSLAlgorithmInstanceBase
+private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
+private import AlgToAVCFlow
 
 /**
  * Given a `KnownOpenSSLBlockModeAlgorithmConstant`, converts this to a block family type.
- * Does not bind if there is know mapping (no mapping to 'unknown' or 'other').
+ * Does not bind if there is no mapping (no mapping to 'unknown' or 'other').
  */
 predicate knownOpenSSLConstantToBlockModeFamilyType(
   KnownOpenSSLBlockModeAlgorithmConstant e, Crypto::TBlockCipherModeOfOperationType type
@@ -70,7 +71,11 @@ class KnownOpenSSLBlockModeConstantAlgorithmInstance extends OpenSSLAlgorithmIns
 
   // NOTE: I'm not going to attempt to parse out the mode specific part, so returning
   // the same as the raw name for now.
-  override string getRawModeAlgorithmName() { result = this.(Literal).getValue().toString() }
+  override string getRawModeAlgorithmName() {
+    result = this.(Literal).getValue().toString()
+    or
+    result = this.(Call).getTarget().getName()
+  }
 
   override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
 }

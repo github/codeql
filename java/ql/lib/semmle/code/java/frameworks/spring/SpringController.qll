@@ -153,8 +153,16 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
     result = this.getProducesExpr().(CompileTimeConstantExpr).getStringValue()
   }
 
-  /** Gets the "value" @RequestMapping annotation value, if present. */
-  string getValue() { result = requestMappingAnnotation.getStringValue("value") }
+  /** DEPRECATED: Use `getAValue()` instead. */
+  deprecated string getValue() { result = requestMappingAnnotation.getStringValue("value") }
+
+  /**
+   * Gets a "value" @RequestMapping annotation string value, if present.
+   *
+   * If the annotation element is defined with an array initializer, then the result will be one of the
+   * elements of that array. Otherwise, the result will be the single expression used as value.
+   */
+  string getAValue() { result = requestMappingAnnotation.getAStringArrayValue("value") }
 
   /** Gets the "method" @RequestMapping annotation value, if present. */
   string getMethodValue() {
