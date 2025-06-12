@@ -4,27 +4,27 @@ extensions:
       extensible: sourceModel
     data:
       - ["repo::test", "crate::simple_source", "ReturnValue", "test-source", "manual"]
-      - ["repo::test", "crate::enum_source", "ReturnValue.Field[test::MyFieldEnum::D::field_d]", "test-source", "manual"]
-      - ["repo::test", "<crate::MyFieldEnum>::source", "ReturnValue.Field[test::MyFieldEnum::C::field_c]", "test-source", "manual"]
+      - ["repo::test", "crate::enum_source", "ReturnValue.Field[main::MyFieldEnum::D::field_d]", "test-source", "manual"]
+      - ["repo::test", "<crate::MyFieldEnum>::source", "ReturnValue.Field[main::MyFieldEnum::C::field_c]", "test-source", "manual"]
       - ["repo::test", "crate::arg_source", "Argument[0]", "test-source", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sinkModel
     data:
       - ["repo::test", "crate::simple_sink", "Argument[0]", "test-sink", "manual"]
-      - ["repo::test", "crate::enum_sink", "Argument[0].Field[test::MyFieldEnum::C::field_c]", "test-sink", "manual"]
-      - ["repo::test", "<crate::MyFieldEnum>::sink", "Argument[self].Field[test::MyFieldEnum::D::field_d]", "test-sink", "manual"]
+      - ["repo::test", "crate::enum_sink", "Argument[0].Field[main::MyFieldEnum::C::field_c]", "test-sink", "manual"]
+      - ["repo::test", "<crate::MyFieldEnum>::sink", "Argument[self].Field[main::MyFieldEnum::D::field_d]", "test-sink", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
       - ["repo::test", "crate::coerce", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["repo::test", "crate::get_var_pos", "Argument[0].Field[test::MyPosEnum::A(0)]", "ReturnValue", "value", "manual"]
-      - ["repo::test", "crate::set_var_pos", "Argument[0]", "ReturnValue.Field[test::MyPosEnum::B(0)]", "value", "manual"]
-      - ["repo::test", "crate::get_var_field", "Argument[0].Field[test::MyFieldEnum::C::field_c]", "ReturnValue", "value", "manual"]
-      - ["repo::test", "crate::set_var_field", "Argument[0]", "ReturnValue.Field[test::MyFieldEnum::D::field_d]", "value", "manual"]
-      - ["repo::test", "crate::get_struct_field", "Argument[0].Field[test::MyStruct::field1]", "ReturnValue", "value", "manual"]
-      - ["repo::test", "crate::set_struct_field", "Argument[0]", "ReturnValue.Field[test::MyStruct::field2]", "value", "manual"]
+      - ["repo::test", "crate::get_var_pos", "Argument[0].Field[main::MyPosEnum::A(0)]", "ReturnValue", "value", "manual"]
+      - ["repo::test", "crate::set_var_pos", "Argument[0]", "ReturnValue.Field[main::MyPosEnum::B(0)]", "value", "manual"]
+      - ["repo::test", "crate::get_var_field", "Argument[0].Field[main::MyFieldEnum::C::field_c]", "ReturnValue", "value", "manual"]
+      - ["repo::test", "crate::set_var_field", "Argument[0]", "ReturnValue.Field[main::MyFieldEnum::D::field_d]", "value", "manual"]
+      - ["repo::test", "crate::get_struct_field", "Argument[0].Field[main::MyStruct::field1]", "ReturnValue", "value", "manual"]
+      - ["repo::test", "crate::set_struct_field", "Argument[0]", "ReturnValue.Field[main::MyStruct::field2]", "value", "manual"]
       - ["repo::test", "crate::get_array_element", "Argument[0].Element", "ReturnValue", "value", "manual"]
       - ["repo::test", "crate::set_array_element", "Argument[0]", "ReturnValue.Element", "value", "manual"]
       - ["repo::test", "crate::get_tuple_element", "Argument[0].Field[0]", "ReturnValue", "value", "manual"]
