@@ -13,9 +13,11 @@ private import codeql.rust.elements.internal.generated.Static
  */
 module Impl {
   /**
-   * A Static. For example:
+   * A static item declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * static X: i32 = 42;
    * ```
    */
   class Static extends Generated::Static { }

@@ -5,7 +5,18 @@
 /ArrayListExpr/gen_array_list_expr.rs linguist-generated
 /ArrayRepeatExpr/gen_array_repeat_expr.rs linguist-generated
 /ArrayTypeRepr/gen_array_type_repr.rs linguist-generated
+/AsmClobberAbi/gen_asm_clobber_abi.rs linguist-generated
+/AsmConst/gen_asm_const.rs linguist-generated
+/AsmDirSpec/gen_asm_dir_spec.rs linguist-generated
 /AsmExpr/gen_asm_expr.rs linguist-generated
+/AsmLabel/gen_asm_label.rs linguist-generated
+/AsmOperandExpr/gen_asm_operand_expr.rs linguist-generated
+/AsmOperandNamed/gen_asm_operand_named.rs linguist-generated
+/AsmOption/gen_asm_option.rs linguist-generated
+/AsmOptionsList/gen_asm_options_list.rs linguist-generated
+/AsmRegOperand/gen_asm_reg_operand.rs linguist-generated
+/AsmRegSpec/gen_asm_reg_spec.rs linguist-generated
+/AsmSym/gen_asm_sym.rs linguist-generated
 /AssocTypeArg/gen_assoc_type_arg.rs linguist-generated
 /Attr/gen_attr.rs linguist-generated
 /AwaitExpr/gen_await_expr.rs linguist-generated
@@ -83,6 +94,7 @@
 /ParenExpr/gen_paren_expr.rs linguist-generated
 /ParenPat/gen_paren_pat.rs linguist-generated
 /ParenTypeRepr/gen_paren_type_repr.rs linguist-generated
+/ParenthesizedArgList/gen_parenthesized_arg_list.rs linguist-generated
 /Path/gen_path.rs linguist-generated
 /Path/gen_path_expr.rs linguist-generated
 /Path/gen_path_pat.rs linguist-generated
@@ -132,6 +144,7 @@
 /UnderscoreExpr/gen_underscore_expr.rs linguist-generated
 /Union/gen_union.rs linguist-generated
 /Use/gen_use.rs linguist-generated
+/UseBoundGenericArgs/gen_use_bound_generic_args.rs linguist-generated
 /UseTree/gen_use_tree.rs linguist-generated
 /UseTreeList/gen_use_tree_list.rs linguist-generated
 /Variant/gen_variant.rs linguist-generated

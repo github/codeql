@@ -12,5 +12,15 @@ private import codeql.rust.elements.internal.generated.AsmSym
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A symbol operand in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("call {sym}", sym = sym my_function);
+   * //                 ^^^^^^^^^^^^^^^^^^^^^^
+   * ```
+   */
   class AsmSym extends Generated::AsmSym { }
 }

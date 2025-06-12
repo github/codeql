@@ -35,7 +35,7 @@ int getLinesOfCode() { result = sum(File f | f.fromSource() | f.getNumberOfLines
  * Gets a count of the total number of lines of code from the source code directory in the database.
  */
 int getLinesOfUserCode() {
-  result = sum(File f | exists(f.getRelativePath()) | f.getNumberOfLinesOfCode())
+  result = sum(ExtractedFile f | exists(f.getRelativePath()) | f.getNumberOfLinesOfCode())
 }
 
 /**
@@ -188,6 +188,8 @@ predicate taintStats(string key, int value) {
   key = "Taint edges - number of edges" and value = getTaintEdgesCount()
   or
   key = "Taint reach - nodes tainted" and value = getTaintedNodesCount()
+  or
+  key = "Taint reach - total non-summary nodes" and value = getTotalNodesCount()
   or
   key = "Taint reach - per million nodes" and value = getTaintReach().floor()
   or

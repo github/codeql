@@ -13,9 +13,11 @@ import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
 /**
- * A TraitAlias. For example:
+ * A trait alias.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * trait Foo = Bar + Baz;
  * ```
  */
 final class TraitAlias = Impl::TraitAlias;

@@ -220,6 +220,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     predicate isCons(TypeParameter tp, TypePath suffix) {
       suffix = this.stripPrefix(TypePath::singleton(tp))
     }
+
+    /** Gets the head of this path, if any. */
+    bindingset[this]
+    TypeParameter getHead() { result = this.getTypeParameter(0) }
   }
 
   /** Provides predicates for constructing `TypePath`s. */
@@ -419,27 +423,23 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           )
       }
 
-      /**
-       * Holds if `app` is a possible instantiation of `tm` at `path`. That is
-       * the type at `path` in `tm` is either a type parameter or equal to the
-       * type at the same path in `app`.
-       */
-      bindingset[app, abs, tm, path]
-      private predicate satisfiesConcreteTypeAt(
-        App app, TypeAbstraction abs, TypeMention tm, TypePath path
+      pragma[nomagic]
+      private Type resolveNthTypeAt(
+        App app, TypeAbstraction abs, TypeMention tm, int i, TypePath path
       ) {
-        exists(Type t |
-          tm.resolveTypeAt(path) = t and
-          if t = abs.getATypeParameter() then any() else app.getTypeAt(path) = t
-        )
+        potentialInstantiationOf(app, abs, tm) and
+        path = getNthPath(tm, i) and
+        result = tm.resolveTypeAt(path)
       }
 
       pragma[nomagic]
       private predicate satisfiesConcreteTypesFromIndex(
         App app, TypeAbstraction abs, TypeMention tm, int i
       ) {
-        potentialInstantiationOf(app, abs, tm) and
-        satisfiesConcreteTypeAt(app, abs, tm, getNthPath(tm, i)) and
+        exists(Type t, TypePath path |
+          t = resolveNthTypeAt(app, abs, tm, i, path) and
+          if t = abs.getATypeParameter() then any() else app.getTypeAt(path) = t
+        ) and
         // Recurse unless we are at the first path
         if i = 0 then any() else satisfiesConcreteTypesFromIndex(app, abs, tm, i - 1)
       }
@@ -463,24 +463,34 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * Gets the path to the `i`th occurrence of `tp` within `tm` per some
        * arbitrary order, if any.
        */
+      pragma[nomagic]
       private TypePath getNthTypeParameterPath(TypeMention tm, TypeParameter tp, int i) {
         result =
           rank[i + 1](TypePath path | tp = tm.resolveTypeAt(path) and relevantTypeMention(tm) | path)
       }
 
       pragma[nomagic]
+      private predicate typeParametersEqualFromIndexBase(
+        App app, TypeAbstraction abs, TypeMention tm, TypeParameter tp, TypePath path
+      ) {
+        path = getNthTypeParameterPath(tm, tp, 0) and
+        satisfiesConcreteTypes(app, abs, tm) and
+        // no need to compute this predicate if there is only one path
+        exists(getNthTypeParameterPath(tm, tp, 1))
+      }
+
+      pragma[nomagic]
       private predicate typeParametersEqualFromIndex(
         App app, TypeAbstraction abs, TypeMention tm, TypeParameter tp, Type t, int i
       ) {
-        satisfiesConcreteTypes(app, abs, tm) and
         exists(TypePath path |
-          path = getNthTypeParameterPath(tm, tp, i) and
           t = app.getTypeAt(path) and
           if i = 0
-          then
-            // no need to compute this predicate if there is only one path
-            exists(getNthTypeParameterPath(tm, tp, 1))
-          else typeParametersEqualFromIndex(app, abs, tm, tp, t, i - 1)
+          then typeParametersEqualFromIndexBase(app, abs, tm, tp, path)
+          else (
+            typeParametersEqualFromIndex(app, abs, tm, tp, t, i - 1) and
+            path = getNthTypeParameterPath(tm, tp, i)
+          )
         )
       }
 
@@ -975,17 +985,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       private module AccessConstraint {
         predicate relevantAccessConstraint(
-          Access a, AccessPosition apos, TypePath path, Type constraint
+          Access a, Declaration target, AccessPosition apos, TypePath path, Type constraint
         ) {
           exists(DeclarationPosition dpos |
             accessDeclarationPositionMatch(apos, dpos) and
-            typeParameterConstraintHasTypeParameter(a.getTarget(), dpos, path, _, constraint, _, _)
+            target = a.getTarget() and
+            typeParameterConstraintHasTypeParameter(target, dpos, path, _, constraint, _, _)
           )
         }
 
         private newtype TRelevantAccess =
-          MkRelevantAccess(Access a, AccessPosition apos, TypePath path) {
-            relevantAccessConstraint(a, apos, path, _)
+          MkRelevantAccess(Access a, Declaration target, AccessPosition apos, TypePath path) {
+            relevantAccessConstraint(a, target, apos, path, _)
           }
 
         /**
@@ -994,19 +1005,20 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          */
         private class RelevantAccess extends MkRelevantAccess {
           Access a;
+          Declaration target;
           AccessPosition apos;
           TypePath path;
 
-          RelevantAccess() { this = MkRelevantAccess(a, apos, path) }
+          RelevantAccess() { this = MkRelevantAccess(a, target, apos, path) }
 
           Type getTypeAt(TypePath suffix) {
-            a.getInferredType(apos, path.appendInverse(suffix)) = result
+            adjustedAccessType(a, apos, target, path.appendInverse(suffix), result)
           }
 
           /** Holds if this relevant access has the type `type` and should satisfy `constraint`. */
           predicate hasTypeConstraint(Type type, Type constraint) {
-            type = a.getInferredType(apos, path) and
-            relevantAccessConstraint(a, apos, path, constraint)
+            adjustedAccessType(a, apos, target, path, type) and
+            relevantAccessConstraint(a, target, apos, path, constraint)
           }
 
           string toString() {
@@ -1036,6 +1048,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         /**
          * Holds if `at` satisfies `constraint` through `abs`, `sub`, and `constraintMention`.
          */
+        pragma[nomagic]
         private predicate hasConstraintMention(
           RelevantAccess at, TypeAbstraction abs, TypeMention sub, Type constraint,
           TypeMention constraintMention
@@ -1059,6 +1072,30 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           )
         }
 
+        pragma[nomagic]
+        predicate satisfiesConstraintTypeMention0(
+          RelevantAccess at, Access a, AccessPosition apos, TypePath prefix, Type constraint,
+          TypeAbstraction abs, TypeMention sub, TypePath path, Type t
+        ) {
+          exists(TypeMention constraintMention |
+            at = MkRelevantAccess(a, _, apos, prefix) and
+            hasConstraintMention(at, abs, sub, constraint, constraintMention) and
+            conditionSatisfiesConstraintTypeAt(abs, sub, constraintMention, path, t)
+          )
+        }
+
+        pragma[nomagic]
+        predicate satisfiesConstraintTypeMention1(
+          RelevantAccess at, Access a, AccessPosition apos, TypePath prefix, Type constraint,
+          TypePath path, TypePath pathToTypeParamInSub
+        ) {
+          exists(TypeAbstraction abs, TypeMention sub, TypeParameter tp |
+            satisfiesConstraintTypeMention0(at, a, apos, prefix, constraint, abs, sub, path, tp) and
+            tp = abs.getATypeParameter() and
+            sub.resolveTypeAt(pathToTypeParamInSub) = tp
+          )
+        }
+
         /**
          * Holds if the type at `a`, `apos`, and `path` satisfies the constraint
          * `constraint` with the type `t` at `path`.
@@ -1067,22 +1104,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         predicate satisfiesConstraintTypeMention(
           Access a, AccessPosition apos, TypePath prefix, Type constraint, TypePath path, Type t
         ) {
+          exists(TypeAbstraction abs |
+            satisfiesConstraintTypeMention0(_, a, apos, prefix, constraint, abs, _, path, t) and
+            not t = abs.getATypeParameter()
+          )
+          or
           exists(
-            RelevantAccess at, TypeAbstraction abs, TypeMention sub, Type t0, TypePath prefix0,
-            TypeMention constraintMention
+            RelevantAccess at, TypePath prefix0, TypePath pathToTypeParamInSub, TypePath suffix
           |
-            at = MkRelevantAccess(a, apos, prefix) and
-            hasConstraintMention(at, abs, sub, constraint, constraintMention) and
-            conditionSatisfiesConstraintTypeAt(abs, sub, constraintMention, prefix0, t0)
-          |
-            not t0 = abs.getATypeParameter() and t = t0 and path = prefix0
-            or
-            t0 = abs.getATypeParameter() and
-            exists(TypePath path3, TypePath suffix |
-              sub.resolveTypeAt(path3) = t0 and
-              at.getTypeAt(path3.appendInverse(suffix)) = t and
-              path = prefix0.append(suffix)
-            )
+            satisfiesConstraintTypeMention1(at, a, apos, prefix, constraint, prefix0,
+              pathToTypeParamInSub) and
+            at.getTypeAt(pathToTypeParamInSub.appendInverse(suffix)) = t and
+            path = prefix0.append(suffix)
           )
         }
       }
@@ -1110,7 +1143,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Declaration decl, DeclarationPosition dpos, Type base, TypePath path, TypeParameter tp
       ) {
         tp = decl.getDeclaredType(dpos, path) and
-        path.isCons(base.getATypeParameter(), _)
+        base.getATypeParameter() = path.getHead()
       }
 
       /**
@@ -1285,14 +1318,14 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         exists(DeclarationPosition dpos | accessDeclarationPositionMatch(apos, dpos) |
           // A suffix of `path` leads to a type parameter in the target
           exists(Declaration target, TypePath prefix, TypeParameter tp, TypePath suffix |
-            tp = target.getDeclaredType(pragma[only_bind_into](dpos), prefix) and
+            tp = target.getDeclaredType(dpos, prefix) and
             path = prefix.append(suffix) and
             typeMatch(a, target, suffix, result, tp)
           )
           or
           // `path` corresponds directly to a concrete type in the declaration
           exists(Declaration target |
-            result = target.getDeclaredType(pragma[only_bind_into](dpos), path) and
+            result = target.getDeclaredType(dpos, path) and
             target = a.getTarget() and
             not result instanceof TypeParameter
           )

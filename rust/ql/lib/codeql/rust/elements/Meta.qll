@@ -10,9 +10,17 @@ import codeql.rust.elements.Path
 import codeql.rust.elements.TokenTree
 
 /**
- * A Meta. For example:
+ * A meta item in an attribute.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * #[unsafe(lint::name = "reason_for_bypass")]
+ * //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ * #[deprecated(since = "1.2.0", note = "Use bar instead", unsafe=true)]
+ * //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ * fn foo() {
+ *     // ...
+ * }
  * ```
  */
 final class Meta = Impl::Meta;

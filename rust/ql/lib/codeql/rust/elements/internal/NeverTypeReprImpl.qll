@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.NeverTypeRepr
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A NeverTypeRepr. For example:
+   * The never type `!`.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo() -> ! { panic!() }
+   * //          ^
    * ```
    */
   class NeverTypeRepr extends Generated::NeverTypeRepr {

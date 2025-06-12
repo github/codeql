@@ -4,3 +4,16 @@ extensions:
       extensible: summaryModel
     data:
       - ["repo:https://github.com/rust-lang/futures-rs:futures-executor", "crate::local_pool::block_on", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["repo:https://github.com/rust-lang/futures-rs:futures-util", "<crate::io::buf_reader::BufReader>::new", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["repo:https://github.com/rust-lang/futures-rs:futures-util", "crate::io::AsyncReadExt::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["repo:https://github.com/rust-lang/futures-rs:futures-util", "crate::io::AsyncReadExt::read", "Argument[self].Reference", "Argument[0].Reference", "taint", "manual"]
+      - ["repo:https://github.com/rust-lang/futures-rs:futures-util", "crate::io::AsyncReadExt::read_to_end", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["repo:https://github.com/rust-lang/futures-rs:futures-util", "crate::io::AsyncReadExt::read_to_end", "Argument[self].Reference", "Argument[0].Reference", "taint", "manual"]
+      - ["repo:https://github.com/rust-lang/futures-rs:futures-util", "crate::io::AsyncBufReadExt::read_line", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["repo:https://github.com/rust-lang/futures-rs:futures-util", "crate::io::AsyncBufReadExt::read_line", "Argument[self].Reference", "Argument[0].Reference", "taint", "manual"]
+      - ["repo:https://github.com/rust-lang/futures-rs:futures-util", "crate::io::AsyncBufReadExt::read_until", "Argument[self]", "Argument[1].Reference", "taint", "manual"]
+      - ["repo:https://github.com/rust-lang/futures-rs:futures-util", "crate::io::AsyncBufReadExt::read_until", "Argument[self].Reference", "Argument[1].Reference", "taint", "manual"]
+      - ["repo:https://github.com/rust-lang/futures-rs:futures-util", "crate::io::AsyncBufReadExt::fill_buf", "Argument[self]", "ReturnValue.Future.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["repo:https://github.com/rust-lang/futures-rs:futures-util", "crate::io::AsyncBufReadExt::lines", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["repo:https://github.com/rust-lang/futures-rs:futures-util", "crate::stream::stream::StreamExt::next", "Argument[self]", "ReturnValue.Future.Field[crate::option::Option::Some(0)]", "taint", "manual"]
+      - ["repo:https://github.com/rust-lang/futures-rs:futures-util", "<crate::io::buf_reader::BufReader as crate::if_std::AsyncBufRead>::poll_fill_buf", "Argument[self].Reference", "ReturnValue.Field[crate::task::poll::Poll::Ready(0)].Field[crate::result::Result::Ok(0)]", "taint", "manual"]
