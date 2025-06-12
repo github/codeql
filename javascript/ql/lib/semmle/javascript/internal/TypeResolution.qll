@@ -130,6 +130,13 @@ module TypeResolution {
     or
     SummaryTypeTracker::basicLoadStep(object.(AST::ValueNode).flow(),
       member.(AST::ValueNode).flow(), contents)
+    or
+    exists(IndexExpr index |
+      not exists(index.getPropertyName()) and
+      object = index.getBase() and
+      member = index and
+      contents = DataFlow::ContentSet::arrayElement()
+    )
   }
 
   predicate callTarget(InvokeExpr call, Function target) {
