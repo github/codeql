@@ -24,16 +24,17 @@ discourage external users of the library from overriding it and observing partia
 </recommendation>
 <example>
 <p>In the following case, the `__init__` method of `Super` calls the `set_up` method that is overriden by `Sub`. 
-This results in `Sun.set_up` being called with a partially initialized instance of `Super` which may be unexpected. 
-<sample src="InitCallsSubclassMethod.py" />
-<p>In the following case, the initialization methods are separate between the superclass and the subclass.
+This results in `Sun.set_up` being called with a partially initialized instance of `Super` which may be unexpected. </p>
+<sample src="examples/InitCallsSubclassMethodBad.py" />
+<p>In the following case, the initialization methods are separate between the superclass and the subclass.</p>
+<sample src="examples/InitCallsSubclassMethodGood.py" />
 </example>
 <references>
 
 
 <li>CERT Secure Coding: <a href="https://www.securecoding.cert.org/confluence/display/java/MET05-J.+Ensure+that+constructors+do+not+call+overridable+methods">
 Rule MET05-J</a>. Reference discusses Java but is applicable to object oriented programming in many languages.</li>
-<li>StackOverflow: <a href="https://stackoverflow.com/questions/3404301/whats-wrong-with-overridable-method-calls-in-constructors">Overridable method calls in constructors<a>.</li>
+<li>StackOverflow: <a href="https://stackoverflow.com/questions/3404301/whats-wrong-with-overridable-method-calls-in-constructors">Overridable method calls in constructors</a>.</li>
 
 
 
