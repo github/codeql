@@ -5,7 +5,7 @@
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
 private import codeql.rust.internal.CachedStages
-private import codeql.rust.frameworks.stdlib.Bultins as Builtins
+private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 
 private newtype TNamespace =
   TTypeNamespace() or

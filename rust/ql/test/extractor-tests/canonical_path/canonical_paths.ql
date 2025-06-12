@@ -1,7 +1,7 @@
 import rust
 import TestUtils
 private import codeql.rust.internal.PathResolution
-private import codeql.rust.frameworks.stdlib.Bultins
+private import codeql.rust.frameworks.stdlib.Builtins
 
 query predicate canonicalPath(Addressable a, string path) {
   (

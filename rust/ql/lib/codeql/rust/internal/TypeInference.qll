@@ -7,7 +7,7 @@ private import Type as T
 private import TypeMention
 private import codeql.typeinference.internal.TypeInference
 private import codeql.rust.frameworks.stdlib.Stdlib
-private import codeql.rust.frameworks.stdlib.Bultins as Builtins
+private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 
 class Type = T::Type;
 
