@@ -76,9 +76,10 @@ class CandidateStringLiteral extends StringLiteral {
  * ```
  */
 predicate hasObjectProvidingTemplateVariables(CandidateStringLiteral lit) {
-  exists(DataFlow::CallNode call, DataFlow::ObjectLiteralNode obj |
-    call.getAnArgument().getALocalSource() = obj and
-    call.getAnArgument().asExpr() = lit and
+  exists(DataFlow::CallNode call, DataFlow::ObjectLiteralNode obj, DataFlow::Node stringArg |
+    stringArg = [StringConcatenation::getRoot(lit.flow()), lit.flow()] and
+    stringArg = call.getAnArgument() and
+    obj.flowsTo(call.getAnArgument()) and
     forex(string name | name = lit.getAReferencedVariable() | exists(obj.getAPropertyWrite(name)))
   )
 }

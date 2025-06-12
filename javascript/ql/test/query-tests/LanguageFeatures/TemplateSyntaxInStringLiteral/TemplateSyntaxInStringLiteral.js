@@ -44,7 +44,7 @@ function foo1() {
 
 function a(actual, expected, description) {
     assert(false, "a", description, "expected (" +
-        typeof expected + ") ${expected} but got (" + typeof actual + ") ${actual}", { // $SPURIOUS:Alert
+        typeof expected + ") ${expected} but got (" + typeof actual + ") ${actual}", {
             expected: expected,
             actual: actual
         });
