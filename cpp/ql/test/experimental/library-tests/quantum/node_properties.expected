@@ -4,7 +4,6 @@
 | openssl_basic.c:23:37:23:51 | KeyOperationAlgorithm | Structure | Block | openssl_basic.c:23:37:23:51 | openssl_basic.c:23:37:23:51 |
 | openssl_basic.c:23:37:23:51 | ModeOfOperation | Name | GCM | openssl_basic.c:23:37:23:51 | openssl_basic.c:23:37:23:51 |
 | openssl_basic.c:23:37:23:51 | ModeOfOperation | RawName | EVP_aes_256_gcm | openssl_basic.c:23:37:23:51 | openssl_basic.c:23:37:23:51 |
-| openssl_basic.c:23:62:23:65 | Key | KeyType | Unknown | openssl_basic.c:23:62:23:65 | openssl_basic.c:23:62:23:65 |
 | openssl_basic.c:31:49:31:51 | Key | KeyType | Unknown | openssl_basic.c:31:49:31:51 | openssl_basic.c:31:49:31:51 |
 | openssl_basic.c:40:13:40:31 | EncryptOperation | KeyOperationSubtype | Encrypt | openssl_basic.c:40:13:40:31 | openssl_basic.c:40:13:40:31 |
 | openssl_basic.c:69:33:69:47 | KeyOperationAlgorithm | KeySize | 256 | openssl_basic.c:69:33:69:47 | openssl_basic.c:69:33:69:47 |
@@ -13,7 +12,6 @@
 | openssl_basic.c:69:33:69:47 | KeyOperationAlgorithm | Structure | Block | openssl_basic.c:69:33:69:47 | openssl_basic.c:69:33:69:47 |
 | openssl_basic.c:69:33:69:47 | ModeOfOperation | Name | GCM | openssl_basic.c:69:33:69:47 | openssl_basic.c:69:33:69:47 |
 | openssl_basic.c:69:33:69:47 | ModeOfOperation | RawName | EVP_aes_256_gcm | openssl_basic.c:69:33:69:47 | openssl_basic.c:69:33:69:47 |
-| openssl_basic.c:69:58:69:61 | Key | KeyType | Unknown | openssl_basic.c:69:58:69:61 | openssl_basic.c:69:58:69:61 |
 | openssl_basic.c:77:45:77:47 | Key | KeyType | Unknown | openssl_basic.c:77:45:77:47 | openssl_basic.c:77:45:77:47 |
 | openssl_basic.c:90:11:90:29 | DecryptOperation | KeyOperationSubtype | Decrypt | openssl_basic.c:90:11:90:29 | openssl_basic.c:90:11:90:29 |
 | openssl_basic.c:116:38:116:47 | HashAlgorithm | DigestSize | 256 | openssl_basic.c:116:38:116:47 | openssl_basic.c:116:38:116:47 |

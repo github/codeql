@@ -1,4 +1,5 @@
 private import experimental.quantum.Language
+private import experimental.quantum.OpenSSL.AvcFlow
 private import experimental.quantum.OpenSSL.CtxFlow
 private import experimental.quantum.OpenSSL.KeyFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
@@ -6,6 +7,18 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
 // using OpenSSLOperationBase. This futher ensures that initializers are tied to opeartions
 // even if only importing the operation by itself.
 import EVPPKeyCtxInitializer
+
+module EncValToInitEncArgConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr().getValue().toInt() in [0, 1] }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(EvpKeyOperationSubtypeInitializer initCall |
+      sink.asExpr() = initCall.getKeyOperationSubtypeArg()
+    )
+  }
+}
+
+module EncValToInitEncArgFlow = DataFlow::Global<EncValToInitEncArgConfig>;
 
 /**
  * A class for all OpenSSL operations.
@@ -24,7 +37,7 @@ abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Cal
    * Algorithm is specified in initialization call or is implicitly established by the key.
    */
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-    AlgGetterToArgFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
+    AvcToCallArgFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
       DataFlow::exprNode(this.getAlgorithmArg()))
   }
 }
@@ -38,29 +51,58 @@ abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Cal
  */
 abstract class EvpInitializer extends Call {
   /**
-   * Gets the context argument that ties together initialization, updates and/or final calls.
-   * The context argument is the context coming into the initializer and is the output as well.
+   * Gets the context argument or return that ties together initialization, updates and/or final calls.
+   * The context is the context coming into the initializer and is the output as well.
    * This is assumed to be the same argument.
    */
-  abstract CtxPointerSource getContextArg();
+  abstract CtxPointerSource getContext();
 }
 
 abstract class EvpKeySizeInitializer extends EvpInitializer {
   abstract Expr getKeySizeArg();
 }
 
-/**
- * Unlike many initializers, this returns the key operation subtype immediately, not the arg.
- * This is a design choice in the overall model, in that the model will not do any tracking
- * for the subtype argument in any automated fashion. Users are currently expected to find the
- * subtype argument manually and associate a type directly.
- */
 abstract class EvpKeyOperationSubtypeInitializer extends EvpInitializer {
-  abstract Crypto::KeyOperationSubtype getKeyOperationSubtype();
+  abstract Expr getKeyOperationSubtypeArg();
+
+  private Crypto::KeyOperationSubtype intToCipherOperationSubtype(int i) {
+    i = 0 and
+    result instanceof Crypto::TEncryptMode
+    or
+    i = 1 and result instanceof Crypto::TDecryptMode
+  }
+
+  Crypto::KeyOperationSubtype getKeyOperationSubtype() {
+    exists(DataFlow::Node a, DataFlow::Node b |
+      EncValToInitEncArgFlow::flow(a, b) and
+      b.asExpr() = this.getKeyOperationSubtypeArg() and
+      result = this.intToCipherOperationSubtype(a.asExpr().getValue().toInt())
+    )
+    or
+    // Infer the subtype from the initialization call, and ignore the argument
+    this.(Call).getTarget().getName().toLowerCase().matches("%encrypt%") and
+    result instanceof Crypto::TEncryptMode
+    or
+    this.(Call).getTarget().getName().toLowerCase().matches("%decrypt%") and
+    result instanceof Crypto::TDecryptMode
+  }
 }
 
-abstract class EvpAlgorithmInitializer extends EvpInitializer {
+/**
+ * An primary algorithm initializer initializes the primary algorithm for a given operation.
+ * For example, for a signing operation, the algorithm initializer may initialize algorithms
+ * like RSA. Other algorithsm may be initialized on an operation, as part of a larger
+ * operation/protocol. For example, hashing operations on signing operations; however,
+ * these are not the primary algorithm. Any other algorithms initialized on an operation
+ * require a specialized initializer, such as EvpHashAlgorithmInitializer.
+ */
+abstract class EvpPrimaryAlgorithmInitializer extends EvpInitializer {
   abstract Expr getAlgorithmArg();
+
+  Crypto::AlgorithmValueConsumer getAlgorithmValueConsumer() {
+    AvcToCallArgFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
+      DataFlow::exprNode(this.getAlgorithmArg()))
+  }
 }
 
 abstract class EvpKeyInitializer extends EvpInitializer {
@@ -72,10 +114,10 @@ abstract class EvpKeyInitializer extends EvpInitializer {
  * the key. Extend any instance of key initializer provide initialization
  * of the algorithm and key size from the key.
  */
-class EvpInitializerThroughKey extends EvpAlgorithmInitializer, EvpKeySizeInitializer instanceof EvpKeyInitializer
+class EvpInitializerThroughKey extends EvpPrimaryAlgorithmInitializer, EvpKeySizeInitializer instanceof EvpKeyInitializer
 {
   //TODO: charpred that traces from creation to key arg, grab creator
-  override CtxPointerSource getContextArg() { result = EvpKeyInitializer.super.getContextArg() }
+  override CtxPointerSource getContext() { result = EvpKeyInitializer.super.getContext() }
 
   override Expr getAlgorithmArg() {
     result =
@@ -109,6 +151,15 @@ abstract class EvpSaltLengthInitializer extends EvpInitializer {
   abstract Expr getSaltLengthArg();
 }
 
+abstract class EvpHashAlgorithmInitializer extends EvpInitializer {
+  abstract Expr getHashAlgorithmArg();
+
+  Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
+    AvcToCallArgFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
+      DataFlow::exprNode(this.getHashAlgorithmArg()))
+  }
+}
+
 /**
  * A Call to an "update" function.
  * These are not operations in the sense of Crypto::OperationInstance,
@@ -120,7 +171,7 @@ abstract class EvpUpdate extends Call {
   /**
    * Gets the context argument that ties together initialization, updates and/or final calls.
    */
-  abstract CtxPointerSource getContextArg();
+  abstract CtxPointerSource getContext();
 
   /**
    * Update calls always have some input data like plaintext or message digest.
@@ -134,23 +185,6 @@ abstract class EvpUpdate extends Call {
 }
 
 /**
- * Flows from algorithm values to operations, specific to OpenSSL
- */
-module AlgGetterToArgConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    exists(OpenSSLAlgorithmValueConsumer c | c.getResultNode() = source)
-  }
-
-  /**
-   * Trace to any call accepting the algorithm.
-   * NOTE: users must restrict this set to the operations they are interested in.
-   */
-  predicate isSink(DataFlow::Node sink) { exists(Call c | c.getAnArgument() = sink.asExpr()) }
-}
-
-module AlgGetterToArgFlow = DataFlow::Global<AlgGetterToArgConfig>;
-
-/**
  * The base class for all operations of the EVP API.
  * This captures one-shot APIs (with and without an initilizer call) and final calls.
  * Provides some default methods for Crypto::KeyOperationInstance class.
@@ -159,7 +193,7 @@ abstract class EvpOperation extends OpenSSLOperation {
   /**
    * Gets the context argument that ties together initialization, updates and/or final calls.
    */
-  abstract CtxPointerSource getContextArg();
+  abstract CtxPointerSource getContext();
 
   /**
    * Some input data like plaintext or message digest.
@@ -175,7 +209,7 @@ abstract class EvpOperation extends OpenSSLOperation {
   /**
    * Finds the initialization call, may be none.
    */
-  EvpInitializer getInitCall() { ctxSrcToSrcFlow(result.getContextArg(), this.getContextArg()) }
+  EvpInitializer getInitCall() { ctxSrcToSrcFlow(result.getContext(), this.getContext()) }
 
   Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
     result = DataFlow::exprNode(this.getOutputArg())
@@ -200,7 +234,7 @@ abstract class EVPFinal extends EvpOperation {
   /**
    * All update calls that were executed before this final call.
    */
-  EvpUpdate getUpdateCalls() { ctxSrcToSrcFlow(result.getContextArg(), this.getContextArg()) }
+  EvpUpdate getUpdateCalls() { ctxSrcToSrcFlow(result.getContext(), this.getContext()) }
 
   /**
    * Gets the input data provided to all update calls.
@@ -214,3 +248,11 @@ abstract class EVPFinal extends EvpOperation {
    */
   override Expr getOutputArg() { result = this.getUpdateCalls().getOutputArg() }
 }
+// Expr getAlgorithmArgFromContext(Expr contextArg) {
+//   exists(EVPPKeyAlgorithmConsumer source |
+//     result = source.getValueArgExpr() and
+//     ctxFlowsToCtxArg(source.getResultNode().asExpr(), ctx)
+//   )
+//   or
+//   result = getAlgorithmFromKey(getKeyFromCtx(ctx))
+// }

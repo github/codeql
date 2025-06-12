@@ -4,7 +4,7 @@ private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 private import semmle.code.cpp.dataflow.new.DataFlow
 
-class EVPKeyGenInitialize extends EvpAlgorithmInitializer {
+class EVPKeyGenInitialize extends EvpPrimaryAlgorithmInitializer {
   EVPKeyGenInitialize() {
     this.(Call).getTarget().getName() in [
         "EVP_PKEY_keygen_init",
@@ -14,10 +14,13 @@ class EVPKeyGenInitialize extends EvpAlgorithmInitializer {
 
   /**
    * The algorithm is encoded through the context argument.
+   * The context may be directly created from an algorithm consumer,
+   * or from a new operation off of a prior key. Either way,
+   * we will treat this argument as the algorithm argument.
    */
-  override Expr getAlgorithmArg() { result = this.getContextArg() }
+  override Expr getAlgorithmArg() { result = this.getContext() }
 
-  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
+  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
 }
 
 class EVPKeyGenOperation extends EVPFinal, Crypto::KeyGenerationOperationInstance {
@@ -31,13 +34,13 @@ class EVPKeyGenOperation extends EVPFinal, Crypto::KeyGenerationOperationInstanc
     keyResultNode.asDefiningArgument() = this.(Call).getArgument(1)
   }
 
-  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
+  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
 
   override Expr getAlgorithmArg() {
     this.(Call).getTarget().getName() = "EVP_PKEY_Q_keygen" and
     result = this.(Call).getArgument(0)
     or
-    result = this.getInitCall().(EvpAlgorithmInitializer).getAlgorithmArg()
+    result = this.getInitCall().(EvpPrimaryAlgorithmInitializer).getAlgorithmArg()
   }
 
   override Crypto::KeyArtifactType getOutputKeyType() { result = Crypto::TAsymmetricKeyType() }

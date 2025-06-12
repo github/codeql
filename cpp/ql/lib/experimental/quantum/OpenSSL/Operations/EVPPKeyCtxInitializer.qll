@@ -1,6 +1,8 @@
 /**
  * Initializers for EVP PKey
- * including https://docs.openssl.org/3.0/man3/EVP_PKEY_CTX_ctrl/
+ * including:
+ *  https://docs.openssl.org/3.0/man3/EVP_PKEY_CTX_ctrl/
+ *  https://docs.openssl.org/3.0/man3/EVP_EncryptInit/#synopsis
  */
 
 import cpp
@@ -31,26 +33,40 @@ class EVPNewKeyCtx extends EvpKeyInitializer {
   /**
    * Context is returned
    */
-  override CtxPointerSource getContextArg() { result = this }
+  override CtxPointerSource getContext() { result = this }
 
   override Expr getKeyArg() { result = keyArg }
-  //TODO: do we specify the algorithm from the key as well?
 }
 
-class EvpCtxSetAlgorithmInitializer extends EvpAlgorithmInitializer {
-  EvpCtxSetAlgorithmInitializer() {
-    this.(Call).getTarget().getName() in [
-        "EVP_PKEY_CTX_set_signature_md", "EVP_PKEY_CTX_set_rsa_mgf1_md_name",
-        "EVP_PKEY_CTX_set_rsa_mgf1_md", "EVP_PKEY_CTX_set_rsa_oaep_md_name",
-        "EVP_PKEY_CTX_set_rsa_oaep_md", "EVP_PKEY_CTX_set_dsa_paramgen_md",
-        "EVP_PKEY_CTX_set_dsa_paramgen_md_props", "EVP_PKEY_CTX_set_dh_kdf_md",
-        "EVP_PKEY_CTX_set_ec_paramgen_curve_nid", "EVP_PKEY_CTX_set_ecdh_kdf_md"
-      ]
+/**
+ * A call to "EVP_PKEY_CTX_set_ec_paramgen_curve_nid".
+ * Note that this is a primary algorithm as the pattenr is to specify an "EC" context,
+ * then set the specific curve later. Although the curve is set later, it is the primary
+ * algorithm intended for an operation.
+ */
+class EvpCtxSetPrimaryAlgorithmInitializer extends EvpPrimaryAlgorithmInitializer {
+  EvpCtxSetPrimaryAlgorithmInitializer() {
+    this.(Call).getTarget().getName() = "EVP_PKEY_CTX_set_ec_paramgen_curve_nid"
   }
 
   override Expr getAlgorithmArg() { result = this.(Call).getArgument(1) }
 
-  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
+  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
+}
+
+class EvpCtxSetHashAlgorithmInitializer extends EvpHashAlgorithmInitializer {
+  EvpCtxSetHashAlgorithmInitializer() {
+    this.(Call).getTarget().getName() in [
+        "EVP_PKEY_CTX_set_signature_md", "EVP_PKEY_CTX_set_rsa_mgf1_md_name",
+        "EVP_PKEY_CTX_set_rsa_mgf1_md", "EVP_PKEY_CTX_set_rsa_oaep_md_name",
+        "EVP_PKEY_CTX_set_rsa_oaep_md", "EVP_PKEY_CTX_set_dsa_paramgen_md",
+        "EVP_PKEY_CTX_set_dh_kdf_md", "EVP_PKEY_CTX_set_ecdh_kdf_md"
+      ]
+  }
+
+  override Expr getHashAlgorithmArg() { result = this.(Call).getArgument(1) }
+
+  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
 }
 
 class EvpCtxSetKeySizeInitializer extends EvpKeySizeInitializer {
@@ -58,7 +74,8 @@ class EvpCtxSetKeySizeInitializer extends EvpKeySizeInitializer {
 
   EvpCtxSetKeySizeInitializer() {
     this.(Call).getTarget().getName() in [
-        "EVP_PKEY_CTX_set_rsa_keygen_bits", "EVP_PKEY_CTX_set_dsa_paramgen_bits"
+        "EVP_PKEY_CTX_set_rsa_keygen_bits", "EVP_PKEY_CTX_set_dsa_paramgen_bits",
+        "EVP_CIPHER_CTX_set_key_length"
       ] and
     arg = this.(Call).getArgument(1)
     or
@@ -68,7 +85,7 @@ class EvpCtxSetKeySizeInitializer extends EvpKeySizeInitializer {
 
   override Expr getKeySizeArg() { result = arg }
 
-  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
+  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
 }
 
 class EvpCtxSetKeyInitializer extends EvpKeyInitializer {
@@ -76,17 +93,19 @@ class EvpCtxSetKeyInitializer extends EvpKeyInitializer {
 
   override Expr getKeyArg() { result = this.(Call).getArgument(1) }
 
-  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
+  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
 }
 
 class EvpCtxSetPaddingInitializer extends EvpPaddingInitializer {
   EvpCtxSetPaddingInitializer() {
-    this.(Call).getTarget().getName() = "EVP_PKEY_CTX_set_rsa_padding"
+    this.(Call).getTarget().getName() in [
+        "EVP_PKEY_CTX_set_rsa_padding", "EVP_CIPHER_CTX_set_padding"
+      ]
   }
 
   override Expr getPaddingArg() { result = this.(Call).getArgument(1) }
 
-  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
+  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
 }
 
 class EvpCtxSetSaltLengthInitializer extends EvpSaltLengthInitializer {
@@ -96,5 +115,5 @@ class EvpCtxSetSaltLengthInitializer extends EvpSaltLengthInitializer {
 
   override Expr getSaltLengthArg() { result = this.(Call).getArgument(1) }
 
-  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
+  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
 }
