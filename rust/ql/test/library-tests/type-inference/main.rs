@@ -697,7 +697,7 @@ mod trait_associated_type {
         println!("{:?}", x3.put(1).unwrap()); // $ method=S::put method=unwrap
 
         // Call to default implementation in `trait` block
-        println!("{:?}", x3.putTwo(2, 3).unwrap()); // $ method=putTwo MISSING: method=unwrap
+        println!("{:?}", x3.putTwo(2, 3).unwrap()); // $ method=putTwo method=unwrap
 
         let x4 = g(S); // $ MISSING: type=x4:AT
         println!("{:?}", x4);
