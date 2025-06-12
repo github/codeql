@@ -112,7 +112,7 @@ This query finds the argument passed in each call to ``File::create``:
 
     from CallExpr call
     where call.getStaticTarget().(Function).getCanonicalPath() = "<std::fs::File>::create"
-    select call.getArgList().getArg(0)
+    select call.getArg(0)
 
 Unfortunately this will only give the expression in the argument, not the values which could be passed to it.
 So we use local data flow to find all expressions that flow into the argument:
@@ -125,7 +125,7 @@ So we use local data flow to find all expressions that flow into the argument:
     from CallExpr call, DataFlow::ExprNode source, DataFlow::ExprNode sink
     where
       call.getStaticTarget().(Function).getCanonicalPath() = "<std::fs::File>::create" and
-      sink.asExpr().getExpr() = call.getArgList().getArg(0) and
+      sink.asExpr().getExpr() = call.getArg(0) and
       DataFlow::localFlow(source, sink)
     select source, sink
 
@@ -139,7 +139,7 @@ We can vary the source, for example, making the source the parameter of a functi
     from CallExpr call, DataFlow::ParameterNode source, DataFlow::ExprNode sink
     where
       call.getStaticTarget().(Function).getCanonicalPath() = "<std::fs::File>::create" and
-      sink.asExpr().getExpr() = call.getArgList().getArg(0) and
+      sink.asExpr().getExpr() = call.getArg(0) and
       DataFlow::localFlow(source, sink)
     select source, sink
 
@@ -234,9 +234,9 @@ The following global taint-tracking query finds places where a string literal is
     predicate isSink(DataFlow::Node node) {
         // any argument going to a parameter called `password`
         exists(Function f, CallExpr call, int index |
-        call.getArgList().getArg(index) = node.asExpr().getExpr() and
+        call.getArg(index) = node.asExpr().getExpr() and
         call.getStaticTarget() = f and
-        f.getParamList().getParam(index).getPat().(IdentPat).getName().getText() = "password"
+        f.getParam(index).getPat().(IdentPat).getName().getText() = "password"
         )
     }
     }
