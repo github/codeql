@@ -4,37 +4,36 @@
 <qhelp>
 <overview>
 <p>
-When an instance of a class is initialized, the super-class state should be
-fully initialized before it becomes visible to the subclass.
-Calling methods of the subclass in the superclass' <code>__init__</code>
-method violates this important invariant.
+When initializing an instance of the class in the class' <code>__init__</code> method, calls tha are made using the instance may receive an instance of the class that is not 
+yet fully initialized. When a method called in an initializer is overridden in a subclass, the subclass method receives the instance
+in a potentially unexpected state, which may lead to runtime errors from accessing uninitialized fields, and generally makes the code
+more difficult to maintain. 
 </p>
 
 </overview>
 <recommendation>
 
-<p>Do not use methods that are subclassed in the construction of an object.
-For simpler cases move the initialization into the superclass' <code>__init__</code> method,
-preventing it being overridden. Additional initialization of subclass should
-be done in the <code>__init__</code> method of the subclass.
-For more complex cases, it is advisable to use a static method or function to manage
-object creation.
+<p>If possible, refactor the initializer method such that initialization is complete before calling any overridden methods. 
+For helper methods used as part of initialization, avoid overriding them, and instead call any additional logic required 
+in the subclass' <code>__init__</code> method.
+</p><p>
+If calling an overridden method is required, consider marking it as an internal method (by using an <code>_</code> prefix) to 
+discourage external users of the library from overriding it and observing partially initialized state. 
 </p>
-
-<p>Alternatively, avoid inheritance altogether using composition instead.</p>
 
 </recommendation>
 <example>
+<p>In the following case, the `__init__` method of `Super` calls the `set_up` method that is overriden by `Sub`. 
+This results in `Sun.set_up` being called with a partially initialized instance of `Super` which may be unexpected. 
 <sample src="InitCallsSubclassMethod.py" />
-
+<p>In the following case, the initialization methods are separate between the superclass and the subclass.
 </example>
 <references>
 
 
 <li>CERT Secure Coding: <a href="https://www.securecoding.cert.org/confluence/display/java/MET05-J.+Ensure+that+constructors+do+not+call+overridable+methods">
-Rule MET05-J</a>. Although this is a Java rule it applies to most object-oriented languages.</li>
-<li>Python Standard Library: <a href="http://docs.python.org/library/functions.html#staticmethod">Static methods</a>.</li>
-<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>.</li>
+Rule MET05-J</a>. Reference discusses Java but is applicable to object oriented programming in many languages.</li>
+<li>StackOverflow: <a href="https://stackoverflow.com/questions/3404301/whats-wrong-with-overridable-method-calls-in-constructors">Overridable method calls in constructors<a>.</li>
 
 
 
