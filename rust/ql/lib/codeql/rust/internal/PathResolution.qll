@@ -5,7 +5,7 @@
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
 private import codeql.rust.internal.CachedStages
-private import codeql.rust.frameworks.stdlib.Bultins as Builtins
+private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 
 private newtype TNamespace =
   TTypeNamespace() or
@@ -374,6 +374,9 @@ class CrateItemNode extends ItemNode instanceof Crate {
       not file = child.(SourceFileItemNode).getSuper() and
       file = super.getSourceFile()
     )
+    or
+    this.getName() = "core" and
+    child instanceof Builtins::BuiltinType
   }
 
   override string getCanonicalPath(Crate c) { c = this and result = Crate.super.getName() }
