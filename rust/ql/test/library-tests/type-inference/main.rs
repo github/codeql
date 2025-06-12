@@ -1753,6 +1753,58 @@ mod impl_trait {
     }
 }
 
+mod indexers {
+    use std::ops::Index;
+
+    #[derive(Debug)]
+    struct S;
+
+    impl S {
+        fn foo(&self) -> Self {
+            S
+        }
+    }
+
+    #[derive(Debug)]
+    struct MyVec<T> {
+        data: Vec<T>,
+    }
+
+    impl<T> MyVec<T> {
+        fn new() -> Self {
+            MyVec { data: Vec::new() }
+        }
+
+        fn push(&mut self, value: T) {
+            self.data.push(value); // $ fieldof=MyVec method=push
+        }
+    }
+
+    impl<T> Index<usize> for MyVec<T> {
+        type Output = T;
+
+        // MyVec::index
+        fn index(&self, index: usize) -> &Self::Output {
+            &self.data[index] // $ fieldof=MyVec
+        }
+    }
+
+    fn analyze_slice(slice: &[S]) {
+        let x = slice[0].foo(); // $ method=foo type=x:S
+    }
+
+    pub fn f() {
+        let mut vec = MyVec::new(); // $ type=vec:T.S
+        vec.push(S); // $ method=push
+        vec[0].foo(); // $ MISSING: method=foo -- type inference does not support the `Index` trait yet
+
+        let xs: [S; 1] = [S];
+        let x = xs[0].foo(); // $ method=foo type=x:S
+
+        analyze_slice(&xs);
+    }
+}
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -1774,4 +1826,5 @@ fn main() {
     operators::f();
     async_::f();
     impl_trait::f();
+    indexers::f();
 }

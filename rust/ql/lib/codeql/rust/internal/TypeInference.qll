@@ -80,9 +80,17 @@ private module Input1 implements InputSig1<Location> {
   int getTypeParameterId(TypeParameter tp) {
     tp =
       rank[result](TypeParameter tp0, int kind, int id |
-        tp0 instanceof RefTypeParameter and
+        tp0 instanceof ArrayTypeParameter and
         kind = 0 and
         id = 0
+        or
+        tp0 instanceof RefTypeParameter and
+        kind = 0 and
+        id = 1
+        or
+        tp0 instanceof SliceTypeParameter and
+        kind = 0 and
+        id = 2
         or
         kind = 1 and
         exists(AstNode node | id = idOfTypeParameterAstNode(node) |
@@ -1128,6 +1136,50 @@ private Type inferAwaitExprType(AstNode n, TypePath path) {
   )
 }
 
+private class Vec extends Struct {
+  Vec() { this.getCanonicalPath() = "alloc::vec::Vec" }
+
+  TypeParamTypeParameter getElementTypeParameter() {
+    result.getTypeParam() = this.getGenericParamList().getTypeParam(0)
+  }
+}
+
+/**
+ * According to [the Rust reference][1]: _"array and slice-typed expressions
+ * can be indexed with a `usize` index ... For other types an index expression
+ * `a[b]` is equivalent to *std::ops::Index::index(&a, b)"_.
+ *
+ * The logic below handles array and slice indexing, but for other types it is
+ * currently limited to `Vec`.
+ *
+ * [1]: https://doc.rust-lang.org/reference/expressions/array-expr.html#r-expr.array.index
+ */
+pragma[nomagic]
+private Type inferIndexExprType(IndexExpr ie, TypePath path) {
+  // TODO: Should be implemented as method resolution, using the special
+  // `std::ops::Index` trait.
+  exists(TypePath exprPath, Builtins::BuiltinType t |
+    TStruct(t) = inferType(ie.getIndex()) and
+    (
+      // also allow `i32`, since that is currently the type that we infer for
+      // integer literals like `0`
+      t instanceof Builtins::I32
+      or
+      t instanceof Builtins::Usize
+    ) and
+    result = inferType(ie.getBase(), exprPath)
+  |
+    exprPath.isCons(any(Vec v).getElementTypeParameter(), path)
+    or
+    exprPath.isCons(any(ArrayTypeParameter tp), path)
+    or
+    exists(TypePath path0 |
+      exprPath.isCons(any(RefTypeParameter tp), path0) and
+      path0.isCons(any(SliceTypeParameter tp), path)
+    )
+  )
+}
+
 private module MethodCall {
   /** An expression that calls a method. */
   abstract private class MethodCallImpl extends Expr {
@@ -1487,6 +1539,8 @@ private module Cached {
     path.isEmpty()
     or
     result = inferAwaitExprType(n, path)
+    or
+    result = inferIndexExprType(n, path)
   }
 }
 
