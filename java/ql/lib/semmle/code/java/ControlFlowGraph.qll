@@ -431,115 +431,132 @@ private module ControlFlowGraphImpl {
   }
 
   /**
-   * A virtual method with a unique implementation. That is, the method does not
-   * participate in overriding and there are no call targets that could dispatch
-   * to both this and another method.
+   * Module containing a global non-returning method analysis. The result is injected back into
+   * a local predicate `nonReturningMethodCall()`, which is used in further local predicates
+   * within this file.
    */
-  private class EffectivelyNonVirtualMethod extends SrcMethod {
-    EffectivelyNonVirtualMethod() {
-      exists(this.getBody()) and
-      this.isVirtual() and
-      not this = any(Method m).getASourceOverriddenMethod() and
-      not this.overrides(_) and
-      // guard against implicit overrides of default methods
-      not this.getAPossibleImplementationOfSrcMethod() != this and
-      // guard against interface implementations in inheriting subclasses
-      not exists(SrcMethod m |
-        1 < strictcount(m.getAPossibleImplementationOfSrcMethod()) and
-        this = m.getAPossibleImplementationOfSrcMethod()
-      ) and
-      // UnsupportedOperationException could indicate that this is meant to be overridden
-      not exists(ClassInstanceExpr ex |
-        this.getBody().getLastStmt().(ThrowStmt).getExpr() = ex and
-        ex.getConstructedType().hasQualifiedName("java.lang", "UnsupportedOperationException")
-      ) and
-      // an unused parameter could indicate that this is meant to be overridden
-      forall(Parameter p | p = this.getAParameter() | exists(p.getAnAccess()))
+  overlay[global]
+  private module NonReturningAnalysis {
+    /**
+     * A virtual method with a unique implementation. That is, the method does not
+     * participate in overriding and there are no call targets that could dispatch
+     * to both this and another method.
+     */
+    private class EffectivelyNonVirtualMethod extends SrcMethod {
+      EffectivelyNonVirtualMethod() {
+        exists(this.getBody()) and
+        this.isVirtual() and
+        not this = any(Method m).getASourceOverriddenMethod() and
+        not this.overrides(_) and
+        // guard against implicit overrides of default methods
+        not this.getAPossibleImplementationOfSrcMethod() != this and
+        // guard against interface implementations in inheriting subclasses
+        not exists(SrcMethod m |
+          1 < strictcount(m.getAPossibleImplementationOfSrcMethod()) and
+          this = m.getAPossibleImplementationOfSrcMethod()
+        ) and
+        // UnsupportedOperationException could indicate that this is meant to be overridden
+        not exists(ClassInstanceExpr ex |
+          this.getBody().getLastStmt().(ThrowStmt).getExpr() = ex and
+          ex.getConstructedType().hasQualifiedName("java.lang", "UnsupportedOperationException")
+        ) and
+        // an unused parameter could indicate that this is meant to be overridden
+        forall(Parameter p | p = this.getAParameter() | exists(p.getAnAccess()))
+      }
+
+      /** Gets a `MethodCall` that calls this method. */
+      MethodCall getAnAccess() { result.getMethod().getAPossibleImplementation() = this }
     }
 
-    /** Gets a `MethodCall` that calls this method. */
-    MethodCall getAnAccess() { result.getMethod().getAPossibleImplementation() = this }
-  }
-
-  /** Holds if a call to `m` indicates that `m` is expected to return. */
-  private predicate expectedReturn(EffectivelyNonVirtualMethod m) {
-    exists(Stmt s, BlockStmt b |
-      m.getAnAccess().getEnclosingStmt() = s and
-      b.getAStmt() = s and
-      not b.getLastStmt() = s
-    )
-  }
-
-  /**
-   * Gets a non-overridable method that always throws an exception or calls `exit`.
-   */
-  private Method nonReturningMethod() {
-    result instanceof MethodExit
-    or
-    not result.isOverridable() and
-    exists(BlockStmt body |
-      body = result.getBody() and
-      not exists(ReturnStmt ret | ret.getEnclosingCallable() = result)
-    |
-      not result.getReturnType() instanceof VoidType or
-      body.getLastStmt() = nonReturningStmt()
-    )
-  }
-
-  /**
-   * Gets a virtual method that always throws an exception or calls `exit`.
-   */
-  private EffectivelyNonVirtualMethod likelyNonReturningMethod() {
-    result.getReturnType() instanceof VoidType and
-    not exists(ReturnStmt ret | ret.getEnclosingCallable() = result) and
-    not expectedReturn(result) and
-    forall(Parameter p | p = result.getAParameter() | exists(p.getAnAccess())) and
-    result.getBody().getLastStmt() = nonReturningStmt()
-  }
-
-  /**
-   * Gets a `MethodCall` that always throws an exception or calls `exit`.
-   */
-  private MethodCall nonReturningMethodCall() {
-    result.getMethod().getSourceDeclaration() = nonReturningMethod() or
-    result = likelyNonReturningMethod().getAnAccess()
-  }
-
-  /**
-   * Gets a statement that always throws an exception or calls `exit`.
-   */
-  private Stmt nonReturningStmt() {
-    result instanceof ThrowStmt
-    or
-    result.(ExprStmt).getExpr() = nonReturningExpr()
-    or
-    result.(BlockStmt).getLastStmt() = nonReturningStmt()
-    or
-    exists(IfStmt ifstmt | ifstmt = result |
-      ifstmt.getThen() = nonReturningStmt() and
-      ifstmt.getElse() = nonReturningStmt()
-    )
-    or
-    exists(TryStmt try | try = result |
-      try.getBlock() = nonReturningStmt() and
-      forall(CatchClause cc | cc = try.getACatchClause() | cc.getBlock() = nonReturningStmt())
-    )
-  }
-
-  /**
-   * Gets an expression that always throws an exception or calls `exit`.
-   */
-  private Expr nonReturningExpr() {
-    result = nonReturningMethodCall()
-    or
-    result.(StmtExpr).getStmt() = nonReturningStmt()
-    or
-    exists(WhenExpr whenexpr | whenexpr = result |
-      whenexpr.getBranch(_).isElseBranch() and
-      forex(WhenBranch whenbranch | whenbranch = whenexpr.getBranch(_) |
-        whenbranch.getRhs() = nonReturningStmt()
+    /** Holds if a call to `m` indicates that `m` is expected to return. */
+    private predicate expectedReturn(EffectivelyNonVirtualMethod m) {
+      exists(Stmt s, BlockStmt b |
+        m.getAnAccess().getEnclosingStmt() = s and
+        b.getAStmt() = s and
+        not b.getLastStmt() = s
       )
-    )
+    }
+
+    /**
+     * Gets a non-overridable method that always throws an exception or calls `exit`.
+     */
+    private Method nonReturningMethod() {
+      result instanceof MethodExit
+      or
+      not result.isOverridable() and
+      exists(BlockStmt body |
+        body = result.getBody() and
+        not exists(ReturnStmt ret | ret.getEnclosingCallable() = result)
+      |
+        not result.getReturnType() instanceof VoidType or
+        body.getLastStmt() = nonReturningStmt()
+      )
+    }
+
+    /**
+     * Gets a virtual method that always throws an exception or calls `exit`.
+     */
+    private EffectivelyNonVirtualMethod likelyNonReturningMethod() {
+      result.getReturnType() instanceof VoidType and
+      not exists(ReturnStmt ret | ret.getEnclosingCallable() = result) and
+      not expectedReturn(result) and
+      forall(Parameter p | p = result.getAParameter() | exists(p.getAnAccess())) and
+      result.getBody().getLastStmt() = nonReturningStmt()
+    }
+
+    /**
+     * Gets a `MethodCall` that always throws an exception or calls `exit`.
+     */
+    private MethodCall nonReturningMethodCallGlobal() {
+      result.getMethod().getSourceDeclaration() = nonReturningMethod() or
+      result = likelyNonReturningMethod().getAnAccess()
+    }
+
+    /**
+     * Gets a `MethodCall` that always throws an exception or calls `exit`.
+     *
+     * This predicate is local so gives the local anaylyis for base and the global
+     * analyis for overlay cases.
+     */
+    overlay[local]
+    MethodCall nonReturningMethodCall() = localToGlobal(nonReturningMethodCallGlobal/0)(result)
+
+    /**
+     * Gets a statement that always throws an exception or calls `exit`.
+     */
+    private Stmt nonReturningStmt() {
+      result instanceof ThrowStmt
+      or
+      result.(ExprStmt).getExpr() = nonReturningExpr()
+      or
+      result.(BlockStmt).getLastStmt() = nonReturningStmt()
+      or
+      exists(IfStmt ifstmt | ifstmt = result |
+        ifstmt.getThen() = nonReturningStmt() and
+        ifstmt.getElse() = nonReturningStmt()
+      )
+      or
+      exists(TryStmt try | try = result |
+        try.getBlock() = nonReturningStmt() and
+        forall(CatchClause cc | cc = try.getACatchClause() | cc.getBlock() = nonReturningStmt())
+      )
+    }
+
+    /**
+     * Gets an expression that always throws an exception or calls `exit`.
+     */
+    private Expr nonReturningExpr() {
+      result = nonReturningMethodCallGlobal()
+      or
+      result.(StmtExpr).getStmt() = nonReturningStmt()
+      or
+      exists(WhenExpr whenexpr | whenexpr = result |
+        whenexpr.getBranch(_).isElseBranch() and
+        forex(WhenBranch whenbranch | whenbranch = whenexpr.getBranch(_) |
+          whenbranch.getRhs() = nonReturningStmt()
+        )
+      )
+    }
   }
 
   // Join order engineering -- first determine the switch block and the case indices required, then retrieve them.
@@ -766,7 +783,7 @@ private module ControlFlowGraphImpl {
       not this instanceof BooleanLiteral and
       not this instanceof ReturnStmt and
       not this instanceof ThrowStmt and
-      not this = nonReturningMethodCall()
+      not this = NonReturningAnalysis::nonReturningMethodCall()
     }
   }
 
