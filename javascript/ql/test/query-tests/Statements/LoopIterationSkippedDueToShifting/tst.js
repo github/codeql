@@ -133,15 +133,25 @@ function withTryCatch(pendingCSS) {
 
 function andOperand(toc) {
   for (let i = 0; i < toc.length; i++) {
-    toc[i].ignoreSubHeading && toc.splice(i, 1) && i--; // $ SPURIOUS:Alert
+    toc[i].ignoreSubHeading && toc.splice(i, 1) && i--;
   }
 }
 
 function ifStatement(toc) {
   for (let i = 0; i < toc.length; i++) {
     if(toc[i].ignoreSubHeading){
-      if(toc.splice(i, 1)){ // $ SPURIOUS:Alert
+      if(toc.splice(i, 1)){
         i--; 
+      }
+    }
+  }
+}
+
+function ifStatement2(toc) {
+  for (let i = 0; i < toc.length; i++) {
+    if(toc[i].ignoreSubHeading){
+      if(!toc.splice(i, 1)){ // $Alert
+        i--;
       }
     }
   }
