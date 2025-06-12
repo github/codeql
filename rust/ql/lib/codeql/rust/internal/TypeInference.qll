@@ -1,5 +1,6 @@
 /** Provides functionality for inferring types. */
 
+private import codeql.util.Boolean
 private import rust
 private import PathResolution
 private import Type
@@ -638,7 +639,28 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
   }
 
-  class AccessPosition = DeclarationPosition;
+  private newtype TAccessPosition =
+    TSelfAccessPosition(Boolean implicitlyBorrowed) or
+    TPositionalAccessPosition(int pos) { exists(TPositionalDeclarationPosition(pos)) } or
+    TReturnAccessPosition()
+
+  class AccessPosition extends TAccessPosition {
+    predicate isSelf(boolean implicitlyBorrowed) { this = TSelfAccessPosition(implicitlyBorrowed) }
+
+    int asPosition() { this = TPositionalAccessPosition(result) }
+
+    predicate isReturn() { this = TReturnAccessPosition() }
+
+    string toString() {
+      this.isSelf(_) and
+      result = "self"
+      or
+      result = this.asPosition().toString()
+      or
+      this.isReturn() and
+      result = "(return)"
+    }
+  }
 
   private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 
@@ -655,7 +677,8 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     AstNode getNodeAt(AccessPosition apos) {
       result = this.getArgument(apos.asPosition())
       or
-      result = this.getReceiver() and apos.isSelf()
+      result = this.getReceiver() and
+      if this.receiverImplicitlyBorrowed() then apos.isSelf(true) else apos.isSelf(false)
       or
       result = this and apos.isReturn()
     }
@@ -672,16 +695,19 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   }
 
   predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
-    apos = dpos
+    apos.isSelf(_) and dpos.isSelf()
+    or
+    apos.asPosition() = dpos.asPosition()
+    or
+    apos.isReturn() and dpos.isReturn()
   }
 
-  bindingset[a, apos, target, path, t]
+  bindingset[apos, target, path, t]
   pragma[inline_late]
   predicate adjustAccessType(
-    Access a, AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj,
-    Type tAdj
+    AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
   ) {
-    if apos.isSelf() and a.receiverImplicitlyBorrowed()
+    if apos.isSelf(true)
     then
       exists(Type selfParamType |
         selfParamType = target.getParameterType(TSelfDeclarationPosition(), TypePath::nil())
@@ -741,7 +767,7 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
     n = a.getNodeAt(apos) and
     result = CallExprBaseMatching::inferAccessType(a, apos, path0)
   |
-    if apos.isSelf()
+    if apos.isSelf(_)
     then
       exists(Type receiverType | receiverType = inferType(n) |
         if receiverType = TRefType()
@@ -845,13 +871,11 @@ private module FieldExprMatchingInput implements MatchingInputSig {
     apos = dpos
   }
 
-  bindingset[a, apos, target, path, t]
+  bindingset[apos, target, path, t]
   pragma[inline_late]
   predicate adjustAccessType(
-    Access a, AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj,
-    Type tAdj
+    AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
   ) {
-    exists(a) and
     exists(target) and
     if apos.isSelf()
     then
@@ -1220,7 +1244,7 @@ private module Cached {
   cached
   predicate receiverHasImplicitDeref(AstNode receiver) {
     exists(CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos |
-      apos.isSelf() and
+      apos.isSelf(true) and
       receiver = a.getNodeAt(apos) and
       inferType(receiver) = TRefType() and
       CallExprBaseMatching::inferAccessType(a, apos, TypePath::nil()) != TRefType()
@@ -1231,7 +1255,7 @@ private module Cached {
   cached
   predicate receiverHasImplicitBorrow(AstNode receiver) {
     exists(CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos |
-      apos.isSelf() and
+      apos.isSelf(true) and
       receiver = a.getNodeAt(apos) and
       CallExprBaseMatching::inferAccessType(a, apos, TypePath::nil()) = TRefType() and
       inferType(receiver) != TRefType()

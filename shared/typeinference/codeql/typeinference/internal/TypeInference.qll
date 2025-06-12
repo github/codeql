@@ -847,10 +847,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * the inferred type of `42` is `int`, but it should be adjusted to `int?`
        * when matching against `M`.
        */
-      bindingset[a, apos, target, path, t]
+      bindingset[apos, target, path, t]
       default predicate adjustAccessType(
-        Access a, AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj,
-        Type tAdj
+        AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
       ) {
         pathAdj = path and
         tAdj = t
@@ -877,7 +876,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         target = a.getTarget() and
         exists(TypePath path0, Type t0 |
           t0 = a.getInferredType(apos, path0) and
-          adjustAccessType(a, apos, target, path0, t0, path, t)
+          adjustAccessType(apos, target, path0, t0, path, t)
         )
       }
 
