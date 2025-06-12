@@ -56,9 +56,9 @@ models
 | 3 | Sink: repo:https://github.com/seanmonstar/reqwest:reqwest; <crate::blocking::client::Client>::request; transmission; Argument[1] |
 | 4 | Sink: repo:https://github.com/seanmonstar/reqwest:reqwest; crate::blocking::get; transmission; Argument[0] |
 | 5 | Summary: lang:alloc; crate::fmt::format; Argument[0]; ReturnValue; taint |
-| 6 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 6 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
 | 7 | Summary: lang:core; crate::hint::must_use; Argument[0]; ReturnValue; value |
-| 8 | Summary: repo:https://github.com/servo/rust-url:url; <crate::Url>::parse; Argument[0].Reference; ReturnValue.Field[crate::result::Result::Ok(0)]; taint |
+| 8 | Summary: repo:https://github.com/servo/rust-url:url; <crate::Url>::parse; Argument[0].Reference; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
 nodes
 | main.rs:6:9:6:11 | url | semmle.label | url |
 | main.rs:6:15:6:58 | res | semmle.label | res |
