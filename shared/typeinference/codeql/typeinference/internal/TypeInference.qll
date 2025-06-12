@@ -8,7 +8,7 @@
  * `TypePath` type, and `Make2`, which (using `TypePath` in the input signature)
  * constructs the `Matching` and `IsInstantiationOf` modules.
  *
- * The intended use of this library is define a predicate
+ * The intended use of this library is to define a predicate
  *
  * ```ql
  * Type inferType(AstNode n, TypePath path)
