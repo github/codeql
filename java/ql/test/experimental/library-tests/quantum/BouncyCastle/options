@@ -1,1 +1,0 @@
-//semmle-extractor-options: --javac-args -cp ${testdir}/../../../../stubs/bcprov-lts8on-2.73.7
