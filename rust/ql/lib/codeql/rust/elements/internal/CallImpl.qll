@@ -8,11 +8,9 @@ module Impl {
   /**
    * An expression that calls a function.
    *
-   * This class abstract over the different ways in which a function can be called in Rust.
+   * This class abstracts over the different ways in which a function can be called in Rust.
    */
   abstract class Call extends ExprImpl::Expr {
-    Call() { this.fromSource() }
-
     /** Gets the number of arguments _excluding_ any `self` argument. */
     abstract int getNumberOfArguments();
 
