@@ -10,7 +10,7 @@ In TypeScript, certain keywords have special meanings for member declarations, a
 <ul>
 <li>In classes, use <code>constructor</code> rather than <code>new</code> to declare constructors. Using <code>new</code> within a class creates a method named "new" and not a constructor signature.</li>
 <li>In interfaces, use <code>new</code> rather than <code>constructor</code> to declare constructor signatures. Using <code>constructor</code> within an interface creates a method named "constructor" and not a constructor signature.</li>
-<li>Similarly, the keyword <code>function</code> is used to declare functions in some contexts. However, using the name <code>function</code> for a class or interface member declaration declares a method named <code>function</code>.</li>
+<li>Similarly, the keyword <code>function</code> is used to declare functions in some contexts. However, using the name <code>function</code> for a class or interface member declaration declares a method named "function".</li>
 </ul>
 
 <p>
