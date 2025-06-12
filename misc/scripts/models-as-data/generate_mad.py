@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import re
+import argparse
 
 def quote_if_needed(row):
     if row != "true" and row != "false":
@@ -26,112 +27,76 @@ def parseData(data):
     return rows
 
 
-def printHelp():
-    print(f"""Usage:
-python3 generate_mad.py <library-database> [DIR] --language LANGUAGE [--with-sinks] [--with-sources] [--with-summaries] [--with-neutrals] [--with-typebased-summaries] [--dry-run]
-
+description = """\
 This generates summary, source, sink and neutral models for the code in the database.
-The files will be placed in `LANGUAGE/ql/lib/ext/generated/DIR`
+The files will be placed in `LANGUAGE/ql/lib/ext/generated/DIR`"""
 
-Which models are generated is controlled by the flags:
-    --with-sinks
-    --with-sources
-    --with-summaries
-    --with-neutrals
-    --with-typebased-summaries (Experimental)
-If none of these flags are specified, all models are generated except for the type based models.
-
-    --dry-run: Only run the queries, but don't write to file.
-
+epilog = """\
 Example invocations:
 $ python3 generate_mad.py /tmp/dbs/my_library_db
 $ python3 generate_mad.py /tmp/dbs/my_library_db --with-sinks
 $ python3 generate_mad.py /tmp/dbs/my_library_db --with-sinks my_directory
 
-
-Requirements: `codeql` should appear on your path.
-    """)
+Requirements: `codeql` should appear on your path."""
 
 class Generator:
-    def __init__(self, language):
+    generateSinks = False
+    generateSources = False
+    generateSummaries = False
+    generateNeutrals = False
+    generateTypeBasedSummaries = False
+    dryRun = False
+    dirname = "modelgenerator"
+    ram = None
+    threads = 0
+    folder = ""
+
+    def __init__(self, language=None):
         self.language = language
-        self.generateSinks = False
-        self.generateSources = False
-        self.generateSummaries = False
-        self.generateNeutrals = False
-        self.generateTypeBasedSummaries = False
-        self.dryRun = False
-        self.dirname = "modelgenerator"
-        self.ram = 2**15
-        self.threads = 8
 
-
-    def setenvironment(self, database, folder):
+    def setenvironment(self, database=None, folder=None):
         self.codeQlRoot = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode("utf-8").strip()
-        self.database = database
+        self.database = database or self.database
+        self.folder = folder or self.folder
         self.generatedFrameworks = os.path.join(
-            self.codeQlRoot, f"{self.language}/ql/lib/ext/generated/{folder}")
+            self.codeQlRoot, f"{self.language}/ql/lib/ext/generated/{self.folder}")
         self.workDir = tempfile.mkdtemp()
+        if self.ram is None:
+            threads = self.threads if self.threads > 0 else os.cpu_count()
+            self.ram = 2048 * threads
         os.makedirs(self.generatedFrameworks, exist_ok=True)
 
 
     @staticmethod
     def make():
-        # Create a generator instance based on command line arguments.
-        if any(s == "--help" for s in sys.argv):
-            printHelp()
-            sys.exit(0)
-
-        if "--language" in sys.argv:
-            language = sys.argv[sys.argv.index("--language") + 1]
-            sys.argv.remove("--language")
-            sys.argv.remove(language)
-        else:
-            printHelp()
-            sys.exit(0)
-
-        generator = Generator(language=language)
-
-        if "--with-sinks" in sys.argv:
-            sys.argv.remove("--with-sinks")
-            generator.generateSinks = True
-
-        if "--with-sources" in sys.argv:
-            sys.argv.remove("--with-sources")
-            generator.generateSources = True
-
-        if "--with-summaries" in sys.argv:
-            sys.argv.remove("--with-summaries")
-            generator.generateSummaries = True
-
-        if "--with-neutrals" in sys.argv:
-            sys.argv.remove("--with-neutrals")
-            generator.generateNeutrals = True
-
-        if "--with-typebased-summaries" in sys.argv:
-            sys.argv.remove("--with-typebased-summaries")
-            generator.generateTypeBasedSummaries = True
-
-        if "--dry-run" in sys.argv:
-            sys.argv.remove("--dry-run")
-            generator.dryRun = True
+        p = argparse.ArgumentParser(
+            description=description,
+            formatter_class=argparse.RawTextHelpFormatter,
+            epilog=epilog)
+        p.add_argument("database", help="Path to the CodeQL database")
+        p.add_argument("folder", nargs="?", default="", help="Optional folder to place the generated files in")
+        p.add_argument("--language", required=True, help="The language for which to generate models")
+        p.add_argument("--with-sinks", action="store_true", help="Generate sink models", dest="generateSinks")
+        p.add_argument("--with-sources", action="store_true", help="Generate source models", dest="generateSources")
+        p.add_argument("--with-summaries", action="store_true", help="Generate summary models", dest="generateSummaries")
+        p.add_argument("--with-neutrals", action="store_true", help="Generate neutral models", dest="generateNeutrals")
+        p.add_argument("--with-typebased-summaries", action="store_true", help="Generate type-based summary models (experimental)", dest="generateTypeBasedSummaries")
+        p.add_argument("--dry-run", action="store_true", help="Do not write the generated files, just print them to stdout", dest="dryRun")
+        p.add_argument("--threads", type=int, default=Generator.threads, help="Number of threads to use for CodeQL queries (default %(default)s). `0` means use all available threads.")
+        p.add_argument("--ram", type=int, help="Amount of RAM to use for CodeQL queries in MB. Default is to use 2048 MB per thread.")
+        generator = p.parse_args(namespace=Generator())
 
         if (not generator.generateSinks and
            not generator.generateSources and
            not generator.generateSummaries and
            not generator.generateNeutrals and
            not generator.generateTypeBasedSummaries):
-            generator.generateSinks = generator.generateSources = generator.generateSummaries = generator.generateNeutrals = True
+            generator.generateSinks = True
+            generator.generateSources = True
+            generator.generateSummaries = True
+            generator.generateNeutrals = True
 
-        n = len(sys.argv)
-        if n < 2:
-            printHelp()
-            sys.exit(1)
-        elif n == 2:
-            generator.setenvironment(sys.argv[1], "")
-        else:
-            generator.setenvironment(sys.argv[1], sys.argv[2])
-
+        generator.setenvironment()
         return generator
 
 
@@ -140,11 +105,7 @@ class Generator:
         queryFile = os.path.join(self.codeQlRoot, f"{self.language}/ql/src/utils/{self.dirname}", query)
         resultBqrs = os.path.join(self.workDir, "out.bqrs")
 
-        cmd = ['codeql', 'query', 'run', queryFile, '--database', self.database, '--output', resultBqrs]
-        if self.threads is not None:
-            cmd += ["--threads", str(self.threads)]
-        if self.ram is not None:
-            cmd += ["--ram", str(self.ram)]
+        cmd = ['codeql', 'query', 'run', queryFile, '--database', self.database, '--output', resultBqrs, "--threads", str(self.threads), "--ram", str(self.ram)]
         helpers.run_cmd(cmd, "Failed to generate " + query)
 
         return helpers.readData(self.workDir, resultBqrs)

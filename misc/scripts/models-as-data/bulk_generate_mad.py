@@ -242,9 +242,9 @@ def generate_models(config, args, project: Project, database_dir: str) -> None:
     generator.generateSinks = should_generate_sinks(project)
     generator.generateSources = should_generate_sources(project)
     generator.generateSummaries = should_generate_summaries(project)
-    generator.setenvironment(database=database_dir, folder=name)
     generator.threads = args.codeql_threads
     generator.ram = args.codeql_ram
+    generator.setenvironment(database=database_dir, folder=name)
     generator.run()
 
 
@@ -527,7 +527,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--codeql-ram",
         type=int,
-        help="What `--ram` value to pass to `codeql` while generating models (by default the flag is not passed)",
+        help="What `--ram` value to pass to `codeql` while generating models (by default 2048 MB per thread)",
         default=None,
     )
     parser.add_argument(
