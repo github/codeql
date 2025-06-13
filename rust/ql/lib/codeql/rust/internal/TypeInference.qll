@@ -1241,6 +1241,10 @@ private predicate implSiblingCandidate(
   Impl impl, TraitItemNode trait, Type rootType, TypeMention selfTy
 ) {
   trait = impl.(ImplItemNode).resolveTraitTy() and
+  // If `impl` has an expansion from a macro attribute, then it's been
+  // superseded by the output of the expansion (and usually the expansion
+  // contains the same `impl` block so considering both would give spurious
+  // siblings).
   not exists(impl.getAttributeMacroExpansion()) and
   // We use this for resolving methods, so exclude traits that do not have methods.
   exists(Function f | f = trait.getASuccessor(_) and f.getParamList().hasSelfParam()) and
@@ -1300,12 +1304,13 @@ private predicate methodTypeAtPath(Function f, int pos, TypePath path, Type type
 }
 
 /**
- * Holds if resolving the method in `impl` with the name `methodName` requires
- * inspecting the types of applied _arguments_ in order to determine whether it
- * is the correct resolution.
+ * Holds if resolving the method `f` in `impl` with the name `methodName`
+ * requires inspecting the types of applied _arguments_ in order to determine
+ * whether it is the correct resolution.
  */
+pragma[nomagic]
 private predicate methodResolutionDependsOnArgument(
-  Impl impl, string methodName, int pos, TypePath path, Type type
+  Impl impl, string methodName, Function f, int pos, TypePath path, Type type
 ) {
   /*
    * As seen in the example below, when an implementation has a sibling for a
@@ -1321,8 +1326,8 @@ private predicate methodResolutionDependsOnArgument(
    * //                              ^ `path` = "T"
    * }
    * impl MyAdd<i64> for i64 {
-   *     fn method(&self, value: i64) -> Self { ... }
-   * //                          ^^^ `type` = i64
+   *     fn method(&self, value: Foo<i64>) -> Self { ... }
+   * //                              ^^^ `type` = i64
    * }
    * ```
    *
@@ -1335,7 +1340,8 @@ private predicate methodResolutionDependsOnArgument(
   exists(TraitItemNode trait |
     implHasSibling(impl, trait) and
     traitTypeParameterOccurrence(trait, methodName, pos, path) and
-    methodTypeAtPath(getMethodSuccessor(impl, methodName), pos, path, type)
+    methodTypeAtPath(getMethodSuccessor(impl, methodName), pos, path, type) and
+    f = getMethodSuccessor(impl, methodName)
   )
 }
 
@@ -1345,10 +1351,11 @@ private Function getMethodFromImpl(MethodCall mc) {
     IsInstantiationOf<MethodCall, IsInstantiationOfInput>::isInstantiationOf(mc, impl, _) and
     result = getMethodSuccessor(impl, mc.getMethodName())
   |
-    not methodResolutionDependsOnArgument(impl, _, _, _, _)
+    not methodResolutionDependsOnArgument(impl, _, _, _, _, _) and
+    result = getMethodSuccessor(impl, mc.getMethodName())
     or
     exists(int pos, TypePath path, Type type |
-      methodResolutionDependsOnArgument(impl, mc.getMethodName(), pos, path, type) and
+      methodResolutionDependsOnArgument(impl, mc.getMethodName(), result, pos, path, type) and
       inferType(mc.getArgument(pos), path) = type
     )
   )
