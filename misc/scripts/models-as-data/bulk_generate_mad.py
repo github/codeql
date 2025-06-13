@@ -236,7 +236,6 @@ def generate_models(config, args, project: Project, database_dir: str) -> None:
     language = config["language"]
 
     generator = mad.Generator(language)
-    # Note: The argument parser converts with-sinks to with_sinks, etc.
     generator.generateSinks = should_generate_sinks(project)
     generator.generateSources = should_generate_sources(project)
     generator.generateSummaries = should_generate_summaries(project)
@@ -348,7 +347,7 @@ def download_dca_databases(
     """
     print("\n=== Finding projects ===")
     project_map = {project["name"]: project for project in projects}
-    analyzed_databases = {}
+    analyzed_databases = {n: None for n in project_map}
     for experiment_name in experiment_names:
         response = get_json_from_github(
             f"https://raw.githubusercontent.com/github/codeql-dca-main/data/{experiment_name}/reports/downloads.json",
@@ -361,16 +360,23 @@ def download_dca_databases(
             artifact_name = analyzed_database["artifact_name"]
             pretty_name = pretty_name_from_artifact_name(artifact_name)
 
-            if not pretty_name in project_map:
+            if not pretty_name in analyzed_databases:
                 print(f"Skipping {pretty_name} as it is not in the list of projects")
                 continue
 
-            if pretty_name in analyzed_databases:
+            if analyzed_databases[pretty_name] is not None:
                 print(
                     f"Skipping previous database {analyzed_databases[pretty_name]['artifact_name']} for {pretty_name}"
                 )
 
             analyzed_databases[pretty_name] = analyzed_database
+
+    not_found = [name for name, db in analyzed_databases.items() if db is None]
+    if not_found:
+        print(
+            f"ERROR: The following projects were not found in the DCA experiments: {', '.join(not_found)}"
+        )
+        sys.exit(1)
 
     def download_and_decompress(analyzed_database: dict) -> str:
         artifact_name = analyzed_database["artifact_name"]
