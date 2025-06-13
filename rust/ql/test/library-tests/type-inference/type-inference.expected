@@ -2302,12 +2302,8 @@ inferType
 | main.rs:1594:28:1594:28 | 1 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1594:34:1594:34 | 2 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1594:34:1594:34 | 2 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1595:13:1595:14 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1595:13:1595:14 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1595:13:1595:14 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1595:18:1595:36 | Vec2 {...} |  | file://:0:0:0:0 | & |
 | main.rs:1595:18:1595:36 | Vec2 {...} |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1595:18:1595:36 | Vec2 {...} | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1595:28:1595:28 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1595:28:1595:28 | 3 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1595:34:1595:34 | 4 |  | {EXTERNAL LOCATION} | i32 |
@@ -2315,122 +2311,84 @@ inferType
 | main.rs:1598:13:1598:19 | vec2_eq |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1598:23:1598:24 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1598:23:1598:30 | ... == ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1598:29:1598:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1598:29:1598:30 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1598:29:1598:30 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1599:13:1599:19 | vec2_ne |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1599:23:1599:24 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1599:23:1599:30 | ... != ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1599:29:1599:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1599:29:1599:30 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1599:29:1599:30 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1600:13:1600:19 | vec2_lt |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1600:23:1600:24 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1600:23:1600:29 | ... < ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1600:28:1600:29 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1600:28:1600:29 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1600:28:1600:29 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1601:13:1601:19 | vec2_le |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1601:23:1601:24 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1601:23:1601:30 | ... <= ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1601:29:1601:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1601:29:1601:30 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1601:29:1601:30 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1602:13:1602:19 | vec2_gt |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1602:23:1602:24 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1602:23:1602:29 | ... > ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1602:28:1602:29 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1602:28:1602:29 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1602:28:1602:29 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1603:13:1603:19 | vec2_ge |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1603:23:1603:24 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1603:23:1603:30 | ... >= ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1603:29:1603:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1603:29:1603:30 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1603:29:1603:30 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1606:13:1606:20 | vec2_add |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1606:24:1606:25 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1606:24:1606:30 | ... + ... |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1606:29:1606:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1606:29:1606:30 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1606:29:1606:30 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1607:13:1607:20 | vec2_sub |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1607:24:1607:25 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1607:24:1607:30 | ... - ... |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1607:29:1607:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1607:29:1607:30 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1607:29:1607:30 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1608:13:1608:20 | vec2_mul |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1608:24:1608:25 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1608:24:1608:30 | ... * ... |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1608:29:1608:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1608:29:1608:30 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1608:29:1608:30 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1609:13:1609:20 | vec2_div |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1609:24:1609:25 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1609:24:1609:30 | ... / ... |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1609:29:1609:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1609:29:1609:30 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1609:29:1609:30 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1610:13:1610:20 | vec2_rem |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1610:24:1610:25 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1610:24:1610:30 | ... % ... |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1610:29:1610:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1610:29:1610:30 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1610:29:1610:30 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1613:13:1613:31 | mut vec2_add_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1613:35:1613:36 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1614:9:1614:23 | vec2_add_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1614:9:1614:29 | ... += ... |  | file://:0:0:0:0 | () |
-| main.rs:1614:28:1614:29 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1614:28:1614:29 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1614:28:1614:29 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1616:13:1616:31 | mut vec2_sub_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1616:35:1616:36 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1617:9:1617:23 | vec2_sub_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1617:9:1617:29 | ... -= ... |  | file://:0:0:0:0 | () |
-| main.rs:1617:28:1617:29 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1617:28:1617:29 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1617:28:1617:29 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1619:13:1619:31 | mut vec2_mul_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1619:35:1619:36 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1620:9:1620:23 | vec2_mul_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1620:9:1620:29 | ... *= ... |  | file://:0:0:0:0 | () |
-| main.rs:1620:28:1620:29 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1620:28:1620:29 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1620:28:1620:29 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1622:13:1622:31 | mut vec2_div_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1622:35:1622:36 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1623:9:1623:23 | vec2_div_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1623:9:1623:29 | ... /= ... |  | file://:0:0:0:0 | () |
-| main.rs:1623:28:1623:29 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1623:28:1623:29 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1623:28:1623:29 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1625:13:1625:31 | mut vec2_rem_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1625:35:1625:36 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1626:9:1626:23 | vec2_rem_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1626:9:1626:29 | ... %= ... |  | file://:0:0:0:0 | () |
-| main.rs:1626:28:1626:29 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1626:28:1626:29 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1626:28:1626:29 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1629:13:1629:23 | vec2_bitand |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1629:27:1629:28 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1629:27:1629:33 | ... & ... |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1629:32:1629:33 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1629:32:1629:33 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1629:32:1629:33 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1630:13:1630:22 | vec2_bitor |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1630:26:1630:27 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1630:26:1630:32 | ... \| ... |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1630:31:1630:32 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1630:31:1630:32 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1630:31:1630:32 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1631:13:1631:23 | vec2_bitxor |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1631:27:1631:28 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1631:27:1631:33 | ... ^ ... |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1631:32:1631:33 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1631:32:1631:33 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1631:32:1631:33 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1632:13:1632:20 | vec2_shl |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1632:24:1632:25 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1632:24:1632:33 | ... << ... |  | main.rs:1302:5:1307:5 | Vec2 |
@@ -2443,23 +2401,17 @@ inferType
 | main.rs:1636:38:1636:39 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1637:9:1637:26 | vec2_bitand_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1637:9:1637:32 | ... &= ... |  | file://:0:0:0:0 | () |
-| main.rs:1637:31:1637:32 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1637:31:1637:32 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1637:31:1637:32 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1639:13:1639:33 | mut vec2_bitor_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1639:37:1639:38 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1640:9:1640:25 | vec2_bitor_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1640:9:1640:31 | ... \|= ... |  | file://:0:0:0:0 | () |
-| main.rs:1640:30:1640:31 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1640:30:1640:31 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1640:30:1640:31 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1642:13:1642:34 | mut vec2_bitxor_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1642:38:1642:39 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1643:9:1643:26 | vec2_bitxor_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1643:9:1643:32 | ... ^= ... |  | file://:0:0:0:0 | () |
-| main.rs:1643:31:1643:32 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1643:31:1643:32 | v2 |  | main.rs:1302:5:1307:5 | Vec2 |
-| main.rs:1643:31:1643:32 | v2 | &T | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1645:13:1645:31 | mut vec2_shl_assign |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1645:35:1645:36 | v1 |  | main.rs:1302:5:1307:5 | Vec2 |
 | main.rs:1646:9:1646:23 | vec2_shl_assign |  | main.rs:1302:5:1307:5 | Vec2 |
