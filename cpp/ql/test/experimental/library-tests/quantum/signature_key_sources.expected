@@ -1,5 +1,0 @@
-| openssl_signature.c:89:9:89:21 | SignOperation | openssl_signature.c:89:53:89:56 | Key |
-| openssl_signature.c:151:9:151:27 | SignOperation | openssl_signature.c:142:52:142:55 | Key |
-| openssl_signature.c:213:9:213:27 | SignOperation | openssl_signature.c:199:57:199:60 | Key |
-| openssl_signature.c:279:9:279:21 | SignOperation | openssl_signature.c:269:39:269:42 | Key |
-| openssl_signature.c:343:9:343:35 | SignOperation | openssl_signature.c:330:39:330:42 | Key |

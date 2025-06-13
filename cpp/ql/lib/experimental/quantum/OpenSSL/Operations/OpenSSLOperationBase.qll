@@ -145,6 +145,32 @@ class EvpInitializerThroughKey extends EvpPrimaryAlgorithmInitializer, EvpKeySiz
   Expr getKeyArg() { result = EvpKeyInitializer.super.getKeyArg() }
 }
 
+/**
+ * A default initializer for any key operation that accepts a key as input.
+ * A key initializer allows for a mechanic to go backwards to the key creation operation
+ * and find the algorithm and key size.
+ * If a user were to stipualte a key consumer for an operation but fail to indicate it as an
+ * initializer, automatic tracing to the creation operation would not occur.
+ * USERS SHOULD NOT NEED TO USE OR EXTEND THIS CLASS DIRECTLY.
+ *
+ * TODO: re-evaluate this approach
+ */
+class DefaultKeyInitializer extends EvpKeyInitializer instanceof Crypto::KeyOperationInstance {
+  Expr arg;
+
+  DefaultKeyInitializer() {
+    exists(Call c |
+      c.getAChild*() = arg and
+      arg = this.(Crypto::KeyOperationInstance).getKeyConsumer().asExpr() and
+      c = this
+    )
+  }
+
+  override Expr getKeyArg() { result = arg }
+
+  override CtxPointerSource getContext() { result = this.(EvpOperation).getContext() }
+}
+
 abstract class EvpIVInitializer extends EvpInitializer {
   abstract Expr getIVArg();
 }

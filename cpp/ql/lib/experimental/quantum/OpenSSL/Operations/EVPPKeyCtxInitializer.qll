@@ -7,6 +7,7 @@
 
 import cpp
 private import experimental.quantum.OpenSSL.CtxFlow
+private import OpenSSLOperations
 private import OpenSSLOperationBase
 
 /**
