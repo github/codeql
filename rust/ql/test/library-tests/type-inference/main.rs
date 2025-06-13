@@ -1107,6 +1107,11 @@ mod method_call_type_conversion {
         // implicit dereference handling doesn't affect nested borrows.
         let t = x7.m1(); // $ method=m1 type=t:& type=t:&T.S2
         println!("{:?}", x7);
+
+        let x9 : String = "Hello".to_string(); // $ type=x9:String
+        // Implicit `String` -> `str` conversion happens via the `Deref` trait:
+        // https://doc.rust-lang.org/std/string/struct.String.html#deref.
+        let u = x9.parse::<u32>(); // $ method=parse type=u:T.u32
     }
 }
 
