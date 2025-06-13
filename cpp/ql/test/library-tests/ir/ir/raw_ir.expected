@@ -37484,8 +37484,8 @@ try_except.c:
 #   49|     r49_2(glval<unknown>) = FunctionAddress[i]     : 
 #   49|     r49_3(int)            = Call[i]                : func:r49_2
 #   49|     mu49_4(unknown)       = ^CallSideEffect        : ~m?
-#   49|     mu49_5(int)           = Store[y]               : &:r49_1, r49_3
-#-----|   Goto -> Block 7
+#-----|   Goto -> Block 3
+#-----|   SEH Exception -> Block 6
 
 #   46|   Block 1
 #   46|     v46_6(void) = AliasedUse   : ~m?
@@ -37495,36 +37495,40 @@ try_except.c:
 #   46|     v46_8(void) = Unwind : 
 #-----|   Goto -> Block 1
 
-#   51|   Block 3
+#   49|   Block 3
+#   49|     mu49_5(int) = Store[y] : &:r49_1, r49_3
+#-----|   Goto -> Block 8
+
+#   51|   Block 4
 #   51|     r51_1(int)  = Constant[0]       : 
 #   51|     r51_2(bool) = CompareEQ         : r51_7, r51_1
 #   51|     v51_3(void) = ConditionalBranch : r51_2
-#-----|   False -> Block 4
+#-----|   False -> Block 5
 #-----|   True -> Block 2
 
-#   51|   Block 4
+#   51|   Block 5
 #   51|     r51_4(int)  = Constant[1]       : 
 #   51|     r51_5(bool) = CompareEQ         : r51_7, r51_4
 #   51|     v51_6(void) = ConditionalBranch : r51_5
-#-----|   True -> Block 6
+#-----|   True -> Block 7
 
-#   51|   Block 5
+#   51|   Block 6
 #   51|     r51_7(int)   = Constant[1]       : 
 #   51|     r51_8(int)   = Constant[-1]      : 
 #   51|     r51_9(bool)  = CompareEQ         : r51_7, r51_8
 #   51|     v51_10(void) = ConditionalBranch : r51_9
-#-----|   False -> Block 3
+#-----|   False -> Block 4
 #-----|   True -> Block 2
 
-#   52|   Block 6
+#   52|   Block 7
 #   52|     r52_1(glval<unknown>) = FunctionAddress[sink] : 
 #   52|     r52_2(glval<int>)     = VariableAddress[x]    : 
 #   52|     r52_3(int)            = Load[x]               : &:r52_2, ~m?
 #   52|     v52_4(void)           = Call[sink]            : func:r52_1, 0:r52_3
 #   52|     mu52_5(unknown)       = ^CallSideEffect       : ~m?
-#-----|   Goto -> Block 7
+#-----|   Goto -> Block 8
 
-#   54|   Block 7
+#   54|   Block 8
 #   54|     v54_1(void) = NoOp       : 
 #   46|     v46_9(void) = ReturnVoid : 
 #-----|   Goto -> Block 1

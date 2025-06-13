@@ -39210,13 +39210,52 @@ try_except.c:
 #   49|     r49_3(int)            = Call[i]                : func:r49_2
 #   49|     m49_4(unknown)        = ^CallSideEffect        : ~m46_4
 #   49|     m49_5(unknown)        = Chi                    : total:m46_4, partial:m49_4
-#   49|     m49_6(int)            = Store[y]               : &:r49_1, r49_3
-#   54|     v54_1(void)           = NoOp                   : 
-#   46|     v46_7(void)           = ReturnVoid             : 
-#   46|     v46_8(void)           = AliasedUse             : ~m49_5
-#   46|     v46_9(void)           = ExitFunction           : 
+#-----|   Goto -> Block 1
+#-----|   SEH Exception -> Block 4
 
-#   46|   Block 1
+#   49|   Block 1
+#   49|     m49_6(int) = Store[y] : &:r49_1, r49_3
+#-----|   Goto -> Block 6
+
+#   51|   Block 2
+#   51|     r51_1(int)  = Constant[0]       : 
+#   51|     r51_2(bool) = CompareEQ         : r51_7, r51_1
+#   51|     v51_3(void) = ConditionalBranch : r51_2
+#-----|   False -> Block 3
+#-----|   True -> Block 7
+
+#   51|   Block 3
+#   51|     r51_4(int)  = Constant[1]       : 
+#   51|     r51_5(bool) = CompareEQ         : r51_7, r51_4
+#   51|     v51_6(void) = ConditionalBranch : r51_5
+#-----|   False -> Block 7
+#-----|   True -> Block 5
+
+#   51|   Block 4
+#   51|     r51_7(int)   = Constant[1]       : 
+#   51|     r51_8(int)   = Constant[-1]      : 
+#   51|     r51_9(bool)  = CompareEQ         : r51_7, r51_8
+#   51|     v51_10(void) = ConditionalBranch : r51_9
+#-----|   False -> Block 2
+#-----|   True -> Block 7
+
+#   52|   Block 5
+#   52|     r52_1(glval<unknown>) = FunctionAddress[sink] : 
+#   52|     r52_2(glval<int>)     = VariableAddress[x]    : 
+#   52|     r52_3(int)            = Load[x]               : &:r52_2, m47_3
+#   52|     v52_4(void)           = Call[sink]            : func:r52_1, 0:r52_3
+#   52|     m52_5(unknown)        = ^CallSideEffect       : ~m49_5
+#   52|     m52_6(unknown)        = Chi                   : total:m49_5, partial:m52_5
+#-----|   Goto -> Block 6
+
+#   54|   Block 6
+#   54|     m54_1(unknown) = Phi          : from 1:~m49_5, from 5:~m52_6
+#   54|     v54_2(void)    = NoOp         : 
+#   46|     v46_7(void)    = ReturnVoid   : 
+#   46|     v46_8(void)    = AliasedUse   : ~m54_1
+#   46|     v46_9(void)    = ExitFunction : 
+
+#   46|   Block 7
 #   46|     v46_10(void) = Unreached : 
 
 try_except.cpp:
