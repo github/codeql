@@ -38,6 +38,8 @@ module WeakSensitiveDataHashingConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(WeakSensitiveDataHashingAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module WeakSensitiveDataHashingFlow = TaintTracking::Global<WeakSensitiveDataHashingConfig>;
