@@ -11,6 +11,7 @@ View the query help for the queries included in the ``default``, ``security-exte
 - :doc:`CodeQL query help for JavaScript and TypeScript <javascript>`
 - :doc:`CodeQL query help for Python <python>`
 - :doc:`CodeQL query help for Ruby <ruby>`
+- :doc:`CodeQL query help for Rust <rust>`
 - :doc:`CodeQL query help for Swift <swift>`
 
 .. pull-quote:: Information
@@ -37,5 +38,6 @@ For a full list of the CWEs covered by these queries, see ":doc:`CodeQL CWE cove
    javascript
    python
    ruby
+   rust
    swift
    codeql-cwe-coverage
