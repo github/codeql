@@ -6,11 +6,20 @@ import javascript
 private import internal.StmtContainers
 private import internal.NameResolution
 private import internal.UnderlyingTypes
+private import internal.BindingInfo
 
 /**
  * A type annotation, either in the form of a TypeScript type or a JSDoc comment.
  */
 class TypeAnnotation extends @type_annotation, NodeInStmtContainer {
+  /**
+   * Gets information about the results of name-resolution for this type.
+   *
+   * This can be used to map a type name to the class/interface it refers to, or
+   * associate it with a named type coming from an dependency.
+   */
+  TypeNameBindingNode getTypeBinding() { result = this }
+
   /** Holds if this is the `any` type. */
   predicate isAny() { none() }
 
@@ -126,7 +135,7 @@ class TypeAnnotation extends @type_annotation, NodeInStmtContainer {
    *
    * Note that this has no result for JSDoc type annotations.
    */
-  Type getType() { none() }
+  deprecated Type getType() { none() }
 
   /**
    * Gets the class referenced by this type annotation, if any.

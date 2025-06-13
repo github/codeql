@@ -5,8 +5,6 @@
 import javascript
 private import semmle.javascript.security.dataflow.ServerSideUrlRedirectCustomizations
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
-private import semmle.javascript.internal.NameResolution
-private import semmle.javascript.internal.TypeResolution
 
 /**
  * Provides classes and predicates for reasoning about [Nest](https://nestjs.com/).
@@ -137,7 +135,7 @@ module NestJS {
       hasSanitizingPipe(this, true) and
       // Note: we could consider types with class-validator decorators to be sanitized here, but instead we consider the root
       // object to be tainted, but omit taint steps for the individual properties names that have sanitizing decorators. See ClassValidator.qll.
-      TypeResolution::isSanitizingPrimitiveType(this.getParameter().getTypeAnnotation())
+      this.getParameter().getTypeBinding().isSanitizingPrimitiveType()
     }
   }
 
@@ -337,9 +335,10 @@ module NestJS {
       handler.isReturnValueReflected() and
       this = handler.getAReturn() and
       // Only returned strings are sinks. If we can find a type for the return value, it must be string-like.
-      not exists(NameResolution::Node type |
-        TypeResolution::valueHasType(this.asExpr(), type) and
-        not TypeResolution::hasUnderlyingStringOrAnyType(type)
+      (
+        this.asExpr().getTypeBinding().hasUnderlyingStringOrAnyType()
+        or
+        not exists(this.asExpr().getTypeBinding())
       )
     }
 
@@ -475,7 +474,7 @@ module NestJS {
 
   /** Gets the class being referenced at `node` without relying on the call graph. */
   private DataFlow::ClassNode getClassFromNode(DataFlow::Node node) {
-    result.getAstNode() = node.analyze().getAValue().(AbstractClass).getClass()
+    result = node.asExpr().getNameBinding().getClassNode()
   }
 
   private predicate providerClassPair(
@@ -491,7 +490,7 @@ module NestJS {
   private class DependencyInjectionStep extends PreCallGraphStep {
     override predicate classInstanceSource(DataFlow::ClassNode cls, DataFlow::Node node) {
       exists(DataFlow::ClassNode interfaceClass |
-        node.asExpr().(Parameter).getType().(ClassType).getClass() = interfaceClass.getAstNode() and
+        node.asExpr().getTypeBinding().getTypeDefinition() = interfaceClass.getAstNode() and
         providerClassPair(interfaceClass, cls)
       )
     }

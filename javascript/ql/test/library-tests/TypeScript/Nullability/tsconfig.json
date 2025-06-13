@@ -1,6 +1,0 @@
-{
-    "include": ["."],
-    "compilerOptions": {
-        "strict": true
-    }
-}
