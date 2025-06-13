@@ -1021,8 +1021,12 @@ inferType
 | main.rs:912:19:912:22 | self | Snd | main.rs:910:15:910:17 | Snd |
 | main.rs:913:43:913:82 | MacroExpr |  | main.rs:910:15:910:17 | Snd |
 | main.rs:913:50:913:81 | "PairNone has no second elemen... |  | {EXTERNAL LOCATION} | str |
+| main.rs:913:50:913:81 | MacroExpr |  | main.rs:910:15:910:17 | Snd |
+| main.rs:913:50:913:81 | { ... } |  | main.rs:910:15:910:17 | Snd |
 | main.rs:914:43:914:81 | MacroExpr |  | main.rs:910:15:910:17 | Snd |
 | main.rs:914:50:914:80 | "PairFst has no second element... |  | {EXTERNAL LOCATION} | str |
+| main.rs:914:50:914:80 | MacroExpr |  | main.rs:910:15:910:17 | Snd |
+| main.rs:914:50:914:80 | { ... } |  | main.rs:910:15:910:17 | Snd |
 | main.rs:915:37:915:39 | snd |  | main.rs:910:15:910:17 | Snd |
 | main.rs:915:45:915:47 | snd |  | main.rs:910:15:910:17 | Snd |
 | main.rs:916:41:916:43 | snd |  | main.rs:910:15:910:17 | Snd |

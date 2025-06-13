@@ -1812,7 +1812,7 @@ mod indexers {
 
 mod macros {
     pub fn f() {
-        let x = format!("Hello, {}", "World!"); // $ MISSING: type=x:String
+        let x = format!("Hello, {}", "World!"); // $ MISSING: type=x:String -- needs https://github.com/github/codeql/pull/19658
     }
 }
 

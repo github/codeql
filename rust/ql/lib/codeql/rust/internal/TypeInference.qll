@@ -265,6 +265,8 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
       n1 = be.getLhs() and
       n2 = be.getRhs()
     )
+    or
+    n1 = n2.(MacroExpr).getMacroCall().getMacroCallExpansion()
   )
   or
   n1 = n2.(RefExpr).getExpr() and
