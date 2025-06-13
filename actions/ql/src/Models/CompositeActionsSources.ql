@@ -36,6 +36,8 @@ private module MyConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 module MyFlow = TaintTracking::Global<MyConfig>;
