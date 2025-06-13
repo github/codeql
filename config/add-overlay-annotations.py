@@ -128,7 +128,7 @@ def annotate_as_appropriate(filename, lines):
     return insert_toplevel_maybe_local_annotation(filename, lines)
 
 
-def process_single_file(filename):
+def process_single_file(check, filename):
     '''
     Process a single file, annotating it as appropriate and writing the changes back to the file.
     '''
@@ -136,7 +136,10 @@ def process_single_file(filename):
 
     annotate_result = annotate_as_appropriate(filename, old)
     if annotate_result is None:
-        return
+        return False
+
+    if check:
+       return True
 
     new = annotate_result[1]
 
@@ -151,8 +154,15 @@ def process_single_file(filename):
                 out_file.write(line)
 
 
+if len(sys.argv) > 1 and sys.argv[1] == "--check":
+  check = True
+  langs = sys.argv[2:]
+else:
+  check = False
+  langs = sys.argv[1:]
+
 dirs = []
-for lang in sys.argv[1:]:
+for lang in langs:
     if lang in ["cpp", "go", "csharp", "java", "javascript", "python", "ruby", "rust", "swift"]:
         dirs.append(f"{lang}/ql/lib")
     else:
@@ -161,8 +171,24 @@ for lang in sys.argv[1:]:
 if dirs:
     dirs.append("shared")
 
+missingAnnotations = []
+
 for roots in dirs:
     for dirpath, dirnames, filenames in os.walk(roots):
         for filename in filenames:
             if filename.endswith(".qll") and not dirpath.endswith("tutorial"):
-                process_single_file(os.path.join(dirpath, filename))
+                path = os.path.join(dirpath, filename)
+                res = process_single_file(check, path)
+                if check and res:
+                    missingAnnotations.append(path)
+
+
+if len(missingAnnotations) > 0:
+    print("The following files have no overlay annotations:")
+    for path in missingAnnotations[:10]:
+      print("- " + path)
+    if len(missingAnnotations) > 10:
+      print("and " + str(len(missingAnnotations) - 10) + " additional files.")
+    print()
+    print("Please manually add overlay annotations or use the config/add-overlay-annotations.py script to automatically add sensible default overlay annotations.")
+    exit(-1)
