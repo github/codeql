@@ -322,7 +322,9 @@ All support is experimental.
    :align: left
 
    Name, Category
+   `actix-web <https://crates.io/crates/actix-web>`__, Web framework
    alloc, Standard library
+   `clap <http://crates.io/crates/clap>`__, Utility library
    core, Standard library
    `digest <https://crates.io/crates/digest>`__, Cryptography library
    `futures-executor <https://crates.io/crates/futures-executor>`__, Utility library
@@ -331,14 +333,20 @@ All support is experimental.
    `libc <https://crates.io/crates/libc>`__, Utility library
    `log <https://crates.io/crates/log>`__, Logging library
    `md5 <https://crates.io/crates/md5>`__, Utility library
+   `memchr <https://crates.io/crates/memchr>`__, Utility library
+   `once_cell <https://crates.io/crates/once_cell>`__, Utility library
    `poem <https://crates.io/crates/poem>`__, Web framework
    `postgres <https://crates.io/crates/postgres>`__, Database
    proc_macro, Standard library
+   `rand <https://crates.io/crates/rand>`__, Utility library
    `regex <https://crates.io/crates/regex>`__, Utility library
    `reqwest <https://crates.io/crates/reqwest>`__, HTTP client
+   `rocket <https://crates.io/crates/rocket>`__, Web framework
    `rusqlite <https://crates.io/crates/rusqlite>`__, Database
    std, Standard library
    `rust-crypto <https://crates.io/crates/rust-crypto>`__, Cryptography library
+   `serde <https://crates.io/crates/serde>`__, Serialization
+   `smallvec <https://crates.io/crates/smallvec>`__, Utility library
    `sqlx <https://crates.io/crates/sqlx>`__, Database
    `tokio <https://crates.io/crates/tokio>`__, Asynchronous IO
    `tokio-postgres <https://crates.io/crates/tokio-postgres>`__, Database
