@@ -148,6 +148,7 @@ import codeql.rust.elements.internal.TuplePatConstructor
 import codeql.rust.elements.internal.TupleStructPatConstructor
 import codeql.rust.elements.internal.TupleTypeReprConstructor
 import codeql.rust.elements.internal.TypeAliasConstructor
+import codeql.rust.elements.internal.TypeAnchorConstructor
 import codeql.rust.elements.internal.TypeArgConstructor
 import codeql.rust.elements.internal.TypeBoundConstructor
 import codeql.rust.elements.internal.TypeBoundListConstructor

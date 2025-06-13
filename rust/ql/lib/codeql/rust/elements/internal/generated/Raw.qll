@@ -870,6 +870,11 @@ module Raw {
     ReturnTypeSyntax getReturnTypeSyntax() { path_segment_return_type_syntaxes(this, result) }
 
     /**
+     * Gets the type anchor of this path segment, if it exists.
+     */
+    TypeAnchor getTypeAnchor() { path_segment_type_anchors(this, result) }
+
+    /**
      * Gets the type representation of this path segment, if it exists.
      */
     TypeRepr getTypeRepr() { path_segment_type_reprs(this, result) }
@@ -1220,6 +1225,23 @@ module Raw {
      * Gets the visibility of this tuple field, if it exists.
      */
     Visibility getVisibility() { tuple_field_visibilities(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TypeAnchor extends @type_anchor, AstNode {
+    override string toString() { result = "TypeAnchor" }
+
+    /**
+     * Gets the path type of this type anchor, if it exists.
+     */
+    PathTypeRepr getPathType() { type_anchor_path_types(this, result) }
+
+    /**
+     * Gets the type representation of this type anchor, if it exists.
+     */
+    TypeRepr getTypeRepr() { type_anchor_type_reprs(this, result) }
   }
 
   /**

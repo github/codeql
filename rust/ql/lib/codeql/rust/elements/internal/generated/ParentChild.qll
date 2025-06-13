@@ -812,7 +812,7 @@ private module Impl {
   ) {
     exists(
       int b, int bAstNode, int n, int nGenericArgList, int nIdentifier, int nParenthesizedArgList,
-      int nRetType, int nReturnTypeSyntax, int nTypeRepr, int nTraitTypeRepr
+      int nRetType, int nReturnTypeSyntax, int nTypeAnchor, int nTypeRepr, int nTraitTypeRepr
     |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
@@ -822,7 +822,8 @@ private module Impl {
       nParenthesizedArgList = nIdentifier + 1 and
       nRetType = nParenthesizedArgList + 1 and
       nReturnTypeSyntax = nRetType + 1 and
-      nTypeRepr = nReturnTypeSyntax + 1 and
+      nTypeAnchor = nReturnTypeSyntax + 1 and
+      nTypeRepr = nTypeAnchor + 1 and
       nTraitTypeRepr = nTypeRepr + 1 and
       (
         none()
@@ -848,8 +849,10 @@ private module Impl {
         partialPredicateCall = "ReturnTypeSyntax()"
         or
         index = nReturnTypeSyntax and
-        result = e.getTypeRepr() and
-        partialPredicateCall = "TypeRepr()"
+        result = e.getTypeAnchor() and
+        partialPredicateCall = "TypeAnchor()"
+        or
+        index = nTypeAnchor and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
         or
         index = nTypeRepr and
         result = e.getTraitTypeRepr() and
@@ -1154,6 +1157,25 @@ private module Impl {
         index = nAttr and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
         or
         index = nTypeRepr and result = e.getVisibility() and partialPredicateCall = "Visibility()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfTypeAnchor(TypeAnchor e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n, int nPathType, int nTypeRepr |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nPathType = n + 1 and
+      nTypeRepr = nPathType + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getPathType() and partialPredicateCall = "PathType()"
+        or
+        index = nPathType and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
       )
     )
   }
@@ -4216,6 +4238,8 @@ private module Impl {
     result = getImmediateChildOfTokenTree(e, index, partialAccessor)
     or
     result = getImmediateChildOfTupleField(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTypeAnchor(e, index, partialAccessor)
     or
     result = getImmediateChildOfTypeBound(e, index, partialAccessor)
     or

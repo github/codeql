@@ -2190,6 +2190,7 @@ impl Translator<'_> {
         let return_type_syntax = node
             .return_type_syntax()
             .and_then(|x| self.emit_return_type_syntax(&x));
+        let type_anchor = node.type_anchor().and_then(|x| self.emit_type_anchor(&x));
         let label = self.trap.emit(generated::PathSegment {
             id: TrapId::Star,
             generic_arg_list,
@@ -2197,6 +2198,7 @@ impl Translator<'_> {
             parenthesized_arg_list,
             ret_type,
             return_type_syntax,
+            type_anchor,
         });
         self.emit_location(label, node);
         post_emit!(PathSegment, self, node, label);
@@ -3015,6 +3017,23 @@ impl Translator<'_> {
         });
         self.emit_location(label, node);
         post_emit!(TypeAlias, self, node, label);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
+    }
+    pub(crate) fn emit_type_anchor(
+        &mut self,
+        node: &ast::TypeAnchor,
+    ) -> Option<Label<generated::TypeAnchor>> {
+        pre_emit!(TypeAnchor, self, node);
+        let path_type = node.path_type().and_then(|x| self.emit_path_type(&x));
+        let type_repr = node.ty().and_then(|x| self.emit_type(&x));
+        let label = self.trap.emit(generated::TypeAnchor {
+            id: TrapId::Star,
+            path_type,
+            type_repr,
+        });
+        self.emit_location(label, node);
+        post_emit!(TypeAnchor, self, node, label);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }

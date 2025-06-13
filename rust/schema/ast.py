@@ -499,6 +499,7 @@ class PathSegment(AstNode, ):
     parenthesized_arg_list: optional["ParenthesizedArgList"] | child
     ret_type: optional["RetTypeRepr"] | child
     return_type_syntax: optional["ReturnTypeSyntax"] | child
+    type_anchor: optional["TypeAnchor"] | child
 
 class PathTypeRepr(TypeRepr, ):
     path: optional["Path"] | child
@@ -692,6 +693,10 @@ class TypeAlias(AssocItem, ExternItem, Item, ):
     type_bound_list: optional["TypeBoundList"] | child
     visibility: optional["Visibility"] | child
     where_clause: optional["WhereClause"] | child
+
+class TypeAnchor(AstNode, ):
+    path_type: optional["PathTypeRepr"] | child
+    type_repr: optional["TypeRepr"] | child
 
 class TypeArg(GenericArg, ):
     type_repr: optional["TypeRepr"] | child

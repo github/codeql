@@ -208,6 +208,7 @@ named_crates(
 | @token
 | @token_tree
 | @tuple_field
+| @type_anchor
 | @type_bound
 | @type_bound_list
 | @type_repr
@@ -789,6 +790,12 @@ path_segment_return_type_syntaxes(
 );
 
 #keyset[id]
+path_segment_type_anchors(
+  int id: @path_segment ref,
+  int type_anchor: @type_anchor ref
+);
+
+#keyset[id]
 path_segment_type_reprs(
   int id: @path_segment ref,
   int type_repr: @type_repr ref
@@ -1045,6 +1052,22 @@ tuple_field_type_reprs(
 tuple_field_visibilities(
   int id: @tuple_field ref,
   int visibility: @visibility ref
+);
+
+type_anchors(
+  unique int id: @type_anchor
+);
+
+#keyset[id]
+type_anchor_path_types(
+  int id: @type_anchor ref,
+  int path_type: @path_type_repr ref
+);
+
+#keyset[id]
+type_anchor_type_reprs(
+  int id: @type_anchor ref,
+  int type_repr: @type_repr ref
 );
 
 type_bounds(

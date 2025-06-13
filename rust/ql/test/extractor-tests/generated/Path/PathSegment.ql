@@ -4,7 +4,8 @@ import TestUtils
 
 from
   PathSegment x, string hasGenericArgList, string hasIdentifier, string hasParenthesizedArgList,
-  string hasRetType, string hasReturnTypeSyntax, string hasTypeRepr, string hasTraitTypeRepr
+  string hasRetType, string hasReturnTypeSyntax, string hasTypeAnchor, string hasTypeRepr,
+  string hasTraitTypeRepr
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -17,9 +18,10 @@ where
   ) and
   (if x.hasRetType() then hasRetType = "yes" else hasRetType = "no") and
   (if x.hasReturnTypeSyntax() then hasReturnTypeSyntax = "yes" else hasReturnTypeSyntax = "no") and
+  (if x.hasTypeAnchor() then hasTypeAnchor = "yes" else hasTypeAnchor = "no") and
   (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
   if x.hasTraitTypeRepr() then hasTraitTypeRepr = "yes" else hasTraitTypeRepr = "no"
 select x, "hasGenericArgList:", hasGenericArgList, "hasIdentifier:", hasIdentifier,
   "hasParenthesizedArgList:", hasParenthesizedArgList, "hasRetType:", hasRetType,
-  "hasReturnTypeSyntax:", hasReturnTypeSyntax, "hasTypeRepr:", hasTypeRepr, "hasTraitTypeRepr:",
-  hasTraitTypeRepr
+  "hasReturnTypeSyntax:", hasReturnTypeSyntax, "hasTypeAnchor:", hasTypeAnchor, "hasTypeRepr:",
+  hasTypeRepr, "hasTraitTypeRepr:", hasTraitTypeRepr

@@ -168,6 +168,7 @@
 /lib/codeql/rust/elements/TupleStructPat.qll linguist-generated
 /lib/codeql/rust/elements/TupleTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/TypeAlias.qll linguist-generated
+/lib/codeql/rust/elements/TypeAnchor.qll linguist-generated
 /lib/codeql/rust/elements/TypeArg.qll linguist-generated
 /lib/codeql/rust/elements/TypeBound.qll linguist-generated
 /lib/codeql/rust/elements/TypeBoundList.qll linguist-generated
@@ -423,6 +424,8 @@
 /lib/codeql/rust/elements/internal/TupleTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TupleTypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeAliasConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/TypeAnchorConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/TypeAnchorImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeArgConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeArgImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeBoundConstructor.qll linguist-generated
@@ -634,6 +637,7 @@
 /lib/codeql/rust/elements/internal/generated/TupleStructPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TupleTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TypeAlias.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/TypeAnchor.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TypeArg.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TypeBound.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TypeBoundList.qll linguist-generated
@@ -1032,6 +1036,7 @@
 /test/extractor-tests/generated/Path/PathSegment_getRetType.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getReturnTypeSyntax.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getTraitTypeRepr.ql linguist-generated
+/test/extractor-tests/generated/Path/PathSegment_getTypeAnchor.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/Path/PathTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/Path/PathTypeRepr_getPath.ql linguist-generated
@@ -1195,6 +1200,7 @@
 /test/extractor-tests/generated/TypeAlias/TypeAlias_getTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/TypeAlias/TypeAlias_getVisibility.ql linguist-generated
 /test/extractor-tests/generated/TypeAlias/TypeAlias_getWhereClause.ql linguist-generated
+/test/extractor-tests/generated/TypeAnchor/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/TypeArg/TypeArg.ql linguist-generated
 /test/extractor-tests/generated/TypeArg/TypeArg_getTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/TypeBound/TypeBound.ql linguist-generated

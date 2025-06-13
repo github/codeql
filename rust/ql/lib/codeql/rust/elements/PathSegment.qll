@@ -11,6 +11,7 @@ import codeql.rust.elements.ParenthesizedArgList
 import codeql.rust.elements.PathTypeRepr
 import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.ReturnTypeSyntax
+import codeql.rust.elements.TypeAnchor
 import codeql.rust.elements.TypeRepr
 
 /**
