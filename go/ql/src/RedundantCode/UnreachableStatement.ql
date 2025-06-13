@@ -5,8 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @id go/unreachable-statement
- * @tags maintainability
- *       correctness
+ * @tags quality
+ *       maintainability
+ *       useless-code
  *       external/cwe/cwe-561
  * @precision very-high
  */
