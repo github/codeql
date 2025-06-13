@@ -79,11 +79,11 @@ class EVP_Signature_Update_Call extends EvpUpdate {
  * We model output explicit output arguments as predicate to use it in constructors.
  * The predicate must cover all EVP_Signature_Operation subclasses.
  */
+pragma[inline]
 private Expr signatureOperationOutputArg(Call call) {
   if call.getTarget().getName() = "EVP_SignFinal_ex"
   then result = call.getArgument(2)
   else result = call.getArgument(1)
-  ////*******todo get rid of this predicate */
 }
 
 /**
@@ -94,7 +94,6 @@ abstract class EvpSignatureOperation extends EvpOperation, Crypto::SignatureOper
     this.(Call).getTarget().getName().matches("EVP_%") and
     // NULL output argument means the call is to get the size of the signature and such call is not an operation
     (
-      // ******TODO review logic
       not exists(signatureOperationOutputArg(this).getValue())
       or
       signatureOperationOutputArg(this).getValue() != "0"
@@ -182,16 +181,8 @@ class EVP_Signature_Final_Call extends EVPFinal, EvpSignatureOperation {
 
   override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
 
-  //***********TODO: the algorithm arg might nto be the right type, can't use the initializer the same way if there
-  // are two initializers for two different algorithms */
   override Expr getAlgorithmArg() {
     this.getInitCall().(EvpPrimaryAlgorithmInitializer).getAlgorithmArg() = result
-    // // algorithm specified by the key and the key is provided in this operation
-    // if this.(Call).getTarget().getName() in ["EVP_SignFinal", "EVP_SignFinal_ex"]
-    // then result = getAlgorithmFromKey(this.getKeyConsumer().asExpr())
-    // else
-    //   // or find algorithm in the initialization call
-    //   result = EVP_Signature_Operation.super.getAlgorithmArg()
   }
 
   override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
