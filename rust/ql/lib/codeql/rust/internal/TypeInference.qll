@@ -765,7 +765,9 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
     TypePath path0
   |
     n = a.getNodeAt(apos) and
-    result = CallExprBaseMatching::inferAccessType(a, apos, path0)
+    result = CallExprBaseMatching::inferAccessType(a, apos, path0) and
+    // temporary workaround until implicit borrows are handled correctly
+    if a instanceof Operation then apos.isReturn() else any()
   |
     if apos.isSelf(_)
     then
