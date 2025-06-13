@@ -1099,6 +1099,7 @@ mod method_call_type_conversion {
         println!("{:?}", x5.0); // $ fieldof=S
 
         let x6 = &S(S2); // $ SPURIOUS: type=x6:&T.&T.S
+
         // explicit dereference
         println!("{:?}", (*x6).m1()); // $ method=m1 method=deref
 
@@ -1668,9 +1669,7 @@ mod async_ {
     }
 
     fn f2() -> impl Future<Output = S1> {
-        async {
-            S1
-        }
+        async { S1 }
     }
 
     struct S2;
@@ -1678,7 +1677,10 @@ mod async_ {
     impl Future for S2 {
         type Output = S1;
 
-        fn poll(self: std::pin::Pin<&mut Self>, _cx: &mut std::task::Context<'_>) -> std::task::Poll<Self::Output> {
+        fn poll(
+            self: std::pin::Pin<&mut Self>,
+            _cx: &mut std::task::Context<'_>,
+        ) -> std::task::Poll<Self::Output> {
             std::task::Poll::Ready(S1)
         }
     }
@@ -1692,13 +1694,10 @@ mod async_ {
         f2().await.f(); // $ method=S1f
         f3().await.f(); // $ method=S1f
         S2.await.f(); // $ method=S1f
-        let b = async {
-            S1
-        };
+        let b = async { S1 };
         b.await.f(); // $ method=S1f
     }
 }
-
 
 mod impl_trait {
     struct S1;
@@ -1816,6 +1815,44 @@ mod macros {
     }
 }
 
+mod method_determined_by_argument_type {
+    trait MyAdd<T> {
+        fn my_add(&self, value: T) -> Self;
+    }
+
+    impl MyAdd<i64> for i64 {
+        // MyAdd<i64>::my_add
+        fn my_add(&self, value: i64) -> Self {
+            value
+        }
+    }
+
+    impl MyAdd<&i64> for i64 {
+        // MyAdd<&i64>::my_add
+        fn my_add(&self, value: &i64) -> Self {
+            *value // $ method=deref
+        }
+    }
+
+    impl MyAdd<bool> for i64 {
+        // MyAdd<bool>::my_add
+        fn my_add(&self, value: bool) -> Self {
+            if value {
+                1
+            } else {
+                0
+            }
+        }
+    }
+
+    pub fn f() {
+        let x: i64 = 73;
+        x.my_add(5i64); // $ method=MyAdd<i64>::my_add
+        x.my_add(&5i64); // $ method=MyAdd<&i64>::my_add
+        x.my_add(true); // $ method=MyAdd<bool>::my_add
+    }
+}
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -1839,4 +1876,5 @@ fn main() {
     impl_trait::f();
     indexers::f();
     macros::f();
+    method_determined_by_argument_type::f();
 }
