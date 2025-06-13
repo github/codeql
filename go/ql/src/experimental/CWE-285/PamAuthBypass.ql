@@ -44,6 +44,8 @@ module PamStartToAcctMgmtConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
 }
 
 module PamStartToAcctMgmtFlow = TaintTracking::Global<PamStartToAcctMgmtConfig>;
@@ -59,6 +61,8 @@ module PamStartToAuthenticateConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
 }
 
 module PamStartToAuthenticateFlow = TaintTracking::Global<PamStartToAuthenticateConfig>;
