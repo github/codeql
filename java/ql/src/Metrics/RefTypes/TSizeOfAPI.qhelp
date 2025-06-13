@@ -46,21 +46,17 @@ need to be part of the class. (A classic example of this is the
 <code>std::string</code> class in the C++ Standard Library.) As [Sutter]
 observes, there are at least two key problems with this approach:
 
-<ul>
-<li>
-It may be possible to generalize some of the utility methods beyond the
+<i>
+1. It may be possible to generalize some of the utility methods beyond the
 narrow context of the class in question -- by bundling them with the class,
 the class author reduces the scope for functionality reuse.
-</li>
 
-<li>
-It's usually impossible for the class author to know every possible
+2. It's usually impossible for the class author to know every possible
 operation that the user might want to perform on the class, so the public
 interface will inherently be incomplete. New utility methods will end up
 having a different syntax to the privileged public methods in the class,
 negatively impacting on code consistency.
-</li>
-</ul>
+</i>
 
 To refactor a class like this, simply move its utility methods elsewhere,
 paring its public interface down to the bare minimum.
