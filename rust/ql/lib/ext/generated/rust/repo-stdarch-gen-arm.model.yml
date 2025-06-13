@@ -25,7 +25,7 @@ extensions:
       - ["repo::stdarch-gen-arm", "<crate::intrinsic::Intrinsic>::generate_variant", "Argument[self].Reference.Reference", "ReturnValue.Field[core::result::Result::Ok(0)]", "value", "dfc-generated"]
       - ["repo::stdarch-gen-arm", "<crate::intrinsic::Intrinsic>::generate_variant", "Argument[self].Reference", "ReturnValue.Field[core::result::Result::Ok(0)]", "value", "dfc-generated"]
       - ["repo::stdarch-gen-arm", "<crate::intrinsic::LLVMLink>::apply_conversions_to_call", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)].Field[stdarch-gen-arm::expression::Expression::FnCall(0)]", "value", "dfc-generated"]
-      - ["repo::stdarch-gen-arm", "<crate::intrinsic::LLVMLink>::make_fn_call", "Argument[self].Field[stdarch-gen-arm::intrinsic::LLVMLink::signature].Field[core::option::Option::Some(0)]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo::stdarch-gen-arm", "<crate::intrinsic::LLVMLink>::make_fn_call", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["repo::stdarch-gen-arm", "<crate::intrinsic::LLVMLink>::resolve", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo::stdarch-gen-arm", "<crate::intrinsic::LLVMLink>::resolve", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["repo::stdarch-gen-arm", "<crate::intrinsic::Signature>::doc_name", "Argument[self]", "ReturnValue", "taint", "df-generated"]
