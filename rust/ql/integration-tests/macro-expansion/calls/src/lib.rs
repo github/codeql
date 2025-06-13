@@ -7,7 +7,7 @@ macro_rules! def_x {
 }
 
 impl S {
-    def_x!();  // this didn't expand in 0.0.274-0.0.281
+    def_x!();  // this didn't expand in 0.0.274..0.0.285
 }
 
 macro_rules! my_macro {
@@ -33,14 +33,14 @@ macro_rules! my_int {
     () => { i32 };
 }
 
-fn answer() -> my_int!() {  // this doesn't expand since 0.0.274
+fn answer() -> my_int!() {  // this didn't expand in 0.0.274..0.0.287
     let a: my_int!() = 42;  // this is fine
     a as my_int!() // this is fine too
 }
 
 
-type MyInt = my_int!();  // this doesn't expand since 0.0.274
+type MyInt = my_int!();  // this didn't expand in 0.0.274..0.0.287
 
 struct MyStruct {
-    field: my_int!(),  // this doesn't expand since 0.0.274
+    field: my_int!(),  // this didn't expand in 0.0.274..0.0.287
 }
