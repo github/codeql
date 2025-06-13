@@ -1123,9 +1123,12 @@ private module ControlFlowGraphImpl {
       or
       // `assert` statements may throw
       completion = ThrowCompletion(assertionError()) and
-      if exists(assertstmt.getMessage())
-      then last(assertstmt.getMessage(), last, NormalCompletion())
-      else last(assertstmt.getExpr(), last, BooleanCompletion(false, _))
+      (
+        last(assertstmt.getMessage(), last, NormalCompletion())
+        or
+        not exists(assertstmt.getMessage()) and
+        last(assertstmt.getExpr(), last, BooleanCompletion(false, _))
+      )
     )
     or
     // `throw` statements or throwing calls give rise to `Throw` completion
