@@ -1124,6 +1124,37 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
   )
 }
 
+pragma[nomagic]
+private Type inferArrayExprType(ArrayExpr ae, TypePath path) {
+  // an array list expression (`[1, 2, 3]`) has the type of the first (any) element
+  exists(Type type0, TypePath path0 |
+    type0 = inferType(ae.(ArrayListExpr).getExpr(0), path0) and
+    result = type0 and
+    path = TypePath::cons(any(ArrayTypeParameter tp), path0)
+  )
+  or
+  // an array repeat expression (`[1; 3]`) has the type of the repeat operand
+  exists(Type type0, TypePath path0 |
+    type0 = inferType(ae.(ArrayRepeatExpr).getRepeatOperand(), path0) and
+    result = type0 and
+    path = TypePath::cons(any(ArrayTypeParameter tp), path0)
+  )
+}
+
+pragma[nomagic]
+private Type inferForLoopExprType(AstNode n, TypePath path) {
+  // type of iterable -> type of pattern (loop variable)
+  exists(ForExpr fe, Type iterableType, TypePath iterablePath |
+    n = fe.getPat() and
+    iterableType = inferType(fe.getIterable(), iterablePath) and
+    (
+      iterablePath.isCons(any(ArrayTypeParameter tp), path) and
+      result = iterableType
+      // TODO: iterables (containers, ranges etc)
+    )
+  )
+}
+
 final class MethodCall extends Call {
   MethodCall() {
     exists(this.getReceiver()) and
@@ -1438,6 +1469,10 @@ private module Cached {
     result = inferAwaitExprType(n, path)
     or
     result = inferIndexExprType(n, path)
+    or
+    result = inferArrayExprType(n, path)
+    or
+    result = inferForLoopExprType(n, path)
   }
 }
 
