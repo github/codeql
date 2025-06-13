@@ -39290,70 +39290,81 @@ try_except.c:
 #   59|     r59_1(glval<int *>)  = VariableAddress[b]       : 
 #   59|     r59_2(int *)         = Load[b]                  : &:r59_1, m56_6
 #   59|     r59_3(int)           = Load[?]                  : &:r59_2, ~m56_8
-#   59|     r59_4(glval<int>)    = VariableAddress[x]       : 
-#   59|     m59_5(int)           = Store[x]                 : &:r59_4, r59_3
-#   60|     r60_1(glval<int>)    = VariableAddress[x]       : 
-#   60|     r60_2(int)           = Load[x]                  : &:r60_1, m59_5
-#   60|     r60_3(glval<int *>)  = VariableAddress[c]       : 
-#   60|     r60_4(int *)         = Load[c]                  : &:r60_3, m56_10
-#   60|     r60_5(glval<int>)    = CopyValue                : r60_4
-#   60|     m60_6(int)           = Store[?]                 : &:r60_5, r60_2
-#   60|     m60_7(unknown)       = Chi                      : total:m56_12, partial:m60_6
 #-----|   Goto -> Block 1
-#-----|   SEH Exception -> Block 4
+#-----|   SEH Exception -> Block 6
 
-#   61|   Block 1
+#   59|   Block 1
+#   59|     r59_4(glval<int>)   = VariableAddress[x] : 
+#   59|     m59_5(int)          = Store[x]           : &:r59_4, r59_3
+#   60|     r60_1(glval<int>)   = VariableAddress[x] : 
+#   60|     r60_2(int)          = Load[x]            : &:r60_1, m59_5
+#   60|     r60_3(glval<int *>) = VariableAddress[c] : 
+#   60|     r60_4(int *)        = Load[c]            : &:r60_3, m56_10
+#   60|     r60_5(glval<int>)   = CopyValue          : r60_4
+#   60|     m60_6(int)          = Store[?]           : &:r60_5, r60_2
+#   60|     m60_7(unknown)      = Chi                : total:m56_12, partial:m60_6
+#-----|   Goto -> Block 2
+#-----|   SEH Exception -> Block 6
+
+#   61|   Block 2
 #   61|     r61_1(glval<int>)   = VariableAddress[y] : 
 #   61|     r61_2(glval<int *>) = VariableAddress[d] : 
 #   61|     r61_3(int *)        = Load[d]            : &:r61_2, m56_14
 #   61|     r61_4(int)          = Load[?]            : &:r61_3, ~m56_16
-#   61|     m61_5(int)          = Store[y]           : &:r61_1, r61_4
-#-----|   Goto -> Block 6
+#-----|   Goto -> Block 3
+#-----|   SEH Exception -> Block 6
 
-#   63|   Block 2
-#   63|     r63_1(int)  = Constant[0]       : 
-#   63|     r63_2(bool) = CompareEQ         : r63_7, r63_1
-#   63|     v63_3(void) = ConditionalBranch : r63_2
-#-----|   False -> Block 3
-#-----|   True -> Block 7
-
-#   63|   Block 3
-#   63|     r63_4(int)  = Constant[1]       : 
-#   63|     r63_5(bool) = CompareEQ         : r63_7, r63_4
-#   63|     v63_6(void) = ConditionalBranch : r63_5
-#-----|   False -> Block 7
-#-----|   True -> Block 5
+#   61|   Block 3
+#   61|     m61_5(int) = Store[y] : &:r61_1, r61_4
+#-----|   Goto -> Block 8
 
 #   63|   Block 4
-#   63|     r63_7(int)   = Constant[1]       : 
-#   63|     r63_8(int)   = Constant[-1]      : 
-#   63|     r63_9(bool)  = CompareEQ         : r63_7, r63_8
-#   63|     v63_10(void) = ConditionalBranch : r63_9
-#-----|   False -> Block 2
+#   63|     r63_1(int)  = Constant[0]       : 
+#   63|     r63_2(bool) = CompareEQ         : r63_9, r63_1
+#   63|     v63_3(void) = ConditionalBranch : r63_2
+#-----|   False -> Block 5
+#-----|   True -> Block 9
+
+#   63|   Block 5
+#   63|     r63_4(int)  = Constant[1]       : 
+#   63|     r63_5(bool) = CompareEQ         : r63_9, r63_4
+#   63|     v63_6(void) = ConditionalBranch : r63_5
+#-----|   False -> Block 9
 #-----|   True -> Block 7
 
-#   64|   Block 5
+#   63|   Block 6
+#   63|     m63_7(unknown) = Phi               : from 0:m56_12, from 1:m60_7, from 2:m60_7
+#   63|     m63_8(int)     = Phi               : from 0:m57_3, from 1:m59_5, from 2:m59_5
+#   63|     r63_9(int)     = Constant[1]       : 
+#   63|     r63_10(int)    = Constant[-1]      : 
+#   63|     r63_11(bool)   = CompareEQ         : r63_9, r63_10
+#   63|     v63_12(void)   = ConditionalBranch : r63_11
+#-----|   False -> Block 4
+#-----|   True -> Block 9
+
+#   64|   Block 7
 #   64|     r64_1(glval<unknown>) = FunctionAddress[sink] : 
 #   64|     r64_2(glval<int>)     = VariableAddress[x]    : 
-#   64|     r64_3(int)            = Load[x]               : &:r64_2, m59_5
+#   64|     r64_3(int)            = Load[x]               : &:r64_2, m63_8
 #   64|     v64_4(void)           = Call[sink]            : func:r64_1, 0:r64_3
 #   64|     m64_5(unknown)        = ^CallSideEffect       : ~m56_4
 #   64|     m64_6(unknown)        = Chi                   : total:m56_4, partial:m64_5
-#-----|   Goto -> Block 6
+#-----|   Goto -> Block 8
 
-#   66|   Block 6
-#   66|     m66_1(unknown) = Phi                  : from 1:~m56_4, from 5:~m64_6
-#   66|     v66_2(void)    = NoOp                 : 
+#   66|   Block 8
+#   66|     m66_1(unknown) = Phi                  : from 3:m60_7, from 7:m63_7
+#   66|     m66_2(unknown) = Phi                  : from 3:~m56_4, from 7:~m64_6
+#   66|     v66_3(void)    = NoOp                 : 
 #   56|     v56_25(void)   = ReturnIndirection[b] : &:r56_7, m56_8
-#   56|     v56_26(void)   = ReturnIndirection[c] : &:r56_11, m60_7
+#   56|     v56_26(void)   = ReturnIndirection[c] : &:r56_11, m66_1
 #   56|     v56_27(void)   = ReturnIndirection[d] : &:r56_15, m56_16
 #   56|     v56_28(void)   = ReturnIndirection[e] : &:r56_19, m56_20
 #   56|     v56_29(void)   = ReturnIndirection[f] : &:r56_23, m56_24
 #   56|     v56_30(void)   = ReturnVoid           : 
-#   56|     v56_31(void)   = AliasedUse           : ~m66_1
+#   56|     v56_31(void)   = AliasedUse           : ~m66_2
 #   56|     v56_32(void)   = ExitFunction         : 
 
-#   56|   Block 7
+#   56|   Block 9
 #   56|     v56_33(void) = Unreached : 
 
 try_except.cpp:
