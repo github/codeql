@@ -28,7 +28,7 @@ mod field_access {
     }
 
     fn default_field_access(x: GenericThing) {
-        let a = x.a; // $ fieldof=GenericThing MISSING: type=a:bool
+        let a = x.a; // $ fieldof=GenericThing type=a:bool
         println!("{:?}", a);
     }
 
@@ -499,15 +499,15 @@ mod type_parameter_bounds {
 
     fn call_trait_per_bound_with_type_3<T: Pair>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
-        let s1 = x.fst(); // $ method=fst MISSING: type=s1:bool
-        let s2 = y.snd(); // $ method=snd MISSING: type=s2:i64
+        let s1 = x.fst(); // $ method=fst type=s1:bool
+        let s2 = y.snd(); // $ method=snd type=s2:i64
         println!("{:?}, {:?}", s1, s2);
     }
 
     fn call_trait_per_bound_with_type_4<T: Pair<u8>>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
         let s1 = x.fst(); // $ method=fst type=s1:u8
-        let s2 = y.snd(); // $ method=snd MISSING: type=s2:i64
+        let s2 = y.snd(); // $ method=snd type=s2:i64
         println!("{:?}, {:?}", s1, s2);
     }
 }

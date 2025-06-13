@@ -42,6 +42,9 @@ abstract class Type extends TType {
   /** Gets the `i`th type parameter of this type, if any. */
   abstract TypeParameter getTypeParameter(int i);
 
+  /** Gets the default type for the `i`th type parameter, if any. */
+  TypeMention getTypeParameterDefault(int i) { none() }
+
   /** Gets a type parameter of this type. */
   final TypeParameter getATypeParameter() { result = this.getTypeParameter(_) }
 
@@ -87,6 +90,10 @@ class StructType extends StructOrEnumType, TStruct {
     result = TTypeParamTypeParameter(struct.getGenericParamList().getTypeParam(i))
   }
 
+  override TypeMention getTypeParameterDefault(int i) {
+    result = struct.getGenericParamList().getTypeParam(i).getDefaultType()
+  }
+
   override string toString() { result = struct.getName().getText() }
 
   override Location getLocation() { result = struct.getLocation() }
@@ -106,6 +113,10 @@ class EnumType extends StructOrEnumType, TEnum {
 
   override TypeParameter getTypeParameter(int i) {
     result = TTypeParamTypeParameter(enum.getGenericParamList().getTypeParam(i))
+  }
+
+  override TypeMention getTypeParameterDefault(int i) {
+    result = enum.getGenericParamList().getTypeParam(i).getDefaultType()
   }
 
   override string toString() { result = enum.getName().getText() }
@@ -131,6 +142,10 @@ class TraitType extends Type, TTrait {
     or
     result =
       any(AssociatedTypeTypeParameter param | param.getTrait() = trait and param.getIndex() = i)
+  }
+
+  override TypeMention getTypeParameterDefault(int i) {
+    result = trait.getGenericParamList().getTypeParam(i).getDefaultType()
   }
 
   override string toString() { result = trait.toString() }
