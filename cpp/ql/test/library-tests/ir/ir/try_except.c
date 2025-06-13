@@ -52,3 +52,15 @@ void j(int b) {
     sink(x);
   }
 }
+
+void k(int *b, int *c, int *d, int *e, int *f) {
+  int x = 0;
+  __try {
+    x = *b;
+    *c = x;
+    int y = *d;
+  }
+  __except (1) {
+    sink(x);
+  }
+}
