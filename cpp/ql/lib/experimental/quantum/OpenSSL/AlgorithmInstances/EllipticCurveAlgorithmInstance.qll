@@ -7,7 +7,7 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgori
 private import AlgToAVCFlow
 
 class KnownOpenSSLEllipticCurveConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
-  Crypto::EllipticCurveInstance instanceof KnownOpenSSLEllipticCurveAlgorithmConstant
+  Crypto::EllipticCurveInstance instanceof KnownOpenSSLEllipticCurveAlgorithmExpr
 {
   OpenSSLAlgorithmValueConsumer getterCall;
 
@@ -16,7 +16,7 @@ class KnownOpenSSLEllipticCurveConstantAlgorithmInstance extends OpenSSLAlgorith
     // 1) The source is a literal and flows to a getter, then we know we have an instance
     // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
     // Possibility 1:
-    this instanceof Literal and
+    this instanceof OpenSSLAlgorithmLiteral and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
       sink = getterCall.getInputNode() and
@@ -27,7 +27,8 @@ class KnownOpenSSLEllipticCurveConstantAlgorithmInstance extends OpenSSLAlgorith
     )
     or
     // Possibility 2:
-    this instanceof DirectAlgorithmValueConsumer and getterCall = this
+    this instanceof OpenSSLAlgorithmCall and
+    getterCall = this
   }
 
   override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
@@ -43,11 +44,11 @@ class KnownOpenSSLEllipticCurveConstantAlgorithmInstance extends OpenSSLAlgorith
   }
 
   override string getParsedEllipticCurveName() {
-    result = this.(KnownOpenSSLEllipticCurveAlgorithmConstant).getNormalizedName()
+    result = this.(KnownOpenSSLAlgorithmExpr).getNormalizedName()
   }
 
   override int getKeySize() {
-    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.(KnownOpenSSLEllipticCurveAlgorithmConstant)
+    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.(KnownOpenSSLAlgorithmExpr)
           .getNormalizedName(), result, _)
   }
 }

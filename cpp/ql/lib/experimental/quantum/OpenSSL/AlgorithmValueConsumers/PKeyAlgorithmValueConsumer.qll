@@ -23,7 +23,8 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
       or
       this.(Call).getTarget().getName() in [
           "EVP_PKEY_CTX_new_from_name", "EVP_PKEY_new_raw_private_key_ex",
-          "EVP_PKEY_new_raw_public_key_ex", "EVP_PKEY_CTX_ctrl", "EVP_PKEY_CTX_set_group_name"
+          "EVP_PKEY_new_raw_public_key_ex", "EVP_PKEY_CTX_ctrl", "EVP_PKEY_CTX_ctrl_uint64",
+          "EVP_PKEY_CTX_ctrl_str", "EVP_PKEY_CTX_set_group_name"
         ] and
       valueArgNode.asExpr() = this.(Call).getArgument(1)
       or
