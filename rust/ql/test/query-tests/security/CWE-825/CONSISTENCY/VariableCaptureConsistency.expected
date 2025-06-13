@@ -1,0 +1,5 @@
+variableIsCaptured
+| lifetime.rs:511:6:511:14 | my_local2 | CapturedVariable is not captured |
+| lifetime.rs:564:6:564:14 | my_local2 | CapturedVariable is not captured |
+consistencyOverview
+| CapturedVariable is not captured | 2 |
