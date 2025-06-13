@@ -5,10 +5,10 @@
  * @kind problem
  * @problem.severity warning
  * @id go/missing-error-check
- * @tags reliability
- *       correctness
- *       logic
- *       quality
+ * @tags quality
+ *       reliability
+ *       error-handling
+ *       external/cwe/cwe-252
  * @precision high
  */
 
