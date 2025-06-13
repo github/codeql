@@ -4,10 +4,10 @@ class MyRange(object):
         self.high = high
 
     def __iter__(self):
-        return self.current
+        return (self.current, self.high) # BAD: does not return `self`.
 
-    def next(self):
+    def __next__(self):
         if self.current > self.high:
-            raise StopIteration
+            return None
         self.current += 1
         return self.current - 1

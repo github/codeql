@@ -1098,15 +1098,20 @@ mod method_call_type_conversion {
         println!("{:?}", x5.m1()); // $ method=m1
         println!("{:?}", x5.0); // $ fieldof=S
 
-        let x6 = &S(S2);
+        let x6 = &S(S2); // $ SPURIOUS: type=x6:&T.&T.S
         // explicit dereference
-        println!("{:?}", (*x6).m1()); // $ method=m1
+        println!("{:?}", (*x6).m1()); // $ method=m1 method=deref
 
         let x7 = S(&S2);
         // Non-implicit dereference with nested borrow in order to test that the
         // implicit dereference handling doesn't affect nested borrows.
         let t = x7.m1(); // $ method=m1 type=t:& type=t:&T.S2
         println!("{:?}", x7);
+
+        let x9 : String = "Hello".to_string(); // $ type=x9:String
+        // Implicit `String` -> `str` conversion happens via the `Deref` trait:
+        // https://doc.rust-lang.org/std/string/struct.String.html#deref.
+        let u = x9.parse::<u32>(); // $ method=parse type=u:T.u32
     }
 }
 
@@ -1191,7 +1196,7 @@ mod borrowed_typed {
         x.f2(); // $ method=f2
         S::f3(&x);
 
-        let n = **&&true; // $ type=n:bool
+        let n = **&&true; // $ type=n:bool method=deref
 
         // In this example the type of `flag` must be inferred at the call to
         // `flip` and flow through the borrow in the argument.
