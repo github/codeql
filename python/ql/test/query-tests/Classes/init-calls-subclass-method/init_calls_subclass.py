@@ -23,19 +23,25 @@ def bad1():
             if self.important_state == "OK":
                 pass
 
-def good2():
+def bad2():
     class Super:
         def __init__(self, arg):
             self.a = arg 
-            self.postproc() # OK: Here `postproc` is called after initialisation. 
+            # BAD: postproc is called after initialization. This is still an issue 
+            #      since it may still occur before all initialization on a subclass is complete.
+            self.postproc() 
 
         def postproc(self):
             if self.a == 1:
                 pass
 
     class Sub(Super):
+        def __init__(self, arg):
+            super().__init__(arg)
+            self.b = 3
+
         def postproc(self):
-            if self.a == 2:
+            if self.a == 2 and self.b == 3:
                 pass
 
 def good3():
