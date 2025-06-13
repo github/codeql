@@ -121,3 +121,38 @@ function inspectNextElement(string) {
   }
   return parts.join('/');
 }
+
+function withTryCatch(pendingCSS) {
+  for (let i = 0; i < pendingCSS.length; ++i) {
+      try {
+          pendingCSS.splice(i, 1); // $ SPURIOUS:Alert
+          i -= 1;
+      } catch (ex) {}
+  }
+}
+
+function andOperand(toc) {
+  for (let i = 0; i < toc.length; i++) {
+    toc[i].ignoreSubHeading && toc.splice(i, 1) && i--;
+  }
+}
+
+function ifStatement(toc) {
+  for (let i = 0; i < toc.length; i++) {
+    if(toc[i].ignoreSubHeading){
+      if(toc.splice(i, 1)){
+        i--; 
+      }
+    }
+  }
+}
+
+function ifStatement2(toc) {
+  for (let i = 0; i < toc.length; i++) {
+    if(toc[i].ignoreSubHeading){
+      if(!toc.splice(i, 1)){ // $Alert
+        i--;
+      }
+    }
+  }
+}
