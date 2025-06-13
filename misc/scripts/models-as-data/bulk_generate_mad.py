@@ -116,9 +116,7 @@ def clone_project(project: Project) -> str:
     return target_dir
 
 
-def run_in_parallel[
-    T, U
-](
+def run_in_parallel[T, U](
     func: Callable[[T], U],
     items: List[T],
     *,
@@ -516,7 +514,7 @@ if __name__ == "__main__":
         "--dca",
         type=str,
         help="Name of a DCA run that built all the projects. Can be repeated, with sources taken from all provided runs, "
-             "the last provided ones having priority",
+        "the last provided ones having priority",
         action="append",
     )
     parser.add_argument(
