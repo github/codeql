@@ -3000,7 +3000,7 @@ ir.c:
 #   25|     r25_3(int)            = Load[x]                                 : &:r25_2, ~m?
 #   25|     v25_4(void)           = Call[ExRaiseAccessViolation]            : func:r25_1, 0:r25_3
 #   25|     mu25_5(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   C++ Exception -> Block 6
+#-----|   SEH Exception -> Block 6
 
 #   21|   Block 1
 #   21|     v21_6(void) = AliasedUse   : ~m?
@@ -3057,7 +3057,7 @@ ir.c:
 #   36|     r36_2(int)            = Constant[0]                             : 
 #   36|     v36_3(void)           = Call[ExRaiseAccessViolation]            : func:r36_1, 0:r36_2
 #   36|     mu36_4(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   C++ Exception -> Block 5
+#-----|   SEH Exception -> Block 5
 
 #   32|   Block 1
 #   32|     v32_4(void) = AliasedUse   : ~m?
@@ -3093,7 +3093,7 @@ ir.c:
 #   40|     r40_2(int)            = Constant[1]                             : 
 #   40|     v40_3(void)           = Call[ExRaiseAccessViolation]            : func:r40_1, 0:r40_2
 #   40|     mu40_4(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   C++ Exception -> Block 2
+#-----|   SEH Exception -> Block 2
 
 #   42|   Block 7
 #   42|     v42_1(void) = NoOp       : 
@@ -3138,7 +3138,7 @@ ir.c:
 #   62|     r62_2(int)            = Constant[0]                             : 
 #   62|     v62_3(void)           = Call[ExRaiseAccessViolation]            : func:r62_1, 0:r62_2
 #   62|     mu62_4(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   C++ Exception -> Block 3
+#-----|   SEH Exception -> Block 3
 
 #   57|   Block 1
 #   57|     v57_4(void) = AliasedUse   : ~m?
@@ -3165,7 +3165,7 @@ ir.c:
 #   73|     r73_2(int)            = Constant[0]                             : 
 #   73|     v73_3(void)           = Call[ExRaiseAccessViolation]            : func:r73_1, 0:r73_2
 #   73|     mu73_4(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   C++ Exception -> Block 3
+#-----|   SEH Exception -> Block 3
 
 #   70|   Block 1
 #   70|     v70_4(void) = AliasedUse   : ~m?
@@ -3180,7 +3180,7 @@ ir.c:
 #   76|     r76_2(int)            = Constant[0]                             : 
 #   76|     v76_3(void)           = Call[ExRaiseAccessViolation]            : func:r76_1, 0:r76_2
 #   76|     mu76_4(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   C++ Exception -> Block 2
+#-----|   SEH Exception -> Block 2
 
 #   78|   Block 4
 #   78|     v78_1(void) = NoOp       : 
@@ -3196,7 +3196,7 @@ ir.c:
 #   81|     r81_2(int)            = Constant[1]                             : 
 #   81|     v81_3(void)           = Call[ExRaiseAccessViolation]            : func:r81_1, 0:r81_2
 #   81|     mu81_4(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   C++ Exception -> Block 2
+#-----|   SEH Exception -> Block 2
 
 #   80|   Block 1
 #   80|     v80_4(void) = AliasedUse   : ~m?
@@ -37288,27 +37288,20 @@ struct_init.cpp:
 try_except.c:
 #    6| void f()
 #    6|   Block 0
-#    6|     v6_1(void)            = EnterFunction                  : 
-#    6|     mu6_2(unknown)        = AliasedDefinition              : 
-#    6|     mu6_3(unknown)        = InitializeNonLocal             : 
-#    7|     r7_1(glval<int>)      = VariableAddress[x]             : 
-#    7|     mu7_2(int)            = Uninitialized[x]               : &:r7_1
-#    7|     r7_3(glval<int>)      = VariableAddress[y]             : 
-#    7|     r7_4(int)             = Constant[0]                    : 
-#    7|     mu7_5(int)            = Store[y]                       : &:r7_3, r7_4
-#    9|     r9_1(glval<unknown>)  = FunctionAddress[ProbeFunction] : 
-#    9|     r9_2(int)             = Constant[0]                    : 
-#    9|     v9_3(void)            = Call[ProbeFunction]            : func:r9_1, 0:r9_2
-#    9|     mu9_4(unknown)        = ^CallSideEffect                : ~m?
-#   10|     r10_1(glval<int>)     = VariableAddress[y]             : 
-#   10|     r10_2(int)            = Load[y]                        : &:r10_1, ~m?
-#   10|     r10_3(glval<int>)     = VariableAddress[x]             : 
-#   10|     mu10_4(int)           = Store[x]                       : &:r10_3, r10_2
-#   11|     r11_1(glval<unknown>) = FunctionAddress[ProbeFunction] : 
-#   11|     r11_2(int)            = Constant[0]                    : 
-#   11|     v11_3(void)           = Call[ProbeFunction]            : func:r11_1, 0:r11_2
-#   11|     mu11_4(unknown)       = ^CallSideEffect                : ~m?
-#-----|   Goto -> Block 7
+#    6|     v6_1(void)           = EnterFunction                  : 
+#    6|     mu6_2(unknown)       = AliasedDefinition              : 
+#    6|     mu6_3(unknown)       = InitializeNonLocal             : 
+#    7|     r7_1(glval<int>)     = VariableAddress[x]             : 
+#    7|     mu7_2(int)           = Uninitialized[x]               : &:r7_1
+#    7|     r7_3(glval<int>)     = VariableAddress[y]             : 
+#    7|     r7_4(int)            = Constant[0]                    : 
+#    7|     mu7_5(int)           = Store[y]                       : &:r7_3, r7_4
+#    9|     r9_1(glval<unknown>) = FunctionAddress[ProbeFunction] : 
+#    9|     r9_2(int)            = Constant[0]                    : 
+#    9|     v9_3(void)           = Call[ProbeFunction]            : func:r9_1, 0:r9_2
+#    9|     mu9_4(unknown)       = ^CallSideEffect                : ~m?
+#-----|   Goto -> Block 3
+#-----|   SEH Exception -> Block 6
 
 #    6|   Block 1
 #    6|     v6_4(void) = AliasedUse   : ~m?
@@ -37318,36 +37311,48 @@ try_except.c:
 #    6|     v6_6(void) = Unwind : 
 #-----|   Goto -> Block 1
 
-#   13|   Block 3
+#   10|   Block 3
+#   10|     r10_1(glval<int>)     = VariableAddress[y]             : 
+#   10|     r10_2(int)            = Load[y]                        : &:r10_1, ~m?
+#   10|     r10_3(glval<int>)     = VariableAddress[x]             : 
+#   10|     mu10_4(int)           = Store[x]                       : &:r10_3, r10_2
+#   11|     r11_1(glval<unknown>) = FunctionAddress[ProbeFunction] : 
+#   11|     r11_2(int)            = Constant[0]                    : 
+#   11|     v11_3(void)           = Call[ProbeFunction]            : func:r11_1, 0:r11_2
+#   11|     mu11_4(unknown)       = ^CallSideEffect                : ~m?
+#-----|   Goto -> Block 8
+#-----|   SEH Exception -> Block 6
+
+#   13|   Block 4
 #   13|     r13_1(int)  = Constant[0]       : 
 #   13|     r13_2(bool) = CompareEQ         : r13_7, r13_1
 #   13|     v13_3(void) = ConditionalBranch : r13_2
-#-----|   False -> Block 4
+#-----|   False -> Block 5
 #-----|   True -> Block 2
 
-#   13|   Block 4
+#   13|   Block 5
 #   13|     r13_4(int)  = Constant[1]       : 
 #   13|     r13_5(bool) = CompareEQ         : r13_7, r13_4
 #   13|     v13_6(void) = ConditionalBranch : r13_5
-#-----|   True -> Block 6
+#-----|   True -> Block 7
 
-#   13|   Block 5
+#   13|   Block 6
 #   13|     r13_7(int)   = Constant[0]       : 
 #   13|     r13_8(int)   = Constant[-1]      : 
 #   13|     r13_9(bool)  = CompareEQ         : r13_7, r13_8
 #   13|     v13_10(void) = ConditionalBranch : r13_9
-#-----|   False -> Block 3
+#-----|   False -> Block 4
 #-----|   True -> Block 2
 
-#   14|   Block 6
+#   14|   Block 7
 #   14|     r14_1(glval<unknown>) = FunctionAddress[sink] : 
 #   14|     r14_2(glval<int>)     = VariableAddress[x]    : 
 #   14|     r14_3(int)            = Load[x]               : &:r14_2, ~m?
 #   14|     v14_4(void)           = Call[sink]            : func:r14_1, 0:r14_3
 #   14|     mu14_5(unknown)       = ^CallSideEffect       : ~m?
-#-----|   Goto -> Block 7
+#-----|   Goto -> Block 8
 
-#   16|   Block 7
+#   16|   Block 8
 #   16|     v16_1(void) = NoOp       : 
 #    6|     v6_7(void)  = ReturnVoid : 
 #-----|   Goto -> Block 1
@@ -37366,6 +37371,18 @@ try_except.c:
 #   21|     r21_2(int)            = Constant[0]                    : 
 #   21|     v21_3(void)           = Call[ProbeFunction]            : func:r21_1, 0:r21_2
 #   21|     mu21_4(unknown)       = ^CallSideEffect                : ~m?
+#-----|   Goto -> Block 3
+#-----|   SEH Exception -> Block 4
+
+#   18|   Block 1
+#   18|     v18_4(void) = AliasedUse   : ~m?
+#   18|     v18_5(void) = ExitFunction : 
+
+#   18|   Block 2
+#   18|     v18_6(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+#   22|   Block 3
 #   22|     r22_1(glval<int>)     = VariableAddress[y]             : 
 #   22|     r22_2(int)            = Load[y]                        : &:r22_1, ~m?
 #   22|     r22_3(glval<int>)     = VariableAddress[x]             : 
@@ -37374,21 +37391,16 @@ try_except.c:
 #   23|     r23_2(int)            = Constant[0]                    : 
 #   23|     v23_3(void)           = Call[ProbeFunction]            : func:r23_1, 0:r23_2
 #   23|     mu23_4(unknown)       = ^CallSideEffect                : ~m?
-#   26|     r26_1(glval<unknown>) = FunctionAddress[sink]          : 
-#   26|     r26_2(glval<int>)     = VariableAddress[x]             : 
-#   26|     r26_3(int)            = Load[x]                        : &:r26_2, ~m?
-#   26|     v26_4(void)           = Call[sink]                     : func:r26_1, 0:r26_3
-#   26|     mu26_5(unknown)       = ^CallSideEffect                : ~m?
-#   28|     v28_1(void)           = NoOp                           : 
-#   18|     v18_4(void)           = ReturnVoid                     : 
-#-----|   Goto -> Block 1
+#-----|   Goto|SEH Exception -> Block 4
 
-#   18|   Block 1
-#   18|     v18_5(void) = AliasedUse   : ~m?
-#   18|     v18_6(void) = ExitFunction : 
-
-#   18|   Block 2
-#   18|     v18_7(void) = Unwind : 
+#   26|   Block 4
+#   26|     r26_1(glval<unknown>) = FunctionAddress[sink] : 
+#   26|     r26_2(glval<int>)     = VariableAddress[x]    : 
+#   26|     r26_3(int)            = Load[x]               : &:r26_2, ~m?
+#   26|     v26_4(void)           = Call[sink]            : func:r26_1, 0:r26_3
+#   26|     mu26_5(unknown)       = ^CallSideEffect       : ~m?
+#   28|     v28_1(void)           = NoOp                  : 
+#   18|     v18_7(void)           = ReturnVoid            : 
 #-----|   Goto -> Block 1
 
 #   32| void h(int)
@@ -37422,6 +37434,7 @@ try_except.c:
 #   36|     v36_2(void)           = Call[AfxThrowMemoryException]            : func:r36_1
 #   36|     mu36_3(unknown)       = ^CallSideEffect                          : ~m?
 #-----|   Goto -> Block 8
+#-----|   SEH Exception -> Block 6
 
 #   39|   Block 4
 #   39|     r39_1(int)  = Constant[0]       : 
@@ -37457,30 +37470,86 @@ try_except.c:
 #   32|     v32_9(void) = ReturnVoid : 
 #-----|   Goto -> Block 1
 
+#   46| void j(int)
+#   46|   Block 0
+#   46|     v46_1(void)           = EnterFunction          : 
+#   46|     mu46_2(unknown)       = AliasedDefinition      : 
+#   46|     mu46_3(unknown)       = InitializeNonLocal     : 
+#   46|     r46_4(glval<int>)     = VariableAddress[b]     : 
+#   46|     mu46_5(int)           = InitializeParameter[b] : &:r46_4
+#   47|     r47_1(glval<int>)     = VariableAddress[x]     : 
+#   47|     r47_2(int)            = Constant[0]            : 
+#   47|     mu47_3(int)           = Store[x]               : &:r47_1, r47_2
+#   49|     r49_1(glval<int>)     = VariableAddress[y]     : 
+#   49|     r49_2(glval<unknown>) = FunctionAddress[i]     : 
+#   49|     r49_3(int)            = Call[i]                : func:r49_2
+#   49|     mu49_4(unknown)       = ^CallSideEffect        : ~m?
+#-----|   Goto -> Block 3
+#-----|   SEH Exception -> Block 6
+
+#   46|   Block 1
+#   46|     v46_6(void) = AliasedUse   : ~m?
+#   46|     v46_7(void) = ExitFunction : 
+
+#   46|   Block 2
+#   46|     v46_8(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+#   49|   Block 3
+#   49|     mu49_5(int) = Store[y] : &:r49_1, r49_3
+#-----|   Goto -> Block 8
+
+#   51|   Block 4
+#   51|     r51_1(int)  = Constant[0]       : 
+#   51|     r51_2(bool) = CompareEQ         : r51_7, r51_1
+#   51|     v51_3(void) = ConditionalBranch : r51_2
+#-----|   False -> Block 5
+#-----|   True -> Block 2
+
+#   51|   Block 5
+#   51|     r51_4(int)  = Constant[1]       : 
+#   51|     r51_5(bool) = CompareEQ         : r51_7, r51_4
+#   51|     v51_6(void) = ConditionalBranch : r51_5
+#-----|   True -> Block 7
+
+#   51|   Block 6
+#   51|     r51_7(int)   = Constant[1]       : 
+#   51|     r51_8(int)   = Constant[-1]      : 
+#   51|     r51_9(bool)  = CompareEQ         : r51_7, r51_8
+#   51|     v51_10(void) = ConditionalBranch : r51_9
+#-----|   False -> Block 4
+#-----|   True -> Block 2
+
+#   52|   Block 7
+#   52|     r52_1(glval<unknown>) = FunctionAddress[sink] : 
+#   52|     r52_2(glval<int>)     = VariableAddress[x]    : 
+#   52|     r52_3(int)            = Load[x]               : &:r52_2, ~m?
+#   52|     v52_4(void)           = Call[sink]            : func:r52_1, 0:r52_3
+#   52|     mu52_5(unknown)       = ^CallSideEffect       : ~m?
+#-----|   Goto -> Block 8
+
+#   54|   Block 8
+#   54|     v54_1(void) = NoOp       : 
+#   46|     v46_9(void) = ReturnVoid : 
+#-----|   Goto -> Block 1
+
 try_except.cpp:
 #    6| void f_cpp()
 #    6|   Block 0
-#    6|     v6_1(void)            = EnterFunction                  : 
-#    6|     mu6_2(unknown)        = AliasedDefinition              : 
-#    6|     mu6_3(unknown)        = InitializeNonLocal             : 
-#    7|     r7_1(glval<int>)      = VariableAddress[x]             : 
-#    7|     mu7_2(int)            = Uninitialized[x]               : &:r7_1
-#    7|     r7_3(glval<int>)      = VariableAddress[y]             : 
-#    7|     r7_4(int)             = Constant[0]                    : 
-#    7|     mu7_5(int)            = Store[y]                       : &:r7_3, r7_4
-#    9|     r9_1(glval<unknown>)  = FunctionAddress[ProbeFunction] : 
-#    9|     r9_2(int)             = Constant[0]                    : 
-#    9|     v9_3(void)            = Call[ProbeFunction]            : func:r9_1, 0:r9_2
-#    9|     mu9_4(unknown)        = ^CallSideEffect                : ~m?
-#   10|     r10_1(glval<int>)     = VariableAddress[y]             : 
-#   10|     r10_2(int)            = Load[y]                        : &:r10_1, ~m?
-#   10|     r10_3(glval<int>)     = VariableAddress[x]             : 
-#   10|     mu10_4(int)           = Store[x]                       : &:r10_3, r10_2
-#   11|     r11_1(glval<unknown>) = FunctionAddress[ProbeFunction] : 
-#   11|     r11_2(int)            = Constant[0]                    : 
-#   11|     v11_3(void)           = Call[ProbeFunction]            : func:r11_1, 0:r11_2
-#   11|     mu11_4(unknown)       = ^CallSideEffect                : ~m?
-#-----|   Goto -> Block 7
+#    6|     v6_1(void)           = EnterFunction                  : 
+#    6|     mu6_2(unknown)       = AliasedDefinition              : 
+#    6|     mu6_3(unknown)       = InitializeNonLocal             : 
+#    7|     r7_1(glval<int>)     = VariableAddress[x]             : 
+#    7|     mu7_2(int)           = Uninitialized[x]               : &:r7_1
+#    7|     r7_3(glval<int>)     = VariableAddress[y]             : 
+#    7|     r7_4(int)            = Constant[0]                    : 
+#    7|     mu7_5(int)           = Store[y]                       : &:r7_3, r7_4
+#    9|     r9_1(glval<unknown>) = FunctionAddress[ProbeFunction] : 
+#    9|     r9_2(int)            = Constant[0]                    : 
+#    9|     v9_3(void)           = Call[ProbeFunction]            : func:r9_1, 0:r9_2
+#    9|     mu9_4(unknown)       = ^CallSideEffect                : ~m?
+#-----|   Goto -> Block 3
+#-----|   SEH Exception -> Block 6
 
 #    6|   Block 1
 #    6|     v6_4(void) = AliasedUse   : ~m?
@@ -37490,36 +37559,48 @@ try_except.cpp:
 #    6|     v6_6(void) = Unwind : 
 #-----|   Goto -> Block 1
 
-#   13|   Block 3
+#   10|   Block 3
+#   10|     r10_1(glval<int>)     = VariableAddress[y]             : 
+#   10|     r10_2(int)            = Load[y]                        : &:r10_1, ~m?
+#   10|     r10_3(glval<int>)     = VariableAddress[x]             : 
+#   10|     mu10_4(int)           = Store[x]                       : &:r10_3, r10_2
+#   11|     r11_1(glval<unknown>) = FunctionAddress[ProbeFunction] : 
+#   11|     r11_2(int)            = Constant[0]                    : 
+#   11|     v11_3(void)           = Call[ProbeFunction]            : func:r11_1, 0:r11_2
+#   11|     mu11_4(unknown)       = ^CallSideEffect                : ~m?
+#-----|   Goto -> Block 8
+#-----|   SEH Exception -> Block 6
+
+#   13|   Block 4
 #   13|     r13_1(int)  = Constant[0]       : 
 #   13|     r13_2(bool) = CompareEQ         : r13_7, r13_1
 #   13|     v13_3(void) = ConditionalBranch : r13_2
-#-----|   False -> Block 4
+#-----|   False -> Block 5
 #-----|   True -> Block 2
 
-#   13|   Block 4
+#   13|   Block 5
 #   13|     r13_4(int)  = Constant[1]       : 
 #   13|     r13_5(bool) = CompareEQ         : r13_7, r13_4
 #   13|     v13_6(void) = ConditionalBranch : r13_5
-#-----|   True -> Block 6
+#-----|   True -> Block 7
 
-#   13|   Block 5
+#   13|   Block 6
 #   13|     r13_7(int)   = Constant[0]       : 
 #   13|     r13_8(int)   = Constant[-1]      : 
 #   13|     r13_9(bool)  = CompareEQ         : r13_7, r13_8
 #   13|     v13_10(void) = ConditionalBranch : r13_9
-#-----|   False -> Block 3
+#-----|   False -> Block 4
 #-----|   True -> Block 2
 
-#   14|   Block 6
+#   14|   Block 7
 #   14|     r14_1(glval<unknown>) = FunctionAddress[sink] : 
 #   14|     r14_2(glval<int>)     = VariableAddress[x]    : 
 #   14|     r14_3(int)            = Load[x]               : &:r14_2, ~m?
 #   14|     v14_4(void)           = Call[sink]            : func:r14_1, 0:r14_3
 #   14|     mu14_5(unknown)       = ^CallSideEffect       : ~m?
-#-----|   Goto -> Block 7
+#-----|   Goto -> Block 8
 
-#   16|   Block 7
+#   16|   Block 8
 #   16|     v16_1(void) = NoOp       : 
 #    6|     v6_7(void)  = ReturnVoid : 
 #-----|   Goto -> Block 1
@@ -37538,6 +37619,18 @@ try_except.cpp:
 #   21|     r21_2(int)            = Constant[0]                    : 
 #   21|     v21_3(void)           = Call[ProbeFunction]            : func:r21_1, 0:r21_2
 #   21|     mu21_4(unknown)       = ^CallSideEffect                : ~m?
+#-----|   Goto -> Block 3
+#-----|   SEH Exception -> Block 4
+
+#   18|   Block 1
+#   18|     v18_4(void) = AliasedUse   : ~m?
+#   18|     v18_5(void) = ExitFunction : 
+
+#   18|   Block 2
+#   18|     v18_6(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+#   22|   Block 3
 #   22|     r22_1(glval<int>)     = VariableAddress[y]             : 
 #   22|     r22_2(int)            = Load[y]                        : &:r22_1, ~m?
 #   22|     r22_3(glval<int>)     = VariableAddress[x]             : 
@@ -37546,21 +37639,16 @@ try_except.cpp:
 #   23|     r23_2(int)            = Constant[0]                    : 
 #   23|     v23_3(void)           = Call[ProbeFunction]            : func:r23_1, 0:r23_2
 #   23|     mu23_4(unknown)       = ^CallSideEffect                : ~m?
-#   26|     r26_1(glval<unknown>) = FunctionAddress[sink]          : 
-#   26|     r26_2(glval<int>)     = VariableAddress[x]             : 
-#   26|     r26_3(int)            = Load[x]                        : &:r26_2, ~m?
-#   26|     v26_4(void)           = Call[sink]                     : func:r26_1, 0:r26_3
-#   26|     mu26_5(unknown)       = ^CallSideEffect                : ~m?
-#   28|     v28_1(void)           = NoOp                           : 
-#   18|     v18_4(void)           = ReturnVoid                     : 
-#-----|   Goto -> Block 1
+#-----|   Goto|SEH Exception -> Block 4
 
-#   18|   Block 1
-#   18|     v18_5(void) = AliasedUse   : ~m?
-#   18|     v18_6(void) = ExitFunction : 
-
-#   18|   Block 2
-#   18|     v18_7(void) = Unwind : 
+#   26|   Block 4
+#   26|     r26_1(glval<unknown>) = FunctionAddress[sink] : 
+#   26|     r26_2(glval<int>)     = VariableAddress[x]    : 
+#   26|     r26_3(int)            = Load[x]               : &:r26_2, ~m?
+#   26|     v26_4(void)           = Call[sink]            : func:r26_1, 0:r26_3
+#   26|     mu26_5(unknown)       = ^CallSideEffect       : ~m?
+#   28|     v28_1(void)           = NoOp                  : 
+#   18|     v18_7(void)           = ReturnVoid            : 
 #-----|   Goto -> Block 1
 
 #   32| void h_cpp(int)
@@ -37594,6 +37682,7 @@ try_except.cpp:
 #   36|     v36_2(void)           = Call[AfxThrowMemoryException]            : func:r36_1
 #   36|     mu36_3(unknown)       = ^CallSideEffect                          : ~m?
 #-----|   Goto -> Block 8
+#-----|   SEH Exception -> Block 6
 
 #   39|   Block 4
 #   39|     r39_1(int)  = Constant[0]       : 
@@ -37656,10 +37745,10 @@ try_except.cpp:
 #-----|   Goto -> Block 1
 
 #   48|   Block 3
-#   48|     r48_1(glval<int>) = VariableAddress[#throw48:13] : 
-#   48|     r48_2(int)        = Constant[1]                  : 
-#   48|     mu48_3(int)       = Store[#throw48:13]           : &:r48_1, r48_2
-#   48|     v48_4(void)       = ThrowValue                   : &:r48_1, ~m?
+#   48|     r48_1(glval<int>) = VariableAddress[#throw48:7] : 
+#   48|     r48_2(int)        = Constant[1]                 : 
+#   48|     mu48_3(int)       = Store[#throw48:7]           : &:r48_1, r48_2
+#   48|     v48_4(void)       = ThrowValue                  : &:r48_1, ~m?
 #-----|   C++ Exception -> Block 6
 
 #   51|   Block 4

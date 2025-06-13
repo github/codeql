@@ -31,12 +31,24 @@ void AfxThrowMemoryException();
 
 void h(int b) {
   int x = 0;
-    __try {
-        if (b) {
-            AfxThrowMemoryException();
-        }
+  __try {
+    if (b) {
+      AfxThrowMemoryException();
     }
-    __except (1) {
-        sink(x);
-    }
+  }
+  __except (1) {
+    sink(x);
+  }
+}
+
+int i();
+
+void j(int b) {
+  int x = 0;
+  __try {
+    int y = i();
+  }
+  __except (1) {
+    sink(x);
+  }
 }
