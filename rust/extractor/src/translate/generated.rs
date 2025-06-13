@@ -828,20 +828,26 @@ impl Translator<'_> {
         } else {
             node.body().and_then(|x| self.emit_expr(&x))
         };
+        let generic_param_list = node
+            .generic_param_list()
+            .and_then(|x| self.emit_generic_param_list(&x));
         let is_const = node.const_token().is_some();
         let is_default = node.default_token().is_some();
         let name = node.name().and_then(|x| self.emit_name(&x));
         let type_repr = node.ty().and_then(|x| self.emit_type(&x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(&x));
+        let where_clause = node.where_clause().and_then(|x| self.emit_where_clause(&x));
         let label = self.trap.emit(generated::Const {
             id: TrapId::Star,
             attrs,
             body,
+            generic_param_list,
             is_const,
             is_default,
             name,
             type_repr,
             visibility,
+            where_clause,
         });
         self.emit_location(label, node);
         post_emit!(Const, self, node, label);

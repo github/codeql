@@ -1422,8 +1422,9 @@ class _:
     macro_rules! macro_type {
         () => { i32 };
     }
-    type T = macro_type!();
-    //       ^^^^^^^^^^^^^
+
+    let x: macro_type!() = 42;
+    //     ^^^^^^^^^^^^^
     ```
     """
 

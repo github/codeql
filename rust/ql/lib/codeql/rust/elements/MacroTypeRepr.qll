@@ -15,8 +15,9 @@ import codeql.rust.elements.TypeRepr
  * macro_rules! macro_type {
  *     () => { i32 };
  * }
- * type T = macro_type!();
- * //       ^^^^^^^^^^^^^
+ *
+ * let x: macro_type!() = 42;
+ * //     ^^^^^^^^^^^^^
  * ```
  */
 final class MacroTypeRepr = Impl::MacroTypeRepr;
