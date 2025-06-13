@@ -1181,6 +1181,15 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
 }
 
 pragma[nomagic]
+private Type inferArrayListExprType(/*ArrayExpr*/ArrayListExpr ale, TypePath path) {
+  exists(Type type0, TypePath path0 |
+    type0 = inferType(ale.getExpr(0), path0) and
+    result = type0 and
+    path = TypePath::cons(any(ArrayTypeParameter tp), path0)
+  )
+}
+
+pragma[nomagic]
 private Type inferForLoopExprType(AstNode n, TypePath path) {
   // type of iterable -> type of pattern (loop variable)
   exists(ForExpr fe, Type iterableType, TypePath iterablePath |
@@ -1555,6 +1564,8 @@ private module Cached {
     result = inferAwaitExprType(n, path)
     or
     result = inferIndexExprType(n, path)
+    or
+    result = inferArrayListExprType(n, path)
     or
     result = inferForLoopExprType(n, path)
   }

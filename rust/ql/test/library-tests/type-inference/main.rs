@@ -1822,12 +1822,12 @@ mod loops {
     pub fn f() {
         // for loops with arrays
 
-        for i in [1, 2, 3] { } // $ MISSING: type=i:i32
+        for i in [1, 2, 3] { } // $ type=i:i32
         for i in [1, 2, 3].map(|x| x + 1) { } // $ MISSING: type=i:i32
         for i in [1, 2, 3].into_iter() { } // $ MISSING: type=i:i32
 
         let vals1 = [1u8, 2, 3]; // $ MISSING: type=vals1:[u8; 3]
-        for u in vals1 { } // $ MISSING: type=u:u8
+        for u in vals1 { } // $ type=u:u8
 
         let vals2 = [1u16; 3]; // $ MISSING: type=vals2:[u16; 3]
         for u in vals2 { } // $ MISSING: type=u:u16
@@ -1841,17 +1841,17 @@ mod loops {
         let mut strings1 = ["foo", "bar", "baz"]; // $ MISSING: type=strings1:[&str; 3]
         for s in &strings1 { } // $ MISSING: type=s:&str
         for s in &mut strings1 { } // $ MISSING: type=s:&str
-        for s in strings1 { } // $ MISSING: type=s:str
+        for s in strings1 { } // $ type=s:str
 
         let strings2 = [String::from("foo"), String::from("bar"), String::from("baz")]; // $ MISSING: type=strings2:[String; 3]
-        for s in strings2 { } // $ MISSING: type=s:String
+        for s in strings2 { } // $ type=s:String
 
         let strings3 = &[String::from("foo"), String::from("bar"), String::from("baz")]; // $ MISSING: type=strings3:&[String; 3]
         for s in strings3 { } // $ MISSING: type=s:String
 
         let callables = [MyCallable::new(), MyCallable::new(), MyCallable::new()]; // $ MISSING: type=callables:[MyCallable; 3]
-        for c in callables { // $ MISSING: type=c:MyCallable
-            let result = c.call(); // $ MISSING: type=result:i64 method=call
+        for c in callables { // $ type=c:MyCallable
+            let result = c.call(); // $ type=result:i64 method=call
         }
 
         // for loops with ranges
