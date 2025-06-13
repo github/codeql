@@ -5,6 +5,7 @@
  * @kind problem
  * @tags reliability
  *       correctness
+ *       quality
  * @problem.severity warning
  * @sub-severity low
  * @precision high
@@ -33,10 +34,6 @@ predicate initSelfCallOverridden(
   )
 }
 
-predicate lastUse(DataFlow::Node node) {
-  not exists(DataFlow::Node next | DataFlow::localFlow(node, next) and node != next)
-}
-
 predicate readsFromSelf(Function method) {
   exists(DataFlow::ParameterNode self, DataFlow::Node sink |
     self.getParameter() = method.getArg(0) and
@@ -55,7 +52,7 @@ where
   initSelfCallOverridden(init, self, call, target, override) and
   readsFromSelf(override) and
   not isClassmethod(override) and
-  not lastUse(self) and
+  not isStaticmethod(override) and
   not target.getName().matches("\\_%")
 select call, "This call to $@ in an initialization method is overridden by $@.", target,
   target.getQualifiedName(), override, override.getQualifiedName()
