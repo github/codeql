@@ -81,7 +81,7 @@ rust_library(
     }),
     version = "0.2.25",
     deps = [
-        "@vendor_ts__cfg-if-1.0.0//:cfg_if",
+        "@vendor_ts__cfg-if-1.0.1//:cfg_if",
     ] + select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
             "@vendor_ts__libc-0.2.172//:libc",  # cfg(unix)

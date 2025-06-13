@@ -81,7 +81,7 @@ rust_library(
     }),
     version = "3.0.8",
     deps = [
-        "@vendor_ts__anstyle-1.0.10//:anstyle",
+        "@vendor_ts__anstyle-1.0.11//:anstyle",
     ] + select({
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
             "@vendor_ts__once_cell_polyfill-1.70.1//:once_cell_polyfill",  # cfg(windows)

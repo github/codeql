@@ -84,7 +84,7 @@ rust_library(
     }),
     version = "0.19.2",
     deps = [
-        "@vendor_ts__camino-1.1.9//:camino",
+        "@vendor_ts__camino-1.1.10//:camino",
         "@vendor_ts__cargo-platform-0.1.9//:cargo_platform",
         "@vendor_ts__semver-1.0.26//:semver",
         "@vendor_ts__serde-1.0.219//:serde",
