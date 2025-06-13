@@ -39194,7 +39194,6 @@ try_except.c:
 #   32|   Block 7
 #   32|     v32_10(void) = Unreached : 
 
-<<<<<<< HEAD
 #   46| void j(int)
 #   46|   Block 0
 #   46|     v46_1(void)           = EnterFunction          : 
@@ -39258,82 +39257,104 @@ try_except.c:
 
 #   46|   Block 7
 #   46|     v46_10(void) = Unreached : 
-=======
-#   44| void i(int*, int*, int*, int*, int*)
-#   44|   Block 0
-#   44|     v44_1(void)          = EnterFunction            : 
-#   44|     m44_2(unknown)       = AliasedDefinition        : 
-#   44|     m44_3(unknown)       = InitializeNonLocal       : 
-#   44|     m44_4(unknown)       = Chi                      : total:m44_2, partial:m44_3
-#   44|     r44_5(glval<int *>)  = VariableAddress[b]       : 
-#   44|     m44_6(int *)         = InitializeParameter[b]   : &:r44_5
-#   44|     r44_7(int *)         = Load[b]                  : &:r44_5, m44_6
-#   44|     m44_8(unknown)       = InitializeIndirection[b] : &:r44_7
-#   44|     r44_9(glval<int *>)  = VariableAddress[c]       : 
-#   44|     m44_10(int *)        = InitializeParameter[c]   : &:r44_9
-#   44|     r44_11(int *)        = Load[c]                  : &:r44_9, m44_10
-#   44|     m44_12(unknown)      = InitializeIndirection[c] : &:r44_11
-#   44|     r44_13(glval<int *>) = VariableAddress[d]       : 
-#   44|     m44_14(int *)        = InitializeParameter[d]   : &:r44_13
-#   44|     r44_15(int *)        = Load[d]                  : &:r44_13, m44_14
-#   44|     m44_16(unknown)      = InitializeIndirection[d] : &:r44_15
-#   44|     r44_17(glval<int *>) = VariableAddress[e]       : 
-#   44|     m44_18(int *)        = InitializeParameter[e]   : &:r44_17
-#   44|     r44_19(int *)        = Load[e]                  : &:r44_17, m44_18
-#   44|     m44_20(unknown)      = InitializeIndirection[e] : &:r44_19
-#   44|     r44_21(glval<int *>) = VariableAddress[f]       : 
-#   44|     m44_22(int *)        = InitializeParameter[f]   : &:r44_21
-#   44|     r44_23(int *)        = Load[f]                  : &:r44_21, m44_22
-#   44|     m44_24(unknown)      = InitializeIndirection[f] : &:r44_23
-#   45|     r45_1(glval<int>)    = VariableAddress[x]       : 
-#   45|     r45_2(int)           = Constant[0]              : 
-#   45|     m45_3(int)           = Store[x]                 : &:r45_1, r45_2
-#   47|     r47_1(glval<int *>)  = VariableAddress[b]       : 
-#   47|     r47_2(int *)         = Load[b]                  : &:r47_1, m44_6
-#   47|     r47_3(int)           = Load[?]                  : &:r47_2, ~m44_8
-#   47|     r47_4(glval<int>)    = VariableAddress[x]       : 
-#   47|     m47_5(int)           = Store[x]                 : &:r47_4, r47_3
-#   48|     r48_1(glval<int>)    = VariableAddress[x]       : 
-#   48|     r48_2(int)           = Load[x]                  : &:r48_1, m47_5
-#   48|     r48_3(glval<int *>)  = VariableAddress[c]       : 
-#   48|     r48_4(int *)         = Load[c]                  : &:r48_3, m44_10
-#   48|     r48_5(glval<int>)    = CopyValue                : r48_4
-#   48|     m48_6(int)           = Store[?]                 : &:r48_5, r48_2
-#   48|     m48_7(unknown)       = Chi                      : total:m44_12, partial:m48_6
-#   49|     r49_1(glval<int>)    = VariableAddress[y]       : 
-#   49|     r49_2(glval<int *>)  = VariableAddress[d]       : 
-#   49|     r49_3(int *)         = Load[d]                  : &:r49_2, m44_14
-#   49|     r49_4(int)           = Load[?]                  : &:r49_3, ~m44_16
-#   49|     m49_5(int)           = Store[y]                 : &:r49_1, r49_4
-#   50|     r50_1(glval<int[2]>) = VariableAddress[x]       : 
-#   50|     m50_2(int[2])        = Uninitialized[x]         : &:r50_1
-#   50|     r50_3(int)           = Constant[0]              : 
-#   50|     r50_4(glval<int>)    = PointerAdd[4]            : r50_1, r50_3
-#   50|     r50_5(glval<int *>)  = VariableAddress[e]       : 
-#   50|     r50_6(int *)         = Load[e]                  : &:r50_5, m44_18
-#   50|     r50_7(int)           = Load[?]                  : &:r50_6, ~m44_20
-#   50|     m50_8(int)           = Store[?]                 : &:r50_4, r50_7
-#   50|     m50_9(int[2])        = Chi                      : total:m50_2, partial:m50_8
-#   50|     r50_10(int)          = Constant[1]              : 
-#   50|     r50_11(glval<int>)   = PointerAdd[4]            : r50_1, r50_10
-#   50|     r50_12(glval<int *>) = VariableAddress[f]       : 
-#   50|     r50_13(int *)        = Load[f]                  : &:r50_12, m44_22
-#   50|     r50_14(int)          = Load[?]                  : &:r50_13, ~m44_24
-#   50|     m50_15(int)          = Store[?]                 : &:r50_11, r50_14
-#   50|     m50_16(int[2])       = Chi                      : total:m50_9, partial:m50_15
-#   55|     v55_1(void)          = NoOp                     : 
-#   44|     v44_25(void)         = ReturnIndirection[b]     : &:r44_7, m44_8
-#   44|     v44_26(void)         = ReturnIndirection[c]     : &:r44_11, m48_7
-#   44|     v44_27(void)         = ReturnIndirection[d]     : &:r44_15, m44_16
-#   44|     v44_28(void)         = ReturnIndirection[e]     : &:r44_19, m44_20
-#   44|     v44_29(void)         = ReturnIndirection[f]     : &:r44_23, m44_24
-#   44|     v44_30(void)         = ReturnVoid               : 
-#   44|     v44_31(void)         = AliasedUse               : m44_3
-#   44|     v44_32(void)         = ExitFunction             : 
 
-#   44|   Block 1
-#   44|     v44_33(void) = Unreached : 
->>>>>>> ad6e7a0f0f8 (C++: Add `__try` with load test case)
+#   56| void k(int*, int*, int*, int*, int*)
+#   56|   Block 0
+#   56|     v56_1(void)          = EnterFunction            : 
+#   56|     m56_2(unknown)       = AliasedDefinition        : 
+#   56|     m56_3(unknown)       = InitializeNonLocal       : 
+#   56|     m56_4(unknown)       = Chi                      : total:m56_2, partial:m56_3
+#   56|     r56_5(glval<int *>)  = VariableAddress[b]       : 
+#   56|     m56_6(int *)         = InitializeParameter[b]   : &:r56_5
+#   56|     r56_7(int *)         = Load[b]                  : &:r56_5, m56_6
+#   56|     m56_8(unknown)       = InitializeIndirection[b] : &:r56_7
+#   56|     r56_9(glval<int *>)  = VariableAddress[c]       : 
+#   56|     m56_10(int *)        = InitializeParameter[c]   : &:r56_9
+#   56|     r56_11(int *)        = Load[c]                  : &:r56_9, m56_10
+#   56|     m56_12(unknown)      = InitializeIndirection[c] : &:r56_11
+#   56|     r56_13(glval<int *>) = VariableAddress[d]       : 
+#   56|     m56_14(int *)        = InitializeParameter[d]   : &:r56_13
+#   56|     r56_15(int *)        = Load[d]                  : &:r56_13, m56_14
+#   56|     m56_16(unknown)      = InitializeIndirection[d] : &:r56_15
+#   56|     r56_17(glval<int *>) = VariableAddress[e]       : 
+#   56|     m56_18(int *)        = InitializeParameter[e]   : &:r56_17
+#   56|     r56_19(int *)        = Load[e]                  : &:r56_17, m56_18
+#   56|     m56_20(unknown)      = InitializeIndirection[e] : &:r56_19
+#   56|     r56_21(glval<int *>) = VariableAddress[f]       : 
+#   56|     m56_22(int *)        = InitializeParameter[f]   : &:r56_21
+#   56|     r56_23(int *)        = Load[f]                  : &:r56_21, m56_22
+#   56|     m56_24(unknown)      = InitializeIndirection[f] : &:r56_23
+#   57|     r57_1(glval<int>)    = VariableAddress[x]       : 
+#   57|     r57_2(int)           = Constant[0]              : 
+#   57|     m57_3(int)           = Store[x]                 : &:r57_1, r57_2
+#   59|     r59_1(glval<int *>)  = VariableAddress[b]       : 
+#   59|     r59_2(int *)         = Load[b]                  : &:r59_1, m56_6
+#   59|     r59_3(int)           = Load[?]                  : &:r59_2, ~m56_8
+#   59|     r59_4(glval<int>)    = VariableAddress[x]       : 
+#   59|     m59_5(int)           = Store[x]                 : &:r59_4, r59_3
+#   60|     r60_1(glval<int>)    = VariableAddress[x]       : 
+#   60|     r60_2(int)           = Load[x]                  : &:r60_1, m59_5
+#   60|     r60_3(glval<int *>)  = VariableAddress[c]       : 
+#   60|     r60_4(int *)         = Load[c]                  : &:r60_3, m56_10
+#   60|     r60_5(glval<int>)    = CopyValue                : r60_4
+#   60|     m60_6(int)           = Store[?]                 : &:r60_5, r60_2
+#   60|     m60_7(unknown)       = Chi                      : total:m56_12, partial:m60_6
+#-----|   Goto -> Block 1
+#-----|   SEH Exception -> Block 4
+
+#   61|   Block 1
+#   61|     r61_1(glval<int>)   = VariableAddress[y] : 
+#   61|     r61_2(glval<int *>) = VariableAddress[d] : 
+#   61|     r61_3(int *)        = Load[d]            : &:r61_2, m56_14
+#   61|     r61_4(int)          = Load[?]            : &:r61_3, ~m56_16
+#   61|     m61_5(int)          = Store[y]           : &:r61_1, r61_4
+#-----|   Goto -> Block 6
+
+#   63|   Block 2
+#   63|     r63_1(int)  = Constant[0]       : 
+#   63|     r63_2(bool) = CompareEQ         : r63_7, r63_1
+#   63|     v63_3(void) = ConditionalBranch : r63_2
+#-----|   False -> Block 3
+#-----|   True -> Block 7
+
+#   63|   Block 3
+#   63|     r63_4(int)  = Constant[1]       : 
+#   63|     r63_5(bool) = CompareEQ         : r63_7, r63_4
+#   63|     v63_6(void) = ConditionalBranch : r63_5
+#-----|   False -> Block 7
+#-----|   True -> Block 5
+
+#   63|   Block 4
+#   63|     r63_7(int)   = Constant[1]       : 
+#   63|     r63_8(int)   = Constant[-1]      : 
+#   63|     r63_9(bool)  = CompareEQ         : r63_7, r63_8
+#   63|     v63_10(void) = ConditionalBranch : r63_9
+#-----|   False -> Block 2
+#-----|   True -> Block 7
+
+#   64|   Block 5
+#   64|     r64_1(glval<unknown>) = FunctionAddress[sink] : 
+#   64|     r64_2(glval<int>)     = VariableAddress[x]    : 
+#   64|     r64_3(int)            = Load[x]               : &:r64_2, m59_5
+#   64|     v64_4(void)           = Call[sink]            : func:r64_1, 0:r64_3
+#   64|     m64_5(unknown)        = ^CallSideEffect       : ~m56_4
+#   64|     m64_6(unknown)        = Chi                   : total:m56_4, partial:m64_5
+#-----|   Goto -> Block 6
+
+#   66|   Block 6
+#   66|     m66_1(unknown) = Phi                  : from 1:~m56_4, from 5:~m64_6
+#   66|     v66_2(void)    = NoOp                 : 
+#   56|     v56_25(void)   = ReturnIndirection[b] : &:r56_7, m56_8
+#   56|     v56_26(void)   = ReturnIndirection[c] : &:r56_11, m60_7
+#   56|     v56_27(void)   = ReturnIndirection[d] : &:r56_15, m56_16
+#   56|     v56_28(void)   = ReturnIndirection[e] : &:r56_19, m56_20
+#   56|     v56_29(void)   = ReturnIndirection[f] : &:r56_23, m56_24
+#   56|     v56_30(void)   = ReturnVoid           : 
+#   56|     v56_31(void)   = AliasedUse           : ~m66_1
+#   56|     v56_32(void)   = ExitFunction         : 
+
+#   56|   Block 7
+#   56|     v56_33(void) = Unreached : 
 
 try_except.cpp:
 #    6| void f_cpp()

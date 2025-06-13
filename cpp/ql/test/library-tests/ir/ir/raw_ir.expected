@@ -37572,12 +37572,8 @@ try_except.c:
 #   60|     r60_4(int *)         = Load[c]                  : &:r60_3, ~m?
 #   60|     r60_5(glval<int>)    = CopyValue                : r60_4
 #   60|     mu60_6(int)          = Store[?]                 : &:r60_5, r60_2
-#   61|     r61_1(glval<int>)    = VariableAddress[y]       : 
-#   61|     r61_2(glval<int *>)  = VariableAddress[d]       : 
-#   61|     r61_3(int *)         = Load[d]                  : &:r61_2, ~m?
-#   61|     r61_4(int)           = Load[?]                  : &:r61_3, ~m?
-#   61|     mu61_5(int)          = Store[y]                 : &:r61_1, r61_4
-#-----|   Goto -> Block 7
+#-----|   Goto -> Block 3
+#-----|   SEH Exception -> Block 6
 
 #   56|   Block 1
 #   56|     v56_24(void) = AliasedUse   : ~m?
@@ -37587,36 +37583,44 @@ try_except.c:
 #   56|     v56_26(void) = Unwind : 
 #-----|   Goto -> Block 1
 
-#   63|   Block 3
+#   61|   Block 3
+#   61|     r61_1(glval<int>)   = VariableAddress[y] : 
+#   61|     r61_2(glval<int *>) = VariableAddress[d] : 
+#   61|     r61_3(int *)        = Load[d]            : &:r61_2, ~m?
+#   61|     r61_4(int)          = Load[?]            : &:r61_3, ~m?
+#   61|     mu61_5(int)         = Store[y]           : &:r61_1, r61_4
+#-----|   Goto -> Block 8
+
+#   63|   Block 4
 #   63|     r63_1(int)  = Constant[0]       : 
 #   63|     r63_2(bool) = CompareEQ         : r63_7, r63_1
 #   63|     v63_3(void) = ConditionalBranch : r63_2
-#-----|   False -> Block 4
+#-----|   False -> Block 5
 #-----|   True -> Block 2
 
-#   63|   Block 4
+#   63|   Block 5
 #   63|     r63_4(int)  = Constant[1]       : 
 #   63|     r63_5(bool) = CompareEQ         : r63_7, r63_4
 #   63|     v63_6(void) = ConditionalBranch : r63_5
-#-----|   True -> Block 6
+#-----|   True -> Block 7
 
-#   63|   Block 5
+#   63|   Block 6
 #   63|     r63_7(int)   = Constant[1]       : 
 #   63|     r63_8(int)   = Constant[-1]      : 
 #   63|     r63_9(bool)  = CompareEQ         : r63_7, r63_8
 #   63|     v63_10(void) = ConditionalBranch : r63_9
-#-----|   False -> Block 3
+#-----|   False -> Block 4
 #-----|   True -> Block 2
 
-#   64|   Block 6
+#   64|   Block 7
 #   64|     r64_1(glval<unknown>) = FunctionAddress[sink] : 
 #   64|     r64_2(glval<int>)     = VariableAddress[x]    : 
 #   64|     r64_3(int)            = Load[x]               : &:r64_2, ~m?
 #   64|     v64_4(void)           = Call[sink]            : func:r64_1, 0:r64_3
 #   64|     mu64_5(unknown)       = ^CallSideEffect       : ~m?
-#-----|   Goto -> Block 7
+#-----|   Goto -> Block 8
 
-#   66|   Block 7
+#   66|   Block 8
 #   66|     v66_1(void)  = NoOp                 : 
 #   56|     v56_27(void) = ReturnIndirection[b] : &:r56_6, ~m?
 #   56|     v56_28(void) = ReturnIndirection[c] : &:r56_10, ~m?
