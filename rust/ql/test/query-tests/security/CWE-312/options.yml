@@ -3,3 +3,5 @@ qltest_dependencies:
     - log = { version = "0.4.25", features = ["kv"] }
     - simple_logger = { version = "5.0.0" }
     - log_err = { version = "1.1.1" }
+    - sqlx = { version = "0.8", features = ["mysql", "sqlite", "postgres", "runtime-async-std", "tls-native-tls"] }
+    - futures = { version = "0.3" }
