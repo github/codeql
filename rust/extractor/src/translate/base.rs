@@ -16,7 +16,7 @@ use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::TextSize;
-use ra_ap_syntax::ast::{Const, Fn, HasName, Param, Static};
+use ra_ap_syntax::ast::HasName;
 use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
     ast,
@@ -38,6 +38,7 @@ macro_rules! post_emit {
         $self.extract_macro_call_expanded($node, $label);
     };
     (Function, $self:ident, $node:ident, $label:ident) => {
+        $self.emit_function_has_implementation($node, $label);
         $self.extract_canonical_origin($node, $label.into());
     };
     (Trait, $self:ident, $node:ident, $label:ident) => {
@@ -82,6 +83,9 @@ macro_rules! post_emit {
     };
     (PathSegment, $self:ident, $node:ident, $label:ident) => {
         $self.extract_types_from_path_segment($node, $label.into());
+    };
+    (Const, $self:ident, $node:ident, $label:ident) => {
+        $self.emit_const_has_implementation($node, $label);
     };
     ($($_:tt)*) => {};
 }
@@ -644,7 +648,7 @@ impl<'a> Translator<'a> {
         })();
     }
 
-    pub(crate) fn should_be_excluded_attrs(&self, item: &impl ast::HasAttrs) -> bool {
+    pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
         self.semantics.is_some_and(|sema| {
             item.attrs().any(|attr| {
                 attr.as_simple_call().is_some_and(|(name, tokens)| {
@@ -654,46 +658,8 @@ impl<'a> Translator<'a> {
         })
     }
 
-    pub(crate) fn should_be_excluded(&self, item: &impl ast::AstNode) -> bool {
-        if self.source_kind == SourceKind::Library {
-            let syntax = item.syntax();
-            if syntax
-                .parent()
-                .and_then(Fn::cast)
-                .and_then(|x| x.body())
-                .is_some_and(|body| body.syntax() == syntax)
-            {
-                return true;
-            }
-            if syntax
-                .parent()
-                .and_then(Const::cast)
-                .and_then(|x| x.body())
-                .is_some_and(|body| body.syntax() == syntax)
-            {
-                return true;
-            }
-            if syntax
-                .parent()
-                .and_then(Static::cast)
-                .and_then(|x| x.body())
-                .is_some_and(|body| body.syntax() == syntax)
-            {
-                return true;
-            }
-            if syntax
-                .parent()
-                .and_then(Param::cast)
-                .and_then(|x| x.pat())
-                .is_some_and(|pat| pat.syntax() == syntax)
-            {
-                return true;
-            }
-            if syntax.kind() == SyntaxKind::TOKEN_TREE {
-                return true;
-            }
-        }
-        false
+    pub(crate) fn should_skip_bodies(&self) -> bool {
+        self.source_kind == SourceKind::Library
     }
 
     pub(crate) fn extract_types_from_path_segment(
@@ -797,6 +763,26 @@ impl<'a> Translator<'a> {
     pub(crate) fn emit_item_expansion(&mut self, node: &ast::Item, label: Label<generated::Item>) {
         if let Some(expanded) = self.emit_attribute_macro_expansion(node) {
             generated::Item::emit_attribute_macro_expansion(label, expanded, &mut self.trap.writer);
+        }
+    }
+
+    pub(crate) fn emit_function_has_implementation(
+        &mut self,
+        node: &ast::Fn,
+        label: Label<generated::Function>,
+    ) {
+        if node.body().is_some() {
+            generated::Function::emit_has_implementation(label, &mut self.trap.writer);
+        }
+    }
+
+    pub(crate) fn emit_const_has_implementation(
+        &mut self,
+        node: &ast::Const,
+        label: Label<generated::Const>,
+    ) {
+        if node.body().is_some() {
+            generated::Const::emit_has_implementation(label, &mut self.trap.writer);
         }
     }
 }

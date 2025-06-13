@@ -34,7 +34,7 @@ module AccessPath {
       not this.accessesGlobal(_) and
       not this instanceof DataFlow::PropRead and
       not this instanceof PropertyProjection and
-      not this instanceof Closure::ClosureNamespaceAccess and
+      not this.asExpr() instanceof Closure::RequireCallExpr and
       not this = DataFlow::parameterNode(any(ImmediatelyInvokedFunctionExpr iife).getAParameter()) and
       not FlowSteps::identityFunctionStep(_, this)
     }
@@ -139,8 +139,8 @@ module AccessPath {
       result = join(fromReference(prop.getBase(), root), "[number]")
     )
     or
-    exists(Closure::ClosureNamespaceAccess acc | node = acc |
-      result = acc.getClosureNamespace() and
+    exists(Closure::RequireCallExpr req | node = req.flow() |
+      result = req.getClosureNamespace() and
       root.isGlobal()
     )
     or

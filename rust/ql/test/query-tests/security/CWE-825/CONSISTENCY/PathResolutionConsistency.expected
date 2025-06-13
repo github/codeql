@@ -21,5 +21,3 @@ multiplePathResolutions
 | deallocation.rs:261:11:261:22 | ...::from | file://:0:0:0:0 | fn from |
 | deallocation.rs:261:11:261:22 | ...::from | file://:0:0:0:0 | fn from |
 | deallocation.rs:261:11:261:22 | ...::from | file://:0:0:0:0 | fn from |
-| lifetime.rs:415:32:415:49 | ...::clone | file://:0:0:0:0 | fn clone |
-| lifetime.rs:415:32:415:49 | ...::clone | file://:0:0:0:0 | fn clone |

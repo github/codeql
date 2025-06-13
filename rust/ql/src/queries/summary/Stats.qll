@@ -189,6 +189,8 @@ predicate taintStats(string key, int value) {
   or
   key = "Taint reach - nodes tainted" and value = getTaintedNodesCount()
   or
+  key = "Taint reach - total non-summary nodes" and value = getTotalNodesCount()
+  or
   key = "Taint reach - per million nodes" and value = getTaintReach().floor()
   or
   key = "Taint sinks - query sinks" and value = getQuerySinksCount()

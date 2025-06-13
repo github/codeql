@@ -43,6 +43,12 @@ class RefTypeReprMention extends TypeMention instanceof RefTypeRepr {
   override Type resolveType() { result = TRefType() }
 }
 
+class SliceTypeReprMention extends TypeMention instanceof SliceTypeRepr {
+  override TypeMention getTypeArgument(int i) { result = super.getTypeRepr() and i = 0 }
+
+  override Type resolveType() { result = TSliceType() }
+}
+
 class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
   Path path;
   ItemNode resolved;
@@ -130,6 +136,7 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
    * Holds if this path resolved to a type alias with a rhs. that has the
    * resulting type at `typePath`.
    */
+  pragma[nomagic]
   Type aliasResolveTypeAt(TypePath typePath) {
     exists(TypeAlias alias, TypeMention rhs | alias = resolved and rhs = alias.getTypeRepr() |
       result = rhs.resolveTypeAt(typePath) and

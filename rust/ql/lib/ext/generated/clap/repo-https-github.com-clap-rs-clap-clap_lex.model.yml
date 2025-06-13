@@ -4,8 +4,9 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["repo:https://github.com/clap-rs/clap:clap_lex", "<crate::ParsedArg>::to_value", "Argument[self].Field[crate::ParsedArg::inner]", "ReturnValue.Field[crate::result::Result::Err(0)]", "value", "dfc-generated"]
-      - ["repo:https://github.com/clap-rs/clap:clap_lex", "<crate::ParsedArg>::to_value_os", "Argument[self].Field[crate::ParsedArg::inner]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap_lex", "<crate::ParsedArg>::to_value", "Argument[self].Field[clap_lex::ParsedArg::inner]", "ReturnValue.Field[core::result::Result::Err(0)]", "value", "dfc-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap_lex", "<crate::ParsedArg>::to_value_os", "Argument[self].Field[clap_lex::ParsedArg::inner]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap_lex", "<crate::RawArgs>::remaining", "Argument[self].Field[clap_lex::RawArgs::items].Field[alloc::vec::Vec::len]", "Argument[0].Field[clap_lex::ArgCursor::cursor]", "value", "dfc-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap_lex", "<crate::ext::Split as crate::iter::traits::iterator::Iterator>::next", "Argument[self]", "ReturnValue", "taint", "df-generated"]
-      - ["repo:https://github.com/clap-rs/clap:clap_lex", "<crate::ffi::os_str::OsStr as crate::ext::OsStrExt>::split", "Argument[0]", "ReturnValue.Field[crate::ext::Split::needle]", "value", "dfc-generated"]
-      - ["repo:https://github.com/clap-rs/clap:clap_lex", "<crate::ffi::os_str::OsStr as crate::ext::OsStrExt>::split", "Argument[self]", "ReturnValue.Field[crate::ext::Split::haystack].Field[crate::option::Option::Some(0)]", "value", "dfc-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap_lex", "<crate::ffi::os_str::OsStr as crate::ext::OsStrExt>::split", "Argument[0]", "ReturnValue.Field[clap_lex::ext::Split::needle]", "value", "dfc-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap_lex", "<crate::ffi::os_str::OsStr as crate::ext::OsStrExt>::split", "Argument[self]", "ReturnValue.Field[clap_lex::ext::Split::haystack].Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
