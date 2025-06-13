@@ -101,6 +101,8 @@ private module LdapInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof LdapSink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof LdapSanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
