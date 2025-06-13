@@ -1810,6 +1810,12 @@ mod indexers {
     }
 }
 
+mod macros {
+    pub fn f() {
+        let x = format!("Hello, {}", "World!"); // $ MISSING: type=x:String
+    }
+}
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -1832,4 +1838,5 @@ fn main() {
     async_::f();
     impl_trait::f();
     indexers::f();
+    macros::f();
 }

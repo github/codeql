@@ -2642,9 +2642,13 @@ inferType
 | main.rs:1809:24:1809:25 | xs |  | file://:0:0:0:0 | [] |
 | main.rs:1809:24:1809:25 | xs | [T;...] | main.rs:1764:5:1765:13 | S |
 | main.rs:1809:24:1809:25 | xs | [T] | main.rs:1764:5:1765:13 | S |
-| main.rs:1815:5:1815:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1816:5:1816:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1816:20:1816:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1816:41:1816:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1832:5:1832:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1815:25:1815:35 | "Hello, {}" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1815:25:1815:45 | ...::format(...) |  | {EXTERNAL LOCATION} | String |
+| main.rs:1815:25:1815:45 | { ... } |  | {EXTERNAL LOCATION} | String |
+| main.rs:1815:38:1815:45 | "World!" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1821:5:1821:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1822:5:1822:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1822:20:1822:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1822:41:1822:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1838:5:1838:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
 testFailures
