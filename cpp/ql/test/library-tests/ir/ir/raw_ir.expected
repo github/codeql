@@ -37351,7 +37351,6 @@ try_except.c:
 #   14|     v14_4(void)           = Call[sink]            : func:r14_1, 0:r14_3
 #   14|     mu14_5(unknown)       = ^CallSideEffect       : ~m?
 #-----|   Goto -> Block 8
-#-----|   SEH Exception -> Block 2
 
 #   16|   Block 8
 #   16|     v16_1(void) = NoOp       : 
@@ -37400,12 +37399,8 @@ try_except.c:
 #   26|     r26_3(int)            = Load[x]               : &:r26_2, ~m?
 #   26|     v26_4(void)           = Call[sink]            : func:r26_1, 0:r26_3
 #   26|     mu26_5(unknown)       = ^CallSideEffect       : ~m?
-#-----|   Goto -> Block 5
-#-----|   SEH Exception -> Block 2
-
-#   28|   Block 5
-#   28|     v28_1(void) = NoOp       : 
-#   18|     v18_7(void) = ReturnVoid : 
+#   28|     v28_1(void)           = NoOp                  : 
+#   18|     v18_7(void)           = ReturnVoid            : 
 #-----|   Goto -> Block 1
 
 #   32| void h(int)
@@ -37469,7 +37464,6 @@ try_except.c:
 #   40|     v40_4(void)           = Call[sink]            : func:r40_1, 0:r40_3
 #   40|     mu40_5(unknown)       = ^CallSideEffect       : ~m?
 #-----|   Goto -> Block 8
-#-----|   SEH Exception -> Block 2
 
 #   42|   Block 8
 #   42|     v42_1(void) = NoOp       : 
@@ -37542,7 +37536,6 @@ try_except.cpp:
 #   14|     v14_4(void)           = Call[sink]            : func:r14_1, 0:r14_3
 #   14|     mu14_5(unknown)       = ^CallSideEffect       : ~m?
 #-----|   Goto -> Block 8
-#-----|   SEH Exception -> Block 2
 
 #   16|   Block 8
 #   16|     v16_1(void) = NoOp       : 
@@ -37591,12 +37584,8 @@ try_except.cpp:
 #   26|     r26_3(int)            = Load[x]               : &:r26_2, ~m?
 #   26|     v26_4(void)           = Call[sink]            : func:r26_1, 0:r26_3
 #   26|     mu26_5(unknown)       = ^CallSideEffect       : ~m?
-#-----|   Goto -> Block 5
-#-----|   SEH Exception -> Block 2
-
-#   28|   Block 5
-#   28|     v28_1(void) = NoOp       : 
-#   18|     v18_7(void) = ReturnVoid : 
+#   28|     v28_1(void)           = NoOp                  : 
+#   18|     v18_7(void)           = ReturnVoid            : 
 #-----|   Goto -> Block 1
 
 #   32| void h_cpp(int)
@@ -37660,7 +37649,6 @@ try_except.cpp:
 #   40|     v40_4(void)           = Call[sink]            : func:r40_1, 0:r40_3
 #   40|     mu40_5(unknown)       = ^CallSideEffect       : ~m?
 #-----|   Goto -> Block 8
-#-----|   SEH Exception -> Block 2
 
 #   42|   Block 8
 #   42|     v42_1(void) = NoOp       : 
@@ -37728,7 +37716,6 @@ try_except.cpp:
 #   52|     v52_4(void)           = Call[sink]            : func:r52_1, 0:r52_3
 #   52|     mu52_5(unknown)       = ^CallSideEffect       : ~m?
 #-----|   Goto -> Block 8
-#-----|   SEH Exception -> Block 2
 
 #   54|   Block 8
 #   54|     v54_1(void) = NoOp       : 

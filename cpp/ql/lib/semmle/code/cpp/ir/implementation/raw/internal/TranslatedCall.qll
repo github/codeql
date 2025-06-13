@@ -364,7 +364,7 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   final override predicate mayThrowException(ExceptionEdge e) {
     this.mustThrowException(e)
     or
-    expr.getEnclosingStmt().getParentStmt*() instanceof MicrosoftTryStmt and
+    exists(MicrosoftTryStmt tryStmt | tryStmt.getStmt().getAChild*() = expr) and
     e instanceof SehExceptionEdge
   }
 
