@@ -9,8 +9,13 @@ inferType
 | main.rs:27:26:27:26 | x |  | main.rs:5:5:8:5 | MyThing |
 | main.rs:27:26:27:28 | x.a |  | main.rs:2:5:3:13 | S |
 | main.rs:30:29:30:29 | x |  | main.rs:16:5:19:5 | GenericThing |
+| main.rs:30:29:30:29 | x | A | {EXTERNAL LOCATION} | bool |
+| main.rs:31:13:31:13 | a |  | {EXTERNAL LOCATION} | bool |
 | main.rs:31:17:31:17 | x |  | main.rs:16:5:19:5 | GenericThing |
+| main.rs:31:17:31:17 | x | A | {EXTERNAL LOCATION} | bool |
+| main.rs:31:17:31:19 | x.a |  | {EXTERNAL LOCATION} | bool |
 | main.rs:32:18:32:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:32:26:32:26 | a |  | {EXTERNAL LOCATION} | bool |
 | main.rs:37:13:37:13 | x |  | main.rs:16:5:19:5 | GenericThing |
 | main.rs:37:13:37:13 | x | A | main.rs:2:5:3:13 | S |
 | main.rs:37:17:37:42 | GenericThing::<...> {...} |  | main.rs:16:5:19:5 | GenericThing |
@@ -583,17 +588,26 @@ inferType
 | main.rs:497:36:497:37 | s2 |  | main.rs:493:41:493:49 | T2 |
 | main.rs:500:50:500:50 | x |  | main.rs:500:41:500:47 | T |
 | main.rs:500:56:500:56 | y |  | main.rs:500:41:500:47 | T |
+| main.rs:502:13:502:14 | s1 |  | {EXTERNAL LOCATION} | bool |
 | main.rs:502:18:502:18 | x |  | main.rs:500:41:500:47 | T |
+| main.rs:502:18:502:24 | x.fst() |  | {EXTERNAL LOCATION} | bool |
+| main.rs:503:13:503:14 | s2 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:503:18:503:18 | y |  | main.rs:500:41:500:47 | T |
+| main.rs:503:18:503:24 | y.snd() |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:504:18:504:29 | "{:?}, {:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:504:32:504:33 | s1 |  | {EXTERNAL LOCATION} | bool |
+| main.rs:504:36:504:37 | s2 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:507:54:507:54 | x |  | main.rs:507:41:507:51 | T |
 | main.rs:507:60:507:60 | y |  | main.rs:507:41:507:51 | T |
 | main.rs:509:13:509:14 | s1 |  | {EXTERNAL LOCATION} | u8 |
 | main.rs:509:18:509:18 | x |  | main.rs:507:41:507:51 | T |
 | main.rs:509:18:509:24 | x.fst() |  | {EXTERNAL LOCATION} | u8 |
+| main.rs:510:13:510:14 | s2 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:510:18:510:18 | y |  | main.rs:507:41:507:51 | T |
+| main.rs:510:18:510:24 | y.snd() |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:511:18:511:29 | "{:?}, {:?}\\n" |  | {EXTERNAL LOCATION} | str |
 | main.rs:511:32:511:33 | s1 |  | {EXTERNAL LOCATION} | u8 |
+| main.rs:511:36:511:37 | s2 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:527:15:527:18 | SelfParam |  | main.rs:526:5:535:5 | Self [trait MyTrait] |
 | main.rs:529:15:529:18 | SelfParam |  | main.rs:526:5:535:5 | Self [trait MyTrait] |
 | main.rs:532:9:534:9 | { ... } |  | main.rs:526:19:526:19 | A |
@@ -2541,6 +2555,7 @@ inferType
 | main.rs:1798:13:1798:38 | MyVec {...} |  | main.rs:1791:5:1794:5 | MyVec |
 | main.rs:1798:13:1798:38 | MyVec {...} | T | main.rs:1796:10:1796:10 | T |
 | main.rs:1798:27:1798:36 | ...::new(...) |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:1798:27:1798:36 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
 | main.rs:1798:27:1798:36 | ...::new(...) | T | main.rs:1796:10:1796:10 | T |
 | main.rs:1801:17:1801:25 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1801:17:1801:25 | SelfParam | &T | main.rs:1791:5:1794:5 | MyVec |
@@ -2550,6 +2565,7 @@ inferType
 | main.rs:1802:13:1802:16 | self | &T | main.rs:1791:5:1794:5 | MyVec |
 | main.rs:1802:13:1802:16 | self | &T.T | main.rs:1796:10:1796:10 | T |
 | main.rs:1802:13:1802:21 | self.data |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:1802:13:1802:21 | self.data | A | {EXTERNAL LOCATION} | Global |
 | main.rs:1802:13:1802:21 | self.data | T | main.rs:1796:10:1796:10 | T |
 | main.rs:1802:28:1802:32 | value |  | main.rs:1796:10:1796:10 | T |
 | main.rs:1810:18:1810:22 | SelfParam |  | file://:0:0:0:0 | & |
@@ -2564,6 +2580,7 @@ inferType
 | main.rs:1811:14:1811:17 | self | &T | main.rs:1791:5:1794:5 | MyVec |
 | main.rs:1811:14:1811:17 | self | &T.T | main.rs:1806:10:1806:10 | T |
 | main.rs:1811:14:1811:22 | self.data |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:1811:14:1811:22 | self.data | A | {EXTERNAL LOCATION} | Global |
 | main.rs:1811:14:1811:22 | self.data | T | main.rs:1806:10:1806:10 | T |
 | main.rs:1811:14:1811:29 | ...[index] |  | main.rs:1806:10:1806:10 | T |
 | main.rs:1811:24:1811:28 | index |  | {EXTERNAL LOCATION} | usize |
