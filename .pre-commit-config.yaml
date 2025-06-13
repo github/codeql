@@ -18,7 +18,7 @@ repos:
     rev: 25.1.0
     hooks:
       - id: black
-        files: ^(misc/codegen/.*|misc/scripts/models-as-data/bulk_generate_mad)\.py$
+        files: ^(misc/codegen/.*|misc/scripts/models-as-data/.*)\.py$
 
   - repo: local
     hooks:
