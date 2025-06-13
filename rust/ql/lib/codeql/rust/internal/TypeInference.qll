@@ -1181,9 +1181,17 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
 }
 
 pragma[nomagic]
-private Type inferArrayListExprType(/*ArrayExpr*/ArrayListExpr ale, TypePath path) {
+private Type inferArrayExprType(ArrayExpr ae, TypePath path) {
+  // an array list expression (`[1, 2, 3]`) has the type of the first (any) element
   exists(Type type0, TypePath path0 |
-    type0 = inferType(ale.getExpr(0), path0) and
+    type0 = inferType(ae.(ArrayListExpr).getExpr(0), path0) and
+    result = type0 and
+    path = TypePath::cons(any(ArrayTypeParameter tp), path0)
+  )
+  or
+  // an array repeat expression (`[1; 3]`) has the type of the repeat operand
+  exists(Type type0, TypePath path0 |
+    type0 = inferType(ae.(ArrayRepeatExpr).getRepeatOperand(), path0) and
     result = type0 and
     path = TypePath::cons(any(ArrayTypeParameter tp), path0)
   )
@@ -1565,7 +1573,7 @@ private module Cached {
     or
     result = inferIndexExprType(n, path)
     or
-    result = inferArrayListExprType(n, path)
+    result = inferArrayExprType(n, path)
     or
     result = inferForLoopExprType(n, path)
   }

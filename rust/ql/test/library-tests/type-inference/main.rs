@@ -1830,7 +1830,7 @@ mod loops {
         for u in vals1 { } // $ type=u:u8
 
         let vals2 = [1u16; 3]; // $ MISSING: type=vals2:[u16; 3]
-        for u in vals2 { } // $ MISSING: type=u:u16
+        for u in vals2 { } // $ type=u:u16
 
         let vals3: [u32; 3] = [1, 2, 3]; // $ MISSING: type=vals3:[u32; 3]
         for u in vals3 { } // $ type=u:u32

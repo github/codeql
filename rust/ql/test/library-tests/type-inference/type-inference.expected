@@ -2639,8 +2639,12 @@ inferType
 | main.rs:1829:30:1829:30 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1830:13:1830:13 | u |  | {EXTERNAL LOCATION} | u8 |
 | main.rs:1830:18:1830:22 | vals1 | [T;...] | {EXTERNAL LOCATION} | u8 |
+| main.rs:1832:13:1832:17 | vals2 | [T;...] | {EXTERNAL LOCATION} | u16 |
+| main.rs:1832:21:1832:29 | [1u16; 3] | [T;...] | {EXTERNAL LOCATION} | u16 |
 | main.rs:1832:22:1832:25 | 1u16 |  | {EXTERNAL LOCATION} | u16 |
 | main.rs:1832:28:1832:28 | 3 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1833:13:1833:13 | u |  | {EXTERNAL LOCATION} | u16 |
+| main.rs:1833:18:1833:22 | vals2 | [T;...] | {EXTERNAL LOCATION} | u16 |
 | main.rs:1835:13:1835:17 | vals3 |  | file://:0:0:0:0 | [] |
 | main.rs:1835:13:1835:17 | vals3 | [T;...] | {EXTERNAL LOCATION} | i32 |
 | main.rs:1835:13:1835:17 | vals3 | [T;...] | {EXTERNAL LOCATION} | u32 |
@@ -2657,14 +2661,18 @@ inferType
 | main.rs:1836:18:1836:22 | vals3 | [T;...] | {EXTERNAL LOCATION} | i32 |
 | main.rs:1836:18:1836:22 | vals3 | [T;...] | {EXTERNAL LOCATION} | u32 |
 | main.rs:1838:13:1838:17 | vals4 |  | file://:0:0:0:0 | [] |
+| main.rs:1838:13:1838:17 | vals4 | [T;...] | {EXTERNAL LOCATION} | i32 |
 | main.rs:1838:13:1838:17 | vals4 | [T;...] | {EXTERNAL LOCATION} | u64 |
 | main.rs:1838:26:1838:26 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1838:31:1838:36 | [1; 3] |  | file://:0:0:0:0 | [] |
+| main.rs:1838:31:1838:36 | [1; 3] | [T;...] | {EXTERNAL LOCATION} | i32 |
 | main.rs:1838:31:1838:36 | [1; 3] | [T;...] | {EXTERNAL LOCATION} | u64 |
 | main.rs:1838:32:1838:32 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1838:35:1838:35 | 3 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1839:13:1839:13 | u |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1839:13:1839:13 | u |  | {EXTERNAL LOCATION} | u64 |
 | main.rs:1839:18:1839:22 | vals4 |  | file://:0:0:0:0 | [] |
+| main.rs:1839:18:1839:22 | vals4 | [T;...] | {EXTERNAL LOCATION} | i32 |
 | main.rs:1839:18:1839:22 | vals4 | [T;...] | {EXTERNAL LOCATION} | u64 |
 | main.rs:1841:13:1841:24 | mut strings1 | [T;...] | {EXTERNAL LOCATION} | str |
 | main.rs:1841:28:1841:48 | [...] | [T;...] | {EXTERNAL LOCATION} | str |
