@@ -171,7 +171,6 @@ import codeql.rust.elements.TuplePat
 import codeql.rust.elements.TupleStructPat
 import codeql.rust.elements.TupleTypeRepr
 import codeql.rust.elements.TypeAlias
-import codeql.rust.elements.TypeAnchor
 import codeql.rust.elements.TypeArg
 import codeql.rust.elements.TypeBound
 import codeql.rust.elements.TypeBoundList

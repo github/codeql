@@ -605,10 +605,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TTypeAnchor(Raw::TypeAnchor id) { constructTypeAnchor(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TTypeArg(Raw::TypeArg id) { constructTypeArg(id) } or
     /**
      * INTERNAL: Do not use.
@@ -725,7 +721,7 @@ module Synth {
         TPat or TPath or TPathSegment or TRename or TResolvable or TRetTypeRepr or
         TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or TStructExprField or
         TStructExprFieldList or TStructField or TStructPatField or TStructPatFieldList or TToken or
-        TTokenTree or TTupleField or TTypeAnchor or TTypeBound or TTypeBoundList or TTypeRepr or
+        TTokenTree or TTupleField or TTypeBound or TTypeBoundList or TTypeRepr or
         TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or TUseTreeList or TVariantDef or
         TVariantList or TVisibility or TWhereClause or TWherePred;
 
@@ -1738,12 +1734,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TTypeAnchor`, if possible.
-   */
-  TTypeAnchor convertTypeAnchorFromRaw(Raw::Element e) { result = TTypeAnchor(e) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TTypeArg`, if possible.
    */
   TTypeArg convertTypeArgFromRaw(Raw::Element e) { result = TTypeArg(e) }
@@ -2034,8 +2024,6 @@ module Synth {
     result = convertTokenTreeFromRaw(e)
     or
     result = convertTupleFieldFromRaw(e)
-    or
-    result = convertTypeAnchorFromRaw(e)
     or
     result = convertTypeBoundFromRaw(e)
     or
@@ -3346,12 +3334,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TTypeAnchor` to a raw DB element, if possible.
-   */
-  Raw::Element convertTypeAnchorToRaw(TTypeAnchor e) { e = TTypeAnchor(result) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TTypeArg` to a raw DB element, if possible.
    */
   Raw::Element convertTypeArgToRaw(TTypeArg e) { e = TTypeArg(result) }
@@ -3642,8 +3624,6 @@ module Synth {
     result = convertTokenTreeToRaw(e)
     or
     result = convertTupleFieldToRaw(e)
-    or
-    result = convertTypeAnchorToRaw(e)
     or
     result = convertTypeBoundToRaw(e)
     or

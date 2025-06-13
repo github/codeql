@@ -2027,7 +2027,6 @@ pub struct PathSegment {
     pub parenthesized_arg_list: Option<trap::Label<ParenthesizedArgList>>,
     pub ret_type: Option<trap::Label<RetTypeRepr>>,
     pub return_type_syntax: Option<trap::Label<ReturnTypeSyntax>>,
-    pub type_anchor: Option<trap::Label<TypeAnchor>>,
 }
 
 impl trap::TrapEntry for PathSegment {
@@ -2051,9 +2050,6 @@ impl trap::TrapEntry for PathSegment {
         }
         if let Some(v) = self.return_type_syntax {
             out.add_tuple("path_segment_return_type_syntaxes", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.type_anchor {
-            out.add_tuple("path_segment_type_anchors", vec![id.into(), v.into()]);
         }
     }
 }
@@ -2869,60 +2865,6 @@ impl From<trap::Label<TupleField>> for trap::Label<Locatable> {
 impl From<trap::Label<TupleField>> for trap::Label<Element> {
     fn from(value: trap::Label<TupleField>) -> Self {
         // SAFETY: this is safe because in the dbscheme TupleField is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct TypeAnchor {
-    pub id: trap::TrapId<TypeAnchor>,
-    pub path_type: Option<trap::Label<PathTypeRepr>>,
-    pub type_repr: Option<trap::Label<TypeRepr>>,
-}
-
-impl trap::TrapEntry for TypeAnchor {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("type_anchors", vec![id.into()]);
-        if let Some(v) = self.path_type {
-            out.add_tuple("type_anchor_path_types", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.type_repr {
-            out.add_tuple("type_anchor_type_reprs", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for TypeAnchor {
-    fn class_name() -> &'static str { "TypeAnchor" }
-}
-
-impl From<trap::Label<TypeAnchor>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<TypeAnchor>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeAnchor is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<TypeAnchor>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<TypeAnchor>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeAnchor is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<TypeAnchor>> for trap::Label<Element> {
-    fn from(value: trap::Label<TypeAnchor>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeAnchor is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }

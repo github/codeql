@@ -667,11 +667,11 @@ impl<'a> Translator<'a> {
     ) {
         // work around a bug in rust-analyzer AST generation machinery
         // this code was inspired by rust-analyzer's own workaround for this:
-        // https://github.com/rust-lang/rust-analyzer/blob/1f86729f29ea50e8491a1516422df4fd3d1277b0/crates/syntax/src/ast/node_ext.rs#L268-L277
-        if item.l_angle_token().is_some() {
+        // https://github.com/rust-lang/rust-analyzer/blob/a642aa8023be11d6bc027fc6a68c71c2f3fc7f72/crates/syntax/src/ast/node_ext.rs#L290-L297
+        if let Some(anchor) = item.type_anchor() {
             // <T> or <T as Trait>
             // T is any TypeRef, Trait has to be a PathType
-            let mut type_refs = item
+            let mut type_refs = anchor
                 .syntax()
                 .children()
                 .filter(|node| ast::Type::can_cast(node.kind()));

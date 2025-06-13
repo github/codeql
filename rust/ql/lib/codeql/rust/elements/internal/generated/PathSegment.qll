@@ -13,7 +13,6 @@ import codeql.rust.elements.ParenthesizedArgList
 import codeql.rust.elements.PathTypeRepr
 import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.ReturnTypeSyntax
-import codeql.rust.elements.TypeAnchor
 import codeql.rust.elements.TypeRepr
 
 /**
@@ -109,21 +108,6 @@ module Generated {
      * Holds if `getReturnTypeSyntax()` exists.
      */
     final predicate hasReturnTypeSyntax() { exists(this.getReturnTypeSyntax()) }
-
-    /**
-     * Gets the type anchor of this path segment, if it exists.
-     */
-    TypeAnchor getTypeAnchor() {
-      result =
-        Synth::convertTypeAnchorFromRaw(Synth::convertPathSegmentToRaw(this)
-              .(Raw::PathSegment)
-              .getTypeAnchor())
-    }
-
-    /**
-     * Holds if `getTypeAnchor()` exists.
-     */
-    final predicate hasTypeAnchor() { exists(this.getTypeAnchor()) }
 
     /**
      * Gets the type representation of this path segment, if it exists.

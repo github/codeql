@@ -155,12 +155,9 @@ fn write_schema(
             .iter()
             .map(|node| enum_src_to_schema_class(node, &super_types)),
     );
-    schema.classes.extend(
-        grammar
-            .nodes
-            .iter()
-            .map(|node| node_src_to_schema_class(node, &super_types)),
-    );
+    schema
+        .classes
+        .extend(get_nodes(grammar).map(|node| node_src_to_schema_class(node, &super_types)));
     let template = mustache_ctx.compile_path("schema")?;
     let res = template.render_to_string(&schema)?;
     Ok(fix_blank_lines(&res))
@@ -295,7 +292,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         let name = field.method_name();
         match (node.name.as_str(), name.as_str()) {
             ("ArrayExpr", "expr") // The ArrayExpr type also has an 'exprs' field
-            | ("PathSegment", "ty" | "path_type")  // these are broken, handling them manually
+            | ("PathSegment", "type_anchor")  // we flatten TypeAnchor into PathSegment in the extractor
             | ("Param", "pat") | ("MacroCall", "token_tree") // handled manually to use `body`
             => continue,
             _ => {}
@@ -384,6 +381,11 @@ struct ExtractorInfo {
     nodes: Vec<ExtractorNodeInfo>,
 }
 
+fn get_nodes(grammar: &AstSrc) -> impl Iterator<Item = &AstNodeSrc> {
+    // we flatten TypeAnchor into PathSegment in the extractor
+    grammar.nodes.iter().filter(|n| n.name != "TypeAnchor")
+}
+
 fn enum_to_extractor_info(node: &AstEnumSrc) -> Option<ExtractorEnumInfo> {
     if node.name == "VariantDef" {
         // currently defined but unused
@@ -470,7 +472,7 @@ fn write_extractor(grammar: &AstSrc, mustache_ctx: &mustache::Context) -> mustac
             .iter()
             .filter_map(enum_to_extractor_info)
             .collect(),
-        nodes: grammar.nodes.iter().map(node_to_extractor_info).collect(),
+        nodes: get_nodes(grammar).map(node_to_extractor_info).collect(),
     };
     let template = mustache_ctx.compile_path("extractor")?;
     let res = template.render_to_string(&extractor_info)?;
