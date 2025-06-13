@@ -72,7 +72,7 @@ function makePaginationQuery<T>(q: SelectQueryBuilder<T>): SelectQueryBuilder<T>
 
 AppDataSource.initialize().then(async () => {
     const BadInput = "A user controllable Remote Source like `' 1=1 --` "
-    
+
     // Active record
     await UserActiveRecord.findByName(BadInput, "Saw")
 
