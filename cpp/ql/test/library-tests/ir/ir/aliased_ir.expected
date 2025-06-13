@@ -39194,6 +39194,31 @@ try_except.c:
 #   32|   Block 7
 #   32|     v32_10(void) = Unreached : 
 
+#   46| void j(int)
+#   46|   Block 0
+#   46|     v46_1(void)           = EnterFunction          : 
+#   46|     m46_2(unknown)        = AliasedDefinition      : 
+#   46|     m46_3(unknown)        = InitializeNonLocal     : 
+#   46|     m46_4(unknown)        = Chi                    : total:m46_2, partial:m46_3
+#   46|     r46_5(glval<int>)     = VariableAddress[b]     : 
+#   46|     m46_6(int)            = InitializeParameter[b] : &:r46_5
+#   47|     r47_1(glval<int>)     = VariableAddress[x]     : 
+#   47|     r47_2(int)            = Constant[0]            : 
+#   47|     m47_3(int)            = Store[x]               : &:r47_1, r47_2
+#   49|     r49_1(glval<int>)     = VariableAddress[y]     : 
+#   49|     r49_2(glval<unknown>) = FunctionAddress[i]     : 
+#   49|     r49_3(int)            = Call[i]                : func:r49_2
+#   49|     m49_4(unknown)        = ^CallSideEffect        : ~m46_4
+#   49|     m49_5(unknown)        = Chi                    : total:m46_4, partial:m49_4
+#   49|     m49_6(int)            = Store[y]               : &:r49_1, r49_3
+#   54|     v54_1(void)           = NoOp                   : 
+#   46|     v46_7(void)           = ReturnVoid             : 
+#   46|     v46_8(void)           = AliasedUse             : ~m49_5
+#   46|     v46_9(void)           = ExitFunction           : 
+
+#   46|   Block 1
+#   46|     v46_10(void) = Unreached : 
+
 try_except.cpp:
 #    6| void f_cpp()
 #    6|   Block 0
@@ -39393,10 +39418,10 @@ try_except.cpp:
 #-----|   True -> Block 1
 
 #   48|   Block 1
-#   48|     r48_1(glval<int>) = VariableAddress[#throw48:13] : 
-#   48|     r48_2(int)        = Constant[1]                  : 
-#   48|     m48_3(int)        = Store[#throw48:13]           : &:r48_1, r48_2
-#   48|     v48_4(void)       = ThrowValue                   : &:r48_1, m48_3
+#   48|     r48_1(glval<int>) = VariableAddress[#throw48:7] : 
+#   48|     r48_2(int)        = Constant[1]                 : 
+#   48|     m48_3(int)        = Store[#throw48:7]           : &:r48_1, r48_2
+#   48|     v48_4(void)       = ThrowValue                  : &:r48_1, m48_3
 #-----|   C++ Exception -> Block 4
 
 #   51|   Block 2
