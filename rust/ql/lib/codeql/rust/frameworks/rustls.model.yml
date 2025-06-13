@@ -3,12 +3,12 @@ extensions:
       pack: codeql/rust-all
       extensible: sourceModel
     data:
-      - ["repo:https://github.com/rustls/rustls:rustls", "<crate::client::client_conn::connection::ClientConnection>::new", "ReturnValue.Field[crate::result::Result::Ok(0)]", "remote", "manual"]
+      - ["repo:https://github.com/rustls/rustls:rustls", "<crate::client::client_conn::connection::ClientConnection>::new", "ReturnValue.Field[core::result::Result::Ok(0)]", "remote", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["repo:https://github.com/quininer/futures-rustls:futures-rustls", "<crate::TlsConnector>::connect", "Argument[1]", "ReturnValue.Future.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["repo:https://github.com/quininer/futures-rustls:futures-rustls", "<crate::TlsConnector>::connect", "Argument[1]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["repo:https://github.com/quininer/futures-rustls:futures-rustls", "<crate::client::TlsStream as crate::if_std::AsyncRead>::poll_read", "Argument[self].Reference", "Argument[1].Reference", "taint", "manual"]
       - ["repo:https://github.com/rustls/rustls:rustls", "<crate::conn::ConnectionCommon>::reader", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["repo:https://github.com/rustls/rustls:rustls", "<crate::conn::connection::Reader as crate::io::Read>::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]

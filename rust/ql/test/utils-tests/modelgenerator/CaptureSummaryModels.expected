@@ -1,4 +1,2 @@
 unexpectedModel
-| Unexpected summary found: repo::test;<crate::option::MyOption as crate::clone::Clone>::clone;Argument[self].Field[crate::option::MyOption::MySome(0)].Reference;ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated |
 expectedModel
-| Expected summary missing: repo::test;<crate::option::MyOption as crate::clone::Clone>::clone;Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated |
