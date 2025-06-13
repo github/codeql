@@ -4,10 +4,9 @@
  * @kind problem
  * @problem.severity warning
  * @id go/unexpected-nil-value
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       logic
- *       quality
  * @precision high
  */
 

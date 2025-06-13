@@ -5,7 +5,10 @@
  * @kind problem
  * @problem.severity warning
  * @id go/constant-length-comparison
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       external/cwe/cwe-129
  * @precision high
  */
 

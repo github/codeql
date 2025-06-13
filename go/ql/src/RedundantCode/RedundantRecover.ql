@@ -6,9 +6,10 @@
  * @kind problem
  * @problem.severity warning
  * @id go/redundant-recover
- * @tags maintainability
- *       correctness
- *       quality
+ * @tags quality
+ *       maintainability
+ *       useless-code
+ *       external/cwe/cwe-561
  * @precision high
  */
 

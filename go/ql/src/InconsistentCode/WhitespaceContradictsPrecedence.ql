@@ -5,8 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @id go/whitespace-contradicts-precedence
- * @tags maintainability
- *       correctness
+ * @tags quality
+ *       maintainability
+ *       readability
  *       external/cwe/cwe-783
  * @precision very-high
  */
