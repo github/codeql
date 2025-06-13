@@ -2645,15 +2645,10 @@ inferType
 | main.rs:1850:9:1850:9 | x |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1850:9:1850:9 | x |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1850:9:1850:22 | x.my_add(...) |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1850:18:1850:21 | 5i64 |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1850:18:1850:21 | 5i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1850:18:1850:21 | 5i64 |  | file://:0:0:0:0 | & |
-| main.rs:1850:18:1850:21 | 5i64 | &T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1851:9:1851:9 | x |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1851:9:1851:9 | x |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1851:9:1851:23 | x.my_add(...) |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1851:18:1851:22 | &5i64 |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1851:18:1851:22 | &5i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1851:18:1851:22 | &5i64 |  | file://:0:0:0:0 | & |
 | main.rs:1851:18:1851:22 | &5i64 | &T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1851:19:1851:22 | 5i64 |  | {EXTERNAL LOCATION} | i64 |
@@ -2661,9 +2656,6 @@ inferType
 | main.rs:1852:9:1852:9 | x |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1852:9:1852:22 | x.my_add(...) |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1852:18:1852:21 | true |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1852:18:1852:21 | true |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1852:18:1852:21 | true |  | file://:0:0:0:0 | & |
-| main.rs:1852:18:1852:21 | true | &T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1858:5:1858:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
 | main.rs:1859:5:1859:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
 | main.rs:1859:20:1859:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |

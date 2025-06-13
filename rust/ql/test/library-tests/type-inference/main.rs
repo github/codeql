@@ -1847,9 +1847,9 @@ mod method_determined_by_argument_type {
 
     pub fn f() {
         let x: i64 = 73;
-        x.my_add(5i64); // $ method=MyAdd<i64>::my_add SPURIOUS: method=MyAdd<bool>::my_add SPURIOUS: method=MyAdd<&i64>::my_add
-        x.my_add(&5i64); // $ method=MyAdd<&i64>::my_add SPURIOUS: method=MyAdd<i64>::my_add SPURIOUS: method=MyAdd<bool>::my_add
-        x.my_add(true); // $ method=MyAdd<bool>::my_add SPURIOUS: method=MyAdd<i64>::my_add SPURIOUS: method=MyAdd<&i64>::my_add
+        x.my_add(5i64); // $ method=MyAdd<i64>::my_add
+        x.my_add(&5i64); // $ method=MyAdd<&i64>::my_add
+        x.my_add(true); // $ method=MyAdd<bool>::my_add
     }
 }
 
