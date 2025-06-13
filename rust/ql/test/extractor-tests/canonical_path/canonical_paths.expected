@@ -1,6 +1,7 @@
 canonicalPath
 | anonymous.rs:3:1:32:1 | fn canonicals | test::anonymous::canonicals |
 | anonymous.rs:34:1:36:1 | fn other | test::anonymous::other |
+| {EXTERNAL LOCATION} | fn trim | <core::str>::trim |
 | lib.rs:1:1:1:14 | mod anonymous | test::anonymous |
 | lib.rs:2:1:2:12 | mod regular | test::regular |
 | regular.rs:1:1:2:18 | struct Struct | test::regular::Struct |

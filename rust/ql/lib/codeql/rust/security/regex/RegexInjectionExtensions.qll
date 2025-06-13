@@ -53,11 +53,10 @@ module RegexInjection {
    */
   private class NewSink extends Sink {
     NewSink() {
-      exists(CallExprCfgNode call, PathExpr path |
-        path = call.getFunction().getExpr() and
-        path.getResolvedCrateOrigin() = "repo:https://github.com/rust-lang/regex:regex" and
-        path.getResolvedPath() = "<crate::regex::string::Regex>::new" and
-        this.asExpr() = call.getArgument(0) and
+      exists(CallExprBase call, Addressable a |
+        call.getStaticTarget() = a and
+        a.getCanonicalPath() = "<regex::regex::string::Regex>::new" and
+        this.asExpr().getExpr() = call.getArg(0) and
         not this.asExpr() instanceof LiteralExprCfgNode
       )
     }

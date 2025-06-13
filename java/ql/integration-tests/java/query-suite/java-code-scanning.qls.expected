@@ -12,7 +12,6 @@ ql/java/ql/src/Security/CWE/CWE-023/PartialPathTraversalFromRemote.ql
 ql/java/ql/src/Security/CWE/CWE-074/JndiInjection.ql
 ql/java/ql/src/Security/CWE/CWE-074/XsltInjection.ql
 ql/java/ql/src/Security/CWE/CWE-078/ExecTainted.ql
-ql/java/ql/src/Security/CWE/CWE-078/ExecUnescaped.ql
 ql/java/ql/src/Security/CWE/CWE-079/XSS.ql
 ql/java/ql/src/Security/CWE/CWE-089/SqlTainted.ql
 ql/java/ql/src/Security/CWE/CWE-090/LdapInjection.ql

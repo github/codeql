@@ -50,3 +50,70 @@ declare class Quz {
 
 var bla = new Foo();
 var blab = new Baz();
+
+
+interface X {
+  constructor: () => string; // Just a property, not a method.
+}
+
+type A = {
+  function(): number; // $ Alert
+};
+
+type B = {
+  constructor(): number; // $ Alert
+  new(): number;
+};
+
+class StaticMethods {
+  static function(): void {}
+  static new(): void {}
+}
+
+interface Overloaded {
+  function(x: string): string; // $Alert
+  function(x: number): number; // $Alert
+  function(x: any): any; // $Alert
+}
+
+abstract class AbstractFoo {
+  abstract new(): void; // $Alert
+}
+
+abstract class AbstractFooFunction {
+  abstract function(): number; // $Alert
+}
+
+abstract class AbstractFooConstructor {
+  constructor(){}
+}
+
+declare module "some-module" {
+  interface ModuleInterface {
+    function(): void;  // $Alert
+  }
+}
+
+type Intersection = {
+  function(): number; // $Alert
+} & {
+  other(): string;
+};
+
+type Union = {
+  new(): number;
+} | {
+  valid(): string;
+};
+
+type Union2 = {
+  constructor(): number; // $Alert
+} | {
+  valid(): string;
+};
+
+type Intersection2 = {
+  constructor(): number; // $Alert
+} & {
+  other(): string;
+};

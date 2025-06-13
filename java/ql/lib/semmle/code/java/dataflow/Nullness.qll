@@ -141,8 +141,6 @@ private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
 private ControlFlowNode ensureNotNull(SsaVariable v) {
   result = varDereference(v, _)
   or
-  result.asStmt().(AssertStmt).getExpr() = nullGuard(v, true, false)
-  or
   exists(AssertTrueMethod m | result.asCall() = m.getACheck(nullGuard(v, true, false)))
   or
   exists(AssertFalseMethod m | result.asCall() = m.getACheck(nullGuard(v, false, false)))

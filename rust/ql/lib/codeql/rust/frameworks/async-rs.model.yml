@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["repo:https://github.com/async-rs/async-std:async-std", "<crate::net::tcp::stream::TcpStream>::connect", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "remote", "manual"]

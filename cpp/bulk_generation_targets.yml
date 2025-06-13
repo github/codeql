@@ -1,0 +1,10 @@
+language: cpp
+strategy: dca
+destination: cpp/ql/lib/ext/generated
+targets:
+- name: openssl
+  with-sinks: false
+  with-sources: false
+- name: sqlite
+  with-sinks: false
+  with-sources: false

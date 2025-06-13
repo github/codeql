@@ -63,8 +63,8 @@ pub struct {{name}} {
 
 impl {{name}} {
 {{#detached_fields}}
-    pub fn emit_{{singular_field_name}}(id: trap::Label<Self>, {{#is_repeated}}{{^is_unordered}}i: usize, {{/is_unordered}}{{/is_repeated}}value: {{base_type}}, out: &mut trap::Writer) {
-        out.add_tuple("{{table_name}}", vec![id.into(), {{#is_repeated}}{{^is_unordered}}i.into(), {{/is_unordered}}{{/is_repeated}}value.into()]);
+    pub fn emit_{{singular_field_name}}(id: trap::Label<Self>{{^is_predicate}}{{#is_repeated}}{{^is_unordered}}, i: usize{{/is_unordered}}{{/is_repeated}}, value: {{base_type}}{{/is_predicate}}, out: &mut trap::Writer) {
+        out.add_tuple("{{table_name}}", vec![id.into(){{^is_predicate}}{{#is_repeated}}{{^is_unordered}}, i.into(){{/is_unordered}}{{/is_repeated}}, value.into(){{/is_predicate}}]);
     }
 {{/detached_fields}}
 }

@@ -62,6 +62,8 @@ class Generator:
         self.generateTypeBasedSummaries = False
         self.dryRun = False
         self.dirname = "modelgenerator"
+        self.ram = 2**15
+        self.threads = 8
 
 
     def setenvironment(self, database, folder):
@@ -138,8 +140,12 @@ class Generator:
         queryFile = os.path.join(self.codeQlRoot, f"{self.language}/ql/src/utils/{self.dirname}", query)
         resultBqrs = os.path.join(self.workDir, "out.bqrs")
 
-        helpers.run_cmd(['codeql', 'query', 'run', queryFile, '--database',
-               self.database, '--output', resultBqrs, '--threads', '8', '--ram', '32768'], "Failed to generate " + query)
+        cmd = ['codeql', 'query', 'run', queryFile, '--database', self.database, '--output', resultBqrs]
+        if self.threads is not None:
+            cmd += ["--threads", str(self.threads)]
+        if self.ram is not None:
+            cmd += ["--ram", str(self.ram)]
+        helpers.run_cmd(cmd, "Failed to generate " + query)
 
         return helpers.readData(self.workDir, resultBqrs)
 

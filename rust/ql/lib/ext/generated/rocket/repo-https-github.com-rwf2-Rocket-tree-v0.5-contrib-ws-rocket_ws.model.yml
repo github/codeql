@@ -4,9 +4,16 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::WebSocket>::accept_key", "Argument[self].Field[crate::websocket::WebSocket::key]", "ReturnValue.Reference", "value", "dfc-generated"]
-      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::WebSocket>::channel", "Argument[self]", "ReturnValue.Field[crate::websocket::Channel::ws]", "value", "dfc-generated"]
-      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::WebSocket>::config", "Argument[0]", "Argument[self].Field[crate::websocket::WebSocket::config]", "value", "dfc-generated"]
-      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::WebSocket>::config", "Argument[0]", "ReturnValue.Field[crate::websocket::WebSocket::config]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::Channel as crate::data::io_stream::IoHandler>::io", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::Channel as crate::data::io_stream::IoHandler>::io", "Argument[self]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::MessageStream as crate::data::io_stream::IoHandler>::io", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::MessageStream as crate::data::io_stream::IoHandler>::io", "Argument[self]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::WebSocket as crate::request::from_request::FromRequest>::from_request", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::WebSocket>::accept_key", "Argument[self].Field[rocket_ws::websocket::WebSocket::key]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::WebSocket>::channel", "Argument[0]", "ReturnValue.Field[rocket_ws::websocket::Channel::handler].Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::WebSocket>::channel", "Argument[self]", "ReturnValue.Field[rocket_ws::websocket::Channel::ws]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::WebSocket>::config", "Argument[0]", "Argument[self].Field[rocket_ws::websocket::WebSocket::config]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::WebSocket>::config", "Argument[0]", "ReturnValue.Field[rocket_ws::websocket::WebSocket::config]", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::WebSocket>::config", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
-      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::WebSocket>::stream", "Argument[self]", "ReturnValue.Field[crate::websocket::MessageStream::ws]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::WebSocket>::stream", "Argument[0]", "ReturnValue.Field[rocket_ws::websocket::MessageStream::handler].Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::WebSocket>::stream", "Argument[self]", "ReturnValue.Field[rocket_ws::websocket::MessageStream::ws]", "value", "dfc-generated"]

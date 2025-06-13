@@ -55,10 +55,13 @@ module TypeTest implements TestSig {
     exists(AstNode n, TypePath path, Type t |
       t = TypeInference::inferType(n, path) and
       location = n.getLocation() and
-      element = n.toString() and
       if path.isEmpty()
       then value = element + ":" + t
       else value = element + ":" + path.toString() + "." + t.toString()
+    |
+      element = n.toString()
+      or
+      element = n.(IdentPat).getName().getText()
     )
   }
 }

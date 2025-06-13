@@ -6,7 +6,9 @@
  * @problem.severity warning
  * @id js/suspicious-method-name-declaration
  * @precision high
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       typescript
  *       methods
  */

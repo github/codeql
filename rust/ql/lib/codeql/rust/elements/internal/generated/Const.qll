@@ -140,5 +140,15 @@ module Generated {
      * Holds if `getWhereClause()` exists.
      */
     final predicate hasWhereClause() { exists(this.getWhereClause()) }
+
+    /**
+     * Holds if this constant has an implementation.
+     *
+     * This is the same as `hasBody` for source code, but for library code (for which we always skip
+     * the body), this will hold when the body was present in the original code.
+     */
+    predicate hasImplementation() {
+      Synth::convertConstToRaw(this).(Raw::Const).hasImplementation()
+    }
   }
 }

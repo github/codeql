@@ -1,15 +1,15 @@
 models
 | 1 | Summary: lang:alloc; <crate::boxed::Box>::new; Argument[0]; ReturnValue.Reference; value |
 | 2 | Summary: lang:core; <_ as crate::convert::From>::from; Argument[0]; ReturnValue; value |
-| 3 | Summary: lang:core; <crate::option::Option>::unwrap; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 3 | Summary: lang:core; <crate::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 4 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[0]; ReturnValue; value |
-| 5 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 5 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 6 | Summary: lang:core; <crate::option::Option>::unwrap_or_else; Argument[0].ReturnValue; ReturnValue; value |
-| 7 | Summary: lang:core; <crate::option::Option>::unwrap_or_else; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue; value |
-| 8 | Summary: lang:core; <crate::result::Result>::err; Argument[self].Field[crate::result::Result::Err(0)]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 9 | Summary: lang:core; <crate::result::Result>::expect; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 10 | Summary: lang:core; <crate::result::Result>::expect_err; Argument[self].Field[crate::result::Result::Err(0)]; ReturnValue; value |
-| 11 | Summary: lang:core; <crate::result::Result>::ok; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 7 | Summary: lang:core; <crate::option::Option>::unwrap_or_else; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
+| 8 | Summary: lang:core; <crate::result::Result>::err; Argument[self].Field[core::result::Result::Err(0)]; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 9 | Summary: lang:core; <crate::result::Result>::expect; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 10 | Summary: lang:core; <crate::result::Result>::expect_err; Argument[self].Field[core::result::Result::Err(0)]; ReturnValue; value |
+| 11 | Summary: lang:core; <crate::result::Result>::ok; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue.Field[core::option::Option::Some(0)]; value |
 edges
 | main.rs:22:9:22:9 | s | main.rs:23:10:23:10 | s | provenance |  |
 | main.rs:22:13:22:21 | source(...) | main.rs:22:9:22:9 | s | provenance |  |

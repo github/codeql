@@ -14,11 +14,11 @@ repos:
     hooks:
       - id: clang-format
 
-  - repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v2.0.4
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
     hooks:
-      - id: autopep8
-        files: ^misc/codegen/.*\.py
+      - id: black
+        files: ^(misc/codegen/.*|misc/scripts/models-as-data/bulk_generate_mad)\.py$
 
   - repo: local
     hooks:

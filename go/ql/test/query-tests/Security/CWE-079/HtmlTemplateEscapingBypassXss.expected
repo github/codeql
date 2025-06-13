@@ -1,0 +1,60 @@
+#select
+| HtmlTemplateEscapingBypassXss.go:28:39:28:39 | a | HtmlTemplateEscapingBypassXss.go:27:26:27:40 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:28:39:28:39 | a | Data from an $@ will not be auto-escaped because it was converted to template.HTML | HtmlTemplateEscapingBypassXss.go:27:26:27:40 | call to UserAgent | untrusted source |
+| HtmlTemplateEscapingBypassXss.go:34:40:34:40 | a | HtmlTemplateEscapingBypassXss.go:33:23:33:37 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:34:40:34:40 | a | Data from an $@ will not be auto-escaped because it was converted to template.HTML | HtmlTemplateEscapingBypassXss.go:33:23:33:37 | call to UserAgent | untrusted source |
+| HtmlTemplateEscapingBypassXss.go:39:40:39:40 | a | HtmlTemplateEscapingBypassXss.go:38:19:38:33 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:39:40:39:40 | a | Data from an $@ will not be auto-escaped because it was converted to template.HTML | HtmlTemplateEscapingBypassXss.go:38:19:38:33 | call to UserAgent | untrusted source |
+| HtmlTemplateEscapingBypassXss.go:45:41:45:41 | c | HtmlTemplateEscapingBypassXss.go:44:29:44:43 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:45:41:45:41 | c | Data from an $@ will not be auto-escaped because it was converted to template.HTMLAttr | HtmlTemplateEscapingBypassXss.go:44:29:44:43 | call to UserAgent | untrusted source |
+| HtmlTemplateEscapingBypassXss.go:49:44:49:44 | d | HtmlTemplateEscapingBypassXss.go:48:23:48:37 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:49:44:49:44 | d | Data from an $@ will not be auto-escaped because it was converted to template.JS | HtmlTemplateEscapingBypassXss.go:48:23:48:37 | call to UserAgent | untrusted source |
+| HtmlTemplateEscapingBypassXss.go:53:44:53:44 | e | HtmlTemplateEscapingBypassXss.go:52:26:52:40 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:53:44:53:44 | e | Data from an $@ will not be auto-escaped because it was converted to template.JSStr | HtmlTemplateEscapingBypassXss.go:52:26:52:40 | call to UserAgent | untrusted source |
+| HtmlTemplateEscapingBypassXss.go:57:38:57:38 | b | HtmlTemplateEscapingBypassXss.go:56:24:56:38 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:57:38:57:38 | b | Data from an $@ will not be auto-escaped because it was converted to template.CSS | HtmlTemplateEscapingBypassXss.go:56:24:56:38 | call to UserAgent | untrusted source |
+| HtmlTemplateEscapingBypassXss.go:61:44:61:44 | f | HtmlTemplateEscapingBypassXss.go:60:27:60:41 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:61:44:61:44 | f | Data from an $@ will not be auto-escaped because it was converted to template.Srcset | HtmlTemplateEscapingBypassXss.go:60:27:60:41 | call to UserAgent | untrusted source |
+| HtmlTemplateEscapingBypassXss.go:65:38:65:38 | g | HtmlTemplateEscapingBypassXss.go:64:24:64:38 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:65:38:65:38 | g | Data from an $@ will not be auto-escaped because it was converted to template.URL | HtmlTemplateEscapingBypassXss.go:64:24:64:38 | call to UserAgent | untrusted source |
+edges
+| HtmlTemplateEscapingBypassXss.go:27:12:27:41 | type conversion | HtmlTemplateEscapingBypassXss.go:28:39:28:39 | a | provenance |  |
+| HtmlTemplateEscapingBypassXss.go:27:26:27:40 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:27:12:27:41 | type conversion | provenance | Src:MaD:1 Config |
+| HtmlTemplateEscapingBypassXss.go:33:9:33:38 | type conversion | HtmlTemplateEscapingBypassXss.go:34:40:34:40 | a | provenance |  |
+| HtmlTemplateEscapingBypassXss.go:33:23:33:37 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:33:9:33:38 | type conversion | provenance | Src:MaD:1 Config |
+| HtmlTemplateEscapingBypassXss.go:38:9:38:34 | type conversion | HtmlTemplateEscapingBypassXss.go:39:40:39:40 | a | provenance |  |
+| HtmlTemplateEscapingBypassXss.go:38:19:38:33 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:38:9:38:34 | type conversion | provenance | Src:MaD:1 Config |
+| HtmlTemplateEscapingBypassXss.go:44:11:44:44 | type conversion | HtmlTemplateEscapingBypassXss.go:45:41:45:41 | c | provenance |  |
+| HtmlTemplateEscapingBypassXss.go:44:29:44:43 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:44:11:44:44 | type conversion | provenance | Src:MaD:1 Config |
+| HtmlTemplateEscapingBypassXss.go:48:11:48:38 | type conversion | HtmlTemplateEscapingBypassXss.go:49:44:49:44 | d | provenance |  |
+| HtmlTemplateEscapingBypassXss.go:48:23:48:37 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:48:11:48:38 | type conversion | provenance | Src:MaD:1 Config |
+| HtmlTemplateEscapingBypassXss.go:52:11:52:41 | type conversion | HtmlTemplateEscapingBypassXss.go:53:44:53:44 | e | provenance |  |
+| HtmlTemplateEscapingBypassXss.go:52:26:52:40 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:52:11:52:41 | type conversion | provenance | Src:MaD:1 Config |
+| HtmlTemplateEscapingBypassXss.go:56:11:56:39 | type conversion | HtmlTemplateEscapingBypassXss.go:57:38:57:38 | b | provenance |  |
+| HtmlTemplateEscapingBypassXss.go:56:24:56:38 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:56:11:56:39 | type conversion | provenance | Src:MaD:1 Config |
+| HtmlTemplateEscapingBypassXss.go:60:11:60:42 | type conversion | HtmlTemplateEscapingBypassXss.go:61:44:61:44 | f | provenance |  |
+| HtmlTemplateEscapingBypassXss.go:60:27:60:41 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:60:11:60:42 | type conversion | provenance | Src:MaD:1 Config |
+| HtmlTemplateEscapingBypassXss.go:64:11:64:39 | type conversion | HtmlTemplateEscapingBypassXss.go:65:38:65:38 | g | provenance |  |
+| HtmlTemplateEscapingBypassXss.go:64:24:64:38 | call to UserAgent | HtmlTemplateEscapingBypassXss.go:64:11:64:39 | type conversion | provenance | Src:MaD:1 Config |
+models
+| 1 | Source: net/http; Request; true; UserAgent; ; ; ReturnValue; remote; manual |
+nodes
+| HtmlTemplateEscapingBypassXss.go:27:12:27:41 | type conversion | semmle.label | type conversion |
+| HtmlTemplateEscapingBypassXss.go:27:26:27:40 | call to UserAgent | semmle.label | call to UserAgent |
+| HtmlTemplateEscapingBypassXss.go:28:39:28:39 | a | semmle.label | a |
+| HtmlTemplateEscapingBypassXss.go:33:9:33:38 | type conversion | semmle.label | type conversion |
+| HtmlTemplateEscapingBypassXss.go:33:23:33:37 | call to UserAgent | semmle.label | call to UserAgent |
+| HtmlTemplateEscapingBypassXss.go:34:40:34:40 | a | semmle.label | a |
+| HtmlTemplateEscapingBypassXss.go:38:9:38:34 | type conversion | semmle.label | type conversion |
+| HtmlTemplateEscapingBypassXss.go:38:19:38:33 | call to UserAgent | semmle.label | call to UserAgent |
+| HtmlTemplateEscapingBypassXss.go:39:40:39:40 | a | semmle.label | a |
+| HtmlTemplateEscapingBypassXss.go:44:11:44:44 | type conversion | semmle.label | type conversion |
+| HtmlTemplateEscapingBypassXss.go:44:29:44:43 | call to UserAgent | semmle.label | call to UserAgent |
+| HtmlTemplateEscapingBypassXss.go:45:41:45:41 | c | semmle.label | c |
+| HtmlTemplateEscapingBypassXss.go:48:11:48:38 | type conversion | semmle.label | type conversion |
+| HtmlTemplateEscapingBypassXss.go:48:23:48:37 | call to UserAgent | semmle.label | call to UserAgent |
+| HtmlTemplateEscapingBypassXss.go:49:44:49:44 | d | semmle.label | d |
+| HtmlTemplateEscapingBypassXss.go:52:11:52:41 | type conversion | semmle.label | type conversion |
+| HtmlTemplateEscapingBypassXss.go:52:26:52:40 | call to UserAgent | semmle.label | call to UserAgent |
+| HtmlTemplateEscapingBypassXss.go:53:44:53:44 | e | semmle.label | e |
+| HtmlTemplateEscapingBypassXss.go:56:11:56:39 | type conversion | semmle.label | type conversion |
+| HtmlTemplateEscapingBypassXss.go:56:24:56:38 | call to UserAgent | semmle.label | call to UserAgent |
+| HtmlTemplateEscapingBypassXss.go:57:38:57:38 | b | semmle.label | b |
+| HtmlTemplateEscapingBypassXss.go:60:11:60:42 | type conversion | semmle.label | type conversion |
+| HtmlTemplateEscapingBypassXss.go:60:27:60:41 | call to UserAgent | semmle.label | call to UserAgent |
+| HtmlTemplateEscapingBypassXss.go:61:44:61:44 | f | semmle.label | f |
+| HtmlTemplateEscapingBypassXss.go:64:11:64:39 | type conversion | semmle.label | type conversion |
+| HtmlTemplateEscapingBypassXss.go:64:24:64:38 | call to UserAgent | semmle.label | call to UserAgent |
+| HtmlTemplateEscapingBypassXss.go:65:38:65:38 | g | semmle.label | g |
+subpaths

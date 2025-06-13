@@ -79,7 +79,7 @@ module ModelGeneratorCommonInput implements
 
   bindingset[c]
   string paramReturnNodeAsExactOutput(Callable c, DataFlowImpl::ParameterPosition pos) {
-    result = parameterExactAccess(c.getParamList().getParam(pos.getPosition()))
+    result = parameterExactAccess(c.getParam(pos.getPosition()))
     or
     pos.isSelf() and result = qualifierString()
   }

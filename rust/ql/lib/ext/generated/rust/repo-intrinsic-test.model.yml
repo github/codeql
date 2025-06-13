@@ -1,0 +1,52 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["repo::intrinsic-test", "<crate::argument::Argument>::from_c", "Argument[0]", "ReturnValue.Field[intrinsic-test::argument::Argument::pos]", "value", "dfc-generated"]
+      - ["repo::intrinsic-test", "<crate::argument::Argument>::from_c", "Argument[1].Element", "ReturnValue.Field[intrinsic-test::argument::Argument::name].Reference", "value", "dfc-generated"]
+      - ["repo::intrinsic-test", "<crate::argument::Argument>::type_and_name_from_c", "Argument[0].Element", "ReturnValue.Field[1].Reference", "value", "dfc-generated"]
+      - ["repo::intrinsic-test", "<crate::argument::ArgumentList>::load_values_c", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::argument::ArgumentList>::load_values_c", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::argument::ArgumentList>::load_values_rust", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::argument::Constraint>::to_range", "Argument[self].Field[intrinsic-test::argument::Constraint::Range(0)].Reference", "ReturnValue", "value", "dfc-generated"]
+      - ["repo::intrinsic-test", "<crate::intrinsic::Intrinsic>::generate_loop_c", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::intrinsic::Intrinsic>::generate_loop_c", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::intrinsic::Intrinsic>::generate_loop_c", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::intrinsic::Intrinsic>::generate_loop_c", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::intrinsic::Intrinsic>::generate_loop_rust", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::intrinsic::Intrinsic>::generate_loop_rust", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::intrinsic::Intrinsic>::generate_loop_rust", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::intrinsic::Intrinsic>::generate_loop_rust", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::intrinsic::Intrinsic>::print_result_c", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::intrinsic::Intrinsic>::print_result_c", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::types::IntrinsicType>::c_single_vector_type", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::types::IntrinsicType>::c_type", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::types::IntrinsicType>::kind", "Argument[self].Reference.Field[intrinsic-test::types::IntrinsicType::Type::kind]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo::intrinsic-test", "<crate::types::IntrinsicType>::populate_random", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::types::IntrinsicType>::rust_type", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::types::TypeKind as crate::str::traits::FromStr>::from_str", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["repo::intrinsic-test", "<crate::argument::Argument>::from_c", "Argument[1]", "log-injection", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::intrinsic::Intrinsic>::generate_loop_c", "Argument[self]", "log-injection", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::intrinsic::Intrinsic>::print_result_c", "Argument[self]", "log-injection", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::types::IntrinsicType>::c_scalar_type", "Argument[self]", "log-injection", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::types::IntrinsicType>::c_type", "Argument[self]", "log-injection", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::types::IntrinsicType>::get_lane_function", "Argument[self]", "log-injection", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::types::IntrinsicType>::get_load_function", "Argument[self]", "log-injection", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::types::IntrinsicType>::populate_random", "Argument[self]", "log-injection", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::types::IntrinsicType>::rust_scalar_type", "Argument[self]", "log-injection", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::types::IntrinsicType>::rust_type", "Argument[self]", "log-injection", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::types::TypeKind>::c_prefix", "Argument[self]", "log-injection", "df-generated"]
+      - ["repo::intrinsic-test", "<crate::types::TypeKind>::rust_prefix", "Argument[self]", "log-injection", "df-generated"]
+      - ["repo::intrinsic-test", "crate::json_parser::get_neon_intrinsics", "Argument[0]", "path-injection", "df-generated"]
+      - ["repo::intrinsic-test", "crate::values::value_for_array", "Argument[0]", "log-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["repo::intrinsic-test", "crate::json_parser::get_neon_intrinsics", "ReturnValue", "file", "df-generated"]

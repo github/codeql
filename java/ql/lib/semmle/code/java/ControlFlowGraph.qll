@@ -327,12 +327,18 @@ private module ControlFlowGraphImpl {
     )
   }
 
+  private ThrowableType assertionError() { result.hasQualifiedName("java.lang", "AssertionError") }
+
   /**
    * Gets an exception type that may be thrown during execution of the
    * body or the resources (if any) of `try`.
    */
   private ThrowableType thrownInBody(TryStmt try) {
-    exists(AstNode n | mayThrow(n, result) |
+    exists(AstNode n |
+      mayThrow(n, result)
+      or
+      n instanceof AssertStmt and result = assertionError()
+    |
       n.getEnclosingStmt().getEnclosingStmt+() = try.getBlock() or
       n.(Expr).getParent*() = try.getAResource()
     )
@@ -394,10 +400,7 @@ private module ControlFlowGraphImpl {
     exists(LogicExpr logexpr |
       logexpr.(BinaryExpr).getLeftOperand() = b
       or
-      // Cannot use LogicExpr.getAnOperand or BinaryExpr.getAnOperand as they remove parentheses.
-      logexpr.(BinaryExpr).getRightOperand() = b and inBooleanContext(logexpr)
-      or
-      logexpr.(UnaryExpr).getExpr() = b and inBooleanContext(logexpr)
+      logexpr.getAnOperand() = b and inBooleanContext(logexpr)
     )
     or
     exists(ConditionalExpr condexpr |
@@ -406,6 +409,8 @@ private module ControlFlowGraphImpl {
       condexpr.getABranchExpr() = b and
       inBooleanContext(condexpr)
     )
+    or
+    exists(AssertStmt assertstmt | assertstmt.getExpr() = b)
     or
     exists(SwitchExpr switch |
       inBooleanContext(switch) and
@@ -672,8 +677,6 @@ private module ControlFlowGraphImpl {
       this instanceof EmptyStmt
       or
       this instanceof LocalTypeDeclStmt
-      or
-      this instanceof AssertStmt
     }
 
     /** Gets child nodes in their order of execution. Indexing starts at either -1 or 0. */
@@ -744,8 +747,6 @@ private module ControlFlowGraphImpl {
       or
       index = 0 and result = this.(ThrowStmt).getExpr()
       or
-      index = 0 and result = this.(AssertStmt).getExpr()
-      or
       result = this.(RecordPatternExpr).getSubPattern(index)
     }
 
@@ -807,9 +808,12 @@ private module ControlFlowGraphImpl {
     or
     result = first(n.(SynchronizedStmt).getExpr())
     or
+    result = first(n.(AssertStmt).getExpr())
+    or
     result.asStmt() = n and
     not n instanceof PostOrderNode and
-    not n instanceof SynchronizedStmt
+    not n instanceof SynchronizedStmt and
+    not n instanceof AssertStmt
     or
     result.asExpr() = n and n instanceof SwitchExpr
   }
@@ -1112,7 +1116,22 @@ private module ControlFlowGraphImpl {
     // `return` statements give rise to a `Return` completion
     last.asStmt() = n.(ReturnStmt) and completion = ReturnCompletion()
     or
-    // `throw` statements or throwing calls give rise to ` Throw` completion
+    exists(AssertStmt assertstmt | assertstmt = n |
+      // `assert` statements may complete normally - we use the `AssertStmt` itself
+      // to represent this outcome
+      last.asStmt() = assertstmt and completion = NormalCompletion()
+      or
+      // `assert` statements may throw
+      completion = ThrowCompletion(assertionError()) and
+      (
+        last(assertstmt.getMessage(), last, NormalCompletion())
+        or
+        not exists(assertstmt.getMessage()) and
+        last(assertstmt.getExpr(), last, BooleanCompletion(false, _))
+      )
+    )
+    or
+    // `throw` statements or throwing calls give rise to `Throw` completion
     exists(ThrowableType tt | mayThrow(n, tt) |
       last = n.getCfgNode() and completion = ThrowCompletion(tt)
     )
@@ -1518,6 +1537,17 @@ private module ControlFlowGraphImpl {
       n.asStmt() = s and result = first(s.getVariable(1))
       or
       exists(int i | last(s.getVariable(i), n, completion) and result = first(s.getVariable(i + 1)))
+    )
+    or
+    // Assert statements:
+    exists(AssertStmt assertstmt |
+      last(assertstmt.getExpr(), n, completion) and
+      completion = BooleanCompletion(true, _) and
+      result.asStmt() = assertstmt
+      or
+      last(assertstmt.getExpr(), n, completion) and
+      completion = BooleanCompletion(false, _) and
+      result = first(assertstmt.getMessage())
     )
     or
     // When expressions:

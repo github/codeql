@@ -1,4 +1,4 @@
-""" dbscheme format representation """
+"""dbscheme format representation"""
 
 import logging
 import pathlib
@@ -100,7 +100,7 @@ class SchemeInclude:
 
 @dataclass
 class Scheme:
-    template: ClassVar = 'dbscheme'
+    template: ClassVar = "dbscheme"
 
     src: str
     includes: List[SchemeInclude]

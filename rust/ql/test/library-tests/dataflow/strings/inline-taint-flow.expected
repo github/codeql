@@ -22,8 +22,10 @@ edges
 | main.rs:57:11:57:26 | source_slice(...) | main.rs:57:6:57:7 | s1 | provenance |  |
 | main.rs:58:6:58:7 | s2 | main.rs:59:7:59:8 | s2 | provenance |  |
 | main.rs:58:11:58:24 | s1.to_string() | main.rs:58:6:58:7 | s2 | provenance |  |
+| main.rs:63:9:63:9 | s | main.rs:64:16:64:16 | s | provenance |  |
 | main.rs:63:9:63:9 | s | main.rs:64:16:64:25 | s.as_str() | provenance | MaD:3 |
 | main.rs:63:13:63:22 | source(...) | main.rs:63:9:63:9 | s | provenance |  |
+| main.rs:64:16:64:16 | s | main.rs:64:16:64:25 | s.as_str() | provenance | MaD:3 |
 | main.rs:68:9:68:9 | s | main.rs:70:34:70:61 | MacroExpr | provenance |  |
 | main.rs:68:9:68:9 | s | main.rs:73:34:73:59 | MacroExpr | provenance |  |
 | main.rs:68:13:68:22 | source(...) | main.rs:68:9:68:9 | s | provenance |  |
@@ -75,6 +77,7 @@ nodes
 | main.rs:59:7:59:8 | s2 | semmle.label | s2 |
 | main.rs:63:9:63:9 | s | semmle.label | s |
 | main.rs:63:13:63:22 | source(...) | semmle.label | source(...) |
+| main.rs:64:16:64:16 | s | semmle.label | s |
 | main.rs:64:16:64:25 | s.as_str() | semmle.label | s.as_str() |
 | main.rs:68:9:68:9 | s | semmle.label | s |
 | main.rs:68:13:68:22 | source(...) | semmle.label | source(...) |

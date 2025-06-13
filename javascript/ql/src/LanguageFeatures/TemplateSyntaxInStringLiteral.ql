@@ -5,7 +5,10 @@
  * @problem.severity warning
  * @id js/template-syntax-in-string-literal
  * @precision high
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       language-features
  */
 
 import javascript
@@ -74,8 +77,8 @@ class CandidateStringLiteral extends StringLiteral {
  */
 predicate hasObjectProvidingTemplateVariables(CandidateStringLiteral lit) {
   exists(DataFlow::CallNode call, DataFlow::ObjectLiteralNode obj |
-    call.getAnArgument().getALocalSource() = obj and
-    call.getAnArgument().asExpr() = lit and
+    call.getAnArgument() = [lit.flow(), StringConcatenation::getRoot(lit.flow())] and
+    obj.flowsTo(call.getAnArgument()) and
     forex(string name | name = lit.getAReferencedVariable() | exists(obj.getAPropertyWrite(name)))
   )
 }
@@ -91,12 +94,38 @@ VarDecl getDeclIn(Variable v, Scope scope, string name, CandidateTopLevel tl) {
   result.getTopLevel() = tl
 }
 
+/**
+ * Tracks data flow from a string literal that may flow to a replace operation.
+ */
+DataFlow::SourceNode trackStringWithTemplateSyntax(
+  CandidateStringLiteral lit, DataFlow::TypeTracker t
+) {
+  t.start() and result = lit.flow() and exists(lit.getAReferencedVariable())
+  or
+  exists(DataFlow::TypeTracker t2 | result = trackStringWithTemplateSyntax(lit, t2).track(t2, t))
+}
+
+/**
+ * Gets a string literal that flows to a replace operation.
+ */
+DataFlow::SourceNode trackStringWithTemplateSyntax(CandidateStringLiteral lit) {
+  result = trackStringWithTemplateSyntax(lit, DataFlow::TypeTracker::end())
+}
+
+/**
+ * Holds if the string literal flows to a replace method call.
+ */
+predicate hasReplaceMethodCall(CandidateStringLiteral lit) {
+  trackStringWithTemplateSyntax(lit).getAMethodCall() instanceof StringReplaceCall
+}
+
 from CandidateStringLiteral lit, Variable v, Scope s, string name, VarDecl decl
 where
   decl = getDeclIn(v, s, name, lit.getTopLevel()) and
   lit.getAReferencedVariable() = name and
   lit.isInScope(s) and
   not hasObjectProvidingTemplateVariables(lit) and
-  not lit.getStringValue() = "${" + name + "}"
+  not lit.getStringValue() = "${" + name + "}" and
+  not hasReplaceMethodCall(lit)
 select lit, "This string is not a template literal, but appears to reference the variable $@.",
   decl, v.getName()
