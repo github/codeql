@@ -111,5 +111,7 @@ module RequestForgery {
    * The result from calling `encodeURI` or `encodeURIComponent` is not a valid URL, and only makes sense
    * as a part of a URL.
    */
-  class UriEncodingSanitizer extends Sanitizer instanceof Xss::Shared::UriEncodingSanitizer { }
+  class UriEncodingSanitizer extends Sanitizer instanceof Xss::Shared::UriEncodingSanitizer {
+    UriEncodingSanitizer() { this.encodesPathSeparators() }
+  }
 }
