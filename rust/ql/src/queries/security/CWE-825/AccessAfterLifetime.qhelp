@@ -6,7 +6,7 @@
 
 <p>
 Dereferencing a pointer after the lifetime of its target has ended causes undefined behavior. Memory
-may be corrupted causing the program to crash or behave incorrectly, in some cases exposing the program
+may be corrupted, causing the program to crash or behave incorrectly, in some cases exposing the program
 to potential attacks.
 </p>
 
@@ -33,7 +33,7 @@ after that lifetime has ended, causing undefined behavior:
 <p>
 One way to fix this is to change the return type of the function from a pointer to a <code>Box</code>,
 which ensures that the value it points to remains on the heap for the lifetime of the <code>Box</code>
-itself. Notice that there is no longer a need for an <code>unsafe</code> block as the code no longer
+itself. Note that there is no longer a need for an <code>unsafe</code> block as the code no longer
 handles pointers directly:
 </p>
 
