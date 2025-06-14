@@ -1,7 +1,7 @@
 testFailures
 routeHandler
 | global/validation.ts:11:3:14:3 | route1( ...  OK\\n  } |
-| global/validation.ts:17:3:19:3 | route2( ... x);\\n  } |
+| global/validation.ts:17:3:20:3 | route2( ... x);\\n  } |
 | local/customDecorator.ts:18:3:20:3 | sneaky( ...  OK\\n  } |
 | local/customDecorator.ts:23:3:25:3 | safe(@S ...  OK\\n  } |
 | local/customPipe.ts:20:5:22:5 | sanitiz ... K\\n    } |

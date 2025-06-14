@@ -519,12 +519,20 @@ module NestJS {
           .(DataFlow::ArrayCreationNode)
           .getAnElement()
   }
+  private DataFlow::Node getConcreteClassFromProviderTuple(DataFlow::SourceNode tuple) {
+    result = tuple.getAPropertyWrite("useClass").getRhs()
+    or
+    exists(DataFlow::FunctionNode f |
+      f = tuple.getAPropertyWrite("useFactory").getRhs().getALocalSource() and
+      result.getAstNode() = f.getFunction().getAReturnedExpr().getType().(ClassType).getClass()
+    )
+  }
 
   private predicate providerPair(DataFlow::Node interface, DataFlow::Node concreteClass) {
     exists(DataFlow::SourceNode tuple |
       tuple = providerTuple().getALocalSource() and
       interface = tuple.getAPropertyWrite("provide").getRhs() and
-      concreteClass = tuple.getAPropertyWrite("useClass").getRhs()
+      concreteClass = getConcreteClassFromProviderTuple(tuple)
     )
   }
 
