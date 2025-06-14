@@ -11,3 +11,9 @@ export class Foo2Impl extends Foo2 {
         sink(x); // $ hasValueFlow=x
     }
 }
+
+export class Foo3Impl extends Foo2 {
+    fooMethod(x: string) {
+        sink(x); // $ hasValueFlow=x
+    }
+}

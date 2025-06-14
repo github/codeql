@@ -1,10 +1,10 @@
 import { Get, Query } from '@nestjs/common';
 import { IsIn } from 'class-validator';
-import { Foo, Foo2 } from './foo.interface';
+import { Foo, Foo2, Foo3 } from './foo.interface';
 
 export class Controller {
   constructor(
-    private readonly foo: Foo, private readonly foo2: Foo2
+    private readonly foo: Foo, private readonly foo2: Foo2, private readonly foo3: Foo3
   ) { }
 
   @Get()
@@ -17,6 +17,7 @@ export class Controller {
   route2(@Query('x') x: string) {
     this.foo.fooMethod(x);
     this.foo2.fooMethod(x);
+    this.foo3.fooMethod(x);
   }
 }
 

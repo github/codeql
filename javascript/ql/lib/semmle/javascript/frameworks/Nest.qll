@@ -526,6 +526,9 @@ module NestJS {
       f = tuple.getAPropertyWrite("useFactory").getRhs().getALocalSource() and
       result.getAstNode() = f.getFunction().getAReturnedExpr().getType().(ClassType).getClass()
     )
+    or 
+    result.getAstNode() =
+      tuple.getAPropertyWrite("useValue").getRhs().asExpr().getType().(ClassType).getClass()
   }
 
   private predicate providerPair(DataFlow::Node interface, DataFlow::Node concreteClass) {
