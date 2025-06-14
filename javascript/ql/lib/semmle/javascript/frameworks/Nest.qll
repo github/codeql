@@ -448,6 +448,61 @@ module NestJS {
   }
 
   /**
+   * A NestJS Middleware Class
+   */
+  private class NestMiddlewareClass extends DataFlow::ClassNode {
+    NestMiddlewareClass() {
+      exists(ClassDefinition cls |
+        this = cls.flow() and
+        cls.getASuperInterface().hasUnderlyingType("@nestjs/common", "NestMiddleware")
+      )
+    }
+
+    DataFlow::FunctionNode getUseFunction() { result = this.getInstanceMethod("use") }
+  }
+
+  /**
+   * A NestJS Middleware Class route handler (the `use` method)
+   */
+  private class MiddlewareRouteHandler extends Http::RouteHandler, DataFlow::FunctionNode {
+    MiddlewareRouteHandler() { this = any(NestMiddlewareClass m).getUseFunction() }
+
+    override Http::HeaderDefinition getAResponseHeader(string name) { none() }
+
+    /**
+     * Gets the request object used by this route
+     */
+    DataFlow::ParameterNode getRequest() { result = this.getParameter(0) }
+
+    /**
+     * Gets the response object used by this route
+     */
+    DataFlow::ParameterNode getResponse() { result = this.getParameter(1) }
+  }
+
+  /**
+   * A source of `express` request objects for NestJS middlewares
+   */
+  private class MiddlewareRequestSource extends Express::RequestSource {
+    MiddlewareRouteHandler middlewareRouteHandler;
+
+    MiddlewareRequestSource() { this = middlewareRouteHandler.getRequest() }
+
+    override Http::RouteHandler getRouteHandler() { result = middlewareRouteHandler }
+  }
+
+  /**
+   * A source of `express` response objects for NestJS middlewares
+   */
+  private class MiddlewareResponseSource extends Express::ResponseSource {
+    MiddlewareRouteHandler middlewareRouteHandler;
+
+    MiddlewareResponseSource() { this = middlewareRouteHandler.getResponse() }
+
+    override Http::RouteHandler getRouteHandler() { result = middlewareRouteHandler }
+  }
+
+  /**
    * A value passed in the `providers` array in:
    * ```js
    * @Module({ providers: [ ... ] })
