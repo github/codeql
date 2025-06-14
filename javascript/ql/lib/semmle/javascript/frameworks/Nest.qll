@@ -510,15 +510,36 @@ module NestJS {
    * ```
    */
   private DataFlow::Node providerTuple() {
-    result =
-      DataFlow::moduleImport("@nestjs/common")
-          .getAPropertyRead("Module")
-          .getACall()
-          .getOptionArgument(0, "providers")
-          .getALocalSource()
-          .(DataFlow::ArrayCreationNode)
-          .getAnElement()
+    exists(DataFlow::CallNode moduleCall |
+      moduleCall = DataFlow::moduleImport("@nestjs/common").getAPropertyRead("Module").getACall() and
+      result = providerTupleAux(moduleCall.getArgument(0).getALocalSource())
+    )
   }
+
+  private DataFlow::Node providerTupleAux(DataFlow::ObjectLiteralNode o) {
+    (
+      result =
+        o.getAPropertyWrite("providers")
+            .getRhs()
+            .getALocalSource()
+            .(DataFlow::ArrayCreationNode)
+            .getAnElement()
+      or
+      result =
+        providerTupleAux(o.getAPropertyWrite("imports")
+              .getRhs()
+              .getALocalSource()
+              .(DataFlow::ArrayCreationNode)
+              .getAnElement()
+              .(DataFlow::CallNode)
+              .getCalleeNode()
+              .getAFunctionValue()
+              .getFunction()
+              .getAReturnedExpr()
+              .flow())
+    )
+  }
+
   private DataFlow::Node getConcreteClassFromProviderTuple(DataFlow::SourceNode tuple) {
     result = tuple.getAPropertyWrite("useClass").getRhs()
     or
