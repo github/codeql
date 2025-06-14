@@ -210,7 +210,7 @@ unsafe fn test_system_alloc(v: usize) {
             let _ = std::alloc::System.grow_zeroed(m4, l4, l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
         }
     } else {
-        let _ = std::alloc::System.shrink(m4, l4, l2).unwrap();
+        let _ = std::alloc::System.shrink(m4, l4, l2).unwrap(); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1 - FP
     }
 }
 

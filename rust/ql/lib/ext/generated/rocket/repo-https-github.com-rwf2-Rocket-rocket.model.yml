@@ -642,6 +642,7 @@ extensions:
       - ["repo:https://github.com/rwf2/Rocket:rocket", "<crate::fairing::fairings::Fairings>::append", "Argument[self]", "log-injection", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket", "<crate::form::error::Error as crate::ext::IntoOwned>::into_owned", "Argument[self]", "pointer-access", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket", "<crate::form::error::ErrorKind as crate::convert::From>::from", "Argument[0]", "pointer-access", "df-generated"]
+      - ["repo:https://github.com/rwf2/Rocket:rocket", "<crate::log::RocketLogger as crate::Log>::log", "Argument[0]", "pointer-access", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket", "<crate::outcome::Outcome>::expect", "Argument[0]", "log-injection", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket", "<crate::request::request::Request>::client_ip", "Argument[self]", "pointer-access", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket", "<crate::response::stream::raw_sse::RawLinedEvent as crate::io::async_read::AsyncRead>::poll_read", "Argument[1]", "log-injection", "df-generated"]
