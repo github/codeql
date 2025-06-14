@@ -523,10 +523,10 @@ module NestJS {
     result = tuple.getAPropertyWrite("useClass").getRhs()
     or
     exists(DataFlow::FunctionNode f |
-      f = tuple.getAPropertyWrite("useFactory").getRhs().getALocalSource() and
+      f = tuple.getAPropertyWrite("useFactory").getRhs().getAFunctionValue() and
       result.getAstNode() = f.getFunction().getAReturnedExpr().getType().(ClassType).getClass()
     )
-    or 
+    or
     result.getAstNode() =
       tuple.getAPropertyWrite("useValue").getRhs().asExpr().getType().(ClassType).getClass()
   }
