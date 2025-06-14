@@ -24,6 +24,10 @@ private module MyConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     sink instanceof CodeInjectionSink and not madSink(sink, "code-injection")
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 module MyFlow = TaintTracking::Global<MyConfig>;
