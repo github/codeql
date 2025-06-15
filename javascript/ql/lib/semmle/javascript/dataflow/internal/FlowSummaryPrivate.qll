@@ -94,6 +94,8 @@ private string encodeContentAux(ContentSet cs, string arg) {
     cs = ContentSet::iteratorElement() and result = "IteratorElement"
     or
     cs = ContentSet::iteratorError() and result = "IteratorError"
+    or
+    cs = ContentSet::anyProperty() and result = "AnyMember"
   )
   or
   cs = getPromiseContent(arg) and
