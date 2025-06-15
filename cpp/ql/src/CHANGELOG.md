@@ -1,3 +1,13 @@
+## 1.4.2
+
+No user-facing changes.
+
+## 1.4.1
+
+### Minor Analysis Improvements
+
+* Added flow model for the `SQLite` and `OpenSSL` libraries. This may result in more alerts when running queries on codebases that use these libraries.
+
 ## 1.4.0
 
 ### Query Metadata Changes

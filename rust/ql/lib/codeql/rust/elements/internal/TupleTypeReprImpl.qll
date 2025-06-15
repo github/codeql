@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.TupleTypeRepr
  */
 module Impl {
   /**
-   * A TupleTypeRepr. For example:
+   * A tuple type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let t: (i32, String);
+   * //     ^^^^^^^^^^^^^
    * ```
    */
   class TupleTypeRepr extends Generated::TupleTypeRepr { }

@@ -20,9 +20,11 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A Const. For example:
+   * A constant item declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * const X: i32 = 42;
    * ```
    * INTERNAL: Do not reference the `Generated::Const` class directly.
    * Use the subclass `Const`, where the following predicates are available.
@@ -106,5 +108,15 @@ module Generated {
      * Holds if `getVisibility()` exists.
      */
     final predicate hasVisibility() { exists(this.getVisibility()) }
+
+    /**
+     * Holds if this constant has an implementation.
+     *
+     * This is the same as `hasBody` for source code, but for library code (for which we always skip
+     * the body), this will hold when the body was present in the original code.
+     */
+    predicate hasImplementation() {
+      Synth::convertConstToRaw(this).(Raw::Const).hasImplementation()
+    }
   }
 }

@@ -5,6 +5,8 @@
 import javascript
 private import semmle.javascript.security.dataflow.ServerSideUrlRedirectCustomizations
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
+private import semmle.javascript.internal.NameResolution
+private import semmle.javascript.internal.TypeResolution
 
 /**
  * Provides classes and predicates for reasoning about [Nest](https://nestjs.com/).
@@ -133,7 +135,9 @@ module NestJS {
       hasSanitizingPipe(this, false)
       or
       hasSanitizingPipe(this, true) and
-      isSanitizingType(this.getParameter().getType().unfold())
+      // Note: we could consider types with class-validator decorators to be sanitized here, but instead we consider the root
+      // object to be tainted, but omit taint steps for the individual properties names that have sanitizing decorators. See ClassValidator.qll.
+      TypeResolution::isSanitizingPrimitiveType(this.getParameter().getTypeAnnotation())
     }
   }
 
@@ -210,19 +214,6 @@ module NestJS {
   }
 
   /**
-   * Holds if a parameter of type `t` is considered sanitized, provided it has been checked by `ValidationPipe`
-   * (which relies on metadata emitted by the TypeScript compiler).
-   */
-  private predicate isSanitizingType(Type t) {
-    t instanceof NumberType
-    or
-    t instanceof BooleanType
-    //
-    // Note: we could consider types with class-validator decorators to be sanitized here, but instead we consider the root
-    // object to be tainted, but omit taint steps for the individual properties names that have sanitizing decorators. See ClassValidator.qll.
-  }
-
-  /**
    * A user-defined pipe class, for example:
    * ```js
    * class MyPipe implements PipeTransform {
@@ -237,7 +228,7 @@ module NestJS {
     CustomPipeClass() {
       exists(ClassDefinition cls |
         this = cls.flow() and
-        cls.getASuperInterface().hasQualifiedName("@nestjs/common", "PipeTransform")
+        cls.getASuperInterface().hasUnderlyingType("@nestjs/common", "PipeTransform")
       )
     }
 
@@ -327,14 +318,6 @@ module NestJS {
     }
   }
 
-  private predicate isStringType(Type type) {
-    type instanceof StringType
-    or
-    type instanceof AnyType
-    or
-    isStringType(type.(PromiseType).getElementType().unfold())
-  }
-
   /**
    * A return value from a route handler, seen as an argument to `res.send()`.
    *
@@ -353,10 +336,10 @@ module NestJS {
     ReturnValueAsResponseSend() {
       handler.isReturnValueReflected() and
       this = handler.getAReturn() and
-      // Only returned strings are sinks
-      not exists(Type type |
-        type = this.asExpr().getType() and
-        not isStringType(type.unfold())
+      // Only returned strings are sinks. If we can find a type for the return value, it must be string-like.
+      not exists(NameResolution::Node type |
+        TypeResolution::valueHasType(this.asExpr(), type) and
+        not TypeResolution::hasUnderlyingStringOrAnyType(type)
       )
     }
 

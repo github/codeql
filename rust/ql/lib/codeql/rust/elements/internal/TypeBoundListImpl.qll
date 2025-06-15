@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.TypeBoundList
  */
 module Impl {
   /**
-   * A TypeBoundList. For example:
+   * A list of type bounds.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T: Debug + Clone>(t: T) {}
+   * //        ^^^^^^^^^^^^^
    * ```
    */
   class TypeBoundList extends Generated::TypeBoundList { }

@@ -13,9 +13,13 @@ private import codeql.rust.elements.internal.generated.WhileExpr
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A WhileExpr. For example:
+   * A while loop expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * while x < 10 {
+   *     x += 1;
+   * }
    * ```
    */
   class WhileExpr extends Generated::WhileExpr {

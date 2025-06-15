@@ -1,3 +1,15 @@
+## 1.3.0
+
+### New Queries
+
+* Query (`go/html-template-escaping-bypass-xss`) has been promoted to the main query suite. This query finds potential cross-site scripting (XSS) vulnerabilities when using the `html/template` package, caused by user input being cast to a type which bypasses the HTML autoescaping. It was originally contributed to the experimental query pack by @gagliardetto in https://github.com/github/codeql-go/pull/493.
+
+## 1.2.1
+
+### Minor Analysis Improvements
+
+* The query `go/hardcoded-credentials` has been removed from all query suites.
+
 ## 1.2.0
 
 ### Query Metadata Changes

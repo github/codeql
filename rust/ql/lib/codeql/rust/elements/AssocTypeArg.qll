@@ -15,9 +15,17 @@ import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.TypeRepr
 
 /**
- * A AssocTypeArg. For example:
+ * An associated type argument in a path.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn process_cloneable<T>(iter: T)
+ * where
+ *     T: Iterator<Item: Clone>
+ * //              ^^^^^^^^^^^
+ * {
+ *     // ...
+ * }
  * ```
  */
 final class AssocTypeArg = Impl::AssocTypeArg;

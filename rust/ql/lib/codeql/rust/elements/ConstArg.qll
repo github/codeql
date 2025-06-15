@@ -8,9 +8,12 @@ import codeql.rust.elements.Expr
 import codeql.rust.elements.GenericArg
 
 /**
- * A ConstArg. For example:
+ * A constant argument in a generic argument list.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * Foo::<3>
+ * //    ^
  * ```
  */
 final class ConstArg = Impl::ConstArg;

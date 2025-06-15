@@ -12,5 +12,15 @@ private import codeql.rust.elements.internal.generated.AsmDirSpec
  * be referenced directly.
  */
 module Impl {
+  /**
+   * An inline assembly direction specifier.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("mov {input:x}, {input:x}", output = out(reg) x, input = in(reg) y);
+   * //                                        ^^^                 ^^
+   * ```
+   */
   class AsmDirSpec extends Generated::AsmDirSpec { }
 }
