@@ -3,24 +3,37 @@
  */
 
 private import experimental.quantum.Language
-private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
+private import experimental.quantum.OpenSSL.CtxFlow
 private import OpenSSLOperationBase
-private import EVPHashInitializer
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
-class EVP_Digest_Update_Call extends EVPUpdate {
+class EVP_DigestInit_Variant_Calls extends EvpPrimaryAlgorithmInitializer {
+  EVP_DigestInit_Variant_Calls() {
+    this.(Call).getTarget().getName() in [
+        "EVP_DigestInit", "EVP_DigestInit_ex", "EVP_DigestInit_ex2"
+      ]
+  }
+
+  override Expr getAlgorithmArg() { result = this.(Call).getArgument(1) }
+
+  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
+}
+
+class EVP_Digest_Update_Call extends EvpUpdate {
   EVP_Digest_Update_Call() { this.(Call).getTarget().getName() = "EVP_DigestUpdate" }
 
   override Expr getInputArg() { result = this.(Call).getArgument(1) }
+
+  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
 }
 
 //https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
-class EVP_Q_Digest_Operation extends EVPOperation, Crypto::HashOperationInstance {
+class EVP_Q_Digest_Operation extends EvpOperation, Crypto::HashOperationInstance {
   EVP_Q_Digest_Operation() { this.(Call).getTarget().getName() = "EVP_Q_digest" }
 
   override Expr getAlgorithmArg() { result = this.(Call).getArgument(1) }
 
-  override EVP_Hash_Initializer getInitCall() {
+  override EvpInitializer getInitCall() {
     // This variant of digest does not use an init
     // and even if it were used, the init would be ignored/undefined
     none()
@@ -31,23 +44,25 @@ class EVP_Q_Digest_Operation extends EVPOperation, Crypto::HashOperationInstance
   override Expr getOutputArg() { result = this.(Call).getArgument(5) }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-    result = EVPOperation.super.getOutputArtifact()
+    result = EvpOperation.super.getOutputArtifact()
   }
 
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
-    result = EVPOperation.super.getInputConsumer()
+    result = EvpOperation.super.getInputConsumer()
   }
+
+  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
 }
 
-class EVP_Digest_Operation extends EVPOperation, Crypto::HashOperationInstance {
+class EVP_Digest_Operation extends EvpOperation, Crypto::HashOperationInstance {
   EVP_Digest_Operation() { this.(Call).getTarget().getName() = "EVP_Digest" }
 
   // There is no context argument for this function
-  override Expr getContextArg() { none() }
+  override CtxPointerSource getContext() { none() }
 
   override Expr getAlgorithmArg() { result = this.(Call).getArgument(4) }
 
-  override EVP_Hash_Initializer getInitCall() {
+  override EvpPrimaryAlgorithmInitializer getInitCall() {
     // This variant of digest does not use an init
     // and even if it were used, the init would be ignored/undefined
     none()
@@ -58,11 +73,11 @@ class EVP_Digest_Operation extends EVPOperation, Crypto::HashOperationInstance {
   override Expr getOutputArg() { result = this.(Call).getArgument(2) }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-    result = EVPOperation.super.getOutputArtifact()
+    result = EvpOperation.super.getOutputArtifact()
   }
 
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
-    result = EVPOperation.super.getInputConsumer()
+    result = EvpOperation.super.getInputConsumer()
   }
 }
 
@@ -73,6 +88,8 @@ class EVP_Digest_Final_Call extends EVPFinal, Crypto::HashOperationInstance {
       ]
   }
 
+  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
+
   override Expr getOutputArg() { result = this.(Call).getArgument(1) }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
@@ -81,5 +98,9 @@ class EVP_Digest_Final_Call extends EVPFinal, Crypto::HashOperationInstance {
 
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
     result = EVPFinal.super.getInputConsumer()
+  }
+
+  override Expr getAlgorithmArg() {
+    result = this.getInitCall().(EvpPrimaryAlgorithmInitializer).getAlgorithmArg()
   }
 }
