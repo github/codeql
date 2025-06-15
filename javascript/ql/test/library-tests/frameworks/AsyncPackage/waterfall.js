@@ -1,7 +1,15 @@
 let async_ = require('async');
 let waterfall = require('a-sync-waterfall');
 
-var source, sink, somethingWrong;
+function source() {
+    return 'TAINT'
+}
+
+function sink(x) {
+    console.log(x)
+}
+
+var somethingWrong;
 
 async_.waterfall([
     function(callback) {
