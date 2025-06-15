@@ -182,6 +182,13 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    */
   abstract class AlgorithmInstance extends KnownElement { }
 
+  abstract class EllipticCurveConsumingAlgorithmInstance extends AlgorithmInstance {
+    /**
+     * Gets the elliptic curve used by this algorithm.
+     */
+    abstract AlgorithmValueConsumer getEllipticCurveConsumer();
+  }
+
   /**
    * An element that represents a generic source of data.
    *
@@ -599,6 +606,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       ECDSA() or
       Ed25519() or
       Ed448() or
+      LMS() or
+      HSS() or
+      MLDSA() or
       OtherSignatureAlgorithmType()
 
     newtype TKEMAlgorithmType =
@@ -707,6 +717,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       type = TSignature(Ed448()) and name = "Ed448"
       or
+      type = TSignature(LMS()) and name = "LMS"
+      or
+      type = TSignature(MLDSA()) and name = "MLDSA"
+      or
       type = TSignature(OtherSignatureAlgorithmType()) and name = "UnknownSignature"
       or
       // Key Encapsulation Mechanisms
@@ -802,6 +816,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the consumer of the signature that is being verified in case of a
      * verification operation.
+     * Gets the consumer of the signature that is being verified in case of a
+     * verification operation.
      */
     abstract ConsumerInputDataFlowNode getSignatureConsumer();
   }
@@ -881,6 +897,11 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * Holds if this algorithm is expected to have a padding scheme specified.
      */
     predicate shouldHavePaddingScheme() { any() }
+
+    /**
+     * Holds if this algorithm is expected to have an elliptic curve specified.
+     */
+    predicate shouldHaveEllipticCurve() { any() }
   }
 
   newtype TBlockCipherModeOfOperationType =
@@ -1409,6 +1430,25 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   class AssetNode = NodeBase;
 
   /**
+   * Holds if the given elliptic curve is directly consumed by another algorithm
+   * node.
+   *
+   * This predicate is used to filter out elliptic curve nodes in cases where
+   * the algorithm instance and the curve instance are represented by the same
+   * algorithm value consumer (e.g. in cases where both the algorithm and the
+   * curve are determined by the same instance).
+   *
+   * An alternative way to handle this would be to use separate instances to
+   * represent the elliptic curve and the algorithm.
+   */
+  predicate isConsumedEllipticCurveNode(EllipticCurveNode node) {
+    exists(AlgorithmNode other |
+      other.asElement() instanceof EllipticCurveConsumingAlgorithmInstance and
+      other.asElement() = node.asElement()
+    )
+  }
+
+  /**
    * A cryptographic operation, such as hashing or encryption.
    */
   abstract class OperationNode extends AssetNode {
@@ -1433,7 +1473,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     AlgorithmNode getAKnownAlgorithm() {
       result =
         this.asElement().(OperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode() and
-      this.isCandidateAlgorithmNode(result)
+      this.isCandidateAlgorithmNode(result) and
+      not isConsumedEllipticCurveNode(result)
     }
 
     override NodeBase getChild(string edgeName) {
@@ -1622,6 +1663,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    */
   private class KeyCreationCandidateAlgorithmNode extends TKeyCreationCandidateAlgorithm instanceof AlgorithmNode
   {
+    LocatableElement asElement() { result = super.asElement() }
+
     string toString() { result = super.getAlgorithmName() }
   }
 
@@ -1664,7 +1707,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     KeyCreationCandidateAlgorithmNode getAKnownAlgorithm() {
       result =
-        instance.(KeyCreationOperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode()
+        instance.(KeyCreationOperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode() and
+      not isConsumedEllipticCurveNode(result)
     }
 
     override NodeBase getChild(string edgeName) {
@@ -2363,6 +2407,26 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result.asElement() = instance.asAlg().getPaddingAlgorithm()
     }
 
+    /**
+     * Gets the elliptic curve used by this algorithm, if applicable.
+     */
+    NodeBase getEllipticCurveOrGenericSource() {
+      result instanceof EllipticCurveNode and
+      result =
+        instance
+            .asAlg()
+            .(EllipticCurveConsumingAlgorithmInstance)
+            .getEllipticCurveConsumer()
+            .getAKnownSourceNode()
+      or
+      result =
+        instance
+            .asAlg()
+            .(EllipticCurveConsumingAlgorithmInstance)
+            .getEllipticCurveConsumer()
+            .getAGenericSourceNode()
+    }
+
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
       or
@@ -2383,6 +2447,15 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
         else result = this
       ) and
       instance.asAlg().shouldHavePaddingScheme()
+      or
+      // [KNOWN_OR_UNKNOWN] - but only if not suppressed
+      edgeName = "Curve" and
+      (
+        if exists(this.getEllipticCurveOrGenericSource())
+        then result = this.getEllipticCurveOrGenericSource()
+        else result = this
+      ) and
+      instance.asAlg() instanceof EllipticCurveConsumingAlgorithmInstance
     }
 
     override predicate properties(string key, string value, Location location) {
