@@ -267,15 +267,15 @@ fn option_questionmark() -> Option<i64> {
 }
 
 fn option_ok() {
-    let r1 : Result<i64, i64> = Ok(source(21));
-    let o1a : Option<i64> = r1.ok();
-    let o1b : Option<i64> = r1.err();
+    let r1: Result<i64, i64> = Ok(source(21));
+    let o1a: Option<i64> = r1.ok();
+    let o1b: Option<i64> = r1.err();
     sink(o1a.unwrap()); // $ hasValueFlow=21
     sink(o1b.unwrap());
 
-    let r2 : Result<i64, i64> = Err(source(22));
-    let o2a : Option<i64> = r2.ok();
-    let o2b : Option<i64> = r2.err();
+    let r2: Result<i64, i64> = Err(source(22));
+    let o2a: Option<i64> = r2.ok();
+    let o2b: Option<i64> = r2.err();
     sink(o2a.unwrap());
     sink(o2b.unwrap()); // $ hasValueFlow=22
 }
@@ -467,12 +467,12 @@ fn parse() {
     let a = source(90);
     let b = a.to_string();
     let c = b.parse::<i64>().unwrap();
-    let d : i64 = b.parse().unwrap();
+    let d: i64 = b.parse().unwrap();
 
     sink(a); // $ hasValueFlow=90
-    sink_string(b); // $ hasTaintFlow=90
-    sink(c); // $ hasTaintFlow=90
-    sink(d); // $ hasTaintFlow=90
+    sink_string(b); // $ MISSING: we are not currently able to resolve the `to_string` call above, which comes from `impl<T: fmt::Display + ?Sized> ToString for T`
+    sink(c); // $ MISSING: hasTaintFlow=90 - we are not currently able to resolve the `parse` call above
+    sink(d); // $ MISSING: hasTaintFlow=90 - we are not currently able to resolve the `parse` call above
 }
 
 fn iterators() {
@@ -489,7 +489,7 @@ fn iterators() {
         sink(v); // $ MISSING: hasValueFlow=91
     }
 
-    let vs2 : Vec<&i64> = vs.iter().collect();
+    let vs2: Vec<&i64> = vs.iter().collect();
     for &v in vs2 {
         sink(v); // $ MISSING: hasValueFlow=91
     }

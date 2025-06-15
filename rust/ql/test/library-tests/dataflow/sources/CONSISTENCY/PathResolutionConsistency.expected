@@ -4,19 +4,19 @@ multipleMethodCallTargets
 | test_futures_io.rs:35:26:35:63 | pinned.poll_read(...) | file://:0:0:0:0 | fn poll_read |
 | test_futures_io.rs:35:26:35:63 | pinned.poll_read(...) | file://:0:0:0:0 | fn poll_read |
 | test_futures_io.rs:35:26:35:63 | pinned.poll_read(...) | file://:0:0:0:0 | fn poll_read |
-| test_futures_io.rs:61:22:61:50 | pinned.poll_fill_buf(...) | file://:0:0:0:0 | fn poll_fill_buf |
-| test_futures_io.rs:61:22:61:50 | pinned.poll_fill_buf(...) | file://:0:0:0:0 | fn poll_fill_buf |
-| test_futures_io.rs:68:23:68:67 | ... .poll_fill_buf(...) | file://:0:0:0:0 | fn poll_fill_buf |
-| test_futures_io.rs:68:23:68:67 | ... .poll_fill_buf(...) | file://:0:0:0:0 | fn poll_fill_buf |
-| test_futures_io.rs:92:26:92:63 | pinned.poll_read(...) | file://:0:0:0:0 | fn poll_read |
-| test_futures_io.rs:92:26:92:63 | pinned.poll_read(...) | file://:0:0:0:0 | fn poll_read |
-| test_futures_io.rs:92:26:92:63 | pinned.poll_read(...) | file://:0:0:0:0 | fn poll_read |
-| test_futures_io.rs:115:22:115:50 | pinned.poll_fill_buf(...) | file://:0:0:0:0 | fn poll_fill_buf |
-| test_futures_io.rs:115:22:115:50 | pinned.poll_fill_buf(...) | file://:0:0:0:0 | fn poll_fill_buf |
-| web_frameworks.rs:88:14:88:23 | a.as_str() | file://:0:0:0:0 | fn as_str |
-| web_frameworks.rs:88:14:88:23 | a.as_str() | file://:0:0:0:0 | fn as_str |
-| web_frameworks.rs:89:14:89:25 | a.as_bytes() | file://:0:0:0:0 | fn as_bytes |
-| web_frameworks.rs:89:14:89:25 | a.as_bytes() | file://:0:0:0:0 | fn as_bytes |
+| test_futures_io.rs:62:22:62:50 | pinned.poll_fill_buf(...) | file://:0:0:0:0 | fn poll_fill_buf |
+| test_futures_io.rs:62:22:62:50 | pinned.poll_fill_buf(...) | file://:0:0:0:0 | fn poll_fill_buf |
+| test_futures_io.rs:69:23:69:67 | ... .poll_fill_buf(...) | file://:0:0:0:0 | fn poll_fill_buf |
+| test_futures_io.rs:69:23:69:67 | ... .poll_fill_buf(...) | file://:0:0:0:0 | fn poll_fill_buf |
+| test_futures_io.rs:93:26:93:63 | pinned.poll_read(...) | file://:0:0:0:0 | fn poll_read |
+| test_futures_io.rs:93:26:93:63 | pinned.poll_read(...) | file://:0:0:0:0 | fn poll_read |
+| test_futures_io.rs:93:26:93:63 | pinned.poll_read(...) | file://:0:0:0:0 | fn poll_read |
+| test_futures_io.rs:116:22:116:50 | pinned.poll_fill_buf(...) | file://:0:0:0:0 | fn poll_fill_buf |
+| test_futures_io.rs:116:22:116:50 | pinned.poll_fill_buf(...) | file://:0:0:0:0 | fn poll_fill_buf |
+| web_frameworks.rs:101:14:101:23 | a.as_str() | file://:0:0:0:0 | fn as_str |
+| web_frameworks.rs:101:14:101:23 | a.as_str() | file://:0:0:0:0 | fn as_str |
+| web_frameworks.rs:102:14:102:25 | a.as_bytes() | file://:0:0:0:0 | fn as_bytes |
+| web_frameworks.rs:102:14:102:25 | a.as_bytes() | file://:0:0:0:0 | fn as_bytes |
 multiplePathResolutions
 | test.rs:112:62:112:73 | ...::from | file://:0:0:0:0 | fn from |
 | test.rs:112:62:112:73 | ...::from | file://:0:0:0:0 | fn from |
@@ -84,8 +84,8 @@ multiplePathResolutions
 | test_futures_io.rs:25:23:25:61 | ...::try_from | file://:0:0:0:0 | fn try_from |
 | test_futures_io.rs:25:23:25:61 | ...::try_from | file://:0:0:0:0 | fn try_from |
 | test_futures_io.rs:25:23:25:61 | ...::try_from | file://:0:0:0:0 | fn try_from |
-| test_futures_io.rs:144:26:144:43 | ...::with_capacity | file://:0:0:0:0 | fn with_capacity |
-| test_futures_io.rs:144:26:144:43 | ...::with_capacity | file://:0:0:0:0 | fn with_capacity |
+| test_futures_io.rs:145:26:145:43 | ...::with_capacity | file://:0:0:0:0 | fn with_capacity |
+| test_futures_io.rs:145:26:145:43 | ...::with_capacity | file://:0:0:0:0 | fn with_capacity |
 multipleCanonicalPaths
 | file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as core::cmp::Ord>::to_ordering |
 | file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as typenum::marker_traits::Ord>::to_ordering |
