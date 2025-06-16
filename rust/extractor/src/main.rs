@@ -103,6 +103,7 @@ impl<'a> Extractor<'a> {
             }
         }
         translator.emit_source_file(&ast);
+        translator.emit_truncated_diagnostics_message();
         translator.trap.commit().unwrap_or_else(|err| {
             error!(
                 "Failed to write trap file for: {}: {}",

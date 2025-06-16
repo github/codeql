@@ -123,10 +123,13 @@ pub struct Translator<'a> {
     resolve_paths: bool,
     source_kind: SourceKind,
     macro_context_depth: usize,
+    diagnostic_count: usize,
 }
 
 const UNKNOWN_LOCATION: (LineCol, LineCol) =
     (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
+
+const DIAGNOSTIC_LIMIT_PER_FILE: usize = 100;
 
 impl<'a> Translator<'a> {
     pub fn new(
@@ -148,6 +151,7 @@ impl<'a> Translator<'a> {
             resolve_paths: resolve_paths == ResolvePaths::Yes,
             source_kind,
             macro_context_depth: 0,
+            diagnostic_count: 0,
         }
     }
     fn location(&self, range: TextRange) -> Option<(LineCol, LineCol)> {
@@ -234,6 +238,36 @@ impl<'a> Translator<'a> {
         } else {
             severity
         };
+        if severity > DiagnosticSeverity::Debug {
+            self.diagnostic_count += 1;
+            if self.diagnostic_count > DIAGNOSTIC_LIMIT_PER_FILE {
+                return;
+            }
+        }
+        self.emit_diagnostic_unchecked(severity, tag, message, full_message, location);
+    }
+    pub fn emit_truncated_diagnostics_message(&mut self) {
+        if self.diagnostic_count > DIAGNOSTIC_LIMIT_PER_FILE {
+            let count = self.diagnostic_count - DIAGNOSTIC_LIMIT_PER_FILE;
+            self.emit_diagnostic_unchecked(
+                DiagnosticSeverity::Warning,
+                "diagnostics".to_owned(),
+                "Too many diagnostic messages".to_owned(),
+                format!(
+                    "Too many diagnostic messages, {count} diagnostic messages were suppressed"
+                ),
+                UNKNOWN_LOCATION,
+            );
+        }
+    }
+    fn emit_diagnostic_unchecked(
+        &mut self,
+        severity: DiagnosticSeverity,
+        tag: String,
+        message: String,
+        full_message: String,
+        location: (LineCol, LineCol),
+    ) {
         let (start, end) = location;
         dispatch_to_tracing!(
             severity,
