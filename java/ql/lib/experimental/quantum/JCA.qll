@@ -1243,7 +1243,7 @@ module JCAModel {
       exists(hash_name_to_type_known(this.getRawHashAlgorithmName(), result))
     }
 
-    override string getRawMACAlgorithmName() {
+    override string getRawMacAlgorithmName() {
       result = super.getRawKDFAlgorithmName().splitAt("PBKDF2With", 1)
     }
 
@@ -1251,7 +1251,7 @@ module JCAModel {
       result = super.getRawKDFAlgorithmName().splitAt("WithHmac", 1)
     }
 
-    override Crypto::TMACType getMACType() { result instanceof Crypto::THMAC }
+    override Crypto::TMACType getMacType() { result instanceof Crypto::THMAC }
 
     override Crypto::AlgorithmValueConsumer getHMACAlgorithmValueConsumer() { result = this }
 
@@ -1487,9 +1487,9 @@ module JCAModel {
 
     MACGetInstanceAlgorithmValueConsumer getConsumer() { result = consumer }
 
-    override string getRawMACAlgorithmName() { result = super.getValue() }
+    override string getRawMacAlgorithmName() { result = super.getValue() }
 
-    override Crypto::TMACType getMACType() {
+    override Crypto::TMACType getMacType() {
       if mac_name_to_mac_type_known(_, super.getValue())
       then mac_name_to_mac_type_known(result, super.getValue())
       else result instanceof Crypto::TOtherMACType
