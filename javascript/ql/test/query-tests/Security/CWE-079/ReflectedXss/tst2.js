@@ -88,3 +88,27 @@ app.get('/baz', function(req, res) {
   res.send(p); // $ Alert
   res.send(other.p); // $ Alert
 });
+
+app.get('/baz', function(req, res) {
+  let { p } = req.params; // $ MISSING: Source
+
+  var serialized = serializeJavaScript(p);
+
+  res.send(serialized);
+  
+  var unsafe = serializeJavaScript({someProperty: p}, {unsafe: true});
+
+  res.send(unsafe); // $ MISSING: Alert
+});
+
+app.get('/baz', function(req, res) {
+  let { p } = req.params; // $ MISSING: Source
+
+  var serialized = serializeJavaScript(p);
+
+  res.send(serialized);
+  let obj = {someProperty: p};
+  var unsafe = serializeJavaScript(obj, {unsafe: true});
+
+  res.send(unsafe); // $ MISSING: Alert
+});
