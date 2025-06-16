@@ -287,11 +287,3 @@ abstract class EVPFinal extends EvpOperation {
    */
   override Expr getOutputArg() { result = this.getUpdateCalls().getOutputArg() }
 }
-// Expr getAlgorithmArgFromContext(Expr contextArg) {
-//   exists(EVPPKeyAlgorithmConsumer source |
-//     result = source.getValueArgExpr() and
-//     ctxFlowsToCtxArg(source.getResultNode().asExpr(), ctx)
-//   )
-//   or
-//   result = getAlgorithmFromKey(getKeyFromCtx(ctx))
-// }
