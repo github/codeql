@@ -12,8 +12,10 @@ import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
 
 /**
  * A function that is known to raise an exception.
+ *
+ * DEPRECATED: use `AlwaysSehThrowingFunction` instead.
  */
-abstract class ThrowingFunction extends Function {
+abstract deprecated class ThrowingFunction extends Function {
   /**
    * Holds if this function may throw an exception during evaluation.
    * If `unconditional` is `true` the function always throws an exception.
