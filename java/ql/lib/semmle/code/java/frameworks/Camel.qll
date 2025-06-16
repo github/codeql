@@ -1,6 +1,8 @@
 /**
  * Apache Camel messaging framework.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.frameworks.spring.SpringCamel

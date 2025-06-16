@@ -1,4 +1,6 @@
 /** Provides classes and predicates to reason about sanitization of path injection vulnerabilities. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.controlflow.Guards

@@ -1,4 +1,6 @@
 /** Provides classes and predicates for working with Android widgets. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
