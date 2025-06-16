@@ -4,9 +4,9 @@ extensions:
       extensible: summaryModel
     data:
       # Iterator
-      - ["lang:core", "<[_]>::iter", "Argument[Self].Element", "ReturnValue.Element", "value", "manual"]
-      - ["lang:core", "<[_]>::iter_mut", "Argument[Self].Element", "ReturnValue.Element", "value", "manual"]
-      - ["lang:core", "<[_]>::into_iter", "Argument[Self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "<[_]>::iter", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "<[_]>::iter_mut", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "<[_]>::into_iter", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
       - ["lang:core", "crate::iter::traits::iterator::Iterator::nth", "Argument[self].Element", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "manual"]
       - ["lang:core", "crate::iter::traits::iterator::Iterator::next", "Argument[self].Element", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "manual"]
       - ["lang:core", "crate::iter::traits::iterator::Iterator::collect", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
