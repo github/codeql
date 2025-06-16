@@ -6,6 +6,8 @@
 | apollo.serverSide.ts:8:39:8:64 | get(fil ...  => {}) | apollo.serverSide.ts:7:36:7:44 | { files } | apollo.serverSide.ts:8:43:8:50 | file.url | The $@ of this request depends on a $@. | apollo.serverSide.ts:8:43:8:50 | file.url | URL | apollo.serverSide.ts:7:36:7:44 | { files } | user-provided value |
 | apollo.serverSide.ts:18:37:18:62 | get(fil ...  => {}) | apollo.serverSide.ts:17:34:17:42 | { files } | apollo.serverSide.ts:18:41:18:48 | file.url | The $@ of this request depends on a $@. | apollo.serverSide.ts:18:41:18:48 | file.url | URL | apollo.serverSide.ts:17:34:17:42 | { files } | user-provided value |
 | axiosInterceptors.serverSide.js:11:26:11:40 | userProvidedUrl | axiosInterceptors.serverSide.js:19:21:19:28 | req.body | axiosInterceptors.serverSide.js:11:26:11:40 | userProvidedUrl | The $@ of this request depends on a $@. | axiosInterceptors.serverSide.js:11:26:11:40 | userProvidedUrl | endpoint | axiosInterceptors.serverSide.js:19:21:19:28 | req.body | user-provided value |
+| serverSide2.js:23:29:23:49 | axios.g ... etUrl2) | serverSide2.js:22:24:22:30 | req.url | serverSide2.js:23:39:23:48 | targetUrl2 | The $@ of this request depends on a $@. | serverSide2.js:23:39:23:48 | targetUrl2 | URL | serverSide2.js:22:24:22:30 | req.url | user-provided value |
+| serverSide2.js:26:29:26:49 | axios.g ... etUrl3) | serverSide2.js:11:24:11:30 | req.url | serverSide2.js:26:39:26:48 | targetUrl3 | The $@ of this request depends on a $@. | serverSide2.js:26:39:26:48 | targetUrl3 | URL | serverSide2.js:11:24:11:30 | req.url | user-provided value |
 | serverSide.js:18:5:18:20 | request(tainted) | serverSide.js:14:29:14:35 | req.url | serverSide.js:18:13:18:19 | tainted | The $@ of this request depends on a $@. | serverSide.js:18:13:18:19 | tainted | URL | serverSide.js:14:29:14:35 | req.url | user-provided value |
 | serverSide.js:20:5:20:24 | request.get(tainted) | serverSide.js:14:29:14:35 | req.url | serverSide.js:20:17:20:23 | tainted | The $@ of this request depends on a $@. | serverSide.js:20:17:20:23 | tainted | URL | serverSide.js:14:29:14:35 | req.url | user-provided value |
 | serverSide.js:24:5:24:20 | request(options) | serverSide.js:14:29:14:35 | req.url | serverSide.js:23:19:23:25 | tainted | The $@ of this request depends on a $@. | serverSide.js:23:19:23:25 | tainted | URL | serverSide.js:14:29:14:35 | req.url | user-provided value |
@@ -61,6 +63,11 @@ edges
 | axiosInterceptors.serverSide.js:19:21:19:28 | req.body | axiosInterceptors.serverSide.js:19:11:19:17 | { url } | provenance |  |
 | axiosInterceptors.serverSide.js:20:5:20:25 | userProvidedUrl | axiosInterceptors.serverSide.js:11:26:11:40 | userProvidedUrl | provenance |  |
 | axiosInterceptors.serverSide.js:20:23:20:25 | url | axiosInterceptors.serverSide.js:20:5:20:25 | userProvidedUrl | provenance |  |
+| serverSide2.js:11:24:11:30 | req.url | serverSide2.js:25:24:25:41 | req.SomeObject.url | provenance |  |
+| serverSide2.js:22:11:22:36 | targetUrl2 | serverSide2.js:23:39:23:48 | targetUrl2 | provenance |  |
+| serverSide2.js:22:24:22:30 | req.url | serverSide2.js:22:11:22:36 | targetUrl2 | provenance |  |
+| serverSide2.js:25:11:25:47 | targetUrl3 | serverSide2.js:26:39:26:48 | targetUrl3 | provenance |  |
+| serverSide2.js:25:24:25:41 | req.SomeObject.url | serverSide2.js:25:11:25:47 | targetUrl3 | provenance |  |
 | serverSide.js:14:9:14:52 | tainted | serverSide.js:18:13:18:19 | tainted | provenance |  |
 | serverSide.js:14:9:14:52 | tainted | serverSide.js:20:17:20:23 | tainted | provenance |  |
 | serverSide.js:14:9:14:52 | tainted | serverSide.js:23:19:23:25 | tainted | provenance |  |
@@ -153,6 +160,13 @@ nodes
 | axiosInterceptors.serverSide.js:19:21:19:28 | req.body | semmle.label | req.body |
 | axiosInterceptors.serverSide.js:20:5:20:25 | userProvidedUrl | semmle.label | userProvidedUrl |
 | axiosInterceptors.serverSide.js:20:23:20:25 | url | semmle.label | url |
+| serverSide2.js:11:24:11:30 | req.url | semmle.label | req.url |
+| serverSide2.js:22:11:22:36 | targetUrl2 | semmle.label | targetUrl2 |
+| serverSide2.js:22:24:22:30 | req.url | semmle.label | req.url |
+| serverSide2.js:23:39:23:48 | targetUrl2 | semmle.label | targetUrl2 |
+| serverSide2.js:25:11:25:47 | targetUrl3 | semmle.label | targetUrl3 |
+| serverSide2.js:25:24:25:41 | req.SomeObject.url | semmle.label | req.SomeObject.url |
+| serverSide2.js:26:39:26:48 | targetUrl3 | semmle.label | targetUrl3 |
 | serverSide.js:14:9:14:52 | tainted | semmle.label | tainted |
 | serverSide.js:14:19:14:42 | url.par ... , true) | semmle.label | url.par ... , true) |
 | serverSide.js:14:29:14:35 | req.url | semmle.label | req.url |
