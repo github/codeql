@@ -6,7 +6,8 @@
  * @kind problem
  * @problem.severity error
  * @id js/regex/unmatchable-dollar
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       regular-expressions
  *       external/cwe/cwe-561

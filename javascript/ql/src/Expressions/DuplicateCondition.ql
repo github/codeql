@@ -5,8 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/duplicate-condition
- * @tags maintainability
- *       correctness
+ * @tags quality
+ *       maintainability
+ *       readability
  *       external/cwe/cwe-561
  * @precision very-high
  */

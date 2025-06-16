@@ -4,8 +4,9 @@
  * @kind problem
  * @problem.severity error
  * @id js/unused-loop-variable
- * @tags maintainability
- *       correctness
+ * @tags quality
+ *       maintainability
+ *       readability
  * @precision high
  */
 

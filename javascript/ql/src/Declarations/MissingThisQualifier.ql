@@ -4,8 +4,9 @@
  * @kind problem
  * @problem.severity error
  * @id js/missing-this-qualifier
- * @tags maintainability
- *       correctness
+ * @tags quality
+ *       maintainability
+ *       readability
  *       methods
  * @precision high
  */

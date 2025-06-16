@@ -6,7 +6,8 @@
  * @kind problem
  * @problem.severity error
  * @id js/overwritten-property
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-563
  * @precision very-high

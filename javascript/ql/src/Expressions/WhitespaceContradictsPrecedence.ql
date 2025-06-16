@@ -5,8 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/whitespace-contradicts-precedence
- * @tags maintainability
- *       correctness
+ * @tags quality
+ *       maintainability
+ *       readability
  *       statistical
  *       non-attributable
  *       external/cwe/cwe-783
