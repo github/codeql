@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with Java statements.
  */
+overlay[local?]
+module;
 
 import Expr
 import metrics.MetricStmt

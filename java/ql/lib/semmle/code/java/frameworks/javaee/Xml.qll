@@ -1,4 +1,6 @@
 /** Provides definitions related to the `javax.xml` package. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.security.XmlParsers

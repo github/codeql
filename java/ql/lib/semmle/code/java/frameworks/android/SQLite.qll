@@ -1,4 +1,6 @@
 /** Provides classes and predicates for working with SQLite databases. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.FlowSteps

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.Collections
@@ -20,6 +23,7 @@ private import semmle.code.java.frameworks.JaxWS
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+overlay[caller]
 pragma[inline]
 predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(src, sink) }
 
@@ -27,6 +31,7 @@ predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+overlay[caller]
 pragma[inline]
 predicate localExprTaint(Expr src, Expr sink) {
   localTaint(DataFlow::exprNode(src), DataFlow::exprNode(sink))
@@ -69,6 +74,7 @@ module LocalTaintFlow<nodeSig/1 source, nodeSig/1 sink> {
    * (intra-procedural) steps that are restricted to be part of a path between
    * `source` and `sink`.
    */
+  overlay[caller]
   pragma[inline]
   predicate hasFlow(DataFlow::Node n1, DataFlow::Node n2) { step*(n1, n2) }
 
@@ -77,6 +83,7 @@ module LocalTaintFlow<nodeSig/1 source, nodeSig/1 sink> {
    * (intra-procedural) steps that are restricted to be part of a path between
    * `source` and `sink`.
    */
+  overlay[caller]
   pragma[inline]
   predicate hasExprFlow(Expr n1, Expr n2) {
     hasFlow(DataFlow::exprNode(n1), DataFlow::exprNode(n2))

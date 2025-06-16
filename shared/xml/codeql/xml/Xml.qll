@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with XML files and their content.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Location
 private import codeql.util.FileSystem

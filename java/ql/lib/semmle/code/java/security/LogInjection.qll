@@ -1,4 +1,6 @@
 /** Provides classes and predicates related to Log Injection vulnerabilities. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
