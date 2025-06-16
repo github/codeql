@@ -6,8 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/chained-type-tests
- * @tags quality
- *       reliability
+ * @tags reliability
  *       performance
  *       changeability
  *       language-features

@@ -5,8 +5,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/complex-condition
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       readability
  *       testability
  */

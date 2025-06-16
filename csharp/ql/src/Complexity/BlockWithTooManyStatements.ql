@@ -7,8 +7,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/complex-block
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       complexity
  *       testability
  */

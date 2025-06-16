@@ -6,8 +6,7 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id cs/too-many-ref-parameters
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       readability
  *       testability
  */
