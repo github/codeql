@@ -620,7 +620,7 @@ module Express {
         or
         // `req.path`
         kind = "url" and
-        this = ref.getAPropertyRead("path")
+        this = ref.getAPropertyRead(["path", "_parsedUrl"])
       )
     }
 
