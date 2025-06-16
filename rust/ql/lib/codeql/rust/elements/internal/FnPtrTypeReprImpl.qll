@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.FnPtrTypeRepr
  */
 module Impl {
   /**
-   * A FnPtrTypeRepr. For example:
+   * A function pointer type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let f: fn(i32) -> i32;
+   * //     ^^^^^^^^^^^^^^
    * ```
    */
   class FnPtrTypeRepr extends Generated::FnPtrTypeRepr { }

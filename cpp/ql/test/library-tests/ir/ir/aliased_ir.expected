@@ -1,3 +1,86 @@
+arm.cpp:
+#    6| uint8x8_t vadd_u8(uint8x8_t, uint8x8_t)
+#    6|   Block 0
+#    6|     v6_1(void)                                                    = EnterFunction            : 
+#    6|     m6_2(unknown)                                                 = AliasedDefinition        : 
+#    6|     m6_3(unknown)                                                 = InitializeNonLocal       : 
+#    6|     m6_4(unknown)                                                 = Chi                      : total:m6_2, partial:m6_3
+#    6|     r6_5(glval<__attribute((neon_vector_type(8))) unsigned char>) = VariableAddress[a]       : 
+#    6|     m6_6(__attribute((neon_vector_type(8))) unsigned char)        = InitializeParameter[a]   : &:r6_5
+#    6|     r6_7(glval<__attribute((neon_vector_type(8))) unsigned char>) = VariableAddress[b]       : 
+#    6|     m6_8(__attribute((neon_vector_type(8))) unsigned char)        = InitializeParameter[b]   : &:r6_7
+#    7|     r7_1(glval<__attribute((neon_vector_type(8))) unsigned char>) = VariableAddress[#return] : 
+#    7|     r7_2(glval<__attribute((neon_vector_type(8))) unsigned char>) = VariableAddress[a]       : 
+#    7|     r7_3(__attribute((neon_vector_type(8))) unsigned char)        = Load[a]                  : &:r7_2, m6_6
+#    7|     r7_4(glval<__attribute((neon_vector_type(8))) unsigned char>) = VariableAddress[b]       : 
+#    7|     r7_5(__attribute((neon_vector_type(8))) unsigned char)        = Load[b]                  : &:r7_4, m6_8
+#    7|     r7_6(__attribute((neon_vector_type(8))) unsigned char)        = Add                      : r7_3, r7_5
+#    7|     m7_7(__attribute((neon_vector_type(8))) unsigned char)        = Store[#return]           : &:r7_1, r7_6
+#    6|     r6_9(glval<__attribute((neon_vector_type(8))) unsigned char>) = VariableAddress[#return] : 
+#    6|     v6_10(void)                                                   = ReturnValue              : &:r6_9, m7_7
+#    6|     v6_11(void)                                                   = AliasedUse               : m6_3
+#    6|     v6_12(void)                                                   = ExitFunction             : 
+
+#   14| uint16x8_t vaddl_u8(uint8x8_t, uint8x8_t)
+#   14|   Block 0
+#   14|     v14_1(void)                                                     = EnterFunction                                    : 
+#   14|     m14_2(unknown)                                                  = AliasedDefinition                                : 
+#   14|     m14_3(unknown)                                                  = InitializeNonLocal                               : 
+#   14|     m14_4(unknown)                                                  = Chi                                              : total:m14_2, partial:m14_3
+#   14|     r14_5(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[a]                               : 
+#   14|     m14_6(__attribute((neon_vector_type(8))) unsigned char)         = InitializeParameter[a]                           : &:r14_5
+#   14|     r14_7(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[b]                               : 
+#   14|     m14_8(__attribute((neon_vector_type(8))) unsigned char)         = InitializeParameter[b]                           : &:r14_7
+#   15|     r15_1(glval<__attribute((neon_vector_type(8))) unsigned short>) = VariableAddress[#return]                         : 
+#   15|     r15_2(glval<unknown>)                                           = FunctionAddress[__builtin_aarch64_uaddlv8qi_uuu] : 
+#   15|     r15_3(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[a]                               : 
+#   15|     r15_4(__attribute((neon_vector_type(8))) unsigned char)         = Load[a]                                          : &:r15_3, m14_6
+#   15|     r15_5(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[b]                               : 
+#   15|     r15_6(__attribute((neon_vector_type(8))) unsigned char)         = Load[b]                                          : &:r15_5, m14_8
+#   15|     r15_7(__attribute((neon_vector_type(8))) unsigned short)        = Call[__builtin_aarch64_uaddlv8qi_uuu]            : func:r15_2, 0:r15_4, 1:r15_6
+#   15|     m15_8(unknown)                                                  = ^CallSideEffect                                  : ~m14_4
+#   15|     m15_9(unknown)                                                  = Chi                                              : total:m14_4, partial:m15_8
+#   15|     m15_10(__attribute((neon_vector_type(8))) unsigned short)       = Store[#return]                                   : &:r15_1, r15_7
+#   14|     r14_9(glval<__attribute((neon_vector_type(8))) unsigned short>) = VariableAddress[#return]                         : 
+#   14|     v14_10(void)                                                    = ReturnValue                                      : &:r14_9, m15_10
+#   14|     v14_11(void)                                                    = AliasedUse                                       : ~m15_9
+#   14|     v14_12(void)                                                    = ExitFunction                                     : 
+
+#   18| uint16x8_t arm_add(uint8x8_t, uint8x8_t)
+#   18|   Block 0
+#   18|     v18_1(void)                                                     = EnterFunction             : 
+#   18|     m18_2(unknown)                                                  = AliasedDefinition         : 
+#   18|     m18_3(unknown)                                                  = InitializeNonLocal        : 
+#   18|     m18_4(unknown)                                                  = Chi                       : total:m18_2, partial:m18_3
+#   18|     r18_5(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[a]        : 
+#   18|     m18_6(__attribute((neon_vector_type(8))) unsigned char)         = InitializeParameter[a]    : &:r18_5
+#   18|     r18_7(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[b]        : 
+#   18|     m18_8(__attribute((neon_vector_type(8))) unsigned char)         = InitializeParameter[b]    : &:r18_7
+#   19|     r19_1(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[c]        : 
+#   19|     r19_2(glval<unknown>)                                           = FunctionAddress[vadd_u8]  : 
+#   19|     r19_3(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[a]        : 
+#   19|     r19_4(__attribute((neon_vector_type(8))) unsigned char)         = Load[a]                   : &:r19_3, m18_6
+#   19|     r19_5(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[b]        : 
+#   19|     r19_6(__attribute((neon_vector_type(8))) unsigned char)         = Load[b]                   : &:r19_5, m18_8
+#   19|     r19_7(__attribute((neon_vector_type(8))) unsigned char)         = Call[vadd_u8]             : func:r19_2, 0:r19_4, 1:r19_6
+#   19|     m19_8(unknown)                                                  = ^CallSideEffect           : ~m18_4
+#   19|     m19_9(unknown)                                                  = Chi                       : total:m18_4, partial:m19_8
+#   19|     m19_10(__attribute((neon_vector_type(8))) unsigned char)        = Store[c]                  : &:r19_1, r19_7
+#   20|     r20_1(glval<__attribute((neon_vector_type(8))) unsigned short>) = VariableAddress[#return]  : 
+#   20|     r20_2(glval<unknown>)                                           = FunctionAddress[vaddl_u8] : 
+#   20|     r20_3(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[a]        : 
+#   20|     r20_4(__attribute((neon_vector_type(8))) unsigned char)         = Load[a]                   : &:r20_3, m18_6
+#   20|     r20_5(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[c]        : 
+#   20|     r20_6(__attribute((neon_vector_type(8))) unsigned char)         = Load[c]                   : &:r20_5, m19_10
+#   20|     r20_7(__attribute((neon_vector_type(8))) unsigned short)        = Call[vaddl_u8]            : func:r20_2, 0:r20_4, 1:r20_6
+#   20|     m20_8(unknown)                                                  = ^CallSideEffect           : ~m19_9
+#   20|     m20_9(unknown)                                                  = Chi                       : total:m19_9, partial:m20_8
+#   20|     m20_10(__attribute((neon_vector_type(8))) unsigned short)       = Store[#return]            : &:r20_1, r20_7
+#   18|     r18_9(glval<__attribute((neon_vector_type(8))) unsigned short>) = VariableAddress[#return]  : 
+#   18|     v18_10(void)                                                    = ReturnValue               : &:r18_9, m20_10
+#   18|     v18_11(void)                                                    = AliasedUse                : ~m20_9
+#   18|     v18_12(void)                                                    = ExitFunction              : 
+
 bad_asts.cpp:
 #    9| int Bad::S::MemberFunction<int 6>(int)
 #    9|   Block 0
@@ -3161,7 +3244,7 @@ ir.c:
 #   25|     v25_4(void)           = Call[ExRaiseAccessViolation]            : func:r25_1, 0:r25_3
 #   25|     m25_5(unknown)        = ^CallSideEffect                         : ~m21_4
 #   25|     m25_6(unknown)        = Chi                                     : total:m21_4, partial:m25_5
-#-----|   C++ Exception -> Block 3
+#-----|   SEH Exception -> Block 3
 
 #   26|   Block 1
 #   26|     r26_1(int)  = Constant[0]       : 
@@ -3208,7 +3291,7 @@ ir.c:
 #   36|     v36_3(void)           = Call[ExRaiseAccessViolation]            : func:r36_1, 0:r36_2
 #   36|     m36_4(unknown)        = ^CallSideEffect                         : ~m32_4
 #   36|     m36_5(unknown)        = Chi                                     : total:m32_4, partial:m36_4
-#-----|   C++ Exception -> Block 4
+#-----|   SEH Exception -> Block 4
 
 #   32|   Block 1
 #   32|     v32_5(void) = Unwind       : 
@@ -3243,7 +3326,7 @@ ir.c:
 #   40|     v40_3(void)           = Call[ExRaiseAccessViolation]            : func:r40_1, 0:r40_2
 #   40|     m40_4(unknown)        = ^CallSideEffect                         : ~m36_5
 #   40|     m40_5(unknown)        = Chi                                     : total:m36_5, partial:m40_4
-#-----|   C++ Exception -> Block 1
+#-----|   SEH Exception -> Block 1
 
 #   32|   Block 6
 #   32|     v32_8(void) = Unreached : 
@@ -3282,7 +3365,7 @@ ir.c:
 #   62|     v62_3(void)           = Call[ExRaiseAccessViolation]            : func:r62_1, 0:r62_2
 #   62|     m62_4(unknown)        = ^CallSideEffect                         : ~m57_4
 #   62|     m62_5(unknown)        = Chi                                     : total:m57_4, partial:m62_4
-#-----|   C++ Exception -> Block 1
+#-----|   SEH Exception -> Block 1
 
 #   66|   Block 1
 #   66|     r66_1(int)        = Constant[1]        : 
@@ -3304,7 +3387,7 @@ ir.c:
 #   73|     v73_3(void)           = Call[ExRaiseAccessViolation]            : func:r73_1, 0:r73_2
 #   73|     m73_4(unknown)        = ^CallSideEffect                         : ~m70_4
 #   73|     m73_5(unknown)        = Chi                                     : total:m70_4, partial:m73_4
-#-----|   C++ Exception -> Block 2
+#-----|   SEH Exception -> Block 2
 
 #   70|   Block 1
 #   70|     v70_5(void) = Unwind       : 
@@ -3317,7 +3400,7 @@ ir.c:
 #   76|     v76_3(void)           = Call[ExRaiseAccessViolation]            : func:r76_1, 0:r76_2
 #   76|     m76_4(unknown)        = ^CallSideEffect                         : ~m73_5
 #   76|     m76_5(unknown)        = Chi                                     : total:m73_5, partial:m76_4
-#-----|   C++ Exception -> Block 1
+#-----|   SEH Exception -> Block 1
 
 #   80| void raise_access_violation()
 #   80|   Block 0
@@ -3330,7 +3413,7 @@ ir.c:
 #   81|     v81_3(void)           = Call[ExRaiseAccessViolation]            : func:r81_1, 0:r81_2
 #   81|     m81_4(unknown)        = ^CallSideEffect                         : ~m80_4
 #   81|     m81_5(unknown)        = Chi                                     : total:m80_4, partial:m81_4
-#-----|   C++ Exception -> Block 1
+#-----|   SEH Exception -> Block 1
 
 #   80|   Block 1
 #   80|     v80_5(void) = Unwind       : 
@@ -19457,11 +19540,11 @@ ir.cpp:
 # 2691|     m2691_3(unknown)    = InitializeNonLocal       : 
 # 2691|     m2691_4(unknown)    = Chi                      : total:m2691_2, partial:m2691_3
 # 2692|     r2692_1(glval<int>) = VariableAddress[y]       : 
-#-----|     r0_1(int)           = Constant[1]              : 
-#-----|     m0_2(int)           = Store[y]                 : &:r2692_1, r0_1
+# 2692|     r2692_2(int)        = Constant[1]              : 
+# 2692|     m2692_3(int)        = Store[y]                 : &:r2692_1, r2692_2
 # 2693|     r2693_1(glval<int>) = VariableAddress[#return] : 
 # 2693|     r2693_2(glval<int>) = VariableAddress[y]       : 
-# 2693|     r2693_3(int)        = Load[y]                  : &:r2693_2, m0_2
+# 2693|     r2693_3(int)        = Load[y]                  : &:r2693_2, m2692_3
 # 2693|     m2693_4(int)        = Store[#return]           : &:r2693_1, r2693_3
 # 2691|     r2691_5(glval<int>) = VariableAddress[#return] : 
 # 2691|     v2691_6(void)       = ReturnValue              : &:r2691_5, m2693_4
@@ -38935,20 +39018,33 @@ struct_init.cpp:
 try_except.c:
 #    6| void f()
 #    6|   Block 0
-#    6|     v6_1(void)            = EnterFunction                  : 
-#    6|     m6_2(unknown)         = AliasedDefinition              : 
-#    6|     m6_3(unknown)         = InitializeNonLocal             : 
-#    6|     m6_4(unknown)         = Chi                            : total:m6_2, partial:m6_3
-#    7|     r7_1(glval<int>)      = VariableAddress[x]             : 
-#    7|     m7_2(int)             = Uninitialized[x]               : &:r7_1
-#    7|     r7_3(glval<int>)      = VariableAddress[y]             : 
-#    7|     r7_4(int)             = Constant[0]                    : 
-#    7|     m7_5(int)             = Store[y]                       : &:r7_3, r7_4
-#    9|     r9_1(glval<unknown>)  = FunctionAddress[ProbeFunction] : 
-#    9|     r9_2(int)             = Constant[0]                    : 
-#    9|     v9_3(void)            = Call[ProbeFunction]            : func:r9_1, 0:r9_2
-#    9|     m9_4(unknown)         = ^CallSideEffect                : ~m6_4
-#    9|     m9_5(unknown)         = Chi                            : total:m6_4, partial:m9_4
+#    6|     v6_1(void)           = EnterFunction                  : 
+#    6|     m6_2(unknown)        = AliasedDefinition              : 
+#    6|     m6_3(unknown)        = InitializeNonLocal             : 
+#    6|     m6_4(unknown)        = Chi                            : total:m6_2, partial:m6_3
+#    7|     r7_1(glval<int>)     = VariableAddress[x]             : 
+#    7|     m7_2(int)            = Uninitialized[x]               : &:r7_1
+#    7|     r7_3(glval<int>)     = VariableAddress[y]             : 
+#    7|     r7_4(int)            = Constant[0]                    : 
+#    7|     m7_5(int)            = Store[y]                       : &:r7_3, r7_4
+#    9|     r9_1(glval<unknown>) = FunctionAddress[ProbeFunction] : 
+#    9|     r9_2(int)            = Constant[0]                    : 
+#    9|     v9_3(void)           = Call[ProbeFunction]            : func:r9_1, 0:r9_2
+#    9|     m9_4(unknown)        = ^CallSideEffect                : ~m6_4
+#    9|     m9_5(unknown)        = Chi                            : total:m6_4, partial:m9_4
+#-----|   Goto -> Block 3
+#-----|   SEH Exception -> Block 5
+
+#    6|   Block 1
+#    6|     m6_5(unknown) = Phi          : from 2:~m13_4, from 6:~m11_5
+#    6|     v6_6(void)    = AliasedUse   : ~m6_5
+#    6|     v6_7(void)    = ExitFunction : 
+
+#    6|   Block 2
+#    6|     v6_8(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+#   10|   Block 3
 #   10|     r10_1(glval<int>)     = VariableAddress[y]             : 
 #   10|     r10_2(int)            = Load[y]                        : &:r10_1, m7_5
 #   10|     r10_3(glval<int>)     = VariableAddress[x]             : 
@@ -38958,13 +39054,32 @@ try_except.c:
 #   11|     v11_3(void)           = Call[ProbeFunction]            : func:r11_1, 0:r11_2
 #   11|     m11_4(unknown)        = ^CallSideEffect                : ~m9_5
 #   11|     m11_5(unknown)        = Chi                            : total:m9_5, partial:m11_4
-#   16|     v16_1(void)           = NoOp                           : 
-#    6|     v6_5(void)            = ReturnVoid                     : 
-#    6|     v6_6(void)            = AliasedUse                     : ~m11_5
-#    6|     v6_7(void)            = ExitFunction                   : 
+#-----|   Goto -> Block 6
+#-----|   SEH Exception -> Block 5
 
-#    6|   Block 1
-#    6|     v6_8(void) = Unreached : 
+#   13|   Block 4
+#   13|     r13_1(int)  = Constant[0]       : 
+#   13|     r13_2(bool) = CompareEQ         : r13_5, r13_1
+#   13|     v13_3(void) = ConditionalBranch : r13_2
+#-----|   False -> Block 7
+#-----|   True -> Block 2
+
+#   13|   Block 5
+#   13|     m13_4(unknown) = Phi               : from 0:~m9_5, from 3:~m11_5
+#   13|     r13_5(int)     = Constant[0]       : 
+#   13|     r13_6(int)     = Constant[-1]      : 
+#   13|     r13_7(bool)    = CompareEQ         : r13_5, r13_6
+#   13|     v13_8(void)    = ConditionalBranch : r13_7
+#-----|   False -> Block 4
+#-----|   True -> Block 7
+
+#   16|   Block 6
+#   16|     v16_1(void) = NoOp       : 
+#    6|     v6_9(void)  = ReturnVoid : 
+#-----|   Goto -> Block 1
+
+#    6|   Block 7
+#    6|     v6_10(void) = Unreached : 
 
 #   18| void g()
 #   18|   Block 0
@@ -38982,6 +39097,10 @@ try_except.c:
 #   21|     v21_3(void)           = Call[ProbeFunction]            : func:r21_1, 0:r21_2
 #   21|     m21_4(unknown)        = ^CallSideEffect                : ~m18_4
 #   21|     m21_5(unknown)        = Chi                            : total:m18_4, partial:m21_4
+#-----|   Goto -> Block 1
+#-----|   SEH Exception -> Block 2
+
+#   22|   Block 1
 #   22|     r22_1(glval<int>)     = VariableAddress[y]             : 
 #   22|     r22_2(int)            = Load[y]                        : &:r22_1, m19_5
 #   22|     r22_3(glval<int>)     = VariableAddress[x]             : 
@@ -38991,16 +39110,21 @@ try_except.c:
 #   23|     v23_3(void)           = Call[ProbeFunction]            : func:r23_1, 0:r23_2
 #   23|     m23_4(unknown)        = ^CallSideEffect                : ~m21_5
 #   23|     m23_5(unknown)        = Chi                            : total:m21_5, partial:m23_4
-#   26|     r26_1(glval<unknown>) = FunctionAddress[sink]          : 
-#   26|     r26_2(glval<int>)     = VariableAddress[x]             : 
-#   26|     r26_3(int)            = Load[x]                        : &:r26_2, m22_4
-#   26|     v26_4(void)           = Call[sink]                     : func:r26_1, 0:r26_3
-#   26|     m26_5(unknown)        = ^CallSideEffect                : ~m23_5
-#   26|     m26_6(unknown)        = Chi                            : total:m23_5, partial:m26_5
-#   28|     v28_1(void)           = NoOp                           : 
-#   18|     v18_5(void)           = ReturnVoid                     : 
-#   18|     v18_6(void)           = AliasedUse                     : ~m26_6
-#   18|     v18_7(void)           = ExitFunction                   : 
+#-----|   Goto|SEH Exception -> Block 2
+
+#   26|   Block 2
+#   26|     m26_1(unknown)        = Phi                   : from 0:~m21_5, from 1:~m23_5
+#   26|     m26_2(int)            = Phi                   : from 0:m19_2, from 1:m22_4
+#   26|     r26_3(glval<unknown>) = FunctionAddress[sink] : 
+#   26|     r26_4(glval<int>)     = VariableAddress[x]    : 
+#   26|     r26_5(int)            = Load[x]               : &:r26_4, m26_2
+#   26|     v26_6(void)           = Call[sink]            : func:r26_3, 0:r26_5
+#   26|     m26_7(unknown)        = ^CallSideEffect       : ~m26_1
+#   26|     m26_8(unknown)        = Chi                   : total:m26_1, partial:m26_7
+#   28|     v28_1(void)           = NoOp                  : 
+#   18|     v18_5(void)           = ReturnVoid            : 
+#   18|     v18_6(void)           = AliasedUse            : ~m26_8
+#   18|     v18_7(void)           = ExitFunction          : 
 
 #   32| void h(int)
 #   32|   Block 0
@@ -39018,7 +39142,7 @@ try_except.c:
 #   35|     r35_3(int)        = Constant[0]            : 
 #   35|     r35_4(bool)       = CompareNE              : r35_2, r35_3
 #   35|     v35_5(void)       = ConditionalBranch      : r35_4
-#-----|   False -> Block 2
+#-----|   False -> Block 6
 #-----|   True -> Block 1
 
 #   36|   Block 1
@@ -39026,35 +39150,144 @@ try_except.c:
 #   36|     v36_2(void)           = Call[AfxThrowMemoryException]            : func:r36_1
 #   36|     m36_3(unknown)        = ^CallSideEffect                          : ~m32_4
 #   36|     m36_4(unknown)        = Chi                                      : total:m32_4, partial:m36_3
-#-----|   Goto -> Block 2
+#-----|   Goto -> Block 6
+#-----|   SEH Exception -> Block 4
 
-#   42|   Block 2
-#   42|     m42_1(unknown) = Phi          : from 0:~m32_4, from 1:~m36_4
+#   39|   Block 2
+#   39|     r39_1(int)  = Constant[0]       : 
+#   39|     r39_2(bool) = CompareEQ         : r39_7, r39_1
+#   39|     v39_3(void) = ConditionalBranch : r39_2
+#-----|   False -> Block 3
+#-----|   True -> Block 7
+
+#   39|   Block 3
+#   39|     r39_4(int)  = Constant[1]       : 
+#   39|     r39_5(bool) = CompareEQ         : r39_7, r39_4
+#   39|     v39_6(void) = ConditionalBranch : r39_5
+#-----|   False -> Block 7
+#-----|   True -> Block 5
+
+#   39|   Block 4
+#   39|     r39_7(int)   = Constant[1]       : 
+#   39|     r39_8(int)   = Constant[-1]      : 
+#   39|     r39_9(bool)  = CompareEQ         : r39_7, r39_8
+#   39|     v39_10(void) = ConditionalBranch : r39_9
+#-----|   False -> Block 2
+#-----|   True -> Block 7
+
+#   40|   Block 5
+#   40|     r40_1(glval<unknown>) = FunctionAddress[sink] : 
+#   40|     r40_2(glval<int>)     = VariableAddress[x]    : 
+#   40|     r40_3(int)            = Load[x]               : &:r40_2, m33_3
+#   40|     v40_4(void)           = Call[sink]            : func:r40_1, 0:r40_3
+#   40|     m40_5(unknown)        = ^CallSideEffect       : ~m36_4
+#   40|     m40_6(unknown)        = Chi                   : total:m36_4, partial:m40_5
+#-----|   Goto -> Block 6
+
+#   42|   Block 6
+#   42|     m42_1(unknown) = Phi          : from 0:~m32_4, from 1:~m36_4, from 5:~m40_6
 #   42|     v42_2(void)    = NoOp         : 
 #   32|     v32_7(void)    = ReturnVoid   : 
 #   32|     v32_8(void)    = AliasedUse   : ~m42_1
 #   32|     v32_9(void)    = ExitFunction : 
 
-#   32|   Block 3
+#   32|   Block 7
 #   32|     v32_10(void) = Unreached : 
+
+#   46| void j(int)
+#   46|   Block 0
+#   46|     v46_1(void)           = EnterFunction          : 
+#   46|     m46_2(unknown)        = AliasedDefinition      : 
+#   46|     m46_3(unknown)        = InitializeNonLocal     : 
+#   46|     m46_4(unknown)        = Chi                    : total:m46_2, partial:m46_3
+#   46|     r46_5(glval<int>)     = VariableAddress[b]     : 
+#   46|     m46_6(int)            = InitializeParameter[b] : &:r46_5
+#   47|     r47_1(glval<int>)     = VariableAddress[x]     : 
+#   47|     r47_2(int)            = Constant[0]            : 
+#   47|     m47_3(int)            = Store[x]               : &:r47_1, r47_2
+#   49|     r49_1(glval<int>)     = VariableAddress[y]     : 
+#   49|     r49_2(glval<unknown>) = FunctionAddress[i]     : 
+#   49|     r49_3(int)            = Call[i]                : func:r49_2
+#   49|     m49_4(unknown)        = ^CallSideEffect        : ~m46_4
+#   49|     m49_5(unknown)        = Chi                    : total:m46_4, partial:m49_4
+#-----|   Goto -> Block 1
+#-----|   SEH Exception -> Block 4
+
+#   49|   Block 1
+#   49|     m49_6(int) = Store[y] : &:r49_1, r49_3
+#-----|   Goto -> Block 6
+
+#   51|   Block 2
+#   51|     r51_1(int)  = Constant[0]       : 
+#   51|     r51_2(bool) = CompareEQ         : r51_7, r51_1
+#   51|     v51_3(void) = ConditionalBranch : r51_2
+#-----|   False -> Block 3
+#-----|   True -> Block 7
+
+#   51|   Block 3
+#   51|     r51_4(int)  = Constant[1]       : 
+#   51|     r51_5(bool) = CompareEQ         : r51_7, r51_4
+#   51|     v51_6(void) = ConditionalBranch : r51_5
+#-----|   False -> Block 7
+#-----|   True -> Block 5
+
+#   51|   Block 4
+#   51|     r51_7(int)   = Constant[1]       : 
+#   51|     r51_8(int)   = Constant[-1]      : 
+#   51|     r51_9(bool)  = CompareEQ         : r51_7, r51_8
+#   51|     v51_10(void) = ConditionalBranch : r51_9
+#-----|   False -> Block 2
+#-----|   True -> Block 7
+
+#   52|   Block 5
+#   52|     r52_1(glval<unknown>) = FunctionAddress[sink] : 
+#   52|     r52_2(glval<int>)     = VariableAddress[x]    : 
+#   52|     r52_3(int)            = Load[x]               : &:r52_2, m47_3
+#   52|     v52_4(void)           = Call[sink]            : func:r52_1, 0:r52_3
+#   52|     m52_5(unknown)        = ^CallSideEffect       : ~m49_5
+#   52|     m52_6(unknown)        = Chi                   : total:m49_5, partial:m52_5
+#-----|   Goto -> Block 6
+
+#   54|   Block 6
+#   54|     m54_1(unknown) = Phi          : from 1:~m49_5, from 5:~m52_6
+#   54|     v54_2(void)    = NoOp         : 
+#   46|     v46_7(void)    = ReturnVoid   : 
+#   46|     v46_8(void)    = AliasedUse   : ~m54_1
+#   46|     v46_9(void)    = ExitFunction : 
+
+#   46|   Block 7
+#   46|     v46_10(void) = Unreached : 
 
 try_except.cpp:
 #    6| void f_cpp()
 #    6|   Block 0
-#    6|     v6_1(void)            = EnterFunction                  : 
-#    6|     m6_2(unknown)         = AliasedDefinition              : 
-#    6|     m6_3(unknown)         = InitializeNonLocal             : 
-#    6|     m6_4(unknown)         = Chi                            : total:m6_2, partial:m6_3
-#    7|     r7_1(glval<int>)      = VariableAddress[x]             : 
-#    7|     m7_2(int)             = Uninitialized[x]               : &:r7_1
-#    7|     r7_3(glval<int>)      = VariableAddress[y]             : 
-#    7|     r7_4(int)             = Constant[0]                    : 
-#    7|     m7_5(int)             = Store[y]                       : &:r7_3, r7_4
-#    9|     r9_1(glval<unknown>)  = FunctionAddress[ProbeFunction] : 
-#    9|     r9_2(int)             = Constant[0]                    : 
-#    9|     v9_3(void)            = Call[ProbeFunction]            : func:r9_1, 0:r9_2
-#    9|     m9_4(unknown)         = ^CallSideEffect                : ~m6_4
-#    9|     m9_5(unknown)         = Chi                            : total:m6_4, partial:m9_4
+#    6|     v6_1(void)           = EnterFunction                  : 
+#    6|     m6_2(unknown)        = AliasedDefinition              : 
+#    6|     m6_3(unknown)        = InitializeNonLocal             : 
+#    6|     m6_4(unknown)        = Chi                            : total:m6_2, partial:m6_3
+#    7|     r7_1(glval<int>)     = VariableAddress[x]             : 
+#    7|     m7_2(int)            = Uninitialized[x]               : &:r7_1
+#    7|     r7_3(glval<int>)     = VariableAddress[y]             : 
+#    7|     r7_4(int)            = Constant[0]                    : 
+#    7|     m7_5(int)            = Store[y]                       : &:r7_3, r7_4
+#    9|     r9_1(glval<unknown>) = FunctionAddress[ProbeFunction] : 
+#    9|     r9_2(int)            = Constant[0]                    : 
+#    9|     v9_3(void)           = Call[ProbeFunction]            : func:r9_1, 0:r9_2
+#    9|     m9_4(unknown)        = ^CallSideEffect                : ~m6_4
+#    9|     m9_5(unknown)        = Chi                            : total:m6_4, partial:m9_4
+#-----|   Goto -> Block 3
+#-----|   SEH Exception -> Block 5
+
+#    6|   Block 1
+#    6|     m6_5(unknown) = Phi          : from 2:~m13_4, from 6:~m11_5
+#    6|     v6_6(void)    = AliasedUse   : ~m6_5
+#    6|     v6_7(void)    = ExitFunction : 
+
+#    6|   Block 2
+#    6|     v6_8(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+#   10|   Block 3
 #   10|     r10_1(glval<int>)     = VariableAddress[y]             : 
 #   10|     r10_2(int)            = Load[y]                        : &:r10_1, m7_5
 #   10|     r10_3(glval<int>)     = VariableAddress[x]             : 
@@ -39064,13 +39297,32 @@ try_except.cpp:
 #   11|     v11_3(void)           = Call[ProbeFunction]            : func:r11_1, 0:r11_2
 #   11|     m11_4(unknown)        = ^CallSideEffect                : ~m9_5
 #   11|     m11_5(unknown)        = Chi                            : total:m9_5, partial:m11_4
-#   16|     v16_1(void)           = NoOp                           : 
-#    6|     v6_5(void)            = ReturnVoid                     : 
-#    6|     v6_6(void)            = AliasedUse                     : ~m11_5
-#    6|     v6_7(void)            = ExitFunction                   : 
+#-----|   Goto -> Block 6
+#-----|   SEH Exception -> Block 5
 
-#    6|   Block 1
-#    6|     v6_8(void) = Unreached : 
+#   13|   Block 4
+#   13|     r13_1(int)  = Constant[0]       : 
+#   13|     r13_2(bool) = CompareEQ         : r13_5, r13_1
+#   13|     v13_3(void) = ConditionalBranch : r13_2
+#-----|   False -> Block 7
+#-----|   True -> Block 2
+
+#   13|   Block 5
+#   13|     m13_4(unknown) = Phi               : from 0:~m9_5, from 3:~m11_5
+#   13|     r13_5(int)     = Constant[0]       : 
+#   13|     r13_6(int)     = Constant[-1]      : 
+#   13|     r13_7(bool)    = CompareEQ         : r13_5, r13_6
+#   13|     v13_8(void)    = ConditionalBranch : r13_7
+#-----|   False -> Block 4
+#-----|   True -> Block 7
+
+#   16|   Block 6
+#   16|     v16_1(void) = NoOp       : 
+#    6|     v6_9(void)  = ReturnVoid : 
+#-----|   Goto -> Block 1
+
+#    6|   Block 7
+#    6|     v6_10(void) = Unreached : 
 
 #   18| void g_cpp()
 #   18|   Block 0
@@ -39088,6 +39340,10 @@ try_except.cpp:
 #   21|     v21_3(void)           = Call[ProbeFunction]            : func:r21_1, 0:r21_2
 #   21|     m21_4(unknown)        = ^CallSideEffect                : ~m18_4
 #   21|     m21_5(unknown)        = Chi                            : total:m18_4, partial:m21_4
+#-----|   Goto -> Block 1
+#-----|   SEH Exception -> Block 2
+
+#   22|   Block 1
 #   22|     r22_1(glval<int>)     = VariableAddress[y]             : 
 #   22|     r22_2(int)            = Load[y]                        : &:r22_1, m19_5
 #   22|     r22_3(glval<int>)     = VariableAddress[x]             : 
@@ -39097,16 +39353,21 @@ try_except.cpp:
 #   23|     v23_3(void)           = Call[ProbeFunction]            : func:r23_1, 0:r23_2
 #   23|     m23_4(unknown)        = ^CallSideEffect                : ~m21_5
 #   23|     m23_5(unknown)        = Chi                            : total:m21_5, partial:m23_4
-#   26|     r26_1(glval<unknown>) = FunctionAddress[sink]          : 
-#   26|     r26_2(glval<int>)     = VariableAddress[x]             : 
-#   26|     r26_3(int)            = Load[x]                        : &:r26_2, m22_4
-#   26|     v26_4(void)           = Call[sink]                     : func:r26_1, 0:r26_3
-#   26|     m26_5(unknown)        = ^CallSideEffect                : ~m23_5
-#   26|     m26_6(unknown)        = Chi                            : total:m23_5, partial:m26_5
-#   28|     v28_1(void)           = NoOp                           : 
-#   18|     v18_5(void)           = ReturnVoid                     : 
-#   18|     v18_6(void)           = AliasedUse                     : ~m26_6
-#   18|     v18_7(void)           = ExitFunction                   : 
+#-----|   Goto|SEH Exception -> Block 2
+
+#   26|   Block 2
+#   26|     m26_1(unknown)        = Phi                   : from 0:~m21_5, from 1:~m23_5
+#   26|     m26_2(int)            = Phi                   : from 0:m19_2, from 1:m22_4
+#   26|     r26_3(glval<unknown>) = FunctionAddress[sink] : 
+#   26|     r26_4(glval<int>)     = VariableAddress[x]    : 
+#   26|     r26_5(int)            = Load[x]               : &:r26_4, m26_2
+#   26|     v26_6(void)           = Call[sink]            : func:r26_3, 0:r26_5
+#   26|     m26_7(unknown)        = ^CallSideEffect       : ~m26_1
+#   26|     m26_8(unknown)        = Chi                   : total:m26_1, partial:m26_7
+#   28|     v28_1(void)           = NoOp                  : 
+#   18|     v18_5(void)           = ReturnVoid            : 
+#   18|     v18_6(void)           = AliasedUse            : ~m26_8
+#   18|     v18_7(void)           = ExitFunction          : 
 
 #   32| void h_cpp(int)
 #   32|   Block 0
@@ -39124,7 +39385,7 @@ try_except.cpp:
 #   35|     r35_3(int)        = Constant[0]            : 
 #   35|     r35_4(bool)       = CompareNE              : r35_2, r35_3
 #   35|     v35_5(void)       = ConditionalBranch      : r35_4
-#-----|   False -> Block 2
+#-----|   False -> Block 6
 #-----|   True -> Block 1
 
 #   36|   Block 1
@@ -39132,16 +39393,48 @@ try_except.cpp:
 #   36|     v36_2(void)           = Call[AfxThrowMemoryException]            : func:r36_1
 #   36|     m36_3(unknown)        = ^CallSideEffect                          : ~m32_4
 #   36|     m36_4(unknown)        = Chi                                      : total:m32_4, partial:m36_3
-#-----|   Goto -> Block 2
+#-----|   Goto -> Block 6
+#-----|   SEH Exception -> Block 4
 
-#   42|   Block 2
-#   42|     m42_1(unknown) = Phi          : from 0:~m32_4, from 1:~m36_4
+#   39|   Block 2
+#   39|     r39_1(int)  = Constant[0]       : 
+#   39|     r39_2(bool) = CompareEQ         : r39_7, r39_1
+#   39|     v39_3(void) = ConditionalBranch : r39_2
+#-----|   False -> Block 3
+#-----|   True -> Block 7
+
+#   39|   Block 3
+#   39|     r39_4(int)  = Constant[1]       : 
+#   39|     r39_5(bool) = CompareEQ         : r39_7, r39_4
+#   39|     v39_6(void) = ConditionalBranch : r39_5
+#-----|   False -> Block 7
+#-----|   True -> Block 5
+
+#   39|   Block 4
+#   39|     r39_7(int)   = Constant[1]       : 
+#   39|     r39_8(int)   = Constant[-1]      : 
+#   39|     r39_9(bool)  = CompareEQ         : r39_7, r39_8
+#   39|     v39_10(void) = ConditionalBranch : r39_9
+#-----|   False -> Block 2
+#-----|   True -> Block 7
+
+#   40|   Block 5
+#   40|     r40_1(glval<unknown>) = FunctionAddress[sink] : 
+#   40|     r40_2(glval<int>)     = VariableAddress[x]    : 
+#   40|     r40_3(int)            = Load[x]               : &:r40_2, m33_3
+#   40|     v40_4(void)           = Call[sink]            : func:r40_1, 0:r40_3
+#   40|     m40_5(unknown)        = ^CallSideEffect       : ~m36_4
+#   40|     m40_6(unknown)        = Chi                   : total:m36_4, partial:m40_5
+#-----|   Goto -> Block 6
+
+#   42|   Block 6
+#   42|     m42_1(unknown) = Phi          : from 0:~m32_4, from 1:~m36_4, from 5:~m40_6
 #   42|     v42_2(void)    = NoOp         : 
 #   32|     v32_7(void)    = ReturnVoid   : 
 #   32|     v32_8(void)    = AliasedUse   : ~m42_1
 #   32|     v32_9(void)    = ExitFunction : 
 
-#   32|   Block 3
+#   32|   Block 7
 #   32|     v32_10(void) = Unreached : 
 
 #   44| void throw_cpp(int)
@@ -39164,10 +39457,10 @@ try_except.cpp:
 #-----|   True -> Block 1
 
 #   48|   Block 1
-#   48|     r48_1(glval<int>) = VariableAddress[#throw48:13] : 
-#   48|     r48_2(int)        = Constant[1]                  : 
-#   48|     m48_3(int)        = Store[#throw48:13]           : &:r48_1, r48_2
-#   48|     v48_4(void)       = ThrowValue                   : &:r48_1, m48_3
+#   48|     r48_1(glval<int>) = VariableAddress[#throw48:7] : 
+#   48|     r48_2(int)        = Constant[1]                 : 
+#   48|     m48_3(int)        = Store[#throw48:7]           : &:r48_1, r48_2
+#   48|     v48_4(void)       = ThrowValue                  : &:r48_1, m48_3
 #-----|   C++ Exception -> Block 4
 
 #   51|   Block 2

@@ -58,6 +58,77 @@
 #-----|         Type = [LongType] unsigned long
 #-----|     getParameter(1): [Parameter] (unnamed parameter 1)
 #-----|         Type = [ScopedEnum] align_val_t
+arm.cpp:
+#    6| [TopLevelFunction] uint8x8_t vadd_u8(uint8x8_t, uint8x8_t)
+#    6|   <params>: 
+#    6|     getParameter(0): [Parameter] a
+#    6|         Type = [CTypedefType] uint8x8_t
+#    6|     getParameter(1): [Parameter] b
+#    6|         Type = [CTypedefType] uint8x8_t
+#    6|   getEntryPoint(): [BlockStmt] { ... }
+#    7|     getStmt(0): [ReturnStmt] return ...
+#    7|       getExpr(): [AddExpr] ... + ...
+#    7|           Type = [GNUVectorType] __attribute((neon_vector_type(8))) unsigned char
+#    7|           ValueCategory = prvalue
+#    7|         getLeftOperand(): [VariableAccess] a
+#    7|             Type = [CTypedefType] uint8x8_t
+#    7|             ValueCategory = prvalue(load)
+#    7|         getRightOperand(): [VariableAccess] b
+#    7|             Type = [CTypedefType] uint8x8_t
+#    7|             ValueCategory = prvalue(load)
+#   12| [TopLevelFunction] uint16x8_t __builtin_aarch64_uaddlv8qi_uuu(uint8x8_t, uint8x8_t)
+#   12|   <params>: 
+#   12|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   12|         Type = [CTypedefType] uint8x8_t
+#   12|     getParameter(1): [Parameter] (unnamed parameter 1)
+#   12|         Type = [CTypedefType] uint8x8_t
+#   14| [TopLevelFunction] uint16x8_t vaddl_u8(uint8x8_t, uint8x8_t)
+#   14|   <params>: 
+#   14|     getParameter(0): [Parameter] a
+#   14|         Type = [CTypedefType] uint8x8_t
+#   14|     getParameter(1): [Parameter] b
+#   14|         Type = [CTypedefType] uint8x8_t
+#   14|   getEntryPoint(): [BlockStmt] { ... }
+#   15|     getStmt(0): [ReturnStmt] return ...
+#   15|       getExpr(): [FunctionCall] call to __builtin_aarch64_uaddlv8qi_uuu
+#   15|           Type = [CTypedefType] uint16x8_t
+#   15|           ValueCategory = prvalue
+#   15|         getArgument(0): [VariableAccess] a
+#   15|             Type = [CTypedefType] uint8x8_t
+#   15|             ValueCategory = prvalue(load)
+#   15|         getArgument(1): [VariableAccess] b
+#   15|             Type = [CTypedefType] uint8x8_t
+#   15|             ValueCategory = prvalue(load)
+#   18| [TopLevelFunction] uint16x8_t arm_add(uint8x8_t, uint8x8_t)
+#   18|   <params>: 
+#   18|     getParameter(0): [Parameter] a
+#   18|         Type = [CTypedefType] uint8x8_t
+#   18|     getParameter(1): [Parameter] b
+#   18|         Type = [CTypedefType] uint8x8_t
+#   18|   getEntryPoint(): [BlockStmt] { ... }
+#   19|     getStmt(0): [DeclStmt] declaration
+#   19|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+#   19|           Type = [CTypedefType] uint8x8_t
+#   19|         getVariable().getInitializer(): [Initializer] initializer for c
+#   19|           getExpr(): [FunctionCall] call to vadd_u8
+#   19|               Type = [CTypedefType] uint8x8_t
+#   19|               ValueCategory = prvalue
+#   19|             getArgument(0): [VariableAccess] a
+#   19|                 Type = [CTypedefType] uint8x8_t
+#   19|                 ValueCategory = prvalue(load)
+#   19|             getArgument(1): [VariableAccess] b
+#   19|                 Type = [CTypedefType] uint8x8_t
+#   19|                 ValueCategory = prvalue(load)
+#   20|     getStmt(1): [ReturnStmt] return ...
+#   20|       getExpr(): [FunctionCall] call to vaddl_u8
+#   20|           Type = [CTypedefType] uint16x8_t
+#   20|           ValueCategory = prvalue
+#   20|         getArgument(0): [VariableAccess] a
+#   20|             Type = [CTypedefType] uint8x8_t
+#   20|             ValueCategory = prvalue(load)
+#   20|         getArgument(1): [VariableAccess] c
+#   20|             Type = [CTypedefType] uint8x8_t
+#   20|             ValueCategory = prvalue(load)
 bad_asts.cpp:
 #    5| [CopyAssignmentOperator] Bad::S& Bad::S::operator=(Bad::S const&)
 #    5|   <params>: 
@@ -23814,11 +23885,11 @@ ir.cpp:
 # 2692|                   Conversion = [IntegralConversion] integral conversion
 # 2692|                   Type = [LongType] unsigned long
 # 2692|                   ValueCategory = prvalue
-#-----|           getExpr().getFullyConverted(): [CStyleCast] (int)...
-#-----|               Conversion = [IntegralConversion] integral conversion
-#-----|               Type = [IntType] int
-#-----|               Value = [CStyleCast] 1
-#-----|               ValueCategory = prvalue
+# 2692|           getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2692|               Conversion = [IntegralConversion] integral conversion
+# 2692|               Type = [IntType] int
+# 2692|               Value = [CStyleCast] 1
+# 2692|               ValueCategory = prvalue
 # 2693|     getStmt(1): [ReturnStmt] return ...
 # 2693|       getExpr(): [VariableAccess] y
 # 2693|           Type = [IntType] int
@@ -49581,6 +49652,43 @@ try_except.c:
 #   40|                 Type = [IntType] int
 #   40|                 ValueCategory = prvalue(load)
 #   42|     getStmt(2): [ReturnStmt] return ...
+#   44| [TopLevelFunction] int i()
+#   44|   <params>: 
+#   46| [TopLevelFunction] void j(int)
+#   46|   <params>: 
+#   46|     getParameter(0): [Parameter] b
+#   46|         Type = [IntType] int
+#   46|   getEntryPoint(): [BlockStmt] { ... }
+#   47|     getStmt(0): [DeclStmt] declaration
+#   47|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#   47|           Type = [IntType] int
+#   47|         getVariable().getInitializer(): [Initializer] initializer for x
+#   47|           getExpr(): [Literal] 0
+#   47|               Type = [IntType] int
+#   47|               Value = [Literal] 0
+#   47|               ValueCategory = prvalue
+#   48|     getStmt(1): [MicrosoftTryExceptStmt] __try { ... } __except( ... ) { ... }
+#   48|       getStmt(): [BlockStmt] { ... }
+#   49|         getStmt(0): [DeclStmt] declaration
+#   49|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+#   49|               Type = [IntType] int
+#   49|             getVariable().getInitializer(): [Initializer] initializer for y
+#   49|               getExpr(): [FunctionCall] call to i
+#   49|                   Type = [IntType] int
+#   49|                   ValueCategory = prvalue
+#   51|       getCondition(): [Literal] 1
+#   51|           Type = [IntType] int
+#   51|           Value = [Literal] 1
+#   51|           ValueCategory = prvalue
+#   51|       getExcept(): [BlockStmt] { ... }
+#   52|         getStmt(0): [ExprStmt] ExprStmt
+#   52|           getExpr(): [FunctionCall] call to sink
+#   52|               Type = [VoidType] void
+#   52|               ValueCategory = prvalue
+#   52|             getArgument(0): [VariableAccess] x
+#   52|                 Type = [IntType] int
+#   52|                 ValueCategory = prvalue(load)
+#   54|     getStmt(2): [ReturnStmt] return ...
 try_except.cpp:
 #    3| [TopLevelFunction] void ProbeFunction()
 #    3|   <params>: 

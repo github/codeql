@@ -13,9 +13,16 @@ private import codeql.rust.elements.internal.generated.TokenTree
  */
 module Impl {
   /**
-   * A TokenTree. For example:
+   * A token tree in a macro definition or invocation.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * println!("{} {}!", "Hello", "world");
+   * //      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * ```
+   * ```rust
+   * macro_rules! foo { ($x:expr) => { $x + 1 }; }
+   * //               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class TokenTree extends Generated::TokenTree { }

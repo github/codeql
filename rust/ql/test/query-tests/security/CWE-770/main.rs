@@ -199,7 +199,7 @@ unsafe fn test_system_alloc(v: usize) {
 
     let l3 = std::alloc::Layout::array::<u8>(10).unwrap();
     let m3 = std::alloc::System.alloc(l3);
-    let _ = std::alloc::System.realloc(m3, l3, v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::System.realloc(m3, l3, v); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l4 = std::alloc::Layout::array::<u8>(10).unwrap();
     let m4 = std::ptr::NonNull::<u8>::new(std::alloc::alloc(l4)).unwrap();
@@ -210,7 +210,7 @@ unsafe fn test_system_alloc(v: usize) {
             let _ = std::alloc::System.grow_zeroed(m4, l4, l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
         }
     } else {
-        let _ = std::alloc::System.shrink(m4, l4, l2).unwrap();
+        let _ = std::alloc::System.shrink(m4, l4, l2).unwrap(); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1 - FP
     }
 }
 

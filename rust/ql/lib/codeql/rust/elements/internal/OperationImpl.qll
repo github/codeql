@@ -8,75 +8,81 @@ private import rust
 private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
 /**
- * Holds if the operator `op` is overloaded to a trait with the canonical path
- * `path` and the method name `method`.
+ * Holds if the operator `op` with arity `arity` is overloaded to a trait with
+ * the canonical path `path` and the method name `method`.
  */
-private predicate isOverloaded(string op, string path, string method) {
-  // Negation
-  op = "-" and path = "core::ops::arith::Neg" and method = "neg"
+private predicate isOverloaded(string op, int arity, string path, string method) {
+  arity = 1 and
+  (
+    // Negation
+    op = "-" and path = "core::ops::arith::Neg" and method = "neg"
+    or
+    // Not
+    op = "!" and path = "core::ops::bit::Not" and method = "not"
+    or
+    // Dereference
+    op = "*" and path = "core::ops::deref::Deref" and method = "deref"
+  )
   or
-  // Not
-  op = "!" and path = "core::ops::bit::Not" and method = "not"
-  or
-  // Dereference
-  op = "*" and path = "core::ops::Deref" and method = "deref"
-  or
-  // Comparison operators
-  op = "==" and path = "core::cmp::PartialEq" and method = "eq"
-  or
-  op = "!=" and path = "core::cmp::PartialEq" and method = "ne"
-  or
-  op = "<" and path = "core::cmp::PartialOrd" and method = "lt"
-  or
-  op = "<=" and path = "core::cmp::PartialOrd" and method = "le"
-  or
-  op = ">" and path = "core::cmp::PartialOrd" and method = "gt"
-  or
-  op = ">=" and path = "core::cmp::PartialOrd" and method = "ge"
-  or
-  // Arithmetic operators
-  op = "+" and path = "core::ops::arith::Add" and method = "add"
-  or
-  op = "-" and path = "core::ops::arith::Sub" and method = "sub"
-  or
-  op = "*" and path = "core::ops::arith::Mul" and method = "mul"
-  or
-  op = "/" and path = "core::ops::arith::Div" and method = "div"
-  or
-  op = "%" and path = "core::ops::arith::Rem" and method = "rem"
-  or
-  // Arithmetic assignment expressions
-  op = "+=" and path = "core::ops::arith::AddAssign" and method = "add_assign"
-  or
-  op = "-=" and path = "core::ops::arith::SubAssign" and method = "sub_assign"
-  or
-  op = "*=" and path = "core::ops::arith::MulAssign" and method = "mul_assign"
-  or
-  op = "/=" and path = "core::ops::arith::DivAssign" and method = "div_assign"
-  or
-  op = "%=" and path = "core::ops::arith::RemAssign" and method = "rem_assign"
-  or
-  // Bitwise operators
-  op = "&" and path = "core::ops::bit::BitAnd" and method = "bitand"
-  or
-  op = "|" and path = "core::ops::bit::BitOr" and method = "bitor"
-  or
-  op = "^" and path = "core::ops::bit::BitXor" and method = "bitxor"
-  or
-  op = "<<" and path = "core::ops::bit::Shl" and method = "shl"
-  or
-  op = ">>" and path = "core::ops::bit::Shr" and method = "shr"
-  or
-  // Bitwise assignment operators
-  op = "&=" and path = "core::ops::bit::BitAndAssign" and method = "bitand_assign"
-  or
-  op = "|=" and path = "core::ops::bit::BitOrAssign" and method = "bitor_assign"
-  or
-  op = "^=" and path = "core::ops::bit::BitXorAssign" and method = "bitxor_assign"
-  or
-  op = "<<=" and path = "core::ops::bit::ShlAssign" and method = "shl_assign"
-  or
-  op = ">>=" and path = "core::ops::bit::ShrAssign" and method = "shr_assign"
+  arity = 2 and
+  (
+    // Comparison operators
+    op = "==" and path = "core::cmp::PartialEq" and method = "eq"
+    or
+    op = "!=" and path = "core::cmp::PartialEq" and method = "ne"
+    or
+    op = "<" and path = "core::cmp::PartialOrd" and method = "lt"
+    or
+    op = "<=" and path = "core::cmp::PartialOrd" and method = "le"
+    or
+    op = ">" and path = "core::cmp::PartialOrd" and method = "gt"
+    or
+    op = ">=" and path = "core::cmp::PartialOrd" and method = "ge"
+    or
+    // Arithmetic operators
+    op = "+" and path = "core::ops::arith::Add" and method = "add"
+    or
+    op = "-" and path = "core::ops::arith::Sub" and method = "sub"
+    or
+    op = "*" and path = "core::ops::arith::Mul" and method = "mul"
+    or
+    op = "/" and path = "core::ops::arith::Div" and method = "div"
+    or
+    op = "%" and path = "core::ops::arith::Rem" and method = "rem"
+    or
+    // Arithmetic assignment expressions
+    op = "+=" and path = "core::ops::arith::AddAssign" and method = "add_assign"
+    or
+    op = "-=" and path = "core::ops::arith::SubAssign" and method = "sub_assign"
+    or
+    op = "*=" and path = "core::ops::arith::MulAssign" and method = "mul_assign"
+    or
+    op = "/=" and path = "core::ops::arith::DivAssign" and method = "div_assign"
+    or
+    op = "%=" and path = "core::ops::arith::RemAssign" and method = "rem_assign"
+    or
+    // Bitwise operators
+    op = "&" and path = "core::ops::bit::BitAnd" and method = "bitand"
+    or
+    op = "|" and path = "core::ops::bit::BitOr" and method = "bitor"
+    or
+    op = "^" and path = "core::ops::bit::BitXor" and method = "bitxor"
+    or
+    op = "<<" and path = "core::ops::bit::Shl" and method = "shl"
+    or
+    op = ">>" and path = "core::ops::bit::Shr" and method = "shr"
+    or
+    // Bitwise assignment operators
+    op = "&=" and path = "core::ops::bit::BitAndAssign" and method = "bitand_assign"
+    or
+    op = "|=" and path = "core::ops::bit::BitOrAssign" and method = "bitor_assign"
+    or
+    op = "^=" and path = "core::ops::bit::BitXorAssign" and method = "bitxor_assign"
+    or
+    op = "<<=" and path = "core::ops::bit::ShlAssign" and method = "shl_assign"
+    or
+    op = ">>=" and path = "core::ops::bit::ShrAssign" and method = "shr_assign"
+  )
 }
 
 /**
@@ -109,7 +115,8 @@ module Impl {
      * trait `trait`.
      */
     predicate isOverloaded(Trait trait, string methodName) {
-      isOverloaded(this.getOperatorName(), trait.getCanonicalPath(), methodName)
+      isOverloaded(this.getOperatorName(), this.getNumberOfOperands(), trait.getCanonicalPath(),
+        methodName)
     }
   }
 }

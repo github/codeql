@@ -4,8 +4,8 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["repo:https://github.com/rust-lang/libc:libc-test", "<crate::style::StyleChecker>::check_file", "Argument[0]", "Argument[self]", "taint", "df-generated"]
-      - ["repo:https://github.com/rust-lang/libc:libc-test", "<crate::style::StyleChecker>::reset_state", "Argument[self].Field[crate::style::StyleChecker::errors]", "Argument[self].Reference.Field[crate::style::StyleChecker::errors]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-lang/libc:libc-test", "<crate::style::StyleChecker>::check_file", "Argument[0].Field[alloc::borrow::Cow::Owned(0)]", "Argument[self].Field[style::style::StyleChecker::path].Field[style_tests::style::StyleChecker::path]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-lang/libc:libc-test", "<crate::style::StyleChecker>::check_file", "Argument[0]", "Argument[self].Field[style::style::StyleChecker::path].Field[style_tests::style::StyleChecker::path].Field[std::path::PathBuf::inner]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sinkModel

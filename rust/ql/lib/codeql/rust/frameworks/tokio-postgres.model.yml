@@ -21,4 +21,4 @@ extensions:
       extensible: sourceModel
     data:
       - ["repo:https://github.com/sfackler/rust-postgres:tokio-postgres", "<crate::row::Row>::get", "ReturnValue", "database", "manual"]
-      - ["repo:https://github.com/sfackler/rust-postgres:tokio-postgres", "<crate::row::Row>::try_get", "ReturnValue.Field[crate::result::Result::Ok(0)]", "database", "manual"]
+      - ["repo:https://github.com/sfackler/rust-postgres:tokio-postgres", "<crate::row::Row>::try_get", "ReturnValue.Field[core::result::Result::Ok(0)]", "database", "manual"]

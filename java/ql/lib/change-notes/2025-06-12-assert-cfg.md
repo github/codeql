@@ -1,0 +1,4 @@
+---
+category: minorAnalysis
+---
+* Java `assert` statements are now assumed to be executed for the purpose of analysing control flow. This improves precision for a number of queries.

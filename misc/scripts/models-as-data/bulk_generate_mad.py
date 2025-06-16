@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Experimental script for bulk generation of MaD models based on a list of projects.
 
@@ -7,15 +8,31 @@ Note: This file must be formatted using the Black Python formatter.
 import os.path
 import subprocess
 import sys
-from typing import NotRequired, TypedDict, List
+from typing import Required, TypedDict, List, Callable, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 import argparse
-import json
-import requests
 import zipfile
 import tarfile
-from functools import cmp_to_key
+import shutil
+
+
+def missing_module(module_name: str) -> None:
+    print(
+        f"ERROR: {module_name} is not installed. Please install it with 'pip install {module_name}'."
+    )
+    sys.exit(1)
+
+
+try:
+    import yaml
+except ImportError:
+    missing_module("pyyaml")
+
+try:
+    import requests
+except ImportError:
+    missing_module("requests")
 
 import generate_mad as mad
 
@@ -28,22 +45,18 @@ build_dir = os.path.join(gitroot, "mad-generation-build")
 
 
 # A project to generate models for
-class Project(TypedDict):
-    """
-    Type definition for projects (acquired via a GitHub repo) to model.
-
-    Attributes:
-        name: The name of the project
-        git_repo: URL to the git repository
-        git_tag: Optional Git tag to check out
-    """
-
-    name: str
-    git_repo: NotRequired[str]
-    git_tag: NotRequired[str]
-    with_sinks: NotRequired[bool]
-    with_sinks: NotRequired[bool]
-    with_summaries: NotRequired[bool]
+Project = TypedDict(
+    "Project",
+    {
+        "name": Required[str],
+        "git-repo": str,
+        "git-tag": str,
+        "with-sinks": bool,
+        "with-sources": bool,
+        "with-summaries": bool,
+    },
+    total=False,
+)
 
 
 def should_generate_sinks(project: Project) -> bool:
@@ -63,14 +76,14 @@ def clone_project(project: Project) -> str:
     Shallow clone a project into the build directory.
 
     Args:
-        project: A dictionary containing project information with 'name', 'git_repo', and optional 'git_tag' keys.
+        project: A dictionary containing project information with 'name', 'git-repo', and optional 'git-tag' keys.
 
     Returns:
         The path to the cloned project directory.
     """
     name = project["name"]
-    repo_url = project["git_repo"]
-    git_tag = project.get("git_tag")
+    repo_url = project["git-repo"]
+    git_tag = project.get("git-tag")
 
     # Determine target directory
     target_dir = os.path.join(build_dir, name)
@@ -103,6 +116,37 @@ def clone_project(project: Project) -> str:
     return target_dir
 
 
+def run_in_parallel[T, U](
+    func: Callable[[T], U],
+    items: List[T],
+    *,
+    on_error=lambda item, exc: None,
+    error_summary=lambda failures: None,
+    max_workers=8,
+) -> List[Optional[U]]:
+    if not items:
+        return []
+    max_workers = min(max_workers, len(items))
+    results = [None for _ in range(len(items))]
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Start cloning tasks and keep track of them
+        futures = {
+            executor.submit(func, item): index for index, item in enumerate(items)
+        }
+        # Process results as they complete
+        for future in as_completed(futures):
+            index = futures[future]
+            try:
+                results[index] = future.result()
+            except Exception as e:
+                on_error(items[index], e)
+    failed = [item for item, result in zip(items, results) if result is None]
+    if failed:
+        error_summary(failed)
+        sys.exit(1)
+    return results
+
+
 def clone_projects(projects: List[Project]) -> List[tuple[Project, str]]:
     """
     Clone all projects in parallel.
@@ -114,40 +158,19 @@ def clone_projects(projects: List[Project]) -> List[tuple[Project, str]]:
         List of (project, project_dir) pairs in the same order as the input projects
     """
     start_time = time.time()
-    max_workers = min(8, len(projects))  # Use at most 8 threads
-    project_dirs_map = {}  # Map to store results by project name
-
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        # Start cloning tasks and keep track of them
-        future_to_project = {
-            executor.submit(clone_project, project): project for project in projects
-        }
-
-        # Process results as they complete
-        for future in as_completed(future_to_project):
-            project = future_to_project[future]
-            try:
-                project_dir = future.result()
-                project_dirs_map[project["name"]] = (project, project_dir)
-            except Exception as e:
-                print(f"ERROR: Failed to clone {project['name']}: {e}")
-
-    if len(project_dirs_map) != len(projects):
-        failed_projects = [
-            project["name"]
-            for project in projects
-            if project["name"] not in project_dirs_map
-        ]
-        print(
-            f"ERROR: Only {len(project_dirs_map)} out of {len(projects)} projects were cloned successfully. Failed projects: {', '.join(failed_projects)}"
-        )
-        sys.exit(1)
-
-    project_dirs = [project_dirs_map[project["name"]] for project in projects]
-
+    dirs = run_in_parallel(
+        clone_project,
+        projects,
+        on_error=lambda project, exc: print(
+            f"ERROR: Failed to clone project {project['name']}: {exc}"
+        ),
+        error_summary=lambda failures: print(
+            f"ERROR: Failed to clone {len(failures)} projects: {', '.join(p['name'] for p in failures)}"
+        ),
+    )
     clone_time = time.time() - start_time
     print(f"Cloning completed in {clone_time:.2f} seconds")
-    return project_dirs
+    return list(zip(projects, dirs))
 
 
 def build_database(
@@ -159,7 +182,7 @@ def build_database(
     Args:
         language: The language for which to build the database (e.g., "rust").
         extractor_options: Additional options for the extractor.
-        project: A dictionary containing project information with 'name' and 'git_repo' keys.
+        project: A dictionary containing project information with 'name' and 'git-repo' keys.
         project_dir: Path to the CodeQL database.
 
     Returns:
@@ -200,7 +223,7 @@ def build_database(
     return database_dir
 
 
-def generate_models(config, project: Project, database_dir: str) -> None:
+def generate_models(config, args, project: Project, database_dir: str) -> None:
     """
     Generate models for a project.
 
@@ -218,6 +241,8 @@ def generate_models(config, project: Project, database_dir: str) -> None:
     generator.generateSources = should_generate_sources(project)
     generator.generateSummaries = should_generate_summaries(project)
     generator.setenvironment(database=database_dir, folder=name)
+    generator.threads = args.codeql_threads
+    generator.ram = args.codeql_ram
     generator.run()
 
 
@@ -307,35 +332,48 @@ def pretty_name_from_artifact_name(artifact_name: str) -> str:
 
 
 def download_dca_databases(
-    experiment_name: str, pat: str, projects: List[Project]
+    language: str,
+    experiment_names: list[str],
+    pat: str,
+    projects: List[Project],
 ) -> List[tuple[Project, str | None]]:
     """
     Download databases from a DCA experiment.
     Args:
-        experiment_name: The name of the DCA experiment to download databases from.
+        experiment_names: The names of the DCA experiments to download databases from.
         pat: Personal Access Token for GitHub API authentication.
         projects: List of projects to download databases for.
     Returns:
         List of (project_name, database_dir) pairs, where database_dir is None if the download failed.
     """
-    database_results = {}
     print("\n=== Finding projects ===")
-    response = get_json_from_github(
-        f"https://raw.githubusercontent.com/github/codeql-dca-main/data/{experiment_name}/reports/downloads.json",
-        pat,
-    )
-    targets = response["targets"]
     project_map = {project["name"]: project for project in projects}
-    for data in targets.values():
-        downloads = data["downloads"]
-        analyzed_database = downloads["analyzed_database"]
+    analyzed_databases = {}
+    for experiment_name in experiment_names:
+        response = get_json_from_github(
+            f"https://raw.githubusercontent.com/github/codeql-dca-main/data/{experiment_name}/reports/downloads.json",
+            pat,
+        )
+        targets = response["targets"]
+        for data in targets.values():
+            downloads = data["downloads"]
+            analyzed_database = downloads["analyzed_database"]
+            artifact_name = analyzed_database["artifact_name"]
+            pretty_name = pretty_name_from_artifact_name(artifact_name)
+
+            if not pretty_name in project_map:
+                print(f"Skipping {pretty_name} as it is not in the list of projects")
+                continue
+
+            if pretty_name in analyzed_databases:
+                print(
+                    f"Skipping previous database {analyzed_databases[pretty_name]['artifact_name']} for {pretty_name}"
+                )
+
+            analyzed_databases[pretty_name] = analyzed_database
+
+    def download_and_decompress(analyzed_database: dict) -> str:
         artifact_name = analyzed_database["artifact_name"]
-        pretty_name = pretty_name_from_artifact_name(artifact_name)
-
-        if not pretty_name in project_map:
-            print(f"Skipping {pretty_name} as it is not in the list of projects")
-            continue
-
         repository = analyzed_database["repository"]
         run_id = analyzed_database["run_id"]
         print(f"=== Finding artifact: {artifact_name} ===")
@@ -351,27 +389,40 @@ def download_dca_databases(
         artifact_zip_location = download_artifact(
             archive_download_url, artifact_name, pat
         )
-        print(f"=== Extracting artifact: {artifact_name} ===")
+        print(f"=== Decompressing artifact: {artifact_name} ===")
         # The database is in a zip file, which contains a tar.gz file with the DB
         # First we open the zip file
         with zipfile.ZipFile(artifact_zip_location, "r") as zip_ref:
             artifact_unzipped_location = os.path.join(build_dir, artifact_name)
+            # clean up any remnants of previous runs
+            shutil.rmtree(artifact_unzipped_location, ignore_errors=True)
             # And then we extract it to build_dir/artifact_name
             zip_ref.extractall(artifact_unzipped_location)
-            # And then we iterate over the contents of the extracted directory
-            # and extract the tar.gz files inside it
-            for entry in os.listdir(artifact_unzipped_location):
-                artifact_tar_location = os.path.join(artifact_unzipped_location, entry)
-                with tarfile.open(artifact_tar_location, "r:gz") as tar_ref:
-                    # And we just untar it to the same directory as the zip file
-                    tar_ref.extractall(artifact_unzipped_location)
-                    database_results[pretty_name] = os.path.join(
-                        artifact_unzipped_location, remove_extension(entry)
-                    )
+            # And then we extract the language tar.gz file inside it
+            artifact_tar_location = os.path.join(
+                artifact_unzipped_location, f"{language}.tar.gz"
+            )
+            with tarfile.open(artifact_tar_location, "r:gz") as tar_ref:
+                # And we just untar it to the same directory as the zip file
+                tar_ref.extractall(artifact_unzipped_location)
+        ret = os.path.join(artifact_unzipped_location, language)
+        print(f"Decompression complete: {ret}")
+        return ret
 
-    print(f"\n=== Extracted {len(database_results)} databases ===")
+    results = run_in_parallel(
+        download_and_decompress,
+        list(analyzed_databases.values()),
+        on_error=lambda db, exc: print(
+            f"ERROR: Failed to download and decompress {db["artifact_name"]}: {exc}"
+        ),
+        error_summary=lambda failures: print(
+            f"ERROR: Failed to download {len(failures)} databases: {', '.join(item[0] for item in failures)}"
+        ),
+    )
 
-    return [(project, database_results[project["name"]]) for project in projects]
+    print(f"\n=== Fetched {len(results)} databases ===")
+
+    return [(project_map[n], r) for n, r in zip(analyzed_databases, results)]
 
 
 def get_mad_destination_for_project(config, name: str) -> str:
@@ -400,33 +451,18 @@ def main(config, args) -> None:
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
 
-    # Check if any of the MaD directories contain working directory changes in git
-    for project in projects:
-        mad_dir = get_mad_destination_for_project(config, project["name"])
-        if os.path.exists(mad_dir):
-            git_status_output = subprocess.check_output(
-                ["git", "status", "-s", mad_dir], text=True
-            ).strip()
-            if git_status_output:
-                print(
-                    f"""ERROR: Working directory changes detected in {mad_dir}.
-
-Before generating new models, the existing models are deleted.
-
-To avoid loss of data, please commit your changes."""
-                )
-                sys.exit(1)
-
     database_results = []
     match get_strategy(config):
         case "repo":
             extractor_options = config.get("extractor_options", [])
             database_results = build_databases_from_projects(
-                language, extractor_options, projects
+                language,
+                extractor_options,
+                projects,
             )
         case "dca":
-            experiment_name = args.dca
-            if experiment_name is None:
+            experiment_names = args.dca
+            if experiment_names is None:
                 print("ERROR: --dca argument is required for DCA strategy")
                 sys.exit(1)
 
@@ -439,7 +475,10 @@ To avoid loss of data, please commit your changes."""
             with open(args.pat, "r") as f:
                 pat = f.read().strip()
                 database_results = download_dca_databases(
-                    experiment_name, pat, projects
+                    language,
+                    experiment_names,
+                    pat,
+                    projects,
                 )
 
     # Generate models for all projects
@@ -463,7 +502,7 @@ To avoid loss of data, please commit your changes."""
 
     for project, database_dir in database_results:
         if database_dir is not None:
-            generate_models(config, project, database_dir)
+            generate_models(config, args, project, database_dir)
 
 
 if __name__ == "__main__":
@@ -474,14 +513,26 @@ if __name__ == "__main__":
     parser.add_argument(
         "--dca",
         type=str,
-        help="Name of a DCA run that built all the projects",
-        required=False,
+        help="Name of a DCA run that built all the projects. Can be repeated, with sources taken from all provided runs, "
+        "the last provided ones having priority",
+        action="append",
     )
     parser.add_argument(
         "--pat",
         type=str,
         help="Path to a file containing the PAT token required to grab DCA databases (the same as the one you use for DCA)",
-        required=False,
+    )
+    parser.add_argument(
+        "--codeql-ram",
+        type=int,
+        help="What `--ram` value to pass to `codeql` while generating models (by default the flag is not passed)",
+        default=None,
+    )
+    parser.add_argument(
+        "--codeql-threads",
+        type=int,
+        help="What `--threads` value to pass to `codeql` (default %(default)s)",
+        default=0,
     )
     args = parser.parse_args()
 
@@ -492,9 +543,9 @@ if __name__ == "__main__":
         sys.exit(1)
     try:
         with open(args.config, "r") as f:
-            config = json.load(f)
-    except json.JSONDecodeError as e:
-        print(f"ERROR: Failed to parse JSON file {args.config}: {e}")
+            config = yaml.safe_load(f)
+    except yaml.YAMLError as e:
+        print(f"ERROR: Failed to parse YAML file {args.config}: {e}")
         sys.exit(1)
 
     main(config, args)
