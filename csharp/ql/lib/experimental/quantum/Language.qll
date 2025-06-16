@@ -16,23 +16,23 @@ private class UnknownDefaultLocation extends UnknownLocation {
 }
 
 module CryptoInput implements InputSig<Language::Location> {
-  class DataFlowNode = DataFlow::Node;
+  class DataFlowNode = Language::DataFlow::Node;
 
   class LocatableElement = Language::Element;
 
   class UnknownLocation = UnknownDefaultLocation;
 
-  string locationToFileBaseNameAndLineNumberString(Location location) {
+  string locationToFileBaseNameAndLineNumberString(Language::Location location) {
     result = location.getFile().getBaseName() + ":" + location.getStartLine()
   }
 
-  LocatableElement dfn_to_element(DataFlow::Node node) {
+  LocatableElement dfn_to_element(Language::DataFlow::Node node) {
     result = node.asExpr() or
     result = node.asParameter()
   }
 
   predicate artifactOutputFlowsToGenericInput(
-    DataFlow::Node artifactOutput, DataFlow::Node otherInput
+    Language::DataFlow::Node artifactOutput, Language::DataFlow::Node otherInput
   ) {
     ArtifactFlow::flow(artifactOutput, otherInput)
   }
@@ -40,3 +40,27 @@ module CryptoInput implements InputSig<Language::Location> {
 
 // Instantiate the `CryptographyBase` module
 module Crypto = CryptographyBase<Language::Location, CryptoInput>;
+
+module ArtifactFlowConfig implements Language::DataFlow::ConfigSig {
+  predicate isSource(Language::DataFlow::Node source) {
+    source = any(Crypto::ArtifactInstance artifact).getOutputNode()
+  }
+
+  predicate isSink(Language::DataFlow::Node sink) {
+    sink = any(Crypto::FlowAwareElement other).getInputNode()
+  }
+
+  predicate isBarrierOut(Language::DataFlow::Node node) {
+    node = any(Crypto::FlowAwareElement element).getInputNode()
+  }
+
+  predicate isBarrierIn(Language::DataFlow::Node node) {
+    node = any(Crypto::FlowAwareElement element).getOutputNode()
+  }
+
+  predicate isAdditionalFlowStep(Language::DataFlow::Node node1, Language::DataFlow::Node node2) {
+    none()
+  }
+}
+
+module ArtifactFlow = Language::DataFlow::Global<ArtifactFlowConfig>;
