@@ -14,7 +14,7 @@ mod field_access {
     }
 
     #[derive(Debug)]
-    struct GenericThing<A> {
+    struct GenericThing<A = bool> {
         a: A,
     }
 
@@ -25,6 +25,11 @@ mod field_access {
     fn simple_field_access() {
         let x = MyThing { a: S };
         println!("{:?}", x.a); // $ fieldof=MyThing
+    }
+
+    fn default_field_access(x: GenericThing) {
+        let a = x.a; // $ fieldof=GenericThing type=a:bool
+        println!("{:?}", a);
     }
 
     fn generic_field_access() {
@@ -472,7 +477,7 @@ mod type_parameter_bounds {
         println!("{:?}", s); // $ type=s:S1
     }
 
-    trait Pair<P1, P2> {
+    trait Pair<P1 = bool, P2 = i64> {
         fn fst(self) -> P1;
 
         fn snd(self) -> P2;
@@ -480,8 +485,8 @@ mod type_parameter_bounds {
 
     fn call_trait_per_bound_with_type_1<T: Pair<S1, S2>>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
-        let s1 = x.fst(); // $ method=fst
-        let s2 = y.snd(); // $ method=snd
+        let s1 = x.fst(); // $ method=fst type=s1:S1
+        let s2 = y.snd(); // $ method=snd type=s2:S2
         println!("{:?}, {:?}", s1, s2);
     }
 
@@ -489,6 +494,20 @@ mod type_parameter_bounds {
         // The type in the type parameter bound determines the return type.
         let s1 = x.fst(); // $ method=fst
         let s2 = y.snd(); // $ method=snd
+        println!("{:?}, {:?}", s1, s2);
+    }
+
+    fn call_trait_per_bound_with_type_3<T: Pair>(x: T, y: T) {
+        // The type in the type parameter bound determines the return type.
+        let s1 = x.fst(); // $ method=fst type=s1:bool
+        let s2 = y.snd(); // $ method=snd type=s2:i64
+        println!("{:?}, {:?}", s1, s2);
+    }
+
+    fn call_trait_per_bound_with_type_4<T: Pair<u8>>(x: T, y: T) {
+        // The type in the type parameter bound determines the return type.
+        let s1 = x.fst(); // $ method=fst type=s1:u8
+        let s2 = y.snd(); // $ method=snd type=s2:i64
         println!("{:?}, {:?}", s1, s2);
     }
 }
