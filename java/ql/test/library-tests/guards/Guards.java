@@ -127,4 +127,20 @@ public class Guards {
       chk(); // $ guarded='o != null:false' guarded=g(1):false
     }
   }
+
+  void t7(int[] a) {
+    boolean found = false;
+    for (int i = 0; i < a.length; i++) {
+      boolean answer = a[i] == 42;
+      if (answer) {
+        found = true;
+      }
+      if (found) {
+        chk(); // $ guarded=found:true guarded='i < a.length:true'
+      }
+    }
+    if (found) {
+      chk(); // $ guarded=found:true guarded='i < a.length:false'
+    }
+  }
 }
