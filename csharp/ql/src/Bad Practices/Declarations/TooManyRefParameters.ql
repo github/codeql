@@ -6,8 +6,10 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id cs/too-many-ref-parameters
- * @tags testability
+ * @tags quality
+ *       maintainability
  *       readability
+ *       testability
  */
 
 import csharp

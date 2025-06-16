@@ -5,8 +5,10 @@
  * @problem.severity warning
  * @precision very-high
  * @id cs/catch-nullreferenceexception
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
+ *       error-handling
  *       external/cwe/cwe-395
  */
 

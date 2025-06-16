@@ -7,9 +7,10 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/complex-block
- * @tags maintainability
- *       testability
+ * @tags quality
+ *       maintainability
  *       complexity
+ *       testability
  */
 
 import csharp
