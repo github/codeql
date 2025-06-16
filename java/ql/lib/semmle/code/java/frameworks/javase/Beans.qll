@@ -1,4 +1,6 @@
 /** Provides definitions related to the `java.beans` package. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.security.XmlParsers

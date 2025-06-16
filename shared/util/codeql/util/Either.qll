@@ -1,4 +1,6 @@
 /** Provides a module for constructing a union `Either` type. */
+overlay[local?]
+module;
 
 /** A type with `toString`. */
 private signature class TypeWithToString {
