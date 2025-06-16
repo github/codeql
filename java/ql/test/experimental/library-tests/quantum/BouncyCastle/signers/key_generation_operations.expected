@@ -1,6 +1,6 @@
-| ECDSAP256SignAndVerify.java:57:16:57:49 | KeyGeneration | ECDSAP256SignAndVerify.java:53:47:53:70 | KeyOperationAlgorithm | ECDSAP256SignAndVerify.java:57:16:57:49 | Key |
-| ECDSAP256SignAndVerify.java:80:16:80:49 | KeyGeneration | ECDSAP256SignAndVerify.java:76:47:76:70 | KeyOperationAlgorithm | ECDSAP256SignAndVerify.java:80:16:80:49 | Key |
-| ECDSAP256SignAndVerify.java:103:16:103:49 | KeyGeneration | ECDSAP256SignAndVerify.java:99:47:99:70 | KeyOperationAlgorithm | ECDSAP256SignAndVerify.java:103:16:103:49 | Key |
-| Ed448SignAndVerify.java:21:47:21:80 | KeyGeneration | Ed448SignAndVerify.java:19:54:19:80 | KeyOperationAlgorithm | Ed448SignAndVerify.java:21:47:21:80 | Key |
-| Ed25519SignAndVerify.java:21:47:21:80 | KeyGeneration | Ed25519SignAndVerify.java:19:56:19:84 | KeyOperationAlgorithm | Ed25519SignAndVerify.java:21:47:21:80 | Key |
-| LMSSignature.java:33:47:33:74 | KeyGeneration | LMSSignature.java:31:46:31:70 | KeyOperationAlgorithm | LMSSignature.java:33:47:33:74 | Key |
+| ECDSAP256SignAndVerify.java:57:16:57:49 | KeyGeneration | ECDSAP256SignAndVerify.java:57:16:57:49 | Key |
+| ECDSAP256SignAndVerify.java:80:16:80:49 | KeyGeneration | ECDSAP256SignAndVerify.java:80:16:80:49 | Key |
+| ECDSAP256SignAndVerify.java:103:16:103:49 | KeyGeneration | ECDSAP256SignAndVerify.java:103:16:103:49 | Key |
+| Ed448SignAndVerify.java:21:47:21:80 | KeyGeneration | Ed448SignAndVerify.java:21:47:21:80 | Key |
+| Ed25519SignAndVerify.java:21:47:21:80 | KeyGeneration | Ed25519SignAndVerify.java:21:47:21:80 | Key |
+| LMSSignature.java:33:47:33:74 | KeyGeneration | LMSSignature.java:33:47:33:74 | Key |
