@@ -2,7 +2,6 @@ private import experimental.quantum.Language
 private import experimental.quantum.OpenSSL.CtxFlow
 private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
-private import semmle.code.cpp.dataflow.new.DataFlow
 
 class EVPKeyGenInitialize extends EvpPrimaryAlgorithmInitializer {
   EVPKeyGenInitialize() {
@@ -13,7 +12,8 @@ class EVPKeyGenInitialize extends EvpPrimaryAlgorithmInitializer {
   }
 
   /**
-   * The algorithm is encoded through the context argument.
+   * Gets the algorithm argument.
+   * In this case the algorithm is encoded through the context argument.
    * The context may be directly created from an algorithm consumer,
    * or from a new operation off of a prior key. Either way,
    * we will treat this argument as the algorithm argument.
@@ -67,8 +67,8 @@ class EVPKeyGenOperation extends EvpOperation, Crypto::KeyGenerationOperationIns
 }
 
 /**
- * Calls to `EVP_PKEY_new_mac_key` create a new MAC key.
- * EVP_PKEY *EVP_PKEY_new_mac_key(int type, ENGINE *e, const unsigned char *key, int keylen);
+ * A call to `EVP_PKEY_new_mac_key` that creatse a new generic MAC key.
+ * Signature: EVP_PKEY *EVP_PKEY_new_mac_key(int type, ENGINE *e, const unsigned char *key, int keylen);
  */
 class EvpNewMacKey extends EvpOperation, Crypto::KeyGenerationOperationInstance {
   DataFlow::Node keyResultNode;

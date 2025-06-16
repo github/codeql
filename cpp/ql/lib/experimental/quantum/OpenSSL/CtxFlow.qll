@@ -66,10 +66,8 @@ class CtxPointerArgument extends CtxPointerExpr {
 /**
  * A call returning a CtxPointerExpr.
  */
-private class CtxPointerReturn extends CtxPointerExpr {
-  CtxPointerReturn() { exists(Call c | c = this) }
-
-  Call getCall() { result = this.(Call) }
+private class CtxPointerReturn extends CtxPointerExpr instanceof Call {
+  Call getCall() { result = this }
 }
 
 /**

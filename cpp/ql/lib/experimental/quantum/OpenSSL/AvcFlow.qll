@@ -1,5 +1,5 @@
 import semmle.code.cpp.dataflow.new.DataFlow
-import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 /**
  * Flows from algorithm values to operations, specific to OpenSSL

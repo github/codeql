@@ -22,12 +22,12 @@ predicate knownOpenSSLConstantToKeyAgreementFamilyType(
   )
 }
 
-class KnownOpenSSLHashConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
+class KnownOpenSSLKeyAgreementConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
   Crypto::KeyAgreementAlgorithmInstance instanceof KnownOpenSSLKeyAgreementAlgorithmExpr
 {
   OpenSSLAlgorithmValueConsumer getterCall;
 
-  KnownOpenSSLHashConstantAlgorithmInstance() {
+  KnownOpenSSLKeyAgreementConstantAlgorithmInstance() {
     // Two possibilities:
     // 1) The source is a literal and flows to a getter, then we know we have an instance
     // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
@@ -44,7 +44,6 @@ class KnownOpenSSLHashConstantAlgorithmInstance extends OpenSSLAlgorithmInstance
     or
     // Possibility 2:
     this instanceof OpenSSLAlgorithmCall and
-    this instanceof DirectAlgorithmValueConsumer and
     getterCall = this
   }
 

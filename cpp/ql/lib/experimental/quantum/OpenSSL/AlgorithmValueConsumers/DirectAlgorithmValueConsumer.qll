@@ -12,9 +12,6 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
  */
 class DirectAlgorithmValueConsumer extends OpenSSLAlgorithmValueConsumer instanceof OpenSSLAlgorithmCall
 {
-  DataFlow::Node resultNode;
-  Expr resultExpr;
-
   /**
    * These cases take in no explicit value (the value is implicit)
    */

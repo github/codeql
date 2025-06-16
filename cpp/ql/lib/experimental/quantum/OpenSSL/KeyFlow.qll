@@ -12,9 +12,7 @@ module OpenSSLKeyFlowConfig implements DataFlow::ConfigSig {
     exists(Crypto::KeyCreationOperationInstance keygen | keygen.getOutputKeyArtifact() = source)
   }
 
-  predicate isSink(DataFlow::Node sink) {
-    exists(Call call | call.(Call).getAnArgument() = sink.asExpr())
-  }
+  predicate isSink(DataFlow::Node sink) { exists(Call call | call.getAnArgument() = sink.asExpr()) }
   //TODO: consideration for additional flow steps? Can a key be copied for example?
 }
 

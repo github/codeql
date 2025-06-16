@@ -3,7 +3,6 @@
  */
 
 private import experimental.quantum.Language
-private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.AvcFlow
 private import experimental.quantum.OpenSSL.CtxFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
@@ -87,7 +86,7 @@ private Expr signatureOperationOutputArg(Call call) {
 }
 
 /**
- * Base configuration for all EVP signature operations.
+ * The base configuration for all EVP signature operations.
  */
 abstract class EvpSignatureOperation extends EvpOperation, Crypto::SignatureOperationInstance {
   EvpSignatureOperation() {

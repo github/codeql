@@ -8,7 +8,6 @@
 import cpp
 private import experimental.quantum.OpenSSL.CtxFlow
 private import OpenSSLOperations
-private import OpenSSLOperationBase
 
 /**
  * A call to `EVP_PKEY_CTX_new` or `EVP_PKEY_CTX_new_from_pkey`.
@@ -17,7 +16,7 @@ private import OpenSSLOperationBase
  * parameters set (e.g., `EVP_PKEY_paramgen`).
  * NOTE: for the case of `EVP_PKEY_paramgen`, these calls
  * are encoded as context passthroughs, and any operation
- * will get all associated initializers for teh paramgen
+ * will get all associated initializers for the paramgen
  * at the final keygen operation automatically.
  */
 class EVPNewKeyCtx extends EvpKeyInitializer {
