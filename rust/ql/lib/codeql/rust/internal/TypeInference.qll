@@ -1594,6 +1594,11 @@ private module Debug {
     result = resolveMethodCallTarget(mce)
   }
 
+  predicate debugTypeMention(TypeMention tm, TypePath path, Type type) {
+    tm = getRelevantLocatable() and
+    tm.resolveTypeAt(path) = type
+  }
+
   pragma[nomagic]
   private int countTypes(AstNode n, TypePath path, Type t) {
     t = inferType(n, path) and
