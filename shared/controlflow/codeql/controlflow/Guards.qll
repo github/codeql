@@ -807,12 +807,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Calculates the transitive closure of all the guard implication steps
      * starting from a given set of base cases.
      */
+    cached
     module ImpliesTC<baseGuardValueSig/2 baseGuardValue> {
       /**
        * Holds if `tgtGuard` evaluating to `tgtVal` implies that `guard`
        * evaluates to `v`.
        */
       pragma[nomagic]
+      cached
       predicate guardControls(Guard guard, GuardValue v, Guard tgtGuard, GuardValue tgtVal) {
         baseGuardValue(tgtGuard, tgtVal) and
         guard = tgtGuard and
@@ -844,6 +846,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * evaluates to `v`.
        */
       pragma[nomagic]
+      cached
       predicate ssaControls(SsaDefinition def, GuardValue v, Guard tgtGuard, GuardValue tgtVal) {
         exists(Guard g0 |
           guardControls(g0, v, tgtGuard, tgtVal) and
