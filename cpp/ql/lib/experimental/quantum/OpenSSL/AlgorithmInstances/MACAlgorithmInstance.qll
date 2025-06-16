@@ -6,32 +6,32 @@ private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmI
 private import experimental.quantum.OpenSSL.Operations.OpenSSLOperations
 private import AlgToAVCFlow
 
-class KnownOpenSSLMACConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
-  Crypto::MACAlgorithmInstance instanceof KnownOpenSSLMACAlgorithmExpr
+class KnownOpenSslMACConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
+  Crypto::MACAlgorithmInstance instanceof KnownOpenSslMACAlgorithmExpr
 {
-  OpenSSLAlgorithmValueConsumer getterCall;
+  OpenSslAlgorithmValueConsumer getterCall;
 
-  KnownOpenSSLMACConstantAlgorithmInstance() {
+  KnownOpenSslMACConstantAlgorithmInstance() {
     // Two possibilities:
     // 1) The source is a literal and flows to a getter, then we know we have an instance
-    // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
+    // 2) The source is a KnownOpenSslAlgorithm is call, and we know we have an instance immediately from that
     // Possibility 1:
-    this instanceof OpenSSLAlgorithmLiteral and
+    this instanceof OpenSslAlgorithmLiteral and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
       sink = getterCall.getInputNode() and
       // Source is `this`
       src.asExpr() = this and
       // This traces to a getter
-      KnownOpenSSLAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
+      KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
     )
     or
     // Possibility 2:
-    this instanceof OpenSSLAlgorithmCall and
+    this instanceof OpenSslAlgorithmCall and
     getterCall = this
   }
 
-  override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
+  override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
 
   override string getRawMACAlgorithmName() {
     result = this.(Literal).getValue().toString()
@@ -40,27 +40,27 @@ class KnownOpenSSLMACConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
   }
 
   override Crypto::TMACType getMACType() {
-    this instanceof KnownOpenSSLHMACAlgorithmExpr and result instanceof Crypto::THMAC
+    this instanceof KnownOpenSslHMACAlgorithmExpr and result instanceof Crypto::THMAC
     or
-    this instanceof KnownOpenSSLCMACAlgorithmExpr and result instanceof Crypto::TCMAC
+    this instanceof KnownOpenSslCMACAlgorithmExpr and result instanceof Crypto::TCMAC
   }
 }
 
-class KnownOpenSSLHMACConstantAlgorithmInstance extends Crypto::HMACAlgorithmInstance,
-  KnownOpenSSLMACConstantAlgorithmInstance
+class KnownOpenSslHMACConstantAlgorithmInstance extends Crypto::HMACAlgorithmInstance,
+  KnownOpenSslMACConstantAlgorithmInstance
 {
   override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
-    if exists(this.(KnownOpenSSLHMACAlgorithmExpr).getExplicitHashAlgorithm())
+    if exists(this.(KnownOpenSslHMACAlgorithmExpr).getExplicitHashAlgorithm())
     then
       // ASSUMPTION: if there is an explicit hash algorithm, it is already modeled
       // and we can simply grab that model's AVC
-      exists(OpenSSLAlgorithmInstance inst | inst.getAVC() = result and inst = this)
+      exists(OpenSslAlgorithmInstance inst | inst.getAvc() = result and inst = this)
     else
       // ASSUMPTION: If no explicit algorithm is given, then it is assumed to be configured by
       // a signature operation
       exists(Crypto::SignatureOperationInstance s |
         s.getHashAlgorithmValueConsumer() = result and
-        s.getAnAlgorithmValueConsumer() = this.getAVC()
+        s.getAnAlgorithmValueConsumer() = this.getAvc()
       )
   }
 }

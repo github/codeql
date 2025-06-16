@@ -92,7 +92,7 @@ module GenericDataSourceFlowConfig implements DataFlow::ConfigSig {
 module GenericDataSourceFlow = TaintTracking::Global<GenericDataSourceFlowConfig>;
 
 private class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof Literal {
-  ConstantDataSource() { this instanceof OpenSSLGenericSourceCandidateLiteral }
+  ConstantDataSource() { this instanceof OpenSslGenericSourceCandidateLiteral }
 
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 

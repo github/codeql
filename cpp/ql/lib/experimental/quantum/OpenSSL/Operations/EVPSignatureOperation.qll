@@ -59,8 +59,8 @@ class EvpSignaturePrimaryAlgorithmInitializer extends EvpPrimaryAlgorithmInitial
   override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
 }
 
-class EVP_Signature_Update_Call extends EvpUpdate {
-  EVP_Signature_Update_Call() {
+class Evp_Signature_Update_Call extends EvpUpdate {
+  Evp_Signature_Update_Call() {
     this.(Call).getTarget().getName() in [
         "EVP_DigestSignUpdate", "EVP_SignUpdate", "EVP_PKEY_sign_message_update"
       ]
@@ -108,7 +108,7 @@ abstract class EvpSignatureOperation extends EvpOperation, Crypto::SignatureOper
   }
 
   override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
-    AvcToCallArgFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
+    AvcToCallArgFlow::flow(result.(OpenSslAlgorithmValueConsumer).getResultNode(),
       DataFlow::exprNode(this.getHashAlgorithmArg()))
   }
 
@@ -152,8 +152,8 @@ abstract class EvpSignatureOperation extends EvpOperation, Crypto::SignatureOper
   override Crypto::ConsumerInputDataFlowNode getSignatureConsumer() { none() }
 }
 
-class EVP_Signature_Call extends EvpSignatureOperation {
-  EVP_Signature_Call() { this.(Call).getTarget().getName() in ["EVP_DigestSign", "EVP_PKEY_sign"] }
+class Evp_Signature_Call extends EvpSignatureOperation {
+  Evp_Signature_Call() { this.(Call).getTarget().getName() in ["EVP_DigestSign", "EVP_PKEY_sign"] }
 
   /**
    * Output is the signature.
@@ -168,8 +168,8 @@ class EVP_Signature_Call extends EvpSignatureOperation {
   override Expr getInputArg() { result = this.(Call).getArgument(3) }
 }
 
-class EVP_Signature_Final_Call extends EVPFinal, EvpSignatureOperation {
-  EVP_Signature_Final_Call() {
+class Evp_Signature_Final_Call extends EvpFinal, EvpSignatureOperation {
+  Evp_Signature_Final_Call() {
     this.(Call).getTarget().getName() in [
         "EVP_DigestSignFinal",
         "EVP_SignFinal_ex",

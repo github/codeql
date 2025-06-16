@@ -4,7 +4,7 @@ private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 // TODO: need to add key consumer
-abstract class EVP_Cipher_Initializer extends EvpKeyOperationSubtypeInitializer,
+abstract class Evp_Cipher_Initializer extends EvpKeyOperationSubtypeInitializer,
   EvpPrimaryAlgorithmInitializer, EvpKeyInitializer, EvpIVInitializer
 {
   override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
@@ -12,7 +12,7 @@ abstract class EVP_Cipher_Initializer extends EvpKeyOperationSubtypeInitializer,
   override Expr getAlgorithmArg() { result = this.(Call).getArgument(1) }
 }
 
-abstract class EVP_EX_Initializer extends EVP_Cipher_Initializer {
+abstract class Evp_EX_Initializer extends Evp_Cipher_Initializer {
   override Expr getKeyArg() {
     // Null key indicates the key is not actually set
     // This pattern can occur during a multi-step initialization
@@ -30,13 +30,13 @@ abstract class EVP_EX_Initializer extends EVP_Cipher_Initializer {
   }
 }
 
-abstract class EVP_EX2_Initializer extends EVP_Cipher_Initializer {
+abstract class Evp_EX2_Initializer extends Evp_Cipher_Initializer {
   override Expr getKeyArg() { result = this.(Call).getArgument(2) }
 
   override Expr getIVArg() { result = this.(Call).getArgument(3) }
 }
 
-class EvpCipherEXInitCall extends EVP_EX_Initializer {
+class EvpCipherEXInitCall extends Evp_EX_Initializer {
   EvpCipherEXInitCall() {
     this.(Call).getTarget().getName() in [
         "EVP_EncryptInit_ex", "EVP_DecryptInit_ex", "EVP_CipherInit_ex"
@@ -56,8 +56,8 @@ class EvpCipherEXInitCall extends EVP_EX_Initializer {
 //   else
 //     if this.(Call).getTarget().getName().toLowerCase().matches("%decrypt%")
 //     then result instanceof Crypto::TDecryptMode
-class EVP_Cipher_EX2_or_Simple_Init_Call extends EVP_EX2_Initializer {
-  EVP_Cipher_EX2_or_Simple_Init_Call() {
+class Evp_Cipher_EX2_or_Simple_Init_Call extends Evp_EX2_Initializer {
+  Evp_Cipher_EX2_or_Simple_Init_Call() {
     this.(Call).getTarget().getName() in [
         "EVP_EncryptInit_ex2", "EVP_DecryptInit_ex2", "EVP_CipherInit_ex2", "EVP_EncryptInit",
         "EVP_DecryptInit", "EVP_CipherInit"
@@ -70,14 +70,14 @@ class EVP_Cipher_EX2_or_Simple_Init_Call extends EVP_EX2_Initializer {
   }
 }
 
-class EVP_CipherInit_SKEY_Call extends EVP_EX2_Initializer {
-  EVP_CipherInit_SKEY_Call() { this.(Call).getTarget().getName() in ["EVP_CipherInit_SKEY"] }
+class Evp_CipherInit_SKEY_Call extends Evp_EX2_Initializer {
+  Evp_CipherInit_SKEY_Call() { this.(Call).getTarget().getName() in ["EVP_CipherInit_SKEY"] }
 
   override Expr getKeyOperationSubtypeArg() { result = this.(Call).getArgument(5) }
 }
 
-class EVP_Cipher_Update_Call extends EvpUpdate {
-  EVP_Cipher_Update_Call() {
+class Evp_Cipher_Update_Call extends EvpUpdate {
+  Evp_Cipher_Update_Call() {
     this.(Call).getTarget().getName() in [
         "EVP_EncryptUpdate", "EVP_DecryptUpdate", "EVP_CipherUpdate"
       ]
@@ -94,7 +94,7 @@ class EVP_Cipher_Update_Call extends EvpUpdate {
  * see: https://docs.openssl.org/master/man3/EVP_EncryptInit/#synopsis
  * Base configuration for all EVP cipher operations.
  */
-abstract class EVP_Cipher_Operation extends EvpOperation, Crypto::KeyOperationInstance {
+abstract class Evp_Cipher_Operation extends EvpOperation, Crypto::KeyOperationInstance {
   override Expr getOutputArg() { result = this.(Call).getArgument(1) }
 
   override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
@@ -126,8 +126,8 @@ abstract class EVP_Cipher_Operation extends EvpOperation, Crypto::KeyOperationIn
   }
 }
 
-class EVP_Cipher_Call extends EvpOperation, EVP_Cipher_Operation {
-  EVP_Cipher_Call() { this.(Call).getTarget().getName() = "EVP_Cipher" }
+class Evp_Cipher_Call extends EvpOperation, Evp_Cipher_Operation {
+  Evp_Cipher_Call() { this.(Call).getTarget().getName() = "EVP_Cipher" }
 
   override Expr getInputArg() { result = this.(Call).getArgument(2) }
 
@@ -138,8 +138,8 @@ class EVP_Cipher_Call extends EvpOperation, EVP_Cipher_Operation {
   override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
 }
 
-class EVP_Cipher_Final_Call extends EVPFinal, EVP_Cipher_Operation {
-  EVP_Cipher_Final_Call() {
+class Evp_Cipher_Final_Call extends EvpFinal, Evp_Cipher_Operation {
+  Evp_Cipher_Final_Call() {
     this.(Call).getTarget().getName() in [
         "EVP_EncryptFinal_ex", "EVP_DecryptFinal_ex", "EVP_CipherFinal_ex", "EVP_EncryptFinal",
         "EVP_DecryptFinal", "EVP_CipherFinal"
@@ -150,9 +150,9 @@ class EVP_Cipher_Final_Call extends EVPFinal, EVP_Cipher_Operation {
    * Output is both from update calls and from the final call.
    */
   override Expr getOutputArg() {
-    result = EVPFinal.super.getOutputArg()
+    result = EvpFinal.super.getOutputArg()
     or
-    result = EVP_Cipher_Operation.super.getOutputArg()
+    result = Evp_Cipher_Operation.super.getOutputArg()
   }
 
   override Expr getAlgorithmArg() {
@@ -166,7 +166,7 @@ class EVP_Cipher_Final_Call extends EVPFinal, EVP_Cipher_Operation {
  * https://docs.openssl.org/3.2/man3/EVP_PKEY_decrypt/
  * https://docs.openssl.org/3.2/man3/EVP_PKEY_encrypt
  */
-class Evp_PKey_Cipher_Operation extends EVP_Cipher_Operation {
+class Evp_PKey_Cipher_Operation extends Evp_Cipher_Operation {
   Evp_PKey_Cipher_Operation() {
     this.(Call).getTarget().getName() in ["EVP_PKEY_encrypt", "EVP_PKEY_decrypt"]
   }

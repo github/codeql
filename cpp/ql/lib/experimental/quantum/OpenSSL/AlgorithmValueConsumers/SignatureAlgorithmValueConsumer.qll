@@ -5,13 +5,13 @@ private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmI
 private import OpenSSLAlgorithmValueConsumerBase
 private import experimental.quantum.OpenSSL.LibraryDetector
 
-abstract class SignatureAlgorithmValueConsumer extends OpenSSLAlgorithmValueConsumer { }
+abstract class SignatureAlgorithmValueConsumer extends OpenSslAlgorithmValueConsumer { }
 
-class EVPSignatureAlgorithmValueConsumer extends SignatureAlgorithmValueConsumer {
+class EvpSignatureAlgorithmValueConsumer extends SignatureAlgorithmValueConsumer {
   DataFlow::Node valueArgNode;
   DataFlow::Node resultNode;
 
-  EVPSignatureAlgorithmValueConsumer() {
+  EvpSignatureAlgorithmValueConsumer() {
     resultNode.asExpr() = this and
     (
       // EVP_SIGNATURE
@@ -27,6 +27,6 @@ class EVPSignatureAlgorithmValueConsumer extends SignatureAlgorithmValueConsumer
   override Crypto::ConsumerInputDataFlowNode getInputNode() { result = valueArgNode }
 
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-    exists(OpenSSLAlgorithmInstance i | i.getAVC() = this and result = i)
+    exists(OpenSslAlgorithmInstance i | i.getAvc() = this and result = i)
   }
 }

@@ -3,8 +3,8 @@ private import experimental.quantum.OpenSSL.CtxFlow
 private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
-class EVPKeyGenInitialize extends EvpPrimaryAlgorithmInitializer {
-  EVPKeyGenInitialize() {
+class EvpKeyGenInitialize extends EvpPrimaryAlgorithmInitializer {
+  EvpKeyGenInitialize() {
     this.(Call).getTarget().getName() in [
         "EVP_PKEY_keygen_init",
         "EVP_PKEY_paramgen_init"
@@ -23,10 +23,10 @@ class EVPKeyGenInitialize extends EvpPrimaryAlgorithmInitializer {
   override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
 }
 
-class EVPKeyGenOperation extends EvpOperation, Crypto::KeyGenerationOperationInstance {
+class EvpKeyGenOperation extends EvpOperation, Crypto::KeyGenerationOperationInstance {
   DataFlow::Node keyResultNode;
 
-  EVPKeyGenOperation() {
+  EvpKeyGenOperation() {
     this.(Call).getTarget().getName() in ["EVP_RSA_gen", "EVP_PKEY_Q_keygen"] and
     keyResultNode.asExpr() = this
     or

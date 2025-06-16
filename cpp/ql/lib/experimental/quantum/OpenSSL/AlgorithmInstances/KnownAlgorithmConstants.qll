@@ -2,28 +2,28 @@ import cpp
 import experimental.quantum.OpenSSL.GenericSourceCandidateLiteral
 
 predicate resolveAlgorithmFromExpr(
-  KnownOpenSSLAlgorithmExpr e, string normalizedName, string algType
+  KnownOpenSslAlgorithmExpr e, string normalizedName, string algType
 ) {
   normalizedName = e.getNormalizedName() and
   algType = e.getAlgType()
 }
 
 /**
- * An expression that resolves to a known OpenSSL algorithm constant.
- * This can be a literal, a call to a known OpenSSL algorithm constant getter,
+ * An expression that resolves to a known OpenSsl algorithm constant.
+ * This can be a literal, a call to a known OpenSsl algorithm constant getter,
  * or a call to an operation that directly operates on a known algorithm.
  */
-abstract class KnownOpenSSLAlgorithmExpr extends Expr {
+abstract class KnownOpenSslAlgorithmExpr extends Expr {
   abstract string getNormalizedName();
 
   abstract string getAlgType();
 }
 
-class OpenSSLAlgorithmLiteral extends KnownOpenSSLAlgorithmExpr instanceof Literal {
+class OpenSslAlgorithmLiteral extends KnownOpenSslAlgorithmExpr instanceof Literal {
   string normalizedName;
   string algType;
 
-  OpenSSLAlgorithmLiteral() { resolveAlgorithmFromLiteral(this, normalizedName, algType) }
+  OpenSslAlgorithmLiteral() { resolveAlgorithmFromLiteral(this, normalizedName, algType) }
 
   override string getNormalizedName() { result = normalizedName }
 
@@ -31,14 +31,14 @@ class OpenSSLAlgorithmLiteral extends KnownOpenSSLAlgorithmExpr instanceof Liter
 }
 
 /**
- * A call to either an OpenSSL algorithm constant 'getter', e.g., EVP_MD5()
+ * A call to either an OpenSsl algorithm constant 'getter', e.g., EVP_MD5()
  * or call to an operation that directly operates on a known algorithm, e.g., AES_encrypt
  */
-abstract class OpenSSLAlgorithmCall extends KnownOpenSSLAlgorithmExpr instanceof Call { }
+abstract class OpenSslAlgorithmCall extends KnownOpenSslAlgorithmExpr instanceof Call { }
 
 /**
  * A call to a 'direct algorithm getter', e.g., EVP_MD5()
- * This approach to fetching algorithms was used in OpenSSL 1.0.2.
+ * This approach to fetching algorithms was used in OpenSsl 1.0.2.
  * The strategy for resolving these calls is to parse the target name
  * and resolve the name as though it were a known literal.
  * There are a few exceptions where the name doesn't directly match the
@@ -48,18 +48,18 @@ abstract class OpenSSLAlgorithmCall extends KnownOpenSSLAlgorithmExpr instanceof
  *   or
  *   alias = "dss1" and target = "dsaWithSHA1"
  */
-class OpenSSLDirectAlgorithmFetchCall extends OpenSSLAlgorithmCall {
+class OpenSslDirectAlgorithmFetchCall extends OpenSslAlgorithmCall {
   string normalizedName;
   string algType;
 
-  OpenSSLDirectAlgorithmFetchCall() {
+  OpenSslDirectAlgorithmFetchCall() {
     //ASSUMPTION: these cases will have operands for the call
     not exists(this.(Call).getAnArgument()) and
     exists(string name, string parsedTargetName |
       parsedTargetName =
         this.(Call).getTarget().getName().replaceAll("EVP_", "").toLowerCase().replaceAll("_", "-") and
       name = resolveAlgorithmAlias(parsedTargetName) and
-      knownOpenSSLAlgorithmLiteral(name, _, normalizedName, algType)
+      knownOpenSslAlgorithmLiteral(name, _, normalizedName, algType)
     )
   }
 
@@ -69,22 +69,22 @@ class OpenSSLDirectAlgorithmFetchCall extends OpenSSLAlgorithmCall {
 }
 
 /**
- * A call to an OpenSSL operation that directly operates on a known algorithm.
+ * A call to an OpenSsl operation that directly operates on a known algorithm.
  * An algorithm construct is not generated for these calls, rather, the operation
  * is directly performed, and the algorithm is inferred by the operation itself.
  */
-class OpenSSLDirectAlgorithmOperationCall extends OpenSSLAlgorithmCall {
+class OpenSslDirectAlgorithmOperationCall extends OpenSslAlgorithmCall {
   string normalizedName;
   string algType;
 
-  OpenSSLDirectAlgorithmOperationCall() {
+  OpenSslDirectAlgorithmOperationCall() {
     //TODO: this set will have to be exhaustive, and for each operation
     //further modeling will be necessary for each case to map the APIs operands
     //ASSUMPTION: these cases must have operands for the call
     exists(this.(Call).getAnArgument()) and
     //TODO: Each case would be enumerated here. Will likely need an exhaustive mapping much like
     // for known constants.
-    knownOpenSSLAlgorithmOperationCall(this, normalizedName, algType)
+    knownOpenSslAlgorithmOperationCall(this, normalizedName, algType)
   }
 
   override string getNormalizedName() { result = normalizedName }
@@ -92,25 +92,25 @@ class OpenSSLDirectAlgorithmOperationCall extends OpenSSLAlgorithmCall {
   override string getAlgType() { result = algType }
 }
 
-class KnownOpenSSLCipherAlgorithmExpr extends Expr instanceof KnownOpenSSLAlgorithmExpr {
+class KnownOpenSslCipherAlgorithmExpr extends Expr instanceof KnownOpenSslAlgorithmExpr {
   string algType;
 
-  KnownOpenSSLCipherAlgorithmExpr() {
-    algType = this.(KnownOpenSSLAlgorithmExpr).getAlgType() and
+  KnownOpenSslCipherAlgorithmExpr() {
+    algType = this.(KnownOpenSslAlgorithmExpr).getAlgType() and
     algType.matches("%ENCRYPTION")
   }
 
   int getExplicitKeySize() {
     exists(string name |
-      name = this.(KnownOpenSSLAlgorithmExpr).getNormalizedName() and
+      name = this.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
       resolveAlgorithmFromExpr(this, name, algType) and
       result = name.regexpCapture(".*-(\\d*)", 1).toInt()
     )
   }
 }
 
-class KnownOpenSSLPaddingAlgorithmExpr extends Expr instanceof KnownOpenSSLAlgorithmExpr {
-  KnownOpenSSLPaddingAlgorithmExpr() {
+class KnownOpenSslPaddingAlgorithmExpr extends Expr instanceof KnownOpenSslAlgorithmExpr {
+  KnownOpenSslPaddingAlgorithmExpr() {
     exists(string algType |
       resolveAlgorithmFromExpr(this, _, algType) and
       algType.matches("%PADDING")
@@ -118,59 +118,59 @@ class KnownOpenSSLPaddingAlgorithmExpr extends Expr instanceof KnownOpenSSLAlgor
   }
 }
 
-class KnownOpenSSLBlockModeAlgorithmExpr extends Expr instanceof KnownOpenSSLAlgorithmExpr {
-  KnownOpenSSLBlockModeAlgorithmExpr() { resolveAlgorithmFromExpr(this, _, "BLOCK_MODE") }
+class KnownOpenSslBlockModeAlgorithmExpr extends Expr instanceof KnownOpenSslAlgorithmExpr {
+  KnownOpenSslBlockModeAlgorithmExpr() { resolveAlgorithmFromExpr(this, _, "BLOCK_MODE") }
 }
 
-class KnownOpenSSLHashAlgorithmExpr extends Expr instanceof KnownOpenSSLAlgorithmExpr {
-  KnownOpenSSLHashAlgorithmExpr() { resolveAlgorithmFromExpr(this, _, "HASH") }
+class KnownOpenSslHashAlgorithmExpr extends Expr instanceof KnownOpenSslAlgorithmExpr {
+  KnownOpenSslHashAlgorithmExpr() { resolveAlgorithmFromExpr(this, _, "HASH") }
 
   int getExplicitDigestLength() {
     exists(string name |
-      name = this.(KnownOpenSSLAlgorithmExpr).getNormalizedName() and
+      name = this.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
       resolveAlgorithmFromExpr(this, name, "HASH") and
       result = name.regexpCapture(".*-(\\d*)$", 1).toInt()
     )
   }
 }
 
-class KnownOpenSSLMACAlgorithmExpr extends Expr instanceof KnownOpenSSLAlgorithmExpr {
-  KnownOpenSSLMACAlgorithmExpr() { resolveAlgorithmFromExpr(this, _, "MAC") }
+class KnownOpenSslMACAlgorithmExpr extends Expr instanceof KnownOpenSslAlgorithmExpr {
+  KnownOpenSslMACAlgorithmExpr() { resolveAlgorithmFromExpr(this, _, "MAC") }
 }
 
-class KnownOpenSSLHMACAlgorithmExpr extends Expr instanceof KnownOpenSSLMACAlgorithmExpr {
-  KnownOpenSSLHMACAlgorithmExpr() { resolveAlgorithmFromExpr(this, "HMAC", "MAC") }
+class KnownOpenSslHMACAlgorithmExpr extends Expr instanceof KnownOpenSslMACAlgorithmExpr {
+  KnownOpenSslHMACAlgorithmExpr() { resolveAlgorithmFromExpr(this, "HMAC", "MAC") }
 
   /**
    * Gets an explicit cipher algorithm for this MAC algorithm.
    * This occurs when the MAC specifies the algorithm at the same time "HMAC-SHA-256"
    */
-  KnownOpenSSLHashAlgorithmExpr getExplicitHashAlgorithm() { result = this }
+  KnownOpenSslHashAlgorithmExpr getExplicitHashAlgorithm() { result = this }
 }
 
-class KnownOpenSSLCMACAlgorithmExpr extends Expr instanceof KnownOpenSSLMACAlgorithmExpr {
-  KnownOpenSSLCMACAlgorithmExpr() { resolveAlgorithmFromExpr(this, "CMAC", "MAC") }
+class KnownOpenSslCMACAlgorithmExpr extends Expr instanceof KnownOpenSslMACAlgorithmExpr {
+  KnownOpenSslCMACAlgorithmExpr() { resolveAlgorithmFromExpr(this, "CMAC", "MAC") }
 
   /**
    * Gets an explicit cipher algorithm for this MAC algorithm.
    * This occurs when the MAC specifies the algorithm at the same time "HMAC-SHA-256"
    */
-  KnownOpenSSLCipherAlgorithmExpr getExplicitCipherAlgorithm() { result = this }
+  KnownOpenSslCipherAlgorithmExpr getExplicitCipherAlgorithm() { result = this }
 }
 
-class KnownOpenSSLEllipticCurveAlgorithmExpr extends Expr instanceof KnownOpenSSLAlgorithmExpr {
-  KnownOpenSSLEllipticCurveAlgorithmExpr() { resolveAlgorithmFromExpr(this, _, "ELLIPTIC_CURVE") }
+class KnownOpenSslEllipticCurveAlgorithmExpr extends Expr instanceof KnownOpenSslAlgorithmExpr {
+  KnownOpenSslEllipticCurveAlgorithmExpr() { resolveAlgorithmFromExpr(this, _, "ELLIPTIC_CURVE") }
 }
 
-class KnownOpenSSLSignatureAlgorithmExpr extends Expr instanceof KnownOpenSSLAlgorithmExpr {
-  KnownOpenSSLSignatureAlgorithmExpr() { resolveAlgorithmFromExpr(this, _, "SIGNATURE") }
+class KnownOpenSslSignatureAlgorithmExpr extends Expr instanceof KnownOpenSslAlgorithmExpr {
+  KnownOpenSslSignatureAlgorithmExpr() { resolveAlgorithmFromExpr(this, _, "SIGNATURE") }
 }
 
-class KnownOpenSSLKeyAgreementAlgorithmExpr extends Expr instanceof KnownOpenSSLAlgorithmExpr {
-  KnownOpenSSLKeyAgreementAlgorithmExpr() { resolveAlgorithmFromExpr(this, _, "KEY_AGREEMENT") }
+class KnownOpenSslKeyAgreementAlgorithmExpr extends Expr instanceof KnownOpenSslAlgorithmExpr {
+  KnownOpenSslKeyAgreementAlgorithmExpr() { resolveAlgorithmFromExpr(this, _, "KEY_AGREEMENT") }
 }
 
-predicate knownOpenSSLAlgorithmOperationCall(Call c, string normalized, string algType) {
+predicate knownOpenSslAlgorithmOperationCall(Call c, string normalized, string algType) {
   c.getTarget().getName() in ["EVP_RSA_gen", "RSA_generate_key_ex", "RSA_generate_key", "RSA_new"] and
   normalized = "RSA" and
   algType = "ASYMMETRIC_ENCRYPTION"
@@ -182,13 +182,13 @@ predicate knownOpenSSLAlgorithmOperationCall(Call c, string normalized, string a
  * If this predicate does not hold, then `e` can be interpreted as being of `UNKNOWN` type.
  */
 predicate resolveAlgorithmFromLiteral(
-  OpenSSLGenericSourceCandidateLiteral e, string normalized, string algType
+  OpenSslGenericSourceCandidateLiteral e, string normalized, string algType
 ) {
-  knownOpenSSLAlgorithmLiteral(_, e.getValue().toInt(), normalized, algType)
+  knownOpenSslAlgorithmLiteral(_, e.getValue().toInt(), normalized, algType)
   or
   exists(string name |
     name = resolveAlgorithmAlias(e.getValue()) and
-    knownOpenSSLAlgorithmLiteral(name, _, normalized, algType)
+    knownOpenSslAlgorithmLiteral(name, _, normalized, algType)
   )
 }
 
@@ -199,7 +199,7 @@ string resolveAlgorithmAlias(string name) {
     result = getAlgorithmAlias(lower)
     or
     // or the name is itself a known algorithm
-    knownOpenSSLAlgorithmLiteral(lower, _, _, _) and result = lower
+    knownOpenSslAlgorithmLiteral(lower, _, _, _) and result = lower
   )
 }
 
@@ -222,9 +222,9 @@ predicate customAliases(string target, string alias) {
 }
 
 /**
- * A hard-coded mapping of known algorithm aliases in OpenSSL.
+ * A hard-coded mapping of known algorithm aliases in OpenSsl.
  * This was derived by applying the same kind of logic foun din `customAliases` to the
- * OpenSSL code base directly.
+ * OpenSsl code base directly.
  *
  * The `target` and `alias` are converted to lowercase to be of a standard form.
  */
@@ -331,7 +331,7 @@ predicate defaultAliases(string target, string alias) {
  * `normalized` is the normalized name of the algorithm (e.g., "AES128" for "aes-128-cbc")
  * `algType` is the type of algorithm (e.g., "SYMMETRIC_ENCRYPTION")
  */
-predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, string algType) {
+predicate knownOpenSslAlgorithmLiteral(string name, int nid, string normalized, string algType) {
   name = "dhKeyAgreement" and nid = 28 and normalized = "DH" and algType = "KEY_AGREEMENT"
   or
   name = "x9.42 dh" and nid = 29 and normalized = "DH" and algType = "KEY_AGREEMENT"
