@@ -713,17 +713,17 @@ module Synth {
    */
   class TAstNode =
     TAbi or TAddressable or TArgList or TAsmDirSpec or TAsmOperand or TAsmOperandExpr or
-        TAsmOption or TAsmPiece or TAsmRegSpec or TAssocItem or TAssocItemList or TAttr or
-        TCallable or TClosureBinder or TExpr or TExternItem or TExternItemList or TFieldList or
-        TFormatArgsArg or TGenericArg or TGenericArgList or TGenericParam or TGenericParamList or
-        TItemList or TLabel or TLetElse or TMacroItems or TMatchArm or TMatchArmList or
-        TMatchGuard or TMeta or TName or TParamBase or TParamList or TParenthesizedArgList or
-        TPat or TPath or TPathSegment or TRename or TResolvable or TRetTypeRepr or
-        TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or TStructExprField or
-        TStructExprFieldList or TStructField or TStructPatField or TStructPatFieldList or TToken or
-        TTokenTree or TTupleField or TTypeBound or TTypeBoundList or TTypeRepr or
-        TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or TUseTreeList or TVariantDef or
-        TVariantList or TVisibility or TWhereClause or TWherePred;
+        TAsmOption or TAsmPiece or TAsmRegSpec or TAssocItemList or TAttr or TCallable or
+        TClosureBinder or TExpandableItem or TExpr or TExternItem or TExternItemList or
+        TFieldList or TFormatArgsArg or TGenericArg or TGenericArgList or TGenericParam or
+        TGenericParamList or TItemList or TLabel or TLetElse or TMacroItems or TMatchArm or
+        TMatchArmList or TMatchGuard or TMeta or TName or TParamBase or TParamList or
+        TParenthesizedArgList or TPat or TPath or TPathSegment or TRename or TResolvable or
+        TRetTypeRepr or TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or
+        TStructExprField or TStructExprFieldList or TStructField or TStructPatField or
+        TStructPatFieldList or TToken or TTokenTree or TTupleField or TTypeBound or
+        TTypeBoundList or TTypeRepr or TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or
+        TUseTreeList or TVariantDef or TVariantList or TVisibility or TWhereClause or TWherePred;
 
   /**
    * INTERNAL: Do not use.
@@ -734,6 +734,11 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TCallable = TClosureExpr or TFunction;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TExpandableItem = TAssocItem or TItem;
 
   /**
    * INTERNAL: Do not use.
@@ -1937,8 +1942,6 @@ module Synth {
     or
     result = convertAsmRegSpecFromRaw(e)
     or
-    result = convertAssocItemFromRaw(e)
-    or
     result = convertAssocItemListFromRaw(e)
     or
     result = convertAttrFromRaw(e)
@@ -1946,6 +1949,8 @@ module Synth {
     result = convertCallableFromRaw(e)
     or
     result = convertClosureBinderFromRaw(e)
+    or
+    result = convertExpandableItemFromRaw(e)
     or
     result = convertExprFromRaw(e)
     or
@@ -2082,6 +2087,16 @@ module Synth {
     result = convertNamedCrateFromRaw(e)
     or
     result = convertUnextractedFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TExpandableItem`, if possible.
+   */
+  TExpandableItem convertExpandableItemFromRaw(Raw::Element e) {
+    result = convertAssocItemFromRaw(e)
+    or
+    result = convertItemFromRaw(e)
   }
 
   /**
@@ -3537,8 +3552,6 @@ module Synth {
     or
     result = convertAsmRegSpecToRaw(e)
     or
-    result = convertAssocItemToRaw(e)
-    or
     result = convertAssocItemListToRaw(e)
     or
     result = convertAttrToRaw(e)
@@ -3546,6 +3559,8 @@ module Synth {
     result = convertCallableToRaw(e)
     or
     result = convertClosureBinderToRaw(e)
+    or
+    result = convertExpandableItemToRaw(e)
     or
     result = convertExprToRaw(e)
     or
@@ -3682,6 +3697,16 @@ module Synth {
     result = convertNamedCrateToRaw(e)
     or
     result = convertUnextractedToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TExpandableItem` to a raw DB element, if possible.
+   */
+  Raw::Element convertExpandableItemToRaw(TExpandableItem e) {
+    result = convertAssocItemToRaw(e)
+    or
+    result = convertItemToRaw(e)
   }
 
   /**

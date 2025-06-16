@@ -305,19 +305,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfAssocItem(AssocItem e, int index, string partialPredicateCall) {
-    exists(int b, int bAstNode, int n |
-      b = 0 and
-      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
-      n = bAstNode and
-      (
-        none()
-        or
-        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
   private Element getImmediateChildOfAssocItemList(
     AssocItemList e, int index, string partialPredicateCall
   ) {
@@ -393,6 +380,26 @@ private module Impl {
         index = n and
         result = e.getGenericParamList() and
         partialPredicateCall = "GenericParamList()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfExpandableItem(
+    ExpandableItem e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAstNode, int n, int nAttributeMacroExpansion |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nAttributeMacroExpansion = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        index = n and
+        result = e.getAttributeMacroExpansion() and
+        partialPredicateCall = "AttributeMacroExpansion()"
       )
     )
   }
@@ -1617,6 +1624,20 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfAssocItem(AssocItem e, int index, string partialPredicateCall) {
+    exists(int b, int bExpandableItem, int n |
+      b = 0 and
+      bExpandableItem =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpandableItem(e, i, _)) | i) and
+      n = bExpandableItem and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpandableItem(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfAssocTypeArg(
     AssocTypeArg e, int index, string partialPredicateCall
   ) {
@@ -2184,13 +2205,15 @@ private module Impl {
   }
 
   private Element getImmediateChildOfItem(Item e, int index, string partialPredicateCall) {
-    exists(int b, int bStmt, int bAddressable, int n, int nAttributeMacroExpansion |
+    exists(int b, int bStmt, int bAddressable, int bExpandableItem, int n |
       b = 0 and
       bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
       bAddressable =
         bStmt + 1 + max(int i | i = -1 or exists(getImmediateChildOfAddressable(e, i, _)) | i) and
-      n = bAddressable and
-      nAttributeMacroExpansion = n + 1 and
+      bExpandableItem =
+        bAddressable + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfExpandableItem(e, i, _)) | i) and
+      n = bExpandableItem and
       (
         none()
         or
@@ -2198,9 +2221,7 @@ private module Impl {
         or
         result = getImmediateChildOfAddressable(e, index - bStmt, partialPredicateCall)
         or
-        index = n and
-        result = e.getAttributeMacroExpansion() and
-        partialPredicateCall = "AttributeMacroExpansion()"
+        result = getImmediateChildOfExpandableItem(e, index - bAddressable, partialPredicateCall)
       )
     )
   }

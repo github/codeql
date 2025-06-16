@@ -906,7 +906,7 @@ class _:
     """
 
 
-@annotate(AssocItem)
+@annotate(AssocItem, replace_bases={AstNode: ExpandableItem})
 class _:
     """
     An associated item in a `Trait` or `Impl`.
@@ -1267,7 +1267,7 @@ class _:
     """
 
 
-@annotate(Item, add_bases=(Addressable,))
+@annotate(Item, add_bases=(Addressable, ExpandableItem))
 class _:
     """
     An item such as a function, struct, enum, etc.
@@ -1279,7 +1279,6 @@ class _:
     enum E {}
     ```
     """
-    attribute_macro_expansion: optional[MacroItems] | child | rust.detach
 
 
 @annotate(ItemList)

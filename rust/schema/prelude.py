@@ -90,6 +90,13 @@ class Addressable(AstNode):
     crate_origin: optional[string] | desc(
         "One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.") | rust.detach | ql.internal
 
+class ExpandableItem(AstNode):
+    """
+    Something that can be expanded by an attribute macro
+    """
+    attribute_macro_expansion: optional["MacroItems"] | child | rust.detach
+
+
 
 class Resolvable(AstNode):
     """

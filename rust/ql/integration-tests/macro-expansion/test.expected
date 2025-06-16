@@ -16,6 +16,9 @@ attribute_macros
 | attributes/src/lib.rs:12:1:13:10 | fn bar_1 | 0 | attributes/src/lib.rs:13:1:13:10 | fn bar_1_0 |
 | attributes/src/lib.rs:12:1:13:10 | fn bar_1 | 1 | attributes/src/lib.rs:13:1:13:10 | fn bar_1_1 |
 | attributes/src/lib.rs:12:1:13:10 | fn bar_1 | 2 | attributes/src/lib.rs:13:1:13:10 | fn bar_1_2 |
+| attributes/src/lib.rs:21:5:22:19 | fn bzz | 0 | attributes/src/lib.rs:22:5:22:18 | fn bzz_0 |
+| attributes/src/lib.rs:21:5:22:19 | fn bzz | 1 | attributes/src/lib.rs:22:5:22:18 | fn bzz_1 |
+| calls/src/lib.rs:49:5:52:5 | fn f | 0 | calls/src/lib.rs:50:5:51:29 | fn f_0 |
 macro_calls
 | attributes/src/lib.rs:5:9:5:34 | concat!... | attributes/src/lib.rs:5:17:5:34 | "Hello world!" |
 | attributes/src/lib.rs:5:9:5:34 | concat!... | attributes/src/lib.rs:5:17:5:34 | "Hello world!" |
@@ -30,5 +33,18 @@ macro_calls
 | calls/src/lib.rs:27:1:27:24 | concat!... | calls/src/lib.rs:27:1:27:24 | "Hello world!" |
 | calls/src/lib.rs:27:1:27:24 | include!... | calls/src/lib.rs:27:1:27:24 | MacroItems |
 | calls/src/lib.rs:29:9:29:32 | include_str!... | calls/src/lib.rs:29:22:29:31 | "" |
+| calls/src/lib.rs:36:16:36:24 | my_int!... | calls/src/lib.rs:36:16:36:24 | i32 |
+| calls/src/lib.rs:37:12:37:20 | my_int!... | calls/src/lib.rs:37:12:37:20 | i32 |
+| calls/src/lib.rs:38:10:38:18 | my_int!... | calls/src/lib.rs:38:10:38:18 | i32 |
+| calls/src/lib.rs:42:14:42:22 | my_int!... | calls/src/lib.rs:42:14:42:22 | i32 |
+| calls/src/lib.rs:45:12:45:20 | my_int!... | calls/src/lib.rs:45:12:45:20 | i32 |
+| calls/src/lib.rs:49:5:49:29 | ...::__log_logger!... | calls/src/lib.rs:49:5:49:29 | { ... } |
+| calls/src/lib.rs:49:5:49:29 | ...::module_path!... | calls/src/lib.rs:49:5:49:29 | "module::path" |
+| calls/src/lib.rs:49:5:49:29 | ...::module_path!... | calls/src/lib.rs:49:5:49:29 | "module::path" |
+| calls/src/lib.rs:51:9:51:27 | ...::info!... | calls/src/lib.rs:51:20:51:27 | MacroBlockExpr |
+| calls/src/lib.rs:51:20:51:27 | ...::__log!... | calls/src/lib.rs:51:20:51:27 | MacroBlockExpr |
+| calls/src/lib.rs:51:20:51:27 | ...::format_args!... | calls/src/lib.rs:51:20:51:27 | FormatArgsExpr |
+| calls/src/lib.rs:51:20:51:27 | ...::log!... | calls/src/lib.rs:51:20:51:27 | MacroBlockExpr |
 unexpanded_macro_calls
 | attributes/src/lib.rs:5:9:5:35 | concat!... |
+| calls/src/lib.rs:51:9:51:28 | ...::info!... |

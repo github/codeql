@@ -3,28 +3,28 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  MacroCall x, string hasExtendedCanonicalPath, string hasCrateOrigin,
-  string hasAttributeMacroExpansion, int getNumberOfAttrs, string hasPath, string hasTokenTree,
+  MacroCall x, string hasAttributeMacroExpansion, string hasExtendedCanonicalPath,
+  string hasCrateOrigin, int getNumberOfAttrs, string hasPath, string hasTokenTree,
   string hasMacroCallExpansion
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (
+    if x.hasAttributeMacroExpansion()
+    then hasAttributeMacroExpansion = "yes"
+    else hasAttributeMacroExpansion = "no"
+  ) and
   (
     if x.hasExtendedCanonicalPath()
     then hasExtendedCanonicalPath = "yes"
     else hasExtendedCanonicalPath = "no"
   ) and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  (
-    if x.hasAttributeMacroExpansion()
-    then hasAttributeMacroExpansion = "yes"
-    else hasAttributeMacroExpansion = "no"
-  ) and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
   (if x.hasTokenTree() then hasTokenTree = "yes" else hasTokenTree = "no") and
   if x.hasMacroCallExpansion() then hasMacroCallExpansion = "yes" else hasMacroCallExpansion = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasPath:", hasPath, "hasTokenTree:", hasTokenTree, "hasMacroCallExpansion:",
+select x, "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "hasExtendedCanonicalPath:",
+  hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin, "getNumberOfAttrs:",
+  getNumberOfAttrs, "hasPath:", hasPath, "hasTokenTree:", hasTokenTree, "hasMacroCallExpansion:",
   hasMacroCallExpansion

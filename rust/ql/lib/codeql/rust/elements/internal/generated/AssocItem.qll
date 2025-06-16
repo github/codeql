@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
+import codeql.rust.elements.internal.ExpandableItemImpl::Impl as ExpandableItemImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `AssocItem` and should not
@@ -24,5 +24,5 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::AssocItem` class directly.
    * Use the subclass `AssocItem`, where the following predicates are available.
    */
-  class AssocItem extends Synth::TAssocItem, AstNodeImpl::AstNode { }
+  class AssocItem extends Synth::TAssocItem, ExpandableItemImpl::ExpandableItem { }
 }

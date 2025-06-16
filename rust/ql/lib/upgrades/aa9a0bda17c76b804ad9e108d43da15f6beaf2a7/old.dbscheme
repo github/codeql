@@ -164,11 +164,11 @@ named_crates(
 | @asm_option
 | @asm_piece
 | @asm_reg_spec
+| @assoc_item
 | @assoc_item_list
 | @attr
 | @callable
 | @closure_binder
-| @expandable_item
 | @expr
 | @extern_item
 | @extern_item_list
@@ -350,6 +350,13 @@ asm_reg_spec_identifiers(
   int identifier: @name_ref ref
 );
 
+@assoc_item =
+  @const
+| @function
+| @macro_call
+| @type_alias
+;
+
 assoc_item_lists(
   unique int id: @assoc_item_list
 );
@@ -404,17 +411,6 @@ closure_binders(
 closure_binder_generic_param_lists(
   int id: @closure_binder ref,
   int generic_param_list: @generic_param_list ref
-);
-
-@expandable_item =
-  @assoc_item
-| @item
-;
-
-#keyset[id]
-expandable_item_attribute_macro_expansions(
-  int id: @expandable_item ref,
-  int attribute_macro_expansion: @macro_items ref
 );
 
 @expr =
@@ -1383,13 +1379,6 @@ asm_sym_paths(
   int path: @path ref
 );
 
-@assoc_item =
-  @const
-| @function
-| @macro_call
-| @type_alias
-;
-
 assoc_type_args(
   unique int id: @assoc_type_arg
 );
@@ -1946,6 +1935,12 @@ infer_type_reprs(
 | @union
 | @use
 ;
+
+#keyset[id]
+item_attribute_macro_expansions(
+  int id: @item ref,
+  int attribute_macro_expansion: @macro_items ref
+);
 
 @labelable_expr =
   @block_expr

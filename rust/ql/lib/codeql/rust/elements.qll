@@ -52,6 +52,7 @@ import codeql.rust.elements.Crate
 import codeql.rust.elements.DynTraitTypeRepr
 import codeql.rust.elements.Element
 import codeql.rust.elements.Enum
+import codeql.rust.elements.ExpandableItem
 import codeql.rust.elements.Expr
 import codeql.rust.elements.ExprStmt
 import codeql.rust.elements.ExternBlock

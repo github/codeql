@@ -26,7 +26,12 @@ use ra_ap_syntax::{
 macro_rules! pre_emit {
     (Item, $self:ident, $node:ident) => {
         if let Some(label) = $self.prepare_item_expansion($node) {
-            return Some(label);
+            return Some(label.into());
+        }
+    };
+    (AssocItem, $self:ident, $node:ident) => {
+        if let Some(label) = $self.prepare_item_expansion(&$node.clone().into()) {
+            return Some(label.into());
         }
     };
     ($($_:tt)*) => {};
@@ -60,7 +65,13 @@ macro_rules! post_emit {
         $self.extract_canonical_origin_of_enum_variant($node, $label);
     };
     (Item, $self:ident, $node:ident, $label:ident) => {
-        $self.emit_item_expansion($node, $label);
+        $self.emit_item_expansion($node, From::<Label<generated::Item>>::from($label));
+    };
+    (AssocItem, $self:ident, $node:ident, $label:ident) => {
+        $self.emit_item_expansion(
+            &$node.clone().into(),
+            From::<Label<generated::AssocItem>>::from($label),
+        );
     };
     // TODO canonical origin of other items
     (PathExpr, $self:ident, $node:ident, $label:ident) => {
@@ -694,10 +705,21 @@ impl<'a> Translator<'a> {
         }
     }
 
+    fn is_attribute_macro_target(&self, node: &ast::Item) -> bool {
+        // rust-analyzer considers as an `attr_macro_call` also a plain macro call, but we want to
+        // process that differently (in `extract_macro_call_expanded`)
+        !matches!(node, ast::Item::MacroCall(_))
+            && self.semantics.is_some_and(|semantics| {
+                let file = semantics.hir_file_for(node.syntax());
+                let node = InFile::new(file, node);
+                semantics.is_attr_macro_call(node)
+            })
+    }
+
     pub(crate) fn prepare_item_expansion(
         &mut self,
         node: &ast::Item,
-    ) -> Option<Label<generated::Item>> {
+    ) -> Option<Label<generated::MacroCall>> {
         if self.source_kind == SourceKind::Library {
             // if the item expands via an attribute macro, we want to only emit the expansion
             if let Some(expanded) = self.emit_attribute_macro_expansion(node) {
@@ -714,13 +736,10 @@ impl<'a> Translator<'a> {
                     expanded.into(),
                     &mut self.trap.writer,
                 );
-                return Some(label.into());
+                return Some(label);
             }
         }
-        let semantics = self.semantics.as_ref()?;
-        let file = semantics.hir_file_for(node.syntax());
-        let node = InFile::new(file, node);
-        if semantics.is_attr_macro_call(node) {
+        if self.is_attribute_macro_target(node) {
             self.macro_context_depth += 1;
         }
         None
@@ -730,10 +749,7 @@ impl<'a> Translator<'a> {
         &mut self,
         node: &ast::Item,
     ) -> Option<Label<generated::MacroItems>> {
-        let semantics = self.semantics?;
-        let file = semantics.hir_file_for(node.syntax());
-        let infile_node = InFile::new(file, node);
-        if !semantics.is_attr_macro_call(infile_node) {
+        if !self.is_attribute_macro_target(node) {
             return None;
         }
         self.macro_context_depth -= 1;
@@ -743,7 +759,7 @@ impl<'a> Translator<'a> {
         }
         let ExpandResult {
             value: expanded, ..
-        } = semantics.expand_attr_macro(node)?;
+        } = self.semantics.and_then(|s| s.expand_attr_macro(node))?;
         self.emit_macro_expansion_parse_errors(node, &expanded);
         let macro_items = ast::MacroItems::cast(expanded).or_else(|| {
             let message = "attribute macro expansion cannot be cast to MacroItems".to_owned();
@@ -760,9 +776,17 @@ impl<'a> Translator<'a> {
         self.emit_macro_items(&macro_items)
     }
 
-    pub(crate) fn emit_item_expansion(&mut self, node: &ast::Item, label: Label<generated::Item>) {
+    pub(crate) fn emit_item_expansion(
+        &mut self,
+        node: &ast::Item,
+        label: Label<generated::ExpandableItem>,
+    ) {
         if let Some(expanded) = self.emit_attribute_macro_expansion(node) {
-            generated::Item::emit_attribute_macro_expansion(label, expanded, &mut self.trap.writer);
+            generated::ExpandableItem::emit_attribute_macro_expansion(
+                label,
+                expanded,
+                &mut self.trap.writer,
+            );
         }
     }
 

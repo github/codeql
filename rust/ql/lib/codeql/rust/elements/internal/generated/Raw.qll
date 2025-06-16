@@ -267,18 +267,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * An associated item in a `Trait` or `Impl`.
-   *
-   * For example:
-   * ```rust
-   * trait T {fn foo(&self);}
-   * //       ^^^^^^^^^^^^^
-   * ```
-   */
-  class AssocItem extends @assoc_item, AstNode { }
-
-  /**
-   * INTERNAL: Do not use.
    * A list of `AssocItem` elements, as appearing in a `Trait` or `Impl`.
    */
   class AssocItemList extends @assoc_item_list, AstNode {
@@ -353,6 +341,19 @@ module Raw {
      * Gets the generic parameter list of this closure binder, if it exists.
      */
     GenericParamList getGenericParamList() { closure_binder_generic_param_lists(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Something that can be expanded by an attribute macro
+   */
+  class ExpandableItem extends @expandable_item, AstNode {
+    /**
+     * Gets the attribute macro expansion of this expandable item, if it exists.
+     */
+    MacroItems getAttributeMacroExpansion() {
+      expandable_item_attribute_macro_expansions(this, result)
+    }
   }
 
   /**
@@ -1701,6 +1702,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An associated item in a `Trait` or `Impl`.
+   *
+   * For example:
+   * ```rust
+   * trait T {fn foo(&self);}
+   * //       ^^^^^^^^^^^^^
+   * ```
+   */
+  class AssocItem extends @assoc_item, ExpandableItem { }
+
+  /**
+   * INTERNAL: Do not use.
    * An associated type argument in a path.
    *
    * For example:
@@ -2465,12 +2478,7 @@ module Raw {
    * enum E {}
    * ```
    */
-  class Item extends @item, Stmt, Addressable {
-    /**
-     * Gets the attribute macro expansion of this item, if it exists.
-     */
-    MacroItems getAttributeMacroExpansion() { item_attribute_macro_expansions(this, result) }
-  }
+  class Item extends @item, Stmt, Addressable, ExpandableItem { }
 
   /**
    * INTERNAL: Do not use.

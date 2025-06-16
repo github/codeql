@@ -4,7 +4,7 @@
  */
 
 private import internal.AssocItemImpl
-import codeql.rust.elements.AstNode
+import codeql.rust.elements.ExpandableItem
 
 /**
  * An associated item in a `Trait` or `Impl`.
