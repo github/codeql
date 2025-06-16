@@ -10,7 +10,6 @@ ql/csharp/ql/src/Bad Practices/CallsUnmanagedCode.ql
 ql/csharp/ql/src/Bad Practices/CatchOfNullReferenceException.ql
 ql/csharp/ql/src/Bad Practices/Control-Flow/ConstantCondition.ql
 ql/csharp/ql/src/Bad Practices/Declarations/LocalScopeVariableShadowsMember.ql
-ql/csharp/ql/src/Bad Practices/Declarations/TooManyRefParameters.ql
 ql/csharp/ql/src/Bad Practices/EmptyCatchBlock.ql
 ql/csharp/ql/src/Bad Practices/Implementation Hiding/ExposeRepresentation.ql
 ql/csharp/ql/src/Bad Practices/Naming Conventions/FieldMasksSuperField.ql
@@ -20,8 +19,6 @@ ql/csharp/ql/src/Bad Practices/UnmanagedCodeCheck.ql
 ql/csharp/ql/src/CSI/CompareIdenticalValues.ql
 ql/csharp/ql/src/CSI/NullAlways.ql
 ql/csharp/ql/src/CSI/NullMaybe.ql
-ql/csharp/ql/src/Complexity/BlockWithTooManyStatements.ql
-ql/csharp/ql/src/Complexity/ComplexCondition.ql
 ql/csharp/ql/src/Concurrency/FutileSyncOnField.ql
 ql/csharp/ql/src/Concurrency/LockOrder.ql
 ql/csharp/ql/src/Concurrency/LockThis.ql
@@ -30,7 +27,6 @@ ql/csharp/ql/src/Dead Code/DeadStoreOfLocal.ql
 ql/csharp/ql/src/Documentation/XmldocMissingSummary.ql
 ql/csharp/ql/src/Language Abuse/CastThisToTypeParameter.ql
 ql/csharp/ql/src/Language Abuse/CatchOfGenericException.ql
-ql/csharp/ql/src/Language Abuse/ChainedIs.ql
 ql/csharp/ql/src/Language Abuse/DubiousDowncastOfThis.ql
 ql/csharp/ql/src/Language Abuse/DubiousTypeTestOfThis.ql
 ql/csharp/ql/src/Language Abuse/MissedReadonlyOpportunity.ql
