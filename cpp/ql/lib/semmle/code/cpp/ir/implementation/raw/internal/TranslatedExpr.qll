@@ -382,6 +382,14 @@ abstract class TranslatedValueCategoryAdjustment extends TranslatedExpr {
 }
 
 /**
+ * Holds if `expr` requires an `SehExceptionEdge` to be generated.
+ */
+private predicate hasSehExceptionEdge(Expr expr) {
+  expr instanceof PointerDereferenceExpr and
+  exists(MicrosoftTryStmt tryStmt | tryStmt.getStmt() = expr.getEnclosingStmt().getParent*())
+}
+
+/**
  * IR translation of an implicit lvalue-to-rvalue conversion on the result of
  * an expression.
  */
@@ -403,9 +411,8 @@ class TranslatedLoad extends TranslatedValueCategoryAdjustment, TTranslatedLoad 
     (
       result = this.getParent().getChildSuccessor(this, kind)
       or
-      expr instanceof PointerDereferenceExpr and
+      hasSehExceptionEdge(expr) and
       kind instanceof SehExceptionEdge and
-      exists(MicrosoftTryStmt tryStmt | tryStmt.getStmt() = expr.getEnclosingStmt().getParent*()) and
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e))
     )
   }
@@ -1955,9 +1962,8 @@ class TranslatedAssignExpr extends TranslatedNonConstantExpr {
     (
       result = this.getParent().getChildSuccessor(this, kind)
       or
-      expr.getLValue() instanceof PointerDereferenceExpr and
+      hasSehExceptionEdge(expr.getLValue()) and
       kind instanceof SehExceptionEdge and
-      exists(MicrosoftTryStmt tryStmt | tryStmt.getStmt() = expr.getEnclosingStmt().getParent*()) and
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e))
     )
   }

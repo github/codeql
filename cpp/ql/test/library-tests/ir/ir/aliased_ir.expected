@@ -39258,7 +39258,7 @@ try_except.c:
 #   46|   Block 7
 #   46|     v46_10(void) = Unreached : 
 
-#   56| void k(int*, int*, int*, int*, int*)
+#   56| void k(int*, int*, int*)
 #   56|   Block 0
 #   56|     v56_1(void)          = EnterFunction            : 
 #   56|     m56_2(unknown)       = AliasedDefinition        : 
@@ -39276,14 +39276,6 @@ try_except.c:
 #   56|     m56_14(int *)        = InitializeParameter[d]   : &:r56_13
 #   56|     r56_15(int *)        = Load[d]                  : &:r56_13, m56_14
 #   56|     m56_16(unknown)      = InitializeIndirection[d] : &:r56_15
-#   56|     r56_17(glval<int *>) = VariableAddress[e]       : 
-#   56|     m56_18(int *)        = InitializeParameter[e]   : &:r56_17
-#   56|     r56_19(int *)        = Load[e]                  : &:r56_17, m56_18
-#   56|     m56_20(unknown)      = InitializeIndirection[e] : &:r56_19
-#   56|     r56_21(glval<int *>) = VariableAddress[f]       : 
-#   56|     m56_22(int *)        = InitializeParameter[f]   : &:r56_21
-#   56|     r56_23(int *)        = Load[f]                  : &:r56_21, m56_22
-#   56|     m56_24(unknown)      = InitializeIndirection[f] : &:r56_23
 #   57|     r57_1(glval<int>)    = VariableAddress[x]       : 
 #   57|     r57_2(int)           = Constant[0]              : 
 #   57|     m57_3(int)           = Store[x]                 : &:r57_1, r57_2
@@ -39355,17 +39347,15 @@ try_except.c:
 #   66|     m66_1(unknown) = Phi                  : from 3:m60_7, from 7:m63_7
 #   66|     m66_2(unknown) = Phi                  : from 3:~m56_4, from 7:~m64_6
 #   66|     v66_3(void)    = NoOp                 : 
-#   56|     v56_25(void)   = ReturnIndirection[b] : &:r56_7, m56_8
-#   56|     v56_26(void)   = ReturnIndirection[c] : &:r56_11, m66_1
-#   56|     v56_27(void)   = ReturnIndirection[d] : &:r56_15, m56_16
-#   56|     v56_28(void)   = ReturnIndirection[e] : &:r56_19, m56_20
-#   56|     v56_29(void)   = ReturnIndirection[f] : &:r56_23, m56_24
-#   56|     v56_30(void)   = ReturnVoid           : 
-#   56|     v56_31(void)   = AliasedUse           : ~m66_2
-#   56|     v56_32(void)   = ExitFunction         : 
+#   56|     v56_17(void)   = ReturnIndirection[b] : &:r56_7, m56_8
+#   56|     v56_18(void)   = ReturnIndirection[c] : &:r56_11, m66_1
+#   56|     v56_19(void)   = ReturnIndirection[d] : &:r56_15, m56_16
+#   56|     v56_20(void)   = ReturnVoid           : 
+#   56|     v56_21(void)   = AliasedUse           : ~m66_2
+#   56|     v56_22(void)   = ExitFunction         : 
 
 #   56|   Block 9
-#   56|     v56_33(void) = Unreached : 
+#   56|     v56_23(void) = Unreached : 
 
 try_except.cpp:
 #    6| void f_cpp()

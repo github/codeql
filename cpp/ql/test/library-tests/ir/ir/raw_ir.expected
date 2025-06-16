@@ -37533,7 +37533,7 @@ try_except.c:
 #   46|     v46_9(void) = ReturnVoid : 
 #-----|   Goto -> Block 1
 
-#   56| void k(int*, int*, int*, int*, int*)
+#   56| void k(int*, int*, int*)
 #   56|   Block 0
 #   56|     v56_1(void)          = EnterFunction            : 
 #   56|     mu56_2(unknown)      = AliasedDefinition        : 
@@ -37550,14 +37550,6 @@ try_except.c:
 #   56|     mu56_13(int *)       = InitializeParameter[d]   : &:r56_12
 #   56|     r56_14(int *)        = Load[d]                  : &:r56_12, ~m?
 #   56|     mu56_15(unknown)     = InitializeIndirection[d] : &:r56_14
-#   56|     r56_16(glval<int *>) = VariableAddress[e]       : 
-#   56|     mu56_17(int *)       = InitializeParameter[e]   : &:r56_16
-#   56|     r56_18(int *)        = Load[e]                  : &:r56_16, ~m?
-#   56|     mu56_19(unknown)     = InitializeIndirection[e] : &:r56_18
-#   56|     r56_20(glval<int *>) = VariableAddress[f]       : 
-#   56|     mu56_21(int *)       = InitializeParameter[f]   : &:r56_20
-#   56|     r56_22(int *)        = Load[f]                  : &:r56_20, ~m?
-#   56|     mu56_23(unknown)     = InitializeIndirection[f] : &:r56_22
 #   57|     r57_1(glval<int>)    = VariableAddress[x]       : 
 #   57|     r57_2(int)           = Constant[0]              : 
 #   57|     mu57_3(int)          = Store[x]                 : &:r57_1, r57_2
@@ -37568,11 +37560,11 @@ try_except.c:
 #-----|   SEH Exception -> Block 8
 
 #   56|   Block 1
-#   56|     v56_24(void) = AliasedUse   : ~m?
-#   56|     v56_25(void) = ExitFunction : 
+#   56|     v56_16(void) = AliasedUse   : ~m?
+#   56|     v56_17(void) = ExitFunction : 
 
 #   56|   Block 2
-#   56|     v56_26(void) = Unwind : 
+#   56|     v56_18(void) = Unwind : 
 #-----|   Goto -> Block 1
 
 #   59|   Block 3
@@ -37630,12 +37622,10 @@ try_except.c:
 
 #   66|   Block 10
 #   66|     v66_1(void)  = NoOp                 : 
-#   56|     v56_27(void) = ReturnIndirection[b] : &:r56_6, ~m?
-#   56|     v56_28(void) = ReturnIndirection[c] : &:r56_10, ~m?
-#   56|     v56_29(void) = ReturnIndirection[d] : &:r56_14, ~m?
-#   56|     v56_30(void) = ReturnIndirection[e] : &:r56_18, ~m?
-#   56|     v56_31(void) = ReturnIndirection[f] : &:r56_22, ~m?
-#   56|     v56_32(void) = ReturnVoid           : 
+#   56|     v56_19(void) = ReturnIndirection[b] : &:r56_6, ~m?
+#   56|     v56_20(void) = ReturnIndirection[c] : &:r56_10, ~m?
+#   56|     v56_21(void) = ReturnIndirection[d] : &:r56_14, ~m?
+#   56|     v56_22(void) = ReturnVoid           : 
 #-----|   Goto -> Block 1
 
 try_except.cpp:

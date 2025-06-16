@@ -49689,17 +49689,13 @@ try_except.c:
 #   52|                 Type = [IntType] int
 #   52|                 ValueCategory = prvalue(load)
 #   54|     getStmt(2): [ReturnStmt] return ...
-#   56| [TopLevelFunction] void k(int*, int*, int*, int*, int*)
+#   56| [TopLevelFunction] void k(int*, int*, int*)
 #   56|   <params>: 
 #   56|     getParameter(0): [Parameter] b
 #   56|         Type = [IntPointerType] int *
 #   56|     getParameter(1): [Parameter] c
 #   56|         Type = [IntPointerType] int *
 #   56|     getParameter(2): [Parameter] d
-#   56|         Type = [IntPointerType] int *
-#   56|     getParameter(3): [Parameter] e
-#   56|         Type = [IntPointerType] int *
-#   56|     getParameter(4): [Parameter] f
 #   56|         Type = [IntPointerType] int *
 #   56|   getEntryPoint(): [BlockStmt] { ... }
 #   57|     getStmt(0): [DeclStmt] declaration

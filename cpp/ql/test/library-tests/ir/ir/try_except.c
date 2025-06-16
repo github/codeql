@@ -53,7 +53,7 @@ void j(int b) {
   }
 }
 
-void k(int *b, int *c, int *d, int *e, int *f) {
+void k(int *b, int *c, int *d) {
   int x = 0;
   __try {
     x = *b;
