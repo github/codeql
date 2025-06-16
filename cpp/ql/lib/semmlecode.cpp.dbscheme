@@ -1139,6 +1139,11 @@ varattributes(
     int spec_id: @attribute ref
 );
 
+namespaceattributes(
+    int namespace_id: @namespace ref,
+    int spec_id: @attribute ref
+);
+
 stmtattributes(
     int stmt_id: @stmt ref,
     int spec_id: @attribute ref
