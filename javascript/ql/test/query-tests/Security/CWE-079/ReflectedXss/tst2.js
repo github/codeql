@@ -90,7 +90,7 @@ app.get('/baz', function(req, res) {
 });
 
 app.get('/baz', function(req, res) {
-  let { p } = req.params; // $ MISSING: Source
+  let { p } = req.params; // $ Source
 
   var serialized = serializeJavaScript(p);
 
@@ -98,11 +98,11 @@ app.get('/baz', function(req, res) {
   
   var unsafe = serializeJavaScript({someProperty: p}, {unsafe: true});
 
-  res.send(unsafe); // $ MISSING: Alert
+  res.send(unsafe); // $ Alert
 });
 
 app.get('/baz', function(req, res) {
-  let { p } = req.params; // $ MISSING: Source
+  let { p } = req.params; // $ Source
 
   var serialized = serializeJavaScript(p);
 
@@ -110,5 +110,5 @@ app.get('/baz', function(req, res) {
   let obj = {someProperty: p};
   var unsafe = serializeJavaScript(obj, {unsafe: true});
 
-  res.send(unsafe); // $ MISSING: Alert
+  res.send(unsafe); // $ Alert
 });
