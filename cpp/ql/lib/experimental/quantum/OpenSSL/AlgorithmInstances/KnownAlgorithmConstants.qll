@@ -134,12 +134,12 @@ class KnownOpenSslHashAlgorithmExpr extends Expr instanceof KnownOpenSslAlgorith
   }
 }
 
-class KnownOpenSslMACAlgorithmExpr extends Expr instanceof KnownOpenSslAlgorithmExpr {
-  KnownOpenSslMACAlgorithmExpr() { resolveAlgorithmFromExpr(this, _, "MAC") }
+class KnownOpenSslMacAlgorithmExpr extends Expr instanceof KnownOpenSslAlgorithmExpr {
+  KnownOpenSslMacAlgorithmExpr() { resolveAlgorithmFromExpr(this, _, "MAC") }
 }
 
-class KnownOpenSslHMACAlgorithmExpr extends Expr instanceof KnownOpenSslMACAlgorithmExpr {
-  KnownOpenSslHMACAlgorithmExpr() { resolveAlgorithmFromExpr(this, "HMAC", "MAC") }
+class KnownOpenSslHMacAlgorithmExpr extends Expr instanceof KnownOpenSslMacAlgorithmExpr {
+  KnownOpenSslHMacAlgorithmExpr() { resolveAlgorithmFromExpr(this, "HMAC", "MAC") }
 
   /**
    * Gets an explicit cipher algorithm for this MAC algorithm.
@@ -148,8 +148,8 @@ class KnownOpenSslHMACAlgorithmExpr extends Expr instanceof KnownOpenSslMACAlgor
   KnownOpenSslHashAlgorithmExpr getExplicitHashAlgorithm() { result = this }
 }
 
-class KnownOpenSslCMACAlgorithmExpr extends Expr instanceof KnownOpenSslMACAlgorithmExpr {
-  KnownOpenSslCMACAlgorithmExpr() { resolveAlgorithmFromExpr(this, "CMAC", "MAC") }
+class KnownOpenSslCMacAlgorithmExpr extends Expr instanceof KnownOpenSslMacAlgorithmExpr {
+  KnownOpenSslCMacAlgorithmExpr() { resolveAlgorithmFromExpr(this, "CMAC", "MAC") }
 
   /**
    * Gets an explicit cipher algorithm for this MAC algorithm.

@@ -132,7 +132,7 @@ abstract class EvpSignatureOperation extends EvpOperation, Crypto::SignatureOper
 
   /**
    * Keys provided in the initialization call or in a context are found by this method.
-   * Keys in explicit arguments are found by overriden methods in extending classes.
+   * Keys in explicit arguments are found by overridden methods in extending classes.
    */
   override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
     result = DataFlow::exprNode(this.getInitCall().(EvpKeyInitializer).getKeyArg())

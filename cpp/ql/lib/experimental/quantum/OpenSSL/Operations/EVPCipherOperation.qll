@@ -70,8 +70,8 @@ class Evp_Cipher_EX2_or_Simple_Init_Call extends Evp_EX2_Initializer {
   }
 }
 
-class Evp_CipherInit_SKEY_Call extends Evp_EX2_Initializer {
-  Evp_CipherInit_SKEY_Call() { this.(Call).getTarget().getName() in ["EVP_CipherInit_SKEY"] }
+class Evp_CipherInit_SKey_Call extends Evp_EX2_Initializer {
+  Evp_CipherInit_SKey_Call() { this.(Call).getTarget().getName() = "EVP_CipherInit_SKEY" }
 
   override Expr getKeyOperationSubtypeArg() { result = this.(Call).getArgument(5) }
 }

@@ -4,13 +4,13 @@ private import semmle.code.cpp.dataflow.new.DataFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstances
 
-abstract class KEMAlgorithmValueConsumer extends OpenSslAlgorithmValueConsumer { }
+abstract class KemAlgorithmValueConsumer extends OpenSslAlgorithmValueConsumer { }
 
-class EvpKEMAlgorithmValueConsumer extends KEMAlgorithmValueConsumer {
+class EvpKemAlgorithmValueConsumer extends KemAlgorithmValueConsumer {
   DataFlow::Node valueArgNode;
   DataFlow::Node resultNode;
 
-  EvpKEMAlgorithmValueConsumer() {
+  EvpKemAlgorithmValueConsumer() {
     resultNode.asExpr() = this and
     (
       this.(Call).getTarget().getName() = "EVP_KEM_fetch" and

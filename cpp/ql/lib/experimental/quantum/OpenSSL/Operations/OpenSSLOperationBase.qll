@@ -4,7 +4,7 @@ private import experimental.quantum.OpenSSL.CtxFlow
 private import experimental.quantum.OpenSSL.KeyFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 // Importing these intializers here to ensure the are part of any model that is
-// using OpenSslOperationBase. This futher ensures that initializers are tied to opeartions
+// using OpenSslOperationBase. This further ensures that initializers are tied to opeartions
 // even if only importing the operation by itself.
 import EVPPKeyCtxInitializer
 
@@ -73,10 +73,16 @@ abstract class EvpInitializer extends Call {
   abstract CtxPointerSource getContext();
 }
 
+/**
+ * A call to initialize a key size.
+ */
 abstract class EvpKeySizeInitializer extends EvpInitializer {
   abstract Expr getKeySizeArg();
 }
 
+/**
+ * A call to initialize a key operation subtype.
+ */
 abstract class EvpKeyOperationSubtypeInitializer extends EvpInitializer {
   abstract Expr getKeyOperationSubtypeArg();
 
@@ -119,6 +125,9 @@ abstract class EvpPrimaryAlgorithmInitializer extends EvpInitializer {
   }
 }
 
+/**
+ * A call to initialize a key.
+ */
 abstract class EvpKeyInitializer extends EvpInitializer {
   abstract Expr getKeyArg();
 }
@@ -175,6 +184,9 @@ abstract class EvpIVInitializer extends EvpInitializer {
   abstract Expr getIVArg();
 }
 
+/**
+ * A call to initialize padding.
+ */
 abstract class EvpPaddingInitializer extends EvpInitializer {
   /**
    * Gets the padding mode argument.
@@ -183,6 +195,9 @@ abstract class EvpPaddingInitializer extends EvpInitializer {
   abstract Expr getPaddingArg();
 }
 
+/**
+ * A call to initialize a salt length.
+ */
 abstract class EvpSaltLengthInitializer extends EvpInitializer {
   /**
    * Gets the salt length argument.
@@ -191,6 +206,9 @@ abstract class EvpSaltLengthInitializer extends EvpInitializer {
   abstract Expr getSaltLengthArg();
 }
 
+/**
+ * A call to initialize a hash algorithm.
+ */
 abstract class EvpHashAlgorithmInitializer extends EvpInitializer {
   abstract Expr getHashAlgorithmArg();
 

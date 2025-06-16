@@ -6,12 +6,12 @@ private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmI
 private import experimental.quantum.OpenSSL.Operations.OpenSSLOperations
 private import AlgToAVCFlow
 
-class KnownOpenSslMACConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
-  Crypto::MACAlgorithmInstance instanceof KnownOpenSslMACAlgorithmExpr
+class KnownOpenSslMacConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
+  Crypto::MACAlgorithmInstance instanceof KnownOpenSslMacAlgorithmExpr
 {
   OpenSslAlgorithmValueConsumer getterCall;
 
-  KnownOpenSslMACConstantAlgorithmInstance() {
+  KnownOpenSslMacConstantAlgorithmInstance() {
     // Two possibilities:
     // 1) The source is a literal and flows to a getter, then we know we have an instance
     // 2) The source is a KnownOpenSslAlgorithm is call, and we know we have an instance immediately from that
@@ -33,24 +33,24 @@ class KnownOpenSslMACConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
 
   override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
 
-  override string getRawMACAlgorithmName() {
+  override string getRawMacAlgorithmName() {
     result = this.(Literal).getValue().toString()
     or
     result = this.(Call).getTarget().getName()
   }
 
-  override Crypto::TMACType getMACType() {
-    this instanceof KnownOpenSslHMACAlgorithmExpr and result instanceof Crypto::THMAC
+  override Crypto::TMACType getMacType() {
+    this instanceof KnownOpenSslHMacAlgorithmExpr and result instanceof Crypto::THMAC
     or
-    this instanceof KnownOpenSslCMACAlgorithmExpr and result instanceof Crypto::TCMAC
+    this instanceof KnownOpenSslCMacAlgorithmExpr and result instanceof Crypto::TCMAC
   }
 }
 
-class KnownOpenSslHMACConstantAlgorithmInstance extends Crypto::HMACAlgorithmInstance,
-  KnownOpenSslMACConstantAlgorithmInstance
+class KnownOpenSslHMacConstantAlgorithmInstance extends Crypto::HMACAlgorithmInstance,
+  KnownOpenSslMacConstantAlgorithmInstance
 {
   override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
-    if exists(this.(KnownOpenSslHMACAlgorithmExpr).getExplicitHashAlgorithm())
+    if exists(this.(KnownOpenSslHMacAlgorithmExpr).getExplicitHashAlgorithm())
     then
       // ASSUMPTION: if there is an explicit hash algorithm, it is already modeled
       // and we can simply grab that model's AVC
