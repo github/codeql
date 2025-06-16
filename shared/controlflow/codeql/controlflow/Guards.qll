@@ -647,6 +647,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     private predicate uniqueValue(SsaDefinition v, Expr e, GuardValue k) {
       possibleValue(v, false, e, k) and
+      not possibleValue(v, true, e, k) and
       forex(Expr other, GuardValue otherval | possibleValue(v, _, other, otherval) and other != e |
         disjointValues(otherval, k)
       )
