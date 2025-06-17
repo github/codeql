@@ -133,7 +133,7 @@ abstract class EvpKeyInitializer extends EvpInitializer {
 }
 
 /**
- * Any key initializer may initialize the algorithm and the key size through
+ * A key initializer may initialize the algorithm and the key size through
  * the key. Extend any instance of key initializer provide initialization
  * of the algorithm and key size from the key.
  */
