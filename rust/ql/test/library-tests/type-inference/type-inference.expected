@@ -2792,6 +2792,8 @@ inferType
 | main.rs:1875:40:1875:40 | 2 |  | {EXTERNAL LOCATION} | u64 |
 | main.rs:1875:43:1875:43 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1875:43:1875:43 | 3 |  | {EXTERNAL LOCATION} | u64 |
+| main.rs:1876:13:1876:13 | u |  | file://:0:0:0:0 | & |
+| main.rs:1876:13:1876:13 | u | &T | {EXTERNAL LOCATION} | u64 |
 | main.rs:1876:18:1876:22 | vals4 |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:1876:18:1876:22 | vals4 | T | file://:0:0:0:0 | & |
 | main.rs:1876:18:1876:22 | vals4 | T.&T | {EXTERNAL LOCATION} | u64 |

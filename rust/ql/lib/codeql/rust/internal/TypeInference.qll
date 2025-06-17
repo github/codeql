@@ -1140,10 +1140,17 @@ private Type inferForLoopExprType(AstNode n, TypePath path) {
   exists(ForExpr fe, Type iterableType, TypePath iterablePath |
     n = fe.getPat() and
     iterableType = inferType(fe.getIterable(), iterablePath) and
+    result = iterableType and
     (
-      iterablePath.isCons(any(ArrayTypeParameter tp), path) and
-      result = iterableType
-      // TODO: iterables (containers, ranges etc)
+      iterablePath.isCons(any(Vec v).getElementTypeParameter(), path)
+      or
+      iterablePath.isCons(any(ArrayTypeParameter tp), path)
+      or
+      exists(TypePath path0 |
+        iterablePath.isCons(any(RefTypeParameter tp), path0) and
+        path0.isCons(any(SliceTypeParameter tp), path)
+      )
+      // TODO: iterables (general case for containers, ranges etc)
     )
   )
 }
