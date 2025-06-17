@@ -34,6 +34,8 @@ module SsrfConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 module SsrfFlow = TaintTracking::Global<SsrfConfig>;
