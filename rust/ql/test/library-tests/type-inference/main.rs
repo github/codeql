@@ -1678,7 +1678,7 @@ mod overloadable_operators {
         let vec2_not = !v1; // $ type=vec2_not:Vec2 method=Vec2::not
 
         // Here the type of `default_vec2` must be inferred from the `+` call.
-        let default_vec2 = Default::default(); // $ MISSING: type=default_vec2:Vec2
+        let default_vec2 = Default::default(); // $ type=default_vec2:Vec2
         let vec2_zero_plus = Vec2 { x: 0, y: 0 } + default_vec2; // $ method=Vec2::add
     }
 }

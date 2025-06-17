@@ -705,7 +705,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   predicate adjustAccessType(
     AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
   ) {
-    if apos.getArgumentPosition().isSelf() and apos.isBorrowed()
+    if apos.isBorrowed()
     then
       exists(Type selfParamType |
         selfParamType =
@@ -767,13 +767,10 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
   |
     n = a.getNodeAt(apos) and
     result = CallExprBaseMatching::inferAccessType(a, apos, path0) and
-    // temporary workaround until implicit borrows are handled correctly
-    if a instanceof Operation then apos.isReturn() else any()
-  |
-    if apos.getArgumentPosition().isSelf()
+    if apos.isBorrowed()
     then
-      exists(Type receiverType | receiverType = inferType(n) |
-        if receiverType = TRefType()
+      exists(Type argType | argType = inferType(n) |
+        if argType = TRefType()
         then
           path = path0 and
           path0.isCons(TRefTypeParameter(), _)
@@ -784,7 +781,7 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
           path = TypePath::cons(TRefTypeParameter(), path0)
         else (
           not (
-            receiverType.(StructType).asItemNode() instanceof StringStruct and
+            argType.(StructType).asItemNode() instanceof StringStruct and
             result.(StructType).asItemNode() instanceof Builtins::Str
           ) and
           (

@@ -2464,6 +2464,8 @@ inferType
 | main.rs:1678:13:1678:20 | vec2_not |  | main.rs:1322:5:1327:5 | Vec2 |
 | main.rs:1678:24:1678:26 | ! ... |  | main.rs:1322:5:1327:5 | Vec2 |
 | main.rs:1678:25:1678:26 | v1 |  | main.rs:1322:5:1327:5 | Vec2 |
+| main.rs:1681:13:1681:24 | default_vec2 |  | main.rs:1322:5:1327:5 | Vec2 |
+| main.rs:1681:28:1681:45 | ...::default(...) |  | main.rs:1322:5:1327:5 | Vec2 |
 | main.rs:1682:13:1682:26 | vec2_zero_plus |  | main.rs:1322:5:1327:5 | Vec2 |
 | main.rs:1682:30:1682:48 | Vec2 {...} |  | main.rs:1322:5:1327:5 | Vec2 |
 | main.rs:1682:30:1682:63 | ... + ... |  | main.rs:1322:5:1327:5 | Vec2 |
@@ -2471,6 +2473,7 @@ inferType
 | main.rs:1682:40:1682:40 | 0 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1682:46:1682:46 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1682:46:1682:46 | 0 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1682:52:1682:63 | default_vec2 |  | main.rs:1322:5:1327:5 | Vec2 |
 | main.rs:1692:18:1692:21 | SelfParam |  | main.rs:1689:5:1689:14 | S1 |
 | main.rs:1695:25:1697:5 | { ... } |  | main.rs:1689:5:1689:14 | S1 |
 | main.rs:1696:9:1696:10 | S1 |  | main.rs:1689:5:1689:14 | S1 |

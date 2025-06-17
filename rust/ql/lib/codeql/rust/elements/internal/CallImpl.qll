@@ -135,14 +135,19 @@ module Impl {
   private class OperatorCall extends Call instanceof Operation {
     Trait trait;
     string methodName;
+    int borrows;
 
-    OperatorCall() { super.isOverloaded(trait, methodName) }
+    OperatorCall() { super.isOverloaded(trait, methodName, borrows) }
 
     override string getMethodName() { result = methodName }
 
     override Trait getTrait() { result = trait }
 
-    override predicate implicitBorrowAt(ArgumentPosition pos) { none() }
+    override predicate implicitBorrowAt(ArgumentPosition pos) {
+      pos.isSelf() and borrows >= 1
+      or
+      pos.asPosition() = 0 and borrows = 2
+    }
 
     override Expr getArgument(ArgumentPosition pos) {
       pos.isSelf() and result = super.getOperand(0)
