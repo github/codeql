@@ -193,7 +193,7 @@ class CtxPointerSource extends CtxPointerExpr {
 /**
  * Flow from any CtxPointerSource to other CtxPointerSource.
  */
-module OpenSSLCtxSourceToSourceFlowConfig implements DataFlow::ConfigSig {
+module OpenSslCtxSourceToSourceFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { exists(CtxPointerSource s | s.asNode() = source) }
 
   predicate isSink(DataFlow::Node sink) { exists(CtxPointerSource s | s.asNode() = sink) }
@@ -207,14 +207,14 @@ module OpenSSLCtxSourceToSourceFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module OpenSSLCtxSourceToArgumentFlow = DataFlow::Global<OpenSSLCtxSourceToSourceFlowConfig>;
+module OpenSslCtxSourceToArgumentFlow = DataFlow::Global<OpenSslCtxSourceToSourceFlowConfig>;
 
 /**
  * Holds if there is a context flow from the source to the sink.
  */
 predicate ctxSrcToSrcFlow(CtxPointerSource source, CtxPointerSource sink) {
   exists(DataFlow::Node a, DataFlow::Node b |
-    OpenSSLCtxSourceToArgumentFlow::flow(a, b) and
+    OpenSslCtxSourceToArgumentFlow::flow(a, b) and
     a = source.asNode() and
     b = sink.asNode()
   )

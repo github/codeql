@@ -2,11 +2,11 @@ import semmle.code.cpp.dataflow.new.DataFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 /**
- * Flows from algorithm values to operations, specific to OpenSSL
+ * Flows from algorithm values to operations, specific to OpenSsl
  */
 module AvcToCallArgConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(OpenSSLAlgorithmValueConsumer c | c.getResultNode() = source)
+    exists(OpenSslAlgorithmValueConsumer c | c.getResultNode() = source)
   }
 
   /**

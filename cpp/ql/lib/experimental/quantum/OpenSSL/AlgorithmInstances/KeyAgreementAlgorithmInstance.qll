@@ -5,11 +5,11 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
 private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstanceBase
 private import AlgToAVCFlow
 
-predicate knownOpenSSLConstantToKeyAgreementFamilyType(
-  KnownOpenSSLKeyAgreementAlgorithmExpr e, Crypto::TKeyAgreementType type
+predicate knownOpenSslConstantToKeyAgreementFamilyType(
+  KnownOpenSslKeyAgreementAlgorithmExpr e, Crypto::TKeyAgreementType type
 ) {
   exists(string name |
-    name = e.(KnownOpenSSLAlgorithmExpr).getNormalizedName() and
+    name = e.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
     (
       name = "ECDH" and type = Crypto::ECDH()
       or
@@ -22,37 +22,37 @@ predicate knownOpenSSLConstantToKeyAgreementFamilyType(
   )
 }
 
-class KnownOpenSSLKeyAgreementConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
-  Crypto::KeyAgreementAlgorithmInstance instanceof KnownOpenSSLKeyAgreementAlgorithmExpr
+class KnownOpenSslKeyAgreementConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
+  Crypto::KeyAgreementAlgorithmInstance instanceof KnownOpenSslKeyAgreementAlgorithmExpr
 {
-  OpenSSLAlgorithmValueConsumer getterCall;
+  OpenSslAlgorithmValueConsumer getterCall;
 
-  KnownOpenSSLKeyAgreementConstantAlgorithmInstance() {
+  KnownOpenSslKeyAgreementConstantAlgorithmInstance() {
     // Two possibilities:
     // 1) The source is a literal and flows to a getter, then we know we have an instance
-    // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
+    // 2) The source is a KnownOpenSslAlgorithm is call, and we know we have an instance immediately from that
     // Possibility 1:
-    this instanceof OpenSSLAlgorithmLiteral and
+    this instanceof OpenSslAlgorithmLiteral and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
       sink = getterCall.getInputNode() and
       // Source is `this`
       src.asExpr() = this and
       // This traces to a getter
-      KnownOpenSSLAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
+      KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
     )
     or
     // Possibility 2:
-    this instanceof OpenSSLAlgorithmCall and
+    this instanceof OpenSslAlgorithmCall and
     getterCall = this
   }
 
-  override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
+  override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
 
   override Crypto::TKeyAgreementType getKeyAgreementType() {
-    knownOpenSSLConstantToKeyAgreementFamilyType(this, result)
+    knownOpenSslConstantToKeyAgreementFamilyType(this, result)
     or
-    not knownOpenSSLConstantToKeyAgreementFamilyType(this, _) and
+    not knownOpenSslConstantToKeyAgreementFamilyType(this, _) and
     result = Crypto::OtherKeyAgreementType()
   }
 

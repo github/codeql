@@ -1,10 +1,9 @@
 private import experimental.quantum.Language
-private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
 private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 private import semmle.code.cpp.dataflow.new.DataFlow
 
-class ECKeyGenOperation extends OpenSSLOperation, Crypto::KeyGenerationOperationInstance {
+class ECKeyGenOperation extends OpenSslOperation, Crypto::KeyGenerationOperationInstance {
   ECKeyGenOperation() { this.(Call).getTarget().getName() = "EC_KEY_generate_key" }
 
   override Expr getAlgorithmArg() { result = this.(Call).getArgument(0) }

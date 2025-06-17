@@ -4,13 +4,13 @@ private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmCon
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstances
 
-abstract class PKeyValueConsumer extends OpenSSLAlgorithmValueConsumer { }
+abstract class PKeyValueConsumer extends OpenSslAlgorithmValueConsumer { }
 
-class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
+class EvpPKeyAlgorithmConsumer extends PKeyValueConsumer {
   DataFlow::Node valueArgNode;
   DataFlow::Node resultNode;
 
-  EVPPKeyAlgorithmConsumer() {
+  EvpPKeyAlgorithmConsumer() {
     resultNode.asExpr() = this.(Call) and // in all cases the result is the return
     (
       // NOTE: some of these consumers are themselves key gen operations,
@@ -47,7 +47,7 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
   }
 
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-    exists(OpenSSLAlgorithmInstance i | i.getAVC() = this and result = i)
+    exists(OpenSslAlgorithmInstance i | i.getAvc() = this and result = i)
   }
 
   override DataFlow::Node getResultNode() { result = resultNode }

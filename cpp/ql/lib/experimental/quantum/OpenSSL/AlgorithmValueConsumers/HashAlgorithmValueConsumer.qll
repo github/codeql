@@ -4,20 +4,20 @@ private import semmle.code.cpp.dataflow.new.DataFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstances
 
-abstract class HashAlgorithmValueConsumer extends OpenSSLAlgorithmValueConsumer { }
+abstract class HashAlgorithmValueConsumer extends OpenSslAlgorithmValueConsumer { }
 
 /**
  * EVP_Q_Digest directly consumes algorithm constant values
  */
-class EVP_Q_Digest_Algorithm_Consumer extends HashAlgorithmValueConsumer {
-  EVP_Q_Digest_Algorithm_Consumer() { this.(Call).getTarget().getName() = "EVP_Q_digest" }
+class Evp_Q_Digest_Algorithm_Consumer extends HashAlgorithmValueConsumer {
+  Evp_Q_Digest_Algorithm_Consumer() { this.(Call).getTarget().getName() = "EVP_Q_digest" }
 
   override Crypto::ConsumerInputDataFlowNode getInputNode() {
     result.asExpr() = this.(Call).getArgument(1)
   }
 
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-    exists(OpenSSLAlgorithmInstance i | i.getAVC() = this and result = i)
+    exists(OpenSslAlgorithmInstance i | i.getAvc() = this and result = i)
   }
 
   override DataFlow::Node getResultNode() {
@@ -50,7 +50,7 @@ class EvpPkeySetCtxALgorithmConsumer extends HashAlgorithmValueConsumer {
   override Crypto::ConsumerInputDataFlowNode getInputNode() { result = valueArgNode }
 
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-    exists(OpenSSLAlgorithmInstance i | i.getAVC() = this and result = i)
+    exists(OpenSslAlgorithmInstance i | i.getAvc() = this and result = i)
   }
 }
 
@@ -59,11 +59,11 @@ class EvpPkeySetCtxALgorithmConsumer extends HashAlgorithmValueConsumer {
  * https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
  * https://docs.openssl.org/3.0/man3/EVP_DigestSignInit/#name
  */
-class EVPDigestAlgorithmValueConsumer extends HashAlgorithmValueConsumer {
+class EvpDigestAlgorithmValueConsumer extends HashAlgorithmValueConsumer {
   DataFlow::Node valueArgNode;
   DataFlow::Node resultNode;
 
-  EVPDigestAlgorithmValueConsumer() {
+  EvpDigestAlgorithmValueConsumer() {
     resultNode.asExpr() = this and
     (
       this.(Call).getTarget().getName() in [
@@ -84,6 +84,6 @@ class EVPDigestAlgorithmValueConsumer extends HashAlgorithmValueConsumer {
   override Crypto::ConsumerInputDataFlowNode getInputNode() { result = valueArgNode }
 
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-    exists(OpenSSLAlgorithmInstance i | i.getAVC() = this and result = i)
+    exists(OpenSslAlgorithmInstance i | i.getAvc() = this and result = i)
   }
 }

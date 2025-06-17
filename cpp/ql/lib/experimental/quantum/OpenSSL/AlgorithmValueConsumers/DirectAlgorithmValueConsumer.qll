@@ -10,7 +10,7 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
  * Also includes operations directly using an algorithm
  * like AES_encrypt().
  */
-class DirectAlgorithmValueConsumer extends OpenSSLAlgorithmValueConsumer instanceof OpenSSLAlgorithmCall
+class DirectAlgorithmValueConsumer extends OpenSslAlgorithmValueConsumer instanceof OpenSslAlgorithmCall
 {
   /**
    * These cases take in no explicit value (the value is implicit)
@@ -22,9 +22,9 @@ class DirectAlgorithmValueConsumer extends OpenSSLAlgorithmValueConsumer instanc
    * created as a result of this call.
    */
   override DataFlow::Node getResultNode() {
-    this instanceof OpenSSLDirectAlgorithmFetchCall and
+    this instanceof OpenSslDirectAlgorithmFetchCall and
     result.asExpr() = this
-    // NOTE: if instanceof OpenSSLDirectAlgorithmOperationCall then there is no algorithm generated
+    // NOTE: if instanceof OpenSslDirectAlgorithmOperationCall then there is no algorithm generated
     // the algorithm is directly used
   }
 

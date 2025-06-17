@@ -10,11 +10,11 @@ private import AlgToAVCFlow
 /**
  * Gets the signature algorithm type based on the normalized algorithm name.
  */
-private predicate knownOpenSSLConstantToSignatureFamilyType(
-  KnownOpenSSLSignatureAlgorithmExpr e, Crypto::KeyOpAlg::TAlgorithm type
+private predicate knownOpenSslConstantToSignatureFamilyType(
+  KnownOpenSslSignatureAlgorithmExpr e, Crypto::KeyOpAlg::TAlgorithm type
 ) {
   exists(string name |
-    name = e.(KnownOpenSSLAlgorithmExpr).getNormalizedName() and
+    name = e.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
     (
       name.matches("RSA%") and type = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA())
       or
@@ -30,30 +30,30 @@ private predicate knownOpenSSLConstantToSignatureFamilyType(
 }
 
 /**
- * A signature algorithm instance derived from an OpenSSL constant.
+ * A signature algorithm instance derived from an OpenSsl constant.
  */
-class KnownOpenSSLSignatureConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
-  Crypto::KeyOperationAlgorithmInstance instanceof KnownOpenSSLSignatureAlgorithmExpr
+class KnownOpenSslSignatureConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
+  Crypto::KeyOperationAlgorithmInstance instanceof KnownOpenSslSignatureAlgorithmExpr
 {
-  OpenSSLAlgorithmValueConsumer getterCall;
+  OpenSslAlgorithmValueConsumer getterCall;
 
-  KnownOpenSSLSignatureConstantAlgorithmInstance() {
+  KnownOpenSslSignatureConstantAlgorithmInstance() {
     // Two possibilities:
     // 1) The source is a literal and flows to a getter, then we know we have an instance
-    // 2) The source is a KnownOpenSSLAlgorithm call, and we know we have an instance immediately from that
+    // 2) The source is a KnownOpenSslAlgorithm call, and we know we have an instance immediately from that
     // Possibility 1:
-    this instanceof OpenSSLAlgorithmLiteral and
+    this instanceof OpenSslAlgorithmLiteral and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a signature getter call
       sink = getterCall.getInputNode() and
       // Source is `this`
       src.asExpr() = this and
       // This traces to a getter
-      KnownOpenSSLAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
+      KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
     )
     or
     // Possibility 2:
-    this instanceof OpenSSLAlgorithmCall and
+    this instanceof OpenSslAlgorithmCall and
     getterCall = this
   }
 
@@ -68,19 +68,19 @@ class KnownOpenSSLSignatureConstantAlgorithmInstance extends OpenSSLAlgorithmIns
   }
 
   override int getKeySizeFixed() {
-    // TODO: use ellipticCurveNameToKeySizeAndFamilyMapping or KnownOpenSSLEllipticCurveConstantAlgorithmInstance
-    // TODO: maybe add getExplicitKeySize to KnownOpenSSLSignatureAlgorithmExpr and use it here
+    // TODO: use ellipticCurveNameToKeySizeAndFamilyMapping or KnownOpenSslEllipticCurveConstantAlgorithmInstance
+    // TODO: maybe add getExplicitKeySize to KnownOpenSslSignatureAlgorithmExpr and use it here
     none()
   }
 
   override KeyOpAlg::Algorithm getAlgorithmType() {
-    knownOpenSSLConstantToSignatureFamilyType(this, result)
+    knownOpenSslConstantToSignatureFamilyType(this, result)
     or
-    not knownOpenSSLConstantToSignatureFamilyType(this, _) and
+    not knownOpenSslConstantToSignatureFamilyType(this, _) and
     result = KeyOpAlg::TSignature(KeyOpAlg::OtherSignatureAlgorithmType())
   }
 
-  override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
+  override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
 
   override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
     // TODO: trace to any key size initializer

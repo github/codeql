@@ -960,14 +960,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the type of this MAC algorithm, e.g., "HMAC" or "CMAC".
      */
-    abstract TMACType getMACType();
+    abstract TMACType getMacType();
 
     /**
      * Gets the isolated name as it appears in source, e.g., "HMAC-SHA256" in "HMAC-SHA256/UnrelatedInformation".
      *
      * This name should not be parsed or formatted beyond isolating the raw MAC name if necessary.
      */
-    abstract string getRawMACAlgorithmName();
+    abstract string getRawMacAlgorithmName();
   }
 
   abstract class MACOperationInstance extends OperationInstance {
@@ -983,7 +983,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   abstract class HMACAlgorithmInstance extends MACAlgorithmInstance {
-    HMACAlgorithmInstance() { this.getMACType() instanceof THMAC }
+    HMACAlgorithmInstance() { this.getMacType() instanceof THMAC }
 
     /**
      * Gets the hash algorithm used by this HMAC algorithm.
@@ -1814,17 +1814,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override LocatableElement asElement() { result = instance }
 
     final override string getRawAlgorithmName() {
-      result = instance.asAlg().getRawMACAlgorithmName()
+      result = instance.asAlg().getRawMacAlgorithmName()
     }
 
-    TMACType getMACType() { result = instance.asAlg().getMACType() }
+    TMACType getMacType() { result = instance.asAlg().getMacType() }
 
     final private predicate macToNameMapping(TMACType type, string name) {
       type instanceof THMAC and
       name = "HMAC"
     }
 
-    override string getAlgorithmName() { this.macToNameMapping(this.getMACType(), result) }
+    override string getAlgorithmName() { this.macToNameMapping(this.getMacType(), result) }
   }
 
   final class HMACAlgorithmNode extends MACAlgorithmNode {

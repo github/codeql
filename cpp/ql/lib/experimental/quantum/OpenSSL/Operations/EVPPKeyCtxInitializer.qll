@@ -19,10 +19,10 @@ private import OpenSSLOperations
  * will get all associated initializers for the paramgen
  * at the final keygen operation automatically.
  */
-class EVPNewKeyCtx extends EvpKeyInitializer {
+class EvpNewKeyCtx extends EvpKeyInitializer {
   Expr keyArg;
 
-  EVPNewKeyCtx() {
+  EvpNewKeyCtx() {
     this.(Call).getTarget().getName() = "EVP_PKEY_CTX_new" and
     keyArg = this.(Call).getArgument(0)
     or

@@ -4,7 +4,7 @@ private import experimental.quantum.OpenSSL.CtxFlow
 private import experimental.quantum.OpenSSL.KeyFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 // Importing these intializers here to ensure the are part of any model that is
-// using OpenSSLOperationBase. This futher ensures that initializers are tied to opeartions
+// using OpenSslOperationBase. This further ensures that initializers are tied to opeartions
 // even if only importing the operation by itself.
 import EVPPKeyCtxInitializer
 
@@ -20,7 +20,7 @@ module EncValToInitEncArgConfig implements DataFlow::ConfigSig {
 
 module EncValToInitEncArgFlow = DataFlow::Global<EncValToInitEncArgConfig>;
 
-private predicate argToAVC(Expr arg, Crypto::AlgorithmValueConsumer avc) {
+private predicate argToAvc(Expr arg, Crypto::AlgorithmValueConsumer avc) {
   // NOTE: because we trace through keys to their sources we must consider that the arg is an avc
   // Consider this example:
   //      EVP_PKEY *pkey = EVP_PKEY_new_mac_key(EVP_PKEY_HMAC, NULL, key, key_len);
@@ -32,14 +32,14 @@ private predicate argToAVC(Expr arg, Crypto::AlgorithmValueConsumer avc) {
   // This should only occur due to tracing through keys to find configuration data.
   avc.getInputNode().asExpr() = arg
   or
-  AvcToCallArgFlow::flow(avc.(OpenSSLAlgorithmValueConsumer).getResultNode(),
+  AvcToCallArgFlow::flow(avc.(OpenSslAlgorithmValueConsumer).getResultNode(),
     DataFlow::exprNode(arg))
 }
 
 /**
- * A class for all OpenSSL operations.
+ * A class for all OpenSsl operations.
  */
-abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Call {
+abstract class OpenSslOperation extends Crypto::OperationInstance instanceof Call {
   /**
    * Gets the argument that specifies the algorithm for the operation.
    * This argument might not be immediately present at the specified operation.
@@ -53,7 +53,7 @@ abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Cal
    * Algorithm is specified in initialization call or is implicitly established by the key.
    */
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-    argToAVC(this.getAlgorithmArg(), result)
+    argToAvc(this.getAlgorithmArg(), result)
   }
 }
 
@@ -73,10 +73,16 @@ abstract class EvpInitializer extends Call {
   abstract CtxPointerSource getContext();
 }
 
+/**
+ * A call to initialize a key size.
+ */
 abstract class EvpKeySizeInitializer extends EvpInitializer {
   abstract Expr getKeySizeArg();
 }
 
+/**
+ * A call to initialize a key operation subtype.
+ */
 abstract class EvpKeyOperationSubtypeInitializer extends EvpInitializer {
   abstract Expr getKeyOperationSubtypeArg();
 
@@ -115,10 +121,13 @@ abstract class EvpPrimaryAlgorithmInitializer extends EvpInitializer {
   abstract Expr getAlgorithmArg();
 
   Crypto::AlgorithmValueConsumer getAlgorithmValueConsumer() {
-    argToAVC(this.getAlgorithmArg(), result)
+    argToAvc(this.getAlgorithmArg(), result)
   }
 }
 
+/**
+ * A call to initialize a key.
+ */
 abstract class EvpKeyInitializer extends EvpInitializer {
   abstract Expr getKeyArg();
 }
@@ -135,7 +144,7 @@ class EvpInitializerThroughKey extends EvpPrimaryAlgorithmInitializer, EvpKeySiz
 
   override Expr getAlgorithmArg() {
     result =
-      getSourceKeyCreationInstanceFromArg(this.getKeyArg()).(OpenSSLOperation).getAlgorithmArg()
+      getSourceKeyCreationInstanceFromArg(this.getKeyArg()).(OpenSslOperation).getAlgorithmArg()
   }
 
   override Expr getKeySizeArg() {
@@ -175,6 +184,9 @@ abstract class EvpIVInitializer extends EvpInitializer {
   abstract Expr getIVArg();
 }
 
+/**
+ * A call to initialize padding.
+ */
 abstract class EvpPaddingInitializer extends EvpInitializer {
   /**
    * Gets the padding mode argument.
@@ -183,6 +195,9 @@ abstract class EvpPaddingInitializer extends EvpInitializer {
   abstract Expr getPaddingArg();
 }
 
+/**
+ * A call to initialize a salt length.
+ */
 abstract class EvpSaltLengthInitializer extends EvpInitializer {
   /**
    * Gets the salt length argument.
@@ -191,11 +206,14 @@ abstract class EvpSaltLengthInitializer extends EvpInitializer {
   abstract Expr getSaltLengthArg();
 }
 
+/**
+ * A call to initialize a hash algorithm.
+ */
 abstract class EvpHashAlgorithmInitializer extends EvpInitializer {
   abstract Expr getHashAlgorithmArg();
 
   Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
-    argToAVC(this.getHashAlgorithmArg(), result)
+    argToAvc(this.getHashAlgorithmArg(), result)
   }
 }
 
@@ -228,7 +246,7 @@ abstract class EvpUpdate extends Call {
  * This captures one-shot APIs (with and without an initilizer call) and final calls.
  * Provides some default methods for Crypto::KeyOperationInstance class.
  */
-abstract class EvpOperation extends OpenSSLOperation {
+abstract class EvpOperation extends OpenSslOperation {
   /**
    * Gets the context argument that ties together initialization, updates and/or final calls.
    */
@@ -269,7 +287,7 @@ abstract class EvpOperation extends OpenSSLOperation {
  * e.g., "EVP_DigestFinal", "EVP_EncryptFinal", etc.
  * however, this is not a strict rule.
  */
-abstract class EVPFinal extends EvpOperation {
+abstract class EvpFinal extends EvpOperation {
   /**
    * All update calls that were executed before this final call.
    */

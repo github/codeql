@@ -7,14 +7,14 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
 private import AlgToAVCFlow
 
 /**
- * Given a `KnownOpenSSLBlockModeAlgorithmExpr`, converts this to a block family type.
+ * Given a `KnownOpenSslBlockModeAlgorithmExpr`, converts this to a block family type.
  * Does not bind if there is no mapping (no mapping to 'unknown' or 'other').
  */
-predicate knownOpenSSLConstantToBlockModeFamilyType(
-  KnownOpenSSLBlockModeAlgorithmExpr e, Crypto::TBlockCipherModeOfOperationType type
+predicate knownOpenSslConstantToBlockModeFamilyType(
+  KnownOpenSslBlockModeAlgorithmExpr e, Crypto::TBlockCipherModeOfOperationType type
 ) {
   exists(string name |
-    name = e.(KnownOpenSSLAlgorithmExpr).getNormalizedName() and
+    name = e.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
     (
       name.matches("CBC") and type instanceof Crypto::CBC
       or
@@ -39,35 +39,35 @@ predicate knownOpenSSLConstantToBlockModeFamilyType(
   )
 }
 
-class KnownOpenSSLBlockModeConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
-  Crypto::ModeOfOperationAlgorithmInstance instanceof KnownOpenSSLBlockModeAlgorithmExpr
+class KnownOpenSslBlockModeConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
+  Crypto::ModeOfOperationAlgorithmInstance instanceof KnownOpenSslBlockModeAlgorithmExpr
 {
-  OpenSSLAlgorithmValueConsumer getterCall;
+  OpenSslAlgorithmValueConsumer getterCall;
 
-  KnownOpenSSLBlockModeConstantAlgorithmInstance() {
+  KnownOpenSslBlockModeConstantAlgorithmInstance() {
     // Two possibilities:
     // 1) The source is a literal and flows to a getter, then we know we have an instance
-    // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
+    // 2) The source is a KnownOpenSslAlgorithm is call, and we know we have an instance immediately from that
     // Possibility 1:
-    this instanceof OpenSSLAlgorithmLiteral and
+    this instanceof OpenSslAlgorithmLiteral and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
-      sink = getterCall.(OpenSSLAlgorithmValueConsumer).getInputNode() and
+      sink = getterCall.getInputNode() and
       // Source is `this`
       src.asExpr() = this and
       // This traces to a getter
-      KnownOpenSSLAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
+      KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
     )
     or
     // Possibility 2:
-    this instanceof OpenSSLAlgorithmCall and
+    this instanceof OpenSslAlgorithmCall and
     getterCall = this
   }
 
   override Crypto::TBlockCipherModeOfOperationType getModeType() {
-    knownOpenSSLConstantToBlockModeFamilyType(this, result)
+    knownOpenSslConstantToBlockModeFamilyType(this, result)
     or
-    not knownOpenSSLConstantToBlockModeFamilyType(this, _) and result = Crypto::OtherMode()
+    not knownOpenSslConstantToBlockModeFamilyType(this, _) and result = Crypto::OtherMode()
   }
 
   // NOTE: I'm not going to attempt to parse out the mode specific part, so returning
@@ -78,5 +78,5 @@ class KnownOpenSSLBlockModeConstantAlgorithmInstance extends OpenSSLAlgorithmIns
     result = this.(Call).getTarget().getName()
   }
 
-  override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
+  override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
 }
