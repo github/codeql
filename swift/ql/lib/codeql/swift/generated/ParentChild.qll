@@ -5259,515 +5259,650 @@ private module Impl {
     // * none() simplifies generation, as we can append `or ...` without a special case for the first item
     none()
     or
-    result = getImmediateChildOfComment(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfComment(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDbFile(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDbFile(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDbLocation(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDbLocation(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDiagnostics(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDiagnostics(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnknownFile(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfUnknownFile(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnknownLocation(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfUnknownLocation(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfAvailabilityInfo(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfAvailabilityInfo(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfKeyPathComponent(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfKeyPathComponent(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfMacroRole(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfMacroRole(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnspecifiedElement(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfUnspecifiedElement(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfOtherAvailabilitySpec(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfOtherAvailabilitySpec(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPlatformVersionAvailabilitySpec(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfPlatformVersionAvailabilitySpec(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfCapturedDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfCapturedDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfEnumCaseDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfEnumCaseDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfExtensionDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfExtensionDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfIfConfigDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfIfConfigDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfImportDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfImportDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfMissingMemberDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfMissingMemberDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPatternBindingDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPatternBindingDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPoundDiagnosticDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPoundDiagnosticDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPrecedenceGroupDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPrecedenceGroupDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfTopLevelCodeDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfTopLevelCodeDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfEnumElementDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfEnumElementDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfInfixOperatorDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfInfixOperatorDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfMacroDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfMacroDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPostfixOperatorDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPostfixOperatorDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPrefixOperatorDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPrefixOperatorDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDeinitializer(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDeinitializer(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfInitializer(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfInitializer(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfModuleDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfModuleDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfSubscriptDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfSubscriptDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfAccessor(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfAccessor(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfAssociatedTypeDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfAssociatedTypeDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfConcreteVarDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfConcreteVarDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfGenericTypeParamDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfGenericTypeParamDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfNamedFunction(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfNamedFunction(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfOpaqueTypeDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfOpaqueTypeDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfParamDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfParamDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfTypeAliasDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfTypeAliasDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfClassDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfClassDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfEnumDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfEnumDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfProtocolDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfProtocolDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfStructDecl(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfStructDecl(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfArgument(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfArgument(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfAppliedPropertyWrapperExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfAppliedPropertyWrapperExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfAssignExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfAssignExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBindOptionalExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBindOptionalExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfCaptureListExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfCaptureListExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfConsumeExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfConsumeExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfCopyExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfCopyExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfCurrentContextIsolationExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfCurrentContextIsolationExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDeclRefExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDeclRefExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDefaultArgumentExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDefaultArgumentExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDiscardAssignmentExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfDiscardAssignmentExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDotSyntaxBaseIgnoredExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfDotSyntaxBaseIgnoredExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDynamicTypeExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDynamicTypeExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfEnumIsCaseExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfEnumIsCaseExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfErrorExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfErrorExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfExtractFunctionIsolationExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfExtractFunctionIsolationExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfForceValueExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfForceValueExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfIfExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfIfExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfInOutExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfInOutExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfKeyPathApplicationExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfKeyPathApplicationExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfKeyPathDotExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfKeyPathDotExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfKeyPathExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfKeyPathExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfLazyInitializationExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfLazyInitializationExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfMakeTemporarilyEscapableExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfMakeTemporarilyEscapableExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfMaterializePackExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfMaterializePackExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfObjCSelectorExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfObjCSelectorExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfOneWayExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfOneWayExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfOpaqueValueExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfOpaqueValueExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfOpenExistentialExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfOpenExistentialExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfOptionalEvaluationExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfOptionalEvaluationExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfOtherInitializerRefExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfOtherInitializerRefExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfOverloadedDeclRefExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfOverloadedDeclRefExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPackElementExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPackElementExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPackExpansionExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPackExpansionExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPropertyWrapperValuePlaceholderExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfPropertyWrapperValuePlaceholderExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfRebindSelfInInitializerExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfRebindSelfInInitializerExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfSequenceExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfSequenceExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfSingleValueStmtExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfSingleValueStmtExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfSuperRefExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfSuperRefExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfTapExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfTapExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfTupleElementExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfTupleElementExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfTupleExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfTupleExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfTypeExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfTypeExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfTypeValueExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfTypeValueExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnresolvedDeclRefExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfUnresolvedDeclRefExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnresolvedDotExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfUnresolvedDotExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnresolvedMemberExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfUnresolvedMemberExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnresolvedPatternExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfUnresolvedPatternExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnresolvedSpecializeExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfUnresolvedSpecializeExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfVarargExpansionExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfVarargExpansionExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfAbiSafeConversionExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfAbiSafeConversionExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfActorIsolationErasureExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfActorIsolationErasureExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfAnyHashableErasureExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfAnyHashableErasureExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfArchetypeToSuperExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfArchetypeToSuperExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfArrayExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfArrayExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfArrayToPointerExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfArrayToPointerExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfAutoClosureExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfAutoClosureExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfAwaitExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfAwaitExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBinaryExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBinaryExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBorrowExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBorrowExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBridgeFromObjCExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBridgeFromObjCExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBridgeToObjCExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBridgeToObjCExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfCallExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfCallExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfClassMetatypeToObjectExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfClassMetatypeToObjectExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfCoerceExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfCoerceExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfCollectionUpcastConversionExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfCollectionUpcastConversionExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfConditionalBridgeFromObjCExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfConditionalBridgeFromObjCExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfCovariantFunctionConversionExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfCovariantFunctionConversionExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfCovariantReturnConversionExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfCovariantReturnConversionExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfDerivedToBaseExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDerivedToBaseExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDestructureTupleExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDestructureTupleExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDictionaryExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDictionaryExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDifferentiableFunctionExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfDifferentiableFunctionExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDifferentiableFunctionExtractOriginalExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfDifferentiableFunctionExtractOriginalExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfDotSelfExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDotSelfExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfErasureExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfErasureExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfExistentialMetatypeToObjectExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfExistentialMetatypeToObjectExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfExplicitClosureExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfExplicitClosureExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfForceTryExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfForceTryExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfForeignObjectConversionExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfForeignObjectConversionExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfFunctionConversionExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfFunctionConversionExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfInOutToPointerExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfInOutToPointerExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfInjectIntoOptionalExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfInjectIntoOptionalExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfInterpolatedStringLiteralExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfInterpolatedStringLiteralExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfLinearFunctionExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfLinearFunctionExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfLinearFunctionExtractOriginalExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfLinearFunctionExtractOriginalExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfLinearToDifferentiableFunctionExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfLinearToDifferentiableFunctionExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfLoadExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfLoadExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfMemberRefExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfMemberRefExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfMetatypeConversionExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfMetatypeConversionExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfMethodLookupExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfMethodLookupExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfNilLiteralExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfNilLiteralExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfObjectLiteralExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfObjectLiteralExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfOptionalTryExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfOptionalTryExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfParenExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfParenExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPointerToPointerExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPointerToPointerExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPostfixUnaryExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPostfixUnaryExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPrefixUnaryExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPrefixUnaryExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfProtocolMetatypeToObjectExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfProtocolMetatypeToObjectExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfRegexLiteralExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfRegexLiteralExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfStringToPointerExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfStringToPointerExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfSubscriptExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfSubscriptExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfTryExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfTryExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnderlyingToOpaqueExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfUnderlyingToOpaqueExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnevaluatedInstanceExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfUnevaluatedInstanceExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnreachableExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfUnreachableExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnresolvedMemberChainResultExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfUnresolvedMemberChainResultExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfUnresolvedTypeConversionExpr(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfUnresolvedTypeConversionExpr(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfUnsafeCastExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfUnsafeCastExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBooleanLiteralExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBooleanLiteralExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfConditionalCheckedCastExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfConditionalCheckedCastExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDotSyntaxCallExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDotSyntaxCallExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDynamicMemberRefExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDynamicMemberRefExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDynamicSubscriptExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDynamicSubscriptExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfForcedCheckedCastExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfForcedCheckedCastExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfInitializerRefCallExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfInitializerRefCallExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfIsExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfIsExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfMagicIdentifierLiteralExpr(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfMagicIdentifierLiteralExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfStringLiteralExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfStringLiteralExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfFloatLiteralExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfFloatLiteralExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfIntegerLiteralExpr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfIntegerLiteralExpr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfAnyPattern(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfAnyPattern(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBindingPattern(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBindingPattern(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBoolPattern(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBoolPattern(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfEnumElementPattern(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfEnumElementPattern(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfExprPattern(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfExprPattern(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfIsPattern(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfIsPattern(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfNamedPattern(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfNamedPattern(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfOptionalSomePattern(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfOptionalSomePattern(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfParenPattern(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfParenPattern(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfTuplePattern(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfTuplePattern(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfTypedPattern(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfTypedPattern(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfCaseLabelItem(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfCaseLabelItem(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfConditionElement(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfConditionElement(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfStmtCondition(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfStmtCondition(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBraceStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBraceStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBreakStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBreakStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfCaseStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfCaseStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfContinueStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfContinueStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDeferStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDeferStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDiscardStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDiscardStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfFailStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfFailStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfFallthroughStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfFallthroughStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPoundAssertStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPoundAssertStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfReturnStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfReturnStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfThenStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfThenStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfThrowStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfThrowStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfYieldStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfYieldStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDoCatchStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDoCatchStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDoStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDoStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfForEachStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfForEachStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfRepeatWhileStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfRepeatWhileStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfSwitchStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfSwitchStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfGuardStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfGuardStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfIfStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfIfStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfWhileStmt(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfWhileStmt(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfTypeRepr(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfTypeRepr(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDependentMemberType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDependentMemberType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDynamicSelfType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDynamicSelfType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfErrorType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfErrorType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfExistentialType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfExistentialType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfInOutType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfInOutType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfIntegerType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfIntegerType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfLValueType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfLValueType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfModuleType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfModuleType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPackElementType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPackElementType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPackExpansionType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPackExpansionType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPackType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPackType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfParameterizedProtocolType(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfParameterizedProtocolType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfProtocolCompositionType(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfProtocolCompositionType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfTupleType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfTupleType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnresolvedType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfUnresolvedType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBuiltinBridgeObjectType(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfBuiltinBridgeObjectType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBuiltinDefaultActorStorageType(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfBuiltinDefaultActorStorageType(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfBuiltinExecutorType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBuiltinExecutorType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBuiltinFixedArrayType(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfBuiltinFixedArrayType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBuiltinFloatType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBuiltinFloatType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBuiltinJobType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBuiltinJobType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBuiltinNativeObjectType(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfBuiltinNativeObjectType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBuiltinRawPointerType(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfBuiltinRawPointerType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBuiltinRawUnsafeContinuationType(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfBuiltinRawUnsafeContinuationType(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfBuiltinUnsafeValueBufferType(e, index, partialAccessor)
+    index =
+      min(int i |
+        result = getImmediateChildOfBuiltinUnsafeValueBufferType(e, i, partialAccessor)
+      |
+        i
+      )
     or
-    result = getImmediateChildOfBuiltinVectorType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBuiltinVectorType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfExistentialMetatypeType(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfExistentialMetatypeType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfFunctionType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfFunctionType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfGenericFunctionType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfGenericFunctionType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfGenericTypeParamType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfGenericTypeParamType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfMetatypeType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfMetatypeType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfParenType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfParenType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfTypeAliasType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfTypeAliasType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnboundGenericType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfUnboundGenericType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnmanagedStorageType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfUnmanagedStorageType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfUnownedStorageType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfUnownedStorageType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfWeakStorageType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfWeakStorageType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBuiltinIntegerLiteralType(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfBuiltinIntegerLiteralType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBuiltinIntegerType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBuiltinIntegerType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfDictionaryType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfDictionaryType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfOpaqueTypeArchetypeType(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfOpaqueTypeArchetypeType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPackArchetypeType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPackArchetypeType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfPrimaryArchetypeType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfPrimaryArchetypeType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfArraySliceType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfArraySliceType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBoundGenericClassType(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfBoundGenericClassType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBoundGenericEnumType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfBoundGenericEnumType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfBoundGenericStructType(e, index, partialAccessor)
+    index =
+      min(int i | result = getImmediateChildOfBoundGenericStructType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfClassType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfClassType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfElementArchetypeType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfElementArchetypeType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfEnumType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfEnumType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfOpenedArchetypeType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfOpenedArchetypeType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfOptionalType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfOptionalType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfProtocolType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfProtocolType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfStructType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfStructType(e, i, partialAccessor) | i)
     or
-    result = getImmediateChildOfVariadicSequenceType(e, index, partialAccessor)
+    index = min(int i | result = getImmediateChildOfVariadicSequenceType(e, i, partialAccessor) | i)
   }
 }
 

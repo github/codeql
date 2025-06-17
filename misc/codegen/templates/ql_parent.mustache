@@ -63,7 +63,7 @@ none()
 {{#classes}}
     {{#final}}
         or
-        result = getImmediateChildOf{{name}}(e, index, partialAccessor)
+        index = min(int i | result = getImmediateChildOf{{name}}(e, i, partialAccessor) | i)
     {{/final}}
 {{/classes}}
 }
