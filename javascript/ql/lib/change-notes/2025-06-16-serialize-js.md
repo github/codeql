@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Improved XSS detection for `serialize-javascript` calls with tainted object properties.
+* Improved taint tracking through calls to `serialize-javascript`.
