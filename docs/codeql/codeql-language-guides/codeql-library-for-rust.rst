@@ -12,14 +12,14 @@ CodeQL ships with a library for analyzing Rust code. The classes in this library
 abstractions and predicates to help you with common analysis tasks.
 
 The library is implemented as a set of CodeQL modules, that is, files with the extension ``.qll``. The
-module `rust.qll <https://github.com/github/codeql/blob/main/rust/ql/lib/rust.qll>`__ imports most other standard library modules, so you can include the complete
-library by beginning your query with:
+module `rust.qll <https://github.com/github/codeql/blob/main/rust/ql/lib/rust.qll>`__ imports most other standard library modules, so you can include them
+by beginning your query with:
 
 .. code-block:: ql
 
    import rust
 
-The CodeQL libraries model various aspects of Rust code. The above import includes the abstract syntax tree (AST) library, which is used for locating program elements,
+The CodeQL libraries model various aspects of Rust code. The above import includes the abstract syntax tree (AST) library, which is used for locating program elements
 to match syntactic elements in the source code. This can be used for example to find values, patterns and structures.
 
 The control flow graph (CFG) is imported using

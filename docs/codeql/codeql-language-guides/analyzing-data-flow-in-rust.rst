@@ -23,10 +23,9 @@ Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
 
 You can use the local data flow library by importing the ``codeql.rust.dataflow.DataFlow`` module. The library uses the class ``Node`` to represent any element through which data can flow.
-``Node``\ s are divided into expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``).
-You can map a data flow ``ParameterNode`` to its corresponding ``Parameter`` AST node using the ``asParameter`` member predicate.
-Similarly, you can use the ``asExpr`` member predicate to map a data flow ``ExprNode`` to its corresponding ``ExprCfgNode`` in the control-flow library.
-
+Common ``Node`` types include expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``).
+You can use the ``asExpr`` member predicate to map a data flow ``ExprNode`` to its corresponding ``ExprCfgNode`` in the control-flow library.
+Similarly, you can map a data flow ``ParameterNode`` to its corresponding ``Parameter`` AST node using the ``asParameter`` member predicate.
 .. code-block:: ql
 
      class Node {
@@ -39,22 +38,8 @@ Similarly, you can use the ``asExpr`` member predicate to map a data flow ``Expr
       ...
      }
 
-You can use the predicates ``exprNode`` and ``parameterNode`` to map from expressions and parameters to their data-flow node:
-
-.. code-block:: ql
-
-     /**
-      * Gets a node corresponding to expression `e`.
-      */
-     ExprNode exprNode(CfgNodes::ExprCfgNode e) { ... }
-
-     /**
-      * Gets the node corresponding to the value of parameter `p` at function entry.
-      */
-     ParameterNode parameterNode(Parameter p) { ... }
-
-Note that since ``asExpr`` and ``exprNode`` map between data-flow and control-flow nodes, you then need to call the ``getExpr`` member predicate on the control-flow node to map to the corresponding AST node,
-for example, by writing ``node.asExpr().getExpr()``.
+Note that since ``asExpr`` maps from data-flow to control-flow nodes, you then need to call the ``getExpr`` member predicate on the control-flow node to map to the corresponding AST node,
+for example by writing ``node.asExpr().getExpr()``.
 A control-flow graph considers every way control can flow through code, consequently, there can be multiple data-flow and control-flow nodes associated with a single expression node in the AST.
 
 The predicate ``localFlowStep(Node nodeFrom, Node nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``.
@@ -207,11 +192,7 @@ The global taint tracking library uses the same configuration module as the glob
 Predefined sources
 ~~~~~~~~~~~~~~~~~~
 
-The data flow library module ``codeql.rust.dataflow.FlowSources`` contains a number of predefined sources that you can use to write security queries to track data flow and taint flow.
-
--  The class ``RemoteFlowSource`` represents data flow from remote network inputs and from other applications.
--  The class ``LocalFlowSource`` represents data flow from local user input.
--  The class ``FlowSource`` includes both of the above.
+The library module ``codeql.rust.Concepts`` contains a number of predefined sources and sinks that you can use to write security queries to track data flow and taint flow.
 
 Examples of global data flow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -229,16 +210,16 @@ The following global taint-tracking query finds places where a string literal is
     import codeql.rust.dataflow.TaintTracking
 
     module ConstantPasswordConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node node) { node.asExpr().getExpr() instanceof StringLiteralExpr }
+        predicate isSource(DataFlow::Node node) { node.asExpr().getExpr() instanceof StringLiteralExpr }
 
-    predicate isSink(DataFlow::Node node) {
-        // any argument going to a parameter called `password`
-        exists(Function f, CallExpr call, int index |
-        call.getArg(index) = node.asExpr().getExpr() and
-        call.getStaticTarget() = f and
-        f.getParam(index).getPat().(IdentPat).getName().getText() = "password"
-        )
-    }
+        predicate isSink(DataFlow::Node node) {
+            // any argument going to a parameter called `password`
+            exists(Function f, CallExpr call, int index |
+            call.getArg(index) = node.asExpr().getExpr() and
+            call.getStaticTarget() = f and
+            f.getParam(index).getPat().(IdentPat).getName().getText() = "password"
+            )
+        }
     }
 
     module ConstantPasswordFlow = TaintTracking::Global<ConstantPasswordConfig>;
