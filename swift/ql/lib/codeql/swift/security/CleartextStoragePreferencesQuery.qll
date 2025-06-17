@@ -30,6 +30,12 @@ module CleartextStoragePreferencesConfig implements DataFlow::ConfigSig {
     // make sources barriers so that we only report the closest instance
     isSource(node)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/queries/Security/CWE-312/CleartextStoragePreferences.ql:34: Column 1 does not select a source or sink originating from the flow call on line 32
+    none()
+  }
 }
 
 /**

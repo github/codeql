@@ -25,6 +25,12 @@ private module StringLiteralUseConfig implements DataFlow::ConfigSig {
     // used to create a regular expression object
     node = any(RegexCreation regexCreation).getStringInput()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/codeql/swift/regex/Regex.qll:53: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module StringLiteralUseFlow = DataFlow::Global<StringLiteralUseConfig>;
@@ -46,6 +52,12 @@ private module RegexUseConfig implements DataFlow::ConfigSig {
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(RegexAdditionalFlowStep s).step(nodeFrom, nodeTo)
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/codeql/swift/regex/Regex.qll:350: Flow call outside 'select' clause
+    none()
   }
 }
 
@@ -100,6 +112,13 @@ private module RegexParseModeConfig implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node nodeFrom, FlowState flowstateFrom, DataFlow::Node nodeTo, FlowState flowStateTo
   ) {
+    none()
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/codeql/swift/regex/Regex.qll:364: Flow call outside 'select' clause
+    // ql/lib/codeql/swift/regex/Regex.qll:365: Flow call outside 'select' clause
     none()
   }
 }
