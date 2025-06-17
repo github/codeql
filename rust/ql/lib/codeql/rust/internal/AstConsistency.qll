@@ -60,17 +60,12 @@ query predicate multipleChildren(Element parent, int index, Element child1, Elem
 }
 
 /**
- * Holds if `child` has multiple positions amongst the `accessor` children
- * of `parent`.
- *
- * Children are allowed to have multiple positions for _different_ accessors,
- * for example in an array repeat expression `[1; 10]`, `1` has positions for
- * both `getRepeatOperand()` and `getExpr()`.
+ * Holds if `child` has multiple positions amongst the children of `parent`.
  */
-query predicate multiplePositions(Element parent, int pos1, int pos2, string accessor, Element child) {
-  child = getChildAndAccessor(parent, pos1, accessor) and
-  child = getChildAndAccessor(parent, pos2, accessor) and
-  pos1 != pos2
+query predicate multiplePositions(Element parent, int pos1, int pos2, Element child) {
+  child = getChildAndAccessor(parent, pos1, _) and
+  child = getChildAndAccessor(parent, pos2, _) and
+  pos1 < pos2
 }
 
 /**
@@ -97,5 +92,5 @@ int getAstInconsistencyCounts(string type) {
   result = count(Element e | multipleChildren(_, _, e, _) | e)
   or
   type = "Multiple positions" and
-  result = count(Element e | multiplePositions(_, _, _, _, e) | e)
+  result = count(Element e | multiplePositions(_, _, _, e) | e)
 }

@@ -27,8 +27,10 @@ module Impl {
           this.getRepeatLength().toAbbreviatedString() + "]"
     }
 
-    override Expr getRepeatOperand() { result = this.getExpr(0) }
+    override Expr getExpr(int index) { none() }
 
-    override Expr getRepeatLength() { result = this.getExpr(1) }
+    override Expr getRepeatOperand() { result = super.getExpr(0) }
+
+    override Expr getRepeatLength() { result = super.getExpr(1) }
   }
 }
