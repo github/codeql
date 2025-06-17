@@ -30,7 +30,7 @@ is mentioned in the documentation.
 </recommendation>
 <example>
 <p>In the following case, the <code>__init__</code> method of <code>Super</code> calls the <code>set_up</code> method that is overridden by <code>Sub</code>. 
-This results in `Sun.set_up` being called with a partially initialized instance of `Super` which may be unexpected. </p>
+This results in <code>Sub.set_up</code> being called with a partially initialized instance of <code>Super</code> which may be unexpected. </p>
 <sample src="examples/InitCallsSubclassMethodBad.py" />
 <p>In the following case, the initialization methods are separate between the superclass and the subclass.</p>
 <sample src="examples/InitCallsSubclassMethodGood.py" />

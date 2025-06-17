@@ -48,7 +48,7 @@ def good3():
     class Super:
         def __init__(self, arg):
             self.a = arg 
-            self.set_b() # OK: Here `set_b` is used for initialisation, but does not read the partialy initialized state of `self`. 
+            self.set_b() # OK: Here `set_b` is used for initialization, but does not read the partially initialized state of `self`. 
             self.c = 1
 
         def set_b(self):
@@ -63,7 +63,7 @@ def good4():
         def __init__(self, arg):
             self.a = arg 
             # OK: Here `_set_b` is likely an internal method (as indicated by the _ prefix). 
-            # We assume thus that regular consumers of the library will not override it, and classes that do are internal and account for `self`'s partially initialised state.
+            # We assume thus that regular consumers of the library will not override it, and classes that do are internal and account for `self`'s partially initialized state.
             self._set_b() 
             self.c = 1 
 
