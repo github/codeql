@@ -244,4 +244,14 @@ public class C {
     }
     xs[0]++; // OK
   }
+
+  public void ex18(boolean b, int[] xs, Object related) {
+    assert (!b && xs == null && related == null) ||
+           (b && xs != null && related != null) ||
+           (b && xs == null && related == null);
+    if (b) {
+      if (related == null) { return; }
+      xs[0] = 42; // FP - correlated conditions fails to recognize assert edges
+    }
+  }
 }
