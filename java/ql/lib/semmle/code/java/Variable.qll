@@ -135,14 +135,12 @@ class Parameter extends Element, @param, LocalScopeVariable {
 }
 
 overlay[local]
-pragma[nomagic]
-predicate discardableLocalVarDecl(string file, @localscopevariable l) {
+private predicate discardableLocalVarDecl(string file, @localscopevariable l) {
   not hasOverlay() and
   file = getRawFile(l)
 }
 
 overlay[discard_entity]
-pragma[nomagic]
-predicate discardLocalVarDecl(@localscopevariable l) {
+private predicate discardLocalVarDecl(@localscopevariable l) {
   exists(string file | discardableLocalVarDecl(file, l) and discardFile(file))
 }

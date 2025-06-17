@@ -223,15 +223,13 @@ private predicate fixedHasLocation(Top l, Location loc, File f) {
 }
 
 overlay[local]
-pragma[nomagic]
-predicate discardableLocation(string file, @location l) {
+private predicate discardableLocation(string file, @location l) {
   not hasOverlay() and
   file = getRawFileForLoc(l) and
   not exists(@file f | hasLocation(f, l))
 }
 
 overlay[discard_entity]
-pragma[nomagic]
-predicate discardLocation(@location l) {
+private predicate discardLocation(@location l) {
   exists(string file | discardableLocation(file, l) and discardFile(file))
 }

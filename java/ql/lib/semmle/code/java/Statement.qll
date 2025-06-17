@@ -989,14 +989,12 @@ class SuperConstructorInvocationStmt extends Stmt, ConstructorCall, @superconstr
 }
 
 overlay[local]
-pragma[nomagic]
-predicate discardableStmt(string file, @stmt s) {
+private predicate discardableStmt(string file, @stmt s) {
   not hasOverlay() and
   file = getRawFile(s)
 }
 
 overlay[discard_entity]
-pragma[nomagic]
-predicate discardStmt(@stmt s) {
+private predicate discardStmt(@stmt s) {
   exists(string file | discardableStmt(file, s) and discardFile(file))
 }

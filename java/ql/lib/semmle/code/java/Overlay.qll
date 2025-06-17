@@ -4,7 +4,6 @@ module;
 import java
 
 overlay[local]
-pragma[nomagic]
 predicate hasOverlay() { databaseMetadata("isOverlay", "true") }
 
 overlay[local]
@@ -22,7 +21,6 @@ string getRawFileForLoc(@location l) {
 }
 
 overlay[local]
-pragma[nomagic]
 predicate discardFile(string file) {
   hasOverlay() and
   exists(@expr e | callableEnclosingExpr(e, _) and file = getRawFile(e))

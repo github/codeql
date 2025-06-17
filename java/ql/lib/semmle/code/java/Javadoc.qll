@@ -198,14 +198,12 @@ class KtCommentSection extends @ktcommentsection {
 }
 
 overlay[local]
-pragma[nomagic]
-predicate discardableJavadoc(string file, @javadoc d) {
+private predicate discardableJavadoc(string file, @javadoc d) {
   not hasOverlay() and
   exists(@member m | file = getRawFile(m) and hasJavadoc(m, d))
 }
 
 overlay[discard_entity]
-pragma[nomagic]
-predicate discardJavadoc(@javadoc d) {
+private predicate discardJavadoc(@javadoc d) {
   exists(string file | discardableJavadoc(file, d) and discardFile(file))
 }
