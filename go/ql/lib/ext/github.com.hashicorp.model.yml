@@ -1,0 +1,26 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data:
+      - ["hcl1", "github.com/hashicorp/hcl"]
+      - ["hclsimple", "github.com/hashicorp/hcl/v2/hclsimple"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["group:hcl1", "", False, "Decode", "", "", "Argument[0]", "file", "manual"]
+      - ["group:hclsimple", "", False, "DecodeFile", "", "", "Argument[2]", "file", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:hclsimple", "", False, "DecodeFile", "", "", "Argument[0]", "path-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["group:hcl1", "", False, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["group:hcl1", "", False, "ParseBytes", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["group:hcl1", "", False, "ParseString", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["group:hclsimple", "", False, "Decode", "", "", "Argument[1]", "Argument[3]", "taint", "manual"]
