@@ -9,6 +9,7 @@ public class ThreadDemo {
 }
 
 class NewThread extends Thread {
+    @Override
     public void run() {
         try {
             Thread.sleep(10000);
