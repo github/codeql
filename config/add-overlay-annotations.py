@@ -17,7 +17,7 @@
 #!/usr/bin/python3
 import sys
 import os
-from difflib import *
+from difflib import context_diff
 
 
 def has_overlay_annotations(lines):
@@ -209,7 +209,8 @@ def process_single_file(write, filename):
     If write is set, the changes are written back to the file.
     Returns True if the file requires changes.
     '''
-    old = [line for line in open(filename)]
+    with open(filename) as f:
+        old = [line for line in f]
 
     annotate_result = annotate_as_appropriate(filename, old)
     if annotate_result is None:
@@ -270,4 +271,4 @@ if len(missingAnnotations) > 0:
       print("and " + str(len(missingAnnotations) - 10) + " additional files.")
     print()
     print("Please manually add overlay annotations or use the config/add-overlay-annotations.py script to automatically add sensible default overlay annotations.")
-    exit(-1)
+    exit(1)
