@@ -1869,11 +1869,21 @@ mod loops {
 
         // for loops with containers
 
-        let vals3 = vec![1, 2, 3]; // MISSING: type=vals:Vec<i32>
+        let vals3 = vec![1, 2, 3]; // $ MISSING: type=vals3:Vec<i32>
         for i in vals3 { } // $ MISSING: type=i:i32
 
-        let vals4 : Vec<&u64> = [1u64, 2, 3].iter().collect();
-        for u in vals4 { } // $ MISSING: type=u:&u64
+        let vals4 = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4:Vec<u16>
+        for u in vals4 { } // $ MISSING: type=u:u16
+
+        let vals5 = Vec::from([1u32, 2, 3]); // $ MISSING: type=vals5:Vec<u32>
+        for u in vals5 { } // $ MISSING: type=u:u32
+
+        let vals6 : Vec<&u64> = [1u64, 2, 3].iter().collect(); // $ MISSING: type=vals6:Vec<&u64>
+        for u in vals6 { } // $ MISSING: type=u:&u64
+
+        let mut vals7 = Vec::new(); // $ MISSING: type=vals7:Vec<u8>
+        vals7.push(1u8); // $ method=push
+        for u in vals7 { } // $ MISSING: type=u:u8
 
         let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ MISSING: type=vals5:Vec<Vec<i32>>
         for row in matrix1 { // $ MISSING: type=row:Vec<i32>
