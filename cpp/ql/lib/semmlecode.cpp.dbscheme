@@ -692,6 +692,7 @@ case @builtintype.kind of
 | 60 = @complex_float64x      // _Complex _Float64x
 | 61 = @complex_std_float128  // _Complex _Float128
 | 62 = @mfp8                  // __mfp8
+| 63 = @scalable_vector_count // __SVCount_t
 ;
 
 builtintypes(
@@ -718,6 +719,7 @@ case @derivedtype.kind of
 |  8 = @rvalue_reference // C++11
 // ... 9 type_conforming_to_protocols deprecated
 | 10 = @block
+| 11 = @scalable_vector // Arm SVE
 ;
 
 derivedtypes(
@@ -736,6 +738,11 @@ arraysizes(
     int num_elements: int ref,
     int bytesize: int ref,
     int alignment: int ref
+);
+
+tupleelements(
+    unique int id: @derivedtype ref,
+    int num_elements: int ref
 );
 
 typedefbase(
