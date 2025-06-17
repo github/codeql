@@ -137,10 +137,19 @@ abstract class EvpKeyInitializer extends EvpInitializer {
  * the key. Extend any instance of key initializer provide initialization
  * of the algorithm and key size from the key.
  */
-class EvpInitializerThroughKey extends EvpPrimaryAlgorithmInitializer, EvpKeySizeInitializer instanceof EvpKeyInitializer
+class EvpInitializerThroughKey extends EvpPrimaryAlgorithmInitializer, EvpKeySizeInitializer,
+  EvpKeyInitializer
 {
-  //TODO: charpred that traces from creation to key arg, grab creator
-  override CtxPointerSource getContext() { result = EvpKeyInitializer.super.getContext() }
+  Expr arg;
+  CtxPointerSource context;
+
+  EvpInitializerThroughKey() {
+    exists(EvpKeyInitializer keyInit |
+      arg = keyInit.getKeyArg() and this = keyInit and context = keyInit.getContext()
+    )
+  }
+
+  override CtxPointerSource getContext() { result = context }
 
   override Expr getAlgorithmArg() {
     result =
@@ -151,7 +160,7 @@ class EvpInitializerThroughKey extends EvpPrimaryAlgorithmInitializer, EvpKeySiz
     result = getSourceKeyCreationInstanceFromArg(this.getKeyArg()).getKeySizeConsumer().asExpr()
   }
 
-  Expr getKeyArg() { result = EvpKeyInitializer.super.getKeyArg() }
+  override Expr getKeyArg() { result = arg }
 }
 
 /**
