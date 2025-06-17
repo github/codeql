@@ -204,8 +204,16 @@ class TypeReprTree extends LeafTree instanceof TypeRepr { }
  * `LetExpr`s.
  */
 module ExprTrees {
-  class ArrayExprTree extends StandardPostOrderTree, ArrayExpr {
+  class ArrayListExprTree extends StandardPostOrderTree, ArrayListExpr {
     override AstNode getChildNode(int i) { result = this.getExpr(i) }
+  }
+
+  class ArrayRepeatExprTree extends StandardPostOrderTree, ArrayRepeatExpr {
+    override AstNode getChildNode(int i) {
+      i = 0 and result = this.getRepeatOperand()
+      or
+      i = 1 and result = this.getRepeatLength()
+    }
   }
 
   class AsmExprTree extends LeafTree instanceof AsmExpr { }
