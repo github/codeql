@@ -68,5 +68,7 @@
 | tst2.js:76:12:76:18 | other.p | Cross-site scripting vulnerability due to $@. | tst2.js:69:9:69:9 | p | user-provided value |
 | tst2.js:88:12:88:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:82:9:82:9 | p | user-provided value |
 | tst2.js:89:12:89:18 | other.p | Cross-site scripting vulnerability due to $@. | tst2.js:82:9:82:9 | p | user-provided value |
+| tst2.js:101:12:101:17 | unsafe | Cross-site scripting vulnerability due to $@. | tst2.js:93:9:93:9 | p | user-provided value |
+| tst2.js:113:12:113:17 | unsafe | Cross-site scripting vulnerability due to $@. | tst2.js:105:9:105:9 | p | user-provided value |
 | tst3.js:6:12:6:12 | p | Cross-site scripting vulnerability due to $@. | tst3.js:5:9:5:9 | p | user-provided value |
 | tst3.js:12:12:12:15 | code | Cross-site scripting vulnerability due to $@. | tst3.js:11:32:11:39 | reg.body | user-provided value |

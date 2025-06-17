@@ -49,6 +49,6 @@ void throw_cpp(int b) {
     }
   }
   __except (1) {
-      sink(x);
+    sink(x);
   }
 }
