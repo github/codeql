@@ -287,6 +287,16 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
       prefix2.isEmpty()
     )
   )
+  or
+  // an array list expression (`[1, 2, 3]`) has the type of the first (any) element
+  n1.(ArrayListExpr).getExpr(0) = n2 and
+  prefix1 = TypePath::singleton(TArrayTypeParameter()) and
+  prefix2.isEmpty()
+  or
+  // an array repeat expression (`[1; 3]`) has the type of the repeat operand
+  n1.(ArrayRepeatExpr).getRepeatOperand() = n2 and
+  prefix1 = TypePath::singleton(TArrayTypeParameter()) and
+  prefix2.isEmpty()
 }
 
 pragma[nomagic]
@@ -1125,23 +1135,6 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
 }
 
 pragma[nomagic]
-private Type inferArrayExprType(ArrayExpr ae, TypePath path) {
-  // an array list expression (`[1, 2, 3]`) has the type of the first (any) element
-  exists(Type type0, TypePath path0 |
-    type0 = inferType(ae.(ArrayListExpr).getExpr(0), path0) and
-    result = type0 and
-    path = TypePath::cons(any(ArrayTypeParameter tp), path0)
-  )
-  or
-  // an array repeat expression (`[1; 3]`) has the type of the repeat operand
-  exists(Type type0, TypePath path0 |
-    type0 = inferType(ae.(ArrayRepeatExpr).getRepeatOperand(), path0) and
-    result = type0 and
-    path = TypePath::cons(any(ArrayTypeParameter tp), path0)
-  )
-}
-
-pragma[nomagic]
 private Type inferForLoopExprType(AstNode n, TypePath path) {
   // type of iterable -> type of pattern (loop variable)
   exists(ForExpr fe, Type iterableType, TypePath iterablePath |
@@ -1469,8 +1462,6 @@ private module Cached {
     result = inferAwaitExprType(n, path)
     or
     result = inferIndexExprType(n, path)
-    or
-    result = inferArrayExprType(n, path)
     or
     result = inferForLoopExprType(n, path)
   }

@@ -2685,6 +2685,7 @@ inferType
 | main.rs:1840:31:1840:39 | [...] | [T;...] | {EXTERNAL LOCATION} | i32 |
 | main.rs:1840:31:1840:39 | [...] | [T;...] | {EXTERNAL LOCATION} | u32 |
 | main.rs:1840:32:1840:32 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1840:32:1840:32 | 1 |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:1840:35:1840:35 | 2 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1840:38:1840:38 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1841:13:1841:13 | u |  | {EXTERNAL LOCATION} | i32 |
@@ -2700,6 +2701,7 @@ inferType
 | main.rs:1843:31:1843:36 | [1; 3] | [T;...] | {EXTERNAL LOCATION} | i32 |
 | main.rs:1843:31:1843:36 | [1; 3] | [T;...] | {EXTERNAL LOCATION} | u64 |
 | main.rs:1843:32:1843:32 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1843:32:1843:32 | 1 |  | {EXTERNAL LOCATION} | u64 |
 | main.rs:1843:35:1843:35 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1844:13:1844:13 | u |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1844:13:1844:13 | u |  | {EXTERNAL LOCATION} | u64 |
