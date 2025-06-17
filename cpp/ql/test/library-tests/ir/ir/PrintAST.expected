@@ -49689,6 +49689,74 @@ try_except.c:
 #   52|                 Type = [IntType] int
 #   52|                 ValueCategory = prvalue(load)
 #   54|     getStmt(2): [ReturnStmt] return ...
+#   56| [TopLevelFunction] void k(int*, int*, int*)
+#   56|   <params>: 
+#   56|     getParameter(0): [Parameter] b
+#   56|         Type = [IntPointerType] int *
+#   56|     getParameter(1): [Parameter] c
+#   56|         Type = [IntPointerType] int *
+#   56|     getParameter(2): [Parameter] d
+#   56|         Type = [IntPointerType] int *
+#   56|   getEntryPoint(): [BlockStmt] { ... }
+#   57|     getStmt(0): [DeclStmt] declaration
+#   57|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#   57|           Type = [IntType] int
+#   57|         getVariable().getInitializer(): [Initializer] initializer for x
+#   57|           getExpr(): [Literal] 0
+#   57|               Type = [IntType] int
+#   57|               Value = [Literal] 0
+#   57|               ValueCategory = prvalue
+#   58|     getStmt(1): [MicrosoftTryExceptStmt] __try { ... } __except( ... ) { ... }
+#   58|       getStmt(): [BlockStmt] { ... }
+#   59|         getStmt(0): [ExprStmt] ExprStmt
+#   59|           getExpr(): [AssignExpr] ... = ...
+#   59|               Type = [IntType] int
+#   59|               ValueCategory = prvalue
+#   59|             getLValue(): [VariableAccess] x
+#   59|                 Type = [IntType] int
+#   59|                 ValueCategory = lvalue
+#   59|             getRValue(): [PointerDereferenceExpr] * ...
+#   59|                 Type = [IntType] int
+#   59|                 ValueCategory = prvalue(load)
+#   59|               getOperand(): [VariableAccess] b
+#   59|                   Type = [IntPointerType] int *
+#   59|                   ValueCategory = prvalue(load)
+#   60|         getStmt(1): [ExprStmt] ExprStmt
+#   60|           getExpr(): [AssignExpr] ... = ...
+#   60|               Type = [IntType] int
+#   60|               ValueCategory = prvalue
+#   60|             getLValue(): [PointerDereferenceExpr] * ...
+#   60|                 Type = [IntType] int
+#   60|                 ValueCategory = lvalue
+#   60|               getOperand(): [VariableAccess] c
+#   60|                   Type = [IntPointerType] int *
+#   60|                   ValueCategory = prvalue(load)
+#   60|             getRValue(): [VariableAccess] x
+#   60|                 Type = [IntType] int
+#   60|                 ValueCategory = prvalue(load)
+#   61|         getStmt(2): [DeclStmt] declaration
+#   61|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+#   61|               Type = [IntType] int
+#   61|             getVariable().getInitializer(): [Initializer] initializer for y
+#   61|               getExpr(): [PointerDereferenceExpr] * ...
+#   61|                   Type = [IntType] int
+#   61|                   ValueCategory = prvalue(load)
+#   61|                 getOperand(): [VariableAccess] d
+#   61|                     Type = [IntPointerType] int *
+#   61|                     ValueCategory = prvalue(load)
+#   63|       getCondition(): [Literal] 1
+#   63|           Type = [IntType] int
+#   63|           Value = [Literal] 1
+#   63|           ValueCategory = prvalue
+#   63|       getExcept(): [BlockStmt] { ... }
+#   64|         getStmt(0): [ExprStmt] ExprStmt
+#   64|           getExpr(): [FunctionCall] call to sink
+#   64|               Type = [VoidType] void
+#   64|               ValueCategory = prvalue
+#   64|             getArgument(0): [VariableAccess] x
+#   64|                 Type = [IntType] int
+#   64|                 ValueCategory = prvalue(load)
+#   66|     getStmt(2): [ReturnStmt] return ...
 try_except.cpp:
 #    3| [TopLevelFunction] void ProbeFunction()
 #    3|   <params>: 

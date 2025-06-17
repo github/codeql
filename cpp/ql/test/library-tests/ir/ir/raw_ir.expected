@@ -37533,6 +37533,101 @@ try_except.c:
 #   46|     v46_9(void) = ReturnVoid : 
 #-----|   Goto -> Block 1
 
+#   56| void k(int*, int*, int*)
+#   56|   Block 0
+#   56|     v56_1(void)          = EnterFunction            : 
+#   56|     mu56_2(unknown)      = AliasedDefinition        : 
+#   56|     mu56_3(unknown)      = InitializeNonLocal       : 
+#   56|     r56_4(glval<int *>)  = VariableAddress[b]       : 
+#   56|     mu56_5(int *)        = InitializeParameter[b]   : &:r56_4
+#   56|     r56_6(int *)         = Load[b]                  : &:r56_4, ~m?
+#   56|     mu56_7(unknown)      = InitializeIndirection[b] : &:r56_6
+#   56|     r56_8(glval<int *>)  = VariableAddress[c]       : 
+#   56|     mu56_9(int *)        = InitializeParameter[c]   : &:r56_8
+#   56|     r56_10(int *)        = Load[c]                  : &:r56_8, ~m?
+#   56|     mu56_11(unknown)     = InitializeIndirection[c] : &:r56_10
+#   56|     r56_12(glval<int *>) = VariableAddress[d]       : 
+#   56|     mu56_13(int *)       = InitializeParameter[d]   : &:r56_12
+#   56|     r56_14(int *)        = Load[d]                  : &:r56_12, ~m?
+#   56|     mu56_15(unknown)     = InitializeIndirection[d] : &:r56_14
+#   57|     r57_1(glval<int>)    = VariableAddress[x]       : 
+#   57|     r57_2(int)           = Constant[0]              : 
+#   57|     mu57_3(int)          = Store[x]                 : &:r57_1, r57_2
+#   59|     r59_1(glval<int *>)  = VariableAddress[b]       : 
+#   59|     r59_2(int *)         = Load[b]                  : &:r59_1, ~m?
+#   59|     r59_3(int)           = Load[?]                  : &:r59_2, ~m?
+#-----|   Goto -> Block 3
+#-----|   SEH Exception -> Block 8
+
+#   56|   Block 1
+#   56|     v56_16(void) = AliasedUse   : ~m?
+#   56|     v56_17(void) = ExitFunction : 
+
+#   56|   Block 2
+#   56|     v56_18(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+#   59|   Block 3
+#   59|     r59_4(glval<int>)   = VariableAddress[x] : 
+#   59|     mu59_5(int)         = Store[x]           : &:r59_4, r59_3
+#   60|     r60_1(glval<int>)   = VariableAddress[x] : 
+#   60|     r60_2(int)          = Load[x]            : &:r60_1, ~m?
+#   60|     r60_3(glval<int *>) = VariableAddress[c] : 
+#   60|     r60_4(int *)        = Load[c]            : &:r60_3, ~m?
+#   60|     r60_5(glval<int>)   = CopyValue          : r60_4
+#   60|     mu60_6(int)         = Store[?]           : &:r60_5, r60_2
+#-----|   Goto -> Block 4
+#-----|   SEH Exception -> Block 8
+
+#   61|   Block 4
+#   61|     r61_1(glval<int>)   = VariableAddress[y] : 
+#   61|     r61_2(glval<int *>) = VariableAddress[d] : 
+#   61|     r61_3(int *)        = Load[d]            : &:r61_2, ~m?
+#   61|     r61_4(int)          = Load[?]            : &:r61_3, ~m?
+#-----|   Goto -> Block 5
+#-----|   SEH Exception -> Block 8
+
+#   61|   Block 5
+#   61|     mu61_5(int) = Store[y] : &:r61_1, r61_4
+#-----|   Goto -> Block 10
+
+#   63|   Block 6
+#   63|     r63_1(int)  = Constant[0]       : 
+#   63|     r63_2(bool) = CompareEQ         : r63_7, r63_1
+#   63|     v63_3(void) = ConditionalBranch : r63_2
+#-----|   False -> Block 7
+#-----|   True -> Block 2
+
+#   63|   Block 7
+#   63|     r63_4(int)  = Constant[1]       : 
+#   63|     r63_5(bool) = CompareEQ         : r63_7, r63_4
+#   63|     v63_6(void) = ConditionalBranch : r63_5
+#-----|   True -> Block 9
+
+#   63|   Block 8
+#   63|     r63_7(int)   = Constant[1]       : 
+#   63|     r63_8(int)   = Constant[-1]      : 
+#   63|     r63_9(bool)  = CompareEQ         : r63_7, r63_8
+#   63|     v63_10(void) = ConditionalBranch : r63_9
+#-----|   False -> Block 6
+#-----|   True -> Block 2
+
+#   64|   Block 9
+#   64|     r64_1(glval<unknown>) = FunctionAddress[sink] : 
+#   64|     r64_2(glval<int>)     = VariableAddress[x]    : 
+#   64|     r64_3(int)            = Load[x]               : &:r64_2, ~m?
+#   64|     v64_4(void)           = Call[sink]            : func:r64_1, 0:r64_3
+#   64|     mu64_5(unknown)       = ^CallSideEffect       : ~m?
+#-----|   Goto -> Block 10
+
+#   66|   Block 10
+#   66|     v66_1(void)  = NoOp                 : 
+#   56|     v56_19(void) = ReturnIndirection[b] : &:r56_6, ~m?
+#   56|     v56_20(void) = ReturnIndirection[c] : &:r56_10, ~m?
+#   56|     v56_21(void) = ReturnIndirection[d] : &:r56_14, ~m?
+#   56|     v56_22(void) = ReturnVoid           : 
+#-----|   Goto -> Block 1
+
 try_except.cpp:
 #    6| void f_cpp()
 #    6|   Block 0
