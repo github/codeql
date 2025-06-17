@@ -69,7 +69,8 @@ module SanitizerGuard {
  */
 private class DotDotCheck extends SanitizerGuard::Range, CfgNodes::MethodCallExprCfgNode {
   DotDotCheck() {
-    this.getAstNode().(Resolvable).getResolvedPath() = "<str>::contains" and
+    this.getAstNode().(CallExprBase).getStaticTarget().(Addressable).getCanonicalPath() =
+      "alloc::string::String::contains" and
     this.getArgument(0).getAstNode().(LiteralExpr).getTextValue() =
       ["\"..\"", "\"../\"", "\"..\\\""]
   }
