@@ -4,6 +4,7 @@ private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.models.interfaces.SideEffect
 private import semmle.code.cpp.models.interfaces.Throwing
+private import semmle.code.cpp.models.interfaces.NonThrowing
 private import InstructionTag
 private import SideEffects
 private import TranslatedElement
@@ -366,6 +367,10 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
     or
     exists(MicrosoftTryStmt tryStmt | tryStmt.getStmt() = expr.getEnclosingStmt().getParent*()) and
     e instanceof SehExceptionEdge
+    or
+    not expr.getTarget() instanceof NonCppThrowingFunction and
+    exists(TryStmt tryStmt | tryStmt.getStmt() = expr.getEnclosingStmt().getParent*()) and
+    e instanceof CppExceptionEdge
   }
 
   final override predicate mustThrowException(ExceptionEdge e) {
