@@ -1,5 +1,5 @@
-| file://:0:0:0:0 | float_t[5] | file://:0:0:0:0 | float_t[5] | ArrayTypedefs.cpp:6:9:6:12 | definition of arr1 |
-| file://:0:0:0:0 | float_t[10] | file://:0:0:0:0 | float_t[10] | ArrayTypedefs.cpp:7:11:7:19 | definition of a_pointer |
-| file://:0:0:0:0 | int_t[2][4] | file://:0:0:0:0 | int_t[2][4] | ArrayTypedefs.cpp:3:7:3:8 | definition of g2 |
-| file://:0:0:0:0 | int_t[4] | file://:0:0:0:0 | int_t[4] | ArrayTypedefs.cpp:3:7:3:8 | definition of g2 |
-| file://:0:0:0:0 | int_t[10] | file://:0:0:0:0 | int_t[10] | ArrayTypedefs.cpp:2:7:2:8 | definition of g1 |
+| file://:0:0:0:0 | float_t[5] | file://:0:0:0:0 | float[5] | ArrayTypedefs.cpp:6:9:6:12 | definition of arr1 |
+| file://:0:0:0:0 | float_t[10] | file://:0:0:0:0 | float[10] | ArrayTypedefs.cpp:7:11:7:19 | definition of a_pointer |
+| file://:0:0:0:0 | int_t[2][4] | file://:0:0:0:0 | int[2][4] | ArrayTypedefs.cpp:3:7:3:8 | definition of g2 |
+| file://:0:0:0:0 | int_t[4] | file://:0:0:0:0 | int[4] | ArrayTypedefs.cpp:3:7:3:8 | definition of g2 |
+| file://:0:0:0:0 | int_t[10] | file://:0:0:0:0 | int[10] | ArrayTypedefs.cpp:2:7:2:8 | definition of g1 |

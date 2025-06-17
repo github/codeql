@@ -1,3 +1,5 @@
+| ArrayTypedefs.cpp:1:13:1:17 | int_t | int_t | getBaseType() = int |
+| ArrayTypedefs.cpp:5:15:5:21 | float_t | float_t | getBaseType() = float |
 | ODASA-6095-A.hpp:5:25:5:30 | mytype | MyTemplate<X>::mytype | NestedTypedefType, getBaseType() = MyTemplate<X>, member of MyTemplate<X> |
 | ODASA-6095-B.hpp:6:43:6:49 | mytype2 | MyTemplate2<X>::mytype2 | NestedTypedefType, getBaseType() = decltype(...), member of MyTemplate2<X> |
 | file://:0:0:0:0 | mytype | MyTemplate<char>::mytype | NestedTypedefType, getBaseType() = MyTemplate<char>, member of MyTemplate<char> |
