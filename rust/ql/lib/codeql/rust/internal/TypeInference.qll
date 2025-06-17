@@ -289,7 +289,7 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
   )
   or
   // an array list expression (`[1, 2, 3]`) has the type of the first (any) element
-  n1.(ArrayListExpr).getExpr(0) = n2 and
+  n1.(ArrayListExpr).getExpr(_) = n2 and
   prefix1 = TypePath::singleton(TArrayTypeParameter()) and
   prefix2.isEmpty()
   or
