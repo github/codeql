@@ -11,13 +11,13 @@ fn tainted_path_handler_bad(
 }
 
 //#[handler]
-fn tainted_path_handler_good(Query(file_name): Query<String>) -> Result<String> {
+fn tainted_path_handler_good(Query(file_name): Query<String>) -> Result<String> { // $ SPURIOUS: Source=remote2
     // GOOD: ensure that the filename has no path separators or parent directory references
     if file_name.contains("..") || file_name.contains("/") || file_name.contains("\\") {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
     let file_path = PathBuf::from(file_name);
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink SPURIOUS: Alert[rust/path-injection]=remote2
 }
 
 //#[handler]
