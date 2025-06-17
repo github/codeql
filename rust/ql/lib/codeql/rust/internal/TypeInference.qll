@@ -1587,7 +1587,7 @@ private module Debug {
     result = inferType(n, path)
   }
 
-  Function debugResolveMethodCallExpr(MethodCallExpr mce) {
+  Function debugResolveMethodCallTarget(Call mce) {
     mce = getRelevantLocatable() and
     result = resolveMethodCallTarget(mce)
   }
