@@ -6,10 +6,11 @@
  * @problem.severity warning
  * @precision high
  * @id java/output-resource-leak
- * @tags efficiency
- *       correctness
+ * @tags quality
+ *       reliability
+ *       performance
+ *       efficiency
  *       resources
- *       quality
  *       external/cwe/cwe-404
  *       external/cwe/cwe-772
  */
