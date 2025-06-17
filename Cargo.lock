@@ -426,6 +426,7 @@ dependencies = [
  "figment",
  "glob",
  "itertools 0.14.0",
+ "mustache",
  "num-traits",
  "ra_ap_base_db",
  "ra_ap_cfg",
