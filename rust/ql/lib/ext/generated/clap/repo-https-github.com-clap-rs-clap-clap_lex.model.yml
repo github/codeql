@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/clap-rs/clap:clap_lex", "<crate::ParsedArg>::to_value", "Argument[self].Field[clap_lex::ParsedArg::inner]", "ReturnValue.Field[core::result::Result::Err(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap_lex", "<crate::ParsedArg>::to_value_os", "Argument[self].Field[clap_lex::ParsedArg::inner]", "ReturnValue", "value", "dfc-generated"]

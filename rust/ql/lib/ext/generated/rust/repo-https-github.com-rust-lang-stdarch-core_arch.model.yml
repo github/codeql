@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/stdarch:core_arch", "<crate::core_arch::simd::f16x16>::from_array", "Argument[0]", "ReturnValue.Field[core::core_arch::simd::f16x16(0)].Field[core_arch::core_arch::simd::f16x16(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-lang/stdarch:core_arch", "<crate::core_arch::simd::f16x16>::new", "Argument[0]", "ReturnValue.Field[core::core_arch::simd::f16x16(0)].Field[core_arch::core_arch::simd::f16x16(0)].Element", "value", "dfc-generated"]
@@ -1132,7 +1132,7 @@ extensions:
       - ["repo:https://github.com/rust-lang/stdarch:core_arch", "crate::core_arch::x86_64::tbm::_tzmsk_u64", "Argument[0]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/stdarch:core_arch", "crate::core_arch::x86::avx512bw::_load_mask32", "Argument[0]", "pointer-access", "df-generated"]
       - ["repo:https://github.com/rust-lang/stdarch:core_arch", "crate::core_arch::x86::avx512bw::_load_mask64", "Argument[0]", "pointer-access", "df-generated"]

@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/tokio-rs/tokio:tokio-stream", "<crate::result::Result as crate::stream_ext::collect::sealed::FromStreamPriv>::extend", "Argument[2].Field[core::result::Result::Err(0)]", "Argument[1].Reference.Field[core::result::Result::Err(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio-stream", "<crate::stream_close::StreamNotifyClose>::into_inner", "Argument[self].Field[tokio_stream::stream_close::StreamNotifyClose::inner]", "ReturnValue", "value", "dfc-generated"]
@@ -185,7 +185,7 @@ extensions:
       - ["repo:https://github.com/tokio-rs/tokio:tokio-stream", "crate::stream_ext::throttle::throttle", "Argument[1]", "ReturnValue.Field[tokio_stream::stream_ext::throttle::Throttle::stream]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/tokio-rs/tokio:tokio-stream", "<crate::stream_map::StreamMap>::insert", "Argument[self]", "log-injection", "df-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio-stream", "<crate::stream_map::StreamMap>::poll_next_many", "Argument[self]", "log-injection", "df-generated"]

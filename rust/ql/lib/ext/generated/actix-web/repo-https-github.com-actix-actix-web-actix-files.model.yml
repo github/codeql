@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:actix-files", "<crate::chunked::ChunkedReadFile>::project", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-files", "<crate::chunked::ChunkedReadFile>::project_ref", "Argument[self]", "ReturnValue", "taint", "df-generated"]
@@ -66,7 +66,7 @@ extensions:
       - ["repo:https://github.com/actix/actix-web:actix-files", "crate::encoding::equiv_utf8_text", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:actix-files", "<crate::named::NamedFile as crate::response::responder::Responder>::respond_to", "Argument[self]", "pointer-access", "df-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-files", "<crate::named::NamedFile>::into_response", "Argument[self]", "pointer-access", "df-generated"]

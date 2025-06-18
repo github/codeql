@@ -9,14 +9,14 @@ extensions:
       - ["repo::test", "crate::arg_source", "Argument[0]", "test-source", "manual"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo::test", "crate::simple_sink", "Argument[0]", "test-sink", "manual"]
       - ["repo::test", "crate::enum_sink", "Argument[0].Field[main::MyFieldEnum::C::field_c]", "test-sink", "manual"]
       - ["repo::test", "<crate::MyFieldEnum>::sink", "Argument[self].Field[main::MyFieldEnum::D::field_d]", "test-sink", "manual"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo::test", "crate::coerce", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["repo::test", "crate::get_var_pos", "Argument[0].Field[main::MyPosEnum::A(0)]", "ReturnValue", "value", "manual"]

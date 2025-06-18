@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "<crate::io::Builder>::build", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "<crate::io::Builder>::name", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
@@ -25,7 +25,7 @@ extensions:
       - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "crate::task::spawn", "Argument[0]", "ReturnValue.Field[tokio_test::task::Spawn::future].Reference", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "<crate::io::Builder>::read", "Argument[self]", "log-injection", "df-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "<crate::io::Builder>::read_error", "Argument[self]", "log-injection", "df-generated"]

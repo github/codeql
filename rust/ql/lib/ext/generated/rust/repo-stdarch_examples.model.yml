@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo::stdarch_examples", "<crate::List>::add", "Argument[0]", "Argument[self].Field[connect5::List::p_move].Element", "value", "dfc-generated"]
       - ["repo::stdarch_examples", "<crate::List>::size", "Argument[self].Field[connect5::List::p_size]", "ReturnValue", "value", "dfc-generated"]

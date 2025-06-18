@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<&str as crate::into_url::IntoUrlSealed>::as_str", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::Url as crate::into_url::IntoUrlSealed>::into_url", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)]", "value", "dfc-generated"]
@@ -444,7 +444,7 @@ extensions:
       - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "crate::error::cast_to_internal_error", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::async_impl::client::Client>::delete", "Argument[0]", "transmission", "df-generated"]
       - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::async_impl::client::Client>::get", "Argument[0]", "transmission", "df-generated"]
@@ -479,7 +479,7 @@ extensions:
       - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "crate::get", "Argument[0]", "transmission", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModel
+      extensible: sourceModelDeprecated
     data:
       - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::async_impl::multipart::Form>::file", "ReturnValue", "file", "df-generated"]
       - ["repo:https://github.com/seanmonstar/reqwest:reqwest", "<crate::async_impl::multipart::Part>::file", "ReturnValue", "file", "df-generated"]

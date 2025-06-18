@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/hyperium/hyper:hyper", "<_ as crate::ffi::task::IntoDynTaskType>::into_dyn_task_type", "Argument[self]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/hyperium/hyper:hyper", "<crate::DebugStream as crate::io::Read>::read", "Argument[self]", "Argument[0]", "taint", "df-generated"]
@@ -296,7 +296,7 @@ extensions:
       - ["repo:https://github.com/hyperium/hyper:hyper", "crate::service::util::service_fn", "Argument[0]", "ReturnValue.Field[hyper::service::util::ServiceFn::f]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/hyperium/hyper:hyper", "<crate::common::buf::BufList>::push", "Argument[self]", "log-injection", "df-generated"]
       - ["repo:https://github.com/hyperium/hyper:hyper", "<crate::common::time::Time>::check", "Argument[1]", "log-injection", "df-generated"]
@@ -315,7 +315,7 @@ extensions:
       - ["repo:https://github.com/hyperium/hyper:hyper", "crate::proto::h2::ping::channel", "Argument[1]", "pointer-access", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModel
+      extensible: sourceModelDeprecated
     data:
       - ["repo:https://github.com/hyperium/hyper:hyper", "crate::ffi::body::hyper_buf_bytes", "ReturnValue", "pointer-invalidate", "df-generated"]
       - ["repo:https://github.com/hyperium/hyper:hyper", "crate::ffi::http_types::hyper_response_reason_phrase", "ReturnValue", "pointer-invalidate", "df-generated"]

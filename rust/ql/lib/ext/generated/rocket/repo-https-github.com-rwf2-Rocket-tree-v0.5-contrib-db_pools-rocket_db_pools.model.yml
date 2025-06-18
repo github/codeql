@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/db_pools:rocket_db_pools", "<crate::client::Client as crate::pool::Pool>::close", "Argument[self]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/db_pools:rocket_db_pools", "<crate::client::Client as crate::pool::Pool>::get", "Argument[self]", "ReturnValue.Reference", "value", "dfc-generated"]

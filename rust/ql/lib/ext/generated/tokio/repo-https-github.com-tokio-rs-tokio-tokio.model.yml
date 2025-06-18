@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/tokio-rs/tokio:tokio", "<&[u8] as crate::io::async_buf_read::AsyncBufRead>::consume", "Argument[self].Element", "Argument[self].Reference.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio", "<&[u8] as crate::io::async_buf_read::AsyncBufRead>::poll_fill_buf", "Argument[self].Reference", "ReturnValue.Field[core::task::poll::Poll::Ready(0)].Field[core::result::Result::Ok(0)]", "value", "dfc-generated"]
@@ -1105,7 +1105,7 @@ extensions:
       - ["repo:https://github.com/tokio-rs/tokio:tokio", "crate::util::typeid::try_transmute", "Argument[0]", "ReturnValue.Field[core::result::Result::Err(0)]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/tokio-rs/tokio:tokio", "<&[u8] as crate::io::async_read::AsyncRead>::poll_read", "Argument[1]", "log-injection", "df-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio", "<crate::R as crate::io::async_read::AsyncRead>::poll_read", "Argument[1]", "log-injection", "df-generated"]
@@ -1152,7 +1152,7 @@ extensions:
       - ["repo:https://github.com/tokio-rs/tokio:tokio", "crate::support::signal::send_signal", "Argument[0]", "log-injection", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModel
+      extensible: sourceModelDeprecated
     data:
       - ["repo:https://github.com/tokio-rs/tokio:tokio", "<crate::fs::read_dir::DirEntry>::file_name", "ReturnValue", "file", "df-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio", "<crate::fs::read_dir::DirEntry>::path", "ReturnValue", "file", "df-generated"]

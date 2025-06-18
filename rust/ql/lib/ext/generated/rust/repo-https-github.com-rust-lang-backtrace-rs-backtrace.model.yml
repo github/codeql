@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/backtrace-rs:backtrace", "<crate::backtrace::Frame>::sp", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/backtrace-rs:backtrace", "<crate::backtrace::libunwind::Frame as crate::clone::Clone>::clone", "Argument[self].Reference.Field[as_if_std::the_backtrace_crate::backtrace::libunwind::Frame::Cloned::sp].Field[backtrace::backtrace::libunwind::Frame::Cloned::sp].Field[std::backtrace_rs::backtrace::libunwind::Frame::Cloned::sp]", "ReturnValue.Field[as_if_std::the_backtrace_crate::backtrace::libunwind::Frame::Cloned::sp].Field[backtrace::backtrace::libunwind::Frame::Cloned::sp].Field[std::backtrace_rs::backtrace::libunwind::Frame::Cloned::sp]", "value", "dfc-generated"]
@@ -31,12 +31,12 @@ extensions:
       - ["repo:https://github.com/rust-lang/backtrace-rs:backtrace", "crate::symbolize::gimli::elf::handle_split_dwarf", "Argument[2]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/backtrace-rs:backtrace", "<crate::symbolize::gimli::Mapping>::new", "Argument[0]", "path-injection", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModel
+      extensible: sourceModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/backtrace-rs:backtrace", "<crate::symbolize::gimli::Mapping>::new", "ReturnValue", "file", "df-generated"]
       - ["repo:https://github.com/rust-lang/backtrace-rs:backtrace", "crate::symbolize::gimli::parse_running_mmaps::parse_maps", "ReturnValue", "file", "df-generated"]

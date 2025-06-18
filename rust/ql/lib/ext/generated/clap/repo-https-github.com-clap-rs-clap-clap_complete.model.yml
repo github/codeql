@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/clap-rs/clap:clap_complete", "<_ as crate::engine::custom::ValueCandidates>::candidates", "Argument[self].ReturnValue", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap_complete", "<_ as crate::engine::custom::ValueCompleter>::complete", "Argument[0]", "Argument[self].Parameter[0]", "value", "dfc-generated"]
@@ -54,7 +54,7 @@ extensions:
       - ["repo:https://github.com/clap-rs/clap:clap_complete", "crate::engine::custom::complete_path", "Argument[1]", "Argument[2]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/clap-rs/clap:clap_complete", "<crate::env::shells::Bash as crate::env::EnvCompleter>::write_complete", "Argument[1]", "log-injection", "df-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap_complete", "<crate::env::shells::Bash as crate::env::EnvCompleter>::write_complete", "Argument[2]", "log-injection", "df-generated"]

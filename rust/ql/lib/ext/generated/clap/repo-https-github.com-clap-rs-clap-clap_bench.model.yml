@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/clap-rs/clap:clap_bench", "<crate::Args as crate::fmt::Display>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap_bench", "<crate::Args>::args", "Argument[self].Field[1]", "ReturnValue", "value", "dfc-generated"]

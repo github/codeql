@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:awc", "<crate::builder::ClientBuilder>::add_default_header", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:awc", "<crate::builder::ClientBuilder>::basic_auth", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
@@ -262,7 +262,7 @@ extensions:
       - ["repo:https://github.com/actix/actix-web:awc", "<crate::ws::WebsocketsRequest>::set_header_if_none", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:awc", "<crate::frozen::FrozenClientRequest>::send", "Argument[self]", "pointer-access", "df-generated"]
       - ["repo:https://github.com/actix/actix-web:awc", "<crate::frozen::FrozenClientRequest>::send_body", "Argument[self]", "pointer-access", "df-generated"]
