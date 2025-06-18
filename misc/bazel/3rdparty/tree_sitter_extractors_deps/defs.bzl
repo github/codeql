@@ -334,6 +334,7 @@ _NORMAL_DEPENDENCIES = {
             "figment": Label("@vendor_ts__figment-0.10.19//:figment"),
             "glob": Label("@vendor_ts__glob-0.3.2//:glob"),
             "itertools": Label("@vendor_ts__itertools-0.14.0//:itertools"),
+            "mustache": Label("@vendor_ts__mustache-0.9.0//:mustache"),
             "num-traits": Label("@vendor_ts__num-traits-0.2.19//:num_traits"),
             "ra_ap_base_db": Label("@vendor_ts__ra_ap_base_db-0.0.273//:ra_ap_base_db"),
             "ra_ap_cfg": Label("@vendor_ts__ra_ap_cfg-0.0.273//:ra_ap_cfg"),
