@@ -6,8 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/coupled-types
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       complexity
  *       modularity
  */
