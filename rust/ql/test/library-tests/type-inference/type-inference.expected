@@ -1,4 +1,239 @@
 inferType
+| dereference.rs:12:14:12:18 | SelfParam |  | file://:0:0:0:0 | & |
+| dereference.rs:12:14:12:18 | SelfParam | &T | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:12:29:14:5 | { ... } |  | file://:0:0:0:0 | & |
+| dereference.rs:12:29:14:5 | { ... } | &T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:13:9:13:19 | &... |  | file://:0:0:0:0 | & |
+| dereference.rs:13:9:13:19 | &... | &T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:13:10:13:13 | self |  | file://:0:0:0:0 | & |
+| dereference.rs:13:10:13:13 | self | &T | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:13:10:13:19 | self.value |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:25:14:25:18 | SelfParam |  | file://:0:0:0:0 | & |
+| dereference.rs:25:14:25:18 | SelfParam | &T | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:25:14:25:18 | SelfParam | &T.T | dereference.rs:21:6:21:6 | T |
+| dereference.rs:25:27:27:5 | { ... } |  | file://:0:0:0:0 | & |
+| dereference.rs:25:27:27:5 | { ... } | &T | dereference.rs:21:6:21:6 | T |
+| dereference.rs:26:9:26:19 | &... |  | file://:0:0:0:0 | & |
+| dereference.rs:26:9:26:19 | &... | &T | dereference.rs:21:6:21:6 | T |
+| dereference.rs:26:10:26:13 | self |  | file://:0:0:0:0 | & |
+| dereference.rs:26:10:26:13 | self | &T | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:26:10:26:13 | self | &T.T | dereference.rs:21:6:21:6 | T |
+| dereference.rs:26:10:26:19 | self.value |  | dereference.rs:21:6:21:6 | T |
+| dereference.rs:32:9:32:10 | a1 |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:32:14:32:42 | MyIntPointer {...} |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:32:36:32:40 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:33:9:33:11 | _b1 |  | file://:0:0:0:0 | & |
+| dereference.rs:33:9:33:11 | _b1 | &T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:33:15:33:16 | a1 |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:33:15:33:24 | a1.deref() |  | file://:0:0:0:0 | & |
+| dereference.rs:33:15:33:24 | a1.deref() | &T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:36:9:36:10 | a2 |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:36:9:36:10 | a2 |  | file://:0:0:0:0 | & |
+| dereference.rs:36:9:36:10 | a2 | &T | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:36:9:36:10 | a2 | &T | file://:0:0:0:0 | & |
+| dereference.rs:36:9:36:10 | a2 | &T.&T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:36:14:36:42 | MyIntPointer {...} |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:36:14:36:42 | MyIntPointer {...} |  | file://:0:0:0:0 | & |
+| dereference.rs:36:14:36:42 | MyIntPointer {...} | &T | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:36:14:36:42 | MyIntPointer {...} | &T | file://:0:0:0:0 | & |
+| dereference.rs:36:14:36:42 | MyIntPointer {...} | &T.&T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:36:36:36:40 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:37:9:37:11 | _b2 |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:37:9:37:11 | _b2 |  | file://:0:0:0:0 | & |
+| dereference.rs:37:9:37:11 | _b2 | &T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:37:15:37:17 | * ... |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:37:15:37:17 | * ... |  | file://:0:0:0:0 | & |
+| dereference.rs:37:15:37:17 | * ... | &T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:37:16:37:17 | a2 |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:37:16:37:17 | a2 |  | file://:0:0:0:0 | & |
+| dereference.rs:37:16:37:17 | a2 | &T | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:37:16:37:17 | a2 | &T | file://:0:0:0:0 | & |
+| dereference.rs:37:16:37:17 | a2 | &T.&T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:40:9:40:10 | a3 |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:40:9:40:10 | a3 |  | file://:0:0:0:0 | & |
+| dereference.rs:40:9:40:10 | a3 | &T | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:40:9:40:10 | a3 | &T | file://:0:0:0:0 | & |
+| dereference.rs:40:9:40:10 | a3 | &T.&T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:40:14:40:42 | MyIntPointer {...} |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:40:14:40:42 | MyIntPointer {...} |  | file://:0:0:0:0 | & |
+| dereference.rs:40:14:40:42 | MyIntPointer {...} | &T | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:40:14:40:42 | MyIntPointer {...} | &T | file://:0:0:0:0 | & |
+| dereference.rs:40:14:40:42 | MyIntPointer {...} | &T.&T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:40:36:40:40 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:41:9:41:11 | _b3 |  | {EXTERNAL LOCATION} | bool |
+| dereference.rs:41:15:41:19 | (...) |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:41:15:41:19 | (...) |  | file://:0:0:0:0 | & |
+| dereference.rs:41:15:41:19 | (...) | &T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:41:15:41:33 | ... .is_positive() |  | {EXTERNAL LOCATION} | bool |
+| dereference.rs:41:16:41:18 | * ... |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:41:16:41:18 | * ... |  | file://:0:0:0:0 | & |
+| dereference.rs:41:16:41:18 | * ... | &T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:41:17:41:18 | a3 |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:41:17:41:18 | a3 |  | file://:0:0:0:0 | & |
+| dereference.rs:41:17:41:18 | a3 | &T | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:41:17:41:18 | a3 | &T | file://:0:0:0:0 | & |
+| dereference.rs:41:17:41:18 | a3 | &T.&T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:46:9:46:10 | c1 |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:46:9:46:10 | c1 | T | {EXTERNAL LOCATION} | char |
+| dereference.rs:46:14:46:42 | MySmartPointer {...} |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:46:14:46:42 | MySmartPointer {...} | T | {EXTERNAL LOCATION} | char |
+| dereference.rs:46:38:46:40 | 'a' |  | {EXTERNAL LOCATION} | char |
+| dereference.rs:47:9:47:11 | _d1 |  | file://:0:0:0:0 | & |
+| dereference.rs:47:9:47:11 | _d1 | &T | {EXTERNAL LOCATION} | char |
+| dereference.rs:47:15:47:16 | c1 |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:47:15:47:16 | c1 | T | {EXTERNAL LOCATION} | char |
+| dereference.rs:47:15:47:24 | c1.deref() |  | file://:0:0:0:0 | & |
+| dereference.rs:47:15:47:24 | c1.deref() | &T | {EXTERNAL LOCATION} | char |
+| dereference.rs:50:9:50:10 | c2 |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:50:9:50:10 | c2 |  | file://:0:0:0:0 | & |
+| dereference.rs:50:9:50:10 | c2 | &T | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:50:9:50:10 | c2 | &T | file://:0:0:0:0 | & |
+| dereference.rs:50:9:50:10 | c2 | T | {EXTERNAL LOCATION} | char |
+| dereference.rs:50:14:50:42 | MySmartPointer {...} |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:50:14:50:42 | MySmartPointer {...} |  | file://:0:0:0:0 | & |
+| dereference.rs:50:14:50:42 | MySmartPointer {...} | &T | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:50:14:50:42 | MySmartPointer {...} | &T | file://:0:0:0:0 | & |
+| dereference.rs:50:14:50:42 | MySmartPointer {...} | T | {EXTERNAL LOCATION} | char |
+| dereference.rs:50:38:50:40 | 'a' |  | {EXTERNAL LOCATION} | char |
+| dereference.rs:51:9:51:11 | _d2 |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:51:9:51:11 | _d2 |  | file://:0:0:0:0 | & |
+| dereference.rs:51:15:51:17 | * ... |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:51:15:51:17 | * ... |  | file://:0:0:0:0 | & |
+| dereference.rs:51:16:51:17 | c2 |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:51:16:51:17 | c2 |  | file://:0:0:0:0 | & |
+| dereference.rs:51:16:51:17 | c2 | &T | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:51:16:51:17 | c2 | &T | file://:0:0:0:0 | & |
+| dereference.rs:51:16:51:17 | c2 | T | {EXTERNAL LOCATION} | char |
+| dereference.rs:54:9:54:10 | c3 |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:54:9:54:10 | c3 |  | file://:0:0:0:0 | & |
+| dereference.rs:54:9:54:10 | c3 | &T | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:54:9:54:10 | c3 | &T | file://:0:0:0:0 | & |
+| dereference.rs:54:9:54:10 | c3 | T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:54:14:54:44 | MySmartPointer {...} |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:54:14:54:44 | MySmartPointer {...} |  | file://:0:0:0:0 | & |
+| dereference.rs:54:14:54:44 | MySmartPointer {...} | &T | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:54:14:54:44 | MySmartPointer {...} | &T | file://:0:0:0:0 | & |
+| dereference.rs:54:14:54:44 | MySmartPointer {...} | T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:54:38:54:42 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:55:15:55:19 | (...) |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:55:15:55:19 | (...) |  | file://:0:0:0:0 | & |
+| dereference.rs:55:16:55:18 | * ... |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:55:16:55:18 | * ... |  | file://:0:0:0:0 | & |
+| dereference.rs:55:17:55:18 | c3 |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:55:17:55:18 | c3 |  | file://:0:0:0:0 | & |
+| dereference.rs:55:17:55:18 | c3 | &T | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:55:17:55:18 | c3 | &T | file://:0:0:0:0 | & |
+| dereference.rs:55:17:55:18 | c3 | T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:60:9:60:10 | e1 |  | file://:0:0:0:0 | & |
+| dereference.rs:60:9:60:10 | e1 | &T | {EXTERNAL LOCATION} | char |
+| dereference.rs:60:14:60:17 | &'a' |  | file://:0:0:0:0 | & |
+| dereference.rs:60:14:60:17 | &'a' | &T | {EXTERNAL LOCATION} | char |
+| dereference.rs:60:15:60:17 | 'a' |  | {EXTERNAL LOCATION} | char |
+| dereference.rs:61:15:61:16 | e1 |  | file://:0:0:0:0 | & |
+| dereference.rs:61:15:61:16 | e1 | &T | {EXTERNAL LOCATION} | char |
+| dereference.rs:64:9:64:10 | e2 |  | file://:0:0:0:0 | & |
+| dereference.rs:64:9:64:10 | e2 | &T | {EXTERNAL LOCATION} | char |
+| dereference.rs:64:9:64:10 | e2 | &T | file://:0:0:0:0 | & |
+| dereference.rs:64:14:64:17 | &'a' |  | file://:0:0:0:0 | & |
+| dereference.rs:64:14:64:17 | &'a' | &T | {EXTERNAL LOCATION} | char |
+| dereference.rs:64:14:64:17 | &'a' | &T | file://:0:0:0:0 | & |
+| dereference.rs:64:15:64:17 | 'a' |  | {EXTERNAL LOCATION} | char |
+| dereference.rs:64:15:64:17 | 'a' |  | file://:0:0:0:0 | & |
+| dereference.rs:65:9:65:11 | _f2 |  | {EXTERNAL LOCATION} | char |
+| dereference.rs:65:9:65:11 | _f2 |  | file://:0:0:0:0 | & |
+| dereference.rs:65:15:65:17 | * ... |  | {EXTERNAL LOCATION} | char |
+| dereference.rs:65:15:65:17 | * ... |  | file://:0:0:0:0 | & |
+| dereference.rs:65:16:65:17 | e2 |  | file://:0:0:0:0 | & |
+| dereference.rs:65:16:65:17 | e2 | &T | {EXTERNAL LOCATION} | char |
+| dereference.rs:65:16:65:17 | e2 | &T | file://:0:0:0:0 | & |
+| dereference.rs:68:9:68:10 | e3 |  | file://:0:0:0:0 | & |
+| dereference.rs:68:9:68:10 | e3 | &T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:68:9:68:10 | e3 | &T | file://:0:0:0:0 | & |
+| dereference.rs:68:14:68:19 | &34i64 |  | file://:0:0:0:0 | & |
+| dereference.rs:68:14:68:19 | &34i64 | &T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:68:14:68:19 | &34i64 | &T | file://:0:0:0:0 | & |
+| dereference.rs:68:15:68:19 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:68:15:68:19 | 34i64 |  | file://:0:0:0:0 | & |
+| dereference.rs:69:9:69:11 | _f3 |  | {EXTERNAL LOCATION} | bool |
+| dereference.rs:69:15:69:19 | (...) |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:69:15:69:19 | (...) |  | file://:0:0:0:0 | & |
+| dereference.rs:69:15:69:33 | ... .is_positive() |  | {EXTERNAL LOCATION} | bool |
+| dereference.rs:69:16:69:18 | * ... |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:69:16:69:18 | * ... |  | file://:0:0:0:0 | & |
+| dereference.rs:69:17:69:18 | e3 |  | file://:0:0:0:0 | & |
+| dereference.rs:69:17:69:18 | e3 | &T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:69:17:69:18 | e3 | &T | file://:0:0:0:0 | & |
+| dereference.rs:74:9:74:10 | g1 |  | {EXTERNAL LOCATION} | Box |
+| dereference.rs:74:9:74:10 | g1 | A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:74:9:74:10 | g1 | T | {EXTERNAL LOCATION} | char |
+| dereference.rs:74:25:74:37 | ...::new(...) |  | {EXTERNAL LOCATION} | Box |
+| dereference.rs:74:25:74:37 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:74:25:74:37 | ...::new(...) | T | {EXTERNAL LOCATION} | char |
+| dereference.rs:74:34:74:36 | 'a' |  | {EXTERNAL LOCATION} | char |
+| dereference.rs:75:9:75:11 | _h1 |  | file://:0:0:0:0 | & |
+| dereference.rs:75:9:75:11 | _h1 | &T | {EXTERNAL LOCATION} | char |
+| dereference.rs:75:15:75:16 | g1 |  | {EXTERNAL LOCATION} | Box |
+| dereference.rs:75:15:75:16 | g1 | A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:75:15:75:16 | g1 | T | {EXTERNAL LOCATION} | char |
+| dereference.rs:75:15:75:24 | g1.deref() |  | file://:0:0:0:0 | & |
+| dereference.rs:75:15:75:24 | g1.deref() | &T | {EXTERNAL LOCATION} | char |
+| dereference.rs:78:9:78:10 | g2 |  | {EXTERNAL LOCATION} | Box |
+| dereference.rs:78:9:78:10 | g2 |  | file://:0:0:0:0 | & |
+| dereference.rs:78:9:78:10 | g2 | &T | {EXTERNAL LOCATION} | Box |
+| dereference.rs:78:9:78:10 | g2 | &T | file://:0:0:0:0 | & |
+| dereference.rs:78:9:78:10 | g2 | A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:78:9:78:10 | g2 | T | {EXTERNAL LOCATION} | char |
+| dereference.rs:78:25:78:37 | ...::new(...) |  | {EXTERNAL LOCATION} | Box |
+| dereference.rs:78:25:78:37 | ...::new(...) |  | file://:0:0:0:0 | & |
+| dereference.rs:78:25:78:37 | ...::new(...) | &T | {EXTERNAL LOCATION} | Box |
+| dereference.rs:78:25:78:37 | ...::new(...) | &T | file://:0:0:0:0 | & |
+| dereference.rs:78:25:78:37 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:78:25:78:37 | ...::new(...) | T | {EXTERNAL LOCATION} | char |
+| dereference.rs:78:34:78:36 | 'a' |  | {EXTERNAL LOCATION} | char |
+| dereference.rs:79:9:79:11 | _h2 |  | {EXTERNAL LOCATION} | Box |
+| dereference.rs:79:9:79:11 | _h2 |  | file://:0:0:0:0 | & |
+| dereference.rs:79:15:79:17 | * ... |  | {EXTERNAL LOCATION} | Box |
+| dereference.rs:79:15:79:17 | * ... |  | file://:0:0:0:0 | & |
+| dereference.rs:79:16:79:17 | g2 |  | {EXTERNAL LOCATION} | Box |
+| dereference.rs:79:16:79:17 | g2 |  | file://:0:0:0:0 | & |
+| dereference.rs:79:16:79:17 | g2 | &T | {EXTERNAL LOCATION} | Box |
+| dereference.rs:79:16:79:17 | g2 | &T | file://:0:0:0:0 | & |
+| dereference.rs:79:16:79:17 | g2 | A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:79:16:79:17 | g2 | T | {EXTERNAL LOCATION} | char |
+| dereference.rs:82:9:82:10 | g3 |  | {EXTERNAL LOCATION} | Box |
+| dereference.rs:82:9:82:10 | g3 |  | file://:0:0:0:0 | & |
+| dereference.rs:82:9:82:10 | g3 | &T | {EXTERNAL LOCATION} | Box |
+| dereference.rs:82:9:82:10 | g3 | &T | file://:0:0:0:0 | & |
+| dereference.rs:82:9:82:10 | g3 | A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:82:9:82:10 | g3 | T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:82:24:82:38 | ...::new(...) |  | {EXTERNAL LOCATION} | Box |
+| dereference.rs:82:24:82:38 | ...::new(...) |  | file://:0:0:0:0 | & |
+| dereference.rs:82:24:82:38 | ...::new(...) | &T | {EXTERNAL LOCATION} | Box |
+| dereference.rs:82:24:82:38 | ...::new(...) | &T | file://:0:0:0:0 | & |
+| dereference.rs:82:24:82:38 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:82:24:82:38 | ...::new(...) | T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:82:33:82:37 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:83:15:83:19 | (...) |  | {EXTERNAL LOCATION} | Box |
+| dereference.rs:83:15:83:19 | (...) |  | file://:0:0:0:0 | & |
+| dereference.rs:83:16:83:18 | * ... |  | {EXTERNAL LOCATION} | Box |
+| dereference.rs:83:16:83:18 | * ... |  | file://:0:0:0:0 | & |
+| dereference.rs:83:17:83:18 | g3 |  | {EXTERNAL LOCATION} | Box |
+| dereference.rs:83:17:83:18 | g3 |  | file://:0:0:0:0 | & |
+| dereference.rs:83:17:83:18 | g3 | &T | {EXTERNAL LOCATION} | Box |
+| dereference.rs:83:17:83:18 | g3 | &T | file://:0:0:0:0 | & |
+| dereference.rs:83:17:83:18 | g3 | A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:83:17:83:18 | g3 | T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:88:9:88:9 | x |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:88:13:88:41 | MyIntPointer {...} |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:88:35:88:39 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:89:14:89:14 | x |  | dereference.rs:4:1:6:1 | MyIntPointer |
+| dereference.rs:92:9:92:9 | x |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:92:9:92:9 | x | T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:92:13:92:43 | MySmartPointer {...} |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:92:13:92:43 | MySmartPointer {...} | T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:92:37:92:41 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:93:14:93:14 | x |  | dereference.rs:17:1:19:1 | MySmartPointer |
+| dereference.rs:93:14:93:14 | x | T | {EXTERNAL LOCATION} | i64 |
 | loop/main.rs:7:12:7:15 | SelfParam |  | loop/main.rs:6:1:8:1 | Self [trait T1] |
 | loop/main.rs:11:12:11:15 | SelfParam |  | loop/main.rs:10:1:14:1 | Self [trait T2] |
 | loop/main.rs:12:9:12:12 | self |  | loop/main.rs:10:1:14:1 | Self [trait T2] |
@@ -2705,9 +2940,9 @@ inferType
 | main.rs:1880:9:1880:9 | x |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1880:9:1880:22 | x.my_add(...) |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1880:18:1880:21 | true |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1886:5:1886:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:1887:5:1887:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:1887:20:1887:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:1887:41:1887:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:1903:5:1903:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1888:5:1888:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:1889:5:1889:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:1889:20:1889:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:1889:41:1889:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:1905:5:1905:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
 testFailures

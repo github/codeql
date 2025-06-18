@@ -1881,6 +1881,8 @@ mod method_determined_by_argument_type {
     }
 }
 
+mod dereference;
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -1905,4 +1907,5 @@ fn main() {
     indexers::f();
     macros::f();
     method_determined_by_argument_type::f();
+    dereference::test();
 }
