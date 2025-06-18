@@ -716,7 +716,7 @@ enum MyEnum3 {
 impl MyEnum3 {
 	pub fn test_match(&self) -> &i64 {
 		let r1 = match self {
-			MyEnum3::Value(v2) => &v2.value, // $ SPURIOUS: Source[rust/access-after-lifetime-ended]=v2_value
+			MyEnum3::Value(v2) => &v2.value,
 		};
 
 		r1
@@ -731,7 +731,7 @@ pub fn test_enum_members() {
 
 	use_the_stack();
 
-	let v3 = *r1; // $ SPURIOUS: Alert[rust/access-after-lifetime-ended]=v2_value
+	let v3 = *r1;
 	println!("	v3 = {v3}");
 }
 

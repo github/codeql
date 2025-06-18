@@ -40,6 +40,11 @@ where
   AccessAfterLifetimeFlow::flowPath(sourceNode, sinkNode) and
   // check that the dereference is outside the lifetime of the target
   AccessAfterLifetime::dereferenceAfterLifetime(sourceNode.getNode(), sinkNode.getNode(), target) and
+  // include only results inside `unsafe` blocks, as other results tend to be false positives
+  (
+    sinkNode.getNode().asExpr().getExpr().getEnclosingBlock*().isUnsafe() or
+    sinkNode.getNode().asExpr().getExpr().getEnclosingCallable().(Function).isUnsafe()
+  ) and
   // exclude cases with sources / sinks in macros, since these results are difficult to interpret
   not sourceNode.getNode().asExpr().getExpr().isFromMacroExpansion() and
   not sinkNode.getNode().asExpr().getExpr().isFromMacroExpansion()
