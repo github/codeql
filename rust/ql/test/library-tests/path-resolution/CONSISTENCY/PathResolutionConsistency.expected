@@ -3,7 +3,7 @@ multiplePathResolutions
 | main.rs:118:9:118:9 | f | main.rs:110:5:112:5 | fn f |
 | main.rs:626:3:626:12 | proc_macro | file://:0:0:0:0 | Crate(proc_macro@0.0.0) |
 | main.rs:626:3:626:12 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
-| main.rs:631:7:631:16 | proc_macro | file://:0:0:0:0 | Crate(proc_macro@0.0.0) |
-| main.rs:631:7:631:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
-| main.rs:634:7:634:16 | proc_macro | file://:0:0:0:0 | Crate(proc_macro@0.0.0) |
-| main.rs:634:7:634:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
+| main.rs:632:7:632:16 | proc_macro | file://:0:0:0:0 | Crate(proc_macro@0.0.0) |
+| main.rs:632:7:632:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
+| main.rs:635:7:635:16 | proc_macro | file://:0:0:0:0 | Crate(proc_macro@0.0.0) |
+| main.rs:635:7:635:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
