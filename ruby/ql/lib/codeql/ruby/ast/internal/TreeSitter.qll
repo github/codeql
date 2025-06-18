@@ -9,6 +9,7 @@ import codeql.Locations as L
 overlay[local]
 private predicate isOverlay() { databaseMetadata("isOverlay", "true") }
 
+overlay[local]
 module Ruby {
   /** The base class for all AST nodes */
   class AstNode extends @ruby_ast_node {
@@ -53,7 +54,6 @@ module Ruby {
   }
 
   /** Gets the file containing the given `node`. */
-  overlay[local]
   private @file getNodeFile(@ruby_ast_node node) {
     exists(@location_default loc | ruby_ast_node_location(node, loc) |
       locations_default(loc, result, _, _, _, _)
@@ -61,7 +61,6 @@ module Ruby {
   }
 
   /** Holds if `node` is in the `file` and is part of the overlay base database. */
-  overlay[local]
   private predicate discardableAstNode(@file file, @ruby_ast_node node) {
     not isOverlay() and file = getNodeFile(node)
   }
@@ -1953,6 +1952,7 @@ module Ruby {
   }
 }
 
+overlay[local]
 module Erb {
   /** The base class for all AST nodes */
   class AstNode extends @erb_ast_node {
@@ -1997,7 +1997,6 @@ module Erb {
   }
 
   /** Gets the file containing the given `node`. */
-  overlay[local]
   private @file getNodeFile(@erb_ast_node node) {
     exists(@location_default loc | erb_ast_node_location(node, loc) |
       locations_default(loc, result, _, _, _, _)
@@ -2005,7 +2004,6 @@ module Erb {
   }
 
   /** Holds if `node` is in the `file` and is part of the overlay base database. */
-  overlay[local]
   private predicate discardableAstNode(@file file, @erb_ast_node node) {
     not isOverlay() and file = getNodeFile(node)
   }

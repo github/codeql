@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import TreeSitter
 private import Variable
 private import codeql.ruby.AST

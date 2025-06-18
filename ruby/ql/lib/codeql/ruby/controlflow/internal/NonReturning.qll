@@ -1,4 +1,6 @@
 /** Provides a simple analysis for identifying calls that will not return. */
+overlay[local]
+module;
 
 private import codeql.ruby.AST
 private import Completion

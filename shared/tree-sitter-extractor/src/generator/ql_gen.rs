@@ -286,7 +286,7 @@ pub fn create_get_node_file_predicate<'a>(
         overridden: false,
         is_private: true,
         is_final: false,
-        overlay: Some(ql::OverlayAnnotation::Local),
+        overlay: None,
         return_type: Some(ql::Type::At("file")),
         formal_parameters: vec![ql::FormalParameter {
             name: "node",
@@ -327,7 +327,7 @@ pub fn create_discardable_ast_node_predicate(ast_node_name: &str) -> ql::Predica
         overridden: false,
         is_private: true,
         is_final: false,
-        overlay: Some(ql::OverlayAnnotation::Local),
+        overlay: None,
         return_type: None,
         formal_parameters: vec![
             ql::FormalParameter {
