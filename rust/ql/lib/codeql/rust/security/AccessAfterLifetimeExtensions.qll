@@ -81,13 +81,13 @@ module AccessAfterLifetime {
   }
 
   /**
-   * Holds if block `a` contains block `b`, in the sense that a variable in
-   * `a` may be on the stack during execution of `b`. This is interprocedural,
+   * Holds if block `a` contains block `b`, in the sense that a stack allocated variable in
+   * `a` may still be on the stack during execution of `b`. This is interprocedural,
    * but is an overapproximation that doesn't accurately track call contexts
    * (for example if `f` and `g` both call `b`, then then depending on the
    * caller a variable in `f` or `g` may or may-not be on the stack during `b`).
    */
-  private predicate maybeOnStack(BlockExpr a, BlockExpr b) {
+  private predicate blockStackEnclosing(BlockExpr a, BlockExpr b) {
     // `b` is a child of `a`
     a = b.getEnclosingBlock*()
     or

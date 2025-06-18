@@ -2,7 +2,7 @@
 fn get_pointer() -> *const i64 {
 	let val = 123;
 
-	return &val;
+	&val
 } // lifetime of `val` ends here, the pointer becomes dangling
 
 fn example() {
