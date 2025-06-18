@@ -91,6 +91,6 @@ pub(crate) fn prepare(config: &mut Config) -> anyhow::Result<()> {
         } else {
             anyhow::bail!("requested cargo check failed");
         }
-    }
+    };
     Ok(())
 }
