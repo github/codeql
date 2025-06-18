@@ -7,9 +7,8 @@
  * @precision high
  * @id java/non-static-nested-class
  * @tags quality
- *       reliability
- *       performance
- *       efficiency
+ *       maintainability
+ *       readability
  */
 
 import java

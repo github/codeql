@@ -6,8 +6,8 @@
  * @precision high
  * @id java/inefficient-empty-string-test
  * @tags quality
- *       reliability
- *       performance
+ *       maintainability
+ *       readability
  */
 
 import java

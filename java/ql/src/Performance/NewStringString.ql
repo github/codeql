@@ -7,9 +7,8 @@
  * @precision high
  * @id java/inefficient-string-constructor
  * @tags quality
- *       reliability
- *       performance
- *       efficiency
+ *       maintainability
+ *       readability
  */
 
 import java
