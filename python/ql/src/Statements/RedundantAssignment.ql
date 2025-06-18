@@ -2,7 +2,8 @@
  * @name Redundant assignment
  * @description Assigning a variable to itself is useless and very likely indicates an error in the code.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-563
  * @problem.severity error
