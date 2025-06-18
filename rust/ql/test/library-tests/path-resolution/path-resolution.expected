@@ -267,14 +267,14 @@ resolvePath
 | main.rs:620:9:620:47 | ...::call_both | main.rs:586:9:589:9 | fn call_both |
 | main.rs:620:25:620:35 | Implementor | main.rs:592:5:592:23 | struct Implementor |
 | main.rs:626:3:626:12 | proc_macro | {EXTERNAL LOCATION} | Crate(proc_macro@0.0.0) |
-| main.rs:626:3:626:12 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.1.0) |
+| main.rs:626:3:626:12 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
 | main.rs:626:3:626:24 | ...::add_suffix | proc_macro.rs:4:1:12:1 | fn add_suffix |
 | main.rs:630:6:630:12 | AStruct | main.rs:629:1:629:17 | struct AStruct |
 | main.rs:631:7:631:16 | proc_macro | {EXTERNAL LOCATION} | Crate(proc_macro@0.0.0) |
-| main.rs:631:7:631:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.1.0) |
+| main.rs:631:7:631:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
 | main.rs:631:7:631:28 | ...::add_suffix | proc_macro.rs:4:1:12:1 | fn add_suffix |
 | main.rs:634:7:634:16 | proc_macro | {EXTERNAL LOCATION} | Crate(proc_macro@0.0.0) |
-| main.rs:634:7:634:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.1.0) |
+| main.rs:634:7:634:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
 | main.rs:634:7:634:28 | ...::add_suffix | proc_macro.rs:4:1:12:1 | fn add_suffix |
 | main.rs:639:5:639:6 | my | main.rs:1:1:1:7 | mod my |
 | main.rs:639:5:639:14 | ...::nested | my.rs:1:1:1:15 | mod nested |
