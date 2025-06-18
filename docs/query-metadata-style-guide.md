@@ -151,12 +151,12 @@ When you tag a query like this, the associated CWE pages from [MITRE.org](https:
 
 #### Quality query sub-category `@tags`
 
+Each code quality related query should have **one** of these two "top-level" categories as a tag:
+
 * `@tags maintainability`–for queries that detect patterns that make it harder for developers to make changes to the code.
 * `@tags reliability`–for queries that detect issues that affect whether the code will perform as expected during execution.
 
-Software quality doesn't have as universally-agreed categorization method as security issues like CWE, so we will do our own categorization instead of using tags like CWE. 
-
-We'll use two "top-level" categories of quality queries, with sub-categories beneath:
+In addition to the "top-level" categories, we will also add sub-categories to further group code quality related queries:
 
 * `@tags maintainability`–for queries that detect patterns that make it harder for developers to make changes to the code.
   * `@tags readability`–for queries that detect confusing patterns that make it harder for developers to read the code.
