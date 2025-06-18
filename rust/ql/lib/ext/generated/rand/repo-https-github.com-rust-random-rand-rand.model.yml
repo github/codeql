@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rust-random/rand:rand", "<&_ as crate::distr::uniform::SampleBorrow>::borrow", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-random/rand:rand", "<_ as crate::distr::uniform::SampleBorrow>::borrow", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
@@ -20,6 +20,7 @@ extensions:
       - ["repo:https://github.com/rust-random/rand:rand", "<crate::distr::weighted::weighted_index::WeightedIndex>::total_weight", "Argument[self].Field[rand::distr::weighted::weighted_index::WeightedIndex::total_weight].Reference", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-random/rand:rand", "<crate::distr::weighted::weighted_index::WeightedIndex>::total_weight", "Argument[self].Field[rand::distr::weighted::weighted_index::WeightedIndex::total_weight]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-random/rand:rand", "<crate::distr::weighted::weighted_index::WeightedIndex>::update_weights", "Argument[self].Field[rand::distr::weighted::weighted_index::WeightedIndex::total_weight].Reference", "Argument[self].Field[rand::distr::weighted::weighted_index::WeightedIndex::total_weight]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand", "<crate::distr::weighted::weighted_index::WeightedIndex>::weight", "Argument[self].Field[rand::distr::weighted::weighted_index::WeightedIndex::cumulative_weights].Element", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-random/rand:rand", "<crate::distr::weighted::weighted_index::WeightedIndex>::weight", "Argument[self].Field[rand::distr::weighted::weighted_index::WeightedIndex::total_weight].Reference", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-random/rand:rand", "<crate::distr::weighted::weighted_index::WeightedIndex>::weight", "Argument[self].Field[rand::distr::weighted::weighted_index::WeightedIndex::total_weight]", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-random/rand:rand", "<crate::distr::weighted::weighted_index::WeightedIndex>::weights", "Argument[self]", "ReturnValue.Field[rand::distr::weighted::weighted_index::WeightedIndexIter::weighted_index]", "value", "dfc-generated"]

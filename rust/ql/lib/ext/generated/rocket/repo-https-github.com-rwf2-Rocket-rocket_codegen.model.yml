@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::Ident as crate::syn_ext::IdentExt>::with_span", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::Simple as crate::data::from_data::FromData>::from_data", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]
@@ -68,7 +68,7 @@ extensions:
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "crate::derive::form_field::first_duplicate", "Argument[0].Element", "Argument[1].Parameter[0].Reference", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::attribute::route::parse::Route>::from", "Argument[0]", "pointer-access", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_codegen", "<crate::syn_ext::Child as crate::ext::IntoOwned>::into_owned", "Argument[self]", "pointer-access", "df-generated"]

@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["lang:proc_macro", "<&[u8] as crate::bridge::Mark>::mark", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["lang:proc_macro", "<&[u8] as crate::bridge::Unmark>::unmark", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
@@ -49,8 +49,7 @@ extensions:
       - ["lang:proc_macro", "<crate::Spacing as crate::bridge::Mark>::mark", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["lang:proc_macro", "<crate::Spacing as crate::bridge::Unmark>::unmark", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["lang:proc_macro", "<crate::TokenStream as crate::to_tokens::ToTokens>::into_token_stream", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
-      - ["lang:proc_macro", "<crate::TokenStream>::expand_expr", "Argument[self].Field[0].Field[core::option::Option::Some(0)]", "ReturnValue.Reference", "value", "dfc-generated"]
-      - ["lang:proc_macro", "<crate::TokenStream>::expand_expr", "Argument[self].Field[proc_macro::TokenStream(0)].Field[core::option::Option::Some(0)]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["lang:proc_macro", "<crate::TokenStream>::expand_expr", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["lang:proc_macro", "<crate::TokenTree as crate::convert::From>::from", "Argument[0]", "ReturnValue.Field[proc_macro::TokenTree::Group(0)]", "value", "dfc-generated"]
       - ["lang:proc_macro", "<crate::TokenTree as crate::convert::From>::from", "Argument[0]", "ReturnValue.Field[proc_macro::TokenTree::Ident(0)]", "value", "dfc-generated"]
       - ["lang:proc_macro", "<crate::TokenTree as crate::convert::From>::from", "Argument[0]", "ReturnValue.Field[proc_macro::TokenTree::Literal(0)]", "value", "dfc-generated"]
@@ -129,7 +128,7 @@ extensions:
       - ["lang:proc_macro", "crate::bridge::client::state::with", "Argument[0].ReturnValue", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["lang:proc_macro", "<crate::Ident>::new", "Argument[0]", "log-injection", "df-generated"]
       - ["lang:proc_macro", "<crate::Ident>::new_raw", "Argument[0]", "log-injection", "df-generated"]

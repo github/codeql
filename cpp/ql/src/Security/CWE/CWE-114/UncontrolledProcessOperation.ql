@@ -39,6 +39,8 @@ module Config implements DataFlow::ConfigSig {
     or
     node.asCertainDefinition().getUnspecifiedType() instanceof ArithmeticType
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module Flow = TaintTracking::Global<Config>;

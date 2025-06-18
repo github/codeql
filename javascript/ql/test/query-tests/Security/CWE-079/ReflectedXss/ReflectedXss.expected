@@ -70,6 +70,8 @@
 | tst2.js:76:12:76:18 | other.p | tst2.js:69:9:69:9 | p | tst2.js:76:12:76:18 | other.p | Cross-site scripting vulnerability due to a $@. | tst2.js:69:9:69:9 | p | user-provided value |
 | tst2.js:88:12:88:12 | p | tst2.js:82:9:82:9 | p | tst2.js:88:12:88:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:82:9:82:9 | p | user-provided value |
 | tst2.js:89:12:89:18 | other.p | tst2.js:82:9:82:9 | p | tst2.js:89:12:89:18 | other.p | Cross-site scripting vulnerability due to a $@. | tst2.js:82:9:82:9 | p | user-provided value |
+| tst2.js:101:12:101:17 | unsafe | tst2.js:93:9:93:9 | p | tst2.js:101:12:101:17 | unsafe | Cross-site scripting vulnerability due to a $@. | tst2.js:93:9:93:9 | p | user-provided value |
+| tst2.js:113:12:113:17 | unsafe | tst2.js:105:9:105:9 | p | tst2.js:113:12:113:17 | unsafe | Cross-site scripting vulnerability due to a $@. | tst2.js:105:9:105:9 | p | user-provided value |
 | tst3.js:6:12:6:12 | p | tst3.js:5:9:5:9 | p | tst3.js:6:12:6:12 | p | Cross-site scripting vulnerability due to a $@. | tst3.js:5:9:5:9 | p | user-provided value |
 | tst3.js:12:12:12:15 | code | tst3.js:11:32:11:39 | reg.body | tst3.js:12:12:12:15 | code | Cross-site scripting vulnerability due to a $@. | tst3.js:11:32:11:39 | reg.body | user-provided value |
 edges
@@ -239,6 +241,22 @@ edges
 | tst2.js:86:15:86:27 | sortKeys(obj) [p] | tst2.js:86:7:86:27 | other [p] | provenance |  |
 | tst2.js:86:24:86:26 | obj [p] | tst2.js:86:15:86:27 | sortKeys(obj) [p] | provenance |  |
 | tst2.js:89:12:89:16 | other [p] | tst2.js:89:12:89:18 | other.p | provenance |  |
+| tst2.js:93:7:93:24 | p | tst2.js:99:51:99:51 | p | provenance |  |
+| tst2.js:93:9:93:9 | p | tst2.js:93:7:93:24 | p | provenance |  |
+| tst2.js:99:7:99:69 | unsafe | tst2.js:101:12:101:17 | unsafe | provenance |  |
+| tst2.js:99:16:99:69 | seriali ...  true}) | tst2.js:99:7:99:69 | unsafe | provenance |  |
+| tst2.js:99:36:99:52 | {someProperty: p} [someProperty] | tst2.js:99:16:99:69 | seriali ...  true}) | provenance |  |
+| tst2.js:99:51:99:51 | p | tst2.js:99:16:99:69 | seriali ...  true}) | provenance |  |
+| tst2.js:99:51:99:51 | p | tst2.js:99:36:99:52 | {someProperty: p} [someProperty] | provenance |  |
+| tst2.js:105:7:105:24 | p | tst2.js:110:28:110:28 | p | provenance |  |
+| tst2.js:105:9:105:9 | p | tst2.js:105:7:105:24 | p | provenance |  |
+| tst2.js:110:7:110:29 | obj [someProperty] | tst2.js:111:36:111:38 | obj [someProperty] | provenance |  |
+| tst2.js:110:13:110:29 | {someProperty: p} [someProperty] | tst2.js:110:7:110:29 | obj [someProperty] | provenance |  |
+| tst2.js:110:28:110:28 | p | tst2.js:110:13:110:29 | {someProperty: p} [someProperty] | provenance |  |
+| tst2.js:110:28:110:28 | p | tst2.js:111:16:111:55 | seriali ...  true}) | provenance |  |
+| tst2.js:111:7:111:55 | unsafe | tst2.js:113:12:113:17 | unsafe | provenance |  |
+| tst2.js:111:16:111:55 | seriali ...  true}) | tst2.js:111:7:111:55 | unsafe | provenance |  |
+| tst2.js:111:36:111:38 | obj [someProperty] | tst2.js:111:16:111:55 | seriali ...  true}) | provenance |  |
 | tst3.js:5:7:5:24 | p | tst3.js:6:12:6:12 | p | provenance |  |
 | tst3.js:5:9:5:9 | p | tst3.js:5:7:5:24 | p | provenance |  |
 | tst3.js:11:9:11:74 | code | tst3.js:12:12:12:15 | code | provenance |  |
@@ -457,6 +475,22 @@ nodes
 | tst2.js:88:12:88:12 | p | semmle.label | p |
 | tst2.js:89:12:89:16 | other [p] | semmle.label | other [p] |
 | tst2.js:89:12:89:18 | other.p | semmle.label | other.p |
+| tst2.js:93:7:93:24 | p | semmle.label | p |
+| tst2.js:93:9:93:9 | p | semmle.label | p |
+| tst2.js:99:7:99:69 | unsafe | semmle.label | unsafe |
+| tst2.js:99:16:99:69 | seriali ...  true}) | semmle.label | seriali ...  true}) |
+| tst2.js:99:36:99:52 | {someProperty: p} [someProperty] | semmle.label | {someProperty: p} [someProperty] |
+| tst2.js:99:51:99:51 | p | semmle.label | p |
+| tst2.js:101:12:101:17 | unsafe | semmle.label | unsafe |
+| tst2.js:105:7:105:24 | p | semmle.label | p |
+| tst2.js:105:9:105:9 | p | semmle.label | p |
+| tst2.js:110:7:110:29 | obj [someProperty] | semmle.label | obj [someProperty] |
+| tst2.js:110:13:110:29 | {someProperty: p} [someProperty] | semmle.label | {someProperty: p} [someProperty] |
+| tst2.js:110:28:110:28 | p | semmle.label | p |
+| tst2.js:111:7:111:55 | unsafe | semmle.label | unsafe |
+| tst2.js:111:16:111:55 | seriali ...  true}) | semmle.label | seriali ...  true}) |
+| tst2.js:111:36:111:38 | obj [someProperty] | semmle.label | obj [someProperty] |
+| tst2.js:113:12:113:17 | unsafe | semmle.label | unsafe |
 | tst3.js:5:7:5:24 | p | semmle.label | p |
 | tst3.js:5:9:5:9 | p | semmle.label | p |
 | tst3.js:6:12:6:12 | p | semmle.label | p |

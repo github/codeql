@@ -2,10 +2,11 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo::serde_test_suite", "<crate::Enum as crate::de::EnumAccess>::variant_seed", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)].Field[1]", "value", "dfc-generated"]
       - ["repo::serde_test_suite", "<crate::bytes::ByteBufVisitor as crate::de::Visitor>::visit_byte_buf", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)]", "value", "dfc-generated"]
+      - ["repo::serde_test_suite", "<crate::bytes::ByteBufVisitor as crate::de::Visitor>::visit_string", "Argument[0].Field[alloc::string::String::vec]", "ReturnValue.Field[core::result::Result::Ok(0)]", "value", "dfc-generated"]
       - ["repo::serde_test_suite", "<crate::remote::NewtypePriv as crate::convert::From>::from", "Argument[0].Field[0]", "ReturnValue.Field[test_remote::remote::NewtypePriv(0)]", "value", "dfc-generated"]
       - ["repo::serde_test_suite", "<crate::remote::NewtypePriv as crate::convert::From>::from", "Argument[0].Field[test_remote::NewtypePrivDef(0)]", "ReturnValue.Field[test_remote::remote::NewtypePriv(0)]", "value", "dfc-generated"]
       - ["repo::serde_test_suite", "<crate::remote::NewtypePriv>::get", "Argument[self].Field[0]", "ReturnValue.Reference", "value", "dfc-generated"]

@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/BurntSushi/memchr:memchr", "<crate::arch::all::memchr::One>::find", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/BurntSushi/memchr:memchr", "<crate::arch::all::memchr::One>::find_raw", "Argument[0]", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
@@ -181,7 +181,7 @@ extensions:
       - ["repo:https://github.com/BurntSushi/memchr:memchr", "crate::tests::substring::prop::suffix_is_substring", "Argument[0]", "Argument[1].Parameter[0]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/BurntSushi/memchr:memchr", "<crate::arch::generic::packedpair::Finder>::find", "Argument[self]", "log-injection", "df-generated"]
       - ["repo:https://github.com/BurntSushi/memchr:memchr", "<crate::arch::generic::packedpair::Finder>::find_prefilter", "Argument[self]", "log-injection", "df-generated"]
