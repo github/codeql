@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 import codeql.Locations
 import ast.Call
 import ast.Control

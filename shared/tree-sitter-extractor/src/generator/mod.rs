@@ -120,6 +120,7 @@ pub fn generate(
                 qldoc: None,
                 name: &language.name,
                 body,
+                overlay: Some(ql::OverlayAnnotation::Local),
             })],
         )?;
     }

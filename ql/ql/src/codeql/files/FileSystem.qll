@@ -1,4 +1,6 @@
 /** Provides classes for working with files and folders. */
+overlay[local?]
+module;
 
 private import codeql_ql.ast.internal.TreeSitter
 private import codeql.Locations

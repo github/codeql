@@ -1,4 +1,6 @@
 /** Provides classes representing nodes in a control flow graph. */
+overlay[local]
+module;
 
 private import codeql.ruby.AST
 private import codeql.ruby.controlflow.BasicBlocks

@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates relevant for splitting the control flow graph.
  */
+overlay[local]
+module;
 
 private import codeql.ruby.AST as Ast
 private import Completion as Comp
