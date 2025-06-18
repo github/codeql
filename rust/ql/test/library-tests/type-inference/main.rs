@@ -1714,6 +1714,11 @@ mod overloadable_operators {
         // Here the type of `default_vec2` must be inferred from the `+` call.
         let default_vec2 = Default::default(); // $ type=default_vec2:Vec2
         let vec2_zero_plus = Vec2 { x: 0, y: 0 } + default_vec2; // $ method=Vec2::add
+
+        // Here the type of `default_vec2` must be inferred from the `==` call
+        // and the type of the borrowed second argument is unknown at the call.
+        let default_vec2 = Default::default(); // $ MISSING: type=default_vec2:Vec2
+        let vec2_zero_plus = Vec2 { x: 0, y: 0 } == default_vec2; // $ method=Vec2::eq
     }
 }
 
