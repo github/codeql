@@ -23,6 +23,8 @@ module MissingJwtSignatureCheck {
     predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       any(AdditionalFlowStep s).step(nodeFrom, nodeTo)
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Tracks taint flow for reasoning about JWT vulnerabilities. */

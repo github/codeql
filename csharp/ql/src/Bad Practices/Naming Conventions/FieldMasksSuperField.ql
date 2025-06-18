@@ -7,7 +7,8 @@
  * @problem.severity warning
  * @precision high
  * @id cs/field-masks-base-field
- * @tags reliability
+ * @tags quality
+ *       maintainability
  *       readability
  *       naming
  */

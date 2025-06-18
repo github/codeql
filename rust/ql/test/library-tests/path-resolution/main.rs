@@ -623,6 +623,18 @@ mod m24 {
 
 extern crate self as zelf;
 
+#[proc_macro::add_suffix("changed")] // $ item=add_suffix
+fn z() {} // I122
+
+struct AStruct {} //I123
+impl AStruct { // $ item=I123
+    #[proc_macro::add_suffix("on_type")] // $ item=add_suffix
+    pub fn z() {} // I124
+
+    #[proc_macro::add_suffix("on_instance")] // $ item=add_suffix
+    pub fn z(&self) {} // I125
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
@@ -653,4 +665,8 @@ fn main() {
     m23::f(); // $ item=I108
     m24::f(); // $ item=I121
     zelf::h(); // $ item=I25
+    z_changed(); // $ MISSING: item=I122
+    AStruct::z_on_type(); // $ MISSING: item=I124
+    AStruct{} // $ item=I123
+        .z_on_instance(); // MISSING: item=I125
 }
