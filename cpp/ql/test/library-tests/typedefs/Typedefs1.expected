@@ -1,9 +1,3 @@
-| file://:0:0:0:0 | (global namespace) | ArrayTypedefs.cpp:1:13:1:17 | int_t |
-| file://:0:0:0:0 | (global namespace) | ArrayTypedefs.cpp:2:7:2:8 | g1 |
-| file://:0:0:0:0 | (global namespace) | ArrayTypedefs.cpp:3:7:3:8 | g2 |
-| file://:0:0:0:0 | (global namespace) | ArrayTypedefs.cpp:5:15:5:21 | float_t |
-| file://:0:0:0:0 | (global namespace) | ArrayTypedefs.cpp:6:9:6:12 | arr1 |
-| file://:0:0:0:0 | (global namespace) | ArrayTypedefs.cpp:7:11:7:19 | a_pointer |
 | file://:0:0:0:0 | (global namespace) | ODASA-6095-A.hpp:2:8:2:17 | MyTemplate<X> |
 | file://:0:0:0:0 | (global namespace) | ODASA-6095-A.hpp:2:8:2:17 | MyTemplate<char> |
 | file://:0:0:0:0 | (global namespace) | ODASA-6095-B.hpp:4:8:4:18 | MyTemplate2<X> |
