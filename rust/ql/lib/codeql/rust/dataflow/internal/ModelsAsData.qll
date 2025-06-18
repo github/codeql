@@ -143,22 +143,22 @@ extensible predicate summaryModel(
  */
 predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
   exists(string crate, string path, string output, string kind |
-    sourceModelDeprecated(crate, path, kind, output, _, madId) and
+    sourceModelDeprecated(crate, path, output, kind, _, madId) and
     model = "Source: " + crate + "; " + path + "; " + output + "; " + kind
   )
   or
   exists(string path, string output, string kind |
-    sourceModel(path, kind, output, _, madId) and
+    sourceModel(path, output, kind, _, madId) and
     model = "Source: " + path + "; " + output + "; " + kind
   )
   or
   exists(string crate, string path, string input, string kind |
-    sinkModelDeprecated(crate, path, kind, input, _, madId) and
+    sinkModelDeprecated(crate, path, input, kind, _, madId) and
     model = "Sink: " + crate + "; " + path + "; " + input + "; " + kind
   )
   or
   exists(string path, string input, string kind |
-    sinkModel(path, kind, input, _, madId) and
+    sinkModel(path, input, kind, _, madId) and
     model = "Sink: " + path + "; " + input + "; " + kind
   )
   or

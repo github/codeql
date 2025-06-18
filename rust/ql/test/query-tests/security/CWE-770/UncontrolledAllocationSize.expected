@@ -275,27 +275,27 @@ edges
 | main.rs:323:27:323:27 | v | main.rs:183:29:183:36 | ...: usize | provenance |  |
 | main.rs:324:25:324:25 | v | main.rs:217:27:217:34 | ...: usize | provenance |  |
 models
-| 1 | Sink: lang:alloc; <crate::alloc::Global as crate::alloc::Allocator>::allocate; alloc-layout; Argument[0] |
-| 2 | Sink: lang:alloc; <crate::alloc::Global as crate::alloc::Allocator>::allocate_zeroed; alloc-layout; Argument[0] |
-| 3 | Sink: lang:alloc; crate::alloc::alloc; alloc-layout; Argument[0] |
-| 4 | Sink: lang:alloc; crate::alloc::alloc_zeroed; alloc-layout; Argument[0] |
-| 5 | Sink: lang:alloc; crate::alloc::realloc; alloc-size; Argument[2] |
-| 6 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::allocate; alloc-layout; Argument[0] |
-| 7 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::allocate_zeroed; alloc-layout; Argument[0] |
-| 8 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::grow; alloc-layout; Argument[2] |
-| 9 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::grow_zeroed; alloc-layout; Argument[2] |
-| 10 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::shrink; alloc-layout; Argument[2] |
-| 11 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc; alloc-layout; Argument[0] |
-| 12 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc; alloc-size; Argument[0] |
-| 13 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc_zeroed; alloc-layout; Argument[0] |
-| 14 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc_zeroed; alloc-size; Argument[0] |
-| 15 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::realloc; alloc-layout; Argument[2] |
-| 16 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::realloc; alloc-size; Argument[2] |
-| 17 | Sink: repo:https://github.com/rust-lang/libc:libc; ::aligned_alloc; alloc-size; Argument[1] |
-| 18 | Sink: repo:https://github.com/rust-lang/libc:libc; ::calloc; alloc-size; Argument[0,1] |
-| 19 | Sink: repo:https://github.com/rust-lang/libc:libc; ::malloc; alloc-size; Argument[0] |
-| 20 | Sink: repo:https://github.com/rust-lang/libc:libc; ::realloc; alloc-size; Argument[1] |
-| 21 | Source: lang:std; crate::env::args; commandargs; ReturnValue.Element |
+| 1 | Sink: lang:alloc; <crate::alloc::Global as crate::alloc::Allocator>::allocate; Argument[0]; alloc-layout |
+| 2 | Sink: lang:alloc; <crate::alloc::Global as crate::alloc::Allocator>::allocate_zeroed; Argument[0]; alloc-layout |
+| 3 | Sink: lang:alloc; crate::alloc::alloc; Argument[0]; alloc-layout |
+| 4 | Sink: lang:alloc; crate::alloc::alloc_zeroed; Argument[0]; alloc-layout |
+| 5 | Sink: lang:alloc; crate::alloc::realloc; Argument[2]; alloc-size |
+| 6 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::allocate; Argument[0]; alloc-layout |
+| 7 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::allocate_zeroed; Argument[0]; alloc-layout |
+| 8 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::grow; Argument[2]; alloc-layout |
+| 9 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::grow_zeroed; Argument[2]; alloc-layout |
+| 10 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::shrink; Argument[2]; alloc-layout |
+| 11 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc; Argument[0]; alloc-layout |
+| 12 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc; Argument[0]; alloc-size |
+| 13 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc_zeroed; Argument[0]; alloc-layout |
+| 14 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc_zeroed; Argument[0]; alloc-size |
+| 15 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::realloc; Argument[2]; alloc-layout |
+| 16 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::realloc; Argument[2]; alloc-size |
+| 17 | Sink: repo:https://github.com/rust-lang/libc:libc; ::aligned_alloc; Argument[1]; alloc-size |
+| 18 | Sink: repo:https://github.com/rust-lang/libc:libc; ::calloc; Argument[0,1]; alloc-size |
+| 19 | Sink: repo:https://github.com/rust-lang/libc:libc; ::malloc; Argument[0]; alloc-size |
+| 20 | Sink: repo:https://github.com/rust-lang/libc:libc; ::realloc; Argument[1]; alloc-size |
+| 21 | Source: lang:std; crate::env::args; ReturnValue.Element; commandargs |
 | 22 | Summary: lang:core; <crate::alloc::layout::Layout>::align_to; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
 | 23 | Summary: lang:core; <crate::alloc::layout::Layout>::array; Argument[0]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
 | 24 | Summary: lang:core; <crate::alloc::layout::Layout>::extend; Argument[0]; ReturnValue.Field[core::result::Result::Ok(0)].Field[0]; taint |
