@@ -41,6 +41,7 @@
 | file://:0:0:0:0 | _Imaginary double | 8 |
 | file://:0:0:0:0 | _Imaginary float | 4 |
 | file://:0:0:0:0 | _Imaginary long double | 16 |
+| file://:0:0:0:0 | __SVCount_t | 0 |
 | file://:0:0:0:0 | __attribute((vector_size(16))) int | 16 |
 | file://:0:0:0:0 | __bf16 | 2 |
 | file://:0:0:0:0 | __float128 | 16 |
