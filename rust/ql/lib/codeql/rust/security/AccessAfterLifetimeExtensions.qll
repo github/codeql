@@ -49,7 +49,7 @@ module AccessAfterLifetime {
     exists(BlockExpr valueScope, BlockExpr accessScope |
       valueScope(source.getTarget(), target, valueScope) and
       accessScope = sink.asExpr().getExpr().getEnclosingBlock() and
-      not maybeOnStack(valueScope, accessScope)
+      not mayEncloseOnStack(valueScope, accessScope)
     )
   }
 
@@ -87,13 +87,13 @@ module AccessAfterLifetime {
    * (for example if `f` and `g` both call `b`, then then depending on the
    * caller a variable in `f` or `g` may or may-not be on the stack during `b`).
    */
-  private predicate blockStackEnclosing(BlockExpr a, BlockExpr b) {
+  private predicate mayEncloseOnStack(BlockExpr a, BlockExpr b) {
     // `b` is a child of `a`
     a = b.getEnclosingBlock*()
     or
     // propagate through function calls
     exists(CallExprBase ce |
-      maybeOnStack(a, ce.getEnclosingBlock()) and
+      mayEncloseOnStack(a, ce.getEnclosingBlock()) and
       ce.getStaticTarget() = b.getEnclosingCallable()
     )
   }
