@@ -5,13 +5,25 @@ extensions:
       pack: codeql/rust-all
       extensible: sourceModelDeprecated
     data: []
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data: []
 
   - addsTo:
       pack: codeql/rust-all
       extensible: sinkModelDeprecated
     data: []
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data: []
 
   - addsTo:
       pack: codeql/rust-all
       extensible: summaryModelDeprecated
+    data: []
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
     data: []
