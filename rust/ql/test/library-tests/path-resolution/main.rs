@@ -638,7 +638,7 @@ impl AStruct // $ item=I123
 
 use std::{self as ztd}; // $ item=std
 
-fn use_ztd(x: ztd::string::String) {} // $ MISSING: item=String
+fn use_ztd(x: ztd::string::String) {} // $ item=String
 
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4

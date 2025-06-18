@@ -277,6 +277,10 @@ resolvePath
 | main.rs:635:7:635:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
 | main.rs:635:7:635:28 | ...::add_suffix | proc_macro.rs:4:1:12:1 | fn add_suffix |
 | main.rs:639:5:639:7 | std | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
+| main.rs:639:11:639:14 | self | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
+| main.rs:641:15:641:17 | ztd | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
+| main.rs:641:15:641:25 | ...::string | {EXTERNAL LOCATION} | mod string |
+| main.rs:641:15:641:33 | ...::String | {EXTERNAL LOCATION} | struct String |
 | main.rs:644:5:644:6 | my | main.rs:1:1:1:7 | mod my |
 | main.rs:644:5:644:14 | ...::nested | my.rs:1:1:1:15 | mod nested |
 | main.rs:644:5:644:23 | ...::nested1 | my/nested.rs:1:1:17:1 | mod nested1 |
