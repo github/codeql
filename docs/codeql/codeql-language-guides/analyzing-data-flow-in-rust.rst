@@ -210,16 +210,16 @@ The following global taint-tracking query finds places where a string literal is
     import codeql.rust.dataflow.TaintTracking
 
     module ConstantPasswordConfig implements DataFlow::ConfigSig {
-        predicate isSource(DataFlow::Node node) { node.asExpr().getExpr() instanceof StringLiteralExpr }
+      predicate isSource(DataFlow::Node node) { node.asExpr().getExpr() instanceof StringLiteralExpr }
 
-        predicate isSink(DataFlow::Node node) {
-            // any argument going to a parameter called `password`
-            exists(Function f, CallExpr call, int index |
-            call.getArg(index) = node.asExpr().getExpr() and
-            call.getStaticTarget() = f and
-            f.getParam(index).getPat().(IdentPat).getName().getText() = "password"
-            )
-        }
+      predicate isSink(DataFlow::Node node) {
+        // any argument going to a parameter called `password`
+        exists(Function f, CallExpr call, int index |
+          call.getArg(index) = node.asExpr().getExpr() and
+          call.getStaticTarget() = f and
+          f.getParam(index).getPat().(IdentPat).getName().getText() = "password"
+        )
+      }
     }
 
     module ConstantPasswordFlow = TaintTracking::Global<ConstantPasswordConfig>;
