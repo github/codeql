@@ -33,8 +33,7 @@ private class PlainJsonParserCall extends JsonParserCall {
       callee = DataFlow::moduleImport("parse-json") or
       callee = DataFlow::moduleImport("json-parse-better-errors") or
       callee = DataFlow::moduleImport("json-safe-parse") or
-      callee = AngularJS::angular().getAPropertyRead("fromJson") or
-      callee = DataFlow::moduleImport("serialize-javascript")
+      callee = AngularJS::angular().getAPropertyRead("fromJson")
     )
   }
 

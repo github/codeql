@@ -88,6 +88,11 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
   override TypeMention getTypeArgument(int i) {
     result = path.getSegment().getGenericArgList().getTypeArg(i)
     or
+    // If a type argument is not given in the path, then we use the default for
+    // the type parameter if one exists for the type.
+    not exists(path.getSegment().getGenericArgList().getTypeArg(i)) and
+    result = this.resolveType().getTypeParameterDefault(i)
+    or
     // `Self` paths inside `impl` blocks have implicit type arguments that are
     // the type parameters of the `impl` block. For example, in
     //

@@ -45,6 +45,8 @@ module Config implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     sink = DataFlow::exprNode(any(QuoExpr e).getRightOperand())
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

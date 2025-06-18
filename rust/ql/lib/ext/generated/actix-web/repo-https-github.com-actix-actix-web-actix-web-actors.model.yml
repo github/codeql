@@ -2,26 +2,26 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
-      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::context::HttpContext as crate::context_impl::AsyncContextParts>::parts", "Argument[self].Field[crate::context::HttpContext::inner]", "ReturnValue.Reference", "value", "dfc-generated"]
-      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WebsocketContext as crate::context_impl::AsyncContextParts>::parts", "Argument[self].Field[crate::ws::WebsocketContext::inner]", "ReturnValue.Reference", "value", "dfc-generated"]
-      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WebsocketContext>::with_codec", "Argument[2]", "ReturnValue.Field[crate::ws::WebsocketContextFut::encoder]", "value", "dfc-generated"]
-      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::codec", "Argument[0]", "Argument[self].Field[crate::ws::WsResponseBuilder::codec].Field[crate::option::Option::Some(0)]", "value", "dfc-generated"]
-      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::codec", "Argument[0]", "ReturnValue.Field[crate::ws::WsResponseBuilder::codec].Field[crate::option::Option::Some(0)]", "value", "dfc-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::context::HttpContext as crate::context_impl::AsyncContextParts>::parts", "Argument[self].Field[actix_web_actors::context::HttpContext::inner]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WebsocketContext as crate::context_impl::AsyncContextParts>::parts", "Argument[self].Field[actix_web_actors::ws::WebsocketContext::inner]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WebsocketContext>::with_codec", "Argument[2]", "ReturnValue.Field[actix_web_actors::ws::WebsocketContextFut::encoder]", "value", "dfc-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::codec", "Argument[0]", "Argument[self].Field[actix_web_actors::ws::WsResponseBuilder::codec].Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::codec", "Argument[0]", "ReturnValue.Field[actix_web_actors::ws::WsResponseBuilder::codec].Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::codec", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
-      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::frame_size", "Argument[0]", "Argument[self].Field[crate::ws::WsResponseBuilder::frame_size].Field[crate::option::Option::Some(0)]", "value", "dfc-generated"]
-      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::frame_size", "Argument[0]", "ReturnValue.Field[crate::ws::WsResponseBuilder::frame_size].Field[crate::option::Option::Some(0)]", "value", "dfc-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::frame_size", "Argument[0]", "Argument[self].Field[actix_web_actors::ws::WsResponseBuilder::frame_size].Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::frame_size", "Argument[0]", "ReturnValue.Field[actix_web_actors::ws::WsResponseBuilder::frame_size].Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::frame_size", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
-      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::new", "Argument[0]", "ReturnValue.Field[crate::ws::WsResponseBuilder::actor]", "value", "dfc-generated"]
-      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::new", "Argument[1]", "ReturnValue.Field[crate::ws::WsResponseBuilder::req]", "value", "dfc-generated"]
-      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::new", "Argument[2]", "ReturnValue.Field[crate::ws::WsResponseBuilder::stream]", "value", "dfc-generated"]
-      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::protocols", "Argument[0]", "Argument[self].Field[crate::ws::WsResponseBuilder::protocols].Field[crate::option::Option::Some(0)]", "value", "dfc-generated"]
-      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::protocols", "Argument[0]", "ReturnValue.Field[crate::ws::WsResponseBuilder::protocols].Field[crate::option::Option::Some(0)]", "value", "dfc-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::new", "Argument[0]", "ReturnValue.Field[actix_web_actors::ws::WsResponseBuilder::actor]", "value", "dfc-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::new", "Argument[1]", "ReturnValue.Field[actix_web_actors::ws::WsResponseBuilder::req]", "value", "dfc-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::new", "Argument[2]", "ReturnValue.Field[actix_web_actors::ws::WsResponseBuilder::stream]", "value", "dfc-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::protocols", "Argument[0]", "Argument[self].Field[actix_web_actors::ws::WsResponseBuilder::protocols].Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::protocols", "Argument[0]", "ReturnValue.Field[actix_web_actors::ws::WsResponseBuilder::protocols].Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::protocols", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::context::HttpContext>::write", "Argument[self]", "log-injection", "df-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::context::HttpContext>::write_eof", "Argument[self]", "log-injection", "df-generated"]

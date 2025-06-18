@@ -1,0 +1,42 @@
+{{#Workspace}}
+[workspace]
+resolver = "2"
+members = [".lib", ".proc_macro"]
+{{/Workspace}}
+
+{{#Lib}}
+{{^uses_proc_macro}}
+[workspace]
+{{/uses_proc_macro}}
+[package]
+name = "test"
+version = "0.0.1"
+edition = "2021"
+[lib]
+path = "{{#uses_proc_macro}}../{{/uses_proc_macro}}lib.rs"
+{{#uses_main}}
+[[bin]]
+name = "main"
+path = "{{#uses_proc_macro}}../{{/uses_proc_macro}}main.rs"
+{{/uses_main}}
+[dependencies]
+{{#uses_proc_macro}}
+proc_macro = { path = "../.proc_macro" }
+{{/uses_proc_macro}}
+{{#dependencies}}
+{{{.}}}
+{{/dependencies}}
+{{/Lib}}
+
+{{#Macro}}
+[package]
+name = "proc_macro"
+version = "0.0.1"
+edition = "2021"
+[lib]
+path = "../proc_macro.rs"
+proc_macro = true
+[dependencies]
+quote = "1.0.40"
+syn = { version = "2.0.100", features = ["full"] }
+{{/Macro}}

@@ -425,14 +425,7 @@ abstract private class AssocItemNode extends ItemNode, AssocItem {
 private class ConstItemNode extends AssocItemNode instanceof Const {
   override string getName() { result = Const.super.getName().getText() }
 
-  override predicate hasImplementation() {
-    super.hasBody()
-    or
-    // for trait items from library code, we do not currently know if they
-    // have default implementations or not, so we assume they do
-    not this.fromSource() and
-    this = any(TraitItemNode t).getAnAssocItem()
-  }
+  override predicate hasImplementation() { Const.super.hasImplementation() }
 
   override Namespace getNamespace() { result.isValue() }
 
@@ -508,14 +501,7 @@ private class VariantItemNode extends ItemNode instanceof Variant {
 class FunctionItemNode extends AssocItemNode instanceof Function {
   override string getName() { result = Function.super.getName().getText() }
 
-  override predicate hasImplementation() {
-    super.hasBody()
-    or
-    // for trait items from library code, we do not currently know if they
-    // have default implementations or not, so we assume they do
-    not this.fromSource() and
-    this = any(TraitItemNode t).getAnAssocItem()
-  }
+  override predicate hasImplementation() { Function.super.hasImplementation() }
 
   override Namespace getNamespace() { result.isValue() }
 
@@ -1536,8 +1522,8 @@ private module Debug {
   private Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/test.rs") and
-      startline = 74
+      filepath.matches("%/main.rs") and
+      startline = 52
     )
   }
 

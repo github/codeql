@@ -2,10 +2,10 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
-      - ["repo::test_helpers", "<crate::array::ArrayValueTree as crate::strategy::traits::ValueTree>::simplify", "Argument[self].Field[crate::array::ArrayValueTree::shrinker]", "Argument[self].Field[crate::array::ArrayValueTree::last_shrinker].Field[crate::option::Option::Some(0)]", "value", "dfc-generated"]
-      - ["repo::test_helpers", "<crate::array::UniformArrayStrategy>::new", "Argument[0]", "ReturnValue.Field[crate::array::UniformArrayStrategy::strategy]", "value", "dfc-generated"]
+      - ["repo::test_helpers", "<crate::array::ArrayValueTree as crate::strategy::traits::ValueTree>::simplify", "Argument[self].Field[test_helpers::array::ArrayValueTree::shrinker]", "Argument[self].Field[test_helpers::array::ArrayValueTree::last_shrinker].Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
+      - ["repo::test_helpers", "<crate::array::UniformArrayStrategy>::new", "Argument[0]", "ReturnValue.Field[test_helpers::array::UniformArrayStrategy::strategy]", "value", "dfc-generated"]
       - ["repo::test_helpers", "<f32 as crate::subnormals::FlushSubnormals>::flush", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["repo::test_helpers", "<f64 as crate::subnormals::FlushSubnormals>::flush", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["repo::test_helpers", "crate::subnormals::flush", "Argument[0]", "ReturnValue", "value", "dfc-generated"]

@@ -2,10 +2,10 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/clap-rs/clap:clap_bench", "<crate::Args as crate::fmt::Display>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap_bench", "<crate::Args>::args", "Argument[self].Field[1]", "ReturnValue", "value", "dfc-generated"]
-      - ["repo:https://github.com/clap-rs/clap:clap_bench", "<crate::Args>::args", "Argument[self].Field[crate::Args(1)]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap_bench", "<crate::Args>::args", "Argument[self].Field[complex::Args(1)]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap_bench", "<crate::Args>::name", "Argument[self].Field[0]", "ReturnValue", "value", "dfc-generated"]
-      - ["repo:https://github.com/clap-rs/clap:clap_bench", "<crate::Args>::name", "Argument[self].Field[crate::Args(0)]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap_bench", "<crate::Args>::name", "Argument[self].Field[complex::Args(0)]", "ReturnValue", "value", "dfc-generated"]

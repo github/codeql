@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
-      - ["repo::pastebin", "<crate::paste_id::PasteId as crate::request::from_param::FromParam>::from_param", "Argument[0]", "ReturnValue.Field[crate::result::Result::Err(0)]", "value", "dfc-generated"]
+      - ["repo::pastebin", "<crate::paste_id::PasteId as crate::request::from_param::FromParam>::from_param", "Argument[0]", "ReturnValue.Field[core::result::Result::Err(0)]", "value", "dfc-generated"]
       - ["repo::pastebin", "<crate::paste_id::PasteId>::file_path", "Argument[self]", "ReturnValue", "taint", "df-generated"]

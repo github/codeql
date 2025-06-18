@@ -1589,6 +1589,11 @@ class ArrayType extends DerivedType {
    * Holds if this array is a variable-length array (VLA).
    */
   predicate isVla() { type_is_vla(underlyingElement(this)) }
+
+  override Type resolveTypedefs() {
+    result.(ArrayType).getBaseType() = this.getBaseType().resolveTypedefs() and
+    result.(ArrayType).getArraySize() = this.getArraySize()
+  }
 }
 
 /**

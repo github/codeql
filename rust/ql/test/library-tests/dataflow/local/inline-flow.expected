@@ -1,15 +1,15 @@
 models
 | 1 | Summary: lang:alloc; <crate::boxed::Box>::new; Argument[0]; ReturnValue.Reference; value |
 | 2 | Summary: lang:core; <_ as crate::convert::From>::from; Argument[0]; ReturnValue; value |
-| 3 | Summary: lang:core; <crate::option::Option>::unwrap; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 3 | Summary: lang:core; <crate::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 4 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[0]; ReturnValue; value |
-| 5 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 5 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 6 | Summary: lang:core; <crate::option::Option>::unwrap_or_else; Argument[0].ReturnValue; ReturnValue; value |
-| 7 | Summary: lang:core; <crate::option::Option>::unwrap_or_else; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue; value |
-| 8 | Summary: lang:core; <crate::result::Result>::err; Argument[self].Field[crate::result::Result::Err(0)]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 9 | Summary: lang:core; <crate::result::Result>::expect; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 10 | Summary: lang:core; <crate::result::Result>::expect_err; Argument[self].Field[crate::result::Result::Err(0)]; ReturnValue; value |
-| 11 | Summary: lang:core; <crate::result::Result>::ok; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 7 | Summary: lang:core; <crate::option::Option>::unwrap_or_else; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
+| 8 | Summary: lang:core; <crate::result::Result>::err; Argument[self].Field[core::result::Result::Err(0)]; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 9 | Summary: lang:core; <crate::result::Result>::expect; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 10 | Summary: lang:core; <crate::result::Result>::expect_err; Argument[self].Field[core::result::Result::Err(0)]; ReturnValue; value |
+| 11 | Summary: lang:core; <crate::result::Result>::ok; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue.Field[core::option::Option::Some(0)]; value |
 edges
 | main.rs:22:9:22:9 | s | main.rs:23:10:23:10 | s | provenance |  |
 | main.rs:22:13:22:21 | source(...) | main.rs:22:9:22:9 | s | provenance |  |
@@ -117,16 +117,16 @@ edges
 | main.rs:263:9:263:10 | i1 | main.rs:264:10:264:11 | i1 | provenance |  |
 | main.rs:263:14:263:15 | s1 [Some] | main.rs:263:14:263:16 | TryExpr | provenance |  |
 | main.rs:263:14:263:16 | TryExpr | main.rs:263:9:263:10 | i1 | provenance |  |
-| main.rs:270:9:270:10 | r1 [Ok] | main.rs:271:29:271:35 | r1.ok() [Some] | provenance | MaD:11 |
-| main.rs:270:33:270:46 | Ok(...) [Ok] | main.rs:270:9:270:10 | r1 [Ok] | provenance |  |
-| main.rs:270:36:270:45 | source(...) | main.rs:270:33:270:46 | Ok(...) [Ok] | provenance |  |
+| main.rs:270:9:270:10 | r1 [Ok] | main.rs:271:28:271:34 | r1.ok() [Some] | provenance | MaD:11 |
+| main.rs:270:32:270:45 | Ok(...) [Ok] | main.rs:270:9:270:10 | r1 [Ok] | provenance |  |
+| main.rs:270:35:270:44 | source(...) | main.rs:270:32:270:45 | Ok(...) [Ok] | provenance |  |
 | main.rs:271:9:271:11 | o1a [Some] | main.rs:273:10:273:21 | o1a.unwrap() | provenance | MaD:3 |
-| main.rs:271:29:271:35 | r1.ok() [Some] | main.rs:271:9:271:11 | o1a [Some] | provenance |  |
-| main.rs:276:9:276:10 | r2 [Err] | main.rs:278:29:278:36 | r2.err() [Some] | provenance | MaD:8 |
-| main.rs:276:33:276:47 | Err(...) [Err] | main.rs:276:9:276:10 | r2 [Err] | provenance |  |
-| main.rs:276:37:276:46 | source(...) | main.rs:276:33:276:47 | Err(...) [Err] | provenance |  |
+| main.rs:271:28:271:34 | r1.ok() [Some] | main.rs:271:9:271:11 | o1a [Some] | provenance |  |
+| main.rs:276:9:276:10 | r2 [Err] | main.rs:278:28:278:35 | r2.err() [Some] | provenance | MaD:8 |
+| main.rs:276:32:276:46 | Err(...) [Err] | main.rs:276:9:276:10 | r2 [Err] | provenance |  |
+| main.rs:276:36:276:45 | source(...) | main.rs:276:32:276:46 | Err(...) [Err] | provenance |  |
 | main.rs:278:9:278:11 | o2b [Some] | main.rs:280:10:280:21 | o2b.unwrap() | provenance | MaD:3 |
-| main.rs:278:29:278:36 | r2.err() [Some] | main.rs:278:9:278:11 | o2b [Some] | provenance |  |
+| main.rs:278:28:278:35 | r2.err() [Some] | main.rs:278:9:278:11 | o2b [Some] | provenance |  |
 | main.rs:284:9:284:10 | s1 [Ok] | main.rs:287:14:287:15 | s1 [Ok] | provenance |  |
 | main.rs:284:32:284:45 | Ok(...) [Ok] | main.rs:284:9:284:10 | s1 [Ok] | provenance |  |
 | main.rs:284:35:284:44 | source(...) | main.rs:284:32:284:45 | Ok(...) [Ok] | provenance |  |
@@ -373,16 +373,16 @@ nodes
 | main.rs:263:14:263:16 | TryExpr | semmle.label | TryExpr |
 | main.rs:264:10:264:11 | i1 | semmle.label | i1 |
 | main.rs:270:9:270:10 | r1 [Ok] | semmle.label | r1 [Ok] |
-| main.rs:270:33:270:46 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
-| main.rs:270:36:270:45 | source(...) | semmle.label | source(...) |
+| main.rs:270:32:270:45 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
+| main.rs:270:35:270:44 | source(...) | semmle.label | source(...) |
 | main.rs:271:9:271:11 | o1a [Some] | semmle.label | o1a [Some] |
-| main.rs:271:29:271:35 | r1.ok() [Some] | semmle.label | r1.ok() [Some] |
+| main.rs:271:28:271:34 | r1.ok() [Some] | semmle.label | r1.ok() [Some] |
 | main.rs:273:10:273:21 | o1a.unwrap() | semmle.label | o1a.unwrap() |
 | main.rs:276:9:276:10 | r2 [Err] | semmle.label | r2 [Err] |
-| main.rs:276:33:276:47 | Err(...) [Err] | semmle.label | Err(...) [Err] |
-| main.rs:276:37:276:46 | source(...) | semmle.label | source(...) |
+| main.rs:276:32:276:46 | Err(...) [Err] | semmle.label | Err(...) [Err] |
+| main.rs:276:36:276:45 | source(...) | semmle.label | source(...) |
 | main.rs:278:9:278:11 | o2b [Some] | semmle.label | o2b [Some] |
-| main.rs:278:29:278:36 | r2.err() [Some] | semmle.label | r2.err() [Some] |
+| main.rs:278:28:278:35 | r2.err() [Some] | semmle.label | r2.err() [Some] |
 | main.rs:280:10:280:21 | o2b.unwrap() | semmle.label | o2b.unwrap() |
 | main.rs:284:9:284:10 | s1 [Ok] | semmle.label | s1 [Ok] |
 | main.rs:284:32:284:45 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
@@ -545,8 +545,8 @@ testFailures
 | main.rs:254:10:254:32 | s1.unwrap_or_else(...) | main.rs:253:19:253:28 | source(...) | main.rs:254:10:254:32 | s1.unwrap_or_else(...) | $@ | main.rs:253:19:253:28 | source(...) | source(...) |
 | main.rs:257:10:257:41 | s2.unwrap_or_else(...) | main.rs:257:31:257:40 | source(...) | main.rs:257:10:257:41 | s2.unwrap_or_else(...) | $@ | main.rs:257:31:257:40 | source(...) | source(...) |
 | main.rs:264:10:264:11 | i1 | main.rs:261:19:261:28 | source(...) | main.rs:264:10:264:11 | i1 | $@ | main.rs:261:19:261:28 | source(...) | source(...) |
-| main.rs:273:10:273:21 | o1a.unwrap() | main.rs:270:36:270:45 | source(...) | main.rs:273:10:273:21 | o1a.unwrap() | $@ | main.rs:270:36:270:45 | source(...) | source(...) |
-| main.rs:280:10:280:21 | o2b.unwrap() | main.rs:276:37:276:46 | source(...) | main.rs:280:10:280:21 | o2b.unwrap() | $@ | main.rs:276:37:276:46 | source(...) | source(...) |
+| main.rs:273:10:273:21 | o1a.unwrap() | main.rs:270:35:270:44 | source(...) | main.rs:273:10:273:21 | o1a.unwrap() | $@ | main.rs:270:35:270:44 | source(...) | source(...) |
+| main.rs:280:10:280:21 | o2b.unwrap() | main.rs:276:36:276:45 | source(...) | main.rs:280:10:280:21 | o2b.unwrap() | $@ | main.rs:276:36:276:45 | source(...) | source(...) |
 | main.rs:289:10:289:11 | i1 | main.rs:284:35:284:44 | source(...) | main.rs:289:10:289:11 | i1 | $@ | main.rs:284:35:284:44 | source(...) | source(...) |
 | main.rs:298:10:298:22 | s1.expect(...) | main.rs:297:35:297:44 | source(...) | main.rs:298:10:298:22 | s1.expect(...) | $@ | main.rs:297:35:297:44 | source(...) | source(...) |
 | main.rs:303:10:303:26 | s2.expect_err(...) | main.rs:301:36:301:45 | source(...) | main.rs:303:10:303:26 | s2.expect_err(...) | $@ | main.rs:301:36:301:45 | source(...) | source(...) |

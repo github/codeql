@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/libc:libc", "<crate::unix::linux_like::linux::gnu::__c_anonymous_ptrace_syscall_info_data as crate::clone::Clone>::clone", "Argument[self].Reference", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-lang/libc:libc", "<crate::unix::linux_like::linux::gnu::sifields_sigchld as crate::clone::Clone>::clone", "Argument[self].Reference", "ReturnValue", "value", "dfc-generated"]
@@ -24,18 +24,18 @@ extensions:
       - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::W_EXITCODE", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::W_STOPCODE", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_CLASS", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_JUMP", "Argument[0]", "ReturnValue.Field[crate::unix::linux_like::linux::sock_filter::code]", "value", "dfc-generated"]
-      - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_JUMP", "Argument[1]", "ReturnValue.Field[crate::unix::linux_like::linux::sock_filter::k]", "value", "dfc-generated"]
-      - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_JUMP", "Argument[2]", "ReturnValue.Field[crate::unix::linux_like::linux::sock_filter::jt]", "value", "dfc-generated"]
-      - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_JUMP", "Argument[3]", "ReturnValue.Field[crate::unix::linux_like::linux::sock_filter::jf]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_JUMP", "Argument[0]", "ReturnValue.Field[libc::unix::linux_like::linux::sock_filter::code]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_JUMP", "Argument[1]", "ReturnValue.Field[libc::unix::linux_like::linux::sock_filter::k]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_JUMP", "Argument[2]", "ReturnValue.Field[libc::unix::linux_like::linux::sock_filter::jt]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_JUMP", "Argument[3]", "ReturnValue.Field[libc::unix::linux_like::linux::sock_filter::jf]", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_MISCOP", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_MODE", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_OP", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_RVAL", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_SIZE", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_SRC", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_STMT", "Argument[0]", "ReturnValue.Field[crate::unix::linux_like::linux::sock_filter::code]", "value", "dfc-generated"]
-      - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_STMT", "Argument[1]", "ReturnValue.Field[crate::unix::linux_like::linux::sock_filter::k]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_STMT", "Argument[0]", "ReturnValue.Field[libc::unix::linux_like::linux::sock_filter::code]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::BPF_STMT", "Argument[1]", "ReturnValue.Field[libc::unix::linux_like::linux::sock_filter::k]", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::CMSG_NXTHDR", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::CPU_ALLOC_SIZE", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/libc:libc", "crate::unix::linux_like::linux::ELF32_R_INFO", "Argument[0]", "ReturnValue", "taint", "df-generated"]

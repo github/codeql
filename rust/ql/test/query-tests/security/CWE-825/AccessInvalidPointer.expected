@@ -51,14 +51,14 @@ edges
 | deallocation.rs:242:3:242:25 | ...::drop_in_place | deallocation.rs:242:27:242:29 | [post] ptr | provenance | Src:MaD:6 MaD:6 |
 | deallocation.rs:242:27:242:29 | [post] ptr | deallocation.rs:248:18:248:20 | ptr | provenance |  |
 models
-| 1 | Sink: lang:core; crate::ptr::read; pointer-access; Argument[0] |
-| 2 | Sink: lang:core; crate::ptr::write; pointer-access; Argument[0] |
-| 3 | Source: lang:alloc; crate::alloc::dealloc; pointer-invalidate; Argument[0] |
-| 4 | Source: lang:core; crate::ptr::dangling; pointer-invalidate; ReturnValue |
-| 5 | Source: lang:core; crate::ptr::dangling_mut; pointer-invalidate; ReturnValue |
-| 6 | Source: lang:core; crate::ptr::drop_in_place; pointer-invalidate; Argument[0] |
-| 7 | Source: lang:core; crate::ptr::null; pointer-invalidate; ReturnValue |
-| 8 | Source: repo:https://github.com/rust-lang/libc:libc; ::free; pointer-invalidate; Argument[0] |
+| 1 | Sink: lang:core; crate::ptr::read; Argument[0]; pointer-access |
+| 2 | Sink: lang:core; crate::ptr::write; Argument[0]; pointer-access |
+| 3 | Source: lang:alloc; crate::alloc::dealloc; Argument[0]; pointer-invalidate |
+| 4 | Source: lang:core; crate::ptr::dangling; ReturnValue; pointer-invalidate |
+| 5 | Source: lang:core; crate::ptr::dangling_mut; ReturnValue; pointer-invalidate |
+| 6 | Source: lang:core; crate::ptr::drop_in_place; Argument[0]; pointer-invalidate |
+| 7 | Source: lang:core; crate::ptr::null; ReturnValue; pointer-invalidate |
+| 8 | Source: repo:https://github.com/rust-lang/libc:libc; ::free; Argument[0]; pointer-invalidate |
 nodes
 | deallocation.rs:20:3:20:21 | ...::dealloc | semmle.label | ...::dealloc |
 | deallocation.rs:20:23:20:24 | [post] m1 | semmle.label | [post] m1 |
