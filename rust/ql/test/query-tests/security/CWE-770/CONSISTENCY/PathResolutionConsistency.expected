@@ -1,30 +1,45 @@
+multipleMethodCallTargets
+| main.rs:187:13:187:43 | ...::System.allocate(...) | file://:0:0:0:0 | fn allocate |
+| main.rs:187:13:187:43 | ...::System.allocate(...) | file://:0:0:0:0 | fn allocate |
+| main.rs:188:13:188:50 | ...::System.allocate_zeroed(...) | file://:0:0:0:0 | fn allocate_zeroed |
+| main.rs:188:13:188:50 | ...::System.allocate_zeroed(...) | file://:0:0:0:0 | fn allocate_zeroed |
+| main.rs:195:13:195:43 | ...::System.allocate(...) | file://:0:0:0:0 | fn allocate |
+| main.rs:195:13:195:43 | ...::System.allocate(...) | file://:0:0:0:0 | fn allocate |
+| main.rs:196:13:196:50 | ...::System.allocate_zeroed(...) | file://:0:0:0:0 | fn allocate_zeroed |
+| main.rs:196:13:196:50 | ...::System.allocate_zeroed(...) | file://:0:0:0:0 | fn allocate_zeroed |
+| main.rs:208:21:208:55 | ...::System.grow(...) | file://:0:0:0:0 | fn grow |
+| main.rs:208:21:208:55 | ...::System.grow(...) | file://:0:0:0:0 | fn grow |
+| main.rs:210:21:210:62 | ...::System.grow_zeroed(...) | file://:0:0:0:0 | fn grow_zeroed |
+| main.rs:210:21:210:62 | ...::System.grow_zeroed(...) | file://:0:0:0:0 | fn grow_zeroed |
+| main.rs:213:17:213:53 | ...::System.shrink(...) | file://:0:0:0:0 | fn shrink |
+| main.rs:213:17:213:53 | ...::System.shrink(...) | file://:0:0:0:0 | fn shrink |
 multiplePathResolutions
-| main.rs:218:14:218:17 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |
-| main.rs:218:14:218:17 | libc | file://:0:0:0:0 | Crate(libc@0.2.173) |
+| main.rs:218:14:218:17 | libc | file://:0:0:0:0 | Crate(libc@0.2.171) |
+| main.rs:218:14:218:17 | libc | file://:0:0:0:0 | Crate(libc@0.2.174) |
 | main.rs:218:14:218:25 | ...::malloc | file://:0:0:0:0 | fn malloc |
 | main.rs:218:14:218:25 | ...::malloc | file://:0:0:0:0 | fn malloc |
-| main.rs:219:13:219:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |
-| main.rs:219:13:219:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.173) |
+| main.rs:219:13:219:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.171) |
+| main.rs:219:13:219:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.174) |
 | main.rs:219:13:219:24 | ...::malloc | file://:0:0:0:0 | fn malloc |
 | main.rs:219:13:219:24 | ...::malloc | file://:0:0:0:0 | fn malloc |
-| main.rs:220:13:220:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |
-| main.rs:220:13:220:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.173) |
+| main.rs:220:13:220:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.171) |
+| main.rs:220:13:220:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.174) |
 | main.rs:220:13:220:31 | ...::aligned_alloc | file://:0:0:0:0 | fn aligned_alloc |
 | main.rs:220:13:220:31 | ...::aligned_alloc | file://:0:0:0:0 | fn aligned_alloc |
-| main.rs:221:13:221:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |
-| main.rs:221:13:221:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.173) |
+| main.rs:221:13:221:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.171) |
+| main.rs:221:13:221:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.174) |
 | main.rs:221:13:221:31 | ...::aligned_alloc | file://:0:0:0:0 | fn aligned_alloc |
 | main.rs:221:13:221:31 | ...::aligned_alloc | file://:0:0:0:0 | fn aligned_alloc |
-| main.rs:222:13:222:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |
-| main.rs:222:13:222:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.173) |
+| main.rs:222:13:222:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.171) |
+| main.rs:222:13:222:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.174) |
 | main.rs:222:13:222:24 | ...::calloc | file://:0:0:0:0 | fn calloc |
 | main.rs:222:13:222:24 | ...::calloc | file://:0:0:0:0 | fn calloc |
-| main.rs:223:13:223:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |
-| main.rs:223:13:223:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.173) |
+| main.rs:223:13:223:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.171) |
+| main.rs:223:13:223:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.174) |
 | main.rs:223:13:223:24 | ...::calloc | file://:0:0:0:0 | fn calloc |
 | main.rs:223:13:223:24 | ...::calloc | file://:0:0:0:0 | fn calloc |
-| main.rs:224:13:224:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |
-| main.rs:224:13:224:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.173) |
+| main.rs:224:13:224:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.171) |
+| main.rs:224:13:224:16 | libc | file://:0:0:0:0 | Crate(libc@0.2.174) |
 | main.rs:224:13:224:25 | ...::realloc | file://:0:0:0:0 | fn realloc |
 | main.rs:224:13:224:25 | ...::realloc | file://:0:0:0:0 | fn realloc |
 | main.rs:229:13:229:37 | ...::with_capacity | file://:0:0:0:0 | fn with_capacity |
