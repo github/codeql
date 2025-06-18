@@ -16,25 +16,25 @@ predicate knownOpenSslConstantToBlockModeFamilyType(
   exists(string name |
     name = e.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
     (
-      name.matches("CBC") and type instanceof Crypto::CBC
+      name = "CBC" and type instanceof Crypto::CBC
       or
-      name.matches("CFB%") and type instanceof Crypto::CFB
+      name = "CFB%" and type instanceof Crypto::CFB
       or
-      name.matches("CTR") and type instanceof Crypto::CTR
+      name = "CTR" and type instanceof Crypto::CTR
       or
-      name.matches("GCM") and type instanceof Crypto::GCM
+      name = "GCM" and type instanceof Crypto::GCM
       or
-      name.matches("OFB") and type instanceof Crypto::OFB
+      name = "OFB" and type instanceof Crypto::OFB
       or
-      name.matches("XTS") and type instanceof Crypto::XTS
+      name = "XTS" and type instanceof Crypto::XTS
       or
-      name.matches("CCM") and type instanceof Crypto::CCM
+      name = "CCM" and type instanceof Crypto::CCM
       or
-      name.matches("GCM") and type instanceof Crypto::GCM
+      name = "GCM" and type instanceof Crypto::GCM
       or
-      name.matches("CCM") and type instanceof Crypto::CCM
+      name = "CCM" and type instanceof Crypto::CCM
       or
-      name.matches("ECB") and type instanceof Crypto::ECB
+      name = "ECB" and type instanceof Crypto::ECB
     )
   )
 }
