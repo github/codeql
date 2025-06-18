@@ -2,7 +2,7 @@ import runs_on
 import pytest
 from query_suites import *
 
-well_known_query_suites = ['cpp-code-quality.qls', 'cpp-security-and-quality.qls', 'cpp-security-extended.qls', 'cpp-code-scanning.qls']
+well_known_query_suites = ['cpp-code-quality.qls', 'cpp-code-quality-extended.qls', 'cpp-security-and-quality.qls', 'cpp-security-extended.qls', 'cpp-code-scanning.qls']
 
 @runs_on.posix
 @pytest.mark.parametrize("query_suite", well_known_query_suites)
