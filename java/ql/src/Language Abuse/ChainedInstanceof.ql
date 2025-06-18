@@ -5,8 +5,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/chained-type-tests
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       complexity
  *       language-features
  */
