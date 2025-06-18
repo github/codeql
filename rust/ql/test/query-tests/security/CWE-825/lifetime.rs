@@ -773,6 +773,23 @@ pub fn test_macros() {
 	}
 }
 
+// --- unsafe function ---
+
+fn get_local_for_unsafe_function() -> *const f64 {
+	let my_local10: f64 = 1.23;
+
+	return &my_local10; // $ Source[rust/access-after-lifetime-ended]=local10
+} // (return value immediately becomes dangling)
+
+pub unsafe fn test_unsafe_function() {
+	let p1 = get_local_for_unsafe_function();
+
+	use_the_stack();
+
+	let v1 = *p1; // $ Alert[rust/access-after-lifetime-ended]=local10
+	println!("	v1 = {v1} (!)"); // corrupt in practice
+}
+
 // --- examples from qhelp ---
 
 fn get_pointer() -> *const i64 {

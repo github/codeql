@@ -190,6 +190,11 @@ fn main() {
 	println!("test_macros:");
 	test_macros();
 
+	println!("test_unsafe_function:");
+	unsafe {
+		test_unsafe_function();
+	}
+
 	println!("test_lifetimes_example_bad:");
 	test_lifetimes_example_bad();
 
