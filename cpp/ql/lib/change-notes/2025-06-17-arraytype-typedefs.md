@@ -1,4 +1,4 @@
 ---
 category: fix
 ---
-* Fixed how typedefs are resolved for ArrayType by overriding the `resolveTypedefs` predicate.
+* `resolveTypedefs` now properly resolves typedefs for `ArrayType`s.
