@@ -5,7 +5,6 @@ ql/java/ql/src/Advisory/Documentation/SpuriousJavadocParam.ql
 ql/java/ql/src/Compatibility/JDK9/JdkInternalAccess.ql
 ql/java/ql/src/Compatibility/JDK9/UnderscoreIdentifier.ql
 ql/java/ql/src/DeadCode/UselessParameter.ql
-ql/java/ql/src/Language Abuse/ChainedInstanceof.ql
 ql/java/ql/src/Language Abuse/IterableIterator.ql
 ql/java/ql/src/Language Abuse/UselessNullCheck.ql
 ql/java/ql/src/Language Abuse/UselessTypeTest.ql
