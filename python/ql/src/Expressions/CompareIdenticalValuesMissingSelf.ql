@@ -2,8 +2,9 @@
  * @name Maybe missing 'self' in comparison
  * @description Comparison of identical values, the intent of which is unclear.
  * @kind problem
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-570
  *       external/cwe/cwe-571
  * @problem.severity warning
