@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rwf2/Rocket:rocket", "<&[u8] as crate::data::from_data::FromData>::from_data", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket", "<&[u8] as crate::data::from_data::FromData>::from_data", "Argument[1]", "ReturnValue.Reference", "value", "dfc-generated"]
@@ -633,7 +633,7 @@ extensions:
       - ["repo:https://github.com/rwf2/Rocket:rocket", "crate::prepend", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/rwf2/Rocket:rocket", "<crate::config::shutdown::Shutdown>::signal_stream", "Argument[self]", "log-injection", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket", "<crate::data::data_stream::StreamReader as crate::io::async_read::AsyncRead>::poll_read", "Argument[1]", "log-injection", "df-generated"]
@@ -653,7 +653,7 @@ extensions:
       - ["repo:https://github.com/rwf2/Rocket:rocket", "<crate::status::Status as crate::response::responder::Responder>::respond_to", "Argument[self]", "log-injection", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModel
+      extensible: sourceModelDeprecated
     data:
       - ["repo:https://github.com/rwf2/Rocket:rocket", "<crate::fs::named_file::NamedFile>::open", "ReturnValue", "file", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket", "<crate::fs::temp_file::TempFile>::open", "ReturnValue", "file", "df-generated"]

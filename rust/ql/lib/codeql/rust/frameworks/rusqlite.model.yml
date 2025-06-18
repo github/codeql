@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::Connection>::execute", "Argument[0]", "sql-injection", "manual"]
       - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::Connection>::execute_batch", "Argument[0]", "sql-injection", "manual"]
@@ -12,7 +12,7 @@ extensions:
 
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModel
+      extensible: sourceModelDeprecated
     data:
       - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::row::Row>::get", "ReturnValue.Field[core::result::Result::Ok(0)]", "database", "manual"]
       - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::row::Row>::get_unwrap", "ReturnValue", "database", "manual"]

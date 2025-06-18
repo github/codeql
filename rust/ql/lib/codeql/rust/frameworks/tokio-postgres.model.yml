@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/sfackler/rust-postgres:tokio-postgres", "<crate::client::Client>::execute", "Argument[0]", "sql-injection", "manual"]
       - ["repo:https://github.com/sfackler/rust-postgres:tokio-postgres", "<crate::client::Client>::batch_execute", "Argument[0]", "sql-injection", "manual"]
@@ -18,7 +18,7 @@ extensions:
 
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModel
+      extensible: sourceModelDeprecated
     data:
       - ["repo:https://github.com/sfackler/rust-postgres:tokio-postgres", "<crate::row::Row>::get", "ReturnValue", "database", "manual"]
       - ["repo:https://github.com/sfackler/rust-postgres:tokio-postgres", "<crate::row::Row>::try_get", "ReturnValue.Field[core::result::Result::Ok(0)]", "database", "manual"]

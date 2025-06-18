@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<bool as crate::ops::bit::BitAnd>::bitand", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<bool as crate::ops::bit::BitOr>::bitor", "Argument[0]", "ReturnValue", "taint", "df-generated"]

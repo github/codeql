@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo::fairings", "<crate::Counter as crate::fairing::Fairing>::on_ignite", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo::fairings", "<crate::Counter as crate::fairing::Fairing>::on_ignite", "Argument[self]", "ReturnValue.Reference", "value", "dfc-generated"]

@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/log:log", "<crate::Level as crate::fmt::Display>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/log:log", "<crate::LevelFilter as crate::fmt::Display>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
@@ -62,7 +62,7 @@ extensions:
       - ["repo:https://github.com/rust-lang/log:log", "<str as crate::kv::key::ToKey>::to_key", "Argument[self]", "ReturnValue.Field[log::kv::key::Key::key]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/log:log", "<crate::Record>::file", "Argument[self]", "pointer-access", "df-generated"]
       - ["repo:https://github.com/rust-lang/log:log", "<crate::Record>::module_path", "Argument[self]", "pointer-access", "df-generated"]

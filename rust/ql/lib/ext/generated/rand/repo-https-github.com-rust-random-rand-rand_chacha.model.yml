@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rust-random/rand:rand_chacha", "<crate::chacha::Array64 as crate::convert::AsMut>::as_mut", "Argument[self].Field[0]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-random/rand:rand_chacha", "<crate::chacha::Array64 as crate::convert::AsMut>::as_mut", "Argument[self].Field[rand_chacha::chacha::Array64(0)]", "ReturnValue.Reference", "value", "dfc-generated"]

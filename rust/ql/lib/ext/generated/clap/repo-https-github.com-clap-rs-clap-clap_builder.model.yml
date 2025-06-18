@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/clap-rs/clap:clap_builder", "<_ as crate::builder::value_parser::AnyValueParser>::clone_any", "Argument[self].Reference", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap_builder", "<char as crate::builder::resettable::IntoResettable>::into_resettable", "Argument[self]", "ReturnValue.Field[clap_builder::builder::resettable::Resettable::Value(0)]", "value", "dfc-generated"]
@@ -394,7 +394,7 @@ extensions:
       - ["repo:https://github.com/clap-rs/clap:clap_builder", "crate::output::textwrap::word_separators::find_words_ascii_space", "Argument[0]", "ReturnValue.Field[core::iter::sources::from_fn::FromFn(0)]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/clap-rs/clap:clap_builder", "<_ as crate::builder::value_parser::TypedValueParser>::parse_ref", "Argument[1]", "pointer-access", "df-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap_builder", "<crate::builder::arg::Arg>::remove", "Argument[self]", "log-injection", "df-generated"]

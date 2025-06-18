@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:actix-multipart", "<_ as crate::form::FieldGroupReader>::from_state", "Argument[0]", "ReturnValue.Field[core::result::Result::Err(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-multipart", "<_ as crate::form::FieldGroupReader>::handle_field", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]

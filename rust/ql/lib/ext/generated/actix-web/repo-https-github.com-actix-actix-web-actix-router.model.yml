@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:actix-router", "<&crate::string::String as crate::pattern::IntoPatterns>::patterns", "Argument[self].Reference.Field[alloc::string::String::vec]", "ReturnValue.Field[actix_router::pattern::Patterns::Single(0)].Field[alloc::string::String::vec]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-router", "<&crate::string::String as crate::pattern::IntoPatterns>::patterns", "Argument[self].Reference.Reference", "ReturnValue.Field[actix_router::pattern::Patterns::Single(0)]", "value", "dfc-generated"]

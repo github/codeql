@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:actix-web-codegen", "<crate::route::MethodTypeExt as crate::convert::TryFrom>::try_from", "Argument[0].Reference", "ReturnValue.Field[core::result::Result::Ok(0)].Field[actix_web_codegen::route::MethodTypeExt::Custom(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-web-codegen", "<crate::route::Route>::new", "Argument[0].Field[actix_web_codegen::route::RouteArgs::path]", "ReturnValue.Field[actix_web_codegen::route::Args::path]", "value", "dfc-generated"]

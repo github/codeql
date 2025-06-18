@@ -31,6 +31,11 @@ module Input implements InputSig<Location, RustDataFlow> {
         crate = ""
       )
     }
+
+    /** Holds if the associated call resolves to `path`. */
+    final predicate callResolvesTo(string path) {
+      path = this.getCall().getStaticTarget().(Addressable).getCanonicalPath()
+    }
   }
 
   abstract class SourceBase extends SourceSinkBase { }

@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/clap-rs/clap:clap_mangen", "<crate::Man>::date", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap_mangen", "<crate::Man>::generate_to", "Argument[self]", "ReturnValue", "taint", "df-generated"]
@@ -14,6 +14,6 @@ extensions:
       - ["repo:https://github.com/clap-rs/clap:clap_mangen", "<crate::Man>::title", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/clap-rs/clap:clap_mangen", "<crate::Man>::generate_to", "Argument[self]", "path-injection", "df-generated"]

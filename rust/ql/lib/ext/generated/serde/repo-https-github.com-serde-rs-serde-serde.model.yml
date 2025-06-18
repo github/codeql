@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/serde-rs/serde:serde", "<&[u8] as crate::__private::de::IdentifierDeserializer>::from", "Argument[self]", "ReturnValue.Field[serde::de::value::BytesDeserializer::value]", "value", "dfc-generated"]
       - ["repo:https://github.com/serde-rs/serde:serde", "<&[u8] as crate::de::IntoDeserializer>::into_deserializer", "Argument[self]", "ReturnValue.Field[serde::de::value::BytesDeserializer::value]", "value", "dfc-generated"]
@@ -216,6 +216,6 @@ extensions:
       - ["repo:https://github.com/serde-rs/serde:serde", "crate::de::value::private::unit_only", "Argument[0]", "ReturnValue.Field[0]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/serde-rs/serde:serde", "<crate::__private::ser::TaggedSerializer as crate::ser::Serializer>::serialize_map", "Argument[0]", "pointer-access", "df-generated"]

@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rwf2/Rocket:rocket_http", "<&[u8] as crate::uri::fmt::from_uri_param::FromUriParam>::from_uri_param", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_http", "<&crate::path::Path as crate::uri::fmt::from_uri_param::FromUriParam>::from_uri_param", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
@@ -252,7 +252,7 @@ extensions:
       - ["repo:https://github.com/rwf2/Rocket:rocket_http", "crate::uri::uri::as_utf8_unchecked", "Argument[0].Field[alloc::borrow::Cow::Owned(0)]", "ReturnValue.Field[alloc::borrow::Cow::Owned(0)].Field[alloc::string::String::vec]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/rwf2/Rocket:rocket_http", "<crate::option::Option as crate::ext::IntoOwned>::into_owned", "Argument[self]", "pointer-access", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket:rocket_http", "<crate::option::Option as crate::uri::fmt::from_uri_param::FromUriParam>::from_uri_param", "Argument[0]", "pointer-access", "df-generated"]

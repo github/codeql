@@ -1,12 +1,12 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModel
+      extensible: sourceModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/libc:libc", "::free", "Argument[0]", "pointer-invalidate", "manual"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/libc:libc", "::malloc", "Argument[0]", "alloc-size", "manual"]
       - ["repo:https://github.com/rust-lang/libc:libc", "::aligned_alloc", "Argument[1]", "alloc-size", "manual"]

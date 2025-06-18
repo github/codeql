@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo::intrinsic-test", "<crate::argument::Argument>::from_c", "Argument[0]", "ReturnValue.Field[intrinsic-test::argument::Argument::pos]", "value", "dfc-generated"]
       - ["repo::intrinsic-test", "<crate::argument::Argument>::from_c", "Argument[1].Element", "ReturnValue.Field[intrinsic-test::argument::Argument::name].Reference", "value", "dfc-generated"]
@@ -29,7 +29,7 @@ extensions:
       - ["repo::intrinsic-test", "<crate::types::TypeKind as crate::str::traits::FromStr>::from_str", "Argument[0]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo::intrinsic-test", "<crate::argument::Argument>::from_c", "Argument[1]", "log-injection", "df-generated"]
       - ["repo::intrinsic-test", "<crate::intrinsic::Intrinsic>::generate_loop_c", "Argument[self]", "log-injection", "df-generated"]
@@ -47,6 +47,6 @@ extensions:
       - ["repo::intrinsic-test", "crate::values::value_for_array", "Argument[0]", "log-injection", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModel
+      extensible: sourceModelDeprecated
     data:
       - ["repo::intrinsic-test", "crate::json_parser::get_neon_intrinsics", "ReturnValue", "file", "df-generated"]
