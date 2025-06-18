@@ -1522,8 +1522,8 @@ private module Debug {
   private Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/test.rs") and
-      startline = 74
+      filepath.matches("%/main.rs") and
+      startline = 52
     )
   }
 
