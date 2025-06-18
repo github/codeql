@@ -1,0 +1,6 @@
+readWithoutDef
+| lifetime.rs:511:6:511:14 | my_local2 | lifetime.rs:514:9:527:2 | enter \|...\| ... | 2 |
+| lifetime.rs:564:6:564:14 | my_local2 | lifetime.rs:567:9:580:2 | enter { ... } | 2 |
+readWithoutPriorRef
+| lifetime.rs:511:6:511:14 | my_local2 | lifetime.rs:514:9:527:2 | enter \|...\| ... | 2 |
+| lifetime.rs:564:6:564:14 | my_local2 | lifetime.rs:567:9:580:2 | enter { ... } | 2 |
