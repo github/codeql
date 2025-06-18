@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import codeql.ruby.controlflow.ControlFlowGraph
 private import internal.AST
