@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.CFG
 
 /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */

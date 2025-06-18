@@ -95,12 +95,21 @@ pub struct Module<'a> {
     pub qldoc: Option<String>,
     pub name: &'a str,
     pub body: Vec<TopLevel<'a>>,
+    pub overlay: Option<OverlayAnnotation>,
 }
 
 impl fmt::Display for Module<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if let Some(qldoc) = &self.qldoc {
             write!(f, "/** {} */", qldoc)?;
+        }
+        if let Some(overlay_annotation) = &self.overlay {
+            write!(f, "overlay[")?;
+            match overlay_annotation {
+                OverlayAnnotation::Local => write!(f, "local")?,
+                OverlayAnnotation::DiscardEntity => write!(f, "discard_entity")?,
+            }
+            write!(f, "] ")?;
         }
         writeln!(f, "module {} {{ ", self.name)?;
         for decl in &self.body {

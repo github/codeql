@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ssa.Ssa as SsaImplCommon
 private import codeql.ruby.AST
 private import codeql.ruby.CFG as Cfg
@@ -375,10 +378,12 @@ private module Cached {
     Impl::uncertainWriteDefinitionInput(def, result)
   }
 
+  overlay[global]
   cached
   module DataFlowIntegration {
     import DataFlowIntegrationImpl
 
+    overlay[local]
     cached
     predicate localFlowStep(
       SsaInput::SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep
@@ -469,19 +474,24 @@ class ParameterExt extends TParameterExt {
   }
 }
 
+overlay[global]
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import codeql.ruby.controlflow.internal.Guards as Guards
 
+  overlay[local]
   class Expr extends Cfg::CfgNodes::ExprCfgNode {
     predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
+  overlay[local]
   Expr getARead(Definition def) { result = Cached::getARead(def) }
 
+  overlay[local]
   predicate ssaDefHasSource(WriteDefinition def) {
     any(ParameterExt p).isInitializedBy(def) or def.(Ssa::WriteDefinition).assigns(_)
   }
 
+  overlay[local]
   class Guard extends Cfg::CfgNodes::AstCfgNode {
     /**
      * Holds if the evaluation of this guard to `branch` corresponds to the edge
@@ -506,6 +516,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
+  overlay[local]
   predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
     Guards::guardControlsBlock(guard, bb, branch)
   }

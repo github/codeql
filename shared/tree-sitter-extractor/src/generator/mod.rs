@@ -135,6 +135,11 @@ pub fn generate(
                 qldoc: None,
                 name: &language.name,
                 body,
+                overlay: if overlay_support {
+                    Some(ql::OverlayAnnotation::Local)
+                } else {
+                    None
+                },
             })],
         )?;
     }
