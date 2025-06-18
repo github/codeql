@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import codeql.ruby.Regexp as RE
 private import internal.AST
@@ -387,6 +390,7 @@ class RegExpLiteral extends StringlikeLiteral instanceof RegExpLiteralImpl {
   final predicate hasFreeSpacingFlag() { this.getFlagString().charAt(_) = "x" }
 
   /** Returns the root node of the parse tree of this regular expression. */
+  overlay[global]
   final RE::RegExpTerm getParsed() { result = RE::getParsedRegExp(this) }
 }
 
