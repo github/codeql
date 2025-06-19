@@ -516,8 +516,8 @@ class NamedSet extends NamedSet0 {
    * this set.
    */
   CfgNodes::ExprNodes::CallExprCfgNode getAnExactBindingCall() {
-    forex(string name | name = this.getAName() | exists(result.getNamedArgument(name))) and
-    forex(string name | exists(result.getNamedArgument(name)) | name = this.getAName())
+    result = this.getABindingCallRec(this.getSize() - 1) and
+    strictcount(string name | result.hasNamedArgument(name)) = this.getSize()
     or
     this.isEmpty() and
     not exists(result.getNamedArgument(_))
