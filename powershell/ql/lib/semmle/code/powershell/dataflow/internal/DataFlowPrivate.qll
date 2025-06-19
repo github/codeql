@@ -533,6 +533,12 @@ private module ParameterNodes {
     }
   }
 
+  bindingset[p]
+  pragma[inline_late]
+  private predicate namedSetHasParameter(NamedSet ns, Parameter p) {
+    ns.getALowerCaseName() = p.getLowerCaseName()
+  }
+
   /**
    * The value of a normal parameter at function entry, viewed as a node in a data
    * flow graph.
@@ -572,7 +578,7 @@ private module ParameterNodes {
               count(int k, Parameter p |
                 k < i and
                 p = getNormalParameter(f, k) and
-                p.getLowerCaseName() = ns.getAName()
+                namedSetHasParameter(ns, p)
               )
         )
       )
