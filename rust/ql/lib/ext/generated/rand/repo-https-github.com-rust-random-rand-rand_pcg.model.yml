@@ -2,9 +2,9 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
-      - ["repo:https://github.com/rust-random/rand:rand_pcg", "<crate::pcg128::Lcg128Xsl64>::new", "Argument[0]", "ReturnValue.Field[crate::pcg128::Lcg128Xsl64::state]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_pcg", "<crate::pcg128::Lcg128Xsl64>::new", "Argument[0]", "ReturnValue.Field[rand_pcg::pcg128::Lcg128Xsl64::state]", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-random/rand:rand_pcg", "<crate::pcg128::Mcg128Xsl64>::new", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["repo:https://github.com/rust-random/rand:rand_pcg", "<crate::pcg128cm::Lcg128CmDxsm64>::new", "Argument[0]", "ReturnValue.Field[crate::pcg128cm::Lcg128CmDxsm64::state]", "value", "dfc-generated"]
-      - ["repo:https://github.com/rust-random/rand:rand_pcg", "<crate::pcg64::Lcg64Xsh32>::new", "Argument[0]", "ReturnValue.Field[crate::pcg64::Lcg64Xsh32::state]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_pcg", "<crate::pcg128cm::Lcg128CmDxsm64>::new", "Argument[0]", "ReturnValue.Field[rand_pcg::pcg128cm::Lcg128CmDxsm64::state]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_pcg", "<crate::pcg64::Lcg64Xsh32>::new", "Argument[0]", "ReturnValue.Field[rand_pcg::pcg64::Lcg64Xsh32::state]", "value", "dfc-generated"]

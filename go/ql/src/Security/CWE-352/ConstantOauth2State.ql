@@ -40,6 +40,8 @@ module ConstantStateFlowConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { isSinkCall(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

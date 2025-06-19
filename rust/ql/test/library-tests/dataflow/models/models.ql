@@ -20,7 +20,7 @@ query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) 
 // not defined in `models.ext.yml`, in order to test that we can also define
 // models directly in QL
 private class SummarizedCallableIdentity extends SummarizedCallable::Range {
-  SummarizedCallableIdentity() { this = "repo::test::_::crate::identity" }
+  SummarizedCallableIdentity() { this.getName().getText() = "identity" }
 
   override predicate propagatesFlow(
     string input, string output, boolean preservesValue, string provenance

@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<bool as crate::ops::bit::BitAnd>::bitand", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<bool as crate::ops::bit::BitOr>::bitor", "Argument[0]", "ReturnValue", "taint", "df-generated"]
@@ -20,12 +20,12 @@ extensions:
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<crate::core_simd::masks::mask_impl::Mask as crate::clone::Clone>::clone", "Argument[self].Reference", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<crate::core_simd::masks::mask_impl::Mask as crate::ops::bit::Not>::not", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<crate::core_simd::masks::mask_impl::Mask>::to_int", "Argument[self].Field[0]", "ReturnValue", "value", "dfc-generated"]
-      - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<crate::core_simd::masks::mask_impl::Mask>::to_int", "Argument[self].Field[crate::core_simd::masks::mask_impl::Mask(0)]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<crate::core_simd::masks::mask_impl::Mask>::to_int", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<crate::core_simd::vector::Simd as crate::clone::Clone>::clone", "Argument[self].Reference", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<crate::core_simd::vector::Simd as crate::convert::AsMut>::as_mut", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<crate::core_simd::vector::Simd as crate::convert::AsRef>::as_ref", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<crate::core_simd::vector::Simd as crate::convert::From>::from", "Argument[0].Field[0]", "ReturnValue", "value", "dfc-generated"]
-      - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<crate::core_simd::vector::Simd as crate::convert::From>::from", "Argument[0].Field[crate::core_simd::masks::mask_impl::Mask(0)]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<crate::core_simd::vector::Simd as crate::convert::From>::from", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<crate::core_simd::vector::Simd as crate::core_simd::simd::num::float::SimdFloat>::recip", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<crate::core_simd::vector::Simd as crate::core_simd::simd::num::float::SimdFloat>::to_degrees", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<crate::core_simd::vector::Simd as crate::core_simd::simd::num::float::SimdFloat>::to_radians", "Argument[self]", "ReturnValue", "taint", "df-generated"]
@@ -44,5 +44,5 @@ extensions:
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<u32 as crate::core_simd::masks::mask_impl::ReverseBits>::reverse_bits", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<u64 as crate::core_simd::masks::mask_impl::ReverseBits>::reverse_bits", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "<u8 as crate::core_simd::masks::mask_impl::ReverseBits>::reverse_bits", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "crate::simd_inv4x4", "Argument[0].Field[0]", "ReturnValue.Field[crate::option::Option::Some(0)].Field[crate::Matrix4x4(0)]", "value", "dfc-generated"]
-      - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "crate::simd_inv4x4", "Argument[0].Field[crate::Matrix4x4(0)]", "ReturnValue.Field[crate::option::Option::Some(0)].Field[crate::Matrix4x4(0)]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "crate::simd_inv4x4", "Argument[0].Field[0]", "ReturnValue.Field[core::option::Option::Some(0)].Field[matrix_inversion::Matrix4x4(0)]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-lang/portable-simd:core_simd", "crate::simd_inv4x4", "Argument[0].Field[matrix_inversion::Matrix4x4(0)]", "ReturnValue.Field[core::option::Option::Some(0)].Field[matrix_inversion::Matrix4x4(0)]", "value", "dfc-generated"]

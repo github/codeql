@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/tokio-rs/tokio:tokio-macros", "crate::entry::main", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio-macros", "crate::entry::test", "Argument[1]", "ReturnValue", "value", "dfc-generated"]

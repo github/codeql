@@ -5,7 +5,8 @@
  * @problem.severity error
  * @precision high
  * @id cs/unused-collection
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-561
  */

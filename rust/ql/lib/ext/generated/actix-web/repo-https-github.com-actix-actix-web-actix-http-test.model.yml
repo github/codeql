@@ -2,9 +2,9 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
-      - ["repo:https://github.com/actix/actix-web:actix-http-test", "<crate::TestServer>::addr", "Argument[self].Field[crate::TestServer::addr]", "ReturnValue", "value", "dfc-generated"]
-      - ["repo:https://github.com/actix/actix-web:actix-http-test", "<crate::TestServer>::request", "Argument[0]", "ReturnValue.Field[crate::request::ClientRequest::head].Field[crate::requests::head::RequestHead::method]", "value", "dfc-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-http-test", "<crate::TestServer>::addr", "Argument[self].Field[actix_http_test::TestServer::addr]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/actix/actix-web:actix-http-test", "<crate::TestServer>::request", "Argument[0]", "ReturnValue.Field[awc::request::ClientRequest::head].Field[actix_http::requests::head::RequestHead::method]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-http-test", "<crate::TestServer>::surl", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-http-test", "<crate::TestServer>::url", "Argument[0]", "ReturnValue", "taint", "df-generated"]

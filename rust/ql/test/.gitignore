@@ -1,4 +1,6 @@
 Cargo.toml
-Cargo.lock
 lib.rs
 target/
+.proc_macro/
+.lib/
+

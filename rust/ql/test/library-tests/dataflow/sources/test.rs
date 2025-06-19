@@ -308,28 +308,28 @@ async fn test_tokio_stdin() -> Result<(), Box<dyn std::error::Error>> {
         let mut stdin = tokio::io::stdin(); // $ Alert[rust/summary/taint-sources]
         let mut buffer = [0u8; 100];
         let _bytes = stdin.read(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow
+        sink(&buffer); // $ MISSING: hasTaintFlow -- we cannot resolve the `read` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
     {
         let mut stdin = tokio::io::stdin(); // $ Alert[rust/summary/taint-sources]
         let mut buffer = Vec::<u8>::new();
         let _bytes = stdin.read_to_end(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow
+        sink(&buffer); // $ MISSING: hasTaintFlow -- we cannot resolve the `read_to_end` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
     {
         let mut stdin = tokio::io::stdin(); // $ Alert[rust/summary/taint-sources]
         let mut buffer = String::new();
         let _bytes = stdin.read_to_string(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow
+        sink(&buffer); // $ MISSING: hasTaintFlow -- we cannot resolve the `read_to_string` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
     {
         let mut stdin = tokio::io::stdin(); // $ Alert[rust/summary/taint-sources]
         let mut buffer = [0; 100];
         stdin.read_exact(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow
+        sink(&buffer); // $ MISSING: hasTaintFlow -- we cannot resolve the `read_exact` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
     {
@@ -338,17 +338,17 @@ async fn test_tokio_stdin() -> Result<(), Box<dyn std::error::Error>> {
         let v2 = stdin.read_i16().await?;
         let v3 = stdin.read_f32().await?;
         let v4 = stdin.read_i64_le().await?;
-        sink(v1); // $ hasTaintFlow
-        sink(v2); // $ hasTaintFlow
-        sink(v3); // $ hasTaintFlow
-        sink(v4); // $ hasTaintFlow
+        sink(v1); // $ MISSING: hasTaintFlow -- we cannot resolve the `read_u8` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
+        sink(v2); // $ MISSING: hasTaintFlow -- we cannot resolve the `read_i16` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
+        sink(v3); // $ MISSING: hasTaintFlow -- we cannot resolve the `read_f32` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
+        sink(v4); // $ MISSING: hasTaintFlow -- we cannot resolve the `read_i64_le` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
     {
         let mut stdin = tokio::io::stdin(); // $ Alert[rust/summary/taint-sources]
         let mut buffer = bytes::BytesMut::new();
         stdin.read_buf(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow
+        sink(&buffer); // $ MISSING: hasTaintFlow -- we cannot resolve the `read_buf` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
     // --- async reading from stdin (BufReader) ---
@@ -356,7 +356,7 @@ async fn test_tokio_stdin() -> Result<(), Box<dyn std::error::Error>> {
     {
         let mut reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ Alert[rust/summary/taint-sources]
         let data = reader.fill_buf().await?;
-        sink(&data); // $ hasTaintFlow
+        sink(&data); // $ MISSING: hasTaintFlow -- we cannot resolve the `fill_buf` call above, which comes from `impl<R: AsyncBufRead + ?Sized> AsyncBufReadExt for R {}` in `async_buf_read_ext.rs`
     }
 
     {
@@ -369,20 +369,20 @@ async fn test_tokio_stdin() -> Result<(), Box<dyn std::error::Error>> {
         let mut buffer = String::new();
         let mut reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ Alert[rust/summary/taint-sources]
         reader.read_line(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow
+        sink(&buffer); // $ MISSING: hasTaintFlow -- we cannot resolve the `read_line` call above, which comes from `impl<R: AsyncBufRead + ?Sized> AsyncBufReadExt for R {}` in `async_buf_read_ext.rs`
     }
 
     {
         let mut buffer = Vec::<u8>::new();
         let mut reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ Alert[rust/summary/taint-sources]
         reader.read_until(b',', &mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow
-        sink(buffer[0]); // $ hasTaintFlow
+        sink(&buffer); // $ MISSING: hasTaintFlow -- we cannot resolve the `read_until` call above, which comes from `impl<R: AsyncBufRead + ?Sized> AsyncBufReadExt for R {}` in `async_buf_read_ext.rs`
+        sink(buffer[0]); // $ MISSING: hasTaintFlow -- we cannot resolve the `read_until` call above, which comes from `impl<R: AsyncBufRead + ?Sized> AsyncBufReadExt for R {}` in `async_buf_read_ext.rs`
     }
 
     {
         let mut reader_split = tokio::io::BufReader::new(tokio::io::stdin()).split(b','); // $ Alert[rust/summary/taint-sources]
-        sink(reader_split.next_segment().await?.unwrap()); // $ hasTaintFlow
+        sink(reader_split.next_segment().await?.unwrap()); // $ MISSING: hasTaintFlow -- we cannot resolve the `split` call above, which comes from `impl<R: AsyncBufRead + ?Sized> AsyncBufReadExt for R {}` in `async_buf_read_ext.rs`
         while let Some(chunk) = reader_split.next_segment().await? {
             sink(chunk); // $ MISSING: hasTaintFlow
         }
@@ -391,7 +391,7 @@ async fn test_tokio_stdin() -> Result<(), Box<dyn std::error::Error>> {
     {
         let reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ Alert[rust/summary/taint-sources]
         let mut lines = reader.lines();
-        sink(lines.next_line().await?.unwrap()); // $ hasTaintFlow
+        sink(lines.next_line().await?.unwrap()); // $ MISSING: hasTaintFlow -- we cannot resolve the `lines` call above, which comes from `impl<R: AsyncBufRead + ?Sized> AsyncBufReadExt for R {}` in `async_buf_read_ext.rs`
         while let Some(line) = lines.next_line().await? {
             sink(line); // $ MISSING: hasTaintFlow
         }
@@ -529,25 +529,25 @@ async fn test_tokio_file() -> std::io::Result<()> {
     {
         let mut buffer = [0u8; 100];
         let _bytes = file.read(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow="file.txt"
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt" -- we cannot resolve the `read` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
     {
         let mut buffer = Vec::<u8>::new();
         let _bytes = file.read_to_end(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow="file.txt"
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt" -- we cannot resolve the `read_to_end` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
     {
         let mut buffer = String::new();
         let _bytes = file.read_to_string(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow="file.txt"
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt" -- we cannot resolve the `read_to_string` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
     {
         let mut buffer = [0; 100];
         file.read_exact(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow="file.txt"
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt" -- we cannot resolve the `read_exact` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
     {
@@ -555,16 +555,16 @@ async fn test_tokio_file() -> std::io::Result<()> {
         let v2 = file.read_i16().await?;
         let v3 = file.read_f32().await?;
         let v4 = file.read_i64_le().await?;
-        sink(v1); // $ hasTaintFlow="file.txt"
-        sink(v2); // $ hasTaintFlow="file.txt"
-        sink(v3); // $ hasTaintFlow="file.txt"
-        sink(v4); // $ hasTaintFlow="file.txt"
+        sink(v1); // $ MISSING: hasTaintFlow="file.txt" -- we cannot resolve the `read_u8` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
+        sink(v2); // $ MISSING: hasTaintFlow="file.txt" -- we cannot resolve the `read_i16` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
+        sink(v3); // $ MISSING: hasTaintFlow="file.txt" -- we cannot resolve the `read_f32` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
+        sink(v4); // $ MISSING: hasTaintFlow="file.txt" -- we cannot resolve the `read_i64_le` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
     {
         let mut buffer = bytes::BytesMut::new();
         file.read_buf(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow="file.txt"
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt" -- we cannot resolve the `read_buf` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
     // --- misc operations ---
@@ -575,7 +575,7 @@ async fn test_tokio_file() -> std::io::Result<()> {
         let file2 = tokio::fs::File::open("another_file.txt").await?; // $ Alert[rust/summary/taint-sources]
         let mut reader = file1.chain(file2);
         reader.read_to_string(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow="file.txt" hasTaintFlow="another_file.txt"
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt" hasTaintFlow="another_file.txt" -- we cannot resolve the `chain` and `read_to_string` calls above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
     {
@@ -583,7 +583,7 @@ async fn test_tokio_file() -> std::io::Result<()> {
         let file1 = tokio::fs::File::open("file.txt").await?; // $ Alert[rust/summary/taint-sources]
         let mut reader = file1.take(100);
         reader.read_to_string(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow="file.txt"
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt" -- we cannot resolve the `take` and `read_to_string` calls above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
     Ok(())
@@ -687,8 +687,8 @@ async fn test_tokio_tcpstream(case: i64) -> std::io::Result<()> {
         sink(buffer1[0]); // $ hasTaintFlow=address
 
         println!("buffer2 = {:?}", buffer2);
-        sink(&buffer2); // $ hasTaintFlow=address
-        sink(buffer2[0]); // $ hasTaintFlow=address
+        sink(&buffer2); // $ MISSING: hasTaintFlow=address -- we cannot resolve the `read` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
+        sink(buffer2[0]); // $ MISSING: hasTaintFlow=address -- we cannot resolve the `read` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
 
         let buffer_string = String::from_utf8_lossy(&buffer2[..n2]);
         println!("string = {}", buffer_string);
@@ -777,25 +777,25 @@ fn test_rustls() -> std::io::Result<()> {
     let server_name = rustls::pki_types::ServerName::try_from("www.example.com").unwrap();
     let config_arc = std::sync::Arc::new(config);
     let mut client = rustls::ClientConnection::new(config_arc, server_name).unwrap(); // $ Alert[rust/summary/taint-sources]
-    let mut reader = client.reader();
-    sink(&reader); // $ hasTaintFlow=config_arc
+    let mut reader = client.reader(); // We cannot resolve the `reader` call because it comes from `Deref`: https://docs.rs/rustls/latest/rustls/client/struct.ClientConnection.html#deref-methods-ConnectionCommon%3CClientConnectionData%3E
+    sink(&reader); // $ MISSING: hasTaintFlow=config_arc
 
     {
         let mut buffer = [0u8; 100];
         let _bytes = reader.read(&mut buffer)?;
-        sink(&buffer); // $ hasTaintFlow=config_arc
+        sink(&buffer); // $ MISSING: hasTaintFlow=config_arc
     }
 
     {
         let mut buffer = Vec::<u8>::new();
         let _bytes = reader.read_to_end(&mut buffer)?;
-        sink(&buffer); // $ hasTaintFlow=config_arc
+        sink(&buffer); // $ MISSING: hasTaintFlow=config_arc
     }
 
     {
         let mut buffer = String::new();
         let _bytes = reader.read_to_string(&mut buffer)?;
-        sink(&buffer); // $ hasTaintFlow=config_arc
+        sink(&buffer); // $ MISSING: hasTaintFlow=config_arc
     }
 
     Ok(())

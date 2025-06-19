@@ -2,6 +2,6 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo::cookies", "<crate::session::User as crate::request::from_request::FromRequest>::from_request", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]

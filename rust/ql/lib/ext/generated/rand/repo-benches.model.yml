@@ -2,8 +2,8 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
-      - ["repo::benches", "<crate::UnhintedIterator as crate::iter::traits::iterator::Iterator>::next", "Argument[self].Field[crate::UnhintedIterator::iter].Element", "ReturnValue.Field[crate::option::Option::Some(0)]", "value", "dfc-generated"]
-      - ["repo::benches", "<crate::WindowHintedIterator as crate::iter::traits::iterator::Iterator>::next", "Argument[self].Field[crate::WindowHintedIterator::iter].Element", "ReturnValue.Field[crate::option::Option::Some(0)]", "value", "dfc-generated"]
-      - ["repo::benches", "<crate::WindowHintedIterator as crate::iter::traits::iterator::Iterator>::size_hint", "Argument[self].Field[crate::WindowHintedIterator::window_size]", "ReturnValue.Field[0]", "value", "dfc-generated"]
+      - ["repo::benches", "<crate::UnhintedIterator as crate::iter::traits::iterator::Iterator>::next", "Argument[self].Field[seq_choose::UnhintedIterator::iter].Element", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
+      - ["repo::benches", "<crate::WindowHintedIterator as crate::iter::traits::iterator::Iterator>::next", "Argument[self].Field[seq_choose::WindowHintedIterator::iter].Element", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
+      - ["repo::benches", "<crate::WindowHintedIterator as crate::iter::traits::iterator::Iterator>::size_hint", "Argument[self].Field[seq_choose::WindowHintedIterator::window_size]", "ReturnValue.Field[0]", "value", "dfc-generated"]

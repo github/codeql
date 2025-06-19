@@ -1,36 +1,20 @@
 #select
-| sqlx.rs:66:26:66:46 | safe_query_3.as_str() | sqlx.rs:48:25:48:46 | ...::get | sqlx.rs:66:26:66:46 | safe_query_3.as_str() | This query depends on a $@. | sqlx.rs:48:25:48:46 | ...::get | user-provided value |
 | sqlx.rs:67:26:67:48 | unsafe_query_1.as_str() | sqlx.rs:47:22:47:35 | ...::args | sqlx.rs:67:26:67:48 | unsafe_query_1.as_str() | This query depends on a $@. | sqlx.rs:47:22:47:35 | ...::args | user-provided value |
 | sqlx.rs:69:30:69:52 | unsafe_query_2.as_str() | sqlx.rs:48:25:48:46 | ...::get | sqlx.rs:69:30:69:52 | unsafe_query_2.as_str() | This query depends on a $@. | sqlx.rs:48:25:48:46 | ...::get | user-provided value |
-| sqlx.rs:71:30:71:52 | unsafe_query_4.as_str() | sqlx.rs:48:25:48:46 | ...::get | sqlx.rs:71:30:71:52 | unsafe_query_4.as_str() | This query depends on a $@. | sqlx.rs:48:25:48:46 | ...::get | user-provided value |
-| sqlx.rs:77:25:77:45 | safe_query_3.as_str() | sqlx.rs:48:25:48:46 | ...::get | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | This query depends on a $@. | sqlx.rs:48:25:48:46 | ...::get | user-provided value |
 | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() | sqlx.rs:47:22:47:35 | ...::args | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() | This query depends on a $@. | sqlx.rs:47:22:47:35 | ...::args | user-provided value |
 | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() | sqlx.rs:48:25:48:46 | ...::get | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() | This query depends on a $@. | sqlx.rs:48:25:48:46 | ...::get | user-provided value |
-| sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | sqlx.rs:48:25:48:46 | ...::get | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | This query depends on a $@. | sqlx.rs:48:25:48:46 | ...::get | user-provided value |
 edges
 | sqlx.rs:47:9:47:18 | arg_string | sqlx.rs:53:27:53:36 | arg_string | provenance |  |
 | sqlx.rs:47:22:47:35 | ...::args | sqlx.rs:47:22:47:37 | ...::args(...) [element] | provenance | Src:MaD:1  |
-| sqlx.rs:47:22:47:37 | ...::args(...) [element] | sqlx.rs:47:22:47:44 | ... .nth(...) [Some] | provenance | MaD:10 |
-| sqlx.rs:47:22:47:44 | ... .nth(...) [Some] | sqlx.rs:47:22:47:77 | ... .unwrap_or(...) | provenance | MaD:5 |
+| sqlx.rs:47:22:47:37 | ...::args(...) [element] | sqlx.rs:47:22:47:44 | ... .nth(...) [Some] | provenance | MaD:7 |
+| sqlx.rs:47:22:47:44 | ... .nth(...) [Some] | sqlx.rs:47:22:47:77 | ... .unwrap_or(...) | provenance | MaD:4 |
 | sqlx.rs:47:22:47:77 | ... .unwrap_or(...) | sqlx.rs:47:9:47:18 | arg_string | provenance |  |
-| sqlx.rs:48:9:48:21 | remote_string | sqlx.rs:49:25:49:52 | remote_string.parse() [Ok] | provenance | MaD:8 |
 | sqlx.rs:48:9:48:21 | remote_string | sqlx.rs:54:27:54:39 | remote_string | provenance |  |
-| sqlx.rs:48:9:48:21 | remote_string | sqlx.rs:59:17:59:72 | MacroExpr | provenance |  |
 | sqlx.rs:48:25:48:46 | ...::get | sqlx.rs:48:25:48:69 | ...::get(...) [Ok] | provenance | Src:MaD:2  |
-| sqlx.rs:48:25:48:69 | ...::get(...) [Ok] | sqlx.rs:48:25:48:78 | ... .unwrap() | provenance | MaD:6 |
-| sqlx.rs:48:25:48:78 | ... .unwrap() | sqlx.rs:48:25:48:85 | ... .text() [Ok] | provenance | MaD:11 |
-| sqlx.rs:48:25:48:85 | ... .text() [Ok] | sqlx.rs:48:25:48:118 | ... .unwrap_or(...) | provenance | MaD:7 |
+| sqlx.rs:48:25:48:69 | ...::get(...) [Ok] | sqlx.rs:48:25:48:78 | ... .unwrap() | provenance | MaD:5 |
+| sqlx.rs:48:25:48:78 | ... .unwrap() | sqlx.rs:48:25:48:85 | ... .text() [Ok] | provenance | MaD:8 |
+| sqlx.rs:48:25:48:85 | ... .text() [Ok] | sqlx.rs:48:25:48:118 | ... .unwrap_or(...) | provenance | MaD:6 |
 | sqlx.rs:48:25:48:118 | ... .unwrap_or(...) | sqlx.rs:48:9:48:21 | remote_string | provenance |  |
-| sqlx.rs:49:9:49:21 | remote_number | sqlx.rs:52:32:52:87 | MacroExpr | provenance |  |
-| sqlx.rs:49:25:49:52 | remote_string.parse() [Ok] | sqlx.rs:49:25:49:65 | ... .unwrap_or(...) | provenance | MaD:7 |
-| sqlx.rs:49:25:49:65 | ... .unwrap_or(...) | sqlx.rs:49:9:49:21 | remote_number | provenance |  |
-| sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:66:26:66:46 | safe_query_3.as_str() | provenance | MaD:3 |
-| sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:3 |
-| sqlx.rs:52:24:52:88 | res | sqlx.rs:52:32:52:87 | { ... } | provenance |  |
-| sqlx.rs:52:32:52:87 | ...::format(...) | sqlx.rs:52:24:52:88 | res | provenance |  |
-| sqlx.rs:52:32:52:87 | ...::must_use(...) | sqlx.rs:52:9:52:20 | safe_query_3 | provenance |  |
-| sqlx.rs:52:32:52:87 | MacroExpr | sqlx.rs:52:32:52:87 | ...::format(...) | provenance | MaD:4 |
-| sqlx.rs:52:32:52:87 | { ... } | sqlx.rs:52:32:52:87 | ...::must_use(...) | provenance | MaD:9 |
 | sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:67:26:67:48 | unsafe_query_1.as_str() | provenance | MaD:3 |
 | sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() | provenance | MaD:3 |
 | sqlx.rs:53:26:53:36 | &arg_string [&ref] | sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | provenance |  |
@@ -39,25 +23,15 @@ edges
 | sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() | provenance | MaD:3 |
 | sqlx.rs:54:26:54:39 | &remote_string [&ref] | sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | provenance |  |
 | sqlx.rs:54:27:54:39 | remote_string | sqlx.rs:54:26:54:39 | &remote_string [&ref] | provenance |  |
-| sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:71:30:71:52 | unsafe_query_4.as_str() | provenance | MaD:3 |
-| sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | provenance | MaD:3 |
-| sqlx.rs:59:9:59:73 | res | sqlx.rs:59:17:59:72 | { ... } | provenance |  |
-| sqlx.rs:59:17:59:72 | ...::format(...) | sqlx.rs:59:9:59:73 | res | provenance |  |
-| sqlx.rs:59:17:59:72 | ...::must_use(...) | sqlx.rs:56:9:56:22 | unsafe_query_4 | provenance |  |
-| sqlx.rs:59:17:59:72 | MacroExpr | sqlx.rs:59:17:59:72 | ...::format(...) | provenance | MaD:4 |
-| sqlx.rs:59:17:59:72 | { ... } | sqlx.rs:59:17:59:72 | ...::must_use(...) | provenance | MaD:9 |
 models
-| 1 | Source: lang:std; crate::env::args; commandargs; ReturnValue.Element |
-| 2 | Source: repo:https://github.com/seanmonstar/reqwest:reqwest; crate::blocking::get; remote; ReturnValue.Field[crate::result::Result::Ok(0)] |
+| 1 | Source: lang:std; crate::env::args; ReturnValue.Element; commandargs |
+| 2 | Source: repo:https://github.com/seanmonstar/reqwest:reqwest; crate::blocking::get; ReturnValue.Field[core::result::Result::Ok(0)]; remote |
 | 3 | Summary: lang:alloc; <crate::string::String>::as_str; Argument[self]; ReturnValue; value |
-| 4 | Summary: lang:alloc; crate::fmt::format; Argument[0]; ReturnValue; taint |
-| 5 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue; value |
-| 6 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 7 | Summary: lang:core; <crate::result::Result>::unwrap_or; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 8 | Summary: lang:core; <str>::parse; Argument[self]; ReturnValue.Field[crate::result::Result::Ok(0)]; taint |
-| 9 | Summary: lang:core; crate::hint::must_use; Argument[0]; ReturnValue; value |
-| 10 | Summary: lang:core; crate::iter::traits::iterator::Iterator::nth; Argument[self].Element; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 11 | Summary: repo:https://github.com/seanmonstar/reqwest:reqwest; <crate::blocking::response::Response>::text; Argument[self]; ReturnValue.Field[crate::result::Result::Ok(0)]; taint |
+| 4 | Summary: lang:core; <crate::option::Option>::unwrap_or; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
+| 5 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 6 | Summary: lang:core; <crate::result::Result>::unwrap_or; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 7 | Summary: lang:core; crate::iter::traits::iterator::Iterator::nth; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 8 | Summary: repo:https://github.com/seanmonstar/reqwest:reqwest; <crate::blocking::response::Response>::text; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
 nodes
 | sqlx.rs:47:9:47:18 | arg_string | semmle.label | arg_string |
 | sqlx.rs:47:22:47:35 | ...::args | semmle.label | ...::args |
@@ -70,33 +44,14 @@ nodes
 | sqlx.rs:48:25:48:78 | ... .unwrap() | semmle.label | ... .unwrap() |
 | sqlx.rs:48:25:48:85 | ... .text() [Ok] | semmle.label | ... .text() [Ok] |
 | sqlx.rs:48:25:48:118 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
-| sqlx.rs:49:9:49:21 | remote_number | semmle.label | remote_number |
-| sqlx.rs:49:25:49:52 | remote_string.parse() [Ok] | semmle.label | remote_string.parse() [Ok] |
-| sqlx.rs:49:25:49:65 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
-| sqlx.rs:52:9:52:20 | safe_query_3 | semmle.label | safe_query_3 |
-| sqlx.rs:52:24:52:88 | res | semmle.label | res |
-| sqlx.rs:52:32:52:87 | ...::format(...) | semmle.label | ...::format(...) |
-| sqlx.rs:52:32:52:87 | ...::must_use(...) | semmle.label | ...::must_use(...) |
-| sqlx.rs:52:32:52:87 | MacroExpr | semmle.label | MacroExpr |
-| sqlx.rs:52:32:52:87 | { ... } | semmle.label | { ... } |
 | sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | semmle.label | unsafe_query_1 [&ref] |
 | sqlx.rs:53:26:53:36 | &arg_string [&ref] | semmle.label | &arg_string [&ref] |
 | sqlx.rs:53:27:53:36 | arg_string | semmle.label | arg_string |
 | sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | semmle.label | unsafe_query_2 [&ref] |
 | sqlx.rs:54:26:54:39 | &remote_string [&ref] | semmle.label | &remote_string [&ref] |
 | sqlx.rs:54:27:54:39 | remote_string | semmle.label | remote_string |
-| sqlx.rs:56:9:56:22 | unsafe_query_4 | semmle.label | unsafe_query_4 |
-| sqlx.rs:59:9:59:73 | res | semmle.label | res |
-| sqlx.rs:59:17:59:72 | ...::format(...) | semmle.label | ...::format(...) |
-| sqlx.rs:59:17:59:72 | ...::must_use(...) | semmle.label | ...::must_use(...) |
-| sqlx.rs:59:17:59:72 | MacroExpr | semmle.label | MacroExpr |
-| sqlx.rs:59:17:59:72 | { ... } | semmle.label | { ... } |
-| sqlx.rs:66:26:66:46 | safe_query_3.as_str() | semmle.label | safe_query_3.as_str() |
 | sqlx.rs:67:26:67:48 | unsafe_query_1.as_str() | semmle.label | unsafe_query_1.as_str() |
 | sqlx.rs:69:30:69:52 | unsafe_query_2.as_str() | semmle.label | unsafe_query_2.as_str() |
-| sqlx.rs:71:30:71:52 | unsafe_query_4.as_str() | semmle.label | unsafe_query_4.as_str() |
-| sqlx.rs:77:25:77:45 | safe_query_3.as_str() | semmle.label | safe_query_3.as_str() |
 | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() | semmle.label | unsafe_query_1.as_str() |
 | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() | semmle.label | unsafe_query_2.as_str() |
-| sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | semmle.label | unsafe_query_4.as_str() |
 subpaths

@@ -5,8 +5,9 @@
  * @problem.severity warning
  * @precision high
  * @id cs/gethashcode-is-not-defined
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp
