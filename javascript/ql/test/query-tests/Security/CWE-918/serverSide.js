@@ -141,4 +141,8 @@ var server2 = http.createServer(function(req, res) {
   axios.get(target.toString()); // $Alert[js/request-forgery]
   axios.get(target); // $Alert[js/request-forgery]
   axios.get(target.href); // $Alert[js/request-forgery]
+  const encodedUrl = encodeURI(input);
+  axios.get(encodedUrl); // $Alert[js/request-forgery]
+  const escapedUrl = escape(input);
+  axios.get(escapedUrl); // $Alert[js/request-forgery]
 });

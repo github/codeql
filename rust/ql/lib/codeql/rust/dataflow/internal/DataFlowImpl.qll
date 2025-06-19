@@ -132,7 +132,7 @@ final class ParameterPosition extends TParameterPosition {
 final class ArgumentPosition extends ParameterPosition {
   /** Gets the argument of `call` at this position, if any. */
   Expr getArgument(Call call) {
-    result = call.getArgument(this.getPosition())
+    result = call.getPositionalArgument(this.getPosition())
     or
     result = call.getReceiver() and this.isSelf()
   }
@@ -145,7 +145,7 @@ final class ArgumentPosition extends ParameterPosition {
  * as the synthetic `ReceiverNode` is the argument for the `self` parameter.
  */
 predicate isArgumentForCall(ExprCfgNode arg, CallCfgNode call, ParameterPosition pos) {
-  call.getArgument(pos.getPosition()) = arg
+  call.getPositionalArgument(pos.getPosition()) = arg
   or
   call.getReceiver() = arg and pos.isSelf() and not call.getCall().receiverImplicitlyBorrowed()
 }
