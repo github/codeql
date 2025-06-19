@@ -17,21 +17,21 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
  *     # define RSA_PKCS1_WITH_TLS_PADDING 7
  *     # define RSA_PKCS1_NO_IMPLICIT_REJECT_PADDING 8
  */
-class OpenSSLPaddingLiteral extends Literal {
+class OpenSslPaddingLiteral extends Literal {
   // TODO: we can be more specific about where the literal is in a larger expression
   // to avoid literals that are clealy not representing an algorithm, e.g., array indices.
-  OpenSSLPaddingLiteral() { this.getValue().toInt() in [0, 1, 3, 4, 5, 6, 7, 8] }
+  OpenSslPaddingLiteral() { this.getValue().toInt() in [0, 1, 3, 4, 5, 6, 7, 8] }
 }
 
 /**
- * Given a `KnownOpenSSLPaddingAlgorithmConstant`, converts this to a padding family type.
+ * Given a `KnownOpenSslPaddingAlgorithmExpr`, converts this to a padding family type.
  * Does not bind if there is no mapping (no mapping to 'unknown' or 'other').
  */
-predicate knownOpenSSLConstantToPaddingFamilyType(
-  KnownOpenSSLPaddingAlgorithmConstant e, Crypto::TPaddingType type
+predicate knownOpenSslConstantToPaddingFamilyType(
+  KnownOpenSslPaddingAlgorithmExpr e, Crypto::TPaddingType type
 ) {
   exists(string name |
-    name = e.getNormalizedName() and
+    name = e.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
     (
       name.matches("OAEP") and type = Crypto::OAEP()
       or
@@ -44,44 +44,44 @@ predicate knownOpenSSLConstantToPaddingFamilyType(
   )
 }
 
-//abstract class OpenSSLPaddingAlgorithmInstance extends OpenSSLAlgorithmInstance, Crypto::PaddingAlgorithmInstance{}
+//abstract class OpenSslPaddingAlgorithmInstance extends OpenSslAlgorithmInstance, Crypto::PaddingAlgorithmInstance{}
 // TODO: need to alter this to include known padding constants which don't have the
 // same mechanics as those with known nids
-class KnownOpenSSLPaddingConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
+class KnownOpenSslPaddingConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
   Crypto::PaddingAlgorithmInstance instanceof Expr
 {
-  OpenSSLAlgorithmValueConsumer getterCall;
+  OpenSslAlgorithmValueConsumer getterCall;
   boolean isPaddingSpecificConsumer;
 
-  KnownOpenSSLPaddingConstantAlgorithmInstance() {
+  KnownOpenSslPaddingConstantAlgorithmInstance() {
     // three possibilities:
     // 1) The source is a 'typical' literal and flows to a getter, then we know we have an instance
-    // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
+    // 2) The source is a KnownOpenSslAlgorithm is call, and we know we have an instance immediately from that
     // 3) the source is a padding-specific literal flowing to a padding-specific consumer
     // Possibility 1:
-    this instanceof Literal and
-    this instanceof KnownOpenSSLPaddingAlgorithmConstant and
+    this instanceof OpenSslAlgorithmLiteral and
+    this instanceof KnownOpenSslPaddingAlgorithmExpr and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
-      sink = getterCall.(OpenSSLAlgorithmValueConsumer).getInputNode() and
+      sink = getterCall.getInputNode() and
       // Source is `this`
       src.asExpr() = this and
       // This traces to a getter
-      KnownOpenSSLAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink) and
+      KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink) and
       isPaddingSpecificConsumer = false
     )
     or
     // Possibility 2:
-    this instanceof DirectAlgorithmValueConsumer and
+    this instanceof OpenSslAlgorithmCall and
     getterCall = this and
-    this instanceof KnownOpenSSLPaddingAlgorithmConstant and
+    this instanceof KnownOpenSslPaddingAlgorithmExpr and
     isPaddingSpecificConsumer = false
     or
     // Possibility 3: padding-specific literal
-    this instanceof OpenSSLPaddingLiteral and
+    this instanceof OpenSslPaddingLiteral and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
-      sink = getterCall.(OpenSSLAlgorithmValueConsumer).getInputNode() and
+      sink = getterCall.getInputNode() and
       // Source is `this`
       src.asExpr() = this and
       // This traces to a padding-specific consumer
@@ -96,7 +96,7 @@ class KnownOpenSSLPaddingConstantAlgorithmInstance extends OpenSSLAlgorithmInsta
     result = this.(Call).getTarget().getName()
   }
 
-  override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
+  override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
 
   Crypto::TPaddingType getKnownPaddingType() {
     this.(Literal).getValue().toInt() in [1, 7, 8] and result = Crypto::PKCS1_v1_5()
@@ -119,7 +119,7 @@ class KnownOpenSSLPaddingConstantAlgorithmInstance extends OpenSSLAlgorithmInsta
     )
     or
     isPaddingSpecificConsumer = false and
-    knownOpenSSLConstantToPaddingFamilyType(this, result)
+    knownOpenSslConstantToPaddingFamilyType(this, result)
   }
 }
 
@@ -127,7 +127,7 @@ class KnownOpenSSLPaddingConstantAlgorithmInstance extends OpenSSLAlgorithmInsta
 // // not the same as 'typical' constants found in the set of known algorithm constants
 // // they do not have an NID
 // // TODO: what about setting the padding directly?
-// class KnownRSAPaddingConstant extends OpenSSLPaddingAlgorithmInstance, Crypto::PaddingAlgorithmInstance instanceof Literal
+// class KnownRSAPaddingConstant extends OpenSslPaddingAlgorithmInstance, Crypto::PaddingAlgorithmInstance instanceof Literal
 // {
 //   KnownRSAPaddingConstant() {
 //     // from rsa.h in openssl:
@@ -162,7 +162,7 @@ class KnownOpenSSLPaddingConstantAlgorithmInstance extends OpenSSLAlgorithmInsta
 //   }
 // }
 class OAEPPaddingAlgorithmInstance extends Crypto::OAEPPaddingAlgorithmInstance,
-  KnownOpenSSLPaddingConstantAlgorithmInstance
+  KnownOpenSslPaddingConstantAlgorithmInstance
 {
   OAEPPaddingAlgorithmInstance() {
     this.(Crypto::PaddingAlgorithmInstance).getPaddingType() = Crypto::OAEP()

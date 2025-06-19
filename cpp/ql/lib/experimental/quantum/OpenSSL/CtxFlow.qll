@@ -28,7 +28,7 @@ import semmle.code.cpp.dataflow.new.DataFlow
  * - EVP_MD_CTX
  * - EVP_PKEY_CTX
  */
-private class CtxType extends Type {
+class CtxType extends Type {
   CtxType() {
     // It is possible for users to use the underlying type of the CTX variables
     // these have a name matching 'evp_%ctx_%st
@@ -47,7 +47,7 @@ private class CtxType extends Type {
 /**
  * A pointer to a CtxType
  */
-private class CtxPointerExpr extends Expr {
+class CtxPointerExpr extends Expr {
   CtxPointerExpr() {
     this.getType() instanceof CtxType and
     this.getType() instanceof PointerType
@@ -57,10 +57,17 @@ private class CtxPointerExpr extends Expr {
 /**
  * A call argument of type CtxPointerExpr.
  */
-private class CtxPointerArgument extends CtxPointerExpr {
+class CtxPointerArgument extends CtxPointerExpr {
   CtxPointerArgument() { exists(Call c | c.getAnArgument() = this) }
 
   Call getCall() { result.getAnArgument() = this }
+}
+
+/**
+ * A call returning a CtxPointerExpr.
+ */
+private class CtxPointerReturn extends CtxPointerExpr instanceof Call {
+  Call getCall() { result = this }
 }
 
 /**
@@ -74,66 +81,141 @@ private class CtxClearCall extends Call {
   }
 }
 
+abstract private class CtxPassThroughCall extends Call {
+  abstract DataFlow::Node getNode1();
+
+  abstract DataFlow::Node getNode2();
+}
+
 /**
  * A call whose target contains 'copy' and has an argument of type
  * CtxPointerArgument.
  */
-private class CtxCopyOutArgCall extends Call {
+private class CtxCopyOutArgCall extends CtxPassThroughCall {
+  DataFlow::Node n1;
+  DataFlow::Node n2;
+
   CtxCopyOutArgCall() {
     this.getTarget().getName().toLowerCase().matches("%copy%") and
-    this.getAnArgument() instanceof CtxPointerArgument
+    n1.asExpr() = this.getAnArgument() and
+    n1.getType() instanceof CtxType and
+    n2.asDefiningArgument() = this.getAnArgument() and
+    n2.getType() instanceof CtxType and
+    n1.asDefiningArgument() != n2.asExpr()
   }
+
+  override DataFlow::Node getNode1() { result = n1 }
+
+  override DataFlow::Node getNode2() { result = n2 }
 }
 
 /**
  * A call whose target contains 'dup' and has an argument of type
  * CtxPointerArgument.
  */
-private class CtxCopyReturnCall extends Call, CtxPointerExpr {
+private class CtxCopyReturnCall extends CtxPassThroughCall, CtxPointerExpr {
+  DataFlow::Node n1;
+
   CtxCopyReturnCall() {
     this.getTarget().getName().toLowerCase().matches("%dup%") and
-    this.getAnArgument() instanceof CtxPointerArgument
+    n1.asExpr() = this.getAnArgument() and
+    n1.getType() instanceof CtxType
+  }
+
+  override DataFlow::Node getNode1() { result = n1 }
+
+  override DataFlow::Node getNode2() { result.asExpr() = this }
+}
+
+/**
+ * A call to `EVP_PKEY_paramgen` acts as a kind of pass through.
+ * It's output pkey is eventually used in a new operation generating
+ * a fresh context pointer (e.g., `EVP_PKEY_CTX_new`).
+ * It is easier to model this as a pass through
+ * than to model the flow from the paramgen to the new key generation.
+ */
+private class CtxParamGenCall extends CtxPassThroughCall {
+  DataFlow::Node n1;
+  DataFlow::Node n2;
+
+  CtxParamGenCall() {
+    this.getTarget().getName() = "EVP_PKEY_paramgen" and
+    n1.asExpr() = this.getArgument(0) and
+    (
+      n2.asExpr() = this.getArgument(1)
+      or
+      n2.asDefiningArgument() = this.getArgument(1)
+    )
+  }
+
+  override DataFlow::Node getNode1() { result = n1 }
+
+  override DataFlow::Node getNode2() { result = n2 }
+}
+
+/**
+ * If the current node gets is an argument to a function
+ * that returns a pointer type, immediately flow through.
+ * NOTE: this passthrough is required if we allow
+ * intermediate steps to go into variables that are not a CTX type.
+ * See for example `CtxParamGenCall`.
+ */
+private class CallArgToCtxRet extends CtxPassThroughCall, CtxPointerExpr {
+  DataFlow::Node n1;
+  DataFlow::Node n2;
+
+  CallArgToCtxRet() {
+    this.getAnArgument() = n1.asExpr() and
+    n2.asExpr() = this
+  }
+
+  override DataFlow::Node getNode1() { result = n1 }
+
+  override DataFlow::Node getNode2() { result = n2 }
+}
+
+/**
+ * A source Ctx of interest is any argument or return of type CtxPointerExpr.
+ */
+class CtxPointerSource extends CtxPointerExpr {
+  CtxPointerSource() {
+    this instanceof CtxPointerReturn or
+    this instanceof CtxPointerArgument
+  }
+
+  DataFlow::Node asNode() {
+    result.asExpr() = this
+    or
+    result.asDefiningArgument() = this
   }
 }
 
 /**
- * Flow from any CtxPointerArgument to any other CtxPointerArgument
+ * Flow from any CtxPointerSource to other CtxPointerSource.
  */
-module OpenSSLCtxArgumentFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CtxPointerArgument }
+module OpenSslCtxSourceToSourceFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { exists(CtxPointerSource s | s.asNode() = source) }
 
-  predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CtxPointerArgument }
+  predicate isSink(DataFlow::Node sink) { exists(CtxPointerSource s | s.asNode() = sink) }
 
   predicate isBarrier(DataFlow::Node node) {
     exists(CtxClearCall c | c.getAnArgument() = node.asExpr())
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(CtxCopyOutArgCall c |
-      c.getAnArgument() = node1.asExpr() and
-      c.getAnArgument() = node2.asExpr() and
-      node1.asExpr() != node2.asExpr() and
-      node2.asExpr().getType() instanceof CtxType
-    )
-    or
-    exists(CtxCopyReturnCall c |
-      c.getAnArgument() = node1.asExpr() and
-      c = node2.asExpr() and
-      node1.asExpr() != node2.asExpr() and
-      node2.asExpr().getType() instanceof CtxType
-    )
+    exists(CtxPassThroughCall c | c.getNode1() = node1 and c.getNode2() = node2)
   }
 }
 
-module OpenSSLCtxArgumentFlow = DataFlow::Global<OpenSSLCtxArgumentFlowConfig>;
+module OpenSslCtxSourceToArgumentFlow = DataFlow::Global<OpenSslCtxSourceToSourceFlowConfig>;
 
 /**
  * Holds if there is a context flow from the source to the sink.
  */
-predicate ctxArgFlowsToCtxArg(CtxPointerArgument source, CtxPointerArgument sink) {
+predicate ctxSrcToSrcFlow(CtxPointerSource source, CtxPointerSource sink) {
   exists(DataFlow::Node a, DataFlow::Node b |
-    OpenSSLCtxArgumentFlow::flow(a, b) and
-    a.asExpr() = source and
-    b.asExpr() = sink
+    OpenSslCtxSourceToArgumentFlow::flow(a, b) and
+    a = source.asNode() and
+    b = sink.asNode()
   )
 }

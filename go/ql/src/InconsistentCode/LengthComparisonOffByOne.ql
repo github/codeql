@@ -5,10 +5,9 @@
  * @kind problem
  * @problem.severity error
  * @id go/index-out-of-bounds
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       logic
- *       quality
  *       external/cwe/cwe-193
  * @precision high
  */

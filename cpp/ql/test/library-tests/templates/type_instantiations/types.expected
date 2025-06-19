@@ -21,6 +21,7 @@
 | file://:0:0:0:0 | _Imaginary double |
 | file://:0:0:0:0 | _Imaginary float |
 | file://:0:0:0:0 | _Imaginary long double |
+| file://:0:0:0:0 | __SVCount_t |
 | file://:0:0:0:0 | __bf16 |
 | file://:0:0:0:0 | __float128 |
 | file://:0:0:0:0 | __fp16 |

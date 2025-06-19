@@ -2,9 +2,9 @@
  * @name Returning tuples with varying lengths
  * @description A function that potentially returns tuples of different lengths may indicate a problem.
  * @kind problem
- * @tags reliability
- *       maintainability
- *       quality
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity recommendation
  * @sub-severity high
  * @precision high

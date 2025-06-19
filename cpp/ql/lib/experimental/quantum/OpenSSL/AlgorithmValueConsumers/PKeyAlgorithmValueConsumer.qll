@@ -4,13 +4,13 @@ private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmCon
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstances
 
-abstract class PKeyValueConsumer extends OpenSSLAlgorithmValueConsumer { }
+abstract class PKeyValueConsumer extends OpenSslAlgorithmValueConsumer { }
 
-class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
+class EvpPKeyAlgorithmConsumer extends PKeyValueConsumer {
   DataFlow::Node valueArgNode;
   DataFlow::Node resultNode;
 
-  EVPPKeyAlgorithmConsumer() {
+  EvpPKeyAlgorithmConsumer() {
     resultNode.asExpr() = this.(Call) and // in all cases the result is the return
     (
       // NOTE: some of these consumers are themselves key gen operations,
@@ -23,7 +23,8 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
       or
       this.(Call).getTarget().getName() in [
           "EVP_PKEY_CTX_new_from_name", "EVP_PKEY_new_raw_private_key_ex",
-          "EVP_PKEY_new_raw_public_key_ex", "EVP_PKEY_CTX_ctrl", "EVP_PKEY_CTX_set_group_name"
+          "EVP_PKEY_new_raw_public_key_ex", "EVP_PKEY_CTX_ctrl", "EVP_PKEY_CTX_ctrl_uint64",
+          "EVP_PKEY_CTX_ctrl_str", "EVP_PKEY_CTX_set_group_name"
         ] and
       valueArgNode.asExpr() = this.(Call).getArgument(1)
       or
@@ -46,7 +47,7 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
   }
 
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-    exists(OpenSSLAlgorithmInstance i | i.getAVC() = this and result = i)
+    exists(OpenSslAlgorithmInstance i | i.getAvc() = this and result = i)
   }
 
   override DataFlow::Node getResultNode() { result = resultNode }
