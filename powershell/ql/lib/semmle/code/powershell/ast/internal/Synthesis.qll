@@ -897,6 +897,7 @@ private module PipelineAccess {
         exists(PipelineByPropertyNameParameter pipelineVar, Raw::PipelineByPropertyNameParameter p |
           i = processBlockPipelineByPropertyNameVarReadAccess(p.getLowerCaseName()) and
           getResultAst(p) = pipelineVar and
+          pipelineVar = TVariableSynth(pb.getScriptBlock(), _) and
           child = SynthChild(VarAccessSynthKind(pipelineVar))
         )
       )
