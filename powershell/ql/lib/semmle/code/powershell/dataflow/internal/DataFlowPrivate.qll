@@ -523,9 +523,21 @@ class NamedSet extends NamedSet0 {
     not exists(result.getNamedArgument(_))
   }
 
+  pragma[nomagic]
+  private Function getAFunctionRec(int i) {
+    i = 0 and
+    result.getAParameter().getLowerCaseName() = this.getRankedName(0)
+    or
+    exists(string name |
+      pragma[only_bind_into](name) = this.getRankedName(i) and
+      result.getAParameter().getLowerCaseName() = pragma[only_bind_into](name) and
+      result = this.getAFunctionRec(i - 1)
+    )
+  }
+
   /** Gets a function that has a parameter for each name in this set. */
   Function getAFunction() {
-    forex(string name | name = this.getAName() | result.getAParameter().matchesName(name))
+    result = this.getAFunctionRec(this.getSize() - 1)
     or
     this.isEmpty() and
     exists(result)
