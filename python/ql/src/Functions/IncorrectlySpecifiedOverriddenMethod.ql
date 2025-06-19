@@ -4,8 +4,8 @@
  *              the arguments with which it is called, and if it were called, would be likely to cause an error.
  * @kind problem
  * @tags quality
- *       maintainability
- *       readability
+ *       reliability
+ *       correctness
  * @problem.severity recommendation
  * @sub-severity high
  * @precision high

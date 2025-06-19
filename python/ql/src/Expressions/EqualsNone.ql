@@ -5,6 +5,7 @@
  * @tags quality
  *       reliability
  *       correctness
+ *       performance
  * @problem.severity recommendation
  * @sub-severity high
  * @precision very-high

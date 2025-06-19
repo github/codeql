@@ -3,8 +3,8 @@
  * @description Method has a different signature from the overridden method and, if it were called, would be likely to cause an error.
  * @kind problem
  * @tags quality
- *       maintainability
- *       readability
+ *       reliability
+ *       correctness
  * @problem.severity error
  * @sub-severity low
  * @precision high
