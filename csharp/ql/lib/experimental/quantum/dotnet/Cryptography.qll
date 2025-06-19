@@ -84,13 +84,14 @@ private class RSAClass extends Type {
   RSAClass() { this.hasFullyQualifiedName("System.Security.Cryptography", "RSA") }
 }
 
-// TODO
-// class ByteArrayTypeUnionReadOnlyByteSpan extends ArrayType {
-//   ByteArrayTypeUnionReadOnlyByteSpan() {
-//     this.hasFullyQualifiedName("System", "Byte[]") or
-//     this.hasFullyQualifiedName("System", "ReadOnlySpan`1") or
-//   }
-// }
+class ByteArrayType extends Type {
+  ByteArrayType() { this.getName() = "Byte[]" }
+}
+
+class ReadOnlyByteSpanType extends Type {
+  ReadOnlyByteSpanType() { this.getName() = "ReadOnlySpan<Byte>" }
+}
+
 abstract class DotNetSigner extends MethodCall {
   DotNetSigner() { this.getTarget().getName().matches(["Verify%", "Sign%"]) }
 
@@ -102,8 +103,13 @@ abstract class DotNetSigner extends MethodCall {
 
   Expr getSignatureArg() {
     this.isVerifier() and
-    // TODO: Should replace getAChild* with the proper two types byte[] and ReadOnlySpan<byte>
-    (result = this.getArgument([1, 3]) and result.getType().getAChild*() instanceof ByteType)
+    (
+      result = this.getArgument([1, 3]) and
+      (
+        result.getType() instanceof ByteArrayType or
+        result.getType() instanceof ReadOnlyByteSpanType
+      )
+    )
   }
 
   Expr getSignatureOutput() {
