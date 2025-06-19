@@ -1,44 +1,49 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModelDeprecated
+      extensible: sourceModel
     data:
       # Alloc
-      - ["lang:alloc", "crate::alloc::dealloc", "Argument[0]", "pointer-invalidate", "manual"]
+      - ["alloc::alloc::dealloc", "Argument[0]", "pointer-invalidate", "manual"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModelDeprecated
+      extensible: sinkModel
     data:
       # Alloc
-      - ["lang:alloc", "crate::alloc::alloc", "Argument[0]", "alloc-layout", "manual"]
-      - ["lang:alloc", "crate::alloc::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
-      - ["lang:alloc", "crate::alloc::realloc", "Argument[2]", "alloc-size", "manual"]
-      - ["lang:std", "<crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc", "Argument[0]", "alloc-layout", "manual"]
-      - ["lang:std", "<crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
-      - ["lang:std", "<crate::alloc::System as crate::alloc::Allocator>::allocate", "Argument[0]", "alloc-layout", "manual"]
-      - ["lang:std", "<crate::alloc::System as crate::alloc::Allocator>::allocate_zeroed", "Argument[0]", "alloc-layout", "manual"]
-      - ["lang:std", "<crate::alloc::System as crate::alloc::Allocator>::grow", "Argument[2]", "alloc-layout", "manual"]
-      - ["lang:std", "<crate::alloc::System as crate::alloc::Allocator>::grow_zeroed", "Argument[2]", "alloc-layout", "manual"]
-      - ["lang:alloc", "<crate::alloc::Global as crate::alloc::global::GlobalAlloc>::alloc", "Argument[0]", "alloc-layout", "manual"]
-      - ["lang:alloc", "<crate::alloc::Global as crate::alloc::global::GlobalAlloc>::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
-      - ["lang:alloc", "<crate::alloc::Global as crate::alloc::Allocator>::allocate", "Argument[0]", "alloc-layout", "manual"]
-      - ["lang:alloc", "<crate::alloc::Global as crate::alloc::Allocator>::allocate_zeroed", "Argument[0]", "alloc-layout", "manual"]
-      - ["lang:alloc", "<crate::alloc::Global as crate::alloc::Allocator>::grow", "Argument[2]", "alloc-layout", "manual"]
-      - ["lang:alloc", "<crate::alloc::Global as crate::alloc::Allocator>::grow_zeroed", "Argument[2]", "alloc-layout", "manual"]
+      - ["alloc::alloc::alloc", "Argument[0]", "alloc-layout", "manual"]
+      - ["alloc::alloc::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["alloc::alloc::realloc", "Argument[2]", "alloc-size", "manual"]
+      - ["<_ as core::alloc::global::GlobalAlloc>::alloc", "Argument[0]", "alloc-layout", "manual"]
+      - ["<std::alloc::System as core::alloc::global::GlobalAlloc>::alloc", "Argument[0]", "alloc-layout", "manual"]
+      - ["<_ as core::alloc::global::GlobalAlloc>::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["<std::alloc::System as core::alloc::global::GlobalAlloc>::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["<std::alloc::System as core::alloc::Allocator>::allocate", "Argument[0]", "alloc-layout", "manual"]
+      - ["<std::alloc::System as core::alloc::Allocator>::allocate_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["<std::alloc::System as core::alloc::Allocator>::grow", "Argument[2]", "alloc-layout", "manual"]
+      - ["<std::alloc::System as core::alloc::Allocator>::grow_zeroed", "Argument[2]", "alloc-layout", "manual"]
+      - ["<alloc::alloc::Global as core::alloc::global::GlobalAlloc>::alloc", "Argument[0]", "alloc-layout", "manual"]
+      - ["<alloc::alloc::Global as core::alloc::global::GlobalAlloc>::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["<alloc::alloc::Global as core::alloc::Allocator>::allocate", "Argument[0]", "alloc-layout", "manual"]
+      - ["<alloc::alloc::Global as core::alloc::Allocator>::allocate_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["<alloc::alloc::Global as core::alloc::Allocator>::grow", "Argument[2]", "alloc-layout", "manual"]
+      - ["<alloc::alloc::Global as core::alloc::Allocator>::grow_zeroed", "Argument[2]", "alloc-layout", "manual"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModelDeprecated
+      extensible: summaryModel
     data:
       # Box
-      - ["lang:alloc", "<crate::boxed::Box>::pin", "Argument[0]", "ReturnValue.Reference", "value", "manual"]
-      - ["lang:alloc", "<crate::boxed::Box>::new", "Argument[0]", "ReturnValue.Reference", "value", "manual"]
-      - ["lang:alloc", "<crate::boxed::Box>::into_pin", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["<alloc::boxed::Box>::pin", "Argument[0]", "ReturnValue.Reference", "value", "manual"]
+      - ["<alloc::boxed::Box>::new", "Argument[0]", "ReturnValue.Reference", "value", "manual"]
+      - ["<alloc::boxed::Box>::into_pin", "Argument[0]", "ReturnValue", "value", "manual"]
       # Fmt
-      - ["lang:alloc", "crate::fmt::format", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["alloc::fmt::format", "Argument[0]", "ReturnValue", "taint", "manual"]
       # String
-      - ["lang:alloc", "<crate::string::String>::as_str", "Argument[self]", "ReturnValue", "value", "manual"]
-      - ["lang:alloc", "<crate::string::String>::as_bytes", "Argument[self]", "ReturnValue", "value", "manual"]
-      - ["lang:alloc", "<_ as crate::string::ToString>::to_string", "Argument[self]", "ReturnValue", "taint", "manual"]
-      - ["lang:alloc", "<crate::string::String>::parse", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-      - ["lang:alloc", "<crate::string::String>::trim", "Argument[self]", "ReturnValue.Reference", "taint", "manual"]
-      - ["lang:alloc", "<crate::string::String as crate::convert::From>::from", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["<core::str>::as_str", "Argument[self]", "ReturnValue", "value", "manual"]
+      - ["<core::str>::as_bytes", "Argument[self]", "ReturnValue", "value", "manual"]
+      - ["<alloc::string::String>::as_str", "Argument[self]", "ReturnValue", "value", "manual"]
+      - ["<alloc::string::String>::as_bytes", "Argument[self]", "ReturnValue", "value", "manual"]
+      - ["<alloc::str as alloc::string::ToString>::to_string", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<alloc::string::String as alloc::string::ToString>::to_string", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<core::str>::parse", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["<core::str>::trim", "Argument[self]", "ReturnValue.Reference", "taint", "manual"]
+      - ["<alloc::string::String as core::convert::From>::from", "Argument[0]", "ReturnValue", "value", "manual"]
