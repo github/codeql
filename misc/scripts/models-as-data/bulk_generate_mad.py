@@ -236,9 +236,9 @@ def generate_models(config, args, project: Project, database_dir: str) -> None:
     language = config["language"]
 
     generator = mad.Generator(language)
-    generator.generateSinks = should_generate_sinks(project)
-    generator.generateSources = should_generate_sources(project)
-    generator.generateSummaries = should_generate_summaries(project)
+    generator.with_sinks = should_generate_sinks(project)
+    generator.with_sources = should_generate_sources(project)
+    generator.with_summaries = should_generate_summaries(project)
     generator.threads = args.codeql_threads
     generator.ram = args.codeql_ram
     generator.setenvironment(database=database_dir, folder=name)

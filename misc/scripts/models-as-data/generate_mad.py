@@ -43,12 +43,12 @@ Requirements: `codeql` should appear on your path."""
 
 
 class Generator:
-    generateSinks = False
-    generateSources = False
-    generateSummaries = False
-    generateNeutrals = False
-    generateTypeBasedSummaries = False
-    dryRun = False
+    with_sinks = False
+    with_sources = False
+    with_summaries = False
+    with_neutrals = False
+    with_typebased_summaries = False
+    dry_run = False
     dirname = "modelgenerator"
     ram = None
     threads = 0
@@ -65,14 +65,14 @@ class Generator:
         )
         self.database = database or self.database
         self.folder = folder or self.folder
-        self.generatedFrameworks = os.path.join(
+        self.generated_frameworks = os.path.join(
             self.codeQlRoot, f"{self.language}/ql/lib/ext/generated/{self.folder}"
         )
         self.workDir = tempfile.mkdtemp()
         if self.ram is None:
             threads = self.threads if self.threads > 0 else os.cpu_count()
             self.ram = 2048 * threads
-        os.makedirs(self.generatedFrameworks, exist_ok=True)
+        os.makedirs(self.generated_frameworks, exist_ok=True)
 
     @staticmethod
     def make():
@@ -97,37 +97,31 @@ class Generator:
             "--with-sinks",
             action="store_true",
             help="Generate sink models",
-            dest="generateSinks",
         )
         p.add_argument(
             "--with-sources",
             action="store_true",
             help="Generate source models",
-            dest="generateSources",
         )
         p.add_argument(
             "--with-summaries",
             action="store_true",
             help="Generate summary models",
-            dest="generateSummaries",
         )
         p.add_argument(
             "--with-neutrals",
             action="store_true",
             help="Generate neutral models",
-            dest="generateNeutrals",
         )
         p.add_argument(
             "--with-typebased-summaries",
             action="store_true",
             help="Generate type-based summary models (experimental)",
-            dest="generateTypeBasedSummaries",
         )
         p.add_argument(
             "--dry-run",
             action="store_true",
             help="Do not write the generated files, just print them to stdout",
-            dest="dryRun",
         )
         p.add_argument(
             "--threads",
@@ -143,16 +137,16 @@ class Generator:
         generator = p.parse_args(namespace=Generator())
 
         if (
-            not generator.generateSinks
-            and not generator.generateSources
-            and not generator.generateSummaries
-            and not generator.generateNeutrals
-            and not generator.generateTypeBasedSummaries
+            not generator.with_sinks
+            and not generator.with_sources
+            and not generator.with_summaries
+            and not generator.with_neutrals
+            and not generator.with_typebased_summaries
         ):
-            generator.generateSinks = True
-            generator.generateSources = True
-            generator.generateSummaries = True
-            generator.generateNeutrals = True
+            generator.with_sinks = True
+            generator.with_sources = True
+            generator.with_summaries = True
+            generator.with_neutrals = True
 
         generator.setenvironment()
         return generator
@@ -197,25 +191,25 @@ class Generator:
 
     def makeContent(self):
         summaryAddsTo = {}
-        if self.generateSummaries:
+        if self.with_summaries:
             summaryAddsTo = self.getAddsTo(
                 "CaptureSummaryModels.ql", helpers.summaryModelPredicate
             )
 
         sinkAddsTo = {}
-        if self.generateSinks:
+        if self.with_sinks:
             sinkAddsTo = self.getAddsTo(
                 "CaptureSinkModels.ql", helpers.sinkModelPredicate
             )
 
         sourceAddsTo = {}
-        if self.generateSources:
+        if self.with_sources:
             sourceAddsTo = self.getAddsTo(
                 "CaptureSourceModels.ql", helpers.sourceModelPredicate
             )
 
         neutralAddsTo = {}
-        if self.generateNeutrals:
+        if self.with_neutrals:
             neutralAddsTo = self.getAddsTo(
                 "CaptureNeutralModels.ql", helpers.neutralModelPredicate
             )
@@ -223,7 +217,7 @@ class Generator:
         return helpers.merge(summaryAddsTo, sinkAddsTo, sourceAddsTo, neutralAddsTo)
 
     def makeTypeBasedContent(self):
-        if self.generateTypeBasedSummaries:
+        if self.with_typebased_summaries:
             typeBasedSummaryAddsTo = self.getAddsTo(
                 "CaptureTypeBasedSummaryModels.ql", helpers.summaryModelPredicate
             )
@@ -242,7 +236,7 @@ extensions:
             sanitizedEntry = re.sub(
                 r"-+", "-", entry.replace("/", "-").replace(":", "-")
             )
-            target = os.path.join(self.generatedFrameworks, sanitizedEntry + extension)
+            target = os.path.join(self.generated_frameworks, sanitizedEntry + extension)
             with open(target, "w") as f:
                 f.write(extensionTemplate.format(extensions[entry]))
             print("Models as data extensions written to " + target)
@@ -251,19 +245,19 @@ extensions:
         content = self.makeContent()
         typeBasedContent = self.makeTypeBasedContent()
 
-        if self.dryRun:
+        if self.dry_run:
             print("Models as data extensions generated, but not written to file.")
             sys.exit(0)
 
         if (
-            self.generateSinks
-            or self.generateSources
-            or self.generateSummaries
-            or self.generateNeutrals
+            self.with_sinks
+            or self.with_sources
+            or self.with_summaries
+            or self.with_neutrals
         ):
             self.save(content, ".model.yml")
 
-        if self.generateTypeBasedSummaries:
+        if self.with_typebased_summaries:
             self.save(typeBasedContent, ".typebased.model.yml")
 
 
