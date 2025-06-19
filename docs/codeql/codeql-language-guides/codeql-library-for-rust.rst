@@ -39,9 +39,8 @@ The data flow library is imported using
    import codeql.rust.dataflow.DataFlow
 
 Data flow tracks the flow of data through the program, including through function calls (interprocedural data flow) and between steps in a job or workflow.
-Data flow is particularly useful for security queries, where untrusted data flows to vulnerable parts of the program
-to exploit it. Related to data flow, is the taint-tracking library, which finds how data can *influence* other values
-in a program, even when it is not copied exactly.
+Data flow is particularly useful for security queries, where untrusted data flows to vulnerable parts of the program. Related to data flow is the taint-tracking library,
+which finds how data can *influence* other values in a program, even when it is not copied exactly.
 
 To summarize, the main Rust library modules are:
 
