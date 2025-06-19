@@ -2,6 +2,6 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo::static-files", "crate::manual::second", "Argument[0]", "path-injection", "df-generated"]

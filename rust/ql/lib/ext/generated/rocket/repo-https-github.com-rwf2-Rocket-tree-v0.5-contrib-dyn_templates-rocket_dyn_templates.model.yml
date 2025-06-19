@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::context::manager::ContextManager>::context", "Argument[self].Field[0]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::context::manager::ContextManager>::context", "Argument[self].Field[rocket_dyn_templates::context::manager::ContextManager(0)]", "ReturnValue.Reference", "value", "dfc-generated"]
@@ -16,7 +16,7 @@ extensions:
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::template::Template>::try_custom", "Argument[0]", "ReturnValue.Field[rocket_dyn_templates::fairing::TemplateFairing::callback].Reference", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::environment::Environment as crate::engine::Engine>::render", "Argument[0]", "log-injection", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::metadata::Metadata>::render", "Argument[self]", "log-injection", "df-generated"]

@@ -15,6 +15,8 @@ private module SecretExfiltrationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof SecretExfiltrationSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks flow of unsafe user input that is used in a context where it may lead to a secret exfiltration. */

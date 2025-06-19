@@ -1,0 +1,3 @@
+multiplePathResolutions
+| macro_expansion.rs:1:5:1:14 | proc_macro | file://:0:0:0:0 | Crate(proc_macro@0.0.0) |
+| macro_expansion.rs:1:5:1:14 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |

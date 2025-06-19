@@ -37,6 +37,10 @@ module AddCertToRootStoreConfig implements DataFlow::ConfigSig {
       sink.asExpr() = mc.getQualifier()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 module AddCertToRootStore = DataFlow::Global<AddCertToRootStoreConfig>;

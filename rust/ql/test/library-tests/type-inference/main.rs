@@ -14,7 +14,7 @@ mod field_access {
     }
 
     #[derive(Debug)]
-    struct GenericThing<A> {
+    struct GenericThing<A = bool> {
         a: A,
     }
 
@@ -25,6 +25,11 @@ mod field_access {
     fn simple_field_access() {
         let x = MyThing { a: S };
         println!("{:?}", x.a); // $ fieldof=MyThing
+    }
+
+    fn default_field_access(x: GenericThing) {
+        let a = x.a; // $ fieldof=GenericThing type=a:bool
+        println!("{:?}", a);
     }
 
     fn generic_field_access() {
@@ -472,7 +477,7 @@ mod type_parameter_bounds {
         println!("{:?}", s); // $ type=s:S1
     }
 
-    trait Pair<P1, P2> {
+    trait Pair<P1 = bool, P2 = i64> {
         fn fst(self) -> P1;
 
         fn snd(self) -> P2;
@@ -480,8 +485,8 @@ mod type_parameter_bounds {
 
     fn call_trait_per_bound_with_type_1<T: Pair<S1, S2>>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
-        let s1 = x.fst(); // $ method=fst
-        let s2 = y.snd(); // $ method=snd
+        let s1 = x.fst(); // $ method=fst type=s1:S1
+        let s2 = y.snd(); // $ method=snd type=s2:S2
         println!("{:?}, {:?}", s1, s2);
     }
 
@@ -489,6 +494,20 @@ mod type_parameter_bounds {
         // The type in the type parameter bound determines the return type.
         let s1 = x.fst(); // $ method=fst
         let s2 = y.snd(); // $ method=snd
+        println!("{:?}, {:?}", s1, s2);
+    }
+
+    fn call_trait_per_bound_with_type_3<T: Pair>(x: T, y: T) {
+        // The type in the type parameter bound determines the return type.
+        let s1 = x.fst(); // $ method=fst type=s1:bool
+        let s2 = y.snd(); // $ method=snd type=s2:i64
+        println!("{:?}, {:?}", s1, s2);
+    }
+
+    fn call_trait_per_bound_with_type_4<T: Pair<u8>>(x: T, y: T) {
+        // The type in the type parameter bound determines the return type.
+        let s1 = x.fst(); // $ method=fst type=s1:u8
+        let s2 = y.snd(); // $ method=snd type=s2:i64
         println!("{:?}, {:?}", s1, s2);
     }
 }
@@ -1099,6 +1118,7 @@ mod method_call_type_conversion {
         println!("{:?}", x5.0); // $ fieldof=S
 
         let x6 = &S(S2); // $ SPURIOUS: type=x6:&T.&T.S
+
         // explicit dereference
         println!("{:?}", (*x6).m1()); // $ method=m1 method=deref
 
@@ -1668,9 +1688,7 @@ mod async_ {
     }
 
     fn f2() -> impl Future<Output = S1> {
-        async {
-            S1
-        }
+        async { S1 }
     }
 
     struct S2;
@@ -1678,7 +1696,10 @@ mod async_ {
     impl Future for S2 {
         type Output = S1;
 
-        fn poll(self: std::pin::Pin<&mut Self>, _cx: &mut std::task::Context<'_>) -> std::task::Poll<Self::Output> {
+        fn poll(
+            self: std::pin::Pin<&mut Self>,
+            _cx: &mut std::task::Context<'_>,
+        ) -> std::task::Poll<Self::Output> {
             std::task::Poll::Ready(S1)
         }
     }
@@ -1692,13 +1713,10 @@ mod async_ {
         f2().await.f(); // $ method=S1f
         f3().await.f(); // $ method=S1f
         S2.await.f(); // $ method=S1f
-        let b = async {
-            S1
-        };
+        let b = async { S1 };
         b.await.f(); // $ method=S1f
     }
 }
-
 
 mod impl_trait {
     struct S1;
@@ -1807,6 +1825,50 @@ mod indexers {
         let x = xs[0].foo(); // $ method=foo type=x:S
 
         analyze_slice(&xs);
+    }
+}
+
+mod macros {
+    pub fn f() {
+        let x = format!("Hello, {}", "World!"); // $ MISSING: type=x:String -- needs https://github.com/github/codeql/pull/19658
+    }
+}
+
+mod method_determined_by_argument_type {
+    trait MyAdd<T> {
+        fn my_add(&self, value: T) -> Self;
+    }
+
+    impl MyAdd<i64> for i64 {
+        // MyAdd<i64>::my_add
+        fn my_add(&self, value: i64) -> Self {
+            value
+        }
+    }
+
+    impl MyAdd<&i64> for i64 {
+        // MyAdd<&i64>::my_add
+        fn my_add(&self, value: &i64) -> Self {
+            *value // $ method=deref
+        }
+    }
+
+    impl MyAdd<bool> for i64 {
+        // MyAdd<bool>::my_add
+        fn my_add(&self, value: bool) -> Self {
+            if value {
+                1
+            } else {
+                0
+            }
+        }
+    }
+
+    pub fn f() {
+        let x: i64 = 73;
+        x.my_add(5i64); // $ method=MyAdd<i64>::my_add
+        x.my_add(&5i64); // $ method=MyAdd<&i64>::my_add
+        x.my_add(true); // $ method=MyAdd<bool>::my_add
     }
 }
 
@@ -1931,4 +1993,6 @@ fn main() {
     impl_trait::f();
     indexers::f();
     loops::f();
+    macros::f();
+    method_determined_by_argument_type::f();
 }

@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/clap-rs/clap:clap_derive", "<crate::attr::ClapAttr>::lit_str_or_abort", "Argument[self].Field[clap_derive::attr::ClapAttr::value].Field[core::option::Option::Some(0)]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap_derive", "<crate::attr::ClapAttr>::value_or_abort", "Argument[self].Field[clap_derive::attr::ClapAttr::value].Field[core::option::Option::Some(0)]", "ReturnValue.Field[core::result::Result::Ok(0)].Reference", "value", "dfc-generated"]
@@ -49,7 +49,7 @@ extensions:
       - ["repo:https://github.com/clap-rs/clap:clap_derive", "crate::utils::ty::inner_type", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/clap-rs/clap:clap_derive", "<crate::item::Item>::action", "Argument[self]", "pointer-access", "df-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap_derive", "<crate::item::Item>::value_parser", "Argument[self]", "pointer-access", "df-generated"]

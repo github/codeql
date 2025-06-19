@@ -265,6 +265,8 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
       n1 = be.getLhs() and
       n2 = be.getRhs()
     )
+    or
+    n1 = n2.(MacroExpr).getMacroCall().getMacroCallExpansion()
   )
   or
   n1 = n2.(RefExpr).getExpr() and
@@ -775,7 +777,9 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
     TypePath path0
   |
     n = a.getNodeAt(apos) and
-    result = CallExprBaseMatching::inferAccessType(a, apos, path0)
+    result = CallExprBaseMatching::inferAccessType(a, apos, path0) and
+    // temporary workaround until implicit borrows are handled correctly
+    if a instanceof Operation then apos.isReturn() else any()
   |
     if apos.isSelf(_)
     then
@@ -1197,6 +1201,7 @@ final class MethodCall extends Call {
  * Holds if a method for `type` with the name `name` and the arity `arity`
  * exists in `impl`.
  */
+pragma[nomagic]
 private predicate methodCandidate(Type type, string name, int arity, Impl impl) {
   type = impl.getSelfTy().(TypeMention).resolveType() and
   exists(Function f |
@@ -1258,11 +1263,133 @@ private Function getTypeParameterMethod(TypeParameter tp, string name) {
   result = getMethodSuccessor(tp.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr(), name)
 }
 
+bindingset[t1, t2]
+private predicate typeMentionEqual(TypeMention t1, TypeMention t2) {
+  forex(TypePath path, Type type | t1.resolveTypeAt(path) = type | t2.resolveTypeAt(path) = type)
+}
+
+pragma[nomagic]
+private predicate implSiblingCandidate(
+  Impl impl, TraitItemNode trait, Type rootType, TypeMention selfTy
+) {
+  trait = impl.(ImplItemNode).resolveTraitTy() and
+  // If `impl` has an expansion from a macro attribute, then it's been
+  // superseded by the output of the expansion (and usually the expansion
+  // contains the same `impl` block so considering both would give spurious
+  // siblings).
+  not exists(impl.getAttributeMacroExpansion()) and
+  // We use this for resolving methods, so exclude traits that do not have methods.
+  exists(Function f | f = trait.getASuccessor(_) and f.getParamList().hasSelfParam()) and
+  selfTy = impl.getSelfTy() and
+  rootType = selfTy.resolveType()
+}
+
+/**
+ * Holds if `impl1` and `impl2` are a sibling implementations of `trait`. We
+ * consider implementations to be siblings if they implement the same trait for
+ * the same type. In that case `Self` is the same type in both implementations,
+ * and method calls to the implementations cannot be resolved unambiguously
+ * based only on the receiver type.
+ */
+pragma[inline]
+private predicate implSiblings(TraitItemNode trait, Impl impl1, Impl impl2) {
+  exists(Type rootType, TypeMention selfTy1, TypeMention selfTy2 |
+    impl1 != impl2 and
+    implSiblingCandidate(impl1, trait, rootType, selfTy1) and
+    implSiblingCandidate(impl2, trait, rootType, selfTy2) and
+    // In principle the second conjunct below should be superflous, but we still
+    // have ill-formed type mentions for types that we don't understand. For
+    // those checking both directions restricts further. Note also that we check
+    // syntactic equality, whereas equality up to renaming would be more
+    // correct.
+    typeMentionEqual(selfTy1, selfTy2) and
+    typeMentionEqual(selfTy2, selfTy1)
+  )
+}
+
+/**
+ * Holds if `impl` is an implementation of `trait` and if another implementation
+ * exists for the same type.
+ */
+pragma[nomagic]
+private predicate implHasSibling(Impl impl, Trait trait) { implSiblings(trait, impl, _) }
+
+/**
+ * Holds if a type parameter of `trait` occurs in the method with the name
+ * `methodName` at the `pos`th parameter at `path`.
+ */
+bindingset[trait]
+pragma[inline_late]
+private predicate traitTypeParameterOccurrence(
+  TraitItemNode trait, string methodName, int pos, TypePath path
+) {
+  exists(Function f | f = trait.getASuccessor(methodName) |
+    f.getParam(pos).getTypeRepr().(TypeMention).resolveTypeAt(path) =
+      trait.(TraitTypeAbstraction).getATypeParameter()
+  )
+}
+
+bindingset[f, pos, path]
+pragma[inline_late]
+private predicate methodTypeAtPath(Function f, int pos, TypePath path, Type type) {
+  f.getParam(pos).getTypeRepr().(TypeMention).resolveTypeAt(path) = type
+}
+
+/**
+ * Holds if resolving the method `f` in `impl` with the name `methodName`
+ * requires inspecting the types of applied _arguments_ in order to determine
+ * whether it is the correct resolution.
+ */
+pragma[nomagic]
+private predicate methodResolutionDependsOnArgument(
+  Impl impl, string methodName, Function f, int pos, TypePath path, Type type
+) {
+  /*
+   * As seen in the example below, when an implementation has a sibling for a
+   * trait we find occurrences of a type parameter of the trait in a method
+   * signature in the trait. We then find the type given in the implementation
+   * at the same position, which is a position that might disambiguate the
+   * method from its siblings.
+   *
+   * ```rust
+   * trait MyTrait<T> {
+   *     fn method(&self, value: Foo<T>) -> Self;
+   * //                   ^^^^^^^^^^^^^ `pos` = 0
+   * //                              ^ `path` = "T"
+   * }
+   * impl MyAdd<i64> for i64 {
+   *     fn method(&self, value: Foo<i64>) -> Self { ... }
+   * //                              ^^^ `type` = i64
+   * }
+   * ```
+   *
+   * Note that we only check the root type symbol at the position. If the type
+   * at that position is a type constructor (for instance `Vec<..>`) then
+   * inspecting the entire type tree could be necessary to disambiguate the
+   * method. In that case we will still resolve several methods.
+   */
+
+  exists(TraitItemNode trait |
+    implHasSibling(impl, trait) and
+    traitTypeParameterOccurrence(trait, methodName, pos, path) and
+    methodTypeAtPath(getMethodSuccessor(impl, methodName), pos, path, type) and
+    f = getMethodSuccessor(impl, methodName)
+  )
+}
+
 /** Gets a method from an `impl` block that matches the method call `mc`. */
 private Function getMethodFromImpl(MethodCall mc) {
   exists(Impl impl |
     IsInstantiationOf<MethodCall, IsInstantiationOfInput>::isInstantiationOf(mc, impl, _) and
     result = getMethodSuccessor(impl, mc.getMethodName())
+  |
+    not methodResolutionDependsOnArgument(impl, _, _, _, _, _) and
+    result = getMethodSuccessor(impl, mc.getMethodName())
+    or
+    exists(int pos, TypePath path, Type type |
+      methodResolutionDependsOnArgument(impl, mc.getMethodName(), result, pos, path, type) and
+      inferType(mc.getArgument(pos), path) = type
+    )
   )
 }
 
@@ -1486,8 +1613,8 @@ private module Debug {
   private Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/main.rs") and
-      startline = 1718
+      filepath.matches("%/sqlx.rs") and
+      startline = [56 .. 60]
     )
   }
 
@@ -1499,6 +1626,11 @@ private module Debug {
   Function debugResolveMethodCallExpr(MethodCallExpr mce) {
     mce = getRelevantLocatable() and
     result = resolveMethodCallTarget(mce)
+  }
+
+  predicate debugTypeMention(TypeMention tm, TypePath path, Type type) {
+    tm = getRelevantLocatable() and
+    tm.resolveTypeAt(path) = type
   }
 
   pragma[nomagic]

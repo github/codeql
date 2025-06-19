@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:actix-http", "<&crate::header::name::HeaderName as crate::header::as_name::Sealed>::try_as_name", "Argument[self].Reference", "ReturnValue.Field[core::result::Result::Ok(0)].Field[alloc::borrow::Cow::Borrowed(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-http", "<&crate::header::value::HeaderValue as crate::header::into_value::TryIntoHeaderValue>::try_into_value", "Argument[self].Reference", "ReturnValue.Field[core::result::Result::Ok(0)]", "value", "dfc-generated"]
@@ -292,7 +292,7 @@ extensions:
       - ["repo:https://github.com/actix/actix-web:actix-http", "<u16 as crate::convert::From>::from", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:actix-http", "<crate::OnConnectData>::from_io", "Argument[1]", "pointer-access", "df-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-http", "<crate::h1::dispatcher::Dispatcher>::new", "Argument[4]", "pointer-access", "df-generated"]

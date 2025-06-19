@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo::state", "<crate::request_local::Guard1 as crate::request::from_request::FromRequest>::from_request", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo::state", "<crate::request_local::Guard2 as crate::request::from_request::FromRequest>::from_request", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]
