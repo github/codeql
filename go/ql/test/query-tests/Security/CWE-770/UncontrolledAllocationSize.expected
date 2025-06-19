@@ -1,2 +1,22 @@
-invalidModelRow
-testFailures
+#select
+| UncontrolledAllocationSizeBad.go:20:27:20:30 | sink | UncontrolledAllocationSizeBad.go:11:12:11:16 | selection of URL | UncontrolledAllocationSizeBad.go:20:27:20:30 | sink | This memory allocation depends on a $@. | UncontrolledAllocationSizeBad.go:11:12:11:16 | selection of URL | user-provided value |
+edges
+| UncontrolledAllocationSizeBad.go:11:12:11:16 | selection of URL | UncontrolledAllocationSizeBad.go:11:12:11:24 | call to Query | provenance | Src:MaD:1 MaD:2 |
+| UncontrolledAllocationSizeBad.go:11:12:11:24 | call to Query | UncontrolledAllocationSizeBad.go:13:15:13:20 | source | provenance |  |
+| UncontrolledAllocationSizeBad.go:13:15:13:20 | source | UncontrolledAllocationSizeBad.go:13:15:13:29 | call to Get | provenance | MaD:3 |
+| UncontrolledAllocationSizeBad.go:13:15:13:29 | call to Get | UncontrolledAllocationSizeBad.go:14:28:14:36 | sourceStr | provenance |  |
+| UncontrolledAllocationSizeBad.go:14:2:14:37 | ... := ...[0] | UncontrolledAllocationSizeBad.go:20:27:20:30 | sink | provenance |  |
+| UncontrolledAllocationSizeBad.go:14:28:14:36 | sourceStr | UncontrolledAllocationSizeBad.go:14:2:14:37 | ... := ...[0] | provenance | Config |
+models
+| 1 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
+| 2 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 3 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
+nodes
+| UncontrolledAllocationSizeBad.go:11:12:11:16 | selection of URL | semmle.label | selection of URL |
+| UncontrolledAllocationSizeBad.go:11:12:11:24 | call to Query | semmle.label | call to Query |
+| UncontrolledAllocationSizeBad.go:13:15:13:20 | source | semmle.label | source |
+| UncontrolledAllocationSizeBad.go:13:15:13:29 | call to Get | semmle.label | call to Get |
+| UncontrolledAllocationSizeBad.go:14:2:14:37 | ... := ...[0] | semmle.label | ... := ...[0] |
+| UncontrolledAllocationSizeBad.go:14:28:14:36 | sourceStr | semmle.label | sourceStr |
+| UncontrolledAllocationSizeBad.go:20:27:20:30 | sink | semmle.label | sink |
+subpaths
