@@ -1,0 +1,4 @@
+query: Security/CWE-770/UncontrolledAllocationSize.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql
