@@ -50,6 +50,8 @@ module WordexpTaintConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 }
 
 module WordexpTaint = TaintTracking::Global<WordexpTaintConfig>;
