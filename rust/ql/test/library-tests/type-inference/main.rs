@@ -1925,6 +1925,8 @@ mod loops {
 
         for i in 0..10 { } // $ MISSING: type=i:i32
         for u in [0u8 .. 10] { } // $ MISSING: type=u:u8
+        let range = 0..10; // $ MISSING: type=range:Range type=range:Idx.i32
+        for i in range { } // $ MISSING: type=i:i32
 
         let range1 = std::ops::Range { start: 0u16, end: 10u16 }; // $ type=range1:Range type=range1:Idx.u16
         for u in range1 { } // $ MISSING: type=u:u16
