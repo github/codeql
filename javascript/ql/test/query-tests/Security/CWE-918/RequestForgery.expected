@@ -33,6 +33,8 @@
 | serverSide.js:141:3:141:30 | axios.g ... ring()) | serverSide.js:139:17:139:29 | req.query.url | serverSide.js:141:13:141:29 | target.toString() | The $@ of this request depends on a $@. | serverSide.js:141:13:141:29 | target.toString() | URL | serverSide.js:139:17:139:29 | req.query.url | user-provided value |
 | serverSide.js:142:3:142:19 | axios.get(target) | serverSide.js:139:17:139:29 | req.query.url | serverSide.js:142:13:142:18 | target | The $@ of this request depends on a $@. | serverSide.js:142:13:142:18 | target | URL | serverSide.js:139:17:139:29 | req.query.url | user-provided value |
 | serverSide.js:143:3:143:24 | axios.g ... t.href) | serverSide.js:139:17:139:29 | req.query.url | serverSide.js:143:13:143:23 | target.href | The $@ of this request depends on a $@. | serverSide.js:143:13:143:23 | target.href | URL | serverSide.js:139:17:139:29 | req.query.url | user-provided value |
+| serverSide.js:145:3:145:23 | axios.g ... dedUrl) | serverSide.js:139:17:139:29 | req.query.url | serverSide.js:145:13:145:22 | encodedUrl | The $@ of this request depends on a $@. | serverSide.js:145:13:145:22 | encodedUrl | URL | serverSide.js:139:17:139:29 | req.query.url | user-provided value |
+| serverSide.js:147:3:147:23 | axios.g ... pedUrl) | serverSide.js:139:17:139:29 | req.query.url | serverSide.js:147:13:147:22 | escapedUrl | The $@ of this request depends on a $@. | serverSide.js:147:13:147:22 | escapedUrl | URL | serverSide.js:139:17:139:29 | req.query.url | user-provided value |
 edges
 | Request/app/api/proxy/route2.serverSide.ts:4:9:4:15 | { url } | Request/app/api/proxy/route2.serverSide.ts:4:9:4:34 | url | provenance |  |
 | Request/app/api/proxy/route2.serverSide.ts:4:9:4:34 | url | Request/app/api/proxy/route2.serverSide.ts:5:27:5:29 | url | provenance |  |
@@ -110,6 +112,8 @@ edges
 | serverSide.js:130:9:130:45 | myUrl | serverSide.js:131:15:131:19 | myUrl | provenance |  |
 | serverSide.js:130:37:130:43 | tainted | serverSide.js:130:9:130:45 | myUrl | provenance |  |
 | serverSide.js:139:9:139:29 | input | serverSide.js:140:26:140:30 | input | provenance |  |
+| serverSide.js:139:9:139:29 | input | serverSide.js:144:32:144:36 | input | provenance |  |
+| serverSide.js:139:9:139:29 | input | serverSide.js:146:29:146:33 | input | provenance |  |
 | serverSide.js:139:17:139:29 | req.query.url | serverSide.js:139:9:139:29 | input | provenance |  |
 | serverSide.js:140:9:140:31 | target | serverSide.js:141:13:141:18 | target | provenance |  |
 | serverSide.js:140:9:140:31 | target | serverSide.js:142:13:142:18 | target | provenance |  |
@@ -118,6 +122,12 @@ edges
 | serverSide.js:140:26:140:30 | input | serverSide.js:140:18:140:31 | new URL(input) | provenance | Config |
 | serverSide.js:141:13:141:18 | target | serverSide.js:141:13:141:29 | target.toString() | provenance |  |
 | serverSide.js:143:13:143:18 | target | serverSide.js:143:13:143:23 | target.href | provenance |  |
+| serverSide.js:144:9:144:37 | encodedUrl | serverSide.js:145:13:145:22 | encodedUrl | provenance |  |
+| serverSide.js:144:22:144:37 | encodeURI(input) | serverSide.js:144:9:144:37 | encodedUrl | provenance |  |
+| serverSide.js:144:32:144:36 | input | serverSide.js:144:22:144:37 | encodeURI(input) | provenance |  |
+| serverSide.js:146:9:146:34 | escapedUrl | serverSide.js:147:13:147:22 | escapedUrl | provenance |  |
+| serverSide.js:146:22:146:34 | escape(input) | serverSide.js:146:9:146:34 | escapedUrl | provenance |  |
+| serverSide.js:146:29:146:33 | input | serverSide.js:146:22:146:34 | escape(input) | provenance |  |
 nodes
 | Request/app/api/proxy/route2.serverSide.ts:4:9:4:15 | { url } | semmle.label | { url } |
 | Request/app/api/proxy/route2.serverSide.ts:4:9:4:34 | url | semmle.label | url |
@@ -221,4 +231,12 @@ nodes
 | serverSide.js:142:13:142:18 | target | semmle.label | target |
 | serverSide.js:143:13:143:18 | target | semmle.label | target |
 | serverSide.js:143:13:143:23 | target.href | semmle.label | target.href |
+| serverSide.js:144:9:144:37 | encodedUrl | semmle.label | encodedUrl |
+| serverSide.js:144:22:144:37 | encodeURI(input) | semmle.label | encodeURI(input) |
+| serverSide.js:144:32:144:36 | input | semmle.label | input |
+| serverSide.js:145:13:145:22 | encodedUrl | semmle.label | encodedUrl |
+| serverSide.js:146:9:146:34 | escapedUrl | semmle.label | escapedUrl |
+| serverSide.js:146:22:146:34 | escape(input) | semmle.label | escape(input) |
+| serverSide.js:146:29:146:33 | input | semmle.label | input |
+| serverSide.js:147:13:147:22 | escapedUrl | semmle.label | escapedUrl |
 subpaths
