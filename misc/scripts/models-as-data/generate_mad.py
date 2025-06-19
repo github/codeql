@@ -53,12 +53,13 @@ class Generator:
     ram = None
     threads = 0
     folder = ""
+    single_file = None
 
     def __init__(self, language=None):
         self.language = language
 
     def setenvironment(self, database=None, folder=None):
-        self.codeQlRoot = (
+        self.codeql_root = (
             subprocess.check_output(["git", "rev-parse", "--show-toplevel"])
             .decode("utf-8")
             .strip()
@@ -66,7 +67,7 @@ class Generator:
         self.database = database or self.database
         self.folder = folder or self.folder
         self.generated_frameworks = os.path.join(
-            self.codeQlRoot, f"{self.language}/ql/lib/ext/generated/{self.folder}"
+            self.codeql_root, f"{self.language}/ql/lib/ext/generated/{self.folder}"
         )
         self.workDir = tempfile.mkdtemp()
         if self.ram is None:
@@ -134,6 +135,10 @@ class Generator:
             type=int,
             help="Amount of RAM to use for CodeQL queries in MB. Default is to use 2048 MB per thread.",
         )
+        p.add_argument(
+            "--single-file",
+            help="Generate a single file with all models instead of separate files for each namespace, using provided argument as the base filename.",
+        )
         generator = p.parse_args(namespace=Generator())
 
         if (
@@ -154,7 +159,7 @@ class Generator:
     def runQuery(self, query):
         print("########## Querying " + query + "...")
         queryFile = os.path.join(
-            self.codeQlRoot, f"{self.language}/ql/src/utils/{self.dirname}", query
+            self.codeql_root, f"{self.language}/ql/src/utils/{self.dirname}", query
         )
         resultBqrs = os.path.join(self.workDir, "out.bqrs")
 
@@ -187,6 +192,8 @@ class Generator:
     def getAddsTo(self, query, predicate):
         data = self.runQuery(query)
         rows = parseData(data)
+        if self.single_file and rows:
+            rows = {self.single_file: "".join(rows.values())}
         return self.asAddsTo(rows, predicate)
 
     def makeContent(self):

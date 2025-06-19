@@ -22,7 +22,7 @@ def remove_dir(dirName):
 
 
 def run_cmd(cmd, msg="Failed to run command"):
-    print("Running " + " ".join(cmd))
+    print("Running " + " ".join(map(str, cmd)))
     if subprocess.check_call(cmd):
         print(msg)
         exit(1)
