@@ -9,13 +9,14 @@ class ECDsaORRSASigningOperationInstance extends Crypto::SignatureOperationInsta
   CryptographyCreateCall creator;
 
   ECDsaORRSASigningOperationInstance() {
-    this instanceof DotNetSigner and
     CryptographyCreateToUseFlow::flow(DataFlow::exprNode(creator), DataFlow::exprNode(this))
   }
 
-  // TODO FIXME
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     result = creator.getAlgorithmArg()
+    or
+    // FIXME: currently not working
+    result = super.getHashAlgorithmArg()
   }
 
   override Crypto::KeyOperationSubtype getKeyOperationSubtype() {

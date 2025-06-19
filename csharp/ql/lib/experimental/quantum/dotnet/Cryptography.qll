@@ -60,6 +60,21 @@ class SigningNamedCurvePropertyAccess extends PropertyAccess {
   string getCurveName() { result = curveName }
 }
 
+class HashAlgorithmNameType extends CryptographyType {
+  HashAlgorithmNameType() { this.hasName("HashAlgorithmName") }
+}
+
+class HashAlgorithmName extends PropertyAccess {
+  string algorithmName;
+
+  HashAlgorithmName() {
+    this.getType() instanceof HashAlgorithmNameType and
+    this.getProperty().getName() = algorithmName
+  }
+
+  string getAlgorithmName() { result = algorithmName }
+}
+
 /**
  * Private predicate mapping NIST names to SEC names and leaving all others the same.
  */
@@ -76,12 +91,12 @@ private predicate eccurveNameMapping(string nist, string secp) {
 }
 
 // OPERATION INSTANCES
-private class ECDsaClass extends Type {
-  ECDsaClass() { this.hasFullyQualifiedName("System.Security.Cryptography", "ECDsa") }
+private class ECDsaClass extends CryptographyType {
+  ECDsaClass() { this.hasName("ECDsa") }
 }
 
-private class RSAClass extends Type {
-  RSAClass() { this.hasFullyQualifiedName("System.Security.Cryptography", "RSA") }
+private class RSAClass extends CryptographyType {
+  RSAClass() { this.hasName("RSA") }
 }
 
 class ByteArrayType extends Type {
@@ -92,7 +107,7 @@ class ReadOnlyByteSpanType extends Type {
   ReadOnlyByteSpanType() { this.getName() = "ReadOnlySpan<Byte>" }
 }
 
-abstract class DotNetSigner extends MethodCall {
+class DotNetSigner extends MethodCall {
   DotNetSigner() { this.getTarget().getName().matches(["Verify%", "Sign%"]) }
 
   Expr getMessageArg() {
@@ -115,6 +130,11 @@ abstract class DotNetSigner extends MethodCall {
   Expr getSignatureOutput() {
     this.isSigner() and
     result = this
+  }
+
+  Expr getHashAlgorithmArg() {
+    // Get the hash algorithm argument if it has the correct type.
+    result = this.getAnArgument() and result.getType() instanceof HashAlgorithmNameType
   }
 
   predicate isSigner() { this.getTarget().getName().matches("Sign%") }
