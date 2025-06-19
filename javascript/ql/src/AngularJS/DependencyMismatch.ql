@@ -8,8 +8,8 @@
  * @precision very-high
  * @id js/angular/dependency-injection-mismatch
  * @tags quality
- *       maintainability
- *       readability
+ *       reliability
+ *       correctness
  *       frameworks/angularjs
  */
 
