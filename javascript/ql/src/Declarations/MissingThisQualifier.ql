@@ -5,8 +5,8 @@
  * @problem.severity error
  * @id js/missing-this-qualifier
  * @tags quality
- *       maintainability
- *       readability
+ *       reliability
+ *       correctness
  *       methods
  * @precision high
  */
