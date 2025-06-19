@@ -64,3 +64,5 @@ module ArtifactFlowConfig implements Language::DataFlow::ConfigSig {
 }
 
 module ArtifactFlow = Language::DataFlow::Global<ArtifactFlowConfig>;
+
+import dotnet
