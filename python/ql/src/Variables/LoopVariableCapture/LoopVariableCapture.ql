@@ -2,8 +2,9 @@
  * @name Loop variable capture
  * @description Capturing a loop variable is not the same as capturing its value, and can lead to unexpected behavior or bugs.
  * @kind path-problem
- * @tags correctness
- *       quality
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity error
  * @sub-severity low
  * @precision high
