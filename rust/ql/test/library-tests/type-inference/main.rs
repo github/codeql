@@ -1140,7 +1140,7 @@ mod method_call_type_conversion {
         println!("{:?}", x5.m1()); // $ method=m1
         println!("{:?}", x5.0); // $ fieldof=S
 
-        let x6 = &S(S2); // $ SPURIOUS: type=x6:&T.&T.S
+        let x6 = &S(S2);
 
         // explicit dereference
         println!("{:?}", (*x6).m1()); // $ method=m1 method=deref
@@ -1717,7 +1717,7 @@ mod overloadable_operators {
 
         // Here the type of `default_vec2` must be inferred from the `==` call
         // and the type of the borrowed second argument is unknown at the call.
-        let default_vec2 = Default::default(); // $ MISSING: type=default_vec2:Vec2
+        let default_vec2 = Default::default(); // $ type=default_vec2:Vec2
         let vec2_zero_plus = Vec2 { x: 0, y: 0 } == default_vec2; // $ method=Vec2::eq
     }
 }

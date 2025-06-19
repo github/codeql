@@ -34,7 +34,7 @@ fn explicit_monomorphic_dereference() {
 
     // Dereference with overloaded dereference operator
     let a2 = MyIntPointer { value: 34i64 };
-    let _b2 = *a2; // $ method=MyIntPointer::deref MISSING: type=_b2:i64
+    let _b2 = *a2; // $ method=MyIntPointer::deref type=_b2:i64
 
     // Call method on explicitly dereferenced value
     let a3 = MyIntPointer { value: 34i64 };
@@ -48,11 +48,11 @@ fn explicit_polymorphic_dereference() {
 
     // Explicit dereference with type parameter
     let c2 = MySmartPointer { value: 'a' };
-    let _d2 = *c2; // $ method=MySmartPointer::deref MISSING: type=_d2:char
+    let _d2 = *c2; // $ method=MySmartPointer::deref type=_d2:char
 
     // Call method on explicitly dereferenced value with type parameter
     let c3 = MySmartPointer { value: 34i64 };
-    let _d3 = (*c3).is_positive(); // $ method=MySmartPointer::deref MISSING: method=is_positive type=_d3:bool
+    let _d3 = (*c3).is_positive(); // $ method=MySmartPointer::deref method=is_positive type=_d3:bool
 }
 
 fn explicit_ref_dereference() {
@@ -76,11 +76,11 @@ fn explicit_box_dereference() {
 
     // Explicit dereference with type parameter
     let g2: Box<char> = Box::new('a');
-    let _h2 = *g2; // $ method=deref MISSING: type=_h2:char
+    let _h2 = *g2; // $ method=deref type=_h2:char
 
     // Call method on explicitly dereferenced value with type parameter
     let g3: Box<i64> = Box::new(34i64);
-    let _h3 = (*g3).is_positive(); // $ method=deref MISSING: method=is_positive type=_h3:bool
+    let _h3 = (*g3).is_positive(); // $ method=deref method=is_positive type=_h3:bool
 }
 
 fn implicit_dereference() {

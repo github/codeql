@@ -273,10 +273,6 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
   prefix1.isEmpty() and
   prefix2 = TypePath::singleton(TRefTypeParameter())
   or
-  n1 = n2.(DerefExpr).getExpr() and
-  prefix1 = TypePath::singleton(TRefTypeParameter()) and
-  prefix2.isEmpty()
-  or
   exists(BlockExpr be |
     n1 = be and
     n2 = be.getStmtList().getTailExpr() and
@@ -640,20 +636,20 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   }
 
   private newtype TAccessPosition =
-    TArgumentAccessPosition(ArgumentPosition pos, Boolean borrowed) or
+    TArgumentAccessPosition(ArgumentPosition pos, Boolean borrowed, Boolean certain) or
     TReturnAccessPosition()
 
   class AccessPosition extends TAccessPosition {
-    ArgumentPosition getArgumentPosition() { this = TArgumentAccessPosition(result, _) }
+    ArgumentPosition getArgumentPosition() { this = TArgumentAccessPosition(result, _, _) }
 
-    predicate isBorrowed() { this = TArgumentAccessPosition(_, true) }
+    predicate isBorrowed(boolean certain) { this = TArgumentAccessPosition(_, true, certain) }
 
     predicate isReturn() { this = TReturnAccessPosition() }
 
     string toString() {
-      exists(ArgumentPosition pos, boolean borrowed |
-        this = TArgumentAccessPosition(pos, borrowed) and
-        result = pos + ":" + borrowed
+      exists(ArgumentPosition pos, boolean borrowed, boolean certain |
+        this = TArgumentAccessPosition(pos, borrowed, certain) and
+        result = pos + ":" + borrowed + ":" + certain
       )
       or
       this.isReturn() and
@@ -674,10 +670,15 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
 
     AstNode getNodeAt(AccessPosition apos) {
-      exists(ArgumentPosition pos, boolean borrowed |
-        apos = TArgumentAccessPosition(pos, borrowed) and
-        result = this.getArgument(pos) and
-        if this.implicitBorrowAt(pos) then borrowed = true else borrowed = false
+      exists(ArgumentPosition pos, boolean borrowed, boolean certain |
+        apos = TArgumentAccessPosition(pos, borrowed, certain) and
+        result = this.getArgument(pos)
+      |
+        if this.implicitBorrowAt(pos, _)
+        then borrowed = true and this.implicitBorrowAt(pos, certain)
+        else (
+          borrowed = false and certain = true
+        )
       )
       or
       result = this and apos.isReturn()
@@ -705,51 +706,54 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   predicate adjustAccessType(
     AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
   ) {
-    if apos.isBorrowed()
-    then
-      exists(Type selfParamType |
-        selfParamType =
-          target
-              .getParameterType(TArgumentDeclarationPosition(apos.getArgumentPosition()),
-                TypePath::nil())
-      |
-        if selfParamType = TRefType()
+    apos.isBorrowed(true) and
+    pathAdj = TypePath::cons(TRefTypeParameter(), path) and
+    tAdj = t
+    or
+    apos.isBorrowed(false) and
+    exists(Type selfParamType |
+      selfParamType =
+        target
+            .getParameterType(TArgumentDeclarationPosition(apos.getArgumentPosition()),
+              TypePath::nil())
+    |
+      if selfParamType = TRefType()
+      then
+        if t != TRefType() and path.isEmpty()
         then
-          if t != TRefType() and path.isEmpty()
-          then
-            // adjust for implicit borrow
-            pathAdj.isEmpty() and
-            tAdj = TRefType()
-            or
-            // adjust for implicit borrow
-            pathAdj = TypePath::singleton(TRefTypeParameter()) and
-            tAdj = t
-          else
-            if path.isCons(TRefTypeParameter(), _)
-            then
-              pathAdj = path and
-              tAdj = t
-            else (
-              // adjust for implicit borrow
-              not (t = TRefType() and path.isEmpty()) and
-              pathAdj = TypePath::cons(TRefTypeParameter(), path) and
-              tAdj = t
-            )
-        else (
-          // adjust for implicit deref
-          path.isCons(TRefTypeParameter(), pathAdj) and
-          tAdj = t
+          // adjust for implicit borrow
+          pathAdj.isEmpty() and
+          tAdj = TRefType()
           or
-          not path.isCons(TRefTypeParameter(), _) and
-          not (t = TRefType() and path.isEmpty()) and
-          pathAdj = path and
+          // adjust for implicit borrow
+          pathAdj = TypePath::singleton(TRefTypeParameter()) and
           tAdj = t
-        )
+        else
+          if path.isCons(TRefTypeParameter(), _)
+          then
+            pathAdj = path and
+            tAdj = t
+          else (
+            // adjust for implicit borrow
+            not (t = TRefType() and path.isEmpty()) and
+            pathAdj = TypePath::cons(TRefTypeParameter(), path) and
+            tAdj = t
+          )
+      else (
+        // adjust for implicit deref
+        path.isCons(TRefTypeParameter(), pathAdj) and
+        tAdj = t
+        or
+        not path.isCons(TRefTypeParameter(), _) and
+        not (t = TRefType() and path.isEmpty()) and
+        pathAdj = path and
+        tAdj = t
       )
-    else (
-      pathAdj = path and
-      tAdj = t
     )
+    or
+    not apos.isBorrowed(_) and
+    pathAdj = path and
+    tAdj = t
   }
 }
 
@@ -766,35 +770,47 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
     TypePath path0
   |
     n = a.getNodeAt(apos) and
-    result = CallExprBaseMatching::inferAccessType(a, apos, path0) and
-    if apos.isBorrowed()
-    then
-      exists(Type argType | argType = inferType(n) |
-        if argType = TRefType()
-        then
-          path = path0 and
-          path0.isCons(TRefTypeParameter(), _)
-          or
-          // adjust for implicit deref
+    result = CallExprBaseMatching::inferAccessType(a, apos, path0)
+  |
+    (
+      apos.isBorrowed(true)
+      or
+      // The desugaring of the unary `*e` is `*Deref::deref(&e)`. To handle the
+      // deref expression after the call we must strip a `&` from the type at
+      // the return position.
+      apos.isReturn() and a instanceof DerefExpr
+    ) and
+    path0.isCons(TRefTypeParameter(), path)
+    or
+    apos.isBorrowed(false) and
+    exists(Type argType | argType = inferType(n) |
+      if argType = TRefType()
+      then
+        path = path0 and
+        path0.isCons(TRefTypeParameter(), _)
+        or
+        // adjust for implicit deref
+        not path0.isCons(TRefTypeParameter(), _) and
+        not (path0.isEmpty() and result = TRefType()) and
+        path = TypePath::cons(TRefTypeParameter(), path0)
+      else (
+        not (
+          argType.(StructType).asItemNode() instanceof StringStruct and
+          result.(StructType).asItemNode() instanceof Builtins::Str
+        ) and
+        (
           not path0.isCons(TRefTypeParameter(), _) and
           not (path0.isEmpty() and result = TRefType()) and
-          path = TypePath::cons(TRefTypeParameter(), path0)
-        else (
-          not (
-            argType.(StructType).asItemNode() instanceof StringStruct and
-            result.(StructType).asItemNode() instanceof Builtins::Str
-          ) and
-          (
-            not path0.isCons(TRefTypeParameter(), _) and
-            not (path0.isEmpty() and result = TRefType()) and
-            path = path0
-            or
-            // adjust for implicit borrow
-            path0.isCons(TRefTypeParameter(), path)
-          )
+          path = path0
+          or
+          // adjust for implicit borrow
+          path0.isCons(TRefTypeParameter(), path)
         )
       )
-    else path = path0
+    )
+    or
+    not apos.isBorrowed(_) and
+    path = path0
   )
 }
 
@@ -1387,7 +1403,7 @@ private module Cached {
   predicate receiverHasImplicitDeref(AstNode receiver) {
     exists(CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos |
       apos.getArgumentPosition().isSelf() and
-      apos.isBorrowed() and
+      apos.isBorrowed(_) and
       receiver = a.getNodeAt(apos) and
       inferType(receiver) = TRefType() and
       CallExprBaseMatching::inferAccessType(a, apos, TypePath::nil()) != TRefType()
@@ -1399,7 +1415,7 @@ private module Cached {
   predicate receiverHasImplicitBorrow(AstNode receiver) {
     exists(CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos |
       apos.getArgumentPosition().isSelf() and
-      apos.isBorrowed() and
+      apos.isBorrowed(_) and
       receiver = a.getNodeAt(apos) and
       CallExprBaseMatching::inferAccessType(a, apos, TypePath::nil()) = TRefType() and
       inferType(receiver) != TRefType()
