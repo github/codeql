@@ -26,17 +26,23 @@ You can use the local data flow library by importing the ``codeql.rust.dataflow.
 Common ``Node`` types include expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``).
 You can use the ``asExpr`` member predicate to map a data flow ``ExprNode`` to its corresponding ``ExprCfgNode`` in the control-flow library.
 Similarly, you can map a data flow ``ParameterNode`` to its corresponding ``Parameter`` AST node using the ``asParameter`` member predicate.
+
 .. code-block:: ql
 
-     class Node {
-       /** Gets the expression corresponding to this node, if any. */
-       CfgNodes::ExprCfgNode asExpr() { ... }
+    class Node {
+      /**
+       * Gets the expression corresponding to this node, if any.
+       */
+      CfgNodes::ExprCfgNode asExpr() { ... }
 
-       /** Gets the parameter corresponding to this node, if any. */
-       Parameter asParameter() { ... }
+      /**
+       * Gets the parameter corresponding to this node, if any.
+       */
+      Parameter asParameter() { ... }
 
       ...
-     }
+    }
+
 
 Note that since ``asExpr`` maps from data-flow to control-flow nodes, you then need to call the ``getExpr`` member predicate on the control-flow node to map to the corresponding AST node,
 for example by writing ``node.asExpr().getExpr()``.
