@@ -1,3 +1,6 @@
 Cargo.toml
 lib.rs
 target/
+.proc_macro/
+.lib/
+

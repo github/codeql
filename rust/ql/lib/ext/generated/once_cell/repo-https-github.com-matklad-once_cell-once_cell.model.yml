@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/matklad/once_cell:once_cell", "<crate::imp::OnceCell>::into_inner", "Argument[self].Field[once_cell::imp::OnceCell::value].Field[core::cell::UnsafeCell::value]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/matklad/once_cell:once_cell", "<crate::race::OnceNonZeroUsize>::get_or_init", "Argument[0]", "ReturnValue", "taint", "df-generated"]

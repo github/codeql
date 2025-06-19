@@ -26,6 +26,8 @@ module UnsafeYearCreationFromArithmeticConfig implements DataFlow::ConfigSig {
       oc.getObjectType().getABaseType*().hasFullyQualifiedName("System", "DateTime")
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module UnsafeYearCreationFromArithmetic =

@@ -2,6 +2,6 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo::benches", "<crate::ChunkReader as crate::io::async_read::AsyncRead>::poll_read", "Argument[1]", "log-injection", "df-generated"]

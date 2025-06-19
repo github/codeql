@@ -13,7 +13,9 @@ module CryptoInput implements InputSig<Language::Location> {
   LocatableElement dfn_to_element(DataFlow::Node node) {
     result = node.asExpr() or
     result = node.asParameter() or
-    result = node.asVariable()
+    result = node.asVariable() or
+    result = node.asDefiningArgument()
+    // TODO: do we need asIndirectExpr()?
   }
 
   string locationToFileBaseNameAndLineNumberString(Location location) {
@@ -90,7 +92,7 @@ module GenericDataSourceFlowConfig implements DataFlow::ConfigSig {
 module GenericDataSourceFlow = TaintTracking::Global<GenericDataSourceFlowConfig>;
 
 private class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof Literal {
-  ConstantDataSource() { this instanceof OpenSSLGenericSourceCandidateLiteral }
+  ConstantDataSource() { this instanceof OpenSslGenericSourceCandidateLiteral }
 
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 

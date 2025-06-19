@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/servo/rust-smallvec:smallvec", "<crate::ConstNonNull as crate::clone::Clone>::clone", "Argument[self].Reference", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/servo/rust-smallvec:smallvec", "<crate::Drain as crate::iter::traits::iterator::Iterator>::next", "Argument[self]", "ReturnValue", "taint", "df-generated"]
@@ -40,7 +40,7 @@ extensions:
       - ["repo:https://github.com/servo/rust-smallvec:smallvec", "<crate::tests::insert_many_panic::BadIter as crate::iter::traits::iterator::Iterator>::size_hint", "Argument[self].Field[smallvec::tests::insert_many_panic::BadIter::hint]", "ReturnValue.Field[0]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/servo/rust-smallvec:smallvec", "<crate::SmallVec>::into_inner", "Argument[self]", "pointer-access", "df-generated"]
       - ["repo:https://github.com/servo/rust-smallvec:smallvec", "<crate::vec::Vec as crate::Vector>::insert", "Argument[0]", "log-injection", "df-generated"]
@@ -49,6 +49,6 @@ extensions:
       - ["repo:https://github.com/servo/rust-smallvec:smallvec", "<crate::vec::Vec as crate::Vector>::remove", "Argument[self]", "log-injection", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModel
+      extensible: sourceModelDeprecated
     data:
       - ["repo:https://github.com/servo/rust-smallvec:smallvec", "<crate::SmallVec as crate::ops::drop::Drop>::drop", "Argument[self]", "pointer-invalidate", "df-generated"]

@@ -1,12 +1,12 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       # Iterator
-      - ["lang:core", "<[_]>::iter", "Argument[Self].Element", "ReturnValue.Element", "value", "manual"]
-      - ["lang:core", "<[_]>::iter_mut", "Argument[Self].Element", "ReturnValue.Element", "value", "manual"]
-      - ["lang:core", "<[_]>::into_iter", "Argument[Self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "<[_]>::iter", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "<[_]>::iter_mut", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "<[_]>::into_iter", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
       - ["lang:core", "crate::iter::traits::iterator::Iterator::nth", "Argument[self].Element", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "manual"]
       - ["lang:core", "crate::iter::traits::iterator::Iterator::next", "Argument[self].Element", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "manual"]
       - ["lang:core", "crate::iter::traits::iterator::Iterator::collect", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
@@ -55,7 +55,7 @@ extensions:
       - ["lang:core", "<str>::trim", "Argument[self]", "ReturnValue.Reference", "taint", "manual"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModel
+      extensible: sourceModelDeprecated
     data:
       # Ptr
       - ["lang:core", "crate::ptr::drop_in_place", "Argument[0]", "pointer-invalidate", "manual"]
@@ -64,7 +64,7 @@ extensions:
       - ["lang:core", "crate::ptr::null", "ReturnValue", "pointer-invalidate", "manual"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       # Ptr
       - ["lang:core", "crate::ptr::read", "Argument[0]", "pointer-access", "manual"]

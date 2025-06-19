@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo::stdarch-gen-arm", "<crate::context::LocalContext>::make_assertion_from_constraint", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo::stdarch-gen-arm", "<crate::context::LocalContext>::make_assertion_from_constraint", "Argument[self]", "ReturnValue", "taint", "df-generated"]
@@ -69,7 +69,7 @@ extensions:
       - ["repo::stdarch-gen-arm", "crate::fn_suffix::make_neon_suffix", "Argument[0]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo::stdarch-gen-arm", "<crate::assert_instr::InstructionAssertionsForBaseType as crate::to_tokens::ToTokens>::to_tokens", "Argument[self]", "log-injection", "df-generated"]
       - ["repo::stdarch-gen-arm", "<crate::expression::Expression as crate::to_tokens::ToTokens>::to_tokens", "Argument[self]", "log-injection", "df-generated"]

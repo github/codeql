@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::context::HttpContext as crate::context_impl::AsyncContextParts>::parts", "Argument[self].Field[actix_web_actors::context::HttpContext::inner]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WebsocketContext as crate::context_impl::AsyncContextParts>::parts", "Argument[self].Field[actix_web_actors::ws::WebsocketContext::inner]", "ReturnValue.Reference", "value", "dfc-generated"]
@@ -21,7 +21,7 @@ extensions:
       - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::ws::WsResponseBuilder>::protocols", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::context::HttpContext>::write", "Argument[self]", "log-injection", "df-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-web-actors", "<crate::context::HttpContext>::write_eof", "Argument[self]", "log-injection", "df-generated"]

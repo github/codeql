@@ -99,6 +99,11 @@ class Namespace extends NameQualifyingElement, @namespace {
 
   /** Gets a file which declares (part of) this namespace. */
   File getAFile() { result = this.getADeclarationEntry().getLocation().getFile() }
+
+  /** Gets an attribute of this namespace. */
+  Attribute getAnAttribute() {
+    namespaceattributes(underlyingElement(this), unresolveElement(result))
+  }
 }
 
 /**

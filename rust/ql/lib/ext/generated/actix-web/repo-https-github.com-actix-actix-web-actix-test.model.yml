@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:actix-test", "<crate::TestServer>::addr", "Argument[self].Field[actix_test::TestServer::addr]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-test", "<crate::TestServer>::request", "Argument[0]", "ReturnValue.Field[awc::request::ClientRequest::head].Field[actix_http::requests::head::RequestHead::method]", "value", "dfc-generated"]

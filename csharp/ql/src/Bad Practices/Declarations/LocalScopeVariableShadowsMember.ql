@@ -6,7 +6,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/local-shadows-member
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
  */
 

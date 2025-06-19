@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:actix-web", "<_ as crate::guard::Guard>::check", "Argument[0]", "Argument[self].Parameter[0]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-web", "<_ as crate::guard::Guard>::check", "Argument[self].ReturnValue", "ReturnValue", "value", "dfc-generated"]
@@ -420,7 +420,7 @@ extensions:
       - ["repo:https://github.com/actix/actix-web:actix-web", "crate::web::scope", "Argument[0]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/actix/actix-web:actix-web", "<crate::http::header::accept::Accept>::ranked", "Argument[self]", "pointer-access", "df-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-web", "<crate::http::header::accept_encoding::AcceptEncoding>::negotiate", "Argument[self]", "pointer-access", "df-generated"]
