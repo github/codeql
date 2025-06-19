@@ -1890,8 +1890,8 @@ mod loops {
         // for loops with arrays
 
         for i in [1, 2, 3] { } // $ type=i:i32
-        for i in [1, 2, 3].map(|x| x + 1) { } // $ MISSING: type=i:i32
-        for i in [1, 2, 3].into_iter() { } // $ MISSING: type=i:i32
+        for i in [1, 2, 3].map(|x| x + 1) { } // $ method=map MISSING: type=i:i32
+        for i in [1, 2, 3].into_iter() { } // $ method=into_iter MISSING: type=i:i32
 
         let vals1 = [1u8, 2, 3]; // $ MISSING: type=vals1:[u8; 3]
         for u in vals1 { } // $ type=u:u8

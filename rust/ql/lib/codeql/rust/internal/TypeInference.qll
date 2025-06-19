@@ -1103,6 +1103,12 @@ private class Vec extends Struct {
 }
 
 /**
+ * Gets the root type of the array expression `ae`.
+ */
+pragma[nomagic]
+private Type inferArrayExprType(ArrayExpr ae) { exists(ae) and result = TArrayType() }
+
+/**
  * According to [the Rust reference][1]: _"array and slice-typed expressions
  * can be indexed with a `usize` index ... For other types an index expression
  * `a[b]` is equivalent to *std::ops::Index::index(&a, b)"_.
@@ -1594,6 +1600,9 @@ private module Cached {
     path.isEmpty()
     or
     result = inferAwaitExprType(n, path)
+    or
+    result = inferArrayExprType(n) and
+    path.isEmpty()
     or
     result = inferIndexExprType(n, path)
     or
