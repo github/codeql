@@ -26,7 +26,8 @@ newtype VarKind =
   PipelineIteratorKind() or
   PipelineByPropertyNameIteratorKind(string name) {
     exists(Raw::ProcessBlock pb |
-      name = pb.getScriptBlock().getParamBlock().getAPipelineByPropertyNameParameter().getLowerCaseName()
+      name =
+        pb.getScriptBlock().getParamBlock().getAPipelineByPropertyNameParameter().getLowerCaseName()
     )
   }
 

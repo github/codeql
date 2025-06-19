@@ -65,6 +65,8 @@ class PipelineByPropertyNameParameter extends Parameter instanceof PipelineByPro
    * Gets the iterator variable that is used to iterate over the elements in the pipeline.
    */
   PipelineByPropertyNameIteratorVariable getIteratorVariable() { result.getParameter() = this }
+
+  ProcessBlock getProcessBlock() { result = this.getIteratorVariable().getProcessBlock() }
 }
 
 /**
