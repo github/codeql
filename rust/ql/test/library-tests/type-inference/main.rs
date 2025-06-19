@@ -1934,8 +1934,11 @@ mod loops {
         let vals3 = vec![1, 2, 3]; // $ MISSING: type=vals3:Vec<i32>
         for i in vals3 { } // $ MISSING: type=i:i32
 
-        let vals4 = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4:Vec<u16>
-        for u in vals4 { } // $ MISSING: type=u:u16
+        let vals4a : Vec<u16> = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4a:Vec<u16>
+        for u in vals4a { } // $ type=u:u16
+
+        let vals4b = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4b:Vec<u16>
+        for u in vals4b { } // $ MISSING: type=u:u16
 
         let vals5 = Vec::from([1u32, 2, 3]); // $ MISSING: type=vals5:Vec<u32>
         for u in vals5 { } // $ MISSING: type=u:u32
