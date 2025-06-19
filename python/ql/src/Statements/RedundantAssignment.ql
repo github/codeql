@@ -3,8 +3,8 @@
  * @description Assigning a variable to itself is useless and very likely indicates an error in the code.
  * @kind problem
  * @tags quality
- *       maintainability
- *       useless-code
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-563
  * @problem.severity error
  * @sub-severity low
