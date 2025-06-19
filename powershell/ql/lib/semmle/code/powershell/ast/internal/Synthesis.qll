@@ -789,7 +789,9 @@ private module IteratorAccessSynth {
       exists(Raw::VarAccess va | va = a |
         va.getUserPath() = "_"
         or
-        exists(Raw::ProcessBlock pb | pb = getProcessBlock(va) |
+        exists(Raw::ProcessBlock pb |
+          pragma[only_bind_into](pb) = getProcessBlock(pragma[only_bind_into](va))
+        |
           va.getUserPath().toLowerCase() =
             pb.getScriptBlock().getParamBlock().getPipelineParameter().getLowerCaseName()
           or
