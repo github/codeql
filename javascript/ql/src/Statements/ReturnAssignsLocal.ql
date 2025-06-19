@@ -6,8 +6,8 @@
  * @problem.severity warning
  * @id js/useless-assignment-in-return
  * @tags quality
- *       maintainability
- *       readability
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-563
  * @precision very-high
  */
