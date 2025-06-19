@@ -1893,30 +1893,30 @@ mod loops {
         for i in [1, 2, 3].map(|x| x + 1) { } // $ method=map MISSING: type=i:i32
         for i in [1, 2, 3].into_iter() { } // $ method=into_iter MISSING: type=i:i32
 
-        let vals1 = [1u8, 2, 3]; // $ MISSING: type=vals1:[u8; 3]
+        let vals1 = [1u8, 2, 3]; // $ type=vals1:[T;...].u8
         for u in vals1 { } // $ type=u:u8
 
-        let vals2 = [1u16; 3]; // $ MISSING: type=vals2:[u16; 3]
+        let vals2 = [1u16; 3]; // $ type=vals2:[T;...].u16
         for u in vals2 { } // $ type=u:u16
 
-        let vals3: [u32; 3] = [1, 2, 3]; // $ MISSING: type=vals3:[u32; 3]
+        let vals3: [u32; 3] = [1, 2, 3]; // $ type=vals3:[T;...].u32
         for u in vals3 { } // $ type=u:u32
 
-        let vals4: [u64; 3] = [1; 3]; // $ MISSING: type=vals4:[u64; 3]
+        let vals4: [u64; 3] = [1; 3]; // $ type=vals4:[T;...].u64
         for u in vals4 { } // $ type=u:u64
 
-        let mut strings1 = ["foo", "bar", "baz"]; // $ MISSING: type=strings1:[&str; 3]
-        for s in &strings1 { } // $ MISSING: type=s:&str
-        for s in &mut strings1 { } // $ MISSING: type=s:&str
+        let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1:[T;...].str
+        for s in &strings1 { } // $ MISSING: type=s:&T.str
+        for s in &mut strings1 { } // $ MISSING: type=s:&T.str
         for s in strings1 { } // $ type=s:str
 
-        let strings2 = [String::from("foo"), String::from("bar"), String::from("baz")]; // $ MISSING: type=strings2:[String; 3]
+        let strings2 = [String::from("foo"), String::from("bar"), String::from("baz")]; // $ type=strings2:[T;...].String
         for s in strings2 { } // $ type=s:String
 
-        let strings3 = &[String::from("foo"), String::from("bar"), String::from("baz")]; // $ MISSING: type=strings3:&[String; 3]
+        let strings3 = &[String::from("foo"), String::from("bar"), String::from("baz")]; // $ type=strings3:&T.[T;...].String
         for s in strings3 { } // $ MISSING: type=s:String
 
-        let callables = [MyCallable::new(), MyCallable::new(), MyCallable::new()]; // $ MISSING: type=callables:[MyCallable; 3]
+        let callables = [MyCallable::new(), MyCallable::new(), MyCallable::new()]; // $ MISSING: type=callables:[T;...].MyCallable; 3
         for c in callables { // $ type=c:MyCallable
             let result = c.call(); // $ type=result:i64 method=call
         }
@@ -1926,48 +1926,48 @@ mod loops {
         for i in 0..10 { } // $ MISSING: type=i:i32
         for u in [0u8 .. 10] { } // $ MISSING: type=u:u8
 
-        let range1 = std::ops::Range { start: 0u16, end: 10u16 }; // $ MISSING: type=range:std::ops::Range<u16>
-        for u in range1 { } // $ MISSING: type=i:u16
+        let range1 = std::ops::Range { start: 0u16, end: 10u16 }; // $ type=range1:Range type=range1:Idx.u16
+        for u in range1 { } // $ MISSING: type=u:u16
 
         // for loops with containers
 
         let vals3 = vec![1, 2, 3]; // $ MISSING: type=vals3:Vec<i32>
         for i in vals3 { } // $ MISSING: type=i:i32
 
-        let vals4a : Vec<u16> = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4a:Vec<u16>
+        let vals4a : Vec<u16> = [1u16, 2, 3].to_vec(); // $ type=vals4a:Vec type=vals4a:T.u16
         for u in vals4a { } // $ type=u:u16
 
-        let vals4b = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4b:Vec<u16>
+        let vals4b = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4b:Vec type=vals4b:T.u16
         for u in vals4b { } // $ MISSING: type=u:u16
 
-        let vals5 = Vec::from([1u32, 2, 3]); // $ MISSING: type=vals5:Vec<u32>
+        let vals5 = Vec::from([1u32, 2, 3]); // $ type=vals5:Vec MISSING: type=vals5:T.u32
         for u in vals5 { } // $ MISSING: type=u:u32
 
-        let vals6 : Vec<&u64> = [1u64, 2, 3].iter().collect(); // $ MISSING: type=vals6:Vec<&u64>
-        for u in vals6 { } // $ MISSING: type=u:&u64
+        let vals6 : Vec<&u64> = [1u64, 2, 3].iter().collect(); // $ type=vals6:Vec type=vals6:T.&T.u64
+        for u in vals6 { } // $ type=u:&T.u64
 
-        let mut vals7 = Vec::new(); // $ MISSING: type=vals7:Vec<u8>
+        let mut vals7 = Vec::new(); // $ type=vals7:Vec MISSING: type=vals7:T.u8
         vals7.push(1u8); // $ method=push
         for u in vals7 { } // $ MISSING: type=u:u8
 
-        let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ MISSING: type=vals5:Vec<Vec<i32>>
-        for row in matrix1 { // $ MISSING: type=row:Vec<i32>
+        let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ MISSING: type=matrix1:Vec type=matrix1:T.Vec type=matrix1:T.T.i32
+        for row in matrix1 { // $ MISSING: type=row:Vec type=row:T.i32
             for cell in row { // $ MISSING: type=cell:i32
             }
         }
 
-        let mut map1 = std::collections::HashMap::new(); // $ MISSING: type=map1:std::collections::HashMap<_, _>
+        let mut map1 = std::collections::HashMap::new(); // $ MISSING: type=map1:Hashmap type=map1:K.i32 type=map1:V.Box type1=map1:V.T.&T.str
         map1.insert(1, Box::new("one")); // $ method=insert
         map1.insert(2, Box::new("two")); // $ method=insert
         for key in map1.keys() { } // $ method=keys MISSING: type=key:i32
-        for value in map1.values() { } // $ method=values MISSING: type=value:Box<&str>
-        for (key, value) in map1.iter() { } // $ method=iter MISSING: type=key:i32 type=value:Box<&str>
-        for (key, value) in &map1 { } // $ MISSING: type=key:i32 type=value:Box<&str>
+        for value in map1.values() { } // $ method=values MISSING: type=value:Box type=value:Box.T:&T.str
+        for (key, value) in map1.iter() { } // $ method=iter MISSING: type=key:i32 type=value:Box type=value:Box.T:&T.str
+        for (key, value) in &map1 { } // $ MISSING: type=key:i32 type=value:Box type=value:Box.T:&T.str
 
         // while loops
 
         let mut a: i64 = 0; // $ type=a:i64
-        while a < 10 { // $ method=lt MISSING: type=a:i64m
+        while a < 10 { // $ method=lt type=a:i64
             a += 1; // $ type=a:i64 method=add_assign
         }
     }
