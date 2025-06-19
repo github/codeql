@@ -1,5 +1,4 @@
 private import codeql.util.Unit
-private import rust
 private import rust as R
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.internal.DataFlowImpl as DataFlowImpl
@@ -12,7 +11,7 @@ private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
 private import codeql.rust.dataflow.internal.FlowSummaryImpl as FlowSummary
 
 private newtype TCallable =
-  TFunction(Function api, string path) {
+  TFunction(R::Function api, string path) {
     path = api.getCanonicalPath() and
     (
       // This excludes closures (these are not exported API endpoints) and
@@ -22,25 +21,25 @@ private newtype TCallable =
       or
       // If a method implements a public trait it is exposed through the trait.
       // We overapproximate this by including all trait method implementations.
-      exists(Impl impl | impl.hasTrait() and impl.getAssocItemList().getAssocItem(_) = api)
+      exists(R::Impl impl | impl.hasTrait() and impl.getAssocItemList().getAssocItem(_) = api)
     )
   }
 
-private class QualifiedCallable extends TCallable {
-  Function api;
+class QualifiedCallable extends TCallable {
+  R::Function api;
   string path;
 
   QualifiedCallable() { this = TFunction(api, path) }
 
   string toString() { result = path }
 
-  Function asFunction() { result = api }
+  R::Function asFunction() { result = api }
 
   string getCanonicalPath() { result = path }
 }
 
 module ModelGeneratorCommonInput implements
-  ModelGeneratorCommonInputSig<Location, DataFlowImpl::RustDataFlow>
+  ModelGeneratorCommonInputSig<R::Location, DataFlowImpl::RustDataFlow>
 {
   // NOTE: We are not using type information for now.
   class Type = Unit;
@@ -75,7 +74,7 @@ module ModelGeneratorCommonInput implements
   string parameterApproximateAccess(R::ParamBase p) { result = parameterExactAccess(p) }
 
   class InstanceParameterNode extends DataFlow::ParameterNode {
-    InstanceParameterNode() { this.asParameter() instanceof SelfParam }
+    InstanceParameterNode() { this.asParameter() instanceof R::SelfParam }
   }
 
   bindingset[c]
@@ -105,31 +104,24 @@ module ModelGeneratorCommonInput implements
     c.(SingletonContentSet).getContent() instanceof ElementContent
   }
 
-  string partialModelRow(QualifiedCallable api, int i) {
-    i = 0 and result = min(string path | path = api.(Function).getCanonicalPath() | path)
-  }
+  string partialModelRow(Callable api, int i) { i = 0 and result = api.getCanonicalPath() }
 
   string partialNeutralModelRow(Callable api, int i) { result = partialModelRow(api, i) }
 }
 
 private import ModelGeneratorCommonInput
-private import MakeModelGeneratorFactory<Location, DataFlowImpl::RustDataFlow, RustTaintTracking, ModelGeneratorCommonInput>
+private import MakeModelGeneratorFactory<R::Location, DataFlowImpl::RustDataFlow, RustTaintTracking, ModelGeneratorCommonInput>
 
 private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
-  class SummaryTargetApi extends Callable {
-    private Callable lift;
+  class SummaryTargetApi extends QualifiedCallable {
+    QualifiedCallable lift() { result = this }
 
-    SummaryTargetApi() {
-      lift = this and
-      relevant(this)
-    }
-
-    Callable lift() { result = lift }
-
-    predicate isRelevant() { relevant(this) }
+    predicate isRelevant() { any() }
   }
 
-  Callable getAsExprEnclosingCallable(NodeExtended node) { result = node.asExpr().getScope() }
+  QualifiedCallable getAsExprEnclosingCallable(NodeExtended node) {
+    result.asFunction() = node.asExpr().getScope()
+  }
 
   Parameter asParameter(NodeExtended node) { result = node.asParameter() }
 
@@ -171,17 +163,13 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
 }
 
 private module SourceModelGeneratorInput implements SourceModelGeneratorInputSig {
-  class SourceTargetApi extends Callable {
-    SourceTargetApi() { relevant(this) }
-  }
+  class SourceTargetApi extends QualifiedCallable { }
 
   predicate sourceNode(DataFlow::Node node, string kind) { FlowSource::sourceNode(node, kind) }
 }
 
 private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
-  class SinkTargetApi extends Callable {
-    SinkTargetApi() { relevant(this) }
-  }
+  class SinkTargetApi extends QualifiedCallable { }
 
   /**
    * Holds if `source` is an API entrypoint, i.e., a source of input where data
