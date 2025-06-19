@@ -6,9 +6,9 @@
  * @problem.severity error
  * @precision very-high
  * @id java/reference-equality-of-boxed-types
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       quality
  *       external/cwe/cwe-595
  */
 

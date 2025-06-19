@@ -6,8 +6,8 @@
  * @problem.severity error
  * @precision high
  * @id java/unsafe-double-checked-locking
- * @tags reliability
- *       correctness
+ * @tags quality
+ *       reliability
  *       concurrency
  *       external/cwe/cwe-609
  */
