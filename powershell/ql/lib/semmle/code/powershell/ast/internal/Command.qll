@@ -1,7 +1,9 @@
 private import AstImport
 
 class CmdCall extends CallExpr, TCmd {
-  final override string getLowerCaseName() { result = getRawAst(this).(Raw::Cmd).getLowerCaseName() }
+  final override string getLowerCaseName() {
+    result = getRawAst(this).(Raw::Cmd).getLowerCaseName()
+  }
 
   final override Expr getArgument(int i) { synthChild(getRawAst(this), cmdArgument(i), result) }
 
