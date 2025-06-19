@@ -58,7 +58,7 @@ fn explicit_polymorphic_dereference() {
 fn explicit_ref_dereference() {
     // Explicit dereference with type parameter
     let e1 = &'a';
-    let _f1 = e1.deref(); // $ MISSING: method=deref type=_f1:&T.char
+    let _f1 = e1.deref(); // $ method=deref MISSING: type=_f1:&T.char
 
     // Explicit dereference with type parameter
     let e2 = &'a';

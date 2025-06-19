@@ -1141,8 +1141,6 @@ final class MethodCall extends Call {
         (
           path0.isCons(TRefTypeParameter(), path)
           or
-          not path0.isCons(TRefTypeParameter(), _) and
-          not (path0.isEmpty() and result = TRefType()) and
           path = path0
         )
       |
