@@ -6,8 +6,8 @@
  * @problem.severity warning
  * @id js/label-in-switch
  * @tags quality
- *       maintainability
- *       readability
+ *       reliability
+ *       correctness
  * @precision very-high
  */
 
