@@ -5,8 +5,8 @@
  * @problem.severity warning
  * @id js/conditional-comment
  * @tags quality
- *       maintainability
- *       readability
+ *       reliability
+ *       correctness
  *       portability
  *       language-features
  *       external/cwe/cwe-758
