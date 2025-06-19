@@ -35,7 +35,7 @@ fn string_add() {
     let s4 = s1 + s3;
     let s5 = s2 + s3;
 
-    sink(s4); // $ hasTaintFlow=83
+    sink(s4); // $ hasValueFlow=83
     sink(s5);
 }
 
