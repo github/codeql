@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rust-random/rand:rand_core", "<crate::UnwrapMut>::re", "Argument[self].Field[0]", "ReturnValue.Field[rand_core::UnwrapMut(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-random/rand:rand_core", "<crate::UnwrapMut>::re", "Argument[self].Field[rand_core::UnwrapMut(0)]", "ReturnValue.Field[rand_core::UnwrapMut(0)]", "value", "dfc-generated"]

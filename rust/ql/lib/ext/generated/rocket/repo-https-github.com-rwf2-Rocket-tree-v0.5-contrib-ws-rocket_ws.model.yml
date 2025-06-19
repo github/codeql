@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::Channel as crate::data::io_stream::IoHandler>::io", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/ws:rocket_ws", "<crate::websocket::Channel as crate::data::io_stream::IoHandler>::io", "Argument[self]", "ReturnValue.Reference", "value", "dfc-generated"]

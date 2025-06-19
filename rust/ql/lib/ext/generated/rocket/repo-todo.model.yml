@@ -2,6 +2,6 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo::todo", "<crate::Context>::raw", "Argument[1]", "ReturnValue.Field[todo::Context::flash]", "value", "dfc-generated"]

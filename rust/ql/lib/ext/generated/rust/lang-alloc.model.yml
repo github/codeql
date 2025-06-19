@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["lang:alloc", "<&&str as crate::string::SpecToString>::spec_to_string", "Argument[self].Reference.Reference", "ReturnValue", "value", "dfc-generated"]
       - ["lang:alloc", "<&crate::collections::btree::map::BTreeMap as crate::iter::traits::collect::IntoIterator>::into_iter", "Argument[self].Field[alloc::collections::btree::map::BTreeMap::length]", "ReturnValue.Field[alloc::collections::btree::map::Iter::length]", "value", "dfc-generated"]
@@ -567,7 +567,7 @@ extensions:
       - ["lang:alloc", "crate::str::convert_while_ascii", "Argument[0]", "Argument[1]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["lang:alloc", "<[_]>::sort", "Argument[self]", "pointer-access", "df-generated"]
       - ["lang:alloc", "<[_]>::sort_by", "Argument[self]", "pointer-access", "df-generated"]
@@ -703,6 +703,6 @@ extensions:
       - ["lang:alloc", "crate::collections::btree::mem::take_mut", "Argument[0]", "pointer-access", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModel
+      extensible: sourceModelDeprecated
     data:
       - ["lang:alloc", "<crate::rc::UniqueRc as crate::ops::drop::Drop>::drop", "Argument[self]", "pointer-invalidate", "df-generated"]

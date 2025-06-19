@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModel
+      extensible: sourceModelDeprecated
     data:
       - ["repo:https://github.com/hyperium/hyper:hyper", "<crate::client::conn::http1::SendRequest>::send_request", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "remote", "manual"]
       - ["repo:https://github.com/hyperium/hyper:hyper", "<crate::client::conn::http2::SendRequest>::send_request", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "remote", "manual"]

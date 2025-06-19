@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/tokio-rs/tokio:tokio-util", "<crate::Op as crate::convert::From>::from", "Argument[0]", "ReturnValue.Field[length_delimited::Op::Data(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio-util", "<crate::codec::any_delimiter_codec::AnyDelimiterCodec>::max_length", "Argument[self].Field[tokio_util::codec::any_delimiter_codec::AnyDelimiterCodec::max_length]", "ReturnValue", "value", "dfc-generated"]
@@ -260,7 +260,7 @@ extensions:
       - ["repo:https://github.com/tokio-rs/tokio:tokio-util", "<crate::udp::frame::UdpFramed>::read_buffer_mut", "Argument[self].Field[tokio_util::udp::frame::UdpFramed::rd]", "ReturnValue.Reference", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/tokio-rs/tokio:tokio-util", "<crate::Mock as crate::io::Write>::write", "Argument[0]", "log-injection", "df-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio-util", "<crate::Mock as crate::io::async_read::AsyncRead>::poll_read", "Argument[1]", "log-injection", "df-generated"]

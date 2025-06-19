@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/libc:libc", "<crate::unix::linux_like::linux::gnu::__c_anonymous_ptrace_syscall_info_data as crate::clone::Clone>::clone", "Argument[self].Reference", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/rust-lang/libc:libc", "<crate::unix::linux_like::linux::gnu::sifields_sigchld as crate::clone::Clone>::clone", "Argument[self].Reference", "ReturnValue", "value", "dfc-generated"]

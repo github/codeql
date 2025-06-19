@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["lang:proc_macro", "<&[u8] as crate::bridge::Mark>::mark", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["lang:proc_macro", "<&[u8] as crate::bridge::Unmark>::unmark", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
@@ -128,7 +128,7 @@ extensions:
       - ["lang:proc_macro", "crate::bridge::client::state::with", "Argument[0].ReturnValue", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["lang:proc_macro", "<crate::Ident>::new", "Argument[0]", "log-injection", "df-generated"]
       - ["lang:proc_macro", "<crate::Ident>::new_raw", "Argument[0]", "log-injection", "df-generated"]

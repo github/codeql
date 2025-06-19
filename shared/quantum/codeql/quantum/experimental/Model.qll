@@ -597,8 +597,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     newtype TSignatureAlgorithmType =
       DSA() or
       ECDSA() or
-      Ed25519() or
-      Ed448() or
+      EDDSA() or // e.g., ED25519 or ED448
       OtherSignatureAlgorithmType()
 
     newtype TKEMAlgorithmType =
@@ -703,9 +702,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       type = TSignature(ECDSA()) and name = "ECDSA"
       or
-      type = TSignature(Ed25519()) and name = "Ed25519"
-      or
-      type = TSignature(Ed448()) and name = "Ed448"
+      type = TSignature(EDDSA()) and name = "EDSA"
       or
       type = TSignature(OtherSignatureAlgorithmType()) and name = "UnknownSignature"
       or
@@ -804,6 +801,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * verification operation.
      */
     abstract ConsumerInputDataFlowNode getSignatureConsumer();
+
+    /**
+     * Gets the consumer of a hash algorithm.
+     * This is intended for signature operations they are explicitly configured
+     * with a hash algorithm. If a signature is not configured with an explicit
+     * hash algorithm, users do not need to provide a consumer (set none()).
+     */
+    abstract AlgorithmValueConsumer getHashAlgorithmValueConsumer();
   }
 
   /**
@@ -955,14 +960,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the type of this MAC algorithm, e.g., "HMAC" or "CMAC".
      */
-    abstract TMACType getMACType();
+    abstract TMACType getMacType();
 
     /**
      * Gets the isolated name as it appears in source, e.g., "HMAC-SHA256" in "HMAC-SHA256/UnrelatedInformation".
      *
      * This name should not be parsed or formatted beyond isolating the raw MAC name if necessary.
      */
-    abstract string getRawMACAlgorithmName();
+    abstract string getRawMacAlgorithmName();
   }
 
   abstract class MACOperationInstance extends OperationInstance {
@@ -978,7 +983,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   abstract class HMACAlgorithmInstance extends MACAlgorithmInstance {
-    HMACAlgorithmInstance() { this.getMACType() instanceof THMAC }
+    HMACAlgorithmInstance() { this.getMacType() instanceof THMAC }
 
     /**
      * Gets the hash algorithm used by this HMAC algorithm.
@@ -1054,7 +1059,11 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     digestLength = 512 // TODO: verify
   }
 
-  abstract private class KeyCreationOperationInstance extends OperationInstance {
+  /**
+   * Users should not extend this class directly, but instead use
+   * `KeyCreationOperationInstance` or `KeyDerivationOperationInstance`.
+   */
+  abstract class KeyCreationOperationInstance extends OperationInstance {
     abstract string getKeyCreationTypeDescription();
 
     /**
@@ -1657,14 +1666,19 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result = this.getAKnownAlgorithm() or
       result =
         instance
-            .(KeyCreationOperationInstance)
+            .(KeyArtifactOutputInstance)
+            .getCreator()
             .getAnAlgorithmValueConsumer()
             .getAGenericSourceNode()
     }
 
     KeyCreationCandidateAlgorithmNode getAKnownAlgorithm() {
       result =
-        instance.(KeyCreationOperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode()
+        instance
+            .(KeyArtifactOutputInstance)
+            .getCreator()
+            .getAnAlgorithmValueConsumer()
+            .getAKnownSourceNode()
     }
 
     override NodeBase getChild(string edgeName) {
@@ -1730,6 +1744,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override string getInternalType() { result = instance.getKeyCreationTypeDescription() }
 
+    NodeBase getAKeySizeSource() {
+      result = instance.getKeySizeConsumer().getConsumer().getAGenericSourceNode()
+      or
+      result = instance.getKeySizeConsumer().getConsumer().getAKnownSourceNode()
+    }
+
     /**
      * Gets the key artifact produced by this operation.
      */
@@ -1794,17 +1814,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override LocatableElement asElement() { result = instance }
 
     final override string getRawAlgorithmName() {
-      result = instance.asAlg().getRawMACAlgorithmName()
+      result = instance.asAlg().getRawMacAlgorithmName()
     }
 
-    TMACType getMACType() { result = instance.asAlg().getMACType() }
+    TMACType getMacType() { result = instance.asAlg().getMacType() }
 
     final private predicate macToNameMapping(TMACType type, string name) {
       type instanceof THMAC and
       name = "HMAC"
     }
 
-    override string getAlgorithmName() { this.macToNameMapping(this.getMACType(), result) }
+    override string getAlgorithmName() { this.macToNameMapping(this.getMacType(), result) }
   }
 
   final class HMACAlgorithmNode extends MACAlgorithmNode {
@@ -2130,6 +2150,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       key = "Key" and
       if exists(this.getAKey()) then result = this.getAKey() else result = this
     }
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      key = "KeyOperationSubtype" and
+      value = this.getKeyOperationSubtype().toString() and
+      location = this.getLocation()
+    }
   }
 
   class CipherOperationNode extends KeyOperationNode {
@@ -2172,15 +2200,25 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result.asElement() = instance.getSignatureConsumer().getConsumer()
     }
 
+    HashAlgorithmNode getHashAlgorithm() {
+      result = instance.getHashAlgorithmValueConsumer().getAKnownSourceNode()
+    }
+
     override NodeBase getChild(string key) {
       result = super.getChild(key)
       or
       // [KNOWN_OR_UNKNOWN] - only if we know the type is verify
       this.getKeyOperationSubtype() = TVerifyMode() and
       key = "Signature" and
-      if exists(this.getASignatureArtifact())
-      then result = this.getASignatureArtifact()
-      else result = this
+      (
+        if exists(this.getASignatureArtifact())
+        then result = this.getASignatureArtifact()
+        else result = this
+      )
+      or
+      // [KNOWN_OR_UNKNOWN]
+      key = "HashAlgorithm" and
+      (if exists(this.getHashAlgorithm()) then result = this.getHashAlgorithm() else result = this)
     }
   }
 
