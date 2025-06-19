@@ -227,7 +227,7 @@ fn test_operator_overloading() {
 
     let a = MyInt { value: source(28) };
     let c = *a;
-    sink(c); // $ MISSING: hasValueFlow=28
+    sink(c); // $ hasTaintFlow=28 MISSING: hasValueFlow=28
 }
 
 trait MyTrait {

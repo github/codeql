@@ -5,3 +5,9 @@ multipleMethodCallTargets
 | test_logging.rs:78:22:78:38 | password.as_str() | file://:0:0:0:0 | fn as_str |
 | test_logging.rs:88:18:88:34 | password.as_str() | file://:0:0:0:0 | fn as_str |
 | test_logging.rs:88:18:88:34 | password.as_str() | file://:0:0:0:0 | fn as_str |
+| test_logging.rs:103:12:103:44 | ... .write_fmt(...) | file://:0:0:0:0 | fn write_fmt |
+| test_logging.rs:103:12:103:44 | ... .write_fmt(...) | file://:0:0:0:0 | fn write_fmt |
+| test_logging.rs:107:14:107:46 | ... .write_fmt(...) | file://:0:0:0:0 | fn write_fmt |
+| test_logging.rs:107:14:107:46 | ... .write_fmt(...) | file://:0:0:0:0 | fn write_fmt |
+| test_logging.rs:111:12:111:44 | ... .write_fmt(...) | file://:0:0:0:0 | fn write_fmt |
+| test_logging.rs:111:12:111:44 | ... .write_fmt(...) | file://:0:0:0:0 | fn write_fmt |
