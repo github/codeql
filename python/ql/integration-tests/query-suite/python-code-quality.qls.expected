@@ -48,9 +48,9 @@ ql/python/ql/src/Expressions/WrongNumberArgumentsForFormat.ql
 ql/python/ql/src/Expressions/WrongNumberArgumentsInCall.ql
 ql/python/ql/src/Functions/ConsistentReturns.ql
 ql/python/ql/src/Functions/ExplicitReturnInInit.ql
+ql/python/ql/src/Functions/IncorrectRaiseInSpecialMethod.ql
 ql/python/ql/src/Functions/IncorrectlyOverriddenMethod.ql
 ql/python/ql/src/Functions/IncorrectlySpecifiedOverriddenMethod.ql
-ql/python/ql/src/Functions/IncorrectRaiseInSpecialMethod.ql
 ql/python/ql/src/Functions/InitIsGenerator.ql
 ql/python/ql/src/Functions/IterReturnsNonIterator.ql
 ql/python/ql/src/Functions/IterReturnsNonSelf.ql
