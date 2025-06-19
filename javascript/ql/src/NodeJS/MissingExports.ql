@@ -6,8 +6,8 @@
  * @problem.severity error
  * @id js/node/missing-exports-qualifier
  * @tags quality
- *       maintainability
- *       readability
+ *       reliability
+ *       correctness
  *       frameworks/node.js
  * @precision high
  */
