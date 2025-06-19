@@ -8,7 +8,7 @@
  * @tags quality
  *       maintainability
  *       readability
- *       external/cwe/cwe-67
+ *       external/cwe/cwe-676
  * @precision very-high
  */
 
