@@ -11,26 +11,32 @@ private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
 private import codeql.rust.dataflow.internal.FlowSummaryImpl as FlowSummary
 
-private predicate relevant(Function api) {
-  // Only include functions that have a resolved path.
-  api.hasCrateOrigin() and
-  api.hasExtendedCanonicalPath() and
-  // A canonical path can contain `;` as the syntax for array types use `;`. For
-  // instance `<[Foo; 1] as Bar>::baz`. This does not work with the shared model
-  // generator and it is not clear if this will also be the case when we move to
-  // QL created canoonical paths, so for now we just exclude functions with
-  // `;`s.
-  not exists(api.getExtendedCanonicalPath().indexOf(";")) and
-  (
-    // This excludes closures (these are not exported API endpoints) and
-    // functions without a `pub` visibility. A function can be `pub` without
-    // ultimately being exported by a crate, so this is an overapproximation.
-    api.hasVisibility()
-    or
-    // If a method implements a public trait it is exposed through the trait.
-    // We overapproximate this by including all trait method implementations.
-    exists(Impl impl | impl.hasTrait() and impl.getAssocItemList().getAssocItem(_) = api)
-  )
+private newtype TCallable =
+  TFunction(Function api, string path) {
+    path = api.getCanonicalPath() and
+    (
+      // This excludes closures (these are not exported API endpoints) and
+      // functions without a `pub` visibility. A function can be `pub` without
+      // ultimately being exported by a crate, so this is an overapproximation.
+      api.hasVisibility()
+      or
+      // If a method implements a public trait it is exposed through the trait.
+      // We overapproximate this by including all trait method implementations.
+      exists(Impl impl | impl.hasTrait() and impl.getAssocItemList().getAssocItem(_) = api)
+    )
+  }
+
+private class QualifiedCallable extends TCallable {
+  Function api;
+  string path;
+
+  QualifiedCallable() { this = TFunction(api, path) }
+
+  string toString() { result = path }
+
+  Function asFunction() { result = api }
+
+  string getCanonicalPath() { result = path }
 }
 
 module ModelGeneratorCommonInput implements
@@ -41,14 +47,14 @@ module ModelGeneratorCommonInput implements
 
   class Parameter = R::ParamBase;
 
-  class Callable = R::Callable;
+  class Callable = QualifiedCallable;
 
   class NodeExtended extends DataFlow::Node {
     Type getType() { any() }
   }
 
-  Callable getEnclosingCallable(NodeExtended node) {
-    result = node.(Node::Node).getEnclosingCallable().asCfgScope()
+  QualifiedCallable getEnclosingCallable(NodeExtended node) {
+    result.asFunction() = node.(Node::Node).getEnclosingCallable().asCfgScope()
   }
 
   predicate isRelevantType(Type t) { any() }
@@ -73,19 +79,19 @@ module ModelGeneratorCommonInput implements
   }
 
   bindingset[c]
-  string paramReturnNodeAsApproximateOutput(Callable c, DataFlowImpl::ParameterPosition pos) {
+  string paramReturnNodeAsApproximateOutput(QualifiedCallable c, DataFlowImpl::ParameterPosition pos) {
     result = paramReturnNodeAsExactOutput(c, pos)
   }
 
   bindingset[c]
-  string paramReturnNodeAsExactOutput(Callable c, DataFlowImpl::ParameterPosition pos) {
-    result = parameterExactAccess(c.getParam(pos.getPosition()))
+  string paramReturnNodeAsExactOutput(QualifiedCallable c, DataFlowImpl::ParameterPosition pos) {
+    result = parameterExactAccess(c.asFunction().getParam(pos.getPosition()))
     or
     pos.isSelf() and result = qualifierString()
   }
 
-  Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
-    result = ret.(Node::Node).getEnclosingCallable().asCfgScope()
+  QualifiedCallable returnNodeEnclosingCallable(DataFlow::Node ret) {
+    result.asFunction() = ret.(Node::Node).getEnclosingCallable().asCfgScope()
   }
 
   predicate isOwnInstanceAccessNode(DataFlowImpl::RustDataFlow::ReturnNode node) {
@@ -99,10 +105,8 @@ module ModelGeneratorCommonInput implements
     c.(SingletonContentSet).getContent() instanceof ElementContent
   }
 
-  string partialModelRow(Callable api, int i) {
-    i = 0 and result = api.(Function).getCrateOrigin() // crate
-    or
-    i = 1 and result = api.(Function).getExtendedCanonicalPath() // name
+  string partialModelRow(QualifiedCallable api, int i) {
+    i = 0 and result = min(string path | path = api.(Function).getCanonicalPath() | path)
   }
 
   string partialNeutralModelRow(Callable api, int i) { result = partialModelRow(api, i) }
