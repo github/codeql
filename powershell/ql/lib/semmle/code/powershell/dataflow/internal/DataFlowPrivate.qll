@@ -468,12 +468,12 @@ class NamedSet extends NamedSet0 {
   /** Holds if this is the empty set. */
   predicate isEmpty() { this = TEmptyNamedSet() }
 
-  /** Gets a name in this set. */
-  string getAName() { this.asNonEmpty().contains(result) }
+  /** Gets a lower-case name in this set. */
+  string getALowerCaseName() { this.asNonEmpty().contains(result) }
 
   /** Gets the textual representation of this set. */
   string toString() {
-    result = "{" + strictconcat(this.getAName(), ", ") + "}"
+    result = "{" + strictconcat(this.getALowerCaseName(), ", ") + "}"
     or
     this.isEmpty() and
     result = "{}"
@@ -566,7 +566,7 @@ private module ParameterNodes {
           f = parameter.getFunction() and
           f = ns.getAFunction() and
           name = parameter.getLowerCaseName() and
-          not name = ns.getAName() and
+          not name = ns.getALowerCaseName() and
           j =
             i -
               count(int k, Parameter p |
