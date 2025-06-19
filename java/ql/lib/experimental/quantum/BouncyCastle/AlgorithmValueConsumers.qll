@@ -22,30 +22,11 @@ class EllipticCurveStringLiteralArg extends EllipticCurveAlgorithmValueConsumer 
 }
 
 /**
- * An AVC for a signature algorithm where the algorithm is implicitly defined by
- * the constructor.
+ * An AVC representing the block cipher argument passed to an block cipher mode
+ * constructor.
  */
-abstract class SignatureAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
-  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
-
-  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
-}
-
-/**
- * An AVC for a key generation algorithm where the algorithm is implicitly
- * defined by the constructor.
- */
-abstract class KeyGenerationAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
-  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
-
-  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
-}
-
-/**
- * A block cipher argument passed to an block cipher mode constructor.
- */
-class BlockCipherAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer instanceof Expr {
-  BlockCipherAlgorithmValueConsumer() {
+class BlockCipherAlgorithmArg extends Crypto::AlgorithmValueConsumer instanceof Expr {
+  BlockCipherAlgorithmArg() {
     this = any(BlockCipherModeAlgorithmInstance mode).getBlockCipherArg()
   }
 
@@ -57,14 +38,9 @@ class BlockCipherAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer i
 }
 
 /**
- * An AVC for a block cipher mode implicitly defined by the constructor.
+ * An AVC for an algorithm that is implicitly defined by the instance.
  */
-abstract class BlockCipherModeAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer instanceof ClassInstanceExpr
-{
-  BlockCipherModeAlgorithmValueConsumer() {
-    this.getType() instanceof Modes::UnpaddedBlockCipherMode
-  }
-
+abstract class ImplicitAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
 
   override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }

@@ -1,12 +1,5 @@
-| ECDSAP256SignAndVerify.java:115:27:115:36 | Key | ECDSAP256SignAndVerify.java:57:16:57:49 | Key |
-| ECDSAP256SignAndVerify.java:115:27:115:36 | Key | ECDSAP256SignAndVerify.java:80:16:80:49 | Key |
-| ECDSAP256SignAndVerify.java:115:27:115:36 | Key | ECDSAP256SignAndVerify.java:103:16:103:49 | Key |
-| ECDSAP256SignAndVerify.java:120:30:120:38 | Key | ECDSAP256SignAndVerify.java:57:16:57:49 | Key |
-| ECDSAP256SignAndVerify.java:120:30:120:38 | Key | ECDSAP256SignAndVerify.java:80:16:80:49 | Key |
-| ECDSAP256SignAndVerify.java:120:30:120:38 | Key | ECDSAP256SignAndVerify.java:103:16:103:49 | Key |
-| Ed448SignAndVerify.java:30:31:30:40 | Key | Ed448SignAndVerify.java:21:47:21:80 | Key |
-| Ed448SignAndVerify.java:38:34:38:42 | Key | Ed448SignAndVerify.java:21:47:21:80 | Key |
-| Ed25519SignAndVerify.java:30:31:30:40 | Key | Ed25519SignAndVerify.java:21:47:21:80 | Key |
-| Ed25519SignAndVerify.java:38:34:38:42 | Key | Ed25519SignAndVerify.java:21:47:21:80 | Key |
-| LMSSignature.java:43:31:43:40 | Key | LMSSignature.java:33:47:33:74 | Key |
-| LMSSignature.java:50:32:50:40 | Key | LMSSignature.java:33:47:33:74 | Key |
+| ECDSASignAndVerify.java:57:16:57:49 | Key | secp256r1 |
+| ECDSASignAndVerify.java:80:16:80:49 | Key | secp256k1 |
+| Ed448SignAndVerify.java:21:47:21:80 | Key | Ed448 |
+| Ed25519SignAndVerify.java:21:47:21:80 | Key | Ed25519 |
+| LMSSignAndVerify.java:33:47:33:74 | Key | LMS |

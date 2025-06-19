@@ -362,7 +362,7 @@ module EllipticCurveStringLiteralToConsumerFlow {
     predicate isSource(DataFlow::Node src) { src.asExpr() instanceof StringLiteral }
 
     predicate isSink(DataFlow::Node sink) {
-      exists(EllipticCurveAlgorithmValueConsumer consumer | sink = consumer.getInputNode())
+      exists(Crypto::AlgorithmValueConsumer consumer | sink = consumer.getInputNode())
     }
 
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -374,7 +374,7 @@ module EllipticCurveStringLiteralToConsumerFlow {
   private module EllipticCurveStringLiteralToAlgorithmValueConsumerFlow =
     DataFlow::Global<EllipticCurveStringLiteralToAlgorithmValueConsumerConfig>;
 
-  EllipticCurveAlgorithmValueConsumer getConsumerFromLiteral(
+  Crypto::AlgorithmValueConsumer getConsumerFromLiteral(
     StringLiteral literal, EllipticCurveStringLiteralToAlgorithmValueConsumerFlow::PathNode src,
     EllipticCurveStringLiteralToAlgorithmValueConsumerFlow::PathNode sink
   ) {

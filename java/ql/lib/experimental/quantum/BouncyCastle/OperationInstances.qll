@@ -233,7 +233,7 @@ module Signers {
    * BouncyCastle algorithms are instantiated by calling the constructor of the
    * corresponding class, which also represents the algorithm instance.
    */
-  private class SignerNewCall = SignatureAlgorithmInstance;
+  private class SignerNewCall = ImplicitSignatureClassInstanceExpr;
 
   /**
    * The type is instantiated by a constructor call and initialized by a call to
@@ -389,7 +389,17 @@ module Generators {
    * BouncyCastle algorithms are instantiated by calling the constructor of the
    * corresponding class, which also represents the algorithm instance.
    */
-  private class KeyGeneratorNewCall = KeyGenerationAlgorithmInstance;
+  private class KeyGeneratorNewCall extends ClassInstanceExpr {
+    KeyGeneratorNewCall() { this.getConstructedType() instanceof KeyGenerator }
+
+    // Used for data flow from elliptic curve string literals to the algorithm
+    // instance.
+    DataFlow::Node getParametersInput() { none() }
+
+    // Used for data flow from elliptic curve string literals to the algorithm
+    // instance.
+    DataFlow::Node getEllipticCurveInput() { none() }
+  }
 
   /**
    * A call to a key generator `init()` method.
@@ -414,7 +424,8 @@ module Generators {
 
     KeyGeneratorUseCall() { this = gen.getAUseCall() }
 
-    // Since key generators don't have `update()` methods, this is always false.
+    // This is used to define the `NewToInitToUse` data flow. Since key
+    // generators don't have `update()` methods, this is always false.
     predicate isIntermediate() { none() }
 
     Crypto::KeyArtifactType getKeyType() { result = gen.getKeyType() }
@@ -422,10 +433,10 @@ module Generators {
     Expr getOutput() { result = this }
   }
 
-  module KeyGeneratorFlow =
+  private module KeyGeneratorFlow =
     NewToInitToUseFlow<KeyGeneratorNewCall, KeyGeneratorInitCall, KeyGeneratorUseCall>;
 
-  module ParametersFlow =
+  private module ParametersFlow =
     ParametersToInitFlow<Params::ParametersInstantiation, KeyGeneratorInitCall>;
 
   /**
@@ -436,8 +447,12 @@ module Generators {
   class KeyGenerationOperationInstance extends Crypto::KeyGenerationOperationInstance instanceof KeyGeneratorUseCall
   {
     override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-      // The algorithm is implicitly defined by the key generator type, which is
-      // determined by the constructor call.
+      // For most Bouncy Castle key generators, the algorithm is implicitly
+      // defined by the type, and so we use the constructor call to represent
+      // the AVC.
+      //
+      // TODO: Avoid using data flow for this and use the operation instance to
+      // represent the AVC and algorithm instance whenever it makes sense.
       result = KeyGeneratorFlow::getNewFromUse(this, _, _)
     }
 
@@ -448,7 +463,14 @@ module Generators {
     override Crypto::KeyArtifactType getOutputKeyType() { result = super.getKeyType() }
 
     override int getKeySizeFixed() {
-      result = KeyGeneratorFlow::getNewFromUse(this, _, _).getKeySizeFixed()
+      // Either the algorithm is a key operation algorithm or an elliptic curve.
+      // For elliptic curve, the key size depends on the curve, so we don't
+      // return anything.
+      result =
+        this.getAnAlgorithmValueConsumer()
+            .getAKnownAlgorithmSource()
+            .(Crypto::KeyOperationAlgorithmInstance)
+            .getKeySizeFixed()
     }
 
     override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
@@ -459,6 +481,25 @@ module Generators {
       exists(KeyGeneratorInitCall init |
         init = KeyGeneratorFlow::getInitFromUse(this, _, _) and
         result = ParametersFlow::getParametersFromInit(init, _, _)
+      )
+    }
+  }
+
+  /**
+   * A generic elliptic curve key generation operation using `ECKeyPairGenerator`.
+   */
+  class EllipticCurveKeyGenerationOperationInstance extends KeyGenerationOperationInstance instanceof KeyGeneratorUseCall
+  {
+    EllipticCurveKeyGenerationOperationInstance() {
+      super.getQualifier().getType().getName().matches("EC%")
+    }
+
+    // We attempt to resolve the elliptic curve algorithm from the
+    // `KeyGenerationParameters` argument to `init()`.
+    override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
+      exists(KeyGeneratorInitCall init |
+        init = KeyGeneratorFlow::getInitFromUse(this, _, _) and
+        result = ParametersFlow::getParametersFromInit(init, _, _).getAnAlgorithmValueConsumer()
       )
     }
   }

@@ -10,12 +10,12 @@ private import FlowAnalysis
 class EllipticCurveStringLiteralInstance extends Crypto::EllipticCurveInstance instanceof StringLiteral
 {
   EllipticCurveStringLiteralInstance() {
-    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getValue().toUpperCase(), _, _)
+    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(super.getValue().toUpperCase(), _, _)
   }
 
   override string getRawEllipticCurveName() { result = super.getValue() }
 
-  EllipticCurveAlgorithmValueConsumer getConsumer() {
+  Crypto::AlgorithmValueConsumer getConsumer() {
     result = EllipticCurveStringLiteralToConsumerFlow::getConsumerFromLiteral(this, _, _)
   }
 
@@ -31,31 +31,14 @@ class EllipticCurveStringLiteralInstance extends Crypto::EllipticCurveInstance i
 }
 
 /**
- * An elliptic curve algorithm where the elliptic curve is implicitly defined by
- * the underlying type.
+ * A signature algorithm instance where the algorithm is implicitly defined by
+ * the constructed type.
  */
-abstract class KnownEllipticCurveInstance extends Crypto::EllipticCurveInstance,
-  Crypto::EllipticCurveConsumingAlgorithmInstance, Crypto::AlgorithmValueConsumer instanceof ClassInstanceExpr
+class ImplicitSignatureClassInstanceExpr extends Crypto::KeyOperationAlgorithmInstance,
+  ImplicitAlgorithmValueConsumer instanceof ClassInstanceExpr
 {
-  override Crypto::TEllipticCurveType getEllipticCurveType() {
-    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName().toUpperCase(),
-      _, result)
-  }
+  ImplicitSignatureClassInstanceExpr() { super.getConstructedType() instanceof Signers::Signer }
 
-  override int getKeySize() {
-    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName().toUpperCase(),
-      result, _)
-  }
-
-  override Crypto::AlgorithmValueConsumer getEllipticCurveConsumer() { result = this }
-}
-
-/**
- * A signature algorithm where the algorithm is implicitly defined by the type.
- */
-abstract class SignatureAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance,
-  SignatureAlgorithmValueConsumer instanceof ClassInstanceExpr
-{
   override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
 
   override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
@@ -63,142 +46,17 @@ abstract class SignatureAlgorithmInstance extends Crypto::KeyOperationAlgorithmI
   override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
 
   override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
-    signatureNameToKeySizeAndAlgorithmMapping(this.getRawAlgorithmName(), _, result)
+    signatureNameToAlgorithmMapping(this.getRawAlgorithmName(), result)
   }
 
   override int getKeySizeFixed() {
-    signatureNameToKeySizeAndAlgorithmMapping(this.getRawAlgorithmName(), result, _)
+    signatureNameToKeySizeMapping(this.getRawAlgorithmName(), result)
   }
 
   override string getRawAlgorithmName() {
     typeNameToRawAlgorithmNameMapping(super.getConstructedType().getName(), result)
   }
 
-  // Used for data flow from elliptic curve string literals to the algorithm
-  DataFlow::Node getParametersInput() { none() }
-
-  // Used for data flow from elliptic curve string literals to the algorithm
-  DataFlow::Node getEllipticCurveInput() { none() }
-}
-
-/**
- * An elliptic curve signature algorithm where both the signature algorithm and
- * elliptic curve are implicitly defined by the underlying type.
- */
-abstract class KnownEllipticCurveSignatureAlgorithmInstance extends KnownEllipticCurveInstance,
-  SignatureAlgorithmInstance
-{
-  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
-
-  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
-}
-
-/**
- * A DSA or DSADigest signer.
- */
-class DsaSignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceof ClassInstanceExpr {
-  DsaSignatureAlgorithmInstance() {
-    super.getConstructedType() instanceof Signers::Signer and
-    super.getConstructedType().getName().matches("DSA%")
-  }
-
-  override string getRawAlgorithmName() {
-    typeNameToRawAlgorithmNameMapping(super.getConstructedType().getName(), result)
-  }
-}
-
-/**
- * An Ed25519, Ed25519ph, or Ed25519ctx signer.
- */
-class Ed25519SignatureAlgorithmInstance extends KnownEllipticCurveSignatureAlgorithmInstance instanceof ClassInstanceExpr
-{
-  Ed25519SignatureAlgorithmInstance() {
-    super.getConstructedType() instanceof Signers::Signer and
-    super.getConstructedType().getName().matches("Ed25519%")
-  }
-
-  override string getRawAlgorithmName() {
-    typeNameToRawAlgorithmNameMapping(super.getConstructedType().getName(), result)
-  }
-
-  override string getRawEllipticCurveName() { result = "Curve25519" }
-}
-
-/**
- * An Ed448 or Ed448ph signer.
- */
-class Ed448SignatureAlgorithmInstance extends KnownEllipticCurveSignatureAlgorithmInstance instanceof ClassInstanceExpr
-{
-  Ed448SignatureAlgorithmInstance() {
-    super.getConstructedType() instanceof Signers::Signer and
-    super.getConstructedType().getName().matches("Ed448%")
-  }
-
-  override string getRawAlgorithmName() {
-    typeNameToRawAlgorithmNameMapping(super.getConstructedType().getName(), result)
-  }
-
-  override string getRawEllipticCurveName() { result = "Curve448" }
-}
-
-/**
- * An ECDSA signer.
- *
- * ECDSA curve parameters can be set in at least five ways:
- * - By using the `ECDomainParameters` class, which is passed to the constructor of the signer.
- * - By using the `ECNamedDomainParameters` class, which is passed to the constructor of the signer.
- * - By using the `ECNamedCurveTable` class, which is used to obtain the curve parameters.
- * - By using the `ECNamedCurveSpec` class, which is passed to the constructor of the signer.
- * - By using the `ECParameterSpec` class, which is passed to the constructor of the signer.
- */
-class EcdsaSignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceof ClassInstanceExpr
-{
-  EcdsaSignatureAlgorithmInstance() {
-    super.getConstructedType() instanceof Signers::OneShotSigner and
-    super.getConstructedType().getName().matches("ECDSA%")
-  }
-
-  override string getRawAlgorithmName() {
-    typeNameToRawAlgorithmNameMapping(super.getConstructedType().getName(), result)
-  }
-
-  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
-    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::ECDSA())
-  }
-
-  override int getKeySizeFixed() { none() }
-}
-
-/**
- * An LMS or HSS stateful, hash-based signer.
- */
-class StatefulSignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceof ClassInstanceExpr
-{
-  StatefulSignatureAlgorithmInstance() {
-    super.getConstructedType() instanceof Signers::Signer and
-    super.getConstructedType().getName().matches(["LMS%", "HSS%"])
-  }
-
-  override string getRawAlgorithmName() {
-    typeNameToRawAlgorithmNameMapping(super.getConstructedType().getName(), result)
-  }
-
-  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
-    super.getConstructedType().getName().matches("LMS%") and
-    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::LMS())
-    or
-    super.getConstructedType().getName().matches("HSS%") and
-    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::HSS())
-  }
-}
-
-/**
- * A key generation algorithm where the algorithm is implicitly defined by the
- * type.
- */
-abstract class KeyGenerationAlgorithmInstance extends Crypto::AlgorithmInstance,
-  KeyGenerationAlgorithmValueConsumer instanceof ClassInstanceExpr
-{
   // Used for data flow from elliptic curve string literals to the algorithm
   // instance.
   DataFlow::Node getParametersInput() { none() }
@@ -206,84 +64,45 @@ abstract class KeyGenerationAlgorithmInstance extends Crypto::AlgorithmInstance,
   // Used for data flow from elliptic curve string literals to the algorithm
   // instance.
   DataFlow::Node getEllipticCurveInput() { none() }
+}
 
-  string getRawAlgorithmName() {
+/**
+ * A key generation algorithm instance where algorithm is a key operation (e.g.
+ * a signature algorithm) implicitly defined by the constructed type.
+ */
+class ImplicitKeyGenerationClassInstanceExpr extends Crypto::KeyOperationAlgorithmInstance,
+  ImplicitAlgorithmValueConsumer instanceof ClassInstanceExpr
+{
+  ImplicitKeyGenerationClassInstanceExpr() {
+    super.getConstructedType() instanceof Generators::KeyGenerator and
+    super.getConstructedType().getName().matches(["Ed25519%", "Ed448%", "LMS%", "HSS%"])
+  }
+
+  override string getRawAlgorithmName() {
     typeNameToRawAlgorithmNameMapping(super.getConstructedType().getName(), result)
   }
 
-  int getKeySizeFixed() {
-    generatorNameToKeySizeAndAlgorithmMapping(this.getRawAlgorithmName(), result, _)
-  }
-}
+  override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
 
-/**
- * An elliptic curve key generation algorithm where both the key generation
- * algorithm and elliptic curve are implicitly defined by the underlying type.
- */
-abstract class KnownEllipticCurveKeyGenerationAlgorithmInstance extends KnownEllipticCurveInstance,
-  KeyGenerationAlgorithmInstance
-{
-  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
+  override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
 
-  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
-}
+  override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
 
-class Ed25519KeyGenerationAlgorithmInstance extends KnownEllipticCurveKeyGenerationAlgorithmInstance instanceof ClassInstanceExpr
-{
-  Ed25519KeyGenerationAlgorithmInstance() {
-    super.getConstructedType() instanceof Generators::KeyGenerator and
-    super.getConstructedType().getName().matches("Ed25519%")
+  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    generatorNameToAlgorithmMapping(this.getRawAlgorithmName(), result)
   }
 
-  override string getRawEllipticCurveName() { result = "Curve25519" }
-}
-
-class Ed448KeyGenerationAlgorithmInstance extends KnownEllipticCurveKeyGenerationAlgorithmInstance instanceof ClassInstanceExpr
-{
-  Ed448KeyGenerationAlgorithmInstance() {
-    super.getConstructedType() instanceof Generators::KeyGenerator and
-    super.getConstructedType().getName().matches("Ed448%")
+  override int getKeySizeFixed() {
+    generatorNameToKeySizeMapping(this.getRawAlgorithmName(), result)
   }
 
-  override string getRawEllipticCurveName() { result = "Curve448" }
-}
+  // Used for data flow from elliptic curve string literals to the algorithm
+  // instance.
+  DataFlow::Node getParametersInput() { none() }
 
-/**
- * A generic `ECKeyPairGenerator` instance.
- */
-class GenericEllipticCurveKeyGenerationAlgorithmInstance extends KeyGenerationAlgorithmInstance,
-  Crypto::EllipticCurveConsumingAlgorithmInstance instanceof ClassInstanceExpr
-{
-  GenericEllipticCurveKeyGenerationAlgorithmInstance() {
-    super.getConstructedType() instanceof Generators::KeyGenerator and
-    super.getConstructedType().getName().matches("EC%")
-  }
-
-  override Crypto::AlgorithmValueConsumer getEllipticCurveConsumer() {
-    // The elliptic curve is resolved recursively from the parameters passed to
-    // the `init()` call.
-    exists(MethodCall init |
-      init = Generators::KeyGeneratorFlow::getInitFromNew(this, _, _) and
-      result =
-        Generators::ParametersFlow::getParametersFromInit(init, _, _).getAnAlgorithmValueConsumer()
-    )
-  }
-
-  Crypto::EllipticCurveInstance getConsumedEllipticCurve() {
-    result = this.getEllipticCurveConsumer().getAKnownAlgorithmSource()
-  }
-}
-
-/**
- * An LMS or HSS key generation instances. The algorithm is implicitly defined
- * by the type.
- */
-class StatefulSignatureKeyGenerationAlgorithmInstance extends KeyGenerationAlgorithmInstance instanceof ClassInstanceExpr
-{
-  StatefulSignatureKeyGenerationAlgorithmInstance() {
-    super.getConstructedType() instanceof Generators::KeyGenerator and
-    super.getConstructedType().getName().matches(["LMS%", "HSS%"])
-  }
+  // Used for data flow from elliptic curve string literals to the algorithm
+  // instance.
+  DataFlow::Node getEllipticCurveInput() { none() }
 }
 
 /**
@@ -335,7 +154,7 @@ class BlockCipherAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance
  * A block cipher mode instance.
  */
 class BlockCipherModeAlgorithmInstance extends Crypto::ModeOfOperationAlgorithmInstance,
-  BlockCipherModeAlgorithmValueConsumer instanceof ClassInstanceExpr
+  ImplicitAlgorithmValueConsumer instanceof ClassInstanceExpr
 {
   BlockCipherModeAlgorithmInstance() {
     super.getConstructedType() instanceof Modes::UnpaddedBlockCipherMode
@@ -394,6 +213,10 @@ private predicate typeNameToRawAlgorithmNameMapping(string typeName, string algo
   // ECDSA
   typeName.matches("ECDSA%") and
   algorithmName = "ECDSA"
+  or
+  // DSA
+  typeName.matches("DSA%") and
+  algorithmName = "DSA"
   or
   // LMS
   typeName.matches("LMS%") and
@@ -464,45 +287,72 @@ private predicate paddingNameToTypeMapping(string paddingName, Crypto::TPaddingT
   paddingType = Crypto::OtherPadding()
 }
 
-private predicate signatureNameToKeySizeAndAlgorithmMapping(
-  string name, int keySize, Crypto::KeyOpAlg::Algorithm algorithm
+private predicate signatureNameToAlgorithmMapping(
+  string signatureName, Crypto::KeyOpAlg::Algorithm algorithmType
 ) {
-  name = "Ed25519" and
-  keySize = 256 and
-  algorithm = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed25519())
+  signatureName = "Ed25519" and
+  algorithmType = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed25519())
   or
-  name = "Ed448" and
-  keySize = 448 and
-  algorithm = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed448())
+  signatureName = "Ed448" and
+  algorithmType = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed448())
+  or
+  signatureName = "ECDSA" and
+  algorithmType = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::ECDSA())
+  or
+  signatureName = "LMS" and
+  algorithmType = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::LMS())
+  or
+  signatureName = "HSS" and
+  algorithmType = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::HSS())
 }
 
-private predicate generatorNameToKeySizeAndAlgorithmMapping(
-  string name, int keySize, Crypto::KeyOpAlg::Algorithm algorithm
-) {
-  name = "Ed25519" and
-  keySize = 256 and
-  algorithm = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed25519())
+private predicate signatureNameToKeySizeMapping(string signatureName, int keySize) {
+  signatureName = "Ed25519" and
+  keySize = 256
   or
-  name = "Ed448" and
-  keySize = 448 and
-  algorithm = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed448())
+  signatureName = "Ed448" and
+  keySize = 448
+}
+
+private predicate generatorNameToAlgorithmMapping(
+  string generatorName, Crypto::KeyOpAlg::Algorithm algorithmType
+) {
+  generatorName = "Ed25519" and
+  algorithmType = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed25519())
+  or
+  generatorName = "Ed448" and
+  algorithmType = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed448())
+  or
+  generatorName = "LMS" and
+  algorithmType = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::LMS())
+  or
+  generatorName = "HSS" and
+  algorithmType = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::HSS())
+}
+
+private predicate generatorNameToKeySizeMapping(string generatorName, int keySize) {
+  generatorName = "Ed25519" and
+  keySize = 256
+  or
+  generatorName = "Ed448" and
+  keySize = 448
 }
 
 private predicate blockCipherNameToAlgorithmMapping(
-  string name, Crypto::KeyOpAlg::Algorithm algorithm
+  string cipherName, Crypto::KeyOpAlg::Algorithm algorithmType
 ) {
-  name = "AES" and
-  algorithm = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES())
+  cipherName = "AES" and
+  algorithmType = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES())
   or
-  name = "Aria" and
-  algorithm = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::ARIA())
+  cipherName = "Aria" and
+  algorithmType = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::ARIA())
   or
-  name = "Blowfish" and
-  algorithm = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::BLOWFISH())
+  cipherName = "Blowfish" and
+  algorithmType = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::BLOWFISH())
   or
-  name = "DES" and
-  algorithm = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::DES())
+  cipherName = "DES" and
+  algorithmType = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::DES())
   or
-  name = "TripleDES" and
-  algorithm = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::TripleDES())
+  cipherName = "TripleDES" and
+  algorithmType = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::TripleDES())
 }

@@ -16,7 +16,7 @@ import java.security.Security;
  * low-level API.
  * 
  */
-public class LMSSignature {
+public class LMSSignAndVerify {
     public static void main(String[] args) {
         Security.addProvider(new BouncyCastleProvider());
         
@@ -37,18 +37,15 @@ public class LMSSignature {
             
             byte[] message = "Hello, LMS signature!".getBytes("UTF-8");
             
-            LMSSigner signer = new LMSSigner();
-            
             // Sign the message
+            LMSSigner signer = new LMSSigner();
             signer.init(true, privateKey); // true for signing
             byte[] signature = signer.generateSignature(message);
             
             // Verify the signature
-            //
-            // TODO: Using the same signer instance for verification causes both
-            // keys to be reported. This should be handled using dataflow.
-            signer.init(false, publicKey);   
-            boolean verified = signer.verifySignature(message, signature);
+            LMSSigner verifier = new LMSSigner();
+            verifier.init(false, publicKey);   
+            boolean verified = verifier.verifySignature(message, signature);
             
             System.out.println("Signature verified: " + verified);
         } catch (Exception e) {

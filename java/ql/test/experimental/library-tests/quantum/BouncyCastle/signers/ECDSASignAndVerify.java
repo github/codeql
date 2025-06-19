@@ -21,14 +21,14 @@ import org.bouncycastle.math.ec.ECPoint;
 /**
  * Test Bouncy Castle's low-level ECDSA API
  */
-public class ECDSAP256SignAndVerify {
+public class ECDSASignAndVerify {
     
     public static void main(String[] args) {
         // Add Bouncy Castle provider
         Security.addProvider(new BouncyCastleProvider());
         
         try {
-            byte[] message = "Hello, ECDSA P-256 signature!".getBytes("UTF-8");
+            byte[] message = "Hello, ECDSA signature!".getBytes("UTF-8");
             
             // Test different key generation methods
             signWithKeyPair(generateKeyPair1(), message);
