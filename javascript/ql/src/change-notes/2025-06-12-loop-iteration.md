@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* The `js/loop-iteration-skipped-due-to-shifting` query has been updated with `reliability` tag.
+* The `js/loop-iteration-skipped-due-to-shifting` query now has the `reliability` tag.
