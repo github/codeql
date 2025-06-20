@@ -295,7 +295,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         let name = field.method_name();
         match (node.name.as_str(), name.as_str()) {
             ("ArrayExpr", "expr") // The ArrayExpr type also has an 'exprs' field
-            | ("PathSegment", "ty" | "path_type")  // these are broken, handling them manually
+            | ("PathSegment", "type_anchor")  // we flatten TypeAnchor into PathSegment in the extractor
             | ("Param", "pat") | ("MacroCall", "token_tree") // handled manually to use `body`
             => continue,
             _ => {}
@@ -486,6 +486,9 @@ fn main() -> anyhow::Result<()> {
     let mut grammar = codegen::grammar::lower(&grammar);
 
     grammar.enums.retain(|x| x.name != "Adt");
+
+    // we flatten TypeAnchor into PathSegment in the extractor
+    grammar.nodes.retain(|x| x.name != "TypeAnchor");
 
     let mut super_types: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
     for node in &grammar.enums {
