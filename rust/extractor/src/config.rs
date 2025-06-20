@@ -52,7 +52,7 @@ pub struct Config {
     pub cargo_target: Option<String>,
     pub cargo_features: Vec<String>,
     pub cargo_cfg_overrides: Vec<String>,
-    pub cargo_extra_env: FxHashMap<String, String>,
+    pub cargo_extra_env: FxHashMap<String, Option<String>>,
     pub cargo_extra_args: Vec<String>,
     pub cargo_all_targets: bool,
     pub logging_flamegraph: Option<PathBuf>,
