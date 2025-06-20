@@ -40,6 +40,8 @@
 | main.rs:165:13:165:34 | ...::new(...) | main.rs:158:5:161:5 | fn new |
 | main.rs:165:24:165:33 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:167:5:167:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
+| main.rs:181:10:181:14 | * ... | main.rs:188:5:190:5 | fn deref |
+| main.rs:189:11:189:15 | * ... | main.rs:188:5:190:5 | fn deref |
 | main.rs:195:28:195:36 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:197:13:197:17 | ... + ... | main.rs:173:5:176:5 | fn add |
 | main.rs:198:5:198:17 | sink(...) | main.rs:5:1:7:1 | fn sink |
