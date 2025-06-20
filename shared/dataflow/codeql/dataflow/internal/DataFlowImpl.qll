@@ -744,7 +744,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             viableImplNotCallContextReducedInlineLate(call, outercc)
           }
 
-          overlay[caller]
+          overlay[caller?]
           pragma[inline]
           private predicate fwdFlowInCand(
             Call call, ArgNd arg, Cc outercc, Callable inner, ParamNd p, SummaryCtx summaryCtx,
@@ -759,7 +759,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             callEdgeArgParamRestrictedInlineLate(call, inner, arg, p, emptyAp)
           }
 
-          overlay[caller]
+          overlay[caller?]
           pragma[inline]
           private predicate fwdFlowInCandTypeFlowDisabled(
             Call call, ArgNd arg, Cc outercc, Callable inner, ParamNd p, SummaryCtx summaryCtx,
@@ -796,7 +796,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             innercc = getCallContextCall(call, inner)
           }
 
-          overlay[caller]
+          overlay[caller?]
           pragma[inline]
           predicate fwdFlowIn(
             Call call, ArgNd arg, Callable inner, ParamNd p, Cc outercc, CcCall innercc,
@@ -2326,7 +2326,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
                * For more information, see
                * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
                */
-              overlay[caller]
+              overlay[caller?]
               pragma[inline]
               deprecated final predicate hasLocationInfo(
                 string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -2530,7 +2530,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       class ApHeadContent = Unit;
 
-      overlay[caller]
+      overlay[caller?]
       pragma[inline]
       ApHeadContent getHeadContent(Ap ap) { exists(result) and ap = true }
 
