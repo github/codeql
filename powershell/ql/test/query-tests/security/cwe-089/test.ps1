@@ -78,4 +78,4 @@ $QueryConn2 = @{
     Query = $userinput
 }
 
-Invoke-Sqlcmd @QueryConn2 # BAD [NOT DETECTED]
+Invoke-Sqlcmd @QueryConn2 # BAD
