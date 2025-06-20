@@ -547,7 +547,7 @@ abstract class ImplOrTraitItemNode extends ItemNode {
 
 pragma[nomagic]
 private TypeParamItemNode resolveTypeParamPathTypeRepr(PathTypeRepr ptr) {
-  result = resolvePathFull(ptr.getPath())
+  result = resolvePath(ptr.getPath())
 }
 
 class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
@@ -555,9 +555,9 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   Path getTraitPath() { result = super.getTrait().(PathTypeRepr).getPath() }
 
-  ItemNode resolveSelfTy() { result = resolvePathFull(this.getSelfPath()) }
+  ItemNode resolveSelfTy() { result = resolvePath(this.getSelfPath()) }
 
-  TraitItemNode resolveTraitTy() { result = resolvePathFull(this.getTraitPath()) }
+  TraitItemNode resolveTraitTy() { result = resolvePath(this.getTraitPath()) }
 
   override AssocItemNode getAnAssocItem() { result = super.getAssocItemList().getAnAssocItem() }
 
@@ -781,7 +781,7 @@ class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
   }
 
   pragma[nomagic]
-  ItemNode resolveABound() { result = resolvePathFull(this.getABoundPath()) }
+  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
 
   override AssocItemNode getAnAssocItem() { result = super.getAssocItemList().getAnAssocItem() }
 
@@ -924,7 +924,7 @@ class TypeParamItemNode extends ItemNode instanceof TypeParam {
   }
 
   pragma[nomagic]
-  ItemNode resolveABound() { result = resolvePathFull(this.getABoundPath()) }
+  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
 
   /**
    * Holds if this type parameter has a trait bound. Examples:
@@ -1352,14 +1352,9 @@ private predicate pathUsesNamespace(Path p, Namespace n) {
   )
 }
 
-/**
- * Gets the item that `path` resolves to, if any.
- *
- * Whenever `path` can resolve to both a function in source code and in library
- * code, both are included
- */
-pragma[nomagic]
-private ItemNode resolvePathFull(RelevantPath path) {
+/** Gets the item that `path` resolves to, if any. */
+cached
+ItemNode resolvePath(RelevantPath path) {
   exists(Namespace ns | result = resolvePath0(path, ns) |
     pathUsesNamespace(path, ns)
     or
@@ -1369,29 +1364,8 @@ private ItemNode resolvePathFull(RelevantPath path) {
 }
 
 pragma[nomagic]
-private predicate resolvesSourceFunction(RelevantPath path) {
-  resolvePathFull(path).(Function).fromSource()
-}
-
-/** Gets the item that `path` resolves to, if any. */
-cached
-ItemNode resolvePath(RelevantPath path) {
-  result = resolvePathFull(path) and
-  (
-    // when a function exists in both source code and in library code, it is because
-    // we also extracted the source code as library code, and hence we only want
-    // the function from source code
-    result.fromSource()
-    or
-    not result instanceof Function
-    or
-    not resolvesSourceFunction(path)
-  )
-}
-
-pragma[nomagic]
 private ItemNode resolvePathQualifier(RelevantPath path, string name) {
-  result = resolvePathFull(path.getQualifier()) and
+  result = resolvePath(path.getQualifier()) and
   name = path.getText()
 }
 
@@ -1437,7 +1411,7 @@ private ItemNode resolveUseTreeListItemQualifier(
 pragma[nomagic]
 private ItemNode resolveUseTreeListItem(Use use, UseTree tree) {
   tree = use.getUseTree() and
-  result = resolvePathFull(tree.getPath())
+  result = resolvePath(tree.getPath())
   or
   result = resolveUseTreeListItem(use, tree, tree.getPath())
 }
