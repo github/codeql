@@ -4,7 +4,7 @@ inputs:
   go-test-version:
     description: Which Go version to use for running the tests
     required: false
-    default: "~1.24.0"
+    default: "1.25.0-rc.1"
   run-code-checks:
     description: Whether to run formatting, code and qhelp generation checks
     required: false
