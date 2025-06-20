@@ -6,7 +6,7 @@ import codeql.rust.dataflow.internal.ModelsAsData
 
 module InlineMadTestConfig implements InlineMadTestConfigSig {
   string getCapturedModel(Function c) {
-    exists(QualifiedCallable qc | c = qc.asFunction() | result = Heuristic::captureSource(qc))
+    exists(QualifiedCallable qc | c = qc.getFunction() | result = Heuristic::captureSource(qc))
   }
 
   string getKind() { result = "source" }

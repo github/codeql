@@ -33,7 +33,7 @@ class QualifiedCallable extends TCallable {
 
   string toString() { result = path }
 
-  R::Function asFunction() { result = api }
+  R::Function getFunction() { result = api }
 
   string getCanonicalPath() { result = path }
 }
@@ -53,7 +53,7 @@ module ModelGeneratorCommonInput implements
   }
 
   QualifiedCallable getEnclosingCallable(NodeExtended node) {
-    result.asFunction() = node.(Node::Node).getEnclosingCallable().asCfgScope()
+    result.getFunction() = node.(Node::Node).getEnclosingCallable().asCfgScope()
   }
 
   predicate isRelevantType(Type t) { any() }
@@ -84,13 +84,13 @@ module ModelGeneratorCommonInput implements
 
   bindingset[c]
   string paramReturnNodeAsExactOutput(QualifiedCallable c, DataFlowImpl::ParameterPosition pos) {
-    result = parameterExactAccess(c.asFunction().getParam(pos.getPosition()))
+    result = parameterExactAccess(c.getFunction().getParam(pos.getPosition()))
     or
     pos.isSelf() and result = qualifierString()
   }
 
   QualifiedCallable returnNodeEnclosingCallable(DataFlow::Node ret) {
-    result.asFunction() = ret.(Node::Node).getEnclosingCallable().asCfgScope()
+    result.getFunction() = ret.(Node::Node).getEnclosingCallable().asCfgScope()
   }
 
   predicate isOwnInstanceAccessNode(DataFlowImpl::RustDataFlow::ReturnNode node) {
@@ -120,7 +120,7 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
   }
 
   QualifiedCallable getAsExprEnclosingCallable(NodeExtended node) {
-    result.asFunction() = node.asExpr().getScope()
+    result.getFunction() = node.asExpr().getScope()
   }
 
   Parameter asParameter(NodeExtended node) { result = node.asParameter() }
