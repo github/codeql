@@ -40,7 +40,10 @@ module SqlInjection {
       exists(DataFlow::CallNode call | call.matchesName("Invoke-Sqlcmd") |
         this = call.getNamedArgument("query")
         or
+        this = call.getNamedArgument("inputfile")
+        or
         not call.hasNamedArgument("query") and
+        not call.hasNamedArgument("inputfile") and
         this = call.getArgument(0)
       )
     }
