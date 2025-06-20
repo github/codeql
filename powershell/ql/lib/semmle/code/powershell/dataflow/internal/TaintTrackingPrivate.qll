@@ -18,7 +18,7 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
   node instanceof ArgumentNode and
-  c.isAnyElement()
+  c.isAnyPositional()
 }
 
 cached
