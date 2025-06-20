@@ -2789,6 +2789,12 @@ const_bodies(
 );
 
 #keyset[id]
+const_generic_param_lists(
+  int id: @const ref,
+  int generic_param_list: @generic_param_list ref
+);
+
+#keyset[id]
 const_is_const(
   int id: @const ref
 );
@@ -2814,6 +2820,12 @@ const_type_reprs(
 const_visibilities(
   int id: @const ref,
   int visibility: @visibility ref
+);
+
+#keyset[id]
+const_where_clauses(
+  int id: @const ref,
+  int where_clause: @where_clause ref
 );
 
 #keyset[id]

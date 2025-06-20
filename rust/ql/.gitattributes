@@ -756,9 +756,11 @@
 /test/extractor-tests/generated/Const/Const_getBody.ql linguist-generated
 /test/extractor-tests/generated/Const/Const_getCrateOrigin.ql linguist-generated
 /test/extractor-tests/generated/Const/Const_getExtendedCanonicalPath.ql linguist-generated
+/test/extractor-tests/generated/Const/Const_getGenericParamList.ql linguist-generated
 /test/extractor-tests/generated/Const/Const_getName.ql linguist-generated
 /test/extractor-tests/generated/Const/Const_getTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/Const/Const_getVisibility.ql linguist-generated
+/test/extractor-tests/generated/Const/Const_getWhereClause.ql linguist-generated
 /test/extractor-tests/generated/ConstArg/ConstArg.ql linguist-generated
 /test/extractor-tests/generated/ConstArg/ConstArg_getExpr.ql linguist-generated
 /test/extractor-tests/generated/ConstBlockPat/ConstBlockPat.ql linguist-generated
