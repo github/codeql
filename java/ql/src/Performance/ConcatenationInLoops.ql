@@ -4,7 +4,7 @@
  *              performance.
  * @kind problem
  * @problem.severity warning
- * @precision low
+ * @precision high
  * @id java/string-concatenation-in-loop
  * @tags efficiency
  *       maintainability
