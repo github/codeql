@@ -62,6 +62,6 @@
 	if (s.matchAll("^http://test.example.com")) {} // $ Alert
 
 	const sinon = require('sinon');
-	const megacliteUrl = "https://a.b.com"; // $SPURIOUS:Alert
+	const megacliteUrl = "https://a.b.com";
 	sinon.assert.calledWith(postStub.firstCall, sinon.match(megacliteUrl));
 });

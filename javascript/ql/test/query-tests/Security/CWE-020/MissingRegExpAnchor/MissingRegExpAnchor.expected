@@ -68,4 +68,3 @@
 | tst-UnanchoredUrlRegExp.js:117:50:117:59 | "good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | tst-UnanchoredUrlRegExp.js:118:50:118:68 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | tst-UnanchoredUrlRegExp.js:119:50:119:73 | "https? ... m:8080" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
-| tst.js:4:24:4:40 | "https://a.b.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
