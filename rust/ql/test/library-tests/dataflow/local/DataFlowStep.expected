@@ -114,6 +114,8 @@ localStep
 | main.rs:89:9:89:9 | i | main.rs:89:9:89:9 | [SSA] i |
 | main.rs:89:9:89:9 | i | main.rs:89:9:89:9 | i |
 | main.rs:89:13:89:31 | ...::new(...) | main.rs:89:9:89:9 | i |
+| main.rs:90:11:90:11 | [post] receiver for i | main.rs:90:11:90:11 | [post] i |
+| main.rs:90:11:90:11 | i | main.rs:90:11:90:11 | receiver for i |
 | main.rs:97:9:97:9 | [SSA] a | main.rs:98:10:98:10 | a |
 | main.rs:97:9:97:9 | a | main.rs:97:9:97:9 | [SSA] a |
 | main.rs:97:9:97:9 | a | main.rs:97:9:97:9 | a |
@@ -732,6 +734,8 @@ localStep
 | main.rs:482:11:482:19 | vs.iter() | main.rs:482:11:482:19 | receiver for vs.iter() |
 | main.rs:482:11:482:26 | ... .next() | main.rs:482:11:482:26 | receiver for ... .next() |
 | main.rs:482:11:482:26 | [post] receiver for ... .next() | main.rs:482:11:482:26 | [post] ... .next() |
+| main.rs:482:11:482:35 | ... .unwrap() | main.rs:482:11:482:35 | receiver for ... .unwrap() |
+| main.rs:482:11:482:35 | [post] receiver for ... .unwrap() | main.rs:482:11:482:35 | [post] ... .unwrap() |
 | main.rs:483:11:483:12 | [post] receiver for vs | main.rs:483:11:483:12 | [post] vs |
 | main.rs:483:11:483:12 | [post] vs | main.rs:485:14:485:15 | vs |
 | main.rs:483:11:483:12 | vs | main.rs:483:11:483:12 | receiver for vs |
@@ -740,6 +744,8 @@ localStep
 | main.rs:483:11:483:19 | vs.iter() | main.rs:483:11:483:19 | receiver for vs.iter() |
 | main.rs:483:11:483:26 | ... .nth(...) | main.rs:483:11:483:26 | receiver for ... .nth(...) |
 | main.rs:483:11:483:26 | [post] receiver for ... .nth(...) | main.rs:483:11:483:26 | [post] ... .nth(...) |
+| main.rs:483:11:483:35 | ... .unwrap() | main.rs:483:11:483:35 | receiver for ... .unwrap() |
+| main.rs:483:11:483:35 | [post] receiver for ... .unwrap() | main.rs:483:11:483:35 | [post] ... .unwrap() |
 | main.rs:485:9:485:9 | [SSA] v | main.rs:486:14:486:14 | v |
 | main.rs:485:9:485:9 | v | main.rs:485:9:485:9 | [SSA] v |
 | main.rs:485:9:485:9 | v | main.rs:485:9:485:9 | v |
@@ -774,6 +780,8 @@ localStep
 | main.rs:497:20:497:20 | [SSA] x | main.rs:497:29:497:29 | x |
 | main.rs:497:20:497:20 | x | main.rs:497:20:497:20 | [SSA] x |
 | main.rs:497:20:497:20 | x | main.rs:497:20:497:20 | x |
+| main.rs:497:29:497:29 | [post] receiver for x | main.rs:497:29:497:29 | [post] x |
+| main.rs:497:29:497:29 | x | main.rs:497:29:497:29 | receiver for x |
 | main.rs:498:5:498:6 | [post] receiver for vs | main.rs:498:5:498:6 | [post] vs |
 | main.rs:498:5:498:6 | [post] vs | main.rs:500:14:500:15 | vs |
 | main.rs:498:5:498:6 | vs | main.rs:498:5:498:6 | receiver for vs |
@@ -784,6 +792,8 @@ localStep
 | main.rs:498:25:498:25 | [SSA] x | main.rs:498:34:498:34 | x |
 | main.rs:498:25:498:25 | x | main.rs:498:25:498:25 | [SSA] x |
 | main.rs:498:25:498:25 | x | main.rs:498:25:498:25 | x |
+| main.rs:498:34:498:34 | [post] receiver for x | main.rs:498:34:498:34 | [post] x |
+| main.rs:498:34:498:34 | x | main.rs:498:34:498:34 | receiver for x |
 | main.rs:500:9:500:9 | [SSA] v | main.rs:501:14:501:14 | v |
 | main.rs:500:9:500:9 | v | main.rs:500:9:500:9 | [SSA] v |
 | main.rs:500:9:500:9 | v | main.rs:500:9:500:9 | v |
@@ -809,6 +819,8 @@ localStep
 | main.rs:507:11:507:23 | vs_mut.iter() | main.rs:507:11:507:23 | receiver for vs_mut.iter() |
 | main.rs:507:11:507:30 | ... .next() | main.rs:507:11:507:30 | receiver for ... .next() |
 | main.rs:507:11:507:30 | [post] receiver for ... .next() | main.rs:507:11:507:30 | [post] ... .next() |
+| main.rs:507:11:507:39 | ... .unwrap() | main.rs:507:11:507:39 | receiver for ... .unwrap() |
+| main.rs:507:11:507:39 | [post] receiver for ... .unwrap() | main.rs:507:11:507:39 | [post] ... .unwrap() |
 | main.rs:508:11:508:16 | [SSA] vs_mut | main.rs:510:19:510:24 | vs_mut |
 | main.rs:508:11:508:16 | [post] receiver for vs_mut | main.rs:508:11:508:16 | [post] vs_mut |
 | main.rs:508:11:508:16 | [post] vs_mut | main.rs:510:19:510:24 | vs_mut |
@@ -818,6 +830,8 @@ localStep
 | main.rs:508:11:508:23 | vs_mut.iter() | main.rs:508:11:508:23 | receiver for vs_mut.iter() |
 | main.rs:508:11:508:30 | ... .nth(...) | main.rs:508:11:508:30 | receiver for ... .nth(...) |
 | main.rs:508:11:508:30 | [post] receiver for ... .nth(...) | main.rs:508:11:508:30 | [post] ... .nth(...) |
+| main.rs:508:11:508:39 | ... .unwrap() | main.rs:508:11:508:39 | receiver for ... .unwrap() |
+| main.rs:508:11:508:39 | [post] receiver for ... .unwrap() | main.rs:508:11:508:39 | [post] ... .unwrap() |
 | main.rs:510:5:512:5 | for ... in ... { ... } | main.rs:478:16:513:1 | { ... } |
 | main.rs:510:14:510:14 | [SSA] v | main.rs:511:14:511:14 | v |
 | main.rs:510:14:510:14 | v | main.rs:510:14:510:14 | [SSA] v |
@@ -842,6 +856,8 @@ localStep
 | main.rs:519:17:519:18 | &c | main.rs:519:9:519:13 | c_ref |
 | main.rs:523:14:523:18 | [post] c_ref | main.rs:524:11:524:15 | c_ref |
 | main.rs:523:14:523:18 | c_ref | main.rs:524:11:524:15 | c_ref |
+| main.rs:524:11:524:15 | [post] receiver for c_ref | main.rs:524:11:524:15 | [post] c_ref |
+| main.rs:524:11:524:15 | c_ref | main.rs:524:11:524:15 | receiver for c_ref |
 | main.rs:528:9:528:9 | [SSA] a | main.rs:530:10:530:10 | a |
 | main.rs:528:9:528:9 | a | main.rs:528:9:528:9 | [SSA] a |
 | main.rs:528:9:528:9 | a | main.rs:528:9:528:9 | a |
@@ -867,6 +883,7 @@ localStep
 | main.rs:577:36:577:41 | [post] MacroExpr | main.rs:577:36:577:41 | [post] ...::new(...) |
 readStep
 | main.rs:36:9:36:15 | Some(...) | {EXTERNAL LOCATION} | Some | main.rs:36:14:36:14 | _ |
+| main.rs:90:11:90:11 | [post] receiver for i | file://:0:0:0:0 | &ref | main.rs:90:11:90:11 | [post] i |
 | main.rs:90:11:90:11 | i | file://:0:0:0:0 | &ref | main.rs:90:10:90:11 | * ... |
 | main.rs:98:10:98:10 | a | file://:0:0:0:0 | tuple.0 | main.rs:98:10:98:12 | a.0 |
 | main.rs:99:10:99:10 | a | file://:0:0:0:0 | tuple.1 | main.rs:99:10:99:12 | a.1 |
@@ -981,6 +998,7 @@ readStep
 | main.rs:510:19:510:35 | vs_mut.iter_mut() | file://:0:0:0:0 | element | main.rs:510:9:510:14 | &mut ... |
 | main.rs:524:11:524:15 | c_ref | file://:0:0:0:0 | &ref | main.rs:524:10:524:15 | * ... |
 storeStep
+| main.rs:90:11:90:11 | i | file://:0:0:0:0 | &ref | main.rs:90:11:90:11 | receiver for i |
 | main.rs:97:14:97:22 | source(...) | file://:0:0:0:0 | tuple.0 | main.rs:97:13:97:26 | TupleExpr |
 | main.rs:97:25:97:25 | 2 | file://:0:0:0:0 | tuple.1 | main.rs:97:13:97:26 | TupleExpr |
 | main.rs:103:14:103:14 | 2 | file://:0:0:0:0 | tuple.0 | main.rs:103:13:103:30 | TupleExpr |
