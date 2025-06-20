@@ -1372,11 +1372,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   */
-  class VariantDef extends @variant_def, AstNode { }
-
-  /**
-   * INTERNAL: Do not use.
    * A list of variants in an enum declaration.
    *
    * For example:
@@ -3523,7 +3518,7 @@ module Raw {
    * //       ^  ^^^^^^  ^^^^^^^^^^^^
    * ```
    */
-  class Variant extends @variant, VariantDef, Addressable {
+  class Variant extends @variant, Addressable {
     override string toString() { result = "Variant" }
 
     /**
@@ -4607,7 +4602,7 @@ module Raw {
    * }
    * ```
    */
-  class Struct extends @struct, Adt, VariantDef {
+  class Struct extends @struct, Adt {
     override string toString() { result = "Struct" }
 
     /**
@@ -4650,7 +4645,7 @@ module Raw {
    * union U { f1: u32, f2: f32 }
    * ```
    */
-  class Union extends @union, Adt, VariantDef {
+  class Union extends @union, Adt {
     override string toString() { result = "Union" }
 
     /**

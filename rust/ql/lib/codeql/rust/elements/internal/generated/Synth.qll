@@ -727,8 +727,8 @@ module Synth {
         TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or TStructExprField or
         TStructExprFieldList or TStructField or TStructPatField or TStructPatFieldList or TToken or
         TTokenTree or TTupleField or TTypeBound or TTypeBoundList or TTypeRepr or
-        TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or TUseTreeList or TVariantDef or
-        TVariantList or TVisibility or TWhereClause or TWherePred;
+        TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or TUseTreeList or TVariantList or
+        TVisibility or TWhereClause or TWherePred;
 
   /**
    * INTERNAL: Do not use.
@@ -849,11 +849,6 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TUseBoundGenericArg = TLifetime or TNameRef;
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  class TVariantDef = TStruct or TUnion or TVariant;
 
   /**
    * INTERNAL: Do not use.
@@ -2056,8 +2051,6 @@ module Synth {
     or
     result = convertUseTreeListFromRaw(e)
     or
-    result = convertVariantDefFromRaw(e)
-    or
     result = convertVariantListFromRaw(e)
     or
     result = convertVisibilityFromRaw(e)
@@ -2451,18 +2444,6 @@ module Synth {
     result = convertLifetimeFromRaw(e)
     or
     result = convertNameRefFromRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TVariantDef`, if possible.
-   */
-  TVariantDef convertVariantDefFromRaw(Raw::Element e) {
-    result = convertStructFromRaw(e)
-    or
-    result = convertUnionFromRaw(e)
-    or
-    result = convertVariantFromRaw(e)
   }
 
   /**
@@ -3664,8 +3645,6 @@ module Synth {
     or
     result = convertUseTreeListToRaw(e)
     or
-    result = convertVariantDefToRaw(e)
-    or
     result = convertVariantListToRaw(e)
     or
     result = convertVisibilityToRaw(e)
@@ -4059,17 +4038,5 @@ module Synth {
     result = convertLifetimeToRaw(e)
     or
     result = convertNameRefToRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TVariantDef` to a raw DB element, if possible.
-   */
-  Raw::Element convertVariantDefToRaw(TVariantDef e) {
-    result = convertStructToRaw(e)
-    or
-    result = convertUnionToRaw(e)
-    or
-    result = convertVariantToRaw(e)
   }
 }

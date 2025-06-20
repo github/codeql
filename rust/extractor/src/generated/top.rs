@@ -3228,42 +3228,6 @@ impl From<trap::Label<UseTreeList>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
-pub struct VariantDef {
-    _unused: ()
-}
-
-impl trap::TrapClass for VariantDef {
-    fn class_name() -> &'static str { "VariantDef" }
-}
-
-impl From<trap::Label<VariantDef>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<VariantDef>) -> Self {
-        // SAFETY: this is safe because in the dbscheme VariantDef is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<VariantDef>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<VariantDef>) -> Self {
-        // SAFETY: this is safe because in the dbscheme VariantDef is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<VariantDef>> for trap::Label<Element> {
-    fn from(value: trap::Label<VariantDef>) -> Self {
-        // SAFETY: this is safe because in the dbscheme VariantDef is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
 pub struct VariantList {
     pub id: trap::TrapId<VariantList>,
     pub variants: Vec<trap::Label<Variant>>,
@@ -8646,9 +8610,9 @@ impl trap::TrapClass for Variant {
     fn class_name() -> &'static str { "Variant" }
 }
 
-impl From<trap::Label<Variant>> for trap::Label<VariantDef> {
+impl From<trap::Label<Variant>> for trap::Label<Addressable> {
     fn from(value: trap::Label<Variant>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Variant is a subclass of VariantDef
+        // SAFETY: this is safe because in the dbscheme Variant is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8676,15 +8640,6 @@ impl From<trap::Label<Variant>> for trap::Label<Locatable> {
 impl From<trap::Label<Variant>> for trap::Label<Element> {
     fn from(value: trap::Label<Variant>) -> Self {
         // SAFETY: this is safe because in the dbscheme Variant is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Variant>> for trap::Label<Addressable> {
-    fn from(value: trap::Label<Variant>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Variant is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -11551,15 +11506,6 @@ impl From<trap::Label<Struct>> for trap::Label<Addressable> {
     }
 }
 
-impl From<trap::Label<Struct>> for trap::Label<VariantDef> {
-    fn from(value: trap::Label<Struct>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Struct is a subclass of VariantDef
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 #[derive(Debug)]
 pub struct Union {
     pub id: trap::TrapId<Union>,
@@ -11660,15 +11606,6 @@ impl From<trap::Label<Union>> for trap::Label<Element> {
 impl From<trap::Label<Union>> for trap::Label<Addressable> {
     fn from(value: trap::Label<Union>) -> Self {
         // SAFETY: this is safe because in the dbscheme Union is a subclass of Addressable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Union>> for trap::Label<VariantDef> {
-    fn from(value: trap::Label<Union>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Union is a subclass of VariantDef
         unsafe {
             Self::from_untyped(value.as_untyped())
         }

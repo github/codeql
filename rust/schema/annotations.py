@@ -2062,7 +2062,7 @@ class _:
     """
 
 
-@annotate(Variant, add_bases=(Addressable,))
+@annotate(Variant, replace_bases={AstNode: Addressable})
 class _:
     """
     A variant in an enum declaration.

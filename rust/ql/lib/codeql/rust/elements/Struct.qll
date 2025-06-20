@@ -9,7 +9,6 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.FieldList
 import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.Name
-import codeql.rust.elements.VariantDef
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
