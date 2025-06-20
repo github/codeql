@@ -691,6 +691,11 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TAdt = TEnum or TStruct or TUnion;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TArrayExpr = TArrayListExpr or TArrayRepeatExpr;
 
   /**
@@ -770,9 +775,9 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TItem =
-    TConst or TEnum or TExternBlock or TExternCrate or TFunction or TImpl or TMacroCall or
-        TMacroDef or TMacroRules or TModule or TStatic or TStruct or TTrait or TTraitAlias or
-        TTypeAlias or TUnion or TUse;
+    TAdt or TConst or TExternBlock or TExternCrate or TFunction or TImpl or TMacroCall or
+        TMacroDef or TMacroRules or TModule or TStatic or TTrait or TTraitAlias or TTypeAlias or
+        TUse;
 
   /**
    * INTERNAL: Do not use.
@@ -1866,6 +1871,18 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TAdt`, if possible.
+   */
+  TAdt convertAdtFromRaw(Raw::Element e) {
+    result = convertEnumFromRaw(e)
+    or
+    result = convertStructFromRaw(e)
+    or
+    result = convertUnionFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TArrayExpr`, if possible.
    */
   TArrayExpr convertArrayExprFromRaw(Raw::Element e) {
@@ -2213,9 +2230,9 @@ module Synth {
    * Converts a raw DB element to a synthesized `TItem`, if possible.
    */
   TItem convertItemFromRaw(Raw::Element e) {
-    result = convertConstFromRaw(e)
+    result = convertAdtFromRaw(e)
     or
-    result = convertEnumFromRaw(e)
+    result = convertConstFromRaw(e)
     or
     result = convertExternBlockFromRaw(e)
     or
@@ -2235,15 +2252,11 @@ module Synth {
     or
     result = convertStaticFromRaw(e)
     or
-    result = convertStructFromRaw(e)
-    or
     result = convertTraitFromRaw(e)
     or
     result = convertTraitAliasFromRaw(e)
     or
     result = convertTypeAliasFromRaw(e)
-    or
-    result = convertUnionFromRaw(e)
     or
     result = convertUseFromRaw(e)
   }
@@ -3466,6 +3479,18 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TAdt` to a raw DB element, if possible.
+   */
+  Raw::Element convertAdtToRaw(TAdt e) {
+    result = convertEnumToRaw(e)
+    or
+    result = convertStructToRaw(e)
+    or
+    result = convertUnionToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TArrayExpr` to a raw DB element, if possible.
    */
   Raw::Element convertArrayExprToRaw(TArrayExpr e) {
@@ -3813,9 +3838,9 @@ module Synth {
    * Converts a synthesized `TItem` to a raw DB element, if possible.
    */
   Raw::Element convertItemToRaw(TItem e) {
-    result = convertConstToRaw(e)
+    result = convertAdtToRaw(e)
     or
-    result = convertEnumToRaw(e)
+    result = convertConstToRaw(e)
     or
     result = convertExternBlockToRaw(e)
     or
@@ -3835,15 +3860,11 @@ module Synth {
     or
     result = convertStaticToRaw(e)
     or
-    result = convertStructToRaw(e)
-    or
     result = convertTraitToRaw(e)
     or
     result = convertTraitAliasToRaw(e)
     or
     result = convertTypeAliasToRaw(e)
-    or
-    result = convertUnionToRaw(e)
     or
     result = convertUseToRaw(e)
   }

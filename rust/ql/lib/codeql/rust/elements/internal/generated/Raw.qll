@@ -3612,6 +3612,19 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An ADT (Abstract Data Type) definition, such as `Struct`, `Enum`, or `Union`.
+   */
+  class Adt extends @adt, Item {
+    /**
+     * Gets the `index`th derive macro expansion of this adt (0-based).
+     */
+    MacroItems getDeriveMacroExpansion(int index) {
+      adt_derive_macro_expansions(this, index, result)
+    }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A block expression. For example:
    * ```rust
    * {
@@ -3742,49 +3755,6 @@ module Raw {
      * the body), this will hold when the body was present in the original code.
      */
     predicate hasImplementation() { const_has_implementation(this) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * An enum declaration.
-   *
-   * For example:
-   * ```rust
-   * enum E {A, B(i32), C {x: i32}}
-   * ```
-   */
-  class Enum extends @enum, Item {
-    override string toString() { result = "Enum" }
-
-    /**
-     * Gets the `index`th attr of this enum (0-based).
-     */
-    Attr getAttr(int index) { enum_attrs(this, index, result) }
-
-    /**
-     * Gets the generic parameter list of this enum, if it exists.
-     */
-    GenericParamList getGenericParamList() { enum_generic_param_lists(this, result) }
-
-    /**
-     * Gets the name of this enum, if it exists.
-     */
-    Name getName() { enum_names(this, result) }
-
-    /**
-     * Gets the variant list of this enum, if it exists.
-     */
-    VariantList getVariantList() { enum_variant_lists(this, result) }
-
-    /**
-     * Gets the visibility of this enum, if it exists.
-     */
-    Visibility getVisibility() { enum_visibilities(this, result) }
-
-    /**
-     * Gets the where clause of this enum, if it exists.
-     */
-    WhereClause getWhereClause() { enum_where_clauses(this, result) }
   }
 
   /**
@@ -4275,50 +4245,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Struct. For example:
-   * ```rust
-   * struct Point {
-   *     x: i32,
-   *     y: i32,
-   * }
-   * ```
-   */
-  class Struct extends @struct, Item, VariantDef {
-    override string toString() { result = "Struct" }
-
-    /**
-     * Gets the `index`th attr of this struct (0-based).
-     */
-    Attr getAttr(int index) { struct_attrs(this, index, result) }
-
-    /**
-     * Gets the field list of this struct, if it exists.
-     */
-    FieldList getFieldList() { struct_field_lists_(this, result) }
-
-    /**
-     * Gets the generic parameter list of this struct, if it exists.
-     */
-    GenericParamList getGenericParamList() { struct_generic_param_lists(this, result) }
-
-    /**
-     * Gets the name of this struct, if it exists.
-     */
-    Name getName() { struct_names(this, result) }
-
-    /**
-     * Gets the visibility of this struct, if it exists.
-     */
-    Visibility getVisibility() { struct_visibilities(this, result) }
-
-    /**
-     * Gets the where clause of this struct, if it exists.
-     */
-    WhereClause getWhereClause() { struct_where_clauses(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A struct expression. For example:
    * ```rust
    * let first = Foo { a: 1, b: 2 };
@@ -4540,49 +4466,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A union declaration.
-   *
-   * For example:
-   * ```rust
-   * union U { f1: u32, f2: f32 }
-   * ```
-   */
-  class Union extends @union, Item, VariantDef {
-    override string toString() { result = "Union" }
-
-    /**
-     * Gets the `index`th attr of this union (0-based).
-     */
-    Attr getAttr(int index) { union_attrs(this, index, result) }
-
-    /**
-     * Gets the generic parameter list of this union, if it exists.
-     */
-    GenericParamList getGenericParamList() { union_generic_param_lists(this, result) }
-
-    /**
-     * Gets the name of this union, if it exists.
-     */
-    Name getName() { union_names(this, result) }
-
-    /**
-     * Gets the struct field list of this union, if it exists.
-     */
-    StructFieldList getStructFieldList() { union_struct_field_lists(this, result) }
-
-    /**
-     * Gets the visibility of this union, if it exists.
-     */
-    Visibility getVisibility() { union_visibilities(this, result) }
-
-    /**
-     * Gets the where clause of this union, if it exists.
-     */
-    WhereClause getWhereClause() { union_where_clauses(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A `use` statement. For example:
    * ```rust
    * use std::collections::HashMap;
@@ -4605,6 +4488,49 @@ module Raw {
      * Gets the visibility of this use, if it exists.
      */
     Visibility getVisibility() { use_visibilities(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An enum declaration.
+   *
+   * For example:
+   * ```rust
+   * enum E {A, B(i32), C {x: i32}}
+   * ```
+   */
+  class Enum extends @enum, Adt {
+    override string toString() { result = "Enum" }
+
+    /**
+     * Gets the `index`th attr of this enum (0-based).
+     */
+    Attr getAttr(int index) { enum_attrs(this, index, result) }
+
+    /**
+     * Gets the generic parameter list of this enum, if it exists.
+     */
+    GenericParamList getGenericParamList() { enum_generic_param_lists(this, result) }
+
+    /**
+     * Gets the name of this enum, if it exists.
+     */
+    Name getName() { enum_names(this, result) }
+
+    /**
+     * Gets the variant list of this enum, if it exists.
+     */
+    VariantList getVariantList() { enum_variant_lists(this, result) }
+
+    /**
+     * Gets the visibility of this enum, if it exists.
+     */
+    Visibility getVisibility() { enum_visibilities(this, result) }
+
+    /**
+     * Gets the where clause of this enum, if it exists.
+     */
+    WhereClause getWhereClause() { enum_where_clauses(this, result) }
   }
 
   /**
@@ -4669,6 +4595,93 @@ module Raw {
      * Gets the `index`th attr of this loop expression (0-based).
      */
     Attr getAttr(int index) { loop_expr_attrs(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A Struct. For example:
+   * ```rust
+   * struct Point {
+   *     x: i32,
+   *     y: i32,
+   * }
+   * ```
+   */
+  class Struct extends @struct, Adt, VariantDef {
+    override string toString() { result = "Struct" }
+
+    /**
+     * Gets the `index`th attr of this struct (0-based).
+     */
+    Attr getAttr(int index) { struct_attrs(this, index, result) }
+
+    /**
+     * Gets the field list of this struct, if it exists.
+     */
+    FieldList getFieldList() { struct_field_lists_(this, result) }
+
+    /**
+     * Gets the generic parameter list of this struct, if it exists.
+     */
+    GenericParamList getGenericParamList() { struct_generic_param_lists(this, result) }
+
+    /**
+     * Gets the name of this struct, if it exists.
+     */
+    Name getName() { struct_names(this, result) }
+
+    /**
+     * Gets the visibility of this struct, if it exists.
+     */
+    Visibility getVisibility() { struct_visibilities(this, result) }
+
+    /**
+     * Gets the where clause of this struct, if it exists.
+     */
+    WhereClause getWhereClause() { struct_where_clauses(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A union declaration.
+   *
+   * For example:
+   * ```rust
+   * union U { f1: u32, f2: f32 }
+   * ```
+   */
+  class Union extends @union, Adt, VariantDef {
+    override string toString() { result = "Union" }
+
+    /**
+     * Gets the `index`th attr of this union (0-based).
+     */
+    Attr getAttr(int index) { union_attrs(this, index, result) }
+
+    /**
+     * Gets the generic parameter list of this union, if it exists.
+     */
+    GenericParamList getGenericParamList() { union_generic_param_lists(this, result) }
+
+    /**
+     * Gets the name of this union, if it exists.
+     */
+    Name getName() { union_names(this, result) }
+
+    /**
+     * Gets the struct field list of this union, if it exists.
+     */
+    StructFieldList getStructFieldList() { union_struct_field_lists(this, result) }
+
+    /**
+     * Gets the visibility of this union, if it exists.
+     */
+    Visibility getVisibility() { union_visibilities(this, result) }
+
+    /**
+     * Gets the where clause of this union, if it exists.
+     */
+    WhereClause getWhereClause() { union_where_clauses(this, result) }
   }
 
   /**

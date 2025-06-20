@@ -16,6 +16,13 @@ class LoopingExpr(LabelableExpr):
     loop_body: optional["BlockExpr"] | child
 
 
+class Adt(Item):
+    """
+    An ADT (Abstract Data Type) definition, such as `Struct`, `Enum`, or `Union`.
+    """
+    derive_macro_expansions: list[MacroItems] | child | rust.detach
+
+
 @annotate(Module)
 @rust.doc_test_signature(None)
 class _:
@@ -1032,7 +1039,7 @@ class _:
     """
 
 
-@annotate(Enum)
+@annotate(Enum, replace_bases={Item: Adt})
 class _:
     """
     An enum declaration.
@@ -1827,7 +1834,7 @@ class _:
     """
 
 
-@annotate(Struct)
+@annotate(Struct, replace_bases={Item: Adt})
 class _:
     """
     A Struct. For example:
@@ -2006,7 +2013,7 @@ class _:
     """
 
 
-@annotate(Union)
+@annotate(Union, replace_bases={Item: Adt})
 class _:
     """
     A union declaration.

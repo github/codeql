@@ -4,9 +4,9 @@
  */
 
 private import internal.UnionImpl
+import codeql.rust.elements.Adt
 import codeql.rust.elements.Attr
 import codeql.rust.elements.GenericParamList
-import codeql.rust.elements.Item
 import codeql.rust.elements.Name
 import codeql.rust.elements.StructFieldList
 import codeql.rust.elements.VariantDef

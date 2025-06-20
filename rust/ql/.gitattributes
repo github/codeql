@@ -3,6 +3,7 @@
 /lib/codeql/rust/controlflow/internal/generated/CfgNodes.qll linguist-generated
 /lib/codeql/rust/elements/Abi.qll linguist-generated
 /lib/codeql/rust/elements/Addressable.qll linguist-generated
+/lib/codeql/rust/elements/Adt.qll linguist-generated
 /lib/codeql/rust/elements/ArgList.qll linguist-generated
 /lib/codeql/rust/elements/ArrayExpr.qll linguist-generated
 /lib/codeql/rust/elements/ArrayListExpr.qll linguist-generated
@@ -194,6 +195,7 @@
 /lib/codeql/rust/elements/YieldExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/AbiConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/AbiImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/AdtImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArgListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArgListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArrayExprInternal.qll linguist-generated
@@ -461,6 +463,7 @@
 /lib/codeql/rust/elements/internal/YieldExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Abi.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Addressable.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/Adt.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ArgList.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ArrayExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ArrayExprInternal.qll linguist-generated
@@ -778,6 +781,7 @@
 /test/extractor-tests/generated/Enum/Enum_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Enum/Enum_getAttributeMacroExpansion.ql linguist-generated
 /test/extractor-tests/generated/Enum/Enum_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Enum/Enum_getDeriveMacroExpansion.ql linguist-generated
 /test/extractor-tests/generated/Enum/Enum_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Enum/Enum_getGenericParamList.ql linguist-generated
 /test/extractor-tests/generated/Enum/Enum_getName.ql linguist-generated
@@ -1097,6 +1101,7 @@
 /test/extractor-tests/generated/Struct/Struct_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Struct/Struct_getAttributeMacroExpansion.ql linguist-generated
 /test/extractor-tests/generated/Struct/Struct_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Struct/Struct_getDeriveMacroExpansion.ql linguist-generated
 /test/extractor-tests/generated/Struct/Struct_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Struct/Struct_getFieldList.ql linguist-generated
 /test/extractor-tests/generated/Struct/Struct_getGenericParamList.ql linguist-generated
@@ -1212,6 +1217,7 @@
 /test/extractor-tests/generated/Union/Union_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Union/Union_getAttributeMacroExpansion.ql linguist-generated
 /test/extractor-tests/generated/Union/Union_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Union/Union_getDeriveMacroExpansion.ql linguist-generated
 /test/extractor-tests/generated/Union/Union_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Union/Union_getGenericParamList.ql linguist-generated
 /test/extractor-tests/generated/Union/Union_getName.ql linguist-generated
