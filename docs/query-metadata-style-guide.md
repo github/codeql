@@ -25,6 +25,7 @@ For examples of query files for the languages supported by CodeQL, visit the fol
 * [JavaScript queries](https://codeql.github.com/codeql-query-help/javascript/)
 * [Python queries](https://codeql.github.com/codeql-query-help/python/)
 * [Ruby queries](https://codeql.github.com/codeql-query-help/ruby/)
+* [Rust queries](https://codeql.github.com/codeql-query-help/rust/)
 * [Swift queries](https://codeql.github.com/codeql-query-help/swift/)
 
 ## Metadata area
@@ -162,7 +163,7 @@ In addition to the "top-level" categories, we will also add sub-categories to fu
   * `@tags readability`–for queries that detect confusing patterns that make it harder for developers to read the code.
   * `@tags useless-code`-for queries that detect functions that are never used and other instances of unused code
   * `@tags complexity`-for queries that detect patterns in the code that lead to unnecesary complexity such as unclear control flow, or high cyclomatic complexity
-  
+
 
 * `@tags reliability`–for queries that detect issues that affect whether the code will perform as expected during execution.
   * `@tags correctness`–for queries that detect incorrect program behavior or couse result in unintended outcomes.
