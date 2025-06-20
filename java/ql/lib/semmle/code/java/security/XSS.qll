@@ -1,4 +1,6 @@
 /** Provides classes to reason about Cross-site scripting (XSS) vulnerabilities. */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.frameworks.Servlets

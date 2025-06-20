@@ -2,6 +2,8 @@
  * Provides a shared interface and implementation for constructing control-flow graphs
  * (CFGs) from abstract syntax trees (ASTs).
  */
+overlay[local?]
+module;
 
 private import codeql.util.Location
 private import codeql.util.FileSystem

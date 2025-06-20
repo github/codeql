@@ -1,6 +1,8 @@
 /**
  * A language-independent library for reasoning about cryptography.
  */
+overlay[local?]
+module;
 
 import codeql.util.Location
 

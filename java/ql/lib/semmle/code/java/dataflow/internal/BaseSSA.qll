@@ -10,6 +10,8 @@
  * This is a restricted version of SSA.qll that only handles `LocalScopeVariable`s
  * in order to not depend on virtual dispatch.
  */
+overlay[local?]
+module;
 
 import java
 private import codeql.ssa.Ssa as SsaImplCommon

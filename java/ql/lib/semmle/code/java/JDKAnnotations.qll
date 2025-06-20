@@ -1,6 +1,8 @@
 /**
  * Provides classes that represent standard annotations from the JDK.
  */
+overlay[local?]
+module;
 
 import java
 

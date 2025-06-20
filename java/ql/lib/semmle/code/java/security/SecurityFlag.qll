@@ -1,6 +1,8 @@
 /**
  * Provides utility predicates to spot variable names, parameter names, and string literals that suggest deliberately insecure settings.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.controlflow.Guards
