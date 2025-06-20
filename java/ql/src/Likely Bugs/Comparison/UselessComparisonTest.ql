@@ -7,7 +7,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/constant-comparison
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       logic
  *       external/cwe/cwe-570
  *       external/cwe/cwe-571

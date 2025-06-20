@@ -134,6 +134,8 @@ private predicate isOpaqueType(Type type) {
   )
   or
   type instanceof PointerToMemberType // PTMs are missing size info
+  or
+  type instanceof ScalableVectorCount
 }
 
 /**

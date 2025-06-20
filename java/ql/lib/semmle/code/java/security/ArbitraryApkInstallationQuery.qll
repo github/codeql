@@ -23,6 +23,10 @@ module ApkInstallationConfig implements DataFlow::ConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 module ApkInstallationFlow = DataFlow::Global<ApkInstallationConfig>;
