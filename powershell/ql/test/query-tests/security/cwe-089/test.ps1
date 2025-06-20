@@ -54,3 +54,6 @@ $parameter.Value = $userinput # GOOD
 $reader = $command.ExecuteReader()
 $reader.Close()
 $connection.Close()
+
+$server = $Env:SERVER_INSTANCE
+Invoke-Sqlcmd -ServerInstance $server -Database "MyDatabase" -InputFile "Foo/Bar/query.sql" # GOOD [FALSE POSITIVE]
