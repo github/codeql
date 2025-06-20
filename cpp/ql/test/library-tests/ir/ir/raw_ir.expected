@@ -7955,7 +7955,7 @@ ir.cpp:
 #  883|     v883_12(void)            = AliasedUse               : ~m?
 #  883|     v883_13(void)            = ExitFunction             : 
 
-#  888| void VAListUsage(int, __va_list_tag[1])
+#  888| void VAListUsage(int, __builtin_va_list)
 #  888|   Block 0
 #  888|     v888_1(void)                    = EnterFunction               : 
 #  888|     mu888_2(unknown)                = AliasedDefinition           : 

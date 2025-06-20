@@ -10,6 +10,8 @@
 | printf1.h:44:18:44:20 | ull | This format specifier for type 'int' does not match the argument type 'unsigned long long'. |
 | printf1.h:45:18:45:20 | ull | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long long'. |
 | printf1.h:46:18:46:20 | ull | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long long'. |
+| printf1.h:62:19:62:20 | ul | This format specifier for type 'size_t' does not match the argument type 'unsigned long'. |
+| printf1.h:68:19:68:21 | sst | This format specifier for type 'size_t' does not match the argument type 'long'. |
 | printf1.h:71:19:71:20 | st | This format specifier for type 'ssize_t' does not match the argument type 'unsigned long long'. |
 | printf1.h:72:19:72:20 | ST | This format specifier for type 'ssize_t' does not match the argument type 'unsigned long long'. |
 | printf1.h:73:19:73:22 | c_st | This format specifier for type 'ssize_t' does not match the argument type 'unsigned long long'. |
