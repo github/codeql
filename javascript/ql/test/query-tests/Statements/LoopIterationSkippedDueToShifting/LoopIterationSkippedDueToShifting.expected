@@ -1,3 +1,5 @@
 | tst.js:4:27:4:44 | parts.splice(i, 1) | Removing an array item without adjusting the loop index 'i' causes the subsequent array item to be skipped. |
 | tst.js:13:29:13:46 | parts.splice(i, 1) | Removing an array item without adjusting the loop index 'i' causes the subsequent array item to be skipped. |
 | tst.js:24:9:24:26 | parts.splice(i, 1) | Removing an array item without adjusting the loop index 'i' causes the subsequent array item to be skipped. |
+| tst.js:128:11:128:33 | pending ... e(i, 1) | Removing an array item without adjusting the loop index 'i' causes the subsequent array item to be skipped. |
+| tst.js:153:11:153:26 | toc.splice(i, 1) | Removing an array item without adjusting the loop index 'i' causes the subsequent array item to be skipped. |

@@ -88,6 +88,7 @@ ql/javascript/ql/src/Statements/DanglingElse.ql
 ql/javascript/ql/src/Statements/IgnoreArrayResult.ql
 ql/javascript/ql/src/Statements/InconsistentLoopOrientation.ql
 ql/javascript/ql/src/Statements/LabelInCase.ql
+ql/javascript/ql/src/Statements/LoopIterationSkippedDueToShifting.ql
 ql/javascript/ql/src/Statements/MisleadingIndentationAfterControlStmt.ql
 ql/javascript/ql/src/Statements/ReturnAssignsLocal.ql
 ql/javascript/ql/src/Statements/SuspiciousUnusedLoopIterationVariable.ql
