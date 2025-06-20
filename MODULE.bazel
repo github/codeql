@@ -37,7 +37,7 @@ bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True
 # the versions there are canonical, the versions here are used for CI in github/codeql, as well as for the vendoring of dependencies.
 RUST_EDITION = "2024"
 
-RUST_VERSION = "1.85.0"
+RUST_VERSION = "1.86.0"
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
