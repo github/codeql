@@ -1,5 +1,5 @@
 # This script is used to annotate .qll files without any existing overlay annotations
-# with overlay[local?] and overlay[caller] annotations. Maintenance of overlay annotations
+# with overlay[local?] and overlay[caller?] annotations. Maintenance of overlay annotations
 # in annotated files will be handled by QL-for-QL queries.
 
 # It will walk the directory tree and annotate most .qll files, skipping only
@@ -24,7 +24,7 @@ def has_overlay_annotations(lines):
     '''
     Check whether the given lines contain any overlay[...] annotations.
     '''
-    overlays = ["local", "local?", "global", "caller"]
+    overlays = ["local", "local?", "global", "caller", "caller?"]
     annotations = [f"overlay[{t}]" for t in overlays]
     return any(ann in line for ann in annotations for line in lines)
 
@@ -165,7 +165,7 @@ def insert_toplevel_maybe_local_annotation(filename, lines):
 
 def insert_overlay_caller_annotations(lines):
     '''
-    Mark pragma[inline] predicates as overlay[caller] if they are not declared private.
+    Mark pragma[inline] predicates as overlay[caller?] if they are not declared private.
     '''
     out_lines = []
     for i, line in enumerate(lines):
@@ -173,7 +173,7 @@ def insert_overlay_caller_annotations(lines):
         if trimmed == "pragma[inline]":
             if i + 1 < len(lines) and not "private" in lines[i+1]:
                 whitespace = line[0: line.find(trimmed)]
-                out_lines.append(f"{whitespace}overlay[caller]\n")
+                out_lines.append(f"{whitespace}overlay[caller?]\n")
         out_lines.append(line)
     return out_lines
 
