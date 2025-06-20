@@ -851,7 +851,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
-      overlay[caller]
+      overlay[caller?]
       pragma[inline]
       predicate baseTypeMentionHasNonTypeParameterAt(
         Type sub, TypeMention baseMention, TypePath path, Type t
@@ -859,7 +859,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         not t = sub.getATypeParameter() and baseTypeMentionHasTypeAt(sub, baseMention, path, t)
       }
 
-      overlay[caller]
+      overlay[caller?]
       pragma[inline]
       predicate baseTypeMentionHasTypeParameterAt(
         Type sub, TypeMention baseMention, TypePath path, TypeParameter tp
