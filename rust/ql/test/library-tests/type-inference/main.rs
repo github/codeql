@@ -1157,14 +1157,14 @@ mod method_call_type_conversion {
         // https://doc.rust-lang.org/std/string/struct.String.html#deref.
         let u = x9.parse::<u32>(); // $ method=parse type=u:T.u32
 
-        let my_thing = &MyInt { a: 37 }; // $ SPURIOUS: type=my_thing:&T.&T.MyInt
+        let my_thing = &MyInt { a: 37 };
         // implicit borrow of a `&`
-        let a = my_thing.method_on_borrow(); // $ method=MyInt::method_on_borrow
+        let a = my_thing.method_on_borrow(); // $ MISSING: method=MyInt::method_on_borrow
         println!("{:?}", a);
 
         // no implicit borrow
         let my_thing = &MyInt { a: 38 };
-        let a = my_thing.method_not_on_borrow(); // $ method=MyInt::method_not_on_borrow
+        let a = my_thing.method_not_on_borrow(); // $ MISSING: method=MyInt::method_not_on_borrow
         println!("{:?}", a);
     }
 }

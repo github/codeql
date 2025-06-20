@@ -1675,26 +1675,15 @@ inferType
 | main.rs:1158:17:1158:33 | x9.parse() |  | {EXTERNAL LOCATION} | Result |
 | main.rs:1158:17:1158:33 | x9.parse() | T | {EXTERNAL LOCATION} | u32 |
 | main.rs:1160:13:1160:20 | my_thing |  | file://:0:0:0:0 | & |
-| main.rs:1160:13:1160:20 | my_thing | &T | file://:0:0:0:0 | & |
 | main.rs:1160:13:1160:20 | my_thing | &T | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1160:13:1160:20 | my_thing | &T.&T | main.rs:1082:5:1085:5 | MyInt |
 | main.rs:1160:24:1160:39 | &... |  | file://:0:0:0:0 | & |
-| main.rs:1160:24:1160:39 | &... | &T | file://:0:0:0:0 | & |
 | main.rs:1160:24:1160:39 | &... | &T | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1160:24:1160:39 | &... | &T.&T | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1160:25:1160:39 | MyInt {...} |  | file://:0:0:0:0 | & |
 | main.rs:1160:25:1160:39 | MyInt {...} |  | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1160:25:1160:39 | MyInt {...} | &T | main.rs:1082:5:1085:5 | MyInt |
 | main.rs:1160:36:1160:37 | 37 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1160:36:1160:37 | 37 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1162:13:1162:13 | a |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1162:17:1162:24 | my_thing |  | file://:0:0:0:0 | & |
-| main.rs:1162:17:1162:24 | my_thing | &T | file://:0:0:0:0 | & |
 | main.rs:1162:17:1162:24 | my_thing | &T | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1162:17:1162:24 | my_thing | &T.&T | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1162:17:1162:43 | my_thing.method_on_borrow() |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1163:18:1163:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1163:26:1163:26 | a |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1166:13:1166:20 | my_thing |  | file://:0:0:0:0 | & |
 | main.rs:1166:13:1166:20 | my_thing | &T | main.rs:1082:5:1085:5 | MyInt |
 | main.rs:1166:24:1166:39 | &... |  | file://:0:0:0:0 | & |
@@ -1702,12 +1691,9 @@ inferType
 | main.rs:1166:25:1166:39 | MyInt {...} |  | main.rs:1082:5:1085:5 | MyInt |
 | main.rs:1166:36:1166:37 | 38 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1166:36:1166:37 | 38 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1167:13:1167:13 | a |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1167:17:1167:24 | my_thing |  | file://:0:0:0:0 | & |
 | main.rs:1167:17:1167:24 | my_thing | &T | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1167:17:1167:47 | my_thing.method_not_on_borrow() |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1168:18:1168:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1168:26:1168:26 | a |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1175:16:1175:20 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1175:16:1175:20 | SelfParam | &T | main.rs:1173:5:1181:5 | Self [trait MyTrait] |
 | main.rs:1178:16:1178:20 | SelfParam |  | file://:0:0:0:0 | & |

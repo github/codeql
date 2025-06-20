@@ -1157,6 +1157,15 @@ final class MethodCall extends Call {
         (
           path0.isCons(TRefTypeParameter(), path)
           or
+          (
+            not path0.isCons(TRefTypeParameter(), _) and
+            not (path0.isEmpty() and result = TRefType())
+            or
+            // Ideally we should find all methods on reference types, but as
+            // that currently causes a blowup we limit this to the `deref`
+            // method in order to make dereferencing work.
+            this.getMethodName() = "deref"
+          ) and
           path = path0
         )
       |
