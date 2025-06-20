@@ -959,7 +959,11 @@ private module Cached {
 
   cached
   newtype TDataFlowCall =
-    TCall(CallCfgNode c) { Stages::DataFlowStage::ref() } or
+    TCall(CallCfgNode c) {
+      Stages::DataFlowStage::ref() and
+      // TODO: Handle index expressions as calls in data flow.
+      not c.getCall() instanceof IndexExpr
+    } or
     TSummaryCall(
       FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
     ) {
