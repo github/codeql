@@ -32,8 +32,7 @@ overlay[local]
 predicate extractedInOverlay(string file) {
   isOverlay() and
   // The incremental Java extractor extracts skeletons without method
-  // bodies for dependencies. To approximate fully extracted files in
-  // the overlay, we restrict attention to files that contain an expression
-  // with an enclosing callable.
-  exists(@expr e | callableEnclosingExpr(e, _) and file = getRawFile(e))
+  // bodies for dependencies. numlines is used to restrict attention
+  // to fully extracted files.
+  exists(@locatable l | numlines(l, _, _, _) and file = getRawFile(l))
 }
