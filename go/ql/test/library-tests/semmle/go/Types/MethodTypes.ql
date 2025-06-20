@@ -1,7 +1,7 @@
 import go
 
-from DefinedType t, string m, Type tp
+from Type t, string m, Type tp
 where
   exists(t.getEntity().getDeclaration()) and
-  t.getBaseType().hasMethod(m, tp)
+  t.hasMethod(m, tp)
 select t, m, tp.pp()
