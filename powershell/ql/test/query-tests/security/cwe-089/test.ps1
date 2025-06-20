@@ -67,4 +67,4 @@ $QueryConn = @{
     Query = ""
 }
 
-Invoke-Sqlcmd @QueryConn # GOOD [FALSE POSITIVE]
+Invoke-Sqlcmd @QueryConn # GOOD
