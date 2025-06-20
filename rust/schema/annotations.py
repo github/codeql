@@ -16,7 +16,8 @@ class LoopingExpr(LabelableExpr):
     loop_body: optional["BlockExpr"] | child
 
 
-class Adt(Item):
+@annotate(Adt, replace_bases={AstNode: Item})
+class _:
     """
     An ADT (Abstract Data Type) definition, such as `Struct`, `Enum`, or `Union`.
     """
@@ -1039,7 +1040,7 @@ class _:
     """
 
 
-@annotate(Enum, replace_bases={Item: Adt})
+@annotate(Enum)
 class _:
     """
     An enum declaration.
@@ -1834,7 +1835,7 @@ class _:
     """
 
 
-@annotate(Struct, replace_bases={Item: Adt})
+@annotate(Struct)
 class _:
     """
     A Struct. For example:
@@ -2013,7 +2014,7 @@ class _:
     """
 
 
-@annotate(Union, replace_bases={Item: Adt})
+@annotate(Union)
 class _:
     """
     A union declaration.

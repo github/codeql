@@ -3937,12 +3937,13 @@ private module Impl {
 
   private Element getImmediateChildOfEnum(Enum e, int index, string partialPredicateCall) {
     exists(
-      int b, int bAdt, int n, int nAttr, int nGenericParamList, int nName, int nVariantList,
-      int nVisibility, int nWhereClause
+      int b, int bAdt, int bItem, int n, int nAttr, int nGenericParamList, int nName,
+      int nVariantList, int nVisibility, int nWhereClause
     |
       b = 0 and
       bAdt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAdt(e, i, _)) | i) and
-      n = bAdt and
+      bItem = bAdt + 1 + max(int i | i = -1 or exists(getImmediateChildOfItem(e, i, _)) | i) and
+      n = bItem and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
       nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
@@ -3953,6 +3954,8 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfAdt(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfItem(e, index - bAdt, partialPredicateCall)
         or
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
@@ -4020,13 +4023,14 @@ private module Impl {
 
   private Element getImmediateChildOfStruct(Struct e, int index, string partialPredicateCall) {
     exists(
-      int b, int bAdt, int bVariantDef, int n, int nAttr, int nFieldList, int nGenericParamList,
-      int nName, int nVisibility, int nWhereClause
+      int b, int bAdt, int bItem, int bVariantDef, int n, int nAttr, int nFieldList,
+      int nGenericParamList, int nName, int nVisibility, int nWhereClause
     |
       b = 0 and
       bAdt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAdt(e, i, _)) | i) and
+      bItem = bAdt + 1 + max(int i | i = -1 or exists(getImmediateChildOfItem(e, i, _)) | i) and
       bVariantDef =
-        bAdt + 1 + max(int i | i = -1 or exists(getImmediateChildOfVariantDef(e, i, _)) | i) and
+        bItem + 1 + max(int i | i = -1 or exists(getImmediateChildOfVariantDef(e, i, _)) | i) and
       n = bVariantDef and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
       nFieldList = nAttr + 1 and
@@ -4039,7 +4043,9 @@ private module Impl {
         or
         result = getImmediateChildOfAdt(e, index - b, partialPredicateCall)
         or
-        result = getImmediateChildOfVariantDef(e, index - bAdt, partialPredicateCall)
+        result = getImmediateChildOfItem(e, index - bAdt, partialPredicateCall)
+        or
+        result = getImmediateChildOfVariantDef(e, index - bItem, partialPredicateCall)
         or
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
@@ -4063,13 +4069,14 @@ private module Impl {
 
   private Element getImmediateChildOfUnion(Union e, int index, string partialPredicateCall) {
     exists(
-      int b, int bAdt, int bVariantDef, int n, int nAttr, int nGenericParamList, int nName,
-      int nStructFieldList, int nVisibility, int nWhereClause
+      int b, int bAdt, int bItem, int bVariantDef, int n, int nAttr, int nGenericParamList,
+      int nName, int nStructFieldList, int nVisibility, int nWhereClause
     |
       b = 0 and
       bAdt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAdt(e, i, _)) | i) and
+      bItem = bAdt + 1 + max(int i | i = -1 or exists(getImmediateChildOfItem(e, i, _)) | i) and
       bVariantDef =
-        bAdt + 1 + max(int i | i = -1 or exists(getImmediateChildOfVariantDef(e, i, _)) | i) and
+        bItem + 1 + max(int i | i = -1 or exists(getImmediateChildOfVariantDef(e, i, _)) | i) and
       n = bVariantDef and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
       nGenericParamList = nAttr + 1 and
@@ -4082,7 +4089,9 @@ private module Impl {
         or
         result = getImmediateChildOfAdt(e, index - b, partialPredicateCall)
         or
-        result = getImmediateChildOfVariantDef(e, index - bAdt, partialPredicateCall)
+        result = getImmediateChildOfItem(e, index - bAdt, partialPredicateCall)
+        or
+        result = getImmediateChildOfVariantDef(e, index - bItem, partialPredicateCall)
         or
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"

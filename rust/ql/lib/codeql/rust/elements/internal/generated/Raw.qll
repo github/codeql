@@ -4499,7 +4499,7 @@ module Raw {
    * enum E {A, B(i32), C {x: i32}}
    * ```
    */
-  class Enum extends @enum, Adt {
+  class Enum extends @enum, Adt, Item {
     override string toString() { result = "Enum" }
 
     /**
@@ -4607,7 +4607,7 @@ module Raw {
    * }
    * ```
    */
-  class Struct extends @struct, Adt, VariantDef {
+  class Struct extends @struct, Adt, Item, VariantDef {
     override string toString() { result = "Struct" }
 
     /**
@@ -4650,7 +4650,7 @@ module Raw {
    * union U { f1: u32, f2: f32 }
    * ```
    */
-  class Union extends @union, Adt, VariantDef {
+  class Union extends @union, Adt, Item, VariantDef {
     override string toString() { result = "Union" }
 
     /**
