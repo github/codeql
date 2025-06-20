@@ -1,6 +1,11 @@
+multipleCallTargets
+| main.rs:118:9:118:11 | f(...) | main.rs:104:5:106:5 | fn f |
+| main.rs:118:9:118:11 | f(...) | main.rs:110:5:112:5 | fn f |
+| proc_macro.rs:10:10:10:12 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
+| proc_macro.rs:10:10:10:12 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
+| proc_macro.rs:10:10:10:12 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
+| proc_macro.rs:10:10:10:12 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
 multiplePathResolutions
-| main.rs:118:9:118:9 | f | main.rs:104:5:106:5 | fn f |
-| main.rs:118:9:118:9 | f | main.rs:110:5:112:5 | fn f |
 | main.rs:626:3:626:12 | proc_macro | file://:0:0:0:0 | Crate(proc_macro@0.0.0) |
 | main.rs:626:3:626:12 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
 | main.rs:632:7:632:16 | proc_macro | file://:0:0:0:0 | Crate(proc_macro@0.0.0) |

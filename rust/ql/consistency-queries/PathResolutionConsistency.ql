@@ -20,8 +20,8 @@ class SourceLocatable extends Locatable {
   }
 }
 
-query predicate multipleMethodCallTargets(SourceLocatable a, SourceLocatable b) {
-  PathResolutionConsistency::multipleMethodCallTargets(a, b)
+query predicate multipleCallTargets(SourceLocatable a, SourceLocatable b) {
+  PathResolutionConsistency::multipleCallTargets(a, b)
 }
 
 query predicate multiplePathResolutions(SourceLocatable a, SourceLocatable b) {

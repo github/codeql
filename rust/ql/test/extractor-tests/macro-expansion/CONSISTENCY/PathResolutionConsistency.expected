@@ -1,3 +1,16 @@
+multipleCallTargets
+| proc_macro.rs:16:12:16:16 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
+| proc_macro.rs:16:12:16:16 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
+| proc_macro.rs:16:12:16:16 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
+| proc_macro.rs:16:12:16:16 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
+| proc_macro.rs:26:10:26:12 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
+| proc_macro.rs:26:10:26:12 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
+| proc_macro.rs:26:10:26:12 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
+| proc_macro.rs:26:10:26:12 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
+| proc_macro.rs:27:10:27:16 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
+| proc_macro.rs:27:10:27:16 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
+| proc_macro.rs:27:10:27:16 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
+| proc_macro.rs:27:10:27:16 | ...::to_tokens(...) | file://:0:0:0:0 | fn to_tokens |
 multiplePathResolutions
 | macro_expansion.rs:1:5:1:14 | proc_macro | file://:0:0:0:0 | Crate(proc_macro@0.0.0) |
 | macro_expansion.rs:1:5:1:14 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
