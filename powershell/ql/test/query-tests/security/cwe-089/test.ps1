@@ -57,3 +57,14 @@ $connection.Close()
 
 $server = $Env:SERVER_INSTANCE
 Invoke-Sqlcmd -ServerInstance $server -Database "MyDatabase" -InputFile "Foo/Bar/query.sql" # GOOD
+
+$QueryConn = @{
+    Database = "MyDB"
+    ServerInstance = $server
+    Username = "MyUserName"
+    Password = "MyPassword"
+    ConnectionTimeout = 0
+    Query = ""
+}
+
+Invoke-Sqlcmd @QueryConn # GOOD [FALSE POSITIVE]
