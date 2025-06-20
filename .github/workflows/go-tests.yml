@@ -1,20 +1,9 @@
 name: "Go: Run Tests"
 on:
-  push:
-    paths:
-      - "go/**"
-      - "!go/documentation/**"
-      - "shared/**"
-      - .github/workflows/go-tests.yml
-      - .github/actions/**
-      - codeql-workspace.yml
-    branches:
-      - main
-      - "rc/*"
   pull_request:
     paths:
       - "go/**"
-      - "!go/documentation/**"      
+      - "!go/documentation/**"
       - "shared/**"
       - .github/workflows/go-tests.yml
       - .github/actions/**
