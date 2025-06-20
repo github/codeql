@@ -529,7 +529,7 @@ fn conversions() {
 
     sink(a as i64); // $ hasTaintFlow=50
     sink(a.into()); // $ MISSING: hasValueFlow=50
-    sink(i64::from(a)); // $ hasValueFlow=50
+    sink(i64::from(a)); // $ hasTaintFlow=50
 
     let b: i32 = source(51) as i32;
 
