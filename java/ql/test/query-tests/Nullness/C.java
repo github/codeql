@@ -60,7 +60,7 @@ public class C {
       arrLen = arr == null ? 0 : arr.length;
     }
     if (arrLen > 0) {
-      arr[0] = 0; // NPE - false positive
+      arr[0] = 0; // OK
     }
   }
 
@@ -243,5 +243,15 @@ public class C {
       xs = new int[5];
     }
     xs[0]++; // OK
+  }
+
+  public void ex18(boolean b, int[] xs, Object related) {
+    assert (!b && xs == null && related == null) ||
+           (b && xs != null && related != null) ||
+           (b && xs == null && related == null);
+    if (b) {
+      if (related == null) { return; }
+      xs[0] = 42; // FP - correlated conditions fails to recognize assert edges
+    }
   }
 }

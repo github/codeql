@@ -86,6 +86,17 @@ class BasicBlock extends BbImpl::BasicBlock {
   predicate dominates(BasicBlock bb) { super.dominates(bb) }
 
   /**
+   * Holds if this basic block strictly dominates basic block `bb`.
+   *
+   * That is, all paths reaching `bb` from the entry point basic block must
+   * go through this basic block and this basic block is different from `bb`.
+   */
+  predicate strictlyDominates(BasicBlock bb) { super.strictlyDominates(bb) }
+
+  /** Gets an immediate successor of this basic block of a given type, if any. */
+  BasicBlock getASuccessor(Input::SuccessorType t) { result = super.getASuccessor(t) }
+
+  /**
    * DEPRECATED: Use `getASuccessor` instead.
    *
    * Gets an immediate successor of this basic block.
