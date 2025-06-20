@@ -1132,7 +1132,7 @@ pragma[nomagic]
 private predicate crateDependencyEdge(SourceFileItemNode file, string name, CrateItemNode dep) {
   exists(CrateItemNode c | dep = c.(Crate).getDependency(name) | file = c.getASourceFile())
   or
-  // Give builtin files, such as `await.rs`, access to `std`
+  // Give builtin files access to `std`
   file instanceof BuiltinSourceFile and
   dep.getName() = name and
   name = "std"
@@ -1501,7 +1501,7 @@ private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
   exists(Crate stdOrCore, ModuleLikeNode mod, ModuleItemNode prelude, ModuleItemNode rust |
     f = any(Crate c0 | stdOrCore = c0.getDependency(_) or stdOrCore = c0).getASourceFile()
     or
-    // Give builtin files, such as `await.rs`, access to the prelude
+    // Give builtin files access to the prelude
     f instanceof BuiltinSourceFile
   |
     stdOrCore.getName() = ["std", "core"] and
