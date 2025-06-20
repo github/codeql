@@ -1040,7 +1040,7 @@ class _:
     """
 
 
-@annotate(Enum)
+@annotate(Enum, replace_bases={Item: None})  # still an Item via Adt
 class _:
     """
     An enum declaration.
@@ -1835,7 +1835,7 @@ class _:
     """
 
 
-@annotate(Struct)
+@annotate(Struct, replace_bases={Item: None})  # still an Item via Adt
 class _:
     """
     A Struct. For example:
@@ -2014,7 +2014,7 @@ class _:
     """
 
 
-@annotate(Union)
+@annotate(Union, replace_bases={Item: None})  # still an Item via Adt
 class _:
     """
     A union declaration.

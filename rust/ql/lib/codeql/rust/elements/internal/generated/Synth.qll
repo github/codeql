@@ -775,9 +775,9 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TItem =
-    TAdt or TConst or TEnum or TExternBlock or TExternCrate or TFunction or TImpl or TMacroCall or
-        TMacroDef or TMacroRules or TModule or TStatic or TStruct or TTrait or TTraitAlias or
-        TTypeAlias or TUnion or TUse;
+    TAdt or TConst or TExternBlock or TExternCrate or TFunction or TImpl or TMacroCall or
+        TMacroDef or TMacroRules or TModule or TStatic or TTrait or TTraitAlias or TTypeAlias or
+        TUse;
 
   /**
    * INTERNAL: Do not use.
@@ -2234,8 +2234,6 @@ module Synth {
     or
     result = convertConstFromRaw(e)
     or
-    result = convertEnumFromRaw(e)
-    or
     result = convertExternBlockFromRaw(e)
     or
     result = convertExternCrateFromRaw(e)
@@ -2254,15 +2252,11 @@ module Synth {
     or
     result = convertStaticFromRaw(e)
     or
-    result = convertStructFromRaw(e)
-    or
     result = convertTraitFromRaw(e)
     or
     result = convertTraitAliasFromRaw(e)
     or
     result = convertTypeAliasFromRaw(e)
-    or
-    result = convertUnionFromRaw(e)
     or
     result = convertUseFromRaw(e)
   }
@@ -3848,8 +3842,6 @@ module Synth {
     or
     result = convertConstToRaw(e)
     or
-    result = convertEnumToRaw(e)
-    or
     result = convertExternBlockToRaw(e)
     or
     result = convertExternCrateToRaw(e)
@@ -3868,15 +3860,11 @@ module Synth {
     or
     result = convertStaticToRaw(e)
     or
-    result = convertStructToRaw(e)
-    or
     result = convertTraitToRaw(e)
     or
     result = convertTraitAliasToRaw(e)
     or
     result = convertTypeAliasToRaw(e)
-    or
-    result = convertUnionToRaw(e)
     or
     result = convertUseToRaw(e)
   }

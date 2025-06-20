@@ -8,7 +8,6 @@ import codeql.rust.elements.Adt
 import codeql.rust.elements.Attr
 import codeql.rust.elements.FieldList
 import codeql.rust.elements.GenericParamList
-import codeql.rust.elements.Item
 import codeql.rust.elements.Name
 import codeql.rust.elements.VariantDef
 import codeql.rust.elements.Visibility

@@ -1919,7 +1919,6 @@ infer_type_reprs(
 @item =
   @adt
 | @const
-| @enum
 | @extern_block
 | @extern_crate
 | @function
@@ -1929,11 +1928,9 @@ infer_type_reprs(
 | @macro_rules
 | @module
 | @static
-| @struct
 | @trait
 | @trait_alias
 | @type_alias
-| @union
 | @use
 ;
 
