@@ -104,6 +104,15 @@
 | isfromtemplateinstantiation.cpp:99:1:99:1 | return ... | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<int> |
 | isfromtemplateinstantiation.cpp:99:1:99:1 | return ... | isfromtemplateinstantiation.cpp:97:52:97:52 | AnotherTemplateClass<int>::myMethod2(MyClassEnum) |
 | isfromtemplateinstantiation.cpp:110:3:110:3 | definition of var_template | isfromtemplateinstantiation.cpp:110:3:110:3 | var_template |
+| isfromtemplateinstantiation.cpp:129:6:129:6 | AnotherTemplateClass<long *>::f() | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<long *> |
+| isfromtemplateinstantiation.cpp:129:6:129:6 | definition of f | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<long *> |
+| isfromtemplateinstantiation.cpp:129:6:129:6 | definition of f | isfromtemplateinstantiation.cpp:129:6:129:6 | AnotherTemplateClass<long *>::f() |
+| isfromtemplateinstantiation.cpp:129:10:129:22 | { ... } | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<long *> |
+| isfromtemplateinstantiation.cpp:129:10:129:22 | { ... } | isfromtemplateinstantiation.cpp:129:6:129:6 | AnotherTemplateClass<long *>::f() |
+| isfromtemplateinstantiation.cpp:129:12:129:20 | return ... | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<long *> |
+| isfromtemplateinstantiation.cpp:129:12:129:20 | return ... | isfromtemplateinstantiation.cpp:129:6:129:6 | AnotherTemplateClass<long *>::f() |
+| isfromtemplateinstantiation.cpp:129:19:129:19 | 1 | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<long *> |
+| isfromtemplateinstantiation.cpp:129:19:129:19 | 1 | isfromtemplateinstantiation.cpp:129:6:129:6 | AnotherTemplateClass<long *>::f() |
 | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
 | isfromtemplateinstantiation.cpp:135:31:135:35 | declaration of Inner<U> | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> |
 | isfromtemplateinstantiation.cpp:136:7:136:7 | definition of x | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> |
@@ -112,7 +121,94 @@
 | isfromtemplateinstantiation.cpp:137:7:137:7 | y | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> |
 | load.cpp:15:14:15:15 | definition of is | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
 | load.cpp:15:14:15:15 | is | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:18:5:18:5 | basic_text_iprimitive<std_istream_mockup>::basic_text_iprimitive(std_istream_mockup &) | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:18:5:18:5 | definition of basic_text_iprimitive | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:18:5:18:5 | definition of basic_text_iprimitive | load.cpp:18:5:18:5 | basic_text_iprimitive<std_istream_mockup>::basic_text_iprimitive(std_istream_mockup &) |
+| load.cpp:18:36:18:42 | definition of isParam | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:18:36:18:42 | definition of isParam | load.cpp:18:5:18:5 | basic_text_iprimitive<std_istream_mockup>::basic_text_iprimitive(std_istream_mockup &) |
+| load.cpp:18:36:18:42 | std_istream_mockup & isParam | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:18:36:18:42 | std_istream_mockup & isParam | load.cpp:18:5:18:5 | basic_text_iprimitive<std_istream_mockup>::basic_text_iprimitive(std_istream_mockup &) |
+| load.cpp:19:11:19:21 | constructor init of field is | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:19:11:19:21 | constructor init of field is | load.cpp:18:5:18:5 | basic_text_iprimitive<std_istream_mockup>::basic_text_iprimitive(std_istream_mockup &) |
+| load.cpp:19:14:19:20 | (reference dereference) | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:19:14:19:20 | (reference dereference) | load.cpp:18:5:18:5 | basic_text_iprimitive<std_istream_mockup>::basic_text_iprimitive(std_istream_mockup &) |
+| load.cpp:19:14:19:20 | (reference to) | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:19:14:19:20 | (reference to) | load.cpp:18:5:18:5 | basic_text_iprimitive<std_istream_mockup>::basic_text_iprimitive(std_istream_mockup &) |
+| load.cpp:19:14:19:20 | isParam | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:19:14:19:20 | isParam | load.cpp:18:5:18:5 | basic_text_iprimitive<std_istream_mockup>::basic_text_iprimitive(std_istream_mockup &) |
+| load.cpp:19:23:19:24 | { ... } | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:19:23:19:24 | { ... } | load.cpp:18:5:18:5 | basic_text_iprimitive<std_istream_mockup>::basic_text_iprimitive(std_istream_mockup &) |
+| load.cpp:19:24:19:24 | return ... | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:19:24:19:24 | return ... | load.cpp:18:5:18:5 | basic_text_iprimitive<std_istream_mockup>::basic_text_iprimitive(std_istream_mockup &) |
+| load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:22:10:22:10 | definition of load | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:22:10:22:10 | definition of load | load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) |
 | load.cpp:22:10:22:13 | basic_text_iprimitive<std_istream_mockup>::load<T>(T &) | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
 | load.cpp:22:10:22:13 | declaration of load | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
 | load.cpp:22:19:22:19 | T & t | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
 | load.cpp:22:19:22:19 | declaration of t | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:22:19:22:19 | definition of t | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:22:19:22:19 | definition of t | load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) |
+| load.cpp:22:19:22:19 | short & t | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:22:19:22:19 | short & t | load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) |
+| load.cpp:23:5:25:5 | { ... } | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:23:5:25:5 | { ... } | load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) |
+| load.cpp:24:9:24:10 | (reference dereference) | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:24:9:24:10 | (reference dereference) | load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) |
+| load.cpp:24:9:24:10 | is | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:24:9:24:10 | is | load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) |
+| load.cpp:24:9:24:10 | this | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:24:9:24:10 | this | load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) |
+| load.cpp:24:9:24:16 | ExprStmt | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:24:9:24:16 | ExprStmt | load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) |
+| load.cpp:24:12:24:12 | call to operator>> | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:24:12:24:12 | call to operator>> | load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) |
+| load.cpp:24:12:24:16 | (reference dereference) | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:24:12:24:16 | (reference dereference) | load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) |
+| load.cpp:24:15:24:15 | (reference dereference) | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:24:15:24:15 | (reference dereference) | load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) |
+| load.cpp:24:15:24:15 | (reference to) | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:24:15:24:15 | (reference to) | load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) |
+| load.cpp:24:15:24:15 | t | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:24:15:24:15 | t | load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) |
+| load.cpp:25:5:25:5 | return ... | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:25:5:25:5 | return ... | load.cpp:22:10:22:10 | basic_text_iprimitive<std_istream_mockup>::load<short>(short &) |
+| load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:27:10:27:10 | definition of load | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:27:10:27:10 | definition of load | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:27:22:27:22 | char & t | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:27:22:27:22 | char & t | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:27:22:27:22 | definition of t | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:27:22:27:22 | definition of t | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:28:5:32:5 | { ... } | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:28:5:32:5 | { ... } | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:29:9:29:20 | declaration | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:29:9:29:20 | declaration | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:29:19:29:19 | definition of i | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:29:19:29:19 | definition of i | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:29:19:29:19 | i | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:29:19:29:19 | i | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:30:9:30:12 | call to load | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:30:9:30:12 | call to load | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:30:9:30:12 | this | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:30:9:30:12 | this | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:30:9:30:16 | ExprStmt | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:30:9:30:16 | ExprStmt | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:30:14:30:14 | (reference to) | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:30:14:30:14 | (reference to) | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:30:14:30:14 | i | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:30:14:30:14 | i | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:31:9:31:9 | (reference dereference) | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:31:9:31:9 | (reference dereference) | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:31:9:31:9 | t | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:31:9:31:9 | t | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:31:9:31:13 | ... = ... | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:31:9:31:13 | ... = ... | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:31:9:31:14 | ExprStmt | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:31:9:31:14 | ExprStmt | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:31:13:31:13 | (char)... | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:31:13:31:13 | (char)... | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:31:13:31:13 | i | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:31:13:31:13 | i | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
+| load.cpp:32:5:32:5 | return ... | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> |
+| load.cpp:32:5:32:5 | return ... | load.cpp:27:10:27:10 | basic_text_iprimitive<std_istream_mockup>::load(char &) |
