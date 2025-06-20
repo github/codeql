@@ -25,11 +25,9 @@ If the class is too big, you should split it into multiple smaller classes.
 </li>
 
 <li>
-<p>
 If several of the fields are part of the same abstraction, you should
 group them into a separate class, using the 'Extract Class' refactoring described
 in [Fowler].
-</p>
 </li>
 </ul>
 
