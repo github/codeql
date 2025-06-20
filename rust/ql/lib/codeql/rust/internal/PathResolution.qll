@@ -205,7 +205,11 @@ abstract class ItemNode extends Locatable {
     else result = this.getImmediateParentModule().getImmediateParentModule()
     or
     name = "self" and
-    if this instanceof Module or this instanceof Enum or this instanceof Struct
+    if
+      this instanceof Module or
+      this instanceof Enum or
+      this instanceof Struct or
+      this instanceof Crate
     then result = this
     else result = this.getImmediateParentModule()
     or
