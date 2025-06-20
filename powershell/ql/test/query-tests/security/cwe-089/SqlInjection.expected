@@ -17,8 +17,8 @@ nodes
 | test.ps1:81:15:81:25 | QueryConn2 | semmle.label | QueryConn2 |
 subpaths
 #select
-| test.ps1:5:72:5:77 | query | test.ps1:1:14:1:45 | Call to read-host | test.ps1:5:72:5:77 | query | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | user-provided value |
-| test.ps1:9:72:9:77 | query | test.ps1:1:14:1:45 | Call to read-host | test.ps1:9:72:9:77 | query | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | user-provided value |
-| test.ps1:17:24:17:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | test.ps1:1:14:1:45 | Call to read-host | test.ps1:17:24:17:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | user-provided value |
-| test.ps1:28:24:28:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | test.ps1:1:14:1:45 | Call to read-host | test.ps1:28:24:28:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | user-provided value |
-| test.ps1:81:15:81:25 | QueryConn2 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:81:15:81:25 | QueryConn2 | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | user-provided value |
+| test.ps1:5:72:5:77 | query | test.ps1:1:14:1:45 | Call to read-host | test.ps1:5:72:5:77 | query | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
+| test.ps1:9:72:9:77 | query | test.ps1:1:14:1:45 | Call to read-host | test.ps1:9:72:9:77 | query | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
+| test.ps1:17:24:17:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | test.ps1:1:14:1:45 | Call to read-host | test.ps1:17:24:17:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
+| test.ps1:28:24:28:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | test.ps1:1:14:1:45 | Call to read-host | test.ps1:28:24:28:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
+| test.ps1:81:15:81:25 | QueryConn2 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:81:15:81:25 | QueryConn2 | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |

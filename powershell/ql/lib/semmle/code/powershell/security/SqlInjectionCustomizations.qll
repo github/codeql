@@ -39,7 +39,7 @@ module SqlInjection {
 
   /** A source of user input, considered as a flow source for command injection. */
   class FlowSourceAsSource extends Source instanceof SourceNode {
-    override string getSourceType() { result = "user-provided value" }
+    override string getSourceType() { result = SourceNode.super.getSourceType() }
   }
 
   class InvokeSqlCmdSink extends Sink {
