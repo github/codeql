@@ -3802,113 +3802,113 @@ inferType
 | main.rs:1863:22:1863:26 | slice |  | file://:0:0:0:0 | [] |
 | main.rs:1863:22:1863:26 | slice | &T | file://:0:0:0:0 | [] |
 | main.rs:1863:22:1863:26 | slice | &T.[T] | main.rs:1830:5:1831:13 | S |
-| main.rs:1864:13:1864:13 | x |  | main.rs:1830:5:1831:13 | S |
-| main.rs:1864:17:1864:21 | slice |  | file://:0:0:0:0 | & |
-| main.rs:1864:17:1864:21 | slice |  | file://:0:0:0:0 | [] |
-| main.rs:1864:17:1864:21 | slice | &T | file://:0:0:0:0 | [] |
-| main.rs:1864:17:1864:21 | slice | &T.[T] | main.rs:1830:5:1831:13 | S |
-| main.rs:1864:17:1864:24 | slice[0] |  | main.rs:1830:5:1831:13 | S |
-| main.rs:1864:17:1864:30 | ... .foo() |  | main.rs:1830:5:1831:13 | S |
-| main.rs:1864:23:1864:23 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1868:13:1868:19 | mut vec |  | main.rs:1839:5:1842:5 | MyVec |
-| main.rs:1868:13:1868:19 | mut vec | T | main.rs:1830:5:1831:13 | S |
-| main.rs:1868:23:1868:34 | ...::new(...) |  | main.rs:1839:5:1842:5 | MyVec |
-| main.rs:1868:23:1868:34 | ...::new(...) | T | main.rs:1830:5:1831:13 | S |
-| main.rs:1869:9:1869:11 | vec |  | main.rs:1839:5:1842:5 | MyVec |
-| main.rs:1869:9:1869:11 | vec | T | main.rs:1830:5:1831:13 | S |
-| main.rs:1869:18:1869:18 | S |  | main.rs:1830:5:1831:13 | S |
-| main.rs:1870:9:1870:11 | vec |  | main.rs:1839:5:1842:5 | MyVec |
-| main.rs:1870:9:1870:11 | vec | T | main.rs:1830:5:1831:13 | S |
-| main.rs:1870:9:1870:14 | vec[0] |  | main.rs:1830:5:1831:13 | S |
-| main.rs:1870:9:1870:20 | ... .foo() |  | main.rs:1830:5:1831:13 | S |
-| main.rs:1870:13:1870:13 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1870:13:1870:13 | 0 |  | {EXTERNAL LOCATION} | usize |
-| main.rs:1872:13:1872:14 | xs |  | file://:0:0:0:0 | [] |
-| main.rs:1872:13:1872:14 | xs |  | file://:0:0:0:0 | [] |
-| main.rs:1872:13:1872:14 | xs | [T;...] | main.rs:1830:5:1831:13 | S |
-| main.rs:1872:13:1872:14 | xs | [T] | main.rs:1830:5:1831:13 | S |
-| main.rs:1872:21:1872:21 | 1 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1872:26:1872:28 | [...] |  | file://:0:0:0:0 | [] |
-| main.rs:1872:26:1872:28 | [...] |  | file://:0:0:0:0 | [] |
-| main.rs:1872:26:1872:28 | [...] | [T;...] | main.rs:1830:5:1831:13 | S |
-| main.rs:1872:26:1872:28 | [...] | [T] | main.rs:1830:5:1831:13 | S |
-| main.rs:1872:27:1872:27 | S |  | main.rs:1830:5:1831:13 | S |
-| main.rs:1873:13:1873:13 | x |  | main.rs:1830:5:1831:13 | S |
-| main.rs:1873:17:1873:18 | xs |  | file://:0:0:0:0 | [] |
-| main.rs:1873:17:1873:18 | xs |  | file://:0:0:0:0 | [] |
-| main.rs:1873:17:1873:18 | xs | [T;...] | main.rs:1830:5:1831:13 | S |
-| main.rs:1873:17:1873:18 | xs | [T] | main.rs:1830:5:1831:13 | S |
-| main.rs:1873:17:1873:21 | xs[0] |  | main.rs:1830:5:1831:13 | S |
-| main.rs:1873:17:1873:27 | ... .foo() |  | main.rs:1830:5:1831:13 | S |
-| main.rs:1873:20:1873:20 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1875:23:1875:25 | &xs |  | file://:0:0:0:0 | & |
-| main.rs:1875:23:1875:25 | &xs | &T | file://:0:0:0:0 | [] |
-| main.rs:1875:23:1875:25 | &xs | &T | file://:0:0:0:0 | [] |
-| main.rs:1875:23:1875:25 | &xs | &T.[T;...] | main.rs:1830:5:1831:13 | S |
-| main.rs:1875:23:1875:25 | &xs | &T.[T] | main.rs:1830:5:1831:13 | S |
-| main.rs:1875:24:1875:25 | xs |  | file://:0:0:0:0 | [] |
-| main.rs:1875:24:1875:25 | xs |  | file://:0:0:0:0 | [] |
-| main.rs:1875:24:1875:25 | xs | [T;...] | main.rs:1830:5:1831:13 | S |
-| main.rs:1875:24:1875:25 | xs | [T] | main.rs:1830:5:1831:13 | S |
-| main.rs:1881:25:1881:35 | "Hello, {}" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1881:25:1881:45 | ...::format(...) |  | {EXTERNAL LOCATION} | String |
-| main.rs:1881:25:1881:45 | { ... } |  | {EXTERNAL LOCATION} | String |
-| main.rs:1881:38:1881:45 | "World!" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1887:19:1887:23 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1887:19:1887:23 | SelfParam | &T | main.rs:1886:5:1888:5 | Self [trait MyAdd] |
-| main.rs:1887:26:1887:30 | value |  | main.rs:1886:17:1886:17 | T |
-| main.rs:1892:19:1892:23 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1892:19:1892:23 | SelfParam | &T | {EXTERNAL LOCATION} | i64 |
-| main.rs:1892:26:1892:30 | value |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1892:46:1894:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1893:13:1893:17 | value |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1899:19:1899:23 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1899:19:1899:23 | SelfParam | &T | {EXTERNAL LOCATION} | i64 |
-| main.rs:1899:26:1899:30 | value |  | file://:0:0:0:0 | & |
-| main.rs:1899:26:1899:30 | value | &T | {EXTERNAL LOCATION} | i64 |
-| main.rs:1899:47:1901:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1900:13:1900:18 | * ... |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1900:14:1900:18 | value |  | file://:0:0:0:0 | & |
-| main.rs:1900:14:1900:18 | value | &T | {EXTERNAL LOCATION} | i64 |
-| main.rs:1906:19:1906:23 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1906:19:1906:23 | SelfParam | &T | {EXTERNAL LOCATION} | i64 |
-| main.rs:1906:26:1906:30 | value |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1906:47:1912:9 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1906:47:1912:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1907:13:1911:13 | if value {...} else {...} |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1907:13:1911:13 | if value {...} else {...} |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1907:16:1907:20 | value |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1907:22:1909:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1907:22:1909:13 | { ... } |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1908:17:1908:17 | 1 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1908:17:1908:17 | 1 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1909:20:1911:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1909:20:1911:13 | { ... } |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1910:17:1910:17 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1910:17:1910:17 | 0 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1916:13:1916:13 | x |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1916:13:1916:13 | x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1916:22:1916:23 | 73 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1916:22:1916:23 | 73 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1917:9:1917:9 | x |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1917:9:1917:9 | x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1917:9:1917:22 | x.my_add(...) |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1917:18:1917:21 | 5i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1918:9:1918:9 | x |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1918:9:1918:9 | x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1918:9:1918:23 | x.my_add(...) |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1918:18:1918:22 | &5i64 |  | file://:0:0:0:0 | & |
-| main.rs:1918:18:1918:22 | &5i64 | &T | {EXTERNAL LOCATION} | i64 |
-| main.rs:1918:19:1918:22 | 5i64 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1919:9:1919:9 | x |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1919:9:1919:9 | x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1919:9:1919:22 | x.my_add(...) |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1919:18:1919:21 | true |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1927:5:1927:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:1928:5:1928:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:1928:20:1928:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:1928:41:1928:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:1944:5:1944:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1870:13:1870:13 | x |  | main.rs:1830:5:1831:13 | S |
+| main.rs:1870:17:1870:21 | slice |  | file://:0:0:0:0 | & |
+| main.rs:1870:17:1870:21 | slice |  | file://:0:0:0:0 | [] |
+| main.rs:1870:17:1870:21 | slice | &T | file://:0:0:0:0 | [] |
+| main.rs:1870:17:1870:21 | slice | &T.[T] | main.rs:1830:5:1831:13 | S |
+| main.rs:1870:17:1870:24 | slice[0] |  | main.rs:1830:5:1831:13 | S |
+| main.rs:1870:17:1870:30 | ... .foo() |  | main.rs:1830:5:1831:13 | S |
+| main.rs:1870:23:1870:23 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1874:13:1874:19 | mut vec |  | main.rs:1839:5:1842:5 | MyVec |
+| main.rs:1874:13:1874:19 | mut vec | T | main.rs:1830:5:1831:13 | S |
+| main.rs:1874:23:1874:34 | ...::new(...) |  | main.rs:1839:5:1842:5 | MyVec |
+| main.rs:1874:23:1874:34 | ...::new(...) | T | main.rs:1830:5:1831:13 | S |
+| main.rs:1875:9:1875:11 | vec |  | main.rs:1839:5:1842:5 | MyVec |
+| main.rs:1875:9:1875:11 | vec | T | main.rs:1830:5:1831:13 | S |
+| main.rs:1875:18:1875:18 | S |  | main.rs:1830:5:1831:13 | S |
+| main.rs:1876:9:1876:11 | vec |  | main.rs:1839:5:1842:5 | MyVec |
+| main.rs:1876:9:1876:11 | vec | T | main.rs:1830:5:1831:13 | S |
+| main.rs:1876:9:1876:14 | vec[0] |  | main.rs:1830:5:1831:13 | S |
+| main.rs:1876:9:1876:20 | ... .foo() |  | main.rs:1830:5:1831:13 | S |
+| main.rs:1876:13:1876:13 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1876:13:1876:13 | 0 |  | {EXTERNAL LOCATION} | usize |
+| main.rs:1878:13:1878:14 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1878:13:1878:14 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1878:13:1878:14 | xs | [T;...] | main.rs:1830:5:1831:13 | S |
+| main.rs:1878:13:1878:14 | xs | [T] | main.rs:1830:5:1831:13 | S |
+| main.rs:1878:21:1878:21 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1878:26:1878:28 | [...] |  | file://:0:0:0:0 | [] |
+| main.rs:1878:26:1878:28 | [...] |  | file://:0:0:0:0 | [] |
+| main.rs:1878:26:1878:28 | [...] | [T;...] | main.rs:1830:5:1831:13 | S |
+| main.rs:1878:26:1878:28 | [...] | [T] | main.rs:1830:5:1831:13 | S |
+| main.rs:1878:27:1878:27 | S |  | main.rs:1830:5:1831:13 | S |
+| main.rs:1879:13:1879:13 | x |  | main.rs:1830:5:1831:13 | S |
+| main.rs:1879:17:1879:18 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1879:17:1879:18 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1879:17:1879:18 | xs | [T;...] | main.rs:1830:5:1831:13 | S |
+| main.rs:1879:17:1879:18 | xs | [T] | main.rs:1830:5:1831:13 | S |
+| main.rs:1879:17:1879:21 | xs[0] |  | main.rs:1830:5:1831:13 | S |
+| main.rs:1879:17:1879:27 | ... .foo() |  | main.rs:1830:5:1831:13 | S |
+| main.rs:1879:20:1879:20 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1881:23:1881:25 | &xs |  | file://:0:0:0:0 | & |
+| main.rs:1881:23:1881:25 | &xs | &T | file://:0:0:0:0 | [] |
+| main.rs:1881:23:1881:25 | &xs | &T | file://:0:0:0:0 | [] |
+| main.rs:1881:23:1881:25 | &xs | &T.[T;...] | main.rs:1830:5:1831:13 | S |
+| main.rs:1881:23:1881:25 | &xs | &T.[T] | main.rs:1830:5:1831:13 | S |
+| main.rs:1881:24:1881:25 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1881:24:1881:25 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1881:24:1881:25 | xs | [T;...] | main.rs:1830:5:1831:13 | S |
+| main.rs:1881:24:1881:25 | xs | [T] | main.rs:1830:5:1831:13 | S |
+| main.rs:1887:25:1887:35 | "Hello, {}" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1887:25:1887:45 | ...::format(...) |  | {EXTERNAL LOCATION} | String |
+| main.rs:1887:25:1887:45 | { ... } |  | {EXTERNAL LOCATION} | String |
+| main.rs:1887:38:1887:45 | "World!" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1893:19:1893:23 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1893:19:1893:23 | SelfParam | &T | main.rs:1892:5:1894:5 | Self [trait MyAdd] |
+| main.rs:1893:26:1893:30 | value |  | main.rs:1892:17:1892:17 | T |
+| main.rs:1898:19:1898:23 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1898:19:1898:23 | SelfParam | &T | {EXTERNAL LOCATION} | i64 |
+| main.rs:1898:26:1898:30 | value |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1898:46:1900:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1899:13:1899:17 | value |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1905:19:1905:23 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1905:19:1905:23 | SelfParam | &T | {EXTERNAL LOCATION} | i64 |
+| main.rs:1905:26:1905:30 | value |  | file://:0:0:0:0 | & |
+| main.rs:1905:26:1905:30 | value | &T | {EXTERNAL LOCATION} | i64 |
+| main.rs:1905:47:1907:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1906:13:1906:18 | * ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1906:14:1906:18 | value |  | file://:0:0:0:0 | & |
+| main.rs:1906:14:1906:18 | value | &T | {EXTERNAL LOCATION} | i64 |
+| main.rs:1912:19:1912:23 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1912:19:1912:23 | SelfParam | &T | {EXTERNAL LOCATION} | i64 |
+| main.rs:1912:26:1912:30 | value |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1912:47:1918:9 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1912:47:1918:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1913:13:1917:13 | if value {...} else {...} |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1913:13:1917:13 | if value {...} else {...} |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1913:16:1913:20 | value |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1913:22:1915:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1913:22:1915:13 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1914:17:1914:17 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1914:17:1914:17 | 1 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1915:20:1917:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1915:20:1917:13 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1916:17:1916:17 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1916:17:1916:17 | 0 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1922:13:1922:13 | x |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1922:13:1922:13 | x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1922:22:1922:23 | 73 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1922:22:1922:23 | 73 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1923:9:1923:9 | x |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1923:9:1923:9 | x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1923:9:1923:22 | x.my_add(...) |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1923:18:1923:21 | 5i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1924:9:1924:9 | x |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1924:9:1924:9 | x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1924:9:1924:23 | x.my_add(...) |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1924:18:1924:22 | &5i64 |  | file://:0:0:0:0 | & |
+| main.rs:1924:18:1924:22 | &5i64 | &T | {EXTERNAL LOCATION} | i64 |
+| main.rs:1924:19:1924:22 | 5i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1925:9:1925:9 | x |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:1925:9:1925:9 | x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1925:9:1925:22 | x.my_add(...) |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1925:18:1925:21 | true |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1933:5:1933:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:1934:5:1934:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:1934:20:1934:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:1934:41:1934:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:1950:5:1950:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
 testFailures
 | main.rs:2:5:2:20 | f.write_str(...) | Unexpected result: method=write_str |
 | main.rs:5:5:5:20 | f.debug_struct(...) | Unexpected result: method=debug_struct |
