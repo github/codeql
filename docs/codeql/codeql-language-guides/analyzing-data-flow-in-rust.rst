@@ -17,7 +17,7 @@ For a more general introduction to modeling data flow, see ":ref:`About data flo
 Local data flow
 ---------------
 
-Local data flow tracks the flow of data within a single method or callable. Local data flow is easier, faster, and more precise than global data flow. Before looking at more complex tracking, you should always consider local tracking because it is sufficient for many queries.
+Local data flow tracks the flow of data within a single method or callable. Local data flow is easier, faster, and more precise than global data flow. Before using more complex tracking,  consider local tracking, as it is sufficient for many queries.
 
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
@@ -43,13 +43,11 @@ Similarly, you can map a data flow ``ParameterNode`` to its corresponding ``Para
       ...
     }
 
-
-Note that since ``asExpr`` maps from data-flow to control-flow nodes, you then need to call the ``getExpr`` member predicate on the control-flow node to map to the corresponding AST node,
-for example by writing ``node.asExpr().getExpr()``.
+Note that because ``asExpr`` maps from data-flow to control-flow nodes, you need to call the ``getExpr`` member predicate on the control-flow node to map to the corresponding AST node. For example, you can write ``node.asExpr().getExpr()``.
 A control-flow graph considers every way control can flow through code, consequently, there can be multiple data-flow and control-flow nodes associated with a single expression node in the AST.
 
 The predicate ``localFlowStep(Node nodeFrom, Node nodeTo)`` holds if there is an immediate data flow edge from the node ``nodeFrom`` to the node ``nodeTo``.
-You can apply the predicate recursively, by using the ``+`` and ``*`` operators, or you can use the predefined recursive predicate ``localFlow``.
+You can apply the predicate recursively by using the ``+`` and ``*`` operators, or you can use the predefined recursive predicate ``localFlow``.
 
 For example, you can find flow from an expression ``source`` to an expression ``sink`` in zero or more local steps:
 
@@ -71,7 +69,7 @@ If ``x`` is a tainted string then ``y`` is also tainted.
 
 The local taint tracking library is in the module ``TaintTracking``.
 Like local data flow, a predicate ``localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo)`` holds if there is an immediate taint propagation edge from the node ``nodeFrom`` to the node ``nodeTo``.
-You can apply the predicate recursively, by using the ``+`` and ``*`` operators, or you can use the predefined recursive predicate ``localTaint``.
+You can apply the predicate recursively by using the ``+`` and ``*`` operators, or you can use the predefined recursive predicate ``localTaint``.
 
 For example, you can find taint propagation from an expression ``source`` to an expression ``sink`` in zero or more local steps:
 
@@ -83,14 +81,14 @@ For example, you can find taint propagation from an expression ``source`` to an 
 Using local sources
 ~~~~~~~~~~~~~~~~~~~
 
-When exploring local data flow or taint propagation between two expressions as above, you would normally constrain the expressions to be relevant to your investigation.
-The next section gives some concrete examples, but first it's helpful to introduce the concept of a local source.
+When exploring local data flow or taint propagation between two expressions, such as in the previous example, you typically constrain the expressions to those relevant to your investigation.
+The next section provides concrete examples, but first introduces the concept of a local source.
 
 A local source is a data-flow node with no local data flow into it.
-As such, it is a local origin of data flow, a place where a new value is created.
+It is a local origin of data flow, a place where a new value is created.
 This includes parameters (which only receive values from global data flow) and most expressions (because they are not value-preserving).
 The class ``LocalSourceNode`` represents data-flow nodes that are also local sources.
-It comes with a useful member predicate ``flowsTo(DataFlow::Node node)``, which holds if there is local data flow from the local source to ``node``.
+It includes a useful member predicate ``flowsTo(DataFlow::Node node)``, which holds if there is local data flow from the local source to ``node``.
 
 Examples of local data flow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -105,8 +103,7 @@ This query finds the argument passed in each call to ``File::create``:
     where call.getStaticTarget().(Function).getCanonicalPath() = "<std::fs::File>::create"
     select call.getArg(0)
 
-Unfortunately this will only give the expression in the argument, not the values which could be passed to it.
-So we use local data flow to find all expressions that flow into the argument:
+Unfortunately, this only returns the expression used as the argument, not the possible values that could be passed to it. To address this, you can use local data flow to find all expressions that flow into the argument.
 
 .. code-block:: ql
 
@@ -120,7 +117,7 @@ So we use local data flow to find all expressions that flow into the argument:
       DataFlow::localFlow(source, sink)
     select source, sink
 
-We can vary the source, for example, making the source the parameter of a function rather than an expression. The following query finds where a parameter is used for the file creation:
+You can vary the source by making the source the parameter of a function instead of an expression. The following query finds where a parameter is used in file creation:
 
 .. code-block:: ql
 
@@ -183,8 +180,8 @@ The last line (``module MyDataFlow = ...``) instantiates the parameterized modul
 Using global taint tracking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Global taint tracking is to global data flow what local taint tracking is to local data flow.
-That is, global taint tracking extends global data flow with additional non-value-preserving steps.
+Global taint tracking relates to global data flow in the same way that local taint tracking relates to local data flow.
+In other words, global taint tracking extends global data flow with additional non-value-preserving steps.
 The global taint tracking library uses the same configuration module as the global data flow library. You can perform taint flow analysis using ``TaintTracking::Global``:
 
 .. code-block:: ql
@@ -207,7 +204,7 @@ The following global taint-tracking query finds places where a string literal is
   - Since this is a taint-tracking query, the ``TaintTracking::Global`` module is used.
   - The ``isSource`` predicate defines sources as any ``StringLiteralExpr``.
   - The ``isSink`` predicate defines sinks as arguments to a ``CallExpr`` called "password".
-  - The sources and sinks may need tuning to a particular use, for example, if passwords are represented by a type other than ``String`` or passed in arguments of a different name than "password".
+  - The sources and sinks may need to be adjusted for a particular use. For example, passwords might be represented by a type other than ``String`` or passed in arguments with a different name than "password".
 
 .. code-block:: ql
 
