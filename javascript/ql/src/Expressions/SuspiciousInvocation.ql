@@ -5,7 +5,9 @@
  * @kind problem
  * @problem.severity error
  * @id js/call-to-non-callable
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-476
  * @precision high
  */

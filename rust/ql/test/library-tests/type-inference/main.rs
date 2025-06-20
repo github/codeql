@@ -1325,6 +1325,11 @@ mod overloadable_operators {
         x: i64,
         y: i64,
     }
+    impl Default for Vec2 {
+        fn default() -> Self {
+            Vec2 { x: 0, y: 0 }
+        }
+    }
     // Implement all overloadable operators for Vec2
     impl Add for Vec2 {
         type Output = Self;
@@ -1671,6 +1676,10 @@ mod overloadable_operators {
         // Prefix operators
         let vec2_neg = -v1; // $ type=vec2_neg:Vec2 method=Vec2::neg
         let vec2_not = !v1; // $ type=vec2_not:Vec2 method=Vec2::not
+
+        // Here the type of `default_vec2` must be inferred from the `+` call.
+        let default_vec2 = Default::default(); // $ type=default_vec2:Vec2
+        let vec2_zero_plus = Vec2 { x: 0, y: 0 } + default_vec2; // $ method=Vec2::add
     }
 }
 

@@ -7,7 +7,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/unused-format-argument
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-685
  */
