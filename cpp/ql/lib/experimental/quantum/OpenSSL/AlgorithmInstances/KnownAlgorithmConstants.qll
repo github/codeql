@@ -210,7 +210,8 @@ string getAlgorithmAlias(string alias) {
 }
 
 /**
- * Finds aliases of known alagorithms defined by users (through obj_name_add and various macros pointing to this function)
+ * Holds for aliases of known alagorithms defined by users
+ * (through obj_name_add and various macros pointing to this function).
  *
  * The `target` and `alias` are converted to lowercase to be of a standard form.
  */
@@ -222,7 +223,7 @@ predicate customAliases(string target, string alias) {
 }
 
 /**
- * A hard-coded mapping of known algorithm aliases in OpenSsl.
+ * Holds for a hard-coded mapping of known algorithm aliases in OpenSsl.
  * This was derived by applying the same kind of logic foun din `customAliases` to the
  * OpenSsl code base directly.
  *

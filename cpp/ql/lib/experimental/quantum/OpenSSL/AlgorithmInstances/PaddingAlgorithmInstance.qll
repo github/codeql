@@ -33,13 +33,13 @@ predicate knownOpenSslConstantToPaddingFamilyType(
   exists(string name |
     name = e.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
     (
-      name.matches("OAEP") and type = Crypto::OAEP()
+      name = "OAEP" and type = Crypto::OAEP()
       or
-      name.matches("PSS") and type = Crypto::PSS()
+      name = "PSS" and type = Crypto::PSS()
       or
-      name.matches("PKCS7") and type = Crypto::PKCS7()
+      name = "PKCS7" and type = Crypto::PKCS7()
       or
-      name.matches("PKCS1V15") and type = Crypto::PKCS1_v1_5()
+      name = "PKCS1V15" and type = Crypto::PKCS1_v1_5()
     )
   )
 }
@@ -85,7 +85,7 @@ class KnownOpenSslPaddingConstantAlgorithmInstance extends OpenSslAlgorithmInsta
       // Source is `this`
       src.asExpr() = this and
       // This traces to a padding-specific consumer
-      RSAPaddingAlgorithmToPaddingAlgorithmValueConsumerFlow::flow(src, sink)
+      RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerFlow::flow(src, sink)
     ) and
     isPaddingSpecificConsumer = true
   }
@@ -143,7 +143,7 @@ class KnownOpenSslPaddingConstantAlgorithmInstance extends OpenSslAlgorithmInsta
 //     this instanceof Literal and
 //     this.getValue().toInt() in [0, 1, 3, 4, 5, 6, 7, 8]
 //     // TODO: trace to padding-specific consumers
-//     RSAPaddingAlgorithmToPaddingAlgorithmValueConsumerFlow
+//     RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerFlow
 //   }
 //   override string getRawPaddingAlgorithmName() { result = this.(Literal).getValue().toString() }
 //   override Crypto::TPaddingType getPaddingType() {
@@ -161,10 +161,10 @@ class KnownOpenSslPaddingConstantAlgorithmInstance extends OpenSslAlgorithmInsta
 //           else result = Crypto::OtherPadding()
 //   }
 // }
-class OAEPPaddingAlgorithmInstance extends Crypto::OAEPPaddingAlgorithmInstance,
+class OaepPaddingAlgorithmInstance extends Crypto::OAEPPaddingAlgorithmInstance,
   KnownOpenSslPaddingConstantAlgorithmInstance
 {
-  OAEPPaddingAlgorithmInstance() {
+  OaepPaddingAlgorithmInstance() {
     this.(Crypto::PaddingAlgorithmInstance).getPaddingType() = Crypto::OAEP()
   }
 
