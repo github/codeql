@@ -11,6 +11,7 @@ import Annotation
 import Exception
 import metrics.MetricField
 private import dispatch.VirtualDispatch
+private import semmle.code.java.Overlay
 
 /**
  * A common abstraction for type member declarations,
@@ -623,7 +624,13 @@ class SrcMethod extends Method {
       then implementsInterfaceMethod(result, this)
       else result.getASourceOverriddenMethod*() = this
     ) and
-    (exists(result.getBody()) or result.hasModifier("native"))
+    (
+      // We allow empty method bodies for the local overlay variant to allow
+      // calls to methods only fully extracted in base.
+      isOverlay() or
+      exists(result.getBody()) or
+      result.hasModifier("native")
+    )
   }
 }
 
@@ -896,4 +903,34 @@ class ExtensionMethod extends Method {
     then result = 1
     else result = 0
   }
+}
+
+overlay[local]
+private predicate discardableMethod(string file, @method m) {
+  not isOverlay() and
+  file = getRawFile(m) and
+  exists(@classorinterface c | methods(m, _, _, _, c, _) and isAnonymClass(c, _))
+}
+
+/** Discard base methods on anonymous classes in files fully extracted in the overlay. */
+overlay[discard_entity]
+private predicate discardAnonMethod(@method m) {
+  exists(string file | discardableMethod(file, m) and extractedInOverlay(file))
+}
+
+overlay[local]
+private predicate discardableBaseMethod(string file, @method m) {
+  not isOverlay() and
+  file = getRawFile(m)
+}
+
+overlay[local]
+private predicate usedOverlayMethod(@method m) { isOverlay() and methods(m, _, _, _, _, _) }
+
+/** Discard base methods in files fully extracted in the overlay that were not extracted in the overlay. */
+overlay[discard_entity]
+private predicate discardMethod(@method m) {
+  exists(string file |
+    discardableBaseMethod(file, m) and extractedInOverlay(file) and not usedOverlayMethod(m)
+  )
 }
