@@ -22,7 +22,7 @@ private predicate isOverloaded(string op, int arity, string path, string method,
     op = "!" and path = "core::ops::bit::Not" and method = "not" and borrows = 0
     or
     // Dereference
-    op = "*" and path = "core::ops::deref::Deref" and method = "deref" and borrows = 0
+    op = "*" and path = "core::ops::deref::Deref" and method = "deref" and borrows = 1
   )
   or
   arity = 2 and
