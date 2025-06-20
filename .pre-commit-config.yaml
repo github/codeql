@@ -9,7 +9,7 @@ repos:
       - id: trailing-whitespace
         exclude: /test/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
       - id: end-of-file-fixer
-        exclude: /test/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
+        exclude: Cargo.lock$|/test/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v17.0.6
