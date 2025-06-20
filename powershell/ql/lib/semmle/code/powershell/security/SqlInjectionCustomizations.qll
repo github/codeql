@@ -22,7 +22,14 @@ module SqlInjection {
    * A data flow sink for SQL-injection vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node {
+    /** Gets a description of this sink. */
     abstract string getSinkType();
+
+    /**
+     * Holds if this sink should allow for an implicit read of `cs` when
+     * reached.
+     */
+    predicate allowImplicitRead(DataFlow::ContentSet cs) { none() }
   }
 
   /**
@@ -45,10 +52,19 @@ module SqlInjection {
         not call.hasNamedArgument("query") and
         not call.hasNamedArgument("inputfile") and
         this = call.getArgument(0)
+        or
+        // TODO: Here we really should pick a splat argument, but we don't yet extract whether an
+        // argument is a splat argument.
+        this = unique( | | call.getAnArgument())
       )
     }
 
     override string getSinkType() { result = "call to Invoke-Sqlcmd" }
+
+    override predicate allowImplicitRead(DataFlow::ContentSet cs) {
+      cs.getAStoreContent().(DataFlow::Content::KnownKeyContent).getIndex().asString().toLowerCase() =
+        ["query", "inputfile"]
+    }
   }
 
   class ConnectionStringWriteSink extends Sink {
