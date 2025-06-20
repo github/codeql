@@ -95,7 +95,7 @@ predicate iDominates(ControlFlowNode dominator, ControlFlowNode node) {
 }
 
 /** Holds if `dom` strictly dominates `node`. */
-overlay[caller]
+overlay[caller?]
 pragma[inline]
 predicate strictlyDominates(ControlFlowNode dom, ControlFlowNode node) {
   // This predicate is gigantic, so it must be inlined.
@@ -105,7 +105,7 @@ predicate strictlyDominates(ControlFlowNode dom, ControlFlowNode node) {
 }
 
 /** Holds if `dom` dominates `node`. (This is reflexive.) */
-overlay[caller]
+overlay[caller?]
 pragma[inline]
 predicate dominates(ControlFlowNode dom, ControlFlowNode node) {
   // This predicate is gigantic, so it must be inlined.
@@ -115,7 +115,7 @@ predicate dominates(ControlFlowNode dom, ControlFlowNode node) {
 }
 
 /** Holds if `dom` strictly post-dominates `node`. */
-overlay[caller]
+overlay[caller?]
 pragma[inline]
 predicate strictlyPostDominates(ControlFlowNode dom, ControlFlowNode node) {
   // This predicate is gigantic, so it must be inlined.
@@ -125,7 +125,7 @@ predicate strictlyPostDominates(ControlFlowNode dom, ControlFlowNode node) {
 }
 
 /** Holds if `dom` post-dominates `node`. (This is reflexive.) */
-overlay[caller]
+overlay[caller?]
 pragma[inline]
 predicate postDominates(ControlFlowNode dom, ControlFlowNode node) {
   // This predicate is gigantic, so it must be inlined.

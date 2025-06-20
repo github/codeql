@@ -1786,7 +1786,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
            * For more information, see
            * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
            */
-          overlay[caller]
+          overlay[caller?]
           pragma[inline]
           deprecated predicate hasLocationInfo(
             string filepath, int startline, int startcolumn, int endline, int endcolumn

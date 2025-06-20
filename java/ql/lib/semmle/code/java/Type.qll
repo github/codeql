@@ -670,7 +670,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
    *
    * For the definition of the notion of *erasure* see JLS v8, section 4.6 (Type Erasure).
    */
-  overlay[caller]
+  overlay[caller?]
   pragma[inline]
   RefType commonSubtype(RefType other) {
     result.getASourceSupertype*() = erase(this) and
@@ -1260,7 +1260,7 @@ private Type erase(Type t) {
  *
  * For the definition of the notion of *erasure* see JLS v8, section 4.6 (Type Erasure).
  */
-overlay[caller]
+overlay[caller?]
 pragma[inline]
 predicate haveIntersection(RefType t1, RefType t2) {
   exists(RefType e1, RefType e2 | e1 = erase(t1) and e2 = erase(t2) |
