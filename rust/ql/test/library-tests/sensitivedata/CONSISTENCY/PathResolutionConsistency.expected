@@ -1,4 +1,4 @@
-multipleMethodCallTargets
+multipleCallTargets
 | test.rs:55:7:55:26 | ... .as_str() | file://:0:0:0:0 | fn as_str |
 | test.rs:55:7:55:26 | ... .as_str() | file://:0:0:0:0 | fn as_str |
 | test.rs:56:7:56:21 | ... .as_str() | file://:0:0:0:0 | fn as_str |
