@@ -68,3 +68,14 @@ $QueryConn = @{
 }
 
 Invoke-Sqlcmd @QueryConn # GOOD
+
+$QueryConn2 = @{
+    Database = "MyDB"
+    ServerInstance = "MyServer"
+    Username = "MyUserName"
+    Password = "MyPassword"
+    ConnectionTimeout = 0
+    Query = $userinput
+}
+
+Invoke-Sqlcmd @QueryConn2 # BAD [NOT DETECTED]
