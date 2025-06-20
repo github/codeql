@@ -29,6 +29,10 @@ macro_rules! pre_emit {
             return Some(label);
         }
     };
+    (Meta, $self:ident, $node:ident) => {
+        // rust-analyzer doesn't expand macros in this context
+        $self.macro_context_depth += 1;
+    };
     ($($_:tt)*) => {};
 }
 
@@ -122,7 +126,7 @@ pub struct Translator<'a> {
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
     resolve_paths: bool,
     source_kind: SourceKind,
-    macro_context_depth: usize,
+    pub(crate) macro_context_depth: usize,
 }
 
 const UNKNOWN_LOCATION: (LineCol, LineCol) =
