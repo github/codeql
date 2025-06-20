@@ -1,4 +1,6 @@
 /** Provides classes and predicates for working with `*.gwt.xml` files. */
+overlay[local?]
+module;
 
 import semmle.code.xml.XML
 

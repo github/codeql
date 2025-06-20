@@ -1,6 +1,8 @@
 /**
  * Definitions for reasoning about lists and arrays that are to be used as arguments to an external process.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.dataflow.SSA

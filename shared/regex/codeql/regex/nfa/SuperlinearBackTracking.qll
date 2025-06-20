@@ -34,6 +34,8 @@
  * It has the same suffix detection issue as the `js/redos` query, which can cause false positives.
  * It also doesn't find all transitions in the product automaton, which can cause false negatives.
  */
+overlay[local?]
+module;
 
 private import NfaUtils as NfaUtils
 private import codeql.regex.RegexTreeView
@@ -99,6 +101,7 @@ module Make<RegexTreeViewSig TreeImpl> {
     /**
      * Holds if the tuple `(r1, r2, r3)` might be on path from a start-state to an end-state in the product automaton.
      */
+    overlay[caller?]
     pragma[inline]
     predicate isFeasibleTuple(State r1, State r2, State r3) {
       // The first element is either inside a repetition (or the start state itself)

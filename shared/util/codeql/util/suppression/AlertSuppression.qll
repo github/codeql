@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 signature class AstNode {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn

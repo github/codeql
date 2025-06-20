@@ -1,4 +1,6 @@
 /** Provides classes and predicates for working with Android layouts and UI elements. */
+overlay[local?]
+module;
 
 import java
 import semmle.code.xml.AndroidManifest

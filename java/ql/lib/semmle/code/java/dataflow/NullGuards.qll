@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for null guards.
  */
+overlay[local?]
+module;
 
 import java
 import SSA

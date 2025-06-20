@@ -1,6 +1,8 @@
 /**
  * Provides classes for representing a position at which an SSA variable is read.
  */
+overlay[local?]
+module;
 
 private import SsaReadPositionSpecific
 import SsaReadPositionSpecific::Public

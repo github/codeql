@@ -6,6 +6,7 @@
  * VS Code, but prevents the "Location is outside of test directory" warning
  * when executed through `codeql test run`.
  */
+overlay[local?]
 module;
 
 external private predicate queryResults(string relation, int row, int column, string data);

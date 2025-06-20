@@ -2,6 +2,8 @@
  * Provides classes and predicates for reasoning about calls that may invoke one
  * of their arguments.
  */
+overlay[local?]
+module;
 
 import java
 import VirtualDispatch
