@@ -5,6 +5,10 @@ query predicate attribute_macros(Item i, int index, Item expanded) {
   i.fromSource() and expanded = i.getAttributeMacroExpansion().getItem(index)
 }
 
+query predicate derive_macros(Adt i, int index, int subIndex, Item expanded) {
+  i.fromSource() and expanded = i.getDeriveMacroExpansion(index).getItem(subIndex)
+}
+
 query predicate macro_calls(MacroCall c, AstNode expansion) {
   c.fromSource() and
   not c.getLocation().getFile().getAbsolutePath().matches("%proc_macro.rs") and

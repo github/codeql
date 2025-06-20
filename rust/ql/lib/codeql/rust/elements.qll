@@ -6,6 +6,7 @@
 import codeql.files.FileSystem
 import codeql.rust.elements.Abi
 import codeql.rust.elements.Addressable
+import codeql.rust.elements.Adt
 import codeql.rust.elements.ArgList
 import codeql.rust.elements.ArrayExpr
 import codeql.rust.elements.ArrayListExpr
@@ -186,7 +187,6 @@ import codeql.rust.elements.UseBoundGenericArgs
 import codeql.rust.elements.UseTree
 import codeql.rust.elements.UseTreeList
 import codeql.rust.elements.Variant
-import codeql.rust.elements.VariantDef
 import codeql.rust.elements.VariantList
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
