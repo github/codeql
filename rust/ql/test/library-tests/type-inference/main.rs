@@ -1856,21 +1856,21 @@ mod indexers {
 
         // MyVec::index
         fn index(&self, index: usize) -> &Self::Output {
-            &self.data[index] // $ fieldof=MyVec
+            &self.data[index] // $ fieldof=MyVec method=index
         }
     }
 
     fn analyze_slice(slice: &[S]) {
-        let x = slice[0].foo(); // $ method=foo type=x:S
+        let x = slice[0].foo(); // $ method=foo type=x:S method=index
     }
 
     pub fn f() {
         let mut vec = MyVec::new(); // $ type=vec:T.S
         vec.push(S); // $ method=push
-        vec[0].foo(); // $ MISSING: method=foo -- type inference does not support the `Index` trait yet
+        vec[0].foo(); // $ method=MyVec::index method=foo
 
         let xs: [S; 1] = [S];
-        let x = xs[0].foo(); // $ method=foo type=x:S
+        let x = xs[0].foo(); // $ method=foo type=x:S method=index
 
         analyze_slice(&xs);
     }
