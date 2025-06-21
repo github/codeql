@@ -772,45 +772,48 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
     n = a.getNodeAt(apos) and
     result = CallExprBaseMatching::inferAccessType(a, apos, path0)
   |
-    (
+    if
       apos.isBorrowed(true)
       or
-      // The desugaring of the unary `*e` is `*Deref::deref(&e)`. To handle the
-      // deref expression after the call we must strip a `&` from the type at
-      // the return position.
-      apos.isReturn() and a instanceof DerefExpr
-    ) and
-    path0.isCons(TRefTypeParameter(), path)
-    or
-    apos.isBorrowed(false) and
-    exists(Type argType | argType = inferType(n) |
-      if argType = TRefType()
+      // The desugaring of the unary `*e` is `*Deref::deref(&e)` and the
+      // desugaring of `a[b]` is `*Index::index(&a, b)`. To handle the deref
+      // expression after the call we must strip a `&` from the type at the
+      // return position.
+      apos.isReturn() and
+      (a instanceof DerefExpr or a instanceof IndexExpr)
+    then path0.isCons(TRefTypeParameter(), path)
+    else
+      if apos.isBorrowed(false)
       then
-        path = path0 and
-        path0.isCons(TRefTypeParameter(), _)
-        or
-        // adjust for implicit deref
-        not path0.isCons(TRefTypeParameter(), _) and
-        not (path0.isEmpty() and result = TRefType()) and
-        path = TypePath::cons(TRefTypeParameter(), path0)
-      else (
-        not (
-          argType.(StructType).asItemNode() instanceof StringStruct and
-          result.(StructType).asItemNode() instanceof Builtins::Str
-        ) and
-        (
-          not path0.isCons(TRefTypeParameter(), _) and
-          not (path0.isEmpty() and result = TRefType()) and
-          path = path0
-          or
-          // adjust for implicit borrow
-          path0.isCons(TRefTypeParameter(), path)
+        exists(Type argType | argType = inferType(n) |
+          if argType = TRefType()
+          then
+            path = path0 and
+            path0.isCons(TRefTypeParameter(), _)
+            or
+            // adjust for implicit deref
+            not path0.isCons(TRefTypeParameter(), _) and
+            not (path0.isEmpty() and result = TRefType()) and
+            path = TypePath::cons(TRefTypeParameter(), path0)
+          else (
+            not (
+              argType.(StructType).asItemNode() instanceof StringStruct and
+              result.(StructType).asItemNode() instanceof Builtins::Str
+            ) and
+            (
+              not path0.isCons(TRefTypeParameter(), _) and
+              not (path0.isEmpty() and result = TRefType()) and
+              path = path0
+              or
+              // adjust for implicit borrow
+              path0.isCons(TRefTypeParameter(), path)
+            )
+          )
         )
+      else (
+        not apos.isBorrowed(_) and
+        path = path0
       )
-    )
-    or
-    not apos.isBorrowed(_) and
-    path = path0
   )
 }
 
@@ -1116,8 +1119,8 @@ private class Vec extends Struct {
  */
 pragma[nomagic]
 private Type inferIndexExprType(IndexExpr ie, TypePath path) {
-  // TODO: Should be implemented as method resolution, using the special
-  // `std::ops::Index` trait.
+  // TODO: Method resolution to the `std::ops::Index` trait can handle the
+  // `Index` instances for slices and arrays.
   exists(TypePath exprPath, Builtins::BuiltinType t |
     TStruct(t) = inferType(ie.getIndex()) and
     (
@@ -1129,8 +1132,6 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
     ) and
     result = inferType(ie.getBase(), exprPath)
   |
-    exprPath.isCons(any(Vec v).getElementTypeParameter(), path)
-    or
     exprPath.isCons(any(ArrayTypeParameter tp), path)
     or
     exists(TypePath path0 |
