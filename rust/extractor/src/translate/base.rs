@@ -216,7 +216,7 @@ impl<'a> Translator<'a> {
         if let Some(semantics) = self.semantics.as_ref() {
             let file_range = semantics.original_range(node.syntax());
             let file_id = self.file_id?;
-            if file_id.file_id(semantics.db) == file_range.file_id {
+            if file_id == file_range.file_id {
                 Some(file_range.range)
             } else {
                 None
@@ -370,20 +370,18 @@ impl<'a> Translator<'a> {
         if let Some(value) = semantics
             .hir_file_for(expanded)
             .macro_file()
-            .and_then(|macro_file| {
-                semantics
-                    .db
-                    .parse_macro_expansion_error(macro_file.macro_call_id)
-            })
+            .and_then(|macro_call_id| semantics.db.parse_macro_expansion_error(macro_call_id))
         {
             if let Some(err) = &value.err {
                 let error = err.render_to_string(semantics.db);
-
-                if err.span().anchor.file_id == semantics.hir_file_for(node.syntax()) {
+                let hir_file_id = semantics.hir_file_for(node.syntax());
+                if Some(err.span().anchor.file_id.file_id())
+                    == hir_file_id.file_id().map(|f| f.file_id(semantics.db))
+                {
                     let location = err.span().range
                         + semantics
                             .db
-                            .ast_id_map(err.span().anchor.file_id.into())
+                            .ast_id_map(hir_file_id)
                             .get_erased(err.span().anchor.ast_id)
                             .text_range()
                             .start();
@@ -435,10 +433,10 @@ impl<'a> Translator<'a> {
             .as_ref()
             .and_then(|s| s.expand_macro_call(mcall))
         {
-            self.emit_macro_expansion_parse_errors(mcall, &expanded);
+            self.emit_macro_expansion_parse_errors(mcall, &expanded.value);
             let expand_to = ra_ap_hir_expand::ExpandTo::from_call_site(mcall);
             let kind = expanded.kind();
-            if let Some(value) = self.emit_expanded_as(expand_to, expanded) {
+            if let Some(value) = self.emit_expanded_as(expand_to, expanded.value) {
                 generated::MacroCall::emit_macro_call_expansion(
                     label,
                     value,
@@ -741,11 +739,11 @@ impl<'a> Translator<'a> {
     ) {
         // work around a bug in rust-analyzer AST generation machinery
         // this code was inspired by rust-analyzer's own workaround for this:
-        // https://github.com/rust-lang/rust-analyzer/blob/1f86729f29ea50e8491a1516422df4fd3d1277b0/crates/syntax/src/ast/node_ext.rs#L268-L277
-        if item.l_angle_token().is_some() {
+        // https://github.com/rust-lang/rust-analyzer/blob/a642aa8023be11d6bc027fc6a68c71c2f3fc7f72/crates/syntax/src/ast/node_ext.rs#L290-L297
+        if let Some(anchor) = item.type_anchor() {
             // <T> or <T as Trait>
             // T is any TypeRef, Trait has to be a PathType
-            let mut type_refs = item
+            let mut type_refs = anchor
                 .syntax()
                 .children()
                 .filter(|node| ast::Type::can_cast(node.kind()));
@@ -763,6 +761,13 @@ impl<'a> Translator<'a> {
             {
                 generated::PathSegment::emit_trait_type_repr(label, t, &mut self.trap.writer)
             }
+            // moreover as we're skipping emission of TypeAnchor, we need to attach its comments to
+            // this path segment
+            self.emit_tokens(
+                &anchor,
+                label.into(),
+                anchor.syntax().children_with_tokens(),
+            );
         }
     }
 
@@ -821,8 +826,8 @@ impl<'a> Translator<'a> {
         let ExpandResult {
             value: expanded, ..
         } = self.semantics.and_then(|s| s.expand_attr_macro(node))?;
-        self.emit_macro_expansion_parse_errors(node, &expanded);
-        let macro_items = ast::MacroItems::cast(expanded).or_else(|| {
+        self.emit_macro_expansion_parse_errors(node, &expanded.value);
+        let macro_items = ast::MacroItems::cast(expanded.value).or_else(|| {
             let message = "attribute macro expansion cannot be cast to MacroItems".to_owned();
             let location = self.location_for_node(node);
             self.emit_diagnostic(
