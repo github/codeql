@@ -465,18 +465,38 @@ class NamedSet extends NamedSet0 {
   /** Gets the non-empty set of names, if any. */
   NamedSetModule::Set asNonEmpty() { this = TNonEmptyNamedSet(result) }
 
+  /** Gets the `i`'th name in this set according to some ordering. */
+  private string getRankedName(int i) {
+    result = rank[i + 1](string s | s = this.getALowerCaseName() | s)
+  }
+
   /** Holds if this is the empty set. */
   predicate isEmpty() { this = TEmptyNamedSet() }
 
-  /** Gets a name in this set. */
-  string getAName() { this.asNonEmpty().contains(result) }
+  int getSize() {
+    result = strictcount(this.getALowerCaseName())
+    or
+    this.isEmpty() and
+    result = 0
+  }
+
+  /** Gets a lower-case name in this set. */
+  string getALowerCaseName() { this.asNonEmpty().contains(result) }
 
   /** Gets the textual representation of this set. */
   string toString() {
-    result = "{" + strictconcat(this.getAName(), ", ") + "}"
+    result = "{" + strictconcat(this.getALowerCaseName(), ", ") + "}"
     or
     this.isEmpty() and
     result = "{}"
+  }
+
+  private CfgNodes::ExprNodes::CallExprCfgNode getABindingCallRec(int i) {
+    exists(string name | name = this.getRankedName(i) and exists(result.getNamedArgument(name)) |
+      i = 0
+      or
+      result = this.getABindingCallRec(i - 1)
+    )
   }
 
   /**
@@ -485,7 +505,7 @@ class NamedSet extends NamedSet0 {
    * NOTE: The `CfgNodes::CallCfgNode` may also provide more names.
    */
   CfgNodes::ExprNodes::CallExprCfgNode getABindingCall() {
-    forex(string name | name = this.getAName() | exists(result.getNamedArgument(name)))
+    result = this.getABindingCallRec(this.getSize() - 1)
     or
     this.isEmpty() and
     exists(result)
@@ -496,16 +516,28 @@ class NamedSet extends NamedSet0 {
    * this set.
    */
   CfgNodes::ExprNodes::CallExprCfgNode getAnExactBindingCall() {
-    forex(string name | name = this.getAName() | exists(result.getNamedArgument(name))) and
-    forex(string name | exists(result.getNamedArgument(name)) | name = this.getAName())
+    result = this.getABindingCallRec(this.getSize() - 1) and
+    strictcount(string name | result.hasNamedArgument(name)) = this.getSize()
     or
     this.isEmpty() and
     not exists(result.getNamedArgument(_))
   }
 
+  pragma[nomagic]
+  private Function getAFunctionRec(int i) {
+    i = 0 and
+    result.getAParameter().getLowerCaseName() = this.getRankedName(0)
+    or
+    exists(string name |
+      pragma[only_bind_into](name) = this.getRankedName(i) and
+      result.getAParameter().getLowerCaseName() = pragma[only_bind_into](name) and
+      result = this.getAFunctionRec(i - 1)
+    )
+  }
+
   /** Gets a function that has a parameter for each name in this set. */
   Function getAFunction() {
-    forex(string name | name = this.getAName() | result.getAParameter().matchesName(name))
+    result = this.getAFunctionRec(this.getSize() - 1)
     or
     this.isEmpty() and
     exists(result)
@@ -531,6 +563,12 @@ private module ParameterNodes {
         c = callable.asCfgScope()
       )
     }
+  }
+
+  bindingset[p]
+  pragma[inline_late]
+  private predicate namedSetHasParameter(NamedSet ns, Parameter p) {
+    ns.getALowerCaseName() = p.getLowerCaseName()
   }
 
   /**
@@ -566,13 +604,13 @@ private module ParameterNodes {
           f = parameter.getFunction() and
           f = ns.getAFunction() and
           name = parameter.getLowerCaseName() and
-          not name = ns.getAName() and
+          not name = ns.getALowerCaseName() and
           j =
             i -
               count(int k, Parameter p |
                 k < i and
                 p = getNormalParameter(f, k) and
-                p.getLowerCaseName() = ns.getAName()
+                namedSetHasParameter(ns, p)
               )
         )
       )

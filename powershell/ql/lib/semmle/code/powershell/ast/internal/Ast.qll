@@ -3,6 +3,7 @@ private import AstImport
 class Ast extends TAst {
   string toString() { none() }
 
+  pragma[nomagic]
   final Ast getParent() { result.getChild(_) = this }
 
   Location getLocation() {
