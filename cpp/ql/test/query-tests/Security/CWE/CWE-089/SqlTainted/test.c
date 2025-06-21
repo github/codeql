@@ -76,3 +76,40 @@ void ODBCTests(){
   SQLPrepare(0, userInput, 100); // BAD
   SQLExecDirect(0, userInput, 100); // BAD
 }
+
+// Oracle Call Interface (OCI) Routines
+int OCIStmtPrepare(
+      void *arg0,
+      void *arg1,
+      const unsigned char *sql,
+      unsigned int arg3,
+      unsigned int arg4,
+      unsigned int arg5);
+int OCIStmtPrepare2(
+      void *arg0,
+      void **arg1,
+      void *arg2,
+      const unsigned char *sql,
+      unsigned int arg4,
+      const unsigned char *arg5,
+      unsigned int arg6,
+      unsigned int arg7,
+      unsigned int arg8);
+
+void OCITests(){
+  char userInput[100];
+  gets(userInput);
+
+  // a string from the user is injected directly into an SQL query.
+  char query1[1000] = {0};
+  snprintf(query1, 1000, "SELECT UID FROM USERS where name = \"%s\"", userInput);
+  OCIStmtPrepare(0, 0, query1, 0, 0, 0); // BAD
+  OCIStmtPrepare2(0, 0, 0, query1, 0, 0, 0, 0, 0); // BAD
+
+  // an integer from the user is injected into an SQL query.
+  int userNumber = atoi(userInput);
+  char query2[1000] = {0};
+  snprintf(query2, 1000, "SELECT UID FROM USERS where number = \"%i\"", userNumber);
+  OCIStmtPrepare(0, 0, query2, 0, 0, 0); // GOOD
+  OCIStmtPrepare2(0, 0, 0, query2, 0, 0, 0, 0, 0); // GOOD
+}

@@ -1,0 +1,8 @@
+# partial model of the Oracle Call Interface (OCI) library
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sinkModel
+    data: # namespace, type, subtypes, name, signature, ext, input, kind, provenance
+      - ["", "", False, "OCIStmtPrepare", "", "", "Argument[*2]", "sql-injection", "manual"]
+      - ["", "", False, "OCIStmtPrepare2", "", "", "Argument[*3]", "sql-injection", "manual"]

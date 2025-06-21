@@ -38,6 +38,9 @@ module SqlTaintedConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) {
     exists(SqlLikeFunction runSql | runSql.outermostWrapperFunctionCall(asSinkExpr(node), _))
+    or
+    // sink defined using models-as-data
+    sinkNode(node, "sql-injection")
   }
 
   predicate isBarrier(DataFlow::Node node) {
