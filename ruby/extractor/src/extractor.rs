@@ -357,17 +357,15 @@ fn get_overlay_changed_files() -> Option<HashSet<PathBuf>> {
     //         ...
     //     ]
     // }
-    json_value
-        .get("changes")?
-        .as_array()?
-        .iter()
-        .map(|change| {
-            change
-                .as_str()
-                .map(|s| PathBuf::from(s).canonicalize().ok())
-                .flatten()
-        })
-        .collect()
+    Some(
+        json_value
+            .get("changes")?
+            .as_array()?
+            .iter()
+            .filter_map(|change| change.as_str())
+            .filter_map(|s| PathBuf::from(s).canonicalize().ok())
+            .collect(),
+    )
 }
 
 fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<str>> {
