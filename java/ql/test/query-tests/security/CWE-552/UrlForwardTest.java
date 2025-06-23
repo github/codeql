@@ -25,26 +25,26 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 
 	// Spring `ModelAndView` test cases
 	@GetMapping("/bad1")
-	public ModelAndView bad1(String url) {
-		return new ModelAndView(url); // $ hasTaintFlow
+	public ModelAndView bad1(String url) { // $ Source
+		return new ModelAndView(url); // $ Alert
 	}
 
 	@GetMapping("/bad2")
-	public ModelAndView bad2(String url) {
+	public ModelAndView bad2(String url) { // $ Source
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName(url); // $ hasTaintFlow
+		modelAndView.setViewName(url); // $ Alert
 		return modelAndView;
 	}
 
 	// Spring `"forward:"` prefix test cases
 	@GetMapping("/bad3")
-	public String bad3(String url) {
-		return "forward:" + url + "/swagger-ui/index.html"; // $ hasTaintFlow
+	public String bad3(String url) { // $ Source
+		return "forward:" + url + "/swagger-ui/index.html"; // $ Alert
 	}
 
 	@GetMapping("/bad4")
-	public ModelAndView bad4(String url) {
-		ModelAndView modelAndView = new ModelAndView("forward:" + url); // $ hasTaintFlow
+	public ModelAndView bad4(String url) { // $ Source
+		ModelAndView modelAndView = new ModelAndView("forward:" + url); // $ Alert
 		return modelAndView;
 	}
 
@@ -58,9 +58,9 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 
 	// `RequestDispatcher` test cases from a Spring `GetMapping` entry point
 	@GetMapping("/bad5")
-	public void bad5(String url, HttpServletRequest request, HttpServletResponse response) {
+	public void bad5(String url, HttpServletRequest request, HttpServletResponse response) { // $ Source
 		try {
-			request.getRequestDispatcher(url).include(request, response); // $ hasTaintFlow
+			request.getRequestDispatcher(url).include(request, response); // $ Alert
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -69,9 +69,9 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	}
 
 	@GetMapping("/bad6")
-	public void bad6(String url, HttpServletRequest request, HttpServletResponse response) {
+	public void bad6(String url, HttpServletRequest request, HttpServletResponse response) { // $ Source
 		try {
-			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").include(request, response); // $ hasTaintFlow
+			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").include(request, response); // $ Alert
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -80,9 +80,9 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	}
 
 	@GetMapping("/bad7")
-	public void bad7(String url, HttpServletRequest request, HttpServletResponse response) {
+	public void bad7(String url, HttpServletRequest request, HttpServletResponse response) { // $ Source
 		try {
-			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").forward(request, response); // $ hasTaintFlow
+			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").forward(request, response); // $ Alert
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -103,10 +103,10 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 
 	// BAD: appended to a prefix without path sanitization
 	@GetMapping("/bad8")
-	public void bad8(String urlPath, HttpServletRequest request, HttpServletResponse response) {
+	public void bad8(String urlPath, HttpServletRequest request, HttpServletResponse response) { // $ Source
 		try {
 			String url = "/pages" + urlPath;
-			request.getRequestDispatcher(url).forward(request, response); // $ hasTaintFlow
+			request.getRequestDispatcher(url).forward(request, response); // $ Alert
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -142,10 +142,10 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	// BAD: Request dispatcher from servlet path without check
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 		throws IOException, ServletException {
-		String path = ((HttpServletRequest) request).getServletPath();
+		String path = ((HttpServletRequest) request).getServletPath(); // $ Source
 		// A sample payload "/%57EB-INF/web.xml" can bypass this `startsWith` check
 		if (path != null && !path.startsWith("/WEB-INF")) {
-			request.getRequestDispatcher(path).forward(request, response); // $ hasTaintFlow
+			request.getRequestDispatcher(path).forward(request, response); // $ Alert
 		} else {
 			chain.doFilter(request, response);
 		}
@@ -155,10 +155,10 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	// the user-supplied path; could bypass check with ".." encoded as "%2e%2e".
 	public void doFilter2(ServletRequest request, ServletResponse response, FilterChain chain)
 		throws IOException, ServletException {
-		String path = ((HttpServletRequest) request).getServletPath();
+		String path = ((HttpServletRequest) request).getServletPath(); // $ Source
 
 		if (path.startsWith(BASE_PATH) && !path.contains("..")) {
-			request.getRequestDispatcher(path).forward(request, response); // $ hasTaintFlow
+			request.getRequestDispatcher(path).forward(request, response); // $ Alert
 		} else {
 			chain.doFilter(request, response);
 		}
@@ -181,7 +181,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("action");
-		String returnURL = request.getParameter("returnURL");
+		String returnURL = request.getParameter("returnURL"); // $ Source
 
 		ServletConfig cfg = getServletConfig();
 		if (action.equals("Login")) {
@@ -190,7 +190,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 			rd.forward(request, response);
 		} else {
 			ServletContext sc = cfg.getServletContext();
-			RequestDispatcher rd = sc.getRequestDispatcher(returnURL); // $ hasTaintFlow
+			RequestDispatcher rd = sc.getRequestDispatcher(returnURL); // $ Alert
 			rd.forward(request, response);
 		}
 	}
@@ -200,13 +200,13 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("action");
-		String returnURL = request.getParameter("returnURL");
+		String returnURL = request.getParameter("returnURL"); // $ Source
 
 		if (action.equals("Login")) {
 			RequestDispatcher rd = request.getRequestDispatcher("/Login.jsp");
 			rd.forward(request, response);
 		} else {
-			RequestDispatcher rd = request.getRequestDispatcher(returnURL); // $ hasTaintFlow
+			RequestDispatcher rd = request.getRequestDispatcher(returnURL); // $ Alert
 			rd.forward(request, response);
 		}
 	}
@@ -229,11 +229,11 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	// BAD: Request dispatcher without path traversal check
 	protected void doHead1(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String path = request.getParameter("path");
+		String path = request.getParameter("path"); // $ Source
 
 		// A sample payload "/pages/welcome.jsp/../WEB-INF/web.xml" can bypass the `startsWith` check
 		if (path.startsWith(BASE_PATH)) {
-			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasTaintFlow
+			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ Alert
 		}
 	}
 
@@ -241,10 +241,10 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	// the user-supplied path; could bypass check with ".." encoded as "%2e%2e".
 	protected void doHead2(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String path = request.getParameter("path");
+		String path = request.getParameter("path"); // $ Source
 
 		if (path.startsWith(BASE_PATH) && !path.contains("..")) {
-			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasTaintFlow
+			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ Alert
 		}
 	}
 
@@ -252,36 +252,36 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	// does not decode before normalization.
 	protected void doHead3(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String path = request.getParameter("path");
+		String path = request.getParameter("path"); // $ Source
 
 		// Since not decoded before normalization, "%2e%2e" can remain in the path
 		Path requestedPath = Paths.get(BASE_PATH).resolve(path).normalize();
 
 		if (requestedPath.startsWith(BASE_PATH)) {
-			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response); // $ hasTaintFlow
+			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response); // $ Alert
 		}
 	}
 
 	// BAD: Request dispatcher with negation check and path normalization, but without URL decoding.
 	protected void doHead4(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String path = request.getParameter("path");
+		String path = request.getParameter("path"); // $ Source
 		// Since not decoded before normalization, "/%57EB-INF" can remain in the path and pass the `startsWith` check.
 		Path requestedPath = Paths.get(BASE_PATH).resolve(path).normalize();
 
 		if (!requestedPath.startsWith("/WEB-INF") && !requestedPath.startsWith("/META-INF")) {
-			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response); // $ hasTaintFlow
+			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response); // $ Alert
 		}
 	}
 
 	// BAD: Request dispatcher with path traversal check and single URL decoding; may be vulnerable to double-encoding
 	protected void doHead5(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String path = request.getParameter("path");
+		String path = request.getParameter("path"); // $ Source
 		path = URLDecoder.decode(path, "UTF-8");
 
 		if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
-			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasTaintFlow
+			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ Alert
 		}
 	}
 
@@ -316,10 +316,10 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	// BAD: Request dispatcher without URL decoding before WEB-INF and path traversal checks
 	protected void doHead8(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String path = request.getParameter("path");
+		String path = request.getParameter("path"); // $ Source
 		if (path.contains("%")){ // incorrect check
 			if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
-				request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasTaintFlow
+				request.getServletContext().getRequestDispatcher(path).include(request, response); // $ Alert
 			}
 		}
 	}
@@ -352,7 +352,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	// GOOD: Request dispatcher with path traversal check and URL decoding in a loop to avoid double-encoding bypass
 	protected void doHead11(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String path = request.getParameter("path");
+		String path = request.getParameter("path"); // $ Source
 		// FP: we don't currently handle the scenario where the
 		// `path.contains("%")` check is stored in a variable.
 		boolean hasEncoding = path.contains("%");
@@ -362,14 +362,14 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		}
 
 		if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
-			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ SPURIOUS: hasTaintFlow
+			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ SPURIOUS: Alert
 		}
 	}
 
 	// BAD: `StaplerResponse.forward` without any checks
 	public void generateResponse(StaplerRequest req, StaplerResponse rsp, Object obj) throws IOException, ServletException {
-		String url = req.getParameter("target");
-		rsp.forward(obj, url, req); // $ hasTaintFlow
+		String url = req.getParameter("target"); // $ Source
+		rsp.forward(obj, url, req); // $ Alert
 	}
 
 	// QHelp example
@@ -381,7 +381,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		ServletContext sc = cfg.getServletContext();
 
 		// BAD: a request parameter is incorporated without validation into a URL forward
-		sc.getRequestDispatcher(request.getParameter("target")).forward(request, response); // $ hasTaintFlow
+		sc.getRequestDispatcher(request.getParameter("target")).forward(request, response); // $ Alert
 
 		// GOOD: the request parameter is validated against a known fixed string
 		if (VALID_FORWARD.equals(request.getParameter("target"))) {
