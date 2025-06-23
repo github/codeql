@@ -23,12 +23,18 @@ class CryptographyCreateCall extends MethodCall {
     or
     result = this.(ECDsaCreateCallWithECCurve)
   }
-
 }
 
 class ECDsaCreateCall extends CryptographyCreateCall {
   ECDsaCreateCall() { this.getQualifier().getType().hasName("ECDsa") }
 }
+
+// TODO
+// class HashAlgorithmCreateCall extends CryptographyCreateCall {
+//   ValueOrRefType type;
+
+//   HashAlgorithmCreateCall() { type = this.getQualifier().getType().getDeclaringType() }
+// }
 
 class RSACreateCall extends CryptographyCreateCall {
   RSACreateCall() { this.getQualifier().getType().hasName("RSA") }
@@ -84,7 +90,11 @@ class HashAlgorithmName extends PropertyAccess {
 
   string getAlgorithmName() { result = algorithmName }
 
-  Crypto::THashType getHashFamily() { hashAlgorithmToFamily(this.getAlgorithmName(), result, _) }
+  Crypto::THashType getHashFamily() {
+    if hashAlgorithmToFamily(this.getAlgorithmName(), _, _)
+    then hashAlgorithmToFamily(this.getAlgorithmName(), result, _)
+    else result = Crypto::OtherHashType()
+  }
 
   int getFixedDigestLength() { hashAlgorithmToFamily(this.getAlgorithmName(), _, result) }
 }
@@ -107,18 +117,18 @@ private predicate hashAlgorithmToFamily(
   hashName = "SHA3_384" and hashFamily = Crypto::SHA3() and digestLength = 384
   or
   hashName = "SHA3_512" and hashFamily = Crypto::SHA3() and digestLength = 512
-  // Q: is there an idiomatic way to add a default type here?
+  // TODO: is there an idiomatic way to add a default type here?
 }
 
-class HashAlgorithmUser extends MethodCall {
+class HashAlgorithmNameUser extends MethodCall {
   Expr arg;
 
-  HashAlgorithmUser() {
+  HashAlgorithmNameUser() {
     arg = this.getAnArgument() and
     arg.getType() instanceof HashAlgorithmNameType
   }
 
-  Expr getHashAlgorithmUser() { result = arg }
+  Expr getHashAlgorithmNameUser() { result = arg }
 }
 
 /**
@@ -172,6 +182,8 @@ class DotNetSigner extends MethodCall {
       )
     )
   }
+
+  predicate isIntermediate() { none() }
 
   Expr getSignatureOutput() {
     this.isSigner() and

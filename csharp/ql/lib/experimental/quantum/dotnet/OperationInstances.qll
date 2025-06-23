@@ -9,7 +9,7 @@ class ECDsaORRSASigningOperationInstance extends Crypto::SignatureOperationInsta
   CryptographyCreateCall creator;
 
   ECDsaORRSASigningOperationInstance() {
-    CryptographyCreateToUseFlow::flow(DataFlow::exprNode(creator), DataFlow::exprNode(this))
+    creator = CryptographyCreateToUseFlow::getCreationFromUse(this, _, _)
   }
 
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {

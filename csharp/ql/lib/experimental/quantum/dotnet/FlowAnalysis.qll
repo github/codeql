@@ -16,27 +16,72 @@ module SigningNamedCurveToSignatureCreateFlowConfig implements DataFlow::ConfigS
 module SigningNamedCurveToSignatureCreateFlow =
   DataFlow::Global<SigningNamedCurveToSignatureCreateFlowConfig>;
 
-/**
- * Flow from a known ECDsa property access to a `ECDsa.Create(sink)` call.
- */
-private module CreateToUseFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof CryptographyCreateCall }
-
-  predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof DotNetSigner }
-
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    node2.asExpr().(DotNetSigner).getQualifier() = node1.asExpr()
-  }
-}
-
-module CryptographyCreateToUseFlow = DataFlow::Global<CreateToUseFlowConfig>;
-
 module HashAlgorithmNameToUseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HashAlgorithmName }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(HashAlgorithmConsumer consumer | sink = consumer.getInputNode())
+    exists(HashAlgorithmNameConsumer consumer | sink = consumer.getInputNode())
   }
 }
 
 module HashAlgorithmNameToUse = DataFlow::Global<HashAlgorithmNameToUseConfig>;
+
+signature class CreationCallSig instanceof Call;
+
+signature class UseCallSig instanceof QualifiableExpr {
+  predicate isIntermediate();
+}
+
+module CryptographyCreateToUseFlow = CreationToUseFlow<CryptographyCreateCall, DotNetSigner>;
+
+module CreationToUseFlow<CreationCallSig Creation, UseCallSig Use> {
+  private module CreationToUseConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      source.asExpr() instanceof Creation
+      or
+      exists(Use use |
+        source.asExpr() = use.(QualifiableExpr).getQualifier() and use.isIntermediate()
+      )
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(Use use | sink.asExpr() = use.(QualifiableExpr).getQualifier())
+    }
+  }
+
+  private module CreationToUseFlow = DataFlow::Global<CreationToUseConfig>;
+
+  Creation getCreationFromUse(
+    Use use, CreationToUseFlow::PathNode source, CreationToUseFlow::PathNode sink
+  ) {
+    source.getNode().asExpr() = result and
+    sink.getNode().asExpr() = use.(MethodCall).getQualifier() and
+    CreationToUseFlow::flowPath(source, sink)
+  }
+
+  Use getUseFromCreation(
+    Creation creation, CreationToUseFlow::PathNode source, CreationToUseFlow::PathNode sink
+  ) {
+    source.getNode().asExpr() = creation and
+    sink.getNode().asExpr() = result.(MethodCall).getQualifier() and
+    CreationToUseFlow::flowPath(source, sink)
+  }
+
+  Use getIntermediateUseFromUse(
+    Use use, CreationToUseFlow::PathNode source, CreationToUseFlow::PathNode sink
+  ) {
+    // Use sources are always intermediate uses.
+    source.getNode().asExpr() = result.(QualifiableExpr).getQualifier() and
+    sink.getNode().asExpr() = use.(QualifiableExpr).getQualifier() and
+    CreationToUseFlow::flowPath(source, sink)
+  }
+
+  // TODO: Remove this.
+  Expr flowsTo(Expr expr) {
+    exists(CreationToUseFlow::PathNode source, CreationToUseFlow::PathNode sink |
+      source.getNode().asExpr() = expr and
+      sink.getNode().asExpr() = result and
+      CreationToUseFlow::flowPath(source, sink)
+    )
+  }
+}

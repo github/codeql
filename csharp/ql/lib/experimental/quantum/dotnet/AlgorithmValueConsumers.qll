@@ -15,14 +15,14 @@ class ECDsaAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
   }
 }
 
-class HashAlgorithmConsumer extends Crypto::AlgorithmValueConsumer {
-  HashAlgorithmUser call;
+class HashAlgorithmNameConsumer extends Crypto::AlgorithmValueConsumer {
+  HashAlgorithmNameUser call;
 
-  HashAlgorithmConsumer() { this = call.getHashAlgorithmUser() }
+  HashAlgorithmNameConsumer() { this = call.getHashAlgorithmNameUser() }
 
   override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
 
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-    exists(HashAlgorithmInstance l | l.getConsumer() = this and result = l)
+    exists(HashAlgorithmNameInstance l | l.getConsumer() = this and result = l)
   }
 }

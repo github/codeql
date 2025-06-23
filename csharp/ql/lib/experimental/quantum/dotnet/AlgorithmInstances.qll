@@ -25,14 +25,13 @@ class SigningNamedCurveAlgorithmInstance extends Crypto::EllipticCurveInstance i
   }
 }
 
-class HashAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof HashAlgorithmName {
-  HashAlgorithmConsumer consumer;
+class HashAlgorithmNameInstance extends Crypto::HashAlgorithmInstance instanceof HashAlgorithmName {
+  HashAlgorithmNameConsumer consumer;
 
-  HashAlgorithmInstance() {
+  HashAlgorithmNameInstance() {
     HashAlgorithmNameToUse::flow(DataFlow::exprNode(this), consumer.getInputNode())
   }
 
-  // Q: super.getHashFamily does not work because it is ambigous. But super.(HashAlgorithmName) does not work either.
   override Crypto::THashType getHashFamily() { result = this.(HashAlgorithmName).getHashFamily() }
 
   override string getRawHashAlgorithmName() { result = super.getAlgorithmName() }
