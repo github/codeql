@@ -1,6 +1,7 @@
 private import csharp
 private import experimental.quantum.Language
 private import AlgorithmValueConsumers
+private import OperationInstances
 private import Cryptography
 private import FlowAnalysis
 
@@ -39,4 +40,68 @@ class HashAlgorithmNameInstance extends Crypto::HashAlgorithmInstance instanceof
   override int getFixedDigestLength() { result = this.(HashAlgorithmName).getFixedDigestLength() }
 
   Crypto::AlgorithmValueConsumer getConsumer() { result = consumer }
+}
+
+class SymmetricAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance instanceof SymmetricAlgorithmCreation
+{
+  override string getRawAlgorithmName() { result = super.getSymmetricAlgorithm().getName() }
+
+  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    if exists(symmetricAlgorithmNameToType(this.getRawAlgorithmName()))
+    then result = symmetricAlgorithmNameToType(this.getRawAlgorithmName())
+    else result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::OtherSymmetricCipherType())
+  }
+
+  override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
+
+  override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
+
+  override int getKeySizeFixed() { none() }
+
+  override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
+}
+
+/**
+ * A padding mode literal, such as `PaddingMode.PKCS7`.
+ */
+class PaddingModeLiteralInstance extends Crypto::PaddingAlgorithmInstance instanceof MemberConstantAccess
+{
+  Crypto::AlgorithmValueConsumer consumer;
+
+  PaddingModeLiteralInstance() {
+    this = any(PaddingMode mode).getAnAccess() and
+    consumer = PaddingModeLiteralFlow::getConsumer(this, _, _)
+  }
+
+  override string getRawPaddingAlgorithmName() { result = super.getTarget().getName() }
+
+  override Crypto::TPaddingType getPaddingType() {
+    if exists(paddingNameToType(this.getRawPaddingAlgorithmName()))
+    then result = paddingNameToType(this.getRawPaddingAlgorithmName())
+    else result = Crypto::OtherPadding()
+  }
+
+  Crypto::AlgorithmValueConsumer getConsumer() { result = consumer }
+}
+
+private Crypto::KeyOpAlg::Algorithm symmetricAlgorithmNameToType(string algorithmName) {
+  algorithmName = "Aes" and result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES())
+  or
+  algorithmName = "DES" and result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::DES())
+  or
+  algorithmName = "RC2" and result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::RC2())
+  or
+  algorithmName = "Rijndael" and
+  result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES())
+  or
+  algorithmName = "TripleDES" and
+  result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::DES())
+}
+
+private Crypto::TPaddingType paddingNameToType(string paddingName) {
+  paddingName = "ANSIX923" and result = Crypto::ANSI_X9_23()
+  or
+  paddingName = "None" and result = Crypto::NoPadding()
+  or
+  paddingName = "PKCS7" and result = Crypto::PKCS7()
 }
