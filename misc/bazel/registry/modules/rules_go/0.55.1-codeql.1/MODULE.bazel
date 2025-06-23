@@ -1,0 +1,54 @@
+module(
+    name = "rules_go",
+    # Updated by the Publish to BCR app.
+    version = "0.55.1-codeql.1",
+    compatibility_level = 0,
+    repo_name = "io_bazel_rules_go",
+)
+
+# The custom repo_name is used to prevent our bazel_features polyfill for WORKSPACE builds from
+# conflicting with the real bazel_features repo.
+bazel_dep(name = "bazel_features", version = "1.9.1", repo_name = "io_bazel_rules_go_bazel_features")
+bazel_dep(name = "bazel_skylib", version = "1.2.0")
+bazel_dep(name = "platforms", version = "0.0.10")
+bazel_dep(name = "rules_proto", version = "7.0.2")
+bazel_dep(name = "protobuf", version = "29.0-rc2.bcr.1", repo_name = "com_google_protobuf")
+bazel_dep(name = "rules_shell", version = "0.3.0")
+
+go_sdk = use_extension("//go:extensions.bzl", "go_sdk")
+
+# Don't depend on this repo by name, use toolchains instead.
+# See https://github.com/bazel-contrib/rules_go/blob/master/go/toolchains.rst
+go_sdk.from_file(
+    name = "go_default_sdk",
+    go_mod = "//:go.mod",
+)
+use_repo(
+    go_sdk,
+    "go_host_compatible_sdk_label",
+    "go_toolchains",
+    # This name is ugly on purpose to avoid a conflict with a user-named SDK.
+    "io_bazel_rules_nogo",
+)
+
+register_toolchains("@go_toolchains//:all")
+
+bazel_dep(name = "gazelle", version = "0.36.0")
+
+go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
+go_deps.from_file(go_mod = "//:go.mod")
+use_repo(
+    go_deps,
+    "com_github_gogo_protobuf",
+    "com_github_golang_mock",
+    "com_github_golang_protobuf",
+    "com_github_pmezard_go_difflib",
+    "org_golang_google_genproto",
+    "org_golang_google_grpc",
+    "org_golang_google_grpc_cmd_protoc_gen_go_grpc",
+    "org_golang_google_protobuf",
+    "org_golang_x_net",
+    "org_golang_x_tools",
+    # Exported by gazelle specifically for rules_go.
+    "bazel_gazelle_go_repository_config",
+)
