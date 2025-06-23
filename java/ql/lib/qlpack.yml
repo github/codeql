@@ -24,3 +24,4 @@ dataExtensions:
   - ext/generated/*.model.yml
   - ext/experimental/*.model.yml
 warnOnImplicitThis: true
+compileForOverlayEval: true
