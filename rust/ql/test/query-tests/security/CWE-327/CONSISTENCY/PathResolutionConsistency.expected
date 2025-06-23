@@ -1,0 +1,7 @@
+multipleCallTargets
+| test_cipher.rs:20:27:20:48 | ...::new(...) |
+| test_cipher.rs:26:27:26:48 | ...::new(...) |
+| test_cipher.rs:29:27:29:48 | ...::new(...) |
+| test_cipher.rs:36:30:36:59 | ...::new(...) |
+| test_cipher.rs:39:30:39:63 | ...::new(...) |
+| test_cipher.rs:110:23:110:50 | ...::new(...) |

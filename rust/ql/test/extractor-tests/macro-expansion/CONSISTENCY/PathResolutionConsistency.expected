@@ -1,7 +1,17 @@
 multipleCallTargets
+| proc_macro.rs:6:18:6:61 | ...::from(...) |
+| proc_macro.rs:7:15:7:58 | ...::from(...) |
+| proc_macro.rs:15:5:17:5 | ...::new(...) |
 | proc_macro.rs:16:12:16:16 | ...::to_tokens(...) |
+| proc_macro.rs:22:15:22:58 | ...::from(...) |
+| proc_macro.rs:25:5:28:5 | ...::new(...) |
 | proc_macro.rs:26:10:26:12 | ...::to_tokens(...) |
 | proc_macro.rs:27:10:27:16 | ...::to_tokens(...) |
+| proc_macro.rs:38:15:38:64 | ...::from(...) |
+| proc_macro.rs:41:5:49:5 | ...::new(...) |
+| proc_macro.rs:41:5:49:5 | ...::new(...) |
+| proc_macro.rs:41:5:49:5 | ...::new(...) |
+| proc_macro.rs:41:5:49:5 | ...::new(...) |
 | proc_macro.rs:42:16:42:26 | ...::to_tokens(...) |
 | proc_macro.rs:44:27:44:30 | ...::to_tokens(...) |
 | proc_macro.rs:46:18:46:28 | ...::to_tokens(...) |
