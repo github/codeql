@@ -17,7 +17,7 @@ For a more general introduction to modeling data flow, see ":ref:`About data flo
 Local data flow
 ---------------
 
-Local data flow tracks the flow of data within a single method or callable. Local data flow is easier, faster, and more precise than global data flow. Before using more complex tracking,  consider local tracking, as it is sufficient for many queries.
+Local data flow tracks the flow of data within a single method or callable. Local data flow is easier, faster, and more precise than global data flow. Before using more complex tracking, consider local tracking, as it is sufficient for many queries.
 
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
