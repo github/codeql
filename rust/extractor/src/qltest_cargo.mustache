@@ -11,7 +11,7 @@ members = [".lib", ".proc_macro"]
 [package]
 name = "test"
 version = "0.0.1"
-edition = "2021"
+edition = "{{ edition }}"
 [lib]
 path = "{{#uses_proc_macro}}../{{/uses_proc_macro}}lib.rs"
 {{#uses_main}}
@@ -32,7 +32,7 @@ proc_macro = { path = "../.proc_macro" }
 [package]
 name = "proc_macro"
 version = "0.0.1"
-edition = "2021"
+edition = "{{ edition }}"
 [lib]
 path = "../proc_macro.rs"
 proc_macro = true
