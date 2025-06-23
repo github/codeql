@@ -11,8 +11,7 @@ use ra_ap_hir::{
 };
 use ra_ap_hir_def::ModuleId;
 use ra_ap_hir_def::type_ref::Mutability;
-use ra_ap_hir_expand::files::InFileWrapper;
-use ra_ap_hir_expand::{ExpandError, ExpandResult, ExpandTo, InFile};
+use ra_ap_hir_expand::{ExpandResult, ExpandTo, InFile};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
@@ -844,8 +843,7 @@ impl<'a> Translator<'a> {
     fn process_item_macro_expansion(
         &mut self,
         node: &impl ast::AstNode,
-        value: SyntaxNode,
-        err: Option<ExpandError>,
+        ExpandResult { value, err }: ExpandResult<SyntaxNode>,
     ) -> Option<Label<generated::MacroItems>> {
         let semantics = self.semantics.unwrap(); // if we are here, we have semantics
         self.emit_macro_expansion_parse_errors(node, &value);
@@ -888,11 +886,7 @@ impl<'a> Translator<'a> {
             return None;
         }
         let expansion = self.semantics?.expand_attr_macro(node)?;
-        let ExpandResult {
-            value: InFileWrapper { value, .. },
-            err,
-        } = expansion;
-        self.process_item_macro_expansion(node, value, err)
+        self.process_item_macro_expansion(node, expansion.map(|x| x.value))
     }
 
     pub(crate) fn emit_item_expansion(&mut self, node: &ast::Item, label: Label<generated::Item>) {
@@ -934,9 +928,7 @@ impl<'a> Translator<'a> {
             .attrs()
             .filter_map(|attr| semantics.expand_derive_macro(&attr))
             .flatten()
-            .filter_map(|ExpandResult { value, err }| {
-                self.process_item_macro_expansion(&node, value, err)
-            })
+            .filter_map(|expanded| self.process_item_macro_expansion(&node, expanded))
             .collect::<Vec<_>>();
         generated::Adt::emit_derive_macro_expansions(
             label.into(),
