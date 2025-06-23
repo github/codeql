@@ -64,6 +64,9 @@ impl From<crate::trap::Label<generated::ExternItem>> for crate::trap::Label<gene
 }
 #[macro_export]
 macro_rules! post_emit {
+    (Meta, $self:ident, $node:ident, $label:ident) => {
+        $self.macro_context_depth -= 1;
+    };
     (MacroCall, $self:ident, $node:ident, $label:ident) => {
         $self.extract_macro_call_expanded($node, $label);
     };
