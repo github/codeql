@@ -11,76 +11,76 @@ import com.google.common.base.Splitter;
 
 public class RegexInjectionTest extends HttpServlet {
   public boolean string1(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return input.matches("^" + pattern + "=.*$");  // $ hasRegexInjection
+    return input.matches("^" + pattern + "=.*$");  // $ Alert
   }
 
   public boolean string2(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return input.split(pattern).length > 0;  // $ hasRegexInjection
+    return input.split(pattern).length > 0;  // $ Alert
   }
 
   public boolean string3(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return input.split(pattern, 0).length > 0;  // $ hasRegexInjection
+    return input.split(pattern, 0).length > 0;  // $ Alert
   }
 
   public boolean string4(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return input.replaceFirst(pattern, "").length() > 0;  // $ hasRegexInjection
+    return input.replaceFirst(pattern, "").length() > 0;  // $ Alert
   }
 
   public boolean string5(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return input.replaceAll(pattern, "").length() > 0;  // $ hasRegexInjection
+    return input.replaceAll(pattern, "").length() > 0;  // $ Alert
   }
 
   public boolean pattern1(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    Pattern pt = Pattern.compile(pattern); // $ hasRegexInjection
+    Pattern pt = Pattern.compile(pattern); // $ Alert
     Matcher matcher = pt.matcher(input);
 
     return matcher.find();
   }
 
   public boolean pattern2(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return Pattern.compile(pattern).matcher(input).matches();  // $ hasRegexInjection
+    return Pattern.compile(pattern).matcher(input).matches();  // $ Alert
   }
 
   public boolean pattern3(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return Pattern.compile(pattern, 0).matcher(input).matches();  // $ hasRegexInjection
+    return Pattern.compile(pattern, 0).matcher(input).matches();  // $ Alert
   }
 
   public boolean pattern4(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return Pattern.matches(pattern, input);  // $ hasRegexInjection
+    return Pattern.matches(pattern, input);  // $ Alert
   }
 
   public boolean pattern5(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return input.matches("^" + foo(pattern) + "=.*$"); // $ hasRegexInjection
+    return input.matches("^" + foo(pattern) + "=.*$"); // $ Alert
   }
 
   String foo(String str) {
@@ -88,38 +88,38 @@ public class RegexInjectionTest extends HttpServlet {
   }
 
   public boolean apache1(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return RegExUtils.removeAll(input, pattern).length() > 0;  // $ hasRegexInjection
+    return RegExUtils.removeAll(input, pattern).length() > 0;  // $ Alert
   }
 
   public boolean apache2(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return RegExUtils.removeFirst(input, pattern).length() > 0;  // $ hasRegexInjection
+    return RegExUtils.removeFirst(input, pattern).length() > 0;  // $ Alert
   }
 
   public boolean apache3(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return RegExUtils.removePattern(input, pattern).length() > 0;  // $ hasRegexInjection
+    return RegExUtils.removePattern(input, pattern).length() > 0;  // $ Alert
   }
 
   public boolean apache4(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return RegExUtils.replaceAll(input, pattern, "").length() > 0;  // $ hasRegexInjection
+    return RegExUtils.replaceAll(input, pattern, "").length() > 0;  // $ Alert
   }
 
   public boolean apache5(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return RegExUtils.replaceFirst(input, pattern, "").length() > 0;  // $ hasRegexInjection
+    return RegExUtils.replaceFirst(input, pattern, "").length() > 0;  // $ Alert
   }
 
   public boolean apache6(javax.servlet.http.HttpServletRequest request) {
@@ -131,10 +131,10 @@ public class RegexInjectionTest extends HttpServlet {
   }
 
   public boolean apache7(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     String input = request.getParameter("input");
 
-    return RegExUtils.replacePattern(input, pattern, "").length() > 0;  // $ hasRegexInjection
+    return RegExUtils.replacePattern(input, pattern, "").length() > 0;  // $ Alert
   }
 
   // test `Pattern.quote` sanitizer
@@ -154,13 +154,13 @@ public class RegexInjectionTest extends HttpServlet {
   }
 
   public Splitter guava1(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
-    return Splitter.onPattern(pattern);  // $ hasRegexInjection
+    String pattern = request.getParameter("pattern"); // $ Source
+    return Splitter.onPattern(pattern);  // $ Alert
   }
 
   public Splitter guava2(javax.servlet.http.HttpServletRequest request) {
-    String pattern = request.getParameter("pattern");
+    String pattern = request.getParameter("pattern"); // $ Source
     // sink is `Pattern.compile`
-    return  Splitter.on(Pattern.compile(pattern));  // $ hasRegexInjection
+    return  Splitter.on(Pattern.compile(pattern));  // $ Alert
   }
 }
