@@ -860,7 +860,7 @@ mod method_supertraits {
             if 3 > 2 { // $ method=gt
                 self.m1() // $ method=MyTrait1::m1
             } else {
-                Self::m1(self)
+                Self::m1(self) // $ method=MyTrait1::m1
             }
         }
     }
@@ -874,7 +874,7 @@ mod method_supertraits {
             if 3 > 2 { // $ method=gt
                 self.m2().a // $ method=m2 $ fieldof=MyThing
             } else {
-                Self::m2(self).a // $ fieldof=MyThing
+                Self::m2(self).a // $ method=m2 fieldof=MyThing
             }
         }
     }
@@ -1057,7 +1057,7 @@ mod type_aliases {
 
         g(PairOption::PairSnd(PairOption::PairSnd(S3)));
 
-        let x: S7<S2>; // $ type=x:Result $ type=x:E.S1 $ type=x:T.S4 $ type=x:T.T41.S2 $ MISSING: type=x:T.T42.S5 $ MISSING: type=x:T.T42.T5.S2
+        let x: S7<S2>; // $ type=x:Result $ type=x:E.S1 $ type=x:T.S4 $ type=x:T.T41.S2 $ type=x:T.T42.S5 $ type=x:T.T42.T5.S2
     }
 }
 
@@ -1101,7 +1101,7 @@ mod option_methods {
     struct S;
 
     pub fn f() {
-        let x1 = MyOption::<S>::new(); // $ MISSING: type=x1:T.S
+        let x1 = MyOption::<S>::new(); // $ type=x1:T.S
         println!("{:?}", x1);
 
         let mut x2 = MyOption::new();
@@ -1120,7 +1120,7 @@ mod option_methods {
         println!("{:?}", x5.flatten()); // $ method=flatten
 
         let x6 = MyOption::MySome(MyOption::<S>::MyNone());
-        println!("{:?}", MyOption::<MyOption<S>>::flatten(x6));
+        println!("{:?}", MyOption::<MyOption<S>>::flatten(x6)); // $ method=flatten
 
         #[rustfmt::skip]
         let from_if = if 3 > 2 { // $ method=gt
@@ -2197,10 +2197,10 @@ mod explicit_type_args {
 
     pub fn f() {
         let x1: Option<S1<S2>> = S1::assoc_fun(); // $ type=x1:T.T.S2
-        let x2 = S1::<S2>::assoc_fun(); // $ MISSING: type=x2:T.T.S2
-        let x3 = S3::assoc_fun(); // $ MISSING: type=x3:T.T.S2
-        let x4 = S1::<S2>::method(S1::default()); // $ MISSING: method=method type=x4:T.S2
-        let x5 = S3::method(S1::default()); // $ MISSING: method=method type=x5:T.S2
+        let x2 = S1::<S2>::assoc_fun(); // $ type=x2:T.T.S2
+        let x3 = S3::assoc_fun(); // $ type=x3:T.T.S2
+        let x4 = S1::<S2>::method(S1::default()); // $ method=method type=x4:T.S2
+        let x5 = S3::method(S1::default()); // $ method=method type=x5:T.S2
         let x6 = S4::<S2>(Default::default()); // $ type=x6:T4.S2
         let x7 = S4(S2); // $ type=x7:T4.S2
         let x8 = S4(0); // $ type=x8:T4.i32
