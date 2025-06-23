@@ -305,3 +305,7 @@ threatModelSource
 | statePropertyWrites.js:38:24:38:33 | this.props | view-component-input |
 | thisAccesses.js:31:12:31:16 | props | view-component-input |
 | thisAccesses.js:48:18:48:18 | y | view-component-input |
+| use-server1.js:2:5:2:5 | x | remote |
+| use-server1.js:3:5:3:5 | y | remote |
+| use-server2.js:4:5:4:5 | x | remote |
+| use-server2.js:5:5:5:5 | y | remote |

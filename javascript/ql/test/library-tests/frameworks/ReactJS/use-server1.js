@@ -1,6 +1,6 @@
 async function getData(
-    x, // $ MISSING: threatModelSource=remote
-    y) { // $ MISSING: threatModelSource=remote
+    x, // $ threatModelSource=remote
+    y) { // $ threatModelSource=remote
   "use server";
 }
 
