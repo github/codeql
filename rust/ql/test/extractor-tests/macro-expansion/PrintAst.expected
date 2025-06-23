@@ -140,7 +140,6 @@ included/included.rs:
 #    2|                   getSegment(): [PathSegment] concat
 #    2|                     getIdentifier(): [NameRef] concat
 #    2|                 getTokenTree(): [TokenTree] TokenTree
-#    2|                 getMacroCallExpansion(): [StringLiteralExpr] "Hello world!"
 #    1|     getName(): [Name] included
 #    2| [Comment] //...
 lib.rs:
@@ -655,7 +654,6 @@ macro_expansion.rs:
 #   56|                                                 getSegment(): [PathSegment] concat
 #   56|                                                   getIdentifier(): [NameRef] concat
 #   56|                                               getTokenTree(): [TokenTree] TokenTree
-#   56|                                               getMacroCallExpansion(): [StringLiteralExpr] "<{}>"
 #   55|                                 getFunction(): [PathExpr] ...::format
 #   55|                                   getPath(): [Path] ...::format
 #   55|                                     getQualifier(): [Path] ...::fmt
@@ -714,7 +712,6 @@ macro_expansion.rs:
 #   63|               getSegment(): [PathSegment] include_str
 #   63|                 getIdentifier(): [NameRef] include_str
 #   63|             getTokenTree(): [TokenTree] TokenTree
-#   63|             getMacroCallExpansion(): [StringLiteralExpr] ""
 #   63|         getPath(): [Path] doc
 #   63|           getSegment(): [PathSegment] doc
 #   63|             getIdentifier(): [NameRef] doc

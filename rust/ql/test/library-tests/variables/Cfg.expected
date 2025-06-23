@@ -1430,17 +1430,11 @@ edges
 | main.rs:592:1:602:1 | enter fn macro_invocation | main.rs:593:5:594:26 | let ... = ... |  |
 | main.rs:592:1:602:1 | exit fn macro_invocation (normal) | main.rs:592:1:602:1 | exit fn macro_invocation |  |
 | main.rs:592:23:602:1 | { ... } | main.rs:592:1:602:1 | exit fn macro_invocation (normal) |  |
-| main.rs:593:5:594:26 | let ... = ... | main.rs:594:23:594:24 | let ... = 37 |  |
+| main.rs:593:5:594:26 | let ... = ... | main.rs:594:9:594:25 | let_in_macro!... |  |
 | main.rs:593:9:593:22 | var_from_macro | main.rs:593:9:593:22 | var_from_macro |  |
 | main.rs:593:9:593:22 | var_from_macro | main.rs:595:5:595:30 | ExprStmt | match |
 | main.rs:594:9:594:25 | MacroExpr | main.rs:593:9:593:22 | var_from_macro |  |
 | main.rs:594:9:594:25 | let_in_macro!... | main.rs:594:9:594:25 | MacroExpr |  |
-| main.rs:594:9:594:25 | var_in_macro | main.rs:594:9:594:25 | var_in_macro |  |
-| main.rs:594:9:594:25 | var_in_macro | main.rs:594:9:594:25 | var_in_macro | match |
-| main.rs:594:9:594:25 | var_in_macro | main.rs:594:23:594:24 | { ... } |  |
-| main.rs:594:23:594:24 | 37 | main.rs:594:9:594:25 | var_in_macro |  |
-| main.rs:594:23:594:24 | let ... = 37 | main.rs:594:23:594:24 | 37 |  |
-| main.rs:594:23:594:24 | { ... } | main.rs:594:9:594:25 | let_in_macro!... |  |
 | main.rs:595:5:595:13 | print_i64 | main.rs:595:15:595:28 | var_from_macro |  |
 | main.rs:595:5:595:29 | print_i64(...) | main.rs:596:5:596:26 | let ... = 33 |  |
 | main.rs:595:5:595:30 | ExprStmt | main.rs:595:5:595:13 | print_i64 |  |
@@ -1449,17 +1443,11 @@ edges
 | main.rs:596:9:596:20 | var_in_macro | main.rs:596:9:596:20 | var_in_macro |  |
 | main.rs:596:9:596:20 | var_in_macro | main.rs:600:5:600:44 | ExprStmt | match |
 | main.rs:596:24:596:25 | 33 | main.rs:596:9:596:20 | var_in_macro |  |
-| main.rs:600:5:600:13 | print_i64 | main.rs:600:15:600:42 | let ... = 0 |  |
+| main.rs:600:5:600:13 | print_i64 | main.rs:600:15:600:42 | let_in_macro2!... |  |
 | main.rs:600:5:600:43 | print_i64(...) | main.rs:601:5:601:28 | ExprStmt |  |
 | main.rs:600:5:600:44 | ExprStmt | main.rs:600:5:600:13 | print_i64 |  |
-| main.rs:600:15:600:42 | 0 | main.rs:600:15:600:42 | var_in_macro |  |
 | main.rs:600:15:600:42 | MacroExpr | main.rs:600:5:600:43 | print_i64(...) |  |
-| main.rs:600:15:600:42 | let ... = 0 | main.rs:600:15:600:42 | 0 |  |
 | main.rs:600:15:600:42 | let_in_macro2!... | main.rs:600:15:600:42 | MacroExpr |  |
-| main.rs:600:15:600:42 | var_in_macro | main.rs:600:15:600:42 | var_in_macro |  |
-| main.rs:600:15:600:42 | var_in_macro | main.rs:600:30:600:41 | var_in_macro | match |
-| main.rs:600:30:600:41 | var_in_macro | main.rs:600:30:600:41 | { ... } |  |
-| main.rs:600:30:600:41 | { ... } | main.rs:600:15:600:42 | let_in_macro2!... |  |
 | main.rs:601:5:601:13 | print_i64 | main.rs:601:15:601:26 | var_in_macro |  |
 | main.rs:601:5:601:27 | print_i64(...) | main.rs:592:23:602:1 | { ... } |  |
 | main.rs:601:5:601:28 | ExprStmt | main.rs:601:5:601:13 | print_i64 |  |

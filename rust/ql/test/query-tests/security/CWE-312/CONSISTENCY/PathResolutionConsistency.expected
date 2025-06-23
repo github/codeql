@@ -1,7 +1,3 @@
 multipleMethodCallTargets
-| test_logging.rs:77:20:77:36 | password.as_str() | file://:0:0:0:0 | fn as_str |
-| test_logging.rs:77:20:77:36 | password.as_str() | file://:0:0:0:0 | fn as_str |
-| test_logging.rs:78:22:78:38 | password.as_str() | file://:0:0:0:0 | fn as_str |
-| test_logging.rs:78:22:78:38 | password.as_str() | file://:0:0:0:0 | fn as_str |
 | test_logging.rs:88:18:88:34 | password.as_str() | file://:0:0:0:0 | fn as_str |
 | test_logging.rs:88:18:88:34 | password.as_str() | file://:0:0:0:0 | fn as_str |

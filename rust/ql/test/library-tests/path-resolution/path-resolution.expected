@@ -393,13 +393,7 @@ resolvePath
 | proc_macro.rs:5:44:5:54 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
 | proc_macro.rs:5:60:5:70 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
 | proc_macro.rs:6:16:6:18 | syn | {EXTERNAL LOCATION} | Crate(syn@2.0.103) |
-| proc_macro.rs:6:48:6:50 | syn | {EXTERNAL LOCATION} | Crate(syn@2.0.103) |
-| proc_macro.rs:6:48:6:58 | ...::LitStr | {EXTERNAL LOCATION} | struct LitStr |
-| proc_macro.rs:6:48:6:58 | ...::parse::<...> | {EXTERNAL LOCATION} | fn parse |
 | proc_macro.rs:7:19:7:21 | syn | {EXTERNAL LOCATION} | Crate(syn@2.0.103) |
-| proc_macro.rs:7:51:7:53 | syn | {EXTERNAL LOCATION} | Crate(syn@2.0.103) |
-| proc_macro.rs:7:51:7:61 | ...::ItemFn | {EXTERNAL LOCATION} | struct ItemFn |
-| proc_macro.rs:7:51:7:61 | ...::parse::<...> | {EXTERNAL LOCATION} | fn parse |
 | proc_macro.rs:8:21:8:23 | syn | {EXTERNAL LOCATION} | Crate(syn@2.0.103) |
 | proc_macro.rs:8:21:8:30 | ...::Ident | {EXTERNAL LOCATION} | struct Ident |
 | proc_macro.rs:8:21:8:35 | ...::new | {EXTERNAL LOCATION} | fn new |

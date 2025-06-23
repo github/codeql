@@ -17,15 +17,3 @@ multiplePathResolutions
 | unreachable.rs:165:20:165:31 | ...::from | file://:0:0:0:0 | fn from |
 | unreachable.rs:165:20:165:31 | ...::from | file://:0:0:0:0 | fn from |
 | unreachable.rs:165:20:165:31 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:171:9:171:17 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:171:9:171:17 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:171:9:171:17 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:171:9:171:17 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:171:9:171:17 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:171:9:171:17 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:177:9:177:26 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:177:9:177:26 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:177:9:177:26 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:177:9:177:26 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:177:9:177:26 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:177:9:177:26 | ...::from | file://:0:0:0:0 | fn from |
