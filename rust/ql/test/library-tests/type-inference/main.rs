@@ -1942,7 +1942,7 @@ mod loops {
 
         // for loops with containers
 
-        let vals3 = vec![1, 2, 3]; // $ MISSING: type=vals3:Vec<i32>
+        let vals3 = vec![1, 2, 3]; // $ MISSING: type=vals3:Vec type=vals3:T.i32
         for i in vals3 { } // $ MISSING: type=i:i32
 
         let vals4a : Vec<u16> = [1u16, 2, 3].to_vec(); // $ type=vals4a:Vec type=vals4a:T.u16
@@ -1971,9 +1971,9 @@ mod loops {
         map1.insert(1, Box::new("one")); // $ method=insert
         map1.insert(2, Box::new("two")); // $ method=insert
         for key in map1.keys() { } // $ method=keys MISSING: type=key:i32
-        for value in map1.values() { } // $ method=values MISSING: type=value:Box type=value:Box.T:&T.str
-        for (key, value) in map1.iter() { } // $ method=iter MISSING: type=key:i32 type=value:Box type=value:Box.T:&T.str
-        for (key, value) in &map1 { } // $ MISSING: type=key:i32 type=value:Box type=value:Box.T:&T.str
+        for value in map1.values() { } // $ method=values MISSING: type=value:Box type=value:T.&T.str
+        for (key, value) in map1.iter() { } // $ method=iter MISSING: type=key:i32 type=value:Box type=value:T.&T.str
+        for (key, value) in &map1 { } // $ MISSING: type=key:i32 type=value:Box type=value:T.&T.str
 
         // while loops
 
