@@ -20,88 +20,88 @@ public class FreemarkerSSTI {
 	@GetMapping(value = "bad1")
 	public void bad1(HttpServletRequest request) {
 		String name = "ttemplate";
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source
 		Reader reader = new StringReader(code);
 
-		Template t = new Template(name, reader); // $hasTemplateInjection
+		Template t = new Template(name, reader); // $ Alert
 	}
 
 	@GetMapping(value = "bad2")
 	public void bad2(HttpServletRequest request) {
 		String name = "ttemplate";
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source
 		Reader reader = new StringReader(code);
 		Configuration cfg = new Configuration();
 
-		Template t = new Template(name, reader, cfg); // $hasTemplateInjection
+		Template t = new Template(name, reader, cfg); // $ Alert
 	}
 
 	@GetMapping(value = "bad3")
 	public void bad3(HttpServletRequest request) {
 		String name = "ttemplate";
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source
 		Reader reader = new StringReader(code);
 		Configuration cfg = new Configuration();
 
-		Template t = new Template(name, reader, cfg, "UTF-8"); // $hasTemplateInjection
+		Template t = new Template(name, reader, cfg, "UTF-8"); // $ Alert
 	}
 
 	@GetMapping(value = "bad4")
 	public void bad4(HttpServletRequest request) {
 		String name = "ttemplate";
-		String sourceCode = request.getParameter("sourceCode");
+		String sourceCode = request.getParameter("sourceCode"); // $ Source
 		Configuration cfg = new Configuration();
 
-		Template t = new Template(name, sourceCode, cfg); // $hasTemplateInjection
+		Template t = new Template(name, sourceCode, cfg); // $ Alert
 	}
 
 	@GetMapping(value = "bad5")
 	public void bad5(HttpServletRequest request) {
 		String name = "ttemplate";
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source
 		Configuration cfg = new Configuration();
 		Reader reader = new StringReader(code);
 
-		Template t = new Template(name, sourceName, reader, cfg); // $hasTemplateInjection
+		Template t = new Template(name, sourceName, reader, cfg); // $ Alert
 	}
 
 	@GetMapping(value = "bad6")
 	public void bad6(HttpServletRequest request) {
 		String name = "ttemplate";
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source
 		Configuration cfg = new Configuration();
 		ParserConfiguration customParserConfiguration = new Configuration();
 		Reader reader = new StringReader(code);
 
 		Template t =
-				new Template(name, sourceName, reader, cfg, customParserConfiguration, "UTF-8"); // $hasTemplateInjection
+				new Template(name, sourceName, reader, cfg, customParserConfiguration, "UTF-8"); // $ Alert
 	}
 
 	@GetMapping(value = "bad7")
 	public void bad7(HttpServletRequest request) {
 		String name = "ttemplate";
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source
 		Configuration cfg = new Configuration();
 		ParserConfiguration customParserConfiguration = new Configuration();
 		Reader reader = new StringReader(code);
 
-		Template t = new Template(name, sourceName, reader, cfg, "UTF-8"); // $hasTemplateInjection
+		Template t = new Template(name, sourceName, reader, cfg, "UTF-8"); // $ Alert
 	}
 
 	@GetMapping(value = "bad8")
 	public void bad8(HttpServletRequest request) {
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source
 		StringTemplateLoader stringLoader = new StringTemplateLoader();
 
-		stringLoader.putTemplate("myTemplate", code); // $hasTemplateInjection
+		stringLoader.putTemplate("myTemplate", code); // $ Alert
 	}
 
 	@GetMapping(value = "bad9")
 	public void bad9(HttpServletRequest request) {
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source
 		StringTemplateLoader stringLoader = new StringTemplateLoader();
 
-		stringLoader.putTemplate("myTemplate", code, 0); // $hasTemplateInjection
+		stringLoader.putTemplate("myTemplate", code, 0); // $ Alert
 	}
 
 	@GetMapping(value = "good1")

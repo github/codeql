@@ -28,19 +28,19 @@ public class VelocitySSTI {
 	@GetMapping(value = "bad1")
 	public void bad1(HttpServletRequest request) {
 		String name = "ttemplate";
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source
 
 		VelocityContext context = null;
 
 		String s = "We are using $project $name to render this.";
 		StringWriter w = new StringWriter();
-		Velocity.evaluate(context, w, "mystring", code); // $hasTemplateInjection
+		Velocity.evaluate(context, w, "mystring", code); // $ Alert
 	}
 
 	@GetMapping(value = "bad2")
 	public void bad2(HttpServletRequest request) {
 		String name = "ttemplate";
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source
 
 		VelocityContext context = null;
 
@@ -48,17 +48,17 @@ public class VelocitySSTI {
 		StringWriter w = new StringWriter();
 		StringReader reader = new StringReader(code);
 
-		Velocity.evaluate(context, w, "mystring", reader); // $hasTemplateInjection
+		Velocity.evaluate(context, w, "mystring", reader); // $ Alert
 	}
 
 	@GetMapping(value = "bad3")
 	public void bad3(HttpServletRequest request) {
 		String name = "ttemplate";
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source
 
 		RuntimeServices runtimeServices = null;
 		StringReader reader = new StringReader(code);
-		runtimeServices.parse(reader, new Template()); // $hasTemplateInjection
+		runtimeServices.parse(reader, new Template()); // $ Alert
 	}
 
 	@GetMapping(value = "good1")
@@ -78,7 +78,7 @@ public class VelocitySSTI {
 	@GetMapping(value = "bad5")
 	public void bad5(HttpServletRequest request) {
 		String name = "ttemplate";
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source
 
 		VelocityContext context = new VelocityContext();
 		context.put("code", code);
@@ -90,8 +90,8 @@ public class VelocitySSTI {
 		ctx.put("key", code);
 		engine.evaluate(ctx, null, null, (String) null); // Safe
 		engine.evaluate(ctx, null, null, (Reader) null); // Safe
-		engine.evaluate(null, null, null, code); // $hasTemplateInjection
-		engine.evaluate(null, null, null, new StringReader(code)); // $hasTemplateInjection
+		engine.evaluate(null, null, null, code); // $ Alert
+		engine.evaluate(null, null, null, new StringReader(code)); // $ Alert
 	}
 
 	@GetMapping(value = "good2")
@@ -111,10 +111,10 @@ public class VelocitySSTI {
 
 	@GetMapping(value = "bad6")
 	public void bad6(HttpServletRequest request) {
-		String code = request.getParameter("code");
+		String code = request.getParameter("code"); // $ Source
 
 		StringResourceRepository repo = new StringResourceRepositoryImpl();
-		repo.putStringResource("woogie2", code); // $hasTemplateInjection
+		repo.putStringResource("woogie2", code); // $ Alert
 
 	}
 }
