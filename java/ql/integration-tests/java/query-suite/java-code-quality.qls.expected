@@ -1,5 +1,4 @@
 ql/java/ql/src/Advisory/Declarations/MissingOverrideAnnotation.ql
-ql/java/ql/src/Advisory/Deprecated Code/AvoidDeprecatedCallableAccess.ql
 ql/java/ql/src/Advisory/Documentation/ImpossibleJavadocThrows.ql
 ql/java/ql/src/Advisory/Documentation/SpuriousJavadocParam.ql
 ql/java/ql/src/Compatibility/JDK9/JdkInternalAccess.ql

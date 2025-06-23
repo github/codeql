@@ -997,79 +997,6 @@ private AssociatedTypeTypeParameter getFutureOutputTypeParameter() {
   result.getTypeAlias() = any(FutureTrait ft).getOutputType()
 }
 
-/**
- * A matching configuration for resolving types of `.await` expressions.
- */
-private module AwaitExprMatchingInput implements MatchingInputSig {
-  private newtype TDeclarationPosition =
-    TSelfDeclarationPosition() or
-    TOutputPos()
-
-  class DeclarationPosition extends TDeclarationPosition {
-    predicate isSelf() { this = TSelfDeclarationPosition() }
-
-    predicate isOutput() { this = TOutputPos() }
-
-    string toString() {
-      this.isSelf() and
-      result = "self"
-      or
-      this.isOutput() and
-      result = "(output)"
-    }
-  }
-
-  private class BuiltinsAwaitFile extends File {
-    BuiltinsAwaitFile() {
-      this.getBaseName() = "await.rs" and
-      this.getParentContainer() instanceof Builtins::BuiltinsFolder
-    }
-  }
-
-  class Declaration extends Function {
-    Declaration() {
-      this.getFile() instanceof BuiltinsAwaitFile and
-      this.getName().getText() = "await_type_matching"
-    }
-
-    TypeParameter getTypeParameter(TypeParameterPosition ppos) {
-      typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
-    }
-
-    Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
-      dpos.isSelf() and
-      result = this.getParam(0).getTypeRepr().(TypeMention).resolveTypeAt(path)
-      or
-      dpos.isOutput() and
-      result = this.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
-    }
-  }
-
-  class AccessPosition = DeclarationPosition;
-
-  class Access extends AwaitExpr {
-    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
-
-    AstNode getNodeAt(AccessPosition apos) {
-      result = this.getExpr() and
-      apos.isSelf()
-      or
-      result = this and
-      apos.isOutput()
-    }
-
-    Type getInferredType(AccessPosition apos, TypePath path) {
-      result = inferType(this.getNodeAt(apos), path)
-    }
-
-    Declaration getTarget() { exists(this) and exists(result) }
-  }
-
-  predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
-    apos = dpos
-  }
-}
-
 pragma[nomagic]
 private TraitType inferAsyncBlockExprRootType(AsyncBlockExpr abe) {
   // `typeEquality` handles the non-root case
@@ -1077,21 +1004,24 @@ private TraitType inferAsyncBlockExprRootType(AsyncBlockExpr abe) {
   result = getFutureTraitType()
 }
 
-private module AwaitExprMatching = Matching<AwaitExprMatchingInput>;
+final class AwaitTarget extends Expr {
+  AwaitTarget() { this = any(AwaitExpr ae).getExpr() }
+
+  Type getTypeAt(TypePath path) { result = inferType(this, path) }
+}
+
+private module AwaitSatisfiesConstraintInput implements SatisfiesConstraintInputSig<AwaitTarget> {
+  predicate relevantConstraint(AwaitTarget term, Type constraint) {
+    exists(term) and
+    constraint.(TraitType).getTrait() instanceof FutureTrait
+  }
+}
 
 pragma[nomagic]
 private Type inferAwaitExprType(AstNode n, TypePath path) {
-  exists(AwaitExprMatchingInput::Access a, AwaitExprMatchingInput::AccessPosition apos |
-    n = a.getNodeAt(apos) and
-    result = AwaitExprMatching::inferAccessType(a, apos, path)
-  )
-  or
-  // This case is needed for `async` functions and blocks, where we assign
-  // the type `Future<Output = T>` directly instead of `impl Future<Output = T>`
-  //
-  // TODO: It would be better if we could handle this in the shared library
   exists(TypePath exprPath |
-    result = inferType(n.(AwaitExpr).getExpr(), exprPath) and
+    SatisfiesConstraint<AwaitTarget, AwaitSatisfiesConstraintInput>::satisfiesConstraintType(n.(AwaitExpr)
+          .getExpr(), _, exprPath, result) and
     exprPath.isCons(getFutureOutputTypeParameter(), path)
   )
 }
