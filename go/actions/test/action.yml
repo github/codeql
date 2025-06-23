@@ -17,11 +17,11 @@ runs:
   using: composite
   steps:
     - name: Set up Go ${{ inputs.go-test-version }}
+      id: setup-go
       uses: actions/setup-go@v5
       with:
         go-version: ${{ inputs.go-test-version }}
         cache: false
-      id: go
 
     - name: Set up CodeQL CLI
       uses: ./.github/actions/fetch-codeql
@@ -65,7 +65,7 @@ runs:
       if: inputs.run-code-checks == 'true' && !cancelled()
       uses: actions/upload-artifact@v4
       with:
-        name: qhelp-markdown
+        name: qhelp-markdown-${{ steps.setup-go.outputs.go-version }}
         path: go/qhelp-out/**/*.md
 
     - name: Cache compilation cache
