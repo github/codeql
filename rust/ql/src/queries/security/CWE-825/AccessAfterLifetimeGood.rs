@@ -7,11 +7,11 @@ fn get_box() -> Box<i64> {
 
 fn example() {
 	let ptr = get_box();
-	let val;
+	let dereferenced_ptr;
 
 	// ...
 
-	val = *ptr; // GOOD
+	dereferenced_ptr = *ptr; // GOOD
 
 	// ...
 }

@@ -800,15 +800,15 @@ fn get_pointer() -> *const i64 {
 
 pub fn test_lifetimes_example_bad() {
 	let ptr = get_pointer();
-	let val;
+	let dereferenced_ptr;
 
 	use_the_stack();
 
 	unsafe {
-		val = *ptr; // $ Alert[rust/access-after-lifetime-ended]=val
+		dereferenced_ptr = *ptr; // $ Alert[rust/access-after-lifetime-ended]=val
 	}
 
-	println!("	val = {val} (!)"); // corrupt in practice
+	println!("	val = {dereferenced_ptr} (!)"); // corrupt in practice
 }
 
 fn get_box() -> Box<i64> {
@@ -819,11 +819,11 @@ fn get_box() -> Box<i64> {
 
 pub fn test_lifetimes_example_good() {
 	let ptr = get_box();
-	let val;
+	let dereferenced_ptr;
 
 	use_the_stack();
 
-	val = *ptr; // GOOD
+	dereferenced_ptr = *ptr; // GOOD
 
-	println!("	val = {val}");
+	println!("	val = {dereferenced_ptr}");
 }

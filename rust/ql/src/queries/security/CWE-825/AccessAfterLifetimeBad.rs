@@ -7,12 +7,12 @@ fn get_pointer() -> *const i64 {
 
 fn example() {
 	let ptr = get_pointer();
-	let val;
+	let dereferenced_ptr;
 
 	// ...
 
 	unsafe {
-		val = *ptr; // BAD: dereferences `ptr` after the lifetime of `val` has ended
+		dereferenced_ptr = *ptr; // BAD: dereferences `ptr` after the lifetime of `val` has ended
 	}
 
 	// ...
