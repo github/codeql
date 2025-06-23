@@ -191,90 +191,6 @@ inferType
 | loop/main.rs:7:12:7:15 | SelfParam |  | loop/main.rs:6:1:8:1 | Self [trait T1] |
 | loop/main.rs:11:12:11:15 | SelfParam |  | loop/main.rs:10:1:14:1 | Self [trait T2] |
 | loop/main.rs:12:9:12:12 | self |  | loop/main.rs:10:1:14:1 | Self [trait T2] |
-| main.rs:2:5:2:20 | "S" |  | {EXTERNAL LOCATION} | str |
-| main.rs:2:5:2:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:2:5:2:20 | SelfParam | &T | main.rs:2:5:3:13 | S |
-| main.rs:2:5:2:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:2:5:2:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:2:5:2:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:2:5:2:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:2:5:2:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:2:5:2:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:2:5:2:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:2:5:2:20 | self | &T | main.rs:2:5:3:13 | S |
-| main.rs:3:12:3:12 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:3:12:3:12 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:3:12:3:12 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:3:12:3:12 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:5:5:5:20 | "MyThing" |  | {EXTERNAL LOCATION} | str |
-| main.rs:5:5:5:20 | "a" |  | {EXTERNAL LOCATION} | str |
-| main.rs:5:5:5:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:5:5:5:20 | SelfParam | &T | main.rs:5:5:8:5 | MyThing |
-| main.rs:5:5:5:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:5:5:5:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:5:5:5:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:5:5:5:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:5:5:5:20 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:5:5:5:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:5:5:5:20 | self | &T | main.rs:5:5:8:5 | MyThing |
-| main.rs:6:12:7:9 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:6:12:7:9 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:6:12:7:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:6:12:7:9 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:7:9:7:9 | &a |  | file://:0:0:0:0 | & |
-| main.rs:7:9:7:9 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:7:9:7:9 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:7:9:7:9 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:7:9:7:9 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:10:5:10:20 | "MyNone" |  | {EXTERNAL LOCATION} | str |
-| main.rs:10:5:10:20 | "MySome" |  | {EXTERNAL LOCATION} | str |
-| main.rs:10:5:10:20 | &f0 |  | file://:0:0:0:0 | & |
-| main.rs:10:5:10:20 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:10:5:10:20 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:10:5:10:20 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:10:5:10:20 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:10:5:10:20 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:10:5:10:20 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:10:5:10:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:10:5:10:20 | SelfParam | &T | main.rs:10:5:14:5 | MyOption |
-| main.rs:10:5:10:20 | SelfParam | &T.T | main.rs:11:19:11:19 | T |
-| main.rs:10:5:10:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:10:5:10:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:10:5:10:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:10:5:10:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:10:5:10:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:10:5:10:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:10:5:10:20 | f.debug_tuple(...) |  | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:10:5:10:20 | f.debug_tuple(...) |  | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:10:5:10:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:10:5:10:20 | self | &T | main.rs:10:5:14:5 | MyOption |
-| main.rs:10:5:10:20 | self | &T.T | main.rs:11:19:11:19 | T |
-| main.rs:11:10:13:14 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:11:10:13:14 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:11:10:13:14 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:11:10:13:14 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:16:5:16:20 | "GenericThing" |  | {EXTERNAL LOCATION} | str |
-| main.rs:16:5:16:20 | "a" |  | {EXTERNAL LOCATION} | str |
-| main.rs:16:5:16:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:16:5:16:20 | SelfParam | &T | main.rs:16:5:19:5 | GenericThing |
-| main.rs:16:5:16:20 | SelfParam | &T.A | main.rs:17:25:17:25 | A |
-| main.rs:16:5:16:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:16:5:16:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:16:5:16:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:16:5:16:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:16:5:16:20 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:16:5:16:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:16:5:16:20 | self | &T | main.rs:16:5:19:5 | GenericThing |
-| main.rs:16:5:16:20 | self | &T.A | main.rs:17:25:17:25 | A |
-| main.rs:17:12:18:9 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:17:12:18:9 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:17:12:18:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:17:12:18:9 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:18:9:18:9 | &a |  | file://:0:0:0:0 | & |
-| main.rs:18:9:18:9 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:18:9:18:9 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:18:9:18:9 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:18:9:18:9 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
 | main.rs:26:13:26:13 | x |  | main.rs:5:5:8:5 | MyThing |
 | main.rs:26:17:26:32 | MyThing {...} |  | main.rs:5:5:8:5 | MyThing |
 | main.rs:26:30:26:30 | S |  | main.rs:2:5:3:13 | S |
@@ -368,26 +284,6 @@ inferType
 | main.rs:93:9:93:14 | x.m1() |  | main.rs:72:5:72:21 | Foo |
 | main.rs:94:9:94:9 | y |  | main.rs:72:5:72:21 | Foo |
 | main.rs:94:9:94:14 | y.m2() |  | main.rs:72:5:72:21 | Foo |
-| main.rs:99:5:99:20 | "MyThing" |  | {EXTERNAL LOCATION} | str |
-| main.rs:99:5:99:20 | "field" |  | {EXTERNAL LOCATION} | str |
-| main.rs:99:5:99:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:99:5:99:20 | SelfParam | &T | main.rs:99:5:102:5 | MyThing |
-| main.rs:99:5:99:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:99:5:99:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:99:5:99:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:99:5:99:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:99:5:99:20 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:99:5:99:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:99:5:99:20 | self | &T | main.rs:99:5:102:5 | MyThing |
-| main.rs:100:12:101:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:100:12:101:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:100:12:101:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:100:12:101:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:101:9:101:13 | &field |  | file://:0:0:0:0 | & |
-| main.rs:101:9:101:13 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:101:9:101:13 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:101:9:101:13 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:101:9:101:13 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
 | main.rs:105:25:105:28 | SelfParam |  | main.rs:104:5:106:5 | Self [trait MyTrait] |
 | main.rs:110:25:110:28 | SelfParam |  | main.rs:99:5:102:5 | MyThing |
 | main.rs:110:39:112:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
@@ -405,58 +301,6 @@ inferType
 | main.rs:120:13:120:13 | b |  | {EXTERNAL LOCATION} | bool |
 | main.rs:120:17:120:40 | ...::trait_method(...) |  | {EXTERNAL LOCATION} | bool |
 | main.rs:120:39:120:39 | y |  | main.rs:99:5:102:5 | MyThing |
-| main.rs:125:5:125:20 | "MyThing" |  | {EXTERNAL LOCATION} | str |
-| main.rs:125:5:125:20 | "a" |  | {EXTERNAL LOCATION} | str |
-| main.rs:125:5:125:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:125:5:125:20 | SelfParam | &T | main.rs:125:5:128:5 | MyThing |
-| main.rs:125:5:125:20 | SelfParam | &T.A | main.rs:126:20:126:20 | A |
-| main.rs:125:5:125:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:125:5:125:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:125:5:125:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:125:5:125:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:125:5:125:20 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:125:5:125:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:125:5:125:20 | self | &T | main.rs:125:5:128:5 | MyThing |
-| main.rs:125:5:125:20 | self | &T.A | main.rs:126:20:126:20 | A |
-| main.rs:126:12:127:9 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:126:12:127:9 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:126:12:127:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:126:12:127:9 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:127:9:127:9 | &a |  | file://:0:0:0:0 | & |
-| main.rs:127:9:127:9 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:127:9:127:9 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:127:9:127:9 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:127:9:127:9 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:130:5:130:20 | "S1" |  | {EXTERNAL LOCATION} | str |
-| main.rs:130:5:130:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:130:5:130:20 | SelfParam | &T | main.rs:130:5:131:14 | S1 |
-| main.rs:130:5:130:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:130:5:130:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:130:5:130:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:130:5:130:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:130:5:130:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:130:5:130:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:130:5:130:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:130:5:130:20 | self | &T | main.rs:130:5:131:14 | S1 |
-| main.rs:131:12:131:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:131:12:131:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:131:12:131:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:131:12:131:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:132:5:132:20 | "S2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:132:5:132:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:132:5:132:20 | SelfParam | &T | main.rs:132:5:133:14 | S2 |
-| main.rs:132:5:132:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:132:5:132:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:132:5:132:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:132:5:132:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:132:5:132:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:132:5:132:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:132:5:132:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:132:5:132:20 | self | &T | main.rs:132:5:133:14 | S2 |
-| main.rs:133:12:133:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:133:12:133:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:133:12:133:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:133:12:133:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:137:15:137:18 | SelfParam |  | main.rs:125:5:128:5 | MyThing |
 | main.rs:137:15:137:18 | SelfParam | A | main.rs:130:5:131:14 | S1 |
 | main.rs:137:27:139:9 | { ... } |  | main.rs:130:5:131:14 | S1 |
@@ -524,156 +368,6 @@ inferType
 | main.rs:170:26:170:26 | y |  | main.rs:125:5:128:5 | MyThing |
 | main.rs:170:26:170:26 | y | A | main.rs:132:5:133:14 | S2 |
 | main.rs:170:26:170:31 | y.m2() |  | main.rs:132:5:133:14 | S2 |
-| main.rs:175:5:175:33 | "MyThing" |  | {EXTERNAL LOCATION} | str |
-| main.rs:175:5:175:33 | "a" |  | {EXTERNAL LOCATION} | str |
-| main.rs:175:5:175:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:175:5:175:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:175:5:175:33 | SelfParam | &T | main.rs:175:5:178:5 | MyThing |
-| main.rs:175:5:175:33 | SelfParam | &T | main.rs:175:5:178:5 | MyThing |
-| main.rs:175:5:175:33 | SelfParam | &T.A | main.rs:176:20:176:20 | A |
-| main.rs:175:5:175:33 | SelfParam | &T.A | main.rs:176:20:176:20 | A |
-| main.rs:175:5:175:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:175:5:175:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:175:5:175:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:175:5:175:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:175:5:175:33 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:175:5:175:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:175:5:175:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:175:5:175:33 | self | &T | main.rs:175:5:178:5 | MyThing |
-| main.rs:175:5:175:33 | self | &T | main.rs:175:5:178:5 | MyThing |
-| main.rs:175:5:175:33 | self | &T.A | main.rs:176:20:176:20 | A |
-| main.rs:175:5:175:33 | self | &T.A | main.rs:176:20:176:20 | A |
-| main.rs:176:12:177:9 | MyThing {...} |  | main.rs:175:5:178:5 | MyThing |
-| main.rs:176:12:177:9 | MyThing {...} | A | main.rs:176:20:176:20 | A |
-| main.rs:176:12:177:9 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:176:12:177:9 | match self { ... } |  | main.rs:175:5:178:5 | MyThing |
-| main.rs:176:12:177:9 | match self { ... } | A | main.rs:176:20:176:20 | A |
-| main.rs:176:12:177:9 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:176:12:177:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:176:12:177:9 | { ... } |  | main.rs:175:5:178:5 | MyThing |
-| main.rs:176:12:177:9 | { ... } | A | main.rs:176:20:176:20 | A |
-| main.rs:176:12:177:9 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:177:9:177:9 | &a |  | file://:0:0:0:0 | & |
-| main.rs:177:9:177:9 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:177:9:177:9 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:177:9:177:9 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:177:9:177:9 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:177:9:177:9 | a.clone() |  | main.rs:176:20:176:20 | A |
-| main.rs:180:5:180:33 | "MyPair" |  | {EXTERNAL LOCATION} | str |
-| main.rs:180:5:180:33 | "p1" |  | {EXTERNAL LOCATION} | str |
-| main.rs:180:5:180:33 | "p2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:180:5:180:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:180:5:180:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:180:5:180:33 | SelfParam | &T | main.rs:180:5:184:5 | MyPair |
-| main.rs:180:5:180:33 | SelfParam | &T | main.rs:180:5:184:5 | MyPair |
-| main.rs:180:5:180:33 | SelfParam | &T.P1 | main.rs:181:19:181:20 | P1 |
-| main.rs:180:5:180:33 | SelfParam | &T.P1 | main.rs:181:19:181:20 | P1 |
-| main.rs:180:5:180:33 | SelfParam | &T.P2 | main.rs:181:23:181:24 | P2 |
-| main.rs:180:5:180:33 | SelfParam | &T.P2 | main.rs:181:23:181:24 | P2 |
-| main.rs:180:5:180:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:180:5:180:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:180:5:180:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:180:5:180:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:180:5:180:33 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:180:5:180:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:180:5:180:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:180:5:180:33 | self | &T | main.rs:180:5:184:5 | MyPair |
-| main.rs:180:5:180:33 | self | &T | main.rs:180:5:184:5 | MyPair |
-| main.rs:180:5:180:33 | self | &T.P1 | main.rs:181:19:181:20 | P1 |
-| main.rs:180:5:180:33 | self | &T.P1 | main.rs:181:19:181:20 | P1 |
-| main.rs:180:5:180:33 | self | &T.P2 | main.rs:181:23:181:24 | P2 |
-| main.rs:180:5:180:33 | self | &T.P2 | main.rs:181:23:181:24 | P2 |
-| main.rs:181:12:183:10 | MyPair {...} |  | main.rs:180:5:184:5 | MyPair |
-| main.rs:181:12:183:10 | MyPair {...} | P1 | main.rs:181:19:181:20 | P1 |
-| main.rs:181:12:183:10 | MyPair {...} | P2 | main.rs:181:23:181:24 | P2 |
-| main.rs:181:12:183:10 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:181:12:183:10 | match self { ... } |  | main.rs:180:5:184:5 | MyPair |
-| main.rs:181:12:183:10 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:181:12:183:10 | match self { ... } | P1 | main.rs:181:19:181:20 | P1 |
-| main.rs:181:12:183:10 | match self { ... } | P2 | main.rs:181:23:181:24 | P2 |
-| main.rs:181:12:183:10 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:181:12:183:10 | { ... } |  | main.rs:180:5:184:5 | MyPair |
-| main.rs:181:12:183:10 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:181:12:183:10 | { ... } | P1 | main.rs:181:19:181:20 | P1 |
-| main.rs:181:12:183:10 | { ... } | P2 | main.rs:181:23:181:24 | P2 |
-| main.rs:182:9:182:10 | &p1 |  | file://:0:0:0:0 | & |
-| main.rs:182:9:182:10 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:182:9:182:10 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:182:9:182:10 | p1.clone() |  | main.rs:181:19:181:20 | P1 |
-| main.rs:182:9:183:10 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:182:9:183:10 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:182:9:183:10 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:182:9:183:10 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:183:9:183:10 | &p2 |  | file://:0:0:0:0 | & |
-| main.rs:183:9:183:10 | p2.clone() |  | main.rs:181:23:181:24 | P2 |
-| main.rs:186:5:186:33 | "S1" |  | {EXTERNAL LOCATION} | str |
-| main.rs:186:5:186:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:186:5:186:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:186:5:186:33 | SelfParam | &T | main.rs:186:5:187:14 | S1 |
-| main.rs:186:5:186:33 | SelfParam | &T | main.rs:186:5:187:14 | S1 |
-| main.rs:186:5:186:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:186:5:186:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:186:5:186:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:186:5:186:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:186:5:186:33 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:186:5:186:33 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:186:5:186:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:186:5:186:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:186:5:186:33 | self | &T | main.rs:186:5:187:14 | S1 |
-| main.rs:186:5:186:33 | self | &T | main.rs:186:5:187:14 | S1 |
-| main.rs:187:12:187:13 | S1 |  | main.rs:186:5:187:14 | S1 |
-| main.rs:187:12:187:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:187:12:187:13 | match self { ... } |  | main.rs:186:5:187:14 | S1 |
-| main.rs:187:12:187:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:187:12:187:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:187:12:187:13 | { ... } |  | main.rs:186:5:187:14 | S1 |
-| main.rs:187:12:187:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:188:5:188:33 | "S2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:188:5:188:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:188:5:188:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:188:5:188:33 | SelfParam | &T | main.rs:188:5:189:14 | S2 |
-| main.rs:188:5:188:33 | SelfParam | &T | main.rs:188:5:189:14 | S2 |
-| main.rs:188:5:188:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:188:5:188:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:188:5:188:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:188:5:188:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:188:5:188:33 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:188:5:188:33 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:188:5:188:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:188:5:188:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:188:5:188:33 | self | &T | main.rs:188:5:189:14 | S2 |
-| main.rs:188:5:188:33 | self | &T | main.rs:188:5:189:14 | S2 |
-| main.rs:189:12:189:13 | S2 |  | main.rs:188:5:189:14 | S2 |
-| main.rs:189:12:189:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:189:12:189:13 | match self { ... } |  | main.rs:188:5:189:14 | S2 |
-| main.rs:189:12:189:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:189:12:189:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:189:12:189:13 | { ... } |  | main.rs:188:5:189:14 | S2 |
-| main.rs:189:12:189:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:190:5:190:42 | "S3" |  | {EXTERNAL LOCATION} | str |
-| main.rs:190:5:190:42 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:190:5:190:42 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:190:5:190:42 | SelfParam | &T | main.rs:190:5:191:14 | S3 |
-| main.rs:190:5:190:42 | SelfParam | &T | main.rs:190:5:191:14 | S3 |
-| main.rs:190:5:190:42 | f |  | file://:0:0:0:0 | & |
-| main.rs:190:5:190:42 | f |  | file://:0:0:0:0 | & |
-| main.rs:190:5:190:42 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:190:5:190:42 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:190:5:190:42 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:190:5:190:42 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:190:5:190:42 | self |  | file://:0:0:0:0 | & |
-| main.rs:190:5:190:42 | self |  | file://:0:0:0:0 | & |
-| main.rs:190:5:190:42 | self | &T | main.rs:190:5:191:14 | S3 |
-| main.rs:190:5:190:42 | self | &T | main.rs:190:5:191:14 | S3 |
-| main.rs:191:12:191:13 | S3 |  | main.rs:190:5:191:14 | S3 |
-| main.rs:191:12:191:13 | S3 |  | main.rs:190:5:191:14 | S3 |
-| main.rs:191:12:191:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:191:12:191:13 | match self { ... } |  | main.rs:190:5:191:14 | S3 |
-| main.rs:191:12:191:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:191:12:191:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:191:12:191:13 | { ... } |  | main.rs:190:5:191:14 | S3 |
-| main.rs:191:12:191:13 | { ... } |  | main.rs:190:5:191:14 | S3 |
-| main.rs:191:12:191:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:194:15:194:18 | SelfParam |  | main.rs:193:5:202:5 | Self [trait MyTrait] |
 | main.rs:196:15:196:18 | SelfParam |  | main.rs:193:5:202:5 | Self [trait MyTrait] |
 | main.rs:199:9:201:9 | { ... } |  | main.rs:193:5:202:5 | Self [trait MyTrait] |
@@ -1007,28 +701,6 @@ inferType
 | main.rs:392:17:392:33 | convert_to(...) |  | main.rs:186:5:187:14 | S1 |
 | main.rs:392:28:392:32 | thing |  | main.rs:175:5:178:5 | MyThing |
 | main.rs:392:28:392:32 | thing | A | main.rs:186:5:187:14 | S1 |
-| main.rs:397:5:397:33 | "S1" |  | {EXTERNAL LOCATION} | str |
-| main.rs:397:5:397:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:397:5:397:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:397:5:397:33 | SelfParam | &T | main.rs:397:5:398:14 | S1 |
-| main.rs:397:5:397:33 | SelfParam | &T | main.rs:397:5:398:14 | S1 |
-| main.rs:397:5:397:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:397:5:397:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:397:5:397:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:397:5:397:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:397:5:397:33 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:397:5:397:33 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:397:5:397:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:397:5:397:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:397:5:397:33 | self | &T | main.rs:397:5:398:14 | S1 |
-| main.rs:397:5:397:33 | self | &T | main.rs:397:5:398:14 | S1 |
-| main.rs:398:12:398:13 | S1 |  | main.rs:397:5:398:14 | S1 |
-| main.rs:398:12:398:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:398:12:398:13 | match self { ... } |  | main.rs:397:5:398:14 | S1 |
-| main.rs:398:12:398:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:398:12:398:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:398:12:398:13 | { ... } |  | main.rs:397:5:398:14 | S1 |
-| main.rs:398:12:398:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:401:26:401:29 | SelfParam |  | main.rs:400:5:404:5 | Self [trait OverlappingTrait] |
 | main.rs:403:28:403:31 | SelfParam |  | main.rs:400:5:404:5 | Self [trait OverlappingTrait] |
 | main.rs:403:34:403:35 | s1 |  | main.rs:397:5:398:14 | S1 |
@@ -1053,36 +725,6 @@ inferType
 | main.rs:433:18:433:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
 | main.rs:433:26:433:26 | x |  | main.rs:397:5:398:14 | S1 |
 | main.rs:433:26:433:44 | x.common_method_2() |  | main.rs:397:5:398:14 | S1 |
-| main.rs:440:5:440:20 | "S1" |  | {EXTERNAL LOCATION} | str |
-| main.rs:440:5:440:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:440:5:440:20 | SelfParam | &T | main.rs:440:5:441:14 | S1 |
-| main.rs:440:5:440:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:440:5:440:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:440:5:440:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:440:5:440:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:440:5:440:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:440:5:440:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:440:5:440:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:440:5:440:20 | self | &T | main.rs:440:5:441:14 | S1 |
-| main.rs:441:12:441:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:441:12:441:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:441:12:441:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:441:12:441:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:443:5:443:20 | "S2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:443:5:443:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:443:5:443:20 | SelfParam | &T | main.rs:443:5:444:14 | S2 |
-| main.rs:443:5:443:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:443:5:443:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:443:5:443:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:443:5:443:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:443:5:443:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:443:5:443:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:443:5:443:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:443:5:443:20 | self | &T | main.rs:443:5:444:14 | S2 |
-| main.rs:444:12:444:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:444:12:444:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:444:12:444:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:444:12:444:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:450:19:450:22 | SelfParam |  | main.rs:448:5:451:5 | Self [trait FirstTrait] |
 | main.rs:455:19:455:22 | SelfParam |  | main.rs:453:5:456:5 | Self [trait SecondTrait] |
 | main.rs:458:64:458:64 | x |  | main.rs:458:45:458:61 | T |
@@ -1155,58 +797,6 @@ inferType
 | main.rs:511:18:511:29 | "{:?}, {:?}\\n" |  | {EXTERNAL LOCATION} | str |
 | main.rs:511:32:511:33 | s1 |  | {EXTERNAL LOCATION} | u8 |
 | main.rs:511:36:511:37 | s2 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:516:5:516:20 | "MyThing" |  | {EXTERNAL LOCATION} | str |
-| main.rs:516:5:516:20 | "a" |  | {EXTERNAL LOCATION} | str |
-| main.rs:516:5:516:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:516:5:516:20 | SelfParam | &T | main.rs:516:5:519:5 | MyThing |
-| main.rs:516:5:516:20 | SelfParam | &T.T | main.rs:517:20:517:20 | T |
-| main.rs:516:5:516:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:516:5:516:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:516:5:516:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:516:5:516:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:516:5:516:20 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:516:5:516:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:516:5:516:20 | self | &T | main.rs:516:5:519:5 | MyThing |
-| main.rs:516:5:516:20 | self | &T.T | main.rs:517:20:517:20 | T |
-| main.rs:517:12:518:9 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:517:12:518:9 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:517:12:518:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:517:12:518:9 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:518:9:518:9 | &a |  | file://:0:0:0:0 | & |
-| main.rs:518:9:518:9 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:518:9:518:9 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:518:9:518:9 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:518:9:518:9 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:521:5:521:20 | "S1" |  | {EXTERNAL LOCATION} | str |
-| main.rs:521:5:521:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:521:5:521:20 | SelfParam | &T | main.rs:521:5:522:14 | S1 |
-| main.rs:521:5:521:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:521:5:521:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:521:5:521:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:521:5:521:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:521:5:521:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:521:5:521:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:521:5:521:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:521:5:521:20 | self | &T | main.rs:521:5:522:14 | S1 |
-| main.rs:522:12:522:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:522:12:522:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:522:12:522:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:522:12:522:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:523:5:523:20 | "S2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:523:5:523:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:523:5:523:20 | SelfParam | &T | main.rs:523:5:524:14 | S2 |
-| main.rs:523:5:523:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:523:5:523:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:523:5:523:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:523:5:523:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:523:5:523:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:523:5:523:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:523:5:523:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:523:5:523:20 | self | &T | main.rs:523:5:524:14 | S2 |
-| main.rs:524:12:524:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:524:12:524:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:524:12:524:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:524:12:524:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:527:15:527:18 | SelfParam |  | main.rs:526:5:535:5 | Self [trait MyTrait] |
 | main.rs:529:15:529:18 | SelfParam |  | main.rs:526:5:535:5 | Self [trait MyTrait] |
 | main.rs:532:9:534:9 | { ... } |  | main.rs:526:19:526:19 | A |
@@ -1315,28 +905,6 @@ inferType
 | main.rs:581:37:581:38 | y3 | T.T | main.rs:523:5:524:14 | S2 |
 | main.rs:582:18:582:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
 | main.rs:582:26:582:26 | b |  | main.rs:523:5:524:14 | S2 |
-| main.rs:587:5:587:20 | "Wrapper" |  | {EXTERNAL LOCATION} | str |
-| main.rs:587:5:587:20 | "field" |  | {EXTERNAL LOCATION} | str |
-| main.rs:587:5:587:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:587:5:587:20 | SelfParam | &T | main.rs:587:5:590:5 | Wrapper |
-| main.rs:587:5:587:20 | SelfParam | &T.A | main.rs:588:20:588:20 | A |
-| main.rs:587:5:587:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:587:5:587:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:587:5:587:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:587:5:587:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:587:5:587:20 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:587:5:587:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:587:5:587:20 | self | &T | main.rs:587:5:590:5 | Wrapper |
-| main.rs:587:5:587:20 | self | &T.A | main.rs:588:20:588:20 | A |
-| main.rs:588:12:589:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:588:12:589:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:588:12:589:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:588:12:589:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:589:9:589:13 | &field |  | file://:0:0:0:0 | & |
-| main.rs:589:9:589:13 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:589:9:589:13 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:589:9:589:13 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:589:9:589:13 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
 | main.rs:593:19:593:22 | SelfParam |  | main.rs:587:5:590:5 | Wrapper |
 | main.rs:593:19:593:22 | SelfParam | A | main.rs:592:10:592:10 | A |
 | main.rs:593:30:595:9 | { ... } |  | main.rs:592:10:592:10 | A |
@@ -1371,57 +939,6 @@ inferType
 | main.rs:633:20:633:24 | SelfParam | &T | main.rs:626:5:636:5 | Self [trait TraitMultipleAssoc] |
 | main.rs:635:20:635:24 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:635:20:635:24 | SelfParam | &T | main.rs:626:5:636:5 | Self [trait TraitMultipleAssoc] |
-| main.rs:638:5:638:29 | "S" |  | {EXTERNAL LOCATION} | str |
-| main.rs:638:5:638:29 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:638:5:638:29 | SelfParam | &T | main.rs:638:5:639:13 | S |
-| main.rs:638:5:638:29 | f |  | file://:0:0:0:0 | & |
-| main.rs:638:5:638:29 | f |  | file://:0:0:0:0 | & |
-| main.rs:638:5:638:29 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:638:5:638:29 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:638:5:638:29 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:638:5:638:29 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:638:5:638:29 | self |  | file://:0:0:0:0 | & |
-| main.rs:638:5:638:29 | self | &T | main.rs:638:5:639:13 | S |
-| main.rs:639:12:639:12 | S |  | main.rs:638:5:639:13 | S |
-| main.rs:639:12:639:12 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:639:12:639:12 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:639:12:639:12 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:639:12:639:12 | { ... } |  | main.rs:638:5:639:13 | S |
-| main.rs:639:12:639:12 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:641:5:641:29 | "S2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:641:5:641:29 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:641:5:641:29 | SelfParam | &T | main.rs:641:5:642:14 | S2 |
-| main.rs:641:5:641:29 | f |  | file://:0:0:0:0 | & |
-| main.rs:641:5:641:29 | f |  | file://:0:0:0:0 | & |
-| main.rs:641:5:641:29 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:641:5:641:29 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:641:5:641:29 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:641:5:641:29 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:641:5:641:29 | self |  | file://:0:0:0:0 | & |
-| main.rs:641:5:641:29 | self | &T | main.rs:641:5:642:14 | S2 |
-| main.rs:642:12:642:13 | S2 |  | main.rs:641:5:642:14 | S2 |
-| main.rs:642:12:642:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:642:12:642:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:642:12:642:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:642:12:642:13 | { ... } |  | main.rs:641:5:642:14 | S2 |
-| main.rs:642:12:642:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:644:5:644:29 | "AT" |  | {EXTERNAL LOCATION} | str |
-| main.rs:644:5:644:29 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:644:5:644:29 | SelfParam | &T | main.rs:644:5:645:14 | AT |
-| main.rs:644:5:644:29 | f |  | file://:0:0:0:0 | & |
-| main.rs:644:5:644:29 | f |  | file://:0:0:0:0 | & |
-| main.rs:644:5:644:29 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:644:5:644:29 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:644:5:644:29 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:644:5:644:29 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:644:5:644:29 | self |  | file://:0:0:0:0 | & |
-| main.rs:644:5:644:29 | self | &T | main.rs:644:5:645:14 | AT |
-| main.rs:645:12:645:13 | AT |  | main.rs:644:5:645:14 | AT |
-| main.rs:645:12:645:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:645:12:645:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:645:12:645:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:645:12:645:13 | { ... } |  | main.rs:644:5:645:14 | AT |
-| main.rs:645:12:645:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:651:15:651:18 | SelfParam |  | main.rs:638:5:639:13 | S |
 | main.rs:651:45:653:9 | { ... } |  | main.rs:644:5:645:14 | AT |
 | main.rs:652:13:652:14 | AT |  | main.rs:644:5:645:14 | AT |
@@ -1508,67 +1025,6 @@ inferType
 | main.rs:731:13:731:21 | assoc_two |  | main.rs:641:5:642:14 | S2 |
 | main.rs:731:25:731:26 | AT |  | main.rs:644:5:645:14 | AT |
 | main.rs:731:25:731:36 | AT.get_two() |  | main.rs:641:5:642:14 | S2 |
-| main.rs:736:5:736:20 | "C1" |  | {EXTERNAL LOCATION} | str |
-| main.rs:736:5:736:20 | "C2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:736:5:736:20 | "a" |  | {EXTERNAL LOCATION} | str |
-| main.rs:736:5:736:20 | &f0 |  | file://:0:0:0:0 | & |
-| main.rs:736:5:736:20 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:736:5:736:20 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:736:5:736:20 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:736:5:736:20 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:736:5:736:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:736:5:736:20 | SelfParam | &T | main.rs:736:5:740:5 | MyEnum |
-| main.rs:736:5:736:20 | SelfParam | &T.A | main.rs:737:17:737:17 | A |
-| main.rs:736:5:736:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:736:5:736:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:736:5:736:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:736:5:736:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:736:5:736:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:736:5:736:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:736:5:736:20 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:736:5:736:20 | f.debug_tuple(...) |  | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:736:5:736:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:736:5:736:20 | self | &T | main.rs:736:5:740:5 | MyEnum |
-| main.rs:736:5:736:20 | self | &T.A | main.rs:737:17:737:17 | A |
-| main.rs:737:10:739:14 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:737:10:739:14 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:737:10:739:14 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:737:10:739:14 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:739:14:739:14 | &a |  | file://:0:0:0:0 | & |
-| main.rs:739:14:739:14 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:739:14:739:14 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:739:14:739:14 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:739:14:739:14 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:742:5:742:20 | "S1" |  | {EXTERNAL LOCATION} | str |
-| main.rs:742:5:742:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:742:5:742:20 | SelfParam | &T | main.rs:742:5:743:14 | S1 |
-| main.rs:742:5:742:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:742:5:742:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:742:5:742:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:742:5:742:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:742:5:742:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:742:5:742:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:742:5:742:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:742:5:742:20 | self | &T | main.rs:742:5:743:14 | S1 |
-| main.rs:743:12:743:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:743:12:743:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:743:12:743:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:743:12:743:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:744:5:744:20 | "S2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:744:5:744:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:744:5:744:20 | SelfParam | &T | main.rs:744:5:745:14 | S2 |
-| main.rs:744:5:744:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:744:5:744:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:744:5:744:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:744:5:744:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:744:5:744:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:744:5:744:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:744:5:744:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:744:5:744:20 | self | &T | main.rs:744:5:745:14 | S2 |
-| main.rs:745:12:745:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:745:12:745:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:745:12:745:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:745:12:745:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:748:15:748:18 | SelfParam |  | main.rs:736:5:740:5 | MyEnum |
 | main.rs:748:15:748:18 | SelfParam | A | main.rs:747:10:747:10 | T |
 | main.rs:748:26:753:9 | { ... } |  | main.rs:747:10:747:10 | T |
@@ -1597,80 +1053,6 @@ inferType
 | main.rs:761:26:761:26 | y |  | main.rs:736:5:740:5 | MyEnum |
 | main.rs:761:26:761:26 | y | A | main.rs:744:5:745:14 | S2 |
 | main.rs:761:26:761:31 | y.m1() |  | main.rs:744:5:745:14 | S2 |
-| main.rs:766:5:766:20 | "MyThing" |  | {EXTERNAL LOCATION} | str |
-| main.rs:766:5:766:20 | "a" |  | {EXTERNAL LOCATION} | str |
-| main.rs:766:5:766:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:766:5:766:20 | SelfParam | &T | main.rs:766:5:769:5 | MyThing |
-| main.rs:766:5:766:20 | SelfParam | &T.A | main.rs:767:20:767:20 | A |
-| main.rs:766:5:766:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:766:5:766:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:766:5:766:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:766:5:766:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:766:5:766:20 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:766:5:766:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:766:5:766:20 | self | &T | main.rs:766:5:769:5 | MyThing |
-| main.rs:766:5:766:20 | self | &T.A | main.rs:767:20:767:20 | A |
-| main.rs:767:12:768:9 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:767:12:768:9 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:767:12:768:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:767:12:768:9 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:768:9:768:9 | &a |  | file://:0:0:0:0 | & |
-| main.rs:768:9:768:9 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:768:9:768:9 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:768:9:768:9 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:768:9:768:9 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:771:5:771:20 | "MyThing2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:771:5:771:20 | "a" |  | {EXTERNAL LOCATION} | str |
-| main.rs:771:5:771:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:771:5:771:20 | SelfParam | &T | main.rs:771:5:774:5 | MyThing2 |
-| main.rs:771:5:771:20 | SelfParam | &T.A | main.rs:772:21:772:21 | A |
-| main.rs:771:5:771:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:771:5:771:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:771:5:771:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:771:5:771:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:771:5:771:20 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:771:5:771:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:771:5:771:20 | self | &T | main.rs:771:5:774:5 | MyThing2 |
-| main.rs:771:5:771:20 | self | &T.A | main.rs:772:21:772:21 | A |
-| main.rs:772:12:773:9 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:772:12:773:9 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:772:12:773:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:772:12:773:9 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:773:9:773:9 | &a |  | file://:0:0:0:0 | & |
-| main.rs:773:9:773:9 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:773:9:773:9 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:773:9:773:9 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:773:9:773:9 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:776:5:776:20 | "S1" |  | {EXTERNAL LOCATION} | str |
-| main.rs:776:5:776:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:776:5:776:20 | SelfParam | &T | main.rs:776:5:777:14 | S1 |
-| main.rs:776:5:776:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:776:5:776:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:776:5:776:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:776:5:776:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:776:5:776:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:776:5:776:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:776:5:776:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:776:5:776:20 | self | &T | main.rs:776:5:777:14 | S1 |
-| main.rs:777:12:777:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:777:12:777:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:777:12:777:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:777:12:777:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:778:5:778:20 | "S2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:778:5:778:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:778:5:778:20 | SelfParam | &T | main.rs:778:5:779:14 | S2 |
-| main.rs:778:5:778:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:778:5:778:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:778:5:778:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:778:5:778:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:778:5:778:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:778:5:778:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:778:5:778:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:778:5:778:20 | self | &T | main.rs:778:5:779:14 | S2 |
-| main.rs:779:12:779:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:779:12:779:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:779:12:779:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:779:12:779:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:783:15:783:18 | SelfParam |  | main.rs:781:5:784:5 | Self [trait MyTrait1] |
 | main.rs:788:15:788:18 | SelfParam |  | main.rs:786:5:798:5 | Self [trait MyTrait2] |
 | main.rs:791:9:797:9 | { ... } |  | main.rs:786:20:786:22 | Tr2 |
@@ -1802,36 +1184,6 @@ inferType
 | main.rs:867:17:867:32 | call_trait_m1(...) | A | main.rs:778:5:779:14 | S2 |
 | main.rs:867:31:867:31 | x |  | main.rs:771:5:774:5 | MyThing2 |
 | main.rs:867:31:867:31 | x | A | main.rs:778:5:779:14 | S2 |
-| main.rs:875:5:875:20 | "S1" |  | {EXTERNAL LOCATION} | str |
-| main.rs:875:5:875:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:875:5:875:20 | SelfParam | &T | main.rs:875:5:876:14 | S1 |
-| main.rs:875:5:875:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:875:5:875:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:875:5:875:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:875:5:875:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:875:5:875:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:875:5:875:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:875:5:875:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:875:5:875:20 | self | &T | main.rs:875:5:876:14 | S1 |
-| main.rs:876:12:876:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:876:12:876:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:876:12:876:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:876:12:876:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:878:5:878:20 | "S2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:878:5:878:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:878:5:878:20 | SelfParam | &T | main.rs:878:5:879:14 | S2 |
-| main.rs:878:5:878:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:878:5:878:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:878:5:878:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:878:5:878:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:878:5:878:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:878:5:878:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:878:5:878:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:878:5:878:20 | self | &T | main.rs:878:5:879:14 | S2 |
-| main.rs:879:12:879:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:879:12:879:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:879:12:879:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:879:12:879:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:885:22:885:22 | x |  | file://:0:0:0:0 | & |
 | main.rs:885:22:885:22 | x | &T | main.rs:885:11:885:19 | T |
 | main.rs:885:35:887:5 | { ... } |  | file://:0:0:0:0 | & |
@@ -1878,56 +1230,6 @@ inferType
 | main.rs:916:13:916:13 | y |  | main.rs:878:5:879:14 | S2 |
 | main.rs:916:21:916:27 | into(...) |  | main.rs:878:5:879:14 | S2 |
 | main.rs:916:26:916:26 | x |  | main.rs:875:5:876:14 | S1 |
-| main.rs:921:5:921:20 | "PairBoth" |  | {EXTERNAL LOCATION} | str |
-| main.rs:921:5:921:20 | "PairFst" |  | {EXTERNAL LOCATION} | str |
-| main.rs:921:5:921:20 | "PairNone" |  | {EXTERNAL LOCATION} | str |
-| main.rs:921:5:921:20 | "PairSnd" |  | {EXTERNAL LOCATION} | str |
-| main.rs:921:5:921:20 | &f0 |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | &f0 |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | &f0 |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | &f1 |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:921:5:921:20 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:921:5:921:20 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:921:5:921:20 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:921:5:921:20 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:921:5:921:20 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:921:5:921:20 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:921:5:921:20 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:921:5:921:20 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:921:5:921:20 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:921:5:921:20 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:921:5:921:20 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:921:5:921:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | SelfParam | &T | main.rs:921:5:927:5 | PairOption |
-| main.rs:921:5:921:20 | SelfParam | &T.Fst | main.rs:922:21:922:23 | Fst |
-| main.rs:921:5:921:20 | SelfParam | &T.Snd | main.rs:922:26:922:28 | Snd |
-| main.rs:921:5:921:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:921:5:921:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:921:5:921:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:921:5:921:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:921:5:921:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:921:5:921:20 | f.debug_tuple(...) |  | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:921:5:921:20 | f.debug_tuple(...) |  | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:921:5:921:20 | f.debug_tuple(...) |  | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:921:5:921:20 | f.debug_tuple(...) |  | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:921:5:921:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:921:5:921:20 | self | &T | main.rs:921:5:927:5 | PairOption |
-| main.rs:921:5:921:20 | self | &T.Fst | main.rs:922:21:922:23 | Fst |
-| main.rs:921:5:921:20 | self | &T.Snd | main.rs:922:26:922:28 | Snd |
-| main.rs:922:10:926:16 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:922:10:926:16 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:922:10:926:16 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:922:10:926:16 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:930:22:930:25 | SelfParam |  | main.rs:921:5:927:5 | PairOption |
 | main.rs:930:22:930:25 | SelfParam | Fst | main.rs:929:10:929:12 | Fst |
 | main.rs:930:22:930:25 | SelfParam | Snd | main.rs:929:15:929:17 | Snd |
@@ -1948,51 +1250,6 @@ inferType
 | main.rs:934:45:934:47 | snd |  | main.rs:929:15:929:17 | Snd |
 | main.rs:935:41:935:43 | snd |  | main.rs:929:15:929:17 | Snd |
 | main.rs:935:49:935:51 | snd |  | main.rs:929:15:929:17 | Snd |
-| main.rs:940:5:940:20 | "S1" |  | {EXTERNAL LOCATION} | str |
-| main.rs:940:5:940:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:940:5:940:20 | SelfParam | &T | main.rs:940:5:941:14 | S1 |
-| main.rs:940:5:940:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:940:5:940:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:940:5:940:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:940:5:940:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:940:5:940:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:940:5:940:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:940:5:940:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:940:5:940:20 | self | &T | main.rs:940:5:941:14 | S1 |
-| main.rs:941:12:941:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:941:12:941:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:941:12:941:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:941:12:941:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:943:5:943:20 | "S2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:943:5:943:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:943:5:943:20 | SelfParam | &T | main.rs:943:5:944:14 | S2 |
-| main.rs:943:5:943:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:943:5:943:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:943:5:943:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:943:5:943:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:943:5:943:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:943:5:943:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:943:5:943:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:943:5:943:20 | self | &T | main.rs:943:5:944:14 | S2 |
-| main.rs:944:12:944:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:944:12:944:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:944:12:944:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:944:12:944:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:946:5:946:20 | "S3" |  | {EXTERNAL LOCATION} | str |
-| main.rs:946:5:946:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:946:5:946:20 | SelfParam | &T | main.rs:946:5:947:14 | S3 |
-| main.rs:946:5:946:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:946:5:946:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:946:5:946:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:946:5:946:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:946:5:946:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:946:5:946:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:946:5:946:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:946:5:946:20 | self | &T | main.rs:946:5:947:14 | S3 |
-| main.rs:947:12:947:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:947:12:947:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:947:12:947:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:947:12:947:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:961:10:961:10 | t |  | main.rs:921:5:927:5 | PairOption |
 | main.rs:961:10:961:10 | t | Fst | main.rs:943:5:944:14 | S2 |
 | main.rs:961:10:961:10 | t | Snd | main.rs:921:5:927:5 | PairOption |
@@ -2062,33 +1319,6 @@ inferType
 | main.rs:983:31:983:53 | ...::PairSnd(...) | Fst | main.rs:943:5:944:14 | S2 |
 | main.rs:983:31:983:53 | ...::PairSnd(...) | Snd | main.rs:946:5:947:14 | S3 |
 | main.rs:983:51:983:52 | S3 |  | main.rs:946:5:947:14 | S3 |
-| main.rs:988:5:988:20 | "MyNone" |  | {EXTERNAL LOCATION} | str |
-| main.rs:988:5:988:20 | "MySome" |  | {EXTERNAL LOCATION} | str |
-| main.rs:988:5:988:20 | &f0 |  | file://:0:0:0:0 | & |
-| main.rs:988:5:988:20 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:988:5:988:20 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:988:5:988:20 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:988:5:988:20 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:988:5:988:20 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:988:5:988:20 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:988:5:988:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:988:5:988:20 | SelfParam | &T | main.rs:988:5:992:5 | MyOption |
-| main.rs:988:5:988:20 | SelfParam | &T.T | main.rs:989:19:989:19 | T |
-| main.rs:988:5:988:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:988:5:988:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:988:5:988:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:988:5:988:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:988:5:988:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:988:5:988:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:988:5:988:20 | f.debug_tuple(...) |  | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:988:5:988:20 | f.debug_tuple(...) |  | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:988:5:988:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:988:5:988:20 | self | &T | main.rs:988:5:992:5 | MyOption |
-| main.rs:988:5:988:20 | self | &T.T | main.rs:989:19:989:19 | T |
-| main.rs:989:10:991:14 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:989:10:991:14 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:989:10:991:14 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:989:10:991:14 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:996:16:996:24 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:996:16:996:24 | SelfParam | &T | main.rs:994:5:1001:5 | Self [trait MyTrait] |
 | main.rs:996:27:996:31 | value |  | main.rs:994:19:994:19 | S |
@@ -2122,21 +1352,6 @@ inferType
 | main.rs:1018:34:1018:34 | x | T | main.rs:1014:10:1014:10 | T |
 | main.rs:1018:40:1018:40 | x |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1018:40:1018:40 | x | T | main.rs:1014:10:1014:10 | T |
-| main.rs:1023:5:1023:20 | "S" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1023:5:1023:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1023:5:1023:20 | SelfParam | &T | main.rs:1023:5:1024:13 | S |
-| main.rs:1023:5:1023:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:1023:5:1023:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:1023:5:1023:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1023:5:1023:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1023:5:1023:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1023:5:1023:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1023:5:1023:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:1023:5:1023:20 | self | &T | main.rs:1023:5:1024:13 | S |
-| main.rs:1024:12:1024:12 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1024:12:1024:12 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1024:12:1024:12 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1024:12:1024:12 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:1027:13:1027:14 | x1 |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1027:18:1027:37 | ...::new(...) |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1028:18:1028:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
@@ -2249,93 +1464,6 @@ inferType
 | main.rs:1070:18:1070:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
 | main.rs:1070:26:1070:34 | from_loop |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1070:26:1070:34 | from_loop | T | main.rs:1023:5:1024:13 | S |
-| main.rs:1076:5:1076:33 | "S" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1076:5:1076:33 | &f0 |  | file://:0:0:0:0 | & |
-| main.rs:1076:5:1076:33 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:1076:5:1076:33 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:1076:5:1076:33 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1076:5:1076:33 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1076:5:1076:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1076:5:1076:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1076:5:1076:33 | SelfParam | &T | main.rs:1076:5:1077:19 | S |
-| main.rs:1076:5:1076:33 | SelfParam | &T | main.rs:1076:5:1077:19 | S |
-| main.rs:1076:5:1076:33 | SelfParam | &T.T | main.rs:1077:14:1077:14 | T |
-| main.rs:1076:5:1076:33 | SelfParam | &T.T | main.rs:1077:14:1077:14 | T |
-| main.rs:1076:5:1076:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:1076:5:1076:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:1076:5:1076:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1076:5:1076:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1076:5:1076:33 | f0.clone() |  | main.rs:1077:14:1077:14 | T |
-| main.rs:1076:5:1076:33 | f.debug_tuple(...) |  | {EXTERNAL LOCATION} | DebugTuple |
-| main.rs:1076:5:1076:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:1076:5:1076:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:1076:5:1076:33 | self | &T | main.rs:1076:5:1077:19 | S |
-| main.rs:1076:5:1076:33 | self | &T | main.rs:1076:5:1077:19 | S |
-| main.rs:1076:5:1076:33 | self | &T.T | main.rs:1077:14:1077:14 | T |
-| main.rs:1076:5:1076:33 | self | &T.T | main.rs:1077:14:1077:14 | T |
-| main.rs:1077:12:1077:12 | S(...) |  | main.rs:1076:5:1077:19 | S |
-| main.rs:1077:12:1077:12 | S(...) | T | main.rs:1077:14:1077:14 | T |
-| main.rs:1077:12:1077:12 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1077:12:1077:12 | match self { ... } |  | main.rs:1076:5:1077:19 | S |
-| main.rs:1077:12:1077:12 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1077:12:1077:12 | match self { ... } | T | main.rs:1077:14:1077:14 | T |
-| main.rs:1077:12:1077:12 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1077:12:1077:12 | { ... } |  | main.rs:1076:5:1077:19 | S |
-| main.rs:1077:12:1077:12 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1077:12:1077:12 | { ... } | T | main.rs:1077:14:1077:14 | T |
-| main.rs:1079:5:1079:33 | "S2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1079:5:1079:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1079:5:1079:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1079:5:1079:33 | SelfParam | &T | main.rs:1079:5:1080:14 | S2 |
-| main.rs:1079:5:1079:33 | SelfParam | &T | main.rs:1079:5:1080:14 | S2 |
-| main.rs:1079:5:1079:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:1079:5:1079:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:1079:5:1079:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1079:5:1079:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1079:5:1079:33 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1079:5:1079:33 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1079:5:1079:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:1079:5:1079:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:1079:5:1079:33 | self | &T | main.rs:1079:5:1080:14 | S2 |
-| main.rs:1079:5:1079:33 | self | &T | main.rs:1079:5:1080:14 | S2 |
-| main.rs:1080:12:1080:13 | S2 |  | main.rs:1079:5:1080:14 | S2 |
-| main.rs:1080:12:1080:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1080:12:1080:13 | match self { ... } |  | main.rs:1079:5:1080:14 | S2 |
-| main.rs:1080:12:1080:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1080:12:1080:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1080:12:1080:13 | { ... } |  | main.rs:1079:5:1080:14 | S2 |
-| main.rs:1080:12:1080:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1082:5:1082:42 | "MyInt" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1082:5:1082:42 | "a" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1082:5:1082:42 | ...::default(...) |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1082:5:1082:42 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1082:5:1082:42 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1082:5:1082:42 | SelfParam | &T | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1082:5:1082:42 | SelfParam | &T | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1082:5:1082:42 | f |  | file://:0:0:0:0 | & |
-| main.rs:1082:5:1082:42 | f |  | file://:0:0:0:0 | & |
-| main.rs:1082:5:1082:42 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1082:5:1082:42 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1082:5:1082:42 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:1082:5:1082:42 | self |  | file://:0:0:0:0 | & |
-| main.rs:1082:5:1082:42 | self |  | file://:0:0:0:0 | & |
-| main.rs:1082:5:1082:42 | self | &T | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1082:5:1082:42 | self | &T | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1083:12:1084:9 | MyInt {...} |  | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1083:12:1084:9 | MyInt {...} |  | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1083:12:1084:9 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1083:12:1084:9 | match self { ... } |  | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1083:12:1084:9 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1083:12:1084:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1083:12:1084:9 | { ... } |  | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1083:12:1084:9 | { ... } |  | main.rs:1082:5:1085:5 | MyInt |
-| main.rs:1083:12:1084:9 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1084:9:1084:9 | &a |  | file://:0:0:0:0 | & |
-| main.rs:1084:9:1084:9 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:1084:9:1084:9 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:1084:9:1084:9 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1084:9:1084:9 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1084:9:1084:9 | a.clone() |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1088:15:1088:18 | SelfParam |  | main.rs:1076:5:1077:19 | S |
 | main.rs:1088:15:1088:18 | SelfParam | T | main.rs:1087:10:1087:10 | T |
 | main.rs:1088:26:1090:9 | { ... } |  | main.rs:1087:10:1087:10 | T |
@@ -2606,37 +1734,6 @@ inferType
 | main.rs:1211:9:1211:15 | x.foo() |  | file://:0:0:0:0 | & |
 | main.rs:1211:9:1211:15 | x.foo() | &T | main.rs:1201:5:1201:26 | MyStruct |
 | main.rs:1211:9:1211:15 | x.foo() | &T.T | main.rs:1199:5:1199:13 | S |
-| main.rs:1216:5:1216:42 | "MyFlag" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1216:5:1216:42 | "bool" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1216:5:1216:42 | ...::default(...) |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1216:5:1216:42 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1216:5:1216:42 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1216:5:1216:42 | SelfParam | &T | main.rs:1216:5:1219:5 | MyFlag |
-| main.rs:1216:5:1216:42 | SelfParam | &T | main.rs:1216:5:1219:5 | MyFlag |
-| main.rs:1216:5:1216:42 | f |  | file://:0:0:0:0 | & |
-| main.rs:1216:5:1216:42 | f |  | file://:0:0:0:0 | & |
-| main.rs:1216:5:1216:42 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1216:5:1216:42 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1216:5:1216:42 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:1216:5:1216:42 | self |  | file://:0:0:0:0 | & |
-| main.rs:1216:5:1216:42 | self |  | file://:0:0:0:0 | & |
-| main.rs:1216:5:1216:42 | self | &T | main.rs:1216:5:1219:5 | MyFlag |
-| main.rs:1216:5:1216:42 | self | &T | main.rs:1216:5:1219:5 | MyFlag |
-| main.rs:1217:12:1218:12 | MyFlag {...} |  | main.rs:1216:5:1219:5 | MyFlag |
-| main.rs:1217:12:1218:12 | MyFlag {...} |  | main.rs:1216:5:1219:5 | MyFlag |
-| main.rs:1217:12:1218:12 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1217:12:1218:12 | match self { ... } |  | main.rs:1216:5:1219:5 | MyFlag |
-| main.rs:1217:12:1218:12 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1217:12:1218:12 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1217:12:1218:12 | { ... } |  | main.rs:1216:5:1219:5 | MyFlag |
-| main.rs:1217:12:1218:12 | { ... } |  | main.rs:1216:5:1219:5 | MyFlag |
-| main.rs:1217:12:1218:12 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1218:9:1218:12 | &bool |  | file://:0:0:0:0 | & |
-| main.rs:1218:9:1218:12 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:1218:9:1218:12 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:1218:9:1218:12 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1218:9:1218:12 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1218:9:1218:12 | bool.clone() |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1222:17:1222:25 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1222:17:1222:25 | SelfParam | &T | main.rs:1216:5:1219:5 | MyFlag |
 | main.rs:1223:13:1223:16 | self |  | file://:0:0:0:0 | & |
@@ -2768,36 +1865,6 @@ inferType
 | main.rs:1258:27:1258:30 | flag |  | main.rs:1216:5:1219:5 | MyFlag |
 | main.rs:1259:18:1259:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
 | main.rs:1259:26:1259:29 | flag |  | main.rs:1216:5:1219:5 | MyFlag |
-| main.rs:1266:5:1266:20 | "S1" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1266:5:1266:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1266:5:1266:20 | SelfParam | &T | main.rs:1266:5:1267:14 | S1 |
-| main.rs:1266:5:1266:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:1266:5:1266:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:1266:5:1266:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1266:5:1266:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1266:5:1266:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1266:5:1266:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1266:5:1266:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:1266:5:1266:20 | self | &T | main.rs:1266:5:1267:14 | S1 |
-| main.rs:1267:12:1267:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1267:12:1267:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1267:12:1267:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1267:12:1267:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1269:5:1269:20 | "S2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1269:5:1269:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1269:5:1269:20 | SelfParam | &T | main.rs:1269:5:1270:14 | S2 |
-| main.rs:1269:5:1269:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:1269:5:1269:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:1269:5:1269:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1269:5:1269:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1269:5:1269:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1269:5:1269:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1269:5:1269:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:1269:5:1269:20 | self | &T | main.rs:1269:5:1270:14 | S2 |
-| main.rs:1270:12:1270:13 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1270:12:1270:13 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1270:12:1270:13 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1270:12:1270:13 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:1273:43:1276:5 | { ... } |  | {EXTERNAL LOCATION} | Result |
 | main.rs:1273:43:1276:5 | { ... } | E | main.rs:1266:5:1267:14 | S1 |
 | main.rs:1273:43:1276:5 | { ... } | T | main.rs:1266:5:1267:14 | S1 |
@@ -2936,39 +2003,6 @@ inferType
 | main.rs:1347:13:1347:17 | ... = ... |  | file://:0:0:0:0 | () |
 | main.rs:1347:17:1347:17 | 2 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1349:9:1349:9 | a |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1357:5:1357:33 | "Vec2" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1357:5:1357:33 | "x" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1357:5:1357:33 | "y" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1357:5:1357:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1357:5:1357:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1357:5:1357:33 | SelfParam | &T | main.rs:1356:5:1361:5 | Vec2 |
-| main.rs:1357:5:1357:33 | SelfParam | &T | main.rs:1356:5:1361:5 | Vec2 |
-| main.rs:1357:5:1357:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:1357:5:1357:33 | f |  | file://:0:0:0:0 | & |
-| main.rs:1357:5:1357:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1357:5:1357:33 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1357:5:1357:33 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:1357:5:1357:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:1357:5:1357:33 | self |  | file://:0:0:0:0 | & |
-| main.rs:1357:5:1357:33 | self | &T | main.rs:1356:5:1361:5 | Vec2 |
-| main.rs:1357:5:1357:33 | self | &T | main.rs:1356:5:1361:5 | Vec2 |
-| main.rs:1358:12:1360:9 | Vec2 {...} |  | main.rs:1356:5:1361:5 | Vec2 |
-| main.rs:1358:12:1360:9 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1358:12:1360:9 | match self { ... } |  | main.rs:1356:5:1361:5 | Vec2 |
-| main.rs:1358:12:1360:9 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1358:12:1360:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1358:12:1360:9 | { ... } |  | main.rs:1356:5:1361:5 | Vec2 |
-| main.rs:1358:12:1360:9 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1359:9:1359:9 | &x |  | file://:0:0:0:0 | & |
-| main.rs:1359:9:1359:9 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:1359:9:1359:9 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:1359:9:1359:9 | x.clone() |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1359:9:1360:9 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:1359:9:1360:9 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:1359:9:1360:9 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1359:9:1360:9 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1360:9:1360:9 | &y |  | file://:0:0:0:0 | & |
-| main.rs:1360:9:1360:9 | y.clone() |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1363:30:1365:9 | { ... } |  | main.rs:1356:5:1361:5 | Vec2 |
 | main.rs:1364:13:1364:31 | Vec2 {...} |  | main.rs:1356:5:1361:5 | Vec2 |
 | main.rs:1364:23:1364:23 | 0 |  | {EXTERNAL LOCATION} | i32 |
@@ -3787,47 +2821,10 @@ inferType
 | main.rs:1823:13:1823:13 | d |  | main.rs:1771:5:1771:14 | S2 |
 | main.rs:1823:17:1823:34 | uses_my_trait2(...) |  | main.rs:1771:5:1771:14 | S2 |
 | main.rs:1823:32:1823:33 | S1 |  | main.rs:1770:5:1770:14 | S1 |
-| main.rs:1830:5:1830:20 | "S" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1830:5:1830:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1830:5:1830:20 | SelfParam | &T | main.rs:1830:5:1831:13 | S |
-| main.rs:1830:5:1830:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:1830:5:1830:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:1830:5:1830:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1830:5:1830:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1830:5:1830:20 | f.write_str(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1830:5:1830:20 | f.write_str(...) | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1830:5:1830:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:1830:5:1830:20 | self | &T | main.rs:1830:5:1831:13 | S |
-| main.rs:1831:12:1831:12 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1831:12:1831:12 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1831:12:1831:12 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1831:12:1831:12 | { ... } | E | {EXTERNAL LOCATION} | Error |
 | main.rs:1834:16:1834:20 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1834:16:1834:20 | SelfParam | &T | main.rs:1830:5:1831:13 | S |
 | main.rs:1834:31:1836:9 | { ... } |  | main.rs:1830:5:1831:13 | S |
 | main.rs:1835:13:1835:13 | S |  | main.rs:1830:5:1831:13 | S |
-| main.rs:1839:5:1839:20 | "MyVec" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1839:5:1839:20 | "data" |  | {EXTERNAL LOCATION} | str |
-| main.rs:1839:5:1839:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:1839:5:1839:20 | SelfParam | &T | main.rs:1839:5:1842:5 | MyVec |
-| main.rs:1839:5:1839:20 | SelfParam | &T.T | main.rs:1840:18:1840:18 | T |
-| main.rs:1839:5:1839:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:1839:5:1839:20 | f |  | file://:0:0:0:0 | & |
-| main.rs:1839:5:1839:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1839:5:1839:20 | f | &T | {EXTERNAL LOCATION} | Formatter |
-| main.rs:1839:5:1839:20 | f.debug_struct(...) |  | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:1839:5:1839:20 | self |  | file://:0:0:0:0 | & |
-| main.rs:1839:5:1839:20 | self | &T | main.rs:1839:5:1842:5 | MyVec |
-| main.rs:1839:5:1839:20 | self | &T.T | main.rs:1840:18:1840:18 | T |
-| main.rs:1840:12:1841:12 | match self { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1840:12:1841:12 | match self { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1840:12:1841:12 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1840:12:1841:12 | { ... } | E | {EXTERNAL LOCATION} | Error |
-| main.rs:1841:9:1841:12 | &data |  | file://:0:0:0:0 | & |
-| main.rs:1841:9:1841:12 | ... .field(...) |  | file://:0:0:0:0 | & |
-| main.rs:1841:9:1841:12 | ... .field(...) | &T | {EXTERNAL LOCATION} | DebugStruct |
-| main.rs:1841:9:1841:12 | ... .finish() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:1841:9:1841:12 | ... .finish() | E | {EXTERNAL LOCATION} | Error |
 | main.rs:1845:26:1847:9 | { ... } |  | main.rs:1839:5:1842:5 | MyVec |
 | main.rs:1845:26:1847:9 | { ... } | T | main.rs:1844:10:1844:10 | T |
 | main.rs:1846:13:1846:38 | MyVec {...} |  | main.rs:1839:5:1842:5 | MyVec |
@@ -3973,93 +2970,3 @@ inferType
 | main.rs:1928:41:1928:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
 | main.rs:1944:5:1944:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
 testFailures
-| main.rs:2:5:2:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:5:5:5:20 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:7:9:7:9 | ... .field(...) | Unexpected result: method=field |
-| main.rs:7:9:7:9 | ... .finish() | Unexpected result: method=finish |
-| main.rs:10:5:10:20 | ... .field(...) | Unexpected result: method=field |
-| main.rs:10:5:10:20 | ... .finish() | Unexpected result: method=finish |
-| main.rs:10:5:10:20 | f.debug_tuple(...) | Unexpected result: method=debug_tuple |
-| main.rs:16:5:16:20 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:18:9:18:9 | ... .field(...) | Unexpected result: method=field |
-| main.rs:18:9:18:9 | ... .finish() | Unexpected result: method=finish |
-| main.rs:99:5:99:20 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:101:9:101:13 | ... .field(...) | Unexpected result: method=field |
-| main.rs:101:9:101:13 | ... .finish() | Unexpected result: method=finish |
-| main.rs:125:5:125:20 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:127:9:127:9 | ... .field(...) | Unexpected result: method=field |
-| main.rs:127:9:127:9 | ... .finish() | Unexpected result: method=finish |
-| main.rs:130:5:130:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:132:5:132:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:175:5:175:33 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:177:9:177:9 | ... .field(...) | Unexpected result: method=field |
-| main.rs:177:9:177:9 | ... .finish() | Unexpected result: method=finish |
-| main.rs:180:5:180:33 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:182:9:182:10 | ... .field(...) | Unexpected result: method=field |
-| main.rs:182:9:183:10 | ... .field(...) | Unexpected result: method=field |
-| main.rs:182:9:183:10 | ... .finish() | Unexpected result: method=finish |
-| main.rs:186:5:186:33 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:188:5:188:33 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:190:5:190:42 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:397:5:397:33 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:440:5:440:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:443:5:443:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:516:5:516:20 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:518:9:518:9 | ... .field(...) | Unexpected result: method=field |
-| main.rs:518:9:518:9 | ... .finish() | Unexpected result: method=finish |
-| main.rs:521:5:521:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:523:5:523:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:587:5:587:20 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:589:9:589:13 | ... .field(...) | Unexpected result: method=field |
-| main.rs:589:9:589:13 | ... .finish() | Unexpected result: method=finish |
-| main.rs:638:5:638:29 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:641:5:641:29 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:644:5:644:29 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:736:5:736:20 | ... .field(...) | Unexpected result: method=field |
-| main.rs:736:5:736:20 | ... .finish() | Unexpected result: method=finish |
-| main.rs:736:5:736:20 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:736:5:736:20 | f.debug_tuple(...) | Unexpected result: method=debug_tuple |
-| main.rs:739:14:739:14 | ... .field(...) | Unexpected result: method=field |
-| main.rs:739:14:739:14 | ... .finish() | Unexpected result: method=finish |
-| main.rs:742:5:742:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:744:5:744:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:766:5:766:20 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:768:9:768:9 | ... .field(...) | Unexpected result: method=field |
-| main.rs:768:9:768:9 | ... .finish() | Unexpected result: method=finish |
-| main.rs:771:5:771:20 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:773:9:773:9 | ... .field(...) | Unexpected result: method=field |
-| main.rs:773:9:773:9 | ... .finish() | Unexpected result: method=finish |
-| main.rs:776:5:776:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:778:5:778:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:875:5:875:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:878:5:878:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:921:5:921:20 | ... .field(...) | Unexpected result: method=field |
-| main.rs:921:5:921:20 | ... .finish() | Unexpected result: method=finish |
-| main.rs:921:5:921:20 | f.debug_tuple(...) | Unexpected result: method=debug_tuple |
-| main.rs:940:5:940:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:943:5:943:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:946:5:946:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:988:5:988:20 | ... .field(...) | Unexpected result: method=field |
-| main.rs:988:5:988:20 | ... .finish() | Unexpected result: method=finish |
-| main.rs:988:5:988:20 | f.debug_tuple(...) | Unexpected result: method=debug_tuple |
-| main.rs:1023:5:1023:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:1076:5:1076:33 | ... .field(...) | Unexpected result: method=field |
-| main.rs:1076:5:1076:33 | ... .finish() | Unexpected result: method=finish |
-| main.rs:1076:5:1076:33 | f.debug_tuple(...) | Unexpected result: method=debug_tuple |
-| main.rs:1079:5:1079:33 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:1082:5:1082:42 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:1084:9:1084:9 | ... .field(...) | Unexpected result: method=field |
-| main.rs:1084:9:1084:9 | ... .finish() | Unexpected result: method=finish |
-| main.rs:1216:5:1216:42 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:1218:9:1218:12 | ... .field(...) | Unexpected result: method=field |
-| main.rs:1218:9:1218:12 | ... .finish() | Unexpected result: method=finish |
-| main.rs:1266:5:1266:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:1269:5:1269:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:1357:5:1357:33 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:1359:9:1359:9 | ... .field(...) | Unexpected result: method=field |
-| main.rs:1359:9:1360:9 | ... .field(...) | Unexpected result: method=field |
-| main.rs:1359:9:1360:9 | ... .finish() | Unexpected result: method=finish |
-| main.rs:1830:5:1830:20 | f.write_str(...) | Unexpected result: method=write_str |
-| main.rs:1839:5:1839:20 | f.debug_struct(...) | Unexpected result: method=debug_struct |
-| main.rs:1841:9:1841:12 | ... .field(...) | Unexpected result: method=field |
-| main.rs:1841:9:1841:12 | ... .finish() | Unexpected result: method=finish |
