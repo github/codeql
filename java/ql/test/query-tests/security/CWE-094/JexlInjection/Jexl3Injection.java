@@ -18,21 +18,21 @@ public class Jexl3Injection {
         JexlEngine jexl = new JexlBuilder().create();
         JexlExpression e = jexl.createExpression(jexlExpr);
         JexlContext jc = new MapContext();
-        e.evaluate(jc); // $hasJexlInjection
+        e.evaluate(jc); // $ Alert
     }
 
     private static void runJexlExpressionWithJexlInfo(String jexlExpr) {
         JexlEngine jexl = new JexlBuilder().create();
         JexlExpression e = jexl.createExpression(new JexlInfo("unknown", 0, 0), jexlExpr);
         JexlContext jc = new MapContext();
-        e.evaluate(jc); // $hasJexlInjection
+        e.evaluate(jc); // $ Alert
     }
 
     private static void runJexlScript(String jexlExpr) {
         JexlEngine jexl = new JexlBuilder().create();
         JexlScript script = jexl.createScript(jexlExpr);
         JexlContext jc = new MapContext();
-        script.execute(jc); // $hasJexlInjection
+        script.execute(jc); // $ Alert
     }
 
     private static void runJexlScriptViaCallable(String jexlExpr) {
@@ -41,7 +41,7 @@ public class Jexl3Injection {
         JexlContext jc = new MapContext();
 
         try {
-            script.callable(jc).call(); // $hasJexlInjection
+            script.callable(jc).call(); // $ Alert
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -49,30 +49,30 @@ public class Jexl3Injection {
 
     private static void runJexlExpressionViaGetProperty(String jexlExpr) {
         JexlEngine jexl = new JexlBuilder().create();
-        jexl.getProperty(new Object(), jexlExpr); // $hasJexlInjection
+        jexl.getProperty(new Object(), jexlExpr); // $ Alert
     }
 
     private static void runJexlExpressionViaSetProperty(String jexlExpr) {
         JexlEngine jexl = new JexlBuilder().create();
-        jexl.setProperty(new Object(), jexlExpr, new Object()); // $hasJexlInjection
+        jexl.setProperty(new Object(), jexlExpr, new Object()); // $ Alert
     }
 
     private static void runJexlExpressionViaJxltEngineExpressionEvaluate(String jexlExpr) {
         JexlEngine jexl = new JexlBuilder().create();
         JxltEngine jxlt = jexl.createJxltEngine();
-        jxlt.createExpression(jexlExpr).evaluate(new MapContext()); // $hasJexlInjection
+        jxlt.createExpression(jexlExpr).evaluate(new MapContext()); // $ Alert
     }
 
     private static void runJexlExpressionViaJxltEngineExpressionPrepare(String jexlExpr) {
         JexlEngine jexl = new JexlBuilder().create();
         JxltEngine jxlt = jexl.createJxltEngine();
-        jxlt.createExpression(jexlExpr).prepare(new MapContext()); // $hasJexlInjection
+        jxlt.createExpression(jexlExpr).prepare(new MapContext()); // $ Alert
     }
 
     private static void runJexlExpressionViaJxltEngineTemplateEvaluate(String jexlExpr) {
         JexlEngine jexl = new JexlBuilder().create();
         JxltEngine jxlt = jexl.createJxltEngine();
-        jxlt.createTemplate(jexlExpr).evaluate(new MapContext(), new StringWriter()); // $hasJexlInjection
+        jxlt.createTemplate(jexlExpr).evaluate(new MapContext(), new StringWriter()); // $ Alert
     }
 
     private static void runJexlExpressionViaCallable(String jexlExpr) {
@@ -81,7 +81,7 @@ public class Jexl3Injection {
         JexlContext jc = new MapContext();
 
         try {
-            e.callable(jc).call(); // $hasJexlInjection
+            e.callable(jc).call(); // $ Alert
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -91,7 +91,7 @@ public class Jexl3Injection {
         try (ServerSocket serverSocket = new ServerSocket(0)) {
             try (Socket socket = serverSocket.accept()) {
                 byte[] bytes = new byte[1024];
-                int n = socket.getInputStream().read(bytes);
+                int n = socket.getInputStream().read(bytes); // $ Source
                 String jexlExpr = new String(bytes, 0, n);
                 action.accept(jexlExpr);
             }
@@ -141,14 +141,14 @@ public class Jexl3Injection {
     }
 
     @PostMapping("/request")
-    public ResponseEntity testWithSpringControllerThatEvaluatesJexlFromPathVariable(@PathVariable String expr) {
+    public ResponseEntity testWithSpringControllerThatEvaluatesJexlFromPathVariable(@PathVariable String expr) { // $ Source
 
         runJexlExpression(expr);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PostMapping("/request")
-    public ResponseEntity testWithSpringControllerThatEvaluatesJexlFromRequestBody(@RequestBody Data data) {
+    public ResponseEntity testWithSpringControllerThatEvaluatesJexlFromRequestBody(@RequestBody Data data) { // $ Source
 
         String expr = data.getExpr();
         runJexlExpression(expr);
@@ -158,7 +158,7 @@ public class Jexl3Injection {
 
     @PostMapping("/request")
     public ResponseEntity testWithSpringControllerThatEvaluatesJexlFromRequestBodyWithNestedObjects(
-            @RequestBody CustomRequest customRequest) {
+            @RequestBody CustomRequest customRequest) { // $ Source
 
         String expr = customRequest.getData().getExpr();
         runJexlExpression(expr);
