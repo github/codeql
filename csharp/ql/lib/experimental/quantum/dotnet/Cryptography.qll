@@ -1,11 +1,27 @@
 private import csharp
 private import experimental.quantum.Language
 
+class CryptographyType extends Type {
+  CryptographyType() { this.hasFullyQualifiedName("System.Security.Cryptography", _) }
+}
+
+class ECParameters extends CryptographyType {
+  ECParameters() { this.hasName("ECParameters") }
+}
+
+class RSAParameters extends CryptographyType {
+  RSAParameters() { this.hasName("RSAParameters") }
+}
+
+class ECCurve extends CryptographyType {
+  ECCurve() { this.hasName("ECCurve") }
+}
+
 // This class models Create calls for the ECDsa and RSA classes in .NET.
-class CryptographyCreateCall extends MethodCall {
-  CryptographyCreateCall() {
+class SigningCreateCall extends MethodCall {
+  SigningCreateCall() {
     this.getTarget().getName() = "Create" and
-    this.getQualifier().getType().hasFullyQualifiedName("System.Security.Cryptography", _)
+    this.getQualifier().getType() instanceof CryptographyType
   }
 
   Expr getAlgorithmArg() {
@@ -25,35 +41,8 @@ class CryptographyCreateCall extends MethodCall {
   }
 }
 
-class ECDsaCreateCall extends CryptographyCreateCall {
+class ECDsaCreateCall extends SigningCreateCall {
   ECDsaCreateCall() { this.getQualifier().getType().hasName("ECDsa") }
-}
-
-// TODO
-// class HashAlgorithmCreateCall extends CryptographyCreateCall {
-//   ValueOrRefType type;
-
-//   HashAlgorithmCreateCall() { type = this.getQualifier().getType().getDeclaringType() }
-// }
-
-class RSACreateCall extends CryptographyCreateCall {
-  RSACreateCall() { this.getQualifier().getType().hasName("RSA") }
-}
-
-class CryptographyType extends Type {
-  CryptographyType() { this.hasFullyQualifiedName("System.Security.Cryptography", _) }
-}
-
-class ECParameters extends CryptographyType {
-  ECParameters() { this.hasName("ECParameters") }
-}
-
-class RSAParameters extends CryptographyType {
-  RSAParameters() { this.hasName("RSAParameters") }
-}
-
-class ECCurve extends CryptographyType {
-  ECCurve() { this.hasName("ECCurve") }
 }
 
 // This class is used to model the `ECDsa.Create(ECParameters)` call
@@ -63,6 +52,28 @@ class ECDsaCreateCallWithParameters extends ECDsaCreateCall {
 
 class ECDsaCreateCallWithECCurve extends ECDsaCreateCall {
   ECDsaCreateCallWithECCurve() { this.getArgument(0).getType() instanceof ECCurve }
+}
+
+class RSACreateCall extends SigningCreateCall {
+  RSACreateCall() { this.getQualifier().getType().hasName("RSA") }
+}
+
+class HashAlgorithmCreateCall extends SigningCreateCall {
+  HashAlgorithmCreateCall() {
+    this.getQualifier()
+        .getType()
+        .hasName([
+            "MD5",
+            "RIPEMD160",
+            "SHA1",
+            "SHA256",
+            "SHA384",
+            "SHA512",
+            "SHA3_256",
+            "SHA3_384",
+            "SHA3_512"
+          ])
+  }
 }
 
 class SigningNamedCurvePropertyAccess extends PropertyAccess {
@@ -163,8 +174,8 @@ class ReadOnlyByteSpanType extends Type {
   ReadOnlyByteSpanType() { this.getName() = "ReadOnlySpan<Byte>" }
 }
 
-class DotNetSigner extends MethodCall {
-  DotNetSigner() { this.getTarget().getName().matches(["Verify%", "Sign%"]) }
+class SignerUse extends MethodCall {
+  SignerUse() { this.getTarget().getName().matches(["Verify%", "Sign%"]) }
 
   Expr getMessageArg() {
     // Both Sign and Verify methods take the message as the first argument.
@@ -200,10 +211,10 @@ class DotNetSigner extends MethodCall {
   predicate isVerifier() { this.getTarget().getName().matches("Verify%") }
 }
 
-private class ECDsaSigner extends DotNetSigner {
+private class ECDsaSigner extends SignerUse {
   ECDsaSigner() { this.getQualifier().getType() instanceof ECDsaClass }
 }
 
-private class RSASigner extends DotNetSigner {
+private class RSASigner extends SignerUse {
   RSASigner() { this.getQualifier().getType() instanceof RSAClass }
 }

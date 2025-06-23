@@ -4,12 +4,12 @@ private import DataFlow
 private import FlowAnalysis
 private import Cryptography
 
-class ECDsaORRSASigningOperationInstance extends Crypto::SignatureOperationInstance instanceof DotNetSigner
+class ECDsaORRSASigningOperationInstance extends Crypto::SignatureOperationInstance instanceof SignerUse
 {
-  CryptographyCreateCall creator;
+  SigningCreateCall creator;
 
   ECDsaORRSASigningOperationInstance() {
-    creator = CryptographyCreateToUseFlow::getCreationFromUse(this, _, _)
+    creator = SigningCreateToUseFlow::getCreationFromUse(this, _, _)
   }
 
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {

@@ -32,7 +32,7 @@ signature class UseCallSig instanceof QualifiableExpr {
   predicate isIntermediate();
 }
 
-module CryptographyCreateToUseFlow = CreationToUseFlow<CryptographyCreateCall, DotNetSigner>;
+module SigningCreateToUseFlow = CreationToUseFlow<SigningCreateCall, SignerUse>;
 
 module CreationToUseFlow<CreationCallSig Creation, UseCallSig Use> {
   private module CreationToUseConfig implements DataFlow::ConfigSig {
