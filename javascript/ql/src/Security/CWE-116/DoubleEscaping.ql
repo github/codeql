@@ -125,9 +125,11 @@ from Replacement primary, Replacement supplementary, string message, string meta
 where
   primary.escapes(metachar, _) and
   supplementary = primary.getAnEarlierEscaping(metachar) and
-  message = "may double-escape '" + metachar + "' characters from $@"
+  message = "may double-escape '" + metachar.replaceAll("\\", "\\\\") + "' characters from $@"
   or
   primary.unescapes(_, metachar) and
   supplementary = primary.getALaterUnescaping(metachar) and
-  message = "may produce '" + metachar + "' characters that are double-unescaped $@"
+  message =
+    "may produce '" + metachar.replaceAll("\\", "\\\\") +
+      "' characters that are double-unescaped $@"
 select primary, "This replacement " + message + ".", supplementary, "here"
