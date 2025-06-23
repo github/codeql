@@ -2,9 +2,9 @@
  * @name Implicit string concatenation in a list
  * @description Omitting a comma between strings causes implicit concatenation which is confusing in a list.
  * @kind problem
- * @tags reliability
+ * @tags quality
  *       maintainability
- *       convention
+ *       readability
  *       external/cwe/cwe-665
  * @problem.severity warning
  * @sub-severity high

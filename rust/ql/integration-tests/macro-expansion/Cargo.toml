@@ -1,3 +1,0 @@
-[workspace]
-members = [ "attributes", "calls", "proc_macros"]
-resolver = "2"

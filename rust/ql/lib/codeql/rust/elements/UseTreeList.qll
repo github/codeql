@@ -8,9 +8,12 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.UseTree
 
 /**
- * A UseTreeList. For example:
+ * A list of use trees in a use declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * use std::{fs, io};
+ * //       ^^^^^^^^
  * ```
  */
 final class UseTreeList = Impl::UseTreeList;

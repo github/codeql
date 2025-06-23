@@ -9,9 +9,12 @@ import codeql.rust.elements.Param
 import codeql.rust.elements.SelfParam
 
 /**
- * A ParamList. For example:
+ * A list of parameters in a function, method, or closure declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn foo(x: i32, y: i32) {}
+ * //      ^^^^^^^^^^^^^
  * ```
  */
 final class ParamList = Impl::ParamList;

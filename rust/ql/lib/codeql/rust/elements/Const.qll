@@ -7,15 +7,19 @@ private import internal.ConstImpl
 import codeql.rust.elements.AssocItem
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
+import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.Item
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
+import codeql.rust.elements.WhereClause
 
 /**
- * A Const. For example:
+ * A constant item declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * const X: i32 = 42;
  * ```
  */
 final class Const = Impl::Const;

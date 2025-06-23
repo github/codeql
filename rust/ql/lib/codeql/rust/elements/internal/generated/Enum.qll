@@ -6,9 +6,9 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.internal.AdtImpl::Impl as AdtImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.GenericParamList
-import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
 import codeql.rust.elements.VariantList
 import codeql.rust.elements.Visibility
@@ -20,14 +20,16 @@ import codeql.rust.elements.WhereClause
  */
 module Generated {
   /**
-   * A Enum. For example:
+   * An enum declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * enum E {A, B(i32), C {x: i32}}
    * ```
    * INTERNAL: Do not reference the `Generated::Enum` class directly.
    * Use the subclass `Enum`, where the following predicates are available.
    */
-  class Enum extends Synth::TEnum, ItemImpl::Item {
+  class Enum extends Synth::TEnum, AdtImpl::Adt {
     override string getAPrimaryQlClass() { result = "Enum" }
 
     /**

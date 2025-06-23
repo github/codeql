@@ -11,7 +11,6 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.FieldList
 import codeql.rust.elements.Name
-import codeql.rust.elements.internal.VariantDefImpl::Impl as VariantDefImpl
 import codeql.rust.elements.Visibility
 
 /**
@@ -20,14 +19,17 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A Variant. For example:
+   * A variant in an enum declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * enum E { A, B(i32), C { x: i32 } }
+   * //       ^  ^^^^^^  ^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::Variant` class directly.
    * Use the subclass `Variant`, where the following predicates are available.
    */
-  class Variant extends Synth::TVariant, VariantDefImpl::VariantDef, AddressableImpl::Addressable {
+  class Variant extends Synth::TVariant, AddressableImpl::Addressable {
     override string getAPrimaryQlClass() { result = "Variant" }
 
     /**

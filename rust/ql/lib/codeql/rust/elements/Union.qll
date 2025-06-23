@@ -4,19 +4,20 @@
  */
 
 private import internal.UnionImpl
+import codeql.rust.elements.Adt
 import codeql.rust.elements.Attr
 import codeql.rust.elements.GenericParamList
-import codeql.rust.elements.Item
 import codeql.rust.elements.Name
 import codeql.rust.elements.StructFieldList
-import codeql.rust.elements.VariantDef
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
 /**
- * A Union. For example:
+ * A union declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * union U { f1: u32, f2: f32 }
  * ```
  */
 final class Union = Impl::Union;

@@ -63,9 +63,23 @@ pub struct {{name}} {
 
 impl {{name}} {
 {{#detached_fields}}
-    pub fn emit_{{singular_field_name}}(id: trap::Label<Self>, {{#is_repeated}}{{^is_unordered}}i: usize, {{/is_unordered}}{{/is_repeated}}value: {{base_type}}, out: &mut trap::Writer) {
-        out.add_tuple("{{table_name}}", vec![id.into(), {{#is_repeated}}{{^is_unordered}}i.into(), {{/is_unordered}}{{/is_repeated}}value.into()]);
+    pub fn emit_{{singular_field_name}}(id: trap::Label<Self>{{^is_predicate}}{{#is_repeated}}{{^is_unordered}}, i: usize{{/is_unordered}}{{/is_repeated}}, value: {{base_type}}{{/is_predicate}}, out: &mut trap::Writer) {
+        out.add_tuple("{{table_name}}", vec![id.into(){{^is_predicate}}{{#is_repeated}}{{^is_unordered}}, i.into(){{/is_unordered}}{{/is_repeated}}, value.into(){{/is_predicate}}]);
     }
+
+    {{#is_repeated}}
+    pub fn emit_{{field_name}}(id: trap::Label<Self>, values: impl IntoIterator<Item={{base_type}}>, out: &mut trap::Writer) {
+        values
+            .into_iter()
+            {{^is_unordered}}
+            .enumerate()
+            .for_each(|(i, value)| Self::emit_{{singular_field_name}}(id, i, value, out));
+            {{/is_unordered}}
+            {{#is_unordered}}
+            .for_each(|value| Self::emit_{{singular_field_name}}(id, value, out));
+            {{/is_unordered}}
+    }
+    {{/is_repeated}}
 {{/detached_fields}}
 }
 {{/has_detached_fields}}

@@ -2,9 +2,9 @@
  * @name Illegal raise
  * @description Raising a non-exception object or type will result in a TypeError being raised instead.
  * @kind problem
- * @tags reliability
- *       correctness
- *       types
+ * @tags quality
+ *       reliability
+ *       error-handling
  * @problem.severity error
  * @sub-severity high
  * @precision very-high

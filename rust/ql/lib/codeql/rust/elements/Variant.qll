@@ -9,13 +9,15 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.FieldList
 import codeql.rust.elements.Name
-import codeql.rust.elements.VariantDef
 import codeql.rust.elements.Visibility
 
 /**
- * A Variant. For example:
+ * A variant in an enum declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * enum E { A, B(i32), C { x: i32 } }
+ * //       ^  ^^^^^^  ^^^^^^^^^^^^
  * ```
  */
 final class Variant = Impl::Variant;

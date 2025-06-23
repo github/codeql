@@ -204,7 +204,7 @@ edges
 | lifetime.rs:802:6:802:8 | ptr | lifetime.rs:808:23:808:25 | ptr | provenance |  |
 | lifetime.rs:802:12:802:24 | get_pointer(...) | lifetime.rs:802:6:802:8 | ptr | provenance |  |
 models
-| 1 | Summary: lang:core; crate::ptr::from_ref; Argument[0]; ReturnValue; value |
+| 1 | Summary: core::ptr::from_ref; Argument[0]; ReturnValue; value |
 nodes
 | deallocation.rs:148:6:148:7 | p1 | semmle.label | p1 |
 | deallocation.rs:148:30:148:38 | &raw const my_buffer | semmle.label | &raw const my_buffer |

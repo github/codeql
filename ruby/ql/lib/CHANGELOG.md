@@ -1,3 +1,19 @@
+## 4.1.8
+
+No user-facing changes.
+
+## 4.1.7
+
+### Minor Analysis Improvements
+
+* Captured variables are currently considered live when the capturing function exits normally. Now they are also considered live when the capturing function exits via an exception.
+
+### Bug Fixes
+
+### Bug Fixes
+
+* The Ruby printAst.qll library now orders AST nodes slightly differently: child nodes that do not literally appear in the source code, but whose parent nodes do, are assigned a deterministic order based on a combination of source location and logical order within the parent. This fixes the non-deterministic ordering that sometimes occurred depending on evaluation order. The effect may also be visible in downstream uses of the printAst library, such as the AST view in the VSCode extension.
+
 ## 4.1.6
 
 No user-facing changes.

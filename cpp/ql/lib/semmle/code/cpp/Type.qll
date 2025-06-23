@@ -352,7 +352,23 @@ class UnknownType extends BuiltInType {
 private predicate isArithmeticType(@builtintype type, int kind) {
   builtintypes(type, _, kind, _, _, _) and
   kind >= 4 and
-  kind != 34 // Exclude decltype(nullptr)
+  kind != 34 and // Exclude decltype(nullptr)
+  kind != 63 // Exclude __SVCount_t
+}
+
+/**
+ * The Arm scalable vector count type.
+ *
+ * In the following example, `a` is declared using the scalable vector
+ * count type:
+ * ```
+ * svcount_t a;
+ * ```
+ */
+class ScalableVectorCount extends BuiltInType {
+  ScalableVectorCount() { builtintypes(underlyingElement(this), _, 63, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "ScalableVectorCount" }
 }
 
 /**
@@ -839,6 +855,9 @@ private predicate floatingPointTypeMapping(
   or
   // _Complex _Float128
   kind = 61 and base = 2 and domain = TComplexDomain() and realKind = 49 and extended = false
+  or
+  // __mfp8
+  kind = 62 and base = 2 and domain = TRealDomain() and realKind = 62 and extended = false
 }
 
 /**
@@ -1081,7 +1100,7 @@ class NullPointerType extends BuiltInType {
 /**
  * A C/C++ derived type.
  *
- * These are pointer and reference types, array and GNU vector types, and `const` and `volatile` types.
+ * These are pointer and reference types, array and vector types, and `const` and `volatile` types.
  * In all cases, the type is formed from a single base type.  For example:
  * ```
  * int *pi;
@@ -1586,6 +1605,11 @@ class ArrayType extends DerivedType {
    * Holds if this array is a variable-length array (VLA).
    */
   predicate isVla() { type_is_vla(underlyingElement(this)) }
+
+  override Type resolveTypedefs() {
+    result.(ArrayType).getBaseType() = this.getBaseType().resolveTypedefs() and
+    result.(ArrayType).getArraySize() = this.getArraySize()
+  }
 }
 
 /**
@@ -1636,6 +1660,30 @@ class GNUVectorType extends DerivedType {
     result =
       "GNU " + this.getNumElements() + " element vector of {" + this.getBaseType().explain() + "}"
   }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
+}
+
+/**
+ * An Arm Scalable vector type.
+ *
+ * In the following example, `a` has a scalable vector type consisting
+ * of 8-bit signed integer elements:
+ * ```
+ * svint8_t a;
+ * ```
+ */
+class ScalableVectorType extends DerivedType {
+  ScalableVectorType() { derivedtypes(underlyingElement(this), _, 11, _) }
+
+  /**
+   * Get the number of tuple elements of this scalable vector type.
+   */
+  int getNumTupleElements() { tupleelements(underlyingElement(this), result) }
+
+  override string getAPrimaryQlClass() { result = "ScalableVectorType" }
+
+  override string explain() { result = "scalable vector of {" + this.getBaseType().explain() + "}" }
 
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
 }

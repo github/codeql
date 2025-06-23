@@ -14,7 +14,7 @@ mod field_access {
     }
 
     #[derive(Debug)]
-    struct GenericThing<A> {
+    struct GenericThing<A = bool> {
         a: A,
     }
 
@@ -25,6 +25,11 @@ mod field_access {
     fn simple_field_access() {
         let x = MyThing { a: S };
         println!("{:?}", x.a); // $ fieldof=MyThing
+    }
+
+    fn default_field_access(x: GenericThing) {
+        let a = x.a; // $ fieldof=GenericThing type=a:bool
+        println!("{:?}", a);
     }
 
     fn generic_field_access() {
@@ -472,7 +477,7 @@ mod type_parameter_bounds {
         println!("{:?}", s); // $ type=s:S1
     }
 
-    trait Pair<P1, P2> {
+    trait Pair<P1 = bool, P2 = i64> {
         fn fst(self) -> P1;
 
         fn snd(self) -> P2;
@@ -480,8 +485,8 @@ mod type_parameter_bounds {
 
     fn call_trait_per_bound_with_type_1<T: Pair<S1, S2>>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
-        let s1 = x.fst(); // $ method=fst
-        let s2 = y.snd(); // $ method=snd
+        let s1 = x.fst(); // $ method=fst type=s1:S1
+        let s2 = y.snd(); // $ method=snd type=s2:S2
         println!("{:?}, {:?}", s1, s2);
     }
 
@@ -489,6 +494,20 @@ mod type_parameter_bounds {
         // The type in the type parameter bound determines the return type.
         let s1 = x.fst(); // $ method=fst
         let s2 = y.snd(); // $ method=snd
+        println!("{:?}, {:?}", s1, s2);
+    }
+
+    fn call_trait_per_bound_with_type_3<T: Pair>(x: T, y: T) {
+        // The type in the type parameter bound determines the return type.
+        let s1 = x.fst(); // $ method=fst type=s1:bool
+        let s2 = y.snd(); // $ method=snd type=s2:i64
+        println!("{:?}, {:?}", s1, s2);
+    }
+
+    fn call_trait_per_bound_with_type_4<T: Pair<u8>>(x: T, y: T) {
+        // The type in the type parameter bound determines the return type.
+        let s1 = x.fst(); // $ method=fst type=s1:u8
+        let s2 = y.snd(); // $ method=snd type=s2:i64
         println!("{:?}, {:?}", s1, s2);
     }
 }
@@ -697,7 +716,7 @@ mod trait_associated_type {
         println!("{:?}", x3.put(1).unwrap()); // $ method=S::put method=unwrap
 
         // Call to default implementation in `trait` block
-        println!("{:?}", x3.putTwo(2, 3).unwrap()); // $ method=putTwo MISSING: method=unwrap
+        println!("{:?}", x3.putTwo(2, 3).unwrap()); // $ method=putTwo method=unwrap
 
         let x4 = g(S); // $ MISSING: type=x4:AT
         println!("{:?}", x4);
@@ -1060,6 +1079,11 @@ mod method_call_type_conversion {
     #[derive(Debug, Copy, Clone)]
     struct S2;
 
+    #[derive(Debug, Copy, Clone, Default)]
+    struct MyInt {
+        a: i64,
+    }
+
     impl<T> S<T> {
         fn m1(self) -> T {
             self.0 // $ fieldof=S
@@ -1071,6 +1095,24 @@ mod method_call_type_conversion {
 
         fn m3(self: &S<T>) -> &T {
             &self.0 // $ fieldof=S
+        }
+    }
+
+    trait ATrait {
+        fn method_on_borrow(&self) -> i64;
+        fn method_not_on_borrow(self) -> i64;
+    }
+
+    // Trait implementation on a borrow.
+    impl ATrait for &MyInt {
+        // MyInt::method_on_borrow
+        fn method_on_borrow(&self) -> i64 {
+            (*(*self)).a // $ method=deref fieldof=MyInt
+        }
+
+        // MyInt::method_not_on_borrow
+        fn method_not_on_borrow(self) -> i64 {
+            (*self).a // $ method=deref fieldof=MyInt
         }
     }
 
@@ -1099,14 +1141,31 @@ mod method_call_type_conversion {
         println!("{:?}", x5.0); // $ fieldof=S
 
         let x6 = &S(S2);
+
         // explicit dereference
-        println!("{:?}", (*x6).m1()); // $ method=m1
+        println!("{:?}", (*x6).m1()); // $ method=m1 method=deref
 
         let x7 = S(&S2);
         // Non-implicit dereference with nested borrow in order to test that the
         // implicit dereference handling doesn't affect nested borrows.
         let t = x7.m1(); // $ method=m1 type=t:& type=t:&T.S2
         println!("{:?}", x7);
+
+        let x9: String = "Hello".to_string(); // $ type=x9:String
+
+        // Implicit `String` -> `str` conversion happens via the `Deref` trait:
+        // https://doc.rust-lang.org/std/string/struct.String.html#deref.
+        let u = x9.parse::<u32>(); // $ method=parse type=u:T.u32
+
+        let my_thing = &MyInt { a: 37 };
+        // implicit borrow of a `&`
+        let a = my_thing.method_on_borrow(); // $ MISSING: method=MyInt::method_on_borrow
+        println!("{:?}", a);
+
+        // no implicit borrow
+        let my_thing = &MyInt { a: 38 };
+        let a = my_thing.method_not_on_borrow(); // $ MISSING: method=MyInt::method_not_on_borrow
+        println!("{:?}", a);
     }
 }
 
@@ -1154,6 +1213,17 @@ mod implicit_self_borrow {
 }
 
 mod borrowed_typed {
+    #[derive(Debug, Copy, Clone, Default)]
+    struct MyFlag {
+        bool: bool,
+    }
+
+    impl MyFlag {
+        fn flip(&mut self) {
+            self.bool = !self.bool; // $ fieldof=MyFlag method=not
+        }
+    }
+
     struct S;
 
     impl S {
@@ -1179,6 +1249,14 @@ mod borrowed_typed {
         x.f1(); // $ method=f1
         x.f2(); // $ method=f2
         S::f3(&x);
+
+        let n = **&&true; // $ type=n:bool method=deref
+
+        // In this example the type of `flag` must be inferred at the call to
+        // `flip` and flow through the borrow in the argument.
+        let mut flag = Default::default();
+        MyFlag::flip(&mut flag);
+        println!("{:?}", flag); // $ type=flag:MyFlag
     }
 }
 
@@ -1280,6 +1358,11 @@ mod overloadable_operators {
     struct Vec2 {
         x: i64,
         y: i64,
+    }
+    impl Default for Vec2 {
+        fn default() -> Self {
+            Vec2 { x: 0, y: 0 }
+        }
     }
     // Implement all overloadable operators for Vec2
     impl Add for Vec2 {
@@ -1627,8 +1710,217 @@ mod overloadable_operators {
         // Prefix operators
         let vec2_neg = -v1; // $ type=vec2_neg:Vec2 method=Vec2::neg
         let vec2_not = !v1; // $ type=vec2_not:Vec2 method=Vec2::not
+
+        // Here the type of `default_vec2` must be inferred from the `+` call.
+        let default_vec2 = Default::default(); // $ type=default_vec2:Vec2
+        let vec2_zero_plus = Vec2 { x: 0, y: 0 } + default_vec2; // $ method=Vec2::add
+
+        // Here the type of `default_vec2` must be inferred from the `==` call
+        // and the type of the borrowed second argument is unknown at the call.
+        let default_vec2 = Default::default(); // $ type=default_vec2:Vec2
+        let vec2_zero_plus = Vec2 { x: 0, y: 0 } == default_vec2; // $ method=Vec2::eq
     }
 }
+
+mod async_ {
+    use std::future::Future;
+
+    struct S1;
+
+    impl S1 {
+        pub fn f(self) {} // S1f
+    }
+
+    async fn f1() -> S1 {
+        S1
+    }
+
+    fn f2() -> impl Future<Output = S1> {
+        async { S1 }
+    }
+
+    struct S2;
+
+    impl Future for S2 {
+        type Output = S1;
+
+        fn poll(
+            self: std::pin::Pin<&mut Self>,
+            _cx: &mut std::task::Context<'_>,
+        ) -> std::task::Poll<Self::Output> {
+            std::task::Poll::Ready(S1)
+        }
+    }
+
+    fn f3() -> impl Future<Output = S1> {
+        S2
+    }
+
+    pub async fn f() {
+        f1().await.f(); // $ method=S1f
+        f2().await.f(); // $ method=S1f
+        f3().await.f(); // $ method=S1f
+        S2.await.f(); // $ method=S1f
+        let b = async { S1 };
+        b.await.f(); // $ method=S1f
+    }
+}
+
+mod impl_trait {
+    struct S1;
+    struct S2;
+
+    trait Trait1 {
+        fn f1(&self) {} // Trait1f1
+    }
+
+    trait Trait2 {
+        fn f2(&self) {} // Trait2f2
+    }
+
+    impl Trait1 for S1 {
+        fn f1(&self) {} // S1f1
+    }
+
+    impl Trait2 for S1 {
+        fn f2(&self) {} // S1f2
+    }
+
+    fn f1() -> impl Trait1 + Trait2 {
+        S1
+    }
+
+    trait MyTrait<A> {
+        fn get_a(&self) -> A; // MyTrait::get_a
+    }
+
+    impl MyTrait<S2> for S1 {
+        fn get_a(&self) -> S2 {
+            S2
+        }
+    }
+
+    fn get_a_my_trait() -> impl MyTrait<S2> {
+        S1
+    }
+
+    fn uses_my_trait1<A, B: MyTrait<A>>(t: B) -> A {
+        t.get_a() // $ method=MyTrait::get_a
+    }
+
+    fn uses_my_trait2<A>(t: impl MyTrait<A>) -> A {
+        t.get_a() // $ method=MyTrait::get_a
+    }
+
+    pub fn f() {
+        let x = f1();
+        x.f1(); // $ method=Trait1f1
+        x.f2(); // $ method=Trait2f2
+        let a = get_a_my_trait();
+        let b = uses_my_trait1(a); // $ type=b:S2
+        let a = get_a_my_trait();
+        let c = uses_my_trait2(a); // $ type=c:S2
+        let d = uses_my_trait2(S1); // $ type=d:S2
+    }
+}
+
+mod indexers {
+    use std::ops::Index;
+
+    #[derive(Debug)]
+    struct S;
+
+    impl S {
+        fn foo(&self) -> Self {
+            S
+        }
+    }
+
+    #[derive(Debug)]
+    struct MyVec<T> {
+        data: Vec<T>,
+    }
+
+    impl<T> MyVec<T> {
+        fn new() -> Self {
+            MyVec { data: Vec::new() }
+        }
+
+        fn push(&mut self, value: T) {
+            self.data.push(value); // $ fieldof=MyVec method=push
+        }
+    }
+
+    impl<T> Index<usize> for MyVec<T> {
+        type Output = T;
+
+        // MyVec::index
+        fn index(&self, index: usize) -> &Self::Output {
+            &self.data[index] // $ fieldof=MyVec
+        }
+    }
+
+    fn analyze_slice(slice: &[S]) {
+        let x = slice[0].foo(); // $ method=foo type=x:S
+    }
+
+    pub fn f() {
+        let mut vec = MyVec::new(); // $ type=vec:T.S
+        vec.push(S); // $ method=push
+        vec[0].foo(); // $ MISSING: method=foo -- type inference does not support the `Index` trait yet
+
+        let xs: [S; 1] = [S];
+        let x = xs[0].foo(); // $ method=foo type=x:S
+
+        analyze_slice(&xs);
+    }
+}
+
+mod macros {
+    pub fn f() {
+        let x = format!("Hello, {}", "World!"); // $ MISSING: type=x:String -- needs https://github.com/github/codeql/pull/19658
+    }
+}
+
+mod method_determined_by_argument_type {
+    trait MyAdd<T> {
+        fn my_add(&self, value: T) -> Self;
+    }
+
+    impl MyAdd<i64> for i64 {
+        // MyAdd<i64>::my_add
+        fn my_add(&self, value: i64) -> Self {
+            value
+        }
+    }
+
+    impl MyAdd<&i64> for i64 {
+        // MyAdd<&i64>::my_add
+        fn my_add(&self, value: &i64) -> Self {
+            *value // $ method=deref
+        }
+    }
+
+    impl MyAdd<bool> for i64 {
+        // MyAdd<bool>::my_add
+        fn my_add(&self, value: bool) -> Self {
+            if value {
+                1
+            } else {
+                0
+            }
+        }
+    }
+
+    pub fn f() {
+        let x: i64 = 73;
+        x.my_add(5i64); // $ method=MyAdd<i64>::my_add
+        x.my_add(&5i64); // $ method=MyAdd<&i64>::my_add
+        x.my_add(true); // $ method=MyAdd<bool>::my_add
+    }
+}
+
+mod dereference;
 
 fn main() {
     field_access::f();
@@ -1649,4 +1941,10 @@ fn main() {
     try_expressions::f();
     builtins::f();
     operators::f();
+    async_::f();
+    impl_trait::f();
+    indexers::f();
+    macros::f();
+    method_determined_by_argument_type::f();
+    dereference::test();
 }

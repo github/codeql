@@ -1,0 +1,1 @@
+| gen_const.rs:4:5:7:22 | Const | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasBody: | yes | hasGenericParamList: | no | isConst: | yes | isDefault: | no | hasName: | yes | hasTypeRepr: | yes | hasVisibility: | no | hasWhereClause: | no | hasImplementation: | yes |

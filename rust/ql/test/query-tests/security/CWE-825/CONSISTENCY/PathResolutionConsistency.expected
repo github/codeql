@@ -1,11 +1,17 @@
+multipleCallTargets
+| deallocation.rs:106:16:106:32 | ...::malloc(...) |
+| deallocation.rs:112:3:112:41 | ...::free(...) |
+| deallocation.rs:260:11:260:29 | ...::from(...) |
+| deallocation.rs:261:11:261:29 | ...::from(...) |
+| lifetime.rs:610:13:610:31 | ...::from(...) |
+| lifetime.rs:611:13:611:31 | ...::from(...) |
+| lifetime.rs:612:27:612:38 | foo.as_str() |
+| lifetime.rs:612:41:612:52 | bar.as_str() |
+| lifetime.rs:628:13:628:31 | ...::from(...) |
+| lifetime.rs:629:32:629:43 | baz.as_str() |
+| main.rs:41:8:41:24 | ...::into_raw(...) |
+| main.rs:80:11:80:27 | ...::into_raw(...) |
 multiplePathResolutions
-| deallocation.rs:106:16:106:19 | libc | file://:0:0:0:0 | Crate(libc@0.2.171) |
-| deallocation.rs:106:16:106:19 | libc | file://:0:0:0:0 | Crate(libc@0.2.174) |
-| deallocation.rs:106:16:106:27 | ...::malloc | file://:0:0:0:0 | fn malloc |
-| deallocation.rs:106:16:106:27 | ...::malloc | file://:0:0:0:0 | fn malloc |
-| deallocation.rs:112:3:112:6 | libc | file://:0:0:0:0 | Crate(libc@0.2.171) |
-| deallocation.rs:112:3:112:6 | libc | file://:0:0:0:0 | Crate(libc@0.2.174) |
-| deallocation.rs:112:3:112:12 | ...::free | file://:0:0:0:0 | fn free |
-| deallocation.rs:112:3:112:12 | ...::free | file://:0:0:0:0 | fn free |
-| deallocation.rs:112:29:112:32 | libc | file://:0:0:0:0 | Crate(libc@0.2.171) |
-| deallocation.rs:112:29:112:32 | libc | file://:0:0:0:0 | Crate(libc@0.2.174) |
+| deallocation.rs:106:16:106:19 | libc |
+| deallocation.rs:112:3:112:6 | libc |
+| deallocation.rs:112:29:112:32 | libc |

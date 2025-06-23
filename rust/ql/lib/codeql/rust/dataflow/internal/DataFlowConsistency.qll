@@ -1,5 +1,8 @@
 import codeql.rust.dataflow.DataFlow::DataFlow as DataFlow
 private import rust
+private import codeql.rust.controlflow.ControlFlowGraph
+private import codeql.rust.controlflow.internal.Splitting
+private import codeql.rust.controlflow.CfgNodes as CfgNodes
 private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.rust.dataflow.internal.Node as Node
@@ -26,28 +29,18 @@ private module Input implements InputSig<Location, RustDataFlow> {
   }
 
   predicate missingLocationExclude(RustDataFlow::Node n) { not exists(n.asExpr().getLocation()) }
+
+  predicate multipleArgumentCallExclude(Node::ArgumentNode arg, DataFlowCall call) {
+    // An argument such as `x` in `if !x { ... }` has two successors (and hence
+    // two calls); one for each Boolean outcome of `x`.
+    exists(CfgNodes::ExprCfgNode n |
+      arg.isArgumentOf(call, _) and
+      n = call.asCallCfgNode() and
+      arg.asExpr().getASuccessor(any(ConditionalSuccessor c)).getASuccessor*() = n and
+      n.getASplit() instanceof ConditionalCompletionSplitting::ConditionalCompletionSplit
+    )
+  }
 }
 
 import MakeConsistency<Location, RustDataFlow, RustTaintTracking, Input>
 private import codeql.rust.dataflow.internal.ModelsAsData
-
-query predicate missingMadSummaryCanonicalPath(string crate, string path, Addressable a) {
-  summaryModel(crate, path, _, _, _, _, _) and
-  a.getCrateOrigin() = crate and
-  a.getExtendedCanonicalPath() = path and
-  not exists(a.getCanonicalPath())
-}
-
-query predicate missingMadSourceCanonicalPath(string crate, string path, Addressable a) {
-  sourceModel(crate, path, _, _, _, _) and
-  a.getCrateOrigin() = crate and
-  a.getExtendedCanonicalPath() = path and
-  not exists(a.getCanonicalPath())
-}
-
-query predicate missingMadSinkCanonicalPath(string crate, string path, Addressable a) {
-  sinkModel(crate, path, _, _, _, _) and
-  a.getCrateOrigin() = crate and
-  a.getExtendedCanonicalPath() = path and
-  not exists(a.getCanonicalPath())
-}

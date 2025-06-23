@@ -13,9 +13,15 @@ private import codeql.rust.elements.internal.generated.StmtList
  */
 module Impl {
   /**
-   * A StmtList. For example:
+   * A list of statements in a block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * {
+   *     let x = 1;
+   *     let y = 2;
+   * }
+   * //  ^^^^^^^^^
    * ```
    */
   class StmtList extends Generated::StmtList { }

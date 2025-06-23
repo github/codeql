@@ -9,9 +9,12 @@ import codeql.rust.elements.RestPat
 import codeql.rust.elements.StructPatField
 
 /**
- * A StructPatFieldList. For example:
+ * A list of fields in a struct pattern.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let Foo { a, b } = foo;
+ * //        ^^^^^
  * ```
  */
 final class StructPatFieldList = Impl::StructPatFieldList;

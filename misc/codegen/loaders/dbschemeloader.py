@@ -12,9 +12,13 @@ class _Re:
         "|"
         r"^(?P<union>@\w+)\s*=\s*(?P<unionbody>@\w+(?:\s*\|\s*@\w+)*)\s*;?"
     )
-    field = re.compile(r"(?m)[\w\s]*\s(?P<field>\w+)\s*:\s*(?P<type>@?\w+)(?P<ref>\s+ref)?")
+    field = re.compile(
+        r"(?m)[\w\s]*\s(?P<field>\w+)\s*:\s*(?P<type>@?\w+)(?P<ref>\s+ref)?"
+    )
     key = re.compile(r"@\w+")
-    comment = re.compile(r"(?m)(?s)/\*.*?\*/|//(?!dir=)[^\n]*$")  # lookahead avoid ignoring metadata like //dir=foo
+    comment = re.compile(
+        r"(?m)(?s)/\*.*?\*/|//(?!dir=)[^\n]*$"
+    )  # lookahead avoid ignoring metadata like //dir=foo
 
 
 def _get_column(match):

@@ -1,0 +1,1 @@
+| gen_union.rs:4:5:7:32 | union U | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfDeriveMacroExpansions: | 0 | getNumberOfAttrs: | 0 | hasGenericParamList: | no | hasName: | yes | hasStructFieldList: | yes | hasVisibility: | no | hasWhereClause: | no |

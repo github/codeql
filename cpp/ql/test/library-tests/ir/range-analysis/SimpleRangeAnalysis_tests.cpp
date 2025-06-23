@@ -1011,10 +1011,10 @@ void test_overflow() {
   range(x); // $ range===2147483647
   const int y = 256;
   range(y); // $ range===256
-  if ((x + y) <= 512) {
+  if ((x + y) <= 512) { // $ overflow=+
     range(x); // $ range===2147483647
     range(y); // $ range===256
-    range(x + y); // $ range===-2147483393
+    range(x + y); // $ range=<=2147483903 overflow=+
   }
 }
 

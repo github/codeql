@@ -14,6 +14,14 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
+   * An inline assembly direction specifier.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("mov {input:x}, {input:x}", output = out(reg) x, input = in(reg) y);
+   * //                                        ^^^                 ^^
+   * ```
    * INTERNAL: Do not reference the `Generated::AsmDirSpec` class directly.
    * Use the subclass `AsmDirSpec`, where the following predicates are available.
    */

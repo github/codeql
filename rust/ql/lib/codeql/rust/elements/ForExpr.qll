@@ -10,9 +10,13 @@ import codeql.rust.elements.LoopingExpr
 import codeql.rust.elements.Pat
 
 /**
- * A ForExpr. For example:
+ * A for loop expression.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * for x in 0..10 {
+ *     println!("{}", x);
+ * }
  * ```
  */
 final class ForExpr = Impl::ForExpr;

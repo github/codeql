@@ -20,9 +20,13 @@ import codeql.rust.elements.WhereClause
  */
 module Generated {
   /**
-   * A Impl. For example:
+   * An `impl`` block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * impl MyTrait for MyType {
+   *     fn foo(&self) {}
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::Impl` class directly.
    * Use the subclass `Impl`, where the following predicates are available.

@@ -14,17 +14,21 @@ module Impl {
   private import rust
 
   pragma[nomagic]
-  predicate isInMacroExpansion(MacroCall mc, AstNode n) {
-    n = mc.getMacroCallExpansion()
+  predicate isInMacroExpansion(AstNode root, AstNode n) {
+    n = root.(MacroCall).getMacroCallExpansion()
     or
-    isInMacroExpansion(mc, n.getParentNode())
+    n = root.(Adt).getDeriveMacroExpansion(_)
+    or
+    isInMacroExpansion(root, n.getParentNode())
   }
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A MacroCall. For example:
+   * A macro invocation.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * println!("Hello, world!");
    * ```
    */
   class MacroCall extends Generated::MacroCall {
