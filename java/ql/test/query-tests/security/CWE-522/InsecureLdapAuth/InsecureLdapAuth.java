@@ -8,7 +8,7 @@ import javax.naming.ldap.InitialLdapContext;
 public class InsecureLdapAuth {
 	// BAD - Test LDAP authentication in cleartext using `DirContext`.
 	public void testCleartextLdapAuth(String ldapUserName, String password) throws Exception {
-		String ldapUrl = "ldap://ad.your-server.com:389";
+		String ldapUrl = "ldap://ad.your-server.com:389"; // $ Source
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		environment.put(Context.INITIAL_CONTEXT_FACTORY,
 				"com.sun.jndi.ldap.LdapCtxFactory");
@@ -17,12 +17,12 @@ public class InsecureLdapAuth {
 		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
 		environment.put(Context.SECURITY_PRINCIPAL, ldapUserName);
 		environment.put(Context.SECURITY_CREDENTIALS, password);
-		DirContext dirContext = new InitialDirContext(environment); // $ hasInsecureLdapAuth
+		DirContext dirContext = new InitialDirContext(environment); // $ Alert
 	}
 
 	// BAD - Test LDAP authentication in cleartext using `DirContext`.
 	public void testCleartextLdapAuth(String ldapUserName, String password, String serverName) throws Exception {
-		String ldapUrl = "ldap://"+serverName+":389";
+		String ldapUrl = "ldap://"+serverName+":389"; // $ Source
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		environment.put(Context.INITIAL_CONTEXT_FACTORY,
 				"com.sun.jndi.ldap.LdapCtxFactory");
@@ -31,7 +31,7 @@ public class InsecureLdapAuth {
 		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
 		environment.put(Context.SECURITY_PRINCIPAL, ldapUserName);
 		environment.put(Context.SECURITY_CREDENTIALS, password);
-		DirContext dirContext = new InitialDirContext(environment); // $ hasInsecureLdapAuth
+		DirContext dirContext = new InitialDirContext(environment); // $ Alert
 	}
 
 	// GOOD - Test LDAP authentication over SSL.
@@ -93,7 +93,7 @@ public class InsecureLdapAuth {
 
 	// BAD - Test LDAP authentication in cleartext using `InitialLdapContext`.
 	public void testCleartextLdapAuth3(String ldapUserName, String password) throws Exception {
-		String ldapUrl = "ldap://ad.your-server.com:389";
+		String ldapUrl = "ldap://ad.your-server.com:389"; // $ Source
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		environment.put(Context.INITIAL_CONTEXT_FACTORY,
 				"com.sun.jndi.ldap.LdapCtxFactory");
@@ -102,13 +102,13 @@ public class InsecureLdapAuth {
 		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
 		environment.put(Context.SECURITY_PRINCIPAL, ldapUserName);
 		environment.put(Context.SECURITY_CREDENTIALS, password);
-		InitialLdapContext ldapContext = new InitialLdapContext(environment, null); // $ hasInsecureLdapAuth
+		InitialLdapContext ldapContext = new InitialLdapContext(environment, null); // $ Alert
 	}
 
 
 	// BAD - Test LDAP authentication in cleartext using `DirContext` and string literals.
 	public void testCleartextLdapAuth4(String ldapUserName, String password) throws Exception {
-		String ldapUrl = "ldap://ad.your-server.com:389";
+		String ldapUrl = "ldap://ad.your-server.com:389"; // $ Source
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		environment.put("java.naming.factory.initial",
 				"com.sun.jndi.ldap.LdapCtxFactory");
@@ -117,7 +117,7 @@ public class InsecureLdapAuth {
 		environment.put("java.naming.security.authentication", "simple");
 		environment.put("java.naming.security.principal", ldapUserName);
 		environment.put("java.naming.security.credentials", password);
-		DirContext dirContext = new InitialDirContext(environment); // $ hasInsecureLdapAuth
+		DirContext dirContext = new InitialDirContext(environment); // $ Alert
 	}
 
 	private void setSSL(Hashtable env) {
@@ -144,12 +144,12 @@ public class InsecureLdapAuth {
 
 	// BAD - Test LDAP authentication with basic authentication.
 	public void testCleartextLdapAuth6(String ldapUserName, String password, String serverName) throws Exception {
-		String ldapUrl = "ldap://"+serverName+":389";
+		String ldapUrl = "ldap://"+serverName+":389"; // $ Source
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		environment.put(Context.INITIAL_CONTEXT_FACTORY,
 				"com.sun.jndi.ldap.LdapCtxFactory");
 		environment.put(Context.PROVIDER_URL, ldapUrl);
 		setBasicAuth(environment, ldapUserName, password);
-		DirContext dirContext = new InitialLdapContext(environment, null); // $ hasInsecureLdapAuth
+		DirContext dirContext = new InitialLdapContext(environment, null); // $ Alert
 	}
 }

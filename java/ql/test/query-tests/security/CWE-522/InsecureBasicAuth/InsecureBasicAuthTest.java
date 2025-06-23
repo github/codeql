@@ -22,10 +22,10 @@ public class InsecureBasicAuthTest {
 		byte[] authEncBytes = Base64.getEncoder().encode(authString.getBytes());
 		String authStringEnc = new String(authEncBytes);
 		{
-			HttpRequestBase post = new HttpPost("http://" + host + "/rest/getuser.do?uid=abcdx");
+			HttpRequestBase post = new HttpPost("http://" + host + "/rest/getuser.do?uid=abcdx"); // $ Source
 			post.setHeader("Accept", "application/json");
 			post.setHeader("Content-type", "application/json");
-			post.addHeader("Authorization", "Basic " + authStringEnc); // $hasInsecureBasicAuth
+			post.addHeader("Authorization", "Basic " + authStringEnc); // $ Alert
 		}
 		{
 			HttpRequestBase post = new HttpPost("https://" + host + "/rest/getuser.do?uid=abcdx");
@@ -40,10 +40,10 @@ public class InsecureBasicAuthTest {
 	 */
 	public void testApacheHttpRequest2(String url) throws java.io.IOException {
 		{
-			String urlStr = "http://www.example.com:8000/payment/retrieve";
+			String urlStr = "http://www.example.com:8000/payment/retrieve"; // $ Source
 			HttpGet get = new HttpGet(urlStr);
 			get.setHeader("Accept", "application/json");
-			get.setHeader("Authorization", // $hasInsecureBasicAuth
+			get.setHeader("Authorization", // $ Alert
 					"Basic " + new String(Base64.getEncoder().encode("admin:test".getBytes())));
 		}
 		{
@@ -63,11 +63,11 @@ public class InsecureBasicAuthTest {
 		byte[] authEncBytes = Base64.getEncoder().encode(authString.getBytes());
 		String authStringEnc = new String(authEncBytes);
 		{
-			String uriStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
+			String uriStr = "http://www.example.com/rest/getuser.do?uid=abcdx"; // $ Source
 			HttpRequestBase post = new HttpPost(URI.create(uriStr));
 			post.setHeader("Accept", "application/json");
 			post.setHeader("Content-type", "application/json");
-			post.addHeader("Authorization", "Basic " + authStringEnc); // $hasInsecureBasicAuth
+			post.addHeader("Authorization", "Basic " + authStringEnc); // $ Alert
 		}
 		{
 			String uriStr = "https://www.example.com/rest/getuser.do?uid=abcdx";
@@ -87,12 +87,12 @@ public class InsecureBasicAuthTest {
 		byte[] authEncBytes = Base64.getEncoder().encode(authString.getBytes());
 		String authStringEnc = new String(authEncBytes);
 		{
-			String uriStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
+			String uriStr = "http://www.example.com/rest/getuser.do?uid=abcdx"; // $ Source
 			URI uri = new URI(uriStr);
 			HttpRequestBase post = new HttpPost(uri);
 			post.setHeader("Accept", "application/json");
 			post.setHeader("Content-type", "application/json");
-			post.addHeader("Authorization", "Basic " + authStringEnc); // $hasInsecureBasicAuth
+			post.addHeader("Authorization", "Basic " + authStringEnc); // $ Alert
 		}
 		{
 			String uriStr = "https://www.example.com/rest/getuser.do?uid=abcdx";
@@ -114,10 +114,10 @@ public class InsecureBasicAuthTest {
 		String authStringEnc = new String(authEncBytes);
 		{
 			HttpRequestBase post =
-					new HttpPost(new URI("http", "www.example.com", "/test", "abc=123", null));
+					new HttpPost(new URI("http", "www.example.com", "/test", "abc=123", null)); // $ Source
 			post.setHeader("Accept", "application/json");
 			post.setHeader("Content-type", "application/json");
-			post.addHeader("Authorization", "Basic " + authStringEnc); // $hasInsecureBasicAuth
+			post.addHeader("Authorization", "Basic " + authStringEnc); // $ Alert
 		}
 		{
 			HttpRequestBase post =
@@ -136,11 +136,11 @@ public class InsecureBasicAuthTest {
 		byte[] authEncBytes = Base64.getEncoder().encode(authString.getBytes());
 		String authStringEnc = new String(authEncBytes);
 		{
-			String uriStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
+			String uriStr = "http://www.example.com/rest/getuser.do?uid=abcdx";	 // $ Source
 			BasicHttpRequest post = new BasicHttpRequest("POST", uriStr);
 			post.setHeader("Accept", "application/json");
 			post.setHeader("Content-type", "application/json");
-			post.addHeader("Authorization", "Basic " + authStringEnc); // $hasInsecureBasicAuth
+			post.addHeader("Authorization", "Basic " + authStringEnc); // $ Alert
 		}
 		{
 			String uriStr = "https://www.example.com/rest/getuser.do?uid=abcdx";
@@ -159,12 +159,12 @@ public class InsecureBasicAuthTest {
 		byte[] authEncBytes = Base64.getEncoder().encode(authString.getBytes());
 		String authStringEnc = new String(authEncBytes);
 		{
-			String uriStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
+			String uriStr = "http://www.example.com/rest/getuser.do?uid=abcdx"; // $ Source
 			RequestLine requestLine = new BasicRequestLine("POST", uriStr, null);
 			BasicHttpRequest post = new BasicHttpRequest(requestLine);
 			post.setHeader("Accept", "application/json");
 			post.setHeader("Content-type", "application/json");
-			post.addHeader("Authorization", "Basic " + authStringEnc); // $hasInsecureBasicAuth
+			post.addHeader("Authorization", "Basic " + authStringEnc); // $ Alert
 		}
 		{
 			String uriStr = "https://www.example.com/rest/getuser.do?uid=abcdx";
@@ -184,12 +184,12 @@ public class InsecureBasicAuthTest {
 		String authString = username + ":" + password;
 		String encoding = Base64.getEncoder().encodeToString(authString.getBytes("UTF-8"));
 		{
-			String urlStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
+			String urlStr = "http://www.example.com/rest/getuser.do?uid=abcdx"; // $ Source
 			URL url = new URL(urlStr);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
 			conn.setDoOutput(true);
-			conn.setRequestProperty("Authorization", "Basic " + encoding); // $hasInsecureBasicAuth
+			conn.setRequestProperty("Authorization", "Basic " + encoding); // $ Alert
 		}
 		{
 			String urlStr = "https://www.example.com/rest/getuser.do?uid=abcdx";
@@ -211,12 +211,12 @@ public class InsecureBasicAuthTest {
 		String host = "www.example.com";
 		String path = "/rest/getuser.do?uid=abcdx";
 		{
-			String protocol = "http";
+			String protocol = "http"; // $ Source
 			URL url = new URL(protocol, host, path);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
 			conn.setDoOutput(true);
-			conn.setRequestProperty("Authorization", "Basic " + encoding); // $hasInsecureBasicAuth
+			conn.setRequestProperty("Authorization", "Basic " + encoding); // $ Alert
 		}
 		{
 			String protocol = "https";
