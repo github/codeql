@@ -1030,6 +1030,14 @@ mod type_aliases {
         println!("{:?}", x);
     }
 
+    struct S4<T41, T42>(T41, T42);
+
+    struct S5<T5>(T5);
+
+    type S6<T6> = S4<T6, S5<T6>>;
+
+    type S7<T7> = Result<S6<T7>, S1>;
+
     pub fn f() {
         // Type can be inferred from the constructor
         let p1: MyPair = PairOption::PairBoth(S1, S2);
@@ -1048,6 +1056,8 @@ mod type_aliases {
         println!("{:?}", p3);
 
         g(PairOption::PairSnd(PairOption::PairSnd(S3)));
+
+        let x: S7<S2>; // $ type=x:Result $ type=x:E.S1 $ type=x:T.S4 $ type=x:T.T41.S2 $ MISSING: type=x:T.T42.S5 $ MISSING: type=x:T.T42.T5.S2
     }
 }
 
@@ -2156,6 +2166,57 @@ mod loops {
 }
 
 mod dereference;
+
+mod explicit_type_args {
+    struct S1<T>(T);
+
+    #[derive(Default)]
+    struct S2;
+
+    impl<T: Default> S1<T> {
+        fn assoc_fun() -> Option<Self> {
+            None
+        }
+
+        fn default() -> Self {
+            S1(T::default())
+        }
+
+        fn method(self) -> Self {
+            self
+        }
+    }
+
+    type S3 = S1<S2>;
+
+    struct S4<T4 = S2>(T4);
+
+    struct S5<T5 = S2> {
+        field: T5,
+    }
+
+    pub fn f() {
+        let x1: Option<S1<S2>> = S1::assoc_fun(); // $ type=x1:T.T.S2
+        let x2 = S1::<S2>::assoc_fun(); // $ MISSING: type=x2:T.T.S2
+        let x3 = S3::assoc_fun(); // $ MISSING: type=x3:T.T.S2
+        let x4 = S1::<S2>::method(S1::default()); // $ MISSING: method=method type=x4:T.S2
+        let x5 = S3::method(S1::default()); // $ MISSING: method=method type=x5:T.S2
+        let x6 = S4::<S2>(Default::default()); // $ type=x6:T4.S2
+        let x7 = S4(S2); // $ type=x7:T4.S2
+        let x8 = S4(0); // $ type=x8:T4.i32
+        let x9 = S4(S2::default()); // $ type=x9:T4.S2
+        let x10 = S5::<S2>  // $ type=x10:T5.S2
+        {
+            field: Default::default(),
+        };
+        let x11 = S5 { field: S2 }; // $ type=x11:T5.S2
+        let x12 = S5 { field: 0 }; // $ type=x12:T5.i32
+        let x13 = S5 // $ type=x13:T5.S2
+        {
+            field: S2::default(),
+        };
+    }
+}
 
 fn main() {
     field_access::f();
