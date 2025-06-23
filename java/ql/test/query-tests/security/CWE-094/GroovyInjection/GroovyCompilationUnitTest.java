@@ -18,8 +18,8 @@ public class GroovyCompilationUnitTest extends HttpServlet {
         // "org.codehaus.groovy.control;CompilationUnit;false;compile;;;Argument[this];groovy;manual"
         {
             CompilationUnit cu = new CompilationUnit();
-            cu.addSource("test", request.getParameter("source"));
-            cu.compile(); // $hasGroovyInjection
+            cu.addSource("test", request.getParameter("source")); // $ Source
+            cu.compile(); // $ Alert
         }
         {
             CompilationUnit cu = new CompilationUnit();
@@ -29,20 +29,20 @@ public class GroovyCompilationUnitTest extends HttpServlet {
         {
             CompilationUnit cu = new CompilationUnit();
             cu.addSource("test",
-                    new ByteArrayInputStream(request.getParameter("source").getBytes()));
-            cu.compile(); // $hasGroovyInjection
+                    new ByteArrayInputStream(request.getParameter("source").getBytes())); // $ Source
+            cu.compile(); // $ Alert
         }
         {
             CompilationUnit cu = new CompilationUnit();
-            cu.addSource(new URL(request.getParameter("source")));
-            cu.compile(); // $hasGroovyInjection
+            cu.addSource(new URL(request.getParameter("source"))); // $ Source
+            cu.compile(); // $ Alert
         }
         {
             CompilationUnit cu = new CompilationUnit();
             SourceUnit su =
-                    new SourceUnit("test", request.getParameter("source"), null, null, null);
+                    new SourceUnit("test", request.getParameter("source"), null, null, null); // $ Source
             cu.addSource(su);
-            cu.compile(); // $hasGroovyInjection
+            cu.compile(); // $ Alert
         }
         {
             CompilationUnit cu = new CompilationUnit();
@@ -53,29 +53,29 @@ public class GroovyCompilationUnitTest extends HttpServlet {
         }
         {
             CompilationUnit cu = new CompilationUnit();
-            StringReaderSource rs = new StringReaderSource(request.getParameter("source"), null);
+            StringReaderSource rs = new StringReaderSource(request.getParameter("source"), null); // $ Source
             SourceUnit su = new SourceUnit("test", rs, null, null, null);
             cu.addSource(su);
-            cu.compile(); // $hasGroovyInjection
+            cu.compile(); // $ Alert
         }
         {
             CompilationUnit cu = new CompilationUnit();
             SourceUnit su =
-                    new SourceUnit(new URL(request.getParameter("source")), null, null, null);
+                    new SourceUnit(new URL(request.getParameter("source")), null, null, null); // $ Source
             cu.addSource(su);
-            cu.compile(); // $hasGroovyInjection
+            cu.compile(); // $ Alert
         }
         {
             CompilationUnit cu = new CompilationUnit();
-            SourceUnit su = SourceUnit.create("test", request.getParameter("source"));
+            SourceUnit su = SourceUnit.create("test", request.getParameter("source")); // $ Source
             cu.addSource(su);
-            cu.compile(); // $hasGroovyInjection
+            cu.compile(); // $ Alert
         }
         {
             CompilationUnit cu = new CompilationUnit();
-            SourceUnit su = SourceUnit.create("test", request.getParameter("source"), 0);
+            SourceUnit su = SourceUnit.create("test", request.getParameter("source"), 0); // $ Source
             cu.addSource(su);
-            cu.compile(); // $hasGroovyInjection
+            cu.compile(); // $ Alert
         }
         {
             CompilationUnit cu = new CompilationUnit();
@@ -85,8 +85,8 @@ public class GroovyCompilationUnitTest extends HttpServlet {
         }
         {
             JavaAwareCompilationUnit cu = new JavaAwareCompilationUnit();
-            cu.addSource("test", request.getParameter("source"));
-            cu.compile(); // $hasGroovyInjection
+            cu.addSource("test", request.getParameter("source")); // $ Source
+            cu.compile(); // $ Alert
         }
         {
             JavaStubCompilationUnit cu = new JavaStubCompilationUnit(null, null);

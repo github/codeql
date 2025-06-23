@@ -11,30 +11,29 @@ public class GroovyEvalTest extends HttpServlet {
             throws ServletException, IOException {
         // "groovy.util;Eval;false;me;(String);;Argument[0];groovy;manual",
         {
-            String script = request.getParameter("script");
-            Eval.me(script); // $hasGroovyInjection
+            String script = request.getParameter("script"); // $ Source
+            Eval.me(script); // $ Alert
         }
         // "groovy.util;Eval;false;me;(String,Object,String);;Argument[2];groovy;manual",
         {
-            String script = request.getParameter("script");
-            Eval.me("test", "result", script); // $hasGroovyInjection
+            String script = request.getParameter("script"); // $ Source
+            Eval.me("test", "result", script); // $ Alert
         }
         // "groovy.util;Eval;false;x;(Object,String);;Argument[1];groovy;manual",
         {
-            String script = request.getParameter("script");
-            Eval.x("result2", script); // $hasGroovyInjection
+            String script = request.getParameter("script"); // $ Source
+            Eval.x("result2", script); // $ Alert
 
         }
         // "groovy.util;Eval;false;xy;(Object,Object,String);;Argument[2];groovy;manual",
         {
-            String script = request.getParameter("script");
-            Eval.xy("result3", "result4", script); // $hasGroovyInjection
+            String script = request.getParameter("script"); // $ Source
+            Eval.xy("result3", "result4", script); // $ Alert
         }
         // "groovy.util;Eval;false;xyz;(Object,Object,Object,String);;Argument[3];groovy;manual",
         {
-            String script = request.getParameter("script");
-            Eval.xyz("result3", "result4", "aaa", script); // $hasGroovyInjection
+            String script = request.getParameter("script"); // $ Source
+            Eval.xyz("result3", "result4", "aaa", script); // $ Alert
         }
     }
 }
-
