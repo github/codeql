@@ -11,12 +11,13 @@ use ra_ap_hir::{
 };
 use ra_ap_hir_def::ModuleId;
 use ra_ap_hir_def::type_ref::Mutability;
-use ra_ap_hir_expand::{ExpandResult, ExpandTo, InFile};
+use ra_ap_hir_expand::files::InFileWrapper;
+use ra_ap_hir_expand::{ExpandError, ExpandResult, ExpandTo, InFile};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::TextSize;
-use ra_ap_syntax::ast::HasName;
+use ra_ap_syntax::ast::{HasAttrs, HasName};
 use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
     ast,
@@ -78,12 +79,15 @@ macro_rules! post_emit {
         $self.extract_canonical_origin($node, $label.into());
     };
     (Struct, $self:ident, $node:ident, $label:ident) => {
+        $self.emit_derive_expansion($node, $label);
         $self.extract_canonical_origin($node, $label.into());
     };
     (Enum, $self:ident, $node:ident, $label:ident) => {
+        $self.emit_derive_expansion($node, $label);
         $self.extract_canonical_origin($node, $label.into());
     };
     (Union, $self:ident, $node:ident, $label:ident) => {
+        $self.emit_derive_expansion($node, $label);
         $self.extract_canonical_origin($node, $label.into());
     };
     (Module, $self:ident, $node:ident, $label:ident) => {
@@ -329,6 +333,25 @@ impl<'a> Translator<'a> {
                 .emit_diagnostic(severity, tag, message, full_message, location);
         }
     }
+
+    pub fn emit_diagnostic_for_node(
+        &mut self,
+        node: &impl ast::AstNode,
+        severity: DiagnosticSeverity,
+        tag: String,
+        message: String,
+        full_message: String,
+    ) {
+        let location = self.location_for_node(node);
+        self.emit_diagnostic(
+            severity,
+            tag,
+            message,
+            full_message,
+            location.unwrap_or(UNKNOWN_LOCATION),
+        );
+    }
+
     pub fn emit_parse_error(&mut self, owner: &impl ast::AstNode, err: &SyntaxError) {
         let owner_range: TextRange = owner.syntax().text_range();
         let err_range = err.range();
@@ -818,6 +841,40 @@ impl<'a> Translator<'a> {
         None
     }
 
+    fn process_item_macro_expansion(
+        &mut self,
+        node: &impl ast::AstNode,
+        value: SyntaxNode,
+        err: Option<ExpandError>,
+    ) -> Option<Label<generated::MacroItems>> {
+        let semantics = self.semantics.unwrap(); // if we are here, we have semantics
+        self.emit_macro_expansion_parse_errors(node, &value);
+        if let Some(err) = err {
+            let rendered = err.render_to_string(semantics.db);
+            self.emit_diagnostic_for_node(
+                node,
+                DiagnosticSeverity::Warning,
+                "item_expansion".to_owned(),
+                format!("item expansion failed ({})", rendered.kind),
+                rendered.message,
+            );
+        }
+        if let Some(items) = ast::MacroItems::cast(value) {
+            self.emit_macro_items(&items)
+        } else {
+            let message =
+                "attribute or derive macro expansion cannot be cast to MacroItems".to_owned();
+            self.emit_diagnostic_for_node(
+                node,
+                DiagnosticSeverity::Warning,
+                "item_expansion".to_owned(),
+                message.clone(),
+                message,
+            );
+            None
+        }
+    }
+
     fn emit_attribute_macro_expansion(
         &mut self,
         node: &ast::Item,
@@ -830,23 +887,12 @@ impl<'a> Translator<'a> {
             // only expand the outermost attribute macro
             return None;
         }
+        let expansion = self.semantics?.expand_attr_macro(node)?;
         let ExpandResult {
-            value: expanded, ..
-        } = self.semantics.and_then(|s| s.expand_attr_macro(node))?;
-        self.emit_macro_expansion_parse_errors(node, &expanded.value);
-        let macro_items = ast::MacroItems::cast(expanded.value).or_else(|| {
-            let message = "attribute macro expansion cannot be cast to MacroItems".to_owned();
-            let location = self.location_for_node(node);
-            self.emit_diagnostic(
-                DiagnosticSeverity::Warning,
-                "item_expansion".to_owned(),
-                message.clone(),
-                message,
-                location.unwrap_or(UNKNOWN_LOCATION),
-            );
-            None
-        })?;
-        self.emit_macro_items(&macro_items)
+            value: InFileWrapper { value, .. },
+            err,
+        } = expansion;
+        self.process_item_macro_expansion(node, value, err)
     }
 
     pub(crate) fn emit_item_expansion(&mut self, node: &ast::Item, label: Label<generated::Item>) {
@@ -873,5 +919,29 @@ impl<'a> Translator<'a> {
         if node.body().is_some() {
             generated::Const::emit_has_implementation(label, &mut self.trap.writer);
         }
+    }
+
+    pub(crate) fn emit_derive_expansion(
+        &mut self,
+        node: &(impl Into<ast::Adt> + Clone),
+        label: impl Into<Label<generated::Adt>> + Copy,
+    ) {
+        let Some(semantics) = self.semantics else {
+            return;
+        };
+        let node: ast::Adt = node.clone().into();
+        let expansions = node
+            .attrs()
+            .filter_map(|attr| semantics.expand_derive_macro(&attr))
+            .flatten()
+            .filter_map(|ExpandResult { value, err }| {
+                self.process_item_macro_expansion(&node, value, err)
+            })
+            .collect::<Vec<_>>();
+        generated::Adt::emit_derive_macro_expansions(
+            label.into(),
+            expansions,
+            &mut self.trap.writer,
+        );
     }
 }

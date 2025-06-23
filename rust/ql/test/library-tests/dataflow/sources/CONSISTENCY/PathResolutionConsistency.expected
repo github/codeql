@@ -53,6 +53,10 @@ multiplePathResolutions
 | test_futures_io.rs:25:23:25:61 | ...::try_from | file://:0:0:0:0 | fn try_from |
 | test_futures_io.rs:145:26:145:43 | ...::with_capacity | file://:0:0:0:0 | fn with_capacity |
 | test_futures_io.rs:145:26:145:43 | ...::with_capacity | file://:0:0:0:0 | fn with_capacity |
+| web_frameworks.rs:40:5:40:26 | ...::write_str | file://:0:0:0:0 | fn write_str |
+| web_frameworks.rs:40:5:40:26 | ...::write_str | file://:0:0:0:0 | fn write_str |
+| web_frameworks.rs:40:5:40:26 | ...::write_str | file://:0:0:0:0 | fn write_str |
+| web_frameworks.rs:40:5:40:26 | ...::write_str | file://:0:0:0:0 | fn write_str |
 multipleCanonicalPaths
 | file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as core::cmp::Ord>::to_ordering |
 | file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as typenum::marker_traits::Ord>::to_ordering |

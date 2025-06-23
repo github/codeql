@@ -215,7 +215,6 @@ named_crates(
 | @use_bound_generic_args
 | @use_tree
 | @use_tree_list
-| @variant_def
 | @variant_list
 | @visibility
 | @where_clause
@@ -1161,12 +1160,6 @@ use_tree_list_use_trees(
   int use_tree: @use_tree ref
 );
 
-@variant_def =
-  @struct
-| @union
-| @variant
-;
-
 variant_lists(
   unique int id: @variant_list
 );
@@ -1917,8 +1910,8 @@ infer_type_reprs(
 );
 
 @item =
-  @const
-| @enum
+  @adt
+| @const
 | @extern_block
 | @extern_crate
 | @function
@@ -1928,11 +1921,9 @@ infer_type_reprs(
 | @macro_rules
 | @module
 | @static
-| @struct
 | @trait
 | @trait_alias
 | @type_alias
-| @union
 | @use
 ;
 
@@ -2714,6 +2705,19 @@ yield_expr_exprs(
   int expr: @expr ref
 );
 
+@adt =
+  @enum
+| @struct
+| @union
+;
+
+#keyset[id, index]
+adt_derive_macro_expansions(
+  int id: @adt ref,
+  int index: int ref,
+  int derive_macro_expansion: @macro_items ref
+);
+
 block_exprs(
   unique int id: @block_expr
 );
@@ -2831,47 +2835,6 @@ const_where_clauses(
 #keyset[id]
 const_has_implementation(
   int id: @const ref
-);
-
-enums(
-  unique int id: @enum
-);
-
-#keyset[id, index]
-enum_attrs(
-  int id: @enum ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-enum_generic_param_lists(
-  int id: @enum ref,
-  int generic_param_list: @generic_param_list ref
-);
-
-#keyset[id]
-enum_names(
-  int id: @enum ref,
-  int name: @name ref
-);
-
-#keyset[id]
-enum_variant_lists(
-  int id: @enum ref,
-  int variant_list: @variant_list ref
-);
-
-#keyset[id]
-enum_visibilities(
-  int id: @enum ref,
-  int visibility: @visibility ref
-);
-
-#keyset[id]
-enum_where_clauses(
-  int id: @enum ref,
-  int where_clause: @where_clause ref
 );
 
 extern_blocks(
@@ -3290,47 +3253,6 @@ static_visibilities(
   int visibility: @visibility ref
 );
 
-structs(
-  unique int id: @struct
-);
-
-#keyset[id, index]
-struct_attrs(
-  int id: @struct ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-struct_field_lists_(
-  int id: @struct ref,
-  int field_list: @field_list ref
-);
-
-#keyset[id]
-struct_generic_param_lists(
-  int id: @struct ref,
-  int generic_param_list: @generic_param_list ref
-);
-
-#keyset[id]
-struct_names(
-  int id: @struct ref,
-  int name: @name ref
-);
-
-#keyset[id]
-struct_visibilities(
-  int id: @struct ref,
-  int visibility: @visibility ref
-);
-
-#keyset[id]
-struct_where_clauses(
-  int id: @struct ref,
-  int where_clause: @where_clause ref
-);
-
 struct_exprs(
   unique int id: @struct_expr
 );
@@ -3512,6 +3434,145 @@ type_alias_where_clauses(
   int where_clause: @where_clause ref
 );
 
+uses(
+  unique int id: @use
+);
+
+#keyset[id, index]
+use_attrs(
+  int id: @use ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+use_use_trees(
+  int id: @use ref,
+  int use_tree: @use_tree ref
+);
+
+#keyset[id]
+use_visibilities(
+  int id: @use ref,
+  int visibility: @visibility ref
+);
+
+enums(
+  unique int id: @enum
+);
+
+#keyset[id, index]
+enum_attrs(
+  int id: @enum ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+enum_generic_param_lists(
+  int id: @enum ref,
+  int generic_param_list: @generic_param_list ref
+);
+
+#keyset[id]
+enum_names(
+  int id: @enum ref,
+  int name: @name ref
+);
+
+#keyset[id]
+enum_variant_lists(
+  int id: @enum ref,
+  int variant_list: @variant_list ref
+);
+
+#keyset[id]
+enum_visibilities(
+  int id: @enum ref,
+  int visibility: @visibility ref
+);
+
+#keyset[id]
+enum_where_clauses(
+  int id: @enum ref,
+  int where_clause: @where_clause ref
+);
+
+for_exprs(
+  unique int id: @for_expr
+);
+
+#keyset[id, index]
+for_expr_attrs(
+  int id: @for_expr ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+for_expr_iterables(
+  int id: @for_expr ref,
+  int iterable: @expr ref
+);
+
+#keyset[id]
+for_expr_pats(
+  int id: @for_expr ref,
+  int pat: @pat ref
+);
+
+loop_exprs(
+  unique int id: @loop_expr
+);
+
+#keyset[id, index]
+loop_expr_attrs(
+  int id: @loop_expr ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+structs(
+  unique int id: @struct
+);
+
+#keyset[id, index]
+struct_attrs(
+  int id: @struct ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+struct_field_lists_(
+  int id: @struct ref,
+  int field_list: @field_list ref
+);
+
+#keyset[id]
+struct_generic_param_lists(
+  int id: @struct ref,
+  int generic_param_list: @generic_param_list ref
+);
+
+#keyset[id]
+struct_names(
+  int id: @struct ref,
+  int name: @name ref
+);
+
+#keyset[id]
+struct_visibilities(
+  int id: @struct ref,
+  int visibility: @visibility ref
+);
+
+#keyset[id]
+struct_where_clauses(
+  int id: @struct ref,
+  int where_clause: @where_clause ref
+);
+
 unions(
   unique int id: @union
 );
@@ -3551,63 +3612,6 @@ union_visibilities(
 union_where_clauses(
   int id: @union ref,
   int where_clause: @where_clause ref
-);
-
-uses(
-  unique int id: @use
-);
-
-#keyset[id, index]
-use_attrs(
-  int id: @use ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-use_use_trees(
-  int id: @use ref,
-  int use_tree: @use_tree ref
-);
-
-#keyset[id]
-use_visibilities(
-  int id: @use ref,
-  int visibility: @visibility ref
-);
-
-for_exprs(
-  unique int id: @for_expr
-);
-
-#keyset[id, index]
-for_expr_attrs(
-  int id: @for_expr ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-for_expr_iterables(
-  int id: @for_expr ref,
-  int iterable: @expr ref
-);
-
-#keyset[id]
-for_expr_pats(
-  int id: @for_expr ref,
-  int pat: @pat ref
-);
-
-loop_exprs(
-  unique int id: @loop_expr
-);
-
-#keyset[id, index]
-loop_expr_attrs(
-  int id: @loop_expr ref,
-  int index: int ref,
-  int attr: @attr ref
 );
 
 while_exprs(

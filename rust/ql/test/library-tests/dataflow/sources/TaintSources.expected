@@ -62,8 +62,6 @@
 | test.rs:444:31:444:45 | ...::read | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:449:22:449:46 | ...::read_to_string | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:455:26:455:29 | path | Flow source 'FileSource' of type file (DEFAULT). |
-| test.rs:455:26:455:29 | path | Flow source 'FileSource' of type file (DEFAULT). |
-| test.rs:456:31:456:39 | file_name | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:456:31:456:39 | file_name | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:462:22:462:41 | ...::read_link | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:472:20:472:38 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |

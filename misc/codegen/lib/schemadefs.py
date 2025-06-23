@@ -321,7 +321,7 @@ drop = object()
 def annotate(
     annotated_cls: type,
     add_bases: _Iterable[type] | None = None,
-    replace_bases: _Dict[type, type] | None = None,
+    replace_bases: _Dict[type, type | None] | None = None,
     cfg: bool = False,
 ) -> _Callable[[type], _PropertyModifierList]:
     """
@@ -329,7 +329,8 @@ def annotate(
 
     The name of the class used for annotation must be `_`.
 
-    `replace_bases` can be used to replace bases on the annotated class.
+    `replace_bases` can be used to replace bases on the annotated class. Mapping to
+    `None` will remove that base class.
     """
 
     def decorator(cls: type) -> _PropertyModifierList:
@@ -341,7 +342,9 @@ def annotate(
             _ClassPragma(p, value=v)(annotated_cls)
         if replace_bases:
             annotated_cls.__bases__ = tuple(
-                replace_bases.get(b, b) for b in annotated_cls.__bases__
+                b
+                for b in (replace_bases.get(b, b) for b in annotated_cls.__bases__)
+                if b is not None
             )
         if add_bases:
             annotated_cls.__bases__ += tuple(add_bases)
