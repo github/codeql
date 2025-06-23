@@ -24,3 +24,20 @@ class SigningNamedCurveAlgorithmInstance extends Crypto::EllipticCurveInstance i
     Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), result, _)
   }
 }
+
+class HashAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof HashAlgorithmName {
+  HashAlgorithmConsumer consumer;
+
+  HashAlgorithmInstance() {
+    HashAlgorithmNameToUse::flow(DataFlow::exprNode(this), consumer.getInputNode())
+  }
+
+  // Q: super.getHashFamily does not work because it is ambigous. But super.(HashAlgorithmName) does not work either.
+  override Crypto::THashType getHashFamily() { result = this.(HashAlgorithmName).getHashFamily() }
+
+  override string getRawHashAlgorithmName() { result = super.getAlgorithmName() }
+
+  override int getFixedDigestLength() { result = this.(HashAlgorithmName).getFixedDigestLength() }
+
+  Crypto::AlgorithmValueConsumer getConsumer() { result = consumer }
+}

@@ -15,7 +15,6 @@ class ECDsaORRSASigningOperationInstance extends Crypto::SignatureOperationInsta
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     result = creator.getAlgorithmArg()
     or
-    // FIXME: currently not working
     result = super.getHashAlgorithmArg()
   }
 
@@ -28,9 +27,8 @@ class ECDsaORRSASigningOperationInstance extends Crypto::SignatureOperationInsta
       else result = Crypto::TUnknownKeyOperationMode()
   }
 
-  // TODO FIXME
   override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
-    result.asExpr() = creator.getAlgorithmArg()
+    result.asExpr() = creator.getKeyConsumer()
   }
 
   override Crypto::ConsumerInputDataFlowNode getNonceConsumer() { none() }

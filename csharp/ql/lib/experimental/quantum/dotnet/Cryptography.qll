@@ -1,4 +1,5 @@
 private import csharp
+private import experimental.quantum.Language
 
 // This class models Create calls for the ECDsa and RSA classes in .NET.
 class CryptographyCreateCall extends MethodCall {
@@ -14,6 +15,15 @@ class CryptographyCreateCall extends MethodCall {
     or
     result = this.(ECDsaCreateCallWithECCurve).getArgument(0)
   }
+
+  Expr getKeyConsumer() {
+    this.hasNoArguments() and result = this
+    or
+    result = this.(ECDsaCreateCallWithParameters).getArgument(0)
+    or
+    result = this.(ECDsaCreateCallWithECCurve)
+  }
+
 }
 
 class ECDsaCreateCall extends CryptographyCreateCall {
@@ -73,6 +83,42 @@ class HashAlgorithmName extends PropertyAccess {
   }
 
   string getAlgorithmName() { result = algorithmName }
+
+  Crypto::THashType getHashFamily() { hashAlgorithmToFamily(this.getAlgorithmName(), result, _) }
+
+  int getFixedDigestLength() { hashAlgorithmToFamily(this.getAlgorithmName(), _, result) }
+}
+
+private predicate hashAlgorithmToFamily(
+  string hashName, Crypto::THashType hashFamily, int digestLength
+) {
+  hashName = "MD5" and hashFamily = Crypto::MD5() and digestLength = 128
+  or
+  hashName = "SHA1" and hashFamily = Crypto::SHA1() and digestLength = 160
+  or
+  hashName = "SHA256" and hashFamily = Crypto::SHA2() and digestLength = 256
+  or
+  hashName = "SHA384" and hashFamily = Crypto::SHA2() and digestLength = 384
+  or
+  hashName = "SHA512" and hashFamily = Crypto::SHA2() and digestLength = 512
+  or
+  hashName = "SHA3_256" and hashFamily = Crypto::SHA3() and digestLength = 256
+  or
+  hashName = "SHA3_384" and hashFamily = Crypto::SHA3() and digestLength = 384
+  or
+  hashName = "SHA3_512" and hashFamily = Crypto::SHA3() and digestLength = 512
+  // Q: is there an idiomatic way to add a default type here?
+}
+
+class HashAlgorithmUser extends MethodCall {
+  Expr arg;
+
+  HashAlgorithmUser() {
+    arg = this.getAnArgument() and
+    arg.getType() instanceof HashAlgorithmNameType
+  }
+
+  Expr getHashAlgorithmUser() { result = arg }
 }
 
 /**

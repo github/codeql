@@ -30,3 +30,13 @@ private module CreateToUseFlowConfig implements DataFlow::ConfigSig {
 }
 
 module CryptographyCreateToUseFlow = DataFlow::Global<CreateToUseFlowConfig>;
+
+module HashAlgorithmNameToUseConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HashAlgorithmName }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(HashAlgorithmConsumer consumer | sink = consumer.getInputNode())
+  }
+}
+
+module HashAlgorithmNameToUse = DataFlow::Global<HashAlgorithmNameToUseConfig>;

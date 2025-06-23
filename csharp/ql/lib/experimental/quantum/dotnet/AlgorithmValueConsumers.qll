@@ -14,3 +14,15 @@ class ECDsaAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
     exists(SigningNamedCurveAlgorithmInstance l | l.getConsumer() = this and result = l)
   }
 }
+
+class HashAlgorithmConsumer extends Crypto::AlgorithmValueConsumer {
+  HashAlgorithmUser call;
+
+  HashAlgorithmConsumer() { this = call.getHashAlgorithmUser() }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
+    exists(HashAlgorithmInstance l | l.getConsumer() = this and result = l)
+  }
+}
