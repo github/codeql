@@ -1010,7 +1010,7 @@ final class AwaitTarget extends Expr {
   Type getTypeAt(TypePath path) { result = inferType(this, path) }
 }
 
-private module AwaitSatisfiesConstraintInput implements SatisfiesConstraintSig<AwaitTarget> {
+private module AwaitSatisfiesConstraintInput implements SatisfiesConstraintInputSig<AwaitTarget> {
   predicate relevantConstraint(AwaitTarget term, Type constraint) {
     exists(term) and
     constraint.(TraitType).getTrait() instanceof FutureTrait
@@ -1020,17 +1020,8 @@ private module AwaitSatisfiesConstraintInput implements SatisfiesConstraintSig<A
 pragma[nomagic]
 private Type inferAwaitExprType(AstNode n, TypePath path) {
   exists(TypePath exprPath |
-    SatisfiesConstraint<AwaitTarget, AwaitSatisfiesConstraintInput>::satisfiesConstraintTypeMention(n.(AwaitExpr)
+    SatisfiesConstraint<AwaitTarget, AwaitSatisfiesConstraintInput>::satisfiesConstraintType(n.(AwaitExpr)
           .getExpr(), _, exprPath, result) and
-    exprPath.isCons(getFutureOutputTypeParameter(), path)
-  )
-  or
-  // This case is needed for `async` functions and blocks, where we assign
-  // the type `Future<Output = T>` directly instead of `impl Future<Output = T>`
-  //
-  // TODO: It would be better if we could handle this in the shared library
-  exists(TypePath exprPath |
-    result = inferType(n.(AwaitExpr).getExpr(), exprPath) and
     exprPath.isCons(getFutureOutputTypeParameter(), path)
   )
 }

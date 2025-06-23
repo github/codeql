@@ -866,16 +866,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
     private import BaseTypes
 
-    signature module SatisfiesConstraintSig<HasTypeTreeSig TypeTree> {
+    signature module SatisfiesConstraintInputSig<HasTypeTreeSig HasTypeTree> {
       /** Holds if it is relevant to know if `term` satisfies `constraint`. */
-      predicate relevantConstraint(TypeTree term, Type constraint);
+      predicate relevantConstraint(HasTypeTree term, Type constraint);
     }
 
-    module SatisfiesConstraint<HasTypeTreeSig TypeTree, SatisfiesConstraintSig<TypeTree> Input> {
-      import Input
+    module SatisfiesConstraint<
+      HasTypeTreeSig HasTypeTree, SatisfiesConstraintInputSig<HasTypeTree> Input>
+    {
+      private import Input
 
-      private module IsInstantiationOfInput implements IsInstantiationOfInputSig<TypeTree> {
-        predicate potentialInstantiationOf(TypeTree tt, TypeAbstraction abs, TypeMention cond) {
+      private module IsInstantiationOfInput implements IsInstantiationOfInputSig<HasTypeTree> {
+        predicate potentialInstantiationOf(HasTypeTree tt, TypeAbstraction abs, TypeMention cond) {
           exists(Type constraint, Type type |
             type = tt.getTypeAt(TypePath::nil()) and
             relevantConstraint(tt, constraint) and
@@ -891,7 +893,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /** Holds if the type tree has the type `type` and should satisfy `constraint`. */
-      private predicate hasTypeConstraint(TypeTree term, Type type, Type constraint) {
+      pragma[nomagic]
+      private predicate hasTypeConstraint(HasTypeTree term, Type type, Type constraint) {
         type = term.getTypeAt(TypePath::nil()) and
         relevantConstraint(term, constraint)
       }
@@ -901,7 +904,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       pragma[nomagic]
       private predicate hasConstraintMention(
-        TypeTree tt, TypeAbstraction abs, TypeMention sub, Type constraint,
+        HasTypeTree tt, TypeAbstraction abs, TypeMention sub, Type constraint,
         TypeMention constraintMention
       ) {
         exists(Type type | hasTypeConstraint(tt, type, constraint) |
@@ -916,14 +919,15 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           // constraint we need to find the right implementation, which is the
           // one where the type instantiates the precondition.
           if countConstraintImplementations(type, constraint) > 1
-          then IsInstantiationOf<TypeTree, IsInstantiationOfInput>::isInstantiationOf(tt, abs, sub)
+          then
+            IsInstantiationOf<HasTypeTree, IsInstantiationOfInput>::isInstantiationOf(tt, abs, sub)
           else any()
         )
       }
 
       pragma[nomagic]
       private predicate satisfiesConstraintTypeMention0(
-        TypeTree tt, Type constraint, TypeAbstraction abs, TypeMention sub, TypePath path, Type t
+        HasTypeTree tt, Type constraint, TypeAbstraction abs, TypeMention sub, TypePath path, Type t
       ) {
         exists(TypeMention constraintMention |
           hasConstraintMention(tt, abs, sub, constraint, constraintMention) and
@@ -933,7 +937,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       pragma[nomagic]
       private predicate satisfiesConstraintTypeMention1(
-        TypeTree tt, Type constraint, TypePath path, TypePath pathToTypeParamInSub
+        HasTypeTree tt, Type constraint, TypePath path, TypePath pathToTypeParamInSub
       ) {
         exists(TypeAbstraction abs, TypeMention sub, TypeParameter tp |
           satisfiesConstraintTypeMention0(tt, constraint, abs, sub, path, tp) and
@@ -947,7 +951,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * with the type `t` at `path`.
        */
       pragma[nomagic]
-      predicate satisfiesConstraintTypeMention(TypeTree tt, Type constraint, TypePath path, Type t) {
+      predicate satisfiesConstraintType(HasTypeTree tt, Type constraint, TypePath path, Type t) {
         exists(TypeAbstraction abs |
           satisfiesConstraintTypeMention0(tt, constraint, abs, _, path, t) and
           not t = abs.getATypeParameter()
@@ -958,6 +962,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           tt.getTypeAt(pathToTypeParamInSub.appendInverse(suffix)) = t and
           path = prefix0.append(suffix)
         )
+        or
+        tt.getTypeAt(TypePath::nil()) = constraint and
+        t = tt.getTypeAt(path)
       }
     }
 
@@ -1234,17 +1241,19 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           Location getLocation() { result = a.getLocation() }
         }
 
-        private module SatisfiesConstraintInput implements SatisfiesConstraintSig<RelevantAccess> {
+        private module SatisfiesConstraintInput implements
+          SatisfiesConstraintInputSig<RelevantAccess>
+        {
           predicate relevantConstraint(RelevantAccess at, Type constraint) {
             constraint = at.getConstraint()
           }
         }
 
-        predicate satisfiesConstraintTypeMention(
+        predicate satisfiesConstraintType(
           Access a, AccessPosition apos, TypePath prefix, Type constraint, TypePath path, Type t
         ) {
           exists(RelevantAccess at | at = MkRelevantAccess(a, _, apos, prefix) |
-            SatisfiesConstraint<RelevantAccess, SatisfiesConstraintInput>::satisfiesConstraintTypeMention(at,
+            SatisfiesConstraint<RelevantAccess, SatisfiesConstraintInput>::satisfiesConstraintType(at,
               constraint, path, t)
           )
         }
@@ -1382,7 +1391,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           accessDeclarationPositionMatch(apos, dpos) and
           typeParameterConstraintHasTypeParameter(target, dpos, pathToTp2, _, constraint, pathToTp,
             tp) and
-          AccessConstraint::satisfiesConstraintTypeMention(a, apos, pathToTp2, constraint,
+          AccessConstraint::satisfiesConstraintType(a, apos, pathToTp2, constraint,
             pathToTp.appendInverse(path), t)
         )
       }
