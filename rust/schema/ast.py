@@ -180,11 +180,13 @@ class ClosureExpr(Expr, ):
 class Const(AssocItem, Item, ):
     attrs: list["Attr"] | child
     body: optional["Expr"] | child
+    generic_param_list: optional["GenericParamList"] | child
     is_const: predicate
     is_default: predicate
     name: optional["Name"] | child
     type_repr: optional["TypeRepr"] | child
     visibility: optional["Visibility"] | child
+    where_clause: optional["WhereClause"] | child
 
 class ConstArg(GenericArg, ):
     expr: optional["Expr"] | child
