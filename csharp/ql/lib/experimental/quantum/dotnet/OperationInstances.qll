@@ -14,8 +14,6 @@ class ECDsaORRSASigningOperationInstance extends Crypto::SignatureOperationInsta
 
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     result = creator.getAlgorithmArg()
-    or
-    result = super.getHashAlgorithmArg()
   }
 
   override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
@@ -44,4 +42,16 @@ class ECDsaORRSASigningOperationInstance extends Crypto::SignatureOperationInsta
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
     result.asExpr() = super.getSignatureOutput()
   }
+}
+
+class HashOperationInstance extends Crypto::HashOperationInstance instanceof HashUse {
+  HashAlgorithmCreateCall creator;
+
+  HashOperationInstance() { creator = HashCreateToUseFlow::getCreationFromUse(this, _, _) }
+
+  override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() { none() }
+
+  override Crypto::ConsumerInputDataFlowNode getInputConsumer() { none() }
+
+  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() { none() }
 }

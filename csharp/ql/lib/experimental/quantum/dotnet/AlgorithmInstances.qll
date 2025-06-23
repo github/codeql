@@ -4,11 +4,11 @@ private import AlgorithmValueConsumers
 private import Cryptography
 private import FlowAnalysis
 
-class SigningNamedCurveAlgorithmInstance extends Crypto::EllipticCurveInstance instanceof SigningNamedCurvePropertyAccess
+class NamedCurveAlgorithmInstance extends Crypto::EllipticCurveInstance instanceof SigningNamedCurvePropertyAccess
 {
   ECDsaAlgorithmValueConsumer consumer;
 
-  SigningNamedCurveAlgorithmInstance() {
+  NamedCurveAlgorithmInstance() {
     SigningNamedCurveToSignatureCreateFlow::flow(DataFlow::exprNode(this), consumer.getInputNode())
   }
 
@@ -22,6 +22,30 @@ class SigningNamedCurveAlgorithmInstance extends Crypto::EllipticCurveInstance i
 
   override int getKeySize() {
     Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), result, _)
+  }
+}
+
+class EcdsaAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance instanceof ECDsaCreateCall
+{
+  EcdsaAlgorithmInstance() {
+    // SigningNamedCurveToSignatureCreateFlow::flow(DataFlow::exprNode(this), consumer.getInputNode())
+    this instanceof ECDsaCreateCall
+  }
+
+  ECDsaAlgorithmValueConsumer getConsumer() { result = super.getQualifier() }
+
+  override string getRawAlgorithmName() { result = "ECDsa" }
+
+  override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
+
+  // TODO: PaddingAlgorithmInstance errors with "call to empty relation: class test for Model::CryptographyBase::PaddingAlgorithmInstance"
+  override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
+  override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
+
+  override int getKeySizeFixed() { none() }
+
+  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::ECDSA())
   }
 }
 

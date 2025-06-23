@@ -17,9 +17,25 @@ class ECCurve extends CryptographyType {
   ECCurve() { this.hasName("ECCurve") }
 }
 
+class HashAlgorithmType extends CryptographyType {
+  HashAlgorithmType() {
+    this.hasName([
+        "MD5",
+        "RIPEMD160",
+        "SHA1",
+        "SHA256",
+        "SHA384",
+        "SHA512",
+        "SHA3_256",
+        "SHA3_384",
+        "SHA3_512"
+      ])
+  }
+}
+
 // This class models Create calls for the ECDsa and RSA classes in .NET.
-class SigningCreateCall extends MethodCall {
-  SigningCreateCall() {
+class CryptographyCreateCall extends MethodCall {
+  CryptographyCreateCall() {
     this.getTarget().getName() = "Create" and
     this.getQualifier().getType() instanceof CryptographyType
   }
@@ -41,7 +57,7 @@ class SigningCreateCall extends MethodCall {
   }
 }
 
-class ECDsaCreateCall extends SigningCreateCall {
+class ECDsaCreateCall extends CryptographyCreateCall {
   ECDsaCreateCall() { this.getQualifier().getType().hasName("ECDsa") }
 }
 
@@ -54,26 +70,19 @@ class ECDsaCreateCallWithECCurve extends ECDsaCreateCall {
   ECDsaCreateCallWithECCurve() { this.getArgument(0).getType() instanceof ECCurve }
 }
 
-class RSACreateCall extends SigningCreateCall {
+class RSACreateCall extends CryptographyCreateCall {
   RSACreateCall() { this.getQualifier().getType().hasName("RSA") }
 }
 
-class HashAlgorithmCreateCall extends SigningCreateCall {
-  HashAlgorithmCreateCall() {
-    this.getQualifier()
-        .getType()
-        .hasName([
-            "MD5",
-            "RIPEMD160",
-            "SHA1",
-            "SHA256",
-            "SHA384",
-            "SHA512",
-            "SHA3_256",
-            "SHA3_384",
-            "SHA3_512"
-          ])
+class SigningCreateCall extends CryptographyCreateCall {
+  SigningCreateCall() {
+    this instanceof ECDsaCreateCall or
+    this instanceof RSACreateCall
   }
+}
+
+class HashAlgorithmCreateCall extends CryptographyCreateCall {
+  HashAlgorithmCreateCall() { this.getQualifier().getType() instanceof HashAlgorithmType }
 }
 
 class SigningNamedCurvePropertyAccess extends PropertyAccess {
@@ -166,6 +175,13 @@ private class RSAClass extends CryptographyType {
   RSAClass() { this.hasName("RSA") }
 }
 
+private class SignerType extends Type {
+  SignerType() {
+    this instanceof ECDsaClass or
+    this instanceof RSAClass
+  }
+}
+
 class ByteArrayType extends Type {
   ByteArrayType() { this.getName() = "Byte[]" }
 }
@@ -174,8 +190,25 @@ class ReadOnlyByteSpanType extends Type {
   ReadOnlyByteSpanType() { this.getName() = "ReadOnlySpan<Byte>" }
 }
 
+class HashUse extends MethodCall {
+  HashUse() {
+    this.getQualifier().getType() instanceof HashAlgorithmType and
+    this.getTarget()
+        .getName()
+        .matches([
+            "ComputeHash", "ComputeHashAsync", "HashCore", "HashData", "HashDataAsync",
+            "TransformBlock", "TransformFinalBlock", "TryComputeHash", "TryHashData", "TryHashFinal"
+          ])
+  }
+
+  predicate isIntermediate() { this.getTarget().hasName("HashCore") }
+}
+
 class SignerUse extends MethodCall {
-  SignerUse() { this.getTarget().getName().matches(["Verify%", "Sign%"]) }
+  SignerUse() {
+    this.getTarget().getName().matches(["Verify%", "Sign%"]) and
+    this.getQualifier().getType() instanceof SignerType
+  }
 
   Expr getMessageArg() {
     // Both Sign and Verify methods take the message as the first argument.

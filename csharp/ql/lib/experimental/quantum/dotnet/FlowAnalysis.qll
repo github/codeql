@@ -34,6 +34,8 @@ signature class UseCallSig instanceof QualifiableExpr {
 
 module SigningCreateToUseFlow = CreationToUseFlow<SigningCreateCall, SignerUse>;
 
+module HashCreateToUseFlow = CreationToUseFlow<HashAlgorithmCreateCall, HashUse>;
+
 module CreationToUseFlow<CreationCallSig Creation, UseCallSig Use> {
   private module CreationToUseConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {

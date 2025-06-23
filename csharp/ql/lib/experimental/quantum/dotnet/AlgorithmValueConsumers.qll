@@ -11,7 +11,7 @@ class ECDsaAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
   override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
 
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-    exists(SigningNamedCurveAlgorithmInstance l | l.getConsumer() = this and result = l)
+    exists(NamedCurveAlgorithmInstance l | l.getConsumer() = this and result = l)
   }
 }
 
