@@ -9,8 +9,6 @@ query predicate getInstanceMethod(ReactComponent c, string n, Function res) {
   res = c.getInstanceMethod(n)
 }
 
-query predicate reactLibraryRef(DataFlow::ValueNode nd) { react().flowsTo(nd) }
-
 query predicate getAPreviousStateSource(ReactComponent c, DataFlow::SourceNode res) {
   res = c.getAPreviousStateSource()
 }
