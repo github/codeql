@@ -1,45 +1,41 @@
 import javascript
 import semmle.javascript.frameworks.React
 
-query predicate test_getADirectStateAccess(ReactComponent c, DataFlow::SourceNode res) {
+query predicate getADirectStateAccess(ReactComponent c, DataFlow::SourceNode res) {
   res = c.getADirectStateAccess()
 }
 
-query predicate test_ReactComponent_getInstanceMethod(ReactComponent c, string n, Function res) {
+query predicate getInstanceMethod(ReactComponent c, string n, Function res) {
   res = c.getInstanceMethod(n)
 }
 
-query predicate test_react(DataFlow::ValueNode nd) { react().flowsTo(nd) }
+query predicate reactLibraryRef(DataFlow::ValueNode nd) { react().flowsTo(nd) }
 
-query predicate test_ReactComponent_getAPreviousStateSource(
-  ReactComponent c, DataFlow::SourceNode res
-) {
+query predicate getAPreviousStateSource(ReactComponent c, DataFlow::SourceNode res) {
   res = c.getAPreviousStateSource()
 }
 
-query predicate test_ReactComponent_ref(ReactComponent c, DataFlow::Node res) { res = c.ref() }
+query predicate reactComponentRef(ReactComponent c, DataFlow::Node res) { res = c.ref() }
 
-query predicate test_ReactComponent_getACandidateStateSource(
-  ReactComponent c, DataFlow::SourceNode res
-) {
+query predicate getACandidateStateSource(ReactComponent c, DataFlow::SourceNode res) {
   res = c.getACandidateStateSource()
 }
 
-query predicate test_ReactComponent_getADirectPropsSource(ReactComponent c, DataFlow::SourceNode res) {
+query predicate getADirectPropsSource(ReactComponent c, DataFlow::SourceNode res) {
   res = c.getADirectPropsAccess()
 }
 
-query predicate test_ReactComponent_getACandidatePropsValue(DataFlow::Node res) {
+query predicate getACandidatePropsValue(DataFlow::Node res) {
   exists(ReactComponent c | res = c.getACandidatePropsValue(_))
 }
 
-query predicate test_ReactComponent(ReactComponent c) { any() }
+query predicate reactComponent(ReactComponent c) { any() }
 
-query predicate test_ReactComponent_getAPropRead(ReactComponent c, string n, DataFlow::PropRead res) {
+query predicate getAPropRead(ReactComponent c, string n, DataFlow::PropRead res) {
   res = c.getAPropRead(n)
 }
 
-query predicate test_JSXname(JsxElement element, JsxName jsxname, string name, string type) {
+query predicate jsxName(JsxElement element, JsxName jsxname, string name, string type) {
   name = jsxname.getValue() and
   (
     jsxname instanceof Identifier and type = "Identifier"
@@ -53,7 +49,7 @@ query predicate test_JSXname(JsxElement element, JsxName jsxname, string name, s
   element.getNameExpr() = jsxname
 }
 
-query ThisExpr test_JsxName_this(JsxElement element) { result.getParentExpr+() = element }
+query ThisExpr jsxNameThis(JsxElement element) { result.getParentExpr+() = element }
 
 query DataFlow::SourceNode locationSource() { result = DOM::locationSource() }
 
