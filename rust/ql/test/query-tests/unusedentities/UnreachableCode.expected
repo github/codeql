@@ -1,4 +1,3 @@
-#select
 | unreachable.rs:19:9:19:23 | ExprStmt | This code is never reached. |
 | unreachable.rs:27:9:27:23 | ExprStmt | This code is never reached. |
 | unreachable.rs:39:9:39:23 | ExprStmt | This code is never reached. |
@@ -7,6 +6,8 @@
 | unreachable.rs:134:13:134:20 | MacroExpr | This code is never reached. |
 | unreachable.rs:143:13:143:20 | MacroExpr | This code is never reached. |
 | unreachable.rs:166:9:166:23 | ExprStmt | This code is never reached. |
+| unreachable.rs:171:9:171:17 | MacroExpr | This code is never reached. |
+| unreachable.rs:177:9:177:26 | MacroExpr | This code is never reached. |
 | unreachable.rs:206:9:206:23 | ExprStmt | This code is never reached. |
 | unreachable.rs:231:13:231:27 | ExprStmt | This code is never reached. |
 | unreachable.rs:241:13:241:27 | ExprStmt | This code is never reached. |
@@ -20,6 +21,3 @@
 | unreachable.rs:370:9:370:23 | ExprStmt | This code is never reached. |
 | unreachable.rs:375:5:375:10 | ExprStmt | This code is never reached. |
 | unreachable.rs:382:5:382:10 | ExprStmt | This code is never reached. |
-testFailures
-| unreachable.rs:171:20:171:55 | //... | Fixed spurious result: Alert[rust/dead-code] |
-| unreachable.rs:177:29:177:64 | //... | Fixed spurious result: Alert[rust/dead-code] |

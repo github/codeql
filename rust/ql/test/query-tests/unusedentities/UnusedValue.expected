@@ -1,23 +1,21 @@
-#select
 | main.rs:10:9:10:9 | a | Variable $@ is assigned a value that is never used. | main.rs:10:9:10:9 | a | a |
 | main.rs:13:9:13:9 | d | Variable $@ is assigned a value that is never used. | main.rs:13:9:13:9 | d | d |
+| main.rs:39:5:39:5 | b | Variable $@ is assigned a value that is never used. | main.rs:30:9:30:9 | b | b |
+| main.rs:41:5:41:5 | c | Variable $@ is assigned a value that is never used. | main.rs:31:13:31:13 | c | c |
+| main.rs:44:5:44:5 | c | Variable $@ is assigned a value that is never used. | main.rs:31:13:31:13 | c | c |
+| main.rs:48:9:48:9 | d | Variable $@ is assigned a value that is never used. | main.rs:32:13:32:13 | d | d |
+| main.rs:54:5:54:5 | e | Variable $@ is assigned a value that is never used. | main.rs:33:13:33:13 | e | e |
+| main.rs:65:5:65:5 | f | Variable $@ is assigned a value that is never used. | main.rs:34:13:34:13 | f | f |
+| main.rs:67:5:67:5 | f | Variable $@ is assigned a value that is never used. | main.rs:34:13:34:13 | f | f |
+| main.rs:69:5:69:5 | g | Variable $@ is assigned a value that is never used. | main.rs:35:9:35:9 | g | g |
+| main.rs:95:9:95:9 | a | Variable $@ is assigned a value that is never used. | main.rs:95:9:95:9 | a | a |
+| main.rs:116:9:116:10 | is | Variable $@ is assigned a value that is never used. | main.rs:116:9:116:10 | is | is |
 | main.rs:139:13:139:17 | total | Variable $@ is assigned a value that is never used. | main.rs:139:13:139:17 | total | total |
+| main.rs:284:13:284:17 | total | Variable $@ is assigned a value that is never used. | main.rs:252:13:252:17 | total | total |
 | main.rs:377:9:377:9 | x | Variable $@ is assigned a value that is never used. | main.rs:377:9:377:9 | x | x |
 | main.rs:385:17:385:17 | x | Variable $@ is assigned a value that is never used. | main.rs:385:17:385:17 | x | x |
+| main.rs:531:9:531:20 | var_in_macro | Variable $@ is assigned a value that is never used. | main.rs:531:9:531:20 | var_in_macro | var_in_macro |
+| main.rs:540:9:540:9 | c | Variable $@ is assigned a value that is never used. | main.rs:540:9:540:9 | c | c |
 | more.rs:44:9:44:14 | a_ptr4 | Variable $@ is assigned a value that is never used. | more.rs:44:9:44:14 | a_ptr4 | a_ptr4 |
 | more.rs:59:9:59:13 | d_ptr | Variable $@ is assigned a value that is never used. | more.rs:59:9:59:13 | d_ptr | d_ptr |
 | more.rs:65:13:65:17 | f_ptr | Variable $@ is assigned a value that is never used. | more.rs:65:13:65:17 | f_ptr | f_ptr |
-testFailures
-| main.rs:39:12:39:40 | //... | Missing result: Alert[rust/unused-value] |
-| main.rs:41:12:41:40 | //... | Missing result: Alert[rust/unused-value] |
-| main.rs:44:12:44:40 | //... | Missing result: Alert[rust/unused-value] |
-| main.rs:48:16:48:44 | //... | Missing result: Alert[rust/unused-value] |
-| main.rs:54:12:54:40 | //... | Missing result: Alert[rust/unused-value] |
-| main.rs:65:13:65:41 | //... | Missing result: Alert[rust/unused-value] |
-| main.rs:67:13:67:41 | //... | Missing result: Alert[rust/unused-value] |
-| main.rs:69:37:69:65 | //... | Missing result: Alert[rust/unused-value] |
-| main.rs:95:34:95:62 | //... | Missing result: Alert[rust/unused-value] |
-| main.rs:116:25:116:53 | //... | Missing result: Alert[rust/unused-value] |
-| main.rs:284:27:284:55 | //... | Missing result: Alert[rust/unused-value] |
-| main.rs:531:27:531:65 | //... | Fixed spurious result: Alert[rust/unused-value] |
-| main.rs:540:17:540:45 | //... | Missing result: Alert[rust/unused-value] |

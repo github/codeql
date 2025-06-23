@@ -1,6 +1,4 @@
 testFailures
-| main.rs:594:28:594:56 | //... | Missing result: read_access=var_in_macro |
-| main.rs:600:46:600:121 | //... | Fixed spurious result: read_access=var_in_macro |
 variable
 | main.rs:3:14:3:14 | s |
 | main.rs:7:14:7:14 | i |
@@ -114,7 +112,9 @@ variable
 | main.rs:562:15:562:18 | self |
 | main.rs:568:11:568:11 | a |
 | main.rs:593:9:593:22 | var_from_macro |
+| main.rs:594:9:594:25 | var_in_macro |
 | main.rs:596:9:596:20 | var_in_macro |
+| main.rs:600:15:600:42 | var_in_macro |
 variableAccess
 | main.rs:4:20:4:20 | s | main.rs:3:14:3:14 | s |
 | main.rs:8:20:8:20 | i | main.rs:7:14:7:14 | i |
@@ -291,7 +291,9 @@ variableAccess
 | main.rs:563:6:563:9 | self | main.rs:562:15:562:18 | self |
 | main.rs:569:3:569:3 | a | main.rs:568:11:568:11 | a |
 | main.rs:571:13:571:13 | a | main.rs:568:11:568:11 | a |
+| main.rs:594:9:594:25 | var_in_macro | main.rs:594:9:594:25 | var_in_macro |
 | main.rs:595:15:595:28 | var_from_macro | main.rs:593:9:593:22 | var_from_macro |
+| main.rs:600:30:600:41 | var_in_macro | main.rs:600:15:600:42 | var_in_macro |
 | main.rs:601:15:601:26 | var_in_macro | main.rs:596:9:596:20 | var_in_macro |
 variableWriteAccess
 | main.rs:23:5:23:6 | x2 | main.rs:21:13:21:14 | x2 |
@@ -459,7 +461,9 @@ variableReadAccess
 | main.rs:563:6:563:9 | self | main.rs:562:15:562:18 | self |
 | main.rs:569:3:569:3 | a | main.rs:568:11:568:11 | a |
 | main.rs:571:13:571:13 | a | main.rs:568:11:568:11 | a |
+| main.rs:594:9:594:25 | var_in_macro | main.rs:594:9:594:25 | var_in_macro |
 | main.rs:595:15:595:28 | var_from_macro | main.rs:593:9:593:22 | var_from_macro |
+| main.rs:600:30:600:41 | var_in_macro | main.rs:600:15:600:42 | var_in_macro |
 | main.rs:601:15:601:26 | var_in_macro | main.rs:596:9:596:20 | var_in_macro |
 variableInitializer
 | main.rs:16:9:16:10 | x1 | main.rs:16:14:16:16 | "a" |
@@ -517,7 +521,9 @@ variableInitializer
 | main.rs:553:9:553:9 | z | main.rs:553:13:553:14 | 17 |
 | main.rs:568:11:568:11 | a | main.rs:568:15:568:33 | MyStruct {...} |
 | main.rs:593:9:593:22 | var_from_macro | main.rs:594:9:594:25 | MacroExpr |
+| main.rs:594:9:594:25 | var_in_macro | main.rs:594:23:594:24 | 37 |
 | main.rs:596:9:596:20 | var_in_macro | main.rs:596:24:596:25 | 33 |
+| main.rs:600:15:600:42 | var_in_macro | main.rs:600:15:600:42 | 0 |
 capturedVariable
 | main.rs:430:9:430:9 | x |
 | main.rs:440:13:440:13 | x |

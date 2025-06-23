@@ -1,12 +1,1 @@
-| test.rs:63:27:63:57 | //... | Missing result: hasTaintFlow="example.com" |
-| test.rs:66:27:66:57 | //... | Missing result: hasTaintFlow="example.com" |
-| test.rs:69:27:69:57 | //... | Missing result: hasTaintFlow="example.com" |
-| test.rs:72:27:72:57 | //... | Missing result: hasTaintFlow="example.com" |
-| test.rs:75:27:75:57 | //... | Missing result: hasTaintFlow="example.com" |
-| test.rs:78:27:78:57 | //... | Missing result: hasTaintFlow="example.com" |
-| test.rs:81:45:81:75 | //... | Missing result: hasTaintFlow="example.com" |
-| test.rs:365:22:365:38 | //... | Missing result: hasTaintFlow |
-| test.rs:686:25:686:49 | //... | Missing result: hasTaintFlow=address |
-| test.rs:687:27:687:51 | //... | Missing result: hasTaintFlow=address |
-| test.rs:706:36:706:60 | //... | Missing result: hasTaintFlow=address |
-| test.rs:729:36:729:60 | //... | Missing result: hasTaintFlow=address |
+

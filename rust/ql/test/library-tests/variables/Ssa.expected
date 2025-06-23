@@ -161,7 +161,9 @@ definition
 | main.rs:568:11:568:11 | a | main.rs:568:11:568:11 | a |
 | main.rs:569:3:569:3 | a | main.rs:568:11:568:11 | a |
 | main.rs:593:9:593:22 | var_from_macro | main.rs:593:9:593:22 | var_from_macro |
+| main.rs:594:9:594:25 | var_in_macro | main.rs:594:9:594:25 | var_in_macro |
 | main.rs:596:9:596:20 | var_in_macro | main.rs:596:9:596:20 | var_in_macro |
+| main.rs:600:15:600:42 | var_in_macro | main.rs:600:15:600:42 | var_in_macro |
 read
 | main.rs:3:14:3:14 | s | main.rs:3:14:3:14 | s | main.rs:4:20:4:20 | s |
 | main.rs:7:14:7:14 | i | main.rs:7:14:7:14 | i | main.rs:8:20:8:20 | i |
@@ -327,7 +329,9 @@ read
 | main.rs:568:11:568:11 | a | main.rs:568:11:568:11 | a | main.rs:569:3:569:3 | a |
 | main.rs:569:3:569:3 | a | main.rs:568:11:568:11 | a | main.rs:571:13:571:13 | a |
 | main.rs:593:9:593:22 | var_from_macro | main.rs:593:9:593:22 | var_from_macro | main.rs:595:15:595:28 | var_from_macro |
+| main.rs:594:9:594:25 | var_in_macro | main.rs:594:9:594:25 | var_in_macro | main.rs:594:9:594:25 | var_in_macro |
 | main.rs:596:9:596:20 | var_in_macro | main.rs:596:9:596:20 | var_in_macro | main.rs:601:15:601:26 | var_in_macro |
+| main.rs:600:15:600:42 | var_in_macro | main.rs:600:15:600:42 | var_in_macro | main.rs:600:30:600:41 | var_in_macro |
 firstRead
 | main.rs:3:14:3:14 | s | main.rs:3:14:3:14 | s | main.rs:4:20:4:20 | s |
 | main.rs:7:14:7:14 | i | main.rs:7:14:7:14 | i | main.rs:8:20:8:20 | i |
@@ -463,7 +467,9 @@ firstRead
 | main.rs:568:11:568:11 | a | main.rs:568:11:568:11 | a | main.rs:569:3:569:3 | a |
 | main.rs:569:3:569:3 | a | main.rs:568:11:568:11 | a | main.rs:571:13:571:13 | a |
 | main.rs:593:9:593:22 | var_from_macro | main.rs:593:9:593:22 | var_from_macro | main.rs:595:15:595:28 | var_from_macro |
+| main.rs:594:9:594:25 | var_in_macro | main.rs:594:9:594:25 | var_in_macro | main.rs:594:9:594:25 | var_in_macro |
 | main.rs:596:9:596:20 | var_in_macro | main.rs:596:9:596:20 | var_in_macro | main.rs:601:15:601:26 | var_in_macro |
+| main.rs:600:15:600:42 | var_in_macro | main.rs:600:15:600:42 | var_in_macro | main.rs:600:30:600:41 | var_in_macro |
 adjacentReads
 | main.rs:35:9:35:10 | x3 | main.rs:35:9:35:10 | x3 | main.rs:36:15:36:16 | x3 | main.rs:38:9:38:10 | x3 |
 | main.rs:43:9:43:10 | x4 | main.rs:43:9:43:10 | x4 | main.rs:44:15:44:16 | x4 | main.rs:49:15:49:16 | x4 |
@@ -632,4 +638,6 @@ assigns
 | main.rs:553:9:553:9 | z | main.rs:553:13:553:14 | 17 |
 | main.rs:568:11:568:11 | a | main.rs:568:15:568:33 | MyStruct {...} |
 | main.rs:593:9:593:22 | var_from_macro | main.rs:594:9:594:25 | MacroExpr |
+| main.rs:594:9:594:25 | var_in_macro | main.rs:594:23:594:24 | 37 |
 | main.rs:596:9:596:20 | var_in_macro | main.rs:596:24:596:25 | 33 |
+| main.rs:600:15:600:42 | var_in_macro | main.rs:600:15:600:42 | 0 |

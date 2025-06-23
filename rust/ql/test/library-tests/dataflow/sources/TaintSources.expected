@@ -78,9 +78,15 @@
 | test.rs:753:22:753:49 | ...::connect | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:779:22:779:50 | ...::new | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:806:16:806:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:806:16:806:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
 | test_futures_io.rs:19:15:19:32 | ...::connect | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | web_frameworks.rs:11:31:11:31 | a | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| web_frameworks.rs:11:31:11:31 | a | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| web_frameworks.rs:22:14:22:18 | TuplePat | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | web_frameworks.rs:22:14:22:19 | TuplePat | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| web_frameworks.rs:48:14:48:28 | MyStruct {...} | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | web_frameworks.rs:48:14:48:30 | MyStruct {...} | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | web_frameworks.rs:58:14:58:15 | ms | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| web_frameworks.rs:58:14:58:15 | ms | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| web_frameworks.rs:68:15:68:15 | a | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | web_frameworks.rs:68:15:68:15 | a | Flow source 'RemoteSource' of type remote (DEFAULT). |

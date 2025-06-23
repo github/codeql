@@ -1321,6 +1321,11 @@ edges
 | test.rs:541:9:546:9 | ExprStmt | test.rs:541:12:541:16 | false |  |
 | test.rs:541:9:546:9 | if false {...} | test.rs:547:9:547:9 | N |  |
 | test.rs:541:12:541:16 | false | test.rs:541:9:546:9 | if false {...} | false |
+| test.rs:544:17:544:24 | ...::panic_explicit | test.rs:544:17:544:24 | ...::panic_explicit(...) |  |
+| test.rs:544:17:544:24 | ...::panic_explicit(...) | test.rs:544:17:544:24 | { ... } |  |
+| test.rs:544:17:544:24 | enter fn panic_cold_explicit | test.rs:544:17:544:24 | ...::panic_explicit |  |
+| test.rs:544:17:544:24 | exit fn panic_cold_explicit (normal) | test.rs:544:17:544:24 | exit fn panic_cold_explicit |  |
+| test.rs:544:17:544:24 | { ... } | test.rs:544:17:544:24 | exit fn panic_cold_explicit (normal) |  |
 | test.rs:547:9:547:9 | N | test.rs:539:35:548:5 | { ... } |  |
 | test.rs:551:1:556:1 | enter fn dead_code | test.rs:552:5:554:5 | ExprStmt |  |
 | test.rs:551:1:556:1 | exit fn dead_code (normal) | test.rs:551:1:556:1 | exit fn dead_code |  |
