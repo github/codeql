@@ -3444,8 +3444,3 @@ dependencies = [
  "cc",
  "pkg-config",
 ]
-
-[[patch.unused]]
-name = "rustc_apfloat"
-version = "0.2.2+llvm-462a31f5a5ab"
-source = "git+https://github.com/redsun82/rustc_apfloat.git?rev=32968f16ef1b082243f9bf43a3fbd65c381b3e27#32968f16ef1b082243f9bf43a3fbd65c381b3e27"
