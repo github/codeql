@@ -85,10 +85,10 @@ class HashAlgorithmCreateCall extends CryptographyCreateCall {
   HashAlgorithmCreateCall() { this.getQualifier().getType() instanceof HashAlgorithmType }
 }
 
-class SigningNamedCurvePropertyAccess extends PropertyAccess {
+class NamedCurvePropertyAccess extends PropertyAccess {
   string curveName;
 
-  SigningNamedCurvePropertyAccess() {
+  NamedCurvePropertyAccess() {
     super.getType().getName() = "ECCurve" and
     eccurveNameMapping(super.getProperty().toString().toUpperCase(), curveName)
   }

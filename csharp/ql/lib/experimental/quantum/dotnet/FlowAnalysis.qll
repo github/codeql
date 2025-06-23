@@ -10,8 +10,6 @@ signature class UseCallSig instanceof QualifiableExpr {
   predicate isIntermediate();
 }
 
-
-
 module CreationToUseFlow<CreationCallSig Creation, UseCallSig Use> {
   private module CreationToUseConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
@@ -68,10 +66,10 @@ module CreationToUseFlow<CreationCallSig Creation, UseCallSig Use> {
  * Flow from a known ECDsa property access to a `ECDsa.Create(sink)` call.
  */
 module SigningNamedCurveToSignatureCreateFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SigningNamedCurvePropertyAccess }
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof NamedCurvePropertyAccess }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(ECDsaAlgorithmValueConsumer consumer | sink = consumer.getInputNode())
+    exists(EcdsaAlgorithmValueConsumer consumer | sink = consumer.getInputNode())
   }
 }
 

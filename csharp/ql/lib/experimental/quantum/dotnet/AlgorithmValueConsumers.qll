@@ -4,15 +4,15 @@ private import AlgorithmInstances
 private import OperationInstances
 private import Cryptography
 
-class ECDsaAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
+class EcdsaAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
   ECDsaCreateCall call;
 
-  ECDsaAlgorithmValueConsumer() { this = call.getAlgorithmArg() }
+  EcdsaAlgorithmValueConsumer() { this = call.getAlgorithmArg() }
 
   override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
 
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-    exists(NamedCurveAlgorithmInstance l | l.getConsumer() = this and result = l)
+    exists(EcdsaAlgorithmInstance l | l.getConsumer() = this and result = l)
   }
 }
 

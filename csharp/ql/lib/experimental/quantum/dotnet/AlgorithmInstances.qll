@@ -5,15 +5,9 @@ private import OperationInstances
 private import Cryptography
 private import FlowAnalysis
 
-class NamedCurveAlgorithmInstance extends Crypto::EllipticCurveInstance instanceof SigningNamedCurvePropertyAccess
+class NamedCurveAlgorithmInstance extends Crypto::EllipticCurveInstance instanceof NamedCurvePropertyAccess
 {
-  ECDsaAlgorithmValueConsumer consumer;
-
-  NamedCurveAlgorithmInstance() {
-    SigningNamedCurveToSignatureCreateFlow::flow(DataFlow::exprNode(this), consumer.getInputNode())
-  }
-
-  ECDsaAlgorithmValueConsumer getConsumer() { result = consumer }
+  NamedCurveAlgorithmInstance() { this instanceof NamedCurvePropertyAccess }
 
   override string getRawEllipticCurveName() { result = super.getCurveName() }
 
@@ -26,27 +20,37 @@ class NamedCurveAlgorithmInstance extends Crypto::EllipticCurveInstance instance
   }
 }
 
-class EcdsaAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance instanceof ECDsaCreateCall
-{
-  EcdsaAlgorithmInstance() {
-    // SigningNamedCurveToSignatureCreateFlow::flow(DataFlow::exprNode(this), consumer.getInputNode())
-    this instanceof ECDsaCreateCall
-  }
+abstract class SigningAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance {
+  override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
 
-  ECDsaAlgorithmValueConsumer getConsumer() { result = super.getQualifier() }
+  override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
+
+  override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
+
+
+  override int getKeySizeFixed() { none() }
+}
+
+class EcdsaAlgorithmInstance extends SigningAlgorithmInstance instanceof SigningCreateCall {
+  EcdsaAlgorithmInstance() { this instanceof ECDsaCreateCall }
+
+  EcdsaAlgorithmValueConsumer getConsumer() { result = super.getQualifier() }
 
   override string getRawAlgorithmName() { result = "ECDsa" }
 
-  override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
-
-  // TODO: PaddingAlgorithmInstance errors with "call to empty relation: class test for Model::CryptographyBase::PaddingAlgorithmInstance"
-  override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
-  override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
-
-  override int getKeySizeFixed() { none() }
-
   override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
     result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::ECDSA())
+  }
+}
+
+class RsaAlgorithmInstance extends SigningAlgorithmInstance {
+  RsaAlgorithmInstance() { this = any(RSACreateCall c).getQualifier() }
+
+  override string getRawAlgorithmName() { result = "RSA" }
+
+  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    // TODO there is no RSA TSignature type, so we use OtherSignatureAlgorithmType
+    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::OtherSignatureAlgorithmType())
   }
 }
 
