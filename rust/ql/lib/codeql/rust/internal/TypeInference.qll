@@ -1152,10 +1152,9 @@ private Type inferForLoopExprType(AstNode n, TypePath path) {
       or
       iterablePath.isCons(any(ArrayTypeParameter tp), path)
       or
-      exists(TypePath path0 |
-        iterablePath.isCons(any(RefTypeParameter tp), path0) and
-        path0.isCons(any(SliceTypeParameter tp), path)
-      )
+      iterablePath
+          .stripPrefix(TypePath::cons(TRefTypeParameter(),
+              TypePath::singleton(any(SliceTypeParameter tp)))) = path
       // TODO: iterables (general case for containers, ranges etc)
     )
   )
