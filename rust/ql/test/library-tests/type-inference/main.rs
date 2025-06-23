@@ -1914,23 +1914,23 @@ mod loops {
         for s in &mut strings1 {} // $ MISSING: type=s:&T.str
         for s in strings1 {} // $ type=s:str
 
-        let strings2 = [
+        let strings2 = [ // $ type=strings2:[T;...].String
             String::from("foo"),
             String::from("bar"),
             String::from("baz"),
-        ]; // $ type=strings2:[T;...].String
+        ];
         for s in strings2 {} // $ type=s:String
 
-        let strings3 = &[
+        let strings3 = &[ // $ type=strings3:&T.[T;...].String
             String::from("foo"),
             String::from("bar"),
             String::from("baz"),
-        ]; // $ type=strings3:&T.[T;...].String
+        ];
         for s in strings3 {} // $ MISSING: type=s:String
 
         let callables = [MyCallable::new(), MyCallable::new(), MyCallable::new()]; // $ MISSING: type=callables:[T;...].MyCallable; 3
-        for c in callables {
-            // $ type=c:MyCallable
+        for c in callables // $ type=c:MyCallable
+        {
             let result = c.call(); // $ type=result:i64 method=call
         }
 
@@ -1941,10 +1941,10 @@ mod loops {
         let range = 0..10; // $ MISSING: type=range:Range type=range:Idx.i32
         for i in range {} // $ MISSING: type=i:i32
 
-        let range1 = std::ops::Range {
+        let range1 = std::ops::Range { // $ type=range1:Range type=range1:Idx.u16
             start: 0u16,
             end: 10u16,
-        }; // $ type=range1:Range type=range1:Idx.u16
+        };
         for u in range1 {} // $ MISSING: type=u:u16
 
         // for loops with containers
@@ -1986,8 +1986,8 @@ mod loops {
         // while loops
 
         let mut a: i64 = 0; // $ type=a:i64
-        while a < 10 {
-            // $ method=lt type=a:i64
+        while a < 10 // $ method=lt type=a:i64
+        {
             a += 1; // $ type=a:i64 method=add_assign
         }
     }

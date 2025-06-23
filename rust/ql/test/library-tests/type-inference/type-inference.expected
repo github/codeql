@@ -3004,11 +3004,3 @@ inferType
 | main.rs:1999:41:1999:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
 | main.rs:2015:5:2015:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
 testFailures
-| main.rs:1921:12:1921:44 | //... | Missing result: type=strings2:[T;...].String |
-| main.rs:1928:12:1928:47 | //... | Missing result: type=strings3:&T.[T;...].String |
-| main.rs:1933:13:1933:34 | //... | Missing result: type=c:MyCallable |
-| main.rs:1947:12:1947:53 | //... | Missing result: type=range1:Idx.u16 |
-| main.rs:1947:12:1947:53 | //... | Missing result: type=range1:Range |
-| main.rs:1989:15:1989:20 | ... < ... | Unexpected result: method=lt |
-| main.rs:1990:13:1990:37 | //... | Missing result: method=lt |
-| main.rs:1990:13:1990:37 | //... | Missing result: type=a:i64 |
