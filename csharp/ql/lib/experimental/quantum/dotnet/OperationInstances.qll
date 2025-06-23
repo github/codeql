@@ -74,7 +74,7 @@ class SymmetricAlgorithmUse extends QualifiableExpr {
   SymmetricAlgorithmUse() {
     this.getQualifier().getType() instanceof SymmetricAlgorithm and
     this.getQualifiedDeclaration()
-        .hasName(["CreateEncryptor", "CreateDecryptor", "Key", "IV", "Padding"])
+        .hasName(["CreateEncryptor", "CreateDecryptor", "Key", "IV", "Padding", "Mode"])
   }
 
   Expr getSymmetricAlgorithm() { result = this.getQualifier() }
@@ -96,6 +96,11 @@ class SymmetricAlgorithmUse extends QualifiableExpr {
   // The padding mode may be set by assigning it to the `Padding` property of the symmetric algorithm.
   predicate isPaddingConsumer() {
     this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "Padding"
+  }
+
+  // The cipher mode may be set by assigning it to the `Mode` property of the symmetric algorithm.
+  predicate isModeConsumer() {
+    this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "Mode"
   }
 }
 
@@ -148,6 +153,12 @@ class PaddingMode extends MemberConstant {
   }
 }
 
+class CipherMode extends MemberConstant {
+  CipherMode() {
+    this.getDeclaringType().hasFullyQualifiedName("System.Security.Cryptography", "CipherMode")
+  }
+}
+
 class CryptoStreamCreation extends ObjectCreation {
   CryptoStreamCreation() { this.getObjectType() instanceof CryptoStream }
 
@@ -197,7 +208,7 @@ class CryptoStreamOperationInstance extends Crypto::KeyOperationInstance instanc
     (transform.isEncryptor() or transform.isDecryptor())
   }
 
-  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() { none() }
+  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() { result = transform }
 
   override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
     if transform.isEncryptor()
@@ -232,14 +243,21 @@ class CryptoStreamOperationInstance extends Crypto::KeyOperationInstance instanc
     )
   }
 
-  // Inputs to the operation can be passed either through the stream argument
-  // when the `CryptoStream` is created, or through calls to
-  // `CryptoStream.Write()`. If the input is passed through the stream argument,
-  // it is wrapped using a `MemoryStream` object.
+  // Inputs can be passed either through the `stream` argument when the
+  // `CryptoStream` is created, or through calls to `Write()` on the
+  // `CryptoStream` object.
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
-    result.asExpr() = MemoryStreamFlow::getCreationFromUse(this, _, _).getBufferArg() or
+    result.asExpr() = StreamFlow::getWrappedStream(this, _, _).getInputArg() or
     result.asExpr() = CryptoStreamFlow::getUseFromCreation(this, _, _).getInputArg()
   }
 
-  override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() { none() }
+  // The output is obtained by calling `ToArray()` on a `Stream` either wrapped
+  // by the `CryptoStream` object, or copied from the `CryptoStream` object.
+  override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
+    // We perform backwards dataflow to identify stream objects that are wrapped
+    // by the `CryptoStream` object, and then we look for calls to `ToArray()`
+    // on those streams.
+    result.asExpr() =
+      StreamFlow::getStreamUse(any(StreamFlow::getWrappedStream(this, _, _)), _, _).getOutput()
+  }
 }

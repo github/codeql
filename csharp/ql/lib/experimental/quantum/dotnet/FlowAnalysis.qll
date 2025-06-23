@@ -31,7 +31,7 @@ module CreationToUseFlow<CreationCallSig Creation, UseCallSig Use> {
     Use use, CreationToUseFlow::PathNode source, CreationToUseFlow::PathNode sink
   ) {
     source.getNode().asExpr() = result and
-    sink.getNode().asExpr() = use.(MethodCall).getQualifier() and
+    sink.getNode().asExpr() = use.(QualifiableExpr).getQualifier() and
     CreationToUseFlow::flowPath(source, sink)
   }
 
@@ -39,7 +39,7 @@ module CreationToUseFlow<CreationCallSig Creation, UseCallSig Use> {
     Creation creation, CreationToUseFlow::PathNode source, CreationToUseFlow::PathNode sink
   ) {
     source.getNode().asExpr() = creation and
-    sink.getNode().asExpr() = result.(MethodCall).getQualifier() and
+    sink.getNode().asExpr() = result.(QualifiableExpr).getQualifier() and
     CreationToUseFlow::flowPath(source, sink)
   }
 
@@ -143,7 +143,9 @@ module CryptoTransformFlow {
 /**
  * A flow analysis module that tracks the flow from a `PaddingMode` member
  * access (e.g. `PaddingMode.PKCS7`) to a `Padding` property write on a
- * `SymmetricAlgorithm` instance.
+ * `SymmetricAlgorithm` instance, or from a `CipherMode` member access
+ * (e.g. `CipherMode.CBC`) to a `Mode` property write on a `SymmetricAlgorithm`
+ * instance.
  *
  * Example:
  * ```
@@ -152,13 +154,18 @@ module CryptoTransformFlow {
  *  ...
  * ```
  */
-module PaddingModeLiteralFlow {
-  private module PaddingModeLiteralConfig implements DataFlow::ConfigSig {
+module ModeLiteralFlow {
+  private module ModeLiteralConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
       source.asExpr() = any(PaddingMode mode).getAnAccess()
+      or
+      source.asExpr() = any(CipherMode mode).getAnAccess()
     }
 
-    predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof PaddingPropertyWrite }
+    predicate isSink(DataFlow::Node sink) {
+      sink.asExpr() instanceof PaddingPropertyWrite or
+      sink.asExpr() instanceof CipherModePropertyWrite
+    }
 
     // TODO: Figure out why this is needed.
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -169,51 +176,96 @@ module PaddingModeLiteralFlow {
     }
   }
 
-  private module PaddingModeLiteralFlow = DataFlow::Global<PaddingModeLiteralConfig>;
+  private module ModeLiteralFlow = DataFlow::Global<ModeLiteralConfig>;
 
   SymmetricAlgorithmUse getConsumer(
-    Expr mode, PaddingModeLiteralFlow::PathNode source, PaddingModeLiteralFlow::PathNode sink
+    Expr mode, ModeLiteralFlow::PathNode source, ModeLiteralFlow::PathNode sink
   ) {
     source.getNode().asExpr() = mode and
     sink.getNode().asExpr() = result and
-    PaddingModeLiteralFlow::flowPath(source, sink)
+    ModeLiteralFlow::flowPath(source, sink)
   }
 }
 
 /**
- * A flow analysis module that tracks the flow from a `MemoryStream` object
- * creation to the `stream` argument passed to a `CryptoStream` constructor
- * call.
+ * A flow analysis module that tracks the flow from an arbitrary `Stream` object
+ * creation to the creation of a second `Stream` object wrapping the first one.
  *
- * TODO: This should probably be made generic over multiple stream types.
+ * This is useful for tracking the flow of data from a buffer passed to a
+ * `MemoryStream` to a `CryptoStream` wrapping the original `MemoryStream`. It
+ * can also be used to track dataflow from a `Stream` object to a call to
+ * `ToArray()` on the stream, or a wrapped stream.
  */
-module MemoryStreamFlow {
-  private class MemoryStreamCreation extends ObjectCreation {
-    MemoryStreamCreation() {
-      this.getObjectType().hasFullyQualifiedName("System.IO", "MemoryStream")
-    }
-
-    Expr getBufferArg() { result = this.getArgument(0) }
+module StreamFlow {
+  private class Stream extends Class {
+    Stream() { this.getABaseType().hasFullyQualifiedName("System.IO", "Stream") }
   }
 
-  // (Note that we cannot use `CreationToUseFlow` here, because the use is not a
-  // `QualifiableExpr`.)
-  private module MemoryStreamConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node source) { source.asExpr() instanceof MemoryStreamCreation }
+  /**
+   * A `Stream` object creation.
+   */
+  private class StreamCreation extends ObjectCreation {
+    StreamCreation() { this.getObjectType() instanceof Stream }
+
+    Expr getInputArg() {
+      result = this.getAnArgument() and
+      result.getType().hasFullyQualifiedName("System", "Byte[]")
+    }
+
+    Expr getStreamArg() {
+      result = this.getAnArgument() and
+      result.getType() instanceof Stream
+    }
+  }
+
+  private class StreamUse extends MethodCall {
+    StreamUse() {
+      this.getQualifier().getType() instanceof Stream and
+      this.getTarget().hasName("ToArray")
+    }
+
+    Expr getOutput() { result = this }
+  }
+
+  private module StreamConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source.asExpr() instanceof StreamCreation }
 
     predicate isSink(DataFlow::Node sink) {
-      exists(CryptoStreamCreation creation | sink.asExpr() = creation.getStreamArg())
+      sink.asExpr() instanceof StreamCreation
+      or
+      exists(StreamUse use | sink.asExpr() = use.getQualifier())
+    }
+
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      // Allow flow from one stream wrapped by a second stream.
+      exists(StreamCreation creation |
+        node1.asExpr() = creation.getStreamArg() and
+        node2.asExpr() = creation
+      )
+      or
+      exists(MethodCall copy |
+        node1.asExpr() = copy.getQualifier() and
+        node2.asExpr() = copy.getAnArgument() and
+        copy.getTarget().hasName("CopyTo")
+      )
     }
   }
 
-  private module MemoryStreamFlow = DataFlow::Global<MemoryStreamConfig>;
+  private module StreamFlow = DataFlow::Global<StreamConfig>;
 
-  MemoryStreamCreation getCreationFromUse(
-    CryptoStreamCreation creation, MemoryStreamFlow::PathNode source,
-    MemoryStreamFlow::PathNode sink
+  StreamCreation getWrappedStream(
+    StreamCreation stream, StreamFlow::PathNode source, StreamFlow::PathNode sink
   ) {
     source.getNode().asExpr() = result and
-    sink.getNode().asExpr() = creation.getStreamArg() and
-    MemoryStreamFlow::flowPath(source, sink)
+    sink.getNode().asExpr() = stream and
+    StreamFlow::flowPath(source, sink)
+  }
+
+  StreamUse getStreamUse(
+    StreamCreation stream, StreamFlow::PathNode source, StreamFlow::PathNode sink
+  ) {
+    source.getNode().asExpr() = stream and
+    sink.getNode().asExpr() = result.getQualifier() and
+    StreamFlow::flowPath(source, sink)
   }
 }
