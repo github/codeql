@@ -227,8 +227,8 @@ unsafe fn test_libc_alloc(v: usize) {
 unsafe fn test_vectors(v: usize) {
     let _ = Vec::<u64>::try_with_capacity(v).unwrap(); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
     let _ = Vec::<u64>::with_capacity(v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = Vec::<u64>::try_with_capacity_in(v, std::alloc::Global).unwrap(); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = Vec::<u64>::with_capacity_in(v, std::alloc::Global); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = Vec::<u64>::try_with_capacity_in(v, std::alloc::Global).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = Vec::<u64>::with_capacity_in(v, std::alloc::Global); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let mut v1 = Vec::<u64>::with_capacity(100);
     v1.reserve(v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]

@@ -6,7 +6,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/underscore-identifier
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  */
 
 import java

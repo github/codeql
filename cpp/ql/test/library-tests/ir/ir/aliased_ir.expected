@@ -8614,7 +8614,7 @@ ir.cpp:
 #  883|     v883_13(void)            = AliasedUse               : m883_3
 #  883|     v883_14(void)            = ExitFunction             : 
 
-#  888| void VAListUsage(int, __va_list_tag[1])
+#  888| void VAListUsage(int, __builtin_va_list)
 #  888|   Block 0
 #  888|     v888_1(void)                    = EnterFunction               : 
 #  888|     m888_2(unknown)                 = AliasedDefinition           : 

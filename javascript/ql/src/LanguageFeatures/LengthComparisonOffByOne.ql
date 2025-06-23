@@ -5,9 +5,11 @@
  * @kind problem
  * @problem.severity warning
  * @id js/index-out-of-bounds
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       logic
+ *       language-features
  *       external/cwe/cwe-193
  * @precision high
  */

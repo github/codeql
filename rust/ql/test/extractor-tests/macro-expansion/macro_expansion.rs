@@ -1,4 +1,4 @@
-use proc_macro::{repeat, add_one, erase};
+use proc_macro::{repeat, add_one, erase, MyTrait};
 
 #[add_one]
 pub fn foo() {
@@ -77,4 +77,26 @@ type MyInt = my_int!();  // this didn't expand in 0.0.274..0.0.287
 
 struct MyStruct {
     field: my_int!(),  // this didn't expand in 0.0.274..0.0.287
+}
+
+
+#[derive(Debug)]
+struct MyDerive {
+    field: usize,
+}
+
+#[derive(PartialEq, Eq)]
+enum MyDeriveEnum {
+    Variant1,
+    Variant2,
+}
+
+trait MyTrait {
+    fn my_method() -> u32;
+}
+
+#[derive(MyTrait)]
+union MyDeriveUnion {
+    field1: usize,
+    field2: f64,
 }

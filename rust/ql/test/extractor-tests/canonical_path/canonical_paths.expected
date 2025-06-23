@@ -5,6 +5,9 @@ canonicalPath
 | lib.rs:1:1:1:14 | mod anonymous | test::anonymous |
 | lib.rs:2:1:2:12 | mod regular | test::regular |
 | regular.rs:1:1:2:18 | struct Struct | test::regular::Struct |
+| regular.rs:2:12:2:17 | fn eq | <test::regular::Struct as core::cmp::PartialEq>::eq |
+| regular.rs:2:12:2:17 | impl ...::Eq for Struct::<...> { ... } | <test::regular::Struct as core::cmp::Eq> |
+| regular.rs:2:12:2:17 | impl ...::PartialEq for Struct::<...> { ... } | <test::regular::Struct as core::cmp::PartialEq> |
 | regular.rs:4:1:6:1 | trait Trait | test::regular::Trait |
 | regular.rs:5:5:5:16 | fn f | <_ as test::regular::Trait>::f |
 | regular.rs:8:1:10:1 | impl Trait for Struct { ... } | <test::regular::Struct as test::regular::Trait> |
@@ -42,6 +45,9 @@ canonicalPaths
 | lib.rs:1:1:1:14 | mod anonymous | repo::test | crate::anonymous |
 | lib.rs:2:1:2:12 | mod regular | repo::test | crate::regular |
 | regular.rs:1:1:2:18 | struct Struct | repo::test | crate::regular::Struct |
+| regular.rs:2:12:2:17 | fn eq | repo::test | <crate::regular::Struct as crate::cmp::PartialEq>::eq |
+| regular.rs:2:12:2:17 | impl ...::Eq for Struct::<...> { ... } | None | None |
+| regular.rs:2:12:2:17 | impl ...::PartialEq for Struct::<...> { ... } | None | None |
 | regular.rs:4:1:6:1 | trait Trait | repo::test | crate::regular::Trait |
 | regular.rs:5:5:5:16 | fn f | repo::test | crate::regular::Trait::f |
 | regular.rs:8:1:10:1 | impl Trait for Struct { ... } | None | None |
@@ -66,6 +72,8 @@ resolvedPaths
 | anonymous.rs:29:9:29:9 | s | None | None |
 | anonymous.rs:29:9:29:13 | s.g() | None | None |
 | anonymous.rs:30:9:30:14 | nested | None | None |
+| regular.rs:1:1:1:24 | other | None | None |
+| regular.rs:1:1:1:24 | self | None | None |
 | regular.rs:27:13:27:21 | Struct {...} | repo::test | crate::regular::Struct |
 | regular.rs:28:5:28:5 | s | None | None |
 | regular.rs:28:5:28:9 | s.f() | repo::test | <crate::regular::Struct as crate::regular::Trait>::f |

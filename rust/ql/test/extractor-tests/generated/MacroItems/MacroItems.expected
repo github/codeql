@@ -1,1 +1,2 @@
 | gen_macro_items.rs:5:5:5:38 | MacroItems | getNumberOfItems: | 2 |
+| gen_macro_items.rs:13:12:13:14 | MacroItems | getNumberOfItems: | 1 |
