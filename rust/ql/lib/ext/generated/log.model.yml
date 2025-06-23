@@ -11,6 +11,8 @@ extensions:
       - ["<log::LevelFilter as core::fmt::Display>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["<log::Metadata>::level", "Argument[self].Field[log::Metadata::level]", "ReturnValue", "value", "dfc-generated"]
       - ["<log::Metadata>::target", "Argument[self].Field[log::Metadata::target]", "ReturnValue", "value", "dfc-generated"]
+      - ["<log::MetadataBuilder>::build", "Argument[self].Field[log::MetadataBuilder::metadata].Reference", "ReturnValue", "value", "dfc-generated"]
+      - ["<log::MetadataBuilder>::build", "Argument[self].Field[log::MetadataBuilder::metadata]", "ReturnValue", "value", "dfc-generated"]
       - ["<log::MetadataBuilder>::level", "Argument[0]", "Argument[self].Field[log::MetadataBuilder::metadata].Field[log::Metadata::level]", "value", "dfc-generated"]
       - ["<log::MetadataBuilder>::level", "Argument[0]", "ReturnValue.Field[log::MetadataBuilder::metadata].Field[log::Metadata::level]", "value", "dfc-generated"]
       - ["<log::MetadataBuilder>::level", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
@@ -30,6 +32,8 @@ extensions:
       - ["<log::RecordBuilder>::args", "Argument[0]", "Argument[self].Field[log::RecordBuilder::record].Field[log::Record::args]", "value", "dfc-generated"]
       - ["<log::RecordBuilder>::args", "Argument[0]", "ReturnValue.Field[log::RecordBuilder::record].Field[log::Record::args]", "value", "dfc-generated"]
       - ["<log::RecordBuilder>::args", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
+      - ["<log::RecordBuilder>::build", "Argument[self].Field[log::RecordBuilder::record].Reference", "ReturnValue", "value", "dfc-generated"]
+      - ["<log::RecordBuilder>::build", "Argument[self].Field[log::RecordBuilder::record]", "ReturnValue", "value", "dfc-generated"]
       - ["<log::RecordBuilder>::file", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["<log::RecordBuilder>::file_static", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["<log::RecordBuilder>::key_values", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
@@ -55,6 +59,8 @@ extensions:
       - ["<log::kv::key::Key>::as_str", "Argument[self].Field[log::kv::key::Key::key]", "ReturnValue", "value", "dfc-generated"]
       - ["<log::kv::key::Key>::from_str", "Argument[0]", "ReturnValue.Field[log::kv::key::Key::key]", "value", "dfc-generated"]
       - ["<log::kv::key::Key>::to_borrowed_str", "Argument[self].Field[log::kv::key::Key::key]", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
+      - ["<log::kv::value::Value as log::kv::value::ToValue>::to_value", "Argument[self].Field[log::kv::value::Value::inner].Reference", "ReturnValue.Field[log::kv::value::Value::inner]", "value", "dfc-generated"]
+      - ["<log::kv::value::Value as log::kv::value::ToValue>::to_value", "Argument[self].Field[log::kv::value::Value::inner]", "ReturnValue.Field[log::kv::value::Value::inner]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sinkModel
