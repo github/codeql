@@ -29,50 +29,50 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class JndiInjectionTest {
   @RequestMapping
-  public void testInitialContextBad1(@RequestParam String nameStr) throws NamingException {
+  public void testInitialContextBad1(@RequestParam String nameStr) throws NamingException { // $ Source
     Name name = new CompositeName(nameStr);
     InitialContext ctx = new InitialContext();
 
-    ctx.lookup(nameStr); // $hasJndiInjection
-    ctx.lookupLink(nameStr); // $hasJndiInjection
-    InitialContext.doLookup(nameStr); // $hasJndiInjection
-    ctx.rename(nameStr, ""); // $hasJndiInjection
-    ctx.list(nameStr); // $hasJndiInjection
-    ctx.listBindings(nameStr); // $hasJndiInjection
+    ctx.lookup(nameStr); // $ Alert
+    ctx.lookupLink(nameStr); // $ Alert
+    InitialContext.doLookup(nameStr); // $ Alert
+    ctx.rename(nameStr, ""); // $ Alert
+    ctx.list(nameStr); // $ Alert
+    ctx.listBindings(nameStr); // $ Alert
 
-    ctx.lookup(name); // $hasJndiInjection
-    ctx.lookupLink(name); // $hasJndiInjection
-    InitialContext.doLookup(name); // $hasJndiInjection
-    ctx.rename(name, null); // $hasJndiInjection
-    ctx.list(name); // $hasJndiInjection
-    ctx.listBindings(name); // $hasJndiInjection
+    ctx.lookup(name); // $ Alert
+    ctx.lookupLink(name); // $ Alert
+    InitialContext.doLookup(name); // $ Alert
+    ctx.rename(name, null); // $ Alert
+    ctx.list(name); // $ Alert
+    ctx.listBindings(name); // $ Alert
   }
 
   @RequestMapping
-  public void testDirContextBad1(@RequestParam String nameStr) throws NamingException {
+  public void testDirContextBad1(@RequestParam String nameStr) throws NamingException { // $ Source
     Name name = new CompoundName(nameStr, new Properties());
     DirContext ctx = new InitialDirContext();
 
-    ctx.lookup(nameStr); // $hasJndiInjection
-    ctx.lookupLink(nameStr); // $hasJndiInjection
-    ctx.rename(nameStr, ""); // $hasJndiInjection
-    ctx.list(nameStr); // $hasJndiInjection
-    ctx.listBindings(nameStr); // $hasJndiInjection
+    ctx.lookup(nameStr); // $ Alert
+    ctx.lookupLink(nameStr); // $ Alert
+    ctx.rename(nameStr, ""); // $ Alert
+    ctx.list(nameStr); // $ Alert
+    ctx.listBindings(nameStr); // $ Alert
 
-    ctx.lookup(name); // $hasJndiInjection
-    ctx.lookupLink(name); // $hasJndiInjection
-    ctx.rename(name, null); // $hasJndiInjection
-    ctx.list(name); // $hasJndiInjection
-    ctx.listBindings(name); // $hasJndiInjection
+    ctx.lookup(name); // $ Alert
+    ctx.lookupLink(name); // $ Alert
+    ctx.rename(name, null); // $ Alert
+    ctx.list(name); // $ Alert
+    ctx.listBindings(name); // $ Alert
 
     SearchControls searchControls = new SearchControls();
     searchControls.setReturningObjFlag(true);
-    ctx.search(nameStr, "", searchControls); // $hasJndiInjection
-    ctx.search(nameStr, "", new Object[] {}, searchControls); // $hasJndiInjection
+    ctx.search(nameStr, "", searchControls); // $ Alert
+    ctx.search(nameStr, "", new Object[] {}, searchControls); // $ Alert
 
     SearchControls searchControls2 = new SearchControls(1, 0, 0, null, true, false);
-    ctx.search(nameStr, "", searchControls2); // $hasJndiInjection
-    ctx.search(nameStr, "", new Object[] {}, searchControls2); // $hasJndiInjection
+    ctx.search(nameStr, "", searchControls2); // $ Alert
+    ctx.search(nameStr, "", new Object[] {}, searchControls2); // $ Alert
 
     SearchControls searchControls3 = new SearchControls(1, 0, 0, null, false, false);
     ctx.search(nameStr, "", searchControls3); // Safe
@@ -80,80 +80,80 @@ public class JndiInjectionTest {
   }
 
   @RequestMapping
-  public void testInitialLdapContextBad1(@RequestParam String nameStr) throws NamingException {
+  public void testInitialLdapContextBad1(@RequestParam String nameStr) throws NamingException { // $ Source
     Name name = new CompositeName(nameStr);
     InitialLdapContext ctx = new InitialLdapContext();
 
-    ctx.lookup(nameStr); // $hasJndiInjection
-    ctx.lookupLink(nameStr); // $hasJndiInjection
-    ctx.rename(nameStr, ""); // $hasJndiInjection
-    ctx.list(nameStr); // $hasJndiInjection
-    ctx.listBindings(nameStr); // $hasJndiInjection
+    ctx.lookup(nameStr); // $ Alert
+    ctx.lookupLink(nameStr); // $ Alert
+    ctx.rename(nameStr, ""); // $ Alert
+    ctx.list(nameStr); // $ Alert
+    ctx.listBindings(nameStr); // $ Alert
 
-    ctx.lookup(name); // $hasJndiInjection
-    ctx.lookupLink(name); // $hasJndiInjection
-    ctx.rename(name, null); // $hasJndiInjection
-    ctx.list(name); // $hasJndiInjection
-    ctx.listBindings(name); // $hasJndiInjection
+    ctx.lookup(name); // $ Alert
+    ctx.lookupLink(name); // $ Alert
+    ctx.rename(name, null); // $ Alert
+    ctx.list(name); // $ Alert
+    ctx.listBindings(name); // $ Alert
   }
 
   @RequestMapping
-  public void testSpringJndiTemplateBad1(@RequestParam String nameStr) throws NamingException {
+  public void testSpringJndiTemplateBad1(@RequestParam String nameStr) throws NamingException { // $ Source
     JndiTemplate ctx = new JndiTemplate();
 
-    ctx.lookup(nameStr); // $hasJndiInjection
-    ctx.lookup(nameStr, null); // $hasJndiInjection
+    ctx.lookup(nameStr); // $ Alert
+    ctx.lookup(nameStr, null); // $ Alert
   }
 
   @RequestMapping
-  public void testSpringLdapTemplateBad1(@RequestParam String nameStr) throws NamingException {
+  public void testSpringLdapTemplateBad1(@RequestParam String nameStr) throws NamingException { // $ Source
     LdapTemplate ctx = new LdapTemplate();
     Name name = new CompositeName().add(nameStr);
 
-    ctx.lookup(name); // $hasJndiInjection
+    ctx.lookup(name); // $ Alert
     ctx.lookup(name, (AttributesMapper) null); // Safe
-    ctx.lookup(name, (ContextMapper) null); // $hasJndiInjection
+    ctx.lookup(name, (ContextMapper) null); // $ Alert
     ctx.lookup(name, new String[] {}, (AttributesMapper) null); // Safe
-    ctx.lookup(name, new String[] {}, (ContextMapper) null); // $hasJndiInjection
-    ctx.lookup(nameStr); // $hasJndiInjection
+    ctx.lookup(name, new String[] {}, (ContextMapper) null); // $ Alert
+    ctx.lookup(nameStr); // $ Alert
     ctx.lookup(nameStr, (AttributesMapper) null); // Safe
-    ctx.lookup(nameStr, (ContextMapper) null); // $hasJndiInjection
+    ctx.lookup(nameStr, (ContextMapper) null); // $ Alert
     ctx.lookup(nameStr, new String[] {}, (AttributesMapper) null); // Safe
-    ctx.lookup(nameStr, new String[] {}, (ContextMapper) null); // $hasJndiInjection
-    ctx.lookupContext(name); // $hasJndiInjection
-    ctx.lookupContext(nameStr); // $hasJndiInjection
-    ctx.findByDn(name, null); // $hasJndiInjection
-    ctx.rename(name, null); // $hasJndiInjection
-    ctx.list(name); // $hasJndiInjection
-    ctx.listBindings(name); // $hasJndiInjection
-    ctx.unbind(nameStr, true); // $hasJndiInjection
+    ctx.lookup(nameStr, new String[] {}, (ContextMapper) null); // $ Alert
+    ctx.lookupContext(name); // $ Alert
+    ctx.lookupContext(nameStr); // $ Alert
+    ctx.findByDn(name, null); // $ Alert
+    ctx.rename(name, null); // $ Alert
+    ctx.list(name); // $ Alert
+    ctx.listBindings(name); // $ Alert
+    ctx.unbind(nameStr, true); // $ Alert
 
-    ctx.search(nameStr, "", 0, true, null); // $hasJndiInjection
-    ctx.search(nameStr, "", 0, new String[] {}, (ContextMapper<Object>) null); // $hasJndiInjection
-    ctx.search(nameStr, "", 0, (ContextMapper<Object>) null); // $hasJndiInjection
-    ctx.search(nameStr, "", (ContextMapper<Object>) null); // $hasJndiInjection
+    ctx.search(nameStr, "", 0, true, null); // $ Alert
+    ctx.search(nameStr, "", 0, new String[] {}, (ContextMapper<Object>) null); // $ Alert
+    ctx.search(nameStr, "", 0, (ContextMapper<Object>) null); // $ Alert
+    ctx.search(nameStr, "", (ContextMapper<Object>) null); // $ Alert
 
     SearchControls searchControls = new SearchControls();
     searchControls.setReturningObjFlag(true);
-    ctx.search(nameStr, "", searchControls, (AttributesMapper<Object>) null); // $hasJndiInjection
-    ctx.search(nameStr, "", searchControls, (AttributesMapper<Object>) null, // $hasJndiInjection
+    ctx.search(nameStr, "", searchControls, (AttributesMapper<Object>) null); // $ Alert
+    ctx.search(nameStr, "", searchControls, (AttributesMapper<Object>) null, // $ Alert
         (DirContextProcessor) null);
-    ctx.search(nameStr, "", searchControls, (ContextMapper<Object>) null); // $hasJndiInjection
-    ctx.search(nameStr, "", searchControls, (ContextMapper<Object>) null, // $hasJndiInjection
+    ctx.search(nameStr, "", searchControls, (ContextMapper<Object>) null); // $ Alert
+    ctx.search(nameStr, "", searchControls, (ContextMapper<Object>) null, // $ Alert
         (DirContextProcessor) null);
-    ctx.search(nameStr, "", searchControls, (NameClassPairCallbackHandler) null); // $hasJndiInjection
-    ctx.search(nameStr, "", searchControls, (NameClassPairCallbackHandler) null, // $hasJndiInjection
+    ctx.search(nameStr, "", searchControls, (NameClassPairCallbackHandler) null); // $ Alert
+    ctx.search(nameStr, "", searchControls, (NameClassPairCallbackHandler) null, // $ Alert
         (DirContextProcessor) null);
 
     SearchControls searchControls2 = new SearchControls(1, 0, 0, null, true, false);
-    ctx.search(nameStr, "", searchControls2, (AttributesMapper<Object>) null); // $hasJndiInjection
-    ctx.search(nameStr, "", searchControls2, (AttributesMapper<Object>) null, // $hasJndiInjection
+    ctx.search(nameStr, "", searchControls2, (AttributesMapper<Object>) null); // $ Alert
+    ctx.search(nameStr, "", searchControls2, (AttributesMapper<Object>) null, // $ Alert
         (DirContextProcessor) null);
-    ctx.search(nameStr, "", searchControls2, (ContextMapper<Object>) null); // $hasJndiInjection
-    ctx.search(nameStr, "", searchControls2, (ContextMapper<Object>) null, // $hasJndiInjection
+    ctx.search(nameStr, "", searchControls2, (ContextMapper<Object>) null); // $ Alert
+    ctx.search(nameStr, "", searchControls2, (ContextMapper<Object>) null, // $ Alert
         (DirContextProcessor) null);
-    ctx.search(nameStr, "", searchControls2, (NameClassPairCallbackHandler) null); // $hasJndiInjection
-    ctx.search(nameStr, "", searchControls2, (NameClassPairCallbackHandler) null, // $hasJndiInjection
+    ctx.search(nameStr, "", searchControls2, (NameClassPairCallbackHandler) null); // $ Alert
+    ctx.search(nameStr, "", searchControls2, (NameClassPairCallbackHandler) null, // $ Alert
         (DirContextProcessor) null);
 
     SearchControls searchControls3 = new SearchControls(1, 0, 0, null, false, false);
@@ -167,68 +167,68 @@ public class JndiInjectionTest {
     ctx.search(nameStr, "", searchControls3, (NameClassPairCallbackHandler) null, // Safe
         (DirContextProcessor) null);
 
-    ctx.searchForObject(nameStr, "", (ContextMapper<Object>) null); // $hasJndiInjection
+    ctx.searchForObject(nameStr, "", (ContextMapper<Object>) null); // $ Alert
   }
 
   @RequestMapping
-  public void testShiroJndiTemplateBad1(@RequestParam String nameStr) throws NamingException {
+  public void testShiroJndiTemplateBad1(@RequestParam String nameStr) throws NamingException { // $ Source
     org.apache.shiro.jndi.JndiTemplate ctx = new org.apache.shiro.jndi.JndiTemplate();
 
-    ctx.lookup(nameStr); // $hasJndiInjection
-    ctx.lookup(nameStr, null); // $hasJndiInjection
+    ctx.lookup(nameStr); // $ Alert
+    ctx.lookup(nameStr, null); // $ Alert
   }
 
   @RequestMapping
-  public void testJMXServiceUrlBad1(@RequestParam String urlStr) throws IOException {
-    JMXConnectorFactory.connect(new JMXServiceURL(urlStr)); // $hasJndiInjection
+  public void testJMXServiceUrlBad1(@RequestParam String urlStr) throws IOException { // $ Source
+    JMXConnectorFactory.connect(new JMXServiceURL(urlStr)); // $ Alert
 
     JMXServiceURL url = new JMXServiceURL(urlStr);
     JMXConnector connector = JMXConnectorFactory.newJMXConnector(url, null);
-    connector.connect(); // $hasJndiInjection
+    connector.connect(); // $ Alert
   }
 
   @RequestMapping
-  public void testEnvBad1(@RequestParam String urlStr) throws NamingException {
+  public void testEnvBad1(@RequestParam String urlStr) throws NamingException { // $ Source
     Hashtable<String, String> env = new Hashtable<String, String>();
     env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
-    env.put(Context.PROVIDER_URL, urlStr); // $hasJndiInjection
+    env.put(Context.PROVIDER_URL, urlStr); // $ Alert
     new InitialContext(env);
   }
 
   @RequestMapping
-  public void testEnvBad2(@RequestParam String urlStr) throws NamingException {
+  public void testEnvBad2(@RequestParam String urlStr) throws NamingException { // $ Source
     Hashtable<String, String> env = new Hashtable<String, String>();
     env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
-    env.put("java.naming.provider.url", urlStr); // $hasJndiInjection
+    env.put("java.naming.provider.url", urlStr); // $ Alert
     new InitialDirContext(env);
   }
 
   @RequestMapping
-  public void testSpringJndiTemplatePropertiesBad1(@RequestParam String urlStr)
+  public void testSpringJndiTemplatePropertiesBad1(@RequestParam String urlStr) // $ Source
       throws NamingException {
     Properties props = new Properties();
     props.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
-    props.put(Context.PROVIDER_URL, urlStr); // $hasJndiInjection
+    props.put(Context.PROVIDER_URL, urlStr); // $ Alert
     new JndiTemplate(props);
   }
 
   @RequestMapping
-  public void testSpringJndiTemplatePropertiesBad2(@RequestParam String urlStr)
+  public void testSpringJndiTemplatePropertiesBad2(@RequestParam String urlStr) // $ Source
       throws NamingException {
     Properties props = new Properties();
     props.setProperty(Context.INITIAL_CONTEXT_FACTORY,
         "com.sun.jndi.rmi.registry.RegistryContextFactory");
-    props.setProperty("java.naming.provider.url", urlStr); // $hasJndiInjection
+    props.setProperty("java.naming.provider.url", urlStr); // $ Alert
     new JndiTemplate(props);
   }
 
   @RequestMapping
-  public void testSpringJndiTemplatePropertiesBad3(@RequestParam String urlStr)
+  public void testSpringJndiTemplatePropertiesBad3(@RequestParam String urlStr) // $ Source
       throws NamingException {
     Properties props = new Properties();
     props.setProperty(Context.INITIAL_CONTEXT_FACTORY,
         "com.sun.jndi.rmi.registry.RegistryContextFactory");
-    props.setProperty("java.naming.provider.url", urlStr); // $hasJndiInjection
+    props.setProperty("java.naming.provider.url", urlStr); // $ Alert
     JndiTemplate template = new JndiTemplate();
     template.setEnvironment(props);
   }
