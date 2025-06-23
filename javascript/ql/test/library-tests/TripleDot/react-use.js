@@ -8,5 +8,5 @@ async function fetchData() {
 
 function Component() {
   const data = use(fetchData());
-  sink(data); // $ MISSING: hasValueFlow=fetchedData
+  sink(data); // $ hasValueFlow=fetchedData
 }
