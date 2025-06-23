@@ -14,7 +14,7 @@ on:
   pull_request:
     paths:
       - "go/**"
-      - "!go/documentation/**"      
+      - "!go/documentation/**"
       - "shared/**"
       - .github/workflows/go-tests.yml
       - .github/actions/**
@@ -31,6 +31,10 @@ jobs:
     if: github.repository_owner == 'github'
     name: Test Linux (Ubuntu)
     runs-on: ubuntu-latest-xl
+    strategy:
+      fail-fast: false
+      matrix:
+        go-version: ['~1.24.0', '1.25.0-rc.1']
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -38,3 +42,4 @@ jobs:
         uses: ./go/actions/test
         with:
           run-code-checks: true
+          go-test-version: ${{ matrix.go-version }}

@@ -1,0 +1,30 @@
+{
+    "homepage": "https://github.com/bazelbuild/rules_go",
+    "maintainers": [
+        {
+            "email": "fabian@meumertzhe.im",
+            "github": "fmeum",
+            "name": "Fabian Meumertzheim",
+            "github_user_id": 4312191
+        },
+        {
+            "email": "zplin@uber.com",
+            "github": "linzhp",
+            "name": "Zhongpeng Lin",
+            "github_user_id": 98395
+        },
+        {
+            "email": "tfrench@uber.com",
+            "github": "tyler-french",
+            "name": "Tyler French",
+            "github_user_id": 66684063
+        }
+    ],
+    "repository": [
+        "github:bazel-contrib/rules_go"
+    ],
+    "versions": [
+        "0.55.1-codeql.1"
+    ],
+    "yanked_versions": {}
+}
