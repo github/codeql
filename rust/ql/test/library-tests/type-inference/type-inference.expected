@@ -264,11 +264,14 @@ inferType
 | main.rs:117:17:117:17 | x |  | main.rs:99:5:102:5 | MyThing |
 | main.rs:117:17:117:32 | x.trait_method() |  | {EXTERNAL LOCATION} | bool |
 | main.rs:119:13:119:13 | y |  | main.rs:99:5:102:5 | MyThing |
+| main.rs:119:13:119:13 | y |  | main.rs:104:5:106:5 | trait MyTrait |
 | main.rs:119:17:119:40 | MyThing {...} |  | main.rs:99:5:102:5 | MyThing |
+| main.rs:119:17:119:40 | MyThing {...} |  | main.rs:104:5:106:5 | trait MyTrait |
 | main.rs:119:34:119:38 | false |  | {EXTERNAL LOCATION} | bool |
 | main.rs:120:13:120:13 | b |  | {EXTERNAL LOCATION} | bool |
 | main.rs:120:17:120:40 | ...::trait_method(...) |  | {EXTERNAL LOCATION} | bool |
 | main.rs:120:39:120:39 | y |  | main.rs:99:5:102:5 | MyThing |
+| main.rs:120:39:120:39 | y |  | main.rs:104:5:106:5 | trait MyTrait |
 | main.rs:137:15:137:18 | SelfParam |  | main.rs:125:5:128:5 | MyThing |
 | main.rs:137:15:137:18 | SelfParam | A | main.rs:130:5:131:14 | S1 |
 | main.rs:137:27:139:9 | { ... } |  | main.rs:130:5:131:14 | S1 |
@@ -1321,9 +1324,12 @@ inferType
 | main.rs:1018:40:1018:40 | x |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1018:40:1018:40 | x | T | main.rs:1014:10:1014:10 | T |
 | main.rs:1027:13:1027:14 | x1 |  | main.rs:988:5:992:5 | MyOption |
+| main.rs:1027:13:1027:14 | x1 | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1027:18:1027:37 | ...::new(...) |  | main.rs:988:5:992:5 | MyOption |
+| main.rs:1027:18:1027:37 | ...::new(...) | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1028:18:1028:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
 | main.rs:1028:26:1028:27 | x1 |  | main.rs:988:5:992:5 | MyOption |
+| main.rs:1028:26:1028:27 | x1 | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1030:13:1030:18 | mut x2 |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1030:13:1030:18 | mut x2 | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1030:22:1030:36 | ...::new(...) |  | main.rs:988:5:992:5 | MyOption |
@@ -1794,12 +1800,17 @@ inferType
 | main.rs:1253:20:1253:24 | &true |  | file://:0:0:0:0 | & |
 | main.rs:1253:20:1253:24 | &true | &T | {EXTERNAL LOCATION} | bool |
 | main.rs:1253:21:1253:24 | true |  | {EXTERNAL LOCATION} | bool |
+| main.rs:1257:13:1257:20 | mut flag |  | {EXTERNAL LOCATION} | trait Default |
 | main.rs:1257:13:1257:20 | mut flag |  | main.rs:1216:5:1219:5 | MyFlag |
+| main.rs:1257:24:1257:41 | ...::default(...) |  | {EXTERNAL LOCATION} | trait Default |
 | main.rs:1257:24:1257:41 | ...::default(...) |  | main.rs:1216:5:1219:5 | MyFlag |
 | main.rs:1258:22:1258:30 | &mut flag |  | file://:0:0:0:0 | & |
+| main.rs:1258:22:1258:30 | &mut flag | &T | {EXTERNAL LOCATION} | trait Default |
 | main.rs:1258:22:1258:30 | &mut flag | &T | main.rs:1216:5:1219:5 | MyFlag |
+| main.rs:1258:27:1258:30 | flag |  | {EXTERNAL LOCATION} | trait Default |
 | main.rs:1258:27:1258:30 | flag |  | main.rs:1216:5:1219:5 | MyFlag |
 | main.rs:1259:18:1259:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1259:26:1259:29 | flag |  | {EXTERNAL LOCATION} | trait Default |
 | main.rs:1259:26:1259:29 | flag |  | main.rs:1216:5:1219:5 | MyFlag |
 | main.rs:1273:43:1276:5 | { ... } |  | {EXTERNAL LOCATION} | Result |
 | main.rs:1273:43:1276:5 | { ... } | E | main.rs:1266:5:1267:14 | S1 |
@@ -2649,7 +2660,9 @@ inferType
 | main.rs:1712:13:1712:20 | vec2_not |  | main.rs:1356:5:1361:5 | Vec2 |
 | main.rs:1712:24:1712:26 | ! ... |  | main.rs:1356:5:1361:5 | Vec2 |
 | main.rs:1712:25:1712:26 | v1 |  | main.rs:1356:5:1361:5 | Vec2 |
+| main.rs:1715:13:1715:24 | default_vec2 |  | {EXTERNAL LOCATION} | trait Default |
 | main.rs:1715:13:1715:24 | default_vec2 |  | main.rs:1356:5:1361:5 | Vec2 |
+| main.rs:1715:28:1715:45 | ...::default(...) |  | {EXTERNAL LOCATION} | trait Default |
 | main.rs:1715:28:1715:45 | ...::default(...) |  | main.rs:1356:5:1361:5 | Vec2 |
 | main.rs:1716:13:1716:26 | vec2_zero_plus |  | main.rs:1356:5:1361:5 | Vec2 |
 | main.rs:1716:30:1716:48 | Vec2 {...} |  | main.rs:1356:5:1361:5 | Vec2 |
@@ -2658,8 +2671,11 @@ inferType
 | main.rs:1716:40:1716:40 | 0 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1716:46:1716:46 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1716:46:1716:46 | 0 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1716:52:1716:63 | default_vec2 |  | {EXTERNAL LOCATION} | trait Default |
 | main.rs:1716:52:1716:63 | default_vec2 |  | main.rs:1356:5:1361:5 | Vec2 |
+| main.rs:1720:13:1720:24 | default_vec2 |  | {EXTERNAL LOCATION} | trait Default |
 | main.rs:1720:13:1720:24 | default_vec2 |  | main.rs:1356:5:1361:5 | Vec2 |
+| main.rs:1720:28:1720:45 | ...::default(...) |  | {EXTERNAL LOCATION} | trait Default |
 | main.rs:1720:28:1720:45 | ...::default(...) |  | main.rs:1356:5:1361:5 | Vec2 |
 | main.rs:1721:13:1721:26 | vec2_zero_plus |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1721:30:1721:48 | Vec2 {...} |  | main.rs:1356:5:1361:5 | Vec2 |
@@ -2668,6 +2684,7 @@ inferType
 | main.rs:1721:40:1721:40 | 0 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1721:46:1721:46 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1721:46:1721:46 | 0 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1721:53:1721:64 | default_vec2 |  | {EXTERNAL LOCATION} | trait Default |
 | main.rs:1721:53:1721:64 | default_vec2 |  | main.rs:1356:5:1361:5 | Vec2 |
 | main.rs:1731:18:1731:21 | SelfParam |  | main.rs:1728:5:1728:14 | S1 |
 | main.rs:1734:25:1736:5 | { ... } |  | main.rs:1728:5:1728:14 | S1 |
@@ -3219,12 +3236,28 @@ inferType
 | main.rs:2070:35:2070:49 | ...::assoc_fun(...) | T.T | main.rs:2046:5:2047:14 | S2 |
 | main.rs:2071:13:2071:14 | x2 |  | {EXTERNAL LOCATION} | Option |
 | main.rs:2071:13:2071:14 | x2 | T | main.rs:2044:5:2044:20 | S1 |
+| main.rs:2071:13:2071:14 | x2 | T.T | main.rs:2046:5:2047:14 | S2 |
 | main.rs:2071:18:2071:38 | ...::assoc_fun(...) |  | {EXTERNAL LOCATION} | Option |
 | main.rs:2071:18:2071:38 | ...::assoc_fun(...) | T | main.rs:2044:5:2044:20 | S1 |
+| main.rs:2071:18:2071:38 | ...::assoc_fun(...) | T.T | main.rs:2046:5:2047:14 | S2 |
+| main.rs:2072:13:2072:14 | x3 |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2072:13:2072:14 | x3 | T | main.rs:2044:5:2044:20 | S1 |
+| main.rs:2072:13:2072:14 | x3 | T.T | main.rs:2046:5:2047:14 | S2 |
+| main.rs:2072:18:2072:32 | ...::assoc_fun(...) |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2072:18:2072:32 | ...::assoc_fun(...) | T | main.rs:2044:5:2044:20 | S1 |
+| main.rs:2072:18:2072:32 | ...::assoc_fun(...) | T.T | main.rs:2046:5:2047:14 | S2 |
 | main.rs:2073:13:2073:14 | x4 |  | main.rs:2044:5:2044:20 | S1 |
+| main.rs:2073:13:2073:14 | x4 | T | main.rs:2046:5:2047:14 | S2 |
 | main.rs:2073:18:2073:48 | ...::method(...) |  | main.rs:2044:5:2044:20 | S1 |
+| main.rs:2073:18:2073:48 | ...::method(...) | T | main.rs:2046:5:2047:14 | S2 |
 | main.rs:2073:35:2073:47 | ...::default(...) |  | main.rs:2044:5:2044:20 | S1 |
+| main.rs:2073:35:2073:47 | ...::default(...) | T | main.rs:2046:5:2047:14 | S2 |
+| main.rs:2074:13:2074:14 | x5 |  | main.rs:2044:5:2044:20 | S1 |
+| main.rs:2074:13:2074:14 | x5 | T | main.rs:2046:5:2047:14 | S2 |
+| main.rs:2074:18:2074:42 | ...::method(...) |  | main.rs:2044:5:2044:20 | S1 |
+| main.rs:2074:18:2074:42 | ...::method(...) | T | main.rs:2046:5:2047:14 | S2 |
 | main.rs:2074:29:2074:41 | ...::default(...) |  | main.rs:2044:5:2044:20 | S1 |
+| main.rs:2074:29:2074:41 | ...::default(...) | T | main.rs:2046:5:2047:14 | S2 |
 | main.rs:2075:13:2075:14 | x6 |  | main.rs:2065:5:2065:27 | S4 |
 | main.rs:2075:13:2075:14 | x6 | T4 | main.rs:2046:5:2047:14 | S2 |
 | main.rs:2075:18:2075:29 | S4::<...>(...) |  | main.rs:2065:5:2065:27 | S4 |

@@ -181,6 +181,9 @@ abstract class ItemNode extends Locatable {
     result = this.(TypeParamItemNode).resolveABound().getASuccessorRec(name).(AssocItemNode)
     or
     result = this.(ImplTraitTypeReprItemNode).resolveABound().getASuccessorRec(name).(AssocItemNode)
+    or
+    result = this.(TypeAliasItemNode).resolveAlias().getASuccessorRec(name) and
+    not result instanceof TypeParam
   }
 
   /**
@@ -288,6 +291,8 @@ abstract class ItemNode extends Locatable {
   /** Gets the location of this item. */
   Location getLocation() { result = super.getLocation() }
 }
+
+abstract class TypeItemNode extends ItemNode { }
 
 /** A module or a source file. */
 abstract private class ModuleLikeNode extends ItemNode {
@@ -438,7 +443,7 @@ private class ConstItemNode extends AssocItemNode instanceof Const {
   override TypeParam getTypeParam(int i) { none() }
 }
 
-private class EnumItemNode extends ItemNode instanceof Enum {
+private class EnumItemNode extends TypeItemNode instanceof Enum {
   override string getName() { result = Enum.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }
@@ -739,7 +744,7 @@ private class ModuleItemNode extends ModuleLikeNode instanceof Module {
   }
 }
 
-private class StructItemNode extends ItemNode instanceof Struct {
+private class StructItemNode extends TypeItemNode instanceof Struct {
   override string getName() { result = Struct.super.getName().getText() }
 
   override Namespace getNamespace() {
@@ -774,7 +779,7 @@ private class StructItemNode extends ItemNode instanceof Struct {
   }
 }
 
-class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
+class TraitItemNode extends ImplOrTraitItemNode, TypeItemNode instanceof Trait {
   pragma[nomagic]
   Path getABoundPath() {
     result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
@@ -831,7 +836,10 @@ class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
   }
 }
 
-class TypeAliasItemNode extends AssocItemNode instanceof TypeAlias {
+class TypeAliasItemNode extends TypeItemNode, AssocItemNode instanceof TypeAlias {
+  pragma[nomagic]
+  ItemNode resolveAlias() { result = resolvePathFull(super.getTypeRepr().(PathTypeRepr).getPath()) }
+
   override string getName() { result = TypeAlias.super.getName().getText() }
 
   override predicate hasImplementation() { super.hasTypeRepr() }
@@ -847,7 +855,7 @@ class TypeAliasItemNode extends AssocItemNode instanceof TypeAlias {
   override string getCanonicalPath(Crate c) { none() }
 }
 
-private class UnionItemNode extends ItemNode instanceof Union {
+private class UnionItemNode extends TypeItemNode instanceof Union {
   override string getName() { result = Union.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }
@@ -905,7 +913,7 @@ private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
   override string getCanonicalPath(Crate c) { none() }
 }
 
-class TypeParamItemNode extends ItemNode instanceof TypeParam {
+class TypeParamItemNode extends TypeItemNode instanceof TypeParam {
   private WherePred getAWherePred() {
     exists(ItemNode declaringItem |
       this = resolveTypeParamPathTypeRepr(result.getTypeRepr()) and

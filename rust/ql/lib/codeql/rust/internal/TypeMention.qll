@@ -15,7 +15,7 @@ abstract class TypeMention extends AstNode {
 
   /** Gets the sub mention at `path`. */
   pragma[nomagic]
-  TypeMention getMentionAt(TypePath path) {
+  private TypeMention getMentionAt(TypePath path) {
     path.isEmpty() and
     result = this
     or
@@ -49,23 +49,17 @@ class SliceTypeReprMention extends TypeMention instanceof SliceTypeRepr {
   override Type resolveType() { result = TSliceType() }
 }
 
-class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
-  Path path;
-  ItemNode resolved;
+class PathTypeMention extends TypeMention, Path {
+  TypeItemNode resolved;
 
-  PathTypeReprMention() {
-    path = super.getPath() and
-    // NOTE: This excludes unresolvable paths which is intentional as these
-    // don't add value to the type inference anyway.
-    resolved = resolvePath(path)
-  }
+  PathTypeMention() { resolved = resolvePath(this) }
 
   ItemNode getResolved() { result = resolved }
 
   pragma[nomagic]
   private TypeAlias getResolvedTraitAlias(string name) {
     exists(TraitItemNode trait |
-      trait = resolvePath(path) and
+      trait = resolved and
       result = trait.getAnAssocItem() and
       name = result.getName().getText()
     )
@@ -73,7 +67,7 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
 
   pragma[nomagic]
   private TypeRepr getAssocTypeArg(string name) {
-    result = path.getSegment().getGenericArgList().getAssocTypeArg(name)
+    result = this.getSegment().getGenericArgList().getAssocTypeArg(name)
   }
 
   /** Gets the type argument for the associated type `alias`, if any. */
@@ -86,11 +80,11 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
   }
 
   override TypeMention getTypeArgument(int i) {
-    result = path.getSegment().getGenericArgList().getTypeArg(i)
+    result = this.getSegment().getGenericArgList().getTypeArg(i)
     or
     // If a type argument is not given in the path, then we use the default for
     // the type parameter if one exists for the type.
-    not exists(path.getSegment().getGenericArgList().getTypeArg(i)) and
+    not exists(this.getSegment().getGenericArgList().getTypeArg(i)) and
     result = this.resolveType().getTypeParameterDefault(i)
     or
     // `Self` paths inside `impl` blocks have implicit type arguments that are
@@ -106,7 +100,7 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
     //
     // the `Self` return type is shorthand for `Foo<T>`.
     exists(ImplItemNode node |
-      path = node.getASelfPath() and
+      this = node.getASelfPath() and
       result = node.(ImplItemNode).getSelfPath().getSegment().getGenericArgList().getTypeArg(i)
     )
     or
@@ -124,7 +118,7 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
     // ```
     // the rhs. of the type alias is a type argument to the trait.
     exists(ImplItemNode impl, AssociatedTypeTypeParameter param, TypeAlias alias |
-      path = impl.getTraitPath() and
+      this = impl.getTraitPath() and
       param.getTrait() = resolved and
       alias = impl.getASuccessor(param.getTypeAlias().getName().getText()) and
       result = alias.getTypeRepr() and
@@ -142,7 +136,7 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
    * resulting type at `typePath`.
    */
   pragma[nomagic]
-  Type aliasResolveTypeAt(TypePath typePath) {
+  private Type aliasResolveTypeAt(TypePath typePath) {
     exists(TypeAlias alias, TypeMention rhs | alias = resolved and rhs = alias.getTypeRepr() |
       result = rhs.resolveTypeAt(typePath) and
       not result = pathGetTypeParameter(alias, _)
@@ -150,7 +144,7 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
       exists(TypeParameter tp, TypeMention arg, TypePath prefix, TypePath suffix, int i |
         tp = rhs.resolveTypeAt(prefix) and
         tp = pathGetTypeParameter(alias, i) and
-        arg = path.getSegment().getGenericArgList().getTypeArg(i) and
+        arg = this.getSegment().getGenericArgList().getTypeArg(i) and
         result = arg.resolveTypeAt(suffix) and
         typePath = prefix.append(suffix)
       )
@@ -169,7 +163,7 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
       exists(TraitItemNode trait | trait = resolved |
         // If this is a `Self` path, then it resolves to the implicit `Self`
         // type parameter, otherwise it is a trait bound.
-        if super.getPath() = trait.getASelfPath()
+        if this = trait.getASelfPath()
         then result = TSelfTypeParameter(trait)
         else result = TTrait(trait)
       )
@@ -190,6 +184,18 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
     not exists(resolved.(TypeAlias).getTypeRepr()) and
     result = super.resolveTypeAt(typePath)
   }
+}
+
+class PathTypeReprMention extends TypeMention, PathTypeRepr {
+  private PathTypeMention path;
+
+  PathTypeReprMention() { path = this.getPath() }
+
+  override TypeMention getTypeArgument(int i) { result = path.getTypeArgument(i) }
+
+  override Type resolveType() { result = path.resolveType() }
+
+  override Type resolveTypeAt(TypePath typePath) { result = path.resolveTypeAt(typePath) }
 }
 
 class ImplTraitTypeReprMention extends TypeMention instanceof ImplTraitTypeRepr {
