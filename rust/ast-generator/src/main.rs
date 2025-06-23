@@ -385,8 +385,8 @@ struct ExtractorInfo {
 }
 
 fn enum_to_extractor_info(node: &AstEnumSrc) -> Option<ExtractorEnumInfo> {
-    if node.name == "VariantDef" {
-        // currently defined but unused
+    if node.name == "Adt" {
+        // no fields have `Adt` type, so we don't need extraction for it
         return None;
     }
     Some(ExtractorEnumInfo {
@@ -484,8 +484,8 @@ fn main() -> anyhow::Result<()> {
         .parse()
         .expect("Failed to parse grammar");
     let mut grammar = codegen::grammar::lower(&grammar);
-
-    grammar.enums.retain(|x| x.name != "Adt");
+    // remove the VariantDef enum, there is no use for it at the moment
+    grammar.enums.retain(|e| e.name != "VariantDef");
 
     let mut super_types: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
     for node in &grammar.enums {

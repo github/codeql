@@ -14,6 +14,12 @@ attribute_macros
 | macro_expansion.rs:31:5:34:5 | fn bzz | 0 | macro_expansion.rs:32:5:33:17 | fn bzz_0 |
 | macro_expansion.rs:31:5:34:5 | fn bzz | 1 | macro_expansion.rs:32:5:33:17 | fn bzz_1 |
 | macro_expansion.rs:31:5:34:5 | fn bzz | 2 | macro_expansion.rs:32:5:33:17 | fn bzz_2 |
+derive_macros
+| macro_expansion.rs:83:1:86:1 | struct MyDerive | 0 | 0 | macro_expansion.rs:84:8:85:9 | impl ...::Debug for MyDerive::<...> { ... } |
+| macro_expansion.rs:88:1:92:1 | enum MyDeriveEnum | 0 | 0 | macro_expansion.rs:89:6:91:12 | impl ...::PartialEq for MyDeriveEnum::<...> { ... } |
+| macro_expansion.rs:88:1:92:1 | enum MyDeriveEnum | 1 | 0 | macro_expansion.rs:89:6:89:17 | impl ...::Eq for MyDeriveEnum::<...> { ... } |
+| macro_expansion.rs:98:1:102:1 | union MyDeriveUnion | 0 | 0 | macro_expansion.rs:99:7:99:19 | Const |
+| macro_expansion.rs:98:1:102:1 | union MyDeriveUnion | 0 | 1 | macro_expansion.rs:99:7:99:19 | impl MyTrait for MyDeriveUnion { ... } |
 macro_calls
 | included/included.rs:2:9:2:39 | concat!... | included/included.rs:2:17:2:38 | "Hello world!" |
 | macro_expansion.rs:5:9:5:34 | concat!... | macro_expansion.rs:5:17:5:34 | "Hello world!" |
