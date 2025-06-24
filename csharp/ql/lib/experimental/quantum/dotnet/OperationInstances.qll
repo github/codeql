@@ -7,14 +7,8 @@ private import Cryptography
 
 class ECDsaORRSASigningOperationInstance extends Crypto::SignatureOperationInstance instanceof SignerUse
 {
-  SigningCreateCall creator;
-
-  ECDsaORRSASigningOperationInstance() {
-    creator = SigningCreateToUseFlow::getCreationFromUse(this, _, _)
-  }
-
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-    result = creator.getAlgorithmArg()
+    result = SigningCreateToUseFlow::getCreationFromUse(this, _, _).getAlgorithmArg()
   }
 
   override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
@@ -27,7 +21,7 @@ class ECDsaORRSASigningOperationInstance extends Crypto::SignatureOperationInsta
   }
 
   override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
-    result.asExpr() = creator.getKeyConsumer()
+    result.asExpr() = SigningCreateToUseFlow::getCreationFromUse(this, _, _).getKeyConsumer()
   }
 
   override Crypto::ConsumerInputDataFlowNode getNonceConsumer() { none() }
@@ -45,18 +39,25 @@ class ECDsaORRSASigningOperationInstance extends Crypto::SignatureOperationInsta
   }
 }
 
-// class HashOperationInstance extends Crypto::HashOperationInstance instanceof HashUse {
-//   HashOperationInstance() {
-//     not super.isIntermediate()
-//   }
-//   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-//     result.asExpr() = super.getOutputArtifact()
-//   }
-//   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
-//     result.asExpr() = super.getInputArg() or result = StreamFlow::getIntermediateUse(this.getStreamArg(), _, _).getInputArg()
-//   }
-//   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() { result = HashCreateToUseFlow::getCreationFromUse(this, _, _) }
-// }
+class HashOperationInstance extends Crypto::HashOperationInstance instanceof HashUse {
+  HashOperationInstance() { not super.isIntermediate() }
+
+  override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
+    result.asExpr() = super.getOutput()
+  }
+
+  override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
+    result.asExpr() = super.getInputArg() or
+    result.asExpr() = StreamFlow::getEarlierUse(super.getStreamArg(), _, _).getInputArg()
+  }
+
+  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
+    if exists(HashCreateToUseFlow::getCreationFromUse(this, _, _))
+    then result = HashCreateToUseFlow::getCreationFromUse(this, _, _)
+    else result = this
+  }
+}
+
 /**
  * A symmetric algorithm class, such as AES or DES.
  */

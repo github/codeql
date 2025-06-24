@@ -82,8 +82,33 @@ class SigningCreateCall extends CryptographyCreateCall {
   }
 }
 
-class HashAlgorithmCreateCall extends CryptographyCreateCall {
-  HashAlgorithmCreateCall() { this.getQualifier().getType() instanceof HashAlgorithmType }
+/**
+ * A call to create on an hash algorithm instance.
+ * The hash algorithm is defined by the qualifier.
+ */
+class HashAlgorithmCreateCall extends Crypto::AlgorithmValueConsumer instanceof CryptographyCreateCall
+{
+  HashAlgorithmCreateCall() { super.getQualifier().getType() instanceof HashAlgorithmType }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = super.getQualifier() }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
+}
+
+class HashAlgorithmQualifier extends Crypto::HashAlgorithmInstance instanceof Expr {
+  HashAlgorithmQualifier() {
+    this = any(HashAlgorithmCreateCall c).(CryptographyCreateCall).getQualifier()
+  }
+
+  override Crypto::THashType getHashFamily() {
+    result = getHashFamily(this.getRawHashAlgorithmName())
+  }
+
+  override string getRawHashAlgorithmName() { result = super.getType().getName() }
+
+  override int getFixedDigestLength() {
+    hashAlgorithmToFamily(this.getRawHashAlgorithmName(), _, result)
+  }
 }
 
 class NamedCurvePropertyAccess extends PropertyAccess {
@@ -111,13 +136,16 @@ class HashAlgorithmName extends PropertyAccess {
 
   string getAlgorithmName() { result = algorithmName }
 
-  Crypto::THashType getHashFamily() {
-    if hashAlgorithmToFamily(this.getAlgorithmName(), _, _)
-    then hashAlgorithmToFamily(this.getAlgorithmName(), result, _)
-    else result = Crypto::OtherHashType()
-  }
+  Crypto::THashType getHashFamily() { result = getHashFamily(this.getAlgorithmName()) }
 
   int getFixedDigestLength() { hashAlgorithmToFamily(this.getAlgorithmName(), _, result) }
+}
+
+bindingset[name]
+Crypto::THashType getHashFamily(string name) {
+  if hashAlgorithmToFamily(name, _, _)
+  then hashAlgorithmToFamily(name, result, _)
+  else result = Crypto::OtherHashType()
 }
 
 private predicate hashAlgorithmToFamily(
@@ -198,40 +226,44 @@ class ByteArrayOrReadOnlyByteSpanType extends Type {
   }
 }
 
-class HashUse extends MethodCall {
+class HashUse extends Crypto::AlgorithmValueConsumer instanceof MethodCall {
   HashUse() {
     this.getQualifier().getType() instanceof HashAlgorithmType and
     this.getTarget()
-        .getName()
-        .matches([
+        .hasName([
             "ComputeHash", "ComputeHashAsync", "HashCore", "HashData", "HashDataAsync",
             "TransformBlock", "TransformFinalBlock", "TryComputeHash", "TryHashData",
             "TryHashFinal", "HashFinal"
           ])
   }
 
-  predicate isIntermediate() { this.getTarget().hasName("HashCore") }
+  predicate isIntermediate() { super.getTarget().hasName("HashCore") }
 
-  Expr getOutputArtifact() {
+  Expr getOutput() {
     not this.isIntermediate() and
     // some functions receive the destination as a parameter
     if
-      this.getTarget().getName() = ["TryComputeHash", "TryHashFinal", "TryHashData"]
+      super.getTarget().getName() = ["TryComputeHash", "TryHashFinal", "TryHashData"]
       or
-      this.getTarget().getName() = ["HashData"] and this.getNumberOfArguments() = 2
+      super.getTarget().getName() = ["HashData"] and super.getNumberOfArguments() = 2
       or
-      this.getTarget().getName() = ["HashDataAsync"] and this.getNumberOfArguments() = 3
-    then result = this.getArgument(1)
+      super.getTarget().getName() = ["HashDataAsync"] and super.getNumberOfArguments() = 3
+    then result = super.getArgument(1)
     else result = this
   }
 
   Expr getInputArg() {
-    result = this.getAnArgument() and result.getType() instanceof ByteArrayOrReadOnlyByteSpanType
+    result = super.getArgument(0) and result.getType() instanceof ByteArrayOrReadOnlyByteSpanType
   }
-  // Expr getStreamArg() {
-  //   result = this.getAnArgument() and
-  //   result.getType() instanceof Stream
-  // }
+
+  Expr getStreamArg() {
+    result = super.getAnArgument() and
+    result.getType() instanceof Stream
+  }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = super.getQualifier() }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
 }
 
 class SignerUse extends MethodCall {
