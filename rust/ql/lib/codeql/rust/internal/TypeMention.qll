@@ -85,7 +85,8 @@ class PathTypeMention extends TypeMention, Path {
     // If a type argument is not given in the path, then we use the default for
     // the type parameter if one exists for the type.
     not exists(this.getSegment().getGenericArgList().getTypeArg(i)) and
-    result = this.resolveType().getTypeParameterDefault(i)
+    result = this.resolveType().getTypeParameterDefault(i) and
+    this = any(PathTypeRepr ptp).getPath().getQualifier*()
     or
     // `Self` paths inside `impl` blocks have implicit type arguments that are
     // the type parameters of the `impl` block. For example, in
