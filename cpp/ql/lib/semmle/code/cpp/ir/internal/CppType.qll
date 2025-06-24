@@ -29,6 +29,10 @@ private int getTypeSizeWorkaround(Type type) {
         not arrayType.hasArraySize() and
         result = getPointerSize()
       )
+      or
+      // Scalable vectors are opaque and not of fixed size. Use 0 as a substitute.
+      type instanceof ScalableVectorType and
+      result = 0
     )
   )
 }
@@ -136,6 +140,8 @@ private predicate isOpaqueType(Type type) {
   type instanceof PointerToMemberType // PTMs are missing size info
   or
   type instanceof ScalableVectorCount
+  or
+  type instanceof ScalableVectorType
 }
 
 /**

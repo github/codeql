@@ -3243,8 +3243,8 @@ private module Impl {
 
   private Element getImmediateChildOfConst(Const e, int index, string partialPredicateCall) {
     exists(
-      int b, int bAssocItem, int bItem, int n, int nAttr, int nBody, int nName, int nTypeRepr,
-      int nVisibility
+      int b, int bAssocItem, int bItem, int n, int nAttr, int nBody, int nGenericParamList,
+      int nName, int nTypeRepr, int nVisibility, int nWhereClause
     |
       b = 0 and
       bAssocItem = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAssocItem(e, i, _)) | i) and
@@ -3252,9 +3252,11 @@ private module Impl {
       n = bItem and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
       nBody = nAttr + 1 and
-      nName = nBody + 1 and
+      nGenericParamList = nBody + 1 and
+      nName = nGenericParamList + 1 and
       nTypeRepr = nName + 1 and
       nVisibility = nTypeRepr + 1 and
+      nWhereClause = nVisibility + 1 and
       (
         none()
         or
@@ -3267,11 +3269,19 @@ private module Impl {
         or
         index = nAttr and result = e.getBody() and partialPredicateCall = "Body()"
         or
-        index = nBody and result = e.getName() and partialPredicateCall = "Name()"
+        index = nBody and
+        result = e.getGenericParamList() and
+        partialPredicateCall = "GenericParamList()"
+        or
+        index = nGenericParamList and result = e.getName() and partialPredicateCall = "Name()"
         or
         index = nName and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
         or
         index = nTypeRepr and result = e.getVisibility() and partialPredicateCall = "Visibility()"
+        or
+        index = nVisibility and
+        result = e.getWhereClause() and
+        partialPredicateCall = "WhereClause()"
       )
     )
   }

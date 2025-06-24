@@ -1856,21 +1856,27 @@ mod indexers {
 
         // MyVec::index
         fn index(&self, index: usize) -> &Self::Output {
-            &self.data[index] // $ fieldof=MyVec
+            &self.data[index] // $ fieldof=MyVec method=index
         }
     }
 
     fn analyze_slice(slice: &[S]) {
-        let x = slice[0].foo(); // $ method=foo type=x:S
+        // NOTE: `slice` gets the spurious type `[]` because the desugaring of
+        // the index expression adds an implicit borrow. `&slice` has the type
+        // `&&[S]`, but the `index` methods takes a `&[S]`, so Rust adds an
+        // implicit dereference. We cannot currently handle a position that is
+        // both implicitly dereferenced and implicitly borrowed, so the extra
+        // type sneaks in.
+        let x = slice[0].foo(); // $ method=foo type=x:S method=index SPURIOUS: type=slice:[]
     }
 
     pub fn f() {
         let mut vec = MyVec::new(); // $ type=vec:T.S
         vec.push(S); // $ method=push
-        vec[0].foo(); // $ MISSING: method=foo -- type inference does not support the `Index` trait yet
+        vec[0].foo(); // $ method=MyVec::index method=foo
 
         let xs: [S; 1] = [S];
-        let x = xs[0].foo(); // $ method=foo type=x:S
+        let x = xs[0].foo(); // $ method=foo type=x:S method=index
 
         analyze_slice(&xs);
     }

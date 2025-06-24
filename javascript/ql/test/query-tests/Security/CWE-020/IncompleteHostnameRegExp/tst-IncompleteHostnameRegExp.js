@@ -60,4 +60,8 @@
 	/^(foo.example\.com|whatever)$/; // $ Alert (but kinda OK - one disjunction doesn't even look like a hostname)
 
 	if (s.matchAll("^http://test.example.com")) {} // $ Alert
+
+	const sinon = require('sinon');
+	const megacliteUrl = "https://a.b.com";
+	sinon.assert.calledWith(postStub.firstCall, sinon.match(megacliteUrl));
 });

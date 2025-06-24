@@ -160,4 +160,20 @@ module Impl {
       pos.asPosition() = 0 and result = super.getOperand(1)
     }
   }
+
+  private class IndexCall extends Call instanceof IndexExpr {
+    override string getMethodName() { result = "index" }
+
+    override Trait getTrait() { result.getCanonicalPath() = "core::ops::index::Index" }
+
+    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) {
+      pos.isSelf() and certain = true
+    }
+
+    override Expr getArgument(ArgumentPosition pos) {
+      pos.isSelf() and result = super.getBase()
+      or
+      pos.asPosition() = 0 and result = super.getIndex()
+    }
+  }
 }

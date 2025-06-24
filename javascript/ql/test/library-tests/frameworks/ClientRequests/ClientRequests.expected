@@ -5,6 +5,8 @@ test_ClientRequest
 | apollo.js:17:1:17:34 | new Pre ... yurl"}) |
 | apollo.js:20:1:20:77 | createN ... phql'}) |
 | apollo.js:23:1:23:31 | new Web ... wsUri}) |
+| axios.ts:14:32:14:65 | api.get ... repo}`) |
+| axios.ts:25:32:25:73 | api.pat ... , data) |
 | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) |
 | puppeteer.ts:6:11:6:42 | page.go ... e.com') |
@@ -111,6 +113,7 @@ test_ClientRequest
 | tst.js:349:5:349:30 | axios.g ...  url }) |
 | tst.js:352:5:352:66 | axiosIn ... text"}) |
 test_getADataNode
+| axios.ts:25:32:25:73 | api.pat ... , data) | axios.ts:25:69:25:72 | data |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:15:18:15:55 | { 'Cont ... json' } |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:16:15:16:35 | {x: 'te ... 'test'} |
 | superagent.js:6:5:6:32 | superag ... st(url) | superagent.js:6:39:6:42 | data |
@@ -159,6 +162,8 @@ test_getADataNode
 | tst.js:347:5:347:30 | axios.p ... , data) | tst.js:347:26:347:29 | data |
 | tst.js:348:5:348:38 | axios.p ... config) | tst.js:348:26:348:29 | data |
 test_getHost
+| axios.ts:14:32:14:65 | api.get ... repo}`) | axios.ts:4:14:4:37 | "https: ... ub.com" |
+| axios.ts:25:32:25:73 | api.pat ... , data) | axios.ts:4:14:4:37 | "https: ... ub.com" |
 | tst.js:87:5:87:39 | http.ge ...  host}) | tst.js:87:34:87:37 | host |
 | tst.js:89:5:89:23 | axios({host: host}) | tst.js:89:18:89:21 | host |
 | tst.js:91:5:91:34 | got(rel ...  host}) | tst.js:91:29:91:32 | host |
@@ -173,6 +178,8 @@ test_getUrl
 | apollo.js:17:1:17:34 | new Pre ... yurl"}) | apollo.js:17:26:17:32 | "myurl" |
 | apollo.js:20:1:20:77 | createN ... phql'}) | apollo.js:20:30:20:75 | 'https: ... raphql' |
 | apollo.js:23:1:23:31 | new Web ... wsUri}) | apollo.js:23:25:23:29 | wsUri |
+| axios.ts:14:32:14:65 | api.get ... repo}`) | axios.ts:14:40:14:64 | `/repos ... {repo}` |
+| axios.ts:25:32:25:73 | api.pat ... , data) | axios.ts:25:42:25:66 | `/repos ... {repo}` |
 | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | axiosTest.js:4:11:7:5 | {\\n      ... ,\\n    } |
 | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | axiosTest.js:6:14:6:16 | url |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:12:11:17:5 | {\\n      ... }\\n    } |
@@ -289,6 +296,8 @@ test_getUrl
 | tst.js:352:5:352:66 | axiosIn ... text"}) | tst.js:352:19:352:65 | {method ... "text"} |
 | tst.js:352:5:352:66 | axiosIn ... text"}) | tst.js:352:40:352:42 | url |
 test_getAResponseDataNode
+| axios.ts:14:32:14:65 | api.get ... repo}`) | axios.ts:14:32:14:65 | api.get ... repo}`) | json | true |
+| axios.ts:25:32:25:73 | api.pat ... , data) | axios.ts:25:32:25:73 | api.pat ... , data) | json | true |
 | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | json | true |
 | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | json | true |
 | superagent.js:4:5:4:26 | superag ... ', url) | superagent.js:4:5:4:26 | superag ... ', url) | stream | true |
