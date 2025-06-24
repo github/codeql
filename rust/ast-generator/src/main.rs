@@ -2,18 +2,16 @@ use std::{fs, path::PathBuf};
 
 pub mod codegen;
 mod flags;
+mod field_info;
+
 use crate::codegen::grammar::ast_src::{AstEnumSrc, Cardinality};
+use crate::field_info::{FieldInfo, FieldType};
 use codegen::grammar::ast_src::{AstNodeSrc, AstSrc, Field};
 use itertools::Itertools;
 use serde::Serialize;
 use std::collections::{BTreeMap, BTreeSet};
 use std::env;
 use ungrammar::Grammar;
-
-fn project_root() -> PathBuf {
-    let dir = env::var("CARGO_MANIFEST_DIR").unwrap().to_owned();
-    PathBuf::from(dir).parent().unwrap().to_owned()
-}
 
 fn class_name(type_name: &str) -> String {
     match type_name {
@@ -76,6 +74,128 @@ fn has_special_emission(type_name: &str) -> bool {
             | "PathSegment"
             | "Const"
     )
+}
+
+fn should_enum_be_skipped(name: &str) -> bool {
+    name == "VariantDef"  // remove the VariantDef enum, there is no use for it at the moment
+
+}
+
+fn should_node_be_skipped(name: &str) -> bool {
+    name == "TypeAnchor"  // we flatten TypeAnchor into PathSegment in the extractor
+}
+
+fn should_node_be_skipped_in_extractor(name: &str) -> bool {
+    name == "Adt"   // no fields have `Adt` type, so we don't need extraction for it
+}
+
+fn should_field_be_skipped(node_name: &str, field_name: &str) -> bool {
+    matches!(
+        (node_name, field_name),
+        ("ArrayExpr", "expr") // The ArrayExpr type also has an 'exprs' field
+            | ("PathSegment", "type_anchor")  // we flatten TypeAnchor into PathSegment in the extractor
+            | ("Param", "pat") | ("MacroCall", "token_tree") // handled manually to use `body`
+    )
+}
+
+fn get_additional_fields(node_name: &str) -> Vec<FieldInfo> {
+    match node_name {
+        "Name" | "NameRef" | "Lifetime" => vec![FieldInfo::string("text")],
+        "Abi" => vec![FieldInfo::string("abi_string")],
+        "Literal" => vec![FieldInfo::string("text_value")],
+        "PrefixExpr" => vec![FieldInfo::string("operator_name")],
+        "BinExpr" => vec![
+            FieldInfo::optional("lhs", "Expr"),
+            FieldInfo::optional("rhs", "Expr"),
+            FieldInfo::string("operator_name"),
+        ],
+        "IfExpr" => vec![
+            FieldInfo::optional("then_branch", "BlockExpr"),
+            FieldInfo::optional("else_branch", "ElseBranch"),
+            FieldInfo::optional("condition", "Expr"),
+        ],
+        "RangeExpr" => vec![
+            FieldInfo::optional("start", "Expr"),
+            FieldInfo::optional("end", "Expr"),
+            FieldInfo::string("operator_name"),
+        ],
+        "RangePat" => vec![
+            FieldInfo::optional("start", "Pat"),
+            FieldInfo::optional("end", "Pat"),
+            FieldInfo::string("operator_name"),
+        ],
+        "IndexExpr" => vec![
+            FieldInfo::optional("index", "Expr"),
+            FieldInfo::optional("base", "Expr"),
+        ],
+        "Impl" => vec![
+            FieldInfo::optional("trait_", "Type"),
+            FieldInfo::optional("self_ty", "Type"),
+        ],
+        "ForExpr" => vec![FieldInfo::optional("iterable", "Expr")],
+        "WhileExpr" => vec![FieldInfo::optional("condition", "Expr")],
+        "MatchGuard" => vec![FieldInfo::optional("condition", "Expr")],
+        "MacroDef" => vec![
+            FieldInfo::body("args", "TokenTree"),
+            FieldInfo::body("body", "TokenTree"),
+        ],
+        "MacroCall" => vec![FieldInfo::body("token_tree", "TokenTree")],
+        "FormatArgsExpr" => vec![FieldInfo::list("args", "FormatArgsArg")],
+        "ArgList" => vec![FieldInfo::list("args", "Expr")],
+        "Fn" => vec![FieldInfo::body("body", "BlockExpr")],
+        "Const" => vec![FieldInfo::body("body", "Expr")],
+        "Static" => vec![FieldInfo::body("body", "Expr")],
+        "Param" => vec![FieldInfo::body("pat", "Pat")],
+        "ClosureExpr" => vec![FieldInfo::optional("body", "Expr")],
+        "ArrayExpr" => vec![FieldInfo::predicate("is_semicolon")],
+        "SelfParam" => vec![FieldInfo::predicate("is_amp")],
+        "UseTree" => vec![FieldInfo::predicate("is_star")],
+        _ => vec![],
+    }
+}
+
+fn get_trait_fields(trait_name: &str) -> Vec<FieldInfo> {
+    match trait_name {
+        "HasAttrs" => vec![FieldInfo::list("attrs", "Attr")],
+        "HasName" => vec![FieldInfo::optional("name", "Name")],
+        "HasVisibility" => vec![FieldInfo::optional("visibility", "Visibility")],
+        "HasGenericParams" => vec![
+            FieldInfo::optional("generic_param_list", "GenericParamList"),
+            FieldInfo::optional("where_clause", "WhereClause"),
+        ],
+        "HasGenericArgs" => vec![FieldInfo::optional("generic_arg_list", "GenericArgList")],
+        "HasTypeBounds" => vec![FieldInfo::optional("type_bound_list", "TypeBoundList")],
+        "HasModuleItem" => vec![FieldInfo::list("items", "Item")],
+        "HasLoopBody" =>
+            vec![FieldInfo::optional("label", "Label"),
+                FieldInfo::optional("loop_body", "BlockExpr")],
+        "HasArgList" => vec![FieldInfo::optional("arg_list", "ArgList")],
+        "HasDocComments" => vec![],
+        _ => panic!("Unknown trait {}", trait_name),
+    }
+}
+
+fn should_predicate_be_extracted(name: &str) -> bool {
+    matches!(
+        name,
+        "async"
+            | "auto"
+            | "const"
+            | "default"
+            | "gen"
+            | "move"
+            | "mut"
+            | "raw"
+            | "ref"
+            | "static"
+            | "try"
+            | "unsafe"
+    )
+}
+
+fn project_root() -> PathBuf {
+    let dir = env::var("CARGO_MANIFEST_DIR").unwrap().to_owned();
+    PathBuf::from(dir).parent().unwrap().to_owned()
 }
 
 fn to_lower_snake_case(s: &str) -> String {
@@ -192,121 +312,11 @@ fn write_schema(
     Ok(fix_blank_lines(&res))
 }
 
-#[derive(Eq, PartialEq)]
-enum FieldType {
-    String,
-    Predicate,
-    Optional(String),
-    Body(String),
-    List(String),
-}
-
-struct FieldInfo {
-    name: String,
-    ty: FieldType,
-}
-
-impl FieldInfo {
-    pub fn optional(name: &str, ty: &str) -> FieldInfo {
-        FieldInfo {
-            name: name.to_string(),
-            ty: FieldType::Optional(ty.to_string()),
-        }
-    }
-
-    pub fn body(name: &str, ty: &str) -> FieldInfo {
-        FieldInfo {
-            name: name.to_string(),
-            ty: FieldType::Body(ty.to_string()),
-        }
-    }
-
-    pub fn string(name: &str) -> FieldInfo {
-        FieldInfo {
-            name: name.to_string(),
-            ty: FieldType::String,
-        }
-    }
-
-    pub fn predicate(name: &str) -> FieldInfo {
-        FieldInfo {
-            name: name.to_string(),
-            ty: FieldType::Predicate,
-        }
-    }
-
-    pub fn list(name: &str, ty: &str) -> FieldInfo {
-        FieldInfo {
-            name: name.to_string(),
-            ty: FieldType::List(ty.to_string()),
-        }
-    }
-}
-
-fn get_additional_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
-    match node.name.as_str() {
-        "Name" | "NameRef" | "Lifetime" => vec![FieldInfo::string("text")],
-        "Abi" => vec![FieldInfo::string("abi_string")],
-        "Literal" => vec![FieldInfo::string("text_value")],
-        "PrefixExpr" => vec![FieldInfo::string("operator_name")],
-        "BinExpr" => vec![
-            FieldInfo::optional("lhs", "Expr"),
-            FieldInfo::optional("rhs", "Expr"),
-            FieldInfo::string("operator_name"),
-        ],
-        "IfExpr" => vec![
-            FieldInfo::optional("then_branch", "BlockExpr"),
-            FieldInfo::optional("else_branch", "ElseBranch"),
-            FieldInfo::optional("condition", "Expr"),
-        ],
-        "RangeExpr" => vec![
-            FieldInfo::optional("start", "Expr"),
-            FieldInfo::optional("end", "Expr"),
-            FieldInfo::string("operator_name"),
-        ],
-        "RangePat" => vec![
-            FieldInfo::optional("start", "Pat"),
-            FieldInfo::optional("end", "Pat"),
-            FieldInfo::string("operator_name"),
-        ],
-        "IndexExpr" => vec![
-            FieldInfo::optional("index", "Expr"),
-            FieldInfo::optional("base", "Expr"),
-        ],
-        "Impl" => vec![
-            FieldInfo::optional("trait_", "Type"),
-            FieldInfo::optional("self_ty", "Type"),
-        ],
-        "ForExpr" => vec![FieldInfo::optional("iterable", "Expr")],
-        "WhileExpr" => vec![FieldInfo::optional("condition", "Expr")],
-        "MatchGuard" => vec![FieldInfo::optional("condition", "Expr")],
-        "MacroDef" => vec![
-            FieldInfo::body("args", "TokenTree"),
-            FieldInfo::body("body", "TokenTree"),
-        ],
-        "MacroCall" => vec![FieldInfo::body("token_tree", "TokenTree")],
-        "FormatArgsExpr" => vec![FieldInfo::list("args", "FormatArgsArg")],
-        "ArgList" => vec![FieldInfo::list("args", "Expr")],
-        "Fn" => vec![FieldInfo::body("body", "BlockExpr")],
-        "Const" => vec![FieldInfo::body("body", "Expr")],
-        "Static" => vec![FieldInfo::body("body", "Expr")],
-        "Param" => vec![FieldInfo::body("pat", "Pat")],
-        "ClosureExpr" => vec![FieldInfo::optional("body", "Expr")],
-        "ArrayExpr" => vec![FieldInfo::predicate("is_semicolon")],
-        "SelfParam" => vec![FieldInfo::predicate("is_amp")],
-        "UseTree" => vec![FieldInfo::predicate("is_star")],
-        _ => vec![],
-    }
-}
 fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
     let mut result = Vec::new();
-    let predicates = [
-        "async", "auto", "const", "default", "gen", "move", "mut", "raw", "ref", "static", "try",
-        "unsafe",
-    ];
     for field in &node.fields {
         if let Field::Token(name) = field {
-            if predicates.contains(&name.as_str()) {
+            if should_predicate_be_extracted(&name) {
                 result.push(FieldInfo {
                     name: format!("is_{name}"),
                     ty: FieldType::Predicate,
@@ -315,17 +325,11 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         }
     }
 
-    result.extend(get_additional_fields(node));
+    result.extend(get_additional_fields(&node.name));
 
     for field in &node.fields {
         let name = field.method_name();
-        match (node.name.as_str(), name.as_str()) {
-            ("ArrayExpr", "expr") // The ArrayExpr type also has an 'exprs' field
-            | ("PathSegment", "type_anchor")  // we flatten TypeAnchor into PathSegment in the extractor
-            | ("Param", "pat") | ("MacroCall", "token_tree") // handled manually to use `body`
-            => continue,
-            _ => {}
-        }
+        if should_field_be_skipped(&node.name, &name) { continue; }
         let ty = match field {
             Field::Token(_) => continue,
             Field::Node {
@@ -338,31 +342,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         result.push(FieldInfo { name, ty });
     }
     for trait_ in &node.traits {
-        match trait_.as_str() {
-            "HasAttrs" => result.push(FieldInfo::list("attrs", "Attr")),
-            "HasName" => result.push(FieldInfo::optional("name", "Name")),
-            "HasVisibility" => result.push(FieldInfo::optional("visibility", "Visibility")),
-            "HasGenericParams" => {
-                result.push(FieldInfo::optional(
-                    "generic_param_list",
-                    "GenericParamList",
-                ));
-                result.push(FieldInfo::optional("where_clause", "WhereClause"))
-            }
-            "HasGenericArgs" => {
-                result.push(FieldInfo::optional("generic_arg_list", "GenericArgList"))
-            }
-            "HasTypeBounds" => result.push(FieldInfo::optional("type_bound_list", "TypeBoundList")),
-            "HasModuleItem" => result.push(FieldInfo::list("items", "Item")),
-            "HasLoopBody" => {
-                result.push(FieldInfo::optional("label", "Label"));
-                result.push(FieldInfo::optional("loop_body", "BlockExpr"))
-            }
-            "HasArgList" => result.push(FieldInfo::optional("arg_list", "ArgList")),
-            "HasDocComments" => {}
-
-            _ => panic!("Unknown trait {}", trait_),
-        };
+        result.extend(get_trait_fields(&trait_));
     }
     result.sort_by(|x, y| x.name.cmp(&y.name));
     result
@@ -412,12 +392,8 @@ struct ExtractorInfo {
     nodes: Vec<ExtractorNodeInfo>,
 }
 
-fn enum_to_extractor_info(node: &AstEnumSrc) -> Option<ExtractorEnumInfo> {
-    if node.name == "Adt" {
-        // no fields have `Adt` type, so we don't need extraction for it
-        return None;
-    }
-    Some(ExtractorEnumInfo {
+fn enum_to_extractor_info(node: &AstEnumSrc) -> ExtractorEnumInfo {
+    ExtractorEnumInfo {
         name: class_name(&node.name),
         snake_case_name: to_lower_snake_case(&node.name),
         ast_name: node.name.clone(),
@@ -435,7 +411,7 @@ fn enum_to_extractor_info(node: &AstEnumSrc) -> Option<ExtractorEnumInfo> {
             })
             .collect(),
         has_special_emission: has_special_emission(&node.name),
-    })
+    }
 }
 
 fn field_info_to_extractor_info(name: &str, field: &FieldInfo) -> ExtractorNodeFieldInfo {
@@ -498,7 +474,8 @@ fn write_extractor(grammar: &AstSrc, mustache_ctx: &mustache::Context) -> mustac
         enums: grammar
             .enums
             .iter()
-            .filter_map(enum_to_extractor_info)
+            .filter(|e| !should_node_be_skipped_in_extractor(&e.name))
+            .map(enum_to_extractor_info)
             .collect(),
         nodes: grammar.nodes.iter().map(node_to_extractor_info).collect(),
     };
@@ -514,11 +491,8 @@ fn main() -> anyhow::Result<()> {
         .parse()
         .expect("Failed to parse grammar");
     let mut grammar = codegen::grammar::lower(&grammar);
-    // remove the VariantDef enum, there is no use for it at the moment
-    grammar.enums.retain(|e| e.name != "VariantDef");
-
-    // we flatten TypeAnchor into PathSegment in the extractor
-    grammar.nodes.retain(|x| x.name != "TypeAnchor");
+    grammar.enums.retain(|e| !should_enum_be_skipped(&e.name));
+    grammar.nodes.retain(|x| !should_node_be_skipped(&x.name));
 
     let mut super_types: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
     for node in &grammar.enums {
