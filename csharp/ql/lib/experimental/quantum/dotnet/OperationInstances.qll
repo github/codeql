@@ -169,6 +169,46 @@ class CipherMode extends MemberConstant {
   }
 }
 
+class Stream extends Class {
+  Stream() { this.getABaseType().hasFullyQualifiedName("System.IO", "Stream") }
+}
+
+/**
+ * A `Stream` object creation.
+ */
+class StreamCreation extends ObjectCreation {
+  StreamCreation() { this.getObjectType() instanceof Stream }
+
+  Expr getInputArg() {
+    result = this.getAnArgument() and
+    result.getType().hasFullyQualifiedName("System", "Byte[]")
+  }
+
+  Expr getStreamArg() {
+    result = this.getAnArgument() and
+    result.getType() instanceof Stream
+  }
+}
+
+class StreamUse extends MethodCall {
+  StreamUse() {
+    this.getQualifier().getType() instanceof Stream and
+    this.getTarget().hasName(["ToArray", "Write"])
+  }
+
+  predicate isIntermediate() { this.getTarget().hasName("Write") }
+
+  Expr getInputArg() {
+    this.isIntermediate() and
+    result = this.getArgument(0)
+  }
+
+  Expr getOutput() {
+    not this.isIntermediate() and
+    result = this
+  }
+}
+
 class CryptoStreamCreation extends ObjectCreation {
   CryptoStreamCreation() { this.getObjectType() instanceof CryptoStream }
 
@@ -253,11 +293,16 @@ class CryptoStreamOperationInstance extends Crypto::KeyOperationInstance instanc
     )
   }
 
-  // Inputs can be passed either through the `stream` argument when the
-  // `CryptoStream` is created, or through calls to `Write()` on the
-  // `CryptoStream` object.
+  // Inputs can be passed to the `CryptoStream` instance in a number of ways.
+  //
+  // 1. Through the `stream` argument when the `CryptoStream` is created
+  // 2. Through calls to `Write()` on (a stream wrapped by) the stream argument
+  // 3. Through calls to write on this `CryptoStream` object
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
-    result.asExpr() = StreamFlow::getWrappedStream(this, _, _).getInputArg() or
+    result.asExpr() = this.getWrappedStreamCreation().getInputArg()
+    or
+    result.asExpr() = this.getEarlierWrappedStreamUse().getInputArg()
+    or
     result.asExpr() = CryptoStreamFlow::getUseFromCreation(this, _, _).getInputArg()
   }
 
@@ -267,7 +312,19 @@ class CryptoStreamOperationInstance extends Crypto::KeyOperationInstance instanc
     // We perform backwards dataflow to identify stream objects that are wrapped
     // by the `CryptoStream` object, and then we look for calls to `ToArray()`
     // on those streams.
-    result.asExpr() =
-      StreamFlow::getStreamUse(any(StreamFlow::getWrappedStream(this, _, _)), _, _).getOutput()
+    result.asExpr() = this.getLaterWrappedStreamUse().getOutput()
+  }
+
+  // Gets either this stream, or a stream wrapped by this stream.
+  StreamCreation getWrappedStreamCreation() {
+    result = StreamFlow::getWrappedStreamCreation(this, _, _)
+  }
+
+  StreamUse getEarlierWrappedStreamUse() {
+    result = StreamFlow::getEarlierUse(this.getWrappedStreamCreation().getStreamArg(), _, _)
+  }
+
+  StreamUse getLaterWrappedStreamUse() {
+    result = StreamFlow::getLaterUse(this.getWrappedStreamCreation().getStreamArg(), _, _)
   }
 }
