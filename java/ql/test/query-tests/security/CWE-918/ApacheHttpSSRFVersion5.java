@@ -38,134 +38,134 @@ public class ApacheHttpSSRFVersion5 extends HttpServlet {
             throws ServletException, IOException {
         try {
 
-            String uriSink = request.getParameter("uri");
+            String uriSink = request.getParameter("uri"); // $ Source
             URI uri = new URI(uriSink);
 
-            String hostSink = request.getParameter("host");
+            String hostSink = request.getParameter("host"); // $ Source
             HttpHost host = new HttpHost(hostSink);
 
             // org.apache.hc.client5.http.async.methods.BasicHttpRequests
-            BasicHttpRequests.create(Method.CONNECT, host, "path"); // $ SSRF
-            BasicHttpRequests.create(Method.CONNECT, uri.toString()); // $ SSRF
-            BasicHttpRequests.create(Method.CONNECT, uri); // $ SSRF
-            BasicHttpRequests.create("method", uri.toString()); // $ SSRF
-            BasicHttpRequests.create("method", uri); // $ SSRF
+            BasicHttpRequests.create(Method.CONNECT, host, "path"); // $ Alert
+            BasicHttpRequests.create(Method.CONNECT, uri.toString()); // $ Alert
+            BasicHttpRequests.create(Method.CONNECT, uri); // $ Alert
+            BasicHttpRequests.create("method", uri.toString()); // $ Alert
+            BasicHttpRequests.create("method", uri); // $ Alert
 
-            BasicHttpRequests.delete(host, "path"); // $ SSRF
-            BasicHttpRequests.delete(uri.toString()); // $ SSRF
-            BasicHttpRequests.delete(uri); // $ SSRF
+            BasicHttpRequests.delete(host, "path"); // $ Alert
+            BasicHttpRequests.delete(uri.toString()); // $ Alert
+            BasicHttpRequests.delete(uri); // $ Alert
 
-            BasicHttpRequests.get(host, "path"); // $ SSRF
-            BasicHttpRequests.get(uri.toString()); // $ SSRF
-            BasicHttpRequests.get(uri); // $ SSRF
+            BasicHttpRequests.get(host, "path"); // $ Alert
+            BasicHttpRequests.get(uri.toString()); // $ Alert
+            BasicHttpRequests.get(uri); // $ Alert
 
-            BasicHttpRequests.head(host, "path"); // $ SSRF
-            BasicHttpRequests.head(uri.toString()); // $ SSRF
-            BasicHttpRequests.head(uri); // $ SSRF
+            BasicHttpRequests.head(host, "path"); // $ Alert
+            BasicHttpRequests.head(uri.toString()); // $ Alert
+            BasicHttpRequests.head(uri); // $ Alert
 
-            BasicHttpRequests.options(host, "path"); // $ SSRF
-            BasicHttpRequests.options(uri.toString()); // $ SSRF
-            BasicHttpRequests.options(uri); // $ SSRF
+            BasicHttpRequests.options(host, "path"); // $ Alert
+            BasicHttpRequests.options(uri.toString()); // $ Alert
+            BasicHttpRequests.options(uri); // $ Alert
 
-            BasicHttpRequests.patch(host, "path"); // $ SSRF
-            BasicHttpRequests.patch(uri.toString()); // $ SSRF
-            BasicHttpRequests.patch(uri); // $ SSRF
+            BasicHttpRequests.patch(host, "path"); // $ Alert
+            BasicHttpRequests.patch(uri.toString()); // $ Alert
+            BasicHttpRequests.patch(uri); // $ Alert
 
-            BasicHttpRequests.post(host, "path"); // $ SSRF
-            BasicHttpRequests.post(uri.toString()); // $ SSRF
-            BasicHttpRequests.post(uri); // $ SSRF
+            BasicHttpRequests.post(host, "path"); // $ Alert
+            BasicHttpRequests.post(uri.toString()); // $ Alert
+            BasicHttpRequests.post(uri); // $ Alert
 
-            BasicHttpRequests.put(host, "path"); // $ SSRF
-            BasicHttpRequests.put(uri.toString()); // $ SSRF
-            BasicHttpRequests.put(uri); // $ SSRF
+            BasicHttpRequests.put(host, "path"); // $ Alert
+            BasicHttpRequests.put(uri.toString()); // $ Alert
+            BasicHttpRequests.put(uri); // $ Alert
 
-            BasicHttpRequests.trace(host, "path"); // $ SSRF
-            BasicHttpRequests.trace(uri.toString()); // $ SSRF
-            BasicHttpRequests.trace(uri); // $ SSRF
+            BasicHttpRequests.trace(host, "path"); // $ Alert
+            BasicHttpRequests.trace(uri.toString()); // $ Alert
+            BasicHttpRequests.trace(uri); // $ Alert
 
             // org.apache.hc.client5.http.async.methods.ConfigurableHttpRequest
-            new ConfigurableHttpRequest("method", host, "path"); // $ SSRF
-            new ConfigurableHttpRequest("method", uri); // $ SSRF
+            new ConfigurableHttpRequest("method", host, "path"); // $ Alert
+            new ConfigurableHttpRequest("method", uri); // $ Alert
 
             // org.apache.hc.client5.http.async.methods.SimpleHttpRequest
-            new SimpleHttpRequest(Method.CONNECT, host, "path"); // $ SSRF
-            new SimpleHttpRequest(Method.CONNECT, uri); // $ SSRF
-            new SimpleHttpRequest("method", host, "path"); // $ SSRF
-            new SimpleHttpRequest("method", uri); // $ SSRF
+            new SimpleHttpRequest(Method.CONNECT, host, "path"); // $ Alert
+            new SimpleHttpRequest(Method.CONNECT, uri); // $ Alert
+            new SimpleHttpRequest("method", host, "path"); // $ Alert
+            new SimpleHttpRequest("method", uri); // $ Alert
 
-            SimpleHttpRequest.create(Method.CONNECT, host, "path"); // $ SSRF
-            SimpleHttpRequest.create(Method.CONNECT, uri); // $ SSRF
-            SimpleHttpRequest.create("method", uri.toString()); // $ SSRF
-            SimpleHttpRequest.create("method", uri); // $ SSRF
+            SimpleHttpRequest.create(Method.CONNECT, host, "path"); // $ Alert
+            SimpleHttpRequest.create(Method.CONNECT, uri); // $ Alert
+            SimpleHttpRequest.create("method", uri.toString()); // $ Alert
+            SimpleHttpRequest.create("method", uri); // $ Alert
 
             // org.apache.hc.client5.http.async.methods.SimpleHttpRequests
-            SimpleHttpRequests.create(Method.CONNECT, host, "path"); // $ SSRF
-            SimpleHttpRequests.create(Method.CONNECT, uri.toString()); // $ SSRF
-            SimpleHttpRequests.create(Method.CONNECT, uri); // $ SSRF
-            SimpleHttpRequests.create("method", uri.toString()); // $ SSRF
-            SimpleHttpRequests.create("method", uri); // $ SSRF
+            SimpleHttpRequests.create(Method.CONNECT, host, "path"); // $ Alert
+            SimpleHttpRequests.create(Method.CONNECT, uri.toString()); // $ Alert
+            SimpleHttpRequests.create(Method.CONNECT, uri); // $ Alert
+            SimpleHttpRequests.create("method", uri.toString()); // $ Alert
+            SimpleHttpRequests.create("method", uri); // $ Alert
 
-            SimpleHttpRequests.delete(host, "path"); // $ SSRF
-            SimpleHttpRequests.delete(uri.toString()); // $ SSRF
-            SimpleHttpRequests.delete(uri); // $ SSRF
+            SimpleHttpRequests.delete(host, "path"); // $ Alert
+            SimpleHttpRequests.delete(uri.toString()); // $ Alert
+            SimpleHttpRequests.delete(uri); // $ Alert
 
-            SimpleHttpRequests.get(host, "path"); // $ SSRF
-            SimpleHttpRequests.get(uri.toString()); // $ SSRF
-            SimpleHttpRequests.get(uri); // $ SSRF
+            SimpleHttpRequests.get(host, "path"); // $ Alert
+            SimpleHttpRequests.get(uri.toString()); // $ Alert
+            SimpleHttpRequests.get(uri); // $ Alert
 
-            SimpleHttpRequests.head(host, "path"); // $ SSRF
-            SimpleHttpRequests.head(uri.toString()); // $ SSRF
-            SimpleHttpRequests.head(uri); // $ SSRF
+            SimpleHttpRequests.head(host, "path"); // $ Alert
+            SimpleHttpRequests.head(uri.toString()); // $ Alert
+            SimpleHttpRequests.head(uri); // $ Alert
 
-            SimpleHttpRequests.options(host, "path"); // $ SSRF
-            SimpleHttpRequests.options(uri.toString()); // $ SSRF
-            SimpleHttpRequests.options(uri); // $ SSRF
+            SimpleHttpRequests.options(host, "path"); // $ Alert
+            SimpleHttpRequests.options(uri.toString()); // $ Alert
+            SimpleHttpRequests.options(uri); // $ Alert
 
-            SimpleHttpRequests.patch(host, "path"); // $ SSRF
-            SimpleHttpRequests.patch(uri.toString()); // $ SSRF
-            SimpleHttpRequests.patch(uri); // $ SSRF
+            SimpleHttpRequests.patch(host, "path"); // $ Alert
+            SimpleHttpRequests.patch(uri.toString()); // $ Alert
+            SimpleHttpRequests.patch(uri); // $ Alert
 
-            SimpleHttpRequests.post(host, "path"); // $ SSRF
-            SimpleHttpRequests.post(uri.toString()); // $ SSRF
-            SimpleHttpRequests.post(uri); // $ SSRF
+            SimpleHttpRequests.post(host, "path"); // $ Alert
+            SimpleHttpRequests.post(uri.toString()); // $ Alert
+            SimpleHttpRequests.post(uri); // $ Alert
 
-            SimpleHttpRequests.put(host, "path"); // $ SSRF
-            SimpleHttpRequests.put(uri.toString()); // $ SSRF
-            SimpleHttpRequests.put(uri); // $ SSRF
+            SimpleHttpRequests.put(host, "path"); // $ Alert
+            SimpleHttpRequests.put(uri.toString()); // $ Alert
+            SimpleHttpRequests.put(uri); // $ Alert
 
-            SimpleHttpRequests.trace(host, "path"); // $ SSRF
-            SimpleHttpRequests.trace(uri.toString()); // $ SSRF
-            SimpleHttpRequests.trace(uri); // $ SSRF
+            SimpleHttpRequests.trace(host, "path"); // $ Alert
+            SimpleHttpRequests.trace(uri.toString()); // $ Alert
+            SimpleHttpRequests.trace(uri); // $ Alert
 
             // org.apache.hc.client5.http.async.methods.SimpleRequestBuilder
-            SimpleRequestBuilder.delete(uri.toString()); // $ SSRF
-            SimpleRequestBuilder.delete(uri); // $ SSRF
+            SimpleRequestBuilder.delete(uri.toString()); // $ Alert
+            SimpleRequestBuilder.delete(uri); // $ Alert
 
-            SimpleRequestBuilder.get(uri.toString()); // $ SSRF
-            SimpleRequestBuilder.get(uri); // $ SSRF
+            SimpleRequestBuilder.get(uri.toString()); // $ Alert
+            SimpleRequestBuilder.get(uri); // $ Alert
 
-            SimpleRequestBuilder.head(uri.toString()); // $ SSRF
-            SimpleRequestBuilder.head(uri); // $ SSRF
+            SimpleRequestBuilder.head(uri.toString()); // $ Alert
+            SimpleRequestBuilder.head(uri); // $ Alert
 
-            SimpleRequestBuilder.options(uri.toString()); // $ SSRF
-            SimpleRequestBuilder.options(uri); // $ SSRF
+            SimpleRequestBuilder.options(uri.toString()); // $ Alert
+            SimpleRequestBuilder.options(uri); // $ Alert
 
-            SimpleRequestBuilder.patch(uri.toString()); // $ SSRF
-            SimpleRequestBuilder.patch(uri); // $ SSRF
+            SimpleRequestBuilder.patch(uri.toString()); // $ Alert
+            SimpleRequestBuilder.patch(uri); // $ Alert
 
-            SimpleRequestBuilder.post(uri.toString()); // $ SSRF
-            SimpleRequestBuilder.post(uri); // $ SSRF
+            SimpleRequestBuilder.post(uri.toString()); // $ Alert
+            SimpleRequestBuilder.post(uri); // $ Alert
 
-            SimpleRequestBuilder.put(uri.toString()); // $ SSRF
-            SimpleRequestBuilder.put(uri); // $ SSRF
+            SimpleRequestBuilder.put(uri.toString()); // $ Alert
+            SimpleRequestBuilder.put(uri); // $ Alert
 
-            SimpleRequestBuilder.get().setHttpHost(host); // $ SSRF
+            SimpleRequestBuilder.get().setHttpHost(host); // $ Alert
 
-            SimpleRequestBuilder.get().setUri(uri.toString()); // $ SSRF
-            SimpleRequestBuilder.get().setUri(uri); // $ SSRF
+            SimpleRequestBuilder.get().setUri(uri.toString()); // $ Alert
+            SimpleRequestBuilder.get().setUri(uri); // $ Alert
 
-            SimpleRequestBuilder.trace(uri.toString()); // $ SSRF
-            SimpleRequestBuilder.trace(uri); // $ SSRF
+            SimpleRequestBuilder.trace(uri.toString()); // $ Alert
+            SimpleRequestBuilder.trace(uri); // $ Alert
 
         } catch (Exception e) {
             // TODO: handle exception
@@ -177,66 +177,66 @@ public class ApacheHttpSSRFVersion5 extends HttpServlet {
             throws ServletException, IOException {
         try {
 
-            String uriSink = request.getParameter("uri");
+            String uriSink = request.getParameter("uri"); // $ Source
             URI uri = new URI(uriSink);
 
             // org.apache.hc.client5.http.classic.methods.ClassicHttpRequests
-            ClassicHttpRequests.create(Method.CONNECT, uri.toString()); // $ SSRF
-            ClassicHttpRequests.create(Method.CONNECT, uri); // $ SSRF
-            ClassicHttpRequests.create("method", uri.toString()); // $ SSRF
-            ClassicHttpRequests.create("method", uri); // $ SSRF
+            ClassicHttpRequests.create(Method.CONNECT, uri.toString()); // $ Alert
+            ClassicHttpRequests.create(Method.CONNECT, uri); // $ Alert
+            ClassicHttpRequests.create("method", uri.toString()); // $ Alert
+            ClassicHttpRequests.create("method", uri); // $ Alert
 
-            ClassicHttpRequests.delete(uri.toString()); // $ SSRF
-            ClassicHttpRequests.delete(uri); // $ SSRF
+            ClassicHttpRequests.delete(uri.toString()); // $ Alert
+            ClassicHttpRequests.delete(uri); // $ Alert
 
-            ClassicHttpRequests.get(uri.toString()); // $ SSRF
-            ClassicHttpRequests.get(uri); // $ SSRF
+            ClassicHttpRequests.get(uri.toString()); // $ Alert
+            ClassicHttpRequests.get(uri); // $ Alert
 
-            ClassicHttpRequests.head(uri.toString()); // $ SSRF
-            ClassicHttpRequests.head(uri); // $ SSRF
+            ClassicHttpRequests.head(uri.toString()); // $ Alert
+            ClassicHttpRequests.head(uri); // $ Alert
 
-            ClassicHttpRequests.options(uri.toString()); // $ SSRF
-            ClassicHttpRequests.options(uri); // $ SSRF
+            ClassicHttpRequests.options(uri.toString()); // $ Alert
+            ClassicHttpRequests.options(uri); // $ Alert
 
-            ClassicHttpRequests.patch(uri.toString()); // $ SSRF
-            ClassicHttpRequests.patch(uri); // $ SSRF
+            ClassicHttpRequests.patch(uri.toString()); // $ Alert
+            ClassicHttpRequests.patch(uri); // $ Alert
 
-            ClassicHttpRequests.post(uri.toString()); // $ SSRF
-            ClassicHttpRequests.post(uri); // $ SSRF
+            ClassicHttpRequests.post(uri.toString()); // $ Alert
+            ClassicHttpRequests.post(uri); // $ Alert
 
-            ClassicHttpRequests.put(uri.toString()); // $ SSRF
-            ClassicHttpRequests.put(uri); // $ SSRF
+            ClassicHttpRequests.put(uri.toString()); // $ Alert
+            ClassicHttpRequests.put(uri); // $ Alert
 
-            ClassicHttpRequests.trace(uri.toString()); // $ SSRF
-            ClassicHttpRequests.trace(uri); // $ SSRF
+            ClassicHttpRequests.trace(uri.toString()); // $ Alert
+            ClassicHttpRequests.trace(uri); // $ Alert
 
             // org.apache.hc.client5.http.classic.methods.HttpDelete through HttpTrace
-            new HttpDelete(uri.toString()); // $ SSRF
-            new HttpDelete(uri); // $ SSRF
+            new HttpDelete(uri.toString()); // $ Alert
+            new HttpDelete(uri); // $ Alert
 
-            new HttpGet(uri.toString()); // $ SSRF
-            new HttpGet(uri); // $ SSRF
+            new HttpGet(uri.toString()); // $ Alert
+            new HttpGet(uri); // $ Alert
 
-            new HttpHead(uri.toString()); // $ SSRF
-            new HttpHead(uri); // $ SSRF
+            new HttpHead(uri.toString()); // $ Alert
+            new HttpHead(uri); // $ Alert
 
-            new HttpOptions(uri.toString()); // $ SSRF
-            new HttpOptions(uri); // $ SSRF
+            new HttpOptions(uri.toString()); // $ Alert
+            new HttpOptions(uri); // $ Alert
 
-            new HttpPatch(uri.toString()); // $ SSRF
-            new HttpPatch(uri); // $ SSRF
+            new HttpPatch(uri.toString()); // $ Alert
+            new HttpPatch(uri); // $ Alert
 
-            new HttpPost(uri.toString()); // $ SSRF
-            new HttpPost(uri); // $ SSRF
+            new HttpPost(uri.toString()); // $ Alert
+            new HttpPost(uri); // $ Alert
 
-            new HttpPut(uri.toString()); // $ SSRF
-            new HttpPut(uri); // $ SSRF
+            new HttpPut(uri.toString()); // $ Alert
+            new HttpPut(uri); // $ Alert
 
-            new HttpTrace(uri.toString()); // $ SSRF
-            new HttpTrace(uri); // $ SSRF
+            new HttpTrace(uri.toString()); // $ Alert
+            new HttpTrace(uri); // $ Alert
 
             // org.apache.hc.client5.http.classic.methods.HttpUriRequestBase
-            new HttpUriRequestBase("method", uri); // $ SSRF
+            new HttpUriRequestBase("method", uri); // $ Alert
 
         } catch (Exception e) {
             // TODO: handle exception
@@ -248,37 +248,37 @@ public class ApacheHttpSSRFVersion5 extends HttpServlet {
             throws ServletException, IOException {
         try {
 
-            String uriSink = request.getParameter("uri");
+            String uriSink = request.getParameter("uri"); // $ Source
             URI uri = new URI(uriSink);
 
             // org.apache.hc.client5.http.fluent.Request
-            Request.create(Method.CONNECT, uri); // $ SSRF
-            Request.create("method", uri.toString()); // $ SSRF
-            Request.create("method", uri); // $ SSRF
+            Request.create(Method.CONNECT, uri); // $ Alert
+            Request.create("method", uri.toString()); // $ Alert
+            Request.create("method", uri); // $ Alert
 
-            Request.delete(uri.toString()); // $ SSRF
-            Request.delete(uri); // $ SSRF
+            Request.delete(uri.toString()); // $ Alert
+            Request.delete(uri); // $ Alert
 
-            Request.get(uri.toString()); // $ SSRF
-            Request.get(uri); // $ SSRF
+            Request.get(uri.toString()); // $ Alert
+            Request.get(uri); // $ Alert
 
-            Request.head(uri.toString()); // $ SSRF
-            Request.head(uri); // $ SSRF
+            Request.head(uri.toString()); // $ Alert
+            Request.head(uri); // $ Alert
 
-            Request.options(uri.toString()); // $ SSRF
-            Request.options(uri); // $ SSRF
+            Request.options(uri.toString()); // $ Alert
+            Request.options(uri); // $ Alert
 
-            Request.patch(uri.toString()); // $ SSRF
-            Request.patch(uri); // $ SSRF
+            Request.patch(uri.toString()); // $ Alert
+            Request.patch(uri); // $ Alert
 
-            Request.post(uri.toString()); // $ SSRF
-            Request.post(uri); // $ SSRF
+            Request.post(uri.toString()); // $ Alert
+            Request.post(uri); // $ Alert
 
-            Request.put(uri.toString()); // $ SSRF
-            Request.put(uri); // $ SSRF
+            Request.put(uri.toString()); // $ Alert
+            Request.put(uri); // $ Alert
 
-            Request.trace(uri.toString()); // $ SSRF
-            Request.trace(uri); // $ SSRF
+            Request.trace(uri.toString()); // $ Alert
+            Request.trace(uri); // $ Alert
 
         } catch (Exception e) {
             // TODO: handle exception
@@ -292,26 +292,26 @@ public class ApacheHttpSSRFVersion5 extends HttpServlet {
             throws ServletException, IOException {
         try {
 
-            String uriSink = request.getParameter("uri");
+            String uriSink = request.getParameter("uri"); // $ Source
             URI uri = new URI(uriSink);
 
-            String hostSink = request.getParameter("host");
+            String hostSink = request.getParameter("host"); // $ Source
             HttpHost host = new HttpHost(hostSink);
 
             // org.apache.hc.core5.http.impl.bootstrap
             HttpAsyncRequester httpAsyncReq = new HttpAsyncRequester(null, null, null, null, null, null);
-            httpAsyncReq.connect(host, null); // $ SSRF
-            httpAsyncReq.connect(host, null, null, null); // $ SSRF
+            httpAsyncReq.connect(host, null); // $ Alert
+            httpAsyncReq.connect(host, null, null, null); // $ Alert
 
             // org.apache.hc.core5.http.impl.io
             DefaultClassicHttpRequestFactory defClassicHttpReqFact = new DefaultClassicHttpRequestFactory();
-            defClassicHttpReqFact.newHttpRequest("method", uri.toString()); // $ SSRF
-            defClassicHttpReqFact.newHttpRequest("method", uri); // $ SSRF
+            defClassicHttpReqFact.newHttpRequest("method", uri.toString()); // $ Alert
+            defClassicHttpReqFact.newHttpRequest("method", uri); // $ Alert
 
             // org.apache.hc.core5.http.impl.nio
             DefaultHttpRequestFactory defHttpReqFact = new DefaultHttpRequestFactory();
-            defHttpReqFact.newHttpRequest("method", uri.toString()); // $ SSRF
-            defHttpReqFact.newHttpRequest("method", uri); // $ SSRF
+            defHttpReqFact.newHttpRequest("method", uri.toString()); // $ Alert
+            defHttpReqFact.newHttpRequest("method", uri); // $ Alert
 
         } catch (Exception e) {
             // TODO: handle exception
@@ -323,41 +323,41 @@ public class ApacheHttpSSRFVersion5 extends HttpServlet {
             throws ServletException, IOException {
         try {
 
-            String uriSink = request.getParameter("uri");
+            String uriSink = request.getParameter("uri"); // $ Source
             URI uri = new URI(uriSink);
 
-            String hostSink = request.getParameter("host");
+            String hostSink = request.getParameter("host"); // $ Source
             HttpHost host = new HttpHost(hostSink);
 
             // org.apache.hc.core5.http.io.support.ClassicRequestBuilder
-            ClassicRequestBuilder.delete(uri.toString()); // $ SSRF
-            ClassicRequestBuilder.delete(uri); // $ SSRF
+            ClassicRequestBuilder.delete(uri.toString()); // $ Alert
+            ClassicRequestBuilder.delete(uri); // $ Alert
 
-            ClassicRequestBuilder.get(uri.toString()); // $ SSRF
-            ClassicRequestBuilder.get(uri); // $ SSRF
+            ClassicRequestBuilder.get(uri.toString()); // $ Alert
+            ClassicRequestBuilder.get(uri); // $ Alert
 
-            ClassicRequestBuilder.head(uri.toString()); // $ SSRF
-            ClassicRequestBuilder.head(uri); // $ SSRF
+            ClassicRequestBuilder.head(uri.toString()); // $ Alert
+            ClassicRequestBuilder.head(uri); // $ Alert
 
-            ClassicRequestBuilder.options(uri.toString()); // $ SSRF
-            ClassicRequestBuilder.options(uri); // $ SSRF
+            ClassicRequestBuilder.options(uri.toString()); // $ Alert
+            ClassicRequestBuilder.options(uri); // $ Alert
 
-            ClassicRequestBuilder.patch(uri.toString()); // $ SSRF
-            ClassicRequestBuilder.patch(uri); // $ SSRF
+            ClassicRequestBuilder.patch(uri.toString()); // $ Alert
+            ClassicRequestBuilder.patch(uri); // $ Alert
 
-            ClassicRequestBuilder.post(uri.toString()); // $ SSRF
-            ClassicRequestBuilder.post(uri); // $ SSRF
+            ClassicRequestBuilder.post(uri.toString()); // $ Alert
+            ClassicRequestBuilder.post(uri); // $ Alert
 
-            ClassicRequestBuilder.put(uri.toString()); // $ SSRF
-            ClassicRequestBuilder.put(uri); // $ SSRF
+            ClassicRequestBuilder.put(uri.toString()); // $ Alert
+            ClassicRequestBuilder.put(uri); // $ Alert
 
-            ClassicRequestBuilder.get().setHttpHost(host); // $ SSRF
+            ClassicRequestBuilder.get().setHttpHost(host); // $ Alert
 
-            ClassicRequestBuilder.get().setUri(uri.toString()); // $ SSRF
-            ClassicRequestBuilder.get().setUri(uri); // $ SSRF
+            ClassicRequestBuilder.get().setUri(uri.toString()); // $ Alert
+            ClassicRequestBuilder.get().setUri(uri); // $ Alert
 
-            ClassicRequestBuilder.trace(uri.toString()); // $ SSRF
-            ClassicRequestBuilder.trace(uri); // $ SSRF
+            ClassicRequestBuilder.trace(uri.toString()); // $ Alert
+            ClassicRequestBuilder.trace(uri); // $ Alert
 
         } catch (Exception e) {
             // TODO: handle exception
@@ -369,29 +369,29 @@ public class ApacheHttpSSRFVersion5 extends HttpServlet {
             throws ServletException, IOException {
         try {
 
-            String uriSink = request.getParameter("uri");
+            String uriSink = request.getParameter("uri"); // $ Source
             URI uri = new URI(uriSink);
 
-            String hostSink = request.getParameter("host");
+            String hostSink = request.getParameter("host"); // $ Source
             HttpHost host = new HttpHost(hostSink);
 
             // BasicClassicHttpRequest
-            new BasicClassicHttpRequest(Method.CONNECT, host, "path"); // $ SSRF
-            new BasicClassicHttpRequest(Method.CONNECT, uri); // $ SSRF
-            new BasicClassicHttpRequest("method", host, "path"); // $ SSRF
-            new BasicClassicHttpRequest("method", uri); // $ SSRF
+            new BasicClassicHttpRequest(Method.CONNECT, host, "path"); // $ Alert
+            new BasicClassicHttpRequest(Method.CONNECT, uri); // $ Alert
+            new BasicClassicHttpRequest("method", host, "path"); // $ Alert
+            new BasicClassicHttpRequest("method", uri); // $ Alert
 
             // BasicHttpRequest
-            new BasicHttpRequest(Method.CONNECT, host, "path"); // $ SSRF
-            new BasicHttpRequest(Method.CONNECT, uri); // $ SSRF
-            new BasicHttpRequest("method", host, "path"); // $ SSRF
-            new BasicHttpRequest("method", uri); // $ SSRF
+            new BasicHttpRequest(Method.CONNECT, host, "path"); // $ Alert
+            new BasicHttpRequest(Method.CONNECT, uri); // $ Alert
+            new BasicHttpRequest("method", host, "path"); // $ Alert
+            new BasicHttpRequest("method", uri); // $ Alert
             BasicHttpRequest bhr = new BasicHttpRequest("method", "path");
-            bhr.setUri(uri); // $ SSRF
+            bhr.setUri(uri); // $ Alert
 
             // HttpRequestWrapper
             HttpRequestWrapper hrw = new HttpRequestWrapper(null);
-            hrw.setUri(uri); // $ SSRF
+            hrw.setUri(uri); // $ Alert
 
         } catch (Exception e) {
             // TODO: handle exception
