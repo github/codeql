@@ -1,5 +1,5 @@
 name: codeql/go-all
-version: 4.2.8-dev
+version: 4.2.8
 groups: go
 dbscheme: go.dbscheme
 extractor: go

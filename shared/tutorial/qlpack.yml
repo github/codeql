@@ -1,7 +1,7 @@
 name: codeql/tutorial
 description: Library for the CodeQL detective tutorials, helping new users learn to
   write CodeQL queries.
-version: 1.0.26-dev
+version: 1.0.26
 groups: shared
 library: true
 warnOnImplicitThis: true
