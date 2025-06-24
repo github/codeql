@@ -1132,6 +1132,8 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
     ) and
     result = inferType(ie.getBase(), exprPath)
   |
+    exprPath.isCons(any(Vec v).getElementTypeParameter(), path)
+    or
     exprPath.isCons(any(ArrayTypeParameter tp), path)
     or
     exists(TypePath path0 |
