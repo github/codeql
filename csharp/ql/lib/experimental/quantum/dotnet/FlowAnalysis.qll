@@ -189,43 +189,21 @@ module ModeLiteralFlow {
  * `ToArray()` on the stream, or a wrapped stream.
  */
 module StreamFlow {
-  private class Stream extends Class {
-    Stream() { this.getABaseType().hasFullyQualifiedName("System.IO", "Stream") }
-  }
-
-  /**
-   * A `Stream` object creation.
-   */
-  private class StreamCreation extends ObjectCreation {
-    StreamCreation() { this.getObjectType() instanceof Stream }
-
-    Expr getInputArg() {
-      result = this.getAnArgument() and
-      result.getType().hasFullyQualifiedName("System", "Byte[]")
-    }
-
-    Expr getStreamArg() {
-      result = this.getAnArgument() and
-      result.getType() instanceof Stream
-    }
-  }
-
-  private class StreamUse extends MethodCall {
-    StreamUse() {
-      this.getQualifier().getType() instanceof Stream and
-      this.getTarget().hasName("ToArray")
-    }
-
-    Expr getOutput() { result = this }
-  }
-
   private module StreamConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node source) { source.asExpr() instanceof StreamCreation }
+    predicate isSource(DataFlow::Node source) {
+      source.asExpr() instanceof StreamCreation
+      or
+      exists(StreamUse use | source.asExpr() = use.getQualifier())
+      or
+      exists(Expr use | source.asExpr() = use and use.getType() instanceof Stream)
+    }
 
     predicate isSink(DataFlow::Node sink) {
       sink.asExpr() instanceof StreamCreation
       or
       exists(StreamUse use | sink.asExpr() = use.getQualifier())
+      or
+      exists(Expr use | sink.asExpr() = use and use.getType() instanceof Stream)
     }
 
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -245,7 +223,7 @@ module StreamFlow {
 
   private module StreamFlow = DataFlow::Global<StreamConfig>;
 
-  StreamCreation getWrappedStream(
+  StreamCreation getWrappedStreamCreation(
     StreamCreation stream, StreamFlow::PathNode source, StreamFlow::PathNode sink
   ) {
     source.getNode().asExpr() = result and
@@ -253,11 +231,15 @@ module StreamFlow {
     StreamFlow::flowPath(source, sink)
   }
 
-  StreamUse getStreamUse(
-    StreamCreation stream, StreamFlow::PathNode source, StreamFlow::PathNode sink
-  ) {
-    source.getNode().asExpr() = stream and
+  StreamUse getLaterUse(Expr use, StreamFlow::PathNode source, StreamFlow::PathNode sink) {
+    source.getNode().asExpr() = use and
     sink.getNode().asExpr() = result.getQualifier() and
+    StreamFlow::flowPath(source, sink)
+  }
+
+  StreamUse getEarlierUse(Expr use, StreamFlow::PathNode source, StreamFlow::PathNode sink) {
+    source.getNode().asExpr() = result.getQualifier() and
+    sink.getNode().asExpr() = use and
     StreamFlow::flowPath(source, sink)
   }
 }
