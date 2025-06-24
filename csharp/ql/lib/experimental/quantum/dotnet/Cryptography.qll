@@ -197,11 +197,29 @@ class HashUse extends MethodCall {
         .getName()
         .matches([
             "ComputeHash", "ComputeHashAsync", "HashCore", "HashData", "HashDataAsync",
-            "TransformBlock", "TransformFinalBlock", "TryComputeHash", "TryHashData", "TryHashFinal"
+            "TransformBlock", "TransformFinalBlock", "TryComputeHash", "TryHashData",
+            "TryHashFinal", "HashFinal"
           ])
   }
 
   predicate isIntermediate() { this.getTarget().hasName("HashCore") }
+
+  Expr getOutputArtifact() {
+    not this.isIntermediate() and
+    // some functions receive the destination as a parameter
+    if
+      this.getTarget().getName() = ["TryComputeHash", "TryHashFinal", "TryHashData"]
+      or
+      this.getTarget().getName() = ["HashData"] and this.getNumberOfArguments() = 2
+      or
+      this.getTarget().getName() = ["HashDataAsync"] and this.getNumberOfArguments() = 3
+    then result = this.getArgument(1)
+    else result = this
+  }
+
+  Expr getInputConsumer() {
+    not this.getTarget().getName() = "HashFinal" and result = this.getArgument(0)
+  }
 }
 
 class SignerUse extends MethodCall {

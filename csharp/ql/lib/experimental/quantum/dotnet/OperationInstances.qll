@@ -50,9 +50,13 @@ class HashOperationInstance extends Crypto::HashOperationInstance instanceof Has
 
   HashOperationInstance() { creator = HashCreateToUseFlow::getCreationFromUse(this, _, _) }
 
-  override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() { none() }
+  override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
+    result = DataFlow::exprNode(this.(HashUse).getOutputArtifact())
+  }
 
-  override Crypto::ConsumerInputDataFlowNode getInputConsumer() { none() }
+  override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
+    result = DataFlow::exprNode(this.(HashUse).getInputConsumer())
+  }
 
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() { none() }
 }
