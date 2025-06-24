@@ -45,22 +45,18 @@ class ECDsaORRSASigningOperationInstance extends Crypto::SignatureOperationInsta
   }
 }
 
-class HashOperationInstance extends Crypto::HashOperationInstance instanceof HashUse {
-  HashAlgorithmCreateCall creator;
-
-  HashOperationInstance() { creator = HashCreateToUseFlow::getCreationFromUse(this, _, _) }
-
-  override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-    result = DataFlow::exprNode(this.(HashUse).getOutputArtifact())
-  }
-
-  override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
-    result = DataFlow::exprNode(this.(HashUse).getInputConsumer())
-  }
-
-  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() { none() }
-}
-
+// class HashOperationInstance extends Crypto::HashOperationInstance instanceof HashUse {
+//   HashOperationInstance() {
+//     not super.isIntermediate()
+//   }
+//   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
+//     result.asExpr() = super.getOutputArtifact()
+//   }
+//   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
+//     result.asExpr() = super.getInputArg() or result = StreamFlow::getIntermediateUse(this.getStreamArg(), _, _).getInputArg()
+//   }
+//   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() { result = HashCreateToUseFlow::getCreationFromUse(this, _, _) }
+// }
 /**
  * A symmetric algorithm class, such as AES or DES.
  */

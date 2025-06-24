@@ -1,5 +1,6 @@
 private import csharp
 private import experimental.quantum.Language
+private import FlowAnalysis
 
 class CryptographyType extends Type {
   CryptographyType() { this.hasFullyQualifiedName("System.Security.Cryptography", _) }
@@ -190,6 +191,13 @@ class ReadOnlyByteSpanType extends Type {
   ReadOnlyByteSpanType() { this.getName() = "ReadOnlySpan<Byte>" }
 }
 
+class ByteArrayOrReadOnlyByteSpanType extends Type {
+  ByteArrayOrReadOnlyByteSpanType() {
+    this instanceof ByteArrayType or
+    this instanceof ReadOnlyByteSpanType
+  }
+}
+
 class HashUse extends MethodCall {
   HashUse() {
     this.getQualifier().getType() instanceof HashAlgorithmType and
@@ -217,9 +225,13 @@ class HashUse extends MethodCall {
     else result = this
   }
 
-  Expr getInputConsumer() {
-    not this.getTarget().getName() = "HashFinal" and result = this.getArgument(0)
+  Expr getInputArg() {
+    result = this.getAnArgument() and result.getType() instanceof ByteArrayOrReadOnlyByteSpanType
   }
+  // Expr getStreamArg() {
+  //   result = this.getAnArgument() and
+  //   result.getType() instanceof Stream
+  // }
 }
 
 class SignerUse extends MethodCall {
@@ -238,10 +250,7 @@ class SignerUse extends MethodCall {
     this.isVerifier() and
     (
       result = this.getArgument([1, 3]) and
-      (
-        result.getType() instanceof ByteArrayType or
-        result.getType() instanceof ReadOnlyByteSpanType
-      )
+      result.getType() instanceof ByteArrayOrReadOnlyByteSpanType
     )
   }
 
