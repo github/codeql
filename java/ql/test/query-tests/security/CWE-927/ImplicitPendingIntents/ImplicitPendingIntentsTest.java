@@ -28,77 +28,77 @@ public class ImplicitPendingIntentsTest {
     public static void testPendingIntentAsAnExtra(Context ctx)
             throws PendingIntent.CanceledException {
         {
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.startActivities(new Intent[] {fwdIntent}); // $ MISSING: hasImplicitPendingIntent
-            ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
+            ctx.startActivities(new Intent[] {fwdIntent}); // $ MISSING: Alert
+            ctx.startActivity(fwdIntent); // $ Alert
             ctx.startService(fwdIntent); // Safe
-            ctx.sendBroadcast(fwdIntent); // $hasImplicitPendingIntent
+            ctx.sendBroadcast(fwdIntent); // $ Alert
 
             fwdIntent.setComponent(null); // Not a sanitizer
-            ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
+            ctx.startActivity(fwdIntent); // $ Alert
 
             fwdIntent.setPackage("a.safe.package"); // Sanitizer
             ctx.startActivity(fwdIntent); // Safe
         }
 
         {
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             PendingIntent pi = PendingIntent.getActivityAsUser(ctx, 0, baseIntent, 0, null, null);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
+            ctx.startActivity(fwdIntent); // $ Alert
         }
 
         {
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             PendingIntent pi = PendingIntent.getActivities(ctx, 0, new Intent[] {baseIntent}, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
+            ctx.startActivity(fwdIntent); // $ Alert
         }
 
         {
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             PendingIntent pi = PendingIntent.getActivitiesAsUser(ctx, 0, new Intent[] {baseIntent},
                     0, null, null);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
+            ctx.startActivity(fwdIntent); // $ Alert
         }
 
         {
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             PendingIntent pi = PendingIntent.getBroadcast(ctx, 0, baseIntent, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.sendBroadcast(fwdIntent); // $hasImplicitPendingIntent
+            ctx.sendBroadcast(fwdIntent); // $ Alert
         }
 
         {
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             PendingIntent pi = PendingIntent.getBroadcastAsUser(ctx, 0, baseIntent, 0, null);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.sendBroadcast(fwdIntent); // $hasImplicitPendingIntent
+            ctx.sendBroadcast(fwdIntent); // $ Alert
         }
 
         {
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             PendingIntent pi = PendingIntent.getService(ctx, 0, baseIntent, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
+            ctx.startActivity(fwdIntent); // $ Alert
         }
 
         {
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             PendingIntent pi = PendingIntent.getForegroundService(ctx, 0, baseIntent, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            ctx.startActivity(fwdIntent); // $hasImplicitPendingIntent
+            ctx.startActivity(fwdIntent); // $ Alert
         }
 
         {
@@ -163,14 +163,14 @@ public class ImplicitPendingIntentsTest {
     public static void testPendingIntentWrappedInAnotherPendingIntent(Context ctx,
             PendingIntent other) throws PendingIntent.CanceledException {
         {
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            other.send(ctx, 0, fwdIntent); // $hasImplicitPendingIntent
-            other.send(ctx, 0, fwdIntent, null, null); // $hasImplicitPendingIntent
-            other.send(ctx, 0, fwdIntent, null, null, null); // $hasImplicitPendingIntent
-            other.send(ctx, 0, fwdIntent, null, null, null, null); // $hasImplicitPendingIntent
+            other.send(ctx, 0, fwdIntent); // $ Alert
+            other.send(ctx, 0, fwdIntent, null, null); // $ Alert
+            other.send(ctx, 0, fwdIntent, null, null, null); // $ Alert
+            other.send(ctx, 0, fwdIntent, null, null, null, null); // $ Alert
         }
     }
 
@@ -178,16 +178,16 @@ public class ImplicitPendingIntentsTest {
             throws PendingIntent.CanceledException {
 
         {
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
             Notification.Action.Builder aBuilder = new Notification.Action.Builder(0, "", pi);
             Notification.Builder nBuilder =
                     new Notification.Builder(ctx).addAction(aBuilder.build());
             Notification notification = nBuilder.build();
             NotificationManager nManager = null;
-            nManager.notifyAsPackage("targetPackage", "tag", 0, notification); // $hasImplicitPendingIntent
-            nManager.notify(0, notification); // $hasImplicitPendingIntent
-            nManager.notifyAsUser("", 0, notification, null); // $hasImplicitPendingIntent
+            nManager.notifyAsPackage("targetPackage", "tag", 0, notification); // $ Alert
+            nManager.notify(0, notification); // $ Alert
+            nManager.notifyAsUser("", 0, notification, null); // $ Alert
         }
         {
             Intent baseIntent = new Intent();
@@ -219,31 +219,31 @@ public class ImplicitPendingIntentsTest {
         }
         // Compat sinks
         {
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
             Notification.Action.Builder aBuilder = new Notification.Action.Builder(0, "", pi);
             Notification.Builder nBuilder =
                     new Notification.Builder(ctx).addAction(aBuilder.build());
             Notification notification = nBuilder.build();
             NotificationManagerCompat nManager = null;
-            nManager.notify(0, notification); // $hasImplicitPendingIntent
-            nManager.notify("", 0, notification); // $hasImplicitPendingIntent
+            nManager.notify(0, notification); // $ Alert
+            nManager.notify("", 0, notification); // $ Alert
         }
     }
 
     public static void testPendingIntentInAnAlarm(Context ctx) {
         AlarmManager aManager = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
         {
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
-            aManager.set(0, 0, pi); // $hasImplicitPendingIntent
-            aManager.setAlarmClock(null, pi); // $hasImplicitPendingIntent
-            aManager.setAndAllowWhileIdle(0, 0, pi); // $hasImplicitPendingIntent
-            aManager.setExact(0, 0, pi); // $hasImplicitPendingIntent
-            aManager.setExactAndAllowWhileIdle(0, 0, pi); // $hasImplicitPendingIntent
-            aManager.setInexactRepeating(0, 0, 0, pi); // $hasImplicitPendingIntent
-            aManager.setRepeating(0, 0, 0, pi); // $hasImplicitPendingIntent
-            aManager.setWindow(0, 0, 0, pi); // $hasImplicitPendingIntent
+            aManager.set(0, 0, pi); // $ Alert
+            aManager.setAlarmClock(null, pi); // $ Alert
+            aManager.setAndAllowWhileIdle(0, 0, pi); // $ Alert
+            aManager.setExact(0, 0, pi); // $ Alert
+            aManager.setExactAndAllowWhileIdle(0, 0, pi); // $ Alert
+            aManager.setInexactRepeating(0, 0, 0, pi); // $ Alert
+            aManager.setRepeating(0, 0, 0, pi); // $ Alert
+            aManager.setWindow(0, 0, 0, pi); // $ Alert
         }
         {
             Intent baseIntent = new Intent();
@@ -253,24 +253,24 @@ public class ImplicitPendingIntentsTest {
         }
         // Compat sinks
         {
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
-            AlarmManagerCompat.setAlarmClock(aManager, 0, pi, null); // $hasImplicitPendingIntent
-            AlarmManagerCompat.setAlarmClock(aManager, 0, null, pi); // $hasImplicitPendingIntent
-            AlarmManagerCompat.setAndAllowWhileIdle(aManager, 0, 0, pi); // $hasImplicitPendingIntent
-            AlarmManagerCompat.setExact(aManager, 0, 0, pi); // $hasImplicitPendingIntent
-            AlarmManagerCompat.setExactAndAllowWhileIdle(aManager, 0, 0, pi); // $hasImplicitPendingIntent
+            AlarmManagerCompat.setAlarmClock(aManager, 0, pi, null); // $ Alert
+            AlarmManagerCompat.setAlarmClock(aManager, 0, null, pi); // $ Alert
+            AlarmManagerCompat.setAndAllowWhileIdle(aManager, 0, 0, pi); // $ Alert
+            AlarmManagerCompat.setExact(aManager, 0, 0, pi); // $ Alert
+            AlarmManagerCompat.setExactAndAllowWhileIdle(aManager, 0, 0, pi); // $ Alert
         }
     }
 
     static class TestActivity extends Activity {
         @Override
         public void onCreate(Bundle bundle) {
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             PendingIntent pi = PendingIntent.getActivity(null, 0, baseIntent, 0);
             Intent fwdIntent = new Intent();
             fwdIntent.putExtra("fwdIntent", pi);
-            setResult(0, fwdIntent); // $hasImplicitPendingIntent
+            setResult(0, fwdIntent); // $ Alert
         }
     }
 
@@ -281,13 +281,13 @@ public class ImplicitPendingIntentsTest {
         @Override
         public Slice onBindSlice(Uri sliceUri) {
             if (sliceUri.getAuthority().equals("1")) {
-                Intent baseIntent = new Intent();
+                Intent baseIntent = new Intent(); // $ Source
                 PendingIntent pi = PendingIntent.getActivity(getContext(), 0, baseIntent, 0);
                 SliceAction activityAction = SliceAction.createDeeplink(pi, null, 0, "Test");
                 ListBuilder listBuilder = new ListBuilder(getContext(), sliceUri, null);
                 listBuilder.addRow(new ListBuilder.RowBuilder().setTitle("Title")
                         .setPrimaryAction(activityAction));
-                return listBuilder.build(); // $hasImplicitPendingIntent
+                return listBuilder.build(); // $ Alert
 
             } else if (sliceUri.getAuthority().equals("2")) {
                 Intent baseIntent = new Intent(getContext(), Activity.class); // Sanitizer
@@ -314,16 +314,16 @@ public class ImplicitPendingIntentsTest {
                 SliceAction action = SliceAction.createDeeplink(mPendingIntent, null, 0, "");
                 ListBuilder listBuilder = new ListBuilder(getContext(), sliceUri, 0);
                 listBuilder.addRow(new ListBuilder.RowBuilder(sliceUri).setPrimaryAction(action));
-                return listBuilder.build(); // $hasImplicitPendingIntent
+                return listBuilder.build(); // $ Alert
             }
         }
 
         @Override
         public PendingIntent onCreatePermissionRequest(Uri sliceUri, String callingPackage) {
             if (sliceUri.getAuthority().equals("1")) {
-                Intent baseIntent = new Intent();
+                Intent baseIntent = new Intent(); // $ Source
                 PendingIntent pi = PendingIntent.getActivity(getContext(), 0, baseIntent, 0);
-                return pi; // $hasImplicitPendingIntent
+                return pi; // $ Alert
             } else {
                 Intent baseIntent = new Intent();
                 PendingIntent pi = PendingIntent.getActivity(getContext(), 0, baseIntent,
@@ -336,7 +336,7 @@ public class ImplicitPendingIntentsTest {
         public boolean onCreateSliceProvider() {
             // Testing implicit field read flows:
             // mPendingIntent is used in onBindSlice
-            Intent baseIntent = new Intent();
+            Intent baseIntent = new Intent(); // $ Source
             mPendingIntent = PendingIntent.getActivity(getContext(), 0, baseIntent, 0);
             return true;
         }
