@@ -72,6 +72,10 @@ class HashAlgorithmNameInstance extends Crypto::HashAlgorithmInstance instanceof
 
 class SymmetricAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance instanceof SymmetricAlgorithmCreation
 {
+  SymmetricAlgorithmConsumer consumer;
+
+  SymmetricAlgorithmInstance() { consumer = SymmetricAlgorithmFlow::getUseFromCreation(this, _, _) }
+
   override string getRawAlgorithmName() { result = super.getSymmetricAlgorithm().getName() }
 
   override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
@@ -80,13 +84,33 @@ class SymmetricAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance i
     else result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::OtherSymmetricCipherType())
   }
 
-  override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
+  // The cipher mode is set by assigning it to the `Mode` property of the
+  // symmetric algorithm.
+  override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() {
+    result.(CipherModeLiteralInstance).getConsumer() = this.getCipherModeAlgorithmValueConsumer()
+  }
 
-  override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
+  // The padding mode is set by assigning it to the `Padding` property of the
+  // symmetric algorithm.
+  override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() {
+    result.(PaddingModeLiteralInstance).getConsumer() = this.getPaddingAlgorithmValueConsumer()
+  }
+
+  Crypto::AlgorithmValueConsumer getPaddingAlgorithmValueConsumer() {
+    result = SymmetricAlgorithmFlow::getUseFromCreation(this, _, _) and
+    result instanceof PaddingPropertyWrite
+  }
+
+  Crypto::AlgorithmValueConsumer getCipherModeAlgorithmValueConsumer() {
+    result = SymmetricAlgorithmFlow::getUseFromCreation(this, _, _) and
+    result instanceof CipherModePropertyWrite
+  }
 
   override int getKeySizeFixed() { none() }
 
   override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
+
+  Crypto::AlgorithmValueConsumer getConsumer() { result = consumer }
 }
 
 /**
@@ -98,7 +122,7 @@ class PaddingModeLiteralInstance extends Crypto::PaddingAlgorithmInstance instan
 
   PaddingModeLiteralInstance() {
     this = any(PaddingMode mode).getAnAccess() and
-    consumer = PaddingModeLiteralFlow::getConsumer(this, _, _)
+    consumer = ModeLiteralFlow::getConsumer(this, _, _)
   }
 
   override string getRawPaddingAlgorithmName() { result = super.getTarget().getName() }
@@ -107,6 +131,29 @@ class PaddingModeLiteralInstance extends Crypto::PaddingAlgorithmInstance instan
     if exists(paddingNameToType(this.getRawPaddingAlgorithmName()))
     then result = paddingNameToType(this.getRawPaddingAlgorithmName())
     else result = Crypto::OtherPadding()
+  }
+
+  Crypto::AlgorithmValueConsumer getConsumer() { result = consumer }
+}
+
+/**
+ * A padding mode literal, such as `PaddingMode.PKCS7`.
+ */
+class CipherModeLiteralInstance extends Crypto::ModeOfOperationAlgorithmInstance instanceof MemberConstantAccess
+{
+  Crypto::AlgorithmValueConsumer consumer;
+
+  CipherModeLiteralInstance() {
+    this = any(CipherMode mode).getAnAccess() and
+    consumer = ModeLiteralFlow::getConsumer(this, _, _)
+  }
+
+  override string getRawModeAlgorithmName() { result = super.getTarget().getName() }
+
+  override Crypto::TBlockCipherModeOfOperationType getModeType() {
+    if exists(modeNameToType(this.getRawModeAlgorithmName()))
+    then result = modeNameToType(this.getRawModeAlgorithmName())
+    else result = Crypto::OtherMode()
   }
 
   Crypto::AlgorithmValueConsumer getConsumer() { result = consumer }
@@ -132,4 +179,14 @@ private Crypto::TPaddingType paddingNameToType(string paddingName) {
   paddingName = "None" and result = Crypto::NoPadding()
   or
   paddingName = "PKCS7" and result = Crypto::PKCS7()
+}
+
+private Crypto::TBlockCipherModeOfOperationType modeNameToType(string modeName) {
+  modeName = "CBC" and result = Crypto::CBC()
+  or
+  modeName = "CFB" and result = Crypto::CFB()
+  or
+  modeName = "ECB" and result = Crypto::ECB()
+  or
+  modeName = "OFB" and result = Crypto::OFB()
 }

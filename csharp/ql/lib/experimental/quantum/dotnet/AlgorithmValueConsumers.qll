@@ -40,3 +40,32 @@ class PaddingPropertyWrite extends Crypto::AlgorithmValueConsumer instanceof Sym
     result.(PaddingModeLiteralInstance).getConsumer() = this
   }
 }
+
+/**
+ * A write access to the `Mode` property of a `SymmetricAlgorithm` instance.
+ */
+class CipherModePropertyWrite extends Crypto::AlgorithmValueConsumer instanceof SymmetricAlgorithmUse
+{
+  CipherModePropertyWrite() { super.isModeConsumer() }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
+    result.(CipherModeLiteralInstance).getConsumer() = this
+  }
+}
+
+/**
+ * A call to a `SymmetricAlgorithm.CreateEncryptor` or `SymmetricAlgorithm.CreateDecryptor`
+ * method that returns a `CryptoTransform` instance.
+ */
+class SymmetricAlgorithmConsumer extends Crypto::AlgorithmValueConsumer instanceof CryptoTransformCreation
+{
+  override Crypto::ConsumerInputDataFlowNode getInputNode() {
+    result.asExpr() = super.getQualifier()
+  }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
+    result.(SymmetricAlgorithmInstance).getConsumer() = this
+  }
+}
