@@ -4,7 +4,7 @@
  * Provides an implementation of a fast initial pruning of global
  * (interprocedural) data flow reachability (Stage 1).
  */
-overlay[local?]
+overlay[local?] // when this is removed, put `overlay[local?]` on `isOverlayNode`.
 module;
 
 private import codeql.util.Unit
@@ -129,14 +129,38 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
       private module AlertFiltering = AlertFilteringImpl<Location>;
 
+      /**
+       * Holds if the given node is visible in overlay-only local evaluation.
+       *
+       * This predicate needs to be `overlay[local?]`, either directly or
+       * through annotations from an outer scope. If `Node` is global for the
+       * language under analysis, then every node is considered an overlay
+       * node, which means there will effectively be no overlay-based
+       * filtering of sources and sinks.
+       */
+      private predicate isOverlayNode(Node node) {
+        isEvaluatingInOverlay() and
+        // Any local node is an overlay node if we are evaluating in overlay mode
+        node = node
+      }
+
+      overlay[global]
       pragma[nomagic]
       private predicate isFilteredSource(Node source) {
         Config::isSource(source, _) and
         if Config::observeDiffInformedIncrementalMode()
         then AlertFiltering::filterByLocation(Config::getASelectedSourceLocation(source))
-        else any()
+        else (
+          // If we are in base-only global evaluation, do not filter out any sources.
+          not isEvaluatingInOverlay()
+          or
+          // If we are in global evaluation with an overlay present, restrict
+          // sources to those visible in the overlay.
+          isOverlayNode(source)
+        )
       }
 
+      overlay[global]
       pragma[nomagic]
       private predicate isFilteredSink(Node sink) {
         (
@@ -145,7 +169,14 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
         ) and
         if Config::observeDiffInformedIncrementalMode()
         then AlertFiltering::filterByLocation(Config::getASelectedSinkLocation(sink))
-        else any()
+        else (
+          // If we are in base-only global evaluation, do not filter out any sinks.
+          not isEvaluatingInOverlay()
+          or
+          // If we are in global evaluation with an overlay present, restrict
+          // sinks to those visible in the overlay.
+          isOverlayNode(sink)
+        )
       }
 
       private predicate hasFilteredSource() { isFilteredSource(_) }
