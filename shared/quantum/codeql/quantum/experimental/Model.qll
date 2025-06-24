@@ -1154,6 +1154,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   abstract class KeyGenerationOperationInstance extends KeyCreationOperationInstance {
     final override string getKeyCreationTypeDescription() { result = "KeyGeneration" }
+
+    /**
+     * Gets a consumer of a raw value that is used to generate the key.
+     * Not all key generation operations require a raw value.
+     */
+    abstract ConsumerInputDataFlowNode getRawKeyValueConsumer();
   }
 
   abstract class KeyLoadOperationInstance extends KeyCreationOperationInstance {
@@ -1914,12 +1920,19 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       node instanceof KeyCreationCandidateAlgorithmNode
     }
 
+    NodeBase getARawValueSource() {
+      result = keyGenInstance.getRawKeyValueConsumer().getConsumer().getAGenericSourceNode()
+      or
+      result = keyGenInstance.getRawKeyValueConsumer().getConsumer().getAKnownSourceNode()
+    }
+
     override NodeBase getChild(string key) {
       result = super.getChild(key)
       or
       // [ALWAYS_KNOWN]
       key = "Output" and
       result = this.getOutputKeyArtifact()
+      //TODO: how do I output the raw key if known? If not known, it may not require/have a raw value consumer, don't output
     }
   }
 

@@ -1,0 +1,141 @@
+/**
+ * https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
+ */
+
+private import experimental.quantum.Language
+private import OpenSSLOperationBase
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+
+/**
+ * A call to and EVP digest initializer, such as:
+ * - `EVP_DigestInit`
+ * - `EVP_DigestInit_ex`
+ * - `EVP_DigestInit_ex2`
+ */
+class EvpDigestInitVariantCalls extends OperationStep {
+  EvpDigestInitVariantCalls() {
+    this.(Call).getTarget().getName() in [
+        "EVP_DigestInit", "EVP_DigestInit_ex", "EVP_DigestInit_ex2"
+      ]
+  }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.(Call).getArgument(0) and type = ContextIO()
+    or
+    result.asExpr() = this.(Call).getArgument(1) and type = PrimaryAlgorithmIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.(Call).getArgument(0) and
+    type = ContextIO()
+  }
+
+  override OperationStepType getStepType() { result = InitializerStep() }
+}
+
+/**
+ * A call to `EVP_DigestUpdate`.
+ */
+class EvpDigestUpdateCall extends OperationStep {
+  EvpDigestUpdateCall() { this.(Call).getTarget().getName() = "EVP_DigestUpdate" }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.(Call).getArgument(0) and type = ContextIO()
+    or
+    result.asExpr() = this.(Call).getArgument(1) and type = PlaintextIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.(Call).getArgument(0) and
+    type = ContextIO()
+  }
+
+  override OperationStepType getStepType() { result = UpdateStep() }
+}
+
+/**
+ * A base class for final digest operations.
+ */
+abstract class EVPFinalDigestOperationStep extends OperationStep {
+  override OperationStepType getStepType() { result = FinalStep() }
+}
+
+/**
+ * A call to `EVP_Q_digest`
+ * https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
+ */
+class EvpQDigestOperation extends EVPFinalDigestOperationStep {
+  EvpQDigestOperation() { this.(Call).getTarget().getName() = "EVP_Q_digest" }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.(Call).getArgument(1) and type = PrimaryAlgorithmIO()
+    or
+    result.asExpr() = this.(Call).getArgument(0) and type = ContextIO()
+    or
+    result.asExpr() = this.(Call).getArgument(3) and type = PlaintextIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.(Call).getArgument(0) and
+    type = ContextIO()
+    or
+    result.asDefiningArgument() = this.(Call).getArgument(5) and type = DigestIO()
+  }
+}
+
+class EvpDigestOperation extends EVPFinalDigestOperationStep {
+  EvpDigestOperation() { this.(Call).getTarget().getName() = "EVP_Digest" }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.(Call).getArgument(4) and type = PrimaryAlgorithmIO()
+    or
+    result.asExpr() = this.(Call).getArgument(0) and type = PlaintextIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asDefiningArgument() = this.(Call).getArgument(2) and type = DigestIO()
+  }
+}
+
+/**
+ * A call to EVP_DigestFinal variants
+ */
+class EvpDigestFinalCall extends EVPFinalDigestOperationStep {
+  EvpDigestFinalCall() {
+    this.(Call).getTarget().getName() in [
+        "EVP_DigestFinal", "EVP_DigestFinal_ex", "EVP_DigestFinalXOF"
+      ]
+  }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.(Call).getArgument(0) and type = ContextIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.(Call).getArgument(0) and
+    type = ContextIO()
+    or
+    result.asDefiningArgument() = this.(Call).getArgument(1) and type = DigestIO()
+  }
+}
+
+/**
+ * An openssl digest final hash operation instance
+ */
+class EvpDigestFinalOperationInstance extends Crypto::HashOperationInstance instanceof EVPFinalDigestOperationStep
+{
+  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
+    super.getPrimaryAlgorithmValueConsumer() = result
+  }
+
+  override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
+    exists(OperationStep s |
+      s.flowsToOperationStep(this) and
+      result = s.getOutput(DigestIO())
+    )
+  }
+
+  override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
+    super.getDominatingInitializersToStep(PlaintextIO()).getInput(PlaintextIO()) = result
+  }
+}
