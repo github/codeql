@@ -1,3 +1,18 @@
+## 1.7.0
+
+### Query Metadata Changes
+
+* The `quality` tag has been added to multiple JavaScript quality queries, with tags for `reliability` or `maintainability` categories and their sub-categories. See [Query file metadata and alert message style guide](https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md#quality-query-sub-category-tags) for more information about these categories.
+* Added `reliability` tag to the `js/suspicious-method-name-declaration` query.
+* Added `reliability` and `language-features` tags to the `js/template-syntax-in-string-literal` query.
+
+### Minor Analysis Improvements
+
+* The `js/loop-iteration-skipped-due-to-shifting` query now has the `reliability` tag.
+* Fixed false positives in the `js/loop-iteration-skipped-due-to-shifting` query when the return value of `splice` is used to decide whether to adjust the loop counter.
+* Fixed false positives in the `js/template-syntax-in-string-literal` query where template syntax in string concatenation and "manual string interpolation" patterns were incorrectly flagged.
+* The `js/useless-expression` query now correctly flags only the innermost expressions with no effect, avoiding duplicate alerts on compound expressions.
+
 ## 1.6.2
 
 No user-facing changes.
