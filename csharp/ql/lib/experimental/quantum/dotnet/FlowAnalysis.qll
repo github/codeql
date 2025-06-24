@@ -1,5 +1,6 @@
 private import csharp
 private import semmle.code.csharp.dataflow.DataFlow
+private import experimental.quantum.Language
 private import OperationInstances
 private import AlgorithmValueConsumers
 private import Cryptography
@@ -50,15 +51,6 @@ module CreationToUseFlow<CreationCallSig Creation, UseCallSig Use> {
     source.getNode().asExpr() = result.(QualifiableExpr).getQualifier() and
     sink.getNode().asExpr() = use.(QualifiableExpr).getQualifier() and
     CreationToUseFlow::flowPath(source, sink)
-  }
-
-  // TODO: Remove this.
-  Expr flowsTo(Expr expr) {
-    exists(CreationToUseFlow::PathNode source, CreationToUseFlow::PathNode sink |
-      source.getNode().asExpr() = expr and
-      sink.getNode().asExpr() = result and
-      CreationToUseFlow::flowPath(source, sink)
-    )
   }
 }
 
@@ -270,4 +262,21 @@ module StreamFlow {
     sink.getNode().asExpr() = result.getQualifier() and
     StreamFlow::flowPath(source, sink)
   }
+}
+
+/**
+ * An additional flow step across property assignments used to track flow from
+ * output artifacts to consumers.
+ *
+ * TODO: Figure out why this is needed.
+ */
+class PropertyWriteFlowStep extends AdditionalFlowInputStep {
+  Assignment assignment;
+
+  PropertyWriteFlowStep() {
+    this.asExpr() = assignment.getRValue() and
+    assignment.getLValue() instanceof PropertyWrite
+  }
+
+  override DataFlow::Node getOutput() { result.asExpr() = assignment.getLValue() }
 }
