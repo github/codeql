@@ -372,7 +372,9 @@ function isExtractableSourceFile(ast: ast_extractor.AugmentedSourceFile): boolea
  */
 function getAstForFile(filename: string): ts.SourceFile {
     let { ast, code } = parseSingleFile(filename);
-    ast_extractor.augmentAst(ast, code, null);
+    if (ast != null && isExtractableSourceFile(ast)) {
+        ast_extractor.augmentAst(ast, code, null);
+    }
     return ast;
 }
 
