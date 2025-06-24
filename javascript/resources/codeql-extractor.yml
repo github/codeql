@@ -6,6 +6,7 @@ display_name: "JavaScript/TypeScript"
 version: 1.22.1
 column_kind: "utf16"
 unicode_newlines: true
+overlay_support_version: 20250108
 build_modes:
   - none
 file_coverage_languages:
