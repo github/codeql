@@ -693,9 +693,6 @@ case @builtintype.kind of
 | 61 = @complex_std_float128  // _Complex _Float128
 | 62 = @mfp8                  // __mfp8
 | 63 = @scalable_vector_count // __SVCount_t
-| 64 = @complex_fp16          // _Complex __fp16
-| 65 = @complex_std_bfloat16  // _Complex __bf16
-| 66 = @complex_std_float16   // _Complex std::float16_t
 ;
 
 builtintypes(

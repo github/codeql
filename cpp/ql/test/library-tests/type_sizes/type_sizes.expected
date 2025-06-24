@@ -25,10 +25,13 @@
 | file://:0:0:0:0 | _Complex _Float64 | 16 |
 | file://:0:0:0:0 | _Complex _Float64x | 32 |
 | file://:0:0:0:0 | _Complex _Float128 | 32 |
+| file://:0:0:0:0 | _Complex __bf16 | 4 |
 | file://:0:0:0:0 | _Complex __float128 | 32 |
+| file://:0:0:0:0 | _Complex __fp16 | 4 |
 | file://:0:0:0:0 | _Complex double | 16 |
 | file://:0:0:0:0 | _Complex float | 8 |
 | file://:0:0:0:0 | _Complex long double | 32 |
+| file://:0:0:0:0 | _Complex std::float16_t | 4 |
 | file://:0:0:0:0 | _Decimal32 | 4 |
 | file://:0:0:0:0 | _Decimal64 | 8 |
 | file://:0:0:0:0 | _Decimal128 | 16 |
