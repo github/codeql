@@ -16,12 +16,11 @@ http.createServer(async function (req, res) {
 
     $.sync`${cmd} ${arg1} ${arg2} ${arg3}`; // $Alert
     $.sync`ssh ${arg1} ${arg2} ${arg3}`; // safely escapes variables, preventing shell injection.
-    await $({ shell: true })`${cmd} ${arg1} ${arg2} ${arg3}` // $Alert
-    await $({ shell: false })`${cmd} ${arg1} ${arg2} ${arg3}` // $Alert
-    await $({ shell: false })`ssh ${arg1} ${arg2} ${arg3}` // safely escapes variables, preventing shell injection.
+    await $({ shell: true })`${cmd} ${arg1} ${arg2} ${arg3}`; // $Alert
+    await $({ shell: false })`${cmd} ${arg1} ${arg2} ${arg3}`; // $Alert
+    await $({ shell: false })`ssh ${arg1} ${arg2} ${arg3}`; // safely escapes variables, preventing shell injection.
 
     await execa(cmd, [arg1, arg2, arg3]); // $Alert
-    await execa(cmd, { shell: true }); // $Alert
     await execa(cmd, { shell: true }); // $Alert
     await execa(cmd, [arg1, arg2, arg3], { shell: true }); // $Alert
 
