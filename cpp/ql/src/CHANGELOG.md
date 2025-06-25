@@ -1,3 +1,9 @@
+## 1.4.3
+
+### Minor Analysis Improvements
+
+* Added flow model for the following libraries: `madler/zlib`, `google/brotli`, `libidn/libidn2`, `libssh2/libssh2/`, `nghttp2/nghttp2`, `libuv/libuv/`, and `curl/curl`. This may result in more alerts when running queries on codebases that use these libraries.
+
 ## 1.4.2
 
 No user-facing changes.

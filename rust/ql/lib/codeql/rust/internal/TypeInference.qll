@@ -273,10 +273,6 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
   prefix1.isEmpty() and
   prefix2 = TypePath::singleton(TRefTypeParameter())
   or
-  n1 = n2.(DerefExpr).getExpr() and
-  prefix1 = TypePath::singleton(TRefTypeParameter()) and
-  prefix2.isEmpty()
-  or
   exists(BlockExpr be |
     n1 = be and
     n2 = be.getStmtList().getTailExpr() and
@@ -289,6 +285,16 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
       prefix2.isEmpty()
     )
   )
+  or
+  // an array list expression (`[1, 2, 3]`) has the type of the first (any) element
+  n1.(ArrayListExpr).getExpr(_) = n2 and
+  prefix1 = TypePath::singleton(TArrayTypeParameter()) and
+  prefix2.isEmpty()
+  or
+  // an array repeat expression (`[1; 3]`) has the type of the repeat operand
+  n1.(ArrayRepeatExpr).getRepeatOperand() = n2 and
+  prefix1 = TypePath::singleton(TArrayTypeParameter()) and
+  prefix2.isEmpty()
 }
 
 pragma[nomagic]
@@ -640,20 +646,20 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   }
 
   private newtype TAccessPosition =
-    TArgumentAccessPosition(ArgumentPosition pos, Boolean borrowed) or
+    TArgumentAccessPosition(ArgumentPosition pos, Boolean borrowed, Boolean certain) or
     TReturnAccessPosition()
 
   class AccessPosition extends TAccessPosition {
-    ArgumentPosition getArgumentPosition() { this = TArgumentAccessPosition(result, _) }
+    ArgumentPosition getArgumentPosition() { this = TArgumentAccessPosition(result, _, _) }
 
-    predicate isBorrowed() { this = TArgumentAccessPosition(_, true) }
+    predicate isBorrowed(boolean certain) { this = TArgumentAccessPosition(_, true, certain) }
 
     predicate isReturn() { this = TReturnAccessPosition() }
 
     string toString() {
-      exists(ArgumentPosition pos, boolean borrowed |
-        this = TArgumentAccessPosition(pos, borrowed) and
-        result = pos + ":" + borrowed
+      exists(ArgumentPosition pos, boolean borrowed, boolean certain |
+        this = TArgumentAccessPosition(pos, borrowed, certain) and
+        result = pos + ":" + borrowed + ":" + certain
       )
       or
       this.isReturn() and
@@ -674,10 +680,15 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
 
     AstNode getNodeAt(AccessPosition apos) {
-      exists(ArgumentPosition pos, boolean borrowed |
-        apos = TArgumentAccessPosition(pos, borrowed) and
-        result = this.getArgument(pos) and
-        if this.implicitBorrowAt(pos) then borrowed = true else borrowed = false
+      exists(ArgumentPosition pos, boolean borrowed, boolean certain |
+        apos = TArgumentAccessPosition(pos, borrowed, certain) and
+        result = this.getArgument(pos)
+      |
+        if this.implicitBorrowAt(pos, _)
+        then borrowed = true and this.implicitBorrowAt(pos, certain)
+        else (
+          borrowed = false and certain = true
+        )
       )
       or
       result = this and apos.isReturn()
@@ -705,51 +716,54 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   predicate adjustAccessType(
     AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
   ) {
-    if apos.isBorrowed()
-    then
-      exists(Type selfParamType |
-        selfParamType =
-          target
-              .getParameterType(TArgumentDeclarationPosition(apos.getArgumentPosition()),
-                TypePath::nil())
-      |
-        if selfParamType = TRefType()
+    apos.isBorrowed(true) and
+    pathAdj = TypePath::cons(TRefTypeParameter(), path) and
+    tAdj = t
+    or
+    apos.isBorrowed(false) and
+    exists(Type selfParamType |
+      selfParamType =
+        target
+            .getParameterType(TArgumentDeclarationPosition(apos.getArgumentPosition()),
+              TypePath::nil())
+    |
+      if selfParamType = TRefType()
+      then
+        if t != TRefType() and path.isEmpty()
         then
-          if t != TRefType() and path.isEmpty()
-          then
-            // adjust for implicit borrow
-            pathAdj.isEmpty() and
-            tAdj = TRefType()
-            or
-            // adjust for implicit borrow
-            pathAdj = TypePath::singleton(TRefTypeParameter()) and
-            tAdj = t
-          else
-            if path.isCons(TRefTypeParameter(), _)
-            then
-              pathAdj = path and
-              tAdj = t
-            else (
-              // adjust for implicit borrow
-              not (t = TRefType() and path.isEmpty()) and
-              pathAdj = TypePath::cons(TRefTypeParameter(), path) and
-              tAdj = t
-            )
-        else (
-          // adjust for implicit deref
-          path.isCons(TRefTypeParameter(), pathAdj) and
-          tAdj = t
+          // adjust for implicit borrow
+          pathAdj.isEmpty() and
+          tAdj = TRefType()
           or
-          not path.isCons(TRefTypeParameter(), _) and
-          not (t = TRefType() and path.isEmpty()) and
-          pathAdj = path and
+          // adjust for implicit borrow
+          pathAdj = TypePath::singleton(TRefTypeParameter()) and
           tAdj = t
-        )
+        else
+          if path.isCons(TRefTypeParameter(), _)
+          then
+            pathAdj = path and
+            tAdj = t
+          else (
+            // adjust for implicit borrow
+            not (t = TRefType() and path.isEmpty()) and
+            pathAdj = TypePath::cons(TRefTypeParameter(), path) and
+            tAdj = t
+          )
+      else (
+        // adjust for implicit deref
+        path.isCons(TRefTypeParameter(), pathAdj) and
+        tAdj = t
+        or
+        not path.isCons(TRefTypeParameter(), _) and
+        not (t = TRefType() and path.isEmpty()) and
+        pathAdj = path and
+        tAdj = t
       )
-    else (
-      pathAdj = path and
-      tAdj = t
     )
+    or
+    not apos.isBorrowed(_) and
+    pathAdj = path and
+    tAdj = t
   }
 }
 
@@ -766,35 +780,50 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
     TypePath path0
   |
     n = a.getNodeAt(apos) and
-    result = CallExprBaseMatching::inferAccessType(a, apos, path0) and
-    if apos.isBorrowed()
-    then
-      exists(Type argType | argType = inferType(n) |
-        if argType = TRefType()
-        then
-          path = path0 and
-          path0.isCons(TRefTypeParameter(), _)
-          or
-          // adjust for implicit deref
-          not path0.isCons(TRefTypeParameter(), _) and
-          not (path0.isEmpty() and result = TRefType()) and
-          path = TypePath::cons(TRefTypeParameter(), path0)
-        else (
-          not (
-            argType.(StructType).asItemNode() instanceof StringStruct and
-            result.(StructType).asItemNode() instanceof Builtins::Str
-          ) and
-          (
+    result = CallExprBaseMatching::inferAccessType(a, apos, path0)
+  |
+    if
+      apos.isBorrowed(true)
+      or
+      // The desugaring of the unary `*e` is `*Deref::deref(&e)` and the
+      // desugaring of `a[b]` is `*Index::index(&a, b)`. To handle the deref
+      // expression after the call we must strip a `&` from the type at the
+      // return position.
+      apos.isReturn() and
+      (a instanceof DerefExpr or a instanceof IndexExpr)
+    then path0.isCons(TRefTypeParameter(), path)
+    else
+      if apos.isBorrowed(false)
+      then
+        exists(Type argType | argType = inferType(n) |
+          if argType = TRefType()
+          then
+            path = path0 and
+            path0.isCons(TRefTypeParameter(), _)
+            or
+            // adjust for implicit deref
             not path0.isCons(TRefTypeParameter(), _) and
             not (path0.isEmpty() and result = TRefType()) and
-            path = path0
-            or
-            // adjust for implicit borrow
-            path0.isCons(TRefTypeParameter(), path)
+            path = TypePath::cons(TRefTypeParameter(), path0)
+          else (
+            not (
+              argType.(StructType).asItemNode() instanceof StringStruct and
+              result.(StructType).asItemNode() instanceof Builtins::Str
+            ) and
+            (
+              not path0.isCons(TRefTypeParameter(), _) and
+              not (path0.isEmpty() and result = TRefType()) and
+              path = path0
+              or
+              // adjust for implicit borrow
+              path0.isCons(TRefTypeParameter(), path)
+            )
           )
         )
+      else (
+        not apos.isBorrowed(_) and
+        path = path0
       )
-    else path = path0
   )
 }
 
@@ -981,79 +1010,6 @@ private AssociatedTypeTypeParameter getFutureOutputTypeParameter() {
   result.getTypeAlias() = any(FutureTrait ft).getOutputType()
 }
 
-/**
- * A matching configuration for resolving types of `.await` expressions.
- */
-private module AwaitExprMatchingInput implements MatchingInputSig {
-  private newtype TDeclarationPosition =
-    TSelfDeclarationPosition() or
-    TOutputPos()
-
-  class DeclarationPosition extends TDeclarationPosition {
-    predicate isSelf() { this = TSelfDeclarationPosition() }
-
-    predicate isOutput() { this = TOutputPos() }
-
-    string toString() {
-      this.isSelf() and
-      result = "self"
-      or
-      this.isOutput() and
-      result = "(output)"
-    }
-  }
-
-  private class BuiltinsAwaitFile extends File {
-    BuiltinsAwaitFile() {
-      this.getBaseName() = "await.rs" and
-      this.getParentContainer() instanceof Builtins::BuiltinsFolder
-    }
-  }
-
-  class Declaration extends Function {
-    Declaration() {
-      this.getFile() instanceof BuiltinsAwaitFile and
-      this.getName().getText() = "await_type_matching"
-    }
-
-    TypeParameter getTypeParameter(TypeParameterPosition ppos) {
-      typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
-    }
-
-    Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
-      dpos.isSelf() and
-      result = this.getParam(0).getTypeRepr().(TypeMention).resolveTypeAt(path)
-      or
-      dpos.isOutput() and
-      result = this.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
-    }
-  }
-
-  class AccessPosition = DeclarationPosition;
-
-  class Access extends AwaitExpr {
-    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
-
-    AstNode getNodeAt(AccessPosition apos) {
-      result = this.getExpr() and
-      apos.isSelf()
-      or
-      result = this and
-      apos.isOutput()
-    }
-
-    Type getInferredType(AccessPosition apos, TypePath path) {
-      result = inferType(this.getNodeAt(apos), path)
-    }
-
-    Declaration getTarget() { exists(this) and exists(result) }
-  }
-
-  predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
-    apos = dpos
-  }
-}
-
 pragma[nomagic]
 private TraitType inferAsyncBlockExprRootType(AsyncBlockExpr abe) {
   // `typeEquality` handles the non-root case
@@ -1061,21 +1017,24 @@ private TraitType inferAsyncBlockExprRootType(AsyncBlockExpr abe) {
   result = getFutureTraitType()
 }
 
-private module AwaitExprMatching = Matching<AwaitExprMatchingInput>;
+final class AwaitTarget extends Expr {
+  AwaitTarget() { this = any(AwaitExpr ae).getExpr() }
+
+  Type getTypeAt(TypePath path) { result = inferType(this, path) }
+}
+
+private module AwaitSatisfiesConstraintInput implements SatisfiesConstraintInputSig<AwaitTarget> {
+  predicate relevantConstraint(AwaitTarget term, Type constraint) {
+    exists(term) and
+    constraint.(TraitType).getTrait() instanceof FutureTrait
+  }
+}
 
 pragma[nomagic]
 private Type inferAwaitExprType(AstNode n, TypePath path) {
-  exists(AwaitExprMatchingInput::Access a, AwaitExprMatchingInput::AccessPosition apos |
-    n = a.getNodeAt(apos) and
-    result = AwaitExprMatching::inferAccessType(a, apos, path)
-  )
-  or
-  // This case is needed for `async` functions and blocks, where we assign
-  // the type `Future<Output = T>` directly instead of `impl Future<Output = T>`
-  //
-  // TODO: It would be better if we could handle this in the shared library
   exists(TypePath exprPath |
-    result = inferType(n.(AwaitExpr).getExpr(), exprPath) and
+    SatisfiesConstraint<AwaitTarget, AwaitSatisfiesConstraintInput>::satisfiesConstraintType(n.(AwaitExpr)
+          .getExpr(), _, exprPath, result) and
     exprPath.isCons(getFutureOutputTypeParameter(), path)
   )
 }
@@ -1089,6 +1048,12 @@ private class Vec extends Struct {
 }
 
 /**
+ * Gets the root type of the array expression `ae`.
+ */
+pragma[nomagic]
+private Type inferArrayExprType(ArrayExpr ae) { exists(ae) and result = TArrayType() }
+
+/**
  * According to [the Rust reference][1]: _"array and slice-typed expressions
  * can be indexed with a `usize` index ... For other types an index expression
  * `a[b]` is equivalent to *std::ops::Index::index(&a, b)"_.
@@ -1100,8 +1065,8 @@ private class Vec extends Struct {
  */
 pragma[nomagic]
 private Type inferIndexExprType(IndexExpr ie, TypePath path) {
-  // TODO: Should be implemented as method resolution, using the special
-  // `std::ops::Index` trait.
+  // TODO: Method resolution to the `std::ops::Index` trait can handle the
+  // `Index` instances for slices and arrays.
   exists(TypePath exprPath, Builtins::BuiltinType t |
     TStruct(t) = inferType(ie.getIndex()) and
     (
@@ -1124,6 +1089,26 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
   )
 }
 
+pragma[nomagic]
+private Type inferForLoopExprType(AstNode n, TypePath path) {
+  // type of iterable -> type of pattern (loop variable)
+  exists(ForExpr fe, Type iterableType, TypePath iterablePath |
+    n = fe.getPat() and
+    iterableType = inferType(fe.getIterable(), iterablePath) and
+    result = iterableType and
+    (
+      iterablePath.isCons(any(Vec v).getElementTypeParameter(), path)
+      or
+      iterablePath.isCons(any(ArrayTypeParameter tp), path)
+      or
+      iterablePath
+          .stripPrefix(TypePath::cons(TRefTypeParameter(),
+              TypePath::singleton(any(SliceTypeParameter tp)))) = path
+      // TODO: iterables (general case for containers, ranges etc)
+    )
+  )
+}
+
 final class MethodCall extends Call {
   MethodCall() {
     exists(this.getReceiver()) and
@@ -1141,8 +1126,15 @@ final class MethodCall extends Call {
         (
           path0.isCons(TRefTypeParameter(), path)
           or
-          not path0.isCons(TRefTypeParameter(), _) and
-          not (path0.isEmpty() and result = TRefType()) and
+          (
+            not path0.isCons(TRefTypeParameter(), _) and
+            not (path0.isEmpty() and result = TRefType())
+            or
+            // Ideally we should find all methods on reference types, but as
+            // that currently causes a blowup we limit this to the `deref`
+            // method in order to make dereferencing work.
+            this.getMethodName() = "deref"
+          ) and
           path = path0
         )
       |
@@ -1389,7 +1381,7 @@ private module Cached {
   predicate receiverHasImplicitDeref(AstNode receiver) {
     exists(CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos |
       apos.getArgumentPosition().isSelf() and
-      apos.isBorrowed() and
+      apos.isBorrowed(_) and
       receiver = a.getNodeAt(apos) and
       inferType(receiver) = TRefType() and
       CallExprBaseMatching::inferAccessType(a, apos, TypePath::nil()) != TRefType()
@@ -1401,7 +1393,7 @@ private module Cached {
   predicate receiverHasImplicitBorrow(AstNode receiver) {
     exists(CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos |
       apos.getArgumentPosition().isSelf() and
-      apos.isBorrowed() and
+      apos.isBorrowed(_) and
       receiver = a.getNodeAt(apos) and
       CallExprBaseMatching::inferAccessType(a, apos, TypePath::nil()) = TRefType() and
       inferType(receiver) != TRefType()
@@ -1562,7 +1554,12 @@ private module Cached {
     or
     result = inferAwaitExprType(n, path)
     or
+    result = inferArrayExprType(n) and
+    path.isEmpty()
+    or
     result = inferIndexExprType(n, path)
+    or
+    result = inferForLoopExprType(n, path)
   }
 }
 

@@ -1079,6 +1079,11 @@ mod method_call_type_conversion {
     #[derive(Debug, Copy, Clone)]
     struct S2;
 
+    #[derive(Debug, Copy, Clone, Default)]
+    struct MyInt {
+        a: i64,
+    }
+
     impl<T> S<T> {
         fn m1(self) -> T {
             self.0 // $ fieldof=S
@@ -1090,6 +1095,24 @@ mod method_call_type_conversion {
 
         fn m3(self: &S<T>) -> &T {
             &self.0 // $ fieldof=S
+        }
+    }
+
+    trait ATrait {
+        fn method_on_borrow(&self) -> i64;
+        fn method_not_on_borrow(self) -> i64;
+    }
+
+    // Trait implementation on a borrow.
+    impl ATrait for &MyInt {
+        // MyInt::method_on_borrow
+        fn method_on_borrow(&self) -> i64 {
+            (*(*self)).a // $ method=deref fieldof=MyInt
+        }
+
+        // MyInt::method_not_on_borrow
+        fn method_not_on_borrow(self) -> i64 {
+            (*self).a // $ method=deref fieldof=MyInt
         }
     }
 
@@ -1117,7 +1140,7 @@ mod method_call_type_conversion {
         println!("{:?}", x5.m1()); // $ method=m1
         println!("{:?}", x5.0); // $ fieldof=S
 
-        let x6 = &S(S2); // $ SPURIOUS: type=x6:&T.&T.S
+        let x6 = &S(S2);
 
         // explicit dereference
         println!("{:?}", (*x6).m1()); // $ method=m1 method=deref
@@ -1128,10 +1151,21 @@ mod method_call_type_conversion {
         let t = x7.m1(); // $ method=m1 type=t:& type=t:&T.S2
         println!("{:?}", x7);
 
-        let x9 : String = "Hello".to_string(); // $ type=x9:String
+        let x9: String = "Hello".to_string(); // $ type=x9:String
+
         // Implicit `String` -> `str` conversion happens via the `Deref` trait:
         // https://doc.rust-lang.org/std/string/struct.String.html#deref.
         let u = x9.parse::<u32>(); // $ method=parse type=u:T.u32
+
+        let my_thing = &MyInt { a: 37 };
+        // implicit borrow of a `&`
+        let a = my_thing.method_on_borrow(); // $ MISSING: method=MyInt::method_on_borrow
+        println!("{:?}", a);
+
+        // no implicit borrow
+        let my_thing = &MyInt { a: 38 };
+        let a = my_thing.method_not_on_borrow(); // $ MISSING: method=MyInt::method_not_on_borrow
+        println!("{:?}", a);
     }
 }
 
@@ -1680,6 +1714,11 @@ mod overloadable_operators {
         // Here the type of `default_vec2` must be inferred from the `+` call.
         let default_vec2 = Default::default(); // $ type=default_vec2:Vec2
         let vec2_zero_plus = Vec2 { x: 0, y: 0 } + default_vec2; // $ method=Vec2::add
+
+        // Here the type of `default_vec2` must be inferred from the `==` call
+        // and the type of the borrowed second argument is unknown at the call.
+        let default_vec2 = Default::default(); // $ type=default_vec2:Vec2
+        let vec2_zero_plus = Vec2 { x: 0, y: 0 } == default_vec2; // $ method=Vec2::eq
     }
 }
 
@@ -1817,21 +1856,27 @@ mod indexers {
 
         // MyVec::index
         fn index(&self, index: usize) -> &Self::Output {
-            &self.data[index] // $ fieldof=MyVec
+            &self.data[index] // $ fieldof=MyVec method=index
         }
     }
 
     fn analyze_slice(slice: &[S]) {
-        let x = slice[0].foo(); // $ method=foo type=x:S
+        // NOTE: `slice` gets the spurious type `[]` because the desugaring of
+        // the index expression adds an implicit borrow. `&slice` has the type
+        // `&&[S]`, but the `index` methods takes a `&[S]`, so Rust adds an
+        // implicit dereference. We cannot currently handle a position that is
+        // both implicitly dereferenced and implicitly borrowed, so the extra
+        // type sneaks in.
+        let x = slice[0].foo(); // $ method=foo type=x:S method=index SPURIOUS: type=slice:[]
     }
 
     pub fn f() {
         let mut vec = MyVec::new(); // $ type=vec:T.S
         vec.push(S); // $ method=push
-        vec[0].foo(); // $ MISSING: method=foo -- type inference does not support the `Index` trait yet
+        vec[0].foo(); // $ method=MyVec::index method=foo
 
         let xs: [S; 1] = [S];
-        let x = xs[0].foo(); // $ method=foo type=x:S
+        let x = xs[0].foo(); // $ method=foo type=x:S method=index
 
         analyze_slice(&xs);
     }
@@ -1865,11 +1910,7 @@ mod method_determined_by_argument_type {
     impl MyAdd<bool> for i64 {
         // MyAdd<bool>::my_add
         fn my_add(&self, value: bool) -> Self {
-            if value {
-                1
-            } else {
-                0
-            }
+            if value { 1 } else { 0 }
         }
     }
 
@@ -1880,6 +1921,124 @@ mod method_determined_by_argument_type {
         x.my_add(true); // $ method=MyAdd<bool>::my_add
     }
 }
+
+mod loops {
+    struct MyCallable {}
+
+    impl MyCallable {
+        fn new() -> Self {
+            MyCallable {}
+        }
+
+        fn call(&self) -> i64 {
+            1
+        }
+    }
+
+    pub fn f() {
+        // for loops with arrays
+
+        for i in [1, 2, 3] {} // $ type=i:i32
+        for i in [1, 2, 3].map(|x| x + 1) {} // $ method=map MISSING: type=i:i32
+        for i in [1, 2, 3].into_iter() {} // $ method=into_iter MISSING: type=i:i32
+
+        let vals1 = [1u8, 2, 3]; // $ type=vals1:[T;...].u8
+        for u in vals1 {} // $ type=u:u8
+
+        let vals2 = [1u16; 3]; // $ type=vals2:[T;...].u16
+        for u in vals2 {} // $ type=u:u16
+
+        let vals3: [u32; 3] = [1, 2, 3]; // $ type=vals3:[T;...].u32
+        for u in vals3 {} // $ type=u:u32
+
+        let vals4: [u64; 3] = [1; 3]; // $ type=vals4:[T;...].u64
+        for u in vals4 {} // $ type=u:u64
+
+        let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1:[T;...].str
+        for s in &strings1 {} // $ MISSING: type=s:&T.str
+        for s in &mut strings1 {} // $ MISSING: type=s:&T.str
+        for s in strings1 {} // $ type=s:str
+
+        let strings2 = [ // $ type=strings2:[T;...].String
+            String::from("foo"),
+            String::from("bar"),
+            String::from("baz"),
+        ];
+        for s in strings2 {} // $ type=s:String
+
+        let strings3 = &[ // $ type=strings3:&T.[T;...].String
+            String::from("foo"),
+            String::from("bar"),
+            String::from("baz"),
+        ];
+        for s in strings3 {} // $ MISSING: type=s:String
+
+        let callables = [MyCallable::new(), MyCallable::new(), MyCallable::new()]; // $ MISSING: type=callables:[T;...].MyCallable; 3
+        for c in callables // $ type=c:MyCallable
+        {
+            let result = c.call(); // $ type=result:i64 method=call
+        }
+
+        // for loops with ranges
+
+        for i in 0..10 {} // $ MISSING: type=i:i32
+        for u in [0u8..10] {} // $ MISSING: type=u:u8
+        let range = 0..10; // $ MISSING: type=range:Range type=range:Idx.i32
+        for i in range {} // $ MISSING: type=i:i32
+
+        let range1 = std::ops::Range { // $ type=range1:Range type=range1:Idx.u16
+            start: 0u16,
+            end: 10u16,
+        };
+        for u in range1 {} // $ MISSING: type=u:u16
+
+        // for loops with containers
+
+        let vals3 = vec![1, 2, 3]; // $ MISSING: type=vals3:Vec type=vals3:T.i32
+        for i in vals3 {} // $ MISSING: type=i:i32
+
+        let vals4a: Vec<u16> = [1u16, 2, 3].to_vec(); // $ type=vals4a:Vec type=vals4a:T.u16
+        for u in vals4a {} // $ type=u:u16
+
+        let vals4b = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4b:Vec type=vals4b:T.u16
+        for u in vals4b {} // $ MISSING: type=u:u16
+
+        let vals5 = Vec::from([1u32, 2, 3]); // $ type=vals5:Vec MISSING: type=vals5:T.u32
+        for u in vals5 {} // $ MISSING: type=u:u32
+
+        let vals6: Vec<&u64> = [1u64, 2, 3].iter().collect(); // $ type=vals6:Vec type=vals6:T.&T.u64
+        for u in vals6 {} // $ type=u:&T.u64
+
+        let mut vals7 = Vec::new(); // $ type=vals7:Vec MISSING: type=vals7:T.u8
+        vals7.push(1u8); // $ method=push
+        for u in vals7 {} // $ MISSING: type=u:u8
+
+        let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ MISSING: type=matrix1:Vec type=matrix1:T.Vec type=matrix1:T.T.i32
+        for row in matrix1 {
+            // $ MISSING: type=row:Vec type=row:T.i32
+            for cell in row { // $ MISSING: type=cell:i32
+            }
+        }
+
+        let mut map1 = std::collections::HashMap::new(); // $ MISSING: type=map1:Hashmap type=map1:K.i32 type=map1:V.Box type1=map1:V.T.&T.str
+        map1.insert(1, Box::new("one")); // $ method=insert
+        map1.insert(2, Box::new("two")); // $ method=insert
+        for key in map1.keys() {} // $ method=keys MISSING: type=key:i32
+        for value in map1.values() {} // $ method=values MISSING: type=value:Box type=value:T.&T.str
+        for (key, value) in map1.iter() {} // $ method=iter MISSING: type=key:i32 type=value:Box type=value:T.&T.str
+        for (key, value) in &map1 {} // $ MISSING: type=key:i32 type=value:Box type=value:T.&T.str
+
+        // while loops
+
+        let mut a: i64 = 0; // $ type=a:i64
+        while a < 10 // $ method=lt type=a:i64
+        {
+            a += 1; // $ type=a:i64 method=add_assign
+        }
+    }
+}
+
+mod dereference;
 
 fn main() {
     field_access::f();
@@ -1903,6 +2062,8 @@ fn main() {
     async_::f();
     impl_trait::f();
     indexers::f();
+    loops::f();
     macros::f();
     method_determined_by_argument_type::f();
+    dereference::test();
 }

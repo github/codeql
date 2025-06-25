@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModelDeprecated
+      extensible: sourceModel
     data:
-      - ["repo::test", "crate::sources::known_source", "ReturnValue", "test-source", "manual"]
+      - ["test::sources::known_source", "ReturnValue", "test-source", "manual"]

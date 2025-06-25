@@ -295,7 +295,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         let name = field.method_name();
         match (node.name.as_str(), name.as_str()) {
             ("ArrayExpr", "expr") // The ArrayExpr type also has an 'exprs' field
-            | ("PathSegment", "ty" | "path_type")  // these are broken, handling them manually
+            | ("PathSegment", "type_anchor")  // we flatten TypeAnchor into PathSegment in the extractor
             | ("Param", "pat") | ("MacroCall", "token_tree") // handled manually to use `body`
             => continue,
             _ => {}
@@ -385,8 +385,8 @@ struct ExtractorInfo {
 }
 
 fn enum_to_extractor_info(node: &AstEnumSrc) -> Option<ExtractorEnumInfo> {
-    if node.name == "VariantDef" {
-        // currently defined but unused
+    if node.name == "Adt" {
+        // no fields have `Adt` type, so we don't need extraction for it
         return None;
     }
     Some(ExtractorEnumInfo {
@@ -484,8 +484,11 @@ fn main() -> anyhow::Result<()> {
         .parse()
         .expect("Failed to parse grammar");
     let mut grammar = codegen::grammar::lower(&grammar);
+    // remove the VariantDef enum, there is no use for it at the moment
+    grammar.enums.retain(|e| e.name != "VariantDef");
 
-    grammar.enums.retain(|x| x.name != "Adt");
+    // we flatten TypeAnchor into PathSegment in the extractor
+    grammar.nodes.retain(|x| x.name != "TypeAnchor");
 
     let mut super_types: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
     for node in &grammar.enums {

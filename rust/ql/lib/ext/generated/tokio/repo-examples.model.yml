@@ -1,7 +1,0 @@
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-extensions:
-  - addsTo:
-      pack: codeql/rust-all
-      extensible: sourceModelDeprecated
-    data:
-      - ["repo::examples", "crate::connect", "ReturnValue", "remote", "df-generated"]

@@ -472,7 +472,11 @@ newtype TNode =
         getPostUpdateReverseStep(any(PostUpdateNode n).getPreUpdateNode().asExpr(), _)
       ]
   } or
-  TReceiverNode(CallCfgNode mc, Boolean isPost) { mc.getCall().receiverImplicitlyBorrowed() } or
+  TReceiverNode(CallCfgNode mc, Boolean isPost) {
+    mc.getCall().receiverImplicitlyBorrowed() and
+    // TODO: Handle index expressions as calls in data flow.
+    not mc.getCall() instanceof IndexExpr
+  } or
   TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
   TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
   TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c, _) } or

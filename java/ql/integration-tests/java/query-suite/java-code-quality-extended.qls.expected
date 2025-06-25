@@ -1,15 +1,82 @@
+ql/java/ql/src/Advisory/Declarations/MissingOverrideAnnotation.ql
+ql/java/ql/src/Advisory/Documentation/ImpossibleJavadocThrows.ql
+ql/java/ql/src/Advisory/Documentation/SpuriousJavadocParam.ql
+ql/java/ql/src/Compatibility/JDK9/JdkInternalAccess.ql
+ql/java/ql/src/Compatibility/JDK9/UnderscoreIdentifier.ql
+ql/java/ql/src/DeadCode/UselessParameter.ql
 ql/java/ql/src/Language Abuse/EmptyMethod.ql
+ql/java/ql/src/Language Abuse/IterableIterator.ql
 ql/java/ql/src/Language Abuse/TypeVariableHidesType.ql
+ql/java/ql/src/Language Abuse/UselessNullCheck.ql
+ql/java/ql/src/Language Abuse/UselessTypeTest.ql
+ql/java/ql/src/Language Abuse/WrappedIterator.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/ConstantExpAppearsNonConstant.ql
 ql/java/ql/src/Likely Bugs/Arithmetic/IntMultToLong.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/LShiftLargerThanTypeWidth.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/WhitespaceContradictsPrecedence.ql
+ql/java/ql/src/Likely Bugs/Collections/ArrayIndexOutOfBounds.ql
+ql/java/ql/src/Likely Bugs/Collections/ContainsTypeMismatch.ql
+ql/java/ql/src/Likely Bugs/Collections/ReadOnlyContainer.ql
+ql/java/ql/src/Likely Bugs/Collections/RemoveTypeMismatch.ql
 ql/java/ql/src/Likely Bugs/Collections/WriteOnlyContainer.ql
+ql/java/ql/src/Likely Bugs/Comparison/CompareIdenticalValues.ql
+ql/java/ql/src/Likely Bugs/Comparison/EqualsArray.ql
+ql/java/ql/src/Likely Bugs/Comparison/HashedButNoHash.ql
 ql/java/ql/src/Likely Bugs/Comparison/IncomparableEquals.ql
 ql/java/ql/src/Likely Bugs/Comparison/InconsistentEqualsHashCode.ql
 ql/java/ql/src/Likely Bugs/Comparison/MissingInstanceofInEquals.ql
 ql/java/ql/src/Likely Bugs/Comparison/RefEqBoxed.ql
+ql/java/ql/src/Likely Bugs/Comparison/UselessComparisonTest.ql
+ql/java/ql/src/Likely Bugs/Comparison/WrongNanComparison.ql
+ql/java/ql/src/Likely Bugs/Concurrency/CallsToRunnableRun.ql
+ql/java/ql/src/Likely Bugs/Concurrency/DoubleCheckedLocking.ql
+ql/java/ql/src/Likely Bugs/Concurrency/DoubleCheckedLockingWithInitRace.ql
+ql/java/ql/src/Likely Bugs/Concurrency/NonSynchronizedOverride.ql
+ql/java/ql/src/Likely Bugs/Concurrency/SynchOnBoxedType.ql
+ql/java/ql/src/Likely Bugs/Concurrency/SynchSetUnsynchGet.ql
 ql/java/ql/src/Likely Bugs/Frameworks/JUnit/JUnit5MissingNestedAnnotation.ql
+ql/java/ql/src/Likely Bugs/Inheritance/NoNonFinalInConstructor.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/ContainerSizeCmpZero.ql
 ql/java/ql/src/Likely Bugs/Likely Typos/ContradictoryTypeChecks.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/MissingFormatArg.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/MissingSpaceTypo.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/SelfAssignment.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/StringBufferCharInit.ql
 ql/java/ql/src/Likely Bugs/Likely Typos/SuspiciousDateFormat.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/UnusedFormatArg.ql
+ql/java/ql/src/Likely Bugs/Nullness/NullAlways.ql
+ql/java/ql/src/Likely Bugs/Nullness/NullExprDeref.ql
+ql/java/ql/src/Likely Bugs/Nullness/NullMaybe.ql
 ql/java/ql/src/Likely Bugs/Resource Leaks/CloseReader.ql
+ql/java/ql/src/Likely Bugs/Resource Leaks/CloseSql.ql
 ql/java/ql/src/Likely Bugs/Resource Leaks/CloseWriter.ql
+ql/java/ql/src/Likely Bugs/Statements/ContinueInFalseLoop.ql
+ql/java/ql/src/Likely Bugs/Statements/PartiallyMaskedCatch.ql
+ql/java/ql/src/Likely Bugs/Statements/UseBraces.ql
+ql/java/ql/src/Likely Bugs/Termination/ConstantLoopCondition.ql
+ql/java/ql/src/Performance/InefficientEmptyStringTest.ql
+ql/java/ql/src/Performance/InefficientKeySetIterator.ql
+ql/java/ql/src/Performance/InefficientOutputStream.ql
+ql/java/ql/src/Performance/InefficientPrimConstructor.ql
+ql/java/ql/src/Performance/InnerClassCouldBeStatic.ql
+ql/java/ql/src/Performance/NewStringString.ql
 ql/java/ql/src/Performance/StringReplaceAllWithNonRegex.ql
+ql/java/ql/src/Violations of Best Practice/Boxed Types/BoxedVariable.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/DeadRefTypes.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/InterfaceCannotBeImplemented.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/UnreadLocal.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/UnusedLabel.ql
+ql/java/ql/src/Violations of Best Practice/Declarations/NoConstantsOnly.ql
+ql/java/ql/src/Violations of Best Practice/Exception Handling/IgnoreExceptionalReturn.ql
+ql/java/ql/src/Violations of Best Practice/Exception Handling/NumberFormatException.ql
+ql/java/ql/src/Violations of Best Practice/Implementation Hiding/AbstractToConcreteCollection.ql
+ql/java/ql/src/Violations of Best Practice/Implementation Hiding/ExposeRepresentation.ql
+ql/java/ql/src/Violations of Best Practice/Naming Conventions/AmbiguousOuterSuper.ql
+ql/java/ql/src/Violations of Best Practice/Naming Conventions/ConfusingMethodNames.ql
+ql/java/ql/src/Violations of Best Practice/Naming Conventions/ConfusingOverloading.ql
+ql/java/ql/src/Violations of Best Practice/Naming Conventions/LocalShadowsFieldConfusing.ql
+ql/java/ql/src/Violations of Best Practice/Naming Conventions/SameNameAsSuper.ql
+ql/java/ql/src/Violations of Best Practice/Undesirable Calls/CallsToStringToString.ql
+ql/java/ql/src/Violations of Best Practice/Undesirable Calls/DefaultToString.ql
 ql/java/ql/src/Violations of Best Practice/Undesirable Calls/DoNotCallFinalize.ql
+ql/java/ql/src/Violations of Best Practice/Undesirable Calls/PrintLnArray.ql

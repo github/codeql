@@ -35,7 +35,7 @@ module Impl {
    */
   abstract class Call extends ExprImpl::Expr {
     /** Holds if the receiver of this call is implicitly borrowed. */
-    predicate receiverImplicitlyBorrowed() { this.implicitBorrowAt(TSelfArgumentPosition()) }
+    predicate receiverImplicitlyBorrowed() { this.implicitBorrowAt(TSelfArgumentPosition(), _) }
 
     /** Gets the trait targeted by this call, if any. */
     abstract Trait getTrait();
@@ -47,7 +47,7 @@ module Impl {
     abstract Expr getArgument(ArgumentPosition pos);
 
     /** Holds if the argument at `pos` might be implicitly borrowed. */
-    abstract predicate implicitBorrowAt(ArgumentPosition pos);
+    abstract predicate implicitBorrowAt(ArgumentPosition pos, boolean certain);
 
     /** Gets the number of arguments _excluding_ any `self` argument. */
     int getNumberOfArguments() { result = count(this.getArgument(TPositionalArgumentPosition(_))) }
@@ -85,7 +85,7 @@ module Impl {
 
     override Trait getTrait() { none() }
 
-    override predicate implicitBorrowAt(ArgumentPosition pos) { none() }
+    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) { none() }
 
     override Expr getArgument(ArgumentPosition pos) {
       result = super.getArgList().getArg(pos.asPosition())
@@ -109,7 +109,7 @@ module Impl {
       qualifier.toString() != "Self"
     }
 
-    override predicate implicitBorrowAt(ArgumentPosition pos) { none() }
+    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) { none() }
 
     override Expr getArgument(ArgumentPosition pos) {
       pos.isSelf() and result = super.getArgList().getArg(0)
@@ -123,7 +123,9 @@ module Impl {
 
     override Trait getTrait() { none() }
 
-    override predicate implicitBorrowAt(ArgumentPosition pos) { pos.isSelf() }
+    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) {
+      pos.isSelf() and certain = false
+    }
 
     override Expr getArgument(ArgumentPosition pos) {
       pos.isSelf() and result = this.(MethodCallExpr).getReceiver()
@@ -143,16 +145,35 @@ module Impl {
 
     override Trait getTrait() { result = trait }
 
-    override predicate implicitBorrowAt(ArgumentPosition pos) {
-      pos.isSelf() and borrows >= 1
-      or
-      pos.asPosition() = 0 and borrows = 2
+    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) {
+      (
+        pos.isSelf() and borrows >= 1
+        or
+        pos.asPosition() = 0 and borrows = 2
+      ) and
+      certain = true
     }
 
     override Expr getArgument(ArgumentPosition pos) {
       pos.isSelf() and result = super.getOperand(0)
       or
       pos.asPosition() = 0 and result = super.getOperand(1)
+    }
+  }
+
+  private class IndexCall extends Call instanceof IndexExpr {
+    override string getMethodName() { result = "index" }
+
+    override Trait getTrait() { result.getCanonicalPath() = "core::ops::index::Index" }
+
+    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) {
+      pos.isSelf() and certain = true
+    }
+
+    override Expr getArgument(ArgumentPosition pos) {
+      pos.isSelf() and result = super.getBase()
+      or
+      pos.asPosition() = 0 and result = super.getIndex()
     }
   }
 }
