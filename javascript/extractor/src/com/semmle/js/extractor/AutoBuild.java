@@ -783,7 +783,7 @@ public class AutoBuild {
     extractTypeScript(filesToExtract, extractedFiles,
               extractors, tsconfigFiles, dependencyInstallationResult);
 
-    boolean hasTypeScriptFiles = extractedFiles.size() > 0;
+    boolean hasTypeScriptFiles = hasTypeScriptFiles(filesToExtract);
 
     // extract remaining files
     return extractFiles(
