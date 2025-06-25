@@ -404,10 +404,10 @@ module RustDataFlow implements InputSig<Location> {
 
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall call) {
-    exists(Callable target | target = call.asCallCfgNode().getCall().getStaticTarget() |
-      target = result.asCfgScope()
+    exists(Call c | c = call.asCallCfgNode().getCall() |
+      result.asCfgScope() = c.getARuntimeTarget()
       or
-      target = result.asSummarizedCallable()
+      result.asSummarizedCallable() = c.getStaticTarget()
     )
   }
 

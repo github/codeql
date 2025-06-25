@@ -27,6 +27,7 @@
 | main.rs:109:35:109:43 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:119:9:119:15 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:123:35:123:44 | source(...) | main.rs:1:1:3:1 | fn source |
+| main.rs:132:13:132:30 | x.get_data_trait() | main.rs:122:5:124:5 | fn get_data_trait |
 | main.rs:133:5:133:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:138:13:138:25 | mn.get_data() | main.rs:108:5:110:5 | fn get_data |
 | main.rs:139:5:139:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
@@ -34,12 +35,14 @@
 | main.rs:143:5:143:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:145:5:145:60 | data_out_of_method_trait_dispatch(...) | main.rs:131:1:134:1 | fn data_out_of_method_trait_dispatch |
 | main.rs:149:13:149:22 | source(...) | main.rs:1:1:3:1 | fn source |
+| main.rs:150:5:150:22 | x.data_in_trait(...) | main.rs:118:5:120:5 | fn data_in_trait |
 | main.rs:155:13:155:21 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:156:5:156:17 | mn.data_in(...) | main.rs:104:5:106:5 | fn data_in |
 | main.rs:159:13:159:22 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:160:5:160:23 | mn.data_in_trait(...) | main.rs:118:5:120:5 | fn data_in_trait |
 | main.rs:162:5:162:64 | data_in_to_method_call_trait_dispatch(...) | main.rs:148:1:151:1 | fn data_in_to_method_call_trait_dispatch |
 | main.rs:166:13:166:22 | source(...) | main.rs:1:1:3:1 | fn source |
+| main.rs:167:13:167:35 | x.data_through_trait(...) | main.rs:126:5:128:5 | fn data_through_trait |
 | main.rs:168:5:168:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:173:13:173:21 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:174:13:174:30 | mn.data_through(...) | main.rs:112:5:114:5 | fn data_through |
@@ -68,6 +71,7 @@
 | main.rs:254:13:254:20 | a.add(...) | main.rs:220:5:223:5 | fn add |
 | main.rs:255:5:255:17 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:259:28:259:37 | source(...) | main.rs:1:1:3:1 | fn source |
+| main.rs:261:5:261:36 | ...::mul_assign(...) | main.rs:227:5:229:5 | fn mul_assign |
 | main.rs:262:5:262:17 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:265:28:265:37 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:266:5:266:10 | ... *= ... | main.rs:227:5:229:5 | fn mul_assign |

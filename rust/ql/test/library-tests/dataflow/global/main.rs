@@ -116,7 +116,7 @@ impl MyFlag {
 
 impl MyTrait for MyFlag {
     fn data_in_trait(self, n: i64) {
-        sink(n); // $ hasValueFlow=22 $ MISSING: hasValueFlow=31
+        sink(n); // $ hasValueFlow=22 $ hasValueFlow=31
     }
 
     fn get_data_trait(self) -> i64 {
@@ -130,7 +130,7 @@ impl MyTrait for MyFlag {
 
 fn data_out_of_method_trait_dispatch<T: MyTrait>(x: T) {
     let a = x.get_data_trait();
-    sink(a); // $ MISSING: hasValueFlow=21
+    sink(a); // $ hasValueFlow=21
 }
 
 fn data_out_of_method() {
@@ -165,7 +165,7 @@ fn data_in_to_method_call() {
 fn data_through_method_trait_dispatch<T: MyTrait>(x: T) {
     let a = source(34);
     let b = x.data_through_trait(a);
-    sink(b); // $ MISSING: hasValueFlow=34
+    sink(b); // $ hasValueFlow=34
 }
 
 fn data_through_method() {
@@ -259,7 +259,7 @@ fn test_operator_overloading() {
     let b = MyInt { value: source(34) };
     // The line below is what `*=` desugars to.
     MulAssign::mul_assign(&mut a, b);
-    sink(a.value); // $ MISSING: hasValueFlow=34
+    sink(a.value); // $ hasValueFlow=34
 
     let mut a = MyInt { value: 0 };
     let b = MyInt { value: source(35) };
