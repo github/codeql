@@ -1,5 +1,5 @@
 instances
-| gen_const.rs:4:5:7:22 | Const | isConst: | yes | isDefault: | no |
+| gen_const.rs:4:5:7:22 | Const | isConst: | yes | isDefault: | no | hasImplementation: | yes |
 getExtendedCanonicalPath
 getCrateOrigin
 getAttributeMacroExpansion
