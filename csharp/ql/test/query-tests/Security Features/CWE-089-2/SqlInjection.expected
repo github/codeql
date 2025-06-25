@@ -1,11 +1,39 @@
 #select
+| SqlInjection.cs:19:42:19:52 | access to local variable queryString | SqlInjection.cs:18:21:18:29 | access to property Text : String | SqlInjection.cs:19:42:19:52 | access to local variable queryString | This query depends on $@. | SqlInjection.cs:18:21:18:29 | access to property Text : String | this TextBox text |
+| SqlInjection.cs:20:50:20:52 | access to local variable cmd | SqlInjection.cs:18:21:18:29 | access to property Text : String | SqlInjection.cs:20:50:20:52 | access to local variable cmd | This query depends on $@. | SqlInjection.cs:18:21:18:29 | access to property Text : String | this TextBox text |
+| SqlInjection.cs:28:42:28:52 | access to local variable queryString | SqlInjection.cs:27:21:27:38 | call to method ReadLine : String | SqlInjection.cs:28:42:28:52 | access to local variable queryString | This query depends on $@. | SqlInjection.cs:27:21:27:38 | call to method ReadLine : String | this read from stdin |
+| SqlInjection.cs:29:50:29:52 | access to local variable cmd | SqlInjection.cs:27:21:27:38 | call to method ReadLine : String | SqlInjection.cs:29:50:29:52 | access to local variable cmd | This query depends on $@. | SqlInjection.cs:27:21:27:38 | call to method ReadLine : String | this read from stdin |
 edges
+| SqlInjection.cs:17:21:17:31 | access to local variable queryString : String | SqlInjection.cs:19:42:19:52 | access to local variable queryString | provenance | Sink:MaD:1 |
+| SqlInjection.cs:17:21:17:31 | access to local variable queryString : String | SqlInjection.cs:19:42:19:52 | access to local variable queryString : String | provenance |  |
+| SqlInjection.cs:18:21:18:29 | access to property Text : String | SqlInjection.cs:17:21:17:31 | access to local variable queryString : String | provenance |  |
+| SqlInjection.cs:19:21:19:23 | access to local variable cmd : SqlCommand | SqlInjection.cs:20:50:20:52 | access to local variable cmd | provenance | Sink:MaD:2 |
+| SqlInjection.cs:19:27:19:53 | object creation of type SqlCommand : SqlCommand | SqlInjection.cs:19:21:19:23 | access to local variable cmd : SqlCommand | provenance |  |
+| SqlInjection.cs:19:42:19:52 | access to local variable queryString : String | SqlInjection.cs:19:27:19:53 | object creation of type SqlCommand : SqlCommand | provenance | MaD:4 |
+| SqlInjection.cs:26:21:26:31 | access to local variable queryString : String | SqlInjection.cs:28:42:28:52 | access to local variable queryString | provenance | Sink:MaD:1 |
+| SqlInjection.cs:26:21:26:31 | access to local variable queryString : String | SqlInjection.cs:28:42:28:52 | access to local variable queryString : String | provenance |  |
+| SqlInjection.cs:27:21:27:38 | call to method ReadLine : String | SqlInjection.cs:26:21:26:31 | access to local variable queryString : String | provenance | Src:MaD:3  |
+| SqlInjection.cs:28:21:28:23 | access to local variable cmd : SqlCommand | SqlInjection.cs:29:50:29:52 | access to local variable cmd | provenance | Sink:MaD:2 |
+| SqlInjection.cs:28:27:28:53 | object creation of type SqlCommand : SqlCommand | SqlInjection.cs:28:21:28:23 | access to local variable cmd : SqlCommand | provenance |  |
+| SqlInjection.cs:28:42:28:52 | access to local variable queryString : String | SqlInjection.cs:28:27:28:53 | object creation of type SqlCommand : SqlCommand | provenance | MaD:4 |
+models
+| 1 | Sink: Microsoft.Data.SqlClient; SqlCommand; false; SqlCommand; (System.String); ; Argument[0]; sql-injection; manual |
+| 2 | Sink: Microsoft.Data.SqlClient; SqlDataAdapter; false; SqlDataAdapter; (Microsoft.Data.SqlClient.SqlCommand); ; Argument[0]; sql-injection; manual |
+| 3 | Source: System; Console; false; ReadLine; ; ; ReturnValue; stdin; manual |
+| 4 | Summary: Microsoft.Data.SqlClient; SqlCommand; false; SqlCommand; (System.String); ; Argument[0]; Argument[this]; taint; manual |
 nodes
+| SqlInjection.cs:17:21:17:31 | access to local variable queryString : String | semmle.label | access to local variable queryString : String |
+| SqlInjection.cs:18:21:18:29 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjection.cs:19:21:19:23 | access to local variable cmd : SqlCommand | semmle.label | access to local variable cmd : SqlCommand |
+| SqlInjection.cs:19:27:19:53 | object creation of type SqlCommand : SqlCommand | semmle.label | object creation of type SqlCommand : SqlCommand |
+| SqlInjection.cs:19:42:19:52 | access to local variable queryString | semmle.label | access to local variable queryString |
+| SqlInjection.cs:19:42:19:52 | access to local variable queryString : String | semmle.label | access to local variable queryString : String |
+| SqlInjection.cs:20:50:20:52 | access to local variable cmd | semmle.label | access to local variable cmd |
+| SqlInjection.cs:26:21:26:31 | access to local variable queryString : String | semmle.label | access to local variable queryString : String |
+| SqlInjection.cs:27:21:27:38 | call to method ReadLine : String | semmle.label | call to method ReadLine : String |
+| SqlInjection.cs:28:21:28:23 | access to local variable cmd : SqlCommand | semmle.label | access to local variable cmd : SqlCommand |
+| SqlInjection.cs:28:27:28:53 | object creation of type SqlCommand : SqlCommand | semmle.label | object creation of type SqlCommand : SqlCommand |
+| SqlInjection.cs:28:42:28:52 | access to local variable queryString | semmle.label | access to local variable queryString |
+| SqlInjection.cs:28:42:28:52 | access to local variable queryString : String | semmle.label | access to local variable queryString : String |
+| SqlInjection.cs:29:50:29:52 | access to local variable cmd | semmle.label | access to local variable cmd |
 subpaths
-testFailures
-| SqlInjection.cs:18:53:18:81 | // ... | Missing result: Source[cs/sql-injection] |
-| SqlInjection.cs:19:56:19:83 | // ... | Missing result: Alert[cs/sql-injection] |
-| SqlInjection.cs:20:56:20:83 | // ... | Missing result: Alert[cs/sql-injection] |
-| SqlInjection.cs:27:62:27:90 | // ... | Missing result: Source[cs/sql-injection] |
-| SqlInjection.cs:28:56:28:83 | // ... | Missing result: Alert[cs/sql-injection] |
-| SqlInjection.cs:29:56:29:83 | // ... | Missing result: Alert[cs/sql-injection] |
