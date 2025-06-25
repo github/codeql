@@ -33,16 +33,6 @@ pub fn generate(
 
     writeln!(dbscheme_writer, include_str!("prefix.dbscheme"))?;
 
-    // Eventually all languages will have the metadata relation (for overlay support), at which
-    // point this could be moved to prefix.dbscheme.
-    if overlay_support {
-        writeln!(dbscheme_writer, "/*- Database metadata -*/",)?;
-        dbscheme::write(
-            &mut dbscheme_writer,
-            &[dbscheme::Entry::Table(create_database_metadata())],
-        )?;
-    }
-
     let mut ql_writer = LineWriter::new(File::create(ql_library_path)?);
     writeln!(
         ql_writer,
@@ -476,28 +466,5 @@ fn create_token_case<'a>(name: &'a str, token_kinds: Map<&'a str, usize>) -> dbs
         name,
         column: "kind",
         branches,
-    }
-}
-
-fn create_database_metadata() -> dbscheme::Table<'static> {
-    dbscheme::Table {
-        name: "databaseMetadata",
-        keysets: None,
-        columns: vec![
-            dbscheme::Column {
-                db_type: dbscheme::DbColumnType::String,
-                name: "metadataKey",
-                unique: false,
-                ql_type: ql::Type::String,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                db_type: dbscheme::DbColumnType::String,
-                name: "value",
-                unique: false,
-                ql_type: ql::Type::String,
-                ql_type_is_ref: true,
-            },
-        ],
     }
 }

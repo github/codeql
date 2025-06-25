@@ -108,12 +108,6 @@ yaml_locations(unique int locatable: @yaml_locatable ref,
 
 @yaml_locatable = @yaml_node | @yaml_error;
 
-/*- Database metadata -*/
-databaseMetadata(
-  string metadataKey: string ref,
-  string value: string ref
-);
-
 
 // from prefix.dbscheme
 #keyset[id]
