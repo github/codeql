@@ -2,18 +2,11 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  ObjectLiteralExpr x, string hasType__label, string hasType, string getKind__label, int getKind,
-  string getNumberOfArguments__label, int getNumberOfArguments
-) {
+query predicate instances(ObjectLiteralExpr x, string getKind__label, int getKind) {
   toBeTested(x) and
   not x.isUnknown() and
-  hasType__label = "hasType:" and
-  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getKind__label = "getKind:" and
-  getKind = x.getKind() and
-  getNumberOfArguments__label = "getNumberOfArguments:" and
-  getNumberOfArguments = x.getNumberOfArguments()
+  getKind = x.getKind()
 }
 
 query predicate getType(ObjectLiteralExpr x, Type getType) {

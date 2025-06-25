@@ -3,23 +3,15 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  ImportDecl x, string getModule__label, ModuleDecl getModule, string getNumberOfMembers__label,
-  int getNumberOfMembers, string isExported__label, string isExported,
-  string hasImportedModule__label, string hasImportedModule, string getNumberOfDeclarations__label,
-  int getNumberOfDeclarations
+  ImportDecl x, string getModule__label, ModuleDecl getModule, string isExported__label,
+  string isExported
 ) {
   toBeTested(x) and
   not x.isUnknown() and
   getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers__label = "getNumberOfMembers:" and
-  getNumberOfMembers = x.getNumberOfMembers() and
   isExported__label = "isExported:" and
-  (if x.isExported() then isExported = "yes" else isExported = "no") and
-  hasImportedModule__label = "hasImportedModule:" and
-  (if x.hasImportedModule() then hasImportedModule = "yes" else hasImportedModule = "no") and
-  getNumberOfDeclarations__label = "getNumberOfDeclarations:" and
-  getNumberOfDeclarations = x.getNumberOfDeclarations()
+  if x.isExported() then isExported = "yes" else isExported = "no"
 }
 
 query predicate getMember(ImportDecl x, int index, Decl getMember) {

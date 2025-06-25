@@ -1,5 +1,5 @@
 instances
-| gen_struct_expr_field_list.rs:7:9:7:22 | StructExprFieldList | getNumberOfAttrs: | 0 | getNumberOfFields: | 2 | hasSpread: | no |
+| gen_struct_expr_field_list.rs:7:9:7:22 | StructExprFieldList |
 getAttr
 getField
 | gen_struct_expr_field_list.rs:7:9:7:22 | StructExprFieldList | 0 | gen_struct_expr_field_list.rs:7:11:7:14 | a: 1 |

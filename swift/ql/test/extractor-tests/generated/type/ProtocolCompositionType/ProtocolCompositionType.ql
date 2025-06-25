@@ -4,16 +4,14 @@ import TestUtils
 
 query predicate instances(
   ProtocolCompositionType x, string getName__label, string getName, string getCanonicalType__label,
-  Type getCanonicalType, string getNumberOfMembers__label, int getNumberOfMembers
+  Type getCanonicalType
 ) {
   toBeTested(x) and
   not x.isUnknown() and
   getName__label = "getName:" and
   getName = x.getName() and
   getCanonicalType__label = "getCanonicalType:" and
-  getCanonicalType = x.getCanonicalType() and
-  getNumberOfMembers__label = "getNumberOfMembers:" and
-  getNumberOfMembers = x.getNumberOfMembers()
+  getCanonicalType = x.getCanonicalType()
 }
 
 query predicate getMember(ProtocolCompositionType x, int index, Type getMember) {

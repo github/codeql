@@ -1,6 +1,6 @@
 instances
-| gen_tuple_field.rs:7:14:7:16 | TupleField | getNumberOfAttrs: | 0 | hasTypeRepr: | yes | hasVisibility: | no |
-| gen_tuple_field.rs:7:19:7:24 | TupleField | getNumberOfAttrs: | 0 | hasTypeRepr: | yes | hasVisibility: | no |
+| gen_tuple_field.rs:7:14:7:16 | TupleField |
+| gen_tuple_field.rs:7:19:7:24 | TupleField |
 getAttr
 getTypeRepr
 | gen_tuple_field.rs:7:14:7:16 | TupleField | gen_tuple_field.rs:7:14:7:16 | i32 |

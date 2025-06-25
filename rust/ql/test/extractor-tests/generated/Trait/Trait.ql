@@ -3,49 +3,14 @@ import codeql.rust.elements
 import TestUtils
 
 query predicate instances(
-  Trait x, string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
-  string hasCrateOrigin__label, string hasCrateOrigin, string hasAttributeMacroExpansion__label,
-  string hasAttributeMacroExpansion, string hasAssocItemList__label, string hasAssocItemList,
-  string getNumberOfAttrs__label, int getNumberOfAttrs, string hasGenericParamList__label,
-  string hasGenericParamList, string isAuto__label, string isAuto, string isUnsafe__label,
-  string isUnsafe, string hasName__label, string hasName, string hasTypeBoundList__label,
-  string hasTypeBoundList, string hasVisibility__label, string hasVisibility,
-  string hasWhereClause__label, string hasWhereClause
+  Trait x, string isAuto__label, string isAuto, string isUnsafe__label, string isUnsafe
 ) {
   toBeTested(x) and
   not x.isUnknown() and
-  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  hasCrateOrigin__label = "hasCrateOrigin:" and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  hasAttributeMacroExpansion__label = "hasAttributeMacroExpansion:" and
-  (
-    if x.hasAttributeMacroExpansion()
-    then hasAttributeMacroExpansion = "yes"
-    else hasAttributeMacroExpansion = "no"
-  ) and
-  hasAssocItemList__label = "hasAssocItemList:" and
-  (if x.hasAssocItemList() then hasAssocItemList = "yes" else hasAssocItemList = "no") and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  hasGenericParamList__label = "hasGenericParamList:" and
-  (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
   isAuto__label = "isAuto:" and
   (if x.isAuto() then isAuto = "yes" else isAuto = "no") and
   isUnsafe__label = "isUnsafe:" and
-  (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
-  hasName__label = "hasName:" and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  hasTypeBoundList__label = "hasTypeBoundList:" and
-  (if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no") and
-  hasVisibility__label = "hasVisibility:" and
-  (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
-  hasWhereClause__label = "hasWhereClause:" and
-  if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
+  if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
 }
 
 query predicate getExtendedCanonicalPath(Trait x, string getExtendedCanonicalPath) {

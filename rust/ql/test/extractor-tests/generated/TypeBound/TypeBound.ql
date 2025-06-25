@@ -3,24 +3,14 @@ import codeql.rust.elements
 import TestUtils
 
 query predicate instances(
-  TypeBound x, string isAsync__label, string isAsync, string isConst__label, string isConst,
-  string hasLifetime__label, string hasLifetime, string hasTypeRepr__label, string hasTypeRepr,
-  string hasUseBoundGenericArgs__label, string hasUseBoundGenericArgs
+  TypeBound x, string isAsync__label, string isAsync, string isConst__label, string isConst
 ) {
   toBeTested(x) and
   not x.isUnknown() and
   isAsync__label = "isAsync:" and
   (if x.isAsync() then isAsync = "yes" else isAsync = "no") and
   isConst__label = "isConst:" and
-  (if x.isConst() then isConst = "yes" else isConst = "no") and
-  hasLifetime__label = "hasLifetime:" and
-  (if x.hasLifetime() then hasLifetime = "yes" else hasLifetime = "no") and
-  hasTypeRepr__label = "hasTypeRepr:" and
-  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
-  hasUseBoundGenericArgs__label = "hasUseBoundGenericArgs:" and
-  if x.hasUseBoundGenericArgs()
-  then hasUseBoundGenericArgs = "yes"
-  else hasUseBoundGenericArgs = "no"
+  if x.isConst() then isConst = "yes" else isConst = "no"
 }
 
 query predicate getLifetime(TypeBound x, Lifetime getLifetime) {

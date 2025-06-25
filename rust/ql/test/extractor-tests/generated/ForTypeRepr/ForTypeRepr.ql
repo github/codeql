@@ -2,17 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  ForTypeRepr x, string hasGenericParamList__label, string hasGenericParamList,
-  string hasTypeRepr__label, string hasTypeRepr
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasGenericParamList__label = "hasGenericParamList:" and
-  (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
-  hasTypeRepr__label = "hasTypeRepr:" and
-  if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
-}
+query predicate instances(ForTypeRepr x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getGenericParamList(ForTypeRepr x, GenericParamList getGenericParamList) {
   toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()

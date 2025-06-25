@@ -1,5 +1,5 @@
 instances
-| gen_extern_crate.rs:4:5:7:23 | ExternCrate | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasIdentifier: | yes | hasRename: | no | hasVisibility: | no |
+| gen_extern_crate.rs:4:5:7:23 | ExternCrate |
 getExtendedCanonicalPath
 getCrateOrigin
 getAttributeMacroExpansion

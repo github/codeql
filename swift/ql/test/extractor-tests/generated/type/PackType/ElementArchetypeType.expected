@@ -1,5 +1,5 @@
 instances
-| \u03c4_1_0 | getName: | \u03c4_1_0 | getCanonicalType: | \u03c4_1_0 | getInterfaceType: | \u03c4_1_0 | hasSuperclass: | no | getNumberOfProtocols: | 2 |
+| \u03c4_1_0 | getName: | \u03c4_1_0 | getCanonicalType: | \u03c4_1_0 | getInterfaceType: | \u03c4_1_0 |
 getSuperclass
 getProtocol
 | \u03c4_1_0 | 0 | file://:0:0:0:0 | Copyable |

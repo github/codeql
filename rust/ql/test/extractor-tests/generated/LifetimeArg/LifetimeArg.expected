@@ -1,4 +1,4 @@
 instances
-| gen_lifetime_arg.rs:7:20:7:21 | LifetimeArg | hasLifetime: | yes |
+| gen_lifetime_arg.rs:7:20:7:21 | LifetimeArg |
 getLifetime
 | gen_lifetime_arg.rs:7:20:7:21 | LifetimeArg | gen_lifetime_arg.rs:7:20:7:21 | 'a |

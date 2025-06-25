@@ -1,4 +1,4 @@
 instances
-| gen_paren_type_repr.rs:7:12:7:16 | (i32) | hasTypeRepr: | yes |
+| gen_paren_type_repr.rs:7:12:7:16 | (i32) |
 getTypeRepr
 | gen_paren_type_repr.rs:7:12:7:16 | (i32) | gen_paren_type_repr.rs:7:13:7:15 | i32 |

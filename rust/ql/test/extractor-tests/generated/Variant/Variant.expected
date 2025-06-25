@@ -1,7 +1,7 @@
 instances
-| gen_variant.rs:7:14:7:14 | A | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | getNumberOfAttrs: | 0 | hasDiscriminant: | no | hasFieldList: | no | hasName: | yes | hasVisibility: | no |
-| gen_variant.rs:7:17:7:22 | B | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | getNumberOfAttrs: | 0 | hasDiscriminant: | no | hasFieldList: | yes | hasName: | yes | hasVisibility: | no |
-| gen_variant.rs:7:25:7:36 | C | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | getNumberOfAttrs: | 0 | hasDiscriminant: | no | hasFieldList: | yes | hasName: | yes | hasVisibility: | no |
+| gen_variant.rs:7:14:7:14 | A |
+| gen_variant.rs:7:17:7:22 | B |
+| gen_variant.rs:7:25:7:36 | C |
 getExtendedCanonicalPath
 getCrateOrigin
 getAttr

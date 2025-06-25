@@ -2,20 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  AsmExpr x, string getNumberOfAsmPieces__label, int getNumberOfAsmPieces,
-  string getNumberOfAttrs__label, int getNumberOfAttrs, string getNumberOfTemplates__label,
-  int getNumberOfTemplates
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAsmPieces__label = "getNumberOfAsmPieces:" and
-  getNumberOfAsmPieces = x.getNumberOfAsmPieces() and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  getNumberOfTemplates__label = "getNumberOfTemplates:" and
-  getNumberOfTemplates = x.getNumberOfTemplates()
-}
+query predicate instances(AsmExpr x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getAsmPiece(AsmExpr x, int index, AsmPiece getAsmPiece) {
   toBeTested(x) and not x.isUnknown() and getAsmPiece = x.getAsmPiece(index)

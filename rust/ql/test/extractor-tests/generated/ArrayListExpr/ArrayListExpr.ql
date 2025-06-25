@@ -2,17 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  ArrayListExpr x, string getNumberOfExprs__label, int getNumberOfExprs,
-  string getNumberOfAttrs__label, int getNumberOfAttrs
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfExprs__label = "getNumberOfExprs:" and
-  getNumberOfExprs = x.getNumberOfExprs() and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs()
-}
+query predicate instances(ArrayListExpr x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getExpr(ArrayListExpr x, int index, Expr getExpr) {
   toBeTested(x) and not x.isUnknown() and getExpr = x.getExpr(index)

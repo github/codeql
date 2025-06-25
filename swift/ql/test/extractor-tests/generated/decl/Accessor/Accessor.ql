@@ -3,36 +3,17 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  Accessor x, string hasName__label, string hasName, string hasSelfParam__label,
-  string hasSelfParam, string getNumberOfParams__label, int getNumberOfParams,
-  string hasBody__label, string hasBody, string getNumberOfCaptures__label, int getNumberOfCaptures,
-  string getNumberOfGenericTypeParams__label, int getNumberOfGenericTypeParams,
-  string getModule__label, ModuleDecl getModule, string getNumberOfMembers__label,
-  int getNumberOfMembers, string getInterfaceType__label, Type getInterfaceType,
-  string isGetter__label, string isGetter, string isSetter__label, string isSetter,
-  string isWillSet__label, string isWillSet, string isDidSet__label, string isDidSet,
-  string isRead__label, string isRead, string isModify__label, string isModify,
+  Accessor x, string getModule__label, ModuleDecl getModule, string getInterfaceType__label,
+  Type getInterfaceType, string isGetter__label, string isGetter, string isSetter__label,
+  string isSetter, string isWillSet__label, string isWillSet, string isDidSet__label,
+  string isDidSet, string isRead__label, string isRead, string isModify__label, string isModify,
   string isUnsafeAddress__label, string isUnsafeAddress, string isUnsafeMutableAddress__label,
   string isUnsafeMutableAddress
 ) {
   toBeTested(x) and
   not x.isUnknown() and
-  hasName__label = "hasName:" and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  hasSelfParam__label = "hasSelfParam:" and
-  (if x.hasSelfParam() then hasSelfParam = "yes" else hasSelfParam = "no") and
-  getNumberOfParams__label = "getNumberOfParams:" and
-  getNumberOfParams = x.getNumberOfParams() and
-  hasBody__label = "hasBody:" and
-  (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
-  getNumberOfCaptures__label = "getNumberOfCaptures:" and
-  getNumberOfCaptures = x.getNumberOfCaptures() and
-  getNumberOfGenericTypeParams__label = "getNumberOfGenericTypeParams:" and
-  getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
   getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers__label = "getNumberOfMembers:" and
-  getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType() and
   isGetter__label = "isGetter:" and

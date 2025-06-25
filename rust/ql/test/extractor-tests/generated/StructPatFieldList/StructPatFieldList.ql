@@ -2,17 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  StructPatFieldList x, string getNumberOfFields__label, int getNumberOfFields,
-  string hasRestPat__label, string hasRestPat
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfFields__label = "getNumberOfFields:" and
-  getNumberOfFields = x.getNumberOfFields() and
-  hasRestPat__label = "hasRestPat:" and
-  if x.hasRestPat() then hasRestPat = "yes" else hasRestPat = "no"
-}
+query predicate instances(StructPatFieldList x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getField(StructPatFieldList x, int index, StructPatField getField) {
   toBeTested(x) and not x.isUnknown() and getField = x.getField(index)

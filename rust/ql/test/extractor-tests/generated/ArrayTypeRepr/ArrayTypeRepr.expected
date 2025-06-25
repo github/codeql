@@ -1,5 +1,5 @@
 instances
-| gen_array_type_repr.rs:7:14:7:21 | ArrayTypeRepr | hasConstArg: | yes | hasElementTypeRepr: | yes |
+| gen_array_type_repr.rs:7:14:7:21 | ArrayTypeRepr |
 getConstArg
 | gen_array_type_repr.rs:7:14:7:21 | ArrayTypeRepr | gen_array_type_repr.rs:7:20:7:20 | ConstArg |
 getElementTypeRepr

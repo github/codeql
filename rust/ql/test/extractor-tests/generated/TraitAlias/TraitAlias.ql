@@ -2,44 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  TraitAlias x, string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
-  string hasCrateOrigin__label, string hasCrateOrigin, string hasAttributeMacroExpansion__label,
-  string hasAttributeMacroExpansion, string getNumberOfAttrs__label, int getNumberOfAttrs,
-  string hasGenericParamList__label, string hasGenericParamList, string hasName__label,
-  string hasName, string hasTypeBoundList__label, string hasTypeBoundList,
-  string hasVisibility__label, string hasVisibility, string hasWhereClause__label,
-  string hasWhereClause
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  hasCrateOrigin__label = "hasCrateOrigin:" and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  hasAttributeMacroExpansion__label = "hasAttributeMacroExpansion:" and
-  (
-    if x.hasAttributeMacroExpansion()
-    then hasAttributeMacroExpansion = "yes"
-    else hasAttributeMacroExpansion = "no"
-  ) and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  hasGenericParamList__label = "hasGenericParamList:" and
-  (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
-  hasName__label = "hasName:" and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  hasTypeBoundList__label = "hasTypeBoundList:" and
-  (if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no") and
-  hasVisibility__label = "hasVisibility:" and
-  (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
-  hasWhereClause__label = "hasWhereClause:" and
-  if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-}
+query predicate instances(TraitAlias x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getExtendedCanonicalPath(TraitAlias x, string getExtendedCanonicalPath) {
   toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()

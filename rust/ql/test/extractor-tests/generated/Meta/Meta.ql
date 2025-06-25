@@ -2,20 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  Meta x, string hasExpr__label, string hasExpr, string isUnsafe__label, string isUnsafe,
-  string hasPath__label, string hasPath, string hasTokenTree__label, string hasTokenTree
-) {
+query predicate instances(Meta x, string isUnsafe__label, string isUnsafe) {
   toBeTested(x) and
   not x.isUnknown() and
-  hasExpr__label = "hasExpr:" and
-  (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
   isUnsafe__label = "isUnsafe:" and
-  (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
-  hasPath__label = "hasPath:" and
-  (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
-  hasTokenTree__label = "hasTokenTree:" and
-  if x.hasTokenTree() then hasTokenTree = "yes" else hasTokenTree = "no"
+  if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
 }
 
 query predicate getExpr(Meta x, Expr getExpr) {

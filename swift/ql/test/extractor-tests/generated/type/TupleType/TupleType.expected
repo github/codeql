@@ -1,10 +1,10 @@
 instances
-| (Builtin.IntLiteral, Builtin.IntLiteral) | getName: | (IntLiteral, IntLiteral) | getCanonicalType: | (Builtin.IntLiteral, Builtin.IntLiteral) | getNumberOfTypes: | 2 |
-| (Builtin.IntLiteral, Builtin.IntLiteral) | getName: | (IntLiteral, IntLiteral) | getCanonicalType: | (Builtin.IntLiteral, Builtin.IntLiteral) | getNumberOfTypes: | 2 |
-| (Int, Int, Int, Int, Int) | getName: | (Int, Int, Int, Int, Int) | getCanonicalType: | (Int, Int, Int, Int, Int) | getNumberOfTypes: | 5 |
-| (Int, String, Double) | getName: | (Int, String, Double) | getCanonicalType: | (Int, String, Double) | getNumberOfTypes: | 3 |
-| (Int, s: String, Double) | getName: | (Int, s: String, Double) | getCanonicalType: | (Int, s: String, Double) | getNumberOfTypes: | 3 |
-| (x: Int, y: Int) | getName: | (x: Int, y: Int) | getCanonicalType: | (x: Int, y: Int) | getNumberOfTypes: | 2 |
+| (Builtin.IntLiteral, Builtin.IntLiteral) | getName: | (IntLiteral, IntLiteral) | getCanonicalType: | (Builtin.IntLiteral, Builtin.IntLiteral) |
+| (Builtin.IntLiteral, Builtin.IntLiteral) | getName: | (IntLiteral, IntLiteral) | getCanonicalType: | (Builtin.IntLiteral, Builtin.IntLiteral) |
+| (Int, Int, Int, Int, Int) | getName: | (Int, Int, Int, Int, Int) | getCanonicalType: | (Int, Int, Int, Int, Int) |
+| (Int, String, Double) | getName: | (Int, String, Double) | getCanonicalType: | (Int, String, Double) |
+| (Int, s: String, Double) | getName: | (Int, s: String, Double) | getCanonicalType: | (Int, s: String, Double) |
+| (x: Int, y: Int) | getName: | (x: Int, y: Int) | getCanonicalType: | (x: Int, y: Int) |
 getType
 | (Builtin.IntLiteral, Builtin.IntLiteral) | 0 | Builtin.IntLiteral |
 | (Builtin.IntLiteral, Builtin.IntLiteral) | 0 | Builtin.IntLiteral |

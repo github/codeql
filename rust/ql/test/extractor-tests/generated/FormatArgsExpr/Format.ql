@@ -3,22 +3,14 @@ import codeql.rust.elements
 import TestUtils
 
 query predicate instances(
-  Format x, string getParent__label, FormatArgsExpr getParent, string getIndex__label, int getIndex,
-  string hasArgumentRef__label, string hasArgumentRef, string hasWidthArgument__label,
-  string hasWidthArgument, string hasPrecisionArgument__label, string hasPrecisionArgument
+  Format x, string getParent__label, FormatArgsExpr getParent, string getIndex__label, int getIndex
 ) {
   toBeTested(x) and
   not x.isUnknown() and
   getParent__label = "getParent:" and
   getParent = x.getParent() and
   getIndex__label = "getIndex:" and
-  getIndex = x.getIndex() and
-  hasArgumentRef__label = "hasArgumentRef:" and
-  (if x.hasArgumentRef() then hasArgumentRef = "yes" else hasArgumentRef = "no") and
-  hasWidthArgument__label = "hasWidthArgument:" and
-  (if x.hasWidthArgument() then hasWidthArgument = "yes" else hasWidthArgument = "no") and
-  hasPrecisionArgument__label = "hasPrecisionArgument:" and
-  if x.hasPrecisionArgument() then hasPrecisionArgument = "yes" else hasPrecisionArgument = "no"
+  getIndex = x.getIndex()
 }
 
 query predicate getArgumentRef(Format x, FormatArgument getArgumentRef) {

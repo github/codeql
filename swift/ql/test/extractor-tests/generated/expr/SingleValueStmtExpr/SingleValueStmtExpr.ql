@@ -2,13 +2,9 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  SingleValueStmtExpr x, string hasType__label, string hasType, string getStmt__label, Stmt getStmt
-) {
+query predicate instances(SingleValueStmtExpr x, string getStmt__label, Stmt getStmt) {
   toBeTested(x) and
   not x.isUnknown() and
-  hasType__label = "hasType:" and
-  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getStmt__label = "getStmt:" and
   getStmt = x.getStmt()
 }

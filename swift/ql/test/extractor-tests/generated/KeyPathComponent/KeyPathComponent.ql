@@ -3,21 +3,13 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  KeyPathComponent x, string getKind__label, int getKind,
-  string getNumberOfSubscriptArguments__label, int getNumberOfSubscriptArguments,
-  string hasTupleIndex__label, string hasTupleIndex, string hasDeclRef__label, string hasDeclRef,
-  string getComponentType__label, Type getComponentType
+  KeyPathComponent x, string getKind__label, int getKind, string getComponentType__label,
+  Type getComponentType
 ) {
   toBeTested(x) and
   not x.isUnknown() and
   getKind__label = "getKind:" and
   getKind = x.getKind() and
-  getNumberOfSubscriptArguments__label = "getNumberOfSubscriptArguments:" and
-  getNumberOfSubscriptArguments = x.getNumberOfSubscriptArguments() and
-  hasTupleIndex__label = "hasTupleIndex:" and
-  (if x.hasTupleIndex() then hasTupleIndex = "yes" else hasTupleIndex = "no") and
-  hasDeclRef__label = "hasDeclRef:" and
-  (if x.hasDeclRef() then hasDeclRef = "yes" else hasDeclRef = "no") and
   getComponentType__label = "getComponentType:" and
   getComponentType = x.getComponentType()
 }

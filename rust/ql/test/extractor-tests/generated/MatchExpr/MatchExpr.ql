@@ -2,19 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  MatchExpr x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasScrutinee__label,
-  string hasScrutinee, string hasMatchArmList__label, string hasMatchArmList
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  hasScrutinee__label = "hasScrutinee:" and
-  (if x.hasScrutinee() then hasScrutinee = "yes" else hasScrutinee = "no") and
-  hasMatchArmList__label = "hasMatchArmList:" and
-  if x.hasMatchArmList() then hasMatchArmList = "yes" else hasMatchArmList = "no"
-}
+query predicate instances(MatchExpr x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getAttr(MatchExpr x, int index, Attr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)

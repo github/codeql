@@ -1,6 +1,6 @@
 instances
-| gen_ret_type_repr.rs:3:25:3:29 | RetTypeRepr | hasTypeRepr: | yes |
-| gen_ret_type_repr.rs:7:14:7:19 | RetTypeRepr | hasTypeRepr: | yes |
+| gen_ret_type_repr.rs:3:25:3:29 | RetTypeRepr |
+| gen_ret_type_repr.rs:7:14:7:19 | RetTypeRepr |
 getTypeRepr
 | gen_ret_type_repr.rs:3:25:3:29 | RetTypeRepr | gen_ret_type_repr.rs:3:28:3:29 | TupleTypeRepr |
 | gen_ret_type_repr.rs:7:14:7:19 | RetTypeRepr | gen_ret_type_repr.rs:7:17:7:19 | i32 |

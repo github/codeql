@@ -2,38 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  ExternCrate x, string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
-  string hasCrateOrigin__label, string hasCrateOrigin, string hasAttributeMacroExpansion__label,
-  string hasAttributeMacroExpansion, string getNumberOfAttrs__label, int getNumberOfAttrs,
-  string hasIdentifier__label, string hasIdentifier, string hasRename__label, string hasRename,
-  string hasVisibility__label, string hasVisibility
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  hasCrateOrigin__label = "hasCrateOrigin:" and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  hasAttributeMacroExpansion__label = "hasAttributeMacroExpansion:" and
-  (
-    if x.hasAttributeMacroExpansion()
-    then hasAttributeMacroExpansion = "yes"
-    else hasAttributeMacroExpansion = "no"
-  ) and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  hasIdentifier__label = "hasIdentifier:" and
-  (if x.hasIdentifier() then hasIdentifier = "yes" else hasIdentifier = "no") and
-  hasRename__label = "hasRename:" and
-  (if x.hasRename() then hasRename = "yes" else hasRename = "no") and
-  hasVisibility__label = "hasVisibility:" and
-  if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-}
+query predicate instances(ExternCrate x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getExtendedCanonicalPath(ExternCrate x, string getExtendedCanonicalPath) {
   toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()

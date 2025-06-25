@@ -3,24 +3,17 @@ import codeql.rust.elements
 import TestUtils
 
 query predicate instances(
-  FnPtrTypeRepr x, string hasAbi__label, string hasAbi, string isAsync__label, string isAsync,
-  string isConst__label, string isConst, string isUnsafe__label, string isUnsafe,
-  string hasParamList__label, string hasParamList, string hasRetType__label, string hasRetType
+  FnPtrTypeRepr x, string isAsync__label, string isAsync, string isConst__label, string isConst,
+  string isUnsafe__label, string isUnsafe
 ) {
   toBeTested(x) and
   not x.isUnknown() and
-  hasAbi__label = "hasAbi:" and
-  (if x.hasAbi() then hasAbi = "yes" else hasAbi = "no") and
   isAsync__label = "isAsync:" and
   (if x.isAsync() then isAsync = "yes" else isAsync = "no") and
   isConst__label = "isConst:" and
   (if x.isConst() then isConst = "yes" else isConst = "no") and
   isUnsafe__label = "isUnsafe:" and
-  (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
-  hasParamList__label = "hasParamList:" and
-  (if x.hasParamList() then hasParamList = "yes" else hasParamList = "no") and
-  hasRetType__label = "hasRetType:" and
-  if x.hasRetType() then hasRetType = "yes" else hasRetType = "no"
+  if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
 }
 
 query predicate getAbi(FnPtrTypeRepr x, Abi getAbi) {

@@ -1,5 +1,5 @@
 instances
-| gen_trait_alias.rs:7:5:7:26 | TraitAlias | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasGenericParamList: | no | hasName: | yes | hasTypeBoundList: | yes | hasVisibility: | no | hasWhereClause: | no |
+| gen_trait_alias.rs:7:5:7:26 | TraitAlias |
 getExtendedCanonicalPath
 getCrateOrigin
 getAttributeMacroExpansion

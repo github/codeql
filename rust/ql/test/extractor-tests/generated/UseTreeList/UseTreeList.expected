@@ -1,5 +1,5 @@
 instances
-| gen_use_tree_list.rs:7:14:7:21 | UseTreeList | getNumberOfUseTrees: | 2 |
+| gen_use_tree_list.rs:7:14:7:21 | UseTreeList |
 getUseTree
 | gen_use_tree_list.rs:7:14:7:21 | UseTreeList | 0 | gen_use_tree_list.rs:7:15:7:16 | fs |
 | gen_use_tree_list.rs:7:14:7:21 | UseTreeList | 1 | gen_use_tree_list.rs:7:19:7:20 | io |

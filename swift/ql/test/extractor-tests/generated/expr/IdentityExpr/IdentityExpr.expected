@@ -1,13 +1,13 @@
 instances
-| identity_expressions.swift:5:9:5:14 | .self | DotSelfExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:5:9:5:9 | self |
-| identity_expressions.swift:5:9:5:21 | .self | DotSelfExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:5:9:5:19 | .x |
-| identity_expressions.swift:5:28:5:31 | (...) | ParenExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:5:29:5:29 | 42 |
-| identity_expressions.swift:9:5:9:9 | (...) | ParenExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:9:6:9:8 | call to A.init() |
-| identity_expressions.swift:12:28:12:43 | (...) | ParenExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:12:29:12:42 | await ... |
-| identity_expressions.swift:12:29:12:42 | await ... | AwaitExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:12:35:12:42 | call to create() |
-| identity_expressions.swift:15:5:15:21 | await ... | AwaitExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:15:11:15:21 | call to process() |
-| identity_expressions.swift:15:11:15:19 | (...) | ParenExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:15:12:15:12 | process() |
-| identity_expressions.swift:18:9:18:17 | BorrowExpr | BorrowExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:18:17:18:17 | x |
+| identity_expressions.swift:5:9:5:14 | .self | DotSelfExpr | getSubExpr: | identity_expressions.swift:5:9:5:9 | self |
+| identity_expressions.swift:5:9:5:21 | .self | DotSelfExpr | getSubExpr: | identity_expressions.swift:5:9:5:19 | .x |
+| identity_expressions.swift:5:28:5:31 | (...) | ParenExpr | getSubExpr: | identity_expressions.swift:5:29:5:29 | 42 |
+| identity_expressions.swift:9:5:9:9 | (...) | ParenExpr | getSubExpr: | identity_expressions.swift:9:6:9:8 | call to A.init() |
+| identity_expressions.swift:12:28:12:43 | (...) | ParenExpr | getSubExpr: | identity_expressions.swift:12:29:12:42 | await ... |
+| identity_expressions.swift:12:29:12:42 | await ... | AwaitExpr | getSubExpr: | identity_expressions.swift:12:35:12:42 | call to create() |
+| identity_expressions.swift:15:5:15:21 | await ... | AwaitExpr | getSubExpr: | identity_expressions.swift:15:11:15:21 | call to process() |
+| identity_expressions.swift:15:11:15:19 | (...) | ParenExpr | getSubExpr: | identity_expressions.swift:15:12:15:12 | process() |
+| identity_expressions.swift:18:9:18:17 | BorrowExpr | BorrowExpr | getSubExpr: | identity_expressions.swift:18:17:18:17 | x |
 getType
 | identity_expressions.swift:5:9:5:14 | .self | A |
 | identity_expressions.swift:5:9:5:21 | .self | @lvalue Int |

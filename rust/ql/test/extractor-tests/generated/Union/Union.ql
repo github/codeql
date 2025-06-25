@@ -2,47 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  Union x, string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
-  string hasCrateOrigin__label, string hasCrateOrigin, string hasAttributeMacroExpansion__label,
-  string hasAttributeMacroExpansion, string getNumberOfDeriveMacroExpansions__label,
-  int getNumberOfDeriveMacroExpansions, string getNumberOfAttrs__label, int getNumberOfAttrs,
-  string hasGenericParamList__label, string hasGenericParamList, string hasName__label,
-  string hasName, string hasStructFieldList__label, string hasStructFieldList,
-  string hasVisibility__label, string hasVisibility, string hasWhereClause__label,
-  string hasWhereClause
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  hasCrateOrigin__label = "hasCrateOrigin:" and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  hasAttributeMacroExpansion__label = "hasAttributeMacroExpansion:" and
-  (
-    if x.hasAttributeMacroExpansion()
-    then hasAttributeMacroExpansion = "yes"
-    else hasAttributeMacroExpansion = "no"
-  ) and
-  getNumberOfDeriveMacroExpansions__label = "getNumberOfDeriveMacroExpansions:" and
-  getNumberOfDeriveMacroExpansions = x.getNumberOfDeriveMacroExpansions() and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  hasGenericParamList__label = "hasGenericParamList:" and
-  (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
-  hasName__label = "hasName:" and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  hasStructFieldList__label = "hasStructFieldList:" and
-  (if x.hasStructFieldList() then hasStructFieldList = "yes" else hasStructFieldList = "no") and
-  hasVisibility__label = "hasVisibility:" and
-  (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
-  hasWhereClause__label = "hasWhereClause:" and
-  if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-}
+query predicate instances(Union x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getExtendedCanonicalPath(Union x, string getExtendedCanonicalPath) {
   toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()

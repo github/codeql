@@ -2,12 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(ParenPat x, string hasPat__label, string hasPat) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasPat__label = "hasPat:" and
-  if x.hasPat() then hasPat = "yes" else hasPat = "no"
-}
+query predicate instances(ParenPat x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getPat(ParenPat x, Pat getPat) {
   toBeTested(x) and not x.isUnknown() and getPat = x.getPat()

@@ -3,20 +3,14 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  MacroRole x, string getKind__label, int getKind, string getMacroSyntax__label, int getMacroSyntax,
-  string getNumberOfConformances__label, int getNumberOfConformances,
-  string getNumberOfNames__label, int getNumberOfNames
+  MacroRole x, string getKind__label, int getKind, string getMacroSyntax__label, int getMacroSyntax
 ) {
   toBeTested(x) and
   not x.isUnknown() and
   getKind__label = "getKind:" and
   getKind = x.getKind() and
   getMacroSyntax__label = "getMacroSyntax:" and
-  getMacroSyntax = x.getMacroSyntax() and
-  getNumberOfConformances__label = "getNumberOfConformances:" and
-  getNumberOfConformances = x.getNumberOfConformances() and
-  getNumberOfNames__label = "getNumberOfNames:" and
-  getNumberOfNames = x.getNumberOfNames()
+  getMacroSyntax = x.getMacroSyntax()
 }
 
 query predicate getConformance(MacroRole x, int index, Expr getConformance) {

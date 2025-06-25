@@ -1,5 +1,5 @@
 instances
-| gen_yield_expr.rs:7:13:7:19 | YieldExpr | getNumberOfAttrs: | 0 | hasExpr: | yes |
+| gen_yield_expr.rs:7:13:7:19 | YieldExpr |
 getAttr
 getExpr
 | gen_yield_expr.rs:7:13:7:19 | YieldExpr | gen_yield_expr.rs:7:19:7:19 | 1 |

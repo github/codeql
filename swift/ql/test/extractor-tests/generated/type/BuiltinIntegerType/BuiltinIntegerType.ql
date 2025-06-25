@@ -4,16 +4,14 @@ import TestUtils
 
 query predicate instances(
   BuiltinIntegerType x, string getName__label, string getName, string getCanonicalType__label,
-  Type getCanonicalType, string hasWidth__label, string hasWidth
+  Type getCanonicalType
 ) {
   toBeTested(x) and
   not x.isUnknown() and
   getName__label = "getName:" and
   getName = x.getName() and
   getCanonicalType__label = "getCanonicalType:" and
-  getCanonicalType = x.getCanonicalType() and
-  hasWidth__label = "hasWidth:" and
-  if x.hasWidth() then hasWidth = "yes" else hasWidth = "no"
+  getCanonicalType = x.getCanonicalType()
 }
 
 query predicate getWidth(BuiltinIntegerType x, int getWidth) {

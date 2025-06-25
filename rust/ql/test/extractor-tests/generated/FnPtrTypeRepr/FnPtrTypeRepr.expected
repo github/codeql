@@ -1,5 +1,5 @@
 instances
-| gen_fn_ptr_type_repr.rs:7:12:7:25 | FnPtrTypeRepr | hasAbi: | no | isAsync: | no | isConst: | no | isUnsafe: | no | hasParamList: | yes | hasRetType: | yes |
+| gen_fn_ptr_type_repr.rs:7:12:7:25 | FnPtrTypeRepr | isAsync: | no | isConst: | no | isUnsafe: | no |
 getAbi
 getParamList
 | gen_fn_ptr_type_repr.rs:7:12:7:25 | FnPtrTypeRepr | gen_fn_ptr_type_repr.rs:7:14:7:18 | ParamList |

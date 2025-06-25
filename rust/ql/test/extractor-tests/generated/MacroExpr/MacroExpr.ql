@@ -2,12 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(MacroExpr x, string hasMacroCall__label, string hasMacroCall) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasMacroCall__label = "hasMacroCall:" and
-  if x.hasMacroCall() then hasMacroCall = "yes" else hasMacroCall = "no"
-}
+query predicate instances(MacroExpr x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getMacroCall(MacroExpr x, MacroCall getMacroCall) {
   toBeTested(x) and not x.isUnknown() and getMacroCall = x.getMacroCall()

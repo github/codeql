@@ -3,17 +3,13 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  MethodLookupExpr x, string hasType__label, string hasType, string getBase__label, Expr getBase,
-  string hasMember__label, string hasMember, string getMethodRef__label, Expr getMethodRef
+  MethodLookupExpr x, string getBase__label, Expr getBase, string getMethodRef__label,
+  Expr getMethodRef
 ) {
   toBeTested(x) and
   not x.isUnknown() and
-  hasType__label = "hasType:" and
-  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getBase__label = "getBase:" and
   getBase = x.getBase() and
-  hasMember__label = "hasMember:" and
-  (if x.hasMember() then hasMember = "yes" else hasMember = "no") and
   getMethodRef__label = "getMethodRef:" and
   getMethodRef = x.getMethodRef()
 }

@@ -4,8 +4,7 @@ import TestUtils
 
 query predicate instances(
   ParameterizedProtocolType x, string getName__label, string getName,
-  string getCanonicalType__label, Type getCanonicalType, string getBase__label,
-  ProtocolType getBase, string getNumberOfArgs__label, int getNumberOfArgs
+  string getCanonicalType__label, Type getCanonicalType, string getBase__label, ProtocolType getBase
 ) {
   toBeTested(x) and
   not x.isUnknown() and
@@ -14,9 +13,7 @@ query predicate instances(
   getCanonicalType__label = "getCanonicalType:" and
   getCanonicalType = x.getCanonicalType() and
   getBase__label = "getBase:" and
-  getBase = x.getBase() and
-  getNumberOfArgs__label = "getNumberOfArgs:" and
-  getNumberOfArgs = x.getNumberOfArgs()
+  getBase = x.getBase()
 }
 
 query predicate getArg(ParameterizedProtocolType x, int index, Type getArg) {

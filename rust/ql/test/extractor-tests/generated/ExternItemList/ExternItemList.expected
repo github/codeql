@@ -1,5 +1,5 @@
 instances
-| gen_extern_item_list.rs:7:16:10:5 | ExternItemList | getNumberOfAttrs: | 0 | getNumberOfExternItems: | 2 |
+| gen_extern_item_list.rs:7:16:10:5 | ExternItemList |
 getAttr
 getExternItem
 | gen_extern_item_list.rs:7:16:10:5 | ExternItemList | 0 | gen_extern_item_list.rs:8:9:8:17 | fn foo |

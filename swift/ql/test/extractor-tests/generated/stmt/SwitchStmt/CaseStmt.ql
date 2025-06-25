@@ -2,16 +2,9 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  CaseStmt x, string getNumberOfLabels__label, int getNumberOfLabels,
-  string getNumberOfVariables__label, int getNumberOfVariables, string getBody__label, Stmt getBody
-) {
+query predicate instances(CaseStmt x, string getBody__label, Stmt getBody) {
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfLabels__label = "getNumberOfLabels:" and
-  getNumberOfLabels = x.getNumberOfLabels() and
-  getNumberOfVariables__label = "getNumberOfVariables:" and
-  getNumberOfVariables = x.getNumberOfVariables() and
   getBody__label = "getBody:" and
   getBody = x.getBody()
 }

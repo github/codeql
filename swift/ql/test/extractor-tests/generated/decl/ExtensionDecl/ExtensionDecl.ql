@@ -3,23 +3,15 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  ExtensionDecl x, string getModule__label, ModuleDecl getModule, string getNumberOfMembers__label,
-  int getNumberOfMembers, string getNumberOfGenericTypeParams__label,
-  int getNumberOfGenericTypeParams, string getExtendedTypeDecl__label,
-  NominalTypeDecl getExtendedTypeDecl, string getNumberOfProtocols__label, int getNumberOfProtocols
+  ExtensionDecl x, string getModule__label, ModuleDecl getModule, string getExtendedTypeDecl__label,
+  NominalTypeDecl getExtendedTypeDecl
 ) {
   toBeTested(x) and
   not x.isUnknown() and
   getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers__label = "getNumberOfMembers:" and
-  getNumberOfMembers = x.getNumberOfMembers() and
-  getNumberOfGenericTypeParams__label = "getNumberOfGenericTypeParams:" and
-  getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
   getExtendedTypeDecl__label = "getExtendedTypeDecl:" and
-  getExtendedTypeDecl = x.getExtendedTypeDecl() and
-  getNumberOfProtocols__label = "getNumberOfProtocols:" and
-  getNumberOfProtocols = x.getNumberOfProtocols()
+  getExtendedTypeDecl = x.getExtendedTypeDecl()
 }
 
 query predicate getMember(ExtensionDecl x, int index, Decl getMember) {

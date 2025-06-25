@@ -1,5 +1,5 @@
 instances
-| gen_param.rs:5:12:5:15 | ...: T | getNumberOfAttrs: | 0 | hasTypeRepr: | yes | hasPat: | yes |
+| gen_param.rs:5:12:5:15 | ...: T |
 getAttr
 getTypeRepr
 | gen_param.rs:5:12:5:15 | ...: T | gen_param.rs:5:15:5:15 | T |

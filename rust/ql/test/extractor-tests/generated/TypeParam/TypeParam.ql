@@ -2,22 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  TypeParam x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasDefaultType__label,
-  string hasDefaultType, string hasName__label, string hasName, string hasTypeBoundList__label,
-  string hasTypeBoundList
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  hasDefaultType__label = "hasDefaultType:" and
-  (if x.hasDefaultType() then hasDefaultType = "yes" else hasDefaultType = "no") and
-  hasName__label = "hasName:" and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  hasTypeBoundList__label = "hasTypeBoundList:" and
-  if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no"
-}
+query predicate instances(TypeParam x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getAttr(TypeParam x, int index, Attr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)

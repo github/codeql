@@ -3,31 +3,20 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  OpaqueTypeDecl x, string getNumberOfGenericTypeParams__label, int getNumberOfGenericTypeParams,
-  string getModule__label, ModuleDecl getModule, string getNumberOfMembers__label,
-  int getNumberOfMembers, string getInterfaceType__label, Type getInterfaceType,
-  string getName__label, string getName, string getNumberOfInheritedTypes__label,
-  int getNumberOfInheritedTypes, string getNamingDeclaration__label, ValueDecl getNamingDeclaration,
-  string getNumberOfOpaqueGenericParams__label, int getNumberOfOpaqueGenericParams
+  OpaqueTypeDecl x, string getModule__label, ModuleDecl getModule, string getInterfaceType__label,
+  Type getInterfaceType, string getName__label, string getName, string getNamingDeclaration__label,
+  ValueDecl getNamingDeclaration
 ) {
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfGenericTypeParams__label = "getNumberOfGenericTypeParams:" and
-  getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
   getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers__label = "getNumberOfMembers:" and
-  getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType() and
   getName__label = "getName:" and
   getName = x.getName() and
-  getNumberOfInheritedTypes__label = "getNumberOfInheritedTypes:" and
-  getNumberOfInheritedTypes = x.getNumberOfInheritedTypes() and
   getNamingDeclaration__label = "getNamingDeclaration:" and
-  getNamingDeclaration = x.getNamingDeclaration() and
-  getNumberOfOpaqueGenericParams__label = "getNumberOfOpaqueGenericParams:" and
-  getNumberOfOpaqueGenericParams = x.getNumberOfOpaqueGenericParams()
+  getNamingDeclaration = x.getNamingDeclaration()
 }
 
 query predicate getGenericTypeParam(

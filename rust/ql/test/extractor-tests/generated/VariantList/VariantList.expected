@@ -1,5 +1,5 @@
 instances
-| gen_variant_list.rs:7:12:7:22 | VariantList | getNumberOfVariants: | 3 |
+| gen_variant_list.rs:7:12:7:22 | VariantList |
 getVariant
 | gen_variant_list.rs:7:12:7:22 | VariantList | 0 | gen_variant_list.rs:7:14:7:14 | A |
 | gen_variant_list.rs:7:12:7:22 | VariantList | 1 | gen_variant_list.rs:7:17:7:17 | B |

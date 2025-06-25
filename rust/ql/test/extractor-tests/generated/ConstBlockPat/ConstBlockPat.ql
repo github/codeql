@@ -2,14 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  ConstBlockPat x, string hasBlockExpr__label, string hasBlockExpr, string isConst__label,
-  string isConst
-) {
+query predicate instances(ConstBlockPat x, string isConst__label, string isConst) {
   toBeTested(x) and
   not x.isUnknown() and
-  hasBlockExpr__label = "hasBlockExpr:" and
-  (if x.hasBlockExpr() then hasBlockExpr = "yes" else hasBlockExpr = "no") and
   isConst__label = "isConst:" and
   if x.isConst() then isConst = "yes" else isConst = "no"
 }

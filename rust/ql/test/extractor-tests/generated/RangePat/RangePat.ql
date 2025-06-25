@@ -2,19 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  RangePat x, string hasEnd__label, string hasEnd, string hasOperatorName__label,
-  string hasOperatorName, string hasStart__label, string hasStart
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasEnd__label = "hasEnd:" and
-  (if x.hasEnd() then hasEnd = "yes" else hasEnd = "no") and
-  hasOperatorName__label = "hasOperatorName:" and
-  (if x.hasOperatorName() then hasOperatorName = "yes" else hasOperatorName = "no") and
-  hasStart__label = "hasStart:" and
-  if x.hasStart() then hasStart = "yes" else hasStart = "no"
-}
+query predicate instances(RangePat x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getEnd(RangePat x, Pat getEnd) {
   toBeTested(x) and not x.isUnknown() and getEnd = x.getEnd()

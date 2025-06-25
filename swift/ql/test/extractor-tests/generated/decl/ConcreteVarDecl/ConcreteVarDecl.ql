@@ -3,66 +3,20 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  ConcreteVarDecl x, string getModule__label, ModuleDecl getModule,
-  string getNumberOfMembers__label, int getNumberOfMembers, string getInterfaceType__label,
-  Type getInterfaceType, string getNumberOfAccessors__label, int getNumberOfAccessors,
-  string getName__label, string getName, string getType__label, Type getType,
-  string hasAttachedPropertyWrapperType__label, string hasAttachedPropertyWrapperType,
-  string hasParentPattern__label, string hasParentPattern, string hasParentInitializer__label,
-  string hasParentInitializer, string hasPropertyWrapperBackingVarBinding__label,
-  string hasPropertyWrapperBackingVarBinding, string hasPropertyWrapperBackingVar__label,
-  string hasPropertyWrapperBackingVar, string hasPropertyWrapperProjectionVarBinding__label,
-  string hasPropertyWrapperProjectionVarBinding, string hasPropertyWrapperProjectionVar__label,
-  string hasPropertyWrapperProjectionVar, string getIntroducerInt__label, int getIntroducerInt
+  ConcreteVarDecl x, string getModule__label, ModuleDecl getModule, string getInterfaceType__label,
+  Type getInterfaceType, string getName__label, string getName, string getType__label, Type getType,
+  string getIntroducerInt__label, int getIntroducerInt
 ) {
   toBeTested(x) and
   not x.isUnknown() and
   getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers__label = "getNumberOfMembers:" and
-  getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType() and
-  getNumberOfAccessors__label = "getNumberOfAccessors:" and
-  getNumberOfAccessors = x.getNumberOfAccessors() and
   getName__label = "getName:" and
   getName = x.getName() and
   getType__label = "getType:" and
   getType = x.getType() and
-  hasAttachedPropertyWrapperType__label = "hasAttachedPropertyWrapperType:" and
-  (
-    if x.hasAttachedPropertyWrapperType()
-    then hasAttachedPropertyWrapperType = "yes"
-    else hasAttachedPropertyWrapperType = "no"
-  ) and
-  hasParentPattern__label = "hasParentPattern:" and
-  (if x.hasParentPattern() then hasParentPattern = "yes" else hasParentPattern = "no") and
-  hasParentInitializer__label = "hasParentInitializer:" and
-  (if x.hasParentInitializer() then hasParentInitializer = "yes" else hasParentInitializer = "no") and
-  hasPropertyWrapperBackingVarBinding__label = "hasPropertyWrapperBackingVarBinding:" and
-  (
-    if x.hasPropertyWrapperBackingVarBinding()
-    then hasPropertyWrapperBackingVarBinding = "yes"
-    else hasPropertyWrapperBackingVarBinding = "no"
-  ) and
-  hasPropertyWrapperBackingVar__label = "hasPropertyWrapperBackingVar:" and
-  (
-    if x.hasPropertyWrapperBackingVar()
-    then hasPropertyWrapperBackingVar = "yes"
-    else hasPropertyWrapperBackingVar = "no"
-  ) and
-  hasPropertyWrapperProjectionVarBinding__label = "hasPropertyWrapperProjectionVarBinding:" and
-  (
-    if x.hasPropertyWrapperProjectionVarBinding()
-    then hasPropertyWrapperProjectionVarBinding = "yes"
-    else hasPropertyWrapperProjectionVarBinding = "no"
-  ) and
-  hasPropertyWrapperProjectionVar__label = "hasPropertyWrapperProjectionVar:" and
-  (
-    if x.hasPropertyWrapperProjectionVar()
-    then hasPropertyWrapperProjectionVar = "yes"
-    else hasPropertyWrapperProjectionVar = "no"
-  ) and
   getIntroducerInt__label = "getIntroducerInt:" and
   getIntroducerInt = x.getIntroducerInt()
 }

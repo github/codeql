@@ -1,4 +1,4 @@
 instances
-| gen_dyn_trait_type_repr.rs:7:13:7:21 | DynTraitTypeRepr | hasTypeBoundList: | yes |
+| gen_dyn_trait_type_repr.rs:7:13:7:21 | DynTraitTypeRepr |
 getTypeBoundList
 | gen_dyn_trait_type_repr.rs:7:13:7:21 | DynTraitTypeRepr | gen_dyn_trait_type_repr.rs:7:17:7:21 | TypeBoundList |

@@ -4,9 +4,7 @@ import TestUtils
 
 query predicate instances(
   PackArchetypeType x, string getName__label, string getName, string getCanonicalType__label,
-  Type getCanonicalType, string getInterfaceType__label, Type getInterfaceType,
-  string hasSuperclass__label, string hasSuperclass, string getNumberOfProtocols__label,
-  int getNumberOfProtocols
+  Type getCanonicalType, string getInterfaceType__label, Type getInterfaceType
 ) {
   toBeTested(x) and
   not x.isUnknown() and
@@ -15,11 +13,7 @@ query predicate instances(
   getCanonicalType__label = "getCanonicalType:" and
   getCanonicalType = x.getCanonicalType() and
   getInterfaceType__label = "getInterfaceType:" and
-  getInterfaceType = x.getInterfaceType() and
-  hasSuperclass__label = "hasSuperclass:" and
-  (if x.hasSuperclass() then hasSuperclass = "yes" else hasSuperclass = "no") and
-  getNumberOfProtocols__label = "getNumberOfProtocols:" and
-  getNumberOfProtocols = x.getNumberOfProtocols()
+  getInterfaceType = x.getInterfaceType()
 }
 
 query predicate getSuperclass(PackArchetypeType x, Type getSuperclass) {

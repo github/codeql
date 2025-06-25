@@ -1,5 +1,5 @@
 instances
-| gen_struct_field_list.rs:7:14:7:31 | StructFieldList | getNumberOfFields: | 2 |
+| gen_struct_field_list.rs:7:14:7:31 | StructFieldList |
 getField
 | gen_struct_field_list.rs:7:14:7:31 | StructFieldList | 0 | gen_struct_field_list.rs:7:16:7:21 | StructField |
 | gen_struct_field_list.rs:7:14:7:31 | StructFieldList | 1 | gen_struct_field_list.rs:7:24:7:29 | StructField |

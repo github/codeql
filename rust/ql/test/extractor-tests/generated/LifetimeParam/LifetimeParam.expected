@@ -1,5 +1,5 @@
 instances
-| gen_lifetime_param.rs:7:12:7:13 | LifetimeParam | getNumberOfAttrs: | 0 | hasLifetime: | yes | hasTypeBoundList: | no |
+| gen_lifetime_param.rs:7:12:7:13 | LifetimeParam |
 getAttr
 getLifetime
 | gen_lifetime_param.rs:7:12:7:13 | LifetimeParam | gen_lifetime_param.rs:7:12:7:13 | 'a |

@@ -3,22 +3,14 @@ import codeql.rust.elements
 import TestUtils
 
 query predicate instances(
-  IdentPat x, string getNumberOfAttrs__label, int getNumberOfAttrs, string isMut__label,
-  string isMut, string isRef__label, string isRef, string hasName__label, string hasName,
-  string hasPat__label, string hasPat
+  IdentPat x, string isMut__label, string isMut, string isRef__label, string isRef
 ) {
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
   isMut__label = "isMut:" and
   (if x.isMut() then isMut = "yes" else isMut = "no") and
   isRef__label = "isRef:" and
-  (if x.isRef() then isRef = "yes" else isRef = "no") and
-  hasName__label = "hasName:" and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  hasPat__label = "hasPat:" and
-  if x.hasPat() then hasPat = "yes" else hasPat = "no"
+  if x.isRef() then isRef = "yes" else isRef = "no"
 }
 
 query predicate getAttr(IdentPat x, int index, Attr getAttr) {

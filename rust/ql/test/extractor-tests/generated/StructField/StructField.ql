@@ -2,25 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  StructField x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasDefault__label,
-  string hasDefault, string isUnsafe__label, string isUnsafe, string hasName__label, string hasName,
-  string hasTypeRepr__label, string hasTypeRepr, string hasVisibility__label, string hasVisibility
-) {
+query predicate instances(StructField x, string isUnsafe__label, string isUnsafe) {
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  hasDefault__label = "hasDefault:" and
-  (if x.hasDefault() then hasDefault = "yes" else hasDefault = "no") and
   isUnsafe__label = "isUnsafe:" and
-  (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
-  hasName__label = "hasName:" and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  hasTypeRepr__label = "hasTypeRepr:" and
-  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
-  hasVisibility__label = "hasVisibility:" and
-  if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
+  if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
 }
 
 query predicate getAttr(StructField x, int index, Attr getAttr) {

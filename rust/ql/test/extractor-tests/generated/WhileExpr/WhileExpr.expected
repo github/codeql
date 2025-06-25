@@ -1,5 +1,5 @@
 instances
-| gen_while_expr.rs:7:5:9:5 | while ... { ... } | hasLabel: | no | hasLoopBody: | yes | getNumberOfAttrs: | 0 | hasCondition: | yes |
+| gen_while_expr.rs:7:5:9:5 | while ... { ... } |
 getLabel
 getLoopBody
 | gen_while_expr.rs:7:5:9:5 | while ... { ... } | gen_while_expr.rs:7:18:9:5 | { ... } |

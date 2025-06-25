@@ -2,18 +2,11 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  IfConfigDecl x, string getModule__label, ModuleDecl getModule, string getNumberOfMembers__label,
-  int getNumberOfMembers, string getNumberOfActiveElements__label, int getNumberOfActiveElements
-) {
+query predicate instances(IfConfigDecl x, string getModule__label, ModuleDecl getModule) {
   toBeTested(x) and
   not x.isUnknown() and
   getModule__label = "getModule:" and
-  getModule = x.getModule() and
-  getNumberOfMembers__label = "getNumberOfMembers:" and
-  getNumberOfMembers = x.getNumberOfMembers() and
-  getNumberOfActiveElements__label = "getNumberOfActiveElements:" and
-  getNumberOfActiveElements = x.getNumberOfActiveElements()
+  getModule = x.getModule()
 }
 
 query predicate getMember(IfConfigDecl x, int index, Decl getMember) {

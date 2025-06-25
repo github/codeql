@@ -2,14 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  ClosureBinder x, string hasGenericParamList__label, string hasGenericParamList
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasGenericParamList__label = "hasGenericParamList:" and
-  if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no"
-}
+query predicate instances(ClosureBinder x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getGenericParamList(ClosureBinder x, GenericParamList getGenericParamList) {
   toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()

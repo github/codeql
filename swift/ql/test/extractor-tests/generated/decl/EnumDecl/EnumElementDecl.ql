@@ -3,23 +3,17 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  EnumElementDecl x, string getModule__label, ModuleDecl getModule,
-  string getNumberOfMembers__label, int getNumberOfMembers, string getInterfaceType__label,
-  Type getInterfaceType, string getName__label, string getName, string getNumberOfParams__label,
-  int getNumberOfParams
+  EnumElementDecl x, string getModule__label, ModuleDecl getModule, string getInterfaceType__label,
+  Type getInterfaceType, string getName__label, string getName
 ) {
   toBeTested(x) and
   not x.isUnknown() and
   getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers__label = "getNumberOfMembers:" and
-  getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType() and
   getName__label = "getName:" and
-  getName = x.getName() and
-  getNumberOfParams__label = "getNumberOfParams:" and
-  getNumberOfParams = x.getNumberOfParams()
+  getName = x.getName()
 }
 
 query predicate getMember(EnumElementDecl x, int index, Decl getMember) {

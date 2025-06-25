@@ -3,26 +3,17 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  ClassDecl x, string getNumberOfGenericTypeParams__label, int getNumberOfGenericTypeParams,
-  string getModule__label, ModuleDecl getModule, string getNumberOfMembers__label,
-  int getNumberOfMembers, string getInterfaceType__label, Type getInterfaceType,
-  string getName__label, string getName, string getNumberOfInheritedTypes__label,
-  int getNumberOfInheritedTypes, string getType__label, Type getType
+  ClassDecl x, string getModule__label, ModuleDecl getModule, string getInterfaceType__label,
+  Type getInterfaceType, string getName__label, string getName, string getType__label, Type getType
 ) {
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfGenericTypeParams__label = "getNumberOfGenericTypeParams:" and
-  getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
   getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers__label = "getNumberOfMembers:" and
-  getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType() and
   getName__label = "getName:" and
   getName = x.getName() and
-  getNumberOfInheritedTypes__label = "getNumberOfInheritedTypes:" and
-  getNumberOfInheritedTypes = x.getNumberOfInheritedTypes() and
   getType__label = "getType:" and
   getType = x.getType()
 }

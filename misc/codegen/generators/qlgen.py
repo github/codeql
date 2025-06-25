@@ -361,10 +361,6 @@ def _get_all_properties_to_be_tested(
                 type=p.type if not p.is_predicate else None,
                 is_indexed=p.is_indexed,
             )
-            if p.is_repeated and not p.is_optional:
-                yield ql.PropertyForTest(f"getNumberOf{p.plural}", type="int")
-            elif p.is_optional and not p.is_repeated:
-                yield ql.PropertyForTest(f"has{p.singular}")
 
 
 def _partition_iter(x, pred):

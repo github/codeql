@@ -2,22 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  FormatArgsExpr x, string getNumberOfArgs__label, int getNumberOfArgs,
-  string getNumberOfAttrs__label, int getNumberOfAttrs, string hasTemplate__label,
-  string hasTemplate, string getNumberOfFormats__label, int getNumberOfFormats
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfArgs__label = "getNumberOfArgs:" and
-  getNumberOfArgs = x.getNumberOfArgs() and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  hasTemplate__label = "hasTemplate:" and
-  (if x.hasTemplate() then hasTemplate = "yes" else hasTemplate = "no") and
-  getNumberOfFormats__label = "getNumberOfFormats:" and
-  getNumberOfFormats = x.getNumberOfFormats()
-}
+query predicate instances(FormatArgsExpr x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getArg(FormatArgsExpr x, int index, FormatArgsArg getArg) {
   toBeTested(x) and not x.isUnknown() and getArg = x.getArg(index)

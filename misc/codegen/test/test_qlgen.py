@@ -1038,16 +1038,13 @@ def test_test_partial_properties(opts, generate_tests):
             class_name="B",
             properties=[
                 ql.PropertyForTest(getter="getX", is_total=False, type="string"),
-                ql.PropertyForTest(getter="hasX"),
                 ql.PropertyForTest(
                     getter="getY", is_total=False, is_indexed=True, type="bool"
                 ),
-                ql.PropertyForTest(getter="getNumberOfYs", type="int"),
                 ql.PropertyForTest(
                     getter="getZ", is_total=False, is_indexed=True, type="int"
                 ),
                 ql.PropertyForTest(getter="getAW", is_total=False, type="string"),
-                ql.PropertyForTest(getter="getNumberOfWs", type="int"),
             ],
         ),
     }
@@ -1077,7 +1074,6 @@ def test_test_properties_deduplicated(opts, generate_tests):
                 ql.PropertyForTest(
                     getter="getY", is_total=False, is_indexed=True, type="bool"
                 ),
-                ql.PropertyForTest(getter="getNumberOfYs", type="int"),
             ],
         ),
     }

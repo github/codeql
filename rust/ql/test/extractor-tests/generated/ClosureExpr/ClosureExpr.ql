@@ -3,25 +3,12 @@ import codeql.rust.elements
 import TestUtils
 
 query predicate instances(
-  ClosureExpr x, string hasParamList__label, string hasParamList, string getNumberOfAttrs__label,
-  int getNumberOfAttrs, string getNumberOfParams__label, int getNumberOfParams,
-  string hasBody__label, string hasBody, string hasClosureBinder__label, string hasClosureBinder,
-  string isAsync__label, string isAsync, string isConst__label, string isConst, string isGen__label,
-  string isGen, string isMove__label, string isMove, string isStatic__label, string isStatic,
-  string hasRetType__label, string hasRetType
+  ClosureExpr x, string isAsync__label, string isAsync, string isConst__label, string isConst,
+  string isGen__label, string isGen, string isMove__label, string isMove, string isStatic__label,
+  string isStatic
 ) {
   toBeTested(x) and
   not x.isUnknown() and
-  hasParamList__label = "hasParamList:" and
-  (if x.hasParamList() then hasParamList = "yes" else hasParamList = "no") and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  getNumberOfParams__label = "getNumberOfParams:" and
-  getNumberOfParams = x.getNumberOfParams() and
-  hasBody__label = "hasBody:" and
-  (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
-  hasClosureBinder__label = "hasClosureBinder:" and
-  (if x.hasClosureBinder() then hasClosureBinder = "yes" else hasClosureBinder = "no") and
   isAsync__label = "isAsync:" and
   (if x.isAsync() then isAsync = "yes" else isAsync = "no") and
   isConst__label = "isConst:" and
@@ -31,9 +18,7 @@ query predicate instances(
   isMove__label = "isMove:" and
   (if x.isMove() then isMove = "yes" else isMove = "no") and
   isStatic__label = "isStatic:" and
-  (if x.isStatic() then isStatic = "yes" else isStatic = "no") and
-  hasRetType__label = "hasRetType:" and
-  if x.hasRetType() then hasRetType = "yes" else hasRetType = "no"
+  if x.isStatic() then isStatic = "yes" else isStatic = "no"
 }
 
 query predicate getParamList(ClosureExpr x, ParamList getParamList) {

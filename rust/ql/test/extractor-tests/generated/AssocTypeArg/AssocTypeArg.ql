@@ -2,32 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  AssocTypeArg x, string hasConstArg__label, string hasConstArg, string hasGenericArgList__label,
-  string hasGenericArgList, string hasIdentifier__label, string hasIdentifier,
-  string hasParamList__label, string hasParamList, string hasRetType__label, string hasRetType,
-  string hasReturnTypeSyntax__label, string hasReturnTypeSyntax, string hasTypeRepr__label,
-  string hasTypeRepr, string hasTypeBoundList__label, string hasTypeBoundList
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasConstArg__label = "hasConstArg:" and
-  (if x.hasConstArg() then hasConstArg = "yes" else hasConstArg = "no") and
-  hasGenericArgList__label = "hasGenericArgList:" and
-  (if x.hasGenericArgList() then hasGenericArgList = "yes" else hasGenericArgList = "no") and
-  hasIdentifier__label = "hasIdentifier:" and
-  (if x.hasIdentifier() then hasIdentifier = "yes" else hasIdentifier = "no") and
-  hasParamList__label = "hasParamList:" and
-  (if x.hasParamList() then hasParamList = "yes" else hasParamList = "no") and
-  hasRetType__label = "hasRetType:" and
-  (if x.hasRetType() then hasRetType = "yes" else hasRetType = "no") and
-  hasReturnTypeSyntax__label = "hasReturnTypeSyntax:" and
-  (if x.hasReturnTypeSyntax() then hasReturnTypeSyntax = "yes" else hasReturnTypeSyntax = "no") and
-  hasTypeRepr__label = "hasTypeRepr:" and
-  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
-  hasTypeBoundList__label = "hasTypeBoundList:" and
-  if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no"
-}
+query predicate instances(AssocTypeArg x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getConstArg(AssocTypeArg x, ConstArg getConstArg) {
   toBeTested(x) and not x.isUnknown() and getConstArg = x.getConstArg()

@@ -2,12 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(UseTreeList x, string getNumberOfUseTrees__label, int getNumberOfUseTrees) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfUseTrees__label = "getNumberOfUseTrees:" and
-  getNumberOfUseTrees = x.getNumberOfUseTrees()
-}
+query predicate instances(UseTreeList x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getUseTree(UseTreeList x, int index, UseTree getUseTree) {
   toBeTested(x) and not x.isUnknown() and getUseTree = x.getUseTree(index)

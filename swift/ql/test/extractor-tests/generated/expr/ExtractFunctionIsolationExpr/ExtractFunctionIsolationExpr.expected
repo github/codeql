@@ -1,4 +1,4 @@
 instances
-| extract_function_isolation.swift:2:21:2:23 | ExtractFunctionIsolationExpr | hasType: | yes | getFunctionExpr: | extract_function_isolation.swift:2:21:2:21 | x |
+| extract_function_isolation.swift:2:21:2:23 | ExtractFunctionIsolationExpr | getFunctionExpr: | extract_function_isolation.swift:2:21:2:21 | x |
 getType
 | extract_function_isolation.swift:2:21:2:23 | ExtractFunctionIsolationExpr | (any Actor)? |

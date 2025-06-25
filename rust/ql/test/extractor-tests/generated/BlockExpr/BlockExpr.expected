@@ -1,7 +1,7 @@
 instances
-| gen_block_expr.rs:3:28:12:1 | { ... } | hasLabel: | no | getNumberOfAttrs: | 0 | isAsync: | no | isConst: | no | isGen: | no | isMove: | no | isTry: | no | isUnsafe: | no | hasStmtList: | yes |
-| gen_block_expr.rs:5:5:7:5 | { ... } | hasLabel: | no | getNumberOfAttrs: | 0 | isAsync: | no | isConst: | no | isGen: | no | isMove: | no | isTry: | no | isUnsafe: | no | hasStmtList: | yes |
-| gen_block_expr.rs:8:5:11:5 | 'label: { ... } | hasLabel: | yes | getNumberOfAttrs: | 0 | isAsync: | no | isConst: | no | isGen: | no | isMove: | no | isTry: | no | isUnsafe: | no | hasStmtList: | yes |
+| gen_block_expr.rs:3:28:12:1 | { ... } | isAsync: | no | isConst: | no | isGen: | no | isMove: | no | isTry: | no | isUnsafe: | no |
+| gen_block_expr.rs:5:5:7:5 | { ... } | isAsync: | no | isConst: | no | isGen: | no | isMove: | no | isTry: | no | isUnsafe: | no |
+| gen_block_expr.rs:8:5:11:5 | 'label: { ... } | isAsync: | no | isConst: | no | isGen: | no | isMove: | no | isTry: | no | isUnsafe: | no |
 getLabel
 | gen_block_expr.rs:8:5:11:5 | 'label: { ... } | gen_block_expr.rs:8:5:8:11 | 'label |
 getAttr

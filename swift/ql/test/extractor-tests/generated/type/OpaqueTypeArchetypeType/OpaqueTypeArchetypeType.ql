@@ -5,8 +5,7 @@ import TestUtils
 query predicate instances(
   OpaqueTypeArchetypeType x, string getName__label, string getName, string getCanonicalType__label,
   Type getCanonicalType, string getInterfaceType__label, Type getInterfaceType,
-  string hasSuperclass__label, string hasSuperclass, string getNumberOfProtocols__label,
-  int getNumberOfProtocols, string getDeclaration__label, OpaqueTypeDecl getDeclaration
+  string getDeclaration__label, OpaqueTypeDecl getDeclaration
 ) {
   toBeTested(x) and
   not x.isUnknown() and
@@ -16,10 +15,6 @@ query predicate instances(
   getCanonicalType = x.getCanonicalType() and
   getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType() and
-  hasSuperclass__label = "hasSuperclass:" and
-  (if x.hasSuperclass() then hasSuperclass = "yes" else hasSuperclass = "no") and
-  getNumberOfProtocols__label = "getNumberOfProtocols:" and
-  getNumberOfProtocols = x.getNumberOfProtocols() and
   getDeclaration__label = "getDeclaration:" and
   getDeclaration = x.getDeclaration()
 }

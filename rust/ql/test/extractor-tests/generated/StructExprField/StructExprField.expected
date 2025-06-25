@@ -1,6 +1,6 @@
 instances
-| gen_struct_expr_field.rs:5:11:5:14 | a: 1 | getNumberOfAttrs: | 0 | hasExpr: | yes | hasIdentifier: | yes |
-| gen_struct_expr_field.rs:5:17:5:20 | b: 2 | getNumberOfAttrs: | 0 | hasExpr: | yes | hasIdentifier: | yes |
+| gen_struct_expr_field.rs:5:11:5:14 | a: 1 |
+| gen_struct_expr_field.rs:5:17:5:20 | b: 2 |
 getAttr
 getExpr
 | gen_struct_expr_field.rs:5:11:5:14 | a: 1 | gen_struct_expr_field.rs:5:14:5:14 | 1 |

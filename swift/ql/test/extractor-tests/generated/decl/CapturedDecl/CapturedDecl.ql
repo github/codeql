@@ -3,16 +3,14 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  CapturedDecl x, string getModule__label, ModuleDecl getModule, string getNumberOfMembers__label,
-  int getNumberOfMembers, string getDecl__label, ValueDecl getDecl, string isDirect__label,
-  string isDirect, string isEscaping__label, string isEscaping
+  CapturedDecl x, string getModule__label, ModuleDecl getModule, string getDecl__label,
+  ValueDecl getDecl, string isDirect__label, string isDirect, string isEscaping__label,
+  string isEscaping
 ) {
   toBeTested(x) and
   not x.isUnknown() and
   getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers__label = "getNumberOfMembers:" and
-  getNumberOfMembers = x.getNumberOfMembers() and
   getDecl__label = "getDecl:" and
   getDecl = x.getDecl() and
   isDirect__label = "isDirect:" and

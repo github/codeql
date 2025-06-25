@@ -1,4 +1,4 @@
 instances
-| gen_attr.rs:7:5:7:20 | Attr | hasMeta: | yes |
+| gen_attr.rs:7:5:7:20 | Attr |
 getMeta
 | gen_attr.rs:7:5:7:20 | Attr | gen_attr.rs:7:7:7:19 | Meta |

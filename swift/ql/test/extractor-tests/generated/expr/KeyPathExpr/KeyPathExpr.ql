@@ -2,19 +2,7 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  KeyPathExpr x, string hasType__label, string hasType, string hasRoot__label, string hasRoot,
-  string getNumberOfComponents__label, int getNumberOfComponents
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasType__label = "hasType:" and
-  (if x.hasType() then hasType = "yes" else hasType = "no") and
-  hasRoot__label = "hasRoot:" and
-  (if x.hasRoot() then hasRoot = "yes" else hasRoot = "no") and
-  getNumberOfComponents__label = "getNumberOfComponents:" and
-  getNumberOfComponents = x.getNumberOfComponents()
-}
+query predicate instances(KeyPathExpr x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getType(KeyPathExpr x, Type getType) {
   toBeTested(x) and not x.isUnknown() and getType = x.getType()

@@ -1,6 +1,6 @@
 instances
-| gen_ptr_type_repr.rs:7:12:7:21 | PtrTypeRepr | isConst: | yes | isMut: | no | hasTypeRepr: | yes |
-| gen_ptr_type_repr.rs:8:12:8:19 | PtrTypeRepr | isConst: | no | isMut: | yes | hasTypeRepr: | yes |
+| gen_ptr_type_repr.rs:7:12:7:21 | PtrTypeRepr | isConst: | yes | isMut: | no |
+| gen_ptr_type_repr.rs:8:12:8:19 | PtrTypeRepr | isConst: | no | isMut: | yes |
 getTypeRepr
 | gen_ptr_type_repr.rs:7:12:7:21 | PtrTypeRepr | gen_ptr_type_repr.rs:7:19:7:21 | i32 |
 | gen_ptr_type_repr.rs:8:12:8:19 | PtrTypeRepr | gen_ptr_type_repr.rs:8:17:8:19 | i32 |

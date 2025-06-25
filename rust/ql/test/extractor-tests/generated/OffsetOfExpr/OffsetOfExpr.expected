@@ -1,5 +1,5 @@
 instances
-| gen_offset_of_expr.rs:5:5:5:38 | OffsetOfExpr | getNumberOfAttrs: | 0 | getNumberOfFields: | 1 | hasTypeRepr: | yes |
+| gen_offset_of_expr.rs:5:5:5:38 | OffsetOfExpr |
 getAttr
 getField
 | gen_offset_of_expr.rs:5:5:5:38 | OffsetOfExpr | 0 | gen_offset_of_expr.rs:5:33:5:37 | field |

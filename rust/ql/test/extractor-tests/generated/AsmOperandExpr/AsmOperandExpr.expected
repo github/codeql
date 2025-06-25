@@ -1,6 +1,6 @@
 instances
-| gen_asm_operand_expr.rs:8:35:8:35 | AsmOperandExpr | hasInExpr: | yes | hasOutExpr: | yes |
-| gen_asm_operand_expr.rs:8:46:8:46 | AsmOperandExpr | hasInExpr: | yes | hasOutExpr: | yes |
+| gen_asm_operand_expr.rs:8:35:8:35 | AsmOperandExpr |
+| gen_asm_operand_expr.rs:8:46:8:46 | AsmOperandExpr |
 getInExpr
 | gen_asm_operand_expr.rs:8:35:8:35 | AsmOperandExpr | gen_asm_operand_expr.rs:8:35:8:35 | x |
 | gen_asm_operand_expr.rs:8:46:8:46 | AsmOperandExpr | gen_asm_operand_expr.rs:8:46:8:46 | y |

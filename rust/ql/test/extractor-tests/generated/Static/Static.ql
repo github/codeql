@@ -3,45 +3,17 @@ import codeql.rust.elements
 import TestUtils
 
 query predicate instances(
-  Static x, string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
-  string hasCrateOrigin__label, string hasCrateOrigin, string hasAttributeMacroExpansion__label,
-  string hasAttributeMacroExpansion, string getNumberOfAttrs__label, int getNumberOfAttrs,
-  string hasBody__label, string hasBody, string isMut__label, string isMut, string isStatic__label,
-  string isStatic, string isUnsafe__label, string isUnsafe, string hasName__label, string hasName,
-  string hasTypeRepr__label, string hasTypeRepr, string hasVisibility__label, string hasVisibility
+  Static x, string isMut__label, string isMut, string isStatic__label, string isStatic,
+  string isUnsafe__label, string isUnsafe
 ) {
   toBeTested(x) and
   not x.isUnknown() and
-  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  hasCrateOrigin__label = "hasCrateOrigin:" and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  hasAttributeMacroExpansion__label = "hasAttributeMacroExpansion:" and
-  (
-    if x.hasAttributeMacroExpansion()
-    then hasAttributeMacroExpansion = "yes"
-    else hasAttributeMacroExpansion = "no"
-  ) and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  hasBody__label = "hasBody:" and
-  (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
   isMut__label = "isMut:" and
   (if x.isMut() then isMut = "yes" else isMut = "no") and
   isStatic__label = "isStatic:" and
   (if x.isStatic() then isStatic = "yes" else isStatic = "no") and
   isUnsafe__label = "isUnsafe:" and
-  (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
-  hasName__label = "hasName:" and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  hasTypeRepr__label = "hasTypeRepr:" and
-  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
-  hasVisibility__label = "hasVisibility:" and
-  if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
+  if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
 }
 
 query predicate getExtendedCanonicalPath(Static x, string getExtendedCanonicalPath) {

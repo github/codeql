@@ -1,5 +1,5 @@
 instances
-| gen_for_type_repr.rs:9:12:9:41 | ForTypeRepr | hasGenericParamList: | yes | hasTypeRepr: | yes |
+| gen_for_type_repr.rs:9:12:9:41 | ForTypeRepr |
 getGenericParamList
 | gen_for_type_repr.rs:9:12:9:41 | ForTypeRepr | gen_for_type_repr.rs:9:15:9:18 | <...> |
 getTypeRepr

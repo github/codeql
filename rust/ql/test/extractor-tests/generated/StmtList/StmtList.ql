@@ -2,20 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  StmtList x, string getNumberOfAttrs__label, int getNumberOfAttrs,
-  string getNumberOfStatements__label, int getNumberOfStatements, string hasTailExpr__label,
-  string hasTailExpr
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  getNumberOfStatements__label = "getNumberOfStatements:" and
-  getNumberOfStatements = x.getNumberOfStatements() and
-  hasTailExpr__label = "hasTailExpr:" and
-  if x.hasTailExpr() then hasTailExpr = "yes" else hasTailExpr = "no"
-}
+query predicate instances(StmtList x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getAttr(StmtList x, int index, Attr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)

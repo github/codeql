@@ -1,7 +1,7 @@
 instances
-| gen_module.rs:3:1:4:8 | mod foo | hasExtendedCanonicalPath: | yes | hasCrateOrigin: | yes | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasItemList: | no | hasName: | yes | hasVisibility: | no |
-| gen_module.rs:5:1:7:1 | mod bar | hasExtendedCanonicalPath: | yes | hasCrateOrigin: | yes | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasItemList: | yes | hasName: | yes | hasVisibility: | no |
-| lib.rs:1:1:1:15 | mod gen_module | hasExtendedCanonicalPath: | yes | hasCrateOrigin: | yes | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasItemList: | no | hasName: | yes | hasVisibility: | no |
+| gen_module.rs:3:1:4:8 | mod foo |
+| gen_module.rs:5:1:7:1 | mod bar |
+| lib.rs:1:1:1:15 | mod gen_module |
 getExtendedCanonicalPath
 | gen_module.rs:3:1:4:8 | mod foo | crate::gen_module::foo |
 | gen_module.rs:5:1:7:1 | mod bar | crate::gen_module::bar |

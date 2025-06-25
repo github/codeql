@@ -2,20 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  AsmRegOperand x, string hasAsmDirSpec__label, string hasAsmDirSpec,
-  string hasAsmOperandExpr__label, string hasAsmOperandExpr, string hasAsmRegSpec__label,
-  string hasAsmRegSpec
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasAsmDirSpec__label = "hasAsmDirSpec:" and
-  (if x.hasAsmDirSpec() then hasAsmDirSpec = "yes" else hasAsmDirSpec = "no") and
-  hasAsmOperandExpr__label = "hasAsmOperandExpr:" and
-  (if x.hasAsmOperandExpr() then hasAsmOperandExpr = "yes" else hasAsmOperandExpr = "no") and
-  hasAsmRegSpec__label = "hasAsmRegSpec:" and
-  if x.hasAsmRegSpec() then hasAsmRegSpec = "yes" else hasAsmRegSpec = "no"
-}
+query predicate instances(AsmRegOperand x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getAsmDirSpec(AsmRegOperand x, AsmDirSpec getAsmDirSpec) {
   toBeTested(x) and not x.isUnknown() and getAsmDirSpec = x.getAsmDirSpec()

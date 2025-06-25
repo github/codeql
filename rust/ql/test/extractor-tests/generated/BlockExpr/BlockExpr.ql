@@ -3,18 +3,12 @@ import codeql.rust.elements
 import TestUtils
 
 query predicate instances(
-  BlockExpr x, string hasLabel__label, string hasLabel, string getNumberOfAttrs__label,
-  int getNumberOfAttrs, string isAsync__label, string isAsync, string isConst__label,
-  string isConst, string isGen__label, string isGen, string isMove__label, string isMove,
-  string isTry__label, string isTry, string isUnsafe__label, string isUnsafe,
-  string hasStmtList__label, string hasStmtList
+  BlockExpr x, string isAsync__label, string isAsync, string isConst__label, string isConst,
+  string isGen__label, string isGen, string isMove__label, string isMove, string isTry__label,
+  string isTry, string isUnsafe__label, string isUnsafe
 ) {
   toBeTested(x) and
   not x.isUnknown() and
-  hasLabel__label = "hasLabel:" and
-  (if x.hasLabel() then hasLabel = "yes" else hasLabel = "no") and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
   isAsync__label = "isAsync:" and
   (if x.isAsync() then isAsync = "yes" else isAsync = "no") and
   isConst__label = "isConst:" and
@@ -26,9 +20,7 @@ query predicate instances(
   isTry__label = "isTry:" and
   (if x.isTry() then isTry = "yes" else isTry = "no") and
   isUnsafe__label = "isUnsafe:" and
-  (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
-  hasStmtList__label = "hasStmtList:" and
-  if x.hasStmtList() then hasStmtList = "yes" else hasStmtList = "no"
+  if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
 }
 
 query predicate getLabel(BlockExpr x, Label getLabel) {

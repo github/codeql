@@ -2,28 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  StructExpr x, string hasResolvedPath__label, string hasResolvedPath,
-  string hasResolvedCrateOrigin__label, string hasResolvedCrateOrigin, string hasPath__label,
-  string hasPath, string hasStructExprFieldList__label, string hasStructExprFieldList
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasResolvedPath__label = "hasResolvedPath:" and
-  (if x.hasResolvedPath() then hasResolvedPath = "yes" else hasResolvedPath = "no") and
-  hasResolvedCrateOrigin__label = "hasResolvedCrateOrigin:" and
-  (
-    if x.hasResolvedCrateOrigin()
-    then hasResolvedCrateOrigin = "yes"
-    else hasResolvedCrateOrigin = "no"
-  ) and
-  hasPath__label = "hasPath:" and
-  (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
-  hasStructExprFieldList__label = "hasStructExprFieldList:" and
-  if x.hasStructExprFieldList()
-  then hasStructExprFieldList = "yes"
-  else hasStructExprFieldList = "no"
-}
+query predicate instances(StructExpr x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getResolvedPath(StructExpr x, string getResolvedPath) {
   toBeTested(x) and not x.isUnknown() and getResolvedPath = x.getResolvedPath()

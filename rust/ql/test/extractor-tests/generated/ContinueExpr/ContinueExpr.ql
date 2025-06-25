@@ -2,17 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  ContinueExpr x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasLifetime__label,
-  string hasLifetime
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  hasLifetime__label = "hasLifetime:" and
-  if x.hasLifetime() then hasLifetime = "yes" else hasLifetime = "no"
-}
+query predicate instances(ContinueExpr x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getAttr(ContinueExpr x, int index, Attr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)

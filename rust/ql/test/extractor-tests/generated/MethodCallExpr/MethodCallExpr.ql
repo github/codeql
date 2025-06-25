@@ -2,36 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  MethodCallExpr x, string hasArgList__label, string hasArgList, string getNumberOfAttrs__label,
-  int getNumberOfAttrs, string getNumberOfArgs__label, int getNumberOfArgs,
-  string hasResolvedPath__label, string hasResolvedPath, string hasResolvedCrateOrigin__label,
-  string hasResolvedCrateOrigin, string hasGenericArgList__label, string hasGenericArgList,
-  string hasIdentifier__label, string hasIdentifier, string hasReceiver__label, string hasReceiver
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasArgList__label = "hasArgList:" and
-  (if x.hasArgList() then hasArgList = "yes" else hasArgList = "no") and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  getNumberOfArgs__label = "getNumberOfArgs:" and
-  getNumberOfArgs = x.getNumberOfArgs() and
-  hasResolvedPath__label = "hasResolvedPath:" and
-  (if x.hasResolvedPath() then hasResolvedPath = "yes" else hasResolvedPath = "no") and
-  hasResolvedCrateOrigin__label = "hasResolvedCrateOrigin:" and
-  (
-    if x.hasResolvedCrateOrigin()
-    then hasResolvedCrateOrigin = "yes"
-    else hasResolvedCrateOrigin = "no"
-  ) and
-  hasGenericArgList__label = "hasGenericArgList:" and
-  (if x.hasGenericArgList() then hasGenericArgList = "yes" else hasGenericArgList = "no") and
-  hasIdentifier__label = "hasIdentifier:" and
-  (if x.hasIdentifier() then hasIdentifier = "yes" else hasIdentifier = "no") and
-  hasReceiver__label = "hasReceiver:" and
-  if x.hasReceiver() then hasReceiver = "yes" else hasReceiver = "no"
-}
+query predicate instances(MethodCallExpr x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getArgList(MethodCallExpr x, ArgList getArgList) {
   toBeTested(x) and not x.isUnknown() and getArgList = x.getArgList()

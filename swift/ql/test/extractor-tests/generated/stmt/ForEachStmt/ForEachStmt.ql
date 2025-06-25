@@ -3,25 +3,13 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  ForEachStmt x, string hasLabel__label, string hasLabel, string getNumberOfVariables__label,
-  int getNumberOfVariables, string getPattern__label, Pattern getPattern, string hasWhere__label,
-  string hasWhere, string hasIteratorVar__label, string hasIteratorVar, string hasNextCall__label,
-  string hasNextCall, string getBody__label, BraceStmt getBody
+  ForEachStmt x, string getPattern__label, Pattern getPattern, string getBody__label,
+  BraceStmt getBody
 ) {
   toBeTested(x) and
   not x.isUnknown() and
-  hasLabel__label = "hasLabel:" and
-  (if x.hasLabel() then hasLabel = "yes" else hasLabel = "no") and
-  getNumberOfVariables__label = "getNumberOfVariables:" and
-  getNumberOfVariables = x.getNumberOfVariables() and
   getPattern__label = "getPattern:" and
   getPattern = x.getPattern() and
-  hasWhere__label = "hasWhere:" and
-  (if x.hasWhere() then hasWhere = "yes" else hasWhere = "no") and
-  hasIteratorVar__label = "hasIteratorVar:" and
-  (if x.hasIteratorVar() then hasIteratorVar = "yes" else hasIteratorVar = "no") and
-  hasNextCall__label = "hasNextCall:" and
-  (if x.hasNextCall() then hasNextCall = "yes" else hasNextCall = "no") and
   getBody__label = "getBody:" and
   getBody = x.getBody()
 }

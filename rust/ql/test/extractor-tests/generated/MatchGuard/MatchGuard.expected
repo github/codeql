@@ -1,4 +1,4 @@
 instances
-| gen_match_guard.rs:8:11:8:18 | MatchGuard | hasCondition: | yes |
+| gen_match_guard.rs:8:11:8:18 | MatchGuard |
 getCondition
 | gen_match_guard.rs:8:11:8:18 | MatchGuard | gen_match_guard.rs:8:14:8:18 | ... > ... |

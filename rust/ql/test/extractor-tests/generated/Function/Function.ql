@@ -3,47 +3,12 @@ import codeql.rust.elements
 import TestUtils
 
 query predicate instances(
-  Function x, string hasParamList__label, string hasParamList, string getNumberOfAttrs__label,
-  int getNumberOfAttrs, string getNumberOfParams__label, int getNumberOfParams,
-  string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
-  string hasCrateOrigin__label, string hasCrateOrigin, string hasAttributeMacroExpansion__label,
-  string hasAttributeMacroExpansion, string hasAbi__label, string hasAbi, string hasBody__label,
-  string hasBody, string hasGenericParamList__label, string hasGenericParamList,
-  string isAsync__label, string isAsync, string isConst__label, string isConst,
+  Function x, string isAsync__label, string isAsync, string isConst__label, string isConst,
   string isDefault__label, string isDefault, string isGen__label, string isGen,
-  string isUnsafe__label, string isUnsafe, string hasName__label, string hasName,
-  string hasRetType__label, string hasRetType, string hasVisibility__label, string hasVisibility,
-  string hasWhereClause__label, string hasWhereClause, string hasImplementation__label,
-  string hasImplementation
+  string isUnsafe__label, string isUnsafe, string hasImplementation__label, string hasImplementation
 ) {
   toBeTested(x) and
   not x.isUnknown() and
-  hasParamList__label = "hasParamList:" and
-  (if x.hasParamList() then hasParamList = "yes" else hasParamList = "no") and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  getNumberOfParams__label = "getNumberOfParams:" and
-  getNumberOfParams = x.getNumberOfParams() and
-  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  hasCrateOrigin__label = "hasCrateOrigin:" and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  hasAttributeMacroExpansion__label = "hasAttributeMacroExpansion:" and
-  (
-    if x.hasAttributeMacroExpansion()
-    then hasAttributeMacroExpansion = "yes"
-    else hasAttributeMacroExpansion = "no"
-  ) and
-  hasAbi__label = "hasAbi:" and
-  (if x.hasAbi() then hasAbi = "yes" else hasAbi = "no") and
-  hasBody__label = "hasBody:" and
-  (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
-  hasGenericParamList__label = "hasGenericParamList:" and
-  (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
   isAsync__label = "isAsync:" and
   (if x.isAsync() then isAsync = "yes" else isAsync = "no") and
   isConst__label = "isConst:" and
@@ -54,14 +19,6 @@ query predicate instances(
   (if x.isGen() then isGen = "yes" else isGen = "no") and
   isUnsafe__label = "isUnsafe:" and
   (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
-  hasName__label = "hasName:" and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  hasRetType__label = "hasRetType:" and
-  (if x.hasRetType() then hasRetType = "yes" else hasRetType = "no") and
-  hasVisibility__label = "hasVisibility:" and
-  (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
-  hasWhereClause__label = "hasWhereClause:" and
-  (if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no") and
   hasImplementation__label = "hasImplementation:" and
   if x.hasImplementation() then hasImplementation = "yes" else hasImplementation = "no"
 }

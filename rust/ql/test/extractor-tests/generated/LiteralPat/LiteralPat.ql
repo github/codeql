@@ -2,12 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(LiteralPat x, string hasLiteral__label, string hasLiteral) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasLiteral__label = "hasLiteral:" and
-  if x.hasLiteral() then hasLiteral = "yes" else hasLiteral = "no"
-}
+query predicate instances(LiteralPat x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getLiteral(LiteralPat x, LiteralExpr getLiteral) {
   toBeTested(x) and not x.isUnknown() and getLiteral = x.getLiteral()

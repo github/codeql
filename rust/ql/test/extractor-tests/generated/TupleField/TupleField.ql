@@ -2,19 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  TupleField x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasTypeRepr__label,
-  string hasTypeRepr, string hasVisibility__label, string hasVisibility
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  hasTypeRepr__label = "hasTypeRepr:" and
-  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
-  hasVisibility__label = "hasVisibility:" and
-  if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-}
+query predicate instances(TupleField x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getAttr(TupleField x, int index, Attr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)

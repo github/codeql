@@ -1,7 +1,7 @@
 instances
-| gen_prefix_expr.rs:5:13:5:15 | - ... | getNumberOfAttrs: | 0 | hasExpr: | yes | hasOperatorName: | yes |
-| gen_prefix_expr.rs:6:13:6:17 | ! ... | getNumberOfAttrs: | 0 | hasExpr: | yes | hasOperatorName: | yes |
-| gen_prefix_expr.rs:7:13:7:16 | * ... | getNumberOfAttrs: | 0 | hasExpr: | yes | hasOperatorName: | yes |
+| gen_prefix_expr.rs:5:13:5:15 | - ... |
+| gen_prefix_expr.rs:6:13:6:17 | ! ... |
+| gen_prefix_expr.rs:7:13:7:16 | * ... |
 getAttr
 getExpr
 | gen_prefix_expr.rs:5:13:5:15 | - ... | gen_prefix_expr.rs:5:14:5:15 | 42 |

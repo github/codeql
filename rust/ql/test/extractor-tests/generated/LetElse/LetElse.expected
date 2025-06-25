@@ -1,4 +1,4 @@
 instances
-| gen_let_else.rs:7:23:9:5 | else {...} | hasBlockExpr: | yes |
+| gen_let_else.rs:7:23:9:5 | else {...} |
 getBlockExpr
 | gen_let_else.rs:7:23:9:5 | else {...} | gen_let_else.rs:7:28:9:5 | { ... } |

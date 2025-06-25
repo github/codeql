@@ -2,17 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  Path x, string hasQualifier__label, string hasQualifier, string hasSegment__label,
-  string hasSegment
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  hasQualifier__label = "hasQualifier:" and
-  (if x.hasQualifier() then hasQualifier = "yes" else hasQualifier = "no") and
-  hasSegment__label = "hasSegment:" and
-  if x.hasSegment() then hasSegment = "yes" else hasSegment = "no"
-}
+query predicate instances(Path x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getQualifier(Path x, Path getQualifier) {
   toBeTested(x) and not x.isUnknown() and getQualifier = x.getQualifier()

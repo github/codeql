@@ -1,9 +1,9 @@
 instances
-| import.swift:1:1:1:8 | import ... | getModule: | file://:0:0:0:0 | import | getNumberOfMembers: | 0 | isExported: | no | hasImportedModule: | yes | getNumberOfDeclarations: | 0 |
-| import.swift:2:1:2:24 | import ... | getModule: | file://:0:0:0:0 | import | getNumberOfMembers: | 0 | isExported: | no | hasImportedModule: | yes | getNumberOfDeclarations: | 1 |
-| import.swift:3:12:3:32 | import ... | getModule: | file://:0:0:0:0 | import | getNumberOfMembers: | 0 | isExported: | yes | hasImportedModule: | yes | getNumberOfDeclarations: | 1 |
-| import.swift:4:1:4:19 | import ... | getModule: | file://:0:0:0:0 | import | getNumberOfMembers: | 0 | isExported: | no | hasImportedModule: | yes | getNumberOfDeclarations: | 2 |
-| import.swift:5:1:5:23 | import ... | getModule: | file://:0:0:0:0 | import | getNumberOfMembers: | 0 | isExported: | no | hasImportedModule: | yes | getNumberOfDeclarations: | 1 |
+| import.swift:1:1:1:8 | import ... | getModule: | file://:0:0:0:0 | import | isExported: | no |
+| import.swift:2:1:2:24 | import ... | getModule: | file://:0:0:0:0 | import | isExported: | no |
+| import.swift:3:12:3:32 | import ... | getModule: | file://:0:0:0:0 | import | isExported: | yes |
+| import.swift:4:1:4:19 | import ... | getModule: | file://:0:0:0:0 | import | isExported: | no |
+| import.swift:5:1:5:23 | import ... | getModule: | file://:0:0:0:0 | import | isExported: | no |
 getMember
 getImportedModule
 | import.swift:1:1:1:8 | import ... | file://:0:0:0:0 | Swift |

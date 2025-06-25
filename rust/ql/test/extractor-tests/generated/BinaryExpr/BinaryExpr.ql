@@ -2,22 +2,7 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  BinaryExpr x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasLhs__label,
-  string hasLhs, string hasOperatorName__label, string hasOperatorName, string hasRhs__label,
-  string hasRhs
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAttrs__label = "getNumberOfAttrs:" and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  hasLhs__label = "hasLhs:" and
-  (if x.hasLhs() then hasLhs = "yes" else hasLhs = "no") and
-  hasOperatorName__label = "hasOperatorName:" and
-  (if x.hasOperatorName() then hasOperatorName = "yes" else hasOperatorName = "no") and
-  hasRhs__label = "hasRhs:" and
-  if x.hasRhs() then hasRhs = "yes" else hasRhs = "no"
-}
+query predicate instances(BinaryExpr x) { toBeTested(x) and not x.isUnknown() }
 
 query predicate getAttr(BinaryExpr x, int index, Attr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)

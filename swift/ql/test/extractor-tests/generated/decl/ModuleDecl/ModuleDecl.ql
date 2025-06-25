@@ -3,34 +3,22 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  ModuleDecl x, string getModule__label, ModuleDecl getModule, string getNumberOfMembers__label,
-  int getNumberOfMembers, string getInterfaceType__label, Type getInterfaceType,
-  string getName__label, string getName, string getNumberOfInheritedTypes__label,
-  int getNumberOfInheritedTypes, string isBuiltinModule__label, string isBuiltinModule,
-  string isSystemModule__label, string isSystemModule, string getNumberOfImportedModules__label,
-  int getNumberOfImportedModules, string getNumberOfExportedModules__label,
-  int getNumberOfExportedModules
+  ModuleDecl x, string getModule__label, ModuleDecl getModule, string getInterfaceType__label,
+  Type getInterfaceType, string getName__label, string getName, string isBuiltinModule__label,
+  string isBuiltinModule, string isSystemModule__label, string isSystemModule
 ) {
   toBeTested(x) and
   not x.isUnknown() and
   getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers__label = "getNumberOfMembers:" and
-  getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType() and
   getName__label = "getName:" and
   getName = x.getName() and
-  getNumberOfInheritedTypes__label = "getNumberOfInheritedTypes:" and
-  getNumberOfInheritedTypes = x.getNumberOfInheritedTypes() and
   isBuiltinModule__label = "isBuiltinModule:" and
   (if x.isBuiltinModule() then isBuiltinModule = "yes" else isBuiltinModule = "no") and
   isSystemModule__label = "isSystemModule:" and
-  (if x.isSystemModule() then isSystemModule = "yes" else isSystemModule = "no") and
-  getNumberOfImportedModules__label = "getNumberOfImportedModules:" and
-  getNumberOfImportedModules = x.getNumberOfImportedModules() and
-  getNumberOfExportedModules__label = "getNumberOfExportedModules:" and
-  getNumberOfExportedModules = x.getNumberOfExportedModules()
+  if x.isSystemModule() then isSystemModule = "yes" else isSystemModule = "no"
 }
 
 query predicate getMember(ModuleDecl x, int index, Decl getMember) {

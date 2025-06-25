@@ -1,5 +1,5 @@
 instances
-| gen_item_list.rs:7:11:10:5 | ItemList | getNumberOfAttrs: | 0 | getNumberOfItems: | 2 |
+| gen_item_list.rs:7:11:10:5 | ItemList |
 getAttr
 getItem
 | gen_item_list.rs:7:11:10:5 | ItemList | 0 | gen_item_list.rs:8:9:8:19 | fn foo |

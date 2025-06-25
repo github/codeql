@@ -1,5 +1,5 @@
 instances
-| gen_struct_field.rs:7:16:7:21 | StructField | getNumberOfAttrs: | 0 | hasDefault: | no | isUnsafe: | no | hasName: | yes | hasTypeRepr: | yes | hasVisibility: | no |
+| gen_struct_field.rs:7:16:7:21 | StructField | isUnsafe: | no |
 getAttr
 getDefault
 getName

@@ -3,13 +3,10 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  ExtractFunctionIsolationExpr x, string hasType__label, string hasType,
-  string getFunctionExpr__label, Expr getFunctionExpr
+  ExtractFunctionIsolationExpr x, string getFunctionExpr__label, Expr getFunctionExpr
 ) {
   toBeTested(x) and
   not x.isUnknown() and
-  hasType__label = "hasType:" and
-  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getFunctionExpr__label = "getFunctionExpr:" and
   getFunctionExpr = x.getFunctionExpr()
 }
