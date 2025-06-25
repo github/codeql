@@ -58,6 +58,9 @@ module Execa {
       or
       this = API::moduleImport("execa").getMember("execaSync").getACall() and
       isSync = true
+      or
+      this = API::moduleImport("execa").getACall() and
+      isSync = false
     }
   }
 
@@ -207,5 +210,87 @@ module Execa {
   pragma[inline]
   private predicate isExecaShellEnable(API::Node n) {
     n.getMember("shell").asSink().asExpr().(BooleanLiteral).getValue() = "true"
+  }
+
+  /**
+   * A call to `execa.node`
+   */
+  class ExecaNodeCall extends SystemCommandExecution, API::CallNode {
+    ExecaNodeCall() { this = API::moduleImport("execa").getMember("node").getACall() }
+
+    override DataFlow::Node getACommandArgument() { result = this.getArgument(0) }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { none() }
+
+    override DataFlow::Node getArgumentList() {
+      result = this.getArgument(1) and
+      not result.asExpr() instanceof ObjectExpr
+    }
+
+    override predicate isSync() { none() }
+
+    override DataFlow::Node getOptionsArg() {
+      result = this.getLastArgument() and
+      result.asExpr() instanceof ObjectExpr
+    }
+  }
+
+  /**
+   * A call to `execa.stdout`, `execa.stderr`, or `execa.sync`
+   */
+  class ExecaStreamCall extends SystemCommandExecution, API::CallNode {
+    string methodName;
+
+    ExecaStreamCall() {
+      methodName in ["stdout", "stderr", "sync"] and
+      this = API::moduleImport("execa").getMember(methodName).getACall()
+    }
+
+    override DataFlow::Node getACommandArgument() { result = this.getArgument(0) }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) {
+      arg = this.getArgument(0) and
+      isExecaShellEnable(this.getParameter([1, 2]))
+    }
+
+    override DataFlow::Node getArgumentList() {
+      result = this.getArgument(1) and
+      not result.asExpr() instanceof ObjectExpr
+    }
+
+    override predicate isSync() { methodName = "sync" }
+
+    override DataFlow::Node getOptionsArg() {
+      result = this.getLastArgument() and
+      result.asExpr() instanceof ObjectExpr
+    }
+  }
+
+  /**
+   * A call to `execa.shell` or `execa.shellSync`
+   */
+  class ExecaShellCall extends SystemCommandExecution, API::CallNode {
+    boolean sync;
+
+    ExecaShellCall() {
+      this = API::moduleImport("execa").getMember("shell").getACall() and
+      sync = false
+      or
+      this = API::moduleImport("execa").getMember("shellSync").getACall() and
+      sync = true
+    }
+
+    override DataFlow::Node getACommandArgument() { result = this.getArgument(0) }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getACommandArgument() }
+
+    override DataFlow::Node getArgumentList() { none() }
+
+    override predicate isSync() { sync = true }
+
+    override DataFlow::Node getOptionsArg() {
+      result = this.getArgument(1) and
+      result.asExpr() instanceof ObjectExpr
+    }
   }
 }
