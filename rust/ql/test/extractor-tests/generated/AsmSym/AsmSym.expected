@@ -1,1 +1,4 @@
+instances
 | gen_asm_sym.rs:8:30:8:44 | AsmSym | hasPath: | yes |
+getPath
+| gen_asm_sym.rs:8:30:8:44 | AsmSym | gen_asm_sym.rs:8:34:8:44 | my_function |

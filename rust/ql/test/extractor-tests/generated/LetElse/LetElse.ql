@@ -2,9 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from LetElse x, string hasBlockExpr
-where
+query predicate instances(LetElse x, string hasBlockExpr__label, string hasBlockExpr) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasBlockExpr__label = "hasBlockExpr:" and
   if x.hasBlockExpr() then hasBlockExpr = "yes" else hasBlockExpr = "no"
-select x, "hasBlockExpr:", hasBlockExpr
+}
+
+query predicate getBlockExpr(LetElse x, BlockExpr getBlockExpr) {
+  toBeTested(x) and not x.isUnknown() and getBlockExpr = x.getBlockExpr()
+}

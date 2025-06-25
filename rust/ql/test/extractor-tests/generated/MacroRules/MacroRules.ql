@@ -2,28 +2,65 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  MacroRules x, string hasExtendedCanonicalPath, string hasCrateOrigin,
-  string hasAttributeMacroExpansion, int getNumberOfAttrs, string hasName, string hasTokenTree,
-  string hasVisibility
-where
+query predicate instances(
+  MacroRules x, string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
+  string hasCrateOrigin__label, string hasCrateOrigin, string hasAttributeMacroExpansion__label,
+  string hasAttributeMacroExpansion, string getNumberOfAttrs__label, int getNumberOfAttrs,
+  string hasName__label, string hasName, string hasTokenTree__label, string hasTokenTree,
+  string hasVisibility__label, string hasVisibility
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
   (
     if x.hasExtendedCanonicalPath()
     then hasExtendedCanonicalPath = "yes"
     else hasExtendedCanonicalPath = "no"
   ) and
+  hasCrateOrigin__label = "hasCrateOrigin:" and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  hasAttributeMacroExpansion__label = "hasAttributeMacroExpansion:" and
   (
     if x.hasAttributeMacroExpansion()
     then hasAttributeMacroExpansion = "yes"
     else hasAttributeMacroExpansion = "no"
   ) and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasName__label = "hasName:" and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
+  hasTokenTree__label = "hasTokenTree:" and
   (if x.hasTokenTree() then hasTokenTree = "yes" else hasTokenTree = "no") and
+  hasVisibility__label = "hasVisibility:" and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasName:", hasName, "hasTokenTree:", hasTokenTree, "hasVisibility:", hasVisibility
+}
+
+query predicate getExtendedCanonicalPath(MacroRules x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(MacroRules x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttributeMacroExpansion(MacroRules x, MacroItems getAttributeMacroExpansion) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getAttr(MacroRules x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getName(MacroRules x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getTokenTree(MacroRules x, TokenTree getTokenTree) {
+  toBeTested(x) and not x.isUnknown() and getTokenTree = x.getTokenTree()
+}
+
+query predicate getVisibility(MacroRules x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}

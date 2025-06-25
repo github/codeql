@@ -2,35 +2,88 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  TypeAlias x, string hasExtendedCanonicalPath, string hasCrateOrigin,
-  string hasAttributeMacroExpansion, int getNumberOfAttrs, string hasGenericParamList,
-  string isDefault, string hasName, string hasTypeRepr, string hasTypeBoundList,
-  string hasVisibility, string hasWhereClause
-where
+query predicate instances(
+  TypeAlias x, string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
+  string hasCrateOrigin__label, string hasCrateOrigin, string hasAttributeMacroExpansion__label,
+  string hasAttributeMacroExpansion, string getNumberOfAttrs__label, int getNumberOfAttrs,
+  string hasGenericParamList__label, string hasGenericParamList, string isDefault__label,
+  string isDefault, string hasName__label, string hasName, string hasTypeRepr__label,
+  string hasTypeRepr, string hasTypeBoundList__label, string hasTypeBoundList,
+  string hasVisibility__label, string hasVisibility, string hasWhereClause__label,
+  string hasWhereClause
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
   (
     if x.hasExtendedCanonicalPath()
     then hasExtendedCanonicalPath = "yes"
     else hasExtendedCanonicalPath = "no"
   ) and
+  hasCrateOrigin__label = "hasCrateOrigin:" and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  hasAttributeMacroExpansion__label = "hasAttributeMacroExpansion:" and
   (
     if x.hasAttributeMacroExpansion()
     then hasAttributeMacroExpansion = "yes"
     else hasAttributeMacroExpansion = "no"
   ) and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasGenericParamList__label = "hasGenericParamList:" and
   (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
+  isDefault__label = "isDefault:" and
   (if x.isDefault() then isDefault = "yes" else isDefault = "no") and
+  hasName__label = "hasName:" and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
+  hasTypeRepr__label = "hasTypeRepr:" and
   (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
+  hasTypeBoundList__label = "hasTypeBoundList:" and
   (if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no") and
+  hasVisibility__label = "hasVisibility:" and
   (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
+  hasWhereClause__label = "hasWhereClause:" and
   if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasGenericParamList:", hasGenericParamList, "isDefault:", isDefault, "hasName:", hasName,
-  "hasTypeRepr:", hasTypeRepr, "hasTypeBoundList:", hasTypeBoundList, "hasVisibility:",
-  hasVisibility, "hasWhereClause:", hasWhereClause
+}
+
+query predicate getExtendedCanonicalPath(TypeAlias x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(TypeAlias x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttributeMacroExpansion(TypeAlias x, MacroItems getAttributeMacroExpansion) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getAttr(TypeAlias x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getGenericParamList(TypeAlias x, GenericParamList getGenericParamList) {
+  toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
+}
+
+query predicate getName(TypeAlias x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getTypeRepr(TypeAlias x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}
+
+query predicate getTypeBoundList(TypeAlias x, TypeBoundList getTypeBoundList) {
+  toBeTested(x) and not x.isUnknown() and getTypeBoundList = x.getTypeBoundList()
+}
+
+query predicate getVisibility(TypeAlias x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}
+
+query predicate getWhereClause(TypeAlias x, WhereClause getWhereClause) {
+  toBeTested(x) and not x.isUnknown() and getWhereClause = x.getWhereClause()
+}

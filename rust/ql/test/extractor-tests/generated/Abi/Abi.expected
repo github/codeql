@@ -1,1 +1,4 @@
+instances
 | gen_abi.rs:7:5:7:14 | Abi | hasAbiString: | yes |
+getAbiString
+| gen_abi.rs:7:5:7:14 | Abi | "C" |

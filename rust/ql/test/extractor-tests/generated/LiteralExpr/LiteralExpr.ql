@@ -2,10 +2,22 @@
 import codeql.rust.elements
 import TestUtils
 
-from LiteralExpr x, int getNumberOfAttrs, string hasTextValue
-where
+query predicate instances(
+  LiteralExpr x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasTextValue__label,
+  string hasTextValue
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasTextValue__label = "hasTextValue:" and
   if x.hasTextValue() then hasTextValue = "yes" else hasTextValue = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasTextValue:", hasTextValue
+}
+
+query predicate getAttr(LiteralExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getTextValue(LiteralExpr x, string getTextValue) {
+  toBeTested(x) and not x.isUnknown() and getTextValue = x.getTextValue()
+}

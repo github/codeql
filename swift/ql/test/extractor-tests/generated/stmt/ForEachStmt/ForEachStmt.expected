@@ -1,3 +1,19 @@
+instances
 | for.swift:4:5:6:5 | for ... in ... where ... { ... } | hasLabel: | no | getNumberOfVariables: | 2 | getPattern: | for.swift:4:9:4:9 | x | hasWhere: | yes | hasIteratorVar: | yes | hasNextCall: | yes | getBody: | for.swift:4:32:6:5 | { ... } |
 | for.swift:7:5:9:5 | for ... in ... { ... } | hasLabel: | no | getNumberOfVariables: | 2 | getPattern: | for.swift:7:9:7:9 | s | hasWhere: | no | hasIteratorVar: | yes | hasNextCall: | yes | getBody: | for.swift:7:23:9:5 | { ... } |
 | for.swift:13:5:17:5 | for ... in ... { ... } | hasLabel: | no | getNumberOfVariables: | 1 | getPattern: | for.swift:13:9:13:9 | x | hasWhere: | no | hasIteratorVar: | no | hasNextCall: | no | getBody: | for.swift:13:32:17:5 | { ... } |
+getLabel
+getVariable
+| for.swift:4:5:6:5 | for ... in ... where ... { ... } | 0 | for.swift:4:9:4:9 | x |
+| for.swift:4:5:6:5 | for ... in ... where ... { ... } | 1 | for.swift:4:14:4:14 | $x$generator |
+| for.swift:7:5:9:5 | for ... in ... { ... } | 0 | for.swift:7:9:7:9 | s |
+| for.swift:7:5:9:5 | for ... in ... { ... } | 1 | for.swift:7:14:7:14 | $s$generator |
+| for.swift:13:5:17:5 | for ... in ... { ... } | 0 | for.swift:13:9:13:9 | x |
+getWhere
+| for.swift:4:5:6:5 | for ... in ... where ... { ... } | for.swift:4:25:4:30 | ... .!=(_:_:) ... |
+getIteratorVar
+| for.swift:4:5:6:5 | for ... in ... where ... { ... } | file://:0:0:0:0 | var ... = ... |
+| for.swift:7:5:9:5 | for ... in ... { ... } | file://:0:0:0:0 | var ... = ... |
+getNextCall
+| for.swift:4:5:6:5 | for ... in ... where ... { ... } | for.swift:4:5:4:5 | call to next() |
+| for.swift:7:5:9:5 | for ... in ... { ... } | for.swift:7:5:7:5 | call to next() |

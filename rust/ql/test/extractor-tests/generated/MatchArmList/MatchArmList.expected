@@ -1,1 +1,7 @@
+instances
 | gen_match_arm_list.rs:7:13:11:5 | MatchArmList | getNumberOfArms: | 3 | getNumberOfAttrs: | 0 |
+getArm
+| gen_match_arm_list.rs:7:13:11:5 | MatchArmList | 0 | gen_match_arm_list.rs:8:9:8:19 | 1 => "one" |
+| gen_match_arm_list.rs:7:13:11:5 | MatchArmList | 1 | gen_match_arm_list.rs:9:9:9:19 | 2 => "two" |
+| gen_match_arm_list.rs:7:13:11:5 | MatchArmList | 2 | gen_match_arm_list.rs:10:9:10:21 | _ => "other" |
+getAttr

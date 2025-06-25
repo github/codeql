@@ -2,10 +2,17 @@
 import codeql.rust.elements
 import TestUtils
 
-from RefPat x, string isMut, string hasPat
-where
+query predicate instances(
+  RefPat x, string isMut__label, string isMut, string hasPat__label, string hasPat
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  isMut__label = "isMut:" and
   (if x.isMut() then isMut = "yes" else isMut = "no") and
+  hasPat__label = "hasPat:" and
   if x.hasPat() then hasPat = "yes" else hasPat = "no"
-select x, "isMut:", isMut, "hasPat:", hasPat
+}
+
+query predicate getPat(RefPat x, Pat getPat) {
+  toBeTested(x) and not x.isUnknown() and getPat = x.getPat()
+}

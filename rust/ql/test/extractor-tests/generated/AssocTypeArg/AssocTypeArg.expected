@@ -1,1 +1,12 @@
+instances
 | gen_assoc_type_arg.rs:9:21:9:31 | AssocTypeArg | hasConstArg: | no | hasGenericArgList: | no | hasIdentifier: | yes | hasParamList: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTypeRepr: | no | hasTypeBoundList: | yes |
+getConstArg
+getGenericArgList
+getIdentifier
+| gen_assoc_type_arg.rs:9:21:9:31 | AssocTypeArg | gen_assoc_type_arg.rs:9:21:9:24 | Item |
+getParamList
+getRetType
+getReturnTypeSyntax
+getTypeRepr
+getTypeBoundList
+| gen_assoc_type_arg.rs:9:21:9:31 | AssocTypeArg | gen_assoc_type_arg.rs:9:27:9:31 | TypeBoundList |

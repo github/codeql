@@ -1,1 +1,5 @@
+instances
 | Pack{String, Int} | getName: | Pack{String, Int} | getCanonicalType: | Pack{String, Int} | getNumberOfElements: | 2 |
+getElement
+| Pack{String, Int} | 0 | String |
+| Pack{String, Int} | 1 | Int |

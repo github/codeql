@@ -2,19 +2,39 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  TupleStructPat x, string hasResolvedPath, string hasResolvedCrateOrigin, string hasPath,
-  int getNumberOfFields
-where
+query predicate instances(
+  TupleStructPat x, string hasResolvedPath__label, string hasResolvedPath,
+  string hasResolvedCrateOrigin__label, string hasResolvedCrateOrigin, string hasPath__label,
+  string hasPath, string getNumberOfFields__label, int getNumberOfFields
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasResolvedPath__label = "hasResolvedPath:" and
   (if x.hasResolvedPath() then hasResolvedPath = "yes" else hasResolvedPath = "no") and
+  hasResolvedCrateOrigin__label = "hasResolvedCrateOrigin:" and
   (
     if x.hasResolvedCrateOrigin()
     then hasResolvedCrateOrigin = "yes"
     else hasResolvedCrateOrigin = "no"
   ) and
+  hasPath__label = "hasPath:" and
   (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
+  getNumberOfFields__label = "getNumberOfFields:" and
   getNumberOfFields = x.getNumberOfFields()
-select x, "hasResolvedPath:", hasResolvedPath, "hasResolvedCrateOrigin:", hasResolvedCrateOrigin,
-  "hasPath:", hasPath, "getNumberOfFields:", getNumberOfFields
+}
+
+query predicate getResolvedPath(TupleStructPat x, string getResolvedPath) {
+  toBeTested(x) and not x.isUnknown() and getResolvedPath = x.getResolvedPath()
+}
+
+query predicate getResolvedCrateOrigin(TupleStructPat x, string getResolvedCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getResolvedCrateOrigin = x.getResolvedCrateOrigin()
+}
+
+query predicate getPath(TupleStructPat x, Path getPath) {
+  toBeTested(x) and not x.isUnknown() and getPath = x.getPath()
+}
+
+query predicate getField(TupleStructPat x, int index, Pat getField) {
+  toBeTested(x) and not x.isUnknown() and getField = x.getField(index)
+}

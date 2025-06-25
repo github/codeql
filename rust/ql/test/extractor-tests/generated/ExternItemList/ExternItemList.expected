@@ -1,1 +1,6 @@
+instances
 | gen_extern_item_list.rs:7:16:10:5 | ExternItemList | getNumberOfAttrs: | 0 | getNumberOfExternItems: | 2 |
+getAttr
+getExternItem
+| gen_extern_item_list.rs:7:16:10:5 | ExternItemList | 0 | gen_extern_item_list.rs:8:9:8:17 | fn foo |
+| gen_extern_item_list.rs:7:16:10:5 | ExternItemList | 1 | gen_extern_item_list.rs:9:9:9:24 | Static |

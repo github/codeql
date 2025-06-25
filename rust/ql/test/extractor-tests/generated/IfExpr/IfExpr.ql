@@ -2,13 +2,34 @@
 import codeql.rust.elements
 import TestUtils
 
-from IfExpr x, int getNumberOfAttrs, string hasCondition, string hasElse, string hasThen
-where
+query predicate instances(
+  IfExpr x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasCondition__label,
+  string hasCondition, string hasElse__label, string hasElse, string hasThen__label, string hasThen
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasCondition__label = "hasCondition:" and
   (if x.hasCondition() then hasCondition = "yes" else hasCondition = "no") and
+  hasElse__label = "hasElse:" and
   (if x.hasElse() then hasElse = "yes" else hasElse = "no") and
+  hasThen__label = "hasThen:" and
   if x.hasThen() then hasThen = "yes" else hasThen = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasCondition:", hasCondition, "hasElse:", hasElse,
-  "hasThen:", hasThen
+}
+
+query predicate getAttr(IfExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getCondition(IfExpr x, Expr getCondition) {
+  toBeTested(x) and not x.isUnknown() and getCondition = x.getCondition()
+}
+
+query predicate getElse(IfExpr x, Expr getElse) {
+  toBeTested(x) and not x.isUnknown() and getElse = x.getElse()
+}
+
+query predicate getThen(IfExpr x, BlockExpr getThen) {
+  toBeTested(x) and not x.isUnknown() and getThen = x.getThen()
+}

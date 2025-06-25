@@ -1,3 +1,4 @@
+instances
 | file://:0:0:0:0 | x | getModule: | file://:0:0:0:0 | param_decls | getNumberOfMembers: | 0 | getInterfaceType: | Int | getNumberOfAccessors: | 0 | getName: | x | getType: | Int | hasAttachedPropertyWrapperType: | no | hasParentPattern: | no | hasParentInitializer: | no | hasPropertyWrapperBackingVarBinding: | no | hasPropertyWrapperBackingVar: | no | hasPropertyWrapperProjectionVarBinding: | no | hasPropertyWrapperProjectionVar: | no | isInout: | no | hasPropertyWrapperLocalWrappedVarBinding: | no | hasPropertyWrapperLocalWrappedVar: | no |
 | file://:0:0:0:0 | y | getModule: | file://:0:0:0:0 | param_decls | getNumberOfMembers: | 0 | getInterfaceType: | Int | getNumberOfAccessors: | 0 | getName: | y | getType: | Int | hasAttachedPropertyWrapperType: | no | hasParentPattern: | no | hasParentInitializer: | no | hasPropertyWrapperBackingVarBinding: | no | hasPropertyWrapperBackingVar: | no | hasPropertyWrapperProjectionVarBinding: | no | hasPropertyWrapperProjectionVar: | no | isInout: | no | hasPropertyWrapperLocalWrappedVarBinding: | no | hasPropertyWrapperLocalWrappedVar: | no |
 | param_decls.swift:1:10:1:13 | _ | getModule: | file://:0:0:0:0 | param_decls | getNumberOfMembers: | 0 | getInterfaceType: | Int | getNumberOfAccessors: | 0 | getName: | _ | getType: | Int | hasAttachedPropertyWrapperType: | no | hasParentPattern: | no | hasParentInitializer: | no | hasPropertyWrapperBackingVarBinding: | no | hasPropertyWrapperBackingVar: | no | hasPropertyWrapperProjectionVarBinding: | no | hasPropertyWrapperProjectionVar: | no | isInout: | no | hasPropertyWrapperLocalWrappedVarBinding: | no | hasPropertyWrapperLocalWrappedVar: | no |
@@ -57,3 +58,22 @@
 | param_decls.swift:41:10:41:26 | projectedValue | getModule: | file://:0:0:0:0 | param_decls | getNumberOfMembers: | 0 | getInterfaceType: | Bool | getNumberOfAccessors: | 0 | getName: | projectedValue | getType: | Bool | hasAttachedPropertyWrapperType: | no | hasParentPattern: | no | hasParentInitializer: | no | hasPropertyWrapperBackingVarBinding: | no | hasPropertyWrapperBackingVar: | no | hasPropertyWrapperProjectionVarBinding: | no | hasPropertyWrapperProjectionVar: | no | isInout: | no | hasPropertyWrapperLocalWrappedVarBinding: | no | hasPropertyWrapperLocalWrappedVar: | no |
 | param_decls.swift:48:18:48:22 | p1 | getModule: | file://:0:0:0:0 | param_decls | getNumberOfMembers: | 0 | getInterfaceType: | Int | getNumberOfAccessors: | 0 | getName: | p1 | getType: | Int | hasAttachedPropertyWrapperType: | yes | hasParentPattern: | no | hasParentInitializer: | no | hasPropertyWrapperBackingVarBinding: | yes | hasPropertyWrapperBackingVar: | yes | hasPropertyWrapperProjectionVarBinding: | no | hasPropertyWrapperProjectionVar: | no | isInout: | no | hasPropertyWrapperLocalWrappedVarBinding: | no | hasPropertyWrapperLocalWrappedVar: | yes |
 | param_decls.swift:49:26:49:30 | p2 | getModule: | file://:0:0:0:0 | param_decls | getNumberOfMembers: | 0 | getInterfaceType: | Int | getNumberOfAccessors: | 0 | getName: | p2 | getType: | Int | hasAttachedPropertyWrapperType: | yes | hasParentPattern: | no | hasParentInitializer: | no | hasPropertyWrapperBackingVarBinding: | yes | hasPropertyWrapperBackingVar: | yes | hasPropertyWrapperProjectionVarBinding: | no | hasPropertyWrapperProjectionVar: | no | isInout: | no | hasPropertyWrapperLocalWrappedVarBinding: | no | hasPropertyWrapperLocalWrappedVar: | yes |
+getMember
+getAccessor
+getAttachedPropertyWrapperType
+| param_decls.swift:48:18:48:22 | p1 | Wrapper |
+| param_decls.swift:49:26:49:30 | p2 | WrapperWithInit |
+getParentPattern
+getParentInitializer
+getPropertyWrapperBackingVarBinding
+| param_decls.swift:48:18:48:22 | p1 | file://:0:0:0:0 | var ... = ... |
+| param_decls.swift:49:26:49:30 | p2 | file://:0:0:0:0 | var ... = ... |
+getPropertyWrapperBackingVar
+| param_decls.swift:48:18:48:22 | p1 | param_decls.swift:48:18:48:18 | _p1 |
+| param_decls.swift:49:26:49:30 | p2 | param_decls.swift:49:26:49:26 | _p2 |
+getPropertyWrapperProjectionVarBinding
+getPropertyWrapperProjectionVar
+getPropertyWrapperLocalWrappedVarBinding
+getPropertyWrapperLocalWrappedVar
+| param_decls.swift:48:18:48:22 | p1 | param_decls.swift:48:18:48:18 | p1 |
+| param_decls.swift:49:26:49:30 | p2 | param_decls.swift:49:26:49:26 | p2 |

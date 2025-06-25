@@ -1,1 +1,5 @@
+instances
 | gen_or_pat.rs:6:9:6:38 | ... \| ...::None | getNumberOfPats: | 2 |
+getPat
+| gen_or_pat.rs:6:9:6:38 | ... \| ...::None | 0 | gen_or_pat.rs:6:9:6:23 | ...::Some(...) |
+| gen_or_pat.rs:6:9:6:38 | ... \| ...::None | 1 | gen_or_pat.rs:6:27:6:38 | ...::None |

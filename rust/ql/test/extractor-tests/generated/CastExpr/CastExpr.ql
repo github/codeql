@@ -2,11 +2,28 @@
 import codeql.rust.elements
 import TestUtils
 
-from CastExpr x, int getNumberOfAttrs, string hasExpr, string hasTypeRepr
-where
+query predicate instances(
+  CastExpr x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasExpr__label,
+  string hasExpr, string hasTypeRepr__label, string hasTypeRepr
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasExpr__label = "hasExpr:" and
   (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
+  hasTypeRepr__label = "hasTypeRepr:" and
   if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasTypeRepr:", hasTypeRepr
+}
+
+query predicate getAttr(CastExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getExpr(CastExpr x, Expr getExpr) {
+  toBeTested(x) and not x.isUnknown() and getExpr = x.getExpr()
+}
+
+query predicate getTypeRepr(CastExpr x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}

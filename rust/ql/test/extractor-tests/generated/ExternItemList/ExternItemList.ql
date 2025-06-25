@@ -2,10 +2,22 @@
 import codeql.rust.elements
 import TestUtils
 
-from ExternItemList x, int getNumberOfAttrs, int getNumberOfExternItems
-where
+query predicate instances(
+  ExternItemList x, string getNumberOfAttrs__label, int getNumberOfAttrs,
+  string getNumberOfExternItems__label, int getNumberOfExternItems
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  getNumberOfExternItems__label = "getNumberOfExternItems:" and
   getNumberOfExternItems = x.getNumberOfExternItems()
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "getNumberOfExternItems:", getNumberOfExternItems
+}
+
+query predicate getAttr(ExternItemList x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getExternItem(ExternItemList x, int index, ExternItem getExternItem) {
+  toBeTested(x) and not x.isUnknown() and getExternItem = x.getExternItem(index)
+}

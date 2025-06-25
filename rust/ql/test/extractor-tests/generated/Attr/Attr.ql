@@ -2,9 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from Attr x, string hasMeta
-where
+query predicate instances(Attr x, string hasMeta__label, string hasMeta) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasMeta__label = "hasMeta:" and
   if x.hasMeta() then hasMeta = "yes" else hasMeta = "no"
-select x, "hasMeta:", hasMeta
+}
+
+query predicate getMeta(Attr x, Meta getMeta) {
+  toBeTested(x) and not x.isUnknown() and getMeta = x.getMeta()
+}

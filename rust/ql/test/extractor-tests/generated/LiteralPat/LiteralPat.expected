@@ -1,1 +1,4 @@
+instances
 | gen_literal_pat.rs:6:9:6:10 | 42 | hasLiteral: | yes |
+getLiteral
+| gen_literal_pat.rs:6:9:6:10 | 42 | gen_literal_pat.rs:6:9:6:10 | 42 |

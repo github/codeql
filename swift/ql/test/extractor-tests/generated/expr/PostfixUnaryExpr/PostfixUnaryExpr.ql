@@ -2,12 +2,24 @@
 import codeql.swift.elements
 import TestUtils
 
-from PostfixUnaryExpr x, string hasType, Expr getFunction, int getNumberOfArguments
-where
+query predicate instances(
+  PostfixUnaryExpr x, string hasType__label, string hasType, string getFunction__label,
+  Expr getFunction, string getNumberOfArguments__label, int getNumberOfArguments
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasType__label = "hasType:" and
   (if x.hasType() then hasType = "yes" else hasType = "no") and
+  getFunction__label = "getFunction:" and
   getFunction = x.getFunction() and
+  getNumberOfArguments__label = "getNumberOfArguments:" and
   getNumberOfArguments = x.getNumberOfArguments()
-select x, "hasType:", hasType, "getFunction:", getFunction, "getNumberOfArguments:",
-  getNumberOfArguments
+}
+
+query predicate getType(PostfixUnaryExpr x, Type getType) {
+  toBeTested(x) and not x.isUnknown() and getType = x.getType()
+}
+
+query predicate getArgument(PostfixUnaryExpr x, int index, Argument getArgument) {
+  toBeTested(x) and not x.isUnknown() and getArgument = x.getArgument(index)
+}

@@ -372,11 +372,6 @@ def _partition_iter(x, pred):
     return filter(pred, x1), itertools.filterfalse(pred, x2)
 
 
-def _partition(l, pred):
-    """partitions a list according to boolean predicate"""
-    return map(list, _partition_iter(l, pred))
-
-
 def _is_in_qltest_collapsed_hierarchy(
     cls: schema.Class, lookup: typing.Dict[str, schema.Class]
 ):
@@ -625,29 +620,18 @@ def generate(opts, renderer):
                         test_dir / missing_test_source_filename,
                     )
                     continue
-                total_props, partial_props = _partition(
-                    _get_all_properties_to_be_tested(c, data.classes),
-                    lambda p: p.is_total,
-                )
                 renderer.render(
                     ql.ClassTester(
                         class_name=c.name,
-                        properties=total_props,
+                        properties=list(
+                            _get_all_properties_to_be_tested(c, data.classes)
+                        ),
                         elements_module=elements_module,
                         # in case of collapsed hierarchies we want to see the actual QL class in results
                         show_ql_class="qltest_collapse_hierarchy" in c.pragmas,
                     ),
                     test_dir / f"{c.name}.ql",
                 )
-                for p in partial_props:
-                    renderer.render(
-                        ql.PropertyTester(
-                            class_name=c.name,
-                            elements_module=elements_module,
-                            property=p,
-                        ),
-                        test_dir / f"{c.name}_{p.getter}.ql",
-                    )
 
         final_synth_types = []
         non_final_synth_types = []

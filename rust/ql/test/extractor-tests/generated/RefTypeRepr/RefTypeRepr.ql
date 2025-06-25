@@ -2,11 +2,24 @@
 import codeql.rust.elements
 import TestUtils
 
-from RefTypeRepr x, string isMut, string hasLifetime, string hasTypeRepr
-where
+query predicate instances(
+  RefTypeRepr x, string isMut__label, string isMut, string hasLifetime__label, string hasLifetime,
+  string hasTypeRepr__label, string hasTypeRepr
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  isMut__label = "isMut:" and
   (if x.isMut() then isMut = "yes" else isMut = "no") and
+  hasLifetime__label = "hasLifetime:" and
   (if x.hasLifetime() then hasLifetime = "yes" else hasLifetime = "no") and
+  hasTypeRepr__label = "hasTypeRepr:" and
   if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
-select x, "isMut:", isMut, "hasLifetime:", hasLifetime, "hasTypeRepr:", hasTypeRepr
+}
+
+query predicate getLifetime(RefTypeRepr x, Lifetime getLifetime) {
+  toBeTested(x) and not x.isUnknown() and getLifetime = x.getLifetime()
+}
+
+query predicate getTypeRepr(RefTypeRepr x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}

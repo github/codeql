@@ -2,34 +2,86 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  Union x, string hasExtendedCanonicalPath, string hasCrateOrigin,
-  string hasAttributeMacroExpansion, int getNumberOfDeriveMacroExpansions, int getNumberOfAttrs,
-  string hasGenericParamList, string hasName, string hasStructFieldList, string hasVisibility,
+query predicate instances(
+  Union x, string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
+  string hasCrateOrigin__label, string hasCrateOrigin, string hasAttributeMacroExpansion__label,
+  string hasAttributeMacroExpansion, string getNumberOfDeriveMacroExpansions__label,
+  int getNumberOfDeriveMacroExpansions, string getNumberOfAttrs__label, int getNumberOfAttrs,
+  string hasGenericParamList__label, string hasGenericParamList, string hasName__label,
+  string hasName, string hasStructFieldList__label, string hasStructFieldList,
+  string hasVisibility__label, string hasVisibility, string hasWhereClause__label,
   string hasWhereClause
-where
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
   (
     if x.hasExtendedCanonicalPath()
     then hasExtendedCanonicalPath = "yes"
     else hasExtendedCanonicalPath = "no"
   ) and
+  hasCrateOrigin__label = "hasCrateOrigin:" and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  hasAttributeMacroExpansion__label = "hasAttributeMacroExpansion:" and
   (
     if x.hasAttributeMacroExpansion()
     then hasAttributeMacroExpansion = "yes"
     else hasAttributeMacroExpansion = "no"
   ) and
+  getNumberOfDeriveMacroExpansions__label = "getNumberOfDeriveMacroExpansions:" and
   getNumberOfDeriveMacroExpansions = x.getNumberOfDeriveMacroExpansions() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasGenericParamList__label = "hasGenericParamList:" and
   (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
+  hasName__label = "hasName:" and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
+  hasStructFieldList__label = "hasStructFieldList:" and
   (if x.hasStructFieldList() then hasStructFieldList = "yes" else hasStructFieldList = "no") and
+  hasVisibility__label = "hasVisibility:" and
   (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
+  hasWhereClause__label = "hasWhereClause:" and
   if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "getNumberOfDeriveMacroExpansions:",
-  getNumberOfDeriveMacroExpansions, "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:",
-  hasGenericParamList, "hasName:", hasName, "hasStructFieldList:", hasStructFieldList,
-  "hasVisibility:", hasVisibility, "hasWhereClause:", hasWhereClause
+}
+
+query predicate getExtendedCanonicalPath(Union x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(Union x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttributeMacroExpansion(Union x, MacroItems getAttributeMacroExpansion) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getDeriveMacroExpansion(Union x, int index, MacroItems getDeriveMacroExpansion) {
+  toBeTested(x) and not x.isUnknown() and getDeriveMacroExpansion = x.getDeriveMacroExpansion(index)
+}
+
+query predicate getAttr(Union x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getGenericParamList(Union x, GenericParamList getGenericParamList) {
+  toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
+}
+
+query predicate getName(Union x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getStructFieldList(Union x, StructFieldList getStructFieldList) {
+  toBeTested(x) and not x.isUnknown() and getStructFieldList = x.getStructFieldList()
+}
+
+query predicate getVisibility(Union x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}
+
+query predicate getWhereClause(Union x, WhereClause getWhereClause) {
+  toBeTested(x) and not x.isUnknown() and getWhereClause = x.getWhereClause()
+}

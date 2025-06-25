@@ -2,13 +2,35 @@
 import codeql.rust.elements
 import TestUtils
 
-from CallExpr x, string hasArgList, int getNumberOfAttrs, int getNumberOfArgs, string hasFunction
-where
+query predicate instances(
+  CallExpr x, string hasArgList__label, string hasArgList, string getNumberOfAttrs__label,
+  int getNumberOfAttrs, string getNumberOfArgs__label, int getNumberOfArgs,
+  string hasFunction__label, string hasFunction
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasArgList__label = "hasArgList:" and
   (if x.hasArgList() then hasArgList = "yes" else hasArgList = "no") and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  getNumberOfArgs__label = "getNumberOfArgs:" and
   getNumberOfArgs = x.getNumberOfArgs() and
+  hasFunction__label = "hasFunction:" and
   if x.hasFunction() then hasFunction = "yes" else hasFunction = "no"
-select x, "hasArgList:", hasArgList, "getNumberOfAttrs:", getNumberOfAttrs, "getNumberOfArgs:",
-  getNumberOfArgs, "hasFunction:", hasFunction
+}
+
+query predicate getArgList(CallExpr x, ArgList getArgList) {
+  toBeTested(x) and not x.isUnknown() and getArgList = x.getArgList()
+}
+
+query predicate getAttr(CallExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getArg(CallExpr x, int index, Expr getArg) {
+  toBeTested(x) and not x.isUnknown() and getArg = x.getArg(index)
+}
+
+query predicate getFunction(CallExpr x, Expr getFunction) {
+  toBeTested(x) and not x.isUnknown() and getFunction = x.getFunction()
+}

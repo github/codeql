@@ -2,9 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from Name x, string hasText
-where
+query predicate instances(Name x, string hasText__label, string hasText) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasText__label = "hasText:" and
   if x.hasText() then hasText = "yes" else hasText = "no"
-select x, "hasText:", hasText
+}
+
+query predicate getText(Name x, string getText) {
+  toBeTested(x) and not x.isUnknown() and getText = x.getText()
+}

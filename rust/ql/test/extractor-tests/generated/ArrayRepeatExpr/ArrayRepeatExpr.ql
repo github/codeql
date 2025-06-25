@@ -2,15 +2,27 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  ArrayRepeatExpr x, int getNumberOfExprs, int getNumberOfAttrs, Expr getRepeatOperand,
-  Expr getRepeatLength
-where
+query predicate instances(
+  ArrayRepeatExpr x, string getNumberOfExprs__label, int getNumberOfExprs,
+  string getNumberOfAttrs__label, int getNumberOfAttrs, string getRepeatOperand__label,
+  Expr getRepeatOperand, string getRepeatLength__label, Expr getRepeatLength
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfExprs__label = "getNumberOfExprs:" and
   getNumberOfExprs = x.getNumberOfExprs() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  getRepeatOperand__label = "getRepeatOperand:" and
   getRepeatOperand = x.getRepeatOperand() and
+  getRepeatLength__label = "getRepeatLength:" and
   getRepeatLength = x.getRepeatLength()
-select x, "getNumberOfExprs:", getNumberOfExprs, "getNumberOfAttrs:", getNumberOfAttrs,
-  "getRepeatOperand:", getRepeatOperand, "getRepeatLength:", getRepeatLength
+}
+
+query predicate getExpr(ArrayRepeatExpr x, int index, Expr getExpr) {
+  toBeTested(x) and not x.isUnknown() and getExpr = x.getExpr(index)
+}
+
+query predicate getAttr(ArrayRepeatExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}

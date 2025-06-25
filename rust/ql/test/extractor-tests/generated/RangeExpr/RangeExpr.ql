@@ -2,13 +2,35 @@
 import codeql.rust.elements
 import TestUtils
 
-from RangeExpr x, int getNumberOfAttrs, string hasEnd, string hasOperatorName, string hasStart
-where
+query predicate instances(
+  RangeExpr x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasEnd__label,
+  string hasEnd, string hasOperatorName__label, string hasOperatorName, string hasStart__label,
+  string hasStart
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasEnd__label = "hasEnd:" and
   (if x.hasEnd() then hasEnd = "yes" else hasEnd = "no") and
+  hasOperatorName__label = "hasOperatorName:" and
   (if x.hasOperatorName() then hasOperatorName = "yes" else hasOperatorName = "no") and
+  hasStart__label = "hasStart:" and
   if x.hasStart() then hasStart = "yes" else hasStart = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasEnd:", hasEnd, "hasOperatorName:",
-  hasOperatorName, "hasStart:", hasStart
+}
+
+query predicate getAttr(RangeExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getEnd(RangeExpr x, Expr getEnd) {
+  toBeTested(x) and not x.isUnknown() and getEnd = x.getEnd()
+}
+
+query predicate getOperatorName(RangeExpr x, string getOperatorName) {
+  toBeTested(x) and not x.isUnknown() and getOperatorName = x.getOperatorName()
+}
+
+query predicate getStart(RangeExpr x, Expr getStart) {
+  toBeTested(x) and not x.isUnknown() and getStart = x.getStart()
+}

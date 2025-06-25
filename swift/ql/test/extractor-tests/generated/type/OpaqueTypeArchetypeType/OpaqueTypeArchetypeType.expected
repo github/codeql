@@ -1,4 +1,11 @@
+instances
 | some Base | getName: | some Base | getCanonicalType: | some Base | getInterfaceType: | \u03c4_1_0 | hasSuperclass: | yes | getNumberOfProtocols: | 0 | getDeclaration: | file://:0:0:0:0 | _ |
 | some P | getName: | some P | getCanonicalType: | some P | getInterfaceType: | \u03c4_1_0 | hasSuperclass: | no | getNumberOfProtocols: | 1 | getDeclaration: | file://:0:0:0:0 | _ |
 | some P | getName: | some P | getCanonicalType: | some P | getInterfaceType: | \u03c4_1_0 | hasSuperclass: | no | getNumberOfProtocols: | 1 | getDeclaration: | file://:0:0:0:0 | _ |
 | some SignedInteger | getName: | some SignedInteger | getCanonicalType: | some SignedInteger | getInterfaceType: | \u03c4_0_0 | hasSuperclass: | no | getNumberOfProtocols: | 1 | getDeclaration: | file://:0:0:0:0 | _ |
+getSuperclass
+| some Base | Base |
+getProtocol
+| some P | 0 | opaque_types.swift:3:1:3:13 | P |
+| some P | 0 | opaque_types.swift:3:1:3:13 | P |
+| some SignedInteger | 0 | file://:0:0:0:0 | SignedInteger |

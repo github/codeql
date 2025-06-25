@@ -1,1 +1,5 @@
+instances
 | gen_become_expr.rs:8:10:8:36 | become ... | getNumberOfAttrs: | 0 | hasExpr: | yes |
+getAttr
+getExpr
+| gen_become_expr.rs:8:10:8:36 | become ... | gen_become_expr.rs:8:17:8:36 | fact_a(...) |

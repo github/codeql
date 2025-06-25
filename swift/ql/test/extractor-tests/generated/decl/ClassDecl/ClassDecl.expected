@@ -1,3 +1,23 @@
+instances
 | class.swift:1:1:7:1 | Foo | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | class | getNumberOfMembers: | 4 | getInterfaceType: | Foo.Type | getName: | Foo | getNumberOfInheritedTypes: | 0 | getType: | Foo |
 | class.swift:11:1:14:1 | Generic | getNumberOfGenericTypeParams: | 2 | getModule: | file://:0:0:0:0 | class | getNumberOfMembers: | 6 | getInterfaceType: | Generic<X, Y>.Type | getName: | Generic | getNumberOfInheritedTypes: | 0 | getType: | Generic |
 | class.swift:16:1:17:1 | Baz | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | class | getNumberOfMembers: | 2 | getInterfaceType: | Baz.Type | getName: | Baz | getNumberOfInheritedTypes: | 2 | getType: | Baz |
+getGenericTypeParam
+| class.swift:11:1:14:1 | Generic | 0 | class.swift:11:15:11:15 | X |
+| class.swift:11:1:14:1 | Generic | 1 | class.swift:11:18:11:18 | Y |
+getMember
+| class.swift:1:1:7:1 | Foo | 0 | class.swift:2:5:2:16 | var ... = ... |
+| class.swift:1:1:7:1 | Foo | 1 | class.swift:2:9:2:9 | field |
+| class.swift:1:1:7:1 | Foo | 2 | class.swift:4:5:6:5 | Foo.init() |
+| class.swift:1:1:7:1 | Foo | 3 | class.swift:1:7:1:7 | Foo.deinit() |
+| class.swift:11:1:14:1 | Generic | 0 | class.swift:12:5:12:13 | var ... = ... |
+| class.swift:11:1:14:1 | Generic | 1 | class.swift:12:9:12:9 | x |
+| class.swift:11:1:14:1 | Generic | 2 | class.swift:13:5:13:13 | var ... = ... |
+| class.swift:11:1:14:1 | Generic | 3 | class.swift:13:9:13:9 | y |
+| class.swift:11:1:14:1 | Generic | 4 | class.swift:11:7:11:7 | Generic<X, Y>.deinit() |
+| class.swift:11:1:14:1 | Generic | 5 | class.swift:11:7:11:7 | Generic<X, Y>.init() |
+| class.swift:16:1:17:1 | Baz | 0 | class.swift:16:7:16:7 | Baz.deinit() |
+| class.swift:16:1:17:1 | Baz | 1 | class.swift:16:21:16:21 | Baz.init() |
+getInheritedType
+| class.swift:16:1:17:1 | Baz | 0 | Foo |
+| class.swift:16:1:17:1 | Baz | 1 | Bar |

@@ -2,10 +2,22 @@
 import codeql.rust.elements
 import TestUtils
 
-from YieldExpr x, int getNumberOfAttrs, string hasExpr
-where
+query predicate instances(
+  YieldExpr x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasExpr__label,
+  string hasExpr
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasExpr__label = "hasExpr:" and
   if x.hasExpr() then hasExpr = "yes" else hasExpr = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr
+}
+
+query predicate getAttr(YieldExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getExpr(YieldExpr x, Expr getExpr) {
+  toBeTested(x) and not x.isUnknown() and getExpr = x.getExpr()
+}

@@ -2,26 +2,58 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  Use x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasAttributeMacroExpansion,
-  int getNumberOfAttrs, string hasUseTree, string hasVisibility
-where
+query predicate instances(
+  Use x, string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
+  string hasCrateOrigin__label, string hasCrateOrigin, string hasAttributeMacroExpansion__label,
+  string hasAttributeMacroExpansion, string getNumberOfAttrs__label, int getNumberOfAttrs,
+  string hasUseTree__label, string hasUseTree, string hasVisibility__label, string hasVisibility
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
   (
     if x.hasExtendedCanonicalPath()
     then hasExtendedCanonicalPath = "yes"
     else hasExtendedCanonicalPath = "no"
   ) and
+  hasCrateOrigin__label = "hasCrateOrigin:" and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  hasAttributeMacroExpansion__label = "hasAttributeMacroExpansion:" and
   (
     if x.hasAttributeMacroExpansion()
     then hasAttributeMacroExpansion = "yes"
     else hasAttributeMacroExpansion = "no"
   ) and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasUseTree__label = "hasUseTree:" and
   (if x.hasUseTree() then hasUseTree = "yes" else hasUseTree = "no") and
+  hasVisibility__label = "hasVisibility:" and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasUseTree:", hasUseTree, "hasVisibility:", hasVisibility
+}
+
+query predicate getExtendedCanonicalPath(Use x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(Use x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttributeMacroExpansion(Use x, MacroItems getAttributeMacroExpansion) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getAttr(Use x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getUseTree(Use x, UseTree getUseTree) {
+  toBeTested(x) and not x.isUnknown() and getUseTree = x.getUseTree()
+}
+
+query predicate getVisibility(Use x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}

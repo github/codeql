@@ -2,10 +2,22 @@
 import codeql.rust.elements
 import TestUtils
 
-from MacroBlockExpr x, string hasTailExpr, int getNumberOfStatements
-where
+query predicate instances(
+  MacroBlockExpr x, string hasTailExpr__label, string hasTailExpr,
+  string getNumberOfStatements__label, int getNumberOfStatements
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasTailExpr__label = "hasTailExpr:" and
   (if x.hasTailExpr() then hasTailExpr = "yes" else hasTailExpr = "no") and
+  getNumberOfStatements__label = "getNumberOfStatements:" and
   getNumberOfStatements = x.getNumberOfStatements()
-select x, "hasTailExpr:", hasTailExpr, "getNumberOfStatements:", getNumberOfStatements
+}
+
+query predicate getTailExpr(MacroBlockExpr x, Expr getTailExpr) {
+  toBeTested(x) and not x.isUnknown() and getTailExpr = x.getTailExpr()
+}
+
+query predicate getStatement(MacroBlockExpr x, int index, Stmt getStatement) {
+  toBeTested(x) and not x.isUnknown() and getStatement = x.getStatement(index)
+}

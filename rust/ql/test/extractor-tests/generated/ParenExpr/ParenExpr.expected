@@ -1,1 +1,5 @@
+instances
 | gen_paren_expr.rs:7:5:7:11 | (...) | getNumberOfAttrs: | 0 | hasExpr: | yes |
+getAttr
+getExpr
+| gen_paren_expr.rs:7:5:7:11 | (...) | gen_paren_expr.rs:7:6:7:10 | ... + ... |

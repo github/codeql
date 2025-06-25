@@ -1,1 +1,4 @@
+instances
 | gen_rename.rs:7:13:7:18 | Rename | hasName: | yes |
+getName
+| gen_rename.rs:7:13:7:18 | Rename | gen_rename.rs:7:16:7:18 | bar |

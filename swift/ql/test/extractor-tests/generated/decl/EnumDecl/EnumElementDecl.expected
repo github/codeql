@@ -1,3 +1,4 @@
+instances
 | enums.swift:2:10:2:10 | value1 | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getInterfaceType: | (EnumValues.Type) -> EnumValues | getName: | value1 | getNumberOfParams: | 0 |
 | enums.swift:2:18:2:18 | value2 | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getInterfaceType: | (EnumValues.Type) -> EnumValues | getName: | value2 | getNumberOfParams: | 0 |
 | enums.swift:3:10:3:10 | value3 | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getInterfaceType: | (EnumValues.Type) -> EnumValues | getName: | value3 | getNumberOfParams: | 0 |
@@ -16,3 +17,16 @@
 | enums.swift:24:10:24:25 | nodata1 | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getInterfaceType: | (EnumWithNamedParams.Type) -> (Void) -> EnumWithNamedParams | getName: | nodata1 | getNumberOfParams: | 1 |
 | enums.swift:25:10:25:24 | intdata | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getInterfaceType: | (EnumWithNamedParams.Type) -> (Int) -> EnumWithNamedParams | getName: | intdata | getNumberOfParams: | 1 |
 | enums.swift:26:10:26:44 | tuple | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getInterfaceType: | (EnumWithNamedParams.Type) -> (Int, String, Double) -> EnumWithNamedParams | getName: | tuple | getNumberOfParams: | 3 |
+getMember
+getParam
+| enums.swift:13:10:13:22 | nodata1 | 0 | enums.swift:13:18:13:18 | _ |
+| enums.swift:14:10:14:21 | intdata | 0 | enums.swift:14:18:14:18 | _ |
+| enums.swift:15:10:15:35 | tuple | 0 | enums.swift:15:16:15:16 | _ |
+| enums.swift:15:10:15:35 | tuple | 1 | enums.swift:15:21:15:21 | _ |
+| enums.swift:15:10:15:35 | tuple | 2 | enums.swift:15:29:15:29 | _ |
+| enums.swift:20:10:20:16 | some | 0 | enums.swift:20:15:20:15 | _ |
+| enums.swift:24:10:24:25 | nodata1 | 0 | enums.swift:24:18:24:21 | v |
+| enums.swift:25:10:25:24 | intdata | 0 | enums.swift:25:18:25:21 | i |
+| enums.swift:26:10:26:44 | tuple | 0 | enums.swift:26:16:26:19 | i |
+| enums.swift:26:10:26:44 | tuple | 1 | enums.swift:26:24:26:27 | s |
+| enums.swift:26:10:26:44 | tuple | 2 | enums.swift:26:35:26:38 | d |

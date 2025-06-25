@@ -1,3 +1,4 @@
+instances
 | identity_expressions.swift:5:9:5:14 | .self | DotSelfExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:5:9:5:9 | self |
 | identity_expressions.swift:5:9:5:21 | .self | DotSelfExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:5:9:5:19 | .x |
 | identity_expressions.swift:5:28:5:31 | (...) | ParenExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:5:29:5:29 | 42 |
@@ -7,3 +8,13 @@
 | identity_expressions.swift:15:5:15:21 | await ... | AwaitExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:15:11:15:21 | call to process() |
 | identity_expressions.swift:15:11:15:19 | (...) | ParenExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:15:12:15:12 | process() |
 | identity_expressions.swift:18:9:18:17 | BorrowExpr | BorrowExpr | hasType: | yes | getSubExpr: | identity_expressions.swift:18:17:18:17 | x |
+getType
+| identity_expressions.swift:5:9:5:14 | .self | A |
+| identity_expressions.swift:5:9:5:21 | .self | @lvalue Int |
+| identity_expressions.swift:5:28:5:31 | (...) | Int |
+| identity_expressions.swift:9:5:9:9 | (...) | A |
+| identity_expressions.swift:12:28:12:43 | (...) | A |
+| identity_expressions.swift:12:29:12:42 | await ... | A |
+| identity_expressions.swift:15:5:15:21 | await ... | () |
+| identity_expressions.swift:15:11:15:19 | (...) | () async -> () |
+| identity_expressions.swift:18:9:18:17 | BorrowExpr | Int |

@@ -2,10 +2,22 @@
 import codeql.rust.elements
 import TestUtils
 
-from ParamList x, int getNumberOfParams, string hasSelfParam
-where
+query predicate instances(
+  ParamList x, string getNumberOfParams__label, int getNumberOfParams, string hasSelfParam__label,
+  string hasSelfParam
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfParams__label = "getNumberOfParams:" and
   getNumberOfParams = x.getNumberOfParams() and
+  hasSelfParam__label = "hasSelfParam:" and
   if x.hasSelfParam() then hasSelfParam = "yes" else hasSelfParam = "no"
-select x, "getNumberOfParams:", getNumberOfParams, "hasSelfParam:", hasSelfParam
+}
+
+query predicate getParam(ParamList x, int index, Param getParam) {
+  toBeTested(x) and not x.isUnknown() and getParam = x.getParam(index)
+}
+
+query predicate getSelfParam(ParamList x, SelfParam getSelfParam) {
+  toBeTested(x) and not x.isUnknown() and getSelfParam = x.getSelfParam()
+}

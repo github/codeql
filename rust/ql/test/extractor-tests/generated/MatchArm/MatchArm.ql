@@ -2,13 +2,34 @@
 import codeql.rust.elements
 import TestUtils
 
-from MatchArm x, int getNumberOfAttrs, string hasExpr, string hasGuard, string hasPat
-where
+query predicate instances(
+  MatchArm x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasExpr__label,
+  string hasExpr, string hasGuard__label, string hasGuard, string hasPat__label, string hasPat
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasExpr__label = "hasExpr:" and
   (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
+  hasGuard__label = "hasGuard:" and
   (if x.hasGuard() then hasGuard = "yes" else hasGuard = "no") and
+  hasPat__label = "hasPat:" and
   if x.hasPat() then hasPat = "yes" else hasPat = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasGuard:", hasGuard,
-  "hasPat:", hasPat
+}
+
+query predicate getAttr(MatchArm x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getExpr(MatchArm x, Expr getExpr) {
+  toBeTested(x) and not x.isUnknown() and getExpr = x.getExpr()
+}
+
+query predicate getGuard(MatchArm x, MatchGuard getGuard) {
+  toBeTested(x) and not x.isUnknown() and getGuard = x.getGuard()
+}
+
+query predicate getPat(MatchArm x, Pat getPat) {
+  toBeTested(x) and not x.isUnknown() and getPat = x.getPat()
+}

@@ -2,14 +2,33 @@
 import codeql.rust.elements
 import TestUtils
 
-from IdentPat x, int getNumberOfAttrs, string isMut, string isRef, string hasName, string hasPat
-where
+query predicate instances(
+  IdentPat x, string getNumberOfAttrs__label, int getNumberOfAttrs, string isMut__label,
+  string isMut, string isRef__label, string isRef, string hasName__label, string hasName,
+  string hasPat__label, string hasPat
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  isMut__label = "isMut:" and
   (if x.isMut() then isMut = "yes" else isMut = "no") and
+  isRef__label = "isRef:" and
   (if x.isRef() then isRef = "yes" else isRef = "no") and
+  hasName__label = "hasName:" and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
+  hasPat__label = "hasPat:" and
   if x.hasPat() then hasPat = "yes" else hasPat = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "isMut:", isMut, "isRef:", isRef, "hasName:",
-  hasName, "hasPat:", hasPat
+}
+
+query predicate getAttr(IdentPat x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getName(IdentPat x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getPat(IdentPat x, Pat getPat) {
+  toBeTested(x) and not x.isUnknown() and getPat = x.getPat()
+}

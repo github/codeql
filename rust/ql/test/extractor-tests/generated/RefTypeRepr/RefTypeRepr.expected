@@ -1,2 +1,7 @@
+instances
 | gen_ref_type_repr.rs:7:12:7:15 | RefTypeRepr | isMut: | no | hasLifetime: | no | hasTypeRepr: | yes |
 | gen_ref_type_repr.rs:8:12:8:19 | RefTypeRepr | isMut: | yes | hasLifetime: | no | hasTypeRepr: | yes |
+getLifetime
+getTypeRepr
+| gen_ref_type_repr.rs:7:12:7:15 | RefTypeRepr | gen_ref_type_repr.rs:7:13:7:15 | i32 |
+| gen_ref_type_repr.rs:8:12:8:19 | RefTypeRepr | gen_ref_type_repr.rs:8:17:8:19 | i32 |

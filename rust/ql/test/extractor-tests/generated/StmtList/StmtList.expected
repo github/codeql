@@ -1,2 +1,9 @@
+instances
 | gen_stmt_list.rs:3:27:12:1 | StmtList | getNumberOfAttrs: | 0 | getNumberOfStatements: | 0 | hasTailExpr: | yes |
 | gen_stmt_list.rs:7:5:10:5 | StmtList | getNumberOfAttrs: | 0 | getNumberOfStatements: | 2 | hasTailExpr: | no |
+getAttr
+getStatement
+| gen_stmt_list.rs:7:5:10:5 | StmtList | 0 | gen_stmt_list.rs:8:9:8:18 | let ... = 1 |
+| gen_stmt_list.rs:7:5:10:5 | StmtList | 1 | gen_stmt_list.rs:9:9:9:18 | let ... = 2 |
+getTailExpr
+| gen_stmt_list.rs:3:27:12:1 | StmtList | gen_stmt_list.rs:7:5:10:5 | { ... } |

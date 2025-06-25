@@ -2,23 +2,59 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  Variant x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasDiscriminant, string hasFieldList, string hasName, string hasVisibility
-where
+query predicate instances(
+  Variant x, string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
+  string hasCrateOrigin__label, string hasCrateOrigin, string getNumberOfAttrs__label,
+  int getNumberOfAttrs, string hasDiscriminant__label, string hasDiscriminant,
+  string hasFieldList__label, string hasFieldList, string hasName__label, string hasName,
+  string hasVisibility__label, string hasVisibility
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
   (
     if x.hasExtendedCanonicalPath()
     then hasExtendedCanonicalPath = "yes"
     else hasExtendedCanonicalPath = "no"
   ) and
+  hasCrateOrigin__label = "hasCrateOrigin:" and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasDiscriminant__label = "hasDiscriminant:" and
   (if x.hasDiscriminant() then hasDiscriminant = "yes" else hasDiscriminant = "no") and
+  hasFieldList__label = "hasFieldList:" and
   (if x.hasFieldList() then hasFieldList = "yes" else hasFieldList = "no") and
+  hasName__label = "hasName:" and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
+  hasVisibility__label = "hasVisibility:" and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasDiscriminant:", hasDiscriminant, "hasFieldList:",
-  hasFieldList, "hasName:", hasName, "hasVisibility:", hasVisibility
+}
+
+query predicate getExtendedCanonicalPath(Variant x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(Variant x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttr(Variant x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getDiscriminant(Variant x, Expr getDiscriminant) {
+  toBeTested(x) and not x.isUnknown() and getDiscriminant = x.getDiscriminant()
+}
+
+query predicate getFieldList(Variant x, FieldList getFieldList) {
+  toBeTested(x) and not x.isUnknown() and getFieldList = x.getFieldList()
+}
+
+query predicate getName(Variant x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getVisibility(Variant x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}

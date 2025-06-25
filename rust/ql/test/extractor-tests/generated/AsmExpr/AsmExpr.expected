@@ -1,1 +1,9 @@
+instances
 | gen_asm_expr.rs:6:9:7:59 | AsmExpr | getNumberOfAsmPieces: | 2 | getNumberOfAttrs: | 1 | getNumberOfTemplates: | 1 |
+getAsmPiece
+| gen_asm_expr.rs:6:9:7:59 | AsmExpr | 0 | gen_asm_expr.rs:7:39:7:47 | AsmOperandNamed |
+| gen_asm_expr.rs:6:9:7:59 | AsmExpr | 1 | gen_asm_expr.rs:7:50:7:58 | AsmOperandNamed |
+getAttr
+| gen_asm_expr.rs:6:9:7:59 | AsmExpr | 0 | gen_asm_expr.rs:6:9:6:25 | Attr |
+getTemplate
+| gen_asm_expr.rs:6:9:7:59 | AsmExpr | 0 | gen_asm_expr.rs:7:23:7:36 | "cmp {0}, {1}" |

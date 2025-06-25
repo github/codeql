@@ -1,2 +1,6 @@
+instances
 | gen_lifetime.rs:7:12:7:13 | 'a | hasText: | yes |
 | gen_lifetime.rs:7:20:7:21 | 'a | hasText: | yes |
+getText
+| gen_lifetime.rs:7:12:7:13 | 'a | 'a |
+| gen_lifetime.rs:7:20:7:21 | 'a | 'a |

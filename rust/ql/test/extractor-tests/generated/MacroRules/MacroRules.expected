@@ -1,1 +1,11 @@
+instances
 | gen_macro_rules.rs:4:5:9:5 | MacroRules | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasName: | yes | hasTokenTree: | yes | hasVisibility: | no |
+getExtendedCanonicalPath
+getCrateOrigin
+getAttributeMacroExpansion
+getAttr
+getName
+| gen_macro_rules.rs:4:5:9:5 | MacroRules | gen_macro_rules.rs:5:18:5:25 | my_macro |
+getTokenTree
+| gen_macro_rules.rs:4:5:9:5 | MacroRules | gen_macro_rules.rs:5:27:9:5 | TokenTree |
+getVisibility

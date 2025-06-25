@@ -2,33 +2,78 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  Static x, string hasExtendedCanonicalPath, string hasCrateOrigin,
-  string hasAttributeMacroExpansion, int getNumberOfAttrs, string hasBody, string isMut,
-  string isStatic, string isUnsafe, string hasName, string hasTypeRepr, string hasVisibility
-where
+query predicate instances(
+  Static x, string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
+  string hasCrateOrigin__label, string hasCrateOrigin, string hasAttributeMacroExpansion__label,
+  string hasAttributeMacroExpansion, string getNumberOfAttrs__label, int getNumberOfAttrs,
+  string hasBody__label, string hasBody, string isMut__label, string isMut, string isStatic__label,
+  string isStatic, string isUnsafe__label, string isUnsafe, string hasName__label, string hasName,
+  string hasTypeRepr__label, string hasTypeRepr, string hasVisibility__label, string hasVisibility
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
   (
     if x.hasExtendedCanonicalPath()
     then hasExtendedCanonicalPath = "yes"
     else hasExtendedCanonicalPath = "no"
   ) and
+  hasCrateOrigin__label = "hasCrateOrigin:" and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  hasAttributeMacroExpansion__label = "hasAttributeMacroExpansion:" and
   (
     if x.hasAttributeMacroExpansion()
     then hasAttributeMacroExpansion = "yes"
     else hasAttributeMacroExpansion = "no"
   ) and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasBody__label = "hasBody:" and
   (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
+  isMut__label = "isMut:" and
   (if x.isMut() then isMut = "yes" else isMut = "no") and
+  isStatic__label = "isStatic:" and
   (if x.isStatic() then isStatic = "yes" else isStatic = "no") and
+  isUnsafe__label = "isUnsafe:" and
   (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
+  hasName__label = "hasName:" and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
+  hasTypeRepr__label = "hasTypeRepr:" and
   (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
+  hasVisibility__label = "hasVisibility:" and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasBody:", hasBody, "isMut:", isMut, "isStatic:", isStatic, "isUnsafe:", isUnsafe, "hasName:",
-  hasName, "hasTypeRepr:", hasTypeRepr, "hasVisibility:", hasVisibility
+}
+
+query predicate getExtendedCanonicalPath(Static x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(Static x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttributeMacroExpansion(Static x, MacroItems getAttributeMacroExpansion) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getAttr(Static x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getBody(Static x, Expr getBody) {
+  toBeTested(x) and not x.isUnknown() and getBody = x.getBody()
+}
+
+query predicate getName(Static x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getTypeRepr(Static x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}
+
+query predicate getVisibility(Static x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}

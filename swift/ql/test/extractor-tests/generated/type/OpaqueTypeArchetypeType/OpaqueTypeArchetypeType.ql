@@ -2,18 +2,32 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  OpaqueTypeArchetypeType x, string getName, Type getCanonicalType, Type getInterfaceType,
-  string hasSuperclass, int getNumberOfProtocols, OpaqueTypeDecl getDeclaration
-where
+query predicate instances(
+  OpaqueTypeArchetypeType x, string getName__label, string getName, string getCanonicalType__label,
+  Type getCanonicalType, string getInterfaceType__label, Type getInterfaceType,
+  string hasSuperclass__label, string hasSuperclass, string getNumberOfProtocols__label,
+  int getNumberOfProtocols, string getDeclaration__label, OpaqueTypeDecl getDeclaration
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getName__label = "getName:" and
   getName = x.getName() and
+  getCanonicalType__label = "getCanonicalType:" and
   getCanonicalType = x.getCanonicalType() and
+  getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType() and
+  hasSuperclass__label = "hasSuperclass:" and
   (if x.hasSuperclass() then hasSuperclass = "yes" else hasSuperclass = "no") and
+  getNumberOfProtocols__label = "getNumberOfProtocols:" and
   getNumberOfProtocols = x.getNumberOfProtocols() and
+  getDeclaration__label = "getDeclaration:" and
   getDeclaration = x.getDeclaration()
-select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getInterfaceType:",
-  getInterfaceType, "hasSuperclass:", hasSuperclass, "getNumberOfProtocols:", getNumberOfProtocols,
-  "getDeclaration:", getDeclaration
+}
+
+query predicate getSuperclass(OpaqueTypeArchetypeType x, Type getSuperclass) {
+  toBeTested(x) and not x.isUnknown() and getSuperclass = x.getSuperclass()
+}
+
+query predicate getProtocol(OpaqueTypeArchetypeType x, int index, ProtocolDecl getProtocol) {
+  toBeTested(x) and not x.isUnknown() and getProtocol = x.getProtocol(index)
+}

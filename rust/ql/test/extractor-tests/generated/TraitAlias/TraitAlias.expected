@@ -1,1 +1,13 @@
+instances
 | gen_trait_alias.rs:7:5:7:26 | TraitAlias | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasGenericParamList: | no | hasName: | yes | hasTypeBoundList: | yes | hasVisibility: | no | hasWhereClause: | no |
+getExtendedCanonicalPath
+getCrateOrigin
+getAttributeMacroExpansion
+getAttr
+getGenericParamList
+getName
+| gen_trait_alias.rs:7:5:7:26 | TraitAlias | gen_trait_alias.rs:7:11:7:13 | Foo |
+getTypeBoundList
+| gen_trait_alias.rs:7:5:7:26 | TraitAlias | gen_trait_alias.rs:7:17:7:25 | TypeBoundList |
+getVisibility
+getWhereClause

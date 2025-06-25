@@ -2,65 +2,146 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  ParamDecl x, ModuleDecl getModule, int getNumberOfMembers, Type getInterfaceType,
-  int getNumberOfAccessors, string getName, Type getType, string hasAttachedPropertyWrapperType,
-  string hasParentPattern, string hasParentInitializer, string hasPropertyWrapperBackingVarBinding,
-  string hasPropertyWrapperBackingVar, string hasPropertyWrapperProjectionVarBinding,
-  string hasPropertyWrapperProjectionVar, string isInout,
-  string hasPropertyWrapperLocalWrappedVarBinding, string hasPropertyWrapperLocalWrappedVar
-where
+query predicate instances(
+  ParamDecl x, string getModule__label, ModuleDecl getModule, string getNumberOfMembers__label,
+  int getNumberOfMembers, string getInterfaceType__label, Type getInterfaceType,
+  string getNumberOfAccessors__label, int getNumberOfAccessors, string getName__label,
+  string getName, string getType__label, Type getType, string hasAttachedPropertyWrapperType__label,
+  string hasAttachedPropertyWrapperType, string hasParentPattern__label, string hasParentPattern,
+  string hasParentInitializer__label, string hasParentInitializer,
+  string hasPropertyWrapperBackingVarBinding__label, string hasPropertyWrapperBackingVarBinding,
+  string hasPropertyWrapperBackingVar__label, string hasPropertyWrapperBackingVar,
+  string hasPropertyWrapperProjectionVarBinding__label,
+  string hasPropertyWrapperProjectionVarBinding, string hasPropertyWrapperProjectionVar__label,
+  string hasPropertyWrapperProjectionVar, string isInout__label, string isInout,
+  string hasPropertyWrapperLocalWrappedVarBinding__label,
+  string hasPropertyWrapperLocalWrappedVarBinding, string hasPropertyWrapperLocalWrappedVar__label,
+  string hasPropertyWrapperLocalWrappedVar
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getModule__label = "getModule:" and
   getModule = x.getModule() and
+  getNumberOfMembers__label = "getNumberOfMembers:" and
   getNumberOfMembers = x.getNumberOfMembers() and
+  getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType() and
+  getNumberOfAccessors__label = "getNumberOfAccessors:" and
   getNumberOfAccessors = x.getNumberOfAccessors() and
+  getName__label = "getName:" and
   getName = x.getName() and
+  getType__label = "getType:" and
   getType = x.getType() and
+  hasAttachedPropertyWrapperType__label = "hasAttachedPropertyWrapperType:" and
   (
     if x.hasAttachedPropertyWrapperType()
     then hasAttachedPropertyWrapperType = "yes"
     else hasAttachedPropertyWrapperType = "no"
   ) and
+  hasParentPattern__label = "hasParentPattern:" and
   (if x.hasParentPattern() then hasParentPattern = "yes" else hasParentPattern = "no") and
+  hasParentInitializer__label = "hasParentInitializer:" and
   (if x.hasParentInitializer() then hasParentInitializer = "yes" else hasParentInitializer = "no") and
+  hasPropertyWrapperBackingVarBinding__label = "hasPropertyWrapperBackingVarBinding:" and
   (
     if x.hasPropertyWrapperBackingVarBinding()
     then hasPropertyWrapperBackingVarBinding = "yes"
     else hasPropertyWrapperBackingVarBinding = "no"
   ) and
+  hasPropertyWrapperBackingVar__label = "hasPropertyWrapperBackingVar:" and
   (
     if x.hasPropertyWrapperBackingVar()
     then hasPropertyWrapperBackingVar = "yes"
     else hasPropertyWrapperBackingVar = "no"
   ) and
+  hasPropertyWrapperProjectionVarBinding__label = "hasPropertyWrapperProjectionVarBinding:" and
   (
     if x.hasPropertyWrapperProjectionVarBinding()
     then hasPropertyWrapperProjectionVarBinding = "yes"
     else hasPropertyWrapperProjectionVarBinding = "no"
   ) and
+  hasPropertyWrapperProjectionVar__label = "hasPropertyWrapperProjectionVar:" and
   (
     if x.hasPropertyWrapperProjectionVar()
     then hasPropertyWrapperProjectionVar = "yes"
     else hasPropertyWrapperProjectionVar = "no"
   ) and
+  isInout__label = "isInout:" and
   (if x.isInout() then isInout = "yes" else isInout = "no") and
+  hasPropertyWrapperLocalWrappedVarBinding__label = "hasPropertyWrapperLocalWrappedVarBinding:" and
   (
     if x.hasPropertyWrapperLocalWrappedVarBinding()
     then hasPropertyWrapperLocalWrappedVarBinding = "yes"
     else hasPropertyWrapperLocalWrappedVarBinding = "no"
   ) and
+  hasPropertyWrapperLocalWrappedVar__label = "hasPropertyWrapperLocalWrappedVar:" and
   if x.hasPropertyWrapperLocalWrappedVar()
   then hasPropertyWrapperLocalWrappedVar = "yes"
   else hasPropertyWrapperLocalWrappedVar = "no"
-select x, "getModule:", getModule, "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:",
-  getInterfaceType, "getNumberOfAccessors:", getNumberOfAccessors, "getName:", getName, "getType:",
-  getType, "hasAttachedPropertyWrapperType:", hasAttachedPropertyWrapperType, "hasParentPattern:",
-  hasParentPattern, "hasParentInitializer:", hasParentInitializer,
-  "hasPropertyWrapperBackingVarBinding:", hasPropertyWrapperBackingVarBinding,
-  "hasPropertyWrapperBackingVar:", hasPropertyWrapperBackingVar,
-  "hasPropertyWrapperProjectionVarBinding:", hasPropertyWrapperProjectionVarBinding,
-  "hasPropertyWrapperProjectionVar:", hasPropertyWrapperProjectionVar, "isInout:", isInout,
-  "hasPropertyWrapperLocalWrappedVarBinding:", hasPropertyWrapperLocalWrappedVarBinding,
-  "hasPropertyWrapperLocalWrappedVar:", hasPropertyWrapperLocalWrappedVar
+}
+
+query predicate getMember(ParamDecl x, int index, Decl getMember) {
+  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
+}
+
+query predicate getAccessor(ParamDecl x, int index, Accessor getAccessor) {
+  toBeTested(x) and not x.isUnknown() and getAccessor = x.getAccessor(index)
+}
+
+query predicate getAttachedPropertyWrapperType(ParamDecl x, Type getAttachedPropertyWrapperType) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getAttachedPropertyWrapperType = x.getAttachedPropertyWrapperType()
+}
+
+query predicate getParentPattern(ParamDecl x, Pattern getParentPattern) {
+  toBeTested(x) and not x.isUnknown() and getParentPattern = x.getParentPattern()
+}
+
+query predicate getParentInitializer(ParamDecl x, Expr getParentInitializer) {
+  toBeTested(x) and not x.isUnknown() and getParentInitializer = x.getParentInitializer()
+}
+
+query predicate getPropertyWrapperBackingVarBinding(
+  ParamDecl x, PatternBindingDecl getPropertyWrapperBackingVarBinding
+) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getPropertyWrapperBackingVarBinding = x.getPropertyWrapperBackingVarBinding()
+}
+
+query predicate getPropertyWrapperBackingVar(ParamDecl x, VarDecl getPropertyWrapperBackingVar) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getPropertyWrapperBackingVar = x.getPropertyWrapperBackingVar()
+}
+
+query predicate getPropertyWrapperProjectionVarBinding(
+  ParamDecl x, PatternBindingDecl getPropertyWrapperProjectionVarBinding
+) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getPropertyWrapperProjectionVarBinding = x.getPropertyWrapperProjectionVarBinding()
+}
+
+query predicate getPropertyWrapperProjectionVar(ParamDecl x, VarDecl getPropertyWrapperProjectionVar) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getPropertyWrapperProjectionVar = x.getPropertyWrapperProjectionVar()
+}
+
+query predicate getPropertyWrapperLocalWrappedVarBinding(
+  ParamDecl x, PatternBindingDecl getPropertyWrapperLocalWrappedVarBinding
+) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getPropertyWrapperLocalWrappedVarBinding = x.getPropertyWrapperLocalWrappedVarBinding()
+}
+
+query predicate getPropertyWrapperLocalWrappedVar(
+  ParamDecl x, VarDecl getPropertyWrapperLocalWrappedVar
+) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getPropertyWrapperLocalWrappedVar = x.getPropertyWrapperLocalWrappedVar()
+}

@@ -2,9 +2,15 @@
 import codeql.rust.elements
 import TestUtils
 
-from ImplTraitTypeRepr x, string hasTypeBoundList
-where
+query predicate instances(
+  ImplTraitTypeRepr x, string hasTypeBoundList__label, string hasTypeBoundList
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasTypeBoundList__label = "hasTypeBoundList:" and
   if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no"
-select x, "hasTypeBoundList:", hasTypeBoundList
+}
+
+query predicate getTypeBoundList(ImplTraitTypeRepr x, TypeBoundList getTypeBoundList) {
+  toBeTested(x) and not x.isUnknown() and getTypeBoundList = x.getTypeBoundList()
+}

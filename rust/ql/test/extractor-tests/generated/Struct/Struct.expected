@@ -1,1 +1,14 @@
+instances
 | gen_struct.rs:4:5:8:5 | struct Point | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfDeriveMacroExpansions: | 0 | getNumberOfAttrs: | 0 | hasFieldList: | yes | hasGenericParamList: | no | hasName: | yes | hasVisibility: | no | hasWhereClause: | no |
+getExtendedCanonicalPath
+getCrateOrigin
+getAttributeMacroExpansion
+getDeriveMacroExpansion
+getAttr
+getFieldList
+| gen_struct.rs:4:5:8:5 | struct Point | gen_struct.rs:5:18:8:5 | StructFieldList |
+getGenericParamList
+getName
+| gen_struct.rs:4:5:8:5 | struct Point | gen_struct.rs:5:12:5:16 | Point |
+getVisibility
+getWhereClause

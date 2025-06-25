@@ -2,11 +2,20 @@
 import codeql.rust.elements
 import TestUtils
 
-from PtrTypeRepr x, string isConst, string isMut, string hasTypeRepr
-where
+query predicate instances(
+  PtrTypeRepr x, string isConst__label, string isConst, string isMut__label, string isMut,
+  string hasTypeRepr__label, string hasTypeRepr
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  isConst__label = "isConst:" and
   (if x.isConst() then isConst = "yes" else isConst = "no") and
+  isMut__label = "isMut:" and
   (if x.isMut() then isMut = "yes" else isMut = "no") and
+  hasTypeRepr__label = "hasTypeRepr:" and
   if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
-select x, "isConst:", isConst, "isMut:", isMut, "hasTypeRepr:", hasTypeRepr
+}
+
+query predicate getTypeRepr(PtrTypeRepr x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}

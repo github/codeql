@@ -2,13 +2,30 @@
 import codeql.rust.elements
 import TestUtils
 
-from UseTree x, string isGlob, string hasPath, string hasRename, string hasUseTreeList
-where
+query predicate instances(
+  UseTree x, string isGlob__label, string isGlob, string hasPath__label, string hasPath,
+  string hasRename__label, string hasRename, string hasUseTreeList__label, string hasUseTreeList
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  isGlob__label = "isGlob:" and
   (if x.isGlob() then isGlob = "yes" else isGlob = "no") and
+  hasPath__label = "hasPath:" and
   (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
+  hasRename__label = "hasRename:" and
   (if x.hasRename() then hasRename = "yes" else hasRename = "no") and
+  hasUseTreeList__label = "hasUseTreeList:" and
   if x.hasUseTreeList() then hasUseTreeList = "yes" else hasUseTreeList = "no"
-select x, "isGlob:", isGlob, "hasPath:", hasPath, "hasRename:", hasRename, "hasUseTreeList:",
-  hasUseTreeList
+}
+
+query predicate getPath(UseTree x, Path getPath) {
+  toBeTested(x) and not x.isUnknown() and getPath = x.getPath()
+}
+
+query predicate getRename(UseTree x, Rename getRename) {
+  toBeTested(x) and not x.isUnknown() and getRename = x.getRename()
+}
+
+query predicate getUseTreeList(UseTree x, UseTreeList getUseTreeList) {
+  toBeTested(x) and not x.isUnknown() and getUseTreeList = x.getUseTreeList()
+}

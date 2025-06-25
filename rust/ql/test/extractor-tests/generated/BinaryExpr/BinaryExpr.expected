@@ -1,5 +1,25 @@
+instances
 | gen_binary_expr.rs:5:5:5:9 | ... + ... | getNumberOfAttrs: | 0 | hasLhs: | yes | hasOperatorName: | yes | hasRhs: | yes |
 | gen_binary_expr.rs:6:5:6:10 | ... && ... | getNumberOfAttrs: | 0 | hasLhs: | yes | hasOperatorName: | yes | hasRhs: | yes |
 | gen_binary_expr.rs:7:5:7:10 | ... <= ... | getNumberOfAttrs: | 0 | hasLhs: | yes | hasOperatorName: | yes | hasRhs: | yes |
 | gen_binary_expr.rs:8:5:8:9 | ... = ... | getNumberOfAttrs: | 0 | hasLhs: | yes | hasOperatorName: | yes | hasRhs: | yes |
 | gen_binary_expr.rs:9:5:9:10 | ... += ... | getNumberOfAttrs: | 0 | hasLhs: | yes | hasOperatorName: | yes | hasRhs: | yes |
+getAttr
+getLhs
+| gen_binary_expr.rs:5:5:5:9 | ... + ... | gen_binary_expr.rs:5:5:5:5 | x |
+| gen_binary_expr.rs:6:5:6:10 | ... && ... | gen_binary_expr.rs:6:5:6:5 | x |
+| gen_binary_expr.rs:7:5:7:10 | ... <= ... | gen_binary_expr.rs:7:5:7:5 | x |
+| gen_binary_expr.rs:8:5:8:9 | ... = ... | gen_binary_expr.rs:8:5:8:5 | x |
+| gen_binary_expr.rs:9:5:9:10 | ... += ... | gen_binary_expr.rs:9:5:9:5 | x |
+getOperatorName
+| gen_binary_expr.rs:5:5:5:9 | ... + ... | + |
+| gen_binary_expr.rs:6:5:6:10 | ... && ... | && |
+| gen_binary_expr.rs:7:5:7:10 | ... <= ... | <= |
+| gen_binary_expr.rs:8:5:8:9 | ... = ... | = |
+| gen_binary_expr.rs:9:5:9:10 | ... += ... | += |
+getRhs
+| gen_binary_expr.rs:5:5:5:9 | ... + ... | gen_binary_expr.rs:5:9:5:9 | y |
+| gen_binary_expr.rs:6:5:6:10 | ... && ... | gen_binary_expr.rs:6:10:6:10 | y |
+| gen_binary_expr.rs:7:5:7:10 | ... <= ... | gen_binary_expr.rs:7:10:7:10 | y |
+| gen_binary_expr.rs:8:5:8:9 | ... = ... | gen_binary_expr.rs:8:9:8:9 | y |
+| gen_binary_expr.rs:9:5:9:10 | ... += ... | gen_binary_expr.rs:9:10:9:10 | y |

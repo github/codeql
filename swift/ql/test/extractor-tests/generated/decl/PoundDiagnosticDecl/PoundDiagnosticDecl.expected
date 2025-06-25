@@ -1,2 +1,4 @@
+instances
 | diagnostics.swift:2:1:2:25 | #warning(...) | getModule: | file://:0:0:0:0 | diagnostics | getNumberOfMembers: | 0 | getKind: | 2 | getMessage: | diagnostics.swift:2:10:2:10 | I'm a warning |
 | diagnostics.swift:3:1:3:26 | #error(...) | getModule: | file://:0:0:0:0 | diagnostics | getNumberOfMembers: | 0 | getKind: | 1 | getMessage: | diagnostics.swift:3:8:3:8 | And I'm an error |
+getMember

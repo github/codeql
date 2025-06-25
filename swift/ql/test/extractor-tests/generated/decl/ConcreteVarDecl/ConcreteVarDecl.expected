@@ -1,3 +1,4 @@
+instances
 | var_decls.swift:2:7:2:7 | i | getModule: | file://:0:0:0:0 | var_decls | getNumberOfMembers: | 0 | getInterfaceType: | Int | getNumberOfAccessors: | 0 | getName: | i | getType: | Int | hasAttachedPropertyWrapperType: | no | hasParentPattern: | yes | hasParentInitializer: | no | hasPropertyWrapperBackingVarBinding: | no | hasPropertyWrapperBackingVar: | no | hasPropertyWrapperProjectionVarBinding: | no | hasPropertyWrapperProjectionVar: | no | getIntroducerInt: | 0 |
 | var_decls.swift:2:12:2:12 | $i$generator | getModule: | file://:0:0:0:0 | var_decls | getNumberOfMembers: | 0 | getInterfaceType: | IndexingIterator<ClosedRange<Int>> | getNumberOfAccessors: | 0 | getName: | $i$generator | getType: | IndexingIterator<ClosedRange<Int>> | hasAttachedPropertyWrapperType: | no | hasParentPattern: | yes | hasParentInitializer: | yes | hasPropertyWrapperBackingVarBinding: | no | hasPropertyWrapperBackingVar: | no | hasPropertyWrapperProjectionVarBinding: | no | hasPropertyWrapperProjectionVar: | no | getIntroducerInt: | 1 |
 | var_decls.swift:4:7:4:7 | i | getModule: | file://:0:0:0:0 | var_decls | getNumberOfMembers: | 0 | getInterfaceType: | Int | getNumberOfAccessors: | 0 | getName: | i | getType: | Int | hasAttachedPropertyWrapperType: | no | hasParentPattern: | yes | hasParentInitializer: | yes | hasPropertyWrapperBackingVarBinding: | no | hasPropertyWrapperBackingVar: | no | hasPropertyWrapperProjectionVarBinding: | no | hasPropertyWrapperProjectionVar: | no | getIntroducerInt: | 1 |
@@ -26,3 +27,111 @@
 | var_decls.swift:65:34:65:34 | $match | getModule: | file://:0:0:0:0 | var_decls | getNumberOfMembers: | 0 | getInterfaceType: | Int | getNumberOfAccessors: | 0 | getName: | $match | getType: | Int | hasAttachedPropertyWrapperType: | no | hasParentPattern: | no | hasParentInitializer: | no | hasPropertyWrapperBackingVarBinding: | no | hasPropertyWrapperBackingVar: | no | hasPropertyWrapperProjectionVarBinding: | no | hasPropertyWrapperProjectionVar: | no | getIntroducerInt: | 0 |
 | var_decls.swift:67:15:67:15 | $match | getModule: | file://:0:0:0:0 | var_decls | getNumberOfMembers: | 0 | getInterfaceType: | Int | getNumberOfAccessors: | 0 | getName: | $match | getType: | Int | hasAttachedPropertyWrapperType: | no | hasParentPattern: | no | hasParentInitializer: | no | hasPropertyWrapperBackingVarBinding: | no | hasPropertyWrapperBackingVar: | no | hasPropertyWrapperProjectionVarBinding: | no | hasPropertyWrapperProjectionVar: | no | getIntroducerInt: | 0 |
 | var_decls.swift:67:22:67:22 | unused_case_variable | getModule: | file://:0:0:0:0 | var_decls | getNumberOfMembers: | 0 | getInterfaceType: | Int | getNumberOfAccessors: | 0 | getName: | unused_case_variable | getType: | Int | hasAttachedPropertyWrapperType: | no | hasParentPattern: | yes | hasParentInitializer: | no | hasPropertyWrapperBackingVarBinding: | no | hasPropertyWrapperBackingVar: | no | hasPropertyWrapperProjectionVarBinding: | no | hasPropertyWrapperProjectionVar: | no | getIntroducerInt: | 0 |
+getMember
+getAccessor
+| var_decls.swift:10:12:10:12 | numbers | 0 | var_decls.swift:10:12:10:12 | get |
+| var_decls.swift:15:7:15:7 | wrappedValue | 0 | var_decls.swift:15:7:15:7 | get |
+| var_decls.swift:15:7:15:7 | wrappedValue | 1 | var_decls.swift:15:7:15:7 | set |
+| var_decls.swift:15:7:15:7 | wrappedValue | 2 | var_decls.swift:15:7:15:7 | _modify |
+| var_decls.swift:20:7:20:7 | wrappedValue | 0 | var_decls.swift:20:7:20:7 | get |
+| var_decls.swift:20:7:20:7 | wrappedValue | 1 | var_decls.swift:20:7:20:7 | set |
+| var_decls.swift:20:7:20:7 | wrappedValue | 2 | var_decls.swift:20:7:20:7 | _modify |
+| var_decls.swift:24:15:24:15 | _wrapped | 0 | var_decls.swift:24:15:24:15 | get |
+| var_decls.swift:24:15:24:15 | _wrapped | 1 | var_decls.swift:24:15:24:15 | set |
+| var_decls.swift:24:15:24:15 | _wrapped | 2 | var_decls.swift:24:15:24:15 | _modify |
+| var_decls.swift:24:15:24:15 | wrapped | 0 | var_decls.swift:24:15:24:15 | get |
+| var_decls.swift:24:15:24:15 | wrapped | 1 | var_decls.swift:24:15:24:15 | set |
+| var_decls.swift:24:15:24:15 | wrapped | 2 | var_decls.swift:24:15:24:15 | _modify |
+| var_decls.swift:28:7:28:7 | wrappedValue | 0 | var_decls.swift:28:7:28:7 | get |
+| var_decls.swift:28:7:28:7 | wrappedValue | 1 | var_decls.swift:28:7:28:7 | set |
+| var_decls.swift:28:7:28:7 | wrappedValue | 2 | var_decls.swift:28:7:28:7 | _modify |
+| var_decls.swift:34:7:34:7 | wrappedValue | 0 | var_decls.swift:34:7:34:7 | get |
+| var_decls.swift:34:7:34:7 | wrappedValue | 1 | var_decls.swift:34:7:34:7 | set |
+| var_decls.swift:34:7:34:7 | wrappedValue | 2 | var_decls.swift:34:7:34:7 | _modify |
+| var_decls.swift:35:7:35:7 | projectedValue | 0 | var_decls.swift:35:7:35:7 | get |
+| var_decls.swift:35:7:35:7 | projectedValue | 1 | var_decls.swift:35:7:35:7 | set |
+| var_decls.swift:35:7:35:7 | projectedValue | 2 | var_decls.swift:35:7:35:7 | _modify |
+| var_decls.swift:39:7:39:7 | wrappedValue | 0 | var_decls.swift:39:7:39:7 | get |
+| var_decls.swift:39:7:39:7 | wrappedValue | 1 | var_decls.swift:39:7:39:7 | set |
+| var_decls.swift:39:7:39:7 | wrappedValue | 2 | var_decls.swift:39:7:39:7 | _modify |
+| var_decls.swift:40:7:40:7 | projectedValue | 0 | var_decls.swift:40:7:40:7 | get |
+| var_decls.swift:40:7:40:7 | projectedValue | 1 | var_decls.swift:40:7:40:7 | set |
+| var_decls.swift:40:7:40:7 | projectedValue | 2 | var_decls.swift:40:7:40:7 | _modify |
+| var_decls.swift:54:10:54:10 | w1 | 0 | var_decls.swift:54:10:54:10 | get |
+| var_decls.swift:54:10:54:10 | w1 | 1 | var_decls.swift:54:10:54:10 | set |
+| var_decls.swift:55:24:55:24 | w2 | 0 | var_decls.swift:55:24:55:24 | get |
+| var_decls.swift:55:24:55:24 | w2 | 1 | var_decls.swift:55:24:55:24 | set |
+| var_decls.swift:56:29:56:29 | $w3 | 0 | var_decls.swift:56:29:56:29 | get |
+| var_decls.swift:56:29:56:29 | $w3 | 1 | var_decls.swift:56:29:56:29 | set |
+| var_decls.swift:56:29:56:29 | w3 | 0 | var_decls.swift:56:29:56:29 | get |
+| var_decls.swift:56:29:56:29 | w3 | 1 | var_decls.swift:56:29:56:29 | set |
+| var_decls.swift:57:36:57:36 | $w4 | 0 | var_decls.swift:57:36:57:36 | get |
+| var_decls.swift:57:36:57:36 | $w4 | 1 | var_decls.swift:57:36:57:36 | set |
+| var_decls.swift:57:36:57:36 | w4 | 0 | var_decls.swift:57:36:57:36 | get |
+| var_decls.swift:57:36:57:36 | w4 | 1 | var_decls.swift:57:36:57:36 | set |
+getAttachedPropertyWrapperType
+| var_decls.swift:24:15:24:15 | wrapped | X<Y> |
+| var_decls.swift:54:10:54:10 | w1 | X<Int> |
+| var_decls.swift:55:24:55:24 | w2 | WrapperWithInit |
+| var_decls.swift:56:29:56:29 | w3 | WrapperWithProjected |
+| var_decls.swift:57:36:57:36 | w4 | WrapperWithProjectedAndInit |
+getParentPattern
+| var_decls.swift:2:7:2:7 | i | var_decls.swift:2:7:2:7 | i |
+| var_decls.swift:2:12:2:12 | $i$generator | var_decls.swift:2:12:2:12 | $i$generator |
+| var_decls.swift:4:7:4:7 | i | var_decls.swift:4:7:4:7 | i |
+| var_decls.swift:7:5:7:5 | numbers | var_decls.swift:7:5:7:5 | numbers |
+| var_decls.swift:10:12:10:12 | numbers | var_decls.swift:10:12:10:12 | numbers |
+| var_decls.swift:15:7:15:7 | wrappedValue | var_decls.swift:15:7:15:21 | ... as ... |
+| var_decls.swift:20:7:20:7 | wrappedValue | var_decls.swift:20:7:20:21 | ... as ... |
+| var_decls.swift:24:15:24:15 | _wrapped | var_decls.swift:24:15:24:15 | ... as ... |
+| var_decls.swift:24:15:24:15 | wrapped | var_decls.swift:24:15:24:25 | ... as ... |
+| var_decls.swift:28:7:28:7 | wrappedValue | var_decls.swift:28:7:28:22 | ... as ... |
+| var_decls.swift:34:7:34:7 | wrappedValue | var_decls.swift:34:7:34:22 | ... as ... |
+| var_decls.swift:35:7:35:7 | projectedValue | var_decls.swift:35:7:35:24 | ... as ... |
+| var_decls.swift:39:7:39:7 | wrappedValue | var_decls.swift:39:7:39:22 | ... as ... |
+| var_decls.swift:40:7:40:7 | projectedValue | var_decls.swift:40:7:40:24 | ... as ... |
+| var_decls.swift:54:10:54:10 | _w1 | var_decls.swift:54:10:54:10 | ... as ... |
+| var_decls.swift:54:10:54:10 | w1 | var_decls.swift:54:10:54:10 | w1 |
+| var_decls.swift:55:24:55:24 | _w2 | var_decls.swift:55:24:55:24 | ... as ... |
+| var_decls.swift:55:24:55:24 | w2 | var_decls.swift:55:24:55:24 | w2 |
+| var_decls.swift:56:29:56:29 | $w3 | var_decls.swift:56:29:56:29 | ... as ... |
+| var_decls.swift:56:29:56:29 | _w3 | var_decls.swift:56:29:56:29 | ... as ... |
+| var_decls.swift:56:29:56:29 | w3 | var_decls.swift:56:29:56:29 | w3 |
+| var_decls.swift:57:36:57:36 | $w4 | var_decls.swift:57:36:57:36 | ... as ... |
+| var_decls.swift:57:36:57:36 | _w4 | var_decls.swift:57:36:57:36 | ... as ... |
+| var_decls.swift:57:36:57:36 | w4 | var_decls.swift:57:36:57:36 | w4 |
+| var_decls.swift:65:19:65:19 | case_variable | var_decls.swift:65:8:65:35 | .value(...) |
+| var_decls.swift:67:22:67:22 | unused_case_variable | var_decls.swift:67:8:67:42 | .value(...) |
+getParentInitializer
+| var_decls.swift:2:12:2:12 | $i$generator | var_decls.swift:2:12:2:16 | call to makeIterator() |
+| var_decls.swift:4:7:4:7 | i | var_decls.swift:4:11:4:11 | 0 |
+| var_decls.swift:7:5:7:5 | numbers | var_decls.swift:7:15:7:18 | [...] |
+| var_decls.swift:10:12:10:12 | numbers | var_decls.swift:10:22:10:35 | [...] |
+| var_decls.swift:34:7:34:7 | wrappedValue | var_decls.swift:34:28:34:28 | 42 |
+| var_decls.swift:35:7:35:7 | projectedValue | var_decls.swift:35:31:35:31 | false |
+| var_decls.swift:54:10:54:10 | _w1 | var_decls.swift:54:4:54:15 | call to X<T>.init(wrappedValue:) |
+| var_decls.swift:54:10:54:10 | w1 | var_decls.swift:54:4:54:15 | call to X<T>.init(wrappedValue:) |
+| var_decls.swift:55:24:55:24 | _w2 | var_decls.swift:55:4:55:29 | call to WrapperWithInit.init(wrappedValue:) |
+| var_decls.swift:55:24:55:24 | w2 | var_decls.swift:55:4:55:29 | call to WrapperWithInit.init(wrappedValue:) |
+| var_decls.swift:56:29:56:29 | _w3 | var_decls.swift:56:4:56:34 | call to WrapperWithProjected.init(wrappedValue:projectedValue:) |
+| var_decls.swift:56:29:56:29 | w3 | var_decls.swift:56:4:56:34 | call to WrapperWithProjected.init(wrappedValue:projectedValue:) |
+| var_decls.swift:57:36:57:36 | _w4 | var_decls.swift:57:4:57:41 | call to WrapperWithProjectedAndInit.init(wrappedValue:) |
+| var_decls.swift:57:36:57:36 | w4 | var_decls.swift:57:4:57:41 | call to WrapperWithProjectedAndInit.init(wrappedValue:) |
+getPropertyWrapperBackingVarBinding
+| var_decls.swift:24:15:24:15 | wrapped | file://:0:0:0:0 | var ... = ... |
+| var_decls.swift:54:10:54:10 | w1 | file://:0:0:0:0 | var ... = ... |
+| var_decls.swift:55:24:55:24 | w2 | file://:0:0:0:0 | var ... = ... |
+| var_decls.swift:56:29:56:29 | w3 | file://:0:0:0:0 | var ... = ... |
+| var_decls.swift:57:36:57:36 | w4 | file://:0:0:0:0 | var ... = ... |
+getPropertyWrapperBackingVar
+| var_decls.swift:24:15:24:15 | wrapped | var_decls.swift:24:15:24:15 | _wrapped |
+| var_decls.swift:54:10:54:10 | w1 | var_decls.swift:54:10:54:10 | _w1 |
+| var_decls.swift:55:24:55:24 | w2 | var_decls.swift:55:24:55:24 | _w2 |
+| var_decls.swift:56:29:56:29 | w3 | var_decls.swift:56:29:56:29 | _w3 |
+| var_decls.swift:57:36:57:36 | w4 | var_decls.swift:57:36:57:36 | _w4 |
+getPropertyWrapperProjectionVarBinding
+| var_decls.swift:56:29:56:29 | w3 | file://:0:0:0:0 | var ... = ... |
+| var_decls.swift:57:36:57:36 | w4 | file://:0:0:0:0 | var ... = ... |
+getPropertyWrapperProjectionVar
+| var_decls.swift:56:29:56:29 | w3 | var_decls.swift:56:29:56:29 | $w3 |
+| var_decls.swift:57:36:57:36 | w4 | var_decls.swift:57:36:57:36 | $w4 |

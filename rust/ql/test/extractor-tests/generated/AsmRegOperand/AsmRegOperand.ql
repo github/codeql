@@ -2,12 +2,29 @@
 import codeql.rust.elements
 import TestUtils
 
-from AsmRegOperand x, string hasAsmDirSpec, string hasAsmOperandExpr, string hasAsmRegSpec
-where
+query predicate instances(
+  AsmRegOperand x, string hasAsmDirSpec__label, string hasAsmDirSpec,
+  string hasAsmOperandExpr__label, string hasAsmOperandExpr, string hasAsmRegSpec__label,
+  string hasAsmRegSpec
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasAsmDirSpec__label = "hasAsmDirSpec:" and
   (if x.hasAsmDirSpec() then hasAsmDirSpec = "yes" else hasAsmDirSpec = "no") and
+  hasAsmOperandExpr__label = "hasAsmOperandExpr:" and
   (if x.hasAsmOperandExpr() then hasAsmOperandExpr = "yes" else hasAsmOperandExpr = "no") and
+  hasAsmRegSpec__label = "hasAsmRegSpec:" and
   if x.hasAsmRegSpec() then hasAsmRegSpec = "yes" else hasAsmRegSpec = "no"
-select x, "hasAsmDirSpec:", hasAsmDirSpec, "hasAsmOperandExpr:", hasAsmOperandExpr,
-  "hasAsmRegSpec:", hasAsmRegSpec
+}
+
+query predicate getAsmDirSpec(AsmRegOperand x, AsmDirSpec getAsmDirSpec) {
+  toBeTested(x) and not x.isUnknown() and getAsmDirSpec = x.getAsmDirSpec()
+}
+
+query predicate getAsmOperandExpr(AsmRegOperand x, AsmOperandExpr getAsmOperandExpr) {
+  toBeTested(x) and not x.isUnknown() and getAsmOperandExpr = x.getAsmOperandExpr()
+}
+
+query predicate getAsmRegSpec(AsmRegOperand x, AsmRegSpec getAsmRegSpec) {
+  toBeTested(x) and not x.isUnknown() and getAsmRegSpec = x.getAsmRegSpec()
+}

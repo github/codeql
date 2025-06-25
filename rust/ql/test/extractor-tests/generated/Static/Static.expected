@@ -1,1 +1,13 @@
+instances
 | gen_static.rs:4:5:7:23 | Static | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasBody: | yes | isMut: | no | isStatic: | yes | isUnsafe: | no | hasName: | yes | hasTypeRepr: | yes | hasVisibility: | no |
+getExtendedCanonicalPath
+getCrateOrigin
+getAttributeMacroExpansion
+getAttr
+getBody
+| gen_static.rs:4:5:7:23 | Static | gen_static.rs:7:21:7:22 | 42 |
+getName
+| gen_static.rs:4:5:7:23 | Static | gen_static.rs:7:12:7:12 | X |
+getTypeRepr
+| gen_static.rs:4:5:7:23 | Static | gen_static.rs:7:15:7:17 | i32 |
+getVisibility

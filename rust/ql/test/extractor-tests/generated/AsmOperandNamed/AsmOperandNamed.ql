@@ -2,10 +2,22 @@
 import codeql.rust.elements
 import TestUtils
 
-from AsmOperandNamed x, string hasAsmOperand, string hasName
-where
+query predicate instances(
+  AsmOperandNamed x, string hasAsmOperand__label, string hasAsmOperand, string hasName__label,
+  string hasName
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasAsmOperand__label = "hasAsmOperand:" and
   (if x.hasAsmOperand() then hasAsmOperand = "yes" else hasAsmOperand = "no") and
+  hasName__label = "hasName:" and
   if x.hasName() then hasName = "yes" else hasName = "no"
-select x, "hasAsmOperand:", hasAsmOperand, "hasName:", hasName
+}
+
+query predicate getAsmOperand(AsmOperandNamed x, AsmOperand getAsmOperand) {
+  toBeTested(x) and not x.isUnknown() and getAsmOperand = x.getAsmOperand()
+}
+
+query predicate getName(AsmOperandNamed x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}

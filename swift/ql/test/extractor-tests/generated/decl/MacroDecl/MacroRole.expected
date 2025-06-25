@@ -1,3 +1,4 @@
+instances
 | file://:0:0:0:0 | #freestanding(declaration) | getKind: | 2 | getMacroSyntax: | 0 | getNumberOfConformances: | 0 | getNumberOfNames: | 0 |
 | file://:0:0:0:0 | #freestanding(declaration) | getKind: | 2 | getMacroSyntax: | 0 | getNumberOfConformances: | 0 | getNumberOfNames: | 0 |
 | file://:0:0:0:0 | #freestanding(expression) | getKind: | 1 | getMacroSyntax: | 0 | getNumberOfConformances: | 0 | getNumberOfNames: | 0 |
@@ -18,3 +19,7 @@
 | test.swift:3:2:3:25 | #freestanding(expression) | getKind: | 1 | getMacroSyntax: | 0 | getNumberOfConformances: | 0 | getNumberOfNames: | 0 |
 | test.swift:5:2:5:17 | @attached(member) | getKind: | 16 | getMacroSyntax: | 1 | getNumberOfConformances: | 0 | getNumberOfNames: | 0 |
 | test.swift:6:2:6:20 | @attached(extension) | getKind: | 256 | getMacroSyntax: | 1 | getNumberOfConformances: | 0 | getNumberOfNames: | 0 |
+getConformance
+getName
+| file://:0:0:0:0 | @attached(peer) | 0 | $() |
+| file://:0:0:0:0 | @attached(peer) | 0 | _lldb_summary() |

@@ -2,9 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from Abi x, string hasAbiString
-where
+query predicate instances(Abi x, string hasAbiString__label, string hasAbiString) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasAbiString__label = "hasAbiString:" and
   if x.hasAbiString() then hasAbiString = "yes" else hasAbiString = "no"
-select x, "hasAbiString:", hasAbiString
+}
+
+query predicate getAbiString(Abi x, string getAbiString) {
+  toBeTested(x) and not x.isUnknown() and getAbiString = x.getAbiString()
+}

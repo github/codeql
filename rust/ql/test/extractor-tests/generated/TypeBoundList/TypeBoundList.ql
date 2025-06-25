@@ -2,9 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from TypeBoundList x, int getNumberOfBounds
-where
+query predicate instances(TypeBoundList x, string getNumberOfBounds__label, int getNumberOfBounds) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfBounds__label = "getNumberOfBounds:" and
   getNumberOfBounds = x.getNumberOfBounds()
-select x, "getNumberOfBounds:", getNumberOfBounds
+}
+
+query predicate getBound(TypeBoundList x, int index, TypeBound getBound) {
+  toBeTested(x) and not x.isUnknown() and getBound = x.getBound(index)
+}

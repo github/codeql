@@ -1,3 +1,4 @@
+instances
 | switch.swift:3:9:3:9 | =~ ... | getPattern: | switch.swift:3:9:3:9 | =~ ... | hasGuard: | no |
 | switch.swift:6:9:6:9 | =~ ... | getPattern: | switch.swift:6:9:6:9 | =~ ... | hasGuard: | no |
 | switch.swift:6:12:6:12 | =~ ... | getPattern: | switch.swift:6:12:6:12 | =~ ... | hasGuard: | no |
@@ -11,3 +12,6 @@
 | switch.swift:35:13:35:13 | =~ ... | getPattern: | switch.swift:35:13:35:13 | =~ ... | hasGuard: | no |
 | switch.swift:37:8:37:8 | _ | getPattern: | switch.swift:37:8:37:8 | _ | hasGuard: | no |
 | switch.swift:40:3:40:3 | _ | getPattern: | switch.swift:40:3:40:3 | _ | hasGuard: | no |
+getGuard
+| switch.swift:8:9:8:26 | x where ... | switch.swift:8:21:8:26 | ... .>=(_:_:) ... |
+| switch.swift:24:8:24:40 | .two(...) where ... | switch.swift:24:33:24:40 | ... .==(_:_:) ... |

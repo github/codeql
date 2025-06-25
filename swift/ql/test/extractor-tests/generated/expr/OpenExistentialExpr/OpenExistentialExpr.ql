@@ -2,15 +2,23 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  OpenExistentialExpr x, string hasType, Expr getSubExpr, Expr getExistential,
+query predicate instances(
+  OpenExistentialExpr x, string hasType__label, string hasType, string getSubExpr__label,
+  Expr getSubExpr, string getExistential__label, Expr getExistential, string getOpaqueExpr__label,
   OpaqueValueExpr getOpaqueExpr
-where
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasType__label = "hasType:" and
   (if x.hasType() then hasType = "yes" else hasType = "no") and
+  getSubExpr__label = "getSubExpr:" and
   getSubExpr = x.getSubExpr() and
+  getExistential__label = "getExistential:" and
   getExistential = x.getExistential() and
+  getOpaqueExpr__label = "getOpaqueExpr:" and
   getOpaqueExpr = x.getOpaqueExpr()
-select x, "hasType:", hasType, "getSubExpr:", getSubExpr, "getExistential:", getExistential,
-  "getOpaqueExpr:", getOpaqueExpr
+}
+
+query predicate getType(OpenExistentialExpr x, Type getType) {
+  toBeTested(x) and not x.isUnknown() and getType = x.getType()
+}

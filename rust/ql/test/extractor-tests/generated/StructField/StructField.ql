@@ -2,17 +2,43 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  StructField x, int getNumberOfAttrs, string hasDefault, string isUnsafe, string hasName,
-  string hasTypeRepr, string hasVisibility
-where
+query predicate instances(
+  StructField x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasDefault__label,
+  string hasDefault, string isUnsafe__label, string isUnsafe, string hasName__label, string hasName,
+  string hasTypeRepr__label, string hasTypeRepr, string hasVisibility__label, string hasVisibility
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasDefault__label = "hasDefault:" and
   (if x.hasDefault() then hasDefault = "yes" else hasDefault = "no") and
+  isUnsafe__label = "isUnsafe:" and
   (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
+  hasName__label = "hasName:" and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
+  hasTypeRepr__label = "hasTypeRepr:" and
   (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
+  hasVisibility__label = "hasVisibility:" and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasDefault:", hasDefault, "isUnsafe:", isUnsafe,
-  "hasName:", hasName, "hasTypeRepr:", hasTypeRepr, "hasVisibility:", hasVisibility
+}
+
+query predicate getAttr(StructField x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getDefault(StructField x, Expr getDefault) {
+  toBeTested(x) and not x.isUnknown() and getDefault = x.getDefault()
+}
+
+query predicate getName(StructField x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getTypeRepr(StructField x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}
+
+query predicate getVisibility(StructField x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}

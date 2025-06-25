@@ -2,37 +2,92 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  Impl x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasAttributeMacroExpansion,
-  string hasAssocItemList, int getNumberOfAttrs, string hasGenericParamList, string isConst,
-  string isDefault, string isUnsafe, string hasSelfTy, string hasTrait, string hasVisibility,
-  string hasWhereClause
-where
+query predicate instances(
+  Impl x, string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
+  string hasCrateOrigin__label, string hasCrateOrigin, string hasAttributeMacroExpansion__label,
+  string hasAttributeMacroExpansion, string hasAssocItemList__label, string hasAssocItemList,
+  string getNumberOfAttrs__label, int getNumberOfAttrs, string hasGenericParamList__label,
+  string hasGenericParamList, string isConst__label, string isConst, string isDefault__label,
+  string isDefault, string isUnsafe__label, string isUnsafe, string hasSelfTy__label,
+  string hasSelfTy, string hasTrait__label, string hasTrait, string hasVisibility__label,
+  string hasVisibility, string hasWhereClause__label, string hasWhereClause
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
   (
     if x.hasExtendedCanonicalPath()
     then hasExtendedCanonicalPath = "yes"
     else hasExtendedCanonicalPath = "no"
   ) and
+  hasCrateOrigin__label = "hasCrateOrigin:" and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  hasAttributeMacroExpansion__label = "hasAttributeMacroExpansion:" and
   (
     if x.hasAttributeMacroExpansion()
     then hasAttributeMacroExpansion = "yes"
     else hasAttributeMacroExpansion = "no"
   ) and
+  hasAssocItemList__label = "hasAssocItemList:" and
   (if x.hasAssocItemList() then hasAssocItemList = "yes" else hasAssocItemList = "no") and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasGenericParamList__label = "hasGenericParamList:" and
   (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
+  isConst__label = "isConst:" and
   (if x.isConst() then isConst = "yes" else isConst = "no") and
+  isDefault__label = "isDefault:" and
   (if x.isDefault() then isDefault = "yes" else isDefault = "no") and
+  isUnsafe__label = "isUnsafe:" and
   (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
+  hasSelfTy__label = "hasSelfTy:" and
   (if x.hasSelfTy() then hasSelfTy = "yes" else hasSelfTy = "no") and
+  hasTrait__label = "hasTrait:" and
   (if x.hasTrait() then hasTrait = "yes" else hasTrait = "no") and
+  hasVisibility__label = "hasVisibility:" and
   (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
+  hasWhereClause__label = "hasWhereClause:" and
   if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "hasAssocItemList:", hasAssocItemList,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:", hasGenericParamList, "isConst:",
-  isConst, "isDefault:", isDefault, "isUnsafe:", isUnsafe, "hasSelfTy:", hasSelfTy, "hasTrait:",
-  hasTrait, "hasVisibility:", hasVisibility, "hasWhereClause:", hasWhereClause
+}
+
+query predicate getExtendedCanonicalPath(Impl x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(Impl x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttributeMacroExpansion(Impl x, MacroItems getAttributeMacroExpansion) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getAssocItemList(Impl x, AssocItemList getAssocItemList) {
+  toBeTested(x) and not x.isUnknown() and getAssocItemList = x.getAssocItemList()
+}
+
+query predicate getAttr(Impl x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getGenericParamList(Impl x, GenericParamList getGenericParamList) {
+  toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
+}
+
+query predicate getSelfTy(Impl x, TypeRepr getSelfTy) {
+  toBeTested(x) and not x.isUnknown() and getSelfTy = x.getSelfTy()
+}
+
+query predicate getTrait(Impl x, TypeRepr getTrait) {
+  toBeTested(x) and not x.isUnknown() and getTrait = x.getTrait()
+}
+
+query predicate getVisibility(Impl x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}
+
+query predicate getWhereClause(Impl x, WhereClause getWhereClause) {
+  toBeTested(x) and not x.isUnknown() and getWhereClause = x.getWhereClause()
+}

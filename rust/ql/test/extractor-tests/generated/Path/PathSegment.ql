@@ -2,24 +2,59 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  PathSegment x, string hasGenericArgList, string hasIdentifier, string hasParenthesizedArgList,
-  string hasRetType, string hasReturnTypeSyntax, string hasTypeRepr, string hasTraitTypeRepr
-where
+query predicate instances(
+  PathSegment x, string hasGenericArgList__label, string hasGenericArgList,
+  string hasIdentifier__label, string hasIdentifier, string hasParenthesizedArgList__label,
+  string hasParenthesizedArgList, string hasRetType__label, string hasRetType,
+  string hasReturnTypeSyntax__label, string hasReturnTypeSyntax, string hasTypeRepr__label,
+  string hasTypeRepr, string hasTraitTypeRepr__label, string hasTraitTypeRepr
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasGenericArgList__label = "hasGenericArgList:" and
   (if x.hasGenericArgList() then hasGenericArgList = "yes" else hasGenericArgList = "no") and
+  hasIdentifier__label = "hasIdentifier:" and
   (if x.hasIdentifier() then hasIdentifier = "yes" else hasIdentifier = "no") and
+  hasParenthesizedArgList__label = "hasParenthesizedArgList:" and
   (
     if x.hasParenthesizedArgList()
     then hasParenthesizedArgList = "yes"
     else hasParenthesizedArgList = "no"
   ) and
+  hasRetType__label = "hasRetType:" and
   (if x.hasRetType() then hasRetType = "yes" else hasRetType = "no") and
+  hasReturnTypeSyntax__label = "hasReturnTypeSyntax:" and
   (if x.hasReturnTypeSyntax() then hasReturnTypeSyntax = "yes" else hasReturnTypeSyntax = "no") and
+  hasTypeRepr__label = "hasTypeRepr:" and
   (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
+  hasTraitTypeRepr__label = "hasTraitTypeRepr:" and
   if x.hasTraitTypeRepr() then hasTraitTypeRepr = "yes" else hasTraitTypeRepr = "no"
-select x, "hasGenericArgList:", hasGenericArgList, "hasIdentifier:", hasIdentifier,
-  "hasParenthesizedArgList:", hasParenthesizedArgList, "hasRetType:", hasRetType,
-  "hasReturnTypeSyntax:", hasReturnTypeSyntax, "hasTypeRepr:", hasTypeRepr, "hasTraitTypeRepr:",
-  hasTraitTypeRepr
+}
+
+query predicate getGenericArgList(PathSegment x, GenericArgList getGenericArgList) {
+  toBeTested(x) and not x.isUnknown() and getGenericArgList = x.getGenericArgList()
+}
+
+query predicate getIdentifier(PathSegment x, NameRef getIdentifier) {
+  toBeTested(x) and not x.isUnknown() and getIdentifier = x.getIdentifier()
+}
+
+query predicate getParenthesizedArgList(PathSegment x, ParenthesizedArgList getParenthesizedArgList) {
+  toBeTested(x) and not x.isUnknown() and getParenthesizedArgList = x.getParenthesizedArgList()
+}
+
+query predicate getRetType(PathSegment x, RetTypeRepr getRetType) {
+  toBeTested(x) and not x.isUnknown() and getRetType = x.getRetType()
+}
+
+query predicate getReturnTypeSyntax(PathSegment x, ReturnTypeSyntax getReturnTypeSyntax) {
+  toBeTested(x) and not x.isUnknown() and getReturnTypeSyntax = x.getReturnTypeSyntax()
+}
+
+query predicate getTypeRepr(PathSegment x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}
+
+query predicate getTraitTypeRepr(PathSegment x, PathTypeRepr getTraitTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTraitTypeRepr = x.getTraitTypeRepr()
+}

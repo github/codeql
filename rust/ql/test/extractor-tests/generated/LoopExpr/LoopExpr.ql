@@ -2,11 +2,28 @@
 import codeql.rust.elements
 import TestUtils
 
-from LoopExpr x, string hasLabel, string hasLoopBody, int getNumberOfAttrs
-where
+query predicate instances(
+  LoopExpr x, string hasLabel__label, string hasLabel, string hasLoopBody__label,
+  string hasLoopBody, string getNumberOfAttrs__label, int getNumberOfAttrs
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasLabel__label = "hasLabel:" and
   (if x.hasLabel() then hasLabel = "yes" else hasLabel = "no") and
+  hasLoopBody__label = "hasLoopBody:" and
   (if x.hasLoopBody() then hasLoopBody = "yes" else hasLoopBody = "no") and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs()
-select x, "hasLabel:", hasLabel, "hasLoopBody:", hasLoopBody, "getNumberOfAttrs:", getNumberOfAttrs
+}
+
+query predicate getLabel(LoopExpr x, Label getLabel) {
+  toBeTested(x) and not x.isUnknown() and getLabel = x.getLabel()
+}
+
+query predicate getLoopBody(LoopExpr x, BlockExpr getLoopBody) {
+  toBeTested(x) and not x.isUnknown() and getLoopBody = x.getLoopBody()
+}
+
+query predicate getAttr(LoopExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}

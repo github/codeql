@@ -2,33 +2,85 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  Enum x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasAttributeMacroExpansion,
-  int getNumberOfDeriveMacroExpansions, int getNumberOfAttrs, string hasGenericParamList,
-  string hasName, string hasVariantList, string hasVisibility, string hasWhereClause
-where
+query predicate instances(
+  Enum x, string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
+  string hasCrateOrigin__label, string hasCrateOrigin, string hasAttributeMacroExpansion__label,
+  string hasAttributeMacroExpansion, string getNumberOfDeriveMacroExpansions__label,
+  int getNumberOfDeriveMacroExpansions, string getNumberOfAttrs__label, int getNumberOfAttrs,
+  string hasGenericParamList__label, string hasGenericParamList, string hasName__label,
+  string hasName, string hasVariantList__label, string hasVariantList, string hasVisibility__label,
+  string hasVisibility, string hasWhereClause__label, string hasWhereClause
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
   (
     if x.hasExtendedCanonicalPath()
     then hasExtendedCanonicalPath = "yes"
     else hasExtendedCanonicalPath = "no"
   ) and
+  hasCrateOrigin__label = "hasCrateOrigin:" and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  hasAttributeMacroExpansion__label = "hasAttributeMacroExpansion:" and
   (
     if x.hasAttributeMacroExpansion()
     then hasAttributeMacroExpansion = "yes"
     else hasAttributeMacroExpansion = "no"
   ) and
+  getNumberOfDeriveMacroExpansions__label = "getNumberOfDeriveMacroExpansions:" and
   getNumberOfDeriveMacroExpansions = x.getNumberOfDeriveMacroExpansions() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasGenericParamList__label = "hasGenericParamList:" and
   (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
+  hasName__label = "hasName:" and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
+  hasVariantList__label = "hasVariantList:" and
   (if x.hasVariantList() then hasVariantList = "yes" else hasVariantList = "no") and
+  hasVisibility__label = "hasVisibility:" and
   (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
+  hasWhereClause__label = "hasWhereClause:" and
   if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "getNumberOfDeriveMacroExpansions:",
-  getNumberOfDeriveMacroExpansions, "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:",
-  hasGenericParamList, "hasName:", hasName, "hasVariantList:", hasVariantList, "hasVisibility:",
-  hasVisibility, "hasWhereClause:", hasWhereClause
+}
+
+query predicate getExtendedCanonicalPath(Enum x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(Enum x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttributeMacroExpansion(Enum x, MacroItems getAttributeMacroExpansion) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getDeriveMacroExpansion(Enum x, int index, MacroItems getDeriveMacroExpansion) {
+  toBeTested(x) and not x.isUnknown() and getDeriveMacroExpansion = x.getDeriveMacroExpansion(index)
+}
+
+query predicate getAttr(Enum x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getGenericParamList(Enum x, GenericParamList getGenericParamList) {
+  toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
+}
+
+query predicate getName(Enum x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getVariantList(Enum x, VariantList getVariantList) {
+  toBeTested(x) and not x.isUnknown() and getVariantList = x.getVariantList()
+}
+
+query predicate getVisibility(Enum x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}
+
+query predicate getWhereClause(Enum x, WhereClause getWhereClause) {
+  toBeTested(x) and not x.isUnknown() and getWhereClause = x.getWhereClause()
+}

@@ -2,9 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from VariantList x, int getNumberOfVariants
-where
+query predicate instances(VariantList x, string getNumberOfVariants__label, int getNumberOfVariants) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfVariants__label = "getNumberOfVariants:" and
   getNumberOfVariants = x.getNumberOfVariants()
-select x, "getNumberOfVariants:", getNumberOfVariants
+}
+
+query predicate getVariant(VariantList x, int index, Variant getVariant) {
+  toBeTested(x) and not x.isUnknown() and getVariant = x.getVariant(index)
+}

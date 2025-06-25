@@ -2,19 +2,39 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  StructPat x, string hasResolvedPath, string hasResolvedCrateOrigin, string hasPath,
-  string hasStructPatFieldList
-where
+query predicate instances(
+  StructPat x, string hasResolvedPath__label, string hasResolvedPath,
+  string hasResolvedCrateOrigin__label, string hasResolvedCrateOrigin, string hasPath__label,
+  string hasPath, string hasStructPatFieldList__label, string hasStructPatFieldList
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasResolvedPath__label = "hasResolvedPath:" and
   (if x.hasResolvedPath() then hasResolvedPath = "yes" else hasResolvedPath = "no") and
+  hasResolvedCrateOrigin__label = "hasResolvedCrateOrigin:" and
   (
     if x.hasResolvedCrateOrigin()
     then hasResolvedCrateOrigin = "yes"
     else hasResolvedCrateOrigin = "no"
   ) and
+  hasPath__label = "hasPath:" and
   (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
+  hasStructPatFieldList__label = "hasStructPatFieldList:" and
   if x.hasStructPatFieldList() then hasStructPatFieldList = "yes" else hasStructPatFieldList = "no"
-select x, "hasResolvedPath:", hasResolvedPath, "hasResolvedCrateOrigin:", hasResolvedCrateOrigin,
-  "hasPath:", hasPath, "hasStructPatFieldList:", hasStructPatFieldList
+}
+
+query predicate getResolvedPath(StructPat x, string getResolvedPath) {
+  toBeTested(x) and not x.isUnknown() and getResolvedPath = x.getResolvedPath()
+}
+
+query predicate getResolvedCrateOrigin(StructPat x, string getResolvedCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getResolvedCrateOrigin = x.getResolvedCrateOrigin()
+}
+
+query predicate getPath(StructPat x, Path getPath) {
+  toBeTested(x) and not x.isUnknown() and getPath = x.getPath()
+}
+
+query predicate getStructPatFieldList(StructPat x, StructPatFieldList getStructPatFieldList) {
+  toBeTested(x) and not x.isUnknown() and getStructPatFieldList = x.getStructPatFieldList()
+}

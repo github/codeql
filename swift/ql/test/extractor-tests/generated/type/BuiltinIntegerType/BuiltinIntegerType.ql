@@ -2,11 +2,20 @@
 import codeql.swift.elements
 import TestUtils
 
-from BuiltinIntegerType x, string getName, Type getCanonicalType, string hasWidth
-where
+query predicate instances(
+  BuiltinIntegerType x, string getName__label, string getName, string getCanonicalType__label,
+  Type getCanonicalType, string hasWidth__label, string hasWidth
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getName__label = "getName:" and
   getName = x.getName() and
+  getCanonicalType__label = "getCanonicalType:" and
   getCanonicalType = x.getCanonicalType() and
+  hasWidth__label = "hasWidth:" and
   if x.hasWidth() then hasWidth = "yes" else hasWidth = "no"
-select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "hasWidth:", hasWidth
+}
+
+query predicate getWidth(BuiltinIntegerType x, int getWidth) {
+  toBeTested(x) and not x.isUnknown() and getWidth = x.getWidth()
+}

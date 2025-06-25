@@ -2,17 +2,35 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  FnPtrTypeRepr x, string hasAbi, string isAsync, string isConst, string isUnsafe,
-  string hasParamList, string hasRetType
-where
+query predicate instances(
+  FnPtrTypeRepr x, string hasAbi__label, string hasAbi, string isAsync__label, string isAsync,
+  string isConst__label, string isConst, string isUnsafe__label, string isUnsafe,
+  string hasParamList__label, string hasParamList, string hasRetType__label, string hasRetType
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasAbi__label = "hasAbi:" and
   (if x.hasAbi() then hasAbi = "yes" else hasAbi = "no") and
+  isAsync__label = "isAsync:" and
   (if x.isAsync() then isAsync = "yes" else isAsync = "no") and
+  isConst__label = "isConst:" and
   (if x.isConst() then isConst = "yes" else isConst = "no") and
+  isUnsafe__label = "isUnsafe:" and
   (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
+  hasParamList__label = "hasParamList:" and
   (if x.hasParamList() then hasParamList = "yes" else hasParamList = "no") and
+  hasRetType__label = "hasRetType:" and
   if x.hasRetType() then hasRetType = "yes" else hasRetType = "no"
-select x, "hasAbi:", hasAbi, "isAsync:", isAsync, "isConst:", isConst, "isUnsafe:", isUnsafe,
-  "hasParamList:", hasParamList, "hasRetType:", hasRetType
+}
+
+query predicate getAbi(FnPtrTypeRepr x, Abi getAbi) {
+  toBeTested(x) and not x.isUnknown() and getAbi = x.getAbi()
+}
+
+query predicate getParamList(FnPtrTypeRepr x, ParamList getParamList) {
+  toBeTested(x) and not x.isUnknown() and getParamList = x.getParamList()
+}
+
+query predicate getRetType(FnPtrTypeRepr x, RetTypeRepr getRetType) {
+  toBeTested(x) and not x.isUnknown() and getRetType = x.getRetType()
+}

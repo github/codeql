@@ -2,9 +2,18 @@
 import codeql.rust.elements
 import TestUtils
 
-from UseBoundGenericArgs x, int getNumberOfUseBoundGenericArgs
-where
+query predicate instances(
+  UseBoundGenericArgs x, string getNumberOfUseBoundGenericArgs__label,
+  int getNumberOfUseBoundGenericArgs
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfUseBoundGenericArgs__label = "getNumberOfUseBoundGenericArgs:" and
   getNumberOfUseBoundGenericArgs = x.getNumberOfUseBoundGenericArgs()
-select x, "getNumberOfUseBoundGenericArgs:", getNumberOfUseBoundGenericArgs
+}
+
+query predicate getUseBoundGenericArg(
+  UseBoundGenericArgs x, int index, UseBoundGenericArg getUseBoundGenericArg
+) {
+  toBeTested(x) and not x.isUnknown() and getUseBoundGenericArg = x.getUseBoundGenericArg(index)
+}

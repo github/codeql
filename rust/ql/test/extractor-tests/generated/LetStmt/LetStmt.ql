@@ -2,16 +2,41 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  LetStmt x, int getNumberOfAttrs, string hasInitializer, string hasLetElse, string hasPat,
-  string hasTypeRepr
-where
+query predicate instances(
+  LetStmt x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasInitializer__label,
+  string hasInitializer, string hasLetElse__label, string hasLetElse, string hasPat__label,
+  string hasPat, string hasTypeRepr__label, string hasTypeRepr
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasInitializer__label = "hasInitializer:" and
   (if x.hasInitializer() then hasInitializer = "yes" else hasInitializer = "no") and
+  hasLetElse__label = "hasLetElse:" and
   (if x.hasLetElse() then hasLetElse = "yes" else hasLetElse = "no") and
+  hasPat__label = "hasPat:" and
   (if x.hasPat() then hasPat = "yes" else hasPat = "no") and
+  hasTypeRepr__label = "hasTypeRepr:" and
   if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasInitializer:", hasInitializer, "hasLetElse:",
-  hasLetElse, "hasPat:", hasPat, "hasTypeRepr:", hasTypeRepr
+}
+
+query predicate getAttr(LetStmt x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getInitializer(LetStmt x, Expr getInitializer) {
+  toBeTested(x) and not x.isUnknown() and getInitializer = x.getInitializer()
+}
+
+query predicate getLetElse(LetStmt x, LetElse getLetElse) {
+  toBeTested(x) and not x.isUnknown() and getLetElse = x.getLetElse()
+}
+
+query predicate getPat(LetStmt x, Pat getPat) {
+  toBeTested(x) and not x.isUnknown() and getPat = x.getPat()
+}
+
+query predicate getTypeRepr(LetStmt x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}

@@ -1,2 +1,16 @@
+instances
 | gen_macro_call.rs:7:5:7:29 | println!... | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasPath: | yes | hasTokenTree: | yes | hasMacroCallExpansion: | yes |
 | gen_macro_call.rs:7:14:7:28 | ...::format_args_nl!... | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasPath: | yes | hasTokenTree: | yes | hasMacroCallExpansion: | yes |
+getExtendedCanonicalPath
+getCrateOrigin
+getAttributeMacroExpansion
+getAttr
+getPath
+| gen_macro_call.rs:7:5:7:29 | println!... | gen_macro_call.rs:7:5:7:11 | println |
+| gen_macro_call.rs:7:14:7:28 | ...::format_args_nl!... | gen_macro_call.rs:7:5:7:29 | ...::format_args_nl |
+getTokenTree
+| gen_macro_call.rs:7:5:7:29 | println!... | gen_macro_call.rs:7:13:7:29 | TokenTree |
+| gen_macro_call.rs:7:14:7:28 | ...::format_args_nl!... | gen_macro_call.rs:7:14:7:28 | TokenTree |
+getMacroCallExpansion
+| gen_macro_call.rs:7:5:7:29 | println!... | gen_macro_call.rs:7:14:7:28 | MacroBlockExpr |
+| gen_macro_call.rs:7:14:7:28 | ...::format_args_nl!... | gen_macro_call.rs:7:14:7:28 | FormatArgsExpr |

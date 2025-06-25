@@ -2,16 +2,37 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  ConstParam x, int getNumberOfAttrs, string hasDefaultVal, string isConst, string hasName,
-  string hasTypeRepr
-where
+query predicate instances(
+  ConstParam x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasDefaultVal__label,
+  string hasDefaultVal, string isConst__label, string isConst, string hasName__label,
+  string hasName, string hasTypeRepr__label, string hasTypeRepr
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasDefaultVal__label = "hasDefaultVal:" and
   (if x.hasDefaultVal() then hasDefaultVal = "yes" else hasDefaultVal = "no") and
+  isConst__label = "isConst:" and
   (if x.isConst() then isConst = "yes" else isConst = "no") and
+  hasName__label = "hasName:" and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
+  hasTypeRepr__label = "hasTypeRepr:" and
   if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasDefaultVal:", hasDefaultVal, "isConst:",
-  isConst, "hasName:", hasName, "hasTypeRepr:", hasTypeRepr
+}
+
+query predicate getAttr(ConstParam x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getDefaultVal(ConstParam x, ConstArg getDefaultVal) {
+  toBeTested(x) and not x.isUnknown() and getDefaultVal = x.getDefaultVal()
+}
+
+query predicate getName(ConstParam x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getTypeRepr(ConstParam x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}

@@ -1,1 +1,14 @@
+instances
 | gen_enum.rs:4:5:7:34 | enum E | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfDeriveMacroExpansions: | 0 | getNumberOfAttrs: | 0 | hasGenericParamList: | no | hasName: | yes | hasVariantList: | yes | hasVisibility: | no | hasWhereClause: | no |
+getExtendedCanonicalPath
+getCrateOrigin
+getAttributeMacroExpansion
+getDeriveMacroExpansion
+getAttr
+getGenericParamList
+getName
+| gen_enum.rs:4:5:7:34 | enum E | gen_enum.rs:7:10:7:10 | E |
+getVariantList
+| gen_enum.rs:4:5:7:34 | enum E | gen_enum.rs:7:12:7:34 | VariantList |
+getVisibility
+getWhereClause

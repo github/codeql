@@ -1,1 +1,4 @@
+instances
 | gen_label.rs:5:5:5:11 | 'label | hasLifetime: | yes |
+getLifetime
+| gen_label.rs:5:5:5:11 | 'label | gen_label.rs:5:5:5:10 | 'label |

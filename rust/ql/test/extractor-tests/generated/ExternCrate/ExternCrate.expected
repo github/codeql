@@ -1,1 +1,10 @@
+instances
 | gen_extern_crate.rs:4:5:7:23 | ExternCrate | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasIdentifier: | yes | hasRename: | no | hasVisibility: | no |
+getExtendedCanonicalPath
+getCrateOrigin
+getAttributeMacroExpansion
+getAttr
+getIdentifier
+| gen_extern_crate.rs:4:5:7:23 | ExternCrate | gen_extern_crate.rs:7:18:7:22 | serde |
+getRename
+getVisibility

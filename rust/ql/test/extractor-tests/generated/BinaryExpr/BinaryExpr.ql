@@ -2,13 +2,35 @@
 import codeql.rust.elements
 import TestUtils
 
-from BinaryExpr x, int getNumberOfAttrs, string hasLhs, string hasOperatorName, string hasRhs
-where
+query predicate instances(
+  BinaryExpr x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasLhs__label,
+  string hasLhs, string hasOperatorName__label, string hasOperatorName, string hasRhs__label,
+  string hasRhs
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasLhs__label = "hasLhs:" and
   (if x.hasLhs() then hasLhs = "yes" else hasLhs = "no") and
+  hasOperatorName__label = "hasOperatorName:" and
   (if x.hasOperatorName() then hasOperatorName = "yes" else hasOperatorName = "no") and
+  hasRhs__label = "hasRhs:" and
   if x.hasRhs() then hasRhs = "yes" else hasRhs = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasLhs:", hasLhs, "hasOperatorName:",
-  hasOperatorName, "hasRhs:", hasRhs
+}
+
+query predicate getAttr(BinaryExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getLhs(BinaryExpr x, Expr getLhs) {
+  toBeTested(x) and not x.isUnknown() and getLhs = x.getLhs()
+}
+
+query predicate getOperatorName(BinaryExpr x, string getOperatorName) {
+  toBeTested(x) and not x.isUnknown() and getOperatorName = x.getOperatorName()
+}
+
+query predicate getRhs(BinaryExpr x, Expr getRhs) {
+  toBeTested(x) and not x.isUnknown() and getRhs = x.getRhs()
+}

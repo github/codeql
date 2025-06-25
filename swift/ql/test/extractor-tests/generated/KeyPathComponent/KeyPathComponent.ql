@@ -2,16 +2,34 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  KeyPathComponent x, int getKind, int getNumberOfSubscriptArguments, string hasTupleIndex,
-  string hasDeclRef, Type getComponentType
-where
+query predicate instances(
+  KeyPathComponent x, string getKind__label, int getKind,
+  string getNumberOfSubscriptArguments__label, int getNumberOfSubscriptArguments,
+  string hasTupleIndex__label, string hasTupleIndex, string hasDeclRef__label, string hasDeclRef,
+  string getComponentType__label, Type getComponentType
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getKind__label = "getKind:" and
   getKind = x.getKind() and
+  getNumberOfSubscriptArguments__label = "getNumberOfSubscriptArguments:" and
   getNumberOfSubscriptArguments = x.getNumberOfSubscriptArguments() and
+  hasTupleIndex__label = "hasTupleIndex:" and
   (if x.hasTupleIndex() then hasTupleIndex = "yes" else hasTupleIndex = "no") and
+  hasDeclRef__label = "hasDeclRef:" and
   (if x.hasDeclRef() then hasDeclRef = "yes" else hasDeclRef = "no") and
+  getComponentType__label = "getComponentType:" and
   getComponentType = x.getComponentType()
-select x, "getKind:", getKind, "getNumberOfSubscriptArguments:", getNumberOfSubscriptArguments,
-  "hasTupleIndex:", hasTupleIndex, "hasDeclRef:", hasDeclRef, "getComponentType:", getComponentType
+}
+
+query predicate getSubscriptArgument(KeyPathComponent x, int index, Argument getSubscriptArgument) {
+  toBeTested(x) and not x.isUnknown() and getSubscriptArgument = x.getSubscriptArgument(index)
+}
+
+query predicate getTupleIndex(KeyPathComponent x, int getTupleIndex) {
+  toBeTested(x) and not x.isUnknown() and getTupleIndex = x.getTupleIndex()
+}
+
+query predicate getDeclRef(KeyPathComponent x, ValueDecl getDeclRef) {
+  toBeTested(x) and not x.isUnknown() and getDeclRef = x.getDeclRef()
+}

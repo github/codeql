@@ -2,10 +2,22 @@
 import codeql.rust.elements
 import TestUtils
 
-from AsmOperandExpr x, string hasInExpr, string hasOutExpr
-where
+query predicate instances(
+  AsmOperandExpr x, string hasInExpr__label, string hasInExpr, string hasOutExpr__label,
+  string hasOutExpr
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasInExpr__label = "hasInExpr:" and
   (if x.hasInExpr() then hasInExpr = "yes" else hasInExpr = "no") and
+  hasOutExpr__label = "hasOutExpr:" and
   if x.hasOutExpr() then hasOutExpr = "yes" else hasOutExpr = "no"
-select x, "hasInExpr:", hasInExpr, "hasOutExpr:", hasOutExpr
+}
+
+query predicate getInExpr(AsmOperandExpr x, Expr getInExpr) {
+  toBeTested(x) and not x.isUnknown() and getInExpr = x.getInExpr()
+}
+
+query predicate getOutExpr(AsmOperandExpr x, Expr getOutExpr) {
+  toBeTested(x) and not x.isUnknown() and getOutExpr = x.getOutExpr()
+}

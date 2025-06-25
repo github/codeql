@@ -2,9 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from Visibility x, string hasPath
-where
+query predicate instances(Visibility x, string hasPath__label, string hasPath) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasPath__label = "hasPath:" and
   if x.hasPath() then hasPath = "yes" else hasPath = "no"
-select x, "hasPath:", hasPath
+}
+
+query predicate getPath(Visibility x, Path getPath) {
+  toBeTested(x) and not x.isUnknown() and getPath = x.getPath()
+}

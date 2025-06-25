@@ -2,9 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from Label x, string hasLifetime
-where
+query predicate instances(Label x, string hasLifetime__label, string hasLifetime) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasLifetime__label = "hasLifetime:" and
   if x.hasLifetime() then hasLifetime = "yes" else hasLifetime = "no"
-select x, "hasLifetime:", hasLifetime
+}
+
+query predicate getLifetime(Label x, Lifetime getLifetime) {
+  toBeTested(x) and not x.isUnknown() and getLifetime = x.getLifetime()
+}

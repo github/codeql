@@ -2,29 +2,65 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  MacroCall x, string hasExtendedCanonicalPath, string hasCrateOrigin,
-  string hasAttributeMacroExpansion, int getNumberOfAttrs, string hasPath, string hasTokenTree,
-  string hasMacroCallExpansion
-where
+query predicate instances(
+  MacroCall x, string hasExtendedCanonicalPath__label, string hasExtendedCanonicalPath,
+  string hasCrateOrigin__label, string hasCrateOrigin, string hasAttributeMacroExpansion__label,
+  string hasAttributeMacroExpansion, string getNumberOfAttrs__label, int getNumberOfAttrs,
+  string hasPath__label, string hasPath, string hasTokenTree__label, string hasTokenTree,
+  string hasMacroCallExpansion__label, string hasMacroCallExpansion
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  hasExtendedCanonicalPath__label = "hasExtendedCanonicalPath:" and
   (
     if x.hasExtendedCanonicalPath()
     then hasExtendedCanonicalPath = "yes"
     else hasExtendedCanonicalPath = "no"
   ) and
+  hasCrateOrigin__label = "hasCrateOrigin:" and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  hasAttributeMacroExpansion__label = "hasAttributeMacroExpansion:" and
   (
     if x.hasAttributeMacroExpansion()
     then hasAttributeMacroExpansion = "yes"
     else hasAttributeMacroExpansion = "no"
   ) and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasPath__label = "hasPath:" and
   (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
+  hasTokenTree__label = "hasTokenTree:" and
   (if x.hasTokenTree() then hasTokenTree = "yes" else hasTokenTree = "no") and
+  hasMacroCallExpansion__label = "hasMacroCallExpansion:" and
   if x.hasMacroCallExpansion() then hasMacroCallExpansion = "yes" else hasMacroCallExpansion = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasPath:", hasPath, "hasTokenTree:", hasTokenTree, "hasMacroCallExpansion:",
-  hasMacroCallExpansion
+}
+
+query predicate getExtendedCanonicalPath(MacroCall x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(MacroCall x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttributeMacroExpansion(MacroCall x, MacroItems getAttributeMacroExpansion) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getAttr(MacroCall x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getPath(MacroCall x, Path getPath) {
+  toBeTested(x) and not x.isUnknown() and getPath = x.getPath()
+}
+
+query predicate getTokenTree(MacroCall x, TokenTree getTokenTree) {
+  toBeTested(x) and not x.isUnknown() and getTokenTree = x.getTokenTree()
+}
+
+query predicate getMacroCallExpansion(MacroCall x, AstNode getMacroCallExpansion) {
+  toBeTested(x) and not x.isUnknown() and getMacroCallExpansion = x.getMacroCallExpansion()
+}

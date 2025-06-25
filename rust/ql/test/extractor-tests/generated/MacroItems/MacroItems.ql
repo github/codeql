@@ -2,9 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from MacroItems x, int getNumberOfItems
-where
+query predicate instances(MacroItems x, string getNumberOfItems__label, int getNumberOfItems) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfItems__label = "getNumberOfItems:" and
   getNumberOfItems = x.getNumberOfItems()
-select x, "getNumberOfItems:", getNumberOfItems
+}
+
+query predicate getItem(MacroItems x, int index, Item getItem) {
+  toBeTested(x) and not x.isUnknown() and getItem = x.getItem(index)
+}

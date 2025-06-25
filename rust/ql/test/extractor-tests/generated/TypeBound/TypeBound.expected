@@ -1,1 +1,6 @@
+instances
 | gen_type_bound.rs:7:15:7:19 | TypeBound | isAsync: | no | isConst: | no | hasLifetime: | no | hasTypeRepr: | yes | hasUseBoundGenericArgs: | no |
+getLifetime
+getTypeRepr
+| gen_type_bound.rs:7:15:7:19 | TypeBound | gen_type_bound.rs:7:15:7:19 | Debug |
+getUseBoundGenericArgs

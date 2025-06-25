@@ -2,10 +2,22 @@
 import codeql.rust.elements
 import TestUtils
 
-from AssocItemList x, int getNumberOfAssocItems, int getNumberOfAttrs
-where
+query predicate instances(
+  AssocItemList x, string getNumberOfAssocItems__label, int getNumberOfAssocItems,
+  string getNumberOfAttrs__label, int getNumberOfAttrs
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAssocItems__label = "getNumberOfAssocItems:" and
   getNumberOfAssocItems = x.getNumberOfAssocItems() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs()
-select x, "getNumberOfAssocItems:", getNumberOfAssocItems, "getNumberOfAttrs:", getNumberOfAttrs
+}
+
+query predicate getAssocItem(AssocItemList x, int index, AssocItem getAssocItem) {
+  toBeTested(x) and not x.isUnknown() and getAssocItem = x.getAssocItem(index)
+}
+
+query predicate getAttr(AssocItemList x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}

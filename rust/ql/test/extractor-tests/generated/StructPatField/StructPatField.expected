@@ -1,2 +1,10 @@
+instances
 | gen_struct_pat_field.rs:5:15:5:18 | a: 1 | getNumberOfAttrs: | 0 | hasIdentifier: | yes | hasPat: | yes |
 | gen_struct_pat_field.rs:5:21:5:24 | b: 2 | getNumberOfAttrs: | 0 | hasIdentifier: | yes | hasPat: | yes |
+getAttr
+getIdentifier
+| gen_struct_pat_field.rs:5:15:5:18 | a: 1 | gen_struct_pat_field.rs:5:15:5:15 | a |
+| gen_struct_pat_field.rs:5:21:5:24 | b: 2 | gen_struct_pat_field.rs:5:21:5:21 | b |
+getPat
+| gen_struct_pat_field.rs:5:15:5:18 | a: 1 | gen_struct_pat_field.rs:5:18:5:18 | 1 |
+| gen_struct_pat_field.rs:5:21:5:24 | b: 2 | gen_struct_pat_field.rs:5:24:5:24 | 2 |

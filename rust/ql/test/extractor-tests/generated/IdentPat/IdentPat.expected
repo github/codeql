@@ -1,2 +1,9 @@
+instances
 | gen_ident_pat.rs:6:22:6:22 | y | getNumberOfAttrs: | 0 | isMut: | no | isRef: | no | hasName: | yes | hasPat: | no |
 | gen_ident_pat.rs:10:9:10:25 | y @ ... | getNumberOfAttrs: | 0 | isMut: | no | isRef: | no | hasName: | yes | hasPat: | yes |
+getAttr
+getName
+| gen_ident_pat.rs:6:22:6:22 | y | gen_ident_pat.rs:6:22:6:22 | y |
+| gen_ident_pat.rs:10:9:10:25 | y @ ... | gen_ident_pat.rs:10:9:10:9 | y |
+getPat
+| gen_ident_pat.rs:10:9:10:25 | y @ ... | gen_ident_pat.rs:10:11:10:25 | ...::Some(...) |

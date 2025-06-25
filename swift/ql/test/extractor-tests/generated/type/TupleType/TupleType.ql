@@ -2,12 +2,24 @@
 import codeql.swift.elements
 import TestUtils
 
-from TupleType x, string getName, Type getCanonicalType, int getNumberOfTypes
-where
+query predicate instances(
+  TupleType x, string getName__label, string getName, string getCanonicalType__label,
+  Type getCanonicalType, string getNumberOfTypes__label, int getNumberOfTypes
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getName__label = "getName:" and
   getName = x.getName() and
+  getCanonicalType__label = "getCanonicalType:" and
   getCanonicalType = x.getCanonicalType() and
+  getNumberOfTypes__label = "getNumberOfTypes:" and
   getNumberOfTypes = x.getNumberOfTypes()
-select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getNumberOfTypes:",
-  getNumberOfTypes
+}
+
+query predicate getType(TupleType x, int index, Type getType) {
+  toBeTested(x) and not x.isUnknown() and getType = x.getType(index)
+}
+
+query predicate getName(TupleType x, int index, string getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName(index)
+}

@@ -2,11 +2,28 @@
 import codeql.rust.elements
 import TestUtils
 
-from IndexExpr x, int getNumberOfAttrs, string hasBase, string hasIndex
-where
+query predicate instances(
+  IndexExpr x, string getNumberOfAttrs__label, int getNumberOfAttrs, string hasBase__label,
+  string hasBase, string hasIndex__label, string hasIndex
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAttrs__label = "getNumberOfAttrs:" and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  hasBase__label = "hasBase:" and
   (if x.hasBase() then hasBase = "yes" else hasBase = "no") and
+  hasIndex__label = "hasIndex:" and
   if x.hasIndex() then hasIndex = "yes" else hasIndex = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasBase:", hasBase, "hasIndex:", hasIndex
+}
+
+query predicate getAttr(IndexExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getBase(IndexExpr x, Expr getBase) {
+  toBeTested(x) and not x.isUnknown() and getBase = x.getBase()
+}
+
+query predicate getIndex(IndexExpr x, Expr getIndex) {
+  toBeTested(x) and not x.isUnknown() and getIndex = x.getIndex()
+}
