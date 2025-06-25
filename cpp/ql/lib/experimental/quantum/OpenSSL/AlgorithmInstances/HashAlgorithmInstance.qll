@@ -15,7 +15,7 @@ predicate knownOpenSslConstantToHashFamilyType(
       or
       name = "BLAKE2S" and type instanceof Crypto::BLAKE2S
       or
-      name.matches("GOST%") and type instanceof Crypto::GOSTHash
+      name.matches("GOST%") and type instanceof Crypto::GOST_HASH
       or
       name = "MD2" and type instanceof Crypto::MD2
       or

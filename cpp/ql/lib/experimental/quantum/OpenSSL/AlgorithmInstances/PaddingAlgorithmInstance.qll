@@ -40,7 +40,7 @@ predicate knownOpenSslConstantToPaddingFamilyType(
       or
       name = "PKCS7" and type = KeyOpAlg::PKCS7()
       or
-      name = "PKCS1V15" and type = KeyOpAlg::PKCS1_v1_5()
+      name = "PKCS1V15" and type = KeyOpAlg::PKCS1_V1_5()
     )
   )
 }
@@ -100,7 +100,7 @@ class KnownOpenSslPaddingConstantAlgorithmInstance extends OpenSslAlgorithmInsta
   override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
 
   KeyOpAlg::PaddingSchemeType getKnownPaddingType() {
-    this.(Literal).getValue().toInt() in [1, 7, 8] and result = KeyOpAlg::PKCS1_v1_5()
+    this.(Literal).getValue().toInt() in [1, 7, 8] and result = KeyOpAlg::PKCS1_V1_5()
     or
     this.(Literal).getValue().toInt() = 3 and result = KeyOpAlg::NoPadding()
     or

@@ -28,8 +28,8 @@ module Types {
       IDEA() or
       KUZNYECHIK() or
       MAGMA() or
-      TripleDES() or
-      DoubleDES() or
+      TRIPLE_DES() or
+      DOUBLE_DES() or
       RC2() or
       RC4() or
       RC5() or
@@ -48,9 +48,9 @@ module Types {
       OtherSignatureAlgorithmType()
 
     newtype TKemAlgorithmType =
-      Kyber() or
-      FrodoKEM() or
-      OtherKEMAlgorithmType()
+      KYBER() or
+      FRODO_KEM() or
+      OtherKemAlgorithmType()
 
     newtype TCipherStructureType =
       Block() or
@@ -94,9 +94,9 @@ module Types {
       or
       type = MAGMA() and name = "Magma" and s = Block()
       or
-      type = TripleDES() and name = "TripleDES" and s = Block()
+      type = TRIPLE_DES() and name = "TripleDES" and s = Block()
       or
-      type = DoubleDES() and name = "DoubleDES" and s = Block()
+      type = DOUBLE_DES() and name = "DoubleDES" and s = Block()
       or
       type = RC2() and name = "RC2" and s = Block()
       or
@@ -134,11 +134,11 @@ module Types {
         this = TSignature(OtherSignatureAlgorithmType()) and result = "UnknownSignature"
         or
         // Key Encapsulation Mechanisms
-        this = TKeyEncapsulation(Kyber()) and result = "Kyber"
+        this = TKeyEncapsulation(KYBER()) and result = "Kyber"
         or
-        this = TKeyEncapsulation(FrodoKEM()) and result = "FrodoKEM"
+        this = TKeyEncapsulation(FRODO_KEM()) and result = "FrodoKEM"
         or
-        this = TKeyEncapsulation(OtherKEMAlgorithmType()) and result = "UnknownKEM"
+        this = TKeyEncapsulation(OtherKemAlgorithmType()) and result = "UnknownKEM"
         or
         // Unknown
         this = TUnknownKeyOperationAlgorithmType() and result = "Unknown"
@@ -149,9 +149,9 @@ module Types {
         or
         this = TSymmetricCipher(DESX()) and result = 184
         or
-        this = TSymmetricCipher(DoubleDES()) and result = 112
+        this = TSymmetricCipher(DOUBLE_DES()) and result = 112
         or
-        this = TSymmetricCipher(TripleDES()) and result = 168
+        this = TSymmetricCipher(TRIPLE_DES()) and result = 168
         or
         this = TSymmetricCipher(CHACHA20()) and result = 256
         or
@@ -225,7 +225,7 @@ module Types {
     }
 
     newtype TPaddingSchemeType =
-      PKCS1_v1_5() or // RSA encryption/signing padding
+      PKCS1_V1_5() or // RSA encryption/signing padding
       PSS() or
       PKCS7() or // Standard block cipher padding (PKCS5 for 8-byte blocks)
       ANSI_X9_23() or // Zero-padding except last byte = padding length
@@ -241,7 +241,7 @@ module Types {
         or
         this = OAEP() and result = "OAEP"
         or
-        this = PKCS1_v1_5() and result = "PKCS1_v1_5"
+        this = PKCS1_V1_5() and result = "PKCS1_v1_5"
         or
         this = PKCS7() and result = "PKCS7"
         or
@@ -255,7 +255,7 @@ module Types {
   newtype THashType =
     BLAKE2B() or
     BLAKE2S() or
-    GOSTHash() or
+    GOST_HASH() or
     MD2() or
     MD4() or
     MD5() or

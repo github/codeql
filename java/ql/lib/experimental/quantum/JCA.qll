@@ -180,7 +180,7 @@ module JCAModel {
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DES())
       or
       upper = "TRIPLEDES" and
-      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TripleDES())
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TRIPLE_DES())
       or
       upper = "IDEA" and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::IDEA())
@@ -1522,9 +1522,7 @@ module JCAModel {
   }
 
   class MacGetInstanceAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
-    MacGetInstanceCall call;
-
-    MacGetInstanceAlgorithmValueConsumer() { this = call.getAlgorithmArg() }
+    MacGetInstanceAlgorithmValueConsumer() { this = any(MacGetInstanceCall c).getAlgorithmArg() }
 
     override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
 
