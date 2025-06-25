@@ -108,12 +108,6 @@ yaml_locations(unique int locatable: @yaml_locatable ref,
 
 @yaml_locatable = @yaml_node | @yaml_error;
 
-/*- Database metadata -*/
-databaseMetadata(
-  string metadataKey: string ref,
-  string value: string ref
-);
-
 /*- Ruby dbscheme -*/
 @ruby_underscore_arg = @ruby_assignment | @ruby_binary | @ruby_conditional | @ruby_operator_assignment | @ruby_range | @ruby_unary | @ruby_underscore_primary
 
