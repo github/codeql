@@ -1105,6 +1105,8 @@ module JCAModel {
     }
 
     override int getKeySizeFixed() { none() }
+
+    override Crypto::ConsumerInputDataFlowNode getRawKeyValueConsumer() { none() }
   }
 
   class KeyGeneratorCipherAlgorithm extends CipherStringLiteralAlgorithmInstance {
