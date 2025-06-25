@@ -1042,7 +1042,7 @@ class DefinedType extends @definedtype, CompositeType {
    * Gets the type which this type is defined to be, if available.
    *
    * Note that this is only defined for types declared in the project being
-   * analyzed. It will not be defined for type declared in external packages.
+   * analyzed. It will not be defined for types declared in external packages.
    */
   Type getBaseType() { result = this.getEntity().(DeclaredType).getSpec().getTypeExpr().getType() }
 
