@@ -181,7 +181,7 @@ class EvpCipherCall extends EvpCipherOperationFinalStep {
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    super.getInput(type) = result
+    super.getOutput(type) = result
     or
     result.asExpr() = this.getArgument(1) and type = CiphertextIO()
   }
@@ -199,7 +199,7 @@ class EvpCipherFinalCall extends EvpCipherOperationFinalStep {
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    super.getInput(type) = result
+    super.getOutput(type) = result
     or
     result.asDefiningArgument() = this.getArgument(1) and
     type = CiphertextIO()
@@ -224,7 +224,7 @@ class EvpPKeyCipherOperation extends EvpCipherOperationFinalStep {
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    super.getInput(type) = result
+    super.getOutput(type) = result
     or
     result.asExpr() = this.getArgument(1) and type = CiphertextIO()
     // TODO: could indicate text lengths here, as well
