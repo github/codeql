@@ -31,8 +31,6 @@ predicate knownOpenSslConstantToBlockModeFamilyType(
       or
       name = "CCM" and type instanceof KeyOpAlg::CCM
       or
-      name = "GCM" and type instanceof KeyOpAlg::GCM
-      or
       name = "CCM" and type instanceof KeyOpAlg::CCM
       or
       name = "ECB" and type instanceof KeyOpAlg::ECB
