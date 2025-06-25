@@ -2185,49 +2185,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfConst(Const e, int index, string partialPredicateCall) {
-    exists(
-      int n, int nAttributeMacroExpansion, int nAttr, int nBody, int nGenericParamList, int nName,
-      int nTypeRepr, int nVisibility, int nWhereClause
-    |
-      n = 0 and
-      nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nBody = nAttr + 1 and
-      nGenericParamList = nBody + 1 and
-      nName = nGenericParamList + 1 and
-      nTypeRepr = nName + 1 and
-      nVisibility = nTypeRepr + 1 and
-      nWhereClause = nVisibility + 1 and
-      (
-        none()
-        or
-        index = n and
-        result = e.getAttributeMacroExpansion() and
-        partialPredicateCall = "AttributeMacroExpansion()"
-        or
-        result = e.getAttr(index - nAttributeMacroExpansion) and
-        partialPredicateCall = "Attr(" + (index - nAttributeMacroExpansion).toString() + ")"
-        or
-        index = nAttr and result = e.getBody() and partialPredicateCall = "Body()"
-        or
-        index = nBody and
-        result = e.getGenericParamList() and
-        partialPredicateCall = "GenericParamList()"
-        or
-        index = nGenericParamList and result = e.getName() and partialPredicateCall = "Name()"
-        or
-        index = nName and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
-        or
-        index = nTypeRepr and result = e.getVisibility() and partialPredicateCall = "Visibility()"
-        or
-        index = nVisibility and
-        result = e.getWhereClause() and
-        partialPredicateCall = "WhereClause()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfExternBlock(
     ExternBlock e, int index, string partialPredicateCall
   ) {
@@ -2293,57 +2250,6 @@ private module Impl {
     none()
   }
 
-  private Element getImmediateChildOfFunction(Function e, int index, string partialPredicateCall) {
-    exists(
-      int n, int nAttributeMacroExpansion, int nParamList, int nAttr, int nAbi, int nBody,
-      int nGenericParamList, int nName, int nRetType, int nVisibility, int nWhereClause
-    |
-      n = 0 and
-      nAttributeMacroExpansion = n + 1 and
-      nParamList = nAttributeMacroExpansion + 1 and
-      nAttr = nParamList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nAbi = nAttr + 1 and
-      nBody = nAbi + 1 and
-      nGenericParamList = nBody + 1 and
-      nName = nGenericParamList + 1 and
-      nRetType = nName + 1 and
-      nVisibility = nRetType + 1 and
-      nWhereClause = nVisibility + 1 and
-      (
-        none()
-        or
-        index = n and
-        result = e.getAttributeMacroExpansion() and
-        partialPredicateCall = "AttributeMacroExpansion()"
-        or
-        index = nAttributeMacroExpansion and
-        result = e.getParamList() and
-        partialPredicateCall = "ParamList()"
-        or
-        result = e.getAttr(index - nParamList) and
-        partialPredicateCall = "Attr(" + (index - nParamList).toString() + ")"
-        or
-        index = nAttr and result = e.getAbi() and partialPredicateCall = "Abi()"
-        or
-        index = nAbi and result = e.getBody() and partialPredicateCall = "Body()"
-        or
-        index = nBody and
-        result = e.getGenericParamList() and
-        partialPredicateCall = "GenericParamList()"
-        or
-        index = nGenericParamList and result = e.getName() and partialPredicateCall = "Name()"
-        or
-        index = nName and result = e.getRetType() and partialPredicateCall = "RetType()"
-        or
-        index = nRetType and result = e.getVisibility() and partialPredicateCall = "Visibility()"
-        or
-        index = nVisibility and
-        result = e.getWhereClause() and
-        partialPredicateCall = "WhereClause()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfImpl(Impl e, int index, string partialPredicateCall) {
     exists(
       int n, int nAttributeMacroExpansion, int nAssocItemList, int nAttr, int nGenericParamList,
@@ -2385,38 +2291,6 @@ private module Impl {
         index = nVisibility and
         result = e.getWhereClause() and
         partialPredicateCall = "WhereClause()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfMacroCall(MacroCall e, int index, string partialPredicateCall) {
-    exists(
-      int n, int nAttributeMacroExpansion, int nAttr, int nPath, int nTokenTree,
-      int nMacroCallExpansion
-    |
-      n = 0 and
-      nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nPath = nAttr + 1 and
-      nTokenTree = nPath + 1 and
-      nMacroCallExpansion = nTokenTree + 1 and
-      (
-        none()
-        or
-        index = n and
-        result = e.getAttributeMacroExpansion() and
-        partialPredicateCall = "AttributeMacroExpansion()"
-        or
-        result = e.getAttr(index - nAttributeMacroExpansion) and
-        partialPredicateCall = "Attr(" + (index - nAttributeMacroExpansion).toString() + ")"
-        or
-        index = nAttr and result = e.getPath() and partialPredicateCall = "Path()"
-        or
-        index = nPath and result = e.getTokenTree() and partialPredicateCall = "TokenTree()"
-        or
-        index = nTokenTree and
-        result = e.getMacroCallExpansion() and
-        partialPredicateCall = "MacroCallExpansion()"
       )
     )
   }
@@ -2573,39 +2447,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfStatic(Static e, int index, string partialPredicateCall) {
-    exists(
-      int n, int nAttributeMacroExpansion, int nAttr, int nBody, int nName, int nTypeRepr,
-      int nVisibility
-    |
-      n = 0 and
-      nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nBody = nAttr + 1 and
-      nName = nBody + 1 and
-      nTypeRepr = nName + 1 and
-      nVisibility = nTypeRepr + 1 and
-      (
-        none()
-        or
-        index = n and
-        result = e.getAttributeMacroExpansion() and
-        partialPredicateCall = "AttributeMacroExpansion()"
-        or
-        result = e.getAttr(index - nAttributeMacroExpansion) and
-        partialPredicateCall = "Attr(" + (index - nAttributeMacroExpansion).toString() + ")"
-        or
-        index = nAttr and result = e.getBody() and partialPredicateCall = "Body()"
-        or
-        index = nBody and result = e.getName() and partialPredicateCall = "Name()"
-        or
-        index = nName and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
-        or
-        index = nTypeRepr and result = e.getVisibility() and partialPredicateCall = "Visibility()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfStructExpr(StructExpr e, int index, string partialPredicateCall) {
     exists(int n, int nPath, int nStructExprFieldList |
       n = 0 and
@@ -2747,53 +2588,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfTypeAlias(TypeAlias e, int index, string partialPredicateCall) {
-    exists(
-      int n, int nAttributeMacroExpansion, int nAttr, int nGenericParamList, int nName,
-      int nTypeRepr, int nTypeBoundList, int nVisibility, int nWhereClause
-    |
-      n = 0 and
-      nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nGenericParamList = nAttr + 1 and
-      nName = nGenericParamList + 1 and
-      nTypeRepr = nName + 1 and
-      nTypeBoundList = nTypeRepr + 1 and
-      nVisibility = nTypeBoundList + 1 and
-      nWhereClause = nVisibility + 1 and
-      (
-        none()
-        or
-        index = n and
-        result = e.getAttributeMacroExpansion() and
-        partialPredicateCall = "AttributeMacroExpansion()"
-        or
-        result = e.getAttr(index - nAttributeMacroExpansion) and
-        partialPredicateCall = "Attr(" + (index - nAttributeMacroExpansion).toString() + ")"
-        or
-        index = nAttr and
-        result = e.getGenericParamList() and
-        partialPredicateCall = "GenericParamList()"
-        or
-        index = nGenericParamList and result = e.getName() and partialPredicateCall = "Name()"
-        or
-        index = nName and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
-        or
-        index = nTypeRepr and
-        result = e.getTypeBoundList() and
-        partialPredicateCall = "TypeBoundList()"
-        or
-        index = nTypeBoundList and
-        result = e.getVisibility() and
-        partialPredicateCall = "Visibility()"
-        or
-        index = nVisibility and
-        result = e.getWhereClause() and
-        partialPredicateCall = "WhereClause()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfUse(Use e, int index, string partialPredicateCall) {
     exists(int n, int nAttributeMacroExpansion, int nAttr, int nUseTree, int nVisibility |
       n = 0 and
@@ -2814,6 +2608,49 @@ private module Impl {
         index = nAttr and result = e.getUseTree() and partialPredicateCall = "UseTree()"
         or
         index = nUseTree and result = e.getVisibility() and partialPredicateCall = "Visibility()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfConst(Const e, int index, string partialPredicateCall) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nAttr, int nBody, int nGenericParamList, int nName,
+      int nTypeRepr, int nVisibility, int nWhereClause
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nBody = nAttr + 1 and
+      nGenericParamList = nBody + 1 and
+      nName = nGenericParamList + 1 and
+      nTypeRepr = nName + 1 and
+      nVisibility = nTypeRepr + 1 and
+      nWhereClause = nVisibility + 1 and
+      (
+        none()
+        or
+        index = n and
+        result = e.getAttributeMacroExpansion() and
+        partialPredicateCall = "AttributeMacroExpansion()"
+        or
+        result = e.getAttr(index - nAttributeMacroExpansion) and
+        partialPredicateCall = "Attr(" + (index - nAttributeMacroExpansion).toString() + ")"
+        or
+        index = nAttr and result = e.getBody() and partialPredicateCall = "Body()"
+        or
+        index = nBody and
+        result = e.getGenericParamList() and
+        partialPredicateCall = "GenericParamList()"
+        or
+        index = nGenericParamList and result = e.getName() and partialPredicateCall = "Name()"
+        or
+        index = nName and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
+        or
+        index = nTypeRepr and result = e.getVisibility() and partialPredicateCall = "Visibility()"
+        or
+        index = nVisibility and
+        result = e.getWhereClause() and
+        partialPredicateCall = "WhereClause()"
       )
     )
   }
@@ -2892,6 +2729,57 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfFunction(Function e, int index, string partialPredicateCall) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nParamList, int nAttr, int nAbi, int nBody,
+      int nGenericParamList, int nName, int nRetType, int nVisibility, int nWhereClause
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nParamList = nAttributeMacroExpansion + 1 and
+      nAttr = nParamList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAbi = nAttr + 1 and
+      nBody = nAbi + 1 and
+      nGenericParamList = nBody + 1 and
+      nName = nGenericParamList + 1 and
+      nRetType = nName + 1 and
+      nVisibility = nRetType + 1 and
+      nWhereClause = nVisibility + 1 and
+      (
+        none()
+        or
+        index = n and
+        result = e.getAttributeMacroExpansion() and
+        partialPredicateCall = "AttributeMacroExpansion()"
+        or
+        index = nAttributeMacroExpansion and
+        result = e.getParamList() and
+        partialPredicateCall = "ParamList()"
+        or
+        result = e.getAttr(index - nParamList) and
+        partialPredicateCall = "Attr(" + (index - nParamList).toString() + ")"
+        or
+        index = nAttr and result = e.getAbi() and partialPredicateCall = "Abi()"
+        or
+        index = nAbi and result = e.getBody() and partialPredicateCall = "Body()"
+        or
+        index = nBody and
+        result = e.getGenericParamList() and
+        partialPredicateCall = "GenericParamList()"
+        or
+        index = nGenericParamList and result = e.getName() and partialPredicateCall = "Name()"
+        or
+        index = nName and result = e.getRetType() and partialPredicateCall = "RetType()"
+        or
+        index = nRetType and result = e.getVisibility() and partialPredicateCall = "Visibility()"
+        or
+        index = nVisibility and
+        result = e.getWhereClause() and
+        partialPredicateCall = "WhereClause()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfLoopExpr(LoopExpr e, int index, string partialPredicateCall) {
     exists(int n, int nLabel, int nLoopBody, int nAttr |
       n = 0 and
@@ -2907,6 +2795,71 @@ private module Impl {
         or
         result = e.getAttr(index - nLoopBody) and
         partialPredicateCall = "Attr(" + (index - nLoopBody).toString() + ")"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfMacroCall(MacroCall e, int index, string partialPredicateCall) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nAttr, int nPath, int nTokenTree,
+      int nMacroCallExpansion
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nPath = nAttr + 1 and
+      nTokenTree = nPath + 1 and
+      nMacroCallExpansion = nTokenTree + 1 and
+      (
+        none()
+        or
+        index = n and
+        result = e.getAttributeMacroExpansion() and
+        partialPredicateCall = "AttributeMacroExpansion()"
+        or
+        result = e.getAttr(index - nAttributeMacroExpansion) and
+        partialPredicateCall = "Attr(" + (index - nAttributeMacroExpansion).toString() + ")"
+        or
+        index = nAttr and result = e.getPath() and partialPredicateCall = "Path()"
+        or
+        index = nPath and result = e.getTokenTree() and partialPredicateCall = "TokenTree()"
+        or
+        index = nTokenTree and
+        result = e.getMacroCallExpansion() and
+        partialPredicateCall = "MacroCallExpansion()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfStatic(Static e, int index, string partialPredicateCall) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nAttr, int nBody, int nName, int nTypeRepr,
+      int nVisibility
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nBody = nAttr + 1 and
+      nName = nBody + 1 and
+      nTypeRepr = nName + 1 and
+      nVisibility = nTypeRepr + 1 and
+      (
+        none()
+        or
+        index = n and
+        result = e.getAttributeMacroExpansion() and
+        partialPredicateCall = "AttributeMacroExpansion()"
+        or
+        result = e.getAttr(index - nAttributeMacroExpansion) and
+        partialPredicateCall = "Attr(" + (index - nAttributeMacroExpansion).toString() + ")"
+        or
+        index = nAttr and result = e.getBody() and partialPredicateCall = "Body()"
+        or
+        index = nBody and result = e.getName() and partialPredicateCall = "Name()"
+        or
+        index = nName and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
+        or
+        index = nTypeRepr and result = e.getVisibility() and partialPredicateCall = "Visibility()"
       )
     )
   }
@@ -2950,6 +2903,53 @@ private module Impl {
         index = nGenericParamList and result = e.getName() and partialPredicateCall = "Name()"
         or
         index = nName and result = e.getVisibility() and partialPredicateCall = "Visibility()"
+        or
+        index = nVisibility and
+        result = e.getWhereClause() and
+        partialPredicateCall = "WhereClause()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfTypeAlias(TypeAlias e, int index, string partialPredicateCall) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nAttr, int nGenericParamList, int nName,
+      int nTypeRepr, int nTypeBoundList, int nVisibility, int nWhereClause
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nGenericParamList = nAttr + 1 and
+      nName = nGenericParamList + 1 and
+      nTypeRepr = nName + 1 and
+      nTypeBoundList = nTypeRepr + 1 and
+      nVisibility = nTypeBoundList + 1 and
+      nWhereClause = nVisibility + 1 and
+      (
+        none()
+        or
+        index = n and
+        result = e.getAttributeMacroExpansion() and
+        partialPredicateCall = "AttributeMacroExpansion()"
+        or
+        result = e.getAttr(index - nAttributeMacroExpansion) and
+        partialPredicateCall = "Attr(" + (index - nAttributeMacroExpansion).toString() + ")"
+        or
+        index = nAttr and
+        result = e.getGenericParamList() and
+        partialPredicateCall = "GenericParamList()"
+        or
+        index = nGenericParamList and result = e.getName() and partialPredicateCall = "Name()"
+        or
+        index = nName and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
+        or
+        index = nTypeRepr and
+        result = e.getTypeBoundList() and
+        partialPredicateCall = "TypeBoundList()"
+        or
+        index = nTypeBoundList and
+        result = e.getVisibility() and
+        partialPredicateCall = "Visibility()"
         or
         index = nVisibility and
         result = e.getWhereClause() and
@@ -3313,19 +3313,13 @@ private module Impl {
     or
     result = getImmediateChildOfCallExpr(e, index, partialAccessor)
     or
-    result = getImmediateChildOfConst(e, index, partialAccessor)
-    or
     result = getImmediateChildOfExternBlock(e, index, partialAccessor)
     or
     result = getImmediateChildOfExternCrate(e, index, partialAccessor)
     or
     result = getImmediateChildOfFormatTemplateVariableAccess(e, index, partialAccessor)
     or
-    result = getImmediateChildOfFunction(e, index, partialAccessor)
-    or
     result = getImmediateChildOfImpl(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfMacroCall(e, index, partialAccessor)
     or
     result = getImmediateChildOfMacroDef(e, index, partialAccessor)
     or
@@ -3339,8 +3333,6 @@ private module Impl {
     or
     result = getImmediateChildOfPathPat(e, index, partialAccessor)
     or
-    result = getImmediateChildOfStatic(e, index, partialAccessor)
-    or
     result = getImmediateChildOfStructExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfStructPat(e, index, partialAccessor)
@@ -3351,17 +3343,25 @@ private module Impl {
     or
     result = getImmediateChildOfTupleStructPat(e, index, partialAccessor)
     or
-    result = getImmediateChildOfTypeAlias(e, index, partialAccessor)
-    or
     result = getImmediateChildOfUse(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfConst(e, index, partialAccessor)
     or
     result = getImmediateChildOfEnum(e, index, partialAccessor)
     or
     result = getImmediateChildOfForExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfFunction(e, index, partialAccessor)
+    or
     result = getImmediateChildOfLoopExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfMacroCall(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfStatic(e, index, partialAccessor)
+    or
     result = getImmediateChildOfStruct(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTypeAlias(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnion(e, index, partialAccessor)
     or
