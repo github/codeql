@@ -44,18 +44,39 @@ class CipherModePropertyWrite extends Crypto::AlgorithmValueConsumer instanceof 
 }
 
 /**
- * A call to a `SymmetricAlgorithm.CreateEncryptor` or `SymmetricAlgorithm.CreateDecryptor`
- * method that returns a `CryptoTransform` instance.
+ * A padding mode argument passed to a symmetric algorithm method call.
  */
-class SymmetricAlgorithmConsumer extends Crypto::AlgorithmValueConsumer instanceof CryptoTransformCreation
+class PaddingModeArgument extends Crypto::AlgorithmValueConsumer instanceof Expr {
+  SymmetricAlgorithmUse use;
+
+  PaddingModeArgument() {
+    (use.isEncryptionCall() or use.isDecryptionCall()) and
+    this = use.getPaddingArg()
+  }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
+    result.(PaddingModeLiteralInstance).getConsumer() = this
+  }
+}
+
+/**
+ * A qualified expression where the qualifier is a `SymmetricAlgorithm`
+ * instance. (e.g. a call to `SymmetricAlgorithm.EncryptCbc` or
+ * `SymmetricAlgorithm.CreateEncryptor`)
+ */
+class SymmetricAlgorithmConsumer extends Crypto::AlgorithmValueConsumer instanceof SymmetricAlgorithmUse
 {
+  SymmetricAlgorithmConsumer() {
+    super.isEncryptionCall() or super.isDecryptionCall() or super.isCreationCall()
+  }
+
   override Crypto::ConsumerInputDataFlowNode getInputNode() {
     result.asExpr() = super.getQualifier()
   }
 
-  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-    result.(SymmetricAlgorithmInstance).getConsumer() = this
-  }
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
 }
 
 /**
