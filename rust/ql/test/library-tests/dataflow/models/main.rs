@@ -360,10 +360,10 @@ fn test_trait_model<T: Ord>(x: T) {
     sink(x4); // $ hasValueFlow=25
 
     let x5 = source(26).lt(&1);
-    sink(x5); // $ MISSING: hasTaintFlow=26
+    sink(x5); // $ hasTaintFlow=26
 
     let x6 = source(27) < 1;
-    sink(x6); // $ MISSING: hasTaintFlow=27
+    sink(x6); // $ hasTaintFlow=27
 }
 
 #[tokio::main]

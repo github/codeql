@@ -7,20 +7,21 @@ models
 | 6 | Source: main::enum_source; ReturnValue.Field[main::MyFieldEnum::D::field_d]; test-source |
 | 7 | Source: main::simple_source; ReturnValue; test-source |
 | 8 | Summary: <_ as core::cmp::Ord>::max; Argument[self]; ReturnValue; value |
-| 9 | Summary: main::apply; Argument[0]; Argument[1].Parameter[0]; value |
-| 10 | Summary: main::apply; Argument[1].ReturnValue; ReturnValue; value |
-| 11 | Summary: main::coerce; Argument[0]; ReturnValue; taint |
-| 12 | Summary: main::get_array_element; Argument[0].Element; ReturnValue; value |
-| 13 | Summary: main::get_async_number; Argument[0]; ReturnValue.Future; value |
-| 14 | Summary: main::get_struct_field; Argument[0].Field[main::MyStruct::field1]; ReturnValue; value |
-| 15 | Summary: main::get_tuple_element; Argument[0].Field[0]; ReturnValue; value |
-| 16 | Summary: main::get_var_field; Argument[0].Field[main::MyFieldEnum::C::field_c]; ReturnValue; value |
-| 17 | Summary: main::get_var_pos; Argument[0].Field[main::MyPosEnum::A(0)]; ReturnValue; value |
-| 18 | Summary: main::set_array_element; Argument[0]; ReturnValue.Element; value |
-| 19 | Summary: main::set_struct_field; Argument[0]; ReturnValue.Field[main::MyStruct::field2]; value |
-| 20 | Summary: main::set_tuple_element; Argument[0]; ReturnValue.Field[1]; value |
-| 21 | Summary: main::set_var_field; Argument[0]; ReturnValue.Field[main::MyFieldEnum::D::field_d]; value |
-| 22 | Summary: main::set_var_pos; Argument[0]; ReturnValue.Field[main::MyPosEnum::B(0)]; value |
+| 9 | Summary: <_ as core::cmp::PartialOrd>::lt; Argument[self].Reference; ReturnValue; taint |
+| 10 | Summary: main::apply; Argument[0]; Argument[1].Parameter[0]; value |
+| 11 | Summary: main::apply; Argument[1].ReturnValue; ReturnValue; value |
+| 12 | Summary: main::coerce; Argument[0]; ReturnValue; taint |
+| 13 | Summary: main::get_array_element; Argument[0].Element; ReturnValue; value |
+| 14 | Summary: main::get_async_number; Argument[0]; ReturnValue.Future; value |
+| 15 | Summary: main::get_struct_field; Argument[0].Field[main::MyStruct::field1]; ReturnValue; value |
+| 16 | Summary: main::get_tuple_element; Argument[0].Field[0]; ReturnValue; value |
+| 17 | Summary: main::get_var_field; Argument[0].Field[main::MyFieldEnum::C::field_c]; ReturnValue; value |
+| 18 | Summary: main::get_var_pos; Argument[0].Field[main::MyPosEnum::A(0)]; ReturnValue; value |
+| 19 | Summary: main::set_array_element; Argument[0]; ReturnValue.Element; value |
+| 20 | Summary: main::set_struct_field; Argument[0]; ReturnValue.Field[main::MyStruct::field2]; value |
+| 21 | Summary: main::set_tuple_element; Argument[0]; ReturnValue.Field[1]; value |
+| 22 | Summary: main::set_var_field; Argument[0]; ReturnValue.Field[main::MyFieldEnum::D::field_d]; value |
+| 23 | Summary: main::set_var_pos; Argument[0]; ReturnValue.Field[main::MyPosEnum::B(0)]; value |
 edges
 | main.rs:15:9:15:9 | s | main.rs:16:19:16:19 | s | provenance |  |
 | main.rs:15:9:15:9 | s | main.rs:16:19:16:19 | s | provenance |  |
@@ -30,7 +31,7 @@ edges
 | main.rs:16:19:16:19 | s | main.rs:16:10:16:20 | identity(...) | provenance | QL |
 | main.rs:25:9:25:9 | s | main.rs:26:17:26:17 | s | provenance |  |
 | main.rs:25:13:25:22 | source(...) | main.rs:25:9:25:9 | s | provenance |  |
-| main.rs:26:17:26:17 | s | main.rs:26:10:26:18 | coerce(...) | provenance | MaD:11 |
+| main.rs:26:17:26:17 | s | main.rs:26:10:26:18 | coerce(...) | provenance | MaD:12 |
 | main.rs:40:9:40:9 | s | main.rs:41:27:41:27 | s | provenance |  |
 | main.rs:40:9:40:9 | s | main.rs:41:27:41:27 | s | provenance |  |
 | main.rs:40:13:40:21 | source(...) | main.rs:40:9:40:9 | s | provenance |  |
@@ -41,8 +42,8 @@ edges
 | main.rs:41:14:41:28 | ...::A(...) [A] | main.rs:41:9:41:10 | e1 [A] | provenance |  |
 | main.rs:41:27:41:27 | s | main.rs:41:14:41:28 | ...::A(...) [A] | provenance |  |
 | main.rs:41:27:41:27 | s | main.rs:41:14:41:28 | ...::A(...) [A] | provenance |  |
-| main.rs:42:22:42:23 | e1 [A] | main.rs:42:10:42:24 | get_var_pos(...) | provenance | MaD:17 |
-| main.rs:42:22:42:23 | e1 [A] | main.rs:42:10:42:24 | get_var_pos(...) | provenance | MaD:17 |
+| main.rs:42:22:42:23 | e1 [A] | main.rs:42:10:42:24 | get_var_pos(...) | provenance | MaD:18 |
+| main.rs:42:22:42:23 | e1 [A] | main.rs:42:10:42:24 | get_var_pos(...) | provenance | MaD:18 |
 | main.rs:53:9:53:9 | s | main.rs:54:26:54:26 | s | provenance |  |
 | main.rs:53:9:53:9 | s | main.rs:54:26:54:26 | s | provenance |  |
 | main.rs:53:13:53:21 | source(...) | main.rs:53:9:53:9 | s | provenance |  |
@@ -51,8 +52,8 @@ edges
 | main.rs:54:9:54:10 | e1 [B] | main.rs:55:11:55:12 | e1 [B] | provenance |  |
 | main.rs:54:14:54:27 | set_var_pos(...) [B] | main.rs:54:9:54:10 | e1 [B] | provenance |  |
 | main.rs:54:14:54:27 | set_var_pos(...) [B] | main.rs:54:9:54:10 | e1 [B] | provenance |  |
-| main.rs:54:26:54:26 | s | main.rs:54:14:54:27 | set_var_pos(...) [B] | provenance | MaD:22 |
-| main.rs:54:26:54:26 | s | main.rs:54:14:54:27 | set_var_pos(...) [B] | provenance | MaD:22 |
+| main.rs:54:26:54:26 | s | main.rs:54:14:54:27 | set_var_pos(...) [B] | provenance | MaD:23 |
+| main.rs:54:26:54:26 | s | main.rs:54:14:54:27 | set_var_pos(...) [B] | provenance | MaD:23 |
 | main.rs:55:11:55:12 | e1 [B] | main.rs:57:9:57:23 | ...::B(...) [B] | provenance |  |
 | main.rs:55:11:55:12 | e1 [B] | main.rs:57:9:57:23 | ...::B(...) [B] | provenance |  |
 | main.rs:57:9:57:23 | ...::B(...) [B] | main.rs:57:22:57:22 | i | provenance |  |
@@ -69,8 +70,8 @@ edges
 | main.rs:73:14:73:42 | ...::C {...} [C] | main.rs:73:9:73:10 | e1 [C] | provenance |  |
 | main.rs:73:40:73:40 | s | main.rs:73:14:73:42 | ...::C {...} [C] | provenance |  |
 | main.rs:73:40:73:40 | s | main.rs:73:14:73:42 | ...::C {...} [C] | provenance |  |
-| main.rs:74:24:74:25 | e1 [C] | main.rs:74:10:74:26 | get_var_field(...) | provenance | MaD:16 |
-| main.rs:74:24:74:25 | e1 [C] | main.rs:74:10:74:26 | get_var_field(...) | provenance | MaD:16 |
+| main.rs:74:24:74:25 | e1 [C] | main.rs:74:10:74:26 | get_var_field(...) | provenance | MaD:17 |
+| main.rs:74:24:74:25 | e1 [C] | main.rs:74:10:74:26 | get_var_field(...) | provenance | MaD:17 |
 | main.rs:85:9:85:9 | s | main.rs:86:28:86:28 | s | provenance |  |
 | main.rs:85:9:85:9 | s | main.rs:86:28:86:28 | s | provenance |  |
 | main.rs:85:13:85:21 | source(...) | main.rs:85:9:85:9 | s | provenance |  |
@@ -79,8 +80,8 @@ edges
 | main.rs:86:9:86:10 | e1 [D] | main.rs:87:11:87:12 | e1 [D] | provenance |  |
 | main.rs:86:14:86:29 | set_var_field(...) [D] | main.rs:86:9:86:10 | e1 [D] | provenance |  |
 | main.rs:86:14:86:29 | set_var_field(...) [D] | main.rs:86:9:86:10 | e1 [D] | provenance |  |
-| main.rs:86:28:86:28 | s | main.rs:86:14:86:29 | set_var_field(...) [D] | provenance | MaD:21 |
-| main.rs:86:28:86:28 | s | main.rs:86:14:86:29 | set_var_field(...) [D] | provenance | MaD:21 |
+| main.rs:86:28:86:28 | s | main.rs:86:14:86:29 | set_var_field(...) [D] | provenance | MaD:22 |
+| main.rs:86:28:86:28 | s | main.rs:86:14:86:29 | set_var_field(...) [D] | provenance | MaD:22 |
 | main.rs:87:11:87:12 | e1 [D] | main.rs:89:9:89:37 | ...::D {...} [D] | provenance |  |
 | main.rs:87:11:87:12 | e1 [D] | main.rs:89:9:89:37 | ...::D {...} [D] | provenance |  |
 | main.rs:89:9:89:37 | ...::D {...} [D] | main.rs:89:35:89:35 | i | provenance |  |
@@ -97,8 +98,8 @@ edges
 | main.rs:105:21:108:5 | MyStruct {...} [MyStruct.field1] | main.rs:105:9:105:17 | my_struct [MyStruct.field1] | provenance |  |
 | main.rs:106:17:106:17 | s | main.rs:105:21:108:5 | MyStruct {...} [MyStruct.field1] | provenance |  |
 | main.rs:106:17:106:17 | s | main.rs:105:21:108:5 | MyStruct {...} [MyStruct.field1] | provenance |  |
-| main.rs:109:27:109:35 | my_struct [MyStruct.field1] | main.rs:109:10:109:36 | get_struct_field(...) | provenance | MaD:14 |
-| main.rs:109:27:109:35 | my_struct [MyStruct.field1] | main.rs:109:10:109:36 | get_struct_field(...) | provenance | MaD:14 |
+| main.rs:109:27:109:35 | my_struct [MyStruct.field1] | main.rs:109:10:109:36 | get_struct_field(...) | provenance | MaD:15 |
+| main.rs:109:27:109:35 | my_struct [MyStruct.field1] | main.rs:109:10:109:36 | get_struct_field(...) | provenance | MaD:15 |
 | main.rs:126:9:126:9 | s | main.rs:127:38:127:38 | s | provenance |  |
 | main.rs:126:9:126:9 | s | main.rs:127:38:127:38 | s | provenance |  |
 | main.rs:126:13:126:21 | source(...) | main.rs:126:9:126:9 | s | provenance |  |
@@ -107,16 +108,16 @@ edges
 | main.rs:127:9:127:17 | my_struct [MyStruct.field2] | main.rs:129:10:129:18 | my_struct [MyStruct.field2] | provenance |  |
 | main.rs:127:21:127:39 | set_struct_field(...) [MyStruct.field2] | main.rs:127:9:127:17 | my_struct [MyStruct.field2] | provenance |  |
 | main.rs:127:21:127:39 | set_struct_field(...) [MyStruct.field2] | main.rs:127:9:127:17 | my_struct [MyStruct.field2] | provenance |  |
-| main.rs:127:38:127:38 | s | main.rs:127:21:127:39 | set_struct_field(...) [MyStruct.field2] | provenance | MaD:19 |
-| main.rs:127:38:127:38 | s | main.rs:127:21:127:39 | set_struct_field(...) [MyStruct.field2] | provenance | MaD:19 |
+| main.rs:127:38:127:38 | s | main.rs:127:21:127:39 | set_struct_field(...) [MyStruct.field2] | provenance | MaD:20 |
+| main.rs:127:38:127:38 | s | main.rs:127:21:127:39 | set_struct_field(...) [MyStruct.field2] | provenance | MaD:20 |
 | main.rs:129:10:129:18 | my_struct [MyStruct.field2] | main.rs:129:10:129:25 | my_struct.field2 | provenance |  |
 | main.rs:129:10:129:18 | my_struct [MyStruct.field2] | main.rs:129:10:129:25 | my_struct.field2 | provenance |  |
 | main.rs:138:9:138:9 | s | main.rs:139:29:139:29 | s | provenance |  |
 | main.rs:138:9:138:9 | s | main.rs:139:29:139:29 | s | provenance |  |
 | main.rs:138:13:138:21 | source(...) | main.rs:138:9:138:9 | s | provenance |  |
 | main.rs:138:13:138:21 | source(...) | main.rs:138:9:138:9 | s | provenance |  |
-| main.rs:139:28:139:30 | [...] [element] | main.rs:139:10:139:31 | get_array_element(...) | provenance | MaD:12 |
-| main.rs:139:28:139:30 | [...] [element] | main.rs:139:10:139:31 | get_array_element(...) | provenance | MaD:12 |
+| main.rs:139:28:139:30 | [...] [element] | main.rs:139:10:139:31 | get_array_element(...) | provenance | MaD:13 |
+| main.rs:139:28:139:30 | [...] [element] | main.rs:139:10:139:31 | get_array_element(...) | provenance | MaD:13 |
 | main.rs:139:29:139:29 | s | main.rs:139:28:139:30 | [...] [element] | provenance |  |
 | main.rs:139:29:139:29 | s | main.rs:139:28:139:30 | [...] [element] | provenance |  |
 | main.rs:148:9:148:9 | s | main.rs:149:33:149:33 | s | provenance |  |
@@ -127,8 +128,8 @@ edges
 | main.rs:149:9:149:11 | arr [element] | main.rs:150:10:150:12 | arr [element] | provenance |  |
 | main.rs:149:15:149:34 | set_array_element(...) [element] | main.rs:149:9:149:11 | arr [element] | provenance |  |
 | main.rs:149:15:149:34 | set_array_element(...) [element] | main.rs:149:9:149:11 | arr [element] | provenance |  |
-| main.rs:149:33:149:33 | s | main.rs:149:15:149:34 | set_array_element(...) [element] | provenance | MaD:18 |
-| main.rs:149:33:149:33 | s | main.rs:149:15:149:34 | set_array_element(...) [element] | provenance | MaD:18 |
+| main.rs:149:33:149:33 | s | main.rs:149:15:149:34 | set_array_element(...) [element] | provenance | MaD:19 |
+| main.rs:149:33:149:33 | s | main.rs:149:15:149:34 | set_array_element(...) [element] | provenance | MaD:19 |
 | main.rs:150:10:150:12 | arr [element] | main.rs:150:10:150:15 | arr[0] | provenance |  |
 | main.rs:150:10:150:12 | arr [element] | main.rs:150:10:150:15 | arr[0] | provenance |  |
 | main.rs:159:9:159:9 | s | main.rs:160:14:160:14 | s | provenance |  |
@@ -141,8 +142,8 @@ edges
 | main.rs:160:13:160:18 | TupleExpr [tuple.0] | main.rs:160:9:160:9 | t [tuple.0] | provenance |  |
 | main.rs:160:14:160:14 | s | main.rs:160:13:160:18 | TupleExpr [tuple.0] | provenance |  |
 | main.rs:160:14:160:14 | s | main.rs:160:13:160:18 | TupleExpr [tuple.0] | provenance |  |
-| main.rs:161:28:161:28 | t [tuple.0] | main.rs:161:10:161:29 | get_tuple_element(...) | provenance | MaD:15 |
-| main.rs:161:28:161:28 | t [tuple.0] | main.rs:161:10:161:29 | get_tuple_element(...) | provenance | MaD:15 |
+| main.rs:161:28:161:28 | t [tuple.0] | main.rs:161:10:161:29 | get_tuple_element(...) | provenance | MaD:16 |
+| main.rs:161:28:161:28 | t [tuple.0] | main.rs:161:10:161:29 | get_tuple_element(...) | provenance | MaD:16 |
 | main.rs:172:9:172:9 | s | main.rs:173:31:173:31 | s | provenance |  |
 | main.rs:172:9:172:9 | s | main.rs:173:31:173:31 | s | provenance |  |
 | main.rs:172:13:172:22 | source(...) | main.rs:172:9:172:9 | s | provenance |  |
@@ -151,8 +152,8 @@ edges
 | main.rs:173:9:173:9 | t [tuple.1] | main.rs:175:10:175:10 | t [tuple.1] | provenance |  |
 | main.rs:173:13:173:32 | set_tuple_element(...) [tuple.1] | main.rs:173:9:173:9 | t [tuple.1] | provenance |  |
 | main.rs:173:13:173:32 | set_tuple_element(...) [tuple.1] | main.rs:173:9:173:9 | t [tuple.1] | provenance |  |
-| main.rs:173:31:173:31 | s | main.rs:173:13:173:32 | set_tuple_element(...) [tuple.1] | provenance | MaD:20 |
-| main.rs:173:31:173:31 | s | main.rs:173:13:173:32 | set_tuple_element(...) [tuple.1] | provenance | MaD:20 |
+| main.rs:173:31:173:31 | s | main.rs:173:13:173:32 | set_tuple_element(...) [tuple.1] | provenance | MaD:21 |
+| main.rs:173:31:173:31 | s | main.rs:173:13:173:32 | set_tuple_element(...) [tuple.1] | provenance | MaD:21 |
 | main.rs:175:10:175:10 | t [tuple.1] | main.rs:175:10:175:12 | t.1 | provenance |  |
 | main.rs:175:10:175:10 | t [tuple.1] | main.rs:175:10:175:12 | t.1 | provenance |  |
 | main.rs:187:9:187:9 | s | main.rs:192:11:192:11 | s | provenance |  |
@@ -161,8 +162,8 @@ edges
 | main.rs:187:13:187:22 | source(...) | main.rs:187:9:187:9 | s | provenance |  |
 | main.rs:188:14:188:14 | ... | main.rs:189:14:189:14 | n | provenance |  |
 | main.rs:188:14:188:14 | ... | main.rs:189:14:189:14 | n | provenance |  |
-| main.rs:192:11:192:11 | s | main.rs:188:14:188:14 | ... | provenance | MaD:9 |
-| main.rs:192:11:192:11 | s | main.rs:188:14:188:14 | ... | provenance | MaD:9 |
+| main.rs:192:11:192:11 | s | main.rs:188:14:188:14 | ... | provenance | MaD:10 |
+| main.rs:192:11:192:11 | s | main.rs:188:14:188:14 | ... | provenance | MaD:10 |
 | main.rs:196:13:196:22 | source(...) | main.rs:198:23:198:23 | f [captured s] | provenance |  |
 | main.rs:196:13:196:22 | source(...) | main.rs:198:23:198:23 | f [captured s] | provenance |  |
 | main.rs:197:40:197:40 | s | main.rs:197:17:197:42 | if ... {...} else {...} | provenance |  |
@@ -171,14 +172,14 @@ edges
 | main.rs:198:9:198:9 | t | main.rs:199:10:199:10 | t | provenance |  |
 | main.rs:198:13:198:24 | apply(...) | main.rs:198:9:198:9 | t | provenance |  |
 | main.rs:198:13:198:24 | apply(...) | main.rs:198:9:198:9 | t | provenance |  |
-| main.rs:198:23:198:23 | f [captured s] | main.rs:197:40:197:40 | s | provenance | MaD:9 |
-| main.rs:198:23:198:23 | f [captured s] | main.rs:197:40:197:40 | s | provenance | MaD:9 |
 | main.rs:198:23:198:23 | f [captured s] | main.rs:197:40:197:40 | s | provenance | MaD:10 |
 | main.rs:198:23:198:23 | f [captured s] | main.rs:197:40:197:40 | s | provenance | MaD:10 |
-| main.rs:198:23:198:23 | f [captured s] | main.rs:198:13:198:24 | apply(...) | provenance | MaD:9 |
-| main.rs:198:23:198:23 | f [captured s] | main.rs:198:13:198:24 | apply(...) | provenance | MaD:9 |
+| main.rs:198:23:198:23 | f [captured s] | main.rs:197:40:197:40 | s | provenance | MaD:11 |
+| main.rs:198:23:198:23 | f [captured s] | main.rs:197:40:197:40 | s | provenance | MaD:11 |
 | main.rs:198:23:198:23 | f [captured s] | main.rs:198:13:198:24 | apply(...) | provenance | MaD:10 |
 | main.rs:198:23:198:23 | f [captured s] | main.rs:198:13:198:24 | apply(...) | provenance | MaD:10 |
+| main.rs:198:23:198:23 | f [captured s] | main.rs:198:13:198:24 | apply(...) | provenance | MaD:11 |
+| main.rs:198:23:198:23 | f [captured s] | main.rs:198:13:198:24 | apply(...) | provenance | MaD:11 |
 | main.rs:203:9:203:9 | s | main.rs:205:19:205:19 | s | provenance |  |
 | main.rs:203:9:203:9 | s | main.rs:205:19:205:19 | s | provenance |  |
 | main.rs:203:13:203:22 | source(...) | main.rs:203:9:203:9 | s | provenance |  |
@@ -189,10 +190,10 @@ edges
 | main.rs:205:9:205:9 | t | main.rs:206:10:206:10 | t | provenance |  |
 | main.rs:205:13:205:23 | apply(...) | main.rs:205:9:205:9 | t | provenance |  |
 | main.rs:205:13:205:23 | apply(...) | main.rs:205:9:205:9 | t | provenance |  |
-| main.rs:205:19:205:19 | s | main.rs:204:14:204:14 | ... | provenance | MaD:9 |
-| main.rs:205:19:205:19 | s | main.rs:204:14:204:14 | ... | provenance | MaD:9 |
-| main.rs:205:19:205:19 | s | main.rs:205:13:205:23 | apply(...) | provenance | MaD:9 |
-| main.rs:205:19:205:19 | s | main.rs:205:13:205:23 | apply(...) | provenance | MaD:9 |
+| main.rs:205:19:205:19 | s | main.rs:204:14:204:14 | ... | provenance | MaD:10 |
+| main.rs:205:19:205:19 | s | main.rs:204:14:204:14 | ... | provenance | MaD:10 |
+| main.rs:205:19:205:19 | s | main.rs:205:13:205:23 | apply(...) | provenance | MaD:10 |
+| main.rs:205:19:205:19 | s | main.rs:205:13:205:23 | apply(...) | provenance | MaD:10 |
 | main.rs:215:9:215:9 | s | main.rs:216:30:216:30 | s | provenance |  |
 | main.rs:215:9:215:9 | s | main.rs:216:30:216:30 | s | provenance |  |
 | main.rs:215:13:215:22 | source(...) | main.rs:215:9:215:9 | s | provenance |  |
@@ -203,8 +204,8 @@ edges
 | main.rs:216:13:216:31 | get_async_number(...) [future] | main.rs:216:13:216:37 | await ... | provenance |  |
 | main.rs:216:13:216:37 | await ... | main.rs:216:9:216:9 | t | provenance |  |
 | main.rs:216:13:216:37 | await ... | main.rs:216:9:216:9 | t | provenance |  |
-| main.rs:216:30:216:30 | s | main.rs:216:13:216:31 | get_async_number(...) [future] | provenance | MaD:13 |
-| main.rs:216:30:216:30 | s | main.rs:216:13:216:31 | get_async_number(...) [future] | provenance | MaD:13 |
+| main.rs:216:30:216:30 | s | main.rs:216:13:216:31 | get_async_number(...) [future] | provenance | MaD:14 |
+| main.rs:216:30:216:30 | s | main.rs:216:13:216:31 | get_async_number(...) [future] | provenance | MaD:14 |
 | main.rs:236:9:236:9 | s [D] | main.rs:237:11:237:11 | s [D] | provenance |  |
 | main.rs:236:9:236:9 | s [D] | main.rs:237:11:237:11 | s [D] | provenance |  |
 | main.rs:236:13:236:23 | enum_source | main.rs:236:13:236:27 | enum_source(...) [D] | provenance | Src:MaD:6  |
@@ -287,6 +288,12 @@ edges
 | main.rs:359:14:359:23 | source(...) | main.rs:359:14:359:30 | ... .max(...) | provenance | MaD:8 |
 | main.rs:359:14:359:30 | ... .max(...) | main.rs:359:9:359:10 | x4 | provenance |  |
 | main.rs:359:14:359:30 | ... .max(...) | main.rs:359:9:359:10 | x4 | provenance |  |
+| main.rs:362:9:362:10 | x5 | main.rs:363:10:363:11 | x5 | provenance |  |
+| main.rs:362:14:362:23 | source(...) | main.rs:362:14:362:30 | ... .lt(...) | provenance | MaD:9 |
+| main.rs:362:14:362:30 | ... .lt(...) | main.rs:362:9:362:10 | x5 | provenance |  |
+| main.rs:365:9:365:10 | x6 | main.rs:366:10:366:11 | x6 | provenance |  |
+| main.rs:365:14:365:23 | source(...) | main.rs:365:14:365:27 | ... < ... | provenance | MaD:9 |
+| main.rs:365:14:365:27 | ... < ... | main.rs:365:9:365:10 | x6 | provenance |  |
 nodes
 | main.rs:15:9:15:9 | s | semmle.label | s |
 | main.rs:15:9:15:9 | s | semmle.label | s |
@@ -600,6 +607,14 @@ nodes
 | main.rs:359:14:359:30 | ... .max(...) | semmle.label | ... .max(...) |
 | main.rs:360:10:360:11 | x4 | semmle.label | x4 |
 | main.rs:360:10:360:11 | x4 | semmle.label | x4 |
+| main.rs:362:9:362:10 | x5 | semmle.label | x5 |
+| main.rs:362:14:362:23 | source(...) | semmle.label | source(...) |
+| main.rs:362:14:362:30 | ... .lt(...) | semmle.label | ... .lt(...) |
+| main.rs:363:10:363:11 | x5 | semmle.label | x5 |
+| main.rs:365:9:365:10 | x6 | semmle.label | x6 |
+| main.rs:365:14:365:23 | source(...) | semmle.label | source(...) |
+| main.rs:365:14:365:27 | ... < ... | semmle.label | ... < ... |
+| main.rs:366:10:366:11 | x6 | semmle.label | x6 |
 subpaths
 | main.rs:198:23:198:23 | f [captured s] | main.rs:197:40:197:40 | s | main.rs:197:17:197:42 | if ... {...} else {...} | main.rs:198:13:198:24 | apply(...) |
 | main.rs:198:23:198:23 | f [captured s] | main.rs:197:40:197:40 | s | main.rs:197:17:197:42 | if ... {...} else {...} | main.rs:198:13:198:24 | apply(...) |
@@ -659,3 +674,5 @@ invalidSpecComponent
 | main.rs:354:10:354:18 | x2.field1 | main.rs:347:17:347:26 | source(...) | main.rs:354:10:354:18 | x2.field1 | $@ | main.rs:347:17:347:26 | source(...) | source(...) |
 | main.rs:360:10:360:11 | x4 | main.rs:359:14:359:23 | source(...) | main.rs:360:10:360:11 | x4 | $@ | main.rs:359:14:359:23 | source(...) | source(...) |
 | main.rs:360:10:360:11 | x4 | main.rs:359:14:359:23 | source(...) | main.rs:360:10:360:11 | x4 | $@ | main.rs:359:14:359:23 | source(...) | source(...) |
+| main.rs:363:10:363:11 | x5 | main.rs:362:14:362:23 | source(...) | main.rs:363:10:363:11 | x5 | $@ | main.rs:362:14:362:23 | source(...) | source(...) |
+| main.rs:366:10:366:11 | x6 | main.rs:365:14:365:23 | source(...) | main.rs:366:10:366:11 | x6 | $@ | main.rs:365:14:365:23 | source(...) | source(...) |

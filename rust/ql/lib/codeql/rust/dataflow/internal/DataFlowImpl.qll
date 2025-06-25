@@ -407,7 +407,17 @@ module RustDataFlow implements InputSig<Location> {
     exists(Call c | c = call.asCallCfgNode().getCall() |
       result.asCfgScope() = c.getARuntimeTarget()
       or
-      result.asSummarizedCallable() = c.getStaticTarget()
+      exists(SummarizedCallable sc, Function staticTarget |
+        staticTarget = c.getStaticTarget() and
+        sc = result.asSummarizedCallable()
+      |
+        sc = staticTarget
+        or
+        // only apply trait models to concrete implementations when they are not
+        // defined in source code
+        staticTarget.implements(sc) and
+        not staticTarget.fromSource()
+      )
     )
   }
 
