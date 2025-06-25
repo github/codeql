@@ -48,6 +48,10 @@
 | TaintedPath.js:214:29:214:42 | improperEscape | TaintedPath.js:212:24:212:30 | req.url | TaintedPath.js:214:29:214:42 | improperEscape | This path depends on a $@. | TaintedPath.js:212:24:212:30 | req.url | user-provided value |
 | TaintedPath.js:216:29:216:43 | improperEscape2 | TaintedPath.js:212:24:212:30 | req.url | TaintedPath.js:216:29:216:43 | improperEscape2 | This path depends on a $@. | TaintedPath.js:212:24:212:30 | req.url | user-provided value |
 | examples/TaintedPath.js:10:29:10:43 | ROOT + filePath | examples/TaintedPath.js:8:28:8:34 | req.url | examples/TaintedPath.js:10:29:10:43 | ROOT + filePath | This path depends on a $@. | examples/TaintedPath.js:8:28:8:34 | req.url | user-provided value |
+| execa.js:9:26:9:33 | filePath | execa.js:6:30:6:36 | req.url | execa.js:9:26:9:33 | filePath | This path depends on a $@. | execa.js:6:30:6:36 | req.url | user-provided value |
+| execa.js:12:37:12:44 | filePath | execa.js:6:30:6:36 | req.url | execa.js:12:37:12:44 | filePath | This path depends on a $@. | execa.js:6:30:6:36 | req.url | user-provided value |
+| execa.js:15:50:15:57 | filePath | execa.js:6:30:6:36 | req.url | execa.js:15:50:15:57 | filePath | This path depends on a $@. | execa.js:6:30:6:36 | req.url | user-provided value |
+| execa.js:18:62:18:69 | filePath | execa.js:6:30:6:36 | req.url | execa.js:18:62:18:69 | filePath | This path depends on a $@. | execa.js:6:30:6:36 | req.url | user-provided value |
 | express.js:8:20:8:32 | req.query.bar | express.js:8:20:8:32 | req.query.bar | express.js:8:20:8:32 | req.query.bar | This path depends on a $@. | express.js:8:20:8:32 | req.query.bar | user-provided value |
 | handlebars.js:11:32:11:39 | filePath | handlebars.js:29:46:29:60 | req.params.path | handlebars.js:11:32:11:39 | filePath | This path depends on a $@. | handlebars.js:29:46:29:60 | req.params.path | user-provided value |
 | handlebars.js:15:25:15:32 | filePath | handlebars.js:43:15:43:29 | req.params.path | handlebars.js:15:25:15:32 | filePath | This path depends on a $@. | handlebars.js:43:15:43:29 | req.params.path | user-provided value |
@@ -399,6 +403,15 @@ edges
 | examples/TaintedPath.js:8:18:8:52 | url.par ... ry.path | examples/TaintedPath.js:8:7:8:52 | filePath | provenance |  |
 | examples/TaintedPath.js:8:28:8:34 | req.url | examples/TaintedPath.js:8:18:8:41 | url.par ... , true) | provenance | Config |
 | examples/TaintedPath.js:10:36:10:43 | filePath | examples/TaintedPath.js:10:29:10:43 | ROOT + filePath | provenance | Config |
+| execa.js:6:9:6:64 | filePath | execa.js:9:26:9:33 | filePath | provenance |  |
+| execa.js:6:9:6:64 | filePath | execa.js:12:37:12:44 | filePath | provenance |  |
+| execa.js:6:9:6:64 | filePath | execa.js:15:50:15:57 | filePath | provenance |  |
+| execa.js:6:9:6:64 | filePath | execa.js:18:62:18:69 | filePath | provenance |  |
+| execa.js:6:20:6:43 | url.par ... , true) | execa.js:6:20:6:49 | url.par ... ).query | provenance | Config |
+| execa.js:6:20:6:49 | url.par ... ).query | execa.js:6:20:6:61 | url.par ... ePath"] | provenance | Config |
+| execa.js:6:20:6:61 | url.par ... ePath"] | execa.js:6:20:6:64 | url.par ... th"][0] | provenance | Config |
+| execa.js:6:20:6:64 | url.par ... th"][0] | execa.js:6:9:6:64 | filePath | provenance |  |
+| execa.js:6:30:6:36 | req.url | execa.js:6:20:6:43 | url.par ... , true) | provenance | Config |
 | handlebars.js:10:51:10:58 | filePath | handlebars.js:11:32:11:39 | filePath | provenance |  |
 | handlebars.js:13:73:13:80 | filePath | handlebars.js:15:25:15:32 | filePath | provenance |  |
 | handlebars.js:29:46:29:60 | req.params.path | handlebars.js:10:51:10:58 | filePath | provenance |  |
@@ -944,6 +957,16 @@ nodes
 | examples/TaintedPath.js:8:28:8:34 | req.url | semmle.label | req.url |
 | examples/TaintedPath.js:10:29:10:43 | ROOT + filePath | semmle.label | ROOT + filePath |
 | examples/TaintedPath.js:10:36:10:43 | filePath | semmle.label | filePath |
+| execa.js:6:9:6:64 | filePath | semmle.label | filePath |
+| execa.js:6:20:6:43 | url.par ... , true) | semmle.label | url.par ... , true) |
+| execa.js:6:20:6:49 | url.par ... ).query | semmle.label | url.par ... ).query |
+| execa.js:6:20:6:61 | url.par ... ePath"] | semmle.label | url.par ... ePath"] |
+| execa.js:6:20:6:64 | url.par ... th"][0] | semmle.label | url.par ... th"][0] |
+| execa.js:6:30:6:36 | req.url | semmle.label | req.url |
+| execa.js:9:26:9:33 | filePath | semmle.label | filePath |
+| execa.js:12:37:12:44 | filePath | semmle.label | filePath |
+| execa.js:15:50:15:57 | filePath | semmle.label | filePath |
+| execa.js:18:62:18:69 | filePath | semmle.label | filePath |
 | express.js:8:20:8:32 | req.query.bar | semmle.label | req.query.bar |
 | handlebars.js:10:51:10:58 | filePath | semmle.label | filePath |
 | handlebars.js:11:32:11:39 | filePath | semmle.label | filePath |
