@@ -990,13 +990,4 @@ class SuperConstructorInvocationStmt extends Stmt, ConstructorCall, @superconstr
 }
 
 overlay[local]
-private predicate discardableStmt(string file, @stmt s) {
-  not isOverlay() and
-  file = getRawFile(s)
-}
-
-/** Discard base statements in files fully extracted in the overlay. */
-overlay[discard_entity]
-private predicate discardStmt(@stmt s) {
-  exists(string file | discardableStmt(file, s) and extractedInOverlay(file))
-}
+private class DiscardableStmt extends DiscardableLocatable, @stmt { }

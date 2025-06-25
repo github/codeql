@@ -136,13 +136,4 @@ class Parameter extends Element, @param, LocalScopeVariable {
 }
 
 overlay[local]
-private predicate discardableLocalVarDecl(string file, @localscopevariable l) {
-  not isOverlay() and
-  file = getRawFile(l)
-}
-
-/** Discard base local scoped variables in files fully extracted in the overlay. */
-overlay[discard_entity]
-private predicate discardLocalVarDecl(@localscopevariable l) {
-  exists(string file | discardableLocalVarDecl(file, l) and extractedInOverlay(file))
-}
+private class DiscardableLocalScopeVariable extends DiscardableLocatable, @localscopevariable { }
