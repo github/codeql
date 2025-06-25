@@ -29,7 +29,7 @@ class EvpNewKeyCtx extends OperationStep instanceof Call {
     result.asExpr() = keyArg and type = KeyIO()
     or
     this.getTarget().getName() = "EVP_PKEY_CTX_new_from_pkey" and
-    result.asDefiningArgument() = this.getArgument(0) and
+    result.asExpr() = this.getArgument(0) and
     type = OsslLibContextIO()
   }
 

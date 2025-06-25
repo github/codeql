@@ -222,22 +222,34 @@ abstract class OperationStep extends Call {
    * not both.
    * Note: Any 'update' that sets a value is not considered to be 'resetting' an input.
    * I.e., there is a difference between changing a configuration before use and
-   * the oepration allows for multiple inputs (like plaintext for cipher update calls before final).
+   * the operation allows for multiple inputs (like plaintext for cipher update calls before final).
    */
   OperationStep getDominatingInitializersToStep(IOType type) {
     result.flowsToOperationStep(this) and
     result.setsValue(type) and
     (
+      // Do not consider a 'reset' to occur on updates
       result.getStepType() = UpdateStep()
       or
       not exists(OperationStep reset |
-        reset != this and
-        reset != result and
+        result != reset and
         reset.setsValue(type) and
         reset.flowsToOperationStep(this) and
         result.flowsToOperationStep(reset)
       )
     )
+  }
+
+  /**
+   * Gets all output of `type` that flow to `this`
+   * if `this` is a final step and the output is not from
+   * a separate final step.
+   */
+  OperationStep getOutputStepFlowingToStep(IOType type) {
+    this.getStepType() = FinalStep() and
+    result.flowsToOperationStep(this) and
+    exists(result.getOutput(type)) and
+    (result = this or result.getStepType() != FinalStep())
   }
 
   /**

@@ -174,10 +174,7 @@ class KeyGenOperationInstance extends Crypto::KeyGenerationOperationInstance ins
   override Crypto::KeyArtifactType getOutputKeyType() { result = Crypto::TAsymmetricKeyType() }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputKeyArtifact() {
-    exists(OperationStep s |
-      s.flowsToOperationStep(this) and
-      result = s.getOutput(KeyIO())
-    )
+    super.getOutputStepFlowingToStep(KeyIO()).getOutput(KeyIO()) = result
   }
 
   override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {

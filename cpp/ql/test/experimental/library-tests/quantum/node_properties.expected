@@ -20,7 +20,7 @@
 | openssl_basic.c:144:67:144:73 | HashAlgorithm | DigestSize | 128 | openssl_basic.c:144:67:144:73 | openssl_basic.c:144:67:144:73 |
 | openssl_basic.c:144:67:144:73 | HashAlgorithm | Name | MD5 | openssl_basic.c:144:67:144:73 | openssl_basic.c:144:67:144:73 |
 | openssl_basic.c:144:67:144:73 | HashAlgorithm | RawName | EVP_md5 | openssl_basic.c:144:67:144:73 | openssl_basic.c:144:67:144:73 |
-| openssl_basic.c:155:22:155:41 | Key | KeyType | Symmetric | openssl_basic.c:155:22:155:41 | openssl_basic.c:155:22:155:41 |
+| openssl_basic.c:155:22:155:41 | Key | KeyType | Asymmetric | openssl_basic.c:155:22:155:41 | openssl_basic.c:155:22:155:41 |
 | openssl_basic.c:155:43:155:55 | MACAlgorithm | Name | HMAC | openssl_basic.c:155:43:155:55 | openssl_basic.c:155:43:155:55 |
 | openssl_basic.c:155:43:155:55 | MACAlgorithm | RawName | 855 | openssl_basic.c:155:43:155:55 | openssl_basic.c:155:43:155:55 |
 | openssl_basic.c:160:39:160:48 | HashAlgorithm | DigestSize | 256 | openssl_basic.c:160:39:160:48 | openssl_basic.c:160:39:160:48 |
@@ -34,6 +34,7 @@
 | openssl_basic.c:218:32:218:33 | Constant | Description | 32 | openssl_basic.c:218:32:218:33 | openssl_basic.c:218:32:218:33 |
 | openssl_pkey.c:21:10:21:28 | KeyOperationAlgorithm | Name | RSA | openssl_pkey.c:21:10:21:28 | openssl_pkey.c:21:10:21:28 |
 | openssl_pkey.c:21:10:21:28 | KeyOperationAlgorithm | RawName | RSA_generate_key_ex | openssl_pkey.c:21:10:21:28 | openssl_pkey.c:21:10:21:28 |
+| openssl_pkey.c:21:30:21:32 | Key | KeyType | Asymmetric | openssl_pkey.c:21:30:21:32 | openssl_pkey.c:21:30:21:32 |
 | openssl_pkey.c:45:49:45:65 | Constant | Description | Hello, OpenSSL! | openssl_pkey.c:45:49:45:65 | openssl_pkey.c:45:49:45:65 |
 | openssl_pkey.c:50:31:50:42 | KeyOperationAlgorithm | Name | RSA | openssl_pkey.c:50:31:50:42 | openssl_pkey.c:50:31:50:42 |
 | openssl_pkey.c:50:31:50:42 | KeyOperationAlgorithm | RawName | 6 | openssl_pkey.c:50:31:50:42 | openssl_pkey.c:50:31:50:42 |
@@ -44,12 +45,16 @@
 | openssl_signature.c:80:9:80:21 | SignOperation | KeyOperationSubtype | Sign | openssl_signature.c:80:9:80:21 | openssl_signature.c:80:9:80:21 |
 | openssl_signature.c:80:53:80:56 | Key | KeyType | Unknown | openssl_signature.c:80:53:80:56 | openssl_signature.c:80:53:80:56 |
 | openssl_signature.c:133:52:133:55 | Key | KeyType | Unknown | openssl_signature.c:133:52:133:55 | openssl_signature.c:133:52:133:55 |
+| openssl_signature.c:135:9:135:27 | SignOperation | KeyOperationSubtype | Sign | openssl_signature.c:135:9:135:27 | openssl_signature.c:135:9:135:27 |
 | openssl_signature.c:142:9:142:27 | SignOperation | KeyOperationSubtype | Sign | openssl_signature.c:142:9:142:27 | openssl_signature.c:142:9:142:27 |
 | openssl_signature.c:190:57:190:60 | Key | KeyType | Unknown | openssl_signature.c:190:57:190:60 | openssl_signature.c:190:57:190:60 |
+| openssl_signature.c:197:9:197:27 | SignOperation | KeyOperationSubtype | Sign | openssl_signature.c:197:9:197:27 | openssl_signature.c:197:9:197:27 |
 | openssl_signature.c:204:9:204:27 | SignOperation | KeyOperationSubtype | Sign | openssl_signature.c:204:9:204:27 | openssl_signature.c:204:9:204:27 |
 | openssl_signature.c:260:39:260:42 | Key | KeyType | Unknown | openssl_signature.c:260:39:260:42 | openssl_signature.c:260:39:260:42 |
+| openssl_signature.c:263:9:263:21 | SignOperation | KeyOperationSubtype | Sign | openssl_signature.c:263:9:263:21 | openssl_signature.c:263:9:263:21 |
 | openssl_signature.c:270:9:270:21 | SignOperation | KeyOperationSubtype | Sign | openssl_signature.c:270:9:270:21 | openssl_signature.c:270:9:270:21 |
 | openssl_signature.c:321:39:321:42 | Key | KeyType | Unknown | openssl_signature.c:321:39:321:42 | openssl_signature.c:321:39:321:42 |
+| openssl_signature.c:327:9:327:35 | SignOperation | KeyOperationSubtype | Sign | openssl_signature.c:327:9:327:35 | openssl_signature.c:327:9:327:35 |
 | openssl_signature.c:334:9:334:35 | SignOperation | KeyOperationSubtype | Sign | openssl_signature.c:334:9:334:35 | openssl_signature.c:334:9:334:35 |
 | openssl_signature.c:521:46:521:66 | PaddingAlgorithm | Name | PSS | openssl_signature.c:521:46:521:66 | openssl_signature.c:521:46:521:66 |
 | openssl_signature.c:521:46:521:66 | PaddingAlgorithm | RawName | 6 | openssl_signature.c:521:46:521:66 | openssl_signature.c:521:46:521:66 |

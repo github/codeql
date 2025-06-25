@@ -263,10 +263,7 @@ class EvpCipherOperationInstance extends Crypto::KeyOperationInstance instanceof
   }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-    exists(OperationStep s |
-      s.flowsToOperationStep(this) and
-      result = s.getOutput(CiphertextIO())
-    )
+    super.getOutputStepFlowingToStep(CiphertextIO()).getOutput(CiphertextIO()) = result
   }
 
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {

@@ -129,10 +129,7 @@ class EvpDigestFinalOperationInstance extends Crypto::HashOperationInstance inst
   }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-    exists(OperationStep s |
-      s.flowsToOperationStep(this) and
-      result = s.getOutput(DigestIO())
-    )
+    super.getOutputStepFlowingToStep(DigestIO()).getOutput(DigestIO()) = result
   }
 
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {

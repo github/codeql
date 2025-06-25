@@ -240,10 +240,7 @@ class EvpSignatureOperationInstance extends Crypto::SignatureOperationInstance i
   }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-    exists(OperationStep s |
-      s.flowsToOperationStep(this) and
-      result = s.getOutput(SignatureIO())
-    )
+    super.getOutputStepFlowingToStep(SignatureIO()).getOutput(SignatureIO()) = result
   }
 
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
