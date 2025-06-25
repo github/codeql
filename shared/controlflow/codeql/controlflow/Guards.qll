@@ -11,7 +11,7 @@
  * controls the basic block `A`, in this case because the true branch dominates
  * `A`, but more elaborate controls-relationships may also hold.
  * For example, in
- * ```
+ * ```java
  * int sz = a != null ? a.length : 0;
  * if (sz != 0) {
  *   // this block is controlled by:
@@ -104,6 +104,19 @@ signature module InputSig<LocationSig Location> {
     predicate strictlyDominates(BasicBlock bb);
   }
 
+  /**
+   * Holds if `bb1` has `bb2` as a direct successor and the edge between `bb1`
+   * and `bb2` is a dominating edge.
+   *
+   * An edge `(bb1, bb2)` is dominating if there exists a basic block that can
+   * only be reached from the entry block by going through `(bb1, bb2)`. This
+   * implies that `(bb1, bb2)` dominates its endpoint `bb2`. I.e., `bb2` can
+   * only be reached from the entry block by going via `(bb1, bb2)`.
+   *
+   * This is a necessary and sufficient condition for an edge to dominate some
+   * block, and therefore `dominatingEdge(bb1, bb2) and bb2.dominates(bb3)`
+   * means that the edge `(bb1, bb2)` dominates `bb3`.
+   */
   predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2);
 
   class AstNode {
@@ -528,6 +541,17 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   module Logic<LogicInputSig LogicInput> {
     private import LogicInput
 
+    /**
+     * Holds if `guard` evaluating to `v` directly controls `phi` taking the value
+     * `inp`. This means that `guard` evaluating to `v` must control all the input
+     * edges to `phi` that read `inp`.
+     *
+     * We also require that `guard` dominates `phi` in order to allow logical inferences
+     * from the value of `phi` to the value of `guard`.
+     *
+     * Trivial cases where `guard` controls `phi` itself are excluded, since that makes
+     * logical inferences from `phi` to `guard` trivial and irrelevant.
+     */
     private predicate guardControlsPhiBranch(
       Guard guard, GuardValue v, SsaPhiNode phi, SsaDefinition inp
     ) {
@@ -571,6 +595,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     private predicate guardReadsSsaVar(Guard guard, SsaDefinition def) {
       def.getARead() = guard
       or
+      // A read of `y` can be considered as a read of `x` if guarded by `x == y`.
       exists(Guard eqtest, SsaDefinition other, boolean branch |
         guardChecksEqualVars(eqtest, def, other, branch) and
         other.getARead() = guard and
@@ -602,21 +627,21 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * boolean `fromBackEdge` indicates whether the flow from `result` to `v` goes
      * through a back edge.
      */
-    private SsaDefinition getADefinition(SsaDefinition v, boolean fromBackEdge) {
+    private SsaDefinition getAnUltimateDefinition(SsaDefinition v, boolean fromBackEdge) {
       result = v and not v instanceof SsaPhiNode and fromBackEdge = false
       or
       exists(SsaDefinition inp, BasicBlock bb, boolean fbe |
         v.(SsaPhiNode).hasInputFromBlock(inp, bb) and
-        result = getADefinition(inp, fbe) and
+        result = getAnUltimateDefinition(inp, fbe) and
         (if v.getBasicBlock().dominates(bb) then fromBackEdge = true else fromBackEdge = fbe)
       )
     }
 
     /**
-     * Holds if `v` can have a value that is not representable as an `GuardValue`.
+     * Holds if `v` can have a value that is not representable as a `GuardValue`.
      */
     private predicate hasPossibleUnknownValue(SsaDefinition v) {
-      exists(SsaDefinition def | def = getADefinition(v, _) |
+      exists(SsaDefinition def | def = getAnUltimateDefinition(v, _) |
         not exists(def.(SsaWriteDefinition).getDefinition())
         or
         exists(Expr e | e = possibleValue(def.(SsaWriteDefinition).getDefinition()) |
@@ -633,7 +658,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     private predicate possibleValue(SsaDefinition v, boolean fromBackEdge, Expr e, GuardValue k) {
       not hasPossibleUnknownValue(v) and
       exists(SsaWriteDefinition def |
-        def = getADefinition(v, fromBackEdge) and
+        def = getAnUltimateDefinition(v, fromBackEdge) and
         e = possibleValue(def.getDefinition()) and
         constantHasValue(e, k)
       )
@@ -676,7 +701,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       or
       exists(SsaDefinition def |
         guardReadsSsaVar(e, def) and
-        relevantInt(getADefinition(def, _).(SsaWriteDefinition).getDefinition(), k)
+        relevantInt(getAnUltimateDefinition(def, _).(SsaWriteDefinition).getDefinition(), k)
       )
     }
 
@@ -808,7 +833,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * starting from a given set of base cases.
      */
     cached
-    module ImpliesTC<baseGuardValueSig/2 baseGuardValue> {
+    private module ImpliesTC<baseGuardValueSig/2 baseGuardValue> {
       /**
        * Holds if `tgtGuard` evaluating to `tgtVal` implies that `guard`
        * evaluates to `v`.
