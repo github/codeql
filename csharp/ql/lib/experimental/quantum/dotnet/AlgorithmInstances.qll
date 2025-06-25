@@ -46,13 +46,19 @@ class HashAlgorithmNameInstance extends Crypto::HashAlgorithmInstance instanceof
   Crypto::AlgorithmValueConsumer getConsumer() { result = consumer }
 }
 
-class SymmetricAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance instanceof SymmetricAlgorithmCreation
+/**
+ * A call to an encryption, decryption, or transform creation API (e.g.
+ * `EncryptCbc` or `CreateEncryptor`) on a `SymmetricAlgorithm` instance.
+ */
+class SymmetricAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance instanceof SymmetricAlgorithmUse
 {
-  SymmetricAlgorithmConsumer consumer;
+  SymmetricAlgorithmInstance() {
+    this.isEncryptionCall() or this.isDecryptionCall() or this.isCreationCall()
+  }
 
-  SymmetricAlgorithmInstance() { consumer = SymmetricAlgorithmFlow::getUseFromCreation(this, _, _) }
-
-  override string getRawAlgorithmName() { result = super.getSymmetricAlgorithm().getName() }
+  override string getRawAlgorithmName() {
+    result = super.getSymmetricAlgorithm().getType().getName()
+  }
 
   override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
     if exists(symmetricAlgorithmNameToType(this.getRawAlgorithmName()))
@@ -60,33 +66,62 @@ class SymmetricAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance i
     else result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::OtherSymmetricCipherType())
   }
 
-  // The cipher mode is set by assigning it to the `Mode` property of the
-  // symmetric algorithm.
   override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() {
+    super.isCreationCall() and
     result.(CipherModeLiteralInstance).getConsumer() = this.getCipherModeAlgorithmValueConsumer()
+    or
+    (super.isEncryptionCall() or super.isDecryptionCall()) and
+    result = this
   }
 
-  // The padding mode is set by assigning it to the `Padding` property of the
-  // symmetric algorithm.
   override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() {
     result.(PaddingModeLiteralInstance).getConsumer() = this.getPaddingAlgorithmValueConsumer()
   }
 
+  // The padding mode is set by assigning it to the `Padding` property of the
+  // symmetric algorithm. It can also be passed as an argument to `EncryptCbc`,
+  // `EncryptCfb`, etc.
   Crypto::AlgorithmValueConsumer getPaddingAlgorithmValueConsumer() {
-    result = SymmetricAlgorithmFlow::getUseFromCreation(this, _, _) and
+    super.isCreationCall() and
+    result = SymmetricAlgorithmFlow::getIntermediateUseFromUse(this, _, _) and
     result instanceof PaddingPropertyWrite
+    or
+    (super.isEncryptionCall() or super.isDecryptionCall()) and
+    result = super.getPaddingArg()
   }
 
+  // The cipher mode is set by assigning it to the `Mode` property of the
+  // symmetric algorithm, or if this is an encryption/decryption call, it
+  // is implicit in the method name.
   Crypto::AlgorithmValueConsumer getCipherModeAlgorithmValueConsumer() {
-    result = SymmetricAlgorithmFlow::getUseFromCreation(this, _, _) and
+    result = SymmetricAlgorithmFlow::getIntermediateUseFromUse(this, _, _) and
     result instanceof CipherModePropertyWrite
   }
 
   override int getKeySizeFixed() { none() }
 
   override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
+}
 
-  Crypto::AlgorithmValueConsumer getConsumer() { result = consumer }
+/**
+ * A call to an encryption or decryption API (e.g. `EncryptCbc` or `EncryptCfb`)
+ * on a `SymmetricAlgorithm` instance.
+ *
+ * For these, the cipher mode is given by the method name.
+ */
+class SymmetricAlgorithmMode extends Crypto::ModeOfOperationAlgorithmInstance instanceof SymmetricAlgorithmUse
+{
+  SymmetricAlgorithmMode() { this.isEncryptionCall() or this.isDecryptionCall() }
+
+  override string getRawModeAlgorithmName() {
+    result = this.(SymmetricAlgorithmUse).getRawModeAlgorithmName()
+  }
+
+  override Crypto::TBlockCipherModeOfOperationType getModeType() {
+    if exists(modeNameToType(this.getRawModeAlgorithmName().toUpperCase()))
+    then result = modeNameToType(this.getRawModeAlgorithmName().toUpperCase())
+    else result = Crypto::OtherMode()
+  }
 }
 
 /**
@@ -113,7 +148,7 @@ class PaddingModeLiteralInstance extends Crypto::PaddingAlgorithmInstance instan
 }
 
 /**
- * A padding mode literal, such as `PaddingMode.PKCS7`.
+ * A cipher mode literal, such as `CipherMode.CBC`.
  */
 class CipherModeLiteralInstance extends Crypto::ModeOfOperationAlgorithmInstance instanceof MemberConstantAccess
 {

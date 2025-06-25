@@ -56,26 +56,56 @@ class HashOperationInstance extends Crypto::HashOperationInstance instanceof Has
 }
 
 /**
+ * A call to an encryption or decryption API (e.g. `EncryptCbc` or `EncryptCfb`)
+ * on a `SymmetricAlgorithm` instance.
+ */
+class SymmetricAlgorithmOperationInstance extends Crypto::KeyOperationInstance instanceof SymmetricAlgorithmUse
+{
+  SymmetricAlgorithmOperationInstance() { super.isEncryptionCall() or super.isDecryptionCall() }
+
+  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() { result = this }
+
+  override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
+    if super.isEncryptionCall()
+    then result = Crypto::TEncryptMode()
+    else
+      if super.isDecryptionCall()
+      then result = Crypto::TDecryptMode()
+      else result = Crypto::TUnknownKeyOperationMode()
+  }
+
+  override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
+    result.asExpr() = SymmetricAlgorithmFlow::getIntermediateUseFromUse(this, _, _) and
+    result.asExpr().(SymmetricAlgorithmUse).isKeyConsumer()
+  }
+
+  override Crypto::ConsumerInputDataFlowNode getNonceConsumer() {
+    result.asExpr() = super.getIvArg()
+  }
+
+  override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
+    result.asExpr() = super.getInputArg()
+  }
+
+  override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
+    result.asExpr() = super.getOutput()
+  }
+}
+
+/**
  * An instantiation of a `CryptoStream` object where the transform is a symmetric
  * encryption or decryption operation (e.g. an encryption transform created by a
  * call to `Aes.CreateEncryptor()`)
  */
 class CryptoStreamOperationInstance extends Crypto::KeyOperationInstance instanceof CryptoStreamCreation
 {
-  CryptoTransformCreation transform;
-
-  CryptoStreamOperationInstance() {
-    transform = CryptoTransformFlow::getCreationFromUse(this) and
-    (transform.isEncryptor() or transform.isDecryptor())
-  }
-
-  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() { result = transform }
+  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() { result = this.getCryptoTransform() }
 
   override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
-    if transform.isEncryptor()
+    if this.getCryptoTransform().isEncryptor()
     then result = Crypto::TEncryptMode()
     else
-      if transform.isDecryptor()
+      if this.getCryptoTransform().isDecryptor()
       then result = Crypto::TDecryptMode()
       else result = Crypto::TUnknownKeyOperationMode()
   }
@@ -84,10 +114,10 @@ class CryptoStreamOperationInstance extends Crypto::KeyOperationInstance instanc
     // If a key is explicitly provided as an argument when the transform is
     // created, this takes precedence over any key that may be set on the
     // symmetric algorithm instance.
-    if exists(transform.getKeyArg())
-    then result.asExpr() = transform.getKeyArg()
+    if exists(this.getCryptoTransform().getKeyArg())
+    then result.asExpr() = this.getCryptoTransform().getKeyArg()
     else (
-      result.asExpr() = SymmetricAlgorithmFlow::getIntermediateUseFromUse(transform, _, _) and
+      result.asExpr() = SymmetricAlgorithmFlow::getIntermediateUseFromUse(this.getCryptoTransform(), _, _) and
       result.asExpr().(SymmetricAlgorithmUse).isKeyConsumer()
     )
   }
@@ -96,10 +126,10 @@ class CryptoStreamOperationInstance extends Crypto::KeyOperationInstance instanc
     // If an IV is explicitly provided as an argument when the transform is
     // created, this takes precedence over any IV that may be set on the
     // symmetric algorithm instance.
-    if exists(transform.getIvArg())
-    then result.asExpr() = transform.getIvArg()
+    if exists(this.getCryptoTransform().getIvArg())
+    then result.asExpr() = this.getCryptoTransform().getIvArg()
     else (
-      result.asExpr() = SymmetricAlgorithmFlow::getIntermediateUseFromUse(transform, _, _) and
+      result.asExpr() = SymmetricAlgorithmFlow::getIntermediateUseFromUse(this.getCryptoTransform(), _, _) and
       result.asExpr().(SymmetricAlgorithmUse).isIvConsumer()
     )
   }
@@ -124,6 +154,11 @@ class CryptoStreamOperationInstance extends Crypto::KeyOperationInstance instanc
     // by the `CryptoStream` object, and then we look for calls to `ToArray()`
     // on those streams.
     result.asExpr() = this.getLaterWrappedStreamUse().getOutput()
+  }
+
+  CryptoTransformCreation getCryptoTransform() {
+    result = CryptoTransformFlow::getCreationFromUse(this) and
+    (result.isEncryptor() or result.isDecryptor())
   }
 
   // Gets either this stream, or a stream wrapped by this stream.

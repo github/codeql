@@ -421,21 +421,23 @@ class SymmetricAlgorithmCreation extends MethodCall {
     this.getTarget().hasName("Create") and
     this.getQualifier().getType() instanceof SymmetricAlgorithm
   }
-
-  SymmetricAlgorithm getSymmetricAlgorithm() { result = this.getQualifier().getType() }
 }
 
 class SymmetricAlgorithmUse extends QualifiableExpr {
   SymmetricAlgorithmUse() {
     this.getQualifier().getType() instanceof SymmetricAlgorithm and
     this.getQualifiedDeclaration()
-        .hasName(["CreateEncryptor", "CreateDecryptor", "Key", "IV", "Padding", "Mode"])
+        .hasName([
+            "EncryptCbc", "DecryptCbc", "EncryptCfb", "DecryptCfb", "EncryptEcb", "DecryptEcb",
+            "TryEncryptCbc", "TryDecryptCbc", "TryEncryptCfb", "TryDecryptCfb", "TryEncryptEcb",
+            "TryDecryptEcb", "CreateEncryptor", "CreateDecryptor", "Key", "IV", "Padding", "Mode"
+          ])
   }
 
   Expr getSymmetricAlgorithm() { result = this.getQualifier() }
 
   predicate isIntermediate() {
-    not this.getQualifiedDeclaration().hasName(["CreateEncryptor", "CreateDecryptor"])
+    this.getQualifiedDeclaration().hasName(["Key", "IV", "Padding", "Mode"])
   }
 
   // The key may be set by assigning it to the `Key` property of the symmetric algorithm.
@@ -456,6 +458,50 @@ class SymmetricAlgorithmUse extends QualifiableExpr {
   // The cipher mode may be set by assigning it to the `Mode` property of the symmetric algorithm.
   predicate isModeConsumer() {
     this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "Mode"
+  }
+
+  predicate isCreationCall() {
+    // TODO: Matching using `hasName` does not work here for some reason.
+    this.getQualifiedDeclaration().getName().matches("Create%")
+  }
+
+  predicate isEncryptionCall() {
+    // TODO: Matching using `hasName` does not work here for some reason.
+    this.getQualifiedDeclaration().getName().matches(["Encrypt%", "TryEncrypt%"])
+  }
+
+  predicate isDecryptionCall() {
+    // TODO: Matching using `hasName` does not work here for some reason.
+    this.getQualifiedDeclaration().getName().matches(["Decrypt%", "TryDecrypt%"])
+  }
+
+  string getRawModeAlgorithmName() {
+    this.isEncryptionCall() and
+    result = this.getQualifiedDeclaration().getName().splitAt("Encrypt", 1)
+    or
+    this.isDecryptionCall() and
+    result = this.getQualifiedDeclaration().getName().splitAt("Decrypt", 1)
+  }
+
+  Expr getInputArg() {
+    (this.isEncryptionCall() or this.isDecryptionCall()) and
+    result = this.(MethodCall).getArgument(0)
+  }
+
+  Expr getIvArg() {
+    (this.isEncryptionCall() or this.isDecryptionCall()) and
+    this.getRawModeAlgorithmName().matches(["Cbc", "Cfb"]) and
+    result = this.(MethodCall).getArgument(1)
+  }
+
+  Expr getPaddingArg() {
+    (this.isEncryptionCall() or this.isDecryptionCall()) and
+    result = this.(MethodCall).getArgument(this.(MethodCall).getNumberOfArguments() - 1)
+  }
+
+  Expr getOutput() {
+    (this.isEncryptionCall() or this.isDecryptionCall()) and
+    result = this
   }
 }
 

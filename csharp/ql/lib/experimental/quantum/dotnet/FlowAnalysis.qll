@@ -151,6 +151,7 @@ module ModeLiteralFlow {
 
     predicate isSink(DataFlow::Node sink) {
       sink.asExpr() instanceof PaddingPropertyWrite or
+      sink.asExpr() instanceof PaddingModeArgument or
       sink.asExpr() instanceof CipherModePropertyWrite
     }
 
@@ -165,9 +166,7 @@ module ModeLiteralFlow {
 
   private module ModeLiteralFlow = DataFlow::Global<ModeLiteralConfig>;
 
-  SymmetricAlgorithmUse getConsumer(
-    Expr mode, ModeLiteralFlow::PathNode source, ModeLiteralFlow::PathNode sink
-  ) {
+  Expr getConsumer(Expr mode, ModeLiteralFlow::PathNode source, ModeLiteralFlow::PathNode sink) {
     source.getNode().asExpr() = mode and
     sink.getNode().asExpr() = result and
     ModeLiteralFlow::flowPath(source, sink)
