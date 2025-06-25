@@ -406,12 +406,12 @@ mod impl_overlap {
     impl OverlappingTrait for S1 {
         // <S1_as_OverlappingTrait>::common_method
         fn common_method(self) -> S1 {
-            panic!("not called");
+            S1
         }
 
         // <S1_as_OverlappingTrait>::common_method_2
         fn common_method_2(self, s1: S1) -> S1 {
-            panic!("not called");
+            S1
         }
     }
 
@@ -427,10 +427,78 @@ mod impl_overlap {
         }
     }
 
+    struct S2<T2>(T2);
+
+    impl S2<i32> {
+        // S2<i32>::common_method
+        fn common_method(self) -> S1 {
+            S1
+        }
+
+        // S2<i32>::common_method
+        fn common_method_2(self) -> S1 {
+            S1
+        }
+    }
+
+    impl OverlappingTrait for S2<i32> {
+        // <S2<i32>_as_OverlappingTrait>::common_method
+        fn common_method(self) -> S1 {
+            S1
+        }
+
+        // <S2<i32>_as_OverlappingTrait>::common_method_2
+        fn common_method_2(self, s1: S1) -> S1 {
+            S1
+        }
+    }
+
+    impl OverlappingTrait for S2<S1> {
+        // <S2<S1>_as_OverlappingTrait>::common_method
+        fn common_method(self) -> S1 {
+            S1
+        }
+
+        // <S2<S1>_as_OverlappingTrait>::common_method_2
+        fn common_method_2(self, s1: S1) -> S1 {
+            S1
+        }
+    }
+
+    #[derive(Debug)]
+    struct S3<T3>(T3);
+
+    trait OverlappingTrait2<T> {
+        fn m(&self, x: &T) -> &Self;
+    }
+
+    impl<T> OverlappingTrait2<T> for S3<T> {
+        // <S3<T>_as_OverlappingTrait2<T>>::m
+        fn m(&self, x: &T) -> &Self {
+            self
+        }
+    }
+
+    impl<T> S3<T> {
+        // S3<T>::m
+        fn m(&self, x: T) -> &Self {
+            self
+        }
+    }
+
     pub fn f() {
         let x = S1;
         println!("{:?}", x.common_method()); // $ method=S1::common_method
         println!("{:?}", x.common_method_2()); // $ method=S1::common_method_2
+
+        let y = S2(S1);
+        println!("{:?}", y.common_method()); // $ method=<S2<S1>_as_OverlappingTrait>::common_method
+
+        let z = S2(0);
+        println!("{:?}", z.common_method()); // $ method=S2<i32>::common_method
+
+        let w = S3(S1);
+        println!("{:?}", w.m(x)); // $ method=S3<T>::m
     }
 }
 
@@ -1959,14 +2027,16 @@ mod loops {
         for s in &mut strings1 {} // $ MISSING: type=s:&T.str
         for s in strings1 {} // $ type=s:str
 
-        let strings2 = [ // $ type=strings2:[T;...].String
+        let strings2 = // $ type=strings2:[T;...].String
+        [
             String::from("foo"),
             String::from("bar"),
             String::from("baz"),
         ];
         for s in strings2 {} // $ type=s:String
 
-        let strings3 = &[ // $ type=strings3:&T.[T;...].String
+        let strings3 = // $ type=strings3:&T.[T;...].String
+        &[
             String::from("foo"),
             String::from("bar"),
             String::from("baz"),
@@ -1974,7 +2044,8 @@ mod loops {
         for s in strings3 {} // $ MISSING: type=s:String
 
         let callables = [MyCallable::new(), MyCallable::new(), MyCallable::new()]; // $ MISSING: type=callables:[T;...].MyCallable; 3
-        for c in callables // $ type=c:MyCallable
+        for c // $ type=c:MyCallable
+        in callables
         {
             let result = c.call(); // $ type=result:i64 method=call
         }
@@ -1986,7 +2057,8 @@ mod loops {
         let range = 0..10; // $ MISSING: type=range:Range type=range:Idx.i32
         for i in range {} // $ MISSING: type=i:i32
 
-        let range1 = std::ops::Range { // $ type=range1:Range type=range1:Idx.u16
+        let range1 = // $ type=range1:Range type=range1:Idx.u16
+        std::ops::Range {
             start: 0u16,
             end: 10u16,
         };
@@ -2031,10 +2103,11 @@ mod loops {
         // while loops
 
         let mut a: i64 = 0; // $ type=a:i64
-        while a < 10 // $ method=lt type=a:i64
+        #[rustfmt::skip]
+        let _ = while a < 10 // $ method=lt type=a:i64
         {
             a += 1; // $ type=a:i64 method=add_assign
-        }
+        };
     }
 }
 
