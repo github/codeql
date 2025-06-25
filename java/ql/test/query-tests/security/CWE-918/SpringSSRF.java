@@ -25,54 +25,54 @@ public class SpringSSRF extends HttpServlet {
 
     protected void doGet(HttpServletRequest request2, HttpServletResponse response2)
             throws ServletException, IOException {
-        String fooResourceUrl = request2.getParameter("uri");;
+        String fooResourceUrl = request2.getParameter("uri"); // $ Source
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> request = new HttpEntity<>(new String("bar"));
         try {
-            restTemplate.getForEntity(fooResourceUrl + "/1", String.class); // $ SSRF
-            restTemplate.exchange(fooResourceUrl, HttpMethod.POST, request, String.class); // $ SSRF
-            restTemplate.execute(fooResourceUrl, HttpMethod.POST, null, null, "test"); // $ SSRF
-            restTemplate.getForObject(fooResourceUrl, String.class, "test"); // $ SSRF
-            restTemplate.getForObject("http://{foo}", String.class, fooResourceUrl); // $ SSRF
-            restTemplate.getForObject("http://{foo}/a/b", String.class, fooResourceUrl); // $ SSRF
+            restTemplate.getForEntity(fooResourceUrl + "/1", String.class); // $ Alert
+            restTemplate.exchange(fooResourceUrl, HttpMethod.POST, request, String.class); // $ Alert
+            restTemplate.execute(fooResourceUrl, HttpMethod.POST, null, null, "test"); // $ Alert
+            restTemplate.getForObject(fooResourceUrl, String.class, "test"); // $ Alert
+            restTemplate.getForObject("http://{foo}", String.class, fooResourceUrl); // $ Alert
+            restTemplate.getForObject("http://{foo}/a/b", String.class, fooResourceUrl); // $ Alert
             restTemplate.getForObject("http://safe.com/{foo}", String.class, fooResourceUrl); // not bad - the tainted value does not affect the host
             restTemplate.getForObject("http://{foo}", String.class, "safe.com", fooResourceUrl); // not bad - the tainted value is unused
-            restTemplate.getForObject("http://{foo}", String.class, Map.of("foo", fooResourceUrl)); // $ SSRF
+            restTemplate.getForObject("http://{foo}", String.class, Map.of("foo", fooResourceUrl)); // $ Alert
             restTemplate.getForObject("http://safe.com/{foo}", String.class, Map.of("foo", fooResourceUrl)); // not bad - the tainted value does not affect the host
-            restTemplate.getForObject("http://{foo}", String.class, Map.of("foo", "safe.com", "unused", fooResourceUrl)); // $ SPURIOUS: SSRF // not bad - the key for the tainted value is unused
+            restTemplate.getForObject("http://{foo}", String.class, Map.of("foo", "safe.com", "unused", fooResourceUrl)); // $ SPURIOUS: Alert // not bad - the key for the tainted value is unused
             restTemplate.getForObject("http://{foo}", String.class, Map.of("foo", "safe.com", fooResourceUrl, "unused")); // not bad - the tainted value is in a map key
-            restTemplate.patchForObject(fooResourceUrl, new String("object"), String.class, "hi"); // $ SSRF
-            restTemplate.postForEntity(new URI(fooResourceUrl), new String("object"), String.class); // $ SSRF
-            restTemplate.postForLocation(fooResourceUrl, new String("object")); // $ SSRF
-            restTemplate.postForObject(fooResourceUrl, new String("object"), String.class); // $ SSRF
-            restTemplate.put(fooResourceUrl, new String("object")); // $ SSRF
-            restTemplate.delete(fooResourceUrl); // $ SSRF
-            restTemplate.headForHeaders(fooResourceUrl); // $ SSRF
-            restTemplate.optionsForAllow(fooResourceUrl); // $ SSRF
+            restTemplate.patchForObject(fooResourceUrl, new String("object"), String.class, "hi"); // $ Alert
+            restTemplate.postForEntity(new URI(fooResourceUrl), new String("object"), String.class); // $ Alert
+            restTemplate.postForLocation(fooResourceUrl, new String("object")); // $ Alert
+            restTemplate.postForObject(fooResourceUrl, new String("object"), String.class); // $ Alert
+            restTemplate.put(fooResourceUrl, new String("object")); // $ Alert
+            restTemplate.delete(fooResourceUrl); // $ Alert
+            restTemplate.headForHeaders(fooResourceUrl); // $ Alert
+            restTemplate.optionsForAllow(fooResourceUrl); // $ Alert
             {
                 String body = new String("body");
                 URI uri = new URI(fooResourceUrl);
                 RequestEntity<String> requestEntity =
-                        RequestEntity.post(uri).body(body); // $ SSRF
+                        RequestEntity.post(uri).body(body); // $ Alert
                 ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
-                RequestEntity.get(uri); // $ SSRF
-                RequestEntity.put(uri); // $ SSRF
-                RequestEntity.delete(uri); // $ SSRF
-                RequestEntity.options(uri); // $ SSRF
-                RequestEntity.patch(uri); // $ SSRF
-                RequestEntity.head(uri); // $ SSRF
-                RequestEntity.method(null, uri); // $ SSRF
+                RequestEntity.get(uri); // $ Alert
+                RequestEntity.put(uri); // $ Alert
+                RequestEntity.delete(uri); // $ Alert
+                RequestEntity.options(uri); // $ Alert
+                RequestEntity.patch(uri); // $ Alert
+                RequestEntity.head(uri); // $ Alert
+                RequestEntity.method(null, uri); // $ Alert
             }
             {
                 URI uri = new URI(fooResourceUrl);
                 MultiValueMap<String, String> headers = null;
                 java.lang.reflect.Type type = null;
-                new RequestEntity<String>(null, uri); // $ SSRF
-                new RequestEntity<String>(headers, null, uri); // $ SSRF
-                new RequestEntity<String>("body", null, uri); // $ SSRF
-                new RequestEntity<String>("body", headers, null, uri); // $ SSRF
-                new RequestEntity<String>("body", null, uri, type); // $ SSRF
-                new RequestEntity<String>("body", headers, null, uri, type); // $ SSRF
+                new RequestEntity<String>(null, uri); // $ Alert
+                new RequestEntity<String>(headers, null, uri); // $ Alert
+                new RequestEntity<String>("body", null, uri); // $ Alert
+                new RequestEntity<String>("body", headers, null, uri); // $ Alert
+                new RequestEntity<String>("body", null, uri, type); // $ Alert
+                new RequestEntity<String>("body", headers, null, uri, type); // $ Alert
             }
         } catch (org.springframework.web.client.RestClientException | java.net.URISyntaxException e) {}
     }
