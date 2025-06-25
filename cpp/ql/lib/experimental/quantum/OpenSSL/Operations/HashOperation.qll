@@ -56,7 +56,7 @@ class EvpDigestUpdateCall extends OperationStep {
 /**
  * A base class for final digest operations.
  */
-abstract class EVPFinalDigestOperationStep extends OperationStep {
+abstract class EvpFinalDigestOperationStep extends OperationStep {
   override OperationStepType getStepType() { result = FinalStep() }
 }
 
@@ -64,7 +64,7 @@ abstract class EVPFinalDigestOperationStep extends OperationStep {
  * A call to `EVP_Q_digest`
  * https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
  */
-class EvpQDigestOperation extends EVPFinalDigestOperationStep {
+class EvpQDigestOperation extends EvpFinalDigestOperationStep {
   EvpQDigestOperation() { this.(Call).getTarget().getName() = "EVP_Q_digest" }
 
   override DataFlow::Node getInput(IOType type) {
@@ -83,7 +83,7 @@ class EvpQDigestOperation extends EVPFinalDigestOperationStep {
   }
 }
 
-class EvpDigestOperation extends EVPFinalDigestOperationStep {
+class EvpDigestOperation extends EvpFinalDigestOperationStep {
   EvpDigestOperation() { this.(Call).getTarget().getName() = "EVP_Digest" }
 
   override DataFlow::Node getInput(IOType type) {
@@ -100,7 +100,7 @@ class EvpDigestOperation extends EVPFinalDigestOperationStep {
 /**
  * A call to EVP_DigestFinal variants
  */
-class EvpDigestFinalCall extends EVPFinalDigestOperationStep {
+class EvpDigestFinalCall extends EvpFinalDigestOperationStep {
   EvpDigestFinalCall() {
     this.(Call).getTarget().getName() in [
         "EVP_DigestFinal", "EVP_DigestFinal_ex", "EVP_DigestFinalXOF"
@@ -122,7 +122,7 @@ class EvpDigestFinalCall extends EVPFinalDigestOperationStep {
 /**
  * An openssl digest final hash operation instance
  */
-class EvpDigestFinalOperationInstance extends Crypto::HashOperationInstance instanceof EVPFinalDigestOperationStep
+class EvpDigestFinalOperationInstance extends Crypto::HashOperationInstance instanceof EvpFinalDigestOperationStep
 {
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     super.getPrimaryAlgorithmValueConsumer() = result

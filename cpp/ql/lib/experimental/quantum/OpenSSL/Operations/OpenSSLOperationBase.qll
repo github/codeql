@@ -6,8 +6,6 @@ import semmle.code.cpp.dataflow.new.DataFlow
 // even if only importing the operation by itself.
 import EVPPKeyCtxInitializer
 
-//TODO: this needs to just be ctx type definitions
-// private import experimental.quantum.OpenSSL.CtxTypes
 /**
  * An openSSL CTX type, which is type for which the stripped underlying type
  * matches the pattern 'evp_%ctx_%st'.
@@ -49,13 +47,6 @@ class CtxPointerArgument extends CtxPointerExpr {
   CtxPointerArgument() { exists(Call c | c.getAnArgument() = this) }
 
   Call getCall() { result.getAnArgument() = this }
-}
-
-/**
- * A call returning a CtxPointerExpr.
- */
-private class CtxPointerReturn extends CtxPointerExpr instanceof Call {
-  Call getCall() { result = this }
 }
 
 /**
@@ -330,9 +321,6 @@ abstract class OperationStep extends Call {
  *     we will use both cases as primary inputs.
  */
 class AvcContextCreationStep extends OperationStep instanceof OpenSslAlgorithmValueConsumer {
-  DataFlow::Node output;
-  DataFlow::Node input;
-
   override DataFlow::Node getOutput(IOType type) {
     type = ContextIO() and result = super.getResultNode()
   }
@@ -477,7 +465,7 @@ module OperationStepFlowConfig implements DataFlow::ConfigSig {
     // is defined.
     exists(OperationStep s | s.getAnInput() = node1 and s.getAnOutput() = node2)
     // TODO: consideration for additional alises defined as follows:
-    // if an output from an operation step itself flows from teh output of another operation step
+    // if an output from an operation step itself flows from the output of another operation step
     // then the source of that flow's outputs (all of them) are potential aliases
   }
 }

@@ -154,8 +154,7 @@ class EvpCipherUpdateCall extends OperationStep {
 }
 
 /**
- * see: https://docs.openssl.org/master/man3/EVP_EncryptInit/#synopsis
- * Base configuration for all EVP cipher operations.
+ * A base configuration for all EVP cipher operations.
  */
 abstract class EvpCipherOperationFinalStep extends OperationStep {
   override DataFlow::Node getInput(IOType type) {
