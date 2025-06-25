@@ -35,3 +35,41 @@ predicate extractedInOverlay(string file) {
   // ignore skeleton extracted files in the overlay
   exists(@locatable l | numlines(l, _, _, _) and file = getRawFile(l))
 }
+
+/**
+ * A `@locatable` in the base variant that should be discarded if its file is
+ * extracted in the overlay variant.
+ */
+overlay[local]
+abstract class DiscardableLocatable extends @locatable {
+  string getRawFileInBase() { not isOverlay() and result = getRawFile(this) }
+
+  string toString() { result = "discardable" }
+}
+
+overlay[discard_entity]
+private predicate discardLocatable(@locatable el) {
+  extractedInOverlay(el.(DiscardableLocatable).getRawFileInBase())
+}
+
+/**
+ * A `@locatable` in the base variant that should be discarded if its file is
+ * extracted in the overlay variant and it is itself not extracted in the
+ * overlay, that is, it is deleted in the overlay.
+ */
+overlay[local]
+abstract class DiscardableReferableLocatable extends @locatable {
+  string getRawFileInBase() { not isOverlay() and result = getRawFile(this) }
+
+  predicate existsInOverlay() { isOverlay() and exists(this) }
+
+  string toString() { result = "discardable" }
+}
+
+overlay[discard_entity]
+private predicate discardReferableLocatable(@locatable el) {
+  exists(DiscardableReferableLocatable drl | drl = el |
+    extractedInOverlay(drl.getRawFileInBase()) and
+    not drl.existsInOverlay()
+  )
+}
