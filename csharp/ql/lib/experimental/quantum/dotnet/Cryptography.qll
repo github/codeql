@@ -37,7 +37,7 @@ class HashAlgorithmType extends CryptographyType {
 // This class models Create calls for the ECDsa and RSA classes in .NET.
 class CryptographyCreateCall extends MethodCall {
   CryptographyCreateCall() {
-    this.getTarget().getName() = "Create" and
+    this.getTarget().hasName("Create") and
     this.getQualifier().getType() instanceof CryptographyType
   }
 
@@ -58,27 +58,35 @@ class CryptographyCreateCall extends MethodCall {
   }
 }
 
-class ECDsaCreateCall extends CryptographyCreateCall {
-  ECDsaCreateCall() { this.getQualifier().getType().hasName("ECDsa") }
+class EcdsaType extends CryptographyType {
+  EcdsaType() { this.hasName("ECDsa") }
+}
+
+class RsaType extends CryptographyType {
+  RsaType() { this.hasName("RSA") }
+}
+
+class EcdsaCreateCall extends CryptographyCreateCall {
+  EcdsaCreateCall() { this.getQualifier().getType().hasName("ECDsa") }
 }
 
 // This class is used to model the `ECDsa.Create(ECParameters)` call
-class ECDsaCreateCallWithParameters extends ECDsaCreateCall {
+class ECDsaCreateCallWithParameters extends EcdsaCreateCall {
   ECDsaCreateCallWithParameters() { this.getArgument(0).getType() instanceof ECParameters }
 }
 
-class ECDsaCreateCallWithECCurve extends ECDsaCreateCall {
+class ECDsaCreateCallWithECCurve extends EcdsaCreateCall {
   ECDsaCreateCallWithECCurve() { this.getArgument(0).getType() instanceof ECCurve }
 }
 
-class RSACreateCall extends CryptographyCreateCall {
-  RSACreateCall() { this.getQualifier().getType().hasName("RSA") }
+class RsaCreateCall extends CryptographyCreateCall {
+  RsaCreateCall() { this.getQualifier().getType().hasName("RSA") }
 }
 
 class SigningCreateCall extends CryptographyCreateCall {
   SigningCreateCall() {
-    this instanceof ECDsaCreateCall or
-    this instanceof RSACreateCall
+    this instanceof EcdsaCreateCall or
+    this instanceof RsaCreateCall
   }
 }
 
@@ -95,10 +103,9 @@ class HashAlgorithmCreateCall extends Crypto::AlgorithmValueConsumer instanceof 
   override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
 }
 
-class HashAlgorithmQualifier extends Crypto::HashAlgorithmInstance instanceof Expr {
-  HashAlgorithmQualifier() {
-    this = any(HashAlgorithmCreateCall c).(CryptographyCreateCall).getQualifier()
-  }
+class HashAlgorithmQualifier extends Crypto::AlgorithmValueConsumer, Crypto::HashAlgorithmInstance instanceof Expr
+{
+  HashAlgorithmQualifier() { this = any(HashUse c).getQualifier() }
 
   override Crypto::THashType getHashFamily() {
     result = getHashFamily(this.getRawHashAlgorithmName())
@@ -109,6 +116,10 @@ class HashAlgorithmQualifier extends Crypto::HashAlgorithmInstance instanceof Ex
   override int getFixedDigestLength() {
     hashAlgorithmToFamily(this.getRawHashAlgorithmName(), _, result)
   }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
 }
 
 class NamedCurvePropertyAccess extends PropertyAccess {
@@ -264,6 +275,37 @@ class HashUse extends Crypto::AlgorithmValueConsumer instanceof MethodCall {
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = super.getQualifier() }
 
   override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
+
+  Expr getQualifier() { result = super.getQualifier() }
+}
+
+abstract class SignerQualifier extends Crypto::AlgorithmValueConsumer, SigningAlgorithmInstance instanceof Expr
+{
+  SignerQualifier() { this = any(SignerUse s).getQualifier() }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
+}
+
+class EcdsaSignerQualifier extends SignerQualifier instanceof Expr {
+  EcdsaSignerQualifier() { super.getType() instanceof EcdsaType }
+
+  override string getRawAlgorithmName() { result = "ECDsa" }
+
+  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::ECDSA())
+  }
+}
+
+class RsaSignerQualifier extends SignerQualifier instanceof Expr {
+  RsaSignerQualifier() { super.getType() instanceof RsaType }
+
+  override string getRawAlgorithmName() { result = "RSA" }
+
+  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::OtherSignatureAlgorithmType())
+  }
 }
 
 class SignerUse extends MethodCall {

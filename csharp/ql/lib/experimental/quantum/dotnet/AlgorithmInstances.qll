@@ -27,31 +27,7 @@ abstract class SigningAlgorithmInstance extends Crypto::KeyOperationAlgorithmIns
 
   override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
 
-
   override int getKeySizeFixed() { none() }
-}
-
-class EcdsaAlgorithmInstance extends SigningAlgorithmInstance instanceof SigningCreateCall {
-  EcdsaAlgorithmInstance() { this instanceof ECDsaCreateCall }
-
-  EcdsaAlgorithmValueConsumer getConsumer() { result = super.getQualifier() }
-
-  override string getRawAlgorithmName() { result = "ECDsa" }
-
-  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
-    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::ECDSA())
-  }
-}
-
-class RsaAlgorithmInstance extends SigningAlgorithmInstance {
-  RsaAlgorithmInstance() { this = any(RSACreateCall c).getQualifier() }
-
-  override string getRawAlgorithmName() { result = "RSA" }
-
-  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
-    // TODO there is no RSA TSignature type, so we use OtherSignatureAlgorithmType
-    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::OtherSignatureAlgorithmType())
-  }
 }
 
 class HashAlgorithmNameInstance extends Crypto::HashAlgorithmInstance instanceof HashAlgorithmName {

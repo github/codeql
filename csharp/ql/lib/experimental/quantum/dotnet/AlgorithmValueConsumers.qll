@@ -4,18 +4,6 @@ private import AlgorithmInstances
 private import OperationInstances
 private import Cryptography
 
-class EcdsaAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
-  ECDsaCreateCall call;
-
-  EcdsaAlgorithmValueConsumer() { this = call.getAlgorithmArg() }
-
-  override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
-
-  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-    exists(EcdsaAlgorithmInstance l | l.getConsumer() = this and result = l)
-  }
-}
-
 class HashAlgorithmNameConsumer extends Crypto::AlgorithmValueConsumer {
   HashAlgorithmNameUser call;
 

@@ -54,20 +54,6 @@ module CreationToUseFlow<CreationCallSig Creation, UseCallSig Use> {
   }
 }
 
-/**
- * Flow from a known ECDsa property access to a `ECDsa.Create(sink)` call.
- */
-module SigningNamedCurveToSignatureCreateFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof NamedCurvePropertyAccess }
-
-  predicate isSink(DataFlow::Node sink) {
-    exists(EcdsaAlgorithmValueConsumer consumer | sink = consumer.getInputNode())
-  }
-}
-
-module SigningNamedCurveToSignatureCreateFlow =
-  DataFlow::Global<SigningNamedCurveToSignatureCreateFlowConfig>;
-
 module HashAlgorithmNameToUseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HashAlgorithmName }
 

@@ -5,10 +5,9 @@ private import AlgorithmValueConsumers
 private import FlowAnalysis
 private import Cryptography
 
-class ECDsaORRSASigningOperationInstance extends Crypto::SignatureOperationInstance instanceof SignerUse
-{
+class SigningOperationInstance extends Crypto::SignatureOperationInstance instanceof SignerUse {
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-    result = SigningCreateToUseFlow::getCreationFromUse(this, _, _).getAlgorithmArg()
+    result = super.getQualifier()
   }
 
   override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
@@ -52,9 +51,7 @@ class HashOperationInstance extends Crypto::HashOperationInstance instanceof Has
   }
 
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-    if exists(HashCreateToUseFlow::getCreationFromUse(this, _, _))
-    then result = HashCreateToUseFlow::getCreationFromUse(this, _, _)
-    else result = this
+    result = super.getQualifier()
   }
 }
 
