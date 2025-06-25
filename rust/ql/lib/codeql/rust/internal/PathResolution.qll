@@ -401,7 +401,7 @@ class ExternCrateItemNode extends ItemNode instanceof ExternCrate {
 }
 
 /** An item that can occur in a trait or an `impl` block. */
-abstract private class AssocItemNode extends ItemNode, AssocItem {
+abstract private class AssocItemNode extends ItemNode instanceof AssocItem {
   /** Holds if this associated item has an implementation. */
   abstract predicate hasImplementation();
 
