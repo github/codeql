@@ -5,7 +5,7 @@ import semmle.code.java.controlflow.Dominance
 
 module JCAModel {
   import Language
-  import Crypto::KeyOpAlg as KeyOpAlg
+  import codeql.quantum.experimental.Standardization::Types::KeyOpAlg as KeyOpAlg
 
   abstract class CipherAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer { }
 
@@ -115,7 +115,7 @@ module JCAModel {
   }
 
   bindingset[name]
-  Crypto::THashType hash_name_to_type_known(string name, int digestLength) {
+  Crypto::HashType hash_name_to_type_known(string name, int digestLength) {
     name = "SHA-1" and result instanceof Crypto::SHA1 and digestLength = 160
     or
     name = ["SHA-256", "SHA-384", "SHA-512"] and
@@ -152,24 +152,22 @@ module JCAModel {
   }
 
   bindingset[name]
-  private predicate mode_name_to_type_known(
-    Crypto::TBlockCipherModeOfOperationType type, string name
-  ) {
-    type = Crypto::ECB() and name = "ECB"
+  private predicate mode_name_to_type_known(KeyOpAlg::ModeOfOperationType type, string name) {
+    type = KeyOpAlg::ECB() and name = "ECB"
     or
-    type = Crypto::CBC() and name = "CBC"
+    type = KeyOpAlg::CBC() and name = "CBC"
     or
-    type = Crypto::GCM() and name = "GCM"
+    type = KeyOpAlg::GCM() and name = "GCM"
     or
-    type = Crypto::CTR() and name = "CTR"
+    type = KeyOpAlg::CTR() and name = "CTR"
     or
-    type = Crypto::XTS() and name = "XTS"
+    type = KeyOpAlg::XTS() and name = "XTS"
     or
-    type = Crypto::CCM() and name = "CCM"
+    type = KeyOpAlg::CCM() and name = "CCM"
     or
-    type = Crypto::SIV() and name = "SIV"
+    type = KeyOpAlg::SIV() and name = "SIV"
     or
-    type = Crypto::OCB() and name = "OCB"
+    type = KeyOpAlg::OCB() and name = "OCB"
   }
 
   bindingset[name]
@@ -206,7 +204,7 @@ module JCAModel {
 
   bindingset[name]
   predicate mac_name_to_mac_type_known(Crypto::TMacType type, string name) {
-    type = Crypto::THMAC() and
+    type = Crypto::HMAC() and
     name.toUpperCase().matches("HMAC%")
   }
 
@@ -298,18 +296,18 @@ module JCAModel {
     override string getRawPaddingAlgorithmName() { result = super.getPadding() }
 
     bindingset[name]
-    private predicate paddingToNameMappingKnown(Crypto::TPaddingType type, string name) {
-      type instanceof Crypto::NoPadding and name = "NOPADDING"
+    private predicate paddingToNameMappingKnown(KeyOpAlg::PaddingSchemeType type, string name) {
+      type instanceof KeyOpAlg::NoPadding and name = "NOPADDING"
       or
-      type instanceof Crypto::PKCS7 and name = ["PKCS5Padding", "PKCS7Padding"] // TODO: misnomer in the JCA?
+      type instanceof KeyOpAlg::PKCS7 and name = ["PKCS5Padding", "PKCS7Padding"] // TODO: misnomer in the JCA?
       or
-      type instanceof Crypto::OAEP and name.matches("OAEP%") // TODO: handle OAEPWith%
+      type instanceof KeyOpAlg::OAEP and name.matches("OAEP%") // TODO: handle OAEPWith%
     }
 
-    override Crypto::TPaddingType getPaddingType() {
+    override KeyOpAlg::PaddingSchemeType getPaddingType() {
       if this.paddingToNameMappingKnown(_, super.getPadding())
       then this.paddingToNameMappingKnown(result, super.getPadding())
-      else result instanceof Crypto::OtherPadding
+      else result instanceof KeyOpAlg::OtherPadding
     }
   }
 
@@ -320,10 +318,10 @@ module JCAModel {
 
     override string getRawModeAlgorithmName() { result = super.getMode() }
 
-    override Crypto::TBlockCipherModeOfOperationType getModeType() {
+    override KeyOpAlg::ModeOfOperationType getModeType() {
       if mode_name_to_type_known(_, super.getMode())
       then mode_name_to_type_known(result, super.getMode())
-      else result instanceof Crypto::OtherMode
+      else result instanceof KeyOpAlg::OtherMode
     }
   }
 
@@ -347,7 +345,7 @@ module JCAModel {
 
     override string getRawAlgorithmName() { result = super.getValue() }
 
-    override KeyOpAlg::Algorithm getAlgorithmType() {
+    override KeyOpAlg::AlgorithmType getAlgorithmType() {
       if cipher_name_to_type_known(_, super.getAlgorithmName())
       then cipher_name_to_type_known(result, super.getAlgorithmName())
       else result instanceof KeyOpAlg::TUnknownKeyOperationAlgorithmType
@@ -1249,7 +1247,7 @@ module JCAModel {
       result = super.getRawKdfAlgorithmName().splitAt("WithHmac", 1)
     }
 
-    override Crypto::TMacType getMacType() { result instanceof Crypto::THMAC }
+    override Crypto::MacType getMacType() { result = Crypto::HMAC() }
 
     override Crypto::AlgorithmValueConsumer getHmacAlgorithmValueConsumer() { result = this }
 
@@ -1487,10 +1485,10 @@ module JCAModel {
 
     override string getRawMacAlgorithmName() { result = super.getValue() }
 
-    override Crypto::TMacType getMacType() {
+    override Crypto::MacType getMacType() {
       if mac_name_to_mac_type_known(_, super.getValue())
       then mac_name_to_mac_type_known(result, super.getValue())
-      else result instanceof Crypto::TOtherMACType
+      else result = Crypto::OtherMacType()
     }
   }
 
@@ -1597,15 +1595,18 @@ module JCAModel {
 
     override string getRawEllipticCurveName() { result = super.getValue() }
 
-    override Crypto::TEllipticCurveType getEllipticCurveType() {
-      if Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), _, _)
+    override Crypto::EllipticCurveFamilyType getEllipticCurveFamilyType() {
+      if
+        Crypto::ellipticCurveNameToKnownKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), _, _)
       then
-        Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), _, result)
+        Crypto::ellipticCurveNameToKnownKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), _,
+          result)
       else result = Crypto::OtherEllipticCurveType()
     }
 
     override int getKeySize() {
-      Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), result, _)
+      Crypto::ellipticCurveNameToKnownKeySizeAndFamilyMapping(this.getRawEllipticCurveName(),
+        result, _)
     }
 
     EllipticCurveAlgorithmValueConsumer getConsumer() { result = consumer }

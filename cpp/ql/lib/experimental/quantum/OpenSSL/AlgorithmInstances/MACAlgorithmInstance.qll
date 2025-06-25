@@ -39,10 +39,10 @@ class KnownOpenSslMacConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
     result = this.(Call).getTarget().getName()
   }
 
-  override Crypto::TMacType getMacType() {
-    this instanceof KnownOpenSslHMacAlgorithmExpr and result instanceof Crypto::THMAC
+  override Crypto::MacType getMacType() {
+    this instanceof KnownOpenSslHMacAlgorithmExpr and result = Crypto::HMAC()
     or
-    this instanceof KnownOpenSslCMacAlgorithmExpr and result instanceof Crypto::TCMAC
+    this instanceof KnownOpenSslCMacAlgorithmExpr and result = Crypto::CMAC()
   }
 }
 

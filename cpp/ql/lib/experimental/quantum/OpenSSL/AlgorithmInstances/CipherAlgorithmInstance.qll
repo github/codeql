@@ -113,7 +113,7 @@ class KnownOpenSslCipherConstantAlgorithmInstance extends OpenSslAlgorithmInstan
     this.(KnownOpenSslCipherAlgorithmExpr).getExplicitKeySize() = result
   }
 
-  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+  override KeyOpAlg::AlgorithmType getAlgorithmType() {
     knownOpenSslConstantToCipherFamilyType(this, result)
     or
     not knownOpenSslConstantToCipherFamilyType(this, _) and

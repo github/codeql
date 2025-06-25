@@ -5,6 +5,7 @@ private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmCon
 private import AlgToAVCFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
+private import codeql.quantum.experimental.Standardization::Types::KeyOpAlg as KeyOpAlg
 
 /**
  * A class to define padding specific integer values.
@@ -28,18 +29,18 @@ class OpenSslPaddingLiteral extends Literal {
  * Does not bind if there is no mapping (no mapping to 'unknown' or 'other').
  */
 predicate knownOpenSslConstantToPaddingFamilyType(
-  KnownOpenSslPaddingAlgorithmExpr e, Crypto::TPaddingType type
+  KnownOpenSslPaddingAlgorithmExpr e, KeyOpAlg::PaddingSchemeType type
 ) {
   exists(string name |
     name = e.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
     (
-      name = "OAEP" and type = Crypto::OAEP()
+      name = "OAEP" and type = KeyOpAlg::OAEP()
       or
-      name = "PSS" and type = Crypto::PSS()
+      name = "PSS" and type = KeyOpAlg::PSS()
       or
-      name = "PKCS7" and type = Crypto::PKCS7()
+      name = "PKCS7" and type = KeyOpAlg::PKCS7()
       or
-      name = "PKCS1V15" and type = Crypto::PKCS1_v1_5()
+      name = "PKCS1V15" and type = KeyOpAlg::PKCS1_v1_5()
     )
   )
 }
@@ -98,24 +99,24 @@ class KnownOpenSslPaddingConstantAlgorithmInstance extends OpenSslAlgorithmInsta
 
   override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
 
-  Crypto::TPaddingType getKnownPaddingType() {
-    this.(Literal).getValue().toInt() in [1, 7, 8] and result = Crypto::PKCS1_v1_5()
+  KeyOpAlg::PaddingSchemeType getKnownPaddingType() {
+    this.(Literal).getValue().toInt() in [1, 7, 8] and result = KeyOpAlg::PKCS1_v1_5()
     or
-    this.(Literal).getValue().toInt() = 3 and result = Crypto::NoPadding()
+    this.(Literal).getValue().toInt() = 3 and result = KeyOpAlg::NoPadding()
     or
-    this.(Literal).getValue().toInt() = 4 and result = Crypto::OAEP()
+    this.(Literal).getValue().toInt() = 4 and result = KeyOpAlg::OAEP()
     or
-    this.(Literal).getValue().toInt() = 5 and result = Crypto::ANSI_X9_23()
+    this.(Literal).getValue().toInt() = 5 and result = KeyOpAlg::ANSI_X9_23()
     or
-    this.(Literal).getValue().toInt() = 6 and result = Crypto::PSS()
+    this.(Literal).getValue().toInt() = 6 and result = KeyOpAlg::PSS()
   }
 
-  override Crypto::TPaddingType getPaddingType() {
+  override KeyOpAlg::PaddingSchemeType getPaddingType() {
     isPaddingSpecificConsumer = true and
     (
       result = this.getKnownPaddingType()
       or
-      not exists(this.getKnownPaddingType()) and result = Crypto::OtherPadding()
+      not exists(this.getKnownPaddingType()) and result = KeyOpAlg::OtherPadding()
     )
     or
     isPaddingSpecificConsumer = false and
@@ -165,7 +166,7 @@ class OaepPaddingAlgorithmInstance extends Crypto::OaepPaddingAlgorithmInstance,
   KnownOpenSslPaddingConstantAlgorithmInstance
 {
   OaepPaddingAlgorithmInstance() {
-    this.(Crypto::PaddingAlgorithmInstance).getPaddingType() = Crypto::OAEP()
+    this.(Crypto::PaddingAlgorithmInstance).getPaddingType() = KeyOpAlg::OAEP()
   }
 
   override Crypto::HashAlgorithmInstance getOaepEncodingHashAlgorithm() {
