@@ -1,0 +1,21 @@
+#select
+| SqlInjection.cs:19:42:19:52 | access to local variable queryString | SqlInjection.cs:18:21:18:29 | access to property Text : String | SqlInjection.cs:19:42:19:52 | access to local variable queryString | This query depends on $@. | SqlInjection.cs:18:21:18:29 | access to property Text : String | this TextBox text |
+| SqlInjection.cs:28:42:28:52 | access to local variable queryString | SqlInjection.cs:27:21:27:38 | call to method ReadLine : String | SqlInjection.cs:28:42:28:52 | access to local variable queryString | This query depends on $@. | SqlInjection.cs:27:21:27:38 | call to method ReadLine : String | this read from stdin |
+edges
+| SqlInjection.cs:17:21:17:31 | access to local variable queryString : String | SqlInjection.cs:19:42:19:52 | access to local variable queryString | provenance |  |
+| SqlInjection.cs:18:21:18:29 | access to property Text : String | SqlInjection.cs:17:21:17:31 | access to local variable queryString : String | provenance |  |
+| SqlInjection.cs:26:21:26:31 | access to local variable queryString : String | SqlInjection.cs:28:42:28:52 | access to local variable queryString | provenance |  |
+| SqlInjection.cs:27:21:27:38 | call to method ReadLine : String | SqlInjection.cs:26:21:26:31 | access to local variable queryString : String | provenance | Src:MaD:1  |
+models
+| 1 | Source: System; Console; false; ReadLine; ; ; ReturnValue; stdin; manual |
+nodes
+| SqlInjection.cs:17:21:17:31 | access to local variable queryString : String | semmle.label | access to local variable queryString : String |
+| SqlInjection.cs:18:21:18:29 | access to property Text : String | semmle.label | access to property Text : String |
+| SqlInjection.cs:19:42:19:52 | access to local variable queryString | semmle.label | access to local variable queryString |
+| SqlInjection.cs:26:21:26:31 | access to local variable queryString : String | semmle.label | access to local variable queryString : String |
+| SqlInjection.cs:27:21:27:38 | call to method ReadLine : String | semmle.label | call to method ReadLine : String |
+| SqlInjection.cs:28:42:28:52 | access to local variable queryString | semmle.label | access to local variable queryString |
+subpaths
+testFailures
+| SqlInjection.cs:20:56:20:83 | // ... | Missing result: Alert[cs/sql-injection] |
+| SqlInjection.cs:29:56:29:83 | // ... | Missing result: Alert[cs/sql-injection] |
