@@ -17,16 +17,16 @@
 #!/usr/bin/python3
 import sys
 import os
+import re
 from difflib import context_diff
 
+OVERLAY_PATTERN = re.compile(r'overlay\[[a-zA-Z?_-]+\]')
 
 def has_overlay_annotations(lines):
     '''
     Check whether the given lines contain any overlay[...] annotations.
     '''
-    overlays = ["local", "local?", "global", "caller", "caller?"]
-    annotations = [f"overlay[{t}]" for t in overlays]
-    return any(ann in line for ann in annotations for line in lines)
+    return any(OVERLAY_PATTERN.search(line) for line in lines)
 
 
 def is_line_comment(line):

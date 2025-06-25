@@ -3,6 +3,7 @@ display_name: "Ruby"
 version: 0.1.0
 column_kind: "utf8"
 legacy_qltest_extraction: true
+overlay_support_version: 20250108
 build_modes:
   - none
 github_api_languages:

@@ -337,6 +337,18 @@
             <v>124</v>
         </e>
         <e>
+            <k>@complex_fp16</k>
+            <v>124</v>
+        </e>
+        <e>
+            <k>@complex_std_bfloat16</k>
+            <v>124</v>
+        </e>
+        <e>
+            <k>@complex_std_float16</k>
+            <v>124</v>
+        </e>
+        <e>
             <k>@pointer</k>
             <v>455609</v>
         </e>
