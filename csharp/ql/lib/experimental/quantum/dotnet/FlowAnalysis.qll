@@ -68,6 +68,13 @@ module SigningCreateToUseFlow = CreationToUseFlow<SigningCreateCall, SignerUse>;
 
 module HashCreateToUseFlow = CreationToUseFlow<HashAlgorithmCreateCall, HashUse>;
 
+module CryptoStreamFlow = CreationToUseFlow<CryptoStreamCreation, CryptoStreamUse>;
+
+module AeadFlow = CreationToUseFlow<AeadCreation, AeadUse>;
+
+module SymmetricAlgorithmFlow =
+  CreationToUseFlow<SymmetricAlgorithmCreation, SymmetricAlgorithmUse>;
+
 /**
  * A flow analysis module that tracks the flow from a `CryptoStreamMode.READ` or
  * `CryptoStreamMode.WRITE` access to the corresponding `CryptoStream` object

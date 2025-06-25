@@ -135,8 +135,51 @@ class CipherModeLiteralInstance extends Crypto::ModeOfOperationAlgorithmInstance
   Crypto::AlgorithmValueConsumer getConsumer() { result = consumer }
 }
 
+/**
+ * A call to either `Encrypt` or `Decrypt` on an `AesGcm`, `AesCcm`, or
+ * `ChaCha20Poly1305` instance. The algorithm is defined implicitly by this AST
+ * node.
+ */
+class AeadAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance,
+  Crypto::ModeOfOperationAlgorithmInstance instanceof AeadUse
+{
+  override string getRawAlgorithmName() {
+    super.getQualifier().getType().hasName("Aes%") and result = "Aes"
+    or
+    super.getQualifier().getType().hasName("ChaCha20%") and result = "ChaCha20"
+  }
+
+  override string getRawModeAlgorithmName() {
+    super.getQualifier().getType().getName() = "AesGcm" and result = "Gcm"
+    or
+    super.getQualifier().getType().getName() = "AesCcm" and result = "Ccm"
+  }
+
+  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    this.getRawAlgorithmName() = "Aes" and
+    result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES())
+    or
+    this.getRawAlgorithmName() = "ChaCha20" and
+    result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::CHACHA20())
+  }
+
+  override Crypto::TBlockCipherModeOfOperationType getModeType() {
+    this.getRawModeAlgorithmName() = "Gcm" and result = Crypto::GCM()
+    or
+    this.getRawModeAlgorithmName() = "Ccm" and result = Crypto::CCM()
+  }
+
+  override int getKeySizeFixed() { none() }
+
+  override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
+
+  override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { result = this }
+
+  override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
+}
+
 private Crypto::KeyOpAlg::Algorithm symmetricAlgorithmNameToType(string algorithmName) {
-  algorithmName = "Aes" and result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES())
+  algorithmName = "Aes%" and result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES())
   or
   algorithmName = "DES" and result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::DES())
   or

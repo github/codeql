@@ -56,193 +56,6 @@ class HashOperationInstance extends Crypto::HashOperationInstance instanceof Has
 }
 
 /**
- * A symmetric algorithm class, such as AES or DES.
- */
-class SymmetricAlgorithm extends Class {
-  SymmetricAlgorithm() {
-    this.getABaseType().hasFullyQualifiedName("System.Security.Cryptography", "SymmetricAlgorithm")
-  }
-
-  CryptoTransformCreation getCreateTransformCall() { result = this.getAMethod().getACall() }
-}
-
-/**
- * A symmetric algorithm creation, such as `Aes.Create()`.
- */
-class SymmetricAlgorithmCreation extends MethodCall {
-  SymmetricAlgorithmCreation() {
-    this.getTarget().hasName("Create") and
-    this.getQualifier().getType() instanceof SymmetricAlgorithm
-  }
-
-  SymmetricAlgorithm getSymmetricAlgorithm() { result = this.getQualifier().getType() }
-}
-
-class SymmetricAlgorithmUse extends QualifiableExpr {
-  SymmetricAlgorithmUse() {
-    this.getQualifier().getType() instanceof SymmetricAlgorithm and
-    this.getQualifiedDeclaration()
-        .hasName(["CreateEncryptor", "CreateDecryptor", "Key", "IV", "Padding", "Mode"])
-  }
-
-  Expr getSymmetricAlgorithm() { result = this.getQualifier() }
-
-  predicate isIntermediate() {
-    not this.getQualifiedDeclaration().hasName(["CreateEncryptor", "CreateDecryptor"])
-  }
-
-  // The key may be set by assigning it to the `Key` property of the symmetric algorithm.
-  predicate isKeyConsumer() {
-    this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "Key"
-  }
-
-  // The IV may be set by assigning it to the `IV` property of the symmetric algorithm.
-  predicate isIvConsumer() {
-    this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "IV"
-  }
-
-  // The padding mode may be set by assigning it to the `Padding` property of the symmetric algorithm.
-  predicate isPaddingConsumer() {
-    this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "Padding"
-  }
-
-  // The cipher mode may be set by assigning it to the `Mode` property of the symmetric algorithm.
-  predicate isModeConsumer() {
-    this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "Mode"
-  }
-}
-
-module SymmetricAlgorithmFlow =
-  CreationToUseFlow<SymmetricAlgorithmCreation, SymmetricAlgorithmUse>;
-
-// TODO: Remove this.
-SymmetricAlgorithmUse getUseFromUse(SymmetricAlgorithmUse use) {
-  result = SymmetricAlgorithmFlow::getIntermediateUseFromUse(use, _, _)
-}
-
-/**
- * A call to `CreateEncryptor` or `CreateDecryptor` on a `SymmetricAlgorithm`.
- */
-class CryptoTransformCreation extends MethodCall {
-  CryptoTransformCreation() {
-    this.getTarget().hasName(["CreateEncryptor", "CreateDecryptor"]) and
-    this.getQualifier().getType() instanceof SymmetricAlgorithm
-  }
-
-  predicate isEncryptor() { this.getTarget().getName() = "CreateEncryptor" }
-
-  predicate isDecryptor() { this.getTarget().getName() = "CreateDecryptor" }
-
-  Expr getKeyArg() { result = this.getArgument(0) }
-
-  Expr getIvArg() { result = this.getArgument(1) }
-
-  SymmetricAlgorithm getSymmetricAlgorithm() { result = this.getQualifier().getType() }
-}
-
-class CryptoStream extends Class {
-  CryptoStream() { this.hasFullyQualifiedName("System.Security.Cryptography", "CryptoStream") }
-}
-
-class CryptoStreamMode extends MemberConstant {
-  CryptoStreamMode() {
-    this.getDeclaringType()
-        .hasFullyQualifiedName("System.Security.Cryptography", "CryptoStreamMode")
-  }
-
-  predicate isRead() { this.getName() = "Read" }
-
-  predicate isWrite() { this.getName() = "Write" }
-}
-
-class PaddingMode extends MemberConstant {
-  PaddingMode() {
-    this.getDeclaringType().hasFullyQualifiedName("System.Security.Cryptography", "PaddingMode")
-  }
-}
-
-class CipherMode extends MemberConstant {
-  CipherMode() {
-    this.getDeclaringType().hasFullyQualifiedName("System.Security.Cryptography", "CipherMode")
-  }
-}
-
-class Stream extends Class {
-  Stream() { this.getABaseType().hasFullyQualifiedName("System.IO", "Stream") }
-}
-
-/**
- * A `Stream` object creation.
- */
-class StreamCreation extends ObjectCreation {
-  StreamCreation() { this.getObjectType() instanceof Stream }
-
-  Expr getInputArg() {
-    result = this.getAnArgument() and
-    result.getType().hasFullyQualifiedName("System", "Byte[]")
-  }
-
-  Expr getStreamArg() {
-    result = this.getAnArgument() and
-    result.getType() instanceof Stream
-  }
-}
-
-class StreamUse extends MethodCall {
-  StreamUse() {
-    this.getQualifier().getType() instanceof Stream and
-    this.getTarget().hasName(["ToArray", "Write"])
-  }
-
-  predicate isIntermediate() { this.getTarget().hasName("Write") }
-
-  Expr getInputArg() {
-    this.isIntermediate() and
-    result = this.getArgument(0)
-  }
-
-  Expr getOutput() {
-    not this.isIntermediate() and
-    result = this
-  }
-}
-
-class CryptoStreamCreation extends ObjectCreation {
-  CryptoStreamCreation() { this.getObjectType() instanceof CryptoStream }
-
-  Expr getStreamArg() { result = this.getArgument(0) }
-
-  Expr getTransformArg() { result = this.getArgument(1) }
-
-  Expr getModeArg() { result = this.getArgument(2) }
-
-  Crypto::KeyOperationSubtype getKeyOperationSubtype() {
-    if CryptoTransformFlow::getCreationFromUse(this.getTransformArg()).isEncryptor()
-    then result = Crypto::TEncryptMode()
-    else
-      if CryptoTransformFlow::getCreationFromUse(this.getTransformArg()).isDecryptor()
-      then result = Crypto::TDecryptMode()
-      else result = Crypto::TUnknownKeyOperationMode()
-  }
-}
-
-private class CryptoStreamUse extends MethodCall {
-  CryptoStreamUse() {
-    this.getQualifier().getType() instanceof CryptoStream and
-    this.getTarget().hasName(["Write", "FlushFinalBlock", "FlushFinalBlockAsync", "Close"])
-  }
-
-  predicate isIntermediate() { this.getTarget().getName() = "Write" }
-
-  Expr getInputArg() {
-    this.isIntermediate() and
-    result = this.getArgument(0)
-  }
-}
-
-private module CryptoStreamFlow = CreationToUseFlow<CryptoStreamCreation, CryptoStreamUse>;
-
-/**
  * An instantiation of a `CryptoStream` object where the transform is a symmetric
  * encryption or decryption operation (e.g. an encryption transform created by a
  * call to `Aes.CreateEncryptor()`)
@@ -324,5 +137,36 @@ class CryptoStreamOperationInstance extends Crypto::KeyOperationInstance instanc
 
   StreamUse getLaterWrappedStreamUse() {
     result = StreamFlow::getLaterUse(this.getWrappedStreamCreation().getStreamArg(), _, _)
+  }
+}
+
+/**
+ * A call to either `Encrypt` or `Decrypt` on an `AesGcm`, `AesCcm`, or
+ * `ChaCha20Poly1305` instance.
+ */
+class AeadOperationInstance extends Crypto::KeyOperationInstance instanceof AeadUse {
+  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
+    // See `AeadModeAlgorithmValueConsumer` for the algorithm value consumer.
+    result = this
+  }
+
+  override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
+    result = this.(AeadUse).getKeyOperationSubtype()
+  }
+
+  override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
+    result.asExpr() = AeadFlow::getCreationFromUse(this, _, _).getKeyArg()
+  }
+
+  override Crypto::ConsumerInputDataFlowNode getNonceConsumer() {
+    result.asExpr() = super.getNonceArg()
+  }
+
+  override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
+    result.asExpr() = super.getMessageArg()
+  }
+
+  override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
+    result.asExpr() = super.getOutputArg()
   }
 }

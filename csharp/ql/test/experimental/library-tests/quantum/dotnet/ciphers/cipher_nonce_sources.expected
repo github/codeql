@@ -1,2 +1,4 @@
 | AesCfbExample.cs:42:53:42:114 | EncryptOperation | AesCfbExample.cs:32:17:32:22 | Nonce | AesCfbExample.cs:97:30:97:31 | RandomNumberGeneration |
 | AesCfbExample.cs:68:53:68:113 | DecryptOperation | AesCfbExample.cs:63:71:63:72 | Nonce | AesCfbExample.cs:97:30:97:31 | RandomNumberGeneration |
+| AesGcmExample.cs:31:17:31:67 | EncryptOperation | AesGcmExample.cs:31:29:31:33 | Nonce | AesGcmExample.cs:63:30:63:34 | RandomNumberGeneration |
+| AesGcmExample.cs:42:17:42:67 | DecryptOperation | AesGcmExample.cs:42:29:42:33 | Nonce | AesGcmExample.cs:63:30:63:34 | RandomNumberGeneration |
