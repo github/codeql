@@ -1,0 +1,13 @@
+| SignatureExample.cs:37:29:37:82 | SignOperation | ECDSA | ECDsa |
+| SignatureExample.cs:42:27:42:93 | VerifyOperation | ECDSA | ECDsa |
+| SignatureExample.cs:52:35:52:104 | VerifyOperation | ECDSA | ECDsa |
+| SignatureExample.cs:58:32:58:91 | SignOperation | ECDSA | ECDsa |
+| SignatureExample.cs:61:30:61:105 | VerifyOperation | ECDSA | ECDsa |
+| SignatureExample.cs:67:39:67:105 | SignOperation | ECDSA | ECDsa |
+| SignatureExample.cs:68:37:68:126 | VerifyOperation | ECDSA | ECDsa |
+| SignatureExample.cs:78:26:78:96 | SignOperation | UnknownSignature | RSA |
+| SignatureExample.cs:79:28:79:105 | VerifyOperation | UnknownSignature | RSA |
+| SignatureExample.cs:85:36:85:116 | SignOperation | UnknownSignature | RSA |
+| SignatureExample.cs:86:38:86:135 | VerifyOperation | UnknownSignature | RSA |
+| SignatureExample.cs:91:37:91:118 | SignOperation | UnknownSignature | RSA |
+| SignatureExample.cs:92:39:92:138 | VerifyOperation | UnknownSignature | RSA |
