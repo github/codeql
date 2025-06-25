@@ -42,19 +42,15 @@ class CryptographyCreateCall extends MethodCall {
   }
 
   Expr getAlgorithmArg() {
-    this.hasNoArguments() and result = this
-    or
-    result = this.(ECDsaCreateCallWithParameters).getArgument(0)
-    or
-    result = this.(ECDsaCreateCallWithECCurve).getArgument(0)
+    if this.getArgument(0).getType().getName().matches("%Parameters")
+    then result = this.getArgument(0)
+    else result = this
   }
 
   Expr getKeyConsumer() {
-    this.hasNoArguments() and result = this
-    or
-    result = this.(ECDsaCreateCallWithParameters).getArgument(0)
-    or
-    result = this.(ECDsaCreateCallWithECCurve)
+    if this.getArgument(0).getType().getName().matches("%Parameters")
+    then result = this.getArgument(0)
+    else result = this
   }
 }
 
@@ -215,10 +211,20 @@ private class RSAClass extends CryptographyType {
   RSAClass() { this.hasName("RSA") }
 }
 
+private class RSAPKCS1SignatureFormatter extends CryptographyType {
+  RSAPKCS1SignatureFormatter() { this.hasName("RSAPKCS1SignatureFormatter") }
+}
+
+private class RSAPKCS1SignatureDeformatter extends CryptographyType {
+  RSAPKCS1SignatureDeformatter() { this.hasName("RSAPKCS1SignatureDeformatter") }
+}
+
 private class SignerType extends Type {
   SignerType() {
     this instanceof ECDsaClass or
-    this instanceof RSAClass
+    this instanceof RSAClass or
+    this instanceof RSAPKCS1SignatureFormatter or
+    this instanceof RSAPKCS1SignatureDeformatter
   }
 }
 
@@ -310,7 +316,7 @@ class RsaSignerQualifier extends SignerQualifier instanceof Expr {
 
 class SignerUse extends MethodCall {
   SignerUse() {
-    this.getTarget().getName().matches(["Verify%", "Sign%"]) and
+    this.getTarget().getName().matches(["Verify%", "Sign%", "CreateSignature"]) and
     this.getQualifier().getType() instanceof SignerType
   }
 
@@ -340,17 +346,9 @@ class SignerUse extends MethodCall {
     result = this.getAnArgument() and result.getType() instanceof HashAlgorithmNameType
   }
 
-  predicate isSigner() { this.getTarget().getName().matches("Sign%") }
+  predicate isSigner() { this.getTarget().getName().matches(["Sign%", "CreateSignature"]) }
 
   predicate isVerifier() { this.getTarget().getName().matches("Verify%") }
-}
-
-private class ECDsaSigner extends SignerUse {
-  ECDsaSigner() { this.getQualifier().getType() instanceof ECDsaClass }
-}
-
-private class RSASigner extends SignerUse {
-  RSASigner() { this.getQualifier().getType() instanceof RSAClass }
 }
 
 /**
