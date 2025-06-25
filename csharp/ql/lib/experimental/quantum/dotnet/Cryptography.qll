@@ -310,3 +310,225 @@ private class ECDsaSigner extends SignerUse {
 private class RSASigner extends SignerUse {
   RSASigner() { this.getQualifier().getType() instanceof RSAClass }
 }
+
+class AesMode extends Class {
+  AesMode() { this.hasFullyQualifiedName("System.Security.Cryptography", ["AesGcm", "AesCcm"]) }
+}
+
+class AesModeCreation extends ObjectCreation {
+  AesModeCreation() { this.getObjectType() instanceof AesMode }
+
+  Expr getKeyArg() { result = this.getArgument(0) }
+}
+
+class AesModeUse extends MethodCall {
+  AesModeUse() {
+    this.getQualifier().getType() instanceof AesMode and
+    this.getTarget().hasName(["Encrypt", "Decrypt"])
+  }
+
+  // One-shot API only.
+  predicate isIntermediate() { none() }
+
+  Crypto::KeyOperationSubtype getKeyOperationSubtype() {
+    if this.isEncrypt()
+    then result = Crypto::TEncryptMode()
+    else
+      if this.isDecrypt()
+      then result = Crypto::TDecryptMode()
+      else result = Crypto::TUnknownKeyOperationMode()
+  }
+
+  predicate isEncrypt() { this.getTarget().getName() = "Encrypt" }
+
+  predicate isDecrypt() { this.getTarget().getName() = "Decrypt" }
+
+  Expr getNonceArg() { result = this.getArgument(0) }
+
+  Expr getMessageArg() { result = this.getArgument(1) }
+
+  Expr getOutputArg() {
+    this.isEncrypt() and
+    result = this.getArgument(2)
+    or
+    this.isDecrypt() and
+    result = this.getArgument(3)
+  }
+}
+
+/**
+ * A symmetric algorithm class, such as AES or DES.
+ */
+class SymmetricAlgorithm extends Class {
+  SymmetricAlgorithm() {
+    this.getABaseType().hasFullyQualifiedName("System.Security.Cryptography", "SymmetricAlgorithm")
+  }
+
+  CryptoTransformCreation getCreateTransformCall() { result = this.getAMethod().getACall() }
+}
+
+/**
+ * A symmetric algorithm creation, such as `Aes.Create()`.
+ */
+class SymmetricAlgorithmCreation extends MethodCall {
+  SymmetricAlgorithmCreation() {
+    this.getTarget().hasName("Create") and
+    this.getQualifier().getType() instanceof SymmetricAlgorithm
+  }
+
+  SymmetricAlgorithm getSymmetricAlgorithm() { result = this.getQualifier().getType() }
+}
+
+class SymmetricAlgorithmUse extends QualifiableExpr {
+  SymmetricAlgorithmUse() {
+    this.getQualifier().getType() instanceof SymmetricAlgorithm and
+    this.getQualifiedDeclaration()
+        .hasName(["CreateEncryptor", "CreateDecryptor", "Key", "IV", "Padding", "Mode"])
+  }
+
+  Expr getSymmetricAlgorithm() { result = this.getQualifier() }
+
+  predicate isIntermediate() {
+    not this.getQualifiedDeclaration().hasName(["CreateEncryptor", "CreateDecryptor"])
+  }
+
+  // The key may be set by assigning it to the `Key` property of the symmetric algorithm.
+  predicate isKeyConsumer() {
+    this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "Key"
+  }
+
+  // The IV may be set by assigning it to the `IV` property of the symmetric algorithm.
+  predicate isIvConsumer() {
+    this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "IV"
+  }
+
+  // The padding mode may be set by assigning it to the `Padding` property of the symmetric algorithm.
+  predicate isPaddingConsumer() {
+    this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "Padding"
+  }
+
+  // The cipher mode may be set by assigning it to the `Mode` property of the symmetric algorithm.
+  predicate isModeConsumer() {
+    this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "Mode"
+  }
+}
+
+/**
+ * A call to `CreateEncryptor` or `CreateDecryptor` on a `SymmetricAlgorithm`.
+ */
+class CryptoTransformCreation extends MethodCall {
+  CryptoTransformCreation() {
+    this.getTarget().hasName(["CreateEncryptor", "CreateDecryptor"]) and
+    this.getQualifier().getType() instanceof SymmetricAlgorithm
+  }
+
+  predicate isEncryptor() { this.getTarget().getName() = "CreateEncryptor" }
+
+  predicate isDecryptor() { this.getTarget().getName() = "CreateDecryptor" }
+
+  Expr getKeyArg() { result = this.getArgument(0) }
+
+  Expr getIvArg() { result = this.getArgument(1) }
+
+  SymmetricAlgorithm getSymmetricAlgorithm() { result = this.getQualifier().getType() }
+}
+
+class CryptoStream extends Class {
+  CryptoStream() { this.hasFullyQualifiedName("System.Security.Cryptography", "CryptoStream") }
+}
+
+class CryptoStreamMode extends MemberConstant {
+  CryptoStreamMode() {
+    this.getDeclaringType()
+        .hasFullyQualifiedName("System.Security.Cryptography", "CryptoStreamMode")
+  }
+
+  predicate isRead() { this.getName() = "Read" }
+
+  predicate isWrite() { this.getName() = "Write" }
+}
+
+class PaddingMode extends MemberConstant {
+  PaddingMode() {
+    this.getDeclaringType().hasFullyQualifiedName("System.Security.Cryptography", "PaddingMode")
+  }
+}
+
+class CipherMode extends MemberConstant {
+  CipherMode() {
+    this.getDeclaringType().hasFullyQualifiedName("System.Security.Cryptography", "CipherMode")
+  }
+}
+
+class Stream extends Class {
+  Stream() { this.getABaseType().hasFullyQualifiedName("System.IO", "Stream") }
+}
+
+/**
+ * A `Stream` object creation.
+ */
+class StreamCreation extends ObjectCreation {
+  StreamCreation() { this.getObjectType() instanceof Stream }
+
+  Expr getInputArg() {
+    result = this.getAnArgument() and
+    result.getType().hasFullyQualifiedName("System", "Byte[]")
+  }
+
+  Expr getStreamArg() {
+    result = this.getAnArgument() and
+    result.getType() instanceof Stream
+  }
+}
+
+class StreamUse extends MethodCall {
+  StreamUse() {
+    this.getQualifier().getType() instanceof Stream and
+    this.getTarget().hasName(["ToArray", "Write"])
+  }
+
+  predicate isIntermediate() { this.getTarget().hasName("Write") }
+
+  Expr getInputArg() {
+    this.isIntermediate() and
+    result = this.getArgument(0)
+  }
+
+  Expr getOutput() {
+    not this.isIntermediate() and
+    result = this
+  }
+}
+
+class CryptoStreamCreation extends ObjectCreation {
+  CryptoStreamCreation() { this.getObjectType() instanceof CryptoStream }
+
+  Expr getStreamArg() { result = this.getArgument(0) }
+
+  Expr getTransformArg() { result = this.getArgument(1) }
+
+  Expr getModeArg() { result = this.getArgument(2) }
+
+  Crypto::KeyOperationSubtype getKeyOperationSubtype() {
+    if CryptoTransformFlow::getCreationFromUse(this.getTransformArg()).isEncryptor()
+    then result = Crypto::TEncryptMode()
+    else
+      if CryptoTransformFlow::getCreationFromUse(this.getTransformArg()).isDecryptor()
+      then result = Crypto::TDecryptMode()
+      else result = Crypto::TUnknownKeyOperationMode()
+  }
+}
+
+class CryptoStreamUse extends MethodCall {
+  CryptoStreamUse() {
+    this.getQualifier().getType() instanceof CryptoStream and
+    this.getTarget().hasName(["Write", "FlushFinalBlock", "FlushFinalBlockAsync", "Close"])
+  }
+
+  predicate isIntermediate() { this.getTarget().getName() = "Write" }
+
+  Expr getInputArg() {
+    this.isIntermediate() and
+    result = this.getArgument(0)
+  }
+}

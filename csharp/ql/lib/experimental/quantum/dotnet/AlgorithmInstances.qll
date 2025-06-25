@@ -159,8 +159,42 @@ class CipherModeLiteralInstance extends Crypto::ModeOfOperationAlgorithmInstance
   Crypto::AlgorithmValueConsumer getConsumer() { result = consumer }
 }
 
+/**
+ * A call to either `Encrypt` or `Decrypt` on an `AesGcm` or `AesCcm` instance.
+ * The algorithm is defined implicitly by this AST node.
+ */
+class AesModeAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance,
+  Crypto::ModeOfOperationAlgorithmInstance instanceof AesModeUse
+{
+  override string getRawAlgorithmName() { result = "Aes" }
+
+  override string getRawModeAlgorithmName() {
+    this.getRawAlgorithmName() = "AesGcm" and result = "Gcm"
+    or
+    this.getRawAlgorithmName() = "AesCcm" and result = "Ccm"
+  }
+
+  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES())
+  }
+
+  override Crypto::TBlockCipherModeOfOperationType getModeType() {
+    this.getRawAlgorithmName() = "AesGcm" and result = Crypto::GCM()
+    or
+    this.getRawAlgorithmName() = "AesCcm" and result = Crypto::CCM()
+  }
+
+  override int getKeySizeFixed() { none() }
+
+  override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
+
+  override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { result = this }
+
+  override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
+}
+
 private Crypto::KeyOpAlg::Algorithm symmetricAlgorithmNameToType(string algorithmName) {
-  algorithmName = "Aes" and result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES())
+  algorithmName = "Aes%" and result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES())
   or
   algorithmName = "DES" and result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::DES())
   or
