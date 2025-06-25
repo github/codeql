@@ -161,18 +161,18 @@ class KnownOpenSslPaddingConstantAlgorithmInstance extends OpenSslAlgorithmInsta
 //           else result = Crypto::OtherPadding()
 //   }
 // }
-class OaepPaddingAlgorithmInstance extends Crypto::OAEPPaddingAlgorithmInstance,
+class OaepPaddingAlgorithmInstance extends Crypto::OaepPaddingAlgorithmInstance,
   KnownOpenSslPaddingConstantAlgorithmInstance
 {
   OaepPaddingAlgorithmInstance() {
     this.(Crypto::PaddingAlgorithmInstance).getPaddingType() = Crypto::OAEP()
   }
 
-  override Crypto::HashAlgorithmInstance getOAEPEncodingHashAlgorithm() {
+  override Crypto::HashAlgorithmInstance getOaepEncodingHashAlgorithm() {
     none() //TODO
   }
 
-  override Crypto::HashAlgorithmInstance getMGF1HashAlgorithm() {
+  override Crypto::HashAlgorithmInstance getMgf1HashAlgorithm() {
     none() //TODO
   }
 }

@@ -355,7 +355,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    *   * An artifact's properties (such as being a nonce) are not necessarily inherent; they are determined by the context in which the artifact is consumed.
    *     The consumer node is therefore essential in defining these properties for inputs.
    *   * This approach reduces ambiguity by avoiding separate notions of "artifact source" and "consumer", as the node itself encapsulates both roles.
-   *   * Instances of nodes do not necessarily have to come from a consumer, allowing additional modelling of an artifact to occur outside of the consumer.
+   *   * Instances of nodes do not necessarily have to come from a consumer, allowing additional modeling of an artifact to occur outside of the consumer.
    */
   abstract class ArtifactConsumer extends ConsumerElement {
     /**
@@ -403,7 +403,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
         or
         exists(KeyDerivationOperationInstance op | inputNode = op.getInputConsumer())
         or
-        exists(MACOperationInstance op | inputNode = op.getMessageConsumer())
+        exists(MacOperationInstance op | inputNode = op.getMessageConsumer())
         or
         exists(HashOperationInstance op | inputNode = op.getInputConsumer())
       ) and
@@ -537,7 +537,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       (
         exists(KeyOperationInstance op | inputNode = op.getKeyConsumer())
         or
-        exists(MACOperationInstance op | inputNode = op.getKeyConsumer())
+        exists(MacOperationInstance op | inputNode = op.getKeyConsumer())
         or
         exists(KeyAgreementSecretGenerationOperationInstance op |
           inputNode = op.getServerKeyConsumer() or
@@ -937,30 +937,30 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract TPaddingType getPaddingType();
   }
 
-  abstract class OAEPPaddingAlgorithmInstance extends PaddingAlgorithmInstance {
-    OAEPPaddingAlgorithmInstance() { this.getPaddingType() instanceof OAEP }
+  abstract class OaepPaddingAlgorithmInstance extends PaddingAlgorithmInstance {
+    OaepPaddingAlgorithmInstance() { this.getPaddingType() instanceof OAEP }
 
     /**
      * Gets the hash algorithm used in this padding scheme.
      */
-    abstract HashAlgorithmInstance getOAEPEncodingHashAlgorithm();
+    abstract HashAlgorithmInstance getOaepEncodingHashAlgorithm();
 
     /**
      * Gets the hash algorithm used by MGF1 (assumption: MGF1 is the only MGF used by OAEP)
      */
-    abstract HashAlgorithmInstance getMGF1HashAlgorithm();
+    abstract HashAlgorithmInstance getMgf1HashAlgorithm();
   }
 
-  newtype TMACType =
+  newtype TMacType =
     THMAC() or
     TCMAC() or
     TOtherMACType()
 
-  abstract class MACAlgorithmInstance extends AlgorithmInstance {
+  abstract class MacAlgorithmInstance extends AlgorithmInstance {
     /**
      * Gets the type of this MAC algorithm, e.g., "HMAC" or "CMAC".
      */
-    abstract TMACType getMacType();
+    abstract TMacType getMacType();
 
     /**
      * Gets the isolated name as it appears in source, e.g., "HMAC-SHA256" in "HMAC-SHA256/UnrelatedInformation".
@@ -970,7 +970,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract string getRawMacAlgorithmName();
   }
 
-  abstract class MACOperationInstance extends OperationInstance {
+  abstract class MacOperationInstance extends OperationInstance {
     /**
      * Gets the message input used in this operation.
      */
@@ -982,8 +982,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract ConsumerInputDataFlowNode getKeyConsumer();
   }
 
-  abstract class HMACAlgorithmInstance extends MACAlgorithmInstance {
-    HMACAlgorithmInstance() { this.getMacType() instanceof THMAC }
+  abstract class HmacAlgorithmInstance extends MacAlgorithmInstance {
+    HmacAlgorithmInstance() { this.getMacType() instanceof THMAC }
 
     /**
      * Gets the hash algorithm used by this HMAC algorithm.
@@ -1060,8 +1060,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * Users should not extend this class directly, but instead use
-   * `KeyCreationOperationInstance` or `KeyDerivationOperationInstance`.
+   * An operation that generates, derives, or loads a cryptographic key.
+   *
+   * Library modeling should not extend this class directly but rather extend
+   * `KeyGenerationOperationInstance`, `KeyDerivationOperationInstance`, or `KeyLoadOperationInstance`.
    */
   abstract class KeyCreationOperationInstance extends OperationInstance {
     abstract string getKeyCreationTypeDescription();
@@ -1087,6 +1089,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
+  /**
+   * An operation that derives a key from an input password or other data.
+   */
   abstract class KeyDerivationOperationInstance extends KeyCreationOperationInstance {
     final override KeyArtifactType getOutputKeyType() { result instanceof TSymmetricKeyType }
 
@@ -1120,16 +1125,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the type of this key derivation algorithm, e.g., "PBKDF2" or "HKDF".
      */
-    abstract TKeyDerivationType getKDFType();
+    abstract TKeyDerivationType getKdfType();
 
     /**
      * Gets the isolated name as it appears in source, e.g., "PBKDF2WithHmacSHA256" in "PBKDF2WithHmacSHA256/UnrelatedInformation".
      */
-    abstract string getRawKDFAlgorithmName();
+    abstract string getRawKdfAlgorithmName();
   }
 
-  abstract class PBKDF2AlgorithmInstance extends KeyDerivationAlgorithmInstance {
-    PBKDF2AlgorithmInstance() { this.getKDFType() instanceof PBKDF2 }
+  abstract class Pbkdf2AlgorithmInstance extends KeyDerivationAlgorithmInstance {
+    Pbkdf2AlgorithmInstance() { this.getKdfType() instanceof PBKDF2 }
 
     /**
      * Gets the HMAC algorithm used by this PBKDF2 algorithm.
@@ -1137,11 +1142,11 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * Note: Other PRFs are not supported, as most cryptographic libraries
      * only support HMAC for PBKDF2's PRF input.
      */
-    abstract AlgorithmValueConsumer getHMACAlgorithmValueConsumer();
+    abstract AlgorithmValueConsumer getHmacAlgorithmValueConsumer();
   }
 
   abstract class ScryptAlgorithmInstance extends KeyDerivationAlgorithmInstance {
-    ScryptAlgorithmInstance() { this.getKDFType() instanceof SCRYPT }
+    ScryptAlgorithmInstance() { this.getKdfType() instanceof SCRYPT }
 
     /**
      * Gets the HMAC algorithm used by this PBKDF2 algorithm.
@@ -1149,7 +1154,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * Note: Other PRFs are not supported, as most cryptographic libraries
      * only support HMAC for PBKDF2's PRF input.
      */
-    abstract AlgorithmValueConsumer getHMACAlgorithmValueConsumer();
+    abstract AlgorithmValueConsumer getHmacAlgorithmValueConsumer();
   }
 
   abstract class KeyGenerationOperationInstance extends KeyCreationOperationInstance {
@@ -1216,7 +1221,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * This concept is used to model consumers that have no known source as an algorithm node.
    *
    * The `isCandidateAVCSig` predicate is used to restrict the set of consumers that expect inputs of `AlgorithmInstanceType`.
-   * These "total unknown" algorithm nodes would otherwise not exist if not modelled as a consumer node.
+   * These "total unknown" algorithm nodes would otherwise not exist if not modeled as a consumer node.
    */
   module AlgorithmInstanceOrValueConsumer<
     AlgorithmInstanceType Alg, isCandidateAVCSig/1 isCandidateAVC>
@@ -1237,58 +1242,58 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
       Alg asAlg() { result = this }
 
-      AlgorithmValueConsumer asAVC() { result = this and not this instanceof Alg }
+      AlgorithmValueConsumer asAvc() { result = this and not this instanceof Alg }
     }
   }
 
-  private predicate isHashAVC(AlgorithmValueConsumer avc) {
+  private predicate isHashAvc(AlgorithmValueConsumer avc) {
     exists(HashOperationInstance op | op.getAnAlgorithmValueConsumer() = avc) or
-    exists(HMACAlgorithmInstance alg | avc = alg.getAConsumer())
+    exists(HmacAlgorithmInstance alg | avc = alg.getAConsumer())
   }
 
-  private predicate isKeyOperationAlgorithmAVC(AlgorithmValueConsumer avc) {
+  private predicate isKeyOperationAlgorithmAvc(AlgorithmValueConsumer avc) {
     exists(KeyOperationInstance op | op.getAnAlgorithmValueConsumer() = avc)
   }
 
-  private predicate isMACAVC(AlgorithmValueConsumer avc) {
-    exists(MACOperationInstance op | op.getAnAlgorithmValueConsumer() = avc) or
-    exists(PBKDF2AlgorithmInstance alg | avc = alg.getHMACAlgorithmValueConsumer())
+  private predicate isMacAvc(AlgorithmValueConsumer avc) {
+    exists(MacOperationInstance op | op.getAnAlgorithmValueConsumer() = avc) or
+    exists(Pbkdf2AlgorithmInstance alg | avc = alg.getHmacAlgorithmValueConsumer())
   }
 
-  private predicate isKeyDerivationAVC(AlgorithmValueConsumer avc) {
+  private predicate isKeyDerivationAvc(AlgorithmValueConsumer avc) {
     exists(KeyDerivationOperationInstance op | op.getAnAlgorithmValueConsumer() = avc)
   }
 
-  private predicate isEllipticCurveAVC(AlgorithmValueConsumer avc) {
+  private predicate isEllipticCurveAvc(AlgorithmValueConsumer avc) {
     exists(ECDHKeyAgreementAlgorithmInstance alg |
       avc = alg.getEllipticCurveAlgorithmValueConsumer()
     ) or
     exists(KeyGenerationOperationInstance op | op.getAnAlgorithmValueConsumer() = avc)
   }
 
-  private predicate isKeyAgreementAVC(AlgorithmValueConsumer avc) {
+  private predicate isKeyAgreementAvc(AlgorithmValueConsumer avc) {
     exists(KeyAgreementSecretGenerationOperationInstance op |
       op.getAnAlgorithmValueConsumer() = avc
     )
   }
 
   final private class KeyOperationAlgorithmInstanceOrValueConsumer =
-    AlgorithmInstanceOrValueConsumer<KeyOperationAlgorithmInstance, isKeyOperationAlgorithmAVC/1>::Union;
+    AlgorithmInstanceOrValueConsumer<KeyOperationAlgorithmInstance, isKeyOperationAlgorithmAvc/1>::Union;
 
   final private class HashAlgorithmInstanceOrValueConsumer =
-    AlgorithmInstanceOrValueConsumer<HashAlgorithmInstance, isHashAVC/1>::Union;
+    AlgorithmInstanceOrValueConsumer<HashAlgorithmInstance, isHashAvc/1>::Union;
 
-  final private class MACAlgorithmInstanceOrValueConsumer =
-    AlgorithmInstanceOrValueConsumer<MACAlgorithmInstance, isMACAVC/1>::Union;
+  final private class MacAlgorithmInstanceOrValueConsumer =
+    AlgorithmInstanceOrValueConsumer<MacAlgorithmInstance, isMacAvc/1>::Union;
 
   final private class KeyDerivationAlgorithmInstanceOrValueConsumer =
-    AlgorithmInstanceOrValueConsumer<KeyDerivationAlgorithmInstance, isKeyDerivationAVC/1>::Union;
+    AlgorithmInstanceOrValueConsumer<KeyDerivationAlgorithmInstance, isKeyDerivationAvc/1>::Union;
 
   final private class EllipticCurveInstanceOrValueConsumer =
-    AlgorithmInstanceOrValueConsumer<EllipticCurveInstance, isEllipticCurveAVC/1>::Union;
+    AlgorithmInstanceOrValueConsumer<EllipticCurveInstance, isEllipticCurveAvc/1>::Union;
 
   final private class KeyAgreementAlgorithmInstanceOrValueConsumer =
-    AlgorithmInstanceOrValueConsumer<KeyAgreementAlgorithmInstance, isKeyAgreementAVC/1>::Union;
+    AlgorithmInstanceOrValueConsumer<KeyAgreementAlgorithmInstance, isKeyAgreementAvc/1>::Union;
 
   private newtype TNode =
     // Output artifacts (data that is not an operation or algorithm, e.g., a key)
@@ -1315,17 +1320,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TPaddingAlgorithm(PaddingAlgorithmInstance e) or
     // All other operations
     THashOperation(HashOperationInstance e) or
-    TMACOperation(MACOperationInstance e) or
+    TMACOperation(MacOperationInstance e) or
     TKeyAgreementOperation(KeyAgreementSecretGenerationOperationInstance e) or
     // All other algorithms
     TEllipticCurve(EllipticCurveInstanceOrValueConsumer e) or
     THashAlgorithm(HashAlgorithmInstanceOrValueConsumer e) or
     TKeyDerivationAlgorithm(KeyDerivationAlgorithmInstanceOrValueConsumer e) or
-    TMACAlgorithm(MACAlgorithmInstanceOrValueConsumer e) or
+    TMACAlgorithm(MacAlgorithmInstanceOrValueConsumer e) or
     TKeyAgreementAlgorithm(KeyAgreementAlgorithmInstanceOrValueConsumer e) or
     // Generic source nodes, i.e., sources of data that are not resolvable to a specific known asset.
     TGenericSourceNode(GenericSourceInstance e) {
-      // An element modelled as a `GenericSourceInstance` can also be modelled as a `KnownElement`
+      // An element modeled as a `GenericSourceInstance` can also be modeled as a `KnownElement`
       // For example, a string literal "AES" could be a generic constant but also an algorithm instance.
       //
       // Therefore, only create generic nodes tied to instances which are not also a `KnownElement`...
@@ -1769,17 +1774,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * A MAC operation that produces a MAC value.
    */
-  final class MACOperationNode extends OperationNode, TMACOperation {
-    MACOperationInstance instance;
+  final class MacOperationNode extends OperationNode, TMACOperation {
+    MacOperationInstance instance;
 
-    MACOperationNode() { this = TMACOperation(instance) }
+    MacOperationNode() { this = TMACOperation(instance) }
 
     final override string getInternalType() { result = "MACOperation" }
 
     override LocatableElement asElement() { result = instance }
 
     override predicate isCandidateAlgorithmNode(AlgorithmNode node) {
-      node instanceof MACAlgorithmNode
+      node instanceof MacAlgorithmNode
     }
 
     MessageArtifactNode getAMessage() {
@@ -1804,10 +1809,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * A MAC algorithm, such as HMAC or CMAC.
    */
-  class MACAlgorithmNode extends AlgorithmNode, TMACAlgorithm {
-    MACAlgorithmInstanceOrValueConsumer instance;
+  class MacAlgorithmNode extends AlgorithmNode, TMACAlgorithm {
+    MacAlgorithmInstanceOrValueConsumer instance;
 
-    MACAlgorithmNode() { this = TMACAlgorithm(instance) }
+    MacAlgorithmNode() { this = TMACAlgorithm(instance) }
 
     final override string getInternalType() { result = "MACAlgorithm" }
 
@@ -1817,9 +1822,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result = instance.asAlg().getRawMacAlgorithmName()
     }
 
-    TMACType getMacType() { result = instance.asAlg().getMacType() }
+    TMacType getMacType() { result = instance.asAlg().getMacType() }
 
-    final private predicate macToNameMapping(TMACType type, string name) {
+    final private predicate macToNameMapping(TMacType type, string name) {
       type instanceof THMAC and
       name = "HMAC"
     }
@@ -1827,10 +1832,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override string getAlgorithmName() { this.macToNameMapping(this.getMacType(), result) }
   }
 
-  final class HMACAlgorithmNode extends MACAlgorithmNode {
-    HMACAlgorithmInstance hmacInstance;
+  final class HmacAlgorithmNode extends MacAlgorithmNode {
+    HmacAlgorithmInstance hmacInstance;
 
-    HMACAlgorithmNode() { hmacInstance = instance.asAlg() }
+    HmacAlgorithmNode() { hmacInstance = instance.asAlg() }
 
     NodeBase getHashAlgorithmOrUnknown() {
       result.asElement() = hmacInstance.getHashAlgorithmValueConsumer().getASource()
@@ -1993,22 +1998,22 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override LocatableElement asElement() { result = instance }
 
     final override string getRawAlgorithmName() {
-      result = instance.asAlg().getRawKDFAlgorithmName()
+      result = instance.asAlg().getRawKdfAlgorithmName()
     }
 
     override string getAlgorithmName() { result = this.getRawAlgorithmName() } // TODO: standardize?
   }
 
   /**
-   * PBKDF2 key derivation function
+   * A PBKDF2 (key derivation function) algorithm node.
    */
-  class PBKDF2AlgorithmNode extends KeyDerivationAlgorithmNode {
-    PBKDF2AlgorithmInstance pbkdf2Instance;
+  class Pbkdf2AlgorithmNode extends KeyDerivationAlgorithmNode {
+    Pbkdf2AlgorithmInstance pbkdf2Instance;
 
-    PBKDF2AlgorithmNode() { pbkdf2Instance = instance.asAlg() }
+    Pbkdf2AlgorithmNode() { pbkdf2Instance = instance.asAlg() }
 
-    HMACAlgorithmNode getHMACAlgorithm() {
-      result.asElement() = pbkdf2Instance.getHMACAlgorithmValueConsumer().getASource()
+    HmacAlgorithmNode getHmacAlgorithm() {
+      result.asElement() = pbkdf2Instance.getHmacAlgorithmValueConsumer().getASource()
     }
 
     override NodeBase getChild(string key) {
@@ -2016,12 +2021,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // [KNOWN_OR_UNKNOWN]
       key = "PRF" and
-      if exists(this.getHMACAlgorithm()) then result = this.getHMACAlgorithm() else result = this
+      if exists(this.getHmacAlgorithm()) then result = this.getHmacAlgorithm() else result = this
     }
   }
 
   /**
-   * scrypt key derivation function
+   * An SCRYPT key derivation algorithm node.
    */
   class ScryptAlgorithmNode extends KeyDerivationAlgorithmNode {
     ScryptAlgorithmInstance scryptInstance;
@@ -2223,7 +2228,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * Block cipher modes of operation algorithms
+   * A block cipher mode of operation algorithm node.
    */
   class ModeOfOperationAlgorithmNode extends AlgorithmNode, TModeOfOperationAlgorithm {
     ModeOfOperationAlgorithmInstance instance;
@@ -2310,16 +2315,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   class OAEPPaddingAlgorithmNode extends PaddingAlgorithmNode {
-    override OAEPPaddingAlgorithmInstance instance;
+    override OaepPaddingAlgorithmInstance instance;
 
     OAEPPaddingAlgorithmNode() { this = TPaddingAlgorithm(instance) }
 
     HashAlgorithmNode getOAEPEncodingHashAlgorithm() {
-      result.asElement() = instance.getOAEPEncodingHashAlgorithm()
+      result.asElement() = instance.getOaepEncodingHashAlgorithm()
     }
 
     HashAlgorithmNode getMGF1HashAlgorithm() {
-      result.asElement() = instance.getMGF1HashAlgorithm()
+      result.asElement() = instance.getMgf1HashAlgorithm()
     }
 
     override NodeBase getChild(string edgeName) {
@@ -2632,9 +2637,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * Holds if `name` corresponds to a known elliptic curve.
    *
-   * Note: As an exception, this predicate may be used for library modelling, as curve names are largely standardized.
+   * Note: As an exception, this predicate may be used for library modeling, as curve names are largely standardized.
    *
-   * When modelling, verify that this predicate offers sufficient coverage for the library and handle edge-cases.
+   * When modeling, verify that this predicate offers sufficient coverage for the library and handle edge-cases.
    */
   bindingset[curveName]
   predicate isEllipticCurveAlgorithmName(string curveName) {
@@ -2644,9 +2649,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * Relates elliptic curve names to their key size and family.
    *
-   * Note: As an exception, this predicate may be used for library modelling, as curve names are largely standardized.
+   * Note: As an exception, this predicate may be used for library modeling, as curve names are largely standardized.
    *
-   * When modelling, verify that this predicate offers sufficient coverage for the library and handle edge-cases.
+   * When modeling, verify that this predicate offers sufficient coverage for the library and handle edge-cases.
    */
   bindingset[rawName]
   predicate ellipticCurveNameToKeySizeAndFamilyMapping(
