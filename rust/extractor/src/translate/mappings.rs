@@ -1,6 +1,19 @@
+use crate::trap::{Label, TrapClass};
 use ra_ap_hir::{Enum, Function, HasContainer, Module, Semantics, Struct, Trait, Union};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_syntax::{AstNode, ast, ast::RangeItem};
+
+pub(crate) trait HasTrapClass: AstNode {
+    type TrapClass: TrapClass;
+}
+
+pub(crate) trait Emission<T: HasTrapClass> {
+    fn pre_emit(&mut self, _node: &T) -> Option<Label<T::TrapClass>> {
+        None
+    }
+
+    fn post_emit(&mut self, _node: &T, _label: Label<T::TrapClass>) {}
+}
 
 pub(crate) trait TextValue {
     fn try_get_text(&self) -> Option<String>;

@@ -8,7 +8,6 @@ import codeql.rust.elements.AssocItem
 import codeql.rust.elements.Attr
 import codeql.rust.elements.ExternItem
 import codeql.rust.elements.GenericParamList
-import codeql.rust.elements.Item
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.TypeRepr

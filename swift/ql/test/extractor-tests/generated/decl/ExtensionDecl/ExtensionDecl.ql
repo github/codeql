@@ -3,16 +3,16 @@ import codeql.swift.elements
 import TestUtils
 
 from
-  ExtensionDecl x, ModuleDecl getModule, int getNumberOfMembers, int getNumberOfGenericTypeParams,
+  ExtensionDecl x, int getNumberOfGenericTypeParams, ModuleDecl getModule, int getNumberOfMembers,
   NominalTypeDecl getExtendedTypeDecl, int getNumberOfProtocols
 where
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
   getModule = x.getModule() and
   getNumberOfMembers = x.getNumberOfMembers() and
-  getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
   getExtendedTypeDecl = x.getExtendedTypeDecl() and
   getNumberOfProtocols = x.getNumberOfProtocols()
-select x, "getModule:", getModule, "getNumberOfMembers:", getNumberOfMembers,
-  "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams, "getExtendedTypeDecl:",
-  getExtendedTypeDecl, "getNumberOfProtocols:", getNumberOfProtocols
+select x, "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams, "getModule:", getModule,
+  "getNumberOfMembers:", getNumberOfMembers, "getExtendedTypeDecl:", getExtendedTypeDecl,
+  "getNumberOfProtocols:", getNumberOfProtocols
