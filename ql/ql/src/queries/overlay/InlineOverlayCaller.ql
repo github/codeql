@@ -31,11 +31,12 @@ where
   mayBeLocal(p) and
   p.getAnAnnotation() instanceof Inline and
   not p.getAnAnnotation() instanceof OverlayCaller and
+  not p.getAnAnnotation() instanceof OverlayCallerQ and
   not p.isPrivate()
 select p,
   "This possibly local non-private inline predicate will not " +
     "be inlined across the overlay frontier. This may negatively " +
     "affect evaluation performance. Consider adding an " +
-    "`overlay[caller]` annotation to allow inlining across the " +
-    "overlay frontier. Note that adding an `overlay[caller]` " +
+    "`overlay[caller]` or `overlay[caller?]` annotation to allow inlining across the " +
+    "overlay frontier. Note that adding an `overlay[caller]` or `overlay[caller?]` " +
     "annotation affects semantics under overlay evaluation."

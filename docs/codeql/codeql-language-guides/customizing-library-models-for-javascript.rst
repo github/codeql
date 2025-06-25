@@ -517,7 +517,6 @@ The following components are supported:
 - **Member[**\ `name`\ **]** selects the property with the given name.
 - **AnyMember** selects any property regardless of name.
 - **ArrayElement** selects an element of an array.
-- **Element** selects an element of an array, iterator, or set object.
 - **MapValue** selects a value of a map object.
 - **Awaited** selects the value of a promise.
 - **Instance** selects instances of a class, including instances of its subclasses.
