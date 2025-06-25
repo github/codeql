@@ -2542,6 +2542,10 @@ private class CallerArg extends AnnotationArg {
   CallerArg() { this.getValue() = "caller" }
 }
 
+private class CallerQArg extends AnnotationArg {
+  CallerQArg() { this.getValue() = "caller?" }
+}
+
 private class LocalArg extends AnnotationArg {
   LocalArg() { this.getValue() = "local" }
 }
@@ -2614,6 +2618,13 @@ class OverlayCaller extends Annotation {
   OverlayCaller() { this.getName() = "overlay" and this.getArgs(0) instanceof CallerArg }
 
   override string toString() { result = "overlay[caller]" }
+}
+
+/** An `overlay[caller?]` annotation. */
+class OverlayCallerQ extends Annotation {
+  OverlayCallerQ() { this.getName() = "overlay" and this.getArgs(0) instanceof CallerQArg }
+
+  override string toString() { result = "overlay[caller?]" }
 }
 
 /** An `overlay[local]` annotation. */

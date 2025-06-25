@@ -16,17 +16,6 @@ private predicate execApi(
     cmdArg = 0 and
     shell = false and
     optionsArg = -1
-    or
-    mod = "execa" and
-    optionsArg = -1 and
-    (
-      shell = false and
-      fn = ["node", "stdout", "stderr", "sync"]
-      or
-      shell = true and
-      fn = ["command", "commandSync", "shell", "shellSync"]
-    ) and
-    cmdArg = 0
   )
 }
 
@@ -38,8 +27,6 @@ private predicate execApi(string mod, int cmdArg, int optionsArg, boolean shell)
     mod = "cross-spawn-async" and cmdArg = 0 and optionsArg = -1
     or
     mod = "exec-async" and cmdArg = 0 and optionsArg = -1
-    or
-    mod = "execa" and cmdArg = 0 and optionsArg = -1
   )
   or
   shell = true and
