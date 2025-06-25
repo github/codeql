@@ -210,7 +210,7 @@ string getAlgorithmAlias(string alias) {
 }
 
 /**
- * Holds for aliases of known alagorithms defined by users
+ * Holds for aliases of known algorithms defined by users
  * (through obj_name_add and various macros pointing to this function).
  *
  * The `target` and `alias` are converted to lowercase to be of a standard form.
