@@ -2704,13 +2704,4 @@ class RecordPatternExpr extends Expr, @recordpatternexpr {
 }
 
 overlay[local]
-private predicate discardableExpr(string file, @expr e) {
-  not isOverlay() and
-  file = getRawFile(e)
-}
-
-/** Discard base expressions in files fully extracted in the overlay. */
-overlay[discard_entity]
-private predicate discardExpr(@expr e) {
-  exists(string file | discardableExpr(file, e) and extractedInOverlay(file))
-}
+private class DiscardableExpr extends DiscardableLocatable, @expr { }

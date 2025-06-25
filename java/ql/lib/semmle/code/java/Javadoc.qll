@@ -199,13 +199,4 @@ class KtCommentSection extends @ktcommentsection {
 }
 
 overlay[local]
-private predicate discardableJavadoc(string file, @javadoc d) {
-  not isOverlay() and
-  exists(@member m | file = getRawFile(m) and hasJavadoc(m, d))
-}
-
-/** Discard javadoc entities in files fully extracted in the overlay. */
-overlay[discard_entity]
-private predicate discardJavadoc(@javadoc d) {
-  exists(string file | discardableJavadoc(file, d) and extractedInOverlay(file))
-}
+private class DiscardableJavadoc extends DiscardableLocatable, @javadoc { }

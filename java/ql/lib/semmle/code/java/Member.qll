@@ -906,31 +906,11 @@ class ExtensionMethod extends Method {
 }
 
 overlay[local]
-private predicate discardableMethod(string file, @method m) {
-  not isOverlay() and
-  file = getRawFile(m) and
-  exists(@classorinterface c | methods(m, _, _, _, c, _) and isAnonymClass(c, _))
-}
-
-/** Discard base methods on anonymous classes in files fully extracted in the overlay. */
-overlay[discard_entity]
-private predicate discardAnonMethod(@method m) {
-  exists(string file | discardableMethod(file, m) and extractedInOverlay(file))
+private class DiscardableAnonymousMethod extends DiscardableLocatable, @method {
+  DiscardableAnonymousMethod() {
+    exists(@classorinterface c | methods(this, _, _, _, c, _) and isAnonymClass(c, _))
+  }
 }
 
 overlay[local]
-private predicate discardableBaseMethod(string file, @method m) {
-  not isOverlay() and
-  file = getRawFile(m)
-}
-
-overlay[local]
-private predicate usedOverlayMethod(@method m) { isOverlay() and methods(m, _, _, _, _, _) }
-
-/** Discard base methods in files fully extracted in the overlay that were not extracted in the overlay. */
-overlay[discard_entity]
-private predicate discardMethod(@method m) {
-  exists(string file |
-    discardableBaseMethod(file, m) and extractedInOverlay(file) and not usedOverlayMethod(m)
-  )
-}
+private class DiscardableMethod extends DiscardableReferableLocatable, @method { }
