@@ -27,7 +27,6 @@ abstract class SigningAlgorithmInstance extends Crypto::KeyOperationAlgorithmIns
 
   override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
 
-
   override int getKeySizeFixed() { none() }
 }
 
@@ -160,28 +159,37 @@ class CipherModeLiteralInstance extends Crypto::ModeOfOperationAlgorithmInstance
 }
 
 /**
- * A call to either `Encrypt` or `Decrypt` on an `AesGcm` or `AesCcm` instance.
- * The algorithm is defined implicitly by this AST node.
+ * A call to either `Encrypt` or `Decrypt` on an `AesGcm`, `AesCcm`, or
+ * `ChaCha20Poly1305` instance. The algorithm is defined implicitly by this AST
+ * node.
  */
-class AesModeAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance,
-  Crypto::ModeOfOperationAlgorithmInstance instanceof AesModeUse
+class AeadAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance,
+  Crypto::ModeOfOperationAlgorithmInstance instanceof AeadUse
 {
-  override string getRawAlgorithmName() { result = "Aes" }
+  override string getRawAlgorithmName() {
+    super.getQualifier().getType().hasName("Aes%") and result = "Aes"
+    or
+    super.getQualifier().getType().hasName("ChaCha20%") and result = "ChaCha20"
+  }
 
   override string getRawModeAlgorithmName() {
-    this.getRawAlgorithmName() = "AesGcm" and result = "Gcm"
+    super.getQualifier().getType().getName() = "AesGcm" and result = "Gcm"
     or
-    this.getRawAlgorithmName() = "AesCcm" and result = "Ccm"
+    super.getQualifier().getType().getName() = "AesCcm" and result = "Ccm"
   }
 
   override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    this.getRawAlgorithmName() = "Aes" and
     result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES())
+    or
+    this.getRawAlgorithmName() = "ChaCha20" and
+    result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::CHACHA20())
   }
 
   override Crypto::TBlockCipherModeOfOperationType getModeType() {
-    this.getRawAlgorithmName() = "AesGcm" and result = Crypto::GCM()
+    this.getRawModeAlgorithmName() = "Gcm" and result = Crypto::GCM()
     or
-    this.getRawAlgorithmName() = "AesCcm" and result = Crypto::CCM()
+    this.getRawModeAlgorithmName() = "Ccm" and result = Crypto::CCM()
   }
 
   override int getKeySizeFixed() { none() }

@@ -84,7 +84,7 @@ module HashCreateToUseFlow = CreationToUseFlow<HashAlgorithmCreateCall, HashUse>
 
 module CryptoStreamFlow = CreationToUseFlow<CryptoStreamCreation, CryptoStreamUse>;
 
-module AesModeFlow = CreationToUseFlow<AesModeCreation, AesModeUse>;
+module AeadFlow = CreationToUseFlow<AeadCreation, AeadUse>;
 
 module SymmetricAlgorithmFlow =
   CreationToUseFlow<SymmetricAlgorithmCreation, SymmetricAlgorithmUse>;

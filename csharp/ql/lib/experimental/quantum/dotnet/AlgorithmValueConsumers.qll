@@ -71,11 +71,15 @@ class SymmetricAlgorithmConsumer extends Crypto::AlgorithmValueConsumer instance
 }
 
 /**
- * A call to either `Encrypt` or `Decrypt` on an `AesGcm` or `AesCcm` instance.
- * The algorithm is defined implicitly by this AST node.
+ * A call to either `Encrypt` or `Decrypt` on an `AesGcm`, `AesCcm` or
+ * `ChaCha20Poly1305` instance.  The algorithm is defined implicitly by this AST
+ * node.
  */
-class AesModeAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer instanceof AesModeUse {
+class AeadAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer instanceof AeadUse {
   override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
 
-  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
+    // See `AeadAlgorithmInstance` for the algorithm instance.
+    result = this
+  }
 }

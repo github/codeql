@@ -311,19 +311,25 @@ private class RSASigner extends SignerUse {
   RSASigner() { this.getQualifier().getType() instanceof RSAClass }
 }
 
-class AesMode extends Class {
-  AesMode() { this.hasFullyQualifiedName("System.Security.Cryptography", ["AesGcm", "AesCcm"]) }
+/**
+ * An AEAD class, such as `AesGcm`, `AesCcm`, or `ChaCha20Poly1305`.
+ */
+class Aead extends Class {
+  Aead() {
+    this.hasFullyQualifiedName("System.Security.Cryptography",
+      ["AesGcm", "AesCcm", "ChaCha20Poly1305"])
+  }
 }
 
-class AesModeCreation extends ObjectCreation {
-  AesModeCreation() { this.getObjectType() instanceof AesMode }
+class AeadCreation extends ObjectCreation {
+  AeadCreation() { this.getObjectType() instanceof Aead }
 
   Expr getKeyArg() { result = this.getArgument(0) }
 }
 
-class AesModeUse extends MethodCall {
-  AesModeUse() {
-    this.getQualifier().getType() instanceof AesMode and
+class AeadUse extends MethodCall {
+  AeadUse() {
+    this.getQualifier().getType() instanceof Aead and
     this.getTarget().hasName(["Encrypt", "Decrypt"])
   }
 

@@ -144,20 +144,21 @@ class CryptoStreamOperationInstance extends Crypto::KeyOperationInstance instanc
 }
 
 /**
- * A call to either `Encrypt` or `Decrypt` on an `AesGcm` or `AesCcm` instance.
+ * A call to either `Encrypt` or `Decrypt` on an `AesGcm`, `AesCcm`, or
+ * `ChaCha20Poly1305` instance.
  */
-class AesModeOperationInstance extends Crypto::KeyOperationInstance instanceof AesModeUse {
+class AeadOperationInstance extends Crypto::KeyOperationInstance instanceof AeadUse {
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-    // See `AesModeAlgorithmInstance` for the algorithm value consumer.
+    // See `AeadModeAlgorithmValueConsumer` for the algorithm value consumer.
     result = this
   }
 
   override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
-    result = this.(AesModeUse).getKeyOperationSubtype()
+    result = this.(AeadUse).getKeyOperationSubtype()
   }
 
   override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
-    result.asExpr() = AesModeFlow::getCreationFromUse(this, _, _).getKeyArg()
+    result.asExpr() = AeadFlow::getCreationFromUse(this, _, _).getKeyArg()
   }
 
   override Crypto::ConsumerInputDataFlowNode getNonceConsumer() {
