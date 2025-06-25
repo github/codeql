@@ -111,12 +111,17 @@ public class AutoBuildTests {
     try {
       Set<String> actual = new LinkedHashSet<>();
       new AutoBuild() {
+        private void markExtracted(Path file, FileExtractor extractor) {
+          String extracted = file.toString();
+          if (extractor.getConfig().hasFileType()) {
+            extracted += ":" + extractor.getFileType(file.toFile());
+          }
+          actual.add(extracted);
+        }
+
         @Override
         protected CompletableFuture<?> extract(FileExtractor extractor, Path file, boolean concurrent) {
-          String extracted = file.toString();
-          if (extractor.getConfig().hasFileType())
-            extracted += ":" + extractor.getFileType(file.toFile());
-          actual.add(extracted);
+          markExtracted(file, extractor);
           return CompletableFuture.completedFuture(null);
         }
 
@@ -134,7 +139,7 @@ public class AutoBuildTests {
             java.util.Set<Path> extractedFiles,
             FileExtractors extractors) {
           for (Path f : files) {
-            actual.add(f.toString());
+            markExtracted(f, extractors.forFile(f));
             extractedFiles.add(f);
           }
         }
