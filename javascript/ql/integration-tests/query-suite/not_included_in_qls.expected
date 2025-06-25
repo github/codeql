@@ -67,7 +67,6 @@ ql/javascript/ql/src/Summary/TaintSinks.ql
 ql/javascript/ql/src/Summary/TaintSources.ql
 ql/javascript/ql/src/definitions.ql
 ql/javascript/ql/src/experimental/Security/CWE-094-dataURL/CodeInjection.ql
-ql/javascript/ql/src/experimental/Security/CWE-094/UntrustedCheckout.ql
 ql/javascript/ql/src/experimental/Security/CWE-099/EnvValueAndKeyInjection.ql
 ql/javascript/ql/src/experimental/Security/CWE-099/EnvValueInjection.ql
 ql/javascript/ql/src/experimental/Security/CWE-340/TokenBuiltFromUUID.ql
