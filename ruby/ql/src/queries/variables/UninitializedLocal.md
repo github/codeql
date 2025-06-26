@@ -38,5 +38,5 @@ end
 
 ## References
 
-- https://www.rubyguides.com/: [Nil](https://www.rubyguides.com/2018/01/ruby-nil/).
-- https://ruby-doc.org/: [NoMethodError](https://ruby-doc.org/core-2.6.5/NoMethodError.html).
+- RubyGuides: [Everything You Need To Know About Nil](https://www.rubyguides.com/2018/01/ruby-nil/).
+- Ruby-Doc.org: [NoMethodError](https://ruby-doc.org/core-2.6.5/NoMethodError.html).

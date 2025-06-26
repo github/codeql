@@ -111,5 +111,5 @@ An attacker is be able to run arbitrary code by injecting environment variables 
 
 ## References
 
-- [Workflow commands for GitHub Actions](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions).
-- [GitHub Actions Exploitation: Repo Jacking and Environment Manipulation](https://www.synacktiv.com/publications/github-actions-exploitation-repo-jacking-and-environment-manipulation).
+- GitHub Docs: [Workflow commands for GitHub Actions](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions).
+- Synacktiv: [GitHub Actions Exploitation: Repo Jacking and Environment Manipulation](https://www.synacktiv.com/publications/github-actions-exploitation-repo-jacking-and-environment-manipulation).

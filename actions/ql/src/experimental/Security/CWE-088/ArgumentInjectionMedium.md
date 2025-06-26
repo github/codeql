@@ -34,6 +34,6 @@ An attacker may set the body of an Issue comment to `BAR|g;1e whoami;#` and the 
 ## References
 
 - Common Weakness Enumeration: [CWE-88](https://cwe.mitre.org/data/definitions/88.html).
-- [Argument Injection Explained](https://sonarsource.github.io/argument-injection-vectors/explained/).
 - [Argument Injection Vectors](https://sonarsource.github.io/argument-injection-vectors/).
+- Argument Injection Vectors: [Argument Injection Explained](https://sonarsource.github.io/argument-injection-vectors/explained/).
 - [GTFOBins](https://gtfobins.github.io/).
