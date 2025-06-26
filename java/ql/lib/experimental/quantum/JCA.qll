@@ -1028,7 +1028,7 @@ module JCAModel {
     KeyGeneratorGetInstanceCall getInstantiationCall() { result = instantiationCall }
   }
 
-  // TODO: Link getAlgorithm from KeyPairGenerator to algorithm instances or AVCs? High priority.
+  //TODO: Link getAlgorithm from KeyPairGenerator to algorithm instances or AVCs? High priority.
   class KeyGeneratorGetInstanceCall extends MethodCall {
     KeyGeneratorGetInstanceCall() {
       this.getCallee().hasQualifiedName("javax.crypto", "KeyGenerator", "getInstance")
