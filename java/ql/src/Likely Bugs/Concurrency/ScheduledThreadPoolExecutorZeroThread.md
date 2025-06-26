@@ -1,6 +1,6 @@
 ## Overview
 
-According the Java documentation on `ScheduledThreadPoolExecutor`, it is not a good idea to set `corePoolSize` to zero, since doing so indicates the executor to keep 0 threads in its pool and the executor will serve no purpose.
+According to the Java documentation on `ScheduledThreadPoolExecutor`, it is not a good idea to set `corePoolSize` to zero, since doing so indicates the executor to keep 0 threads in its pool and the executor will serve no purpose.
 
 ## Recommendation
 
