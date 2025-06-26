@@ -2,17 +2,26 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  ImportDecl x, ModuleDecl getModule, int getNumberOfMembers, string isExported,
-  string hasImportedModule, int getNumberOfDeclarations
-where
+query predicate instances(
+  ImportDecl x, string getModule__label, ModuleDecl getModule, string isExported__label,
+  string isExported
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers = x.getNumberOfMembers() and
-  (if x.isExported() then isExported = "yes" else isExported = "no") and
-  (if x.hasImportedModule() then hasImportedModule = "yes" else hasImportedModule = "no") and
-  getNumberOfDeclarations = x.getNumberOfDeclarations()
-select x, "getModule:", getModule, "getNumberOfMembers:", getNumberOfMembers, "isExported:",
-  isExported, "hasImportedModule:", hasImportedModule, "getNumberOfDeclarations:",
-  getNumberOfDeclarations
+  isExported__label = "isExported:" and
+  if x.isExported() then isExported = "yes" else isExported = "no"
+}
+
+query predicate getMember(ImportDecl x, int index, Decl getMember) {
+  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
+}
+
+query predicate getImportedModule(ImportDecl x, ModuleDecl getImportedModule) {
+  toBeTested(x) and not x.isUnknown() and getImportedModule = x.getImportedModule()
+}
+
+query predicate getDeclaration(ImportDecl x, int index, ValueDecl getDeclaration) {
+  toBeTested(x) and not x.isUnknown() and getDeclaration = x.getDeclaration(index)
+}

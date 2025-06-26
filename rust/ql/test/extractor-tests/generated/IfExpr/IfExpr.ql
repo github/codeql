@@ -2,13 +2,20 @@
 import codeql.rust.elements
 import TestUtils
 
-from IfExpr x, int getNumberOfAttrs, string hasCondition, string hasElse, string hasThen
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasCondition() then hasCondition = "yes" else hasCondition = "no") and
-  (if x.hasElse() then hasElse = "yes" else hasElse = "no") and
-  if x.hasThen() then hasThen = "yes" else hasThen = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasCondition:", hasCondition, "hasElse:", hasElse,
-  "hasThen:", hasThen
+query predicate instances(IfExpr x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getAttr(IfExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getCondition(IfExpr x, Expr getCondition) {
+  toBeTested(x) and not x.isUnknown() and getCondition = x.getCondition()
+}
+
+query predicate getElse(IfExpr x, Expr getElse) {
+  toBeTested(x) and not x.isUnknown() and getElse = x.getElse()
+}
+
+query predicate getThen(IfExpr x, BlockExpr getThen) {
+  toBeTested(x) and not x.isUnknown() and getThen = x.getThen()
+}
