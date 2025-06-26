@@ -58,7 +58,11 @@ newtype TIOType =
   // For OSSL_PARAM and OSSL_LIB_CTX use of OsslParamIO and OsslLibContextIO
   ContextIO() or
   DigestIO() or
+  // For OAEP and MGF1 hashes, there is a special IO type for these hashes
+  // it is recommended to set the most explicit type known, not both
   HashAlgorithmIO() or
+  HashAlgorithmOaepIO() or
+  HashAlgorithmMgf1IO() or
   IVorNonceIO() or
   KeyIO() or
   KeyOperationSubtypeIO() or
@@ -254,18 +258,18 @@ abstract class OperationStep extends Call {
    * operation step (dominating operation step, see `getDominatingInitializersToStep`).
    */
   Crypto::AlgorithmValueConsumer getPrimaryAlgorithmValueConsumer() {
-    exists(DataFlow::Node src, DataFlow::Node sink, IOType t, OperationStep avcSucc |
+    exists(DataFlow::Node src, DataFlow::Node sink, IOType t, OperationStep avcConsumingPred |
       (t = PrimaryAlgorithmIO() or t = ContextIO()) and
-      avcSucc.flowsToOperationStep(this) and
+      avcConsumingPred.flowsToOperationStep(this) and
       src.asExpr() = result and
-      sink = avcSucc.getInput(t) and
+      sink = avcConsumingPred.getInput(t) and
       AvcToOperationStepFlow::flow(src, sink) and
       (
-        // Case 1: the avcSucc step is a dominating initialization step
+        // Case 1: the avcConsumingPred step is a dominating initialization step
         t = PrimaryAlgorithmIO() and
-        avcSucc = this.getDominatingInitializersToStep(PrimaryAlgorithmIO())
+        avcConsumingPred = this.getDominatingInitializersToStep(PrimaryAlgorithmIO())
         or
-        // Case 2: the succ is a context input (any avcSucc is valid)
+        // Case 2: the pred is a context input
         t = ContextIO()
       )
     )
@@ -277,6 +281,8 @@ abstract class OperationStep extends Call {
    * TODO: generalize to use this for `getPrimaryAlgorithmValueConsumer`
    */
   Crypto::AlgorithmValueConsumer getAlgorithmValueConsumerForInput(IOType type) {
+    result = this and this.setsValue(type)
+    or
     exists(DataFlow::Node src, DataFlow::Node sink |
       AvcToOperationStepFlow::flow(src, sink) and
       src.asExpr() = result and

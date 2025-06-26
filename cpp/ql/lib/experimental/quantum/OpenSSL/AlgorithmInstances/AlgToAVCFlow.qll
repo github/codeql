@@ -49,7 +49,9 @@ module KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow =
   DataFlow::Global<KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig>;
 
 module RSAPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof OpenSslPaddingLiteral }
+  predicate isSource(DataFlow::Node source) {
+    source.asExpr() instanceof OpenSslSpecialPaddingLiteral
+  }
 
   predicate isSink(DataFlow::Node sink) {
     exists(PaddingAlgorithmValueConsumer c | c.getInputNode() = sink)

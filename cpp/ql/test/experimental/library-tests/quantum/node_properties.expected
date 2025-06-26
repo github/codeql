@@ -32,6 +32,21 @@
 | openssl_basic.c:180:42:180:59 | Constant | Description | 0123456789012345 | openssl_basic.c:180:42:180:59 | openssl_basic.c:180:42:180:59 |
 | openssl_basic.c:181:49:181:87 | Constant | Description | This is a test message for encryption | openssl_basic.c:181:49:181:87 | openssl_basic.c:181:49:181:87 |
 | openssl_basic.c:218:32:218:33 | Constant | Description | 32 | openssl_basic.c:218:32:218:33 | openssl_basic.c:218:32:218:33 |
+| openssl_basic.c:231:27:231:49 | Constant | Description | Encrypt me with OAEP! | openssl_basic.c:231:27:231:49 | openssl_basic.c:231:27:231:49 |
+| openssl_basic.c:235:51:235:55 | KeyOperationAlgorithm | Name | RSA | openssl_basic.c:235:51:235:55 | openssl_basic.c:235:51:235:55 |
+| openssl_basic.c:235:51:235:55 | KeyOperationAlgorithm | RawName | RSA | openssl_basic.c:235:51:235:55 | openssl_basic.c:235:51:235:55 |
+| openssl_basic.c:237:54:237:57 | Constant | Description | 2048 | openssl_basic.c:237:54:237:57 | openssl_basic.c:237:54:237:57 |
+| openssl_basic.c:238:39:238:43 | Key | KeyType | Asymmetric | openssl_basic.c:238:39:238:43 | openssl_basic.c:238:39:238:43 |
+| openssl_basic.c:243:52:243:55 | Key | KeyType | Unknown | openssl_basic.c:243:52:243:55 | openssl_basic.c:243:52:243:55 |
+| openssl_basic.c:249:51:249:72 | PaddingAlgorithm | Name | OAEP | openssl_basic.c:249:51:249:72 | openssl_basic.c:249:51:249:72 |
+| openssl_basic.c:249:51:249:72 | PaddingAlgorithm | RawName | 4 | openssl_basic.c:249:51:249:72 | openssl_basic.c:249:51:249:72 |
+| openssl_basic.c:250:51:250:60 | HashAlgorithm | DigestSize | 256 | openssl_basic.c:250:51:250:60 | openssl_basic.c:250:51:250:60 |
+| openssl_basic.c:250:51:250:60 | HashAlgorithm | Name | SHA2 | openssl_basic.c:250:51:250:60 | openssl_basic.c:250:51:250:60 |
+| openssl_basic.c:250:51:250:60 | HashAlgorithm | RawName | EVP_sha256 | openssl_basic.c:250:51:250:60 | openssl_basic.c:250:51:250:60 |
+| openssl_basic.c:251:51:251:60 | HashAlgorithm | DigestSize | 256 | openssl_basic.c:251:51:251:60 | openssl_basic.c:251:51:251:60 |
+| openssl_basic.c:251:51:251:60 | HashAlgorithm | Name | SHA2 | openssl_basic.c:251:51:251:60 | openssl_basic.c:251:51:251:60 |
+| openssl_basic.c:251:51:251:60 | HashAlgorithm | RawName | EVP_sha256 | openssl_basic.c:251:51:251:60 | openssl_basic.c:251:51:251:60 |
+| openssl_basic.c:262:24:262:39 | EncryptOperation | KeyOperationSubtype | Encrypt | openssl_basic.c:262:24:262:39 | openssl_basic.c:262:24:262:39 |
 | openssl_pkey.c:21:10:21:28 | KeyOperationAlgorithm | Name | RSA | openssl_pkey.c:21:10:21:28 | openssl_pkey.c:21:10:21:28 |
 | openssl_pkey.c:21:10:21:28 | KeyOperationAlgorithm | RawName | RSA_generate_key_ex | openssl_pkey.c:21:10:21:28 | openssl_pkey.c:21:10:21:28 |
 | openssl_pkey.c:21:30:21:32 | Key | KeyType | Asymmetric | openssl_pkey.c:21:30:21:32 | openssl_pkey.c:21:30:21:32 |
