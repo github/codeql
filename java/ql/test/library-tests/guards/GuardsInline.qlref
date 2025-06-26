@@ -1,0 +1,2 @@
+query: GuardsInline.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

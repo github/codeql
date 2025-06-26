@@ -1,0 +1,135 @@
+#select
+| PartialPathTraversalTest.java:13:14:13:37 | getCanonicalPath(...) | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:13:14:13:37 | getCanonicalPath(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+| PartialPathTraversalTest.java:20:10:20:33 | getCanonicalPath(...) | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:20:10:20:33 | getCanonicalPath(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+| PartialPathTraversalTest.java:32:14:32:37 | getCanonicalPath(...) | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:32:14:32:37 | getCanonicalPath(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+| PartialPathTraversalTest.java:38:14:38:37 | getCanonicalPath(...) | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:38:14:38:37 | getCanonicalPath(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+| PartialPathTraversalTest.java:45:14:45:26 | canonicalPath | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:45:14:45:26 | canonicalPath | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+| PartialPathTraversalTest.java:52:14:52:26 | canonicalPath | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:52:14:52:26 | canonicalPath | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+| PartialPathTraversalTest.java:56:14:56:27 | canonicalPath2 | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:56:14:56:27 | canonicalPath2 | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+| PartialPathTraversalTest.java:64:14:64:26 | canonicalPath | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:64:14:64:26 | canonicalPath | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+| PartialPathTraversalTest.java:67:14:67:27 | canonicalPath2 | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:67:14:67:27 | canonicalPath2 | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+| PartialPathTraversalTest.java:97:14:97:37 | getCanonicalPath(...) | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:97:14:97:37 | getCanonicalPath(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+| PartialPathTraversalTest.java:105:14:105:37 | getCanonicalPath(...) | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:105:14:105:37 | getCanonicalPath(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+| PartialPathTraversalTest.java:108:14:108:37 | getCanonicalPath(...) | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:108:14:108:37 | getCanonicalPath(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+| PartialPathTraversalTest.java:176:14:176:37 | getCanonicalPath(...) | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:176:14:176:37 | getCanonicalPath(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+| PartialPathTraversalTest.java:194:18:194:47 | getCanonicalPath(...) | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:194:18:194:47 | getCanonicalPath(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+| PartialPathTraversalTest.java:212:14:212:26 | canonicalPath | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:212:14:212:26 | canonicalPath | Partial Path Traversal Vulnerability due to insufficient guard against path traversal from $@. | PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | user-supplied data |
+edges
+| PartialPathTraversalTest.java:13:14:13:18 | dir(...) : File | PartialPathTraversalTest.java:13:14:13:37 | getCanonicalPath(...) | provenance | MaD:6 |
+| PartialPathTraversalTest.java:20:10:20:14 | dir(...) : File | PartialPathTraversalTest.java:20:10:20:33 | getCanonicalPath(...) | provenance | MaD:6 |
+| PartialPathTraversalTest.java:32:14:32:18 | dir(...) : File | PartialPathTraversalTest.java:32:14:32:37 | getCanonicalPath(...) | provenance | MaD:6 |
+| PartialPathTraversalTest.java:38:14:38:18 | dir(...) : File | PartialPathTraversalTest.java:38:14:38:37 | getCanonicalPath(...) | provenance | MaD:6 |
+| PartialPathTraversalTest.java:44:32:44:36 | dir(...) : File | PartialPathTraversalTest.java:44:32:44:55 | getCanonicalPath(...) : String | provenance | MaD:6 |
+| PartialPathTraversalTest.java:44:32:44:55 | getCanonicalPath(...) : String | PartialPathTraversalTest.java:45:14:45:26 | canonicalPath | provenance |  |
+| PartialPathTraversalTest.java:51:32:51:36 | dir(...) : File | PartialPathTraversalTest.java:51:32:51:55 | getCanonicalPath(...) : String | provenance | MaD:6 |
+| PartialPathTraversalTest.java:51:32:51:55 | getCanonicalPath(...) : String | PartialPathTraversalTest.java:52:14:52:26 | canonicalPath | provenance |  |
+| PartialPathTraversalTest.java:55:33:55:37 | dir(...) : File | PartialPathTraversalTest.java:55:33:55:56 | getCanonicalPath(...) : String | provenance | MaD:6 |
+| PartialPathTraversalTest.java:55:33:55:56 | getCanonicalPath(...) : String | PartialPathTraversalTest.java:56:14:56:27 | canonicalPath2 | provenance |  |
+| PartialPathTraversalTest.java:62:32:62:36 | dir(...) : File | PartialPathTraversalTest.java:62:32:62:55 | getCanonicalPath(...) : String | provenance | MaD:6 |
+| PartialPathTraversalTest.java:62:32:62:55 | getCanonicalPath(...) : String | PartialPathTraversalTest.java:64:14:64:26 | canonicalPath | provenance |  |
+| PartialPathTraversalTest.java:63:33:63:37 | dir(...) : File | PartialPathTraversalTest.java:63:33:63:56 | getCanonicalPath(...) : String | provenance | MaD:6 |
+| PartialPathTraversalTest.java:63:33:63:56 | getCanonicalPath(...) : String | PartialPathTraversalTest.java:67:14:67:27 | canonicalPath2 | provenance |  |
+| PartialPathTraversalTest.java:97:14:97:18 | dir(...) : File | PartialPathTraversalTest.java:97:14:97:37 | getCanonicalPath(...) | provenance | MaD:6 |
+| PartialPathTraversalTest.java:105:14:105:18 | dir(...) : File | PartialPathTraversalTest.java:105:14:105:37 | getCanonicalPath(...) | provenance | MaD:6 |
+| PartialPathTraversalTest.java:108:14:108:18 | dir(...) : File | PartialPathTraversalTest.java:108:14:108:37 | getCanonicalPath(...) | provenance | MaD:6 |
+| PartialPathTraversalTest.java:176:14:176:18 | dir(...) : File | PartialPathTraversalTest.java:176:14:176:37 | getCanonicalPath(...) | provenance | MaD:6 |
+| PartialPathTraversalTest.java:186:25:186:30 | path(...) : String[] | PartialPathTraversalTest.java:188:23:188:23 | p : String | provenance |  |
+| PartialPathTraversalTest.java:188:13:188:14 | sb [post update] : StringBuilder | PartialPathTraversalTest.java:191:27:191:28 | sb : StringBuilder | provenance |  |
+| PartialPathTraversalTest.java:188:23:188:23 | p : String | PartialPathTraversalTest.java:188:13:188:14 | sb [post update] : StringBuilder | provenance | MaD:8 |
+| PartialPathTraversalTest.java:191:27:191:28 | sb : StringBuilder | PartialPathTraversalTest.java:191:27:191:39 | toString(...) : String | provenance | MaD:9 |
+| PartialPathTraversalTest.java:191:27:191:39 | toString(...) : String | PartialPathTraversalTest.java:192:37:192:44 | filePath : String | provenance |  |
+| PartialPathTraversalTest.java:192:28:192:45 | new File(...) : File | PartialPathTraversalTest.java:194:18:194:28 | encodedFile : File | provenance |  |
+| PartialPathTraversalTest.java:192:37:192:44 | filePath : String | PartialPathTraversalTest.java:192:28:192:45 | new File(...) : File | provenance | MaD:4 |
+| PartialPathTraversalTest.java:194:18:194:28 | encodedFile : File | PartialPathTraversalTest.java:194:18:194:47 | getCanonicalPath(...) | provenance | MaD:6 |
+| PartialPathTraversalTest.java:211:46:211:50 | dir(...) : File | PartialPathTraversalTest.java:211:46:211:69 | getCanonicalPath(...) : String | provenance | MaD:6 |
+| PartialPathTraversalTest.java:211:46:211:69 | getCanonicalPath(...) : String | PartialPathTraversalTest.java:212:14:212:26 | canonicalPath | provenance |  |
+| PartialPathTraversalTest.java:252:45:252:117 | new BufferedReader(...) : BufferedReader | PartialPathTraversalTest.java:253:31:253:44 | filenameReader : BufferedReader | provenance |  |
+| PartialPathTraversalTest.java:252:64:252:116 | new InputStreamReader(...) : InputStreamReader | PartialPathTraversalTest.java:252:45:252:117 | new BufferedReader(...) : BufferedReader | provenance | MaD:2 |
+| PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | PartialPathTraversalTest.java:252:64:252:116 | new InputStreamReader(...) : InputStreamReader | provenance | Src:MaD:1 MaD:7 |
+| PartialPathTraversalTest.java:253:31:253:44 | filenameReader : BufferedReader | PartialPathTraversalTest.java:253:31:253:55 | readLine(...) : String | provenance | MaD:3 |
+| PartialPathTraversalTest.java:253:31:253:55 | readLine(...) : String | PartialPathTraversalTest.java:254:29:254:36 | filename : String | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:13:14:13:18 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:20:10:20:14 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:32:14:32:18 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:38:14:38:18 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:44:32:44:36 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:51:32:51:36 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:55:33:55:37 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:62:32:62:36 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:63:33:63:37 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:97:14:97:18 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:105:14:105:18 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:108:14:108:18 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:176:14:176:18 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:211:46:211:50 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | PartialPathTraversalTest.java:261:16:261:20 | dir(...) : File | provenance |  |
+| PartialPathTraversalTest.java:254:29:254:36 | filename : String | PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | provenance | MaD:4 |
+| PartialPathTraversalTest.java:261:16:261:20 | dir(...) : File | PartialPathTraversalTest.java:261:16:261:38 | getAbsolutePath(...) : String | provenance | MaD:5 |
+| PartialPathTraversalTest.java:261:16:261:38 | getAbsolutePath(...) : String | PartialPathTraversalTest.java:261:16:261:60 | split(...) : String[] | provenance | MaD:10 |
+| PartialPathTraversalTest.java:261:16:261:60 | split(...) : String[] | PartialPathTraversalTest.java:186:25:186:30 | path(...) : String[] | provenance |  |
+models
+| 1 | Source: java.net; Socket; false; getInputStream; (); ; ReturnValue; remote; manual |
+| 2 | Summary: java.io; BufferedReader; false; BufferedReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 3 | Summary: java.io; BufferedReader; true; readLine; ; ; Argument[this]; ReturnValue; taint; manual |
+| 4 | Summary: java.io; File; false; File; ; ; Argument[0]; Argument[this]; taint; manual |
+| 5 | Summary: java.io; File; true; getAbsolutePath; ; ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Summary: java.io; File; true; getCanonicalPath; ; ; Argument[this]; ReturnValue; taint; manual |
+| 7 | Summary: java.io; InputStreamReader; false; InputStreamReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 8 | Summary: java.lang; AbstractStringBuilder; true; append; ; ; Argument[0]; Argument[this]; taint; manual |
+| 9 | Summary: java.lang; CharSequence; true; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+| 10 | Summary: java.lang; String; false; split; ; ; Argument[this]; ReturnValue; taint; manual |
+nodes
+| PartialPathTraversalTest.java:13:14:13:18 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:13:14:13:37 | getCanonicalPath(...) | semmle.label | getCanonicalPath(...) |
+| PartialPathTraversalTest.java:20:10:20:14 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:20:10:20:33 | getCanonicalPath(...) | semmle.label | getCanonicalPath(...) |
+| PartialPathTraversalTest.java:32:14:32:18 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:32:14:32:37 | getCanonicalPath(...) | semmle.label | getCanonicalPath(...) |
+| PartialPathTraversalTest.java:38:14:38:18 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:38:14:38:37 | getCanonicalPath(...) | semmle.label | getCanonicalPath(...) |
+| PartialPathTraversalTest.java:44:32:44:36 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:44:32:44:55 | getCanonicalPath(...) : String | semmle.label | getCanonicalPath(...) : String |
+| PartialPathTraversalTest.java:45:14:45:26 | canonicalPath | semmle.label | canonicalPath |
+| PartialPathTraversalTest.java:51:32:51:36 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:51:32:51:55 | getCanonicalPath(...) : String | semmle.label | getCanonicalPath(...) : String |
+| PartialPathTraversalTest.java:52:14:52:26 | canonicalPath | semmle.label | canonicalPath |
+| PartialPathTraversalTest.java:55:33:55:37 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:55:33:55:56 | getCanonicalPath(...) : String | semmle.label | getCanonicalPath(...) : String |
+| PartialPathTraversalTest.java:56:14:56:27 | canonicalPath2 | semmle.label | canonicalPath2 |
+| PartialPathTraversalTest.java:62:32:62:36 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:62:32:62:55 | getCanonicalPath(...) : String | semmle.label | getCanonicalPath(...) : String |
+| PartialPathTraversalTest.java:63:33:63:37 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:63:33:63:56 | getCanonicalPath(...) : String | semmle.label | getCanonicalPath(...) : String |
+| PartialPathTraversalTest.java:64:14:64:26 | canonicalPath | semmle.label | canonicalPath |
+| PartialPathTraversalTest.java:67:14:67:27 | canonicalPath2 | semmle.label | canonicalPath2 |
+| PartialPathTraversalTest.java:97:14:97:18 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:97:14:97:37 | getCanonicalPath(...) | semmle.label | getCanonicalPath(...) |
+| PartialPathTraversalTest.java:105:14:105:18 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:105:14:105:37 | getCanonicalPath(...) | semmle.label | getCanonicalPath(...) |
+| PartialPathTraversalTest.java:108:14:108:18 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:108:14:108:37 | getCanonicalPath(...) | semmle.label | getCanonicalPath(...) |
+| PartialPathTraversalTest.java:176:14:176:18 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:176:14:176:37 | getCanonicalPath(...) | semmle.label | getCanonicalPath(...) |
+| PartialPathTraversalTest.java:186:25:186:30 | path(...) : String[] | semmle.label | path(...) : String[] |
+| PartialPathTraversalTest.java:188:13:188:14 | sb [post update] : StringBuilder | semmle.label | sb [post update] : StringBuilder |
+| PartialPathTraversalTest.java:188:23:188:23 | p : String | semmle.label | p : String |
+| PartialPathTraversalTest.java:191:27:191:28 | sb : StringBuilder | semmle.label | sb : StringBuilder |
+| PartialPathTraversalTest.java:191:27:191:39 | toString(...) : String | semmle.label | toString(...) : String |
+| PartialPathTraversalTest.java:192:28:192:45 | new File(...) : File | semmle.label | new File(...) : File |
+| PartialPathTraversalTest.java:192:37:192:44 | filePath : String | semmle.label | filePath : String |
+| PartialPathTraversalTest.java:194:18:194:28 | encodedFile : File | semmle.label | encodedFile : File |
+| PartialPathTraversalTest.java:194:18:194:47 | getCanonicalPath(...) | semmle.label | getCanonicalPath(...) |
+| PartialPathTraversalTest.java:211:46:211:50 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:211:46:211:69 | getCanonicalPath(...) : String | semmle.label | getCanonicalPath(...) : String |
+| PartialPathTraversalTest.java:212:14:212:26 | canonicalPath | semmle.label | canonicalPath |
+| PartialPathTraversalTest.java:252:45:252:117 | new BufferedReader(...) : BufferedReader | semmle.label | new BufferedReader(...) : BufferedReader |
+| PartialPathTraversalTest.java:252:64:252:116 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| PartialPathTraversalTest.java:252:86:252:106 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| PartialPathTraversalTest.java:253:31:253:44 | filenameReader : BufferedReader | semmle.label | filenameReader : BufferedReader |
+| PartialPathTraversalTest.java:253:31:253:55 | readLine(...) : String | semmle.label | readLine(...) : String |
+| PartialPathTraversalTest.java:254:20:254:37 | new File(...) : File | semmle.label | new File(...) : File |
+| PartialPathTraversalTest.java:254:29:254:36 | filename : String | semmle.label | filename : String |
+| PartialPathTraversalTest.java:261:16:261:20 | dir(...) : File | semmle.label | dir(...) : File |
+| PartialPathTraversalTest.java:261:16:261:38 | getAbsolutePath(...) : String | semmle.label | getAbsolutePath(...) : String |
+| PartialPathTraversalTest.java:261:16:261:60 | split(...) : String[] | semmle.label | split(...) : String[] |
+subpaths
