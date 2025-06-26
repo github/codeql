@@ -12,5 +12,44 @@
  */
 
 import rust
+import codeql.rust.dataflow.DataFlow
+import codeql.rust.dataflow.TaintTracking
+import codeql.rust.security.CleartextStorageDatabaseExtensions
 
-select 0
+/**
+ * A taint configuration from sensitive information to expressions that are
+ * stored in a database.
+ */
+module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
+  import CleartextStorageDatabase
+
+  predicate isSource(DataFlow::Node node) { node instanceof Source }
+
+  predicate isSink(DataFlow::Node node) { node instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof Barrier }
+
+  predicate isBarrierIn(DataFlow::Node node) {
+    // make sources barriers so that we only report the closest instance
+    isSource(node)
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    // flow from `a` to `&a`
+    node2.asExpr().getExpr().(RefExpr).getExpr() = node1.asExpr().getExpr()
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+module CleartextStorageDatabaseFlow = TaintTracking::Global<CleartextStorageDatabaseConfig>;
+
+import CleartextStorageDatabaseFlow::PathGraph
+
+from
+  CleartextStorageDatabaseFlow::PathNode sourceNode, CleartextStorageDatabaseFlow::PathNode sinkNode
+where CleartextStorageDatabaseFlow::flowPath(sourceNode, sinkNode)
+select sinkNode, sourceNode, sinkNode,
+  "This operation stores '" + sinkNode.toString() +
+    "' in a database. It may contain unencrypted sensitive data from $@.", sourceNode,
+  sourceNode.getNode().toString()

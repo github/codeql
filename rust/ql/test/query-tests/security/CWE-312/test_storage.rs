@@ -30,7 +30,7 @@ async fn test_storage_sql_command(url: &str) -> Result<(), sqlx::Error> {
     let select_query1 = String::from("SELECT * FROM CONTACTS WHERE ID = ") + id;
     let select_query2 = String::from("SELECT * FROM CONTACTS WHERE SSN = '") + &get_social_security_number() + "'";
     let insert_query1 = String::from("INSERT INTO CONTACTS(ID, HARMLESS) VALUES(") + id + ", '" + &get_harmless() + "')";
-    let insert_query2 = String::from("INSERT INTO CONTACTS(ID, PHONE) VALUES(") + id + ", '" + &get_phone_number() + "')";
+    let insert_query2 = String::from("INSERT INTO CONTACTS(ID, PHONE) VALUES(") + id + ", '" + &get_phone_number() + "')"; // $ Source[rust/cleartext-storage-database]
     let update_query1 = String::from("UPDATE CONTACTS SET HARMLESS='") + &get_harmless() + "' WHERE ID=" + id;
     let update_query2 = String::from("UPDATE CONTACTS SET EMAIL='") + &get_email() + "' WHERE ID=" + id;
     let s1 = &get_social_security_number();
@@ -59,7 +59,7 @@ async fn test_storage_sql_command(url: &str) -> Result<(), sqlx::Error> {
 
     // execute queries - MySQL, prepared query
     let _ = sqlx::query(insert_query1.as_str()).execute(&pool1).await?;
-    let _ = sqlx::query(insert_query2.as_str()).execute(&pool1).await?; // $ MISSING: Alert[rust/cleartext-storage-database]
+    let _ = sqlx::query(insert_query2.as_str()).execute(&pool1).await?; // $ Alert[rust/cleartext-storage-database]
     let _ = sqlx::query(prepared_query.as_str()).bind(get_harmless()).execute(&pool1).await?;
     let _ = sqlx::query(prepared_query.as_str()).bind(get_social_security_number()).execute(&pool1).await?; // $ MISSING: Alert[rust/cleartext-storage-database]
     let _ = sqlx::query(prepared_query.as_str()).bind(&s1).execute(&pool1).await?; // $ MISSING: Alert[rust/cleartext-storage-database]
@@ -74,17 +74,17 @@ async fn test_storage_sql_command(url: &str) -> Result<(), sqlx::Error> {
 
     // execute queries - SQLite, direct variant
     let _ = sqlx::raw_sql(insert_query1.as_str()).execute(&mut conn2).await?;
-    let _ = sqlx::raw_sql(insert_query2.as_str()).execute(&mut conn2).await?; // $ MISSING: Alert[rust/cleartext-storage-database]
+    let _ = sqlx::raw_sql(insert_query2.as_str()).execute(&mut conn2).await?; // $ Alert[rust/cleartext-storage-database]
 
     // execute queries - SQLite, prepared query
     let _ = sqlx::query(insert_query1.as_str()).execute(&mut conn2).await?;
-    let _ = sqlx::query(insert_query2.as_str()).execute(&mut conn2).await?; // $ MISSING: Alert[rust/cleartext-storage-database]
+    let _ = sqlx::query(insert_query2.as_str()).execute(&mut conn2).await?; // $ Alert[rust/cleartext-storage-database]
     let _ = sqlx::query(prepared_query.as_str()).bind(get_harmless()).execute(&mut conn2).await?;
     let _ = sqlx::query(prepared_query.as_str()).bind(get_social_security_number()).execute(&mut conn2).await?; // $ MISSING: Alert[rust/cleartext-storage-database]
 
     // execute queries - SQLite, prepared query variant
     let _ = sqlx::query(insert_query1.as_str()).fetch(&mut conn2);
-    let _ = sqlx::query(insert_query2.as_str()).fetch(&mut conn2); // $ MISSING: Alert[rust/cleartext-storage-database]
+    let _ = sqlx::query(insert_query2.as_str()).fetch(&mut conn2); // $ Alert[rust/cleartext-storage-database]
     let _ = sqlx::query(prepared_query.as_str()).bind(get_harmless()).fetch(&mut conn2);
     let _ = sqlx::query(prepared_query.as_str()).bind(get_social_security_number()).fetch(&mut conn2); // $ MISSING: Alert[rust/cleartext-storage-database]
 
@@ -98,7 +98,7 @@ async fn test_storage_sql_command(url: &str) -> Result<(), sqlx::Error> {
 
     // execute queries - PostgreSQL, prepared query
     let _ = sqlx::query(insert_query1.as_str()).execute(&pool3).await?;
-    let _ = sqlx::query(insert_query2.as_str()).execute(&pool3).await?; // $ MISSING: Alert[rust/cleartext-storage-database]
+    let _ = sqlx::query(insert_query2.as_str()).execute(&pool3).await?; // $ Alert[rust/cleartext-storage-database]
     let _ = sqlx::query(prepared_query.as_str()).bind(get_harmless()).execute(&pool3).await?;
     let _ = sqlx::query(prepared_query.as_str()).bind(get_social_security_number()).execute(&pool3).await?; // $ MISSING: Alert[rust/cleartext-storage-database]
 
