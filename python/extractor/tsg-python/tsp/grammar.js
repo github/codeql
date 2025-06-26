@@ -1,4 +1,5 @@
 const PREC = {
+  statment_conflicting_softkeyword: -10,
   // this resolves a conflict between the usage of ':' in a lambda vs in a
   // typed parameter. In the case of a lambda, we don't allow typed parameters.
   lambda: -2,
@@ -165,7 +166,7 @@ module.exports = grammar({
         repeat(seq(',', field('argument', $.expression))),
         optional(','))
       ),
-      prec(-10, seq(
+      prec(PREC.statment_conflicting_softkeyword, seq(
         'print',
         commaSep1(field('argument', $.expression)),
         optional(',')
@@ -349,7 +350,7 @@ module.exports = grammar({
       ))
     )),
 
-    match_statement: $ => seq(
+    match_statement: $ => prec(PREC.statment_conflicting_softkeyword,seq(
       'match',
       field('subject',
         choice(
@@ -359,7 +360,7 @@ module.exports = grammar({
       ),
       ':',
       field('cases', $.cases)
-    ),
+    )),
 
     cases: $ => repeat1($.case_block),
 
@@ -549,7 +550,7 @@ module.exports = grammar({
       commaSep1($.identifier)
     ),
 
-    exec_statement: $ => seq(
+    exec_statement: $ => prec(PREC.statment_conflicting_softkeyword,seq(
       'exec',
       field('code', $.string),
       optional(
@@ -558,15 +559,15 @@ module.exports = grammar({
           commaSep1($.expression)
         )
       )
-    ),
+    )),
 
-    type_alias_statement: $ => seq(
+    type_alias_statement: $ => prec(PREC.statment_conflicting_softkeyword,seq(
       'type',
       field('name', $.identifier),
       optional(field('type_parameters', $.type_parameters)),
         '=',
         field('value', $.expression)
-      ),
+      )),
 
     class_definition: $ => seq(
       'class',
@@ -1191,7 +1192,7 @@ module.exports = grammar({
 
     identifier: $ => /[_\p{XID_Start}][_\p{XID_Continue}]*/,
 
-    keyword_identifier: $ => prec(-3, alias(
+    keyword_identifier: $ => prec(11, alias(
       choice(
         'print',
         'exec',
@@ -1207,7 +1208,7 @@ module.exports = grammar({
     false: $ => 'False',
     none: $ => 'None',
 
-    await: $ => prec(PREC.unary, seq(
+    await: $ => prec(PREC.statment_conflicting_softkeyword, seq(
       'await',
       $.primary_expression
     )),
