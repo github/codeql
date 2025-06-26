@@ -15,12 +15,23 @@ module AsyncPackage {
   }
 
   /**
+   * Gets a reference to the given member or one of its `Limit` or `Series` variants.
+   *
+   * For example, `memberVariant("map")` finds references to `map`, `mapLimit`, and `mapSeries`.
+   */
+  DataFlow::SourceNode memberVariant(string name) {
+    result = member(name) or
+    result = member(name + "Limit") or
+    result = member(name + "Series")
+  }
+
+  /**
    * Gets `Limit` or `Series` name variants for a given member name.
    *
    * For example, `memberNameVariant("map")` returns `map`, `mapLimit`, and `mapSeries`.
    */
   bindingset[name]
-  string memberNameVariant(string name) {
+  private string memberNameVariant(string name) {
     result = name or
     result = name + "Limit" or
     result = name + "Series"
@@ -161,63 +172,23 @@ module AsyncPackage {
     DataFlow::FunctionNode getFinalCallback() { result = this.getCallback(finalCallbackIndex) }
   }
 
-  /**
-   * An IterationCall with its iterator callback at index 1
-   */
-  private class IterationCallCallbacksFirstArg extends IterationCall {
-    IterationCallCallbacksFirstArg() { this.getIteratorCallbackIndex() = 1 }
-  }
+  private class IterationCallFlowSummary extends DataFlow::SummarizedCallable {
+    private int callbackArgIndex;
 
-  /**
-   * An IterationCall with its iterator callback at index 2
-   */
-  private class IterationCallCallbacksSecondArg extends IterationCall {
-    IterationCallCallbacksSecondArg() { this.getIteratorCallbackIndex() = 2 }
-  }
-
-  /**
-   * The model with the iteratorCallbackIndex abstracted
-   */
-  bindingset[iteratorCallbackIndex]
-  private predicate iterationCallPropagatesFlow(
-    string input, string output, boolean preservesValue, int iteratorCallbackIndex
-  ) {
-    preservesValue = true and
-    input = "Argument[0]." + ["ArrayElement", "SetElement", "IteratorElement", "AnyMember"] and
-    output = "Argument[" + iteratorCallbackIndex + "].Parameter[0]"
-  }
-
-  /**
-   * A taint step from the collection into the iterator callback (at index 1) of an iteration call.
-   *
-   * For example: `data -> item` in `async.each(data, (item, cb) => {})`.
-   */
-  class IterationCallCallbacksFirstArgFlowSummary extends DataFlow::SummarizedCallable {
-    IterationCallCallbacksFirstArgFlowSummary() { this = "async.[IterationCallCallbacksFirstArg]" }
+    IterationCallFlowSummary() {
+      this = "async.IteratorCall(callbackArgIndex=" + callbackArgIndex + ")" and
+      callbackArgIndex in [1 .. 3]
+    }
 
     override DataFlow::InvokeNode getACallSimple() {
-      result instanceof IterationCallCallbacksFirstArg
+      result instanceof IterationCall and
+      result.(IterationCall).getIteratorCallbackIndex() = callbackArgIndex
     }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      iterationCallPropagatesFlow(input, output, preservesValue, 1)
-    }
-  }
-
-  /**
-   * A taint step from the collection into the iterator callback (at index 2) of an iteration call.
-   *
-   * For example: `data -> item` in `async.eachLimit(data, 1, (item, cb) => {})`.
-   */
-  class IterationCallCallbacksSecondArgFlowSummary extends DataFlow::SummarizedCallable {
-    IterationCallCallbacksSecondArgFlowSummary() { this = "async.[IterationCallCallbackSecondArg]" }
-
-    override DataFlow::InvokeNode getACallSimple() {
-      result instanceof IterationCallCallbacksSecondArg
-    }
-
-    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      iterationCallPropagatesFlow(input, output, preservesValue, 2)
+      preservesValue = true and
+      input = "Argument[0]." + ["ArrayElement", "SetElement", "IteratorElement", "AnyMember"] and
+      output = "Argument[" + callbackArgIndex + "].Parameter[0]"
     }
   }
 
@@ -248,7 +219,7 @@ module AsyncPackage {
    *
    * For example: `data -> result` in `async.sortBy(data, orderingFn, (err, result) => {})`.
    */
-  class IterationPreserveTaintStepFlowSummary extends DataFlow::SummarizedCallable {
+  private class IterationPreserveTaintStepFlowSummary extends DataFlow::SummarizedCallable {
     IterationPreserveTaintStepFlowSummary() { this = "async.sortBy" }
 
     override DataFlow::InvokeNode getACallSimple() {
