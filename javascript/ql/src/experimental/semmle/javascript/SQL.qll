@@ -154,8 +154,8 @@ module ExperimentalSql {
 
       RepositoryCall() {
         (
-            repository = API::moduleImport("typeorm").getMember("Repository").getInstance() or
-            repository = dataSource().getMember("getRepository").getReturn()
+          repository = API::moduleImport("typeorm").getMember("Repository").getInstance() or
+          repository = dataSource().getMember("getRepository").getReturn()
         ) and
         this = repository.getMember(_).asSource()
       }
