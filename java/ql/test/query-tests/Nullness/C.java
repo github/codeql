@@ -251,7 +251,7 @@ public class C {
            (b && xs == null && related == null);
     if (b) {
       if (related == null) { return; }
-      xs[0] = 42; // FP - correlated conditions fails to recognize assert edges
+      xs[0] = 42; // OK
     }
   }
 }
