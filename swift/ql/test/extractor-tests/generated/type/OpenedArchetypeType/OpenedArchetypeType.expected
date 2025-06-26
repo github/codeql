@@ -1,1 +1,7 @@
-| any C & P1 & P2 | getName: | any C & P1 & P2 | getCanonicalType: | any C & P1 & P2 | getInterfaceType: | \u03c4_0_0 | hasSuperclass: | yes | getNumberOfProtocols: | 2 |
+instances
+| any C & P1 & P2 | getName: | any C & P1 & P2 | getCanonicalType: | any C & P1 & P2 | getInterfaceType: | \u03c4_0_0 |
+getSuperclass
+| any C & P1 & P2 | C |
+getProtocol
+| any C & P1 & P2 | 0 | opened_archetypes.swift:3:1:3:14 | P1 |
+| any C & P1 & P2 | 1 | opened_archetypes.swift:9:1:9:14 | P2 |

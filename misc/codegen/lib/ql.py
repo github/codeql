@@ -249,13 +249,6 @@ class ClassTester(TesterBase):
 
 
 @dataclass
-class PropertyTester(TesterBase):
-    template: ClassVar = "ql_test_property"
-
-    property: PropertyForTest
-
-
-@dataclass
 class MissingTestInstructions:
     template: ClassVar = "ql_test_missing"
 

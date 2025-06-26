@@ -281,10 +281,6 @@ class Resolver:
                     type=p.type if not p.is_predicate else None,
                     is_indexed=p.is_indexed,
                 )
-                if p.is_repeated and not p.is_optional:
-                    yield ql.PropertyForTest(f"getNumberOf{p.plural}", type="int")
-                elif p.is_optional and not p.is_repeated:
-                    yield ql.PropertyForTest(f"has{p.singular}")
 
     def _is_in_qltest_collapsed_hierarchy(
         self,
@@ -413,16 +409,6 @@ def _get_path_public(cls: schema.Class) -> pathlib.Path:
     return pathlib.Path(
         cls.group or "", "internal" if "ql_internal" in cls.pragmas else "", cls.name
     ).with_suffix(".qll")
-
-
-def _partition_iter(x, pred):
-    x1, x2 = itertools.tee(x)
-    return filter(pred, x1), itertools.filterfalse(pred, x2)
-
-
-def _partition(l, pred):
-    """partitions a list according to boolean predicate"""
-    return map(list, _partition_iter(l, pred))
 
 
 def _get_stub(
@@ -650,29 +636,16 @@ def generate(opts, renderer):
                         test_dir / missing_test_source_filename,
                     )
                     continue
-                total_props, partial_props = _partition(
-                    resolver.get_all_properties_to_be_tested(c),
-                    lambda p: p.is_total,
-                )
                 renderer.render(
                     ql.ClassTester(
                         class_name=c.name,
-                        properties=total_props,
+                        properties=list(resolver.get_all_properties_to_be_tested(c)),
                         elements_module=elements_module,
                         # in case of collapsed hierarchies we want to see the actual QL class in results
                         show_ql_class="qltest_collapse_hierarchy" in c.pragmas,
                     ),
                     test_dir / f"{c.name}.ql",
                 )
-                for p in partial_props:
-                    renderer.render(
-                        ql.PropertyTester(
-                            class_name=c.name,
-                            elements_module=elements_module,
-                            property=p,
-                        ),
-                        test_dir / f"{c.name}_{p.getter}.ql",
-                    )
 
         final_synth_types = []
         non_final_synth_types = []

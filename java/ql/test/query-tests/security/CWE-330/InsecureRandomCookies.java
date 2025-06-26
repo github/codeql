@@ -16,28 +16,28 @@ public class InsecureRandomCookies extends HttpServlet {
     public void doGet() {
         Random r = new Random();
 
-        int c = r.nextInt();
+        int c = r.nextInt(); // $ Source
         // BAD: The cookie value may be predictable.
-        Cookie cookie = new Cookie("name", Integer.toString(c)); // $hasWeakRandomFlow
-        cookie.setValue(Integer.toString(c)); // $hasWeakRandomFlow
+        Cookie cookie = new Cookie("name", Integer.toString(c)); // $ Alert
+        cookie.setValue(Integer.toString(c)); // $ Alert
 
         io.netty.handler.codec.http.Cookie nettyCookie =
-                new io.netty.handler.codec.http.DefaultCookie("name", Integer.toString(c)); // $hasWeakRandomFlow
-        nettyCookie.setValue(Integer.toString(c)); // $hasWeakRandomFlow
+                new io.netty.handler.codec.http.DefaultCookie("name", Integer.toString(c)); // $ Alert
+        nettyCookie.setValue(Integer.toString(c)); // $ Alert
         io.netty.handler.codec.http.cookie.Cookie nettyCookie2 =
-                new io.netty.handler.codec.http.cookie.DefaultCookie("name", Integer.toString(c)); // $hasWeakRandomFlow
-        nettyCookie2.setValue(Integer.toString(c)); // $hasWeakRandomFlow
+                new io.netty.handler.codec.http.cookie.DefaultCookie("name", Integer.toString(c)); // $ Alert
+        nettyCookie2.setValue(Integer.toString(c)); // $ Alert
 
         Encoder enc = null;
-        int c2 = r.nextInt();
+        int c2 = r.nextInt(); // $ Source
         String value = enc.encodeForHTML(Integer.toString(c2));
         // BAD: The cookie value may be predictable.
-        Cookie cookie2 = new Cookie("name", value); // $hasWeakRandomFlow
+        Cookie cookie2 = new Cookie("name", value); // $ Alert
 
         byte[] bytes = new byte[16];
-        r.nextBytes(bytes);
+        r.nextBytes(bytes); // $ Source
         // BAD: The cookie value may be predictable.
-        Cookie cookie3 = new Cookie("name", new String(bytes)); // $hasWeakRandomFlow
+        Cookie cookie3 = new Cookie("name", new String(bytes)); // $ Alert
 
         SecureRandom sr = new SecureRandom();
 
@@ -48,22 +48,22 @@ public class InsecureRandomCookies extends HttpServlet {
 
         ThreadLocalRandom tlr = ThreadLocalRandom.current();
 
-        Cookie cookie5 = new Cookie("name", Integer.toString(tlr.nextInt())); // $hasWeakRandomFlow
+        Cookie cookie5 = new Cookie("name", Integer.toString(tlr.nextInt())); // $ Alert
 
-        Cookie cookie6 = new Cookie("name", RandomStringUtils.random(10)); // $hasWeakRandomFlow
+        Cookie cookie6 = new Cookie("name", RandomStringUtils.random(10)); // $ Alert
 
-        Cookie cookie7 = new Cookie("name", RandomStringUtils.randomAscii(10)); // $hasWeakRandomFlow
+        Cookie cookie7 = new Cookie("name", RandomStringUtils.randomAscii(10)); // $ Alert
 
-        long c3 = r.nextLong();
+        long c3 = r.nextLong(); // $ Source
         // BAD: The cookie value may be predictable.
-        Cookie cookie8 = new Cookie("name", Long.toString(c3 * 5)); // $hasWeakRandomFlow
+        Cookie cookie8 = new Cookie("name", Long.toString(c3 * 5)); // $ Alert
 
-        double c4 = Math.random();
+        double c4 = Math.random(); // $ Source
         // BAD: The cookie value may be predictable.
-        Cookie cookie9 = new Cookie("name", Double.toString(c4)); // $hasWeakRandomFlow
+        Cookie cookie9 = new Cookie("name", Double.toString(c4)); // $ Alert
 
-        double c5 = Math.random();
+        double c5 = Math.random(); // $ Source
         // BAD: The cookie value may be predictable.
-        Cookie cookie10 = new Cookie("name", Double.toString(++c5)); // $hasWeakRandomFlow
+        Cookie cookie10 = new Cookie("name", Double.toString(++c5)); // $ Alert
     }
 }
