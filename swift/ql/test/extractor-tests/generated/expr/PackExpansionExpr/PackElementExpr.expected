@@ -1,1 +1,4 @@
-| test.swift:2:18:2:23 | PackElementExpr | hasType: | yes | getSubExpr: | test.swift:2:23:2:23 | t |
+instances
+| test.swift:2:18:2:23 | PackElementExpr | getSubExpr: | test.swift:2:23:2:23 | t |
+getType
+| test.swift:2:18:2:23 | PackElementExpr | \u03c4_1_0 |

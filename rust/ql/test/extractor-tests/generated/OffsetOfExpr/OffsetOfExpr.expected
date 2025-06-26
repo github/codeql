@@ -1,1 +1,7 @@
-| gen_offset_of_expr.rs:5:5:5:38 | OffsetOfExpr | getNumberOfAttrs: | 0 | getNumberOfFields: | 1 | hasTypeRepr: | yes |
+instances
+| gen_offset_of_expr.rs:5:5:5:38 | OffsetOfExpr |
+getAttr
+getField
+| gen_offset_of_expr.rs:5:5:5:38 | OffsetOfExpr | 0 | gen_offset_of_expr.rs:5:33:5:37 | field |
+getTypeRepr
+| gen_offset_of_expr.rs:5:5:5:38 | OffsetOfExpr | gen_offset_of_expr.rs:5:25:5:30 | Struct |

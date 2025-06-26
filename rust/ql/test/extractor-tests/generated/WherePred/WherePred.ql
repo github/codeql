@@ -2,15 +2,20 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  WherePred x, string hasGenericParamList, string hasLifetime, string hasTypeRepr,
-  string hasTypeBoundList
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
-  (if x.hasLifetime() then hasLifetime = "yes" else hasLifetime = "no") and
-  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
-  if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no"
-select x, "hasGenericParamList:", hasGenericParamList, "hasLifetime:", hasLifetime, "hasTypeRepr:",
-  hasTypeRepr, "hasTypeBoundList:", hasTypeBoundList
+query predicate instances(WherePred x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getGenericParamList(WherePred x, GenericParamList getGenericParamList) {
+  toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
+}
+
+query predicate getLifetime(WherePred x, Lifetime getLifetime) {
+  toBeTested(x) and not x.isUnknown() and getLifetime = x.getLifetime()
+}
+
+query predicate getTypeRepr(WherePred x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}
+
+query predicate getTypeBoundList(WherePred x, TypeBoundList getTypeBoundList) {
+  toBeTested(x) and not x.isUnknown() and getTypeBoundList = x.getTypeBoundList()
+}

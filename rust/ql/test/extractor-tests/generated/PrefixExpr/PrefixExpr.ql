@@ -2,12 +2,16 @@
 import codeql.rust.elements
 import TestUtils
 
-from PrefixExpr x, int getNumberOfAttrs, string hasExpr, string hasOperatorName
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
-  if x.hasOperatorName() then hasOperatorName = "yes" else hasOperatorName = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasOperatorName:",
-  hasOperatorName
+query predicate instances(PrefixExpr x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getAttr(PrefixExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getExpr(PrefixExpr x, Expr getExpr) {
+  toBeTested(x) and not x.isUnknown() and getExpr = x.getExpr()
+}
+
+query predicate getOperatorName(PrefixExpr x, string getOperatorName) {
+  toBeTested(x) and not x.isUnknown() and getOperatorName = x.getOperatorName()
+}

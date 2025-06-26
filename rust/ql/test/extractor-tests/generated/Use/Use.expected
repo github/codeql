@@ -1,1 +1,9 @@
-| gen_use.rs:4:5:5:34 | use ...::HashMap | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasUseTree: | yes | hasVisibility: | no |
+instances
+| gen_use.rs:4:5:5:34 | use ...::HashMap |
+getExtendedCanonicalPath
+getCrateOrigin
+getAttributeMacroExpansion
+getAttr
+getUseTree
+| gen_use.rs:4:5:5:34 | use ...::HashMap | gen_use.rs:5:9:5:33 | ...::HashMap |
+getVisibility

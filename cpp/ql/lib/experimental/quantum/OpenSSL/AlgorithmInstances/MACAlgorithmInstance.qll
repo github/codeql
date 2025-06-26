@@ -7,7 +7,7 @@ private import experimental.quantum.OpenSSL.Operations.OpenSSLOperations
 private import AlgToAVCFlow
 
 class KnownOpenSslMacConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
-  Crypto::MACAlgorithmInstance instanceof KnownOpenSslMacAlgorithmExpr
+  Crypto::MacAlgorithmInstance instanceof KnownOpenSslMacAlgorithmExpr
 {
   OpenSslAlgorithmValueConsumer getterCall;
 
@@ -39,14 +39,14 @@ class KnownOpenSslMacConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
     result = this.(Call).getTarget().getName()
   }
 
-  override Crypto::TMACType getMacType() {
-    this instanceof KnownOpenSslHMacAlgorithmExpr and result instanceof Crypto::THMAC
+  override Crypto::MacType getMacType() {
+    this instanceof KnownOpenSslHMacAlgorithmExpr and result = Crypto::HMAC()
     or
-    this instanceof KnownOpenSslCMacAlgorithmExpr and result instanceof Crypto::TCMAC
+    this instanceof KnownOpenSslCMacAlgorithmExpr and result = Crypto::CMAC()
   }
 }
 
-class KnownOpenSslHMacConstantAlgorithmInstance extends Crypto::HMACAlgorithmInstance,
+class KnownOpenSslHMacConstantAlgorithmInstance extends Crypto::HmacAlgorithmInstance,
   KnownOpenSslMacConstantAlgorithmInstance
 {
   override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
