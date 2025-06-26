@@ -4005,6 +4005,17 @@
             </dependencies>
         </relation>
         <relation>
+            <name>overlayChangedFiles</name>
+            <cardinality>50</cardinality>
+            <columnsizes>
+                <e>
+                    <k>path</k>
+                    <v>50</v>
+                </e>
+            </columnsizes>
+            <dependencies/>
+        </relation>
+        <relation>
             <name>smap_header</name>
             <cardinality>1</cardinality>
             <columnsizes>
