@@ -278,3 +278,10 @@ def closed28(path):
         f28.write("hi")
     finally:
         f28.close()
+
+def closed29(path):
+    # Due to an approximation in CFG reachability for performance, it is not detected that the `write` call that may raise occurs after the file has already been closed.
+    # We presume this case to be uncommon.
+    f28 = open(path) # $SPURIOUS:notClosedOnException 
+    f28.close()
+    f28.write("already closed") 
