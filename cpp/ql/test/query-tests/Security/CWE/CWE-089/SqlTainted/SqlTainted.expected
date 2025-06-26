@@ -9,6 +9,8 @@ edges
 | test.c:48:20:48:33 | *globalUsername | test.c:51:18:51:23 | *query1 | provenance | TaintFunction |
 | test.c:75:8:75:16 | gets output argument | test.c:76:17:76:25 | *userInput | provenance |  |
 | test.c:75:8:75:16 | gets output argument | test.c:77:20:77:28 | *userInput | provenance |  |
+| test.c:101:8:101:16 | gets output argument | test.c:106:24:106:29 | *query1 | provenance | TaintFunction Sink:MaD:325 |
+| test.c:101:8:101:16 | gets output argument | test.c:107:28:107:33 | *query1 | provenance | TaintFunction Sink:MaD:326 |
 | test.cpp:39:27:39:30 | **argv | test.cpp:43:27:43:33 | *access to array | provenance |  |
 nodes
 | test.c:14:27:14:30 | **argv | semmle.label | **argv |
@@ -23,6 +25,9 @@ nodes
 | test.c:75:8:75:16 | gets output argument | semmle.label | gets output argument |
 | test.c:76:17:76:25 | *userInput | semmle.label | *userInput |
 | test.c:77:20:77:28 | *userInput | semmle.label | *userInput |
+| test.c:101:8:101:16 | gets output argument | semmle.label | gets output argument |
+| test.c:106:24:106:29 | *query1 | semmle.label | *query1 |
+| test.c:107:28:107:33 | *query1 | semmle.label | *query1 |
 | test.cpp:39:27:39:30 | **argv | semmle.label | **argv |
 | test.cpp:43:27:43:33 | *access to array | semmle.label | *access to array |
 subpaths
@@ -31,4 +36,6 @@ subpaths
 | test.c:51:18:51:23 | query1 | test.c:14:27:14:30 | **argv | test.c:51:18:51:23 | *query1 | This argument to a SQL query function is derived from $@ and then passed to mysql_query(sqlArg). | test.c:14:27:14:30 | **argv | user input (a command-line argument) |
 | test.c:76:17:76:25 | userInput | test.c:75:8:75:16 | gets output argument | test.c:76:17:76:25 | *userInput | This argument to a SQL query function is derived from $@ and then passed to SQLPrepare(StatementText). | test.c:75:8:75:16 | gets output argument | user input (string read by gets) |
 | test.c:77:20:77:28 | userInput | test.c:75:8:75:16 | gets output argument | test.c:77:20:77:28 | *userInput | This argument to a SQL query function is derived from $@ and then passed to SQLExecDirect(StatementText). | test.c:75:8:75:16 | gets output argument | user input (string read by gets) |
+| test.c:106:24:106:29 | query1 | test.c:101:8:101:16 | gets output argument | test.c:106:24:106:29 | *query1 | This argument to a SQL query function is derived from $@. | test.c:101:8:101:16 | gets output argument | user input (string read by gets) |
+| test.c:107:28:107:33 | query1 | test.c:101:8:101:16 | gets output argument | test.c:107:28:107:33 | *query1 | This argument to a SQL query function is derived from $@. | test.c:101:8:101:16 | gets output argument | user input (string read by gets) |
 | test.cpp:43:27:43:33 | access to array | test.cpp:39:27:39:30 | **argv | test.cpp:43:27:43:33 | *access to array | This argument to a SQL query function is derived from $@ and then passed to pqxx::work::exec1((unnamed parameter 0)). | test.cpp:39:27:39:30 | **argv | user input (a command-line argument) |
