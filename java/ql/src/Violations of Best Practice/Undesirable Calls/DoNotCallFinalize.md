@@ -8,6 +8,8 @@ Avoid calling `finalize()` in application code. Allow the JVM to determine a gar
 
 ## Example
 
+### Incorrect Usage
+
 ```java
 class LocalCache {
     private Collection<File> cacheFiles = ...;
@@ -20,6 +22,8 @@ void main() {
     cache.finalize(); // NON_COMPLIANT
 }
 ```
+
+### Correct Usage
 
 ```java
 import java.lang.AutoCloseable;

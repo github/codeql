@@ -4,7 +4,18 @@ If a GitHub Actions job or workflow has no explicit permissions set, then the re
 
 ## Recommendation
 
-Add the `permissions` key to the job or the root of workflow (in this case it is applied to all jobs in the workflow that do not have their own `permissions` key) and assign the least privileges required to complete the task:
+Add the `permissions` key to the job or the root of workflow (in this case it is applied to all jobs in the workflow that do not have their own `permissions` key) and assign the least privileges required to complete the task.
+
+## Example
+
+### Incorrect Usage
+
+```yaml
+name: "My workflow"
+# No permissions block
+```
+
+### Correct Usage
 
 ```yaml
 name: "My workflow"

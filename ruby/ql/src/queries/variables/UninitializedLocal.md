@@ -11,6 +11,8 @@ Note: You do not need to explicitly initialize the variable, if you can make the
 
 ## Example
 
+### Incorrect Usage
+
 In the following code, the call to `create_file` may fail and then the call `f.close` will raise a `NoMethodError` since `f` will be `nil` at that point.
 
 ```ruby
@@ -21,6 +23,8 @@ ensure
   f.close
 end
 ```
+
+### Correct Usage
 
 We can fix this by using safe navigation:
 ```ruby

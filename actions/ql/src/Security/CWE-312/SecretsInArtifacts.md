@@ -8,6 +8,8 @@ Only store information that is meant to be publicly available in a GitHub Action
 
 ## Example
 
+### Incorrect Usage
+
 The following example uses `actions/checkout` to checkout code which stores the GITHUB_TOKEN in the \`.git/config\` file and then stores the contents of the \`.git\` repository into the artifact:
 
 ```yaml
@@ -25,6 +27,8 @@ jobs:
           name: file
           path: .
 ```
+
+### Correct Usage
 
 The issue has been fixed below, where the `actions/upload-artifact` uses a version (v4+) which does not include hidden files or directories into the artifact.
 
