@@ -960,10 +960,6 @@ def a_ql_class_tester(**kwargs):
     return ql.ClassTester(**kwargs, elements_module=stub_import)
 
 
-def a_ql_property_tester(**kwargs):
-    return ql.PropertyTester(**kwargs, elements_module=stub_import)
-
-
 def test_test_source_present(opts, generate_tests):
     write(opts.ql_test_output / "A" / "test.swift")
     assert generate_tests(
@@ -1041,30 +1037,15 @@ def test_test_partial_properties(opts, generate_tests):
         "B/B.ql": a_ql_class_tester(
             class_name="B",
             properties=[
-                ql.PropertyForTest(getter="hasX"),
-                ql.PropertyForTest(getter="getNumberOfYs", type="int"),
-                ql.PropertyForTest(getter="getNumberOfWs", type="int"),
+                ql.PropertyForTest(getter="getX", is_total=False, type="string"),
+                ql.PropertyForTest(
+                    getter="getY", is_total=False, is_indexed=True, type="bool"
+                ),
+                ql.PropertyForTest(
+                    getter="getZ", is_total=False, is_indexed=True, type="int"
+                ),
+                ql.PropertyForTest(getter="getAW", is_total=False, type="string"),
             ],
-        ),
-        "B/B_getX.ql": a_ql_property_tester(
-            class_name="B",
-            property=ql.PropertyForTest(getter="getX", is_total=False, type="string"),
-        ),
-        "B/B_getY.ql": a_ql_property_tester(
-            class_name="B",
-            property=ql.PropertyForTest(
-                getter="getY", is_total=False, is_indexed=True, type="bool"
-            ),
-        ),
-        "B/B_getZ.ql": a_ql_property_tester(
-            class_name="B",
-            property=ql.PropertyForTest(
-                getter="getZ", is_total=False, is_indexed=True, type="int"
-            ),
-        ),
-        "B/B_getAW.ql": a_ql_property_tester(
-            class_name="B",
-            property=ql.PropertyForTest(getter="getAW", is_total=False, type="string"),
         ),
     }
 
@@ -1090,14 +1071,10 @@ def test_test_properties_deduplicated(opts, generate_tests):
             class_name="Final",
             properties=[
                 ql.PropertyForTest(getter="getX", type="string"),
-                ql.PropertyForTest(getter="getNumberOfYs", type="int"),
+                ql.PropertyForTest(
+                    getter="getY", is_total=False, is_indexed=True, type="bool"
+                ),
             ],
-        ),
-        "Final/Final_getY.ql": a_ql_property_tester(
-            class_name="Final",
-            property=ql.PropertyForTest(
-                getter="getY", is_total=False, is_indexed=True, type="bool"
-            ),
         ),
     }
 

@@ -41,6 +41,8 @@ module StringLengthConflationConfig implements DataFlow::StateConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 /**

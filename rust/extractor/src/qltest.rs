@@ -8,6 +8,8 @@ use std::path::Path;
 use std::process::Command;
 use tracing::info;
 
+const EDITION: &str = "2021";
+
 fn dump_lib() -> anyhow::Result<()> {
     let path_iterator = glob("*.rs").context("globbing test sources")?;
     let paths = path_iterator
@@ -29,8 +31,11 @@ enum TestCargoManifest<'a> {
         uses_proc_macro: bool,
         uses_main: bool,
         dependencies: &'a [String],
+        edition: &'a str,
     },
-    Macro {},
+    Macro {
+        edition: &'a str,
+    },
 }
 
 impl TestCargoManifest<'_> {
@@ -56,14 +61,24 @@ fn dump_cargo_manifest(dependencies: &[String]) -> anyhow::Result<()> {
         uses_proc_macro,
         uses_main: fs::exists("main.rs").context("checking existence of main.rs")?,
         dependencies,
+        edition: EDITION,
     };
     if uses_proc_macro {
         TestCargoManifest::Workspace {}.dump("")?;
         lib_manifest.dump(".lib")?;
-        TestCargoManifest::Macro {}.dump(".proc_macro")
+        TestCargoManifest::Macro { edition: EDITION }.dump(".proc_macro")
     } else {
         lib_manifest.dump("")
     }
+}
+
+fn dump_nightly_toolchain() -> anyhow::Result<()> {
+    fs::write(
+        "rust-toolchain.toml",
+        include_str!("nightly-toolchain/rust-toolchain.toml"),
+    )
+    .context("writing rust-toolchain.toml")?;
+    Ok(())
 }
 
 fn set_sources(config: &mut Config) -> anyhow::Result<()> {
@@ -79,6 +94,9 @@ pub(crate) fn prepare(config: &mut Config) -> anyhow::Result<()> {
     dump_lib()?;
     set_sources(config)?;
     dump_cargo_manifest(&config.qltest_dependencies)?;
+    if config.qltest_use_nightly {
+        dump_nightly_toolchain()?;
+    }
     if config.qltest_cargo_check {
         let status = Command::new("cargo")
             .env("RUSTFLAGS", "-Awarnings")

@@ -70,9 +70,9 @@ module Impl {
      */
     pragma[nomagic]
     predicate isFromMacroExpansion() {
-      exists(MacroCall mc |
-        MacroCallImpl::isInMacroExpansion(mc, this) and
-        not this = mc.getATokenTreeNode()
+      exists(AstNode root |
+        MacroCallImpl::isInMacroExpansion(root, this) and
+        not this = root.(MacroCall).getATokenTreeNode()
       )
     }
 

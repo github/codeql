@@ -5,20 +5,37 @@ private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 private import codeql.rust.elements.Operation
 
 module Impl {
+  newtype TArgumentPosition =
+    TPositionalArgumentPosition(int i) {
+      i in [0 .. max([any(ParamList l).getNumberOfParams(), any(ArgList l).getNumberOfArgs()]) - 1]
+    } or
+    TSelfArgumentPosition()
+
+  /** An argument position in a call. */
+  class ArgumentPosition extends TArgumentPosition {
+    /** Gets the index of the argument in the call, if this is a positional argument. */
+    int asPosition() { this = TPositionalArgumentPosition(result) }
+
+    /** Holds if this call position is a self argument. */
+    predicate isSelf() { this instanceof TSelfArgumentPosition }
+
+    /** Gets a string representation of this argument position. */
+    string toString() {
+      result = this.asPosition().toString()
+      or
+      this.isSelf() and result = "self"
+    }
+  }
+
   /**
    * An expression that calls a function.
    *
-   * This class abstracts over the different ways in which a function can be called in Rust.
+   * This class abstracts over the different ways in which a function can be
+   * called in Rust.
    */
   abstract class Call extends ExprImpl::Expr {
-    /** Gets the number of arguments _excluding_ any `self` argument. */
-    abstract int getNumberOfArguments();
-
-    /** Gets the receiver of this call if it is a method call. */
-    abstract Expr getReceiver();
-
-    /** Holds if the call has a receiver that might be implicitly borrowed. */
-    abstract predicate receiverImplicitlyBorrowed();
+    /** Holds if the receiver of this call is implicitly borrowed. */
+    predicate receiverImplicitlyBorrowed() { this.implicitBorrowAt(TSelfArgumentPosition(), _) }
 
     /** Gets the trait targeted by this call, if any. */
     abstract Trait getTrait();
@@ -26,8 +43,20 @@ module Impl {
     /** Gets the name of the method called if this call is a method call. */
     abstract string getMethodName();
 
+    /** Gets the argument at the given position, if any. */
+    abstract Expr getArgument(ArgumentPosition pos);
+
+    /** Holds if the argument at `pos` might be implicitly borrowed. */
+    abstract predicate implicitBorrowAt(ArgumentPosition pos, boolean certain);
+
+    /** Gets the number of arguments _excluding_ any `self` argument. */
+    int getNumberOfArguments() { result = count(this.getArgument(TPositionalArgumentPosition(_))) }
+
     /** Gets the `i`th argument of this call, if any. */
-    abstract Expr getArgument(int i);
+    Expr getPositionalArgument(int i) { result = this.getArgument(TPositionalArgumentPosition(i)) }
+
+    /** Gets the receiver of this call if it is a method call. */
+    Expr getReceiver() { result = this.getArgument(TSelfArgumentPosition()) }
 
     /** Gets the static target of this call, if any. */
     Function getStaticTarget() {
@@ -54,15 +83,13 @@ module Impl {
 
     override string getMethodName() { none() }
 
-    override Expr getReceiver() { none() }
-
     override Trait getTrait() { none() }
 
-    override predicate receiverImplicitlyBorrowed() { none() }
+    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) { none() }
 
-    override int getNumberOfArguments() { result = super.getArgList().getNumberOfArgs() }
-
-    override Expr getArgument(int i) { result = super.getArgList().getArg(i) }
+    override Expr getArgument(ArgumentPosition pos) {
+      result = super.getArgList().getArg(pos.asPosition())
+    }
   }
 
   private class CallExprMethodCall extends Call instanceof CallExpr {
@@ -73,8 +100,6 @@ module Impl {
 
     override string getMethodName() { result = methodName }
 
-    override Expr getReceiver() { result = super.getArgList().getArg(0) }
-
     override Trait getTrait() {
       result = resolvePath(qualifier) and
       // When the qualifier is `Self` and resolves to a trait, it's inside a
@@ -84,43 +109,71 @@ module Impl {
       qualifier.toString() != "Self"
     }
 
-    override predicate receiverImplicitlyBorrowed() { none() }
+    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) { none() }
 
-    override int getNumberOfArguments() { result = super.getArgList().getNumberOfArgs() - 1 }
-
-    override Expr getArgument(int i) { result = super.getArgList().getArg(i + 1) }
+    override Expr getArgument(ArgumentPosition pos) {
+      pos.isSelf() and result = super.getArgList().getArg(0)
+      or
+      result = super.getArgList().getArg(pos.asPosition() + 1)
+    }
   }
 
   private class MethodCallExprCall extends Call instanceof MethodCallExpr {
     override string getMethodName() { result = super.getIdentifier().getText() }
 
-    override Expr getReceiver() { result = this.(MethodCallExpr).getReceiver() }
-
     override Trait getTrait() { none() }
 
-    override predicate receiverImplicitlyBorrowed() { any() }
+    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) {
+      pos.isSelf() and certain = false
+    }
 
-    override int getNumberOfArguments() { result = super.getArgList().getNumberOfArgs() }
-
-    override Expr getArgument(int i) { result = super.getArgList().getArg(i) }
+    override Expr getArgument(ArgumentPosition pos) {
+      pos.isSelf() and result = this.(MethodCallExpr).getReceiver()
+      or
+      result = super.getArgList().getArg(pos.asPosition())
+    }
   }
 
   private class OperatorCall extends Call instanceof Operation {
     Trait trait;
     string methodName;
+    int borrows;
 
-    OperatorCall() { super.isOverloaded(trait, methodName) }
+    OperatorCall() { super.isOverloaded(trait, methodName, borrows) }
 
     override string getMethodName() { result = methodName }
 
-    override Expr getReceiver() { result = super.getOperand(0) }
-
     override Trait getTrait() { result = trait }
 
-    override predicate receiverImplicitlyBorrowed() { none() }
+    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) {
+      (
+        pos.isSelf() and borrows >= 1
+        or
+        pos.asPosition() = 0 and borrows = 2
+      ) and
+      certain = true
+    }
 
-    override int getNumberOfArguments() { result = super.getNumberOfOperands() - 1 }
+    override Expr getArgument(ArgumentPosition pos) {
+      pos.isSelf() and result = super.getOperand(0)
+      or
+      pos.asPosition() = 0 and result = super.getOperand(1)
+    }
+  }
 
-    override Expr getArgument(int i) { result = super.getOperand(1) and i = 0 }
+  private class IndexCall extends Call instanceof IndexExpr {
+    override string getMethodName() { result = "index" }
+
+    override Trait getTrait() { result.getCanonicalPath() = "core::ops::index::Index" }
+
+    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) {
+      pos.isSelf() and certain = true
+    }
+
+    override Expr getArgument(ArgumentPosition pos) {
+      pos.isSelf() and result = super.getBase()
+      or
+      pos.asPosition() = 0 and result = super.getIndex()
+    }
   }
 }

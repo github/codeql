@@ -11,6 +11,7 @@
     "/*- Diagnostic messages -*/",
     "/*- Diagnostic messages: severity -*/",
     "/*- Source location prefix -*/",
+    "/*- Database metadata -*/",
     "/*- Lines of code -*/",
     "/*- Configuration files with key value pairs -*/",
     "/*- YAML -*/",

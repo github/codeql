@@ -2,15 +2,20 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  ParameterizedProtocolType x, string getName, Type getCanonicalType, ProtocolType getBase,
-  int getNumberOfArgs
-where
+query predicate instances(
+  ParameterizedProtocolType x, string getName__label, string getName,
+  string getCanonicalType__label, Type getCanonicalType, string getBase__label, ProtocolType getBase
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getName__label = "getName:" and
   getName = x.getName() and
+  getCanonicalType__label = "getCanonicalType:" and
   getCanonicalType = x.getCanonicalType() and
-  getBase = x.getBase() and
-  getNumberOfArgs = x.getNumberOfArgs()
-select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getBase:", getBase,
-  "getNumberOfArgs:", getNumberOfArgs
+  getBase__label = "getBase:" and
+  getBase = x.getBase()
+}
+
+query predicate getArg(ParameterizedProtocolType x, int index, Type getArg) {
+  toBeTested(x) and not x.isUnknown() and getArg = x.getArg(index)
+}

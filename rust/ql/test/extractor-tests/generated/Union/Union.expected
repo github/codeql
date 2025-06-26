@@ -1,1 +1,14 @@
-| gen_union.rs:4:5:7:32 | union U | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasGenericParamList: | no | hasName: | yes | hasStructFieldList: | yes | hasVisibility: | no | hasWhereClause: | no |
+instances
+| gen_union.rs:4:5:7:32 | union U |
+getExtendedCanonicalPath
+getCrateOrigin
+getAttributeMacroExpansion
+getDeriveMacroExpansion
+getAttr
+getGenericParamList
+getName
+| gen_union.rs:4:5:7:32 | union U | gen_union.rs:7:11:7:11 | U |
+getStructFieldList
+| gen_union.rs:4:5:7:32 | union U | gen_union.rs:7:13:7:32 | StructFieldList |
+getVisibility
+getWhereClause

@@ -32,3 +32,20 @@ pub fn add_one(_attr: TokenStream, item: TokenStream) -> TokenStream {
 pub fn erase(_attr: TokenStream, _item: TokenStream) -> TokenStream {
     TokenStream::new()
 }
+
+#[proc_macro_derive(MyTrait)]
+pub fn my_trait_derive(input: TokenStream) -> TokenStream {
+    let ast = syn::parse_macro_input!(input as syn::DeriveInput);
+    let name = &ast.ident;
+    let const_ident = syn::Ident::new(&format!("CONST_{}", name), name.span());
+    quote! {
+        const #const_ident: u32 = 42;
+
+        impl MyTrait for #name {
+            fn my_method() -> u32 {
+                #const_ident
+            }
+        }
+    }.into()
+}
+

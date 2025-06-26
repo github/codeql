@@ -6,8 +6,8 @@
  * @kind problem
  * @problem.severity warning
  * @id js/misspelled-variable-name
- * @tags maintainability
- *       readability
+ * @tags quality
+ *       reliability
  *       correctness
  * @precision very-high
  */

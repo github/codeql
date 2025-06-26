@@ -4,4 +4,6 @@
 
 private import internal.CallImpl
 
+final class ArgumentPosition = Impl::ArgumentPosition;
+
 final class Call = Impl::Call;

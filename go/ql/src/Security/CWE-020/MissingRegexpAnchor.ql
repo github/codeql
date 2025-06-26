@@ -74,6 +74,8 @@ module Config implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
 }
 
 module Flow = DataFlow::Global<Config>;

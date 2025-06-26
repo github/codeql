@@ -212,7 +212,7 @@ impl TrapFile {
         );
     }
     pub fn emit_file(&mut self, absolute_path: &Path) -> Label<generated::File> {
-        let untyped = extractor::populate_file(&mut self.writer, absolute_path);
+        let untyped = extractor::populate_file(&mut self.writer, absolute_path, None);
         // SAFETY: populate_file emits `@file` typed labels
         unsafe { Label::from_untyped(untyped) }
     }
@@ -268,6 +268,7 @@ impl TrapFileProvider {
             &self.trap_dir.join(category),
             key.as_ref(),
             self.compression.extension(),
+            None,
         );
         debug!("creating trap file {}", path.display());
         let mut writer = trap::Writer::new();

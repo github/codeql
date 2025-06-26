@@ -5,7 +5,9 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/eval-like-call
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  *       external/cwe/cwe-676
  * @precision very-high
  */

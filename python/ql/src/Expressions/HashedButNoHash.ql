@@ -2,7 +2,8 @@
  * @name Unhashable object hashed
  * @description Hashing an object which is not hashable will result in a TypeError at runtime.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low

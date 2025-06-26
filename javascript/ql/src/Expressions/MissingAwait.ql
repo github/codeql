@@ -4,8 +4,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/missing-await
- * @tags correctness
- *       quality
+ * @tags quality
+ *       reliability
+ *       correctness
  * @precision high
  */
 
