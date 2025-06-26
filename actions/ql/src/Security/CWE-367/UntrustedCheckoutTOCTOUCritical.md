@@ -97,4 +97,4 @@ jobs:
 
 ## References
 
-- [ActionsTOCTOU](https://github.com/AdnaneKhan/ActionsTOCTOU)
+- [ActionsTOCTOU](https://github.com/AdnaneKhan/ActionsTOCTOU).

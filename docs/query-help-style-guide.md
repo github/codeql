@@ -242,8 +242,8 @@ tab width settings cannot be taken into account.
 
 ## References
 
-* Java SE Documentation: [Compound Statements](https://www.oracle.com/java/technologies/javase/codeconventions-statements.html#15395)
-* Wikipedia: [Indentation style](https://en.wikipedia.org/wiki/Indentation_style)
+* Java SE Documentation: [Compound Statements](https://www.oracle.com/java/technologies/javase/codeconventions-statements.html#15395).
+* Wikipedia: [Indentation style](https://en.wikipedia.org/wiki/Indentation_style).
 ````
 
 ### XML example

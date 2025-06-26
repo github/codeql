@@ -8,4 +8,4 @@ If there is no reason to have a custom configuration switch to the CodeQL defaul
 
 ## References
 
-- [GitHub Docs: Configuring Default Setup for a repository](https://docs.github.com/en/code-security/code-scanning/enabling-code-scanning/configuring-default-setup-for-code-scanning#configuring-default-setup-for-a-repository)
+- [GitHub Docs: Configuring Default Setup for a repository](https://docs.github.com/en/code-security/code-scanning/enabling-code-scanning/configuring-default-setup-for-code-scanning#configuring-default-setup-for-a-repository).

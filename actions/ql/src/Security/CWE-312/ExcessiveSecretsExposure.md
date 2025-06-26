@@ -46,5 +46,5 @@ env:
 
 ## References
 
-- [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#using-encrypted-secrets-in-a-workflow)
-- [Job uses all secrets](https://github.com/boostsecurityio/poutine/blob/main/docs/content/en/rules/job_all_secrets.md)
+- [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#using-encrypted-secrets-in-a-workflow).
+- [Job uses all secrets](https://github.com/boostsecurityio/poutine/blob/main/docs/content/en/rules/job_all_secrets.md).

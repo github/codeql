@@ -58,4 +58,4 @@ To avoid the vulnerability where an `if` condition always evaluates to `true`, i
 
 ## References
 
-- [Expression Always True Github Issue](https://github.com/actions/runner/issues/1173)
+- [Expression Always True Github Issue](https://github.com/actions/runner/issues/1173).

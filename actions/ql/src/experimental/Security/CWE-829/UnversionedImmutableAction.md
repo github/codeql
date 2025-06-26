@@ -23,4 +23,4 @@ For internal users: when using [immutable actions](https://github.com/github/pac
 
 ## References
 
-- [Consuming immutable actions]()
+- [Consuming immutable actions]().
