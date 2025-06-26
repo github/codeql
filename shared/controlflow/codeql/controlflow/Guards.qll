@@ -47,6 +47,8 @@
  * using the result of Range Analysis to provide a final and more complete
  * controls relation.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Boolean
 private import codeql.util.Location
