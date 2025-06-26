@@ -1044,7 +1044,9 @@ class DefinedType extends @definedtype, CompositeType {
    * Note that this is only defined for types declared in the project being
    * analyzed. It will not be defined for types declared in external packages.
    */
-  Type getBaseType() { result = this.getEntity().(DeclaredType).getSpec().getTypeExpr().getType() }
+  Type getBaseType() {
+    result = this.getEntity().(DeclaredTypeEntity).getSpec().getTypeExpr().getType()
+  }
 
   override Method getMethod(string m) {
     result = CompositeType.super.getMethod(m)
