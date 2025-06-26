@@ -1,11 +1,12 @@
 /**
- * @id java/javautilconcurrentscheduledthreadpoolexecutor
+ * @id java/java-util-concurrent-scheduledthreadpoolexecutor
  * @name Zero threads set for `java.util.concurrent.ScheduledThreadPoolExecutor`
  * @description Setting `java.util.concurrent.ScheduledThreadPoolExecutor` to have 0 threads serves
  *              no purpose and may indicate programmer error.
  * @kind problem
  * @precision very-high
  * @problem.severity recommendation
+ * @previous-id java/javautilconcurrentscheduledthreadpoolexecutor
  * @tags quality
  *       reliability
  *       correctness
