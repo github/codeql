@@ -2,19 +2,32 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  MacroDecl x, int getNumberOfGenericTypeParams, ModuleDecl getModule, int getNumberOfMembers,
-  Type getInterfaceType, string getName, int getNumberOfParameters, int getNumberOfRoles
-where
+query predicate instances(
+  MacroDecl x, string getModule__label, ModuleDecl getModule, string getInterfaceType__label,
+  Type getInterfaceType, string getName__label, string getName
+) {
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
+  getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers = x.getNumberOfMembers() and
+  getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType() and
-  getName = x.getName() and
-  getNumberOfParameters = x.getNumberOfParameters() and
-  getNumberOfRoles = x.getNumberOfRoles()
-select x, "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams, "getModule:", getModule,
-  "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:", getInterfaceType, "getName:",
-  getName, "getNumberOfParameters:", getNumberOfParameters, "getNumberOfRoles:", getNumberOfRoles
+  getName__label = "getName:" and
+  getName = x.getName()
+}
+
+query predicate getGenericTypeParam(MacroDecl x, int index, GenericTypeParamDecl getGenericTypeParam) {
+  toBeTested(x) and not x.isUnknown() and getGenericTypeParam = x.getGenericTypeParam(index)
+}
+
+query predicate getMember(MacroDecl x, int index, Decl getMember) {
+  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
+}
+
+query predicate getParameter(MacroDecl x, int index, ParamDecl getParameter) {
+  toBeTested(x) and not x.isUnknown() and getParameter = x.getParameter(index)
+}
+
+query predicate getRole(MacroDecl x, int index, MacroRole getRole) {
+  toBeTested(x) and not x.isUnknown() and getRole = x.getRole(index)
+}

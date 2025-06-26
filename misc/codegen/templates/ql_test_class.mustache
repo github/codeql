@@ -3,14 +3,28 @@
 import {{elements_module}}
 import TestUtils
 
-from {{class_name}} x{{#properties}}, {{#type}}{{.}}{{/type}}{{^type}}string{{/type}} {{getter}}{{/properties}}
-where toBeTested(x) and not x.isUnknown()
+query predicate instances({{class_name}} x{{#show_ql_class}}, string primaryQlClasses{{/show_ql_class}}{{#properties}}{{#is_total}}, string {{getter}}__label, {{#type}}{{.}}{{/type}}{{^type}}string{{/type}} {{getter}}{{/is_total}}{{/properties}}) {
+    toBeTested(x) and not x.isUnknown()
+    {{#show_ql_class}}
+    and primaryQlClasses = x.getPrimaryQlClasses()
+    {{/show_ql_class}}
+    {{#properties}}
+    {{#is_total}}
+    and {{getter}}__label = "{{getter}}:"
+    {{#type}}
+    and {{getter}} = x.{{getter}}()
+    {{/type}}
+    {{^type}}
+    and if x.{{getter}}() then {{getter}} = "yes" else {{getter}} = "no"
+    {{/type}}
+    {{/is_total}}
+    {{/properties}}
+}
+
 {{#properties}}
-{{#type}}
-and {{getter}} = x.{{getter}}()
-{{/type}}
-{{^type}}
-and if x.{{getter}}() then {{getter}} = "yes" else {{getter}} = "no"
-{{/type}}
+{{^is_total}}
+query predicate {{getter}}({{class_name}} x{{#is_indexed}}, int index{{/is_indexed}}, {{type}} {{getter}}) {
+    toBeTested(x) and not x.isUnknown() and {{getter}} = x.{{getter}}({{#is_indexed}}index{{/is_indexed}})
+}
+{{/is_total}}
 {{/properties}}
-select x{{#show_ql_class}}, x.getPrimaryQlClasses(){{/show_ql_class}}{{#properties}}, "{{getter}}:", {{getter}}{{/properties}}

@@ -3,7 +3,6 @@
 | A.java:45:14:45:22 | ...[...] | This array access might be out of bounds, as the index might be equal to the array length. |
 | A.java:49:14:49:22 | ...[...] | This array access might be out of bounds, as the index might be equal to the array length. |
 | A.java:58:14:58:19 | ...[...] | This array access might be out of bounds, as the index might be equal to the array length. |
-| A.java:67:14:67:19 | ...[...] | This array access might be out of bounds, as the index might be equal to the array length. |
 | A.java:89:12:89:16 | ...[...] | This array access might be out of bounds, as the index might be equal to the array length. |
 | A.java:100:18:100:31 | ...[...] | This array access might be out of bounds, as the index might be equal to the array length + 8. |
 | A.java:113:14:113:21 | ...[...] | This array access might be out of bounds, as the index might be equal to the array length. |

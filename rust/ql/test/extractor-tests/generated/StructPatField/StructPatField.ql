@@ -2,11 +2,16 @@
 import codeql.rust.elements
 import TestUtils
 
-from StructPatField x, int getNumberOfAttrs, string hasIdentifier, string hasPat
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasIdentifier() then hasIdentifier = "yes" else hasIdentifier = "no") and
-  if x.hasPat() then hasPat = "yes" else hasPat = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasIdentifier:", hasIdentifier, "hasPat:", hasPat
+query predicate instances(StructPatField x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getAttr(StructPatField x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getIdentifier(StructPatField x, NameRef getIdentifier) {
+  toBeTested(x) and not x.isUnknown() and getIdentifier = x.getIdentifier()
+}
+
+query predicate getPat(StructPatField x, Pat getPat) {
+  toBeTested(x) and not x.isUnknown() and getPat = x.getPat()
+}

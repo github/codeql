@@ -1,36 +1,165 @@
-| accessors.swift:2:9:2:9 | _modify | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> () -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:2:9:2:9 | get | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (Foo) -> () -> Int | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:2:9:2:9 | set | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> (Int) -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 1 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:3:9:3:9 | _modify | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> () -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:4:9:4:28 | get | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (Foo) -> () -> Int | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:5:9:5:42 | set | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> (Int) -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 1 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:7:9:7:9 | _modify | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> () -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:7:9:7:9 | get | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (Foo) -> () -> Int | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:7:9:7:9 | set | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> (Int) -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 1 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:8:9:8:29 | willSet | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> (Int) -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 1 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | yes | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:11:9:11:9 | _modify | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> () -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:11:9:11:9 | get | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (Foo) -> () -> Int | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:11:9:11:9 | set | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> (Int) -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 1 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:12:9:12:19 | willSet | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> (Int) -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 1 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | yes | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:15:9:15:9 | _modify | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> () -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:15:9:15:9 | get | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (Foo) -> () -> Int | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:15:9:15:9 | set | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> (Int) -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 1 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:16:9:16:28 | didSet | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> (Int) -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 1 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | yes | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:19:9:19:9 | _modify | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> () -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:19:9:19:9 | get | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (Foo) -> () -> Int | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:19:9:19:9 | set | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> (Int) -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 1 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:20:9:20:18 | didSet | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> () -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | yes | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:23:9:23:9 | _modify | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> () -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:23:9:23:9 | get | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (Foo) -> () -> Int | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:23:9:23:9 | set | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> (Int) -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 1 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:24:9:24:19 | willSet | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> (Int) -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 1 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | yes | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:26:9:26:18 | didSet | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> () -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | yes | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:29:9:29:9 | get | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (Foo) -> () -> Int | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:29:9:29:9 | set | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> (Int) -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 1 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:30:9:32:9 | _read | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (Foo) -> () -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | yes | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:33:9:35:9 | _modify | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> () -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:38:9:38:9 | _modify | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> () -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:38:9:38:9 | get | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (Foo) -> () -> Int | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:38:9:38:9 | set | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> (Int) -> () | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 1 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
-| accessors.swift:39:9:41:9 | unsafeAddress | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (Foo) -> () -> UnsafePointer<Int> | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | yes | isUnsafeMutableAddress: | no |
-| accessors.swift:42:9:44:9 | unsafeMutableAddress | getNumberOfGenericTypeParams: | 0 | getModule: | file://:0:0:0:0 | accessors | getNumberOfMembers: | 0 | getInterfaceType: | (inout Foo) -> () -> UnsafeMutablePointer<Int> | hasName: | yes | hasSelfParam: | yes | getNumberOfParams: | 0 | hasBody: | yes | getNumberOfCaptures: | 0 | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | yes |
+instances
+| accessors.swift:2:9:2:9 | _modify | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> () -> () | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:2:9:2:9 | get | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (Foo) -> () -> Int | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:2:9:2:9 | set | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> (Int) -> () | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:3:9:3:9 | _modify | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> () -> () | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:4:9:4:28 | get | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (Foo) -> () -> Int | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:5:9:5:42 | set | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> (Int) -> () | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:7:9:7:9 | _modify | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> () -> () | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:7:9:7:9 | get | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (Foo) -> () -> Int | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:7:9:7:9 | set | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> (Int) -> () | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:8:9:8:29 | willSet | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> (Int) -> () | isGetter: | no | isSetter: | no | isWillSet: | yes | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:11:9:11:9 | _modify | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> () -> () | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:11:9:11:9 | get | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (Foo) -> () -> Int | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:11:9:11:9 | set | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> (Int) -> () | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:12:9:12:19 | willSet | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> (Int) -> () | isGetter: | no | isSetter: | no | isWillSet: | yes | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:15:9:15:9 | _modify | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> () -> () | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:15:9:15:9 | get | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (Foo) -> () -> Int | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:15:9:15:9 | set | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> (Int) -> () | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:16:9:16:28 | didSet | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> (Int) -> () | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | yes | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:19:9:19:9 | _modify | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> () -> () | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:19:9:19:9 | get | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (Foo) -> () -> Int | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:19:9:19:9 | set | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> (Int) -> () | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:20:9:20:18 | didSet | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> () -> () | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | yes | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:23:9:23:9 | _modify | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> () -> () | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:23:9:23:9 | get | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (Foo) -> () -> Int | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:23:9:23:9 | set | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> (Int) -> () | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:24:9:24:19 | willSet | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> (Int) -> () | isGetter: | no | isSetter: | no | isWillSet: | yes | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:26:9:26:18 | didSet | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> () -> () | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | yes | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:29:9:29:9 | get | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (Foo) -> () -> Int | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:29:9:29:9 | set | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> (Int) -> () | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:30:9:32:9 | _read | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (Foo) -> () -> () | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | yes | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:33:9:35:9 | _modify | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> () -> () | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:38:9:38:9 | _modify | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> () -> () | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | yes | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:38:9:38:9 | get | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (Foo) -> () -> Int | isGetter: | yes | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:38:9:38:9 | set | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> (Int) -> () | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
+| accessors.swift:39:9:41:9 | unsafeAddress | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (Foo) -> () -> UnsafePointer<Int> | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | yes | isUnsafeMutableAddress: | no |
+| accessors.swift:42:9:44:9 | unsafeMutableAddress | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> () -> UnsafeMutablePointer<Int> | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | yes |
+getGenericTypeParam
+getMember
+getName
+| accessors.swift:2:9:2:9 | _modify | (unnamed function decl) |
+| accessors.swift:2:9:2:9 | get | (unnamed function decl) |
+| accessors.swift:2:9:2:9 | set | (unnamed function decl) |
+| accessors.swift:3:9:3:9 | _modify | (unnamed function decl) |
+| accessors.swift:4:9:4:28 | get | (unnamed function decl) |
+| accessors.swift:5:9:5:42 | set | (unnamed function decl) |
+| accessors.swift:7:9:7:9 | _modify | (unnamed function decl) |
+| accessors.swift:7:9:7:9 | get | (unnamed function decl) |
+| accessors.swift:7:9:7:9 | set | (unnamed function decl) |
+| accessors.swift:8:9:8:29 | willSet | (unnamed function decl) |
+| accessors.swift:11:9:11:9 | _modify | (unnamed function decl) |
+| accessors.swift:11:9:11:9 | get | (unnamed function decl) |
+| accessors.swift:11:9:11:9 | set | (unnamed function decl) |
+| accessors.swift:12:9:12:19 | willSet | (unnamed function decl) |
+| accessors.swift:15:9:15:9 | _modify | (unnamed function decl) |
+| accessors.swift:15:9:15:9 | get | (unnamed function decl) |
+| accessors.swift:15:9:15:9 | set | (unnamed function decl) |
+| accessors.swift:16:9:16:28 | didSet | (unnamed function decl) |
+| accessors.swift:19:9:19:9 | _modify | (unnamed function decl) |
+| accessors.swift:19:9:19:9 | get | (unnamed function decl) |
+| accessors.swift:19:9:19:9 | set | (unnamed function decl) |
+| accessors.swift:20:9:20:18 | didSet | (unnamed function decl) |
+| accessors.swift:23:9:23:9 | _modify | (unnamed function decl) |
+| accessors.swift:23:9:23:9 | get | (unnamed function decl) |
+| accessors.swift:23:9:23:9 | set | (unnamed function decl) |
+| accessors.swift:24:9:24:19 | willSet | (unnamed function decl) |
+| accessors.swift:26:9:26:18 | didSet | (unnamed function decl) |
+| accessors.swift:29:9:29:9 | get | (unnamed function decl) |
+| accessors.swift:29:9:29:9 | set | (unnamed function decl) |
+| accessors.swift:30:9:32:9 | _read | (unnamed function decl) |
+| accessors.swift:33:9:35:9 | _modify | (unnamed function decl) |
+| accessors.swift:38:9:38:9 | _modify | (unnamed function decl) |
+| accessors.swift:38:9:38:9 | get | (unnamed function decl) |
+| accessors.swift:38:9:38:9 | set | (unnamed function decl) |
+| accessors.swift:39:9:41:9 | unsafeAddress | (unnamed function decl) |
+| accessors.swift:42:9:44:9 | unsafeMutableAddress | (unnamed function decl) |
+getSelfParam
+| accessors.swift:2:9:2:9 | _modify | accessors.swift:2:9:2:9 | self |
+| accessors.swift:2:9:2:9 | get | accessors.swift:2:9:2:9 | self |
+| accessors.swift:2:9:2:9 | set | accessors.swift:2:9:2:9 | self |
+| accessors.swift:3:9:3:9 | _modify | accessors.swift:3:9:3:9 | self |
+| accessors.swift:4:9:4:28 | get | accessors.swift:4:9:4:9 | self |
+| accessors.swift:5:9:5:42 | set | accessors.swift:5:9:5:9 | self |
+| accessors.swift:7:9:7:9 | _modify | accessors.swift:7:9:7:9 | self |
+| accessors.swift:7:9:7:9 | get | accessors.swift:7:9:7:9 | self |
+| accessors.swift:7:9:7:9 | set | accessors.swift:7:9:7:9 | self |
+| accessors.swift:8:9:8:29 | willSet | accessors.swift:8:9:8:9 | self |
+| accessors.swift:11:9:11:9 | _modify | accessors.swift:11:9:11:9 | self |
+| accessors.swift:11:9:11:9 | get | accessors.swift:11:9:11:9 | self |
+| accessors.swift:11:9:11:9 | set | accessors.swift:11:9:11:9 | self |
+| accessors.swift:12:9:12:19 | willSet | accessors.swift:12:9:12:9 | self |
+| accessors.swift:15:9:15:9 | _modify | accessors.swift:15:9:15:9 | self |
+| accessors.swift:15:9:15:9 | get | accessors.swift:15:9:15:9 | self |
+| accessors.swift:15:9:15:9 | set | accessors.swift:15:9:15:9 | self |
+| accessors.swift:16:9:16:28 | didSet | accessors.swift:16:9:16:9 | self |
+| accessors.swift:19:9:19:9 | _modify | accessors.swift:19:9:19:9 | self |
+| accessors.swift:19:9:19:9 | get | accessors.swift:19:9:19:9 | self |
+| accessors.swift:19:9:19:9 | set | accessors.swift:19:9:19:9 | self |
+| accessors.swift:20:9:20:18 | didSet | accessors.swift:20:9:20:9 | self |
+| accessors.swift:23:9:23:9 | _modify | accessors.swift:23:9:23:9 | self |
+| accessors.swift:23:9:23:9 | get | accessors.swift:23:9:23:9 | self |
+| accessors.swift:23:9:23:9 | set | accessors.swift:23:9:23:9 | self |
+| accessors.swift:24:9:24:19 | willSet | accessors.swift:24:9:24:9 | self |
+| accessors.swift:26:9:26:18 | didSet | accessors.swift:26:9:26:9 | self |
+| accessors.swift:29:9:29:9 | get | accessors.swift:29:9:29:9 | self |
+| accessors.swift:29:9:29:9 | set | accessors.swift:29:9:29:9 | self |
+| accessors.swift:30:9:32:9 | _read | accessors.swift:30:9:30:9 | self |
+| accessors.swift:33:9:35:9 | _modify | accessors.swift:33:9:33:9 | self |
+| accessors.swift:38:9:38:9 | _modify | accessors.swift:38:9:38:9 | self |
+| accessors.swift:38:9:38:9 | get | accessors.swift:38:9:38:9 | self |
+| accessors.swift:38:9:38:9 | set | accessors.swift:38:9:38:9 | self |
+| accessors.swift:39:9:41:9 | unsafeAddress | accessors.swift:39:9:39:9 | self |
+| accessors.swift:42:9:44:9 | unsafeMutableAddress | accessors.swift:42:9:42:9 | self |
+getParam
+| accessors.swift:2:9:2:9 | set | 0 | accessors.swift:2:9:2:9 | value |
+| accessors.swift:5:9:5:42 | set | 0 | accessors.swift:5:13:5:13 | newValue |
+| accessors.swift:7:9:7:9 | set | 0 | accessors.swift:7:9:7:9 | value |
+| accessors.swift:8:9:8:29 | willSet | 0 | accessors.swift:8:17:8:17 | newValue |
+| accessors.swift:11:9:11:9 | set | 0 | accessors.swift:11:9:11:9 | value |
+| accessors.swift:12:9:12:19 | willSet | 0 | accessors.swift:12:9:12:9 | newValue |
+| accessors.swift:15:9:15:9 | set | 0 | accessors.swift:15:9:15:9 | value |
+| accessors.swift:16:9:16:28 | didSet | 0 | accessors.swift:16:16:16:16 | oldValue |
+| accessors.swift:19:9:19:9 | set | 0 | accessors.swift:19:9:19:9 | value |
+| accessors.swift:23:9:23:9 | set | 0 | accessors.swift:23:9:23:9 | value |
+| accessors.swift:24:9:24:19 | willSet | 0 | accessors.swift:24:9:24:9 | newValue |
+| accessors.swift:29:9:29:9 | set | 0 | accessors.swift:29:9:29:9 | value |
+| accessors.swift:38:9:38:9 | set | 0 | accessors.swift:38:9:38:9 | value |
+getBody
+| accessors.swift:2:9:2:9 | _modify | accessors.swift:2:9:2:9 | { ... } |
+| accessors.swift:2:9:2:9 | get | accessors.swift:2:9:2:9 | { ... } |
+| accessors.swift:2:9:2:9 | set | accessors.swift:2:9:2:9 | { ... } |
+| accessors.swift:3:9:3:9 | _modify | accessors.swift:3:9:3:9 | { ... } |
+| accessors.swift:4:9:4:28 | get | accessors.swift:4:13:4:28 | { ... } |
+| accessors.swift:5:9:5:42 | set | accessors.swift:5:23:5:42 | { ... } |
+| accessors.swift:7:9:7:9 | _modify | accessors.swift:7:9:7:9 | { ... } |
+| accessors.swift:7:9:7:9 | get | accessors.swift:7:9:7:9 | { ... } |
+| accessors.swift:7:9:7:9 | set | accessors.swift:7:9:7:9 | { ... } |
+| accessors.swift:8:9:8:29 | willSet | accessors.swift:8:27:8:29 | { ... } |
+| accessors.swift:11:9:11:9 | _modify | accessors.swift:11:9:11:9 | { ... } |
+| accessors.swift:11:9:11:9 | get | accessors.swift:11:9:11:9 | { ... } |
+| accessors.swift:11:9:11:9 | set | accessors.swift:11:9:11:9 | { ... } |
+| accessors.swift:12:9:12:19 | willSet | accessors.swift:12:17:12:19 | { ... } |
+| accessors.swift:15:9:15:9 | _modify | accessors.swift:15:9:15:9 | { ... } |
+| accessors.swift:15:9:15:9 | get | accessors.swift:15:9:15:9 | { ... } |
+| accessors.swift:15:9:15:9 | set | accessors.swift:15:9:15:9 | { ... } |
+| accessors.swift:16:9:16:28 | didSet | accessors.swift:16:26:16:28 | { ... } |
+| accessors.swift:19:9:19:9 | _modify | accessors.swift:19:9:19:9 | { ... } |
+| accessors.swift:19:9:19:9 | get | accessors.swift:19:9:19:9 | { ... } |
+| accessors.swift:19:9:19:9 | set | accessors.swift:19:9:19:9 | { ... } |
+| accessors.swift:20:9:20:18 | didSet | accessors.swift:20:16:20:18 | { ... } |
+| accessors.swift:23:9:23:9 | _modify | accessors.swift:23:9:23:9 | { ... } |
+| accessors.swift:23:9:23:9 | get | accessors.swift:23:9:23:9 | { ... } |
+| accessors.swift:23:9:23:9 | set | accessors.swift:23:9:23:9 | { ... } |
+| accessors.swift:24:9:24:19 | willSet | accessors.swift:24:17:24:19 | { ... } |
+| accessors.swift:26:9:26:18 | didSet | accessors.swift:26:16:26:18 | { ... } |
+| accessors.swift:29:9:29:9 | get | accessors.swift:29:9:29:9 | { ... } |
+| accessors.swift:29:9:29:9 | set | accessors.swift:29:9:29:9 | { ... } |
+| accessors.swift:30:9:32:9 | _read | accessors.swift:30:15:32:9 | { ... } |
+| accessors.swift:33:9:35:9 | _modify | accessors.swift:33:17:35:9 | { ... } |
+| accessors.swift:38:9:38:9 | _modify | accessors.swift:38:9:38:9 | { ... } |
+| accessors.swift:38:9:38:9 | get | accessors.swift:38:9:38:9 | { ... } |
+| accessors.swift:38:9:38:9 | set | accessors.swift:38:9:38:9 | { ... } |
+| accessors.swift:39:9:41:9 | unsafeAddress | accessors.swift:39:23:41:9 | { ... } |
+| accessors.swift:42:9:44:9 | unsafeMutableAddress | accessors.swift:42:30:44:9 | { ... } |
+getCapture

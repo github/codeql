@@ -1,2 +1,9 @@
-| each Arg | getName: | each Arg | getCanonicalType: | each Arg | getInterfaceType: | each Arg | hasSuperclass: | no | getNumberOfProtocols: | 2 |
-| each T | getName: | each T | getCanonicalType: | each T | getInterfaceType: | each T | hasSuperclass: | no | getNumberOfProtocols: | 2 |
+instances
+| each Arg | getName: | each Arg | getCanonicalType: | each Arg | getInterfaceType: | each Arg |
+| each T | getName: | each T | getCanonicalType: | each T | getInterfaceType: | each T |
+getSuperclass
+getProtocol
+| each Arg | 0 | file://:0:0:0:0 | Copyable |
+| each Arg | 1 | file://:0:0:0:0 | Escapable |
+| each T | 0 | file://:0:0:0:0 | Copyable |
+| each T | 1 | file://:0:0:0:0 | Escapable |
