@@ -62,8 +62,12 @@ class RsaType extends CryptographyType {
   RsaType() { this.hasName("RSA") }
 }
 
+class RsaPkcs1Type extends CryptographyType {
+  RsaPkcs1Type() { this.getName().matches("RSAPKCS1Signature%") }
+}
+
 class EcdsaCreateCall extends CryptographyCreateCall {
-  EcdsaCreateCall() { this.getQualifier().getType().hasName("ECDsa") }
+  EcdsaCreateCall() { this.getQualifier().getType() instanceof EcdsaType }
 }
 
 // This class is used to model the `ECDsa.Create(ECParameters)` call
@@ -305,9 +309,11 @@ class EcdsaSignerQualifier extends SignerQualifier instanceof Expr {
 }
 
 class RsaSignerQualifier extends SignerQualifier instanceof Expr {
-  RsaSignerQualifier() { super.getType() instanceof RsaType }
+  RsaSignerQualifier() {
+    super.getType() instanceof RsaType or super.getType() instanceof RsaPkcs1Type
+  }
 
-  override string getRawAlgorithmName() { result = "RSA" }
+  override string getRawAlgorithmName() { result = super.getType().getName() }
 
   override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
     result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::OtherSignatureAlgorithmType())

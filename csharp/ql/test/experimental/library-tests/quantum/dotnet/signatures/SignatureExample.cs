@@ -25,7 +25,6 @@ namespace QuantumExamples.Cryptography
             Console.WriteLine("=== ECDSA Example ===");
 
             // Create ECDSA instance with P-256 curve
-            var nistP256 = ECCurve.NamedCurves.nistP256;
             using var ecdsa = ECDsa.Create(ECCurve.NamedCurves.nistP256);
 
             // Message to sign

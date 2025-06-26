@@ -64,8 +64,6 @@ module HashAlgorithmNameToUseConfig implements DataFlow::ConfigSig {
 
 module HashAlgorithmNameToUse = DataFlow::Global<HashAlgorithmNameToUseConfig>;
 
-module SigningCreateToUseFlow = CreationToUseFlow<SigningCreateCall, SignerUse>;
-
 module HashCreateToUseFlow = CreationToUseFlow<HashAlgorithmCreateCall, HashUse>;
 
 module CryptoStreamFlow = CreationToUseFlow<CryptoStreamCreation, CryptoStreamUse>;
@@ -253,4 +251,41 @@ class PropertyWriteFlowStep extends AdditionalFlowInputStep {
   }
 
   override DataFlow::Node getOutput() { result.asExpr() = assignment.getLValue() }
+}
+
+module SigningCreateToUseFlow {
+  private module SigningCreateToUseFlow implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SigningCreateCall }
+
+    predicate isSink(DataFlow::Node sink) {
+      sink.asExpr() = any(SignerUse use).(QualifiableExpr).getQualifier()
+    }
+
+    /**
+     * An additional flow step across new object creations that use the original objects.
+     *
+     * Example:
+     * ```
+     * RSA rsa = RSA.Create()
+     * RSAPKCS1SignatureFormatter rsaFormatter = new(rsa);
+     * rsaFormatter.SetHashAlgorithm(nameof(SHA256));
+     * signedHash = rsaFormatter.CreateSignature(hash);
+     * ```
+     */
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      exists(ObjectCreation create |
+        node2.asExpr() = create and node1.asExpr() = create.getAnArgument()
+      )
+    }
+  }
+
+  private module CreationToUseFlow = DataFlow::Global<SigningCreateToUseFlow>;
+
+  SigningCreateCall getCreationFromUse(
+    SignerUse use, CreationToUseFlow::PathNode source, CreationToUseFlow::PathNode sink
+  ) {
+    source.getNode().asExpr() = result and
+    sink.getNode().asExpr() = use.(QualifiableExpr).getQualifier() and
+    CreationToUseFlow::flowPath(source, sink)
+  }
 }
