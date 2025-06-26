@@ -295,6 +295,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       (
         exists(KeyCreationOperationInstance op | input = op.getKeySizeConsumer())
         or
+        exists(KeyGenerationOperationInstance op | input = op.getKeyValueConsumer())
+        or
         exists(KeyDerivationOperationInstance op |
           input = op.getIterationCountConsumer() or
           input = op.getOutputKeySizeConsumer()
@@ -538,6 +540,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     KeyArtifactConsumer() {
       (
         exists(KeyOperationInstance op | inputNode = op.getKeyConsumer())
+        or
+        exists(KeyGenerationOperationInstance op | inputNode = op.getKeyValueConsumer())
         or
         exists(MacOperationInstance op | inputNode = op.getKeyConsumer())
         or
@@ -959,10 +963,18 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final override string getKeyCreationTypeDescription() { result = "KeyGeneration" }
 
     /**
-     * Gets a consumer of a raw value that is used to generate the key.
-     * Not all key generation operations require a raw value.
+     * Gets the consumer of a key for this key generaiton operation.
+     * This occurs when a key generation operaiton is based on a raw key value
+     * or it generates another key or key context from a previously generated key.
      */
-    abstract ConsumerInputDataFlowNode getRawKeyValueConsumer();
+    abstract ConsumerInputDataFlowNode getKeyValueConsumer();
+
+    /**
+     * Holds if the key generation operation has a key consumer
+     * i.e., an input that is explicitly used for the key value.
+     * This value should correspond to the value returned by `getKeyValueConsumer()`.
+     */
+    abstract predicate hasKeyValueConsumer();
   }
 
   abstract class KeyLoadOperationInstance extends KeyCreationOperationInstance {
@@ -1708,10 +1720,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       node instanceof KeyCreationCandidateAlgorithmNode
     }
 
-    NodeBase getARawValueSource() {
-      result = keyGenInstance.getRawKeyValueConsumer().getConsumer().getAGenericSourceNode()
-      or
-      result = keyGenInstance.getRawKeyValueConsumer().getConsumer().getAKnownSourceNode()
+    KeyArtifactNode getKeyArtifact() {
+      result.asElement() = keyGenInstance.getKeyValueConsumer().getConsumer()
     }
 
     override NodeBase getChild(string key) {
@@ -1720,7 +1730,11 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       // [ALWAYS_KNOWN]
       key = "Output" and
       result = this.getOutputKeyArtifact()
-      //TODO: how do I output the raw key if known? If not known, it may not require/have a raw value consumer, don't output
+      or
+      // [KnOWN_OR_UNKNOWN] only if a raw key is a known input
+      key = "KeyInput" and
+      keyGenInstance.hasKeyValueConsumer() and
+      result = this.getKeyArtifact()
     }
   }
 

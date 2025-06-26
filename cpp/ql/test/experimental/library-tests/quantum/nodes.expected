@@ -25,6 +25,7 @@
 | openssl_basic.c:155:22:155:41 | Key |
 | openssl_basic.c:155:22:155:41 | KeyGeneration |
 | openssl_basic.c:155:43:155:55 | MACAlgorithm |
+| openssl_basic.c:155:64:155:66 | Key |
 | openssl_basic.c:160:39:160:48 | HashAlgorithm |
 | openssl_basic.c:160:59:160:62 | Key |
 | openssl_basic.c:163:35:163:41 | Message |
@@ -86,6 +87,7 @@
 | openssl_signature.c:548:34:548:37 | Key |
 | openssl_signature.c:565:50:565:54 | KeyOperationAlgorithm |
 | openssl_signature.c:569:55:569:58 | Constant |
+| openssl_signature.c:575:32:575:37 | Key |
 | openssl_signature.c:578:9:578:23 | KeyGeneration |
 | openssl_signature.c:578:34:578:37 | Key |
 | openssl_signature.c:602:37:602:77 | Constant |
