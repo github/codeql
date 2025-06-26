@@ -1,2 +1,2 @@
-| main.go:3:6:3:15 | type declaration specifier | status | int | def |
-| main.go:5:6:5:20 | type declaration specifier | intlist | []int | alias |
+| main.go:3:6:3:15 | type declaration specifier | status | status | main.go:3:13:3:15 | int | int | def |
+| main.go:5:6:5:20 | type declaration specifier | intlist | []int | main.go:5:16:5:20 | array type | []int | alias |

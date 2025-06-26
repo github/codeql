@@ -1,2 +1,0 @@
-| postfix.swift:1:5:1:6 | call to ...(_:) | 0 | postfix.swift:1:5:1:5 | : 3 |
-| postfix.swift:7:1:7:2 | call to **(_:) | 0 | postfix.swift:7:1:7:1 | : 3 |

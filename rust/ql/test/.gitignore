@@ -1,3 +1,9 @@
-Cargo.toml
-lib.rs
 target/
+
+# these are all generated, see `rust/extractor/src/qltest.rs` for details
+Cargo.toml
+rust-toolchain.toml
+lib.rs
+.proc_macro/
+.lib/
+

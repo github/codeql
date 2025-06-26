@@ -2,9 +2,9 @@
  * @name Non-callable called
  * @description A call to an object which is not a callable will raise a TypeError at runtime.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       types
  * @problem.severity error
  * @sub-severity high
  * @precision high

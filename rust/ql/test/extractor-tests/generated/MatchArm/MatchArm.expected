@@ -1,4 +1,18 @@
-| gen_match_arm.rs:6:9:6:29 | ... => y | getNumberOfAttrs: | 0 | hasExpr: | yes | hasGuard: | no | hasPat: | yes |
-| gen_match_arm.rs:7:9:7:26 | ...::None => 0 | getNumberOfAttrs: | 0 | hasExpr: | yes | hasGuard: | no | hasPat: | yes |
-| gen_match_arm.rs:10:9:10:35 | ... if ... => ... | getNumberOfAttrs: | 0 | hasExpr: | yes | hasGuard: | yes | hasPat: | yes |
-| gen_match_arm.rs:11:9:11:15 | _ => 0 | getNumberOfAttrs: | 0 | hasExpr: | yes | hasGuard: | no | hasPat: | yes |
+instances
+| gen_match_arm.rs:6:9:6:29 | ... => y |
+| gen_match_arm.rs:7:9:7:26 | ...::None => 0 |
+| gen_match_arm.rs:10:9:10:35 | ... if ... => ... |
+| gen_match_arm.rs:11:9:11:15 | _ => 0 |
+getAttr
+getExpr
+| gen_match_arm.rs:6:9:6:29 | ... => y | gen_match_arm.rs:6:28:6:28 | y |
+| gen_match_arm.rs:7:9:7:26 | ...::None => 0 | gen_match_arm.rs:7:25:7:25 | 0 |
+| gen_match_arm.rs:10:9:10:35 | ... if ... => ... | gen_match_arm.rs:10:30:10:34 | ... / ... |
+| gen_match_arm.rs:11:9:11:15 | _ => 0 | gen_match_arm.rs:11:14:11:14 | 0 |
+getGuard
+| gen_match_arm.rs:10:9:10:35 | ... if ... => ... | gen_match_arm.rs:10:17:10:25 | MatchGuard |
+getPat
+| gen_match_arm.rs:6:9:6:29 | ... => y | gen_match_arm.rs:6:9:6:23 | ...::Some(...) |
+| gen_match_arm.rs:7:9:7:26 | ...::None => 0 | gen_match_arm.rs:7:9:7:20 | ...::None |
+| gen_match_arm.rs:10:9:10:35 | ... if ... => ... | gen_match_arm.rs:10:9:10:15 | Some(...) |
+| gen_match_arm.rs:11:9:11:15 | _ => 0 | gen_match_arm.rs:11:9:11:9 | _ |

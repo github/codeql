@@ -1,0 +1,85 @@
+#select
+| testAEXMLDocumentXXE.swift:51:32:51:32 | remoteString | testAEXMLDocumentXXE.swift:50:24:50:78 | call to String.init(contentsOf:) | testAEXMLDocumentXXE.swift:51:32:51:32 | remoteString | XML parsing depends on a $@ without guarding against external entity expansion. | testAEXMLDocumentXXE.swift:50:24:50:78 | call to String.init(contentsOf:) | user-provided value |
+| testAEXMLDocumentXXE.swift:74:32:74:32 | remoteData | testAEXMLDocumentXXE.swift:70:24:70:78 | call to String.init(contentsOf:) | testAEXMLDocumentXXE.swift:74:32:74:32 | remoteData | XML parsing depends on a $@ without guarding against external entity expansion. | testAEXMLDocumentXXE.swift:70:24:70:78 | call to String.init(contentsOf:) | user-provided value |
+| testAEXMLDocumentXXE.swift:99:17:99:17 | remoteData | testAEXMLDocumentXXE.swift:97:24:97:78 | call to String.init(contentsOf:) | testAEXMLDocumentXXE.swift:99:17:99:17 | remoteData | XML parsing depends on a $@ without guarding against external entity expansion. | testAEXMLDocumentXXE.swift:97:24:97:78 | call to String.init(contentsOf:) | user-provided value |
+| testAEXMLDocumentXXE.swift:128:46:128:46 | remoteData | testAEXMLDocumentXXE.swift:126:24:126:78 | call to String.init(contentsOf:) | testAEXMLDocumentXXE.swift:128:46:128:46 | remoteData | XML parsing depends on a $@ without guarding against external entity expansion. | testAEXMLDocumentXXE.swift:126:24:126:78 | call to String.init(contentsOf:) | user-provided value |
+| testXMLDocumentXXE.swift:40:37:40:37 | remoteUrl | testXMLDocumentXXE.swift:38:24:38:78 | call to String.init(contentsOf:) | testXMLDocumentXXE.swift:40:37:40:37 | remoteUrl | XML parsing depends on a $@ without guarding against external entity expansion. | testXMLDocumentXXE.swift:38:24:38:78 | call to String.init(contentsOf:) | user-provided value |
+| testXMLDocumentXXE.swift:58:31:58:31 | remoteData | testXMLDocumentXXE.swift:56:24:56:78 | call to String.init(contentsOf:) | testXMLDocumentXXE.swift:58:31:58:31 | remoteData | XML parsing depends on a $@ without guarding against external entity expansion. | testXMLDocumentXXE.swift:56:24:56:78 | call to String.init(contentsOf:) | user-provided value |
+| testXMLDocumentXXE.swift:75:36:75:36 | remoteString | testXMLDocumentXXE.swift:74:24:74:78 | call to String.init(contentsOf:) | testXMLDocumentXXE.swift:75:36:75:36 | remoteString | XML parsing depends on a $@ without guarding against external entity expansion. | testXMLDocumentXXE.swift:74:24:74:78 | call to String.init(contentsOf:) | user-provided value |
+| testXMLParserXXE.swift:34:34:34:34 | remoteData | testXMLParserXXE.swift:32:24:32:78 | call to String.init(contentsOf:) | testXMLParserXXE.swift:34:34:34:34 | remoteData | XML parsing depends on a $@ without guarding against external entity expansion. | testXMLParserXXE.swift:32:24:32:78 | call to String.init(contentsOf:) | user-provided value |
+| testXMLParserXXE.swift:42:36:42:36 | remoteStream | testXMLParserXXE.swift:39:24:39:78 | call to String.init(contentsOf:) | testXMLParserXXE.swift:42:36:42:36 | remoteStream | XML parsing depends on a $@ without guarding against external entity expansion. | testXMLParserXXE.swift:39:24:39:78 | call to String.init(contentsOf:) | user-provided value |
+| testXMLParserXXE.swift:49:40:49:40 | remoteUrl | testXMLParserXXE.swift:47:24:47:78 | call to String.init(contentsOf:) | testXMLParserXXE.swift:49:40:49:40 | remoteUrl | XML parsing depends on a $@ without guarding against external entity expansion. | testXMLParserXXE.swift:47:24:47:78 | call to String.init(contentsOf:) | user-provided value |
+edges
+| testAEXMLDocumentXXE.swift:50:24:50:78 | call to String.init(contentsOf:) | testAEXMLDocumentXXE.swift:51:32:51:32 | remoteString | provenance |  |
+| testAEXMLDocumentXXE.swift:70:24:70:78 | call to String.init(contentsOf:) | testAEXMLDocumentXXE.swift:71:27:71:27 | remoteString | provenance |  |
+| testAEXMLDocumentXXE.swift:71:22:71:39 | call to Data.init(_:) | testAEXMLDocumentXXE.swift:74:32:74:32 | remoteData | provenance |  |
+| testAEXMLDocumentXXE.swift:71:27:71:27 | remoteString | testAEXMLDocumentXXE.swift:71:22:71:39 | call to Data.init(_:) | provenance |  |
+| testAEXMLDocumentXXE.swift:97:24:97:78 | call to String.init(contentsOf:) | testAEXMLDocumentXXE.swift:98:27:98:27 | remoteString | provenance |  |
+| testAEXMLDocumentXXE.swift:98:22:98:39 | call to Data.init(_:) | testAEXMLDocumentXXE.swift:99:17:99:17 | remoteData | provenance |  |
+| testAEXMLDocumentXXE.swift:98:27:98:27 | remoteString | testAEXMLDocumentXXE.swift:98:22:98:39 | call to Data.init(_:) | provenance |  |
+| testAEXMLDocumentXXE.swift:126:24:126:78 | call to String.init(contentsOf:) | testAEXMLDocumentXXE.swift:127:27:127:27 | remoteString | provenance |  |
+| testAEXMLDocumentXXE.swift:127:22:127:39 | call to Data.init(_:) | testAEXMLDocumentXXE.swift:128:46:128:46 | remoteData | provenance |  |
+| testAEXMLDocumentXXE.swift:127:27:127:27 | remoteString | testAEXMLDocumentXXE.swift:127:22:127:39 | call to Data.init(_:) | provenance |  |
+| testXMLDocumentXXE.swift:38:24:38:78 | call to String.init(contentsOf:) | testXMLDocumentXXE.swift:39:33:39:33 | remoteString | provenance |  |
+| testXMLDocumentXXE.swift:39:21:39:45 | call to URL.init(string:) [some:0] | testXMLDocumentXXE.swift:39:21:39:46 | ...! | provenance |  |
+| testXMLDocumentXXE.swift:39:21:39:46 | ...! | testXMLDocumentXXE.swift:40:37:40:37 | remoteUrl | provenance |  |
+| testXMLDocumentXXE.swift:39:33:39:33 | remoteString | testXMLDocumentXXE.swift:39:21:39:45 | call to URL.init(string:) [some:0] | provenance |  |
+| testXMLDocumentXXE.swift:56:24:56:78 | call to String.init(contentsOf:) | testXMLDocumentXXE.swift:57:27:57:27 | remoteString | provenance |  |
+| testXMLDocumentXXE.swift:57:22:57:39 | call to Data.init(_:) | testXMLDocumentXXE.swift:58:31:58:31 | remoteData | provenance |  |
+| testXMLDocumentXXE.swift:57:27:57:27 | remoteString | testXMLDocumentXXE.swift:57:22:57:39 | call to Data.init(_:) | provenance |  |
+| testXMLDocumentXXE.swift:74:24:74:78 | call to String.init(contentsOf:) | testXMLDocumentXXE.swift:75:36:75:36 | remoteString | provenance |  |
+| testXMLParserXXE.swift:32:24:32:78 | call to String.init(contentsOf:) | testXMLParserXXE.swift:33:27:33:27 | remoteString | provenance |  |
+| testXMLParserXXE.swift:33:22:33:39 | call to Data.init(_:) | testXMLParserXXE.swift:34:34:34:34 | remoteData | provenance |  |
+| testXMLParserXXE.swift:33:27:33:27 | remoteString | testXMLParserXXE.swift:33:22:33:39 | call to Data.init(_:) | provenance |  |
+| testXMLParserXXE.swift:39:24:39:78 | call to String.init(contentsOf:) | testXMLParserXXE.swift:40:27:40:27 | remoteString | provenance |  |
+| testXMLParserXXE.swift:40:22:40:39 | call to Data.init(_:) | testXMLParserXXE.swift:41:42:41:42 | remoteData | provenance |  |
+| testXMLParserXXE.swift:40:22:40:39 | call to Data.init(_:) | testXMLParserXXE.swift:42:36:42:36 | remoteStream | provenance | AdditionalTaintStep |
+| testXMLParserXXE.swift:40:27:40:27 | remoteString | testXMLParserXXE.swift:40:22:40:39 | call to Data.init(_:) | provenance |  |
+| testXMLParserXXE.swift:41:24:41:52 | call to InputStream.init(data:) | testXMLParserXXE.swift:42:36:42:36 | remoteStream | provenance |  |
+| testXMLParserXXE.swift:41:42:41:42 | remoteData | testXMLParserXXE.swift:41:24:41:52 | call to InputStream.init(data:) | provenance |  |
+| testXMLParserXXE.swift:47:24:47:78 | call to String.init(contentsOf:) | testXMLParserXXE.swift:48:33:48:33 | remoteString | provenance |  |
+| testXMLParserXXE.swift:48:21:48:45 | call to URL.init(string:) [some:0] | testXMLParserXXE.swift:48:21:48:46 | ...! | provenance |  |
+| testXMLParserXXE.swift:48:21:48:46 | ...! | testXMLParserXXE.swift:49:40:49:40 | remoteUrl | provenance |  |
+| testXMLParserXXE.swift:48:33:48:33 | remoteString | testXMLParserXXE.swift:48:21:48:45 | call to URL.init(string:) [some:0] | provenance |  |
+nodes
+| testAEXMLDocumentXXE.swift:50:24:50:78 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| testAEXMLDocumentXXE.swift:51:32:51:32 | remoteString | semmle.label | remoteString |
+| testAEXMLDocumentXXE.swift:70:24:70:78 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| testAEXMLDocumentXXE.swift:71:22:71:39 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| testAEXMLDocumentXXE.swift:71:27:71:27 | remoteString | semmle.label | remoteString |
+| testAEXMLDocumentXXE.swift:74:32:74:32 | remoteData | semmle.label | remoteData |
+| testAEXMLDocumentXXE.swift:97:24:97:78 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| testAEXMLDocumentXXE.swift:98:22:98:39 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| testAEXMLDocumentXXE.swift:98:27:98:27 | remoteString | semmle.label | remoteString |
+| testAEXMLDocumentXXE.swift:99:17:99:17 | remoteData | semmle.label | remoteData |
+| testAEXMLDocumentXXE.swift:126:24:126:78 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| testAEXMLDocumentXXE.swift:127:22:127:39 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| testAEXMLDocumentXXE.swift:127:27:127:27 | remoteString | semmle.label | remoteString |
+| testAEXMLDocumentXXE.swift:128:46:128:46 | remoteData | semmle.label | remoteData |
+| testXMLDocumentXXE.swift:38:24:38:78 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| testXMLDocumentXXE.swift:39:21:39:45 | call to URL.init(string:) [some:0] | semmle.label | call to URL.init(string:) [some:0] |
+| testXMLDocumentXXE.swift:39:21:39:46 | ...! | semmle.label | ...! |
+| testXMLDocumentXXE.swift:39:33:39:33 | remoteString | semmle.label | remoteString |
+| testXMLDocumentXXE.swift:40:37:40:37 | remoteUrl | semmle.label | remoteUrl |
+| testXMLDocumentXXE.swift:56:24:56:78 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| testXMLDocumentXXE.swift:57:22:57:39 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| testXMLDocumentXXE.swift:57:27:57:27 | remoteString | semmle.label | remoteString |
+| testXMLDocumentXXE.swift:58:31:58:31 | remoteData | semmle.label | remoteData |
+| testXMLDocumentXXE.swift:74:24:74:78 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| testXMLDocumentXXE.swift:75:36:75:36 | remoteString | semmle.label | remoteString |
+| testXMLParserXXE.swift:32:24:32:78 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| testXMLParserXXE.swift:33:22:33:39 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| testXMLParserXXE.swift:33:27:33:27 | remoteString | semmle.label | remoteString |
+| testXMLParserXXE.swift:34:34:34:34 | remoteData | semmle.label | remoteData |
+| testXMLParserXXE.swift:39:24:39:78 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| testXMLParserXXE.swift:40:22:40:39 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| testXMLParserXXE.swift:40:27:40:27 | remoteString | semmle.label | remoteString |
+| testXMLParserXXE.swift:41:24:41:52 | call to InputStream.init(data:) | semmle.label | call to InputStream.init(data:) |
+| testXMLParserXXE.swift:41:42:41:42 | remoteData | semmle.label | remoteData |
+| testXMLParserXXE.swift:42:36:42:36 | remoteStream | semmle.label | remoteStream |
+| testXMLParserXXE.swift:47:24:47:78 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| testXMLParserXXE.swift:48:21:48:45 | call to URL.init(string:) [some:0] | semmle.label | call to URL.init(string:) [some:0] |
+| testXMLParserXXE.swift:48:21:48:46 | ...! | semmle.label | ...! |
+| testXMLParserXXE.swift:48:33:48:33 | remoteString | semmle.label | remoteString |
+| testXMLParserXXE.swift:49:40:49:40 | remoteUrl | semmle.label | remoteUrl |
+subpaths

@@ -3,9 +3,9 @@
  * @description Assigning multiple variables without ensuring that you define a
  *              value for each variable causes an exception at runtime.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       types
  * @problem.severity error
  * @sub-severity low
  * @precision very-high

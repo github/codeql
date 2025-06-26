@@ -44,7 +44,7 @@ abstract class NodePublic extends TNode {
 
 abstract class Node extends NodePublic {
   /** Gets the enclosing callable. */
-  DataFlowCallable getEnclosingCallable() { result = TCfgScope(this.getCfgScope()) }
+  DataFlowCallable getEnclosingCallable() { result.asCfgScope() = this.getCfgScope() }
 
   /** Do not call: use `getEnclosingCallable()` instead. */
   abstract CfgScope getCfgScope();
@@ -102,9 +102,9 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.asLibraryCallable() = this.getSummarizedCallable()
-    or
     result.asCfgScope() = this.getCfgScope()
+    or
+    result.asSummarizedCallable() = this.getSummarizedCallable()
   }
 
   override Location getLocation() {
@@ -195,7 +195,7 @@ final class SummaryParameterNode extends ParameterNode, FlowSummaryNode {
   }
 
   override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-    this.getSummarizedCallable() = c.asLibraryCallable() and pos = pos_
+    this.getSummarizedCallable() = c.asSummarizedCallable() and pos = pos_
   }
 }
 
@@ -472,7 +472,11 @@ newtype TNode =
         getPostUpdateReverseStep(any(PostUpdateNode n).getPreUpdateNode().asExpr(), _)
       ]
   } or
-  TReceiverNode(CallCfgNode mc, Boolean isPost) { mc.getCall().receiverImplicitlyBorrowed() } or
+  TReceiverNode(CallCfgNode mc, Boolean isPost) {
+    mc.getCall().receiverImplicitlyBorrowed() and
+    // TODO: Handle index expressions as calls in data flow.
+    not mc.getCall() instanceof IndexExpr
+  } or
   TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
   TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
   TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c, _) } or

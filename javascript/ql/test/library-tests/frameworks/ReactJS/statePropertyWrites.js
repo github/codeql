@@ -31,15 +31,15 @@ class Writes extends React.Component {
     state = {
         p7: 42
     };
-}
+} // $ reactComponent
 
 React.createClass({
   render: function() {
-    return <div>Hello {this.props.name}</div>;
+    return <div>Hello {this.props.name}</div>; // $ threatModelSource=view-component-input
   },
   getInitialState: function() {
     return {
       p8: 42
     };
   }
-});
+}); // $ reactComponent

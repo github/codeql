@@ -3,8 +3,9 @@
  * @description Including an undefined attribute in `__all__` causes an exception when
  *              the module is imported using '*'
  * @kind problem
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity error
  * @sub-severity low
  * @precision high

@@ -382,6 +382,14 @@ abstract class TranslatedValueCategoryAdjustment extends TranslatedExpr {
 }
 
 /**
+ * Holds if `expr` requires an `SehExceptionEdge` to be generated.
+ */
+private predicate hasSehExceptionEdge(Expr expr) {
+  expr instanceof PointerDereferenceExpr and
+  exists(MicrosoftTryStmt tryStmt | tryStmt.getStmt() = expr.getEnclosingStmt().getParent*())
+}
+
+/**
  * IR translation of an implicit lvalue-to-rvalue conversion on the result of
  * an expression.
  */
@@ -400,7 +408,13 @@ class TranslatedLoad extends TranslatedValueCategoryAdjustment, TTranslatedLoad 
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = LoadTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      hasSehExceptionEdge(expr) and
+      kind instanceof SehExceptionEdge and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e))
+    )
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -1945,7 +1959,13 @@ class TranslatedAssignExpr extends TranslatedNonConstantExpr {
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = AssignmentStoreTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      hasSehExceptionEdge(expr.getLValue()) and
+      kind instanceof SehExceptionEdge and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e))
+    )
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {

@@ -45,10 +45,12 @@ final class DataFlowCallable extends TDataFlowCallable {
   /**
    * Gets the underlying library callable, if any.
    */
-  LibraryCallable asLibraryCallable() { this = TLibraryCallable(result) }
+  SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
   /** Gets a textual representation of this callable. */
-  string toString() { result = [this.asCfgScope().toString(), this.asLibraryCallable().toString()] }
+  string toString() {
+    result = [this.asCfgScope().toString(), this.asSummarizedCallable().toString()]
+  }
 
   /** Gets the location of this callable. */
   Location getLocation() { result = this.asCfgScope().getLocation() }
@@ -65,12 +67,9 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   DataFlowCallable getEnclosingCallable() {
-    result = TCfgScope(this.asCallCfgNode().getExpr().getEnclosingCfgScope())
+    result.asCfgScope() = this.asCallCfgNode().getExpr().getEnclosingCfgScope()
     or
-    exists(FlowSummaryImpl::Public::SummarizedCallable c |
-      this.isSummaryCall(c, _) and
-      result = TLibraryCallable(c)
-    )
+    this.isSummaryCall(result.asSummarizedCallable(), _)
   }
 
   string toString() {
@@ -133,7 +132,7 @@ final class ParameterPosition extends TParameterPosition {
 final class ArgumentPosition extends ParameterPosition {
   /** Gets the argument of `call` at this position, if any. */
   Expr getArgument(Call call) {
-    result = call.getArgument(this.getPosition())
+    result = call.getPositionalArgument(this.getPosition())
     or
     result = call.getReceiver() and this.isSelf()
   }
@@ -146,9 +145,13 @@ final class ArgumentPosition extends ParameterPosition {
  * as the synthetic `ReceiverNode` is the argument for the `self` parameter.
  */
 predicate isArgumentForCall(ExprCfgNode arg, CallCfgNode call, ParameterPosition pos) {
-  call.getArgument(pos.getPosition()) = arg
-  or
-  call.getReceiver() = arg and pos.isSelf() and not call.getCall().receiverImplicitlyBorrowed()
+  // TODO: Handle index expressions as calls in data flow.
+  not call.getCall() instanceof IndexExpr and
+  (
+    call.getPositionalArgument(pos.getPosition()) = arg
+    or
+    call.getReceiver() = arg and pos.isSelf() and not call.getCall().receiverImplicitlyBorrowed()
+  )
 }
 
 /** Provides logic related to SSA. */
@@ -401,9 +404,11 @@ module RustDataFlow implements InputSig<Location> {
 
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall call) {
-    result.asCfgScope() = call.asCallCfgNode().getCall().getStaticTarget()
-    or
-    result.asLibraryCallable().getACall() = call.asCallCfgNode().getCall()
+    exists(Callable target | target = call.asCallCfgNode().getCall().getStaticTarget() |
+      target = result.asCfgScope()
+      or
+      target = result.asSummarizedCallable()
+    )
   }
 
   /**
@@ -757,7 +762,7 @@ module RustDataFlow implements InputSig<Location> {
   predicate allowParameterReturnInSelf(ParameterNode p) {
     exists(DataFlowCallable c, ParameterPosition pos |
       p.isParameterOf(c, pos) and
-      FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asLibraryCallable(), pos)
+      FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
     )
     or
     VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(p.(ClosureParameterNode)
@@ -958,7 +963,11 @@ private module Cached {
 
   cached
   newtype TDataFlowCall =
-    TCall(CallCfgNode c) { Stages::DataFlowStage::ref() } or
+    TCall(CallCfgNode c) {
+      Stages::DataFlowStage::ref() and
+      // TODO: Handle index expressions as calls in data flow.
+      not c.getCall() instanceof IndexExpr
+    } or
     TSummaryCall(
       FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
     ) {
@@ -968,7 +977,7 @@ private module Cached {
   cached
   newtype TDataFlowCallable =
     TCfgScope(CfgScope scope) or
-    TLibraryCallable(LibraryCallable c)
+    TSummarizedCallable(SummarizedCallable c)
 
   /** This is the local flow predicate that is exposed. */
   cached

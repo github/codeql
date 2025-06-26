@@ -2,16 +2,25 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  Format x, FormatArgsExpr getParent, int getIndex, string hasArgumentRef, string hasWidthArgument,
-  string hasPrecisionArgument
-where
+query predicate instances(
+  Format x, string getParent__label, FormatArgsExpr getParent, string getIndex__label, int getIndex
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getParent__label = "getParent:" and
   getParent = x.getParent() and
-  getIndex = x.getIndex() and
-  (if x.hasArgumentRef() then hasArgumentRef = "yes" else hasArgumentRef = "no") and
-  (if x.hasWidthArgument() then hasWidthArgument = "yes" else hasWidthArgument = "no") and
-  if x.hasPrecisionArgument() then hasPrecisionArgument = "yes" else hasPrecisionArgument = "no"
-select x, "getParent:", getParent, "getIndex:", getIndex, "hasArgumentRef:", hasArgumentRef,
-  "hasWidthArgument:", hasWidthArgument, "hasPrecisionArgument:", hasPrecisionArgument
+  getIndex__label = "getIndex:" and
+  getIndex = x.getIndex()
+}
+
+query predicate getArgumentRef(Format x, FormatArgument getArgumentRef) {
+  toBeTested(x) and not x.isUnknown() and getArgumentRef = x.getArgumentRef()
+}
+
+query predicate getWidthArgument(Format x, FormatArgument getWidthArgument) {
+  toBeTested(x) and not x.isUnknown() and getWidthArgument = x.getWidthArgument()
+}
+
+query predicate getPrecisionArgument(Format x, FormatArgument getPrecisionArgument) {
+  toBeTested(x) and not x.isUnknown() and getPrecisionArgument = x.getPrecisionArgument()
+}

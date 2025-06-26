@@ -13,7 +13,7 @@ class C extends React.Component {
     someInstanceMethod() {
         this;
     }
-}
+} // $ reactComponent
 
 React.createClass({
     render: function() {
@@ -26,14 +26,14 @@ React.createClass({
     someInstanceMethod: function() {
         this;
     }
-});
+}); // $ reactComponent
 
-(function (props) {
+(function (props) { // $ threatModelSource=view-component-input
     (function () {
         this; props;
     }).bind(this);
     return <div/>;
-})
+}) // $ reactComponent
 
 React.createClass({
     render: function() {
@@ -42,14 +42,14 @@ React.createClass({
         }, this)
         return <div/>;
     },
-});
+}); // $ reactComponent
 
 class C2 extends React.Component {
-    constructor (y) {
+    constructor (y) { // $ threatModelSource=view-component-input
         this.state = x;
         this.state = y;
     }
-}
+} // $ reactComponent
 
 class C3 extends React.Component {
     constructor() {
@@ -60,4 +60,4 @@ class C3 extends React.Component {
         var foo = <this.name></this.name>;
         var bar = <this.this></this.this>;
     }
-}
+} // $ reactComponent

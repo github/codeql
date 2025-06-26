@@ -7,10 +7,9 @@
  * @id js/useless-expression
  * @tags quality
  *       maintainability
- *       correctness
+ *       useless-code
  *       external/cwe/cwe-480
  *       external/cwe/cwe-561
- *       useless-code
  * @precision very-high
  */
 

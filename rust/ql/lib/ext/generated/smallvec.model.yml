@@ -1,0 +1,54 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["<smallvec::ConstNonNull as core::clone::Clone>::clone", "Argument[self].Reference", "ReturnValue", "value", "dfc-generated"]
+      - ["<smallvec::Drain as core::iter::traits::iterator::Iterator>::next", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["<smallvec::DrainFilter as core::iter::traits::iterator::Iterator>::size_hint", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["<smallvec::IntoIter as core::iter::traits::iterator::Iterator>::size_hint", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["<smallvec::SetLenOnDrop as core::ops::drop::Drop>::drop", "Argument[self].Field[smallvec::SetLenOnDrop::local_len]", "Argument[self].Field[smallvec::SetLenOnDrop::len].Reference", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec as core::borrow::Borrow>::borrow", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec as core::borrow::BorrowMut>::borrow_mut", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec as core::clone::Clone>::clone", "Argument[self].Field[alloc::vec::Vec::len]", "ReturnValue.Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec as core::convert::AsMut>::as_mut", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec as core::convert::AsRef>::as_ref", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec as core::convert::From>::from", "Argument[0].Field[alloc::vec::Vec::len]", "ReturnValue.Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec as core::ops::index::Index>::index", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["<smallvec::SmallVec as core::ops::index::IndexMut>::index_mut", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["<smallvec::SmallVec>::as_mut_slice", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::as_slice", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::capacity", "Argument[self].Field[smallvec::SmallVec::capacity]", "ReturnValue", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::drain", "Argument[self].Field[smallvec::SmallVec::capacity]", "ReturnValue.Field[smallvec::Drain::tail_start]", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::drain_filter", "Argument[0]", "ReturnValue.Field[smallvec::DrainFilter::pred]", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::drain_filter", "Argument[self].Field[smallvec::SmallVec::capacity]", "ReturnValue.Field[smallvec::DrainFilter::old_len]", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::drain_filter", "Argument[self]", "ReturnValue.Field[smallvec::DrainFilter::vec]", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::from_buf_and_len", "Argument[1]", "ReturnValue.Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::from_buf_and_len_unchecked", "Argument[1]", "ReturnValue.Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::from_const_with_len_unchecked", "Argument[1]", "ReturnValue.Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::from_raw_parts", "Argument[2]", "ReturnValue.Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::from_vec", "Argument[0].Field[alloc::vec::Vec::len]", "ReturnValue.Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::grow", "Argument[0]", "Argument[self].Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::into_inner", "Argument[self]", "ReturnValue.Field[core::result::Result::Err(0)]", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::len", "Argument[self].Field[smallvec::SmallVec::capacity]", "ReturnValue", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::retain", "Argument[self].Element", "Argument[0].Parameter[0].Reference", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::retain_mut", "Argument[self].Element", "Argument[0].Parameter[0].Reference", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::try_grow", "Argument[0]", "Argument[self].Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
+      - ["<smallvec::tests::MockHintIter as core::iter::traits::iterator::Iterator>::next", "Argument[self].Field[smallvec::tests::MockHintIter::x].Element", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "dfc-generated"]
+      - ["<smallvec::tests::MockHintIter as core::iter::traits::iterator::Iterator>::size_hint", "Argument[self].Field[smallvec::tests::MockHintIter::hint]", "ReturnValue.Field[0]", "value", "dfc-generated"]
+      - ["<smallvec::tests::insert_many_panic::BadIter as core::iter::traits::iterator::Iterator>::size_hint", "Argument[self].Field[smallvec::tests::insert_many_panic::BadIter::hint]", "ReturnValue.Field[0]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["<alloc::vec::Vec as bench::Vector>::insert", "Argument[0]", "log-injection", "df-generated"]
+      - ["<alloc::vec::Vec as bench::Vector>::insert", "Argument[self]", "log-injection", "df-generated"]
+      - ["<alloc::vec::Vec as bench::Vector>::remove", "Argument[0]", "log-injection", "df-generated"]
+      - ["<alloc::vec::Vec as bench::Vector>::remove", "Argument[self]", "log-injection", "df-generated"]
+      - ["<smallvec::SmallVec>::into_inner", "Argument[self]", "pointer-access", "df-generated"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["<smallvec::SmallVec as core::ops::drop::Drop>::drop", "Argument[self]", "pointer-invalidate", "df-generated"]

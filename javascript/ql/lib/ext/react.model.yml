@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: summaryModel
+    data:
+      - ["react", "Member[use]", "Argument[0].Awaited", "ReturnValue", "value"]

@@ -1,7 +1,0 @@
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-extensions:
-  - addsTo:
-      pack: codeql/rust-all
-      extensible: summaryModel
-    data:
-      - ["repo::dylib-dep", "crate::foo", "Argument[0]", "Argument[1].Parameter[0]", "value", "dfc-generated"]

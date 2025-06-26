@@ -2,9 +2,8 @@
 import codeql.rust.elements
 import TestUtils
 
-from MatchGuard x, string hasCondition
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  if x.hasCondition() then hasCondition = "yes" else hasCondition = "no"
-select x, "hasCondition:", hasCondition
+query predicate instances(MatchGuard x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getCondition(MatchGuard x, Expr getCondition) {
+  toBeTested(x) and not x.isUnknown() and getCondition = x.getCondition()
+}

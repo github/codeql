@@ -1,6 +1,7 @@
 strategy: dca
 language: rust
 destination: rust/ql/lib/ext/generated
+single-file: true  # dump models into a single file per crate (we do not have proper namespaces)
 # targets must have name specified and corresponding to the name in the DCA suite
 # they can optionally specify any of
 #   with-sinks: false

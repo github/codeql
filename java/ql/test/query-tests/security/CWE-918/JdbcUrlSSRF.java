@@ -17,75 +17,75 @@ public class JdbcUrlSSRF extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    
-        String jdbcUrl = request.getParameter("jdbcUrl");
+
+        String jdbcUrl = request.getParameter("jdbcUrl"); // $ Source
         Driver driver = new org.postgresql.Driver();
         DataSourceBuilder dsBuilder = DataSourceBuilder.create();
-        
+
         try {
-            driver.connect(jdbcUrl, null); // $ SSRF
+            driver.connect(jdbcUrl, null); // $ Alert
 
-            DriverManager.getConnection(jdbcUrl); // $ SSRF
-            DriverManager.getConnection(jdbcUrl, "user", "password"); // $ SSRF
-            DriverManager.getConnection(jdbcUrl, null); // $ SSRF
+            DriverManager.getConnection(jdbcUrl); // $ Alert
+            DriverManager.getConnection(jdbcUrl, "user", "password"); // $ Alert
+            DriverManager.getConnection(jdbcUrl, null); // $ Alert
 
-            dsBuilder.url(jdbcUrl); // $ SSRF
+            dsBuilder.url(jdbcUrl); // $ Alert
         }
         catch(SQLException e) {}
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    
-        String jdbcUrl = request.getParameter("jdbcUrl");
+
+        String jdbcUrl = request.getParameter("jdbcUrl"); // $ Source
         HikariConfig config = new HikariConfig();
 
-        config.setJdbcUrl(jdbcUrl); // $ SSRF
+        config.setJdbcUrl(jdbcUrl); // $ Alert
         config.setUsername("database_username");
         config.setPassword("database_password");
 
         HikariDataSource ds = new HikariDataSource();
-        ds.setJdbcUrl(jdbcUrl); // $ SSRF
+        ds.setJdbcUrl(jdbcUrl); // $ Alert
 
         Properties props = new Properties();
         props.setProperty("driverClassName", "org.postgresql.Driver");
         props.setProperty("jdbcUrl", jdbcUrl);
 
-        HikariConfig config2 = new HikariConfig(props); // $ SSRF
+        HikariConfig config2 = new HikariConfig(props); // $ Alert
     }
 
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String jdbcUrl = request.getParameter("jdbcUrl");
-    
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-    
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl(jdbcUrl); // $ SSRF
+        String jdbcUrl = request.getParameter("jdbcUrl"); // $ Source
 
-        DriverManagerDataSource dataSource2 = new DriverManagerDataSource(jdbcUrl); // $ SSRF
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUrl(jdbcUrl); // $ Alert
+
+        DriverManagerDataSource dataSource2 = new DriverManagerDataSource(jdbcUrl); // $ Alert
         dataSource2.setDriverClassName("org.postgresql.Driver");
 
-        DriverManagerDataSource dataSource3 = new DriverManagerDataSource(jdbcUrl, "user", "pass"); // $ SSRF
+        DriverManagerDataSource dataSource3 = new DriverManagerDataSource(jdbcUrl, "user", "pass"); // $ Alert
         dataSource3.setDriverClassName("org.postgresql.Driver");
 
-        DriverManagerDataSource dataSource4 = new DriverManagerDataSource(jdbcUrl, null); // $ SSRF
+        DriverManagerDataSource dataSource4 = new DriverManagerDataSource(jdbcUrl, null); // $ Alert
         dataSource4.setDriverClassName("org.postgresql.Driver");
     }
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String jdbcUrl = request.getParameter("jdbcUrl");
+        String jdbcUrl = request.getParameter("jdbcUrl"); // $ Source
 
-        Jdbi.create(jdbcUrl); // $ SSRF
-        Jdbi.create(jdbcUrl, null); // $ SSRF
-        Jdbi.create(jdbcUrl, "user", "pass"); // $ SSRF
+        Jdbi.create(jdbcUrl); // $ Alert
+        Jdbi.create(jdbcUrl, null); // $ Alert
+        Jdbi.create(jdbcUrl, "user", "pass"); // $ Alert
 
-        Jdbi.open(jdbcUrl); // $ SSRF
-        Jdbi.open(jdbcUrl, null); // $ SSRF
-        Jdbi.open(jdbcUrl, "user", "pass"); // $ SSRF
+        Jdbi.open(jdbcUrl); // $ Alert
+        Jdbi.open(jdbcUrl, null); // $ Alert
+        Jdbi.open(jdbcUrl, "user", "pass"); // $ Alert
     }
-    
+
 }

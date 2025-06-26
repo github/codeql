@@ -1,0 +1,120 @@
+#select
+| InsufficientKeySizeTest.java:17:26:17:27 | 64 | InsufficientKeySizeTest.java:17:26:17:27 | 64 | InsufficientKeySizeTest.java:17:26:17:27 | 64 | This $@ is less than the recommended key size of 128 bits. | InsufficientKeySizeTest.java:17:26:17:27 | 64 | key size |
+| InsufficientKeySizeTest.java:27:26:27:30 | size1 | InsufficientKeySizeTest.java:23:31:23:32 | 64 : Number | InsufficientKeySizeTest.java:27:26:27:30 | size1 | This $@ is less than the recommended key size of 128 bits. | InsufficientKeySizeTest.java:23:31:23:32 | 64 | key size |
+| InsufficientKeySizeTest.java:30:26:30:30 | size2 | InsufficientKeySizeTest.java:24:25:24:26 | 64 : Number | InsufficientKeySizeTest.java:30:26:30:30 | size2 | This $@ is less than the recommended key size of 128 bits. | InsufficientKeySizeTest.java:24:25:24:26 | 64 | key size |
+| InsufficientKeySizeTest.java:40:26:40:27 | 64 | InsufficientKeySizeTest.java:40:26:40:27 | 64 | InsufficientKeySizeTest.java:40:26:40:27 | 64 | This $@ is less than the recommended key size of 128 bits. | InsufficientKeySizeTest.java:40:26:40:27 | 64 | key size |
+| InsufficientKeySizeTest.java:51:36:51:39 | 1024 | InsufficientKeySizeTest.java:51:36:51:39 | 1024 | InsufficientKeySizeTest.java:51:36:51:39 | 1024 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:51:36:51:39 | 1024 | key size |
+| InsufficientKeySizeTest.java:58:73:58:76 | 1024 | InsufficientKeySizeTest.java:58:73:58:76 | 1024 | InsufficientKeySizeTest.java:58:73:58:76 | 1024 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:58:73:58:76 | 1024 | key size |
+| InsufficientKeySizeTest.java:62:63:62:66 | 1024 | InsufficientKeySizeTest.java:62:63:62:66 | 1024 | InsufficientKeySizeTest.java:62:63:62:66 | 1024 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:62:63:62:66 | 1024 | key size |
+| InsufficientKeySizeTest.java:69:36:69:40 | size1 | InsufficientKeySizeTest.java:65:31:65:34 | 1024 : Number | InsufficientKeySizeTest.java:69:36:69:40 | size1 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:65:31:65:34 | 1024 | key size |
+| InsufficientKeySizeTest.java:72:36:72:40 | size2 | InsufficientKeySizeTest.java:66:25:66:28 | 1024 : Number | InsufficientKeySizeTest.java:72:36:72:40 | size2 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:66:25:66:28 | 1024 | key size |
+| InsufficientKeySizeTest.java:81:36:81:50 | getRSAKeySize(...) | InsufficientKeySizeTest.java:255:40:255:43 | 1024 : Number | InsufficientKeySizeTest.java:81:36:81:50 | getRSAKeySize(...) | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:255:40:255:43 | 1024 | key size |
+| InsufficientKeySizeTest.java:86:36:86:39 | 1024 | InsufficientKeySizeTest.java:86:36:86:39 | 1024 | InsufficientKeySizeTest.java:86:36:86:39 | 1024 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:86:36:86:39 | 1024 | key size |
+| InsufficientKeySizeTest.java:97:36:97:39 | 1024 | InsufficientKeySizeTest.java:97:36:97:39 | 1024 | InsufficientKeySizeTest.java:97:36:97:39 | 1024 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:97:36:97:39 | 1024 | key size |
+| InsufficientKeySizeTest.java:104:67:104:70 | 1024 | InsufficientKeySizeTest.java:104:67:104:70 | 1024 | InsufficientKeySizeTest.java:104:67:104:70 | 1024 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:104:67:104:70 | 1024 | key size |
+| InsufficientKeySizeTest.java:108:60:108:63 | 1024 | InsufficientKeySizeTest.java:108:60:108:63 | 1024 | InsufficientKeySizeTest.java:108:60:108:63 | 1024 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:108:60:108:63 | 1024 | key size |
+| InsufficientKeySizeTest.java:112:27:112:30 | 1024 | InsufficientKeySizeTest.java:112:27:112:30 | 1024 | InsufficientKeySizeTest.java:112:27:112:30 | 1024 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:112:27:112:30 | 1024 | key size |
+| InsufficientKeySizeTest.java:117:28:117:31 | 1024 | InsufficientKeySizeTest.java:117:28:117:31 | 1024 | InsufficientKeySizeTest.java:117:28:117:31 | 1024 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:117:28:117:31 | 1024 | key size |
+| InsufficientKeySizeTest.java:128:36:128:39 | 1024 | InsufficientKeySizeTest.java:128:36:128:39 | 1024 | InsufficientKeySizeTest.java:128:36:128:39 | 1024 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:128:36:128:39 | 1024 | key size |
+| InsufficientKeySizeTest.java:135:64:135:67 | 1024 | InsufficientKeySizeTest.java:135:64:135:67 | 1024 | InsufficientKeySizeTest.java:135:64:135:67 | 1024 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:135:64:135:67 | 1024 | key size |
+| InsufficientKeySizeTest.java:139:59:139:62 | 1024 | InsufficientKeySizeTest.java:139:59:139:62 | 1024 | InsufficientKeySizeTest.java:139:59:139:62 | 1024 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:139:59:139:62 | 1024 | key size |
+| InsufficientKeySizeTest.java:143:27:143:30 | 1024 | InsufficientKeySizeTest.java:143:27:143:30 | 1024 | InsufficientKeySizeTest.java:143:27:143:30 | 1024 | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:143:27:143:30 | 1024 | key size |
+| InsufficientKeySizeTest.java:150:36:150:38 | 128 | InsufficientKeySizeTest.java:150:36:150:38 | 128 | InsufficientKeySizeTest.java:150:36:150:38 | 128 | This $@ is less than the recommended key size of 256 bits. | InsufficientKeySizeTest.java:150:36:150:38 | 128 | key size |
+| InsufficientKeySizeTest.java:154:65:154:75 | "secp112r1" | InsufficientKeySizeTest.java:154:65:154:75 | "secp112r1" | InsufficientKeySizeTest.java:154:65:154:75 | "secp112r1" | This $@ is less than the recommended key size of EC bits. | InsufficientKeySizeTest.java:154:65:154:75 | "secp112r1" | key size |
+| InsufficientKeySizeTest.java:158:59:158:69 | "secp112r1" | InsufficientKeySizeTest.java:158:59:158:69 | "secp112r1" | InsufficientKeySizeTest.java:158:59:158:69 | "secp112r1" | This $@ is less than the recommended key size of EC bits. | InsufficientKeySizeTest.java:158:59:158:69 | "secp112r1" | key size |
+| InsufficientKeySizeTest.java:165:65:165:82 | "X9.62 prime192v2" | InsufficientKeySizeTest.java:165:65:165:82 | "X9.62 prime192v2" | InsufficientKeySizeTest.java:165:65:165:82 | "X9.62 prime192v2" | This $@ is less than the recommended key size of EC bits. | InsufficientKeySizeTest.java:165:65:165:82 | "X9.62 prime192v2" | key size |
+| InsufficientKeySizeTest.java:169:65:169:82 | "X9.62 c2tnb191v3" | InsufficientKeySizeTest.java:169:65:169:82 | "X9.62 c2tnb191v3" | InsufficientKeySizeTest.java:169:65:169:82 | "X9.62 c2tnb191v3" | This $@ is less than the recommended key size of EC bits. | InsufficientKeySizeTest.java:169:65:169:82 | "X9.62 c2tnb191v3" | key size |
+| InsufficientKeySizeTest.java:173:65:173:75 | "sect163k1" | InsufficientKeySizeTest.java:173:65:173:75 | "sect163k1" | InsufficientKeySizeTest.java:173:65:173:75 | "sect163k1" | This $@ is less than the recommended key size of EC bits. | InsufficientKeySizeTest.java:173:65:173:75 | "sect163k1" | key size |
+| InsufficientKeySizeTest.java:181:65:181:76 | "prime192v2" | InsufficientKeySizeTest.java:181:65:181:76 | "prime192v2" | InsufficientKeySizeTest.java:181:65:181:76 | "prime192v2" | This $@ is less than the recommended key size of EC bits. | InsufficientKeySizeTest.java:181:65:181:76 | "prime192v2" | key size |
+| InsufficientKeySizeTest.java:189:65:189:76 | "c2tnb191v1" | InsufficientKeySizeTest.java:189:65:189:76 | "c2tnb191v1" | InsufficientKeySizeTest.java:189:65:189:76 | "c2tnb191v1" | This $@ is less than the recommended key size of EC bits. | InsufficientKeySizeTest.java:189:65:189:76 | "c2tnb191v1" | key size |
+| InsufficientKeySizeTest.java:197:64:197:74 | "secp112r1" | InsufficientKeySizeTest.java:197:64:197:74 | "secp112r1" | InsufficientKeySizeTest.java:197:64:197:74 | "secp112r1" | This $@ is less than the recommended key size of EC bits. | InsufficientKeySizeTest.java:197:64:197:74 | "secp112r1" | key size |
+| InsufficientKeySizeTest.java:207:66:207:75 | curveName1 | InsufficientKeySizeTest.java:205:39:205:49 | "secp112r1" : String | InsufficientKeySizeTest.java:207:66:207:75 | curveName1 | This $@ is less than the recommended key size of EC bits. | InsufficientKeySizeTest.java:205:39:205:49 | "secp112r1" | key size |
+| InsufficientKeySizeTest.java:212:66:212:75 | curveName2 | InsufficientKeySizeTest.java:210:33:210:43 | "secp112r1" : String | InsufficientKeySizeTest.java:212:66:212:75 | curveName2 | This $@ is less than the recommended key size of EC bits. | InsufficientKeySizeTest.java:210:33:210:43 | "secp112r1" | key size |
+| InsufficientKeySizeTest.java:219:21:219:27 | keySize | InsufficientKeySizeTest.java:24:25:24:26 | 64 : Number | InsufficientKeySizeTest.java:219:21:219:27 | keySize | This $@ is less than the recommended key size of 128 bits. | InsufficientKeySizeTest.java:24:25:24:26 | 64 | key size |
+| InsufficientKeySizeTest.java:225:21:225:27 | keySize | InsufficientKeySizeTest.java:35:30:35:31 | 64 : Number | InsufficientKeySizeTest.java:225:21:225:27 | keySize | This $@ is less than the recommended key size of 128 bits. | InsufficientKeySizeTest.java:35:30:35:31 | 64 | key size |
+| InsufficientKeySizeTest.java:230:31:230:37 | keySize | InsufficientKeySizeTest.java:66:25:66:28 | 1024 : Number | InsufficientKeySizeTest.java:230:31:230:37 | keySize | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:66:25:66:28 | 1024 | key size |
+| InsufficientKeySizeTest.java:236:31:236:37 | keySize | InsufficientKeySizeTest.java:77:36:77:39 | 1024 : Number | InsufficientKeySizeTest.java:236:31:236:37 | keySize | This $@ is less than the recommended key size of 2048 bits. | InsufficientKeySizeTest.java:77:36:77:39 | 1024 | key size |
+| InsufficientKeySizeTest.java:246:31:246:37 | keySize | InsufficientKeySizeTest.java:199:24:199:26 | 128 : Number | InsufficientKeySizeTest.java:246:31:246:37 | keySize | This $@ is less than the recommended key size of 256 bits. | InsufficientKeySizeTest.java:199:24:199:26 | 128 | key size |
+| InsufficientKeySizeTest.java:252:31:252:37 | keySize | InsufficientKeySizeTest.java:202:40:202:42 | 128 : Number | InsufficientKeySizeTest.java:252:31:252:37 | keySize | This $@ is less than the recommended key size of 256 bits. | InsufficientKeySizeTest.java:202:40:202:42 | 128 | key size |
+edges
+| InsufficientKeySizeTest.java:23:31:23:32 | 64 : Number | InsufficientKeySizeTest.java:27:26:27:30 | size1 | provenance |  |
+| InsufficientKeySizeTest.java:24:25:24:26 | 64 : Number | InsufficientKeySizeTest.java:30:26:30:30 | size2 | provenance |  |
+| InsufficientKeySizeTest.java:24:25:24:26 | 64 : Number | InsufficientKeySizeTest.java:34:35:34:39 | size2 : Number | provenance |  |
+| InsufficientKeySizeTest.java:34:35:34:39 | size2 : Number | InsufficientKeySizeTest.java:217:46:217:56 | keySize : Number | provenance |  |
+| InsufficientKeySizeTest.java:35:30:35:31 | 64 : Number | InsufficientKeySizeTest.java:223:41:223:51 | keySize : Number | provenance |  |
+| InsufficientKeySizeTest.java:65:31:65:34 | 1024 : Number | InsufficientKeySizeTest.java:69:36:69:40 | size1 | provenance |  |
+| InsufficientKeySizeTest.java:66:25:66:28 | 1024 : Number | InsufficientKeySizeTest.java:72:36:72:40 | size2 | provenance |  |
+| InsufficientKeySizeTest.java:66:25:66:28 | 1024 : Number | InsufficientKeySizeTest.java:76:41:76:45 | size2 : Number | provenance |  |
+| InsufficientKeySizeTest.java:76:41:76:45 | size2 : Number | InsufficientKeySizeTest.java:228:52:228:62 | keySize : Number | provenance |  |
+| InsufficientKeySizeTest.java:77:36:77:39 | 1024 : Number | InsufficientKeySizeTest.java:234:47:234:57 | keySize : Number | provenance |  |
+| InsufficientKeySizeTest.java:199:24:199:26 | 128 : Number | InsufficientKeySizeTest.java:201:41:201:44 | size : Number | provenance |  |
+| InsufficientKeySizeTest.java:201:41:201:44 | size : Number | InsufficientKeySizeTest.java:244:52:244:62 | keySize : Number | provenance |  |
+| InsufficientKeySizeTest.java:202:40:202:42 | 128 : Number | InsufficientKeySizeTest.java:250:51:250:61 | keySize : Number | provenance |  |
+| InsufficientKeySizeTest.java:205:39:205:49 | "secp112r1" : String | InsufficientKeySizeTest.java:207:66:207:75 | curveName1 | provenance |  |
+| InsufficientKeySizeTest.java:210:33:210:43 | "secp112r1" : String | InsufficientKeySizeTest.java:212:66:212:75 | curveName2 | provenance |  |
+| InsufficientKeySizeTest.java:217:46:217:56 | keySize : Number | InsufficientKeySizeTest.java:219:21:219:27 | keySize | provenance |  |
+| InsufficientKeySizeTest.java:223:41:223:51 | keySize : Number | InsufficientKeySizeTest.java:225:21:225:27 | keySize | provenance |  |
+| InsufficientKeySizeTest.java:228:52:228:62 | keySize : Number | InsufficientKeySizeTest.java:230:31:230:37 | keySize | provenance |  |
+| InsufficientKeySizeTest.java:234:47:234:57 | keySize : Number | InsufficientKeySizeTest.java:236:31:236:37 | keySize | provenance |  |
+| InsufficientKeySizeTest.java:244:52:244:62 | keySize : Number | InsufficientKeySizeTest.java:246:31:246:37 | keySize | provenance |  |
+| InsufficientKeySizeTest.java:250:51:250:61 | keySize : Number | InsufficientKeySizeTest.java:252:31:252:37 | keySize | provenance |  |
+| InsufficientKeySizeTest.java:255:40:255:43 | 1024 : Number | InsufficientKeySizeTest.java:81:36:81:50 | getRSAKeySize(...) | provenance |  |
+nodes
+| InsufficientKeySizeTest.java:17:26:17:27 | 64 | semmle.label | 64 |
+| InsufficientKeySizeTest.java:23:31:23:32 | 64 : Number | semmle.label | 64 : Number |
+| InsufficientKeySizeTest.java:24:25:24:26 | 64 : Number | semmle.label | 64 : Number |
+| InsufficientKeySizeTest.java:27:26:27:30 | size1 | semmle.label | size1 |
+| InsufficientKeySizeTest.java:30:26:30:30 | size2 | semmle.label | size2 |
+| InsufficientKeySizeTest.java:34:35:34:39 | size2 : Number | semmle.label | size2 : Number |
+| InsufficientKeySizeTest.java:35:30:35:31 | 64 : Number | semmle.label | 64 : Number |
+| InsufficientKeySizeTest.java:40:26:40:27 | 64 | semmle.label | 64 |
+| InsufficientKeySizeTest.java:51:36:51:39 | 1024 | semmle.label | 1024 |
+| InsufficientKeySizeTest.java:58:73:58:76 | 1024 | semmle.label | 1024 |
+| InsufficientKeySizeTest.java:62:63:62:66 | 1024 | semmle.label | 1024 |
+| InsufficientKeySizeTest.java:65:31:65:34 | 1024 : Number | semmle.label | 1024 : Number |
+| InsufficientKeySizeTest.java:66:25:66:28 | 1024 : Number | semmle.label | 1024 : Number |
+| InsufficientKeySizeTest.java:69:36:69:40 | size1 | semmle.label | size1 |
+| InsufficientKeySizeTest.java:72:36:72:40 | size2 | semmle.label | size2 |
+| InsufficientKeySizeTest.java:76:41:76:45 | size2 : Number | semmle.label | size2 : Number |
+| InsufficientKeySizeTest.java:77:36:77:39 | 1024 : Number | semmle.label | 1024 : Number |
+| InsufficientKeySizeTest.java:81:36:81:50 | getRSAKeySize(...) | semmle.label | getRSAKeySize(...) |
+| InsufficientKeySizeTest.java:86:36:86:39 | 1024 | semmle.label | 1024 |
+| InsufficientKeySizeTest.java:97:36:97:39 | 1024 | semmle.label | 1024 |
+| InsufficientKeySizeTest.java:104:67:104:70 | 1024 | semmle.label | 1024 |
+| InsufficientKeySizeTest.java:108:60:108:63 | 1024 | semmle.label | 1024 |
+| InsufficientKeySizeTest.java:112:27:112:30 | 1024 | semmle.label | 1024 |
+| InsufficientKeySizeTest.java:117:28:117:31 | 1024 | semmle.label | 1024 |
+| InsufficientKeySizeTest.java:128:36:128:39 | 1024 | semmle.label | 1024 |
+| InsufficientKeySizeTest.java:135:64:135:67 | 1024 | semmle.label | 1024 |
+| InsufficientKeySizeTest.java:139:59:139:62 | 1024 | semmle.label | 1024 |
+| InsufficientKeySizeTest.java:143:27:143:30 | 1024 | semmle.label | 1024 |
+| InsufficientKeySizeTest.java:150:36:150:38 | 128 | semmle.label | 128 |
+| InsufficientKeySizeTest.java:154:65:154:75 | "secp112r1" | semmle.label | "secp112r1" |
+| InsufficientKeySizeTest.java:158:59:158:69 | "secp112r1" | semmle.label | "secp112r1" |
+| InsufficientKeySizeTest.java:165:65:165:82 | "X9.62 prime192v2" | semmle.label | "X9.62 prime192v2" |
+| InsufficientKeySizeTest.java:169:65:169:82 | "X9.62 c2tnb191v3" | semmle.label | "X9.62 c2tnb191v3" |
+| InsufficientKeySizeTest.java:173:65:173:75 | "sect163k1" | semmle.label | "sect163k1" |
+| InsufficientKeySizeTest.java:181:65:181:76 | "prime192v2" | semmle.label | "prime192v2" |
+| InsufficientKeySizeTest.java:189:65:189:76 | "c2tnb191v1" | semmle.label | "c2tnb191v1" |
+| InsufficientKeySizeTest.java:197:64:197:74 | "secp112r1" | semmle.label | "secp112r1" |
+| InsufficientKeySizeTest.java:199:24:199:26 | 128 : Number | semmle.label | 128 : Number |
+| InsufficientKeySizeTest.java:201:41:201:44 | size : Number | semmle.label | size : Number |
+| InsufficientKeySizeTest.java:202:40:202:42 | 128 : Number | semmle.label | 128 : Number |
+| InsufficientKeySizeTest.java:205:39:205:49 | "secp112r1" : String | semmle.label | "secp112r1" : String |
+| InsufficientKeySizeTest.java:207:66:207:75 | curveName1 | semmle.label | curveName1 |
+| InsufficientKeySizeTest.java:210:33:210:43 | "secp112r1" : String | semmle.label | "secp112r1" : String |
+| InsufficientKeySizeTest.java:212:66:212:75 | curveName2 | semmle.label | curveName2 |
+| InsufficientKeySizeTest.java:217:46:217:56 | keySize : Number | semmle.label | keySize : Number |
+| InsufficientKeySizeTest.java:219:21:219:27 | keySize | semmle.label | keySize |
+| InsufficientKeySizeTest.java:223:41:223:51 | keySize : Number | semmle.label | keySize : Number |
+| InsufficientKeySizeTest.java:225:21:225:27 | keySize | semmle.label | keySize |
+| InsufficientKeySizeTest.java:228:52:228:62 | keySize : Number | semmle.label | keySize : Number |
+| InsufficientKeySizeTest.java:230:31:230:37 | keySize | semmle.label | keySize |
+| InsufficientKeySizeTest.java:234:47:234:57 | keySize : Number | semmle.label | keySize : Number |
+| InsufficientKeySizeTest.java:236:31:236:37 | keySize | semmle.label | keySize |
+| InsufficientKeySizeTest.java:244:52:244:62 | keySize : Number | semmle.label | keySize : Number |
+| InsufficientKeySizeTest.java:246:31:246:37 | keySize | semmle.label | keySize |
+| InsufficientKeySizeTest.java:250:51:250:61 | keySize : Number | semmle.label | keySize : Number |
+| InsufficientKeySizeTest.java:252:31:252:37 | keySize | semmle.label | keySize |
+| InsufficientKeySizeTest.java:255:40:255:43 | 1024 : Number | semmle.label | 1024 : Number |
+subpaths
