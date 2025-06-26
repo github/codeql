@@ -1,1 +1,5 @@
-| gen_try_expr.rs:7:13:7:18 | TryExpr | getNumberOfAttrs: | 0 | hasExpr: | yes |
+instances
+| gen_try_expr.rs:7:13:7:18 | TryExpr |
+getAttr
+getExpr
+| gen_try_expr.rs:7:13:7:18 | TryExpr | gen_try_expr.rs:7:13:7:17 | foo(...) |

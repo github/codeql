@@ -1,1 +1,6 @@
-| property_wrapper_value_placeholder.swift:12:26:12:26 | PropertyWrapperValuePlaceholderExpr | hasType: | yes | hasWrappedValue: | yes | getPlaceholder: | property_wrapper_value_placeholder.swift:12:26:12:26 | OpaqueValueExpr |
+instances
+| property_wrapper_value_placeholder.swift:12:26:12:26 | PropertyWrapperValuePlaceholderExpr | getPlaceholder: | property_wrapper_value_placeholder.swift:12:26:12:26 | OpaqueValueExpr |
+getType
+| property_wrapper_value_placeholder.swift:12:26:12:26 | PropertyWrapperValuePlaceholderExpr | Int |
+getWrappedValue
+| property_wrapper_value_placeholder.swift:12:26:12:26 | PropertyWrapperValuePlaceholderExpr | property_wrapper_value_placeholder.swift:12:26:12:26 | 42 |

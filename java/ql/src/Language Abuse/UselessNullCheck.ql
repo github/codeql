@@ -18,10 +18,10 @@ import semmle.code.java.controlflow.Guards
 
 from Expr guard, Expr e, Expr reason, string msg
 where
-  guard = basicNullGuard(e, _, true) and
+  guardSuggestsExprMaybeNull(guard, e) and
   e = clearlyNotNullExpr(reason) and
   (
-    if reason instanceof Guard
+    if reason = directNullGuard(_, _, _)
     then msg = "This check is useless. $@ cannot be null at this check, since it is guarded by $@."
     else
       if reason != e

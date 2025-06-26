@@ -2,19 +2,34 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  ForEachStmt x, string hasLabel, int getNumberOfVariables, Pattern getPattern, string hasWhere,
-  string hasIteratorVar, string hasNextCall, BraceStmt getBody
-where
+query predicate instances(
+  ForEachStmt x, string getPattern__label, Pattern getPattern, string getBody__label,
+  BraceStmt getBody
+) {
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.hasLabel() then hasLabel = "yes" else hasLabel = "no") and
-  getNumberOfVariables = x.getNumberOfVariables() and
+  getPattern__label = "getPattern:" and
   getPattern = x.getPattern() and
-  (if x.hasWhere() then hasWhere = "yes" else hasWhere = "no") and
-  (if x.hasIteratorVar() then hasIteratorVar = "yes" else hasIteratorVar = "no") and
-  (if x.hasNextCall() then hasNextCall = "yes" else hasNextCall = "no") and
+  getBody__label = "getBody:" and
   getBody = x.getBody()
-select x, "hasLabel:", hasLabel, "getNumberOfVariables:", getNumberOfVariables, "getPattern:",
-  getPattern, "hasWhere:", hasWhere, "hasIteratorVar:", hasIteratorVar, "hasNextCall:", hasNextCall,
-  "getBody:", getBody
+}
+
+query predicate getLabel(ForEachStmt x, string getLabel) {
+  toBeTested(x) and not x.isUnknown() and getLabel = x.getLabel()
+}
+
+query predicate getVariable(ForEachStmt x, int index, VarDecl getVariable) {
+  toBeTested(x) and not x.isUnknown() and getVariable = x.getVariable(index)
+}
+
+query predicate getWhere(ForEachStmt x, Expr getWhere) {
+  toBeTested(x) and not x.isUnknown() and getWhere = x.getWhere()
+}
+
+query predicate getIteratorVar(ForEachStmt x, PatternBindingDecl getIteratorVar) {
+  toBeTested(x) and not x.isUnknown() and getIteratorVar = x.getIteratorVar()
+}
+
+query predicate getNextCall(ForEachStmt x, Expr getNextCall) {
+  toBeTested(x) and not x.isUnknown() and getNextCall = x.getNextCall()
+}

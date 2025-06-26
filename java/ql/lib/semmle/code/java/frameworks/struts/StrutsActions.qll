@@ -133,7 +133,7 @@ class Struts2PrepareMethod extends Method {
  */
 class Struts2ActionSupportClass extends Class {
   Struts2ActionSupportClass() {
-    this.getAStrictAncestor().hasQualifiedName("com.opensymphony.xwork2", "ActionSupport")
+    this.getASourceSupertype+().hasQualifiedName("com.opensymphony.xwork2", "ActionSupport")
   }
 
   /**

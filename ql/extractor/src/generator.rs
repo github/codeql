@@ -36,5 +36,5 @@ pub fn run(options: Options) -> std::io::Result<()> {
         },
     ];
 
-    generate(languages, options.dbscheme, options.library)
+    generate(languages, options.dbscheme, options.library, false)
 }

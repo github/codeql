@@ -2,19 +2,30 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  EnumDecl x, int getNumberOfGenericTypeParams, ModuleDecl getModule, int getNumberOfMembers,
-  Type getInterfaceType, string getName, int getNumberOfInheritedTypes, Type getType
-where
+query predicate instances(
+  EnumDecl x, string getModule__label, ModuleDecl getModule, string getInterfaceType__label,
+  Type getInterfaceType, string getName__label, string getName, string getType__label, Type getType
+) {
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
+  getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers = x.getNumberOfMembers() and
+  getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType() and
+  getName__label = "getName:" and
   getName = x.getName() and
-  getNumberOfInheritedTypes = x.getNumberOfInheritedTypes() and
+  getType__label = "getType:" and
   getType = x.getType()
-select x, "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams, "getModule:", getModule,
-  "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:", getInterfaceType, "getName:",
-  getName, "getNumberOfInheritedTypes:", getNumberOfInheritedTypes, "getType:", getType
+}
+
+query predicate getGenericTypeParam(EnumDecl x, int index, GenericTypeParamDecl getGenericTypeParam) {
+  toBeTested(x) and not x.isUnknown() and getGenericTypeParam = x.getGenericTypeParam(index)
+}
+
+query predicate getMember(EnumDecl x, int index, Decl getMember) {
+  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
+}
+
+query predicate getInheritedType(EnumDecl x, int index, Type getInheritedType) {
+  toBeTested(x) and not x.isUnknown() and getInheritedType = x.getInheritedType(index)
+}

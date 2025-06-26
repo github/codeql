@@ -285,6 +285,16 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
       prefix2.isEmpty()
     )
   )
+  or
+  // an array list expression (`[1, 2, 3]`) has the type of the first (any) element
+  n1.(ArrayListExpr).getExpr(_) = n2 and
+  prefix1 = TypePath::singleton(TArrayTypeParameter()) and
+  prefix2.isEmpty()
+  or
+  // an array repeat expression (`[1; 3]`) has the type of the repeat operand
+  n1.(ArrayRepeatExpr).getRepeatOperand() = n2 and
+  prefix1 = TypePath::singleton(TArrayTypeParameter()) and
+  prefix2.isEmpty()
 }
 
 pragma[nomagic]
@@ -772,45 +782,48 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
     n = a.getNodeAt(apos) and
     result = CallExprBaseMatching::inferAccessType(a, apos, path0)
   |
-    (
+    if
       apos.isBorrowed(true)
       or
-      // The desugaring of the unary `*e` is `*Deref::deref(&e)`. To handle the
-      // deref expression after the call we must strip a `&` from the type at
-      // the return position.
-      apos.isReturn() and a instanceof DerefExpr
-    ) and
-    path0.isCons(TRefTypeParameter(), path)
-    or
-    apos.isBorrowed(false) and
-    exists(Type argType | argType = inferType(n) |
-      if argType = TRefType()
+      // The desugaring of the unary `*e` is `*Deref::deref(&e)` and the
+      // desugaring of `a[b]` is `*Index::index(&a, b)`. To handle the deref
+      // expression after the call we must strip a `&` from the type at the
+      // return position.
+      apos.isReturn() and
+      (a instanceof DerefExpr or a instanceof IndexExpr)
+    then path0.isCons(TRefTypeParameter(), path)
+    else
+      if apos.isBorrowed(false)
       then
-        path = path0 and
-        path0.isCons(TRefTypeParameter(), _)
-        or
-        // adjust for implicit deref
-        not path0.isCons(TRefTypeParameter(), _) and
-        not (path0.isEmpty() and result = TRefType()) and
-        path = TypePath::cons(TRefTypeParameter(), path0)
-      else (
-        not (
-          argType.(StructType).asItemNode() instanceof StringStruct and
-          result.(StructType).asItemNode() instanceof Builtins::Str
-        ) and
-        (
-          not path0.isCons(TRefTypeParameter(), _) and
-          not (path0.isEmpty() and result = TRefType()) and
-          path = path0
-          or
-          // adjust for implicit borrow
-          path0.isCons(TRefTypeParameter(), path)
+        exists(Type argType | argType = inferType(n) |
+          if argType = TRefType()
+          then
+            path = path0 and
+            path0.isCons(TRefTypeParameter(), _)
+            or
+            // adjust for implicit deref
+            not path0.isCons(TRefTypeParameter(), _) and
+            not (path0.isEmpty() and result = TRefType()) and
+            path = TypePath::cons(TRefTypeParameter(), path0)
+          else (
+            not (
+              argType.(StructType).asItemNode() instanceof StringStruct and
+              result.(StructType).asItemNode() instanceof Builtins::Str
+            ) and
+            (
+              not path0.isCons(TRefTypeParameter(), _) and
+              not (path0.isEmpty() and result = TRefType()) and
+              path = path0
+              or
+              // adjust for implicit borrow
+              path0.isCons(TRefTypeParameter(), path)
+            )
+          )
         )
+      else (
+        not apos.isBorrowed(_) and
+        path = path0
       )
-    )
-    or
-    not apos.isBorrowed(_) and
-    path = path0
   )
 }
 
@@ -1035,6 +1048,12 @@ private class Vec extends Struct {
 }
 
 /**
+ * Gets the root type of the array expression `ae`.
+ */
+pragma[nomagic]
+private Type inferArrayExprType(ArrayExpr ae) { exists(ae) and result = TArrayType() }
+
+/**
  * According to [the Rust reference][1]: _"array and slice-typed expressions
  * can be indexed with a `usize` index ... For other types an index expression
  * `a[b]` is equivalent to *std::ops::Index::index(&a, b)"_.
@@ -1046,8 +1065,8 @@ private class Vec extends Struct {
  */
 pragma[nomagic]
 private Type inferIndexExprType(IndexExpr ie, TypePath path) {
-  // TODO: Should be implemented as method resolution, using the special
-  // `std::ops::Index` trait.
+  // TODO: Method resolution to the `std::ops::Index` trait can handle the
+  // `Index` instances for slices and arrays.
   exists(TypePath exprPath, Builtins::BuiltinType t |
     TStruct(t) = inferType(ie.getIndex()) and
     (
@@ -1066,6 +1085,26 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
     exists(TypePath path0 |
       exprPath.isCons(any(RefTypeParameter tp), path0) and
       path0.isCons(any(SliceTypeParameter tp), path)
+    )
+  )
+}
+
+pragma[nomagic]
+private Type inferForLoopExprType(AstNode n, TypePath path) {
+  // type of iterable -> type of pattern (loop variable)
+  exists(ForExpr fe, Type iterableType, TypePath iterablePath |
+    n = fe.getPat() and
+    iterableType = inferType(fe.getIterable(), iterablePath) and
+    result = iterableType and
+    (
+      iterablePath.isCons(any(Vec v).getElementTypeParameter(), path)
+      or
+      iterablePath.isCons(any(ArrayTypeParameter tp), path)
+      or
+      iterablePath
+          .stripPrefix(TypePath::cons(TRefTypeParameter(),
+              TypePath::singleton(any(SliceTypeParameter tp)))) = path
+      // TODO: iterables (general case for containers, ranges etc)
     )
   )
 }
@@ -1515,7 +1554,12 @@ private module Cached {
     or
     result = inferAwaitExprType(n, path)
     or
+    result = inferArrayExprType(n) and
+    path.isEmpty()
+    or
     result = inferIndexExprType(n, path)
+    or
+    result = inferForLoopExprType(n, path)
   }
 }
 
