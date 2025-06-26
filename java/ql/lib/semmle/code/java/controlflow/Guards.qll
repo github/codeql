@@ -294,27 +294,23 @@ private module GuardsInput implements SharedGuards::InputSig<Location> {
     equals.getNumberOfParameters() = 2
   }
 
-  class EqualityTest extends Expr {
-    EqualityTest() {
-      this instanceof J::EqualityTest or
-      this.(MethodCall).getMethod() instanceof EqualsMethod or
-      objectsEquals(this.(MethodCall).getMethod())
-    }
-
-    Expr getAnOperand() {
-      result = this.(J::EqualityTest).getAnOperand()
+  pragma[nomagic]
+  predicate equalityTest(Expr eqtest, Expr left, Expr right, boolean polarity) {
+    exists(EqualityTest eq | eq = eqtest |
+      eq.getLeftOperand() = left and
+      eq.getRightOperand() = right and
+      eq.polarity() = polarity
+    )
+    or
+    exists(MethodCall call | call = eqtest and polarity = true |
+      call.getMethod() instanceof EqualsMethod and
+      call.getQualifier() = left and
+      call.getAnArgument() = right
       or
-      result = this.(MethodCall).getAnArgument()
-      or
-      this.(MethodCall).getMethod() instanceof EqualsMethod and
-      result = this.(MethodCall).getQualifier()
-    }
-
-    boolean polarity() {
-      result = this.(J::EqualityTest).polarity()
-      or
-      result = true and not this instanceof J::EqualityTest
-    }
+      objectsEquals(call.getMethod()) and
+      call.getArgument(0) = left and
+      call.getArgument(1) = right
+    )
   }
 
   class ConditionalExpr extends Expr instanceof J::ConditionalExpr {
