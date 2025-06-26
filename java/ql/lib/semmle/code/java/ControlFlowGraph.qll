@@ -347,7 +347,17 @@ private module ControlFlowGraphImpl {
     )
   }
 
-  private ThrowableType assertionError() { result.hasQualifiedName("java.lang", "AssertionError") }
+  private ThrowableType actualAssertionError() {
+    result.hasQualifiedName("java.lang", "AssertionError")
+  }
+
+  private ThrowableType assertionError() {
+    result = actualAssertionError()
+    or
+    // In case `AssertionError` is not extracted, we use `Error` as a fallback.
+    not exists(actualAssertionError()) and
+    result.hasQualifiedName("java.lang", "Error")
+  }
 
   /**
    * Gets an exception type that may be thrown during execution of the
