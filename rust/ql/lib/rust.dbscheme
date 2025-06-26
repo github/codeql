@@ -114,6 +114,10 @@ databaseMetadata(
   string value: string ref
 );
 
+overlayChangedFiles(
+  string path: string ref
+);
+
 
 // from prefix.dbscheme
 #keyset[id]
