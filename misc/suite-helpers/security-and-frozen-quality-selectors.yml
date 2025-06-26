@@ -1,4 +1,4 @@
-- description: Selectors for selecting the security-and-quality queries for a language
+- description: Selectors for selecting the non-quality queries for the security-and-quality queries for a language
 - include:
     kind:
     - problem
@@ -6,6 +6,8 @@
     precision:
     - high
     - very-high
+    tags contain:
+    - security
 - include:
     kind:
     - problem
@@ -14,6 +16,8 @@
     problem.severity:
       - error
       - warning
+    tags contain:
+    - security
 - include:
     kind:
     - diagnostic
