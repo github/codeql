@@ -1,3 +1,10 @@
+## 1.4.0
+
+### Query Metadata Changes
+
+* Update query metadata tags for `rb/database-query-in-loop` and `rb/useless-assignment-to-local` to align with the established
+[Query file metadata and alert message style guide](https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md#quality-query-sub-category-tags).
+
 ## 1.3.2
 
 No user-facing changes.

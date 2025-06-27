@@ -254,7 +254,7 @@ module ClientRequest {
       method = "request" and
       result = this.getOptionArgument(0, "data")
       or
-      method = ["post", "put"] and
+      method = ["post", "put", "patch"] and
       result = [this.getArgument(1), this.getOptionArgument(2, "data")]
       or
       method = ["postForm", "putForm", "patchForm"] and result = this.getArgument(1)
@@ -276,6 +276,69 @@ module ClientRequest {
       or
       this.getArgument(this.getOptionsArgIndex()).analyze().getAValue().isIndefinite(_) and
       result = ""
+    }
+
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      responseType = this.getResponseType() and
+      promise = true and
+      result = this
+      or
+      responseType = this.getResponseType() and
+      promise = false and
+      result = this.getReturn().getPromisedError().getMember("response").asSource()
+    }
+  }
+
+  /**
+   * A model of a `axios` instance request.
+   */
+  class AxiosInstanceRequest extends ClientRequest::Range, API::CallNode {
+    string method;
+    API::CallNode instance;
+
+    // Instances of axios, e.g. `axios.create({ ... })`
+    AxiosInstanceRequest() {
+      instance = axios().getMember(["create", "createInstance"]).getACall() and
+      method = [httpMethodName(), "request", "postForm", "putForm", "patchForm", "getUri"] and
+      this = instance.getReturn().getMember(method).getACall()
+    }
+
+    private int getOptionsArgIndex() {
+      (method = "get" or method = "delete" or method = "head") and
+      result = 0
+      or
+      (method = "post" or method = "put" or method = "patch") and
+      result = 1
+    }
+
+    private DataFlow::Node getOptionArgument(string name) {
+      result = this.getOptionArgument(this.getOptionsArgIndex(), name)
+    }
+
+    override DataFlow::Node getUrl() {
+      result = this.getArgument(0) or
+      result = this.getOptionArgument(urlPropertyName())
+    }
+
+    override DataFlow::Node getHost() { result = instance.getOptionArgument(0, "baseURL") }
+
+    override DataFlow::Node getADataNode() {
+      method = ["post", "put", "patch"] and
+      result = [this.getArgument(1), this.getOptionArgument(2, "data")]
+      or
+      method = ["postForm", "putForm", "patchForm"] and result = this.getArgument(1)
+      or
+      result = this.getOptionArgument([0 .. 2], ["headers", "params"])
+    }
+
+    /** Gets the response type from the options passed in. */
+    string getResponseType() {
+      exists(DataFlow::Node option | option = instance.getOptionArgument(0, "responseType") |
+        option.mayHaveStringValue(result)
+      )
+      or
+      not exists(this.getOptionArgument("responseType")) and
+      result = "json"
     }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {

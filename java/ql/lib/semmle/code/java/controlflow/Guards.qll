@@ -7,9 +7,9 @@ module;
 
 import java
 private import semmle.code.java.controlflow.Dominance
-private import semmle.code.java.controlflow.internal.GuardsLogic
 private import semmle.code.java.controlflow.internal.Preconditions
 private import semmle.code.java.controlflow.internal.SwitchCases
+private import codeql.controlflow.Guards as SharedGuards
 
 /**
  * A basic block that terminates in a condition, splitting the subsequent control flow.
@@ -139,66 +139,376 @@ private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pre
   )
 }
 
-/**
- * A condition that can be evaluated to either true or false. This can either
- * be an `Expr` of boolean type that isn't a boolean literal, or a case of a
- * switch statement, or a method access that acts as a precondition check.
- *
- * Evaluating a switch case to true corresponds to taking that switch case, and
- * evaluating it to false corresponds to taking some other branch.
- */
-final class Guard extends ExprParent {
-  Guard() {
-    this.(Expr).getType() instanceof BooleanType and not this instanceof BooleanLiteral
-    or
-    this instanceof SwitchCase
-    or
-    conditionCheckArgument(this, _, _)
+private module GuardsInput implements SharedGuards::InputSig<Location> {
+  private import java as J
+  private import semmle.code.java.dataflow.NullGuards as NullGuards
+  import SuccessorType
+
+  class ControlFlowNode = J::ControlFlowNode;
+
+  class BasicBlock = J::BasicBlock;
+
+  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) { J::dominatingEdge(bb1, bb2) }
+
+  class AstNode = ExprParent;
+
+  class Expr = J::Expr;
+
+  private newtype TConstantValue =
+    TCharValue(string c) { any(CharacterLiteral lit).getValue() = c } or
+    TStringValue(string value) { any(CompileTimeConstantExpr c).getStringValue() = value } or
+    TEnumValue(EnumConstant c)
+
+  class ConstantValue extends TConstantValue {
+    string toString() {
+      this = TCharValue(result)
+      or
+      this = TStringValue(result)
+      or
+      exists(EnumConstant c | this = TEnumValue(c) and result = c.toString())
+    }
   }
 
+  abstract class ConstantExpr extends Expr {
+    predicate isNull() { none() }
+
+    boolean asBooleanValue() { none() }
+
+    int asIntegerValue() { none() }
+
+    ConstantValue asConstantValue() { none() }
+  }
+
+  private class NullConstant extends ConstantExpr instanceof J::NullLiteral {
+    override predicate isNull() { any() }
+  }
+
+  private class BooleanConstant extends ConstantExpr instanceof J::BooleanLiteral {
+    override boolean asBooleanValue() { result = super.getBooleanValue() }
+  }
+
+  private class IntegerConstant extends ConstantExpr instanceof J::CompileTimeConstantExpr {
+    override int asIntegerValue() { result = super.getIntValue() }
+  }
+
+  private class CharConstant extends ConstantExpr instanceof J::CharacterLiteral {
+    override ConstantValue asConstantValue() { result = TCharValue(super.getValue()) }
+  }
+
+  private class StringConstant extends ConstantExpr instanceof J::CompileTimeConstantExpr {
+    override ConstantValue asConstantValue() { result = TStringValue(super.getStringValue()) }
+  }
+
+  private class EnumConstantExpr extends ConstantExpr instanceof J::VarAccess {
+    override ConstantValue asConstantValue() {
+      exists(EnumConstant c | this = c.getAnAccess() and result = TEnumValue(c))
+    }
+  }
+
+  class NonNullExpr extends Expr {
+    NonNullExpr() {
+      this = NullGuards::baseNotNullExpr()
+      or
+      exists(Field f |
+        this = f.getAnAccess() and
+        f.isFinal() and
+        f.getInitializer() = NullGuards::baseNotNullExpr()
+      )
+    }
+  }
+
+  class Case extends ExprParent instanceof J::SwitchCase {
+    Expr getSwitchExpr() { result = super.getSelectorExpr() }
+
+    predicate isDefaultCase() { this instanceof DefaultCase }
+
+    ConstantExpr asConstantCase() {
+      exists(ConstCase cc | this = cc |
+        cc.getValue() = result and
+        strictcount(cc.getValue(_)) = 1
+      )
+    }
+
+    private predicate hasPatternCaseMatchEdge(BasicBlock bb1, BasicBlock bb2, boolean isMatch) {
+      exists(ConditionNode patterncase |
+        this instanceof PatternCase and
+        patterncase = super.getControlFlowNode() and
+        bb1.getLastNode() = patterncase and
+        bb2.getFirstNode() = patterncase.getABranchSuccessor(isMatch)
+      )
+    }
+
+    predicate matchEdge(BasicBlock bb1, BasicBlock bb2) {
+      exists(ControlFlowNode pred |
+        // Pattern cases are handled as ConditionBlocks.
+        not this instanceof PatternCase and
+        bb2.getFirstNode() = super.getControlFlowNode() and
+        isNonFallThroughPredecessor(this, pred) and
+        bb1 = pred.getBasicBlock()
+      )
+      or
+      this.hasPatternCaseMatchEdge(bb1, bb2, true)
+    }
+
+    predicate nonMatchEdge(BasicBlock bb1, BasicBlock bb2) {
+      this.hasPatternCaseMatchEdge(bb1, bb2, false)
+    }
+  }
+
+  abstract private class BinExpr extends Expr {
+    Expr getAnOperand() {
+      result = this.(BinaryExpr).getAnOperand() or result = this.(AssignOp).getSource()
+    }
+  }
+
+  class AndExpr extends BinExpr {
+    AndExpr() {
+      this instanceof AndBitwiseExpr or
+      this instanceof AndLogicalExpr or
+      this instanceof AssignAndExpr
+    }
+  }
+
+  class OrExpr extends BinExpr {
+    OrExpr() {
+      this instanceof OrBitwiseExpr or
+      this instanceof OrLogicalExpr or
+      this instanceof AssignOrExpr
+    }
+  }
+
+  class NotExpr extends Expr instanceof J::LogNotExpr {
+    Expr getOperand() { result = this.(J::LogNotExpr).getExpr() }
+  }
+
+  class IdExpr extends Expr {
+    IdExpr() { this instanceof AssignExpr or this instanceof CastExpr }
+
+    Expr getEqualChildExpr() {
+      result = this.(AssignExpr).getSource()
+      or
+      result = this.(CastExpr).getExpr()
+    }
+  }
+
+  private predicate objectsEquals(Method equals) {
+    equals.hasQualifiedName("java.util", "Objects", "equals") and
+    equals.getNumberOfParameters() = 2
+  }
+
+  pragma[nomagic]
+  predicate equalityTest(Expr eqtest, Expr left, Expr right, boolean polarity) {
+    exists(EqualityTest eq | eq = eqtest |
+      eq.getLeftOperand() = left and
+      eq.getRightOperand() = right and
+      eq.polarity() = polarity
+    )
+    or
+    exists(MethodCall call | call = eqtest and polarity = true |
+      call.getMethod() instanceof EqualsMethod and
+      call.getQualifier() = left and
+      call.getAnArgument() = right
+      or
+      objectsEquals(call.getMethod()) and
+      call.getArgument(0) = left and
+      call.getArgument(1) = right
+    )
+  }
+
+  class ConditionalExpr extends Expr instanceof J::ConditionalExpr {
+    Expr getCondition() { result = super.getCondition() }
+
+    Expr getThen() { result = super.getTrueExpr() }
+
+    Expr getElse() { result = super.getFalseExpr() }
+  }
+}
+
+private module GuardsImpl = SharedGuards::Make<Location, GuardsInput>;
+
+private module LogicInputCommon {
+  private import semmle.code.java.dataflow.NullGuards as NullGuards
+
+  predicate additionalNullCheck(
+    GuardsImpl::PreGuard guard, GuardValue val, GuardsInput::Expr e, boolean isNull
+  ) {
+    guard.(InstanceOfExpr).getExpr() = e and val.asBooleanValue() = true and isNull = false
+    or
+    exists(MethodCall call |
+      call = guard and
+      call.getAnArgument() = e and
+      NullGuards::nullCheckMethod(call.getMethod(), val.asBooleanValue(), isNull)
+    )
+  }
+}
+
+private module LogicInput_v1 implements GuardsImpl::LogicInputSig {
+  private import semmle.code.java.dataflow.internal.BaseSSA
+
+  final private class FinalBaseSsaVariable = BaseSsaVariable;
+
+  class SsaDefinition extends FinalBaseSsaVariable {
+    GuardsInput::Expr getARead() { result = this.getAUse() }
+  }
+
+  class SsaWriteDefinition extends SsaDefinition instanceof BaseSsaUpdate {
+    GuardsInput::Expr getDefinition() {
+      super.getDefiningExpr().(VariableAssign).getSource() = result or
+      super.getDefiningExpr().(AssignOp) = result
+    }
+  }
+
+  class SsaPhiNode extends SsaDefinition instanceof BaseSsaPhiNode {
+    predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
+      super.hasInputFromBlock(inp, bb)
+    }
+  }
+
+  predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
+
+  predicate additionalImpliesStep(
+    GuardsImpl::PreGuard g1, GuardValue v1, GuardsImpl::PreGuard g2, GuardValue v2
+  ) {
+    exists(MethodCall check, int argIndex |
+      g1 = check and
+      v1.getDualValue().isThrowsException() and
+      conditionCheckArgument(check, argIndex, v2.asBooleanValue()) and
+      g2 = check.getArgument(argIndex)
+    )
+  }
+}
+
+private module LogicInput_v2 implements GuardsImpl::LogicInputSig {
+  private import semmle.code.java.dataflow.SSA as SSA
+
+  final private class FinalSsaVariable = SSA::SsaVariable;
+
+  class SsaDefinition extends FinalSsaVariable {
+    GuardsInput::Expr getARead() { result = this.getAUse() }
+  }
+
+  class SsaWriteDefinition extends SsaDefinition instanceof SSA::SsaExplicitUpdate {
+    GuardsInput::Expr getDefinition() {
+      super.getDefiningExpr().(VariableAssign).getSource() = result or
+      super.getDefiningExpr().(AssignOp) = result
+    }
+  }
+
+  class SsaPhiNode extends SsaDefinition instanceof SSA::SsaPhiNode {
+    predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
+      super.hasInputFromBlock(inp, bb)
+    }
+  }
+
+  predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
+
+  predicate additionalImpliesStep(
+    GuardsImpl::PreGuard g1, GuardValue v1, GuardsImpl::PreGuard g2, GuardValue v2
+  ) {
+    LogicInput_v1::additionalImpliesStep(g1, v1, g2, v2)
+    or
+    CustomGuard::additionalImpliesStep(g1, v1, g2, v2)
+  }
+}
+
+private module LogicInput_v3 implements GuardsImpl::LogicInputSig {
+  private import semmle.code.java.dataflow.IntegerGuards as IntegerGuards
+  import LogicInput_v2
+
+  predicate rangeGuard(GuardsImpl::PreGuard guard, GuardValue val, Expr e, int k, boolean upper) {
+    IntegerGuards::rangeGuard(guard, val.asBooleanValue(), e, k, upper)
+  }
+
+  predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
+
+  predicate additionalImpliesStep = LogicInput_v2::additionalImpliesStep/4;
+}
+
+private module CustomGuardInput implements Guards_v2::CustomGuardInputSig {
+  private import semmle.code.java.dataflow.SSA
+
+  private int parameterPosition() { result in [-1, any(Parameter p).getPosition()] }
+
+  /** A parameter position represented by an integer. */
+  class ParameterPosition extends int {
+    ParameterPosition() { this = parameterPosition() }
+  }
+
+  /** An argument position represented by an integer. */
+  class ArgumentPosition extends int {
+    ArgumentPosition() { this = parameterPosition() }
+  }
+
+  /** Holds if arguments at position `apos` match parameters at position `ppos`. */
+  pragma[inline]
+  predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+
+  final private class FinalMethod = Method;
+
+  class BooleanMethod extends FinalMethod {
+    BooleanMethod() {
+      super.getReturnType().(PrimitiveType).hasName("boolean") and
+      not super.isOverridable()
+    }
+
+    LogicInput_v2::SsaDefinition getParameter(ParameterPosition ppos) {
+      exists(Parameter p |
+        super.getParameter(ppos) = p and
+        not p.isVarargs() and
+        result.(SsaImplicitInit).isParameterDefinition(p)
+      )
+    }
+
+    GuardsInput::Expr getAReturnExpr() {
+      exists(ReturnStmt ret |
+        this = ret.getEnclosingCallable() and
+        ret.getResult() = result
+      )
+    }
+  }
+
+  private predicate booleanMethodCall(MethodCall call, BooleanMethod m) {
+    call.getMethod().getSourceDeclaration() = m
+  }
+
+  class BooleanMethodCall extends GuardsInput::Expr instanceof MethodCall {
+    BooleanMethodCall() { booleanMethodCall(this, _) }
+
+    BooleanMethod getMethod() { booleanMethodCall(this, result) }
+
+    GuardsInput::Expr getArgument(ArgumentPosition apos) { result = super.getArgument(apos) }
+  }
+}
+
+class GuardValue = GuardsImpl::GuardValue;
+
+private module CustomGuard = Guards_v2::CustomGuard<CustomGuardInput>;
+
+/** INTERNAL: Don't use. */
+module Guards_v1 = GuardsImpl::Logic<LogicInput_v1>;
+
+/** INTERNAL: Don't use. */
+module Guards_v2 = GuardsImpl::Logic<LogicInput_v2>;
+
+/** INTERNAL: Don't use. */
+module Guards_v3 = GuardsImpl::Logic<LogicInput_v3>;
+
+/** INTERNAL: Don't use. */
+predicate implies_v3(Guard g1, boolean b1, Guard g2, boolean b2) {
+  Guards_v3::boolImplies(g1, any(GuardValue v | v.asBooleanValue() = b1), g2,
+    any(GuardValue v | v.asBooleanValue() = b2))
+}
+
+/**
+ * A guard. This may be any expression whose value determines subsequent
+ * control flow. It may also be a switch case, which as a guard is considered
+ * to evaluate to either true or false depending on whether the case matches.
+ */
+final class Guard extends Guards_v3::Guard {
   /** Gets the immediately enclosing callable whose body contains this guard. */
   Callable getEnclosingCallable() {
     result = this.(Expr).getEnclosingCallable() or
     result = this.(SwitchCase).getEnclosingCallable()
-  }
-
-  /** Gets the statement containing this guard. */
-  Stmt getEnclosingStmt() {
-    result = this.(Expr).getEnclosingStmt() or
-    result = this.(SwitchCase).getSwitch() or
-    result = this.(SwitchCase).getSwitchExpr().getEnclosingStmt()
-  }
-
-  /**
-   * Gets the basic block containing this guard or the basic block that tests the
-   * applicability of this switch case -- for a pattern case this is the case statement
-   * itself; for a non-pattern case this is the most recent pattern case or the top of
-   * the switch block if there is none.
-   */
-  BasicBlock getBasicBlock() {
-    // Not a switch case
-    result = this.(Expr).getBasicBlock()
-    or
-    // Return the closest pattern case statement before this one, including this one.
-    result = getClosestPrecedingPatternCase(this).getBasicBlock()
-    or
-    // Not a pattern case and no preceding pattern case -- return the top of the switch block.
-    not exists(getClosestPrecedingPatternCase(this)) and
-    result = this.(SwitchCase).getSelectorExpr().getBasicBlock()
-  }
-
-  /**
-   * Holds if this guard is an equality test between `e1` and `e2`. The test
-   * can be either `==`, `!=`, `.equals`, or a switch case. If the test is
-   * negated, that is `!=`, then `polarity` is false, otherwise `polarity` is
-   * true.
-   */
-  predicate isEquality(Expr e1, Expr e2, boolean polarity) {
-    exists(Expr exp1, Expr exp2 | equalityGuard(this, exp1, exp2, polarity) |
-      e1 = exp1 and e2 = exp2
-      or
-      e2 = exp1 and e1 = exp2
-    )
   }
 
   /**
@@ -233,211 +543,14 @@ final class Guard extends ExprParent {
       else restricted = false
     )
   }
-
-  /**
-   * Holds if the evaluation of this guard to `branch` corresponds to the edge
-   * from `bb1` to `bb2`.
-   */
-  predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
-    exists(ConditionBlock cb |
-      cb = bb1 and
-      cb.getCondition() = this and
-      bb2 = cb.getTestSuccessor(branch)
-    )
-    or
-    exists(SwitchCase sc, ControlFlowNode pred |
-      sc = this and
-      // Pattern cases are handled as ConditionBlocks above.
-      not sc instanceof PatternCase and
-      branch = true and
-      bb2.getFirstNode() = sc.getControlFlowNode() and
-      isNonFallThroughPredecessor(sc, pred) and
-      bb1 = pred.getBasicBlock()
-    )
-    or
-    preconditionBranchEdge(this, bb1, bb2, branch)
-  }
-
-  /**
-   * Holds if this guard evaluating to `branch` directly controls the block
-   * `controlled`. That is, the `true`- or `false`-successor of this guard (as
-   * given by `branch`) dominates `controlled`.
-   */
-  predicate directlyControls(BasicBlock controlled, boolean branch) {
-    exists(ConditionBlock cb |
-      cb.getCondition() = this and
-      cb.controls(controlled, branch)
-    )
-    or
-    switchCaseControls(this, controlled) and branch = true
-    or
-    preconditionControls(this, controlled, branch)
-  }
-
-  /**
-   * Holds if this guard evaluating to `branch` controls the control-flow
-   * branch edge from `bb1` to `bb2`. That is, following the edge from
-   * `bb1` to `bb2` implies that this guard evaluated to `branch`.
-   */
-  predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
-    guardControlsBranchEdge_v3(this, bb1, bb2, branch)
-  }
-
-  /**
-   * Holds if this guard evaluating to `branch` directly or indirectly controls
-   * the block `controlled`. That is, the evaluation of `controlled` is
-   * dominated by this guard evaluating to `branch`.
-   */
-  predicate controls(BasicBlock controlled, boolean branch) {
-    guardControls_v3(this, controlled, branch)
-  }
-}
-
-private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
-  exists(BasicBlock caseblock |
-    // Pattern cases are handled as condition blocks
-    not sc instanceof PatternCase and
-    caseblock.getFirstNode() = sc.getControlFlowNode() and
-    caseblock.dominates(bb) and
-    // Check we can't fall through from a previous block:
-    forall(ControlFlowNode pred | pred = sc.getControlFlowNode().getAPredecessor() |
-      isNonFallThroughPredecessor(sc, pred)
-    )
-  )
-}
-
-private predicate preconditionBranchEdge(
-  MethodCall ma, BasicBlock bb1, BasicBlock bb2, boolean branch
-) {
-  conditionCheckArgument(ma, _, branch) and
-  bb1.getLastNode() = ma.getControlFlowNode() and
-  bb2.getFirstNode() = bb1.getLastNode().getANormalSuccessor()
-}
-
-private predicate preconditionControls(MethodCall ma, BasicBlock controlled, boolean branch) {
-  exists(BasicBlock check, BasicBlock succ |
-    preconditionBranchEdge(ma, check, succ, branch) and
-    dominatingEdge(check, succ) and
-    succ.dominates(controlled)
-  )
 }
 
 /**
- * INTERNAL: Use `Guards.controls` instead.
+ * INTERNAL: Use `Guard.controls` instead.
  *
  * Holds if `guard.controls(controlled, branch)`, except this only relies on
  * BaseSSA-based reasoning.
  */
-predicate guardControls_v1(Guard guard, BasicBlock controlled, boolean branch) {
-  guard.directlyControls(controlled, branch)
-  or
-  exists(Guard g, boolean b |
-    guardControls_v1(g, controlled, b) and
-    implies_v1(g, b, guard, branch)
-  )
-}
-
-/**
- * INTERNAL: Use `Guards.controls` instead.
- *
- * Holds if `guard.controls(controlled, branch)`, except this doesn't rely on
- * RangeAnalysis.
- */
-predicate guardControls_v2(Guard guard, BasicBlock controlled, boolean branch) {
-  guard.directlyControls(controlled, branch)
-  or
-  exists(Guard g, boolean b |
-    guardControls_v2(g, controlled, b) and
-    implies_v2(g, b, guard, branch)
-  )
-}
-
-pragma[nomagic]
-private predicate guardControls_v3(Guard guard, BasicBlock controlled, boolean branch) {
-  guard.directlyControls(controlled, branch)
-  or
-  exists(Guard g, boolean b |
-    guardControls_v3(g, controlled, b) and
-    implies_v3(g, b, guard, branch)
-  )
-}
-
-pragma[nomagic]
-private predicate guardControlsBranchEdge_v2(
-  Guard guard, BasicBlock bb1, BasicBlock bb2, boolean branch
-) {
-  guard.hasBranchEdge(bb1, bb2, branch)
-  or
-  exists(Guard g, boolean b |
-    guardControlsBranchEdge_v2(g, bb1, bb2, b) and
-    implies_v2(g, b, guard, branch)
-  )
-}
-
-pragma[nomagic]
-private predicate guardControlsBranchEdge_v3(
-  Guard guard, BasicBlock bb1, BasicBlock bb2, boolean branch
-) {
-  guard.hasBranchEdge(bb1, bb2, branch)
-  or
-  exists(Guard g, boolean b |
-    guardControlsBranchEdge_v3(g, bb1, bb2, b) and
-    implies_v3(g, b, guard, branch)
-  )
-}
-
-/** INTERNAL: Use `Guard` instead. */
-final class Guard_v2 extends Guard {
-  /**
-   * Holds if this guard evaluating to `branch` controls the control-flow
-   * branch edge from `bb1` to `bb2`. That is, following the edge from
-   * `bb1` to `bb2` implies that this guard evaluated to `branch`.
-   */
-  predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
-    guardControlsBranchEdge_v2(this, bb1, bb2, branch)
-  }
-
-  /**
-   * Holds if this guard evaluating to `branch` directly or indirectly controls
-   * the block `controlled`. That is, the evaluation of `controlled` is
-   * dominated by this guard evaluating to `branch`.
-   */
-  predicate controls(BasicBlock controlled, boolean branch) {
-    guardControls_v2(this, controlled, branch)
-  }
-}
-
-private predicate equalityGuard(Guard g, Expr e1, Expr e2, boolean polarity) {
-  exists(EqualityTest eqtest |
-    eqtest = g and
-    polarity = eqtest.polarity() and
-    eqtest.hasOperands(e1, e2)
-  )
-  or
-  exists(MethodCall ma |
-    ma = g and
-    ma.getMethod() instanceof EqualsMethod and
-    polarity = true and
-    ma.getAnArgument() = e1 and
-    ma.getQualifier() = e2
-  )
-  or
-  exists(MethodCall ma, Method equals |
-    ma = g and
-    ma.getMethod() = equals and
-    polarity = true and
-    equals.hasName("equals") and
-    equals.getNumberOfParameters() = 2 and
-    equals.getDeclaringType().hasQualifiedName("java.util", "Objects") and
-    ma.getArgument(0) = e1 and
-    ma.getArgument(1) = e2
-  )
-  or
-  exists(ConstCase cc |
-    cc = g and
-    polarity = true and
-    cc.getSelectorExpr() = e1 and
-    cc.getValue() = e2 and
-    strictcount(cc.getValue(_)) = 1
-  )
+predicate guardControls_v1(Guards_v1::Guard guard, BasicBlock controlled, boolean branch) {
+  guard.controls(controlled, branch)
 }

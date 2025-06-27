@@ -2,6 +2,4 @@
 import codeql.rust.elements
 import TestUtils
 
-from AsmClobberAbi x
-where toBeTested(x) and not x.isUnknown()
-select x
+query predicate instances(AsmClobberAbi x) { toBeTested(x) and not x.isUnknown() }

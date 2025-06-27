@@ -1,0 +1,43 @@
+#select
+| MainActivity.java:13:34:13:39 | intent | MainActivity.java:12:29:12:39 | getIntent(...) : Intent | MainActivity.java:13:34:13:39 | intent | This Intent can be set with arbitrary flags from a $@, and used to give access to internal content providers. | MainActivity.java:12:29:12:39 | getIntent(...) | user-provided value |
+| MainActivity.java:17:34:17:44 | extraIntent | MainActivity.java:16:43:16:53 | getIntent(...) : Intent | MainActivity.java:17:34:17:44 | extraIntent | This Intent can be set with arbitrary flags from a $@, and used to give access to internal content providers. | MainActivity.java:16:43:16:53 | getIntent(...) | user-provided value |
+| MainActivity.java:33:34:33:39 | intent | MainActivity.java:30:29:30:39 | getIntent(...) : Intent | MainActivity.java:33:34:33:39 | intent | This Intent can be set with arbitrary flags from a $@, and used to give access to internal content providers. | MainActivity.java:30:29:30:39 | getIntent(...) | user-provided value |
+| MainActivity.java:46:34:46:39 | intent | MainActivity.java:42:29:42:39 | getIntent(...) : Intent | MainActivity.java:46:34:46:39 | intent | This Intent can be set with arbitrary flags from a $@, and used to give access to internal content providers. | MainActivity.java:42:29:42:39 | getIntent(...) | user-provided value |
+| MainActivity.java:52:34:52:39 | intent | MainActivity.java:49:29:49:39 | getIntent(...) : Intent | MainActivity.java:52:34:52:39 | intent | This Intent can be set with arbitrary flags from a $@, and used to give access to internal content providers. | MainActivity.java:49:29:49:39 | getIntent(...) | user-provided value |
+| MainActivity.java:60:38:60:43 | intent | MainActivity.java:55:29:55:39 | getIntent(...) : Intent | MainActivity.java:60:38:60:43 | intent | This Intent can be set with arbitrary flags from a $@, and used to give access to internal content providers. | MainActivity.java:55:29:55:39 | getIntent(...) | user-provided value |
+| MainActivity.java:71:38:71:43 | intent | MainActivity.java:64:29:64:39 | getIntent(...) : Intent | MainActivity.java:71:38:71:43 | intent | This Intent can be set with arbitrary flags from a $@, and used to give access to internal content providers. | MainActivity.java:64:29:64:39 | getIntent(...) | user-provided value |
+| MainActivity.java:81:38:81:43 | intent | MainActivity.java:75:29:75:39 | getIntent(...) : Intent | MainActivity.java:81:38:81:43 | intent | This Intent can be set with arbitrary flags from a $@, and used to give access to internal content providers. | MainActivity.java:75:29:75:39 | getIntent(...) | user-provided value |
+edges
+| MainActivity.java:12:29:12:39 | getIntent(...) : Intent | MainActivity.java:13:34:13:39 | intent | provenance | Sink:MaD:1 |
+| MainActivity.java:16:34:16:87 | (...)... : Intent | MainActivity.java:17:34:17:44 | extraIntent | provenance | Sink:MaD:1 |
+| MainActivity.java:16:43:16:53 | getIntent(...) : Intent | MainActivity.java:16:43:16:87 | getParcelableExtra(...) : Parcelable | provenance | MaD:2 |
+| MainActivity.java:16:43:16:87 | getParcelableExtra(...) : Parcelable | MainActivity.java:16:34:16:87 | (...)... : Intent | provenance |  |
+| MainActivity.java:30:29:30:39 | getIntent(...) : Intent | MainActivity.java:33:34:33:39 | intent | provenance | Sink:MaD:1 |
+| MainActivity.java:42:29:42:39 | getIntent(...) : Intent | MainActivity.java:46:34:46:39 | intent | provenance | Sink:MaD:1 |
+| MainActivity.java:49:29:49:39 | getIntent(...) : Intent | MainActivity.java:52:34:52:39 | intent | provenance | Sink:MaD:1 |
+| MainActivity.java:55:29:55:39 | getIntent(...) : Intent | MainActivity.java:60:38:60:43 | intent | provenance | Sink:MaD:1 |
+| MainActivity.java:64:29:64:39 | getIntent(...) : Intent | MainActivity.java:71:38:71:43 | intent | provenance | Sink:MaD:1 |
+| MainActivity.java:75:29:75:39 | getIntent(...) : Intent | MainActivity.java:81:38:81:43 | intent | provenance | Sink:MaD:1 |
+models
+| 1 | Sink: android.app; Activity; true; setResult; (int,Intent); ; Argument[1]; pending-intents; manual |
+| 2 | Summary: android.content; Intent; true; getParcelableExtra; (String); ; Argument[this].SyntheticField[android.content.Intent.extras].MapValue; ReturnValue; value; manual |
+nodes
+| MainActivity.java:12:29:12:39 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| MainActivity.java:13:34:13:39 | intent | semmle.label | intent |
+| MainActivity.java:16:34:16:87 | (...)... : Intent | semmle.label | (...)... : Intent |
+| MainActivity.java:16:43:16:53 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| MainActivity.java:16:43:16:87 | getParcelableExtra(...) : Parcelable | semmle.label | getParcelableExtra(...) : Parcelable |
+| MainActivity.java:17:34:17:44 | extraIntent | semmle.label | extraIntent |
+| MainActivity.java:30:29:30:39 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| MainActivity.java:33:34:33:39 | intent | semmle.label | intent |
+| MainActivity.java:42:29:42:39 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| MainActivity.java:46:34:46:39 | intent | semmle.label | intent |
+| MainActivity.java:49:29:49:39 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| MainActivity.java:52:34:52:39 | intent | semmle.label | intent |
+| MainActivity.java:55:29:55:39 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| MainActivity.java:60:38:60:43 | intent | semmle.label | intent |
+| MainActivity.java:64:29:64:39 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| MainActivity.java:71:38:71:43 | intent | semmle.label | intent |
+| MainActivity.java:75:29:75:39 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| MainActivity.java:81:38:81:43 | intent | semmle.label | intent |
+subpaths

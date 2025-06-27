@@ -1,8 +1,9 @@
 import java
 import semmle.code.java.controlflow.Guards
 
-from Guard g, BasicBlock bb, boolean branch
+from Guard g, BasicBlock bb, GuardValue gv
 where
-  g.controls(bb, branch) and
-  g.getEnclosingCallable().getDeclaringType().hasName("Preconditions")
-select g, branch, bb
+  g.valueControls(bb, gv) and
+  g.getEnclosingCallable().getDeclaringType().hasName("Preconditions") and
+  (gv.isThrowsException() or gv.getDualValue().isThrowsException())
+select g, gv, bb

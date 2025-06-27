@@ -2,9 +2,8 @@
 import codeql.rust.elements
 import TestUtils
 
-from WhereClause x, int getNumberOfPredicates
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfPredicates = x.getNumberOfPredicates()
-select x, "getNumberOfPredicates:", getNumberOfPredicates
+query predicate instances(WhereClause x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getPredicate(WhereClause x, int index, WherePred getPredicate) {
+  toBeTested(x) and not x.isUnknown() and getPredicate = x.getPredicate(index)
+}

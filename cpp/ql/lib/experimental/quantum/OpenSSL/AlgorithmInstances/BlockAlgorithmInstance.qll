@@ -5,36 +5,35 @@ private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmCon
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 private import AlgToAVCFlow
+private import codeql.quantum.experimental.Standardization::Types::KeyOpAlg as KeyOpAlg
 
 /**
  * Given a `KnownOpenSslBlockModeAlgorithmExpr`, converts this to a block family type.
  * Does not bind if there is no mapping (no mapping to 'unknown' or 'other').
  */
 predicate knownOpenSslConstantToBlockModeFamilyType(
-  KnownOpenSslBlockModeAlgorithmExpr e, Crypto::TBlockCipherModeOfOperationType type
+  KnownOpenSslBlockModeAlgorithmExpr e, KeyOpAlg::ModeOfOperationType type
 ) {
   exists(string name |
     name = e.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
     (
-      name.matches("CBC") and type instanceof Crypto::CBC
+      name = "CBC" and type instanceof KeyOpAlg::CBC
       or
-      name.matches("CFB%") and type instanceof Crypto::CFB
+      name = "CFB%" and type instanceof KeyOpAlg::CFB
       or
-      name.matches("CTR") and type instanceof Crypto::CTR
+      name = "CTR" and type instanceof KeyOpAlg::CTR
       or
-      name.matches("GCM") and type instanceof Crypto::GCM
+      name = "GCM" and type instanceof KeyOpAlg::GCM
       or
-      name.matches("OFB") and type instanceof Crypto::OFB
+      name = "OFB" and type instanceof KeyOpAlg::OFB
       or
-      name.matches("XTS") and type instanceof Crypto::XTS
+      name = "XTS" and type instanceof KeyOpAlg::XTS
       or
-      name.matches("CCM") and type instanceof Crypto::CCM
+      name = "CCM" and type instanceof KeyOpAlg::CCM
       or
-      name.matches("GCM") and type instanceof Crypto::GCM
+      name = "CCM" and type instanceof KeyOpAlg::CCM
       or
-      name.matches("CCM") and type instanceof Crypto::CCM
-      or
-      name.matches("ECB") and type instanceof Crypto::ECB
+      name = "ECB" and type instanceof KeyOpAlg::ECB
     )
   )
 }
@@ -64,10 +63,10 @@ class KnownOpenSslBlockModeConstantAlgorithmInstance extends OpenSslAlgorithmIns
     getterCall = this
   }
 
-  override Crypto::TBlockCipherModeOfOperationType getModeType() {
+  override KeyOpAlg::ModeOfOperationType getModeType() {
     knownOpenSslConstantToBlockModeFamilyType(this, result)
     or
-    not knownOpenSslConstantToBlockModeFamilyType(this, _) and result = Crypto::OtherMode()
+    not knownOpenSslConstantToBlockModeFamilyType(this, _) and result = KeyOpAlg::OtherMode()
   }
 
   // NOTE: I'm not going to attempt to parse out the mode specific part, so returning

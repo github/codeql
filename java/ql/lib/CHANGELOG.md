@@ -1,3 +1,9 @@
+## 7.3.2
+
+### Minor Analysis Improvements
+
+* Java `assert` statements are now assumed to be executed for the purpose of analysing control flow. This improves precision for a number of queries.
+
 ## 7.3.1
 
 No user-facing changes.

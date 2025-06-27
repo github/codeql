@@ -8,9 +8,9 @@ needs_an_re = re.compile(r'^(?!Unary)[AEIOU]')  # Name requiring "an" instead of
 start_qldoc_re = re.compile(r'^\s*/\*\*')  # Start of a QLDoc comment
 end_qldoc_re = re.compile(r'\*/\s*$')  # End of a QLDoc comment
 blank_qldoc_line_re = re.compile(r'^\s*\*\s*$')  # A line in a QLDoc comment with only the '*'
-instruction_class_re = re.compile(r'^class (?P<name>[A-aa-z0-9]+)Instruction\s')  # Declaration of an `Instruction` class
-opcode_base_class_re = re.compile(r'^abstract class (?P<name>[A-aa-z0-9]+)Opcode\s')  # Declaration of an `Opcode` base class
-opcode_class_re = re.compile(r'^  class (?P<name>[A-aa-z0-9]+)\s')  # Declaration of an `Opcode` class
+instruction_class_re = re.compile(r'^class (?P<name>[A-Za-z0-9]+)Instruction\s')  # Declaration of an `Instruction` class
+opcode_base_class_re = re.compile(r'^abstract class (?P<name>[A-Za-z0-9]+)Opcode\s')  # Declaration of an `Opcode` base class
+opcode_class_re = re.compile(r'^  class (?P<name>[A-Za-z0-9]+)\s')  # Declaration of an `Opcode` class
 
 script_dir = path.realpath(path.dirname(__file__))
 instruction_path = path.realpath(path.join(script_dir, '../cpp/ql/src/semmle/code/cpp/ir/implementation/raw/Instruction.qll'))

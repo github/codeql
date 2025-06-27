@@ -2,38 +2,64 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  Accessor x, string hasName, string hasSelfParam, int getNumberOfParams, string hasBody,
-  int getNumberOfCaptures, int getNumberOfGenericTypeParams, ModuleDecl getModule,
-  int getNumberOfMembers, Type getInterfaceType, string isGetter, string isSetter, string isWillSet,
-  string isDidSet, string isRead, string isModify, string isUnsafeAddress,
+query predicate instances(
+  Accessor x, string getModule__label, ModuleDecl getModule, string getInterfaceType__label,
+  Type getInterfaceType, string isGetter__label, string isGetter, string isSetter__label,
+  string isSetter, string isWillSet__label, string isWillSet, string isDidSet__label,
+  string isDidSet, string isRead__label, string isRead, string isModify__label, string isModify,
+  string isUnsafeAddress__label, string isUnsafeAddress, string isUnsafeMutableAddress__label,
   string isUnsafeMutableAddress
-where
+) {
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  (if x.hasSelfParam() then hasSelfParam = "yes" else hasSelfParam = "no") and
-  getNumberOfParams = x.getNumberOfParams() and
-  (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
-  getNumberOfCaptures = x.getNumberOfCaptures() and
-  getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
+  getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers = x.getNumberOfMembers() and
+  getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType() and
+  isGetter__label = "isGetter:" and
   (if x.isGetter() then isGetter = "yes" else isGetter = "no") and
+  isSetter__label = "isSetter:" and
   (if x.isSetter() then isSetter = "yes" else isSetter = "no") and
+  isWillSet__label = "isWillSet:" and
   (if x.isWillSet() then isWillSet = "yes" else isWillSet = "no") and
+  isDidSet__label = "isDidSet:" and
   (if x.isDidSet() then isDidSet = "yes" else isDidSet = "no") and
+  isRead__label = "isRead:" and
   (if x.isRead() then isRead = "yes" else isRead = "no") and
+  isModify__label = "isModify:" and
   (if x.isModify() then isModify = "yes" else isModify = "no") and
+  isUnsafeAddress__label = "isUnsafeAddress:" and
   (if x.isUnsafeAddress() then isUnsafeAddress = "yes" else isUnsafeAddress = "no") and
+  isUnsafeMutableAddress__label = "isUnsafeMutableAddress:" and
   if x.isUnsafeMutableAddress()
   then isUnsafeMutableAddress = "yes"
   else isUnsafeMutableAddress = "no"
-select x, "hasName:", hasName, "hasSelfParam:", hasSelfParam, "getNumberOfParams:",
-  getNumberOfParams, "hasBody:", hasBody, "getNumberOfCaptures:", getNumberOfCaptures,
-  "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams, "getModule:", getModule,
-  "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:", getInterfaceType, "isGetter:",
-  isGetter, "isSetter:", isSetter, "isWillSet:", isWillSet, "isDidSet:", isDidSet, "isRead:",
-  isRead, "isModify:", isModify, "isUnsafeAddress:", isUnsafeAddress, "isUnsafeMutableAddress:",
-  isUnsafeMutableAddress
+}
+
+query predicate getName(Accessor x, string getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getSelfParam(Accessor x, ParamDecl getSelfParam) {
+  toBeTested(x) and not x.isUnknown() and getSelfParam = x.getSelfParam()
+}
+
+query predicate getParam(Accessor x, int index, ParamDecl getParam) {
+  toBeTested(x) and not x.isUnknown() and getParam = x.getParam(index)
+}
+
+query predicate getBody(Accessor x, BraceStmt getBody) {
+  toBeTested(x) and not x.isUnknown() and getBody = x.getBody()
+}
+
+query predicate getCapture(Accessor x, int index, CapturedDecl getCapture) {
+  toBeTested(x) and not x.isUnknown() and getCapture = x.getCapture(index)
+}
+
+query predicate getGenericTypeParam(Accessor x, int index, GenericTypeParamDecl getGenericTypeParam) {
+  toBeTested(x) and not x.isUnknown() and getGenericTypeParam = x.getGenericTypeParam(index)
+}
+
+query predicate getMember(Accessor x, int index, Decl getMember) {
+  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
+}

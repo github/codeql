@@ -1,0 +1,85 @@
+#select
+| PolyRedosTest.java:12:9:12:15 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:12:9:12:15 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:13:9:13:15 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:13:9:13:15 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:14:9:14:15 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:14:9:14:15 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:15:9:15:15 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:15:9:15:15 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:16:9:16:15 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:16:9:16:15 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:17:30:17:36 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:17:30:17:36 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:18:38:18:44 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:18:38:18:44 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:19:36:19:42 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:19:36:19:42 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:20:52:20:58 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:20:52:20:58 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:21:36:21:42 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:21:36:21:42 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:22:44:22:50 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:22:44:22:50 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:23:49:23:55 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:23:49:23:55 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:24:92:24:98 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:24:92:24:98 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:25:93:25:99 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:25:93:25:99 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:27:49:27:55 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:27:49:27:55 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:29:39:29:45 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:29:39:29:45 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:30:45:30:51 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:30:45:30:51 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:31:81:31:87 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:31:81:31:87 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:32:69:32:75 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:32:69:32:75 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:34:79:34:85 | tainted | PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:34:79:34:85 | tainted | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | PolyRedosTest.java:9:33:9:36 | \\d+ | regular expression | PolyRedosTest.java:8:26:8:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:45:20:45:26 | tainted | PolyRedosTest.java:39:26:39:52 | getParameter(...) : String | PolyRedosTest.java:45:20:45:26 | tainted | This $@ that depends on a $@ may run slow on strings with many repetitions of 'a'. | PolyRedosTest.java:42:39:42:40 | .* | regular expression | PolyRedosTest.java:39:26:39:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:54:20:54:26 | tainted | PolyRedosTest.java:49:26:49:52 | getParameter(...) : String | PolyRedosTest.java:54:20:54:26 | tainted | This $@ that depends on a $@ may run slow on strings starting with 'a' and with many repetitions of 'b'. | PolyRedosTest.java:51:42:51:43 | b* | regular expression | PolyRedosTest.java:49:26:49:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:62:9:62:15 | tainted | PolyRedosTest.java:59:26:59:52 | getParameter(...) : String | PolyRedosTest.java:62:9:62:15 | tainted | This $@ that depends on a $@ may run slow on strings with many repetitions of 'a'. | PolyRedosTest.java:62:29:62:30 | .* | regular expression | PolyRedosTest.java:59:26:59:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:73:31:73:37 | tainted | PolyRedosTest.java:70:26:70:52 | getParameter(...) : String | PolyRedosTest.java:73:31:73:37 | tainted | This $@ that depends on a $@ may run slow on strings with many repetitions of 'a'. | PolyRedosTest.java:66:42:66:43 | .* | regular expression | PolyRedosTest.java:70:26:70:52 | getParameter(...) | user-provided value |
+| PolyRedosTest.java:79:19:79:45 | getParameter(...) | PolyRedosTest.java:79:19:79:45 | getParameter(...) | PolyRedosTest.java:79:19:79:45 | getParameter(...) | This $@ that depends on a $@ may run slow on strings with many repetitions of 'a'. | PolyRedosTest.java:77:41:77:42 | a* | regular expression | PolyRedosTest.java:79:19:79:45 | getParameter(...) | user-provided value |
+edges
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:12:9:12:15 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:13:9:13:15 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:14:9:14:15 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:15:9:15:15 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:16:9:16:15 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:17:30:17:36 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:18:38:18:44 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:19:36:19:42 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:20:52:20:58 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:21:36:21:42 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:22:44:22:50 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:23:49:23:55 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:24:92:24:98 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:25:93:25:99 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:27:49:27:55 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:29:39:29:45 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:30:45:30:51 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:31:81:31:87 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:32:69:32:75 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | PolyRedosTest.java:34:79:34:85 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:39:26:39:52 | getParameter(...) : String | PolyRedosTest.java:45:20:45:26 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:49:26:49:52 | getParameter(...) : String | PolyRedosTest.java:54:20:54:26 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:59:26:59:52 | getParameter(...) : String | PolyRedosTest.java:62:9:62:15 | tainted | provenance | Src:MaD:1  |
+| PolyRedosTest.java:70:26:70:52 | getParameter(...) : String | PolyRedosTest.java:73:31:73:37 | tainted | provenance | Src:MaD:1  |
+models
+| 1 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+nodes
+| PolyRedosTest.java:8:26:8:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| PolyRedosTest.java:12:9:12:15 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:13:9:13:15 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:14:9:14:15 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:15:9:15:15 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:16:9:16:15 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:17:30:17:36 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:18:38:18:44 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:19:36:19:42 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:20:52:20:58 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:21:36:21:42 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:22:44:22:50 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:23:49:23:55 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:24:92:24:98 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:25:93:25:99 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:27:49:27:55 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:29:39:29:45 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:30:45:30:51 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:31:81:31:87 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:32:69:32:75 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:34:79:34:85 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:39:26:39:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| PolyRedosTest.java:45:20:45:26 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:49:26:49:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| PolyRedosTest.java:54:20:54:26 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:59:26:59:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| PolyRedosTest.java:62:9:62:15 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:70:26:70:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| PolyRedosTest.java:73:31:73:37 | tainted | semmle.label | tainted |
+| PolyRedosTest.java:79:19:79:45 | getParameter(...) | semmle.label | getParameter(...) |
+subpaths
