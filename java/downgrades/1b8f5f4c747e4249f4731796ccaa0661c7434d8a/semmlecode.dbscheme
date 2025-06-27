@@ -211,10 +211,6 @@ databaseMetadata(
   string value : string ref
 );
 
-overlayChangedFiles(
-  string path: string ref
-);
-
 /*
  * SMAP
  */
