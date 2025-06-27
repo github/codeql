@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for integer guards.
  */
+overlay[local?]
+module;
 
 import java
 private import SSA

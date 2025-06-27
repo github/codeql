@@ -2,6 +2,8 @@
  * Provides classes and predicates for working with configuration files, such
  * as Java `.properties` or `.ini` files.
  */
+overlay[local?]
+module;
 
 import semmle.code.Location
 

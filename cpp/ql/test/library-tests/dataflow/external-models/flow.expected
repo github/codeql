@@ -1,57 +1,80 @@
-testFailures
+models
+| 1 | Sink: ; ; false; ymlSink; ; ; Argument[0]; test-sink; manual |
+| 2 | Sink: boost::asio; ; false; write; ; ; Argument[*1]; remote-sink; manual |
+| 3 | Source: ; ; false; GetCommandLineA; ; ; ReturnValue[*]; local; manual |
+| 4 | Source: ; ; false; GetEnvironmentStringsA; ; ; ReturnValue[*]; local; manual |
+| 5 | Source: ; ; false; GetEnvironmentVariableA; ; ; Argument[*1]; local; manual |
+| 6 | Source: ; ; false; MapViewOfFile2; ; ; ReturnValue[*]; local; manual |
+| 7 | Source: ; ; false; MapViewOfFile3; ; ; ReturnValue[*]; local; manual |
+| 8 | Source: ; ; false; MapViewOfFile3FromApp; ; ; ReturnValue[*]; local; manual |
+| 9 | Source: ; ; false; MapViewOfFile; ; ; ReturnValue[*]; local; manual |
+| 10 | Source: ; ; false; MapViewOfFileEx; ; ; ReturnValue[*]; local; manual |
+| 11 | Source: ; ; false; MapViewOfFileFromApp; ; ; ReturnValue[*]; local; manual |
+| 12 | Source: ; ; false; MapViewOfFileNuma2; ; ; ReturnValue[*]; local; manual |
+| 13 | Source: ; ; false; NtReadFile; ; ; Argument[*5]; local; manual |
+| 14 | Source: ; ; false; ReadFile; ; ; Argument[*1]; local; manual |
+| 15 | Source: ; ; false; ReadFileEx; ; ; Argument[*1]; local; manual |
+| 16 | Source: ; ; false; ymlSource; ; ; ReturnValue; local; manual |
+| 17 | Source: boost::asio; ; false; read_until; ; ; Argument[*1]; remote; manual |
+| 18 | Summary: ; ; false; CommandLineToArgvA; ; ; Argument[*0]; ReturnValue[**]; taint; manual |
+| 19 | Summary: ; ; false; ReadFileEx; ; ; Argument[*3].Field[@hEvent]; Argument[4].Parameter[*2].Field[@hEvent]; value; manual |
+| 20 | Summary: ; ; false; ymlStepGenerated; ; ; Argument[0]; ReturnValue; taint; df-generated |
+| 21 | Summary: ; ; false; ymlStepManual; ; ; Argument[0]; ReturnValue; taint; manual |
+| 22 | Summary: ; ; false; ymlStepManual_with_body; ; ; Argument[0]; ReturnValue; taint; manual |
+| 23 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
 edges
-| asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | provenance | MaD:10 |
-| asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:2  |
-| asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | *recv_buffer | provenance | Src:MaD:2 Sink:MaD:6 |
+| asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | provenance | MaD:23 |
+| asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:17  |
+| asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | *recv_buffer | provenance | Src:MaD:17 Sink:MaD:2 |
 | asio_streams.cpp:97:37:97:44 | call to source | asio_streams.cpp:98:7:98:14 | send_str | provenance | TaintFunction |
 | asio_streams.cpp:97:37:97:44 | call to source | asio_streams.cpp:100:64:100:71 | *send_str | provenance | TaintFunction |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:100:44:100:62 | call to buffer | provenance |  |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:101:7:101:17 | send_buffer | provenance |  |
-| asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:103:29:103:39 | *send_buffer | provenance | Sink:MaD:6 |
+| asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:103:29:103:39 | *send_buffer | provenance | Sink:MaD:2 |
 | asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | provenance |  |
-| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:10 |
-| test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | provenance | MaD:26957 |
-| test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | test.cpp:5:5:5:20 | [summary] to write: ReturnValue in ymlStepGenerated | provenance | MaD:26958 |
-| test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | test.cpp:6:5:6:27 | [summary] to write: ReturnValue in ymlStepManual_with_body | provenance | MaD:26959 |
+| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:23 |
+| test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | provenance | MaD:21 |
+| test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | test.cpp:5:5:5:20 | [summary] to write: ReturnValue in ymlStepGenerated | provenance | MaD:20 |
+| test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | test.cpp:6:5:6:27 | [summary] to write: ReturnValue in ymlStepManual_with_body | provenance | MaD:22 |
 | test.cpp:7:47:7:52 | value2 | test.cpp:7:64:7:69 | value2 | provenance |  |
 | test.cpp:7:64:7:69 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | provenance |  |
-| test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:26955  |
-| test.cpp:10:10:10:18 | call to ymlSource | test.cpp:14:10:14:10 | x | provenance | Sink:MaD:26956 |
+| test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:16  |
+| test.cpp:10:10:10:18 | call to ymlSource | test.cpp:14:10:14:10 | x | provenance | Sink:MaD:1 |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:17:24:17:24 | x | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:21:27:21:27 | x | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:25:35:25:35 | x | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:32:41:32:41 | x | provenance |  |
 | test.cpp:17:10:17:22 | call to ymlStepManual | test.cpp:17:10:17:22 | call to ymlStepManual | provenance |  |
-| test.cpp:17:10:17:22 | call to ymlStepManual | test.cpp:18:10:18:10 | y | provenance | Sink:MaD:26956 |
+| test.cpp:17:10:17:22 | call to ymlStepManual | test.cpp:18:10:18:10 | y | provenance | Sink:MaD:1 |
 | test.cpp:17:24:17:24 | x | test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | provenance |  |
-| test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual | provenance | MaD:26957 |
+| test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual | provenance | MaD:21 |
 | test.cpp:21:10:21:25 | call to ymlStepGenerated | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance |  |
-| test.cpp:21:10:21:25 | call to ymlStepGenerated | test.cpp:22:10:22:10 | z | provenance | Sink:MaD:26956 |
+| test.cpp:21:10:21:25 | call to ymlStepGenerated | test.cpp:22:10:22:10 | z | provenance | Sink:MaD:1 |
 | test.cpp:21:27:21:27 | x | test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | provenance |  |
-| test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance | MaD:26958 |
+| test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance | MaD:20 |
 | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance |  |
-| test.cpp:25:11:25:33 | call to ymlStepManual_with_body | test.cpp:26:10:26:11 | y2 | provenance | Sink:MaD:26956 |
+| test.cpp:25:11:25:33 | call to ymlStepManual_with_body | test.cpp:26:10:26:11 | y2 | provenance | Sink:MaD:1 |
 | test.cpp:25:35:25:35 | x | test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | provenance |  |
-| test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance | MaD:26959 |
+| test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance | MaD:22 |
 | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | provenance |  |
-| test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | test.cpp:33:10:33:11 | z2 | provenance | Sink:MaD:26956 |
+| test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | test.cpp:33:10:33:11 | z2 | provenance | Sink:MaD:1 |
 | test.cpp:32:41:32:41 | x | test.cpp:7:47:7:52 | value2 | provenance |  |
 | test.cpp:32:41:32:41 | x | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | provenance |  |
-| windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | windows.cpp:17:8:17:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | provenance | MaD:343 |
-| windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:22:15:22:29 | *call to GetCommandLineA | provenance | Src:MaD:327  |
+| windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | windows.cpp:17:8:17:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | provenance | MaD:18 |
+| windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:22:15:22:29 | *call to GetCommandLineA | provenance | Src:MaD:3  |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:24:8:24:11 | * ... | provenance |  |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:27:36:27:38 | *cmd | provenance |  |
 | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA | provenance |  |
 | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA | windows.cpp:30:8:30:15 | * ... | provenance |  |
 | windows.cpp:27:36:27:38 | *cmd | windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | provenance |  |
-| windows.cpp:27:36:27:38 | *cmd | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA | provenance | MaD:343 |
-| windows.cpp:34:17:34:38 | *call to GetEnvironmentStringsA | windows.cpp:34:17:34:38 | *call to GetEnvironmentStringsA | provenance | Src:MaD:329  |
+| windows.cpp:27:36:27:38 | *cmd | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA | provenance | MaD:18 |
+| windows.cpp:34:17:34:38 | *call to GetEnvironmentStringsA | windows.cpp:34:17:34:38 | *call to GetEnvironmentStringsA | provenance | Src:MaD:4  |
 | windows.cpp:34:17:34:38 | *call to GetEnvironmentStringsA | windows.cpp:36:10:36:13 | * ... | provenance |  |
-| windows.cpp:39:36:39:38 | GetEnvironmentVariableA output argument | windows.cpp:41:10:41:13 | * ... | provenance | Src:MaD:331  |
+| windows.cpp:39:36:39:38 | GetEnvironmentVariableA output argument | windows.cpp:41:10:41:13 | * ... | provenance | Src:MaD:5  |
 | windows.cpp:90:6:90:15 | [summary param] *3 in ReadFileEx [*hEvent] | windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[*hEvent] in ReadFileEx | provenance |  |
 | windows.cpp:90:6:90:15 | [summary param] *3 in ReadFileEx [hEvent] | windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[hEvent] in ReadFileEx | provenance |  |
-| windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[*hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[*hEvent] in ReadFileEx | provenance | MaD:345 |
-| windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[hEvent] in ReadFileEx | provenance | MaD:345 |
+| windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[*hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[*hEvent] in ReadFileEx | provenance | MaD:19 |
+| windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[hEvent] in ReadFileEx | provenance | MaD:19 |
 | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2] in ReadFileEx [*hEvent] | windows.cpp:147:16:147:27 | *lpOverlapped [*hEvent] | provenance |  |
 | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2] in ReadFileEx [hEvent] | windows.cpp:157:16:157:27 | *lpOverlapped [hEvent] | provenance |  |
 | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[*hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2] in ReadFileEx [*hEvent] | provenance |  |
@@ -67,36 +90,36 @@ edges
 | windows.cpp:159:12:159:55 | hEvent | windows.cpp:160:8:160:8 | c | provenance |  |
 | windows.cpp:159:35:159:46 | *lpOverlapped [hEvent] | windows.cpp:159:12:159:55 | hEvent | provenance |  |
 | windows.cpp:159:35:159:46 | *lpOverlapped [hEvent] | windows.cpp:159:12:159:55 | hEvent | provenance |  |
-| windows.cpp:168:35:168:40 | ReadFile output argument | windows.cpp:170:10:170:16 | * ... | provenance | Src:MaD:333  |
-| windows.cpp:177:23:177:28 | ReadFileEx output argument | windows.cpp:179:10:179:16 | * ... | provenance | Src:MaD:334  |
-| windows.cpp:189:21:189:26 | ReadFile output argument | windows.cpp:190:5:190:56 | *... = ... | provenance | Src:MaD:333  |
+| windows.cpp:168:35:168:40 | ReadFile output argument | windows.cpp:170:10:170:16 | * ... | provenance | Src:MaD:14  |
+| windows.cpp:177:23:177:28 | ReadFileEx output argument | windows.cpp:179:10:179:16 | * ... | provenance | Src:MaD:15  |
+| windows.cpp:189:21:189:26 | ReadFile output argument | windows.cpp:190:5:190:56 | *... = ... | provenance | Src:MaD:14  |
 | windows.cpp:190:5:190:14 | *overlapped [post update] [*hEvent] | windows.cpp:192:53:192:63 | *& ... [*hEvent] | provenance |  |
 | windows.cpp:190:5:190:56 | *... = ... | windows.cpp:190:5:190:14 | *overlapped [post update] [*hEvent] | provenance |  |
 | windows.cpp:192:53:192:63 | *& ... [*hEvent] | windows.cpp:90:6:90:15 | [summary param] *3 in ReadFileEx [*hEvent] | provenance |  |
-| windows.cpp:198:21:198:26 | ReadFile output argument | windows.cpp:199:5:199:57 | ... = ... | provenance | Src:MaD:333  |
+| windows.cpp:198:21:198:26 | ReadFile output argument | windows.cpp:199:5:199:57 | ... = ... | provenance | Src:MaD:14  |
 | windows.cpp:199:5:199:14 | *overlapped [post update] [hEvent] | windows.cpp:201:53:201:63 | *& ... [hEvent] | provenance |  |
 | windows.cpp:199:5:199:57 | ... = ... | windows.cpp:199:5:199:14 | *overlapped [post update] [hEvent] | provenance |  |
 | windows.cpp:201:53:201:63 | *& ... [hEvent] | windows.cpp:90:6:90:15 | [summary param] *3 in ReadFileEx [hEvent] | provenance |  |
-| windows.cpp:209:84:209:89 | NtReadFile output argument | windows.cpp:211:10:211:16 | * ... | provenance | Src:MaD:342  |
-| windows.cpp:286:23:286:35 | *call to MapViewOfFile | windows.cpp:286:23:286:35 | *call to MapViewOfFile | provenance | Src:MaD:335  |
+| windows.cpp:209:84:209:89 | NtReadFile output argument | windows.cpp:211:10:211:16 | * ... | provenance | Src:MaD:13  |
+| windows.cpp:286:23:286:35 | *call to MapViewOfFile | windows.cpp:286:23:286:35 | *call to MapViewOfFile | provenance | Src:MaD:9  |
 | windows.cpp:286:23:286:35 | *call to MapViewOfFile | windows.cpp:287:20:287:52 | *pMapView | provenance |  |
 | windows.cpp:287:20:287:52 | *pMapView | windows.cpp:289:10:289:16 | * ... | provenance |  |
-| windows.cpp:293:23:293:36 | *call to MapViewOfFile2 | windows.cpp:293:23:293:36 | *call to MapViewOfFile2 | provenance | Src:MaD:336  |
+| windows.cpp:293:23:293:36 | *call to MapViewOfFile2 | windows.cpp:293:23:293:36 | *call to MapViewOfFile2 | provenance | Src:MaD:6  |
 | windows.cpp:293:23:293:36 | *call to MapViewOfFile2 | windows.cpp:294:20:294:52 | *pMapView | provenance |  |
 | windows.cpp:294:20:294:52 | *pMapView | windows.cpp:296:10:296:16 | * ... | provenance |  |
-| windows.cpp:302:23:302:36 | *call to MapViewOfFile3 | windows.cpp:302:23:302:36 | *call to MapViewOfFile3 | provenance | Src:MaD:337  |
+| windows.cpp:302:23:302:36 | *call to MapViewOfFile3 | windows.cpp:302:23:302:36 | *call to MapViewOfFile3 | provenance | Src:MaD:7  |
 | windows.cpp:302:23:302:36 | *call to MapViewOfFile3 | windows.cpp:303:20:303:52 | *pMapView | provenance |  |
 | windows.cpp:303:20:303:52 | *pMapView | windows.cpp:305:10:305:16 | * ... | provenance |  |
-| windows.cpp:311:23:311:43 | *call to MapViewOfFile3FromApp | windows.cpp:311:23:311:43 | *call to MapViewOfFile3FromApp | provenance | Src:MaD:338  |
+| windows.cpp:311:23:311:43 | *call to MapViewOfFile3FromApp | windows.cpp:311:23:311:43 | *call to MapViewOfFile3FromApp | provenance | Src:MaD:8  |
 | windows.cpp:311:23:311:43 | *call to MapViewOfFile3FromApp | windows.cpp:312:20:312:52 | *pMapView | provenance |  |
 | windows.cpp:312:20:312:52 | *pMapView | windows.cpp:314:10:314:16 | * ... | provenance |  |
-| windows.cpp:318:23:318:37 | *call to MapViewOfFileEx | windows.cpp:318:23:318:37 | *call to MapViewOfFileEx | provenance | Src:MaD:339  |
+| windows.cpp:318:23:318:37 | *call to MapViewOfFileEx | windows.cpp:318:23:318:37 | *call to MapViewOfFileEx | provenance | Src:MaD:10  |
 | windows.cpp:318:23:318:37 | *call to MapViewOfFileEx | windows.cpp:319:20:319:52 | *pMapView | provenance |  |
 | windows.cpp:319:20:319:52 | *pMapView | windows.cpp:321:10:321:16 | * ... | provenance |  |
-| windows.cpp:325:23:325:42 | *call to MapViewOfFileFromApp | windows.cpp:325:23:325:42 | *call to MapViewOfFileFromApp | provenance | Src:MaD:340  |
+| windows.cpp:325:23:325:42 | *call to MapViewOfFileFromApp | windows.cpp:325:23:325:42 | *call to MapViewOfFileFromApp | provenance | Src:MaD:11  |
 | windows.cpp:325:23:325:42 | *call to MapViewOfFileFromApp | windows.cpp:326:20:326:52 | *pMapView | provenance |  |
 | windows.cpp:326:20:326:52 | *pMapView | windows.cpp:328:10:328:16 | * ... | provenance |  |
-| windows.cpp:332:23:332:40 | *call to MapViewOfFileNuma2 | windows.cpp:332:23:332:40 | *call to MapViewOfFileNuma2 | provenance | Src:MaD:341  |
+| windows.cpp:332:23:332:40 | *call to MapViewOfFileNuma2 | windows.cpp:332:23:332:40 | *call to MapViewOfFileNuma2 | provenance | Src:MaD:12  |
 | windows.cpp:332:23:332:40 | *call to MapViewOfFileNuma2 | windows.cpp:333:20:333:52 | *pMapView | provenance |  |
 | windows.cpp:333:20:333:52 | *pMapView | windows.cpp:335:10:335:16 | * ... | provenance |  |
 nodes
@@ -222,3 +245,4 @@ subpaths
 | test.cpp:25:35:25:35 | x | test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | test.cpp:6:5:6:27 | [summary] to write: ReturnValue in ymlStepManual_with_body | test.cpp:25:11:25:33 | call to ymlStepManual_with_body |
 | test.cpp:32:41:32:41 | x | test.cpp:7:47:7:52 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body |
 | windows.cpp:27:36:27:38 | *cmd | windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | windows.cpp:17:8:17:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA |
+testFailures

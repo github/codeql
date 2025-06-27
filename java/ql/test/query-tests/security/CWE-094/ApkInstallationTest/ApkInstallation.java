@@ -11,7 +11,7 @@ public class ApkInstallation extends Activity {
     public void installAPK(String path) {
         // BAD: the path is not checked
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive"); // $ hasApkInstallation
+        intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive"); // $ Alert
         startActivity(intent);
     }
 
@@ -19,7 +19,7 @@ public class ApkInstallation extends Activity {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setType(APK_MIMETYPE);
         // BAD: the path is not checked
-        intent.setData(Uri.fromFile(new File(path))); // $ hasApkInstallation
+        intent.setData(Uri.fromFile(new File(path))); // $ Alert
         startActivity(intent);
     }
 
@@ -27,7 +27,7 @@ public class ApkInstallation extends Activity {
         // BAD: file is from external storage
         File file = new File(Environment.getExternalStorageDirectory(), path);
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file), APK_MIMETYPE); // $ hasApkInstallation
+        intent.setDataAndType(Uri.fromFile(file), APK_MIMETYPE); // $ Alert
         startActivity(intent);
     }
 
@@ -35,14 +35,14 @@ public class ApkInstallation extends Activity {
         // BAD: file is from external storage
         File file = new File(Environment.getExternalStorageDirectory(), path);
         Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
-        intent.setData(Uri.fromFile(file)); // $ hasApkInstallation
+        intent.setData(Uri.fromFile(file)); // $ Alert
         startActivity(intent);
     }
 
     public void installAPKInstallPackageLiteral(String path) {
         File file = new File(Environment.getExternalStorageDirectory(), path);
         Intent intent = new Intent("android.intent.action.INSTALL_PACKAGE");
-        intent.setData(Uri.fromFile(file)); // $ hasApkInstallation
+        intent.setData(Uri.fromFile(file)); // $ Alert
         startActivity(intent);
     }
 
@@ -50,7 +50,7 @@ public class ApkInstallation extends Activity {
         Intent intent = new Intent(this, OtherActivity.class);
         intent.setAction(Intent.ACTION_VIEW);
         // BAD: the file is from unknown source
-        intent.setData(Uri.fromFile(file)); // $ hasApkInstallation
+        intent.setData(Uri.fromFile(file)); // $ Alert
     }
 }
 

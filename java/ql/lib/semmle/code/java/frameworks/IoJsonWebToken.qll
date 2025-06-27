@@ -1,4 +1,6 @@
 /** Predicates and classes to reason about the `io.jsonwebtoken` library. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

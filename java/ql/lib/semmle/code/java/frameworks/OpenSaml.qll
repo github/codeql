@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the OpenSAML libraries.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.security.InsecureRandomnessQuery

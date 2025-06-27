@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - ["Microsoft.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["Microsoft.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String,Microsoft.Data.SqlClient.SqlConnection)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["Microsoft.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String,Microsoft.Data.SqlClient.SqlConnection,Microsoft.Data.SqlClient.SqlTransaction)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["Microsoft.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String,Microsoft.Data.SqlClient.SqlConnection,Microsoft.Data.SqlClient.SqlTransaction,Microsoft.Data.SqlClient.SqlCommandColumnEncryptionSetting)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["Microsoft.Data.SqlClient", "SqlDataAdapter", False, "SqlDataAdapter", "(Microsoft.Data.SqlClient.SqlCommand)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["Microsoft.Data.SqlClient", "SqlDataAdapter", False, "SqlDataAdapter", "(System.String,Microsoft.Data.SqlClient.SqlConnection)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["Microsoft.Data.SqlClient", "SqlDataAdapter", False, "SqlDataAdapter", "(System.String,System.String)", "", "Argument[0]", "sql-injection", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["Microsoft.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String,Microsoft.Data.SqlClient.SqlConnection)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["Microsoft.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String,Microsoft.Data.SqlClient.SqlConnection,Microsoft.Data.SqlClient.SqlTransaction)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["Microsoft.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String,Microsoft.Data.SqlClient.SqlConnection,Microsoft.Data.SqlClient.SqlTransaction,Microsoft.Data.SqlClient.SqlCommandColumnEncryptionSetting)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
