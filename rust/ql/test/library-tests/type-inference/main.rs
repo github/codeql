@@ -14,7 +14,7 @@ mod field_access {
     }
 
     #[derive(Debug)]
-    struct GenericThing<A> {
+    struct GenericThing<A = bool> {
         a: A,
     }
 
@@ -25,6 +25,11 @@ mod field_access {
     fn simple_field_access() {
         let x = MyThing { a: S };
         println!("{:?}", x.a); // $ fieldof=MyThing
+    }
+
+    fn default_field_access(x: GenericThing) {
+        let a = x.a; // $ fieldof=GenericThing type=a:bool
+        println!("{:?}", a);
     }
 
     fn generic_field_access() {
@@ -472,7 +477,7 @@ mod type_parameter_bounds {
         println!("{:?}", s); // $ type=s:S1
     }
 
-    trait Pair<P1, P2> {
+    trait Pair<P1 = bool, P2 = i64> {
         fn fst(self) -> P1;
 
         fn snd(self) -> P2;
@@ -480,8 +485,8 @@ mod type_parameter_bounds {
 
     fn call_trait_per_bound_with_type_1<T: Pair<S1, S2>>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
-        let s1 = x.fst(); // $ method=fst
-        let s2 = y.snd(); // $ method=snd
+        let s1 = x.fst(); // $ method=fst type=s1:S1
+        let s2 = y.snd(); // $ method=snd type=s2:S2
         println!("{:?}, {:?}", s1, s2);
     }
 
@@ -489,6 +494,20 @@ mod type_parameter_bounds {
         // The type in the type parameter bound determines the return type.
         let s1 = x.fst(); // $ method=fst
         let s2 = y.snd(); // $ method=snd
+        println!("{:?}, {:?}", s1, s2);
+    }
+
+    fn call_trait_per_bound_with_type_3<T: Pair>(x: T, y: T) {
+        // The type in the type parameter bound determines the return type.
+        let s1 = x.fst(); // $ method=fst type=s1:bool
+        let s2 = y.snd(); // $ method=snd type=s2:i64
+        println!("{:?}, {:?}", s1, s2);
+    }
+
+    fn call_trait_per_bound_with_type_4<T: Pair<u8>>(x: T, y: T) {
+        // The type in the type parameter bound determines the return type.
+        let s1 = x.fst(); // $ method=fst type=s1:u8
+        let s2 = y.snd(); // $ method=snd type=s2:i64
         println!("{:?}, {:?}", s1, s2);
     }
 }
@@ -697,7 +716,7 @@ mod trait_associated_type {
         println!("{:?}", x3.put(1).unwrap()); // $ method=S::put method=unwrap
 
         // Call to default implementation in `trait` block
-        println!("{:?}", x3.putTwo(2, 3).unwrap()); // $ method=putTwo MISSING: method=unwrap
+        println!("{:?}", x3.putTwo(2, 3).unwrap()); // $ method=putTwo method=unwrap
 
         let x4 = g(S); // $ MISSING: type=x4:AT
         println!("{:?}", x4);
@@ -1060,6 +1079,11 @@ mod method_call_type_conversion {
     #[derive(Debug, Copy, Clone)]
     struct S2;
 
+    #[derive(Debug, Copy, Clone, Default)]
+    struct MyInt {
+        a: i64,
+    }
+
     impl<T> S<T> {
         fn m1(self) -> T {
             self.0 // $ fieldof=S
@@ -1071,6 +1095,24 @@ mod method_call_type_conversion {
 
         fn m3(self: &S<T>) -> &T {
             &self.0 // $ fieldof=S
+        }
+    }
+
+    trait ATrait {
+        fn method_on_borrow(&self) -> i64;
+        fn method_not_on_borrow(self) -> i64;
+    }
+
+    // Trait implementation on a borrow.
+    impl ATrait for &MyInt {
+        // MyInt::method_on_borrow
+        fn method_on_borrow(&self) -> i64 {
+            (*(*self)).a // $ method=deref fieldof=MyInt
+        }
+
+        // MyInt::method_not_on_borrow
+        fn method_not_on_borrow(self) -> i64 {
+            (*self).a // $ method=deref fieldof=MyInt
         }
     }
 
@@ -1099,14 +1141,31 @@ mod method_call_type_conversion {
         println!("{:?}", x5.0); // $ fieldof=S
 
         let x6 = &S(S2);
+
         // explicit dereference
-        println!("{:?}", (*x6).m1()); // $ method=m1
+        println!("{:?}", (*x6).m1()); // $ method=m1 method=deref
 
         let x7 = S(&S2);
         // Non-implicit dereference with nested borrow in order to test that the
         // implicit dereference handling doesn't affect nested borrows.
         let t = x7.m1(); // $ method=m1 type=t:& type=t:&T.S2
         println!("{:?}", x7);
+
+        let x9: String = "Hello".to_string(); // $ type=x9:String
+
+        // Implicit `String` -> `str` conversion happens via the `Deref` trait:
+        // https://doc.rust-lang.org/std/string/struct.String.html#deref.
+        let u = x9.parse::<u32>(); // $ method=parse type=u:T.u32
+
+        let my_thing = &MyInt { a: 37 };
+        // implicit borrow of a `&`
+        let a = my_thing.method_on_borrow(); // $ MISSING: method=MyInt::method_on_borrow
+        println!("{:?}", a);
+
+        // no implicit borrow
+        let my_thing = &MyInt { a: 38 };
+        let a = my_thing.method_not_on_borrow(); // $ MISSING: method=MyInt::method_not_on_borrow
+        println!("{:?}", a);
     }
 }
 
@@ -1191,7 +1250,7 @@ mod borrowed_typed {
         x.f2(); // $ method=f2
         S::f3(&x);
 
-        let n = **&&true; // $ type=n:bool
+        let n = **&&true; // $ type=n:bool method=deref
 
         // In this example the type of `flag` must be inferred at the call to
         // `flip` and flow through the borrow in the argument.
@@ -1299,6 +1358,11 @@ mod overloadable_operators {
     struct Vec2 {
         x: i64,
         y: i64,
+    }
+    impl Default for Vec2 {
+        fn default() -> Self {
+            Vec2 { x: 0, y: 0 }
+        }
     }
     // Implement all overloadable operators for Vec2
     impl Add for Vec2 {
@@ -1646,6 +1710,15 @@ mod overloadable_operators {
         // Prefix operators
         let vec2_neg = -v1; // $ type=vec2_neg:Vec2 method=Vec2::neg
         let vec2_not = !v1; // $ type=vec2_not:Vec2 method=Vec2::not
+
+        // Here the type of `default_vec2` must be inferred from the `+` call.
+        let default_vec2 = Default::default(); // $ type=default_vec2:Vec2
+        let vec2_zero_plus = Vec2 { x: 0, y: 0 } + default_vec2; // $ method=Vec2::add
+
+        // Here the type of `default_vec2` must be inferred from the `==` call
+        // and the type of the borrowed second argument is unknown at the call.
+        let default_vec2 = Default::default(); // $ type=default_vec2:Vec2
+        let vec2_zero_plus = Vec2 { x: 0, y: 0 } == default_vec2; // $ method=Vec2::eq
     }
 }
 
@@ -1663,9 +1736,7 @@ mod async_ {
     }
 
     fn f2() -> impl Future<Output = S1> {
-        async {
-            S1
-        }
+        async { S1 }
     }
 
     struct S2;
@@ -1673,7 +1744,10 @@ mod async_ {
     impl Future for S2 {
         type Output = S1;
 
-        fn poll(self: std::pin::Pin<&mut Self>, _cx: &mut std::task::Context<'_>) -> std::task::Poll<Self::Output> {
+        fn poll(
+            self: std::pin::Pin<&mut Self>,
+            _cx: &mut std::task::Context<'_>,
+        ) -> std::task::Poll<Self::Output> {
             std::task::Poll::Ready(S1)
         }
     }
@@ -1687,13 +1761,10 @@ mod async_ {
         f2().await.f(); // $ method=S1f
         f3().await.f(); // $ method=S1f
         S2.await.f(); // $ method=S1f
-        let b = async {
-            S1
-        };
+        let b = async { S1 };
         b.await.f(); // $ method=S1f
     }
 }
-
 
 mod impl_trait {
     struct S1;
@@ -1753,6 +1824,222 @@ mod impl_trait {
     }
 }
 
+mod indexers {
+    use std::ops::Index;
+
+    #[derive(Debug)]
+    struct S;
+
+    impl S {
+        fn foo(&self) -> Self {
+            S
+        }
+    }
+
+    #[derive(Debug)]
+    struct MyVec<T> {
+        data: Vec<T>,
+    }
+
+    impl<T> MyVec<T> {
+        fn new() -> Self {
+            MyVec { data: Vec::new() }
+        }
+
+        fn push(&mut self, value: T) {
+            self.data.push(value); // $ fieldof=MyVec method=push
+        }
+    }
+
+    impl<T> Index<usize> for MyVec<T> {
+        type Output = T;
+
+        // MyVec::index
+        fn index(&self, index: usize) -> &Self::Output {
+            &self.data[index] // $ fieldof=MyVec method=index
+        }
+    }
+
+    fn analyze_slice(slice: &[S]) {
+        // NOTE: `slice` gets the spurious type `[]` because the desugaring of
+        // the index expression adds an implicit borrow. `&slice` has the type
+        // `&&[S]`, but the `index` methods takes a `&[S]`, so Rust adds an
+        // implicit dereference. We cannot currently handle a position that is
+        // both implicitly dereferenced and implicitly borrowed, so the extra
+        // type sneaks in.
+        let x = slice[0].foo(); // $ method=foo type=x:S method=index SPURIOUS: type=slice:[]
+    }
+
+    pub fn f() {
+        let mut vec = MyVec::new(); // $ type=vec:T.S
+        vec.push(S); // $ method=push
+        vec[0].foo(); // $ method=MyVec::index method=foo
+
+        let xs: [S; 1] = [S];
+        let x = xs[0].foo(); // $ method=foo type=x:S method=index
+
+        analyze_slice(&xs);
+    }
+}
+
+mod macros {
+    pub fn f() {
+        let x = format!("Hello, {}", "World!"); // $ MISSING: type=x:String -- needs https://github.com/github/codeql/pull/19658
+    }
+}
+
+mod method_determined_by_argument_type {
+    trait MyAdd<T> {
+        fn my_add(&self, value: T) -> Self;
+    }
+
+    impl MyAdd<i64> for i64 {
+        // MyAdd<i64>::my_add
+        fn my_add(&self, value: i64) -> Self {
+            value
+        }
+    }
+
+    impl MyAdd<&i64> for i64 {
+        // MyAdd<&i64>::my_add
+        fn my_add(&self, value: &i64) -> Self {
+            *value // $ method=deref
+        }
+    }
+
+    impl MyAdd<bool> for i64 {
+        // MyAdd<bool>::my_add
+        fn my_add(&self, value: bool) -> Self {
+            if value { 1 } else { 0 }
+        }
+    }
+
+    pub fn f() {
+        let x: i64 = 73;
+        x.my_add(5i64); // $ method=MyAdd<i64>::my_add
+        x.my_add(&5i64); // $ method=MyAdd<&i64>::my_add
+        x.my_add(true); // $ method=MyAdd<bool>::my_add
+    }
+}
+
+mod loops {
+    struct MyCallable {}
+
+    impl MyCallable {
+        fn new() -> Self {
+            MyCallable {}
+        }
+
+        fn call(&self) -> i64 {
+            1
+        }
+    }
+
+    pub fn f() {
+        // for loops with arrays
+
+        for i in [1, 2, 3] {} // $ type=i:i32
+        for i in [1, 2, 3].map(|x| x + 1) {} // $ method=map MISSING: type=i:i32
+        for i in [1, 2, 3].into_iter() {} // $ method=into_iter MISSING: type=i:i32
+
+        let vals1 = [1u8, 2, 3]; // $ type=vals1:[T;...].u8
+        for u in vals1 {} // $ type=u:u8
+
+        let vals2 = [1u16; 3]; // $ type=vals2:[T;...].u16
+        for u in vals2 {} // $ type=u:u16
+
+        let vals3: [u32; 3] = [1, 2, 3]; // $ type=vals3:[T;...].u32
+        for u in vals3 {} // $ type=u:u32
+
+        let vals4: [u64; 3] = [1; 3]; // $ type=vals4:[T;...].u64
+        for u in vals4 {} // $ type=u:u64
+
+        let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1:[T;...].str
+        for s in &strings1 {} // $ MISSING: type=s:&T.str
+        for s in &mut strings1 {} // $ MISSING: type=s:&T.str
+        for s in strings1 {} // $ type=s:str
+
+        let strings2 = [ // $ type=strings2:[T;...].String
+            String::from("foo"),
+            String::from("bar"),
+            String::from("baz"),
+        ];
+        for s in strings2 {} // $ type=s:String
+
+        let strings3 = &[ // $ type=strings3:&T.[T;...].String
+            String::from("foo"),
+            String::from("bar"),
+            String::from("baz"),
+        ];
+        for s in strings3 {} // $ MISSING: type=s:String
+
+        let callables = [MyCallable::new(), MyCallable::new(), MyCallable::new()]; // $ MISSING: type=callables:[T;...].MyCallable; 3
+        for c in callables // $ type=c:MyCallable
+        {
+            let result = c.call(); // $ type=result:i64 method=call
+        }
+
+        // for loops with ranges
+
+        for i in 0..10 {} // $ MISSING: type=i:i32
+        for u in [0u8..10] {} // $ MISSING: type=u:u8
+        let range = 0..10; // $ MISSING: type=range:Range type=range:Idx.i32
+        for i in range {} // $ MISSING: type=i:i32
+
+        let range1 = std::ops::Range { // $ type=range1:Range type=range1:Idx.u16
+            start: 0u16,
+            end: 10u16,
+        };
+        for u in range1 {} // $ MISSING: type=u:u16
+
+        // for loops with containers
+
+        let vals3 = vec![1, 2, 3]; // $ MISSING: type=vals3:Vec type=vals3:T.i32
+        for i in vals3 {} // $ MISSING: type=i:i32
+
+        let vals4a: Vec<u16> = [1u16, 2, 3].to_vec(); // $ type=vals4a:Vec type=vals4a:T.u16
+        for u in vals4a {} // $ type=u:u16
+
+        let vals4b = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4b:Vec type=vals4b:T.u16
+        for u in vals4b {} // $ MISSING: type=u:u16
+
+        let vals5 = Vec::from([1u32, 2, 3]); // $ type=vals5:Vec MISSING: type=vals5:T.u32
+        for u in vals5 {} // $ MISSING: type=u:u32
+
+        let vals6: Vec<&u64> = [1u64, 2, 3].iter().collect(); // $ type=vals6:Vec type=vals6:T.&T.u64
+        for u in vals6 {} // $ type=u:&T.u64
+
+        let mut vals7 = Vec::new(); // $ type=vals7:Vec MISSING: type=vals7:T.u8
+        vals7.push(1u8); // $ method=push
+        for u in vals7 {} // $ MISSING: type=u:u8
+
+        let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ MISSING: type=matrix1:Vec type=matrix1:T.Vec type=matrix1:T.T.i32
+        for row in matrix1 {
+            // $ MISSING: type=row:Vec type=row:T.i32
+            for cell in row { // $ MISSING: type=cell:i32
+            }
+        }
+
+        let mut map1 = std::collections::HashMap::new(); // $ MISSING: type=map1:Hashmap type=map1:K.i32 type=map1:V.Box type1=map1:V.T.&T.str
+        map1.insert(1, Box::new("one")); // $ method=insert
+        map1.insert(2, Box::new("two")); // $ method=insert
+        for key in map1.keys() {} // $ method=keys MISSING: type=key:i32
+        for value in map1.values() {} // $ method=values MISSING: type=value:Box type=value:T.&T.str
+        for (key, value) in map1.iter() {} // $ method=iter MISSING: type=key:i32 type=value:Box type=value:T.&T.str
+        for (key, value) in &map1 {} // $ MISSING: type=key:i32 type=value:Box type=value:T.&T.str
+
+        // while loops
+
+        let mut a: i64 = 0; // $ type=a:i64
+        while a < 10 // $ method=lt type=a:i64
+        {
+            a += 1; // $ type=a:i64 method=add_assign
+        }
+    }
+}
+
+mod dereference;
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -1774,4 +2061,9 @@ fn main() {
     operators::f();
     async_::f();
     impl_trait::f();
+    indexers::f();
+    loops::f();
+    macros::f();
+    method_determined_by_argument_type::f();
+    dereference::test();
 }

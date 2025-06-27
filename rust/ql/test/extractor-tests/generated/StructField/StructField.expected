@@ -1,1 +1,9 @@
-| gen_struct_field.rs:7:16:7:21 | StructField | getNumberOfAttrs: | 0 | hasDefault: | no | isUnsafe: | no | hasName: | yes | hasTypeRepr: | yes | hasVisibility: | no |
+instances
+| gen_struct_field.rs:7:16:7:21 | StructField | isUnsafe: | no |
+getAttr
+getDefault
+getName
+| gen_struct_field.rs:7:16:7:21 | StructField | gen_struct_field.rs:7:16:7:16 | x |
+getTypeRepr
+| gen_struct_field.rs:7:16:7:21 | StructField | gen_struct_field.rs:7:19:7:21 | i32 |
+getVisibility

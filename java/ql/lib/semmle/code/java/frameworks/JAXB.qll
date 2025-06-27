@@ -1,4 +1,6 @@
 /** Definitions related to JAXB. */
+overlay[local?]
+module;
 
 import semmle.code.java.Type
 

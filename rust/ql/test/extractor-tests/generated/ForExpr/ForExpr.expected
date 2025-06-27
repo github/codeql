@@ -1,1 +1,10 @@
-| gen_for_expr.rs:7:5:9:5 | for ... in ... { ... } | hasLabel: | no | hasLoopBody: | yes | getNumberOfAttrs: | 0 | hasIterable: | yes | hasPat: | yes |
+instances
+| gen_for_expr.rs:7:5:9:5 | for ... in ... { ... } |
+getLabel
+getLoopBody
+| gen_for_expr.rs:7:5:9:5 | for ... in ... { ... } | gen_for_expr.rs:7:20:9:5 | { ... } |
+getAttr
+getIterable
+| gen_for_expr.rs:7:5:9:5 | for ... in ... { ... } | gen_for_expr.rs:7:14:7:18 | 0..10 |
+getPat
+| gen_for_expr.rs:7:5:9:5 | for ... in ... { ... } | gen_for_expr.rs:7:9:7:9 | x |

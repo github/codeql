@@ -100,7 +100,7 @@ class Base:
 
 @dataclass
 class Class:
-    template: ClassVar = 'ql_class'
+    template: ClassVar = "ql_class"
 
     name: str
     bases: List[Base] = field(default_factory=list)
@@ -116,7 +116,12 @@ class Class:
     cfg: bool = False
 
     def __post_init__(self):
-        def get_bases(bases): return [Base(str(b), str(prev)) for b, prev in zip(bases, itertools.chain([""], bases))]
+        def get_bases(bases):
+            return [
+                Base(str(b), str(prev))
+                for b, prev in zip(bases, itertools.chain([""], bases))
+            ]
+
         self.bases = get_bases(self.bases)
         self.bases_impl = get_bases(self.bases_impl)
         if self.properties:
@@ -164,7 +169,7 @@ class SynthUnderlyingAccessor:
 
 @dataclass
 class Stub:
-    template: ClassVar = 'ql_stub'
+    template: ClassVar = "ql_stub"
 
     name: str
     base_import: str
@@ -183,7 +188,7 @@ class Stub:
 
 @dataclass
 class ClassPublic:
-    template: ClassVar = 'ql_class_public'
+    template: ClassVar = "ql_class_public"
 
     name: str
     imports: List[str] = field(default_factory=list)
@@ -197,7 +202,7 @@ class ClassPublic:
 
 @dataclass
 class DbClasses:
-    template: ClassVar = 'ql_db'
+    template: ClassVar = "ql_db"
 
     classes: List[Class] = field(default_factory=list)
     imports: List[str] = field(default_factory=list)
@@ -205,14 +210,14 @@ class DbClasses:
 
 @dataclass
 class ImportList:
-    template: ClassVar = 'ql_imports'
+    template: ClassVar = "ql_imports"
 
     imports: List[str] = field(default_factory=list)
 
 
 @dataclass
 class GetParentImplementation:
-    template: ClassVar = 'ql_parent'
+    template: ClassVar = "ql_parent"
 
     classes: List[Class] = field(default_factory=list)
     imports: List[str] = field(default_factory=list)
@@ -234,22 +239,15 @@ class TesterBase:
 
 @dataclass
 class ClassTester(TesterBase):
-    template: ClassVar = 'ql_test_class'
+    template: ClassVar = "ql_test_class"
 
     properties: List[PropertyForTest] = field(default_factory=list)
     show_ql_class: bool = False
 
 
 @dataclass
-class PropertyTester(TesterBase):
-    template: ClassVar = 'ql_test_property'
-
-    property: PropertyForTest
-
-
-@dataclass
 class MissingTestInstructions:
-    template: ClassVar = 'ql_test_missing'
+    template: ClassVar = "ql_test_missing"
 
 
 class Synth:
@@ -306,7 +304,9 @@ class Synth:
         subtracted_synth_types: List["Synth.Class"] = field(default_factory=list)
 
         def subtract_type(self, type: str):
-            self.subtracted_synth_types.append(Synth.Class(type, first=not self.subtracted_synth_types))
+            self.subtracted_synth_types.append(
+                Synth.Class(type, first=not self.subtracted_synth_types)
+            )
 
         @property
         def has_subtracted_synth_types(self) -> bool:
@@ -357,6 +357,6 @@ class CfgClass:
 
 @dataclass
 class CfgClasses:
-    template: ClassVar = 'ql_cfg_nodes'
+    template: ClassVar = "ql_cfg_nodes"
     include_file_import: Optional[str] = None
     classes: List[CfgClass] = field(default_factory=list)

@@ -11,15 +11,15 @@ import org.nibblesec.tools.SerialKiller;
 
 public class A {
   public Object deserialize1(Socket sock) throws java.io.IOException, ClassNotFoundException {
-    InputStream inputStream = sock.getInputStream();
+    InputStream inputStream = sock.getInputStream(); // $ Source
     ObjectInputStream in = new ObjectInputStream(inputStream);
-    return in.readObject(); // $unsafeDeserialization
+    return in.readObject(); // $ Alert
   }
 
   public Object deserialize2(Socket sock) throws java.io.IOException, ClassNotFoundException {
-    InputStream inputStream = sock.getInputStream();
+    InputStream inputStream = sock.getInputStream(); // $ Source
     ObjectInputStream in = new ObjectInputStream(inputStream);
-    return in.readUnshared(); // $unsafeDeserialization
+    return in.readUnshared(); // $ Alert
   }
 
   public Object deserializeWithSerialKiller(Socket sock) throws java.io.IOException, ClassNotFoundException {
@@ -29,24 +29,24 @@ public class A {
   }
 
   public Object deserialize3(Socket sock) throws java.io.IOException {
-    InputStream inputStream = sock.getInputStream();
+    InputStream inputStream = sock.getInputStream(); // $ Source
     XMLDecoder d = new XMLDecoder(inputStream);
-    return d.readObject(); // $unsafeDeserialization
+    return d.readObject(); // $ Alert
   }
 
   public Object deserialize4(Socket sock) throws java.io.IOException {
     XStream xs = new XStream();
-    InputStream inputStream = sock.getInputStream();
+    InputStream inputStream = sock.getInputStream(); // $ Source
     Reader reader = new InputStreamReader(inputStream);
-    return xs.fromXML(reader); // $unsafeDeserialization
+    return xs.fromXML(reader); // $ Alert
   }
 
   public void deserialize5(Socket sock) throws java.io.IOException {
     Kryo kryo = new Kryo();
-    Input input = new Input(sock.getInputStream());
-    A a1 = kryo.readObject(input, A.class); // $unsafeDeserialization
-    A a2 = kryo.readObjectOrNull(input, A.class); // $unsafeDeserialization
-    Object o = kryo.readClassAndObject(input); // $unsafeDeserialization
+    Input input = new Input(sock.getInputStream()); // $ Source
+    A a1 = kryo.readObject(input, A.class); // $ Alert
+    A a2 = kryo.readObjectOrNull(input, A.class); // $ Alert
+    Object o = kryo.readClassAndObject(input); // $ Alert
   }
 
   private Kryo getSafeKryo() throws java.io.IOException {
@@ -64,22 +64,22 @@ public class A {
 
   public void deserializeSnakeYaml(Socket sock) throws java.io.IOException {
     Yaml yaml = new Yaml();
-    InputStream input = sock.getInputStream();
-    Object o = yaml.load(input); // $unsafeDeserialization
-    Object o2 = yaml.loadAll(input); // $unsafeDeserialization
-    Object o3 = yaml.parse(new InputStreamReader(input)); // $unsafeDeserialization
-    A o4 = yaml.loadAs(input, A.class); // $unsafeDeserialization
-    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); // $unsafeDeserialization
+    InputStream input = sock.getInputStream(); // $ Source
+    Object o = yaml.load(input); // $ Alert
+    Object o2 = yaml.loadAll(input); // $ Alert
+    Object o3 = yaml.parse(new InputStreamReader(input)); // $ Alert
+    A o4 = yaml.loadAs(input, A.class); // $ Alert
+    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); // $ Alert
   }
 
   public void deserializeSnakeYaml2(Socket sock) throws java.io.IOException {
     Yaml yaml = new Yaml(new Constructor());
-    InputStream input = sock.getInputStream();
-    Object o = yaml.load(input); // $unsafeDeserialization
-    Object o2 = yaml.loadAll(input); // $unsafeDeserialization
-    Object o3 = yaml.parse(new InputStreamReader(input)); // $unsafeDeserialization
-    A o4 = yaml.loadAs(input, A.class); // $unsafeDeserialization
-    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); // $unsafeDeserialization
+    InputStream input = sock.getInputStream(); // $ Source
+    Object o = yaml.load(input); // $ Alert
+    Object o2 = yaml.loadAll(input); // $ Alert
+    Object o3 = yaml.parse(new InputStreamReader(input)); // $ Alert
+    A o4 = yaml.loadAs(input, A.class); // $ Alert
+    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); // $ Alert
   }
 
   public void deserializeSnakeYaml3(Socket sock) throws java.io.IOException {
@@ -94,11 +94,11 @@ public class A {
 
   public void deserializeSnakeYaml4(Socket sock) throws java.io.IOException {
     Yaml yaml = new Yaml(new Constructor(A.class));
-    InputStream input = sock.getInputStream();
-    Object o = yaml.load(input); // $unsafeDeserialization
-    Object o2 = yaml.loadAll(input); // $unsafeDeserialization
-    Object o3 = yaml.parse(new InputStreamReader(input)); // $unsafeDeserialization
-    A o4 = yaml.loadAs(input, A.class); // $unsafeDeserialization
-    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); // $unsafeDeserialization
+    InputStream input = sock.getInputStream(); // $ Source
+    Object o = yaml.load(input); // $ Alert
+    Object o2 = yaml.loadAll(input); // $ Alert
+    Object o3 = yaml.parse(new InputStreamReader(input)); // $ Alert
+    A o4 = yaml.loadAs(input, A.class); // $ Alert
+    A o5 = yaml.loadAs(new InputStreamReader(input), A.class); // $ Alert
   }
 }

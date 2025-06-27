@@ -26,6 +26,6 @@ public class UnmarshallerTests {
     SAXParserFactory spf = SAXParserFactory.newInstance();
     JAXBContext jc = JAXBContext.newInstance(Object.class);
     Unmarshaller um = jc.createUnmarshaller();
-    um.unmarshal(sock.getInputStream()); // $ hasTaintFlow
+    um.unmarshal(sock.getInputStream()); // $ Alert
   }
 }

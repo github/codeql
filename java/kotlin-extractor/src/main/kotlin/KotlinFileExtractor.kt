@@ -8053,7 +8053,7 @@ open class KotlinFileExtractor(
                 ?.symbol
                 ?.typeWithArguments(listOf(functionNTypeArguments.last()))
         else
-            functionN(pluginContext)(functionNTypeArguments.size - 1)
+            pluginContext.irBuiltIns.functionN(functionNTypeArguments.size - 1)
                 .symbol
                 .typeWithArguments(functionNTypeArguments)
 

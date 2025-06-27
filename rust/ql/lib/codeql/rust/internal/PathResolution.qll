@@ -5,7 +5,7 @@
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
 private import codeql.rust.internal.CachedStages
-private import codeql.rust.frameworks.stdlib.Bultins as Builtins
+private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 
 private newtype TNamespace =
   TTypeNamespace() or
@@ -205,7 +205,11 @@ abstract class ItemNode extends Locatable {
     else result = this.getImmediateParentModule().getImmediateParentModule()
     or
     name = "self" and
-    if this instanceof Module or this instanceof Enum or this instanceof Struct
+    if
+      this instanceof Module or
+      this instanceof Enum or
+      this instanceof Struct or
+      this instanceof Crate
     then result = this
     else result = this.getImmediateParentModule()
     or
@@ -374,6 +378,9 @@ class CrateItemNode extends ItemNode instanceof Crate {
       not file = child.(SourceFileItemNode).getSuper() and
       file = super.getSourceFile()
     )
+    or
+    this.getName() = "core" and
+    child instanceof Builtins::BuiltinType
   }
 
   override string getCanonicalPath(Crate c) { c = this and result = Crate.super.getName() }
@@ -422,14 +429,7 @@ abstract private class AssocItemNode extends ItemNode, AssocItem {
 private class ConstItemNode extends AssocItemNode instanceof Const {
   override string getName() { result = Const.super.getName().getText() }
 
-  override predicate hasImplementation() {
-    super.hasBody()
-    or
-    // for trait items from library code, we do not currently know if they
-    // have default implementations or not, so we assume they do
-    not this.fromSource() and
-    this = any(TraitItemNode t).getAnAssocItem()
-  }
+  override predicate hasImplementation() { Const.super.hasImplementation() }
 
   override Namespace getNamespace() { result.isValue() }
 
@@ -505,14 +505,7 @@ private class VariantItemNode extends ItemNode instanceof Variant {
 class FunctionItemNode extends AssocItemNode instanceof Function {
   override string getName() { result = Function.super.getName().getText() }
 
-  override predicate hasImplementation() {
-    super.hasBody()
-    or
-    // for trait items from library code, we do not currently know if they
-    // have default implementations or not, so we assume they do
-    not this.fromSource() and
-    this = any(TraitItemNode t).getAnAssocItem()
-  }
+  override predicate hasImplementation() { Function.super.hasImplementation() }
 
   override Namespace getNamespace() { result.isValue() }
 
@@ -546,6 +539,13 @@ abstract class ImplOrTraitItemNode extends ItemNode {
 
   /** Gets an associated item belonging to this trait or `impl` block. */
   abstract AssocItemNode getAnAssocItem();
+
+  /** Gets the associated item named `name` belonging to this trait or `impl` block. */
+  pragma[nomagic]
+  AssocItemNode getAssocItem(string name) {
+    result = this.getAnAssocItem() and
+    result.getName() = name
+  }
 
   /** Holds if this trait or `impl` block declares an associated item named `name`. */
   pragma[nomagic]
@@ -1139,7 +1139,7 @@ pragma[nomagic]
 private predicate crateDependencyEdge(SourceFileItemNode file, string name, CrateItemNode dep) {
   exists(CrateItemNode c | dep = c.(Crate).getDependency(name) | file = c.getASourceFile())
   or
-  // Give builtin files, such as `await.rs`, access to `std`
+  // Give builtin files access to `std`
   file instanceof BuiltinSourceFile and
   dep.getName() = name and
   name = "std"
@@ -1508,7 +1508,7 @@ private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
   exists(Crate stdOrCore, ModuleLikeNode mod, ModuleItemNode prelude, ModuleItemNode rust |
     f = any(Crate c0 | stdOrCore = c0.getDependency(_) or stdOrCore = c0).getASourceFile()
     or
-    // Give builtin files, such as `await.rs`, access to the prelude
+    // Give builtin files access to the prelude
     f instanceof BuiltinSourceFile
   |
     stdOrCore.getName() = ["std", "core"] and
@@ -1533,8 +1533,8 @@ private module Debug {
   private Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/test.rs") and
-      startline = 74
+      filepath.matches("%/main.rs") and
+      startline = 52
     )
   }
 

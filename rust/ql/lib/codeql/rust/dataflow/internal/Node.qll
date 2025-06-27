@@ -44,7 +44,7 @@ abstract class NodePublic extends TNode {
 
 abstract class Node extends NodePublic {
   /** Gets the enclosing callable. */
-  DataFlowCallable getEnclosingCallable() { result = TCfgScope(this.getCfgScope()) }
+  DataFlowCallable getEnclosingCallable() { result.asCfgScope() = this.getCfgScope() }
 
   /** Do not call: use `getEnclosingCallable()` instead. */
   abstract CfgScope getCfgScope();
@@ -102,9 +102,9 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.asLibraryCallable() = this.getSummarizedCallable()
-    or
     result.asCfgScope() = this.getCfgScope()
+    or
+    result.asSummarizedCallable() = this.getSummarizedCallable()
   }
 
   override Location getLocation() {
@@ -195,7 +195,7 @@ final class SummaryParameterNode extends ParameterNode, FlowSummaryNode {
   }
 
   override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-    this.getSummarizedCallable() = c.asLibraryCallable() and pos = pos_
+    this.getSummarizedCallable() = c.asSummarizedCallable() and pos = pos_
   }
 }
 
@@ -224,13 +224,13 @@ abstract class ArgumentNode extends Node {
 }
 
 final class ExprArgumentNode extends ArgumentNode, ExprNode {
-  private CallExprBaseCfgNode call_;
+  private CallCfgNode call_;
   private RustDataFlow::ArgumentPosition pos_;
 
   ExprArgumentNode() { isArgumentForCall(n, call_, pos_) }
 
   override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
-    call.asCallBaseExprCfgNode() = call_ and pos = pos_
+    call.asCallCfgNode() = call_ and pos = pos_
   }
 }
 
@@ -239,7 +239,7 @@ final class ExprArgumentNode extends ArgumentNode, ExprNode {
  * has taken place.
  */
 final class ReceiverNode extends ArgumentNode, TReceiverNode {
-  private MethodCallExprCfgNode n;
+  private CallCfgNode n;
 
   ReceiverNode() { this = TReceiverNode(n, false) }
 
@@ -248,7 +248,7 @@ final class ReceiverNode extends ArgumentNode, TReceiverNode {
   MethodCallExprCfgNode getMethodCall() { result = n }
 
   override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
-    call.asMethodCallExprCfgNode() = n and pos = TSelfParameterPosition()
+    call.asCallCfgNode() = n and pos = TSelfParameterPosition()
   }
 
   override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
@@ -281,7 +281,7 @@ final class ClosureArgumentNode extends ArgumentNode, ExprNode {
   ClosureArgumentNode() { lambdaCallExpr(call_, _, this.asExpr()) }
 
   override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
-    call.asCallExprCfgNode() = call_ and
+    call.asCallCfgNode() = call_ and
     pos.isClosureSelf()
   }
 }
@@ -330,11 +330,11 @@ abstract class OutNode extends Node {
 }
 
 final private class ExprOutNode extends ExprNode, OutNode {
-  ExprOutNode() { this.asExpr() instanceof CallExprBaseCfgNode }
+  ExprOutNode() { this.asExpr() instanceof CallCfgNode }
 
   /** Gets the underlying call CFG node that includes this out node. */
   override DataFlowCall getCall(ReturnKind kind) {
-    result.asCallBaseExprCfgNode() = this.getCfgNode() and
+    result.asCallCfgNode() = this.getCfgNode() and
     kind = TNormalReturnKind()
   }
 }
@@ -404,7 +404,7 @@ final class ExprPostUpdateNode extends PostUpdateNode, TExprPostUpdateNode {
 }
 
 final class ReceiverPostUpdateNode extends PostUpdateNode, TReceiverNode {
-  private MethodCallExprCfgNode n;
+  private CallCfgNode n;
 
   ReceiverPostUpdateNode() { this = TReceiverNode(n, true) }
 
@@ -467,11 +467,16 @@ newtype TNode =
         any(FieldExprCfgNode access).getContainer(), //
         any(TryExprCfgNode try).getExpr(), //
         any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr(), //
-        any(AwaitExprCfgNode a).getExpr(), any(MethodCallExprCfgNode mc).getReceiver(), //
+        any(AwaitExprCfgNode a).getExpr(), //
+        any(MethodCallExprCfgNode mc).getReceiver(), //
         getPostUpdateReverseStep(any(PostUpdateNode n).getPreUpdateNode().asExpr(), _)
       ]
   } or
-  TReceiverNode(MethodCallExprCfgNode mc, Boolean isPost) or
+  TReceiverNode(CallCfgNode mc, Boolean isPost) {
+    mc.getCall().receiverImplicitlyBorrowed() and
+    // TODO: Handle index expressions as calls in data flow.
+    not mc.getCall() instanceof IndexExpr
+  } or
   TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
   TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
   TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c, _) } or

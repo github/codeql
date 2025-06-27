@@ -5,7 +5,7 @@ Experimental script for bulk generation of MaD models based on a list of project
 Note: This file must be formatted using the Black Python formatter.
 """
 
-import os.path
+import pathlib
 import subprocess
 import sys
 from typing import Required, TypedDict, List, Callable, Optional
@@ -41,7 +41,7 @@ gitroot = (
     .decode("utf-8")
     .strip()
 )
-build_dir = os.path.join(gitroot, "mad-generation-build")
+build_dir = pathlib.Path(gitroot, "mad-generation-build")
 
 
 # A project to generate models for
@@ -86,10 +86,10 @@ def clone_project(project: Project) -> str:
     git_tag = project.get("git-tag")
 
     # Determine target directory
-    target_dir = os.path.join(build_dir, name)
+    target_dir = build_dir / name
 
     # Clone only if directory doesn't already exist
-    if not os.path.exists(target_dir):
+    if not target_dir.exists():
         if git_tag:
             print(f"Cloning {name} from {repo_url} at tag {git_tag}")
         else:
@@ -116,9 +116,7 @@ def clone_project(project: Project) -> str:
     return target_dir
 
 
-def run_in_parallel[
-    T, U
-](
+def run_in_parallel[T, U](
     func: Callable[[T], U],
     items: List[T],
     *,
@@ -193,10 +191,10 @@ def build_database(
     name = project["name"]
 
     # Create database directory path
-    database_dir = os.path.join(build_dir, f"{name}-db")
+    database_dir = build_dir / f"{name}-db"
 
     # Only build the database if it doesn't already exist
-    if not os.path.exists(database_dir):
+    if not database_dir.exists():
         print(f"Building CodeQL database for {name}...")
         extractor_options = [option for x in extractor_options for option in ("-O", x)]
         try:
@@ -225,7 +223,7 @@ def build_database(
     return database_dir
 
 
-def generate_models(config, project: Project, database_dir: str) -> None:
+def generate_models(config, args, project: Project, database_dir: str) -> None:
     """
     Generate models for a project.
 
@@ -238,11 +236,16 @@ def generate_models(config, project: Project, database_dir: str) -> None:
     language = config["language"]
 
     generator = mad.Generator(language)
-    # Note: The argument parser converts with-sinks to with_sinks, etc.
-    generator.generateSinks = should_generate_sinks(project)
-    generator.generateSources = should_generate_sources(project)
-    generator.generateSummaries = should_generate_summaries(project)
-    generator.setenvironment(database=database_dir, folder=name)
+    generator.with_sinks = should_generate_sinks(project)
+    generator.with_sources = should_generate_sources(project)
+    generator.with_summaries = should_generate_summaries(project)
+    generator.threads = args.codeql_threads
+    generator.ram = args.codeql_ram
+    if config.get("single-file", False):
+        generator.single_file = name
+    else:
+        generator.folder = name
+    generator.setenvironment(database=database_dir)
     generator.run()
 
 
@@ -313,18 +316,12 @@ def download_artifact(url: str, artifact_name: str, pat: str) -> str:
     if response.status_code != 200:
         print(f"Failed to download file. Status code: {response.status_code}")
         sys.exit(1)
-    target_zip = os.path.join(build_dir, zipName)
+    target_zip = build_dir / zipName
     with open(target_zip, "wb") as file:
         for chunk in response.iter_content(chunk_size=8192):
             file.write(chunk)
     print(f"Download complete: {target_zip}")
     return target_zip
-
-
-def remove_extension(filename: str) -> str:
-    while "." in filename:
-        filename, _ = os.path.splitext(filename)
-    return filename
 
 
 def pretty_name_from_artifact_name(artifact_name: str) -> str:
@@ -333,43 +330,51 @@ def pretty_name_from_artifact_name(artifact_name: str) -> str:
 
 def download_dca_databases(
     language: str,
-    experiment_name: str,
+    experiment_names: list[str],
     pat: str,
     projects: List[Project],
 ) -> List[tuple[Project, str | None]]:
     """
     Download databases from a DCA experiment.
     Args:
-        experiment_name: The name of the DCA experiment to download databases from.
+        experiment_names: The names of the DCA experiments to download databases from.
         pat: Personal Access Token for GitHub API authentication.
         projects: List of projects to download databases for.
     Returns:
         List of (project_name, database_dir) pairs, where database_dir is None if the download failed.
     """
     print("\n=== Finding projects ===")
-    response = get_json_from_github(
-        f"https://raw.githubusercontent.com/github/codeql-dca-main/data/{experiment_name}/reports/downloads.json",
-        pat,
-    )
-    targets = response["targets"]
     project_map = {project["name"]: project for project in projects}
-    analyzed_databases = {}
-    for data in targets.values():
-        downloads = data["downloads"]
-        analyzed_database = downloads["analyzed_database"]
-        artifact_name = analyzed_database["artifact_name"]
-        pretty_name = pretty_name_from_artifact_name(artifact_name)
+    analyzed_databases = {n: None for n in project_map}
+    for experiment_name in experiment_names:
+        response = get_json_from_github(
+            f"https://raw.githubusercontent.com/github/codeql-dca-main/data/{experiment_name}/reports/downloads.json",
+            pat,
+        )
+        targets = response["targets"]
+        for data in targets.values():
+            downloads = data["downloads"]
+            analyzed_database = downloads["analyzed_database"]
+            artifact_name = analyzed_database["artifact_name"]
+            pretty_name = pretty_name_from_artifact_name(artifact_name)
 
-        if not pretty_name in project_map:
-            print(f"Skipping {pretty_name} as it is not in the list of projects")
-            continue
+            if not pretty_name in analyzed_databases:
+                print(f"Skipping {pretty_name} as it is not in the list of projects")
+                continue
 
-        if pretty_name in analyzed_databases:
-            print(
-                f"Skipping previous database {analyzed_databases[pretty_name]['artifact_name']} for {pretty_name}"
-            )
+            if analyzed_databases[pretty_name] is not None:
+                print(
+                    f"Skipping previous database {analyzed_databases[pretty_name]['artifact_name']} for {pretty_name}"
+                )
 
-        analyzed_databases[pretty_name] = analyzed_database
+            analyzed_databases[pretty_name] = analyzed_database
+
+    not_found = [name for name, db in analyzed_databases.items() if db is None]
+    if not_found:
+        print(
+            f"ERROR: The following projects were not found in the DCA experiments: {', '.join(not_found)}"
+        )
+        sys.exit(1)
 
     def download_and_decompress(analyzed_database: dict) -> str:
         artifact_name = analyzed_database["artifact_name"]
@@ -392,19 +397,17 @@ def download_dca_databases(
         # The database is in a zip file, which contains a tar.gz file with the DB
         # First we open the zip file
         with zipfile.ZipFile(artifact_zip_location, "r") as zip_ref:
-            artifact_unzipped_location = os.path.join(build_dir, artifact_name)
+            artifact_unzipped_location = build_dir / artifact_name
             # clean up any remnants of previous runs
             shutil.rmtree(artifact_unzipped_location, ignore_errors=True)
             # And then we extract it to build_dir/artifact_name
             zip_ref.extractall(artifact_unzipped_location)
             # And then we extract the language tar.gz file inside it
-            artifact_tar_location = os.path.join(
-                artifact_unzipped_location, f"{language}.tar.gz"
-            )
+            artifact_tar_location = artifact_unzipped_location / f"{language}.tar.gz"
             with tarfile.open(artifact_tar_location, "r:gz") as tar_ref:
                 # And we just untar it to the same directory as the zip file
                 tar_ref.extractall(artifact_unzipped_location)
-        ret = os.path.join(artifact_unzipped_location, language)
+        ret = artifact_unzipped_location / language
         print(f"Decompression complete: {ret}")
         return ret
 
@@ -424,8 +427,16 @@ def download_dca_databases(
     return [(project_map[n], r) for n, r in zip(analyzed_databases, results)]
 
 
-def get_mad_destination_for_project(config, name: str) -> str:
-    return os.path.join(config["destination"], name)
+def clean_up_mad_destination_for_project(config, name: str):
+    target = pathlib.Path(config["destination"], name)
+    if config.get("single-file", False):
+        target = target.with_suffix(".model.yml")
+        if target.exists():
+            print(f"Deleting existing MaD file at {target}")
+            target.unlink()
+    elif target.exists():
+        print(f"Deleting existing MaD directory at {target}")
+        shutil.rmtree(target, ignore_errors=True)
 
 
 def get_strategy(config) -> str:
@@ -447,25 +458,7 @@ def main(config, args) -> None:
     language = config["language"]
 
     # Create build directory if it doesn't exist
-    if not os.path.exists(build_dir):
-        os.makedirs(build_dir)
-
-    # Check if any of the MaD directories contain working directory changes in git
-    for project in projects:
-        mad_dir = get_mad_destination_for_project(config, project["name"])
-        if os.path.exists(mad_dir):
-            git_status_output = subprocess.check_output(
-                ["git", "status", "-s", mad_dir], text=True
-            ).strip()
-            if git_status_output:
-                print(
-                    f"""ERROR: Working directory changes detected in {mad_dir}.
-
-Before generating new models, the existing models are deleted.
-
-To avoid loss of data, please commit your changes."""
-                )
-                sys.exit(1)
+    build_dir.mkdir(parents=True, exist_ok=True)
 
     database_results = []
     match get_strategy(config):
@@ -477,22 +470,22 @@ To avoid loss of data, please commit your changes."""
                 projects,
             )
         case "dca":
-            experiment_name = args.dca
-            if experiment_name is None:
+            experiment_names = args.dca
+            if experiment_names is None:
                 print("ERROR: --dca argument is required for DCA strategy")
                 sys.exit(1)
 
             if args.pat is None:
                 print("ERROR: --pat argument is required for DCA strategy")
                 sys.exit(1)
-            if not os.path.exists(args.pat):
+            if not args.pat.exists():
                 print(f"ERROR: Personal Access Token file '{pat}' does not exist.")
                 sys.exit(1)
             with open(args.pat, "r") as f:
                 pat = f.read().strip()
                 database_results = download_dca_databases(
                     language,
-                    experiment_name,
+                    experiment_names,
                     pat,
                     projects,
                 )
@@ -509,40 +502,52 @@ To avoid loss of data, please commit your changes."""
         )
         sys.exit(1)
 
-    # Delete the MaD directory for each project
-    for project, database_dir in database_results:
-        mad_dir = get_mad_destination_for_project(config, project["name"])
-        if os.path.exists(mad_dir):
-            print(f"Deleting existing MaD directory at {mad_dir}")
-            subprocess.check_call(["rm", "-rf", mad_dir])
+    # clean up existing MaD data for the projects
+    for project, _ in database_results:
+        clean_up_mad_destination_for_project(config, project["name"])
 
     for project, database_dir in database_results:
         if database_dir is not None:
-            generate_models(config, project, database_dir)
+            generate_models(config, args, project, database_dir)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--config", type=str, help="Path to the configuration file.", required=True
+        "--config",
+        type=pathlib.Path,
+        help="Path to the configuration file.",
+        required=True,
     )
     parser.add_argument(
         "--dca",
         type=str,
-        help="Name of a DCA run that built all the projects",
-        required=False,
+        help="Name of a DCA run that built all the projects. Can be repeated, with sources taken from all provided runs, "
+        "the last provided ones having priority",
+        action="append",
     )
     parser.add_argument(
         "--pat",
-        type=str,
+        type=pathlib.Path,
         help="Path to a file containing the PAT token required to grab DCA databases (the same as the one you use for DCA)",
-        required=False,
+    )
+    parser.add_argument(
+        "--codeql-ram",
+        type=int,
+        help="What `--ram` value to pass to `codeql` while generating models (by default 2048 MB per thread)",
+        default=None,
+    )
+    parser.add_argument(
+        "--codeql-threads",
+        type=int,
+        help="What `--threads` value to pass to `codeql` (default %(default)s)",
+        default=0,
     )
     args = parser.parse_args()
 
     # Load config file
     config = {}
-    if not os.path.exists(args.config):
+    if not args.config.exists():
         print(f"ERROR: Config file '{args.config}' does not exist.")
         sys.exit(1)
     try:

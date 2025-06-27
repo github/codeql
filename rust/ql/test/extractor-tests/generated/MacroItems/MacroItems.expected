@@ -1,1 +1,7 @@
-| gen_macro_items.rs:5:5:5:38 | MacroItems | getNumberOfItems: | 2 |
+instances
+| gen_macro_items.rs:5:5:5:38 | MacroItems |
+| gen_macro_items.rs:13:12:13:14 | MacroItems |
+getItem
+| gen_macro_items.rs:5:5:5:38 | MacroItems | 0 | gen_macro_items.rs:5:5:5:38 | use ...::Path |
+| gen_macro_items.rs:5:5:5:38 | MacroItems | 1 | gen_macro_items.rs:5:5:5:38 | fn get_parent |
+| gen_macro_items.rs:13:12:13:14 | MacroItems | 0 | gen_macro_items.rs:13:12:13:14 | impl ...::Debug for Bar::<...> { ... } |

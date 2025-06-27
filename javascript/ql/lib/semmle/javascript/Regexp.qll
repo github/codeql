@@ -998,6 +998,8 @@ private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
     or
     // Result is obviously unused
     call.asExpr() = any(ExprStmt stmt).getExpr()
+    or
+    call = API::moduleImport("sinon").getMember("match").getACall()
   )
 }
 

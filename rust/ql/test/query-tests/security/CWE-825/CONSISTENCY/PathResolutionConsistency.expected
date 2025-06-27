@@ -1,25 +1,9 @@
+multipleCallTargets
+| deallocation.rs:106:16:106:32 | ...::malloc(...) |
+| deallocation.rs:112:3:112:41 | ...::free(...) |
+| deallocation.rs:260:11:260:29 | ...::from(...) |
+| deallocation.rs:261:11:261:29 | ...::from(...) |
 multiplePathResolutions
-| deallocation.rs:106:16:106:19 | libc | file://:0:0:0:0 | Crate(libc@0.2.171) |
-| deallocation.rs:106:16:106:19 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |
-| deallocation.rs:106:16:106:27 | ...::malloc | file://:0:0:0:0 | fn malloc |
-| deallocation.rs:106:16:106:27 | ...::malloc | file://:0:0:0:0 | fn malloc |
-| deallocation.rs:112:3:112:6 | libc | file://:0:0:0:0 | Crate(libc@0.2.171) |
-| deallocation.rs:112:3:112:6 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |
-| deallocation.rs:112:3:112:12 | ...::free | file://:0:0:0:0 | fn free |
-| deallocation.rs:112:3:112:12 | ...::free | file://:0:0:0:0 | fn free |
-| deallocation.rs:112:29:112:32 | libc | file://:0:0:0:0 | Crate(libc@0.2.171) |
-| deallocation.rs:112:29:112:32 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |
-| deallocation.rs:260:11:260:22 | ...::from | file://:0:0:0:0 | fn from |
-| deallocation.rs:260:11:260:22 | ...::from | file://:0:0:0:0 | fn from |
-| deallocation.rs:260:11:260:22 | ...::from | file://:0:0:0:0 | fn from |
-| deallocation.rs:260:11:260:22 | ...::from | file://:0:0:0:0 | fn from |
-| deallocation.rs:260:11:260:22 | ...::from | file://:0:0:0:0 | fn from |
-| deallocation.rs:260:11:260:22 | ...::from | file://:0:0:0:0 | fn from |
-| deallocation.rs:261:11:261:22 | ...::from | file://:0:0:0:0 | fn from |
-| deallocation.rs:261:11:261:22 | ...::from | file://:0:0:0:0 | fn from |
-| deallocation.rs:261:11:261:22 | ...::from | file://:0:0:0:0 | fn from |
-| deallocation.rs:261:11:261:22 | ...::from | file://:0:0:0:0 | fn from |
-| deallocation.rs:261:11:261:22 | ...::from | file://:0:0:0:0 | fn from |
-| deallocation.rs:261:11:261:22 | ...::from | file://:0:0:0:0 | fn from |
-| lifetime.rs:415:32:415:49 | ...::clone | file://:0:0:0:0 | fn clone |
-| lifetime.rs:415:32:415:49 | ...::clone | file://:0:0:0:0 | fn clone |
+| deallocation.rs:106:16:106:19 | libc |
+| deallocation.rs:112:3:112:6 | libc |
+| deallocation.rs:112:29:112:32 | libc |

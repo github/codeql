@@ -3,6 +3,8 @@
  *
  * Locations represent parts of files and are used to map elements to their source location.
  */
+overlay[local?]
+module;
 
 import FileSystem
 import semmle.code.java.Element

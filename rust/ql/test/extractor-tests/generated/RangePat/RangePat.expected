@@ -1,3 +1,14 @@
-| gen_range_pat.rs:6:9:6:12 | RangePat | hasEnd: | yes | hasOperatorName: | yes | hasStart: | no |
-| gen_range_pat.rs:7:9:7:15 | RangePat | hasEnd: | yes | hasOperatorName: | yes | hasStart: | yes |
-| gen_range_pat.rs:8:9:8:12 | RangePat | hasEnd: | no | hasOperatorName: | yes | hasStart: | yes |
+instances
+| gen_range_pat.rs:6:9:6:12 | RangePat |
+| gen_range_pat.rs:7:9:7:15 | RangePat |
+| gen_range_pat.rs:8:9:8:12 | RangePat |
+getEnd
+| gen_range_pat.rs:6:9:6:12 | RangePat | gen_range_pat.rs:6:11:6:12 | 15 |
+| gen_range_pat.rs:7:9:7:15 | RangePat | gen_range_pat.rs:7:14:7:15 | 25 |
+getOperatorName
+| gen_range_pat.rs:6:9:6:12 | RangePat | .. |
+| gen_range_pat.rs:7:9:7:15 | RangePat | ..= |
+| gen_range_pat.rs:8:9:8:12 | RangePat | .. |
+getStart
+| gen_range_pat.rs:7:9:7:15 | RangePat | gen_range_pat.rs:7:9:7:10 | 16 |
+| gen_range_pat.rs:8:9:8:12 | RangePat | gen_range_pat.rs:8:9:8:10 | 26 |

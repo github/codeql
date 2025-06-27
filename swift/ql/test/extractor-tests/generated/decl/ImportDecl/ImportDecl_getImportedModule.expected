@@ -1,5 +1,0 @@
-| import.swift:1:1:1:8 | import ... | file://:0:0:0:0 | Swift |
-| import.swift:2:1:2:24 | import ... | file://:0:0:0:0 | Swift |
-| import.swift:3:12:3:32 | import ... | file://:0:0:0:0 | Swift |
-| import.swift:4:1:4:19 | import ... | file://:0:0:0:0 | Swift |
-| import.swift:5:1:5:23 | import ... | file://:0:0:0:0 | Swift |

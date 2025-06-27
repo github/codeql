@@ -1,7 +1,0 @@
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-extensions:
-  - addsTo:
-      pack: codeql/rust-all
-      extensible: summaryModel
-    data:
-      - ["repo::stdarch-gen-loongarch", "<crate::Lines as crate::convert::From>::from", "Argument[0]", "ReturnValue.Field[crate::Lines::lines]", "value", "dfc-generated"]

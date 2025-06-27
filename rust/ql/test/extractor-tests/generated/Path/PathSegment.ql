@@ -2,24 +2,32 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  PathSegment x, string hasGenericArgList, string hasIdentifier, string hasParenthesizedArgList,
-  string hasRetType, string hasReturnTypeSyntax, string hasTypeRepr, string hasTraitTypeRepr
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  (if x.hasGenericArgList() then hasGenericArgList = "yes" else hasGenericArgList = "no") and
-  (if x.hasIdentifier() then hasIdentifier = "yes" else hasIdentifier = "no") and
-  (
-    if x.hasParenthesizedArgList()
-    then hasParenthesizedArgList = "yes"
-    else hasParenthesizedArgList = "no"
-  ) and
-  (if x.hasRetType() then hasRetType = "yes" else hasRetType = "no") and
-  (if x.hasReturnTypeSyntax() then hasReturnTypeSyntax = "yes" else hasReturnTypeSyntax = "no") and
-  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
-  if x.hasTraitTypeRepr() then hasTraitTypeRepr = "yes" else hasTraitTypeRepr = "no"
-select x, "hasGenericArgList:", hasGenericArgList, "hasIdentifier:", hasIdentifier,
-  "hasParenthesizedArgList:", hasParenthesizedArgList, "hasRetType:", hasRetType,
-  "hasReturnTypeSyntax:", hasReturnTypeSyntax, "hasTypeRepr:", hasTypeRepr, "hasTraitTypeRepr:",
-  hasTraitTypeRepr
+query predicate instances(PathSegment x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getGenericArgList(PathSegment x, GenericArgList getGenericArgList) {
+  toBeTested(x) and not x.isUnknown() and getGenericArgList = x.getGenericArgList()
+}
+
+query predicate getIdentifier(PathSegment x, NameRef getIdentifier) {
+  toBeTested(x) and not x.isUnknown() and getIdentifier = x.getIdentifier()
+}
+
+query predicate getParenthesizedArgList(PathSegment x, ParenthesizedArgList getParenthesizedArgList) {
+  toBeTested(x) and not x.isUnknown() and getParenthesizedArgList = x.getParenthesizedArgList()
+}
+
+query predicate getRetType(PathSegment x, RetTypeRepr getRetType) {
+  toBeTested(x) and not x.isUnknown() and getRetType = x.getRetType()
+}
+
+query predicate getReturnTypeSyntax(PathSegment x, ReturnTypeSyntax getReturnTypeSyntax) {
+  toBeTested(x) and not x.isUnknown() and getReturnTypeSyntax = x.getReturnTypeSyntax()
+}
+
+query predicate getTypeRepr(PathSegment x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}
+
+query predicate getTraitTypeRepr(PathSegment x, PathTypeRepr getTraitTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTraitTypeRepr = x.getTraitTypeRepr()
+}

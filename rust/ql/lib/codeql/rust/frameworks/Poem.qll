@@ -4,7 +4,6 @@
 
 private import rust
 private import codeql.rust.Concepts
-private import codeql.rust.dataflow.DataFlow
 
 /**
  * Parameters of a handler function
@@ -12,9 +11,8 @@ private import codeql.rust.dataflow.DataFlow
 private class PoemHandlerParam extends RemoteSource::Range {
   PoemHandlerParam() {
     exists(TupleStructPat param |
-      param.getResolvedPath() = ["crate::web::query::Query", "crate::web::path::Path"]
-    |
-      this.asPat().getPat() = param.getAField()
+      this.asPat().getPat() = param.getAField() and
+      param.getStruct().getCanonicalPath() = ["poem::web::query::Query", "poem::web::path::Path"]
     )
   }
 }

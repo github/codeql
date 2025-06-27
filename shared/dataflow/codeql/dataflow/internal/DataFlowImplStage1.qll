@@ -4,6 +4,8 @@
  * Provides an implementation of a fast initial pruning of global
  * (interprocedural) data flow reachability (Stage 1).
  */
+overlay[local?]
+module;
 
 private import codeql.util.Unit
 private import codeql.util.Location
@@ -1784,6 +1786,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
            * For more information, see
            * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
            */
+          overlay[caller?]
           pragma[inline]
           deprecated predicate hasLocationInfo(
             string filepath, int startline, int startcolumn, int endline, int endcolumn

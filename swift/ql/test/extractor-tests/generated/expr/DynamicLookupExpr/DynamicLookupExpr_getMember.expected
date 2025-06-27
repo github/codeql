@@ -1,2 +1,0 @@
-| dynamic_lookup.swift:15:1:15:3 | .foo(_:) | dynamic_lookup.swift:6:9:6:28 | foo(_:) |
-| dynamic_lookup.swift:16:5:16:9 | subscript ...[...] | dynamic_lookup.swift:7:9:9:3 | subscript ... |

@@ -2,10 +2,12 @@
 import codeql.rust.elements
 import TestUtils
 
-from ArrayTypeRepr x, string hasConstArg, string hasElementTypeRepr
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  (if x.hasConstArg() then hasConstArg = "yes" else hasConstArg = "no") and
-  if x.hasElementTypeRepr() then hasElementTypeRepr = "yes" else hasElementTypeRepr = "no"
-select x, "hasConstArg:", hasConstArg, "hasElementTypeRepr:", hasElementTypeRepr
+query predicate instances(ArrayTypeRepr x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getConstArg(ArrayTypeRepr x, ConstArg getConstArg) {
+  toBeTested(x) and not x.isUnknown() and getConstArg = x.getConstArg()
+}
+
+query predicate getElementTypeRepr(ArrayTypeRepr x, TypeRepr getElementTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getElementTypeRepr = x.getElementTypeRepr()
+}

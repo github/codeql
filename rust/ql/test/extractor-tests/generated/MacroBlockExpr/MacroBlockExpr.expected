@@ -1,1 +1,5 @@
-| gen_macro_block_expr.rs:5:14:5:28 | MacroBlockExpr | hasTailExpr: | yes | getNumberOfStatements: | 0 |
+instances
+| gen_macro_block_expr.rs:5:14:5:28 | MacroBlockExpr |
+getTailExpr
+| gen_macro_block_expr.rs:5:14:5:28 | MacroBlockExpr | gen_macro_block_expr.rs:5:14:5:28 | { ... } |
+getStatement

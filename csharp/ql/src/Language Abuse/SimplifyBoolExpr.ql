@@ -5,8 +5,9 @@
  * @kind problem
  * @problem.severity recommendation
  * @precision high
- * @tags readability
+ * @tags quality
  *       maintainability
+ *       readability
  */
 
 import csharp

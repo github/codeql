@@ -635,8 +635,6 @@ unary
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:13 | ... == ... | == | 1 | 30 | 30 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:13 | ... == ... | == | 1 | 31 | 32 |
 | test.cpp:42:13:42:20 | call to getABool | test.cpp:42:13:42:20 | call to getABool | != | 0 | 43 | 45 |
-| test.cpp:42:13:42:20 | call to getABool | test.cpp:42:13:42:20 | call to getABool | != | 1 | 53 | 53 |
-| test.cpp:42:13:42:20 | call to getABool | test.cpp:42:13:42:20 | call to getABool | == | 0 | 53 | 53 |
 | test.cpp:42:13:42:20 | call to getABool | test.cpp:42:13:42:20 | call to getABool | == | 1 | 43 | 45 |
 | test.cpp:61:10:61:10 | i | test.cpp:61:10:61:10 | i | == | 0 | 62 | 64 |
 | test.cpp:61:10:61:10 | i | test.cpp:61:10:61:10 | i | == | 1 | 65 | 66 |

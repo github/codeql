@@ -1,1 +1,14 @@
-| gen_macro_def.rs:4:5:9:5 | MacroDef | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | hasArgs: | yes | getNumberOfAttrs: | 0 | hasBody: | yes | hasName: | yes | hasVisibility: | yes |
+instances
+| gen_macro_def.rs:4:5:9:5 | MacroDef |
+getExtendedCanonicalPath
+getCrateOrigin
+getAttributeMacroExpansion
+getArgs
+| gen_macro_def.rs:4:5:9:5 | MacroDef | gen_macro_def.rs:7:25:7:39 | TokenTree |
+getAttr
+getBody
+| gen_macro_def.rs:4:5:9:5 | MacroDef | gen_macro_def.rs:7:41:9:5 | TokenTree |
+getName
+| gen_macro_def.rs:4:5:9:5 | MacroDef | gen_macro_def.rs:7:15:7:24 | vec_of_two |
+getVisibility
+| gen_macro_def.rs:4:5:9:5 | MacroDef | gen_macro_def.rs:7:5:7:7 | Visibility |

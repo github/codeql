@@ -16,6 +16,14 @@ class LoopingExpr(LabelableExpr):
     loop_body: optional["BlockExpr"] | child
 
 
+@annotate(Adt, replace_bases={AstNode: Item})
+class _:
+    """
+    An ADT (Abstract Data Type) definition, such as `Struct`, `Enum`, or `Union`.
+    """
+    derive_macro_expansions: list[MacroItems] | child | rust.detach
+
+
 @annotate(Module)
 @rust.doc_test_signature(None)
 class _:
@@ -987,6 +995,10 @@ class _:
     const X: i32 = 42;
     ```
     """
+    has_implementation: predicate | doc("this constant has an implementation") | desc("""
+      This is the same as `hasBody` for source code, but for library code (for which we always skip
+      the body), this will hold when the body was present in the original code.
+    """) | rust.detach
 
 
 @annotate(ConstArg)
@@ -1028,7 +1040,7 @@ class _:
     """
 
 
-@annotate(Enum)
+@annotate(Enum, replace_bases={Item: None})  # still an Item via Adt
 class _:
     """
     An enum declaration.
@@ -1823,7 +1835,7 @@ class _:
     """
 
 
-@annotate(Struct)
+@annotate(Struct, replace_bases={Item: None})  # still an Item via Adt
 class _:
     """
     A Struct. For example:
@@ -2002,7 +2014,7 @@ class _:
     """
 
 
-@annotate(Union)
+@annotate(Union, replace_bases={Item: None})  # still an Item via Adt
 class _:
     """
     A union declaration.
@@ -2050,7 +2062,7 @@ class _:
     """
 
 
-@annotate(Variant, add_bases=(Addressable,))
+@annotate(Variant, replace_bases={AstNode: Addressable})
 class _:
     """
     A variant in an enum declaration.
@@ -2135,6 +2147,10 @@ class _:
 class _:
     param_list: drop
     attrs: drop
+    has_implementation: predicate | doc("this function has an implementation") | desc("""
+      This is the same as `hasBody` for source code, but for library code (for which we always skip
+      the body), this will hold when the body was present in the original code.
+    """) | rust.detach
 
 
 @annotate(ClosureExpr, add_bases=[Callable])

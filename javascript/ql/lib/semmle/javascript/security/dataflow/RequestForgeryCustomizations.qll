@@ -106,10 +106,12 @@ module RequestForgery {
   private import Xss as Xss
 
   /**
-   * A call to `encodeURI` or `encodeURIComponent`, viewed as a sanitizer for request forgery.
+   * A call to `encodeURIComponent`, viewed as a sanitizer for request forgery.
    * These calls will escape "/" to "%2F", which is not a problem for request forgery.
-   * The result from calling `encodeURI` or `encodeURIComponent` is not a valid URL, and only makes sense
+   * The result from calling `encodeURIComponent` is not a valid URL, and only makes sense
    * as a part of a URL.
    */
-  class UriEncodingSanitizer extends Sanitizer instanceof Xss::Shared::UriEncodingSanitizer { }
+  class UriEncodingSanitizer extends Sanitizer instanceof Xss::Shared::UriEncodingSanitizer {
+    UriEncodingSanitizer() { this.encodesPathSeparators() }
+  }
 }

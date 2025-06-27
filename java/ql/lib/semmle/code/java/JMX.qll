@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with JMX bean types.
  */
+overlay[local?]
+module;
 
 import Type
 

@@ -5,7 +5,9 @@
  * @problem.severity warning
  * @precision high
  * @id cs/constant-comparison
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp
