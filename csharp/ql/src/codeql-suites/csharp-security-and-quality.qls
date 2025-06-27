@@ -1,24 +1,7 @@
 - description: Security-and-quality queries for C#
 - queries: .
-- include:
-    kind:
-    - problem
-    - path-problem
-    precision:
-    - high
-    - very-high
-    tags contain:
-    - security
-- include:
-    kind:
-    - problem
-    - path-problem
-    precision: medium
-    problem.severity:
-    - error
-    - warning
-    tags contain:
-    - security
+- apply: security-and-frozen-quality-selectors.yml
+  from: codeql/suite-helpers
 - include:
     id:
       - cs/asp/response-write
@@ -123,21 +106,3 @@
       - cs/wrong-compareto-signature
       - cs/wrong-equals-signature
       - cs/xmldoc/missing-summary
-- include:
-    kind:
-    - diagnostic
-- include:
-    kind:
-    - metric
-    tags contain:
-    - summary
-- exclude:
-    deprecated: //
-- exclude:
-    query path:
-      - /^experimental\/.*/
-      - Metrics/Summaries/FrameworkCoverage.ql
-- exclude:
-    tags contain:
-      - modeleditor
-      - modelgenerator

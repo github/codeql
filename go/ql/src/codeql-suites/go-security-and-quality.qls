@@ -1,4 +1,28 @@
 - description: Security-and-quality queries for Go
 - queries: .
-- apply: security-and-quality-selectors.yml
+- apply: security-and-frozen-quality-selectors.yml
   from: codeql/suite-helpers
+- include:
+    id:
+      - go/comparison-of-identical-expressions
+      - go/constant-length-comparison
+      - go/duplicate-branches
+      - go/duplicate-condition
+      - go/duplicate-switch-case
+      - go/impossible-interface-nil-check
+      - go/inconsistent-loop-direction
+      - go/index-out-of-bounds
+      - go/missing-error-check
+      - go/mistyped-exponentiation
+      - go/negative-length-check
+      - go/redundant-assignment
+      - go/redundant-operation
+      - go/redundant-recover
+      - go/shift-out-of-range
+      - go/unexpected-nil-value
+      - go/unhandled-writable-file-close
+      - go/unreachable-statement
+      - go/useless-assignment-to-field
+      - go/useless-assignment-to-local
+      - go/useless-expression
+      - go/whitespace-contradicts-precedence
