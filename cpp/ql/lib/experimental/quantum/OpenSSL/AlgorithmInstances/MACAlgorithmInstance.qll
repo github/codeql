@@ -54,7 +54,7 @@ class KnownOpenSslHMacConstantAlgorithmInstance extends Crypto::HmacAlgorithmIns
     then
       // ASSUMPTION: if there is an explicit hash algorithm, it is already modeled
       // and we can simply grab that model's AVC
-      exists(OpenSslAlgorithmInstance inst | inst.getAvc() = result and inst = this)
+      this.(OpenSslAlgorithmInstance).getAvc() = result
     else
       // ASSUMPTION: If no explicit algorithm is given, then find
       // where the current AVC traces to a HashAlgorithmIO consuming operation step.
