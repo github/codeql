@@ -60,10 +60,6 @@ module Ruby {
     )
   }
 
-  /** Holds if `file` was extracted as part of the overlay database. */
-  overlay[local]
-  private predicate discardFile(@file file) { isOverlay() and file = getNodeFile(_) }
-
   /** Holds if `node` is in the `file` and is part of the overlay base database. */
   overlay[local]
   private predicate discardableAstNode(@file file, @ruby_ast_node node) {
@@ -73,7 +69,9 @@ module Ruby {
   /** Holds if `node` should be discarded, because it is part of the overlay base and is in a file that was also extracted as part of the overlay database. */
   overlay[discard_entity]
   private predicate discardAstNode(@ruby_ast_node node) {
-    exists(@file file | discardableAstNode(file, node) and discardFile(file))
+    exists(@file file, string path | files(file, path) |
+      discardableAstNode(file, node) and overlayChangedFiles(path)
+    )
   }
 
   class UnderscoreArg extends @ruby_underscore_arg, AstNode { }
@@ -2006,10 +2004,6 @@ module Erb {
     )
   }
 
-  /** Holds if `file` was extracted as part of the overlay database. */
-  overlay[local]
-  private predicate discardFile(@file file) { isOverlay() and file = getNodeFile(_) }
-
   /** Holds if `node` is in the `file` and is part of the overlay base database. */
   overlay[local]
   private predicate discardableAstNode(@file file, @erb_ast_node node) {
@@ -2019,7 +2013,9 @@ module Erb {
   /** Holds if `node` should be discarded, because it is part of the overlay base and is in a file that was also extracted as part of the overlay database. */
   overlay[discard_entity]
   private predicate discardAstNode(@erb_ast_node node) {
-    exists(@file file | discardableAstNode(file, node) and discardFile(file))
+    exists(@file file, string path | files(file, path) |
+      discardableAstNode(file, node) and overlayChangedFiles(path)
+    )
   }
 
   /** A class representing `code` tokens. */
