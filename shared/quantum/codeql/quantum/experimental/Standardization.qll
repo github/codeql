@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 /**
  * The `KeyOpAlg` module defines key operation algorithms types (e.g., symmetric ciphers, signatures, etc.)
  * and provides mapping of those types to string names and structural properties.
