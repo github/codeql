@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Microsoft.Bcl.AsyncInterfaces/1.1.1/Microsoft.Bcl.AsyncInterfaces.csproj" />
+    <ProjectReference Include="../../System.ClientModel/1.0.0/System.ClientModel.csproj" />
+    <ProjectReference Include="../../System.Diagnostics.DiagnosticSource/6.0.1/System.Diagnostics.DiagnosticSource.csproj" />
+    <ProjectReference Include="../../System.Memory.Data/1.0.2/System.Memory.Data.csproj" />
+    <ProjectReference Include="../../System.Numerics.Vectors/4.5.0/System.Numerics.Vectors.csproj" />
+    <ProjectReference Include="../../System.Text.Encodings.Web/4.7.2/System.Text.Encodings.Web.csproj" />
+    <ProjectReference Include="../../System.Text.Json/4.7.2/System.Text.Json.csproj" />
+    <ProjectReference Include="../../System.Threading.Tasks.Extensions/4.5.4/System.Threading.Tasks.Extensions.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>
