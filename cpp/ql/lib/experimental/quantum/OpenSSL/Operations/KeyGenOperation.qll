@@ -177,6 +177,10 @@ class KeyGenOperationInstance extends Crypto::KeyGenerationOperationInstance ins
     super.getOutputStepFlowingToStep(KeyIO()).getOutput(KeyIO()) = result
   }
 
+  override predicate hasKeyValueConsumer() {
+    exists(OperationStep s | s.flowsToOperationStep(this) and s.setsValue(KeyIO()))
+  }
+
   override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
     super.getDominatingInitializersToStep(KeySizeIO()).getInput(KeySizeIO()) = result
   }
@@ -194,7 +198,7 @@ class KeyGenOperationInstance extends Crypto::KeyGenerationOperationInstance ins
     //       .getKeySize()
   }
 
-  override Crypto::ConsumerInputDataFlowNode getRawKeyValueConsumer() {
+  override Crypto::ConsumerInputDataFlowNode getKeyValueConsumer() {
     super.getDominatingInitializersToStep(KeyIO()).getInput(KeyIO()) = result
   }
 }

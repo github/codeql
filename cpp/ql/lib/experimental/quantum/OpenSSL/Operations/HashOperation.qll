@@ -12,21 +12,19 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
  * - `EVP_DigestInit_ex`
  * - `EVP_DigestInit_ex2`
  */
-class EvpDigestInitVariantCalls extends OperationStep {
+class EvpDigestInitVariantCalls extends OperationStep instanceof Call {
   EvpDigestInitVariantCalls() {
-    this.(Call).getTarget().getName() in [
-        "EVP_DigestInit", "EVP_DigestInit_ex", "EVP_DigestInit_ex2"
-      ]
+    this.getTarget().getName() in ["EVP_DigestInit", "EVP_DigestInit_ex", "EVP_DigestInit_ex2"]
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.(Call).getArgument(0) and type = ContextIO()
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.(Call).getArgument(1) and type = PrimaryAlgorithmIO()
+    result.asExpr() = this.getArgument(1) and type = PrimaryAlgorithmIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.(Call).getArgument(0) and
+    result.asExpr() = this.getArgument(0) and
     type = ContextIO()
   }
 
@@ -36,17 +34,17 @@ class EvpDigestInitVariantCalls extends OperationStep {
 /**
  * A call to `EVP_DigestUpdate`.
  */
-class EvpDigestUpdateCall extends OperationStep {
-  EvpDigestUpdateCall() { this.(Call).getTarget().getName() = "EVP_DigestUpdate" }
+class EvpDigestUpdateCall extends OperationStep instanceof Call {
+  EvpDigestUpdateCall() { this.getTarget().getName() = "EVP_DigestUpdate" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.(Call).getArgument(0) and type = ContextIO()
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.(Call).getArgument(1) and type = PlaintextIO()
+    result.asExpr() = this.getArgument(1) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.(Call).getArgument(0) and
+    result.asExpr() = this.getArgument(0) and
     type = ContextIO()
   }
 
@@ -64,58 +62,56 @@ abstract class EvpFinalDigestOperationStep extends OperationStep {
  * A call to `EVP_Q_digest`
  * https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
  */
-class EvpQDigestOperation extends EvpFinalDigestOperationStep {
-  EvpQDigestOperation() { this.(Call).getTarget().getName() = "EVP_Q_digest" }
+class EvpQDigestOperation extends EvpFinalDigestOperationStep instanceof Call {
+  EvpQDigestOperation() { this.getTarget().getName() = "EVP_Q_digest" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.(Call).getArgument(1) and type = PrimaryAlgorithmIO()
+    result.asExpr() = this.getArgument(1) and type = PrimaryAlgorithmIO()
     or
-    result.asExpr() = this.(Call).getArgument(0) and type = ContextIO()
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.(Call).getArgument(3) and type = PlaintextIO()
+    result.asExpr() = this.getArgument(3) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.(Call).getArgument(0) and
+    result.asExpr() = this.getArgument(0) and
     type = ContextIO()
     or
-    result.asDefiningArgument() = this.(Call).getArgument(5) and type = DigestIO()
+    result.asDefiningArgument() = this.getArgument(5) and type = DigestIO()
   }
 }
 
-class EvpDigestOperation extends EvpFinalDigestOperationStep {
-  EvpDigestOperation() { this.(Call).getTarget().getName() = "EVP_Digest" }
+class EvpDigestOperation extends EvpFinalDigestOperationStep instanceof Call {
+  EvpDigestOperation() { this.getTarget().getName() = "EVP_Digest" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.(Call).getArgument(4) and type = PrimaryAlgorithmIO()
+    result.asExpr() = this.getArgument(4) and type = PrimaryAlgorithmIO()
     or
-    result.asExpr() = this.(Call).getArgument(0) and type = PlaintextIO()
+    result.asExpr() = this.getArgument(0) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asDefiningArgument() = this.(Call).getArgument(2) and type = DigestIO()
+    result.asDefiningArgument() = this.getArgument(2) and type = DigestIO()
   }
 }
 
 /**
  * A call to EVP_DigestFinal variants
  */
-class EvpDigestFinalCall extends EvpFinalDigestOperationStep {
+class EvpDigestFinalCall extends EvpFinalDigestOperationStep instanceof Call {
   EvpDigestFinalCall() {
-    this.(Call).getTarget().getName() in [
-        "EVP_DigestFinal", "EVP_DigestFinal_ex", "EVP_DigestFinalXOF"
-      ]
+    this.getTarget().getName() in ["EVP_DigestFinal", "EVP_DigestFinal_ex", "EVP_DigestFinalXOF"]
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.(Call).getArgument(0) and type = ContextIO()
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.(Call).getArgument(0) and
+    result.asExpr() = this.getArgument(0) and
     type = ContextIO()
     or
-    result.asDefiningArgument() = this.(Call).getArgument(1) and type = DigestIO()
+    result.asDefiningArgument() = this.getArgument(1) and type = DigestIO()
   }
 }
 

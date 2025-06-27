@@ -7,7 +7,7 @@ private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmI
 abstract class HashAlgorithmValueConsumer extends OpenSslAlgorithmValueConsumer { }
 
 /**
- * EVP_Q_Digest directly consumes algorithm constant values
+ * An EVP_Q_Digest directly consumes algorithm constant values
  */
 class Evp_Q_Digest_Algorithm_Consumer extends HashAlgorithmValueConsumer {
   Evp_Q_Digest_Algorithm_Consumer() { this.(Call).getTarget().getName() = "EVP_Q_digest" }

@@ -540,6 +540,13 @@ abstract class ImplOrTraitItemNode extends ItemNode {
   /** Gets an associated item belonging to this trait or `impl` block. */
   abstract AssocItemNode getAnAssocItem();
 
+  /** Gets the associated item named `name` belonging to this trait or `impl` block. */
+  pragma[nomagic]
+  AssocItemNode getAssocItem(string name) {
+    result = this.getAnAssocItem() and
+    result.getName() = name
+  }
+
   /** Holds if this trait or `impl` block declares an associated item named `name`. */
   pragma[nomagic]
   predicate hasAssocItem(string name) { name = this.getAnAssocItem().getName() }

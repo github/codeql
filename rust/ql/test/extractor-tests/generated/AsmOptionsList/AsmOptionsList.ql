@@ -2,9 +2,8 @@
 import codeql.rust.elements
 import TestUtils
 
-from AsmOptionsList x, int getNumberOfAsmOptions
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAsmOptions = x.getNumberOfAsmOptions()
-select x, "getNumberOfAsmOptions:", getNumberOfAsmOptions
+query predicate instances(AsmOptionsList x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getAsmOption(AsmOptionsList x, int index, AsmOption getAsmOption) {
+  toBeTested(x) and not x.isUnknown() and getAsmOption = x.getAsmOption(index)
+}

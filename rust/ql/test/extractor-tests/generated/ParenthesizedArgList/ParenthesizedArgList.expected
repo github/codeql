@@ -1,1 +1,5 @@
-| gen_parenthesized_arg_list.rs:9:14:9:26 | ParenthesizedArgList | getNumberOfTypeArgs: | 2 |
+instances
+| gen_parenthesized_arg_list.rs:9:14:9:26 | ParenthesizedArgList |
+getTypeArg
+| gen_parenthesized_arg_list.rs:9:14:9:26 | ParenthesizedArgList | 0 | gen_parenthesized_arg_list.rs:9:15:9:17 | TypeArg |
+| gen_parenthesized_arg_list.rs:9:14:9:26 | ParenthesizedArgList | 1 | gen_parenthesized_arg_list.rs:9:20:9:25 | TypeArg |

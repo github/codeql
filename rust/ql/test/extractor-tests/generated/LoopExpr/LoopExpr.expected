@@ -1,3 +1,11 @@
-| gen_loop_expr.rs:5:5:7:5 | loop { ... } | hasLabel: | no | hasLoopBody: | yes | getNumberOfAttrs: | 0 |
-| gen_loop_expr.rs:8:5:11:5 | 'label: loop { ... } | hasLabel: | yes | hasLoopBody: | yes | getNumberOfAttrs: | 0 |
-| gen_loop_expr.rs:13:5:19:5 | loop { ... } | hasLabel: | no | hasLoopBody: | yes | getNumberOfAttrs: | 0 |
+instances
+| gen_loop_expr.rs:5:5:7:5 | loop { ... } |
+| gen_loop_expr.rs:8:5:11:5 | 'label: loop { ... } |
+| gen_loop_expr.rs:13:5:19:5 | loop { ... } |
+getLabel
+| gen_loop_expr.rs:8:5:11:5 | 'label: loop { ... } | gen_loop_expr.rs:8:5:8:11 | 'label |
+getLoopBody
+| gen_loop_expr.rs:5:5:7:5 | loop { ... } | gen_loop_expr.rs:5:10:7:5 | { ... } |
+| gen_loop_expr.rs:8:5:11:5 | 'label: loop { ... } | gen_loop_expr.rs:8:18:11:5 | { ... } |
+| gen_loop_expr.rs:13:5:19:5 | loop { ... } | gen_loop_expr.rs:13:10:19:5 | { ... } |
+getAttr

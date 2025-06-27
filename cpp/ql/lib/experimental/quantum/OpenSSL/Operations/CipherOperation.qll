@@ -12,9 +12,10 @@ abstract class EvpCipherInitializer extends OperationStep {
     or
     result.asExpr() = this.getArgument(1) and
     type = PrimaryAlgorithmIO() and
-    // Null for the algorithm indicates the algorithm is not actually set
-    // This pattern can occur during a multi-step initialization
-    // TODO/Note: not flowing 0 to the sink, assuming a direct use of NULL for now
+    // Constants that are not equal to zero or
+    // non-constants (e.g., variable accesses, which require data-flow to determine the value)
+    // A zero (null) value typically indicates use of this operation step to initialize
+    // other out parameters in a multi-step initialization.
     (exists(result.asExpr().getValue()) implies result.asExpr().getValue().toInt() != 0)
   }
 
@@ -33,9 +34,10 @@ abstract class EvpEXInitializer extends EvpCipherInitializer {
     result = super.getInput(type)
     or
     (
-      // Null key or nonce indicates the key/nonce is not actually set
-      // This pattern can occur during a multi-step initialization
-      // TODO/Note: not flowing 0 to the sink, assuming a direct use of NULL for now
+      // Constants that are not equal to zero or
+      // non-constants (e.g., variable accesses, which require data-flow to determine the value)
+      // A zero (null) value typically indicates use of this operation step to initialize
+      // other out parameters in a multi-step initialization.
       result.asExpr() = this.getArgument(3) and type = KeyIO()
       or
       result.asExpr() = this.getArgument(4) and type = IVorNonceIO()

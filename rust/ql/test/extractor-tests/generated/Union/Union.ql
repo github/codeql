@@ -2,34 +2,46 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  Union x, string hasExtendedCanonicalPath, string hasCrateOrigin,
-  string hasAttributeMacroExpansion, int getNumberOfDeriveMacroExpansions, int getNumberOfAttrs,
-  string hasGenericParamList, string hasName, string hasStructFieldList, string hasVisibility,
-  string hasWhereClause
-where
+query predicate instances(Union x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getExtendedCanonicalPath(Union x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(Union x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttributeMacroExpansion(Union x, MacroItems getAttributeMacroExpansion) {
   toBeTested(x) and
   not x.isUnknown() and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  (
-    if x.hasAttributeMacroExpansion()
-    then hasAttributeMacroExpansion = "yes"
-    else hasAttributeMacroExpansion = "no"
-  ) and
-  getNumberOfDeriveMacroExpansions = x.getNumberOfDeriveMacroExpansions() and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  (if x.hasStructFieldList() then hasStructFieldList = "yes" else hasStructFieldList = "no") and
-  (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
-  if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "getNumberOfDeriveMacroExpansions:",
-  getNumberOfDeriveMacroExpansions, "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:",
-  hasGenericParamList, "hasName:", hasName, "hasStructFieldList:", hasStructFieldList,
-  "hasVisibility:", hasVisibility, "hasWhereClause:", hasWhereClause
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getDeriveMacroExpansion(Union x, int index, MacroItems getDeriveMacroExpansion) {
+  toBeTested(x) and not x.isUnknown() and getDeriveMacroExpansion = x.getDeriveMacroExpansion(index)
+}
+
+query predicate getAttr(Union x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getGenericParamList(Union x, GenericParamList getGenericParamList) {
+  toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
+}
+
+query predicate getName(Union x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getStructFieldList(Union x, StructFieldList getStructFieldList) {
+  toBeTested(x) and not x.isUnknown() and getStructFieldList = x.getStructFieldList()
+}
+
+query predicate getVisibility(Union x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}
+
+query predicate getWhereClause(Union x, WhereClause getWhereClause) {
+  toBeTested(x) and not x.isUnknown() and getWhereClause = x.getWhereClause()
+}
