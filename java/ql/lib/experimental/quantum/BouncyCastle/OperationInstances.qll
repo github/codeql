@@ -724,7 +724,7 @@ module Modes {
     }
 
     override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-      result.asExpr() = this.getAUseCall().getOutput()
+      result.asExpr() = super.getOutput()
     }
 
     override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
