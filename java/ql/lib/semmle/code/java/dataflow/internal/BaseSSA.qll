@@ -374,5 +374,10 @@ class BaseSsaImplicitInit extends BaseSsaVariable instanceof Impl::WriteDefiniti
 /** An SSA phi node. */
 class BaseSsaPhiNode extends BaseSsaVariable instanceof Impl::PhiNode {
   /** Gets an input to the phi node defining the SSA variable. */
-  BaseSsaVariable getAPhiInput() { phiHasInputFromBlock(this, result, _) }
+  BaseSsaVariable getAPhiInput() { this.hasInputFromBlock(result, _) }
+
+  /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
+  predicate hasInputFromBlock(BaseSsaVariable inp, BasicBlock bb) {
+    phiHasInputFromBlock(this, inp, bb)
+  }
 }

@@ -2,21 +2,35 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  BlockExpr x, string hasLabel, int getNumberOfAttrs, string isAsync, string isConst, string isGen,
-  string isMove, string isTry, string isUnsafe, string hasStmtList
-where
+query predicate instances(
+  BlockExpr x, string isAsync__label, string isAsync, string isConst__label, string isConst,
+  string isGen__label, string isGen, string isMove__label, string isMove, string isTry__label,
+  string isTry, string isUnsafe__label, string isUnsafe
+) {
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.hasLabel() then hasLabel = "yes" else hasLabel = "no") and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
+  isAsync__label = "isAsync:" and
   (if x.isAsync() then isAsync = "yes" else isAsync = "no") and
+  isConst__label = "isConst:" and
   (if x.isConst() then isConst = "yes" else isConst = "no") and
+  isGen__label = "isGen:" and
   (if x.isGen() then isGen = "yes" else isGen = "no") and
+  isMove__label = "isMove:" and
   (if x.isMove() then isMove = "yes" else isMove = "no") and
+  isTry__label = "isTry:" and
   (if x.isTry() then isTry = "yes" else isTry = "no") and
-  (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
-  if x.hasStmtList() then hasStmtList = "yes" else hasStmtList = "no"
-select x, "hasLabel:", hasLabel, "getNumberOfAttrs:", getNumberOfAttrs, "isAsync:", isAsync,
-  "isConst:", isConst, "isGen:", isGen, "isMove:", isMove, "isTry:", isTry, "isUnsafe:", isUnsafe,
-  "hasStmtList:", hasStmtList
+  isUnsafe__label = "isUnsafe:" and
+  if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
+}
+
+query predicate getLabel(BlockExpr x, Label getLabel) {
+  toBeTested(x) and not x.isUnknown() and getLabel = x.getLabel()
+}
+
+query predicate getAttr(BlockExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getStmtList(BlockExpr x, StmtList getStmtList) {
+  toBeTested(x) and not x.isUnknown() and getStmtList = x.getStmtList()
+}

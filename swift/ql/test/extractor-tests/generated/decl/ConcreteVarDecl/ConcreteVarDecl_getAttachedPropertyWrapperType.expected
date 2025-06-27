@@ -1,5 +1,0 @@
-| var_decls.swift:24:15:24:15 | wrapped | X<Y> |
-| var_decls.swift:54:10:54:10 | w1 | X<Int> |
-| var_decls.swift:55:24:55:24 | w2 | WrapperWithInit |
-| var_decls.swift:56:29:56:29 | w3 | WrapperWithProjected |
-| var_decls.swift:57:36:57:36 | w4 | WrapperWithProjectedAndInit |

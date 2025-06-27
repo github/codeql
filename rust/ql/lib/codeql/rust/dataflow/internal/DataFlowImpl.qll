@@ -145,9 +145,13 @@ final class ArgumentPosition extends ParameterPosition {
  * as the synthetic `ReceiverNode` is the argument for the `self` parameter.
  */
 predicate isArgumentForCall(ExprCfgNode arg, CallCfgNode call, ParameterPosition pos) {
-  call.getPositionalArgument(pos.getPosition()) = arg
-  or
-  call.getReceiver() = arg and pos.isSelf() and not call.getCall().receiverImplicitlyBorrowed()
+  // TODO: Handle index expressions as calls in data flow.
+  not call.getCall() instanceof IndexExpr and
+  (
+    call.getPositionalArgument(pos.getPosition()) = arg
+    or
+    call.getReceiver() = arg and pos.isSelf() and not call.getCall().receiverImplicitlyBorrowed()
+  )
 }
 
 /** Provides logic related to SSA. */
@@ -959,7 +963,11 @@ private module Cached {
 
   cached
   newtype TDataFlowCall =
-    TCall(CallCfgNode c) { Stages::DataFlowStage::ref() } or
+    TCall(CallCfgNode c) {
+      Stages::DataFlowStage::ref() and
+      // TODO: Handle index expressions as calls in data flow.
+      not c.getCall() instanceof IndexExpr
+    } or
     TSummaryCall(
       FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
     ) {

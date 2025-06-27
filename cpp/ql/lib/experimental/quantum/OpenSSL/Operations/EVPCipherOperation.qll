@@ -91,7 +91,8 @@ class Evp_Cipher_Update_Call extends EvpUpdate {
 }
 
 /**
- * see: https://docs.openssl.org/master/man3/EVP_EncryptInit/#synopsis
+ * The EVP Cipher operations.
+ * See: https://docs.openssl.org/master/man3/EVP_EncryptInit/#synopsis
  * Base configuration for all EVP cipher operations.
  */
 abstract class Evp_Cipher_Operation extends EvpOperation, Crypto::KeyOperationInstance {
@@ -163,6 +164,7 @@ class Evp_Cipher_Final_Call extends EvpFinal, Evp_Cipher_Operation {
 }
 
 /**
+ * The EVP encryption/decryption operations.
  * https://docs.openssl.org/3.2/man3/EVP_PKEY_decrypt/
  * https://docs.openssl.org/3.2/man3/EVP_PKEY_encrypt
  */

@@ -1,4 +1,4 @@
-arm.cpp:
+arm_neon.cpp:
 #    6| uint8x8_t vadd_u8(uint8x8_t, uint8x8_t)
 #    6|   Block 0
 #    6|     v6_1(void)                                                    = EnterFunction            : 
@@ -20,60 +20,100 @@ arm.cpp:
 #    6|     v6_10(void)                                                   = AliasedUse               : ~m?
 #    6|     v6_11(void)                                                   = ExitFunction             : 
 
-#   14| uint16x8_t vaddl_u8(uint8x8_t, uint8x8_t)
-#   14|   Block 0
-#   14|     v14_1(void)                                                     = EnterFunction                                    : 
-#   14|     mu14_2(unknown)                                                 = AliasedDefinition                                : 
-#   14|     mu14_3(unknown)                                                 = InitializeNonLocal                               : 
-#   14|     r14_4(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[a]                               : 
-#   14|     mu14_5(__attribute((neon_vector_type(8))) unsigned char)        = InitializeParameter[a]                           : &:r14_4
-#   14|     r14_6(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[b]                               : 
-#   14|     mu14_7(__attribute((neon_vector_type(8))) unsigned char)        = InitializeParameter[b]                           : &:r14_6
-#   15|     r15_1(glval<__attribute((neon_vector_type(8))) unsigned short>) = VariableAddress[#return]                         : 
-#   15|     r15_2(glval<unknown>)                                           = FunctionAddress[__builtin_aarch64_uaddlv8qi_uuu] : 
-#   15|     r15_3(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[a]                               : 
-#   15|     r15_4(__attribute((neon_vector_type(8))) unsigned char)         = Load[a]                                          : &:r15_3, ~m?
-#   15|     r15_5(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[b]                               : 
-#   15|     r15_6(__attribute((neon_vector_type(8))) unsigned char)         = Load[b]                                          : &:r15_5, ~m?
-#   15|     r15_7(__attribute((neon_vector_type(8))) unsigned short)        = Call[__builtin_aarch64_uaddlv8qi_uuu]            : func:r15_2, 0:r15_4, 1:r15_6
-#   15|     mu15_8(unknown)                                                 = ^CallSideEffect                                  : ~m?
-#   15|     mu15_9(__attribute((neon_vector_type(8))) unsigned short)       = Store[#return]                                   : &:r15_1, r15_7
-#   14|     r14_8(glval<__attribute((neon_vector_type(8))) unsigned short>) = VariableAddress[#return]                         : 
-#   14|     v14_9(void)                                                     = ReturnValue                                      : &:r14_8, ~m?
-#   14|     v14_10(void)                                                    = AliasedUse                                       : ~m?
-#   14|     v14_11(void)                                                    = ExitFunction                                     : 
+#   12| uint16x8_t arm_add(uint8x8_t, uint8x8_t*)
+#   12|   Block 0
+#   12|     v12_1(void)                                                      = EnterFunction             : 
+#   12|     mu12_2(unknown)                                                  = AliasedDefinition         : 
+#   12|     mu12_3(unknown)                                                  = InitializeNonLocal        : 
+#   12|     r12_4(glval<__attribute((neon_vector_type(8))) unsigned char>)   = VariableAddress[a]        : 
+#   12|     mu12_5(__attribute((neon_vector_type(8))) unsigned char)         = InitializeParameter[a]    : &:r12_4
+#   12|     r12_6(glval<__attribute((neon_vector_type(8))) unsigned char *>) = VariableAddress[b]        : 
+#   12|     mu12_7(__attribute((neon_vector_type(8))) unsigned char *)       = InitializeParameter[b]    : &:r12_6
+#   12|     r12_8(__attribute((neon_vector_type(8))) unsigned char *)        = Load[b]                   : &:r12_6, ~m?
+#   12|     mu12_9(unknown)                                                  = InitializeIndirection[b]  : &:r12_8
+#   13|     r13_1(glval<__attribute((neon_vector_type(8))) unsigned char>)   = VariableAddress[c]        : 
+#   13|     r13_2(glval<unknown>)                                            = FunctionAddress[vadd_u8]  : 
+#   13|     r13_3(glval<__attribute((neon_vector_type(8))) unsigned char>)   = VariableAddress[a]        : 
+#   13|     r13_4(__attribute((neon_vector_type(8))) unsigned char)          = Load[a]                   : &:r13_3, ~m?
+#   13|     r13_5(glval<__attribute((neon_vector_type(8))) unsigned char *>) = VariableAddress[b]        : 
+#   13|     r13_6(__attribute((neon_vector_type(8))) unsigned char *)        = Load[b]                   : &:r13_5, ~m?
+#   13|     r13_7(__attribute((neon_vector_type(8))) unsigned char)          = Load[?]                   : &:r13_6, ~m?
+#   13|     r13_8(__attribute((neon_vector_type(8))) unsigned char)          = Call[vadd_u8]             : func:r13_2, 0:r13_4, 1:r13_7
+#   13|     mu13_9(unknown)                                                  = ^CallSideEffect           : ~m?
+#   13|     mu13_10(__attribute((neon_vector_type(8))) unsigned char)        = Store[c]                  : &:r13_1, r13_8
+#   14|     r14_1(glval<__attribute((neon_vector_type(8))) unsigned short>)  = VariableAddress[#return]  : 
+#   14|     r14_2(glval<unknown>)                                            = FunctionAddress[vaddl_u8] : 
+#   14|     r14_3(glval<__attribute((neon_vector_type(8))) unsigned char>)   = VariableAddress[a]        : 
+#   14|     r14_4(__attribute((neon_vector_type(8))) unsigned char)          = Load[a]                   : &:r14_3, ~m?
+#   14|     r14_5(glval<__attribute((neon_vector_type(8))) unsigned char>)   = VariableAddress[c]        : 
+#   14|     r14_6(__attribute((neon_vector_type(8))) unsigned char)          = Load[c]                   : &:r14_5, ~m?
+#   14|     r14_7(__attribute((neon_vector_type(8))) unsigned short)         = Call[vaddl_u8]            : func:r14_2, 0:r14_4, 1:r14_6
+#   14|     mu14_8(unknown)                                                  = ^CallSideEffect           : ~m?
+#   14|     mu14_9(__attribute((neon_vector_type(8))) unsigned short)        = Store[#return]            : &:r14_1, r14_7
+#   12|     v12_10(void)                                                     = ReturnIndirection[b]      : &:r12_8, ~m?
+#   12|     r12_11(glval<__attribute((neon_vector_type(8))) unsigned short>) = VariableAddress[#return]  : 
+#   12|     v12_12(void)                                                     = ReturnValue               : &:r12_11, ~m?
+#   12|     v12_13(void)                                                     = AliasedUse                : ~m?
+#   12|     v12_14(void)                                                     = ExitFunction              : 
 
-#   18| uint16x8_t arm_add(uint8x8_t, uint8x8_t)
-#   18|   Block 0
-#   18|     v18_1(void)                                                     = EnterFunction             : 
-#   18|     mu18_2(unknown)                                                 = AliasedDefinition         : 
-#   18|     mu18_3(unknown)                                                 = InitializeNonLocal        : 
-#   18|     r18_4(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[a]        : 
-#   18|     mu18_5(__attribute((neon_vector_type(8))) unsigned char)        = InitializeParameter[a]    : &:r18_4
-#   18|     r18_6(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[b]        : 
-#   18|     mu18_7(__attribute((neon_vector_type(8))) unsigned char)        = InitializeParameter[b]    : &:r18_6
-#   19|     r19_1(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[c]        : 
-#   19|     r19_2(glval<unknown>)                                           = FunctionAddress[vadd_u8]  : 
-#   19|     r19_3(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[a]        : 
-#   19|     r19_4(__attribute((neon_vector_type(8))) unsigned char)         = Load[a]                   : &:r19_3, ~m?
-#   19|     r19_5(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[b]        : 
-#   19|     r19_6(__attribute((neon_vector_type(8))) unsigned char)         = Load[b]                   : &:r19_5, ~m?
-#   19|     r19_7(__attribute((neon_vector_type(8))) unsigned char)         = Call[vadd_u8]             : func:r19_2, 0:r19_4, 1:r19_6
-#   19|     mu19_8(unknown)                                                 = ^CallSideEffect           : ~m?
-#   19|     mu19_9(__attribute((neon_vector_type(8))) unsigned char)        = Store[c]                  : &:r19_1, r19_7
-#   20|     r20_1(glval<__attribute((neon_vector_type(8))) unsigned short>) = VariableAddress[#return]  : 
-#   20|     r20_2(glval<unknown>)                                           = FunctionAddress[vaddl_u8] : 
-#   20|     r20_3(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[a]        : 
-#   20|     r20_4(__attribute((neon_vector_type(8))) unsigned char)         = Load[a]                   : &:r20_3, ~m?
-#   20|     r20_5(glval<__attribute((neon_vector_type(8))) unsigned char>)  = VariableAddress[c]        : 
-#   20|     r20_6(__attribute((neon_vector_type(8))) unsigned char)         = Load[c]                   : &:r20_5, ~m?
-#   20|     r20_7(__attribute((neon_vector_type(8))) unsigned short)        = Call[vaddl_u8]            : func:r20_2, 0:r20_4, 1:r20_6
-#   20|     mu20_8(unknown)                                                 = ^CallSideEffect           : ~m?
-#   20|     mu20_9(__attribute((neon_vector_type(8))) unsigned short)       = Store[#return]            : &:r20_1, r20_7
-#   18|     r18_8(glval<__attribute((neon_vector_type(8))) unsigned short>) = VariableAddress[#return]  : 
-#   18|     v18_9(void)                                                     = ReturnValue               : &:r18_8, ~m?
-#   18|     v18_10(void)                                                    = AliasedUse                : ~m?
-#   18|     v18_11(void)                                                    = ExitFunction              : 
+#   22| mfloat8x8_t arm_reinterpret(int8x8_t*)
+#   22|   Block 0
+#   22|     v22_1(void)           = EnterFunction                        : 
+#   22|     mu22_2(unknown)       = AliasedDefinition                    : 
+#   22|     mu22_3(unknown)       = InitializeNonLocal                   : 
+#   22|     r22_4(glval<char *>)  = VariableAddress[a]                   : 
+#   22|     mu22_5(char *)        = InitializeParameter[a]               : &:r22_4
+#   22|     r22_6(char *)         = Load[a]                              : &:r22_4, ~m?
+#   22|     mu22_7(unknown)       = InitializeIndirection[a]             : &:r22_6
+#   23|     r23_1(glval<__mfp8>)  = VariableAddress[#return]             : 
+#   23|     r23_2(glval<unknown>) = FunctionAddress[vreinterpret_mf8_s8] : 
+#   23|     r23_3(glval<char *>)  = VariableAddress[a]                   : 
+#   23|     r23_4(char *)         = Load[a]                              : &:r23_3, ~m?
+#   23|     r23_5(char)           = Load[?]                              : &:r23_4, ~m?
+#   23|     r23_6(__mfp8)         = Call[vreinterpret_mf8_s8]            : func:r23_2, 0:r23_5
+#   23|     mu23_7(unknown)       = ^CallSideEffect                      : ~m?
+#   23|     mu23_8(__mfp8)        = Store[#return]                       : &:r23_1, r23_6
+#   22|     v22_8(void)           = ReturnIndirection[a]                 : &:r22_6, ~m?
+#   22|     r22_9(glval<__mfp8>)  = VariableAddress[#return]             : 
+#   22|     v22_10(void)          = ReturnValue                          : &:r22_9, ~m?
+#   22|     v22_11(void)          = AliasedUse                           : ~m?
+#   22|     v22_12(void)          = ExitFunction                         : 
+
+arm_sve.cpp:
+#    8| svuint8x2_t arm_sel(svcount_t, svuint8x2_t, svuint8x2_t*)
+#    8|   Block 0
+#    8|     v8_1(void)                                                    = EnterFunction                : 
+#    8|     mu8_2(unknown)                                                = AliasedDefinition            : 
+#    8|     mu8_3(unknown)                                                = InitializeNonLocal           : 
+#    8|     r8_4(glval<__SVCount_t>)                                      = VariableAddress[a]           : 
+#    8|     mu8_5(__SVCount_t)                                            = InitializeParameter[a]       : &:r8_4
+#    8|     r8_6(glval<__edg_scalable_vector_type__(unsigned char, 2)>)   = VariableAddress[b]           : 
+#    8|     mu8_7(__edg_scalable_vector_type__(unsigned char, 2))         = InitializeParameter[b]       : &:r8_6
+#    8|     r8_8(glval<__edg_scalable_vector_type__(unsigned char, 2) *>) = VariableAddress[c]           : 
+#    8|     mu8_9(__edg_scalable_vector_type__(unsigned char, 2) *)       = InitializeParameter[c]       : &:r8_8
+#    8|     r8_10(__edg_scalable_vector_type__(unsigned char, 2) *)       = Load[c]                      : &:r8_8, ~m?
+#    8|     mu8_11(unknown)                                               = InitializeIndirection[c]     : &:r8_10
+#    9|     r9_1(glval<__edg_scalable_vector_type__(unsigned char, 2)>)   = VariableAddress[d]           : 
+#    9|     r9_2(glval<unknown>)                                          = FunctionAddress[svsel_u8_x2] : 
+#    9|     r9_3(glval<__SVCount_t>)                                      = VariableAddress[a]           : 
+#    9|     r9_4(__SVCount_t)                                             = Load[a]                      : &:r9_3, ~m?
+#    9|     r9_5(glval<__edg_scalable_vector_type__(unsigned char, 2)>)   = VariableAddress[b]           : 
+#    9|     r9_6(__edg_scalable_vector_type__(unsigned char, 2))          = Load[b]                      : &:r9_5, ~m?
+#    9|     r9_7(glval<__edg_scalable_vector_type__(unsigned char, 2) *>) = VariableAddress[c]           : 
+#    9|     r9_8(__edg_scalable_vector_type__(unsigned char, 2) *)        = Load[c]                      : &:r9_7, ~m?
+#    9|     r9_9(__edg_scalable_vector_type__(unsigned char, 2))          = Load[?]                      : &:r9_8, ~m?
+#    9|     r9_10(__edg_scalable_vector_type__(unsigned char, 2))         = Call[svsel_u8_x2]            : func:r9_2, 0:r9_4, 1:r9_6, 2:r9_9
+#    9|     mu9_11(unknown)                                               = ^CallSideEffect              : ~m?
+#    9|     mu9_12(__edg_scalable_vector_type__(unsigned char, 2))        = Store[d]                     : &:r9_1, r9_10
+#   10|     r10_1(glval<__edg_scalable_vector_type__(unsigned char, 2)>)  = VariableAddress[#return]     : 
+#   10|     r10_2(glval<__edg_scalable_vector_type__(unsigned char, 2)>)  = VariableAddress[d]           : 
+#   10|     r10_3(__edg_scalable_vector_type__(unsigned char, 2))         = Load[d]                      : &:r10_2, ~m?
+#   10|     mu10_4(__edg_scalable_vector_type__(unsigned char, 2))        = Store[#return]               : &:r10_1, r10_3
+#    8|     v8_12(void)                                                   = ReturnIndirection[c]         : &:r8_10, ~m?
+#    8|     r8_13(glval<__edg_scalable_vector_type__(unsigned char, 2)>)  = VariableAddress[#return]     : 
+#    8|     v8_14(void)                                                   = ReturnValue                  : &:r8_13, ~m?
+#    8|     v8_15(void)                                                   = AliasedUse                   : ~m?
+#    8|     v8_16(void)                                                   = ExitFunction                 : 
 
 bad_asts.cpp:
 #    9| int Bad::S::MemberFunction<int 6>(int)

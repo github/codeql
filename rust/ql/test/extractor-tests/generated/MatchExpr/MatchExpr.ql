@@ -2,12 +2,16 @@
 import codeql.rust.elements
 import TestUtils
 
-from MatchExpr x, int getNumberOfAttrs, string hasScrutinee, string hasMatchArmList
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasScrutinee() then hasScrutinee = "yes" else hasScrutinee = "no") and
-  if x.hasMatchArmList() then hasMatchArmList = "yes" else hasMatchArmList = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasScrutinee:", hasScrutinee, "hasMatchArmList:",
-  hasMatchArmList
+query predicate instances(MatchExpr x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getAttr(MatchExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getScrutinee(MatchExpr x, Expr getScrutinee) {
+  toBeTested(x) and not x.isUnknown() and getScrutinee = x.getScrutinee()
+}
+
+query predicate getMatchArmList(MatchExpr x, MatchArmList getMatchArmList) {
+  toBeTested(x) and not x.isUnknown() and getMatchArmList = x.getMatchArmList()
+}
