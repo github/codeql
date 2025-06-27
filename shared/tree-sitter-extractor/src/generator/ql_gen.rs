@@ -318,34 +318,6 @@ pub fn create_get_node_file_predicate<'a>(
     }
 }
 
-pub fn create_discard_file_predicate<'a>() -> ql::Predicate<'a> {
-    ql::Predicate {
-        name: "discardFile",
-        qldoc: Some(String::from(
-            "Holds if `file` was extracted as part of the overlay database.",
-        )),
-        overridden: false,
-        is_private: true,
-        is_final: false,
-        overlay: Some(ql::OverlayAnnotation::Local),
-        return_type: None,
-        formal_parameters: vec![ql::FormalParameter {
-            name: "file",
-            param_type: ql::Type::At("file"),
-        }],
-        body: ql::Expression::And(vec![
-            ql::Expression::Pred("isOverlay", vec![]),
-            ql::Expression::Equals(
-                Box::new(ql::Expression::Var("file")),
-                Box::new(ql::Expression::Pred(
-                    "getNodeFile",
-                    vec![ql::Expression::Var("_")],
-                )),
-            ),
-        ]),
-    }
-}
-
 pub fn create_discardable_ast_node_predicate(ast_node_name: &str) -> ql::Predicate {
     ql::Predicate {
         name: "discardableAstNode",
@@ -398,17 +370,26 @@ pub fn create_discard_ast_node_predicate(ast_node_name: &str) -> ql::Predicate {
         }],
         body: ql::Expression::Aggregate {
             name: "exists",
-            vars: vec![ql::FormalParameter {
-                name: "file",
-                param_type: ql::Type::At("file"),
-            }],
-            range: None,
+            vars: vec![
+                ql::FormalParameter {
+                    name: "file",
+                    param_type: ql::Type::At("file"),
+                },
+                ql::FormalParameter {
+                    name: "path",
+                    param_type: ql::Type::String,
+                },
+            ],
+            range: Some(Box::new(ql::Expression::Pred(
+                "files",
+                vec![ql::Expression::Var("file"), ql::Expression::Var("path")],
+            ))),
             expr: Box::new(ql::Expression::And(vec![
                 ql::Expression::Pred(
                     "discardableAstNode",
                     vec![ql::Expression::Var("file"), ql::Expression::Var("node")],
                 ),
-                ql::Expression::Pred("discardFile", vec![ql::Expression::Var("file")]),
+                ql::Expression::Pred("overlayChangedFiles", vec![ql::Expression::Var("path")]),
             ])),
             second_expr: None,
         },
