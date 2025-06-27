@@ -105,9 +105,6 @@ pub fn generate(
             ql_gen::create_get_node_file_predicate(&ast_node_name, &node_location_table_name),
         ));
         body.push(ql::TopLevel::Predicate(
-            ql_gen::create_discard_file_predicate(),
-        ));
-        body.push(ql::TopLevel::Predicate(
             ql_gen::create_discardable_ast_node_predicate(&ast_node_name),
         ));
         body.push(ql::TopLevel::Predicate(
