@@ -22,6 +22,7 @@ genrule(
         "export NPM_CONFIG_USERCONFIG=$$TEMP/npmrc",
         "$$NPM config set cache $$TEMP/npm",
         "$$NPM config set update-notifier false",
+        '$$NPM config set ca=""',  # avoid using any self-signed certificate
         "rm -rf $(RULEDIR)/inputs",
         "cp -L -R $$(dirname $(execpath package.json)) $(RULEDIR)/inputs",
         "cd $(RULEDIR)/inputs",
