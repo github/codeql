@@ -699,7 +699,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
 
     Declaration getTarget() {
-      result = inferMethodCallTarget(this) // mutual recursion; resolving method calls requires resolving types and vice versa
+      result = resolveMethodCallTarget(this) // mutual recursion; resolving method calls requires resolving types and vice versa
       or
       result = CallExprImpl::getResolvedFunction(this)
     }
@@ -1178,14 +1178,14 @@ private predicate methodCandidateTrait(Type type, Trait trait, string name, int 
   methodCandidate(type, name, arity, impl)
 }
 
-private module IsInstantiationOfInput implements IsInstantiationOfInputSig<MethodCall> {
-  pragma[nomagic]
-  private predicate isMethodCall(MethodCall mc, Type rootType, string name, int arity) {
-    rootType = mc.getTypeAt(TypePath::nil()) and
-    name = mc.getMethodName() and
-    arity = mc.getNumberOfArguments()
-  }
+pragma[nomagic]
+private predicate isMethodCall(MethodCall mc, Type rootType, string name, int arity) {
+  rootType = mc.getTypeAt(TypePath::nil()) and
+  name = mc.getMethodName() and
+  arity = mc.getNumberOfArguments()
+}
 
+private module IsInstantiationOfInput implements IsInstantiationOfInputSig<MethodCall> {
   pragma[nomagic]
   predicate potentialInstantiationOf(MethodCall mc, TypeAbstraction impl, TypeMention constraint) {
     exists(Type rootType, string name, int arity |
@@ -1335,16 +1335,29 @@ private predicate methodResolutionDependsOnArgument(
 }
 
 /** Gets a method from an `impl` block that matches the method call `mc`. */
+pragma[nomagic]
 private Function getMethodFromImpl(MethodCall mc) {
-  exists(Impl impl |
+  exists(Type rootType, string name, int arity, Impl impl |
+    isMethodCall(mc, rootType, name, arity) and
     IsInstantiationOf<MethodCall, IsInstantiationOfInput>::isInstantiationOf(mc, impl, _) and
-    result = getMethodSuccessor(impl, mc.getMethodName())
+    result = getMethodSuccessor(impl, name) and
+    if impl.hasTrait() and not exists(mc.getTrait())
+    then
+      // inherent methods take precedence over trait methods, so only allow
+      // trait methods when there are no matching inherent methods
+      forall(Impl other |
+        not other.hasTrait() and
+        methodCandidate(rootType, name, arity, other)
+      |
+        IsInstantiationOf<MethodCall, IsInstantiationOfInput>::isNotInstantiationOf(mc, other, _)
+      )
+    else any()
   |
     not methodResolutionDependsOnArgument(impl, _, _, _, _, _) and
-    result = getMethodSuccessor(impl, mc.getMethodName())
+    result = getMethodSuccessor(impl, name)
     or
     exists(int pos, TypePath path, Type type |
-      methodResolutionDependsOnArgument(impl, mc.getMethodName(), result, pos, path, type) and
+      methodResolutionDependsOnArgument(impl, name, result, pos, path, type) and
       inferType(mc.getPositionalArgument(pos), path) = type
     )
   )
@@ -1354,22 +1367,6 @@ bindingset[trait, name]
 pragma[inline_late]
 private Function getTraitMethod(ImplTraitReturnType trait, string name) {
   result = getMethodSuccessor(trait.getImplTraitTypeRepr(), name)
-}
-
-/**
- * Gets a method that the method call `mc` resolves to based on type inference,
- * if any.
- */
-private Function inferMethodCallTarget(MethodCall mc) {
-  // The method comes from an `impl` block targeting the type of the receiver.
-  result = getMethodFromImpl(mc)
-  or
-  // The type of the receiver is a type parameter and the method comes from a
-  // trait bound on the type parameter.
-  result = getTypeParameterMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
-  or
-  // The type of the receiver is an `impl Trait` type.
-  result = getTraitMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
 }
 
 cached
@@ -1400,47 +1397,18 @@ private module Cached {
     )
   }
 
-  private predicate isInherentImplFunction(Function f) {
-    f = any(Impl impl | not impl.hasTrait()).(ImplItemNode).getAnAssocItem()
-  }
-
-  private predicate isTraitImplFunction(Function f) {
-    f = any(Impl impl | impl.hasTrait()).(ImplItemNode).getAnAssocItem()
-  }
-
-  private Function resolveMethodCallTargetFrom(MethodCall mc, boolean fromSource) {
-    result = inferMethodCallTarget(mc) and
-    (if result.fromSource() then fromSource = true else fromSource = false) and
-    (
-      // prioritize inherent implementation methods first
-      isInherentImplFunction(result)
-      or
-      not isInherentImplFunction(inferMethodCallTarget(mc)) and
-      (
-        // then trait implementation methods
-        isTraitImplFunction(result)
-        or
-        not isTraitImplFunction(inferMethodCallTarget(mc)) and
-        (
-          // then trait methods with default implementations
-          result.hasBody()
-          or
-          // and finally trait methods without default implementations
-          not inferMethodCallTarget(mc).hasBody()
-        )
-      )
-    )
-  }
-
   /** Gets a method that the method call `mc` resolves to, if any. */
   cached
   Function resolveMethodCallTarget(MethodCall mc) {
-    // Functions in source code also gets extracted as library code, due to
-    // this duplication we prioritize functions from source code.
-    result = resolveMethodCallTargetFrom(mc, true)
+    // The method comes from an `impl` block targeting the type of the receiver.
+    result = getMethodFromImpl(mc)
     or
-    not exists(resolveMethodCallTargetFrom(mc, true)) and
-    result = resolveMethodCallTargetFrom(mc, false)
+    // The type of the receiver is a type parameter and the method comes from a
+    // trait bound on the type parameter.
+    result = getTypeParameterMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
+    or
+    // The type of the receiver is an `impl Trait` type.
+    result = getTraitMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
   }
 
   pragma[inline]
