@@ -99,7 +99,9 @@ class SymmetricAlgorithmOperationInstance extends Crypto::KeyOperationInstance i
  */
 class CryptoStreamOperationInstance extends Crypto::KeyOperationInstance instanceof CryptoStreamCreation
 {
-  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() { result = this.getCryptoTransform() }
+  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
+    result = this.getCryptoTransform()
+  }
 
   override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
     if this.getCryptoTransform().isEncryptor()
@@ -117,7 +119,8 @@ class CryptoStreamOperationInstance extends Crypto::KeyOperationInstance instanc
     if exists(this.getCryptoTransform().getKeyArg())
     then result.asExpr() = this.getCryptoTransform().getKeyArg()
     else (
-      result.asExpr() = SymmetricAlgorithmFlow::getIntermediateUseFromUse(this.getCryptoTransform(), _, _) and
+      result.asExpr() =
+        SymmetricAlgorithmFlow::getIntermediateUseFromUse(this.getCryptoTransform(), _, _) and
       result.asExpr().(SymmetricAlgorithmUse).isKeyConsumer()
     )
   }
@@ -129,7 +132,8 @@ class CryptoStreamOperationInstance extends Crypto::KeyOperationInstance instanc
     if exists(this.getCryptoTransform().getIvArg())
     then result.asExpr() = this.getCryptoTransform().getIvArg()
     else (
-      result.asExpr() = SymmetricAlgorithmFlow::getIntermediateUseFromUse(this.getCryptoTransform(), _, _) and
+      result.asExpr() =
+        SymmetricAlgorithmFlow::getIntermediateUseFromUse(this.getCryptoTransform(), _, _) and
       result.asExpr().(SymmetricAlgorithmUse).isIvConsumer()
     )
   }
@@ -203,5 +207,22 @@ class AeadOperationInstance extends Crypto::KeyOperationInstance instanceof Aead
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
     result.asExpr() = super.getOutputArg()
+  }
+}
+
+class HMACOperationInstance extends Crypto::MACOperationInstance instanceof MacUse {
+  HMACOperationInstance() { not super.isIntermediate() }
+
+  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
+    result = super.getQualifier()
+  }
+
+  override Crypto::ConsumerInputDataFlowNode getMessageConsumer() {
+    result.asExpr() = super.getInputArg() or
+    result.asExpr() = StreamFlow::getEarlierUse(super.getStreamArg(), _, _).getInputArg()
+  }
+
+  override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
+    result.asExpr() = super.getKeyArg()
   }
 }

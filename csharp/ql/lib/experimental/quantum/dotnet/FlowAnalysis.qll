@@ -70,6 +70,8 @@ module CryptoStreamFlow = CreationToUseFlow<CryptoStreamCreation, CryptoStreamUs
 
 module AeadFlow = CreationToUseFlow<AeadCreation, AeadUse>;
 
+module HMACFlow = CreationToUseFlow<HMACCreation, MacUse>;
+
 module SymmetricAlgorithmFlow =
   CreationToUseFlow<SymmetricAlgorithmCreation, SymmetricAlgorithmUse>;
 

@@ -177,7 +177,8 @@ private predicate hashAlgorithmToFamily(
   hashName = "SHA3_384" and hashFamily = Crypto::SHA3() and digestLength = 384
   or
   hashName = "SHA3_512" and hashFamily = Crypto::SHA3() and digestLength = 512
-  // TODO: is there an idiomatic way to add a default type here?
+  or
+  hashName = "RIPEMD160" and hashFamily = Crypto::RIPEMD160() and digestLength = 160
 }
 
 class HashAlgorithmNameUser extends MethodCall {
@@ -628,5 +629,101 @@ class CryptoStreamUse extends MethodCall {
   Expr getInputArg() {
     this.isIntermediate() and
     result = this.getArgument(0)
+  }
+}
+
+class MacAlgorithmType extends CryptographyType {
+  MacAlgorithmType() { this.getName().matches(["HMAC%", "KeyedHashAlgorithm"]) }
+}
+
+class HMACCreation extends ObjectCreation {
+  HMACCreation() { this.getObjectType() instanceof MacAlgorithmType }
+
+  Expr getKeyArg() { if this.hasNoArguments() then result = this else result = this.getArgument(0) }
+
+  string getRawAlgorithmName() { result = this.getObjectType().getName() }
+}
+
+class MacUse extends Crypto::AlgorithmValueConsumer instanceof MethodCall {
+  MacUse() {
+    this.getQualifier().getType() instanceof MacAlgorithmType and
+    this.getTarget().hasName(["ComputeHash", "ComputeHashAsync", "HashData", "HashDataAsync"])
+  }
+
+  predicate isIntermediate() { none() }
+
+  Expr getOutput() {
+    not this.isIntermediate() and
+    // some functions receive the destination as a parameter
+    if
+      super.getTarget().getName() = ["HashData"] and super.getNumberOfArguments() = 3
+      or
+      super.getTarget().getName() = ["HashDataAsync"] and super.getNumberOfArguments() = 4
+    then result = super.getArgument(2)
+    else result = this
+  }
+
+  private Expr getDataArg() {
+    // ComputeHash and ComputeHashAsync take the data as the first argument.
+    if super.getTarget().getName().matches("ComputeHash%")
+    then result = super.getArgument(0)
+    else result = super.getArgument(1)
+  }
+
+  Expr getInputArg() {
+    result = this.getDataArg() and result.getType() instanceof ByteArrayOrReadOnlyByteSpanType
+  }
+
+  Expr getStreamArg() { result = this.getDataArg() and result.getType() instanceof Stream }
+
+  Expr getKeyArg() {
+    if not super.getTarget().getName().matches("ComputeHash%")
+    then result = super.getArgument(0)
+    else result = HMACFlow::getCreationFromUse(this, _, _).getKeyArg()
+  }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = super.getQualifier() }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
+
+  Expr getQualifier() { result = super.getQualifier() }
+}
+
+class HMACAlgorithmInstance extends Crypto::MACAlgorithmInstance instanceof Expr {
+  HMACAlgorithmInstance() { this = any(MacUse c).getQualifier() }
+
+  override Crypto::TMACType getMACType() { result instanceof Crypto::THMAC }
+
+  override string getRawMACAlgorithmName() { result = super.getType().getName() }
+}
+
+class HMACAlgorithmQualifier extends Crypto::HMACAlgorithmInstance, Crypto::AlgorithmValueConsumer,
+  HMACAlgorithmInstance, Crypto::HashAlgorithmInstance instanceof Expr
+{
+  override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() { result = this }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
+
+  override Crypto::THashType getHashFamily() {
+    result = getHashFamily(this.getRawHashAlgorithmName())
+  }
+
+  override string getRawHashAlgorithmName() {
+    if super.getType().hasName("KeyedHashAlgorithm")
+    then result = this.getOriginalRawHashAlgorithmName()
+    else result = super.getType().getName().replaceAll("HMAC", "")
+  }
+
+  override int getFixedDigestLength() {
+    hashAlgorithmToFamily(this.getRawHashAlgorithmName(), _, result)
+  }
+
+  private string getOriginalRawHashAlgorithmName() {
+    exists(MacUse use |
+      use.getQualifier() = this and
+      result = HMACFlow::getCreationFromUse(use, _, _).getRawAlgorithmName().replaceAll("HMAC", "")
+    )
   }
 }
