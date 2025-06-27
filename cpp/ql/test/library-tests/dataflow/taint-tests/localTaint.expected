@@ -4717,7 +4717,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
 | stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
 | stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
-| stl.h:292:53:292:63 | 0 | stl.h:292:46:292:64 | (no string representation) | TAINT |
+| stl.h:292:53:292:63 | 0 | stl.h:292:46:292:64 | constructor init | TAINT |
 | stl.h:396:3:396:3 | this | stl.h:396:36:396:43 | constructor init of field first [pre-this] |  |
 | stl.h:396:3:396:3 | this | stl.h:396:36:396:43 | constructor init of field first [pre-this] |  |
 | stl.h:396:3:396:3 | this | stl.h:396:36:396:43 | constructor init of field first [pre-this] |  |
