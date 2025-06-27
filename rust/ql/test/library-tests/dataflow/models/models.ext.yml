@@ -32,3 +32,5 @@ extensions:
       - ["main::apply", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
       - ["main::apply", "Argument[1].ReturnValue", "ReturnValue", "value", "manual"]
       - ["main::get_async_number", "Argument[0]", "ReturnValue.Future", "value", "manual"]
+      - ["<_ as core::cmp::Ord>::max", "Argument[self]", "ReturnValue", "value", "manual"]
+      - ["<_ as core::cmp::PartialOrd>::lt", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
