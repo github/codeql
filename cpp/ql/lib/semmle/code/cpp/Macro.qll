@@ -154,8 +154,9 @@ class MacroInvocation extends MacroAccess {
    * well.
    */
   Locatable getAnAffectedElement() {
-    inmacroexpansion(unresolveElement(result), underlyingElement(this)) or
-    macrolocationbind(underlyingElement(this), result.getLocation())
+    inmacroexpansion(unresolveElement(result), underlyingElement(this))
+    or
+    macrolocationbind(underlyingElement(this), result.getLocation()) and this != result
   }
 
   /**
