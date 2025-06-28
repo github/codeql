@@ -12,6 +12,7 @@ int vfprintf (FILE *, const char *, va_list);
 
 int a = 1;
 int b;
+int *c;
 
 int my_printf(const char * fmt, ...)
 {
@@ -37,6 +38,7 @@ void f2() {
 
 int main()
 {
+    unsigned size = sizeof(*c); // GOOD
     my_printf("%d\n", b); // BAD
     b = f1();
     f2();

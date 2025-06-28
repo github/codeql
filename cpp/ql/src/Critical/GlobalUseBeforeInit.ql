@@ -31,11 +31,19 @@ predicate dominatingInitInFunc(GlobalVariable v, Function f, ControlFlowNode nod
   )
 }
 
+predicate safeAccess(VariableAccess access) {
+  // it is safe if the variable access is part of a `sizeof` expression
+  exists(SizeofExprOperator e |
+    e.getAChild*() = access
+  )
+}
+
 predicate useFunc(GlobalVariable v, Function f) {
   exists(VariableAccess access |
     v.getAnAccess() = access and
     access.isRValue() and
     access.getEnclosingFunction() = f and
+    not safeAccess(access) and
     not dominatingInitInFunc(v, f, access)
   )
 }
