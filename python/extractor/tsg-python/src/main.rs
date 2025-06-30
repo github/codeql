@@ -502,7 +502,7 @@ fn main() -> Result<()> {
     let source_path = Path::new(matches.get_one::<String>("source").unwrap());
     let language = tsp::language();
     let mut parser = Parser::new();
-    parser.set_language(language)?;
+    parser.set_language(&language)?;
     // Statically include `python.tsg`:
     let tsg = if matches.contains_id("tsg") {
         std::fs::read(&tsg_path).with_context(|| format!("Error reading TSG file {}", tsg_path))?
