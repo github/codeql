@@ -910,7 +910,11 @@ module VariableCapture {
       CapturedVariable v;
 
       VariableRead() {
-        exists(VariableReadAccess read | this.getExpr() = read and v = read.getVariable())
+        exists(VariableAccess read | this.getExpr() = read and v = read.getVariable() |
+          read instanceof VariableReadAccess
+          or
+          read = any(RefExpr re).getExpr()
+        )
       }
 
       CapturedVariable getVariable() { result = v }
