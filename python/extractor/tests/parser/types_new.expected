@@ -338,16 +338,9 @@ Module: [1, 0] - [23, 0]
               variable: Variable('Spam', None)
               ctx: Load
           index:
-            BinOp: [20, 36] - [20, 40]
-              left:
-                Name: [20, 36] - [20, 36]
-                  variable: Variable('', None)
-                  ctx: Load
-              op: Pow
-              right:
-                Name: [20, 38] - [20, 40]
-                  variable: Variable('P2', None)
-                  ctx: Load
+            Name: [20, 38] - [20, 40]
+              variable: Variable('P2', None)
+              ctx: Load
           ctx: Load
     TypeAlias: [21, 0] - [21, 41]
       name:
