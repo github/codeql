@@ -36,6 +36,7 @@ module.exports = grammar({
     [$.tuple, $.tuple_pattern],
     [$.list, $.list_pattern],
     [$.with_item, $._collection_elements],
+    [$.match_statement, $.primary_expression],
   ],
 
   supertypes: $ => [
@@ -349,7 +350,7 @@ module.exports = grammar({
       ))
     )),
 
-    match_statement: $ => seq(
+    match_statement: $ => prec(-3, seq(
       'match',
       field('subject',
         choice(
@@ -359,7 +360,7 @@ module.exports = grammar({
       ),
       ':',
       field('cases', $.cases)
-    ),
+    )),
 
     cases: $ => repeat1($.case_block),
 
