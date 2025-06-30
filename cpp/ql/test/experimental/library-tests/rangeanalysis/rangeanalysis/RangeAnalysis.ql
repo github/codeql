@@ -15,5 +15,5 @@ query predicate instructionBounds(
   not valueNumber(b.getInstruction()) = valueNumber(i) and
   if reason instanceof CondReason
   then reasonLoc = reason.(CondReason).getCond().getLocation()
-  else reasonLoc instanceof UnknownDefaultLocation
+  else reasonLoc instanceof UnknownLocation
 }

@@ -89,7 +89,7 @@ class ZeroBound extends Bound instanceof IRBound::ZeroBound {
     result = super.getInstruction(delta).getUnconvertedResultExpression()
   }
 
-  override Location getLocation() { result instanceof UnknownDefaultLocation }
+  override Location getLocation() { result instanceof UnknownLocation }
 }
 
 /**
