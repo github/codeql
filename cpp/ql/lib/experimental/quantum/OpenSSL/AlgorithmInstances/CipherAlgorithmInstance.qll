@@ -4,8 +4,9 @@ private import KnownAlgorithmConstants
 private import Crypto::KeyOpAlg as KeyOpAlg
 private import OpenSSLAlgorithmInstanceBase
 private import PaddingAlgorithmInstance
-private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
-private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
+private import experimental.quantum.OpenSSL.Operations.OpenSSLOperationBase
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+private import OpenSSLAlgorithmInstances
 private import AlgToAVCFlow
 private import BlockAlgorithmInstance
 
@@ -97,10 +98,13 @@ class KnownOpenSslCipherConstantAlgorithmInstance extends OpenSslAlgorithmInstan
   }
 
   override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() {
-    //TODO: the padding is either self, or it flows through getter ctx to a set padding call
-    // like EVP_PKEY_CTX_set_rsa_padding
     result = this
-    // TODO or trace through getter ctx to set padding
+    or
+    exists(OperationStep s |
+      this.getAvc().(AvcContextCreationStep).flowsToOperationStep(s) and
+      s.getAlgorithmValueConsumerForInput(PaddingAlgorithmIO()) =
+        result.(OpenSslAlgorithmInstance).getAvc()
+    )
   }
 
   override string getRawAlgorithmName() {

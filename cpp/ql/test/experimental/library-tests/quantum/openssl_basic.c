@@ -1,7 +1,7 @@
 #include "openssl/evp.h"
 #include "openssl/obj_mac.h"
 #include "openssl/rand.h"
-
+#include "openssl/rsa.h"
 size_t strlen(const char* str);
 
 // Sample OpenSSL code that demonstrates various cryptographic operations
@@ -219,3 +219,57 @@ int test_main() {
     
     return 0;
 } 
+
+/**
+ * Simplified signature test
+ */
+int test_rsa_oaep_basic(void) {
+    EVP_PKEY_CTX *keygen_ctx = NULL, *encrypt_ctx = NULL;
+    EVP_PKEY *pkey = NULL;
+    unsigned char *ciphertext = NULL;
+    size_t ciphertext_len = 0;
+    const char *message = "Encrypt me with OAEP!";
+    int ret = 1;
+
+    // Generate RSA key
+    keygen_ctx = EVP_PKEY_CTX_new_from_name(NULL, "RSA", NULL);
+    if (!keygen_ctx || EVP_PKEY_keygen_init(keygen_ctx) <= 0 ||
+        EVP_PKEY_CTX_set_rsa_keygen_bits(keygen_ctx, 2048) <= 0 ||
+        EVP_PKEY_generate(keygen_ctx, &pkey) <= 0) {
+        goto cleanup;
+    }
+
+    // Create encryption context
+    encrypt_ctx = EVP_PKEY_CTX_new_from_pkey(NULL, pkey, NULL);
+    if (!encrypt_ctx || EVP_PKEY_encrypt_init(encrypt_ctx) <= 0) {
+        goto cleanup;
+    }
+
+    // Set OAEP padding
+    if (EVP_PKEY_CTX_set_rsa_padding(encrypt_ctx, RSA_PKCS1_OAEP_PADDING) <= 0 ||
+        EVP_PKEY_CTX_set_rsa_oaep_md(encrypt_ctx, EVP_sha256()) <= 0 ||
+        EVP_PKEY_CTX_set_rsa_mgf1_md(encrypt_ctx, EVP_sha256()) <= 0) {
+        goto cleanup;
+    }
+
+    // Determine buffer size
+    if (EVP_PKEY_encrypt(encrypt_ctx, NULL, &ciphertext_len,
+                         (const unsigned char *)message, strlen(message)) <= 0) {
+        goto cleanup;
+    }
+
+    ciphertext = OPENSSL_malloc(ciphertext_len);
+    if (!ciphertext || EVP_PKEY_encrypt(encrypt_ctx, ciphertext, &ciphertext_len,
+                                        (const unsigned char *)message, strlen(message)) <= 0) {
+        goto cleanup;
+    }
+
+    ret = 0;
+
+cleanup:
+    EVP_PKEY_CTX_free(keygen_ctx);
+    EVP_PKEY_CTX_free(encrypt_ctx);
+    EVP_PKEY_free(pkey);
+    OPENSSL_free(ciphertext);
+    return ret;
+}
