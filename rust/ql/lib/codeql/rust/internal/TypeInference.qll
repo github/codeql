@@ -10,6 +10,7 @@ private import codeql.typeinference.internal.TypeInference
 private import codeql.rust.frameworks.stdlib.Stdlib
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 private import codeql.rust.elements.Call
+private import codeql.rust.elements.internal.CallImpl::Impl as CallImpl
 
 class Type = T::Type;
 
@@ -354,19 +355,6 @@ private Type inferImplicitSelfType(SelfParam self, TypePath path) {
 }
 
 /**
- * Gets any of the types mentioned in `path` that corresponds to the type
- * parameter `tp`.
- */
-private TypeMention getExplicitTypeArgMention(Path path, TypeParam tp) {
-  exists(int i |
-    result = path.getSegment().getGenericArgList().getTypeArg(pragma[only_bind_into](i)) and
-    tp = resolvePath(path).getTypeParam(pragma[only_bind_into](i))
-  )
-  or
-  result = getExplicitTypeArgMention(path.getQualifier(), tp)
-}
-
-/**
  * A matching configuration for resolving types of struct expressions
  * like `Foo { bar = baz }`.
  */
@@ -452,9 +440,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
   class AccessPosition = DeclarationPosition;
 
   class Access extends StructExpr {
-    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
-      result = getExplicitTypeArgMention(this.getPath(), apos.asTypeParam()).resolveTypeAt(path)
-    }
+    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
 
     AstNode getNodeAt(AccessPosition apos) {
       result = this.getFieldExpr(apos.asFieldPos()).getExpr()
@@ -465,6 +451,17 @@ private module StructExprMatchingInput implements MatchingInputSig {
 
     Type getInferredType(AccessPosition apos, TypePath path) {
       result = inferType(this.getNodeAt(apos), path)
+      or
+      // The struct type is supplied explicitly as a type qualifier, e.g. TODO
+      apos.isStructPos() and
+      exists(TypeMention tm |
+        // variant
+        tm = this.getPath().getQualifier()
+        or
+        tm = this.getPath()
+      |
+        result = tm.resolveTypeAt(path)
+      )
     }
 
     Declaration getTarget() { result = resolvePath(this.getPath()) }
@@ -537,7 +534,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
 
     abstract Type getReturnType(TypePath path);
 
-    final Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
+    Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
       result = this.getParameterType(dpos, path)
       or
       dpos.isReturn() and
@@ -545,7 +542,16 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
   }
 
-  private class TupleStructDecl extends Declaration, Struct {
+  abstract private class TupleDeclaration extends Declaration {
+    override Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
+      result = super.getDeclaredType(dpos, path)
+      or
+      dpos.isSelf() and
+      result = this.getReturnType(path)
+    }
+  }
+
+  private class TupleStructDecl extends TupleDeclaration, Struct {
     TupleStructDecl() { this.isTuple() }
 
     override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
@@ -568,7 +574,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
   }
 
-  private class TupleVariantDecl extends Declaration, Variant {
+  private class TupleVariantDecl extends TupleDeclaration, Variant {
     TupleVariantDecl() { this.isTuple() }
 
     override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
@@ -597,13 +603,13 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
       typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
       or
-      exists(TraitItemNode trait | this = trait.getAnAssocItem() |
-        typeParamMatchPosition(trait.getTypeParam(_), result, ppos)
+      exists(ImplOrTraitItemNode i | this = i.getAnAssocItem() |
+        typeParamMatchPosition(i.getTypeParam(_), result, ppos)
         or
-        ppos.isImplicit() and result = TSelfTypeParameter(trait)
+        ppos.isImplicit() and result = TSelfTypeParameter(i)
         or
         ppos.isImplicit() and
-        result.(AssociatedTypeTypeParameter).getTrait() = trait
+        result.(AssociatedTypeTypeParameter).getTrait() = i
       )
       or
       ppos.isImplicit() and
@@ -624,6 +630,33 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
         result = inferAnnotatedType(self, path) // `self` parameter with type annotation
         or
         result = inferImplicitSelfType(self, path) // `self` parameter without type annotation
+      )
+      or
+      // For associated functions, we may also need to match type arguments against
+      // the `Self` type. For example, in
+      //
+      // ```rust
+      // struct Foo<T>(T);
+      //
+      // impl<T : Default> Foo<T> {
+      //   fn default() -> Self {
+      //     Foo(Default::default())
+      //   }
+      // }
+      //
+      // Foo::<i32>::default();
+      // ```
+      //
+      // we need to match `i32` against the type parameter `T` of the `impl` block.
+      exists(ImplOrTraitItemNode i |
+        this = i.getAnAssocItem() and
+        dpos.isSelf() and
+        not this.getParamList().hasSelfParam()
+      |
+        result = TSelfTypeParameter(i) and
+        path.isEmpty()
+        or
+        result = resolveImplSelfType(i, path)
       )
     }
 
@@ -670,9 +703,14 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 
   final class Access extends Call {
+    pragma[nomagic]
     Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       exists(TypeMention arg | result = arg.resolveTypeAt(path) |
-        arg = getExplicitTypeArgMention(CallExprImpl::getFunctionPath(this), apos.asTypeParam())
+        exists(Path p, int i |
+          p = CallExprImpl::getFunctionPath(this) and
+          arg = p.getSegment().getGenericArgList().getTypeArg(pragma[only_bind_into](i)) and
+          apos.asTypeParam() = resolvePath(p).getTypeParam(pragma[only_bind_into](i))
+        )
         or
         arg =
           this.(MethodCallExpr).getGenericArgList().getTypeArg(apos.asMethodTypeArgumentPosition())
@@ -696,6 +734,14 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
 
     Type getInferredType(AccessPosition apos, TypePath path) {
       result = inferType(this.getNodeAt(apos), path)
+      or
+      // The `Self` type is supplied explicitly as a type qualifier, e.g. `Foo::<Bar>::baz()`
+      apos = TArgumentAccessPosition(CallImpl::TSelfArgumentPosition(), false, false) and
+      exists(PathExpr pe, TypeMention tm |
+        pe = this.(CallExpr).getFunction() and
+        tm = pe.getPath().getQualifier() and
+        result = tm.resolveTypeAt(path)
+      )
     }
 
     Declaration getTarget() {
@@ -1110,12 +1156,7 @@ private Type inferForLoopExprType(AstNode n, TypePath path) {
 }
 
 final class MethodCall extends Call {
-  MethodCall() {
-    exists(this.getReceiver()) and
-    // We want the method calls that don't have a path to a concrete method in
-    // an impl block. We need to exclude calls like `MyType::my_method(..)`.
-    (this instanceof CallExpr implies exists(this.getTrait()))
-  }
+  MethodCall() { exists(this.getReceiver()) }
 
   /** Gets the type of the receiver of the method call at `path`. */
   Type getTypeAt(TypePath path) {

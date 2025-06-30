@@ -792,7 +792,7 @@ mod method_supertraits {
             if 3 > 2 { // $ method=gt
                 self.m1() // $ method=MyTrait1::m1
             } else {
-                Self::m1(self)
+                Self::m1(self) // $ method=MyTrait1::m1
             }
         }
     }
@@ -806,7 +806,7 @@ mod method_supertraits {
             if 3 > 2 { // $ method=gt
                 self.m2().a // $ method=m2 $ fieldof=MyThing
             } else {
-                Self::m2(self).a // $ fieldof=MyThing
+                Self::m2(self).a // $ method=m2 fieldof=MyThing
             }
         }
     }
@@ -1024,7 +1024,7 @@ mod option_methods {
     struct S;
 
     pub fn f() {
-        let x1 = MyOption::<S>::new(); // $ MISSING: type=x1:T.S
+        let x1 = MyOption::<S>::new(); // $ type=x1:T.S
         println!("{:?}", x1);
 
         let mut x2 = MyOption::new();
@@ -1043,7 +1043,7 @@ mod option_methods {
         println!("{:?}", x5.flatten()); // $ method=flatten
 
         let x6 = MyOption::MySome(MyOption::<S>::MyNone());
-        println!("{:?}", MyOption::<MyOption<S>>::flatten(x6));
+        println!("{:?}", MyOption::<MyOption<S>>::flatten(x6)); // $ method=flatten
 
         #[rustfmt::skip]
         let from_if = if 3 > 2 { // $ method=gt
@@ -2039,6 +2039,49 @@ mod loops {
 }
 
 mod dereference;
+
+mod explicit_type_args {
+    struct S1<T>(T);
+
+    #[derive(Default)]
+    struct S2;
+
+    impl<T : Default> S1<T> {
+        fn assoc_fun() -> Option<Self> {
+            None
+        }
+
+        fn default() -> Self {
+            S1(T::default())
+        }
+
+        fn method(self) -> Self {
+            self
+        }
+    }
+
+    type S3 = S1<S2>;
+
+    struct S4<T4 = S2>(T4);
+
+    struct S5<T5 = S2> { field: T5 }
+
+    pub fn f() {
+        let x1 : Option<S1<S2>> = S1::assoc_fun(); // $ type=x1:T.T.S2
+        let x2 = S1::<S2>::assoc_fun(); // $ type=x2:T.T.S2
+        let x3 = S3::assoc_fun(); // $ type=x3:T.T.S2
+        let x4 = S1::<S2>::method(S1::default()); // $ method=method type=x4:T.S2
+        let x5 = S3::method(S1::default()); // $ method=method type=x5:T.S2
+        let x6 = S4::<S2>(S2); // $ type=x6:T4.S2
+        let x7 = S4(S2); // $ type=x7:T4.S2
+        let x8 = S4(0); // $ type=x8:T4.i32
+        let x9 = S4(S2::default()); // $ type=x9:T4.S2
+        let x10 = S5::<S2> { field: S2 }; // $ type=x10:T5.S2
+        let x11 = S5 { field: S2 }; // $ type=x11:T5.S2
+        let x12 = S5 { field: 0 }; // $ type=x12:T5.i32
+        let x13 = S5 { field: S2::default() }; // $ type=x13:T5.S2
+    }
+}
 
 fn main() {
     field_access::f();

@@ -78,7 +78,7 @@ module Impl {
     }
   }
 
-  /** Holds if the call expression dispatches to a trait method. */
+  /** Holds if the call expression dispatches to a method. */
   private predicate callIsMethodCall(CallExpr call, Path qualifier, string methodName) {
     exists(Path path, Function f |
       path = call.getFunction().(PathExpr).getPath() and
