@@ -1,4 +1,5 @@
 localStep
+| file://:0:0:0:0 | [summary param] self in fn canonicalize | file://:0:0:0:0 | [summary] read: Argument[self].OptionalBarrier[normalize-path] in fn canonicalize |
 | main.rs:3:11:3:11 | [SSA] i | main.rs:4:12:4:12 | i |
 | main.rs:3:11:3:11 | i | main.rs:3:11:3:11 | [SSA] i |
 | main.rs:3:11:3:11 | i | main.rs:3:11:3:11 | i |

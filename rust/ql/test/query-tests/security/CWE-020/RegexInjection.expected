@@ -13,7 +13,7 @@ edges
 | main.rs:5:25:5:44 | { ... } | main.rs:5:25:5:44 | ...::must_use(...) | provenance | MaD:3 |
 | main.rs:6:26:6:30 | regex | main.rs:6:25:6:30 | &regex | provenance |  |
 models
-| 1 | Source: lang:std; crate::env::var; ReturnValue.Field[core::result::Result::Ok(0)]; environment |
+| 1 | Source: std::env::var; ReturnValue.Field[core::result::Result::Ok(0)]; environment |
 | 2 | Summary: <core::result::Result>::unwrap_or; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
 | 3 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
 | 4 | Summary: lang:alloc; crate::fmt::format; Argument[0]; ReturnValue; taint |
