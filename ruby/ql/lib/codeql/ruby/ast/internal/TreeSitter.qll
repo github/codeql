@@ -9,6 +9,20 @@ import codeql.Locations as L
 overlay[local]
 private predicate isOverlay() { databaseMetadata("isOverlay", "true") }
 
+/** Holds if `loc` is in the `file` and is part of the overlay base database. */
+overlay[local]
+private predicate discardableLocation(@file file, @location_default loc) {
+  not isOverlay() and locations_default(loc, file, _, _, _, _)
+}
+
+/** Holds if `loc` should be discarded, because it is part of the overlay base and is in a file that was also extracted as part of the overlay database. */
+overlay[discard_entity]
+private predicate discardLocation(@location_default loc) {
+  exists(@file file, string path | files(file, path) |
+    discardableLocation(file, loc) and overlayChangedFiles(path)
+  )
+}
+
 module Ruby {
   /** The base class for all AST nodes */
   class AstNode extends @ruby_ast_node {

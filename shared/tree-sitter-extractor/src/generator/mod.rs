@@ -51,9 +51,11 @@ pub fn generate(
 
     ql::write(
         &mut ql_writer,
-        &[ql::TopLevel::Predicate(
-            ql_gen::create_is_overlay_predicate(),
-        )],
+        &[
+            ql::TopLevel::Predicate(ql_gen::create_is_overlay_predicate()),
+            ql::TopLevel::Predicate(ql_gen::create_discardable_location_predicate()),
+            ql::TopLevel::Predicate(ql_gen::create_discard_location_predicate()),
+        ],
     )?;
 
     for language in languages {
