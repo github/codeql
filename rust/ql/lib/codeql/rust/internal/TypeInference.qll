@@ -1220,9 +1220,17 @@ private Function getTypeParameterMethod(TypeParameter tp, string name) {
   result = getMethodSuccessor(tp.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr(), name)
 }
 
+pragma[nomagic]
+private Type resolveNonTypeParameterTypeAt(TypeMention tm, TypePath path) {
+  result = tm.resolveTypeAt(path) and
+  not result instanceof TypeParameter
+}
+
 bindingset[t1, t2]
 private predicate typeMentionEqual(TypeMention t1, TypeMention t2) {
-  forex(TypePath path, Type type | t1.resolveTypeAt(path) = type | t2.resolveTypeAt(path) = type)
+  forex(TypePath path, Type type | resolveNonTypeParameterTypeAt(t1, path) = type |
+    resolveNonTypeParameterTypeAt(t2, path) = type
+  )
 }
 
 pragma[nomagic]
