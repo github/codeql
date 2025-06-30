@@ -31,14 +31,12 @@
 
 "use strict";
 
-import * as fs from "fs";
 import * as pathlib from "path";
 import * as readline from "readline";
 import * as ts from "./typescript";
 import * as ast_extractor from "./ast_extractor";
 
 import { Project } from "./common";
-import { TypeTable } from "./type_table";
 import { VirtualSourceRoot } from "./virtual_source_root";
 
 // Remove limit on stack trace depth.
@@ -55,19 +53,6 @@ interface LoadCommand {
     packageEntryPoints: [string, string][];
     packageJsonFiles: [string, string][];
 }
-interface OpenProjectCommand extends LoadCommand {
-    command: "open-project";
-}
-interface GetOwnFilesCommand extends LoadCommand {
-    command: "get-own-files";
-}
-interface CloseProjectCommand {
-    command: "close-project";
-    tsConfig: string;
-}
-interface GetTypeTableCommand {
-    command: "get-type-table";
-}
 interface ResetCommand {
     command: "reset";
 }
@@ -81,13 +66,11 @@ interface PrepareFilesCommand {
 interface GetMetadataCommand {
     command: "get-metadata";
 }
-type Command = ParseCommand | OpenProjectCommand | GetOwnFilesCommand | CloseProjectCommand
-    | GetTypeTableCommand | ResetCommand | QuitCommand | PrepareFilesCommand | GetMetadataCommand;
+type Command = ParseCommand | ResetCommand | QuitCommand | PrepareFilesCommand | GetMetadataCommand;
 
 /** The state to be shared between commands. */
 class State {
     public project: Project = null;
-    public typeTable = new TypeTable();
 
     /** List of files that have been requested. */
     public pendingFiles: string[] = [];
@@ -205,22 +188,18 @@ function checkCycle(root: any) {
     visit(root);
     if (path.length > 0) {
         path.reverse();
-        console.log(JSON.stringify({type: "error", message: "Cycle = " + path.join(".")}));
+        console.log(JSON.stringify({ type: "error", message: "Cycle = " + path.join(".") }));
     }
 }
 
 /** Property names to extract from the TypeScript AST. */
 const astProperties: string[] = [
     "$declarationKind",
-    "$declaredSignature",
     "$end",
     "$lineStarts",
     "$overloadIndex",
     "$pos",
-    "$resolvedSignature",
-    "$symbol",
     "$tokens",
-    "$type",
     "argument",
     "argumentExpression",
     "arguments",
@@ -392,20 +371,14 @@ function isExtractableSourceFile(ast: ast_extractor.AugmentedSourceFile): boolea
  * an already-open project, or by parsing the file.
  */
 function getAstForFile(filename: string): ts.SourceFile {
-    if (state.project != null) {
-        let ast = state.project.program.getSourceFile(filename);
-        if (ast != null && isExtractableSourceFile(ast)) {
-            ast_extractor.augmentAst(ast, ast.text, state.project);
-            return ast;
-        }
+    let { ast, code } = parseSingleFile(filename);
+    if (ast != null && isExtractableSourceFile(ast)) {
+        ast_extractor.augmentAst(ast, code, null);
     }
-    // Fall back to extracting without a project.
-    let {ast, code} = parseSingleFile(filename);
-    ast_extractor.augmentAst(ast, code, null);
     return ast;
 }
 
-function parseSingleFile(filename: string): {ast: ts.SourceFile, code: string} {
+function parseSingleFile(filename: string): { ast: ts.SourceFile, code: string } {
     let code = ts.sys.readFile(filename);
 
     // create a compiler host that only allows access to `filename`
@@ -436,7 +409,7 @@ function parseSingleFile(filename: string): {ast: ts.SourceFile, code: string} {
 
     let ast = program.getSourceFile(filename);
 
-    return {ast, code};
+    return { ast, code };
 }
 
 /**
@@ -507,7 +480,7 @@ function loadTsConfig(command: LoadCommand): LoadedConfig {
             let virtualExclusions = excludes == null ? [] : [...excludes];
             virtualExclusions.push('**/node_modules/**/*');
             let virtualResults = ts.sys.readDirectory(virtualDir, extensions, virtualExclusions, includes, depth)
-            return [ ...originalResults, ...virtualResults ];
+            return [...originalResults, ...virtualResults];
         },
         fileExists: (path: string) => {
             return ts.sys.fileExists(path)
@@ -529,256 +502,6 @@ function loadTsConfig(command: LoadCommand): LoadedConfig {
     let ownFiles = config.fileNames.map(file => pathlib.resolve(file));
 
     return { config, basePath, packageJsonFiles, packageEntryPoints, virtualSourceRoot, ownFiles };
-}
-
-/**
- * Returns the list of files included in the given tsconfig.json file's include pattern,
- * (not including those only references through imports).
- */
-function handleGetFileListCommand(command: GetOwnFilesCommand) {
-    let { config, ownFiles } = loadTsConfig(command);
-
-    console.log(JSON.stringify({
-        type: "file-list",
-        ownFiles,
-    }));
-}
-
-function handleOpenProjectCommand(command: OpenProjectCommand) {
-    let { config, packageEntryPoints, virtualSourceRoot, basePath, ownFiles } = loadTsConfig(command);
-
-    let project = new Project(command.tsConfig, config, state.typeTable, packageEntryPoints, virtualSourceRoot);
-    project.load();
-
-    state.project = project;
-    let program = project.program;
-    let typeChecker = program.getTypeChecker();
-
-    let shouldReportDiagnostics = getEnvironmentVariable("SEMMLE_TYPESCRIPT_REPORT_DIAGNOSTICS", v => v.trim().toLowerCase() === "true", false);
-    let diagnostics = shouldReportDiagnostics
-        ? program.getSemanticDiagnostics().filter(d => d.category === ts.DiagnosticCategory.Error)
-        : [];
-    if (diagnostics.length > 0) {
-        console.warn('TypeScript: reported ' + diagnostics.length + ' semantic errors.');
-    }
-    for (let diagnostic of diagnostics) {
-        let text = diagnostic.messageText;
-        if (text && typeof text !== 'string') {
-            text = text.messageText;
-        }
-        let locationStr = '';
-        let { file } = diagnostic;
-        if (file != null) {
-            let { line, character } = file.getLineAndCharacterOfPosition(diagnostic.start);
-            locationStr = `${file.fileName}:${line}:${character}`;
-        }
-        console.warn(`TypeScript: ${locationStr} ${text}`);
-    }
-
-    // Associate external module names with the corresponding file symbols.
-    // We need these mappings to identify which module a given external type comes from.
-    // The TypeScript API lets us resolve a module name to a source file, but there is no
-    // inverse mapping, nor a way to enumerate all known module names. So we discover all
-    // modules on the type roots (usually "node_modules/@types" but this is configurable).
-    let typeRoots = ts.getEffectiveTypeRoots(config.options, {
-        getCurrentDirectory: () => basePath,
-    });
-
-    for (let typeRoot of typeRoots || []) {
-        if (ts.sys.directoryExists(typeRoot)) {
-            traverseTypeRoot(typeRoot, "");
-        }
-        let virtualTypeRoot = virtualSourceRoot.toVirtualPathIfDirectoryExists(typeRoot);
-        if (virtualTypeRoot != null) {
-            traverseTypeRoot(virtualTypeRoot, "");
-        }
-    }
-
-    for (let sourceFile of program.getSourceFiles()) {
-        addModuleBindingsFromModuleDeclarations(sourceFile);
-        addModuleBindingsFromFilePath(sourceFile);
-    }
-
-    /** Concatenates two imports paths. These always use `/` as path separator. */
-    function joinModulePath(prefix: string, suffix: string) {
-        if (prefix.length === 0) return suffix;
-        if (suffix.length === 0) return prefix;
-        return prefix + "/" + suffix;
-    }
-
-    /**
-     * Traverses a directory that is a type root or contained in a type root, and associates
-     * module names (i.e. import strings) with files in this directory.
-     *
-     * `importPrefix` denotes an import string that resolves to this directory,
-     * or an empty string if the file itself is a type root.
-     *
-     * The `filePath` is a system file path, possibly absolute, whereas `importPrefix`
-     * is generally short and system-independent, typically just the name of a module.
-     */
-    function traverseTypeRoot(filePath: string, importPrefix: string) {
-        for (let child of fs.readdirSync(filePath)) {
-            if (child[0] === ".") continue;
-            let childPath = pathlib.join(filePath, child);
-            if (fs.statSync(childPath).isDirectory()) {
-                traverseTypeRoot(childPath, joinModulePath(importPrefix, child));
-                continue;
-            }
-            let sourceFile = program.getSourceFile(childPath);
-            if (sourceFile == null) {
-                continue;
-            }
-            let importPath = getImportPathFromFileInFolder(importPrefix, child);
-            addModuleBindingFromImportPath(sourceFile, importPath);
-        }
-    }
-
-    function getImportPathFromFileInFolder(folder: string, baseName: string) {
-        let stem = getStem(baseName);
-        return (stem === "index")
-            ? folder
-            : joinModulePath(folder, stem);
-    }
-
-    /**
-     * Emits module bindings for a module with relative path `folder/baseName`.
-     */
-    function addModuleBindingFromImportPath(sourceFile: ts.SourceFile, importPath: string) {
-        let symbol = typeChecker.getSymbolAtLocation(sourceFile);
-        if (symbol == null) return; // Happens if the source file is not a module.
-
-        let canonicalSymbol = getEffectiveExportTarget(symbol); // Follow `export = X` declarations.
-        let symbolId = state.typeTable.getSymbolId(canonicalSymbol);
-
-        // Associate the module name with this symbol.
-        state.typeTable.addModuleMapping(symbolId, importPath);
-
-        // Associate global variable names with this module.
-        // For each `export as X` declaration, the global X refers to this module.
-        // Note: the `globalExports` map is stored on the original symbol, not the target of `export=`.
-        if (symbol.globalExports != null) {
-            symbol.globalExports.forEach((global: ts.Symbol) => {
-                state.typeTable.addGlobalMapping(symbolId, global.name);
-            });
-        }
-    }
-
-    /**
-     * Returns the basename of `file` without its extension, while treating `.d.ts` as a
-     * single extension.
-     */
-    function getStem(file: string) {
-        if (file.endsWith(".d.ts")) {
-            return pathlib.basename(file, ".d.ts");
-        }
-        if (file.endsWith(".d.mts") || file.endsWith(".d.cts")) {
-            // We don't extract d.mts or d.cts files, but their symbol can coincide with that of a d.ts file,
-            // which means any module bindings we generate for it will ultimately be visible in QL.
-            let base = pathlib.basename(file);
-            return base.substring(0, base.length - '.d.mts'.length);
-        }
-        let base = pathlib.basename(file);
-        let dot = base.lastIndexOf('.');
-        return dot === -1 || dot === 0 ? base : base.substring(0, dot);
-    }
-
-    /**
-     * Emits module bindings for a module based on its file path.
-     *
-     * This looks for enclosing `node_modules` folders to determine the module name.
-     * This is needed for modules that ship their own type definitions as opposed to having
-     * type definitions loaded from a type root (conventionally named `@types/xxx`).
-     */
-    function addModuleBindingsFromFilePath(sourceFile: ts.SourceFile) {
-        let fullPath = sourceFile.fileName;
-        let index = fullPath.lastIndexOf('/node_modules/');
-        if (index === -1) return;
-
-        let relativePath = fullPath.substring(index + '/node_modules/'.length);
-
-        // Ignore node_modules/@types folders here as they are typically handled as type roots.
-        if (relativePath.startsWith("@types/")) return;
-
-        // If the enclosing package has a "typings" field, only add module bindings for that file.
-        let packageJsonFile = getEnclosingPackageJson(fullPath);
-        if (packageJsonFile != null) {
-            let json = getPackageJson(packageJsonFile);
-            let typings = getPackageTypings(packageJsonFile);
-            if (json != null && typings != null) {
-                let name = json.name;
-                if (typings === fullPath && typeof name === 'string') {
-                    addModuleBindingFromImportPath(sourceFile, name);
-                } else if (typings != null) {
-                    return; // Typings field prevents access to other files in package.
-                }
-            }
-        }
-
-        // Add module bindings relative to package directory.
-        let { dir, base } = pathlib.parse(relativePath);
-        addModuleBindingFromImportPath(sourceFile, getImportPathFromFileInFolder(dir, base));
-    }
-
-    /**
-     * Emit module name bindings for external module declarations, i.e: `declare module 'X' {..}`
-     * These can generally occur anywhere; they may or may not be on the type root path.
-     */
-    function addModuleBindingsFromModuleDeclarations(sourceFile: ts.SourceFile) {
-        for (let stmt of sourceFile.statements) {
-            if (ts.isModuleDeclaration(stmt) && ts.isStringLiteral(stmt.name)) {
-                let symbol = (stmt as any).symbol;
-                if (symbol == null) continue;
-                symbol = getEffectiveExportTarget(symbol);
-                let symbolId = state.typeTable.getSymbolId(symbol);
-                let moduleName = stmt.name.text;
-                state.typeTable.addModuleMapping(symbolId, moduleName);
-            }
-        }
-    }
-
-    /**
-     * If `symbol` refers to a container with an `export = X` declaration, returns
-     * the target of `X`, otherwise returns `symbol`.
-     */
-    function getEffectiveExportTarget(symbol: ts.Symbol) {
-        if (symbol.exports != null && symbol.exports.has(ts.InternalSymbolName.ExportEquals)) {
-            let exportAlias = symbol.exports.get(ts.InternalSymbolName.ExportEquals);
-            if (exportAlias.flags & ts.SymbolFlags.Alias) {
-                return typeChecker.getAliasedSymbol(exportAlias);
-            }
-        }
-        return symbol;
-    }
-
-    // Unlike in the get-own-files command, this command gets all files we can possibly
-    // extract type information for, including files referenced outside the tsconfig's inclusion pattern.
-    let allFiles = program.getSourceFiles().map(sf => pathlib.resolve(sf.fileName));
-
-    console.log(JSON.stringify({
-        type: "project-opened",
-        ownFiles,
-        allFiles,
-    }));
-}
-
-function handleCloseProjectCommand(command: CloseProjectCommand) {
-    if (state.project == null) {
-        console.log(JSON.stringify({
-            type: "error",
-            message: "No project is open",
-        }));
-        return;
-    }
-    state.project.unload();
-    state.project = null;
-    console.log(JSON.stringify({type: "project-closed"}));
-}
-
-function handleGetTypeTableCommand(command: GetTypeTableCommand) {
-    console.log(JSON.stringify({
-        type: "type-table",
-        typeTable: state.typeTable.getTypeTableJson(),
-    }));
 }
 
 function handleResetCommand(command: ResetCommand) {
@@ -807,8 +530,6 @@ function handleGetMetadataCommand(command: GetMetadataCommand) {
 
 function reset() {
     state = new State();
-    state.typeTable.restrictedExpansion = getEnvironmentVariable("SEMMLE_TYPESCRIPT_NO_EXPANSION", v => v.trim().toLowerCase() === "true", true);
-    state.typeTable.skipExtractingTypes = getEnvironmentVariable("CODEQL_EXTRACTOR_JAVASCRIPT_OPTION_SKIP_TYPES", v => v.trim().toLowerCase() === "true", false);
 }
 
 function getEnvironmentVariable<T>(name: string, parse: (x: string) => T, defaultValue: T) {
@@ -848,35 +569,23 @@ function runReadLineInterface() {
     rl.on("line", (line: string) => {
         let req: Command = JSON.parse(line);
         switch (req.command) {
-        case "parse":
-            handleParseCommand(req);
-            break;
-        case "open-project":
-            handleOpenProjectCommand(req);
-            break;
-        case "get-own-files":
-            handleGetFileListCommand(req);
-            break;
-        case "close-project":
-            handleCloseProjectCommand(req);
-            break;
-        case "get-type-table":
-            handleGetTypeTableCommand(req);
-            break;
-        case "prepare-files":
-            handlePrepareFilesCommand(req);
-            break;
-        case "reset":
-            handleResetCommand(req);
-            break;
-        case "get-metadata":
-            handleGetMetadataCommand(req);
-            break;
-        case "quit":
-            rl.close();
-            break;
-        default:
-            throw new Error("Unknown command " + (req as any).command + ".");
+            case "parse":
+                handleParseCommand(req);
+                break;
+            case "prepare-files":
+                handlePrepareFilesCommand(req);
+                break;
+            case "reset":
+                handleResetCommand(req);
+                break;
+            case "get-metadata":
+                handleGetMetadataCommand(req);
+                break;
+            case "quit":
+                rl.close();
+                break;
+            default:
+                throw new Error("Unknown command " + (req as any).command + ".");
         }
     });
 }
@@ -886,23 +595,6 @@ if (process.argv.length > 2) {
     let argument = process.argv[2];
     if (argument === "--version") {
         console.log("parser-wrapper with TypeScript " + ts.version);
-    } else if (pathlib.basename(argument) === "tsconfig.json") {
-        reset();
-        handleOpenProjectCommand({
-            command: "open-project",
-            tsConfig: argument,
-            packageEntryPoints: [],
-            packageJsonFiles: [],
-            sourceRoot: null,
-            virtualSourceRoot: null,
-        });
-        for (let sf of state.project.program.getSourceFiles()) {
-            if (/lib\..*\.d\.ts/.test(pathlib.basename(sf.fileName)) || pathlib.basename(sf.fileName) === "lib.d.ts") continue;
-            handleParseCommand({
-                command: "parse",
-                filename: sf.fileName,
-            }, false);
-        }
     } else if (pathlib.extname(argument) === ".ts" || pathlib.extname(argument) === ".tsx") {
         handleParseCommand({
             command: "parse",

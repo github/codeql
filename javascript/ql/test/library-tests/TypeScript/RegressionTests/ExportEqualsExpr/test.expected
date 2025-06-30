@@ -1,7 +1,1 @@
-| "bar" in global scope |
-| C in module 'bar' |
-| Foo in global scope |
-| Foo in tst.ts |
-| module 'bar' |
-| module 'foo' |
-| tst.ts |
+| Just test extraction |
