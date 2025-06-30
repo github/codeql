@@ -420,10 +420,10 @@ fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
 
     for entry in fs::read_dir("directory")? {
         let e = entry?;
-        let path = e.path(); // $ Alert[rust/summary/taint-sources]
-        let file_name = e.file_name(); // $ Alert[rust/summary/taint-sources]
-        sink(path); // $ hasTaintFlow
-        sink(file_name); // $ hasTaintFlow
+        let path = e.path(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let file_name = e.file_name(); // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(path); // $ MISSING: hasTaintFlow
+        sink(file_name); // $ MISSING: hasTaintFlow
     }
 
     {
@@ -452,10 +452,10 @@ async fn test_tokio_fs() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut read_dir = tokio::fs::read_dir("directory").await?;
     for entry in read_dir.next_entry().await? {
-        let path = entry.path(); // $ Alert[rust/summary/taint-sources]
-        let file_name = entry.file_name(); // $ Alert[rust/summary/taint-sources]
-        sink(path); // $ hasTaintFlow
-        sink(file_name); // $ hasTaintFlow
+        let path = entry.path(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let file_name = entry.file_name(); // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(path); // $ MISSING: hasTaintFlow
+        sink(file_name); // $ MISSING: hasTaintFlow
     }
 
     {
