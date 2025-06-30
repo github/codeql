@@ -1,4 +1,21 @@
-| gen_call_expr.rs:5:5:5:11 | foo(...) | hasArgList: | yes | getNumberOfAttrs: | 0 | getNumberOfArgs: | 1 | hasFunction: | yes |
-| gen_call_expr.rs:6:5:6:23 | foo::<...>(...) | hasArgList: | yes | getNumberOfAttrs: | 0 | getNumberOfArgs: | 1 | hasFunction: | yes |
-| gen_call_expr.rs:7:5:7:14 | ...(...) | hasArgList: | yes | getNumberOfAttrs: | 0 | getNumberOfArgs: | 1 | hasFunction: | yes |
-| gen_call_expr.rs:8:5:8:10 | foo(...) | hasArgList: | yes | getNumberOfAttrs: | 0 | getNumberOfArgs: | 1 | hasFunction: | yes |
+instances
+| gen_call_expr.rs:5:5:5:11 | foo(...) |
+| gen_call_expr.rs:6:5:6:23 | foo::<...>(...) |
+| gen_call_expr.rs:7:5:7:14 | ...(...) |
+| gen_call_expr.rs:8:5:8:10 | foo(...) |
+getArgList
+| gen_call_expr.rs:5:5:5:11 | foo(...) | gen_call_expr.rs:5:8:5:11 | ArgList |
+| gen_call_expr.rs:6:5:6:23 | foo::<...>(...) | gen_call_expr.rs:6:20:6:23 | ArgList |
+| gen_call_expr.rs:7:5:7:14 | ...(...) | gen_call_expr.rs:7:11:7:14 | ArgList |
+| gen_call_expr.rs:8:5:8:10 | foo(...) | gen_call_expr.rs:8:8:8:10 | ArgList |
+getAttr
+getArg
+| gen_call_expr.rs:5:5:5:11 | foo(...) | 0 | gen_call_expr.rs:5:9:5:10 | 42 |
+| gen_call_expr.rs:6:5:6:23 | foo::<...>(...) | 0 | gen_call_expr.rs:6:21:6:22 | 42 |
+| gen_call_expr.rs:7:5:7:14 | ...(...) | 0 | gen_call_expr.rs:7:12:7:13 | 42 |
+| gen_call_expr.rs:8:5:8:10 | foo(...) | 0 | gen_call_expr.rs:8:9:8:9 | 1 |
+getFunction
+| gen_call_expr.rs:5:5:5:11 | foo(...) | gen_call_expr.rs:5:5:5:7 | foo |
+| gen_call_expr.rs:6:5:6:23 | foo::<...>(...) | gen_call_expr.rs:6:5:6:19 | foo::<...> |
+| gen_call_expr.rs:7:5:7:14 | ...(...) | gen_call_expr.rs:7:5:7:10 | foo[0] |
+| gen_call_expr.rs:8:5:8:10 | foo(...) | gen_call_expr.rs:8:5:8:7 | foo |

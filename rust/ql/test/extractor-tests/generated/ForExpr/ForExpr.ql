@@ -2,16 +2,24 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  ForExpr x, string hasLabel, string hasLoopBody, int getNumberOfAttrs, string hasIterable,
-  string hasPat
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  (if x.hasLabel() then hasLabel = "yes" else hasLabel = "no") and
-  (if x.hasLoopBody() then hasLoopBody = "yes" else hasLoopBody = "no") and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasIterable() then hasIterable = "yes" else hasIterable = "no") and
-  if x.hasPat() then hasPat = "yes" else hasPat = "no"
-select x, "hasLabel:", hasLabel, "hasLoopBody:", hasLoopBody, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasIterable:", hasIterable, "hasPat:", hasPat
+query predicate instances(ForExpr x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getLabel(ForExpr x, Label getLabel) {
+  toBeTested(x) and not x.isUnknown() and getLabel = x.getLabel()
+}
+
+query predicate getLoopBody(ForExpr x, BlockExpr getLoopBody) {
+  toBeTested(x) and not x.isUnknown() and getLoopBody = x.getLoopBody()
+}
+
+query predicate getAttr(ForExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getIterable(ForExpr x, Expr getIterable) {
+  toBeTested(x) and not x.isUnknown() and getIterable = x.getIterable()
+}
+
+query predicate getPat(ForExpr x, Pat getPat) {
+  toBeTested(x) and not x.isUnknown() and getPat = x.getPat()
+}

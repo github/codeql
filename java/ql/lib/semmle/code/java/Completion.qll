@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for representing completions.
  */
+overlay[local?]
+module;
 
 /*
  * A completion represents how a statement or expression terminates.

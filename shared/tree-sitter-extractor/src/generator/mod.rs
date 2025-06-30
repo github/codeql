@@ -49,6 +49,13 @@ pub fn generate(
         })],
     )?;
 
+    ql::write(
+        &mut ql_writer,
+        &[ql::TopLevel::Predicate(
+            ql_gen::create_is_overlay_predicate(),
+        )],
+    )?;
+
     for language in languages {
         let prefix = node_types::to_snake_case(&language.name);
         let ast_node_name = format!("{}_ast_node", &prefix);
@@ -92,6 +99,21 @@ pub fn generate(
             ql::TopLevel::Class(ql_gen::create_token_class(&token_name, &tokeninfo_name)),
             ql::TopLevel::Class(ql_gen::create_reserved_word_class(&reserved_word_name)),
         ];
+
+        // Overlay discard predicates
+        body.push(ql::TopLevel::Predicate(
+            ql_gen::create_get_node_file_predicate(&ast_node_name, &node_location_table_name),
+        ));
+        body.push(ql::TopLevel::Predicate(
+            ql_gen::create_discard_file_predicate(),
+        ));
+        body.push(ql::TopLevel::Predicate(
+            ql_gen::create_discardable_ast_node_predicate(&ast_node_name),
+        ));
+        body.push(ql::TopLevel::Predicate(
+            ql_gen::create_discard_ast_node_predicate(&ast_node_name),
+        ));
+
         body.append(&mut ql_gen::convert_nodes(&nodes));
         ql::write(
             &mut ql_writer,

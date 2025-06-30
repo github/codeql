@@ -6,8 +6,9 @@
  * @problem.severity error
  * @precision high
  * @id cs/recursive-equals-call
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp

@@ -5,7 +5,8 @@
  * @kind problem
  * @problem.severity warning
  * @id js/whitespace-contradicts-precedence
- * @tags maintainability
+ * @tags quality
+ *       reliability
  *       correctness
  *       statistical
  *       non-attributable

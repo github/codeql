@@ -4,7 +4,8 @@
  *              number and type of parameters has the potential to cause an error when there is a mismatch.
  * @kind problem
  * @problem.severity warning
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @sub-severity high
  * @precision very-high

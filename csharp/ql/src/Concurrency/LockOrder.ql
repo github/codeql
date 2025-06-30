@@ -5,9 +5,10 @@
  * @problem.severity error
  * @precision high
  * @id cs/inconsistent-lock-sequence
- * @tags reliability
- *       correctness
+ * @tags quality
+ *       reliability
  *       concurrency
+ *       correctness
  *       external/cwe/cwe-662
  */
 

@@ -16,6 +16,7 @@ import semmle.code.cpp.dataflow.new.DataFlow
 private import DataFlowPrivate
 private import DataFlowUtil
 private import DataFlowImplCommon
+private import DataFlowImplSpecific
 private import codeql.util.Unit
 
 /**
@@ -95,10 +96,7 @@ module ProductFlow {
      * This can be overridden to a smaller value to improve performance (a
      * value of 0 disables field flow), or a larger value to get more results.
      */
-    default int fieldFlowBranchLimit1() {
-      // NOTE: This should be synchronized with the default value in the shared dataflow library
-      result = 2
-    }
+    default int fieldFlowBranchLimit1() { result = CppDataFlow::defaultFieldFlowBranchLimit() }
 
     /**
      * Gets the virtual dispatch branching limit when calculating field flow in the second
@@ -107,10 +105,7 @@ module ProductFlow {
      * This can be overridden to a smaller value to improve performance (a
      * value of 0 disables field flow), or a larger value to get more results.
      */
-    default int fieldFlowBranchLimit2() {
-      // NOTE: This should be synchronized with the default value in the shared dataflow library
-      result = 2
-    }
+    default int fieldFlowBranchLimit2() { result = CppDataFlow::defaultFieldFlowBranchLimit() }
   }
 
   /**
@@ -304,10 +299,7 @@ module ProductFlow {
      * This can be overridden to a smaller value to improve performance (a
      * value of 0 disables field flow), or a larger value to get more results.
      */
-    default int fieldFlowBranchLimit1() {
-      // NOTE: This should be synchronized with the default value in the shared dataflow library
-      result = 2
-    }
+    default int fieldFlowBranchLimit1() { result = CppDataFlow::defaultFieldFlowBranchLimit() }
 
     /**
      * Gets the virtual dispatch branching limit when calculating field flow in the second
@@ -316,10 +308,7 @@ module ProductFlow {
      * This can be overridden to a smaller value to improve performance (a
      * value of 0 disables field flow), or a larger value to get more results.
      */
-    default int fieldFlowBranchLimit2() {
-      // NOTE: This should be synchronized with the default value in the shared dataflow library
-      result = 2
-    }
+    default int fieldFlowBranchLimit2() { result = CppDataFlow::defaultFieldFlowBranchLimit() }
   }
 
   /**

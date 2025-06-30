@@ -40,7 +40,7 @@ class Namespace extends NameQualifyingElement, @namespace {
   override Location getLocation() {
     if strictcount(this.getADeclarationEntry()) = 1
     then result = this.getADeclarationEntry().getLocation()
-    else result instanceof UnknownDefaultLocation
+    else result instanceof UnknownLocation
   }
 
   /** Gets the simple name of this namespace. */
@@ -99,6 +99,11 @@ class Namespace extends NameQualifyingElement, @namespace {
 
   /** Gets a file which declares (part of) this namespace. */
   File getAFile() { result = this.getADeclarationEntry().getLocation().getFile() }
+
+  /** Gets an attribute of this namespace. */
+  Attribute getAnAttribute() {
+    namespaceattributes(underlyingElement(this), unresolveElement(result))
+  }
 }
 
 /**

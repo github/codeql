@@ -1407,47 +1407,51 @@
       }
     },
     "match_statement": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "match"
-        },
-        {
-          "type": "FIELD",
-          "name": "subject",
-          "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "expression"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
+      "type": "PREC",
+      "value": -3,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "match"
+          },
+          {
+            "type": "FIELD",
+            "name": "subject",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
                   "type": "SYMBOL",
-                  "name": "expression_list"
+                  "name": "expression"
                 },
-                "named": true,
-                "value": "tuple"
-              }
-            ]
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "expression_list"
+                  },
+                  "named": true,
+                  "value": "tuple"
+                }
+              ]
+            }
+          },
+          {
+            "type": "STRING",
+            "value": ":"
+          },
+          {
+            "type": "FIELD",
+            "name": "cases",
+            "content": {
+              "type": "SYMBOL",
+              "name": "cases"
+            }
           }
-        },
-        {
-          "type": "STRING",
-          "value": ":"
-        },
-        {
-          "type": "FIELD",
-          "name": "cases",
-          "content": {
-            "type": "SYMBOL",
-            "name": "cases"
-          }
-        }
-      ]
+        ]
+      }
     },
     "cases": {
       "type": "REPEAT1",
@@ -6675,6 +6679,10 @@
     [
       "with_item",
       "_collection_elements"
+    ],
+    [
+      "match_statement",
+      "primary_expression"
     ]
   ],
   "precedences": [],

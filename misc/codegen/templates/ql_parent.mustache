@@ -9,51 +9,39 @@ import {{.}}
 
 private module Impl {
 {{#classes}}
-    private Element getImmediateChildOf{{name}}({{name}} e, int index, string partialPredicateCall) {
-    {{! avoid unused argument warnings on root element, assuming the root element has no children }}
-    {{#root}}none(){{/root}}
-    {{^root}}
-    {{! b is the base offset 0, for ease of generation }}
-    {{! b<base> is constructed to be strictly greater than the indexes required for children coming from <base> }}
-    {{! n is the base offset for direct children, equal to the last base offset from above }}
-    {{! n<child> is constructed to be strictly greater than the indexes for <child> children }}
-        exists(int b{{#bases}}, int b{{.}}{{/bases}}, int n{{#properties}}{{#is_child}}, int n{{singular}}{{/is_child}}{{/properties}} |
-        b = 0
-        {{#bases}}
-            and
-            b{{.}} = b{{prev}} + 1 + max(int i | i = -1 or exists(getImmediateChildOf{{.}}(e, i, _)) | i)
-        {{/bases}}
-        and
-        n = b{{last_base}}
-        {{#properties}}
-            {{#is_child}}
-            {{! n<child> is defined on top of the previous definition }}
-            {{! for single and optional properties it adds 1 (regardless of whether the optional property exists) }}
-            {{! for repeated it adds 1 + the maximum index (which works for repeated optional as well) }}
-                and
-                n{{singular}} = n{{prev_child}} + 1{{#is_repeated}}+ max(int i | i = -1 or exists(e.get{{#type_is_hideable}}Immediate{{/type_is_hideable}}{{singular}}(i)) | i){{/is_repeated}}
-            {{/is_child}}
-        {{/properties}} and (
-        none()
-        {{#bases}}
-            or
-            result = getImmediateChildOf{{.}}(e, index - b{{prev}}, partialPredicateCall)
-        {{/bases}}
-        {{#properties}}
-            {{#is_child}}
-                or
-                {{#is_repeated}}
-                    result = e.get{{#type_is_hideable}}Immediate{{/type_is_hideable}}{{singular}}(index - n{{prev_child}}) and partialPredicateCall = "{{singular}}(" + (index - n{{prev_child}}).toString() + ")"
-                {{/is_repeated}}
-                {{^is_repeated}}
-                    index = n{{prev_child}} and result = e.get{{#type_is_hideable}}Immediate{{/type_is_hideable}}{{singular}}() and partialPredicateCall = "{{singular}}()"
-                {{/is_repeated}}
-            {{/is_child}}
-        {{/properties}}
-        ))
-    {{/root}}
-    }
-
+    {{#final}}
+        private Element getImmediateChildOf{{name}}({{name}} e, int index, string partialPredicateCall) {
+        {{^has_children}}none(){{/has_children}}
+        {{#has_children}}
+        {{! n is the base offset 0, for ease of generation }}
+        {{! n<child> is constructed to be strictly greater than the indexes for <child> children }}
+            exists(int n{{#all_children}}, int n{{property.singular}}{{/all_children}} |
+                n = 0
+                {{#all_children}}
+                    {{#property}}
+                        {{! n<child> is defined on top of the previous definition }}
+                        {{! for single and optional properties it adds 1 (regardless of whether the optional property exists) }}
+                        {{! for repeated it adds 1 + the maximum index (which works for repeated optional as well) }}
+                            and
+                            n{{singular}} = n{{prev}} + 1{{#is_repeated}}+ max(int i | i = -1 or exists(e.get{{#type_is_hideable}}Immediate{{/type_is_hideable}}{{singular}}(i)) | i){{/is_repeated}}
+                    {{/property}}
+                {{/all_children}} and (
+            none()
+            {{#all_children}}
+                {{#property}}
+                    or
+                    {{#is_repeated}}
+                        result = e.get{{#type_is_hideable}}Immediate{{/type_is_hideable}}{{singular}}(index - n{{prev}}) and partialPredicateCall = "{{singular}}(" + (index - n{{prev}}).toString() + ")"
+                    {{/is_repeated}}
+                    {{^is_repeated}}
+                        index = n{{prev}} and result = e.get{{#type_is_hideable}}Immediate{{/type_is_hideable}}{{singular}}() and partialPredicateCall = "{{singular}}()"
+                    {{/is_repeated}}
+                {{/property}}
+            {{/all_children}}
+            ))
+        {{/has_children}}
+        }
+    {{/final}}
 {{/classes}}
 cached
 Element getImmediateChild(Element e, int index, string partialAccessor) {

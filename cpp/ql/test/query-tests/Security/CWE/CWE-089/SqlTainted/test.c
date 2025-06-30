@@ -11,14 +11,14 @@ int atoi(const char *nptr);
 void exit(int i);
 ///// Test code /////
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) { // $ Source
   char *userName = argv[2];
   int userNumber = atoi(argv[3]);
 
   // a string from the user is injected directly into an SQL query.
   char query1[1000] = {0};
   snprintf(query1, 1000, "SELECT UID FROM USERS where name = \"%s\"", userName);
-  mysql_query(0, query1); // BAD
+  mysql_query(0, query1); // $ Alert
   
   // the user string is encoded by a library routine.
   char userNameSanitized[1000] = {0};
@@ -48,7 +48,7 @@ void badFunc() {
   char *userName = globalUsername;
   char query1[1000] = {0};
   snprintf(query1, 1000, "SELECT UID FROM USERS where name = \"%s\"", userName);
-  mysql_query(0, query1); // BAD
+  mysql_query(0, query1); // $ Alert
 }
 
 //ODBC Library Rountines
@@ -72,7 +72,44 @@ SQLRETURN SQLPrepare(
 
 void ODBCTests(){
   char userInput[100];
-  gets(userInput);
-  SQLPrepare(0, userInput, 100); // BAD
-  SQLExecDirect(0, userInput, 100); // BAD
+  gets(userInput); // $ Source
+  SQLPrepare(0, userInput, 100); // $ Alert
+  SQLExecDirect(0, userInput, 100); // $ Alert
+}
+
+// Oracle Call Interface (OCI) Routines
+int OCIStmtPrepare(
+      void *arg0,
+      void *arg1,
+      const unsigned char *sql,
+      unsigned int arg3,
+      unsigned int arg4,
+      unsigned int arg5);
+int OCIStmtPrepare2(
+      void *arg0,
+      void **arg1,
+      void *arg2,
+      const unsigned char *sql,
+      unsigned int arg4,
+      const unsigned char *arg5,
+      unsigned int arg6,
+      unsigned int arg7,
+      unsigned int arg8);
+
+void OCITests(){
+  char userInput[100];
+  gets(userInput); // $ Source
+
+  // a string from the user is injected directly into an SQL query.
+  char query1[1000] = {0};
+  snprintf(query1, 1000, "SELECT UID FROM USERS where name = \"%s\"", userInput);
+  OCIStmtPrepare(0, 0, query1, 0, 0, 0); // $ Alert
+  OCIStmtPrepare2(0, 0, 0, query1, 0, 0, 0, 0, 0); // $ Alert
+
+  // an integer from the user is injected into an SQL query.
+  int userNumber = atoi(userInput);
+  char query2[1000] = {0};
+  snprintf(query2, 1000, "SELECT UID FROM USERS where number = \"%i\"", userNumber);
+  OCIStmtPrepare(0, 0, query2, 0, 0, 0); // GOOD
+  OCIStmtPrepare2(0, 0, 0, query2, 0, 0, 0, 0, 0); // GOOD
 }

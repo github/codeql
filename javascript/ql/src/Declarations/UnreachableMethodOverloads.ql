@@ -7,7 +7,9 @@
  * @problem.severity warning
  * @id js/unreachable-method-overloads
  * @precision high
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       typescript
  */
 

@@ -1,8 +1,0 @@
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-extensions:
-  - addsTo:
-      pack: codeql/rust-all
-      extensible: summaryModel
-    data:
-      - ["lang:other", "<crate::detect::cache::Initializer>::set", "Argument[0]", "Argument[self]", "taint", "df-generated"]
-      - ["lang:other", "<crate::detect::cache::Initializer>::unset", "Argument[0]", "Argument[self]", "taint", "df-generated"]

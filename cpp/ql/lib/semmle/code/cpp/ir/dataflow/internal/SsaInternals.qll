@@ -516,7 +516,7 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
     result = unique( | | p.getLocation())
     or
     not exists(unique( | | p.getLocation())) and
-    result instanceof UnknownDefaultLocation
+    result instanceof UnknownLocation
   }
 
   override BaseIRVariable getBaseSourceVariable() { result.getIRVariable().getAst() = p }

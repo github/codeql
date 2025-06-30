@@ -23,6 +23,6 @@ from
 where
   PartialFlow::partialFlow(source, sink, _) and
   p = source.getNode() and
-  p.asParameter() = api.getParamList().getAParamBase()
+  p.asParameter() = api.getFunction().getParamList().getAParamBase()
 select sink.getNode(), source, sink, "There is flow from a $@ to $@.", source.getNode(),
   "parameter", sink.getNode(), "intermediate value"

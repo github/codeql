@@ -6,12 +6,11 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.internal.AdtImpl::Impl as AdtImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.GenericParamList
-import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
 import codeql.rust.elements.StructFieldList
-import codeql.rust.elements.internal.VariantDefImpl::Impl as VariantDefImpl
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
@@ -30,7 +29,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Union` class directly.
    * Use the subclass `Union`, where the following predicates are available.
    */
-  class Union extends Synth::TUnion, ItemImpl::Item, VariantDefImpl::VariantDef {
+  class Union extends Synth::TUnion, AdtImpl::Adt {
     override string getAPrimaryQlClass() { result = "Union" }
 
     /**

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 /**
  * Provides Java-specific definitions for use in sign analysis.
  */
@@ -12,7 +15,7 @@ module Private {
 
   class ConstantIntegerExpr = RU::ConstantIntegerExpr;
 
-  class Guard = G::Guard_v2;
+  class Guard = G::Guards_v2::Guard;
 
   class SsaVariable = Ssa::SsaVariable;
 

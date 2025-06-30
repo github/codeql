@@ -2,6 +2,9 @@
 
 from .prelude import *
 
+class Adt(AstNode, ):
+    pass
+
 class AsmOperand(AstNode, ):
     pass
 
@@ -36,9 +39,6 @@ class TypeRepr(AstNode, ):
     pass
 
 class UseBoundGenericArg(AstNode, ):
-    pass
-
-class VariantDef(AstNode, ):
     pass
 
 class Item(Stmt, ):
@@ -180,11 +180,13 @@ class ClosureExpr(Expr, ):
 class Const(AssocItem, Item, ):
     attrs: list["Attr"] | child
     body: optional["Expr"] | child
+    generic_param_list: optional["GenericParamList"] | child
     is_const: predicate
     is_default: predicate
     name: optional["Name"] | child
     type_repr: optional["TypeRepr"] | child
     visibility: optional["Visibility"] | child
+    where_clause: optional["WhereClause"] | child
 
 class ConstArg(GenericArg, ):
     expr: optional["Expr"] | child
@@ -207,7 +209,7 @@ class ContinueExpr(Expr, ):
 class DynTraitTypeRepr(TypeRepr, ):
     type_bound_list: optional["TypeBoundList"] | child
 
-class Enum(Item, ):
+class Enum(Adt, Item, ):
     attrs: list["Attr"] | child
     generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child
@@ -625,7 +627,7 @@ class StmtList(AstNode, ):
     statements: list["Stmt"] | child
     tail_expr: optional["Expr"] | child
 
-class Struct(Item, VariantDef, ):
+class Struct(Adt, Item, ):
     attrs: list["Attr"] | child
     field_list: optional["FieldList"] | child
     generic_param_list: optional["GenericParamList"] | child
@@ -713,7 +715,7 @@ class TypeParam(GenericParam, ):
 class UnderscoreExpr(Expr, ):
     attrs: list["Attr"] | child
 
-class Union(Item, VariantDef, ):
+class Union(Adt, Item, ):
     attrs: list["Attr"] | child
     generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child
@@ -738,7 +740,7 @@ class UseTree(AstNode, ):
 class UseTreeList(AstNode, ):
     use_trees: list["UseTree"] | child
 
-class Variant(VariantDef, ):
+class Variant(AstNode, ):
     attrs: list["Attr"] | child
     discriminant: optional["Expr"] | child
     field_list: optional["FieldList"] | child

@@ -2,21 +2,36 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  AssocTypeArg x, string hasConstArg, string hasGenericArgList, string hasIdentifier,
-  string hasParamList, string hasRetType, string hasReturnTypeSyntax, string hasTypeRepr,
-  string hasTypeBoundList
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  (if x.hasConstArg() then hasConstArg = "yes" else hasConstArg = "no") and
-  (if x.hasGenericArgList() then hasGenericArgList = "yes" else hasGenericArgList = "no") and
-  (if x.hasIdentifier() then hasIdentifier = "yes" else hasIdentifier = "no") and
-  (if x.hasParamList() then hasParamList = "yes" else hasParamList = "no") and
-  (if x.hasRetType() then hasRetType = "yes" else hasRetType = "no") and
-  (if x.hasReturnTypeSyntax() then hasReturnTypeSyntax = "yes" else hasReturnTypeSyntax = "no") and
-  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
-  if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no"
-select x, "hasConstArg:", hasConstArg, "hasGenericArgList:", hasGenericArgList, "hasIdentifier:",
-  hasIdentifier, "hasParamList:", hasParamList, "hasRetType:", hasRetType, "hasReturnTypeSyntax:",
-  hasReturnTypeSyntax, "hasTypeRepr:", hasTypeRepr, "hasTypeBoundList:", hasTypeBoundList
+query predicate instances(AssocTypeArg x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getConstArg(AssocTypeArg x, ConstArg getConstArg) {
+  toBeTested(x) and not x.isUnknown() and getConstArg = x.getConstArg()
+}
+
+query predicate getGenericArgList(AssocTypeArg x, GenericArgList getGenericArgList) {
+  toBeTested(x) and not x.isUnknown() and getGenericArgList = x.getGenericArgList()
+}
+
+query predicate getIdentifier(AssocTypeArg x, NameRef getIdentifier) {
+  toBeTested(x) and not x.isUnknown() and getIdentifier = x.getIdentifier()
+}
+
+query predicate getParamList(AssocTypeArg x, ParamList getParamList) {
+  toBeTested(x) and not x.isUnknown() and getParamList = x.getParamList()
+}
+
+query predicate getRetType(AssocTypeArg x, RetTypeRepr getRetType) {
+  toBeTested(x) and not x.isUnknown() and getRetType = x.getRetType()
+}
+
+query predicate getReturnTypeSyntax(AssocTypeArg x, ReturnTypeSyntax getReturnTypeSyntax) {
+  toBeTested(x) and not x.isUnknown() and getReturnTypeSyntax = x.getReturnTypeSyntax()
+}
+
+query predicate getTypeRepr(AssocTypeArg x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}
+
+query predicate getTypeBoundList(AssocTypeArg x, TypeBoundList getTypeBoundList) {
+  toBeTested(x) and not x.isUnknown() and getTypeBoundList = x.getTypeBoundList()
+}

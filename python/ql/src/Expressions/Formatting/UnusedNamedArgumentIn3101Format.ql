@@ -2,7 +2,8 @@
  * @name Unused named argument in formatting call
  * @description Including surplus keyword arguments in a formatting call makes code more difficult to read and may indicate an error.
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  * @problem.severity warning
  * @sub-severity high

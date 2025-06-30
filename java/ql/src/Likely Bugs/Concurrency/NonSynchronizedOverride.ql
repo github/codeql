@@ -6,8 +6,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/non-sync-override
- * @tags reliability
- *       correctness
+ * @tags quality
+ *       reliability
  *       concurrency
  *       language-features
  *       external/cwe/cwe-820

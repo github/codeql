@@ -1,0 +1,4 @@
+query: Security/CWE/CWE-441/UnsafeContentUriResolution.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql
