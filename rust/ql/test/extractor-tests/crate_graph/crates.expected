@@ -1,10 +1,8 @@
 #-----| Crate(alloc@0.0.0)
 #-----| core -> Crate(core@0.0.0)
 #-----| compiler_builtins -> Crate(compiler_builtins@0.1.146)
-#-----| rand -> Crate(rand@0.9.0)
+#-----| rand -> Crate(rand@0.9.1)
 #-----| rand_xorshift -> Crate(rand_xorshift@0.4.0)
-
-#-----| Crate(allocator_api2@0.2.21)
 
 #-----| Crate(block_buffer@0.10.4)
 #-----| proc_macro -> Crate(proc_macro@0.0.0)
@@ -14,16 +12,15 @@
 #-----| test -> Crate(test@0.0.0)
 #-----| generic_array -> Crate(generic_array@0.14.7)
 
-#-----| Crate(cfg_if@1.0.0)
-#-----| core -> Crate(core@0.0.0)
-#-----| compiler_builtins -> Crate(compiler_builtins@0.1.146)
-
 #-----| Crate(cfg_if@1.0.1)
 #-----| proc_macro -> Crate(proc_macro@0.0.0)
 #-----| alloc -> Crate(alloc@0.0.0)
 #-----| core -> Crate(core@0.0.0)
 #-----| std -> Crate(std@0.0.0)
 #-----| test -> Crate(test@0.0.0)
+
+#-----| Crate(cfg_if@1.0.1)
+#-----| core -> Crate(core@0.0.0)
 
 #-----| Crate(compiler_builtins@0.1.146)
 #-----| core -> Crate(core@0.0.0)
@@ -56,18 +53,16 @@
 #-----| test -> Crate(test@0.0.0)
 #-----| typenum -> Crate(typenum@1.18.0)
 
-#-----| Crate(getopts@0.2.21)
+#-----| Crate(getopts@0.2.23)
 #-----| core -> Crate(core@0.0.0)
 #-----| std -> Crate(std@0.0.0)
-#-----| unicode_width -> Crate(unicode_width@0.1.14)
+#-----| unicode_width -> Crate(unicode_width@0.2.1)
 
-#-----| Crate(hashbrown@0.15.2)
-#-----| allocator_api2 -> Crate(allocator_api2@0.2.21)
+#-----| Crate(hashbrown@0.15.4)
 #-----| alloc -> Crate(alloc@0.0.0)
 #-----| core -> Crate(core@0.0.0)
-#-----| compiler_builtins -> Crate(compiler_builtins@0.1.146)
 
-#-----| Crate(libc@0.2.169)
+#-----| Crate(libc@0.2.174)
 #-----| rustc_std_workspace_core -> Crate(core@0.0.0)
 
 main.rs:
@@ -100,46 +95,43 @@ main.rs:
 #-----| Crate(panic_abort@0.0.0)
 #-----| alloc -> Crate(alloc@0.0.0)
 #-----| core -> Crate(core@0.0.0)
+#-----| cfg_if -> Crate(cfg_if@1.0.1)
 #-----| compiler_builtins -> Crate(compiler_builtins@0.1.146)
-#-----| cfg_if -> Crate(cfg_if@1.0.0)
-#-----| libc -> Crate(libc@0.2.169)
+#-----| libc -> Crate(libc@0.2.174)
 
 #-----| Crate(panic_unwind@0.0.0)
 #-----| alloc -> Crate(alloc@0.0.0)
 #-----| core -> Crate(core@0.0.0)
+#-----| cfg_if -> Crate(cfg_if@1.0.1)
 #-----| compiler_builtins -> Crate(compiler_builtins@0.1.146)
-#-----| cfg_if -> Crate(cfg_if@1.0.0)
-#-----| libc -> Crate(libc@0.2.169)
+#-----| libc -> Crate(libc@0.2.174)
 #-----| unwind -> Crate(unwind@0.0.0)
 
 #-----| Crate(proc_macro@0.0.0)
 #-----| core -> Crate(core@0.0.0)
 #-----| std -> Crate(std@0.0.0)
 
-#-----| Crate(rand@0.9.0)
-#-----| zerocopy -> Crate(zerocopy@0.8.17)
-#-----| rand_core -> Crate(rand_core@0.9.0)
+#-----| Crate(rand@0.9.1)
+#-----| rand_core -> Crate(rand_core@0.9.3)
 
-#-----| Crate(rand_core@0.9.0)
-#-----| zerocopy -> Crate(zerocopy@0.8.17)
+#-----| Crate(rand_core@0.9.3)
 
 #-----| Crate(rand_xorshift@0.4.0)
-#-----| rand_core -> Crate(rand_core@0.9.0)
+#-----| rand_core -> Crate(rand_core@0.9.3)
 
-#-----| Crate(rustc_demangle@0.1.24)
+#-----| Crate(rustc_demangle@0.1.25)
 #-----| core -> Crate(core@0.0.0)
-#-----| compiler_builtins -> Crate(compiler_builtins@0.1.146)
 
 #-----| Crate(std@0.0.0)
 #-----| alloc -> Crate(alloc@0.0.0)
 #-----| core -> Crate(core@0.0.0)
+#-----| cfg_if -> Crate(cfg_if@1.0.1)
 #-----| compiler_builtins -> Crate(compiler_builtins@0.1.146)
-#-----| cfg_if -> Crate(cfg_if@1.0.0)
-#-----| hashbrown -> Crate(hashbrown@0.15.2)
-#-----| libc -> Crate(libc@0.2.169)
-#-----| rand -> Crate(rand@0.9.0)
+#-----| hashbrown -> Crate(hashbrown@0.15.4)
+#-----| libc -> Crate(libc@0.2.174)
+#-----| rand -> Crate(rand@0.9.1)
 #-----| rand_xorshift -> Crate(rand_xorshift@0.4.0)
-#-----| rustc_demangle -> Crate(rustc_demangle@0.1.24)
+#-----| rustc_demangle -> Crate(rustc_demangle@0.1.25)
 #-----| panic_abort -> Crate(panic_abort@0.0.0)
 #-----| unwind -> Crate(unwind@0.0.0)
 #-----| panic_unwind -> Crate(panic_unwind@0.0.0)
@@ -148,15 +140,15 @@ main.rs:
 #-----| Crate(std_detect@0.1.5)
 #-----| alloc -> Crate(alloc@0.0.0)
 #-----| core -> Crate(core@0.0.0)
+#-----| cfg_if -> Crate(cfg_if@1.0.1)
 #-----| compiler_builtins -> Crate(compiler_builtins@0.1.146)
-#-----| cfg_if -> Crate(cfg_if@1.0.0)
-#-----| libc -> Crate(libc@0.2.169)
+#-----| libc -> Crate(libc@0.2.174)
 
 #-----| Crate(test@0.0.0)
 #-----| core -> Crate(core@0.0.0)
 #-----| std -> Crate(std@0.0.0)
-#-----| getopts -> Crate(getopts@0.2.21)
-#-----| libc -> Crate(libc@0.2.169)
+#-----| getopts -> Crate(getopts@0.2.23)
+#-----| libc -> Crate(libc@0.2.174)
 
 lib.rs:
 #    0| Crate(test@0.0.1)
@@ -175,16 +167,15 @@ lib.rs:
 #-----| std -> Crate(std@0.0.0)
 #-----| test -> Crate(test@0.0.0)
 
-#-----| Crate(unicode_width@0.1.14)
+#-----| Crate(unicode_width@0.2.1)
 #-----| core -> Crate(core@0.0.0)
 #-----| std -> Crate(std@0.0.0)
-#-----| compiler_builtins -> Crate(compiler_builtins@0.1.146)
 
 #-----| Crate(unwind@0.0.0)
 #-----| core -> Crate(core@0.0.0)
+#-----| cfg_if -> Crate(cfg_if@1.0.1)
 #-----| compiler_builtins -> Crate(compiler_builtins@0.1.146)
-#-----| cfg_if -> Crate(cfg_if@1.0.0)
-#-----| libc -> Crate(libc@0.2.169)
+#-----| libc -> Crate(libc@0.2.174)
 
 #-----| Crate(version_check@0.9.5)
 #-----| proc_macro -> Crate(proc_macro@0.0.0)
@@ -192,5 +183,3 @@ lib.rs:
 #-----| core -> Crate(core@0.0.0)
 #-----| std -> Crate(std@0.0.0)
 #-----| test -> Crate(test@0.0.0)
-
-#-----| Crate(zerocopy@0.8.17)

@@ -1,6 +1,4 @@
 multipleCallTargets
-| deallocation.rs:106:16:106:32 | ...::malloc(...) |
-| deallocation.rs:112:3:112:41 | ...::free(...) |
 | deallocation.rs:260:11:260:29 | ...::from(...) |
 | deallocation.rs:261:11:261:29 | ...::from(...) |
 | lifetime.rs:610:13:610:31 | ...::from(...) |
