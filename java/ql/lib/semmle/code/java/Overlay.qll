@@ -1,3 +1,6 @@
+/**
+ * Defines entity discard predicates for Java overlay analysis.
+ */
 overlay[local?]
 module;
 
