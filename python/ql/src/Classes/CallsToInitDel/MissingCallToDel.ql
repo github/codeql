@@ -1,6 +1,6 @@
 /**
- * @name Missing call to `__del__` during object destruction
- * @description An omitted call to a super-class `__del__` method may lead to class instances not being cleaned up properly.
+ * @name Missing call to superclass `__del__` during object destruction
+ * @description An omitted call to a superclass `__del__` method may lead to class instances not being cleaned up properly.
  * @kind problem
  * @tags quality
  *       reliability
@@ -15,12 +15,21 @@
 import python
 import MethodCallOrder
 
-from ClassObject self, FunctionObject missing
+predicate missingCallToSuperclassDel(Function base, Function shouldCall, Class mroStart) {
+  missingCallToSuperclassMethod(base, shouldCall, mroStart, "__del__")
+}
+
+from Function base, Function shouldCall, Class mroStart, string msg
 where
-  missing_call_to_superclass_method(self, _, missing, "__del__") and
-  not missing.neverReturns() and
-  not self.failedInference() and
-  not missing.isBuiltin()
-select self,
-  "Class " + self.getName() + " may not be cleaned up properly as $@ is not called during deletion.",
-  missing, missing.descriptiveString()
+  missingCallToSuperclassDel(base, shouldCall, mroStart) and
+  (
+    // Simple case: the method that should be called is directly overridden
+    mroStart = base.getScope() and
+    msg = "This deletion method does not call $@, which may leave $@ not properly cleaned up."
+    or
+    // Only alert for a different mro base if there are no alerts for direct overrides
+    not missingCallToSuperclassDel(base, _, base.getScope()) and
+    msg =
+      "This deletion method does not call $@, which follows it in the MRO of $@, leaving it not properly cleaned up."
+  )
+select base, msg, shouldCall, shouldCall.getQualifiedName(), mroStart, mroStart.getName()
