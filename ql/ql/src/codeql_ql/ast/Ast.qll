@@ -202,24 +202,42 @@ class QueryDoc extends QLDoc {
 
   override string getAPrimaryQlClass() { result = "QueryDoc" }
 
-  /** Gets the @kind for the query */
+  /** Gets the @kind for the query. */
   string getQueryKind() {
     result = this.getContents().regexpCapture("(?s).*@kind ([\\w-]+)\\s.*", 1)
   }
 
-  /** Gets the @name for the query */
+  /** Gets the @name for the query. */
   string getQueryName() {
     result = this.getContents().regexpCapture("(?s).*@name (.+?)(?=\\n).*", 1)
   }
 
-  /** Gets the id part (without language) of the @id */
+  /** Gets the id part (without language) of the @id. */
   string getQueryId() {
     result = this.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-/]+)\\s.*", 2)
   }
 
-  /** Gets the language of the @id */
+  /** Gets the language of the @id. */
   string getQueryLanguage() {
     result = this.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-/]+)\\s.*", 1)
+  }
+
+  /** Gets the @precision for the query. */
+  string getQueryPrecision() {
+    result = this.getContents().regexpCapture("(?s).*@precision ([\\w\\-]+)\\s.*", 1)
+  }
+
+  /** Gets the @security-severity for the query. */
+  string getQuerySecuritySeverity() {
+    result = this.getContents().regexpCapture("(?s).*@security\\-severity ([\\d\\.]+)\\s.*", 1)
+  }
+
+  /** Gets the individual @tags for the query. */
+  string getQueryTags() {
+    exists(string tags | tags = this.getContents().regexpCapture("(?s).*@tags ([^@]+)", 1) |
+      result = tags.splitAt("*").trim() and
+      result.regexpMatch("[\\w\\s\\-]+")
+    )
   }
 }
 
