@@ -1,6 +1,8 @@
-deprecated module;
+/** Definitions for reasoning about multiple or missing calls to superclass methods. */
 
 import python
+import semmle.python.ApiGraphs
+import semmle.python.dataflow.new.internal.DataFlowDispatch
 
 // Helper predicates for multiple call to __init__/__del__ queries.
 pragma[noinline]
@@ -36,42 +38,77 @@ predicate multiple_calls_to_superclass_method(ClassObject self, FunctionObject m
   )
 }
 
-/** Holds if all attributes called `name` can be inferred to be methods. */
-private predicate named_attributes_not_method(ClassObject cls, string name) {
-  cls.declaresAttribute(name) and not cls.declaredAttribute(name) instanceof FunctionObject
+predicate nonTrivial(Function meth) {
+  exists(Stmt s | s = meth.getAStmt() |
+    not s instanceof Pass and
+    not exists(DataFlow::Node call | call.asExpr() = s.(ExprStmt).getValue() |
+      superCall(call, meth.getName())
+      or
+      callsMethodOnClassWithSelf(meth, call, _, meth.getName())
+    )
+  ) and
+  exists(meth.getANormalExit()) // doesn't always raise an exception
 }
 
-/** Holds if `f` actually does something. */
-private predicate does_something(FunctionObject f) {
-  f.isBuiltin() and not f = theObjectType().lookupAttribute("__init__")
-  or
-  exists(Stmt s | s = f.getFunction().getAStmt() and not s instanceof Pass)
-}
-
-/** Holds if `meth` looks like it should have a call to `name`, but does not */
-private predicate missing_call(FunctionObject meth, string name) {
-  exists(CallNode call, AttrNode attr |
-    call.getScope() = meth.getFunction() and
-    call.getFunction() = attr and
-    attr.getName() = name and
-    not exists(FunctionObject f | f.getACall() = call)
+predicate superCall(DataFlow::MethodCallNode call, string name) {
+  exists(DataFlow::Node sup |
+    call.calls(sup, name) and
+    sup = API::builtin("super").getACall()
   )
 }
 
-/** Holds if `self.name` does not call `missing`, even though it is expected to. */
-predicate missing_call_to_superclass_method(
-  ClassObject self, FunctionObject top, FunctionObject missing, string name
+predicate callsSuper(Function meth) {
+  exists(DataFlow::MethodCallNode call |
+    call.getScope() = meth and
+    superCall(call, meth.getName())
+  )
+}
+
+predicate callsMethodOnClassWithSelf(
+  Function meth, DataFlow::MethodCallNode call, Class target, string name
 ) {
-  missing = self.getASuperType().declaredAttribute(name) and
-  top = self.lookupAttribute(name) and
-  /* There is no call to missing originating from top */
-  not top.getACallee*() = missing and
-  /* Make sure that all named 'methods' are objects that we can understand. */
-  not exists(ClassObject sup |
-    sup = self.getAnImproperSuperType() and
-    named_attributes_not_method(sup, name)
-  ) and
-  not self.isAbstract() and
-  does_something(missing) and
-  not missing_call(top, name)
+  exists(DataFlow::Node callTarget, DataFlow::ParameterNode self |
+    call.calls(callTarget, name) and
+    self.getParameter() = meth.getArg(0) and
+    self.(DataFlow::LocalSourceNode).flowsTo(call.getArg(0)) and
+    callTarget = classTracker(target)
+  )
+}
+
+predicate callsMethodOnUnknownClassWithSelf(Function meth, string name) {
+  exists(DataFlow::MethodCallNode call, DataFlow::Node callTarget, DataFlow::ParameterNode self |
+    call.calls(callTarget, name) and
+    self.getParameter() = meth.getArg(0) and
+    self.(DataFlow::LocalSourceNode).flowsTo(call.getArg(0)) and
+    not exists(Class target | callTarget = classTracker(target))
+  )
+}
+
+predicate mayProceedInMro(Class a, Class b, Class mroStart) {
+  b = getNextClassInMroKnownStartingClass(a, mroStart)
+  or
+  exists(Class mid |
+    mid = getNextClassInMroKnownStartingClass(a, mroStart) and
+    mayProceedInMro(mid, b, mroStart)
+  )
+}
+
+predicate missingCallToSuperclassMethod(
+  Function base, Function shouldCall, Class mroStart, string name
+) {
+  base.getName() = name and
+  shouldCall.getName() = name and
+  not callsSuper(base) and
+  not callsMethodOnUnknownClassWithSelf(base, name) and
+  nonTrivial(shouldCall) and
+  base.getScope() = getADirectSuperclass*(mroStart) and
+  mayProceedInMro(base.getScope(), shouldCall.getScope(), mroStart) and
+  not exists(Class called |
+    (
+      callsMethodOnClassWithSelf(base, _, called, name)
+      or
+      callsMethodOnClassWithSelf(findFunctionAccordingToMro(mroStart, name), _, called, name)
+    ) and
+    shouldCall.getScope() = getADirectSuperclass*(called)
+  )
 }
