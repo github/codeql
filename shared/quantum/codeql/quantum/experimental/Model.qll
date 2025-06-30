@@ -409,8 +409,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
         or
         exists(KeyDerivationOperationInstance op | inputNode = op.getInputConsumer())
         or
-        exists(MacOperationInstance op | inputNode = op.getMessageConsumer())
-        or
         exists(HashOperationInstance op | inputNode = op.getInputConsumer())
       ) and
       this = Input::dfn_to_element(inputNode)
@@ -545,8 +543,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
         or
         exists(KeyGenerationOperationInstance op | inputNode = op.getKeyValueConsumer())
         or
-        exists(MacOperationInstance op | inputNode = op.getKeyConsumer())
-        or
         exists(KeyAgreementSecretGenerationOperationInstance op |
           inputNode = op.getServerKeyConsumer() or
           inputNode = op.getPeerKeyConsumer()
@@ -562,9 +558,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   /**
    * A key-based cryptographic operation instance, encompassing:
-   * 1. **Ciphers**: Encryption and decryption, both symmetric and asymmetric
-   * 1. **Signing**: Signing and verifying, **NOT** including MACs (see `MACOperationInstance`)
-   * 1. **Key encapsulation**: Key wrapping and unwrapping
+   * - **Ciphers**: Encryption and decryption, both symmetric and asymmetric
+   * - **Signing**: Signing and verifying
+   * - **MACs**: Mac generation
+   * - **Key encapsulation**: Key wrapping and unwrapping
    *
    * This class represents a generic key operation that transforms input data
    * using a cryptographic key, producing an output artifact such as ciphertext,
@@ -598,7 +595,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the consumer of the primary message input for this key operation.
      * For example: plaintext (for encryption), ciphertext (for decryption),
-     * message to be signed, or wrapped key to be unwrapped.
+     * a message to be signed or verified, the message on which a mac is generated,
+     * or a wrapped key to be unwrapped.
      */
     abstract ConsumerInputDataFlowNode getInputConsumer();
 
@@ -612,25 +610,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * 2. Discarded or transient intermediate values should not be artifacts.
      */
     abstract ArtifactOutputDataFlowNode getOutputArtifact();
-  }
-
-  /**
-   * A key operation instance representing a signature being generated or verified.
-   */
-  abstract class SignatureOperationInstance extends KeyOperationInstance {
-    /**
-     * Gets the consumer of the signature that is being verified in case of a
-     * verification operation.
-     */
-    abstract ConsumerInputDataFlowNode getSignatureConsumer();
-
-    /**
-     * Gets the consumer of a hash algorithm.
-     * This is intended for signature operations they are explicitly configured
-     * with a hash algorithm. If a signature is not configured with an explicit
-     * hash algorithm, users do not need to provide a consumer (set none()).
-     */
-    abstract AlgorithmValueConsumer getHashAlgorithmValueConsumer();
   }
 
   /**
@@ -651,6 +630,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * - `TSymmetricCipher(OtherSymmetricCipherType())`
      * - `TAsymmetricCipher(OtherAsymmetricCipherType())`
      * - `TSignature(OtherSignatureAlgorithmType())`
+     * - `TMacAlgorithm(OtherMacAlgorithmType())`
      * - `TKeyEncapsulation(OtherKEMAlgorithmType())`
      *
      * If the category of algorithm is not known, the following type should be used:
@@ -710,6 +690,58 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     predicate shouldHavePaddingScheme() { any() }
   }
 
+  // abstract class SignatureOrMacAlgorithmInstance extends KeyOperationAlgorithmInstance {
+  //   SignatureOrMacAlgorithmInstance() {
+  //     this.getAlgorithmType() = KeyOpAlg::TSignature(_)
+  //     or
+  //     this.getAlgorithmType() = KeyOpAlg::TMac(_)
+  //   }
+  //   override predicate shouldHaveModeOfOperation() { none() }
+  //   /**
+  //    * Gets the hash algorithm used by this signature algorithm.
+  //    */
+  //   abstract AlgorithmValueConsumer getHashAlgorithmValueConsumer();
+  // }
+  // abstract class SignatureAlgorithmInstance extends SignatureOrMacAlgorithmInstance {
+  //   SignatureAlgorithmInstance() { this.getAlgorithmType() = KeyOpAlg::TSignature(_) }
+  // }
+  abstract class MacOperationInstance extends KeyOperationAlgorithmInstance { }
+
+  abstract class HmacAlgorithmInstance extends KeyOperationAlgorithmInstance {
+    HmacAlgorithmInstance() { this.getAlgorithmType() = KeyOpAlg::TMac(KeyOpAlg::HMAC()) }
+
+    /**
+     * Gets the hash algorithm used by this HMAC algorithm.
+     */
+    abstract AlgorithmValueConsumer getHashAlgorithmValueConsumer();
+
+    /**
+     * CMACs will have algorithms that have modes of operation but that
+     * is associated with the cipher algorithm, that is itself
+     * associated to the MAC algorithm.
+     */
+    override predicate shouldHaveModeOfOperation() { none() }
+
+    override ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
+
+    /**
+     * CMACs may have padding but the padding is associated with the cipher algorithm,
+     * that is itself associated to the MAC algorithm.
+     */
+    override predicate shouldHavePaddingScheme() { none() }
+
+    override PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
+  }
+
+  abstract class CmacAlgorithmInstance extends KeyOperationAlgorithmInstance {
+    CmacAlgorithmInstance() { this.getAlgorithmType() = KeyOpAlg::TMac(KeyOpAlg::CMAC()) }
+
+    /**
+     * Gets the cipher algorithm used by this CMAC algorithm.
+     */
+    abstract AlgorithmValueConsumer getCipherAlgorithmValueConsumer();
+  }
+
   abstract class ModeOfOperationAlgorithmInstance extends AlgorithmInstance {
     /**
      * Gets the type of this mode of operation, e.g., "ECB" or "CBC".
@@ -760,39 +792,44 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract HashAlgorithmInstance getMgf1HashAlgorithm();
   }
 
-  abstract class MacAlgorithmInstance extends AlgorithmInstance {
+  /**
+   * A parent class for signature and MAC operations.
+   * Signatures and macs are the asymmetric and symmetric analogs of each other,
+   * and some APIs can reuse a single operation to do either signing on mac.
+   * Users should extend this class when an operation can be either a signature or a MAC,
+   * and where the instance is not obviously one or the other from use.
+   */
+  abstract class SignatureOrMacOperationInstance extends KeyOperationInstance {
     /**
-     * Gets the type of this MAC algorithm, e.g., "HMAC" or "CMAC".
-     */
-    abstract MacType getMacType();
-
-    /**
-     * Gets the isolated name as it appears in source, e.g., "HMAC-SHA256" in "HMAC-SHA256/UnrelatedInformation".
-     *
-     * This name should not be parsed or formatted beyond isolating the raw MAC name if necessary.
-     */
-    abstract string getRawMacAlgorithmName();
-  }
-
-  abstract class MacOperationInstance extends OperationInstance {
-    /**
-     * Gets the message input used in this operation.
-     */
-    abstract ConsumerInputDataFlowNode getMessageConsumer();
-
-    /**
-     * Gets the key used in this operation.
-     */
-    abstract ConsumerInputDataFlowNode getKeyConsumer();
-  }
-
-  abstract class HmacAlgorithmInstance extends MacAlgorithmInstance {
-    HmacAlgorithmInstance() { this.getMacType() = HMAC() }
-
-    /**
-     * Gets the hash algorithm used by this HMAC algorithm.
+     * Gets the consumer of a hash algorithm.
+     * This is intended for mac/signing operations they are explicitly configured
+     * with a hash algorithm. If the operation is not configured with an explicit
+     * hash algorithm, users do not need to provide a consumer (set none()).
      */
     abstract AlgorithmValueConsumer getHashAlgorithmValueConsumer();
+
+    /**
+     * Holds if this operation has a hash algorithm consumer.
+     * I.e., holds if the operation is configured to perform a hash
+     * on a message before signing and algorithm is passed in.
+     * The hash algorithm consumer must be specified through
+     * `getHashAlgorithmValueConsumer()`.
+     */
+    abstract predicate hasHashAlgorithmConsumer();
+  }
+
+  /**
+   * A key operation instance representing a signature being generated or verified.
+   * Note: These instances are known to always be signature operations.
+   * If an API allows an operation to be used for both MAC and signature,
+   * it should be modeled as a `SignatureOrMacOperationInstance` instead,
+   * even if all configuration paths to the current operation only configure it as a signature operation.
+   */
+  abstract class SignatureOperationInstance extends SignatureOrMacOperationInstance {
+    /**
+     * Gets the consumer of the signature when this operation is a verification operation.
+     */
+    abstract ConsumerInputDataFlowNode getSignatureConsumer();
   }
 
   abstract class EllipticCurveInstance extends AlgorithmInstance {
@@ -1063,11 +1100,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     exists(KeyOperationInstance op | op.getAnAlgorithmValueConsumer() = avc)
   }
 
-  private predicate isMacAvc(AlgorithmValueConsumer avc) {
-    exists(MacOperationInstance op | op.getAnAlgorithmValueConsumer() = avc) or
-    exists(Pbkdf2AlgorithmInstance alg | avc = alg.getHmacAlgorithmValueConsumer())
-  }
-
   private predicate isKeyDerivationAvc(AlgorithmValueConsumer avc) {
     exists(KeyDerivationOperationInstance op | op.getAnAlgorithmValueConsumer() = avc)
   }
@@ -1090,9 +1122,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   final private class HashAlgorithmInstanceOrValueConsumer =
     AlgorithmInstanceOrValueConsumer<HashAlgorithmInstance, isHashAvc/1>::Union;
-
-  final private class MacAlgorithmInstanceOrValueConsumer =
-    AlgorithmInstanceOrValueConsumer<MacAlgorithmInstance, isMacAvc/1>::Union;
 
   final private class KeyDerivationAlgorithmInstanceOrValueConsumer =
     AlgorithmInstanceOrValueConsumer<KeyDerivationAlgorithmInstance, isKeyDerivationAvc/1>::Union;
@@ -1128,13 +1157,11 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TPaddingAlgorithm(PaddingAlgorithmInstance e) or
     // All other operations
     THashOperation(HashOperationInstance e) or
-    TMacOperation(MacOperationInstance e) or
     TKeyAgreementOperation(KeyAgreementSecretGenerationOperationInstance e) or
     // All other algorithms
     TEllipticCurve(EllipticCurveInstanceOrValueConsumer e) or
     THashAlgorithm(HashAlgorithmInstanceOrValueConsumer e) or
     TKeyDerivationAlgorithm(KeyDerivationAlgorithmInstanceOrValueConsumer e) or
-    TMacAlgorithm(MacAlgorithmInstanceOrValueConsumer e) or
     TKeyAgreementAlgorithm(KeyAgreementAlgorithmInstanceOrValueConsumer e) or
     // Generic source nodes, i.e., sources of data that are not resolvable to a specific known asset.
     TGenericSourceNode(GenericSourceInstance e) {
@@ -1582,60 +1609,36 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * A MAC operation that produces a MAC value.
    */
-  final class MacOperationNode extends OperationNode, TMacOperation {
-    MacOperationInstance instance;
-
-    MacOperationNode() { this = TMacOperation(instance) }
+  final class MacOperationNode extends SignatureOrMacOperationNode {
+    MacOperationNode() {
+      this.getKeyOperationSubtype() = TMacMode() and
+      // Consider any operation a mac operation only if all algorithms going to the sink
+      // are MAC or unknown. This addresses the issue where an API allows for reuse of
+      // MAC operations for signatures.
+      forex(KeyOperationAlgorithmNode n | n = this.getAnAlgorithmOrGenericSource() |
+        n.getAlgorithmType() = KeyOpAlg::TMac(_)
+      )
+    }
 
     final override string getInternalType() { result = "MACOperation" }
 
     override LocatableElement asElement() { result = instance }
 
-    override predicate isCandidateAlgorithmNode(AlgorithmNode node) {
-      node instanceof MacAlgorithmNode
-    }
-
     MessageArtifactNode getAMessage() {
-      result.asElement() = instance.getMessageConsumer().getConsumer()
+      result.asElement() = instance.getInputConsumer().getConsumer()
     }
 
-    KeyArtifactNode getAKey() { result.asElement() = instance.getKeyConsumer().getConsumer() }
-
+    //KeyArtifactNode getAKey() { result.asElement() = instance.getKeyConsumer().getConsumer() }
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
       or
       // [KNOWN_OR_UNKNOWN]
       edgeName = "Message" and
-      if exists(this.getAMessage()) then result = this.getAMessage() else result = this
-      or
-      // [KNOWN_OR_UNKNOWN]
-      edgeName = "Key" and
-      if exists(this.getAKey()) then result = this.getAKey() else result = this
+      (if exists(this.getAMessage()) then result = this.getAMessage() else result = this)
     }
   }
 
-  /**
-   * A MAC algorithm, such as HMAC or CMAC.
-   */
-  class MacAlgorithmNode extends AlgorithmNode, TMacAlgorithm {
-    MacAlgorithmInstanceOrValueConsumer instance;
-
-    MacAlgorithmNode() { this = TMacAlgorithm(instance) }
-
-    final override string getInternalType() { result = "MACAlgorithm" }
-
-    override LocatableElement asElement() { result = instance }
-
-    final override string getRawAlgorithmName() {
-      result = instance.asAlg().getRawMacAlgorithmName()
-    }
-
-    MacType getMacType() { result = instance.asAlg().getMacType() }
-
-    override string getAlgorithmName() { result = this.getMacType().toString() }
-  }
-
-  final class HmacAlgorithmNode extends MacAlgorithmNode {
+  final class HmacAlgorithmNode extends KeyAgreementAlgorithmNode {
     HmacAlgorithmInstance hmacInstance;
 
     HmacAlgorithmNode() { hmacInstance = instance.asAlg() }
@@ -1871,6 +1874,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TUnwrapMode() or
     TSignMode() or
     TVerifyMode() or
+    TMacMode() or
     TUnknownKeyOperationMode()
 
   /**
@@ -1889,6 +1893,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result = "Sign" and this = TSignMode()
       or
       result = "Verify" and this = TVerifyMode()
+      or
+      result = "Mac" and this = TMacMode()
       or
       result = "Unknown" and this = TUnknownKeyOperationMode()
     }
@@ -2001,14 +2007,31 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override string getInternalType() { result = nodeName }
   }
 
-  class SignatureOperationNode extends KeyOperationNode {
+  class SignatureOrMacOperationNode extends KeyOperationNode {
+    SignatureOrMacOperationNode() {
+      this.getKeyOperationSubtype() = TSignMode()
+      or
+      this.getKeyOperationSubtype() = TVerifyMode()
+      or
+      this.getKeyOperationSubtype() = TMacMode()
+    }
+
+    override string getInternalType() { result = "SignatureOrMACOperation" }
+  }
+
+  class SignatureOperationNode extends SignatureOrMacOperationNode {
     override SignatureOperationInstance instance;
     string nodeName;
 
     SignatureOperationNode() {
-      this.getKeyOperationSubtype() = TSignMode() and nodeName = "SignOperation"
-      or
-      this.getKeyOperationSubtype() = TVerifyMode() and nodeName = "VerifyOperation"
+      (
+        this.getKeyOperationSubtype() = TSignMode() and nodeName = "SignOperation"
+        or
+        this.getKeyOperationSubtype() = TVerifyMode() and nodeName = "VerifyOperation"
+      ) and
+      not exists(KeyOperationAlgorithmNode n |
+        n = this.getAnAlgorithmOrGenericSource() and n.getAlgorithmType() = KeyOpAlg::TMac(_)
+      )
     }
 
     override string getInternalType() { result = nodeName }

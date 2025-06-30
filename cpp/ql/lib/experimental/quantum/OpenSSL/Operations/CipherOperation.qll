@@ -4,6 +4,26 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
 import EVPPKeyCtxInitializer
 
 /**
+ * A base class for all final cipher operation steps.
+ */
+abstract class FinalCipherOperationStep extends OperationStep {
+  override OperationStepType getStepType() { result = FinalStep() }
+}
+
+/**
+ * A base configuration for all EVP cipher operations.
+ */
+abstract class EvpCipherOperationFinalStep extends FinalCipherOperationStep {
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
+}
+
+/**
  * A base class for all EVP cipher operations.
  */
 abstract class EvpCipherInitializer extends OperationStep {
@@ -156,21 +176,6 @@ class EvpCipherUpdateCall extends OperationStep {
 }
 
 /**
- * A base configuration for all EVP cipher operations.
- */
-abstract class EvpCipherOperationFinalStep extends OperationStep {
-  override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
-  }
-
-  override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
-  }
-
-  override OperationStepType getStepType() { result = FinalStep() }
-}
-
-/**
  * A Call to EVP_Cipher.
  */
 class EvpCipherCall extends EvpCipherOperationFinalStep {
@@ -259,7 +264,7 @@ class EvpPKeyCipherOperation extends EvpCipherOperationFinalStep {
  * An EVP cipher operation instance.
  * Any operation step that is a final operation step for EVP cipher operation steps.
  */
-class EvpCipherOperationInstance extends Crypto::KeyOperationInstance instanceof EvpCipherOperationFinalStep
+class OpenSslCipherOperationInstance extends Crypto::KeyOperationInstance instanceof FinalCipherOperationStep
 {
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     super.getPrimaryAlgorithmValueConsumer() = result

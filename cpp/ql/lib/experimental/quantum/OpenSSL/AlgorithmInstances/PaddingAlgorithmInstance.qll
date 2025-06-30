@@ -4,8 +4,7 @@ private import OpenSSLAlgorithmInstanceBase
 private import experimental.quantum.OpenSSL.Operations.OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
 private import AlgToAVCFlow
-private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
-private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 private import codeql.quantum.experimental.Standardization::Types::KeyOpAlg as KeyOpAlg
 
 /**
