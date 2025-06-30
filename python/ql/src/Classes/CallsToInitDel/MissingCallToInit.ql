@@ -1,5 +1,5 @@
 /**
- * @name Missing call to `__init__` during object initialization
+ * @name Missing call to superclass `__init__` during object initialization
  * @description An omitted call to a super-class `__init__` method may lead to objects of this class not being fully initialized.
  * @kind problem
  * @tags quality
@@ -14,16 +14,21 @@
 import python
 import MethodCallOrder
 
-from ClassObject self, FunctionObject initializer, FunctionObject missing
+predicate missingCallToSuperclassInit(Function base, Function shouldCall, Class mroStart) {
+  missingCallToSuperclassMethod(base, shouldCall, mroStart, "__init__")
+}
+
+from Function base, Function shouldCall, Class mroStart, string msg
 where
-  self.lookupAttribute("__init__") = initializer and
-  missing_call_to_superclass_method(self, initializer, missing, "__init__") and
-  // If a superclass is incorrect, don't flag this class as well.
-  not missing_call_to_superclass_method(self.getASuperType(), _, missing, "__init__") and
-  not missing.neverReturns() and
-  not self.failedInference() and
-  not missing.isBuiltin() and
-  not self.isAbstract()
-select self,
-  "Class " + self.getName() + " may not be initialized properly as $@ is not called from its $@.",
-  missing, missing.descriptiveString(), initializer, "__init__ method"
+  missingCallToSuperclassInit(base, shouldCall, mroStart) and
+  (
+    // Simple case: the method that should be called is directly overridden
+    mroStart = base.getScope() and
+    msg = "This initialization method does not call $@, which may leave $@ partially initialized."
+    or
+    // Only alert for a different mro base if there are no alerts for direct overrides
+    not missingCallToSuperclassInit(base, _, base.getScope()) and
+    msg =
+      "This initialization method does not call $@, which follows it in the MRO of $@, leaving it partially initialized."
+  )
+select base, msg, shouldCall, shouldCall.getQualifiedName(), mroStart, mroStart.getName()
