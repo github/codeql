@@ -1,6 +1,4 @@
-# Storage of sensitive information in GitHub Actions artifact
-
-## Description
+## Overview
 
 Sensitive information included in a GitHub Actions artifact can allow an attacker to access the sensitive information if the artifact is published.
 
@@ -9,6 +7,8 @@ Sensitive information included in a GitHub Actions artifact can allow an attacke
 Only store information that is meant to be publicly available in a GitHub Actions artifact.
 
 ## Example
+
+### Incorrect Usage
 
 The following example uses `actions/checkout` to checkout code which stores the GITHUB_TOKEN in the \`.git/config\` file and then stores the contents of the \`.git\` repository into the artifact:
 
@@ -27,6 +27,8 @@ jobs:
           name: file
           path: .
 ```
+
+### Correct Usage
 
 The issue has been fixed below, where the `actions/upload-artifact` uses a version (v4+) which does not include hidden files or directories into the artifact.
 

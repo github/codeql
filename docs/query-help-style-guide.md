@@ -100,7 +100,7 @@ Note, if any code words are included in the `overview` and `recommendation` sect
 
 ## Including references
 
-You should include one or more references, formatted as an unordered list (`- ...` or `* ...`) in Markdown or with `<li> ... </li>` for each item in XML, to provide further information about the problem that your query is designed to find. References can be of the following types:
+You should include one or more references, formatted as an unordered list (`- ...` or `* ...`) in Markdown or with `<li> ... </li>` for each item in XML, to provide further information about the problem that your query is designed to find. Each reference should end in a full stop. References can be of the following types:
 
 ### Books
 
@@ -124,7 +124,7 @@ If you are citing an academic paper, we recommend adopting the reference style o
 
 If you are citing a website, please use the following format, without breadcrumb trails:
 
->\<Name of website>: \<Name of page or anchor>
+>\<Name of website>: \<Name of page or anchor>.
 
 For example:
 
@@ -242,8 +242,8 @@ tab width settings cannot be taken into account.
 
 ## References
 
-* Java SE Documentation: [Compound Statements](https://www.oracle.com/java/technologies/javase/codeconventions-statements.html#15395)
-* Wikipedia: [Indentation style](https://en.wikipedia.org/wiki/Indentation_style)
+* Java SE Documentation: [Compound Statements](https://www.oracle.com/java/technologies/javase/codeconventions-statements.html#15395).
+* Wikipedia: [Indentation style](https://en.wikipedia.org/wiki/Indentation_style).
 ````
 
 ### XML example

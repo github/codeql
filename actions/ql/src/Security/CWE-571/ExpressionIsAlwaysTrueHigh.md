@@ -1,6 +1,4 @@
-# If Condition Always Evaluates to True
-
-## Description
+## Overview
 
 GitHub Workflow Expressions (`${{ ... }}`) used in the `if` condition of jobs or steps must not contain extra characters or spaces. Otherwise, the condition is invariably evaluated to `true`.
 
@@ -14,7 +12,7 @@ To avoid the vulnerability where an `if` condition always evaluates to `true`, i
 2. Avoid multiline or spaced-out conditional expressions that might inadvertently introduce unwanted characters or formatting.
 3. Test the workflow to ensure the `if` conditions behave as expected under different scenarios.
 
-## Examples
+## Example
 
 ### Correct Usage
 
@@ -60,4 +58,4 @@ To avoid the vulnerability where an `if` condition always evaluates to `true`, i
 
 ## References
 
-- [Expression Always True Github Issue](https://github.com/actions/runner/issues/1173)
+- GitHub actions/runner Issues: [Expression Always True](https://github.com/actions/runner/issues/1173).

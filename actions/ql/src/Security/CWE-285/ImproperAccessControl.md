@@ -1,14 +1,12 @@
-# Improper Access Control
-
-## Description
+## Overview
 
 Sometimes labels are used to approve GitHub Actions. An authorization check may not be properly implemented, allowing an attacker to mutate the code after it has been reviewed and approved by label.
 
-## Recommendations
+## Recommendation
 
 When using labels, make sure that the code cannot be modified after it has been reviewed and the label has been set.
 
-## Examples
+## Example
 
 ### Incorrect Usage
 
@@ -57,4 +55,4 @@ jobs:
 
 ## References
 
-- [Events that trigger workflows](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request_target)
+- GitHub Docs: [Events that trigger workflows](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request_target).
