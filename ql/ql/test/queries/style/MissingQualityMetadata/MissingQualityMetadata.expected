@@ -1,0 +1,4 @@
+| testcases/BadQualityMaintainabilityWrongToplevel.ql:1:1:17:13 | TopLevel | This query file has a sub-category of reliability but is missing the `@tags reliability` tag. |
+| testcases/BadQualityMultipleTopLevel.ql:1:1:17:13 | TopLevel | This query file has incorrect top-level categorisation. It should have exactly one top-level category, either `@tags maintainability` or `@tags reliability`. |
+| testcases/BadQualityNoToplevel.ql:1:1:16:13 | TopLevel | This query file has incorrect top-level categorisation. It should have exactly one top-level category, either `@tags maintainability` or `@tags reliability`. |
+| testcases/BadQualityReliabilityWrongToplevel.ql:1:1:17:13 | TopLevel | This query file has a sub-category of maintainability but is missing the `@tags maintainability` tag. |
