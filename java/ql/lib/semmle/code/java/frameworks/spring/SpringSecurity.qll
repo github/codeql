@@ -2,6 +2,8 @@
  * Provides classes for working with Spring classes and interfaces from
  * `org.springframework.security.*`.
  */
+overlay[local?]
+module;
 
 import java
 

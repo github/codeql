@@ -1,6 +1,8 @@
 /**
  * Provides different types of control flow successor types.
  */
+overlay[local?]
+module;
 
 import java
 private import codeql.util.Boolean

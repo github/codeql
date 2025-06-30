@@ -13,7 +13,7 @@ class Specifier extends Element, @specifier {
   /** Gets a dummy location for the specifier. */
   override Location getLocation() {
     exists(this) and
-    result instanceof UnknownDefaultLocation
+    result instanceof UnknownLocation
   }
 
   override string getAPrimaryQlClass() { result = "Specifier" }

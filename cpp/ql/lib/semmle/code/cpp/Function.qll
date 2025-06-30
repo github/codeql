@@ -901,7 +901,7 @@ class BuiltInFunction extends Function {
   /** Gets a dummy location for the built-in function. */
   override Location getLocation() {
     suppressUnusedThis(this) and
-    result instanceof UnknownDefaultLocation
+    result instanceof UnknownLocation
   }
 }
 

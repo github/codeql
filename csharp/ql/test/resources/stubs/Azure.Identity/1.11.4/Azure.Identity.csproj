@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Azure.Core/1.38.0/Azure.Core.csproj" />
+    <ProjectReference Include="../../Microsoft.Identity.Client/4.61.3/Microsoft.Identity.Client.csproj" />
+    <ProjectReference Include="../../Microsoft.Identity.Client.Extensions.Msal/4.61.3/Microsoft.Identity.Client.Extensions.Msal.csproj" />
+    <ProjectReference Include="../../System.Memory/4.5.4/System.Memory.csproj" />
+    <ProjectReference Include="../../System.Security.Cryptography.ProtectedData/9.0.1/System.Security.Cryptography.ProtectedData.csproj" />
+    <ProjectReference Include="../../System.Text.Json/4.7.2/System.Text.Json.csproj" />
+    <ProjectReference Include="../../System.Threading.Tasks.Extensions/4.5.4/System.Threading.Tasks.Extensions.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

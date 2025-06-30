@@ -2,8 +2,8 @@ fn source(i: i64) -> i64 {
     1000 + i
 }
 
-fn sink(s: i64) {
-    println!("{}", s);
+fn sink<T: std::fmt::Debug>(s: T) {
+    println!("{:?}", s);
 }
 
 // has a flow model
@@ -176,7 +176,10 @@ fn test_set_tuple_element() {
 }
 
 // has a flow model
-pub fn apply<F>(n: i64, f: F) -> i64 where F : FnOnce(i64) -> i64 {
+pub fn apply<F>(n: i64, f: F) -> i64
+where
+    F: FnOnce(i64) -> i64,
+{
     0
 }
 
@@ -286,6 +289,81 @@ fn test_arg_source() {
     let i = 19;
     arg_source(i);
     sink(i) // $ hasValueFlow=i
+}
+
+struct MyStruct2(i64);
+
+impl PartialEq for MyStruct {
+    fn eq(&self, other: &Self) -> bool {
+        true
+    }
+}
+
+impl PartialEq for MyStruct2 {
+    fn eq(&self, other: &Self) -> bool {
+        self.0 == other.0
+    }
+}
+
+impl Eq for MyStruct {}
+
+impl Eq for MyStruct2 {}
+
+use std::cmp::Ordering;
+
+impl PartialOrd for MyStruct {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(Ordering::Equal)
+    }
+}
+
+impl PartialOrd for MyStruct2 {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.0.cmp(&other.0))
+    }
+}
+
+impl Ord for MyStruct {
+    fn cmp(&self, other: &Self) -> Ordering {
+        Ordering::Equal
+    }
+}
+
+impl Ord for MyStruct2 {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.0.cmp(&other.0)
+    }
+
+    fn max(self, other: Self) -> Self {
+        other
+    }
+}
+
+fn test_trait_model<T: Ord>(x: T) {
+    let x1 = source(20).max(0);
+    sink(x1); // $ hasValueFlow=20
+
+    let x2 = (MyStruct {
+        field1: source(23),
+        field2: 0,
+    })
+    .max(MyStruct {
+        field1: 0,
+        field2: 0,
+    });
+    sink(x2.field1); // $ hasValueFlow=23
+
+    let x3 = MyStruct2(source(24)).max(MyStruct2(0));
+    sink(x3.0); // no flow, because the model does not apply when the target is in source code
+
+    let x4 = source(25).max(1);
+    sink(x4); // $ hasValueFlow=25
+
+    let x5 = source(26).lt(&1);
+    sink(x5); // $ hasTaintFlow=26
+
+    let x6 = source(27) < 1;
+    sink(x6); // $ hasTaintFlow=27
 }
 
 #[tokio::main]

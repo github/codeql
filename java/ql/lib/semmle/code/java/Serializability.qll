@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with Java Serialization.
  */
+overlay[local?]
+module;
 
 import java
 private import frameworks.jackson.JacksonSerializability

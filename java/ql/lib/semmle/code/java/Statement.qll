@@ -1,9 +1,12 @@
 /**
  * Provides classes and predicates for working with Java statements.
  */
+overlay[local?]
+module;
 
 import Expr
 import metrics.MetricStmt
+private import semmle.code.java.Overlay
 
 /** A common super-class of all statements. */
 class Stmt extends StmtParent, ExprParent, @stmt {
@@ -985,3 +988,6 @@ class SuperConstructorInvocationStmt extends Stmt, ConstructorCall, @superconstr
 
   override string getAPrimaryQlClass() { result = "SuperConstructorInvocationStmt" }
 }
+
+overlay[local]
+private class DiscardableStmt extends DiscardableLocatable, @stmt { }

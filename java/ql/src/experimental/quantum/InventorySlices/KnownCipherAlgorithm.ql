@@ -13,6 +13,6 @@ import experimental.quantum.Language
 // TODO: should there be a cipher algorithm node?
 from Crypto::KeyOperationAlgorithmNode a
 where
-  a.getAlgorithmType() instanceof Crypto::KeyOpAlg::AsymmetricCipherAlgorithm or
-  a.getAlgorithmType() instanceof Crypto::KeyOpAlg::SymmetricCipherAlgorithm
+  a.getAlgorithmType() instanceof Crypto::KeyOpAlg::AsymmetricCipherAlgorithmType or
+  a.getAlgorithmType() instanceof Crypto::KeyOpAlg::SymmetricCipherAlgorithmType
 select a, a.getAlgorithmName()
