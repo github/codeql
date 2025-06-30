@@ -2028,9 +2028,9 @@ mod method_determined_by_argument_type {
         x.my_add(&5i64); // $ method=MyAdd<&i64>::my_add
         x.my_add(true); // $ method=MyAdd<bool>::my_add
 
-        S(1i64).my_add(S(2i64)); // $ method=S::my_add1 $ SPURIOUS method=S::my_add2 $ SPURIOUS method=S::my_add3
-        S(1i64).my_add(3i64); // $ method=S::my_add2 $ SPURIOUS method=S::my_add1 $ SPURIOUS method=S::my_add3
-        S(1i64).my_add(&3i64); // $ method=S::my_add3 $ SPURIOUS method=S::my_add1 $ SPURIOUS method=S::my_add2
+        S(1i64).my_add(S(2i64)); // $ method=S::my_add1
+        S(1i64).my_add(3i64); // $ MISSING: method=S::my_add2
+        S(1i64).my_add(&3i64); // $ method=S::my_add3
     }
 }
 
