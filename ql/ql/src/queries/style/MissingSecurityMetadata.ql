@@ -10,45 +10,30 @@
 
 import ql
 
-predicate missingSecuritySeverity(QLDoc doc) {
-  exists(string s | s = doc.getContents() |
-    exists(string securityTag | securityTag = s.splitAt("@") |
-      securityTag.matches("tags%security%")
-    ) and
-    exists(string precisionTag | precisionTag = s.splitAt("@") |
-      precisionTag.matches("precision %")
-    ) and
-    not exists(string securitySeverity | securitySeverity = s.splitAt("@") |
-      securitySeverity.matches("security-severity %")
-    )
-  )
+private predicate unInterestingLocation(File f) {
+  f.getRelativePath().matches("%/" + ["experimental", "examples", "test"] + "/%")
 }
 
-predicate missingSecurityTag(QLDoc doc) {
-  exists(string s | s = doc.getContents() |
-    exists(string securitySeverity | securitySeverity = s.splitAt("@") |
-      securitySeverity.matches("security-severity %")
-    ) and
-    exists(string precisionTag | precisionTag = s.splitAt("@") |
-      precisionTag.matches("precision %")
-    ) and
-    not exists(string securityTag | securityTag = s.splitAt("@") |
-      securityTag.matches("tags%security%")
-    )
-  )
+predicate missingSecuritySeverity(QueryDoc doc) {
+  doc.getQueryTags() = "security" and
+  exists(doc.getQueryPrecision()) and
+  not exists(doc.getQuerySecuritySeverity())
 }
 
-from TopLevel t, string msg
+predicate missingSecurityTag(QueryDoc doc) {
+  exists(doc.getQuerySecuritySeverity()) and
+  exists(doc.getQueryPrecision()) and
+  not doc.getQueryTags() = "security"
+}
+
+from TopLevel t, QueryDoc doc, string msg
 where
-  t.getLocation().getFile().getBaseName().matches("%.ql") and
-  not t.getLocation()
-      .getFile()
-      .getRelativePath()
-      .matches("%/" + ["experimental", "examples", "test"] + "/%") and
+  doc = t.getQLDoc() and
+  not unInterestingLocation(t.getLocation().getFile()) and
   (
-    missingSecuritySeverity(t.getQLDoc()) and
+    missingSecuritySeverity(doc) and
     msg = "This query file is missing a `@security-severity` tag."
     or
-    missingSecurityTag(t.getQLDoc()) and msg = "This query file is missing a `@tag security`."
+    missingSecurityTag(doc) and msg = "This query file is missing a `@tags security`."
   )
 select t, msg
