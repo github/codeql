@@ -83,7 +83,7 @@ rust_library(
     version = "0.24.8",
     deps = [
         "@vendor_ts__tree-sitter-json-0.24.8//:build_script_build",
-        "@vendor_ts__tree-sitter-language-0.1.3//:tree_sitter_language",
+        "@vendor_ts__tree-sitter-language-0.1.5//:tree_sitter_language",
     ],
 )
 
@@ -135,7 +135,7 @@ cargo_build_script(
     version = "0.24.8",
     visibility = ["//visibility:private"],
     deps = [
-        "@vendor_ts__cc-1.2.7//:cc",
+        "@vendor_ts__cc-1.2.27//:cc",
     ],
 )
 

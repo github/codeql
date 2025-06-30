@@ -81,6 +81,6 @@ rust_library(
     }),
     version = "0.116.0",
     deps = [
-        "@vendor_ts__rustc-stable-hash-0.1.1//:rustc_stable_hash",
+        "@vendor_ts__rustc-stable-hash-0.1.2//:rustc_stable_hash",
     ],
 )
