@@ -30,6 +30,7 @@ import subprocess
 import typing
 import itertools
 import os
+import dataclasses
 
 import inflection
 
@@ -113,117 +114,197 @@ def _get_doc(cls: schema.Class, prop: schema.Property, plural=None):
     return f"{prop_name} of this {class_name}"
 
 
-def _type_is_hideable(t: str, lookup: typing.Dict[str, schema.ClassBase]) -> bool:
-    if t in lookup:
-        match lookup[t]:
+@dataclasses.dataclass
+class Resolver:
+    lookup: typing.Dict[str, schema.ClassBase]
+    _property_cache: typing.Dict[tuple[int, int], ql.Property] = dataclasses.field(
+        default_factory=dict, init=False
+    )
+    _class_cache: typing.Dict[int, ql.Class] = dataclasses.field(
+        default_factory=dict, init=False
+    )
+
+    def _type_is_hideable(self, t: str) -> bool:
+        match self.lookup.get(t):
             case schema.Class() as cls:
                 return "ql_hideable" in cls.pragmas
-    return False
+            case _:
+                return False
 
+    def get_ql_property(
+        self,
+        cls: schema.Class,
+        prop: schema.Property,
+    ) -> ql.Property:
+        cache_key = (id(cls), id(prop))
+        if cache_key not in self._property_cache:
+            args = dict(
+                type=prop.type if not prop.is_predicate else "predicate",
+                qltest_skip="qltest_skip" in prop.pragmas,
+                is_optional=prop.is_optional,
+                is_predicate=prop.is_predicate,
+                is_unordered=prop.is_unordered,
+                description=prop.description,
+                synth=bool(cls.synth) or prop.synth,
+                type_is_hideable=self._type_is_hideable(prop.type),
+                type_is_codegen_class=prop.type in self.lookup
+                and not self.lookup[prop.type].imported,
+                internal="ql_internal" in prop.pragmas,
+                cfg=prop.is_child
+                and prop.type in self.lookup
+                and self.lookup[prop.type].cfg,
+                is_child=prop.is_child,
+            )
+            ql_name = prop.pragmas.get("ql_name", prop.name)
+            db_table_name = prop.pragmas.get("ql_db_table_name")
+            if db_table_name and prop.is_single:
+                raise Error(
+                    f"`db_table_name` pragma is not supported for single properties, but {cls.name}.{prop.name} has it"
+                )
+            if prop.is_single:
+                args.update(
+                    singular=inflection.camelize(ql_name),
+                    tablename=inflection.tableize(cls.name),
+                    tableparams=["this"]
+                    + [
+                        "result" if p is prop else "_"
+                        for p in cls.properties
+                        if p.is_single
+                    ],
+                    doc=_get_doc(cls, prop),
+                )
+            elif prop.is_repeated:
+                args.update(
+                    singular=inflection.singularize(inflection.camelize(ql_name)),
+                    plural=inflection.pluralize(inflection.camelize(ql_name)),
+                    tablename=db_table_name
+                    or inflection.tableize(f"{cls.name}_{prop.name}"),
+                    tableparams=(
+                        ["this", "index", "result"]
+                        if not prop.is_unordered
+                        else ["this", "result"]
+                    ),
+                    doc=_get_doc(cls, prop, plural=False),
+                    doc_plural=_get_doc(cls, prop, plural=True),
+                )
+            elif prop.is_optional:
+                args.update(
+                    singular=inflection.camelize(ql_name),
+                    tablename=db_table_name
+                    or inflection.tableize(f"{cls.name}_{prop.name}"),
+                    tableparams=["this", "result"],
+                    doc=_get_doc(cls, prop),
+                )
+            elif prop.is_predicate:
+                args.update(
+                    singular=inflection.camelize(ql_name, uppercase_first_letter=False),
+                    tablename=db_table_name
+                    or inflection.underscore(f"{cls.name}_{prop.name}"),
+                    tableparams=["this"],
+                    doc=_get_doc(cls, prop),
+                )
+            else:
+                raise ValueError(
+                    f"unknown property kind for {prop.name} from {cls.name}"
+                )
+            self._property_cache[cache_key] = ql.Property(**args)
+        return self._property_cache[cache_key]
 
-def get_ql_property(
-    cls: schema.Class,
-    prop: schema.Property,
-    lookup: typing.Dict[str, schema.ClassBase],
-    prev_child: str = "",
-) -> ql.Property:
+    def get_ql_class(self, cls: schema.Class) -> ql.Class:
+        cache_key = id(cls)
+        if cache_key not in self._class_cache:
+            if "ql_name" in cls.pragmas:
+                raise Error(
+                    "ql_name is not supported yet for classes, only for properties"
+                )
+            properties = [self.get_ql_property(cls, p) for p in cls.properties]
+            all_children = [
+                ql.Child(self.get_ql_property(c, p))
+                for c, p in self._get_all_properties(cls)
+                if p.is_child
+            ]
+            for prev, child in zip([""] + all_children, all_children):
+                child.prev = prev and prev.property.singular
+            self._class_cache[cache_key] = ql.Class(
+                name=cls.name,
+                bases=cls.bases,
+                bases_impl=[base + "Impl::" + base for base in cls.bases],
+                final=not cls.derived,
+                properties=properties,
+                all_children=all_children,
+                dir=pathlib.Path(cls.group or ""),
+                doc=cls.doc,
+                hideable="ql_hideable" in cls.pragmas,
+                internal="ql_internal" in cls.pragmas,
+                cfg=cls.cfg,
+            )
+        return self._class_cache[cache_key]
 
-    args = dict(
-        type=prop.type if not prop.is_predicate else "predicate",
-        qltest_skip="qltest_skip" in prop.pragmas,
-        prev_child=prev_child if prop.is_child else None,
-        is_optional=prop.is_optional,
-        is_predicate=prop.is_predicate,
-        is_unordered=prop.is_unordered,
-        description=prop.description,
-        synth=bool(cls.synth) or prop.synth,
-        type_is_hideable=_type_is_hideable(prop.type, lookup),
-        type_is_codegen_class=prop.type in lookup and not lookup[prop.type].imported,
-        internal="ql_internal" in prop.pragmas,
-    )
-    ql_name = prop.pragmas.get("ql_name", prop.name)
-    db_table_name = prop.pragmas.get("ql_db_table_name")
-    if db_table_name and prop.is_single:
-        raise Error(
-            f"`db_table_name` pragma is not supported for single properties, but {cls.name}.{prop.name} has it"
+    def get_ql_cfg_class(
+        self,
+        cls: schema.Class,
+    ) -> ql.CfgClass:
+        return ql.CfgClass(
+            name=cls.name,
+            bases=[base for base in cls.bases if self.lookup[base.base].cfg],
+            properties=cls.properties,
+            doc=cls.doc,
         )
-    if prop.is_single:
-        args.update(
-            singular=inflection.camelize(ql_name),
-            tablename=inflection.tableize(cls.name),
-            tableparams=["this"]
-            + ["result" if p is prop else "_" for p in cls.properties if p.is_single],
-            doc=_get_doc(cls, prop),
-        )
-    elif prop.is_repeated:
-        args.update(
-            singular=inflection.singularize(inflection.camelize(ql_name)),
-            plural=inflection.pluralize(inflection.camelize(ql_name)),
-            tablename=db_table_name or inflection.tableize(f"{cls.name}_{prop.name}"),
-            tableparams=(
-                ["this", "index", "result"]
-                if not prop.is_unordered
-                else ["this", "result"]
-            ),
-            doc=_get_doc(cls, prop, plural=False),
-            doc_plural=_get_doc(cls, prop, plural=True),
-        )
-    elif prop.is_optional:
-        args.update(
-            singular=inflection.camelize(ql_name),
-            tablename=db_table_name or inflection.tableize(f"{cls.name}_{prop.name}"),
-            tableparams=["this", "result"],
-            doc=_get_doc(cls, prop),
-        )
-    elif prop.is_predicate:
-        args.update(
-            singular=inflection.camelize(ql_name, uppercase_first_letter=False),
-            tablename=db_table_name or inflection.underscore(f"{cls.name}_{prop.name}"),
-            tableparams=["this"],
-            doc=_get_doc(cls, prop),
-        )
-    else:
-        raise ValueError(f"unknown property kind for {prop.name} from {cls.name}")
-    return ql.Property(**args)
 
+    def _get_all_properties(
+        self,
+        cls: schema.Class,
+        already_seen: typing.Optional[typing.Set[int]] = None,
+    ) -> typing.Iterable[typing.Tuple[schema.Class, schema.Property]]:
+        # deduplicate using ids
+        if already_seen is None:
+            already_seen = set()
+        for b in cls.bases:
+            base = self.lookup[b]
+            for item in self._get_all_properties(base, already_seen):
+                yield item
+        for p in cls.properties:
+            if id(p) not in already_seen:
+                already_seen.add(id(p))
+                yield cls, p
 
-def get_ql_class(
-    cls: schema.Class, lookup: typing.Dict[str, schema.ClassBase]
-) -> ql.Class:
-    if "ql_name" in cls.pragmas:
-        raise Error("ql_name is not supported yet for classes, only for properties")
-    prev_child = ""
-    properties = []
-    for p in cls.properties:
-        prop = get_ql_property(cls, p, lookup, prev_child)
-        if prop.is_child:
-            prev_child = prop.singular
-            if prop.type in lookup and lookup[prop.type].cfg:
-                prop.cfg = True
-        properties.append(prop)
-    return ql.Class(
-        name=cls.name,
-        bases=cls.bases,
-        bases_impl=[base + "Impl::" + base for base in cls.bases],
-        final=not cls.derived,
-        properties=properties,
-        dir=pathlib.Path(cls.group or ""),
-        doc=cls.doc,
-        hideable="ql_hideable" in cls.pragmas,
-        internal="ql_internal" in cls.pragmas,
-        cfg=cls.cfg,
-    )
+    def get_all_properties_to_be_tested(
+        self,
+        cls: schema.Class,
+    ) -> typing.Iterable[ql.PropertyForTest]:
+        for c, p in self._get_all_properties(cls):
+            if not ("qltest_skip" in c.pragmas or "qltest_skip" in p.pragmas):
+                p = self.get_ql_property(c, p)
+                yield ql.PropertyForTest(
+                    p.getter,
+                    is_total=p.is_single or p.is_predicate,
+                    type=p.type if not p.is_predicate else None,
+                    is_indexed=p.is_indexed,
+                )
 
+    def _is_in_qltest_collapsed_hierarchy(
+        self,
+        cls: schema.Class,
+    ) -> bool:
+        return (
+            "qltest_collapse_hierarchy" in cls.pragmas
+            or self._is_under_qltest_collapsed_hierarchy(cls)
+        )
 
-def get_ql_cfg_class(
-    cls: schema.Class, lookup: typing.Dict[str, ql.Class]
-) -> ql.CfgClass:
-    return ql.CfgClass(
-        name=cls.name,
-        bases=[base for base in cls.bases if lookup[base.base].cfg],
-        properties=cls.properties,
-        doc=cls.doc,
-    )
+    def _is_under_qltest_collapsed_hierarchy(
+        self,
+        cls: schema.Class,
+    ) -> bool:
+        return "qltest_uncollapse_hierarchy" not in cls.pragmas and any(
+            self._is_in_qltest_collapsed_hierarchy(self.lookup[b]) for b in cls.bases
+        )
+
+    def should_skip_qltest(self, cls: schema.Class) -> bool:
+        return (
+            "qltest_skip" in cls.pragmas
+            or not (cls.final or "qltest_collapse_hierarchy" in cls.pragmas)
+            or self._is_under_qltest_collapsed_hierarchy(cls)
+        )
 
 
 def _to_db_type(x: str) -> str:
@@ -330,69 +411,6 @@ def _get_path_public(cls: schema.Class) -> pathlib.Path:
     ).with_suffix(".qll")
 
 
-def _get_all_properties(
-    cls: schema.Class,
-    lookup: typing.Dict[str, schema.Class],
-    already_seen: typing.Optional[typing.Set[int]] = None,
-) -> typing.Iterable[typing.Tuple[schema.Class, schema.Property]]:
-    # deduplicate using ids
-    if already_seen is None:
-        already_seen = set()
-    for b in sorted(cls.bases):
-        base = lookup[b]
-        for item in _get_all_properties(base, lookup, already_seen):
-            yield item
-    for p in cls.properties:
-        if id(p) not in already_seen:
-            already_seen.add(id(p))
-            yield cls, p
-
-
-def _get_all_properties_to_be_tested(
-    cls: schema.Class, lookup: typing.Dict[str, schema.Class]
-) -> typing.Iterable[ql.PropertyForTest]:
-    for c, p in _get_all_properties(cls, lookup):
-        if not ("qltest_skip" in c.pragmas or "qltest_skip" in p.pragmas):
-            # TODO here operations are duplicated, but should be better if we split ql and qltest generation
-            p = get_ql_property(c, p, lookup)
-            yield ql.PropertyForTest(
-                p.getter,
-                is_total=p.is_single or p.is_predicate,
-                type=p.type if not p.is_predicate else None,
-                is_indexed=p.is_indexed,
-            )
-
-
-def _partition_iter(x, pred):
-    x1, x2 = itertools.tee(x)
-    return filter(pred, x1), itertools.filterfalse(pred, x2)
-
-
-def _is_in_qltest_collapsed_hierarchy(
-    cls: schema.Class, lookup: typing.Dict[str, schema.Class]
-):
-    return (
-        "qltest_collapse_hierarchy" in cls.pragmas
-        or _is_under_qltest_collapsed_hierarchy(cls, lookup)
-    )
-
-
-def _is_under_qltest_collapsed_hierarchy(
-    cls: schema.Class, lookup: typing.Dict[str, schema.Class]
-):
-    return "qltest_uncollapse_hierarchy" not in cls.pragmas and any(
-        _is_in_qltest_collapsed_hierarchy(lookup[b], lookup) for b in cls.bases
-    )
-
-
-def should_skip_qltest(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
-    return (
-        "qltest_skip" in cls.pragmas
-        or not (cls.final or "qltest_collapse_hierarchy" in cls.pragmas)
-        or _is_under_qltest_collapsed_hierarchy(cls, lookup)
-    )
-
-
 def _get_stub(
     cls: schema.Class, base_import: str, generated_import_prefix: str
 ) -> ql.Stub:
@@ -478,8 +496,10 @@ def generate(opts, renderer):
 
     data = schemaloader.load_file(input)
 
+    resolver = Resolver(data.classes)
+
     classes = {
-        name: get_ql_class(cls, data.classes)
+        name: resolver.get_ql_class(cls)
         for name, cls in data.classes.items()
         if not cls.imported
     }
@@ -529,7 +549,7 @@ def generate(opts, renderer):
             )
             imports_impl[c.name + "Impl"] = path_impl + "Impl"
             if c.cfg:
-                cfg_classes.append(get_ql_cfg_class(c, classes))
+                cfg_classes.append(resolver.get_ql_cfg_class(c))
 
         for c in classes.values():
             qll = out / c.path.with_suffix(".qll")
@@ -600,7 +620,7 @@ def generate(opts, renderer):
             for c in data.classes.values():
                 if c.imported:
                     continue
-                if should_skip_qltest(c, data.classes):
+                if resolver.should_skip_qltest(c):
                     continue
                 test_with_name = c.pragmas.get("qltest_test_with")
                 test_with = data.classes[test_with_name] if test_with_name else c
@@ -619,9 +639,7 @@ def generate(opts, renderer):
                 renderer.render(
                     ql.ClassTester(
                         class_name=c.name,
-                        properties=list(
-                            _get_all_properties_to_be_tested(c, data.classes)
-                        ),
+                        properties=list(resolver.get_all_properties_to_be_tested(c)),
                         elements_module=elements_module,
                         # in case of collapsed hierarchies we want to see the actual QL class in results
                         show_ql_class="qltest_collapse_hierarchy" in c.pragmas,

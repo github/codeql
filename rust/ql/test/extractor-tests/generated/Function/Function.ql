@@ -23,18 +23,6 @@ query predicate instances(
   if x.hasImplementation() then hasImplementation = "yes" else hasImplementation = "no"
 }
 
-query predicate getParamList(Function x, ParamList getParamList) {
-  toBeTested(x) and not x.isUnknown() and getParamList = x.getParamList()
-}
-
-query predicate getAttr(Function x, int index, Attr getAttr) {
-  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
-}
-
-query predicate getParam(Function x, int index, Param getParam) {
-  toBeTested(x) and not x.isUnknown() and getParam = x.getParam(index)
-}
-
 query predicate getExtendedCanonicalPath(Function x, string getExtendedCanonicalPath) {
   toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
 }
@@ -47,6 +35,18 @@ query predicate getAttributeMacroExpansion(Function x, MacroItems getAttributeMa
   toBeTested(x) and
   not x.isUnknown() and
   getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getParamList(Function x, ParamList getParamList) {
+  toBeTested(x) and not x.isUnknown() and getParamList = x.getParamList()
+}
+
+query predicate getAttr(Function x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getParam(Function x, int index, Param getParam) {
+  toBeTested(x) and not x.isUnknown() and getParam = x.getParam(index)
 }
 
 query predicate getAbi(Function x, Abi getAbi) {
