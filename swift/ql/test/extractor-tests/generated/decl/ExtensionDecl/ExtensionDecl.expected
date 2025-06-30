@@ -3,6 +3,7 @@ instances
 | extensions.swift:11:1:15:1 | extension of C | getModule: | file://:0:0:0:0 | extensions | getExtendedTypeDecl: | extensions.swift:3:1:3:10 | C |
 | extensions.swift:21:1:23:1 | extension of S | getModule: | file://:0:0:0:0 | extensions | getExtendedTypeDecl: | extensions.swift:1:1:1:11 | S |
 | extensions.swift:27:1:29:1 | extension of C | getModule: | file://:0:0:0:0 | extensions | getExtendedTypeDecl: | extensions.swift:3:1:3:10 | C |
+getGenericTypeParam
 getMember
 | extensions.swift:5:1:9:1 | extension of S | 0 | extensions.swift:6:5:6:37 | var ... = ... |
 | extensions.swift:5:1:9:1 | extension of S | 1 | extensions.swift:6:9:6:9 | x |
@@ -12,7 +13,6 @@ getMember
 | extensions.swift:11:1:15:1 | extension of C | 2 | extensions.swift:14:5:14:17 | bar() |
 | extensions.swift:21:1:23:1 | extension of S | 0 | extensions.swift:22:5:22:17 | baz() |
 | extensions.swift:27:1:29:1 | extension of C | 0 | extensions.swift:28:5:28:17 | baz() |
-getGenericTypeParam
 getProtocol
 | extensions.swift:21:1:23:1 | extension of S | 0 | extensions.swift:17:1:19:1 | P1 |
 | extensions.swift:27:1:29:1 | extension of C | 0 | extensions.swift:17:1:19:1 | P1 |
