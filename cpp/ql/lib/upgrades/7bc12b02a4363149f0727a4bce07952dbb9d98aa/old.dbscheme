@@ -218,10 +218,10 @@ extractor_version(
     string frontend_version: string ref
 )
 
-@location = @location_default ;
+@location = @location_stmt | @location_expr | @location_default ;
 
 /**
- * The location of an element.
+ * The location of an element that is not an expression or a statement.
  * The location spans column `startcolumn` of line `startline` to
  * column `endcolumn` of line `endline` in file `file`.
  * For more information, see
@@ -230,6 +230,40 @@ extractor_version(
 locations_default(
     /** The location of an element that is not an expression or a statement. */
     unique int id: @location_default,
+    int container: @container ref,
+    int startLine: int ref,
+    int startColumn: int ref,
+    int endLine: int ref,
+    int endColumn: int ref
+);
+
+/**
+ * The location of a statement.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
+locations_stmt(
+    /** The location of a statement. */
+    unique int id: @location_stmt,
+    int container: @container ref,
+    int startLine: int ref,
+    int startColumn: int ref,
+    int endLine: int ref,
+    int endColumn: int ref
+);
+
+/**
+ * The location of an expression.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
+locations_expr(
+    /** The location of an expression. */
+    unique int id: @location_expr,
     int container: @container ref,
     int startLine: int ref,
     int startColumn: int ref,
@@ -253,7 +287,7 @@ diagnostics(
     string error_tag: string ref,
     string error_message: string ref,
     string full_error_message: string ref,
-    int location: @location ref
+    int location: @location_default ref
 );
 
 files(
@@ -298,7 +332,7 @@ case @macroinvocation.kind of
 macroinvocations(
     unique int id: @macroinvocation,
     int macro_id: @ppd_define ref,
-    int location: @location ref,
+    int location: @location_default ref,
     int kind: int ref
 );
 
@@ -419,7 +453,7 @@ fun_decls(
     int function: @function ref,
     int type_id: @type ref,
     string name: string ref,
-    int location: @location ref
+    int location: @location_default ref
 );
 fun_def(unique int id: @fun_decl ref);
 fun_specialized(unique int id: @fun_decl ref);
@@ -471,7 +505,7 @@ var_decls(
     int variable: @variable ref,
     int type_id: @type ref,
     string name: string ref,
-    int location: @location ref
+    int location: @location_default ref
 );
 var_def(unique int id: @var_decl ref);
 var_specialized(int id: @var_decl ref);
@@ -488,7 +522,7 @@ var_requires(
 type_decls(
     unique int id: @type_decl,
     int type_id: @type ref,
-    int location: @location ref
+    int location: @location_default ref
 );
 type_def(unique int id: @type_decl ref);
 type_decl_top(
@@ -502,8 +536,8 @@ type_requires(
 namespace_decls(
     unique int id: @namespace_decl,
     int namespace_id: @namespace ref,
-    int location: @location ref,
-    int bodylocation: @location ref
+    int location: @location_default ref,
+    int bodylocation: @location_default ref
 );
 
 case @using.kind of
@@ -515,7 +549,7 @@ case @using.kind of
 usings(
     unique int id: @using,
     int element_id: @element ref,
-    int location: @location ref,
+    int location: @location_default ref,
     int kind: int ref
 );
 
@@ -529,7 +563,7 @@ static_asserts(
     unique int id: @static_assert,
     int condition : @expr ref,
     string message : string ref,
-    int location: @location ref,
+    int location: @location_default ref,
     int enclosing : @element ref
 );
 
@@ -585,7 +619,7 @@ enumconstants(
     int index: int ref,
     int type_id: @type ref,
     string name: string ref,
-    int location: @location ref
+    int location: @location_default ref
 );
 
 @variable = @localscopevariable | @globalvariable | @membervariable;
@@ -946,7 +980,7 @@ template_template_argument_value(
 concept_templates(
     unique int concept_id: @concept_template,
     string name: string ref,
-    int location: @location ref
+    int location: @location_default ref
 );
 concept_instantiation(
     unique int to: @concept_id ref,
@@ -1050,7 +1084,7 @@ attributes(
     int kind: int ref,
     string name: string ref,
     string name_space: string ref,
-    int location: @location ref
+    int location: @location_default ref
 );
 
 case @attribute.kind of
@@ -1067,7 +1101,7 @@ attribute_args(
     int kind: int ref,
     int attribute: @attribute ref,
     int index: int ref,
-    int location: @location ref
+    int location: @location_default ref
 );
 
 case @attribute_arg.kind of
@@ -1156,7 +1190,7 @@ derivations(
     int sub: @type ref,
     int index: int ref,
     int super: @type ref,
-    int location: @location ref
+    int location: @location_default ref
 );
 
 derspecifiers(
@@ -1190,7 +1224,7 @@ frienddecls(
     unique int id: @frienddecl,
     int type_id: @type ref,
     int decl_id: @declaration ref,
-    int location: @location ref
+    int location: @location_default ref
 );
 
 @declaredtype = @usertype ;
@@ -1247,7 +1281,7 @@ frienddecls(
 comments(
     unique int id: @comment,
     string contents: string ref,
-    int location: @location ref
+    int location: @location_default ref
 );
 
 commentbinding(
@@ -1369,7 +1403,7 @@ namequalifiers(
     unique int id: @namequalifier,
     unique int qualifiableelement: @namequalifiableelement ref,
     int qualifyingelement: @namequalifyingelement ref,
-    int location: @location ref
+    int location: @location_default ref
 );
 
 varbind(
@@ -1638,7 +1672,7 @@ initialisers(
     unique int init: @initialiser,
     int var: @accessible ref,
     unique int expr: @expr ref,
-    int location: @location ref
+    int location: @location_expr ref
 );
 
 braced_initialisers(
@@ -1657,7 +1691,7 @@ expr_ancestor(
 exprs(
     unique int id: @expr,
     int kind: int ref,
-    int location: @location ref
+    int location: @location_expr ref
 );
 
 expr_reuse(
@@ -2131,7 +2165,7 @@ lambda_capture(
     int field: @membervariable ref,
     boolean captured_by_reference: boolean ref,
     boolean is_implicit: boolean ref,
-    int location: @location ref
+    int location: @location_default ref
 );
 
 @funbindexpr = @routineexpr
@@ -2159,7 +2193,7 @@ fold(
 stmts(
     unique int id: @stmt,
     int kind: int ref,
-    int location: @location ref
+    int location: @location_stmt ref
 );
 
 case @stmt.kind of
@@ -2344,7 +2378,7 @@ jumpinfo(
 preprocdirects(
     unique int id: @preprocdirect,
     int kind: int ref,
-    int location: @location ref
+    int location: @location_default ref
 );
 case @preprocdirect.kind of
    0 = @ppd_if
