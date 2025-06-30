@@ -26,6 +26,18 @@ module AsyncPackage {
   }
 
   /**
+   * Gets `Limit` or `Series` name variants for a given member name.
+   *
+   * For example, `memberNameVariant("map")` returns `map`, `mapLimit`, and `mapSeries`.
+   */
+  bindingset[name]
+  private string memberNameVariant(string name) {
+    result = name or
+    result = name + "Limit" or
+    result = name + "Series"
+  }
+
+  /**
    * A call to `async.waterfall`.
    */
   class Waterfall extends DataFlow::InvokeNode {
@@ -101,21 +113,46 @@ module AsyncPackage {
    */
   class IterationCall extends DataFlow::InvokeNode {
     string name;
+    int iteratorCallbackIndex;
+    int finalCallbackIndex;
 
     IterationCall() {
-      this = memberVariant(name).getACall() and
-      name =
-        [
-          "concat", "detect", "each", "eachOf", "forEach", "forEachOf", "every", "filter",
-          "groupBy", "map", "mapValues", "reduce", "reduceRight", "reject", "some", "sortBy",
-          "transform"
-        ]
+      (
+        (
+          name =
+            memberNameVariant([
+                "concat", "detect", "each", "eachOf", "forEach", "forEachOf", "every", "filter",
+                "groupBy", "map", "mapValues", "reject", "some", "sortBy",
+              ]) and
+          if name.matches("%Limit")
+          then (
+            iteratorCallbackIndex = 2 and finalCallbackIndex = 3
+          ) else (
+            iteratorCallbackIndex = 1 and finalCallbackIndex = 2
+          )
+        )
+        or
+        name = ["reduce", "reduceRight", "transform"] and
+        iteratorCallbackIndex = 2 and
+        finalCallbackIndex = 3
+      ) and
+      this = member(name).getACall()
     }
 
     /**
-     * Gets the name of the iteration call, without the `Limit` or `Series` suffix.
+     * Gets the name of the iteration call
      */
     string getName() { result = name }
+
+    /**
+     * Gets the iterator callback index
+     */
+    int getIteratorCallbackIndex() { result = iteratorCallbackIndex }
+
+    /**
+     * Gets the final callback index
+     */
+    int getFinalCallbackIndex() { result = finalCallbackIndex }
 
     /**
      * Gets the node holding the collection being iterated over.
@@ -125,26 +162,33 @@ module AsyncPackage {
     /**
      * Gets the node holding the function being called for each element in the collection.
      */
-    DataFlow::Node getIteratorCallback() { result = this.getArgument(this.getNumArgument() - 2) }
+    DataFlow::FunctionNode getIteratorCallback() {
+      result = this.getCallback(iteratorCallbackIndex)
+    }
 
     /**
-     * Gets the node holding the function being invoked after iteration is complete.
+     * Gets the node holding the function being invoked after iteration is complete. (may not exist)
      */
-    DataFlow::Node getFinalCallback() { result = this.getArgument(this.getNumArgument() - 1) }
+    DataFlow::FunctionNode getFinalCallback() { result = this.getCallback(finalCallbackIndex) }
   }
 
-  /**
-   * A taint step from the collection into the iterator callback of an iteration call.
-   *
-   * For example: `data -> item` in `async.each(data, (item, cb) => {})`.
-   */
-  private class IterationInputTaintStep extends TaintTracking::SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(DataFlow::FunctionNode iteratee, IterationCall call |
-        iteratee = call.getIteratorCallback() and // Require a closure to avoid spurious call/return mismatch.
-        pred = call.getCollection() and // TODO: needs a flow summary to ensure ArrayElement content is unfolded
-        succ = iteratee.getParameter(0)
-      )
+  private class IterationCallFlowSummary extends DataFlow::SummarizedCallable {
+    private int callbackArgIndex;
+
+    IterationCallFlowSummary() {
+      this = "async.IteratorCall(callbackArgIndex=" + callbackArgIndex + ")" and
+      callbackArgIndex in [1 .. 3]
+    }
+
+    override DataFlow::InvokeNode getACallSimple() {
+      result instanceof IterationCall and
+      result.(IterationCall).getIteratorCallbackIndex() = callbackArgIndex
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      preservesValue = true and
+      input = "Argument[0]." + ["ArrayElement", "SetElement", "IteratorElement", "AnyMember"] and
+      output = "Argument[" + callbackArgIndex + "].Parameter[0]"
     }
   }
 
@@ -152,14 +196,14 @@ module AsyncPackage {
    * A taint step from the return value of an iterator callback to the result of the iteration
    * call.
    *
-   * For example: `item + taint()` -> result` in `async.map(data, (item, cb) => cb(null, item + taint()), (err, result) => {})`.
+   * For example: `item + taint() -> result` in `async.map(data, (item, cb) => cb(null, item + taint()), (err, result) => {})`.
    */
   private class IterationOutputTaintStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(
         DataFlow::FunctionNode iteratee, DataFlow::FunctionNode final, int i, IterationCall call
       |
-        iteratee = call.getIteratorCallback().getALocalSource() and
+        iteratee = call.getIteratorCallback() and
         final = call.getFinalCallback() and // Require a closure to avoid spurious call/return mismatch.
         pred = getLastParameter(iteratee).getACall().getArgument(i) and
         succ = final.getParameter(i) and
@@ -175,14 +219,18 @@ module AsyncPackage {
    *
    * For example: `data -> result` in `async.sortBy(data, orderingFn, (err, result) => {})`.
    */
-  private class IterationPreserveTaintStep extends TaintTracking::SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(DataFlow::FunctionNode final, IterationCall call |
-        final = call.getFinalCallback() and // Require a closure to avoid spurious call/return mismatch.
-        pred = call.getCollection() and
-        succ = final.getParameter(1) and
-        call.getName() = "sortBy"
-      )
+  private class IterationPreserveTaintStepFlowSummary extends DataFlow::SummarizedCallable {
+    IterationPreserveTaintStepFlowSummary() { this = "async.sortBy" }
+
+    override DataFlow::InvokeNode getACallSimple() {
+      result instanceof IterationCall and
+      result.(IterationCall).getName() = "sortBy"
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      preservesValue = false and
+      input = "Argument[0]." + ["ArrayElement", "SetElement", "IteratorElement", "AnyMember"] and
+      output = "Argument[2].Parameter[1]"
     }
   }
 }
