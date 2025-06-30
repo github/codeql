@@ -7,7 +7,7 @@ import experimental.quantum.Language
 class AESGCMAlgorithmNode extends Crypto::KeyOperationAlgorithmNode {
   AESGCMAlgorithmNode() {
     this.getAlgorithmType() = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES()) and
-    this.getModeOfOperation().getModeType() = Crypto::GCM()
+    this.getModeOfOperation().getModeType() = Crypto::KeyOpAlg::GCM()
   }
 }
 

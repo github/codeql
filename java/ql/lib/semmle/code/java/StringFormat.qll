@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for reasoning about string formatting.
  */
+overlay[local?]
+module;
 
 import java
 import dataflow.DefUse

@@ -56,7 +56,7 @@ module ArtifactFlowConfig implements DataFlow::ConfigSig {
 module ArtifactFlow = DataFlow::Global<ArtifactFlowConfig>;
 
 /**
- * Artifact output to node input configuration
+ * An artifact output to node input configuration
  */
 abstract class AdditionalFlowInputStep extends DataFlow::Node {
   abstract DataFlow::Node getOutput();
@@ -91,9 +91,8 @@ module GenericDataSourceFlowConfig implements DataFlow::ConfigSig {
 
 module GenericDataSourceFlow = TaintTracking::Global<GenericDataSourceFlowConfig>;
 
-private class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof Literal {
-  ConstantDataSource() { this instanceof OpenSslGenericSourceCandidateLiteral }
-
+private class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof OpenSslGenericSourceCandidateLiteral
+{
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 
   override predicate flowsTo(Crypto::FlowAwareElement other) {

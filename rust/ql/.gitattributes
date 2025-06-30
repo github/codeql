@@ -228,7 +228,6 @@
 /lib/codeql/rust/elements/internal/AsmRegSpecImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/AsmSymConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/AsmSymImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/AssocItemImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/AssocItemListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/AssocItemListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/AssocTypeArgConstructor.qll linguist-generated

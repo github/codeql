@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with basic blocks in Java.
  */
+overlay[local?]
+module;
 
 import java
 import Dominance

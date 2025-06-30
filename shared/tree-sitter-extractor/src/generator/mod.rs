@@ -17,7 +17,6 @@ pub fn generate(
     languages: Vec<language::Language>,
     dbscheme_path: PathBuf,
     ql_library_path: PathBuf,
-    overlay_support: bool,
 ) -> std::io::Result<()> {
     let dbscheme_file = File::create(dbscheme_path).map_err(|e| {
         tracing::error!("Failed to create dbscheme file: {}", e);
@@ -32,16 +31,6 @@ pub fn generate(
     )?;
 
     writeln!(dbscheme_writer, include_str!("prefix.dbscheme"))?;
-
-    // Eventually all languages will have the metadata relation (for overlay support), at which
-    // point this could be moved to prefix.dbscheme.
-    if overlay_support {
-        writeln!(dbscheme_writer, "/*- Database metadata -*/",)?;
-        dbscheme::write(
-            &mut dbscheme_writer,
-            &[dbscheme::Entry::Table(create_database_metadata())],
-        )?;
-    }
 
     let mut ql_writer = LineWriter::new(File::create(ql_library_path)?);
     writeln!(
@@ -60,14 +49,12 @@ pub fn generate(
         })],
     )?;
 
-    if overlay_support {
-        ql::write(
-            &mut ql_writer,
-            &[ql::TopLevel::Predicate(
-                ql_gen::create_is_overlay_predicate(),
-            )],
-        )?;
-    }
+    ql::write(
+        &mut ql_writer,
+        &[ql::TopLevel::Predicate(
+            ql_gen::create_is_overlay_predicate(),
+        )],
+    )?;
 
     for language in languages {
         let prefix = node_types::to_snake_case(&language.name);
@@ -113,20 +100,19 @@ pub fn generate(
             ql::TopLevel::Class(ql_gen::create_reserved_word_class(&reserved_word_name)),
         ];
 
-        if overlay_support {
-            body.push(ql::TopLevel::Predicate(
-                ql_gen::create_get_node_file_predicate(&ast_node_name, &node_location_table_name),
-            ));
-            body.push(ql::TopLevel::Predicate(
-                ql_gen::create_discard_file_predicate(),
-            ));
-            body.push(ql::TopLevel::Predicate(
-                ql_gen::create_discardable_ast_node_predicate(&ast_node_name),
-            ));
-            body.push(ql::TopLevel::Predicate(
-                ql_gen::create_discard_ast_node_predicate(&ast_node_name),
-            ));
-        }
+        // Overlay discard predicates
+        body.push(ql::TopLevel::Predicate(
+            ql_gen::create_get_node_file_predicate(&ast_node_name, &node_location_table_name),
+        ));
+        body.push(ql::TopLevel::Predicate(
+            ql_gen::create_discard_file_predicate(),
+        ));
+        body.push(ql::TopLevel::Predicate(
+            ql_gen::create_discardable_ast_node_predicate(&ast_node_name),
+        ));
+        body.push(ql::TopLevel::Predicate(
+            ql_gen::create_discard_ast_node_predicate(&ast_node_name),
+        ));
 
         body.append(&mut ql_gen::convert_nodes(&nodes));
         ql::write(
@@ -476,28 +462,5 @@ fn create_token_case<'a>(name: &'a str, token_kinds: Map<&'a str, usize>) -> dbs
         name,
         column: "kind",
         branches,
-    }
-}
-
-fn create_database_metadata() -> dbscheme::Table<'static> {
-    dbscheme::Table {
-        name: "databaseMetadata",
-        keysets: None,
-        columns: vec![
-            dbscheme::Column {
-                db_type: dbscheme::DbColumnType::String,
-                name: "metadataKey",
-                unique: false,
-                ql_type: ql::Type::String,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                db_type: dbscheme::DbColumnType::String,
-                name: "value",
-                unique: false,
-                ql_type: ql::Type::String,
-                ql_type_is_ref: true,
-            },
-        ],
     }
 }

@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with Java exceptions.
  */
+overlay[local?]
+module;
 
 import Element
 import Type
