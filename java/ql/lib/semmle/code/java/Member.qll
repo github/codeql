@@ -11,6 +11,7 @@ import Annotation
 import Exception
 import metrics.MetricField
 private import dispatch.VirtualDispatch
+private import semmle.code.java.Overlay
 
 /**
  * A common abstraction for type member declarations,
@@ -623,7 +624,13 @@ class SrcMethod extends Method {
       then implementsInterfaceMethod(result, this)
       else result.getASourceOverriddenMethod*() = this
     ) and
-    (exists(result.getBody()) or result.hasModifier("native"))
+    (
+      // We allow empty method bodies for the local overlay variant to allow
+      // calls to methods only fully extracted in base.
+      isOverlay() or
+      exists(result.getBody()) or
+      result.hasModifier("native")
+    )
   }
 }
 
@@ -897,3 +904,13 @@ class ExtensionMethod extends Method {
     else result = 0
   }
 }
+
+overlay[local]
+private class DiscardableAnonymousMethod extends DiscardableLocatable, @method {
+  DiscardableAnonymousMethod() {
+    exists(@classorinterface c | methods(this, _, _, _, c, _) and isAnonymClass(c, _))
+  }
+}
+
+overlay[local]
+private class DiscardableMethod extends DiscardableReferableLocatable, @method { }
