@@ -18,6 +18,18 @@ private module PolynomialReDoSConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  // Diff-informedness is disabled because of RegExpTerms having incorrect locations when
+  // the regexp is parsed from a string arising from constant folding.
+  predicate observeDiffInformedIncrementalMode() { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getHighlight().getLocation()
+  }
+
+  Location getASelectedSinkLocationApprox(DataFlow::Node sink) {
+    result = sink.(Sink).getRegExp().getRootTerm().getLocation()
+  }
 }
 
 /**
