@@ -41,6 +41,7 @@ class Call extends Expr instanceof CallImpl {
    * foo :bar "baz", qux: 123
    * ```
    */
+  overlay[global]
   final Expr getKeywordArgument(string keyword) {
     exists(Pair p |
       p = this.getAnArgument() and
