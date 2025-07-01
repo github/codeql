@@ -4,6 +4,7 @@ module;
 private import codeql.ruby.AST
 private import internal.AST
 private import internal.Call
+private import internal.Literal
 private import internal.TreeSitter
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.dataflow.internal.DataFlowImplCommon
@@ -44,7 +45,7 @@ class Call extends Expr instanceof CallImpl {
   final Expr getKeywordArgument(string keyword) {
     exists(Pair p |
       p = this.getAnArgument() and
-      p.getKey().getConstantValue().isSymbol(keyword) and
+      keyword = p.getKey().(SymbolLiteral).(StringlikeLiteralImpl).getStringValue() and
       result = p.getValue()
     )
   }
