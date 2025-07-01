@@ -19,7 +19,7 @@ fn dump_lib() -> anyhow::Result<()> {
         .iter()
         .map(|p| p.file_stem().expect("results of glob must have a name"))
         .filter(|&p| !["main", "lib", "proc_macro"].map(OsStr::new).contains(&p))
-        .map(|p| format!("mod {};", p.to_string_lossy()))
+        .map(|p| format!("pub mod {};", p.to_string_lossy()))
         .join("\n");
     fs::write("lib.rs", lib).context("writing lib.rs")
 }
