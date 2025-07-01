@@ -206,6 +206,7 @@ class HashPattern extends CasePattern, THashPattern {
   }
 
   /** Gets the value for a given key name. */
+  overlay[global]
   CasePattern getValueByKey(string key) {
     exists(int i |
       this.getKey(i).getConstantValue().isStringlikeValue(key) and result = this.getValue(i)
