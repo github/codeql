@@ -107,4 +107,40 @@ module AlertFilteringImpl<LocationSig Location> {
       location.hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
     )
   }
+
+  /**
+   * Holds if some subrange within `location` would be accepted by alert filtering.
+   *
+   * There does not need to exist a `Location` corresponding to that subrange.
+   */
+  bindingset[location]
+  predicate filterByLocationApprox(Location location) {
+    not restrictAlertsTo(_, _, _) and not restrictAlertsToExactLocation(_, _, _, _, _)
+    or
+    exists(string filePath |
+      restrictAlertsToEntireFile(filePath) and
+      location.hasLocationInfo(filePath, _, _, _, _)
+      or
+      exists(int locStartLine, int locEndLine |
+        location.hasLocationInfo(filePath, locStartLine, _, locEndLine, _)
+      |
+        restrictAlertsToStartLine(filePath, [locStartLine .. locEndLine])
+      )
+    )
+    or
+    // Check if an exact filter-location is fully contained in `location`.
+    // This is slow but only used for testing.
+    exists(
+      string filePath, int startLine, int startColumn, int endLine, int endColumn,
+      int filterStartLine, int filterStartColumn, int filterEndLine, int filterEndColumn
+    |
+      location.hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn) and
+      restrictAlertsToExactLocation(filePath, filterStartLine, filterStartColumn, filterEndLine,
+        filterEndColumn) and
+      startLine <= filterStartLine and
+      (startLine != filterStartLine or startColumn <= filterStartColumn) and
+      endLine >= filterEndLine and
+      (endLine != filterEndLine or endColumn >= filterEndColumn)
+    )
+  }
 }
