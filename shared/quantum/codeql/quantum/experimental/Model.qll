@@ -690,23 +690,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     predicate shouldHavePaddingScheme() { any() }
   }
 
-  // abstract class SignatureOrMacAlgorithmInstance extends KeyOperationAlgorithmInstance {
-  //   SignatureOrMacAlgorithmInstance() {
-  //     this.getAlgorithmType() = KeyOpAlg::TSignature(_)
-  //     or
-  //     this.getAlgorithmType() = KeyOpAlg::TMac(_)
-  //   }
-  //   override predicate shouldHaveModeOfOperation() { none() }
-  //   /**
-  //    * Gets the hash algorithm used by this signature algorithm.
-  //    */
-  //   abstract AlgorithmValueConsumer getHashAlgorithmValueConsumer();
-  // }
-  // abstract class SignatureAlgorithmInstance extends SignatureOrMacAlgorithmInstance {
-  //   SignatureAlgorithmInstance() { this.getAlgorithmType() = KeyOpAlg::TSignature(_) }
-  // }
-  abstract class MacOperationInstance extends KeyOperationAlgorithmInstance { }
-
   abstract class HmacAlgorithmInstance extends KeyOperationAlgorithmInstance {
     HmacAlgorithmInstance() { this.getAlgorithmType() = KeyOpAlg::TMac(KeyOpAlg::HMAC()) }
 
@@ -831,6 +814,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     abstract ConsumerInputDataFlowNode getSignatureConsumer();
   }
+
+  abstract class MacOperationInstance extends SignatureOrMacOperationInstance { }
 
   abstract class EllipticCurveInstance extends AlgorithmInstance {
     /**
