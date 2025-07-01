@@ -75,19 +75,30 @@ extensible predicate restrictAlertsToExactLocation(
 
 /** Module for applying alert location filtering. */
 module AlertFilteringImpl<LocationSig Location> {
+  pragma[nomagic]
+  private predicate restrictAlertsToEntireFile(string filePath) { restrictAlertsTo(filePath, 0, 0) }
+
+  pragma[nomagic]
+  private predicate restrictAlertsToStartLine(string filePath, int line) {
+    exists(int startLineStart, int startLineEnd |
+      restrictAlertsTo(filePath, startLineStart, startLineEnd) and
+      line = [startLineStart .. startLineEnd]
+    )
+  }
+
   /** Applies alert filtering to the given location. */
   bindingset[location]
   predicate filterByLocation(Location location) {
     not restrictAlertsTo(_, _, _) and not restrictAlertsToExactLocation(_, _, _, _, _)
     or
-    exists(string filePath, int startLineStart, int startLineEnd |
-      restrictAlertsTo(filePath, startLineStart, startLineEnd)
-    |
-      startLineStart = 0 and
-      startLineEnd = 0 and
+    exists(string filePath |
+      restrictAlertsToEntireFile(filePath) and
       location.hasLocationInfo(filePath, _, _, _, _)
       or
-      location.hasLocationInfo(filePath, [startLineStart .. startLineEnd], _, _, _)
+      exists(int line |
+        restrictAlertsToStartLine(filePath, line) and
+        location.hasLocationInfo(filePath, line, _, _, _)
+      )
     )
     or
     exists(string filePath, int startLine, int startColumn, int endLine, int endColumn |
