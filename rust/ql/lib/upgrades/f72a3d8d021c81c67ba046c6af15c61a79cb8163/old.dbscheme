@@ -170,11 +170,13 @@ named_crates(
 | @asm_option
 | @asm_piece
 | @asm_reg_spec
+| @assoc_item
 | @assoc_item_list
 | @attr
 | @callable
 | @closure_binder
 | @expr
+| @extern_item
 | @extern_item_list
 | @field_list
 | @format_args_arg
@@ -353,6 +355,13 @@ asm_reg_spec_identifiers(
   int identifier: @name_ref ref
 );
 
+@assoc_item =
+  @const
+| @function
+| @macro_call
+| @type_alias
+;
+
 assoc_item_lists(
   unique int id: @assoc_item_list
 );
@@ -443,6 +452,13 @@ closure_binder_generic_param_lists(
 | @underscore_expr
 | @yeet_expr
 | @yield_expr
+;
+
+@extern_item =
+  @function
+| @macro_call
+| @static
+| @type_alias
 ;
 
 extern_item_lists(
@@ -1901,16 +1917,19 @@ infer_type_reprs(
 
 @item =
   @adt
-| @assoc_item
+| @const
 | @extern_block
 | @extern_crate
-| @extern_item
+| @function
 | @impl
+| @macro_call
 | @macro_def
 | @macro_rules
 | @module
+| @static
 | @trait
 | @trait_alias
+| @type_alias
 | @use
 ;
 
@@ -2705,13 +2724,6 @@ adt_derive_macro_expansions(
   int derive_macro_expansion: @macro_items ref
 );
 
-@assoc_item =
-  @const
-| @function
-| @macro_call
-| @type_alias
-;
-
 block_exprs(
   unique int id: @block_expr
 );
@@ -2767,6 +2779,68 @@ call_exprs(
 call_expr_functions(
   int id: @call_expr ref,
   int function: @expr ref
+);
+
+consts(
+  unique int id: @const
+);
+
+#keyset[id, index]
+const_attrs(
+  int id: @const ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+const_bodies(
+  int id: @const ref,
+  int body: @expr ref
+);
+
+#keyset[id]
+const_generic_param_lists(
+  int id: @const ref,
+  int generic_param_list: @generic_param_list ref
+);
+
+#keyset[id]
+const_is_const(
+  int id: @const ref
+);
+
+#keyset[id]
+const_is_default(
+  int id: @const ref
+);
+
+#keyset[id]
+const_names(
+  int id: @const ref,
+  int name: @name ref
+);
+
+#keyset[id]
+const_type_reprs(
+  int id: @const ref,
+  int type_repr: @type_repr ref
+);
+
+#keyset[id]
+const_visibilities(
+  int id: @const ref,
+  int visibility: @visibility ref
+);
+
+#keyset[id]
+const_where_clauses(
+  int id: @const ref,
+  int where_clause: @where_clause ref
+);
+
+#keyset[id]
+const_has_implementation(
+  int id: @const ref
 );
 
 extern_blocks(
@@ -2826,12 +2900,81 @@ extern_crate_visibilities(
   int visibility: @visibility ref
 );
 
-@extern_item =
-  @function
-| @macro_call
-| @static
-| @type_alias
-;
+functions(
+  unique int id: @function
+);
+
+#keyset[id]
+function_abis(
+  int id: @function ref,
+  int abi: @abi ref
+);
+
+#keyset[id]
+function_bodies(
+  int id: @function ref,
+  int body: @block_expr ref
+);
+
+#keyset[id]
+function_generic_param_lists(
+  int id: @function ref,
+  int generic_param_list: @generic_param_list ref
+);
+
+#keyset[id]
+function_is_async(
+  int id: @function ref
+);
+
+#keyset[id]
+function_is_const(
+  int id: @function ref
+);
+
+#keyset[id]
+function_is_default(
+  int id: @function ref
+);
+
+#keyset[id]
+function_is_gen(
+  int id: @function ref
+);
+
+#keyset[id]
+function_is_unsafe(
+  int id: @function ref
+);
+
+#keyset[id]
+function_names(
+  int id: @function ref,
+  int name: @name ref
+);
+
+#keyset[id]
+function_ret_types(
+  int id: @function ref,
+  int ret_type: @ret_type_repr ref
+);
+
+#keyset[id]
+function_visibilities(
+  int id: @function ref,
+  int visibility: @visibility ref
+);
+
+#keyset[id]
+function_where_clauses(
+  int id: @function ref,
+  int where_clause: @where_clause ref
+);
+
+#keyset[id]
+function_has_implementation(
+  int id: @function ref
+);
 
 impls(
   unique int id: @impl
@@ -2905,6 +3048,35 @@ impl_where_clauses(
 looping_expr_loop_bodies(
   int id: @looping_expr ref,
   int loop_body: @block_expr ref
+);
+
+macro_calls(
+  unique int id: @macro_call
+);
+
+#keyset[id, index]
+macro_call_attrs(
+  int id: @macro_call ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+macro_call_paths(
+  int id: @macro_call ref,
+  int path: @path ref
+);
+
+#keyset[id]
+macro_call_token_trees(
+  int id: @macro_call ref,
+  int token_tree: @token_tree ref
+);
+
+#keyset[id]
+macro_call_macro_call_expansions(
+  int id: @macro_call ref,
+  int macro_call_expansion: @ast_node ref
 );
 
 macro_defs(
@@ -3037,6 +3209,56 @@ path_pats(
   unique int id: @path_pat
 );
 
+statics(
+  unique int id: @static
+);
+
+#keyset[id, index]
+static_attrs(
+  int id: @static ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+static_bodies(
+  int id: @static ref,
+  int body: @expr ref
+);
+
+#keyset[id]
+static_is_mut(
+  int id: @static ref
+);
+
+#keyset[id]
+static_is_static(
+  int id: @static ref
+);
+
+#keyset[id]
+static_is_unsafe(
+  int id: @static ref
+);
+
+#keyset[id]
+static_names(
+  int id: @static ref,
+  int name: @name ref
+);
+
+#keyset[id]
+static_type_reprs(
+  int id: @static ref,
+  int type_repr: @type_repr ref
+);
+
+#keyset[id]
+static_visibilities(
+  int id: @static ref,
+  int visibility: @visibility ref
+);
+
 struct_exprs(
   unique int id: @struct_expr
 );
@@ -3166,6 +3388,58 @@ tuple_struct_pat_fields(
   int field: @pat ref
 );
 
+type_aliases(
+  unique int id: @type_alias
+);
+
+#keyset[id, index]
+type_alias_attrs(
+  int id: @type_alias ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+type_alias_generic_param_lists(
+  int id: @type_alias ref,
+  int generic_param_list: @generic_param_list ref
+);
+
+#keyset[id]
+type_alias_is_default(
+  int id: @type_alias ref
+);
+
+#keyset[id]
+type_alias_names(
+  int id: @type_alias ref,
+  int name: @name ref
+);
+
+#keyset[id]
+type_alias_type_reprs(
+  int id: @type_alias ref,
+  int type_repr: @type_repr ref
+);
+
+#keyset[id]
+type_alias_type_bound_lists(
+  int id: @type_alias ref,
+  int type_bound_list: @type_bound_list ref
+);
+
+#keyset[id]
+type_alias_visibilities(
+  int id: @type_alias ref,
+  int visibility: @visibility ref
+);
+
+#keyset[id]
+type_alias_where_clauses(
+  int id: @type_alias ref,
+  int where_clause: @where_clause ref
+);
+
 uses(
   unique int id: @use
 );
@@ -3187,68 +3461,6 @@ use_use_trees(
 use_visibilities(
   int id: @use ref,
   int visibility: @visibility ref
-);
-
-consts(
-  unique int id: @const
-);
-
-#keyset[id, index]
-const_attrs(
-  int id: @const ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-const_bodies(
-  int id: @const ref,
-  int body: @expr ref
-);
-
-#keyset[id]
-const_generic_param_lists(
-  int id: @const ref,
-  int generic_param_list: @generic_param_list ref
-);
-
-#keyset[id]
-const_is_const(
-  int id: @const ref
-);
-
-#keyset[id]
-const_is_default(
-  int id: @const ref
-);
-
-#keyset[id]
-const_names(
-  int id: @const ref,
-  int name: @name ref
-);
-
-#keyset[id]
-const_type_reprs(
-  int id: @const ref,
-  int type_repr: @type_repr ref
-);
-
-#keyset[id]
-const_visibilities(
-  int id: @const ref,
-  int visibility: @visibility ref
-);
-
-#keyset[id]
-const_where_clauses(
-  int id: @const ref,
-  int where_clause: @where_clause ref
-);
-
-#keyset[id]
-const_has_implementation(
-  int id: @const ref
 );
 
 enums(
@@ -3315,82 +3527,6 @@ for_expr_pats(
   int pat: @pat ref
 );
 
-functions(
-  unique int id: @function
-);
-
-#keyset[id]
-function_abis(
-  int id: @function ref,
-  int abi: @abi ref
-);
-
-#keyset[id]
-function_bodies(
-  int id: @function ref,
-  int body: @block_expr ref
-);
-
-#keyset[id]
-function_generic_param_lists(
-  int id: @function ref,
-  int generic_param_list: @generic_param_list ref
-);
-
-#keyset[id]
-function_is_async(
-  int id: @function ref
-);
-
-#keyset[id]
-function_is_const(
-  int id: @function ref
-);
-
-#keyset[id]
-function_is_default(
-  int id: @function ref
-);
-
-#keyset[id]
-function_is_gen(
-  int id: @function ref
-);
-
-#keyset[id]
-function_is_unsafe(
-  int id: @function ref
-);
-
-#keyset[id]
-function_names(
-  int id: @function ref,
-  int name: @name ref
-);
-
-#keyset[id]
-function_ret_types(
-  int id: @function ref,
-  int ret_type: @ret_type_repr ref
-);
-
-#keyset[id]
-function_visibilities(
-  int id: @function ref,
-  int visibility: @visibility ref
-);
-
-#keyset[id]
-function_where_clauses(
-  int id: @function ref,
-  int where_clause: @where_clause ref
-);
-
-#keyset[id]
-function_has_implementation(
-  int id: @function ref
-);
-
 loop_exprs(
   unique int id: @loop_expr
 );
@@ -3400,85 +3536,6 @@ loop_expr_attrs(
   int id: @loop_expr ref,
   int index: int ref,
   int attr: @attr ref
-);
-
-macro_calls(
-  unique int id: @macro_call
-);
-
-#keyset[id, index]
-macro_call_attrs(
-  int id: @macro_call ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-macro_call_paths(
-  int id: @macro_call ref,
-  int path: @path ref
-);
-
-#keyset[id]
-macro_call_token_trees(
-  int id: @macro_call ref,
-  int token_tree: @token_tree ref
-);
-
-#keyset[id]
-macro_call_macro_call_expansions(
-  int id: @macro_call ref,
-  int macro_call_expansion: @ast_node ref
-);
-
-statics(
-  unique int id: @static
-);
-
-#keyset[id, index]
-static_attrs(
-  int id: @static ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-static_bodies(
-  int id: @static ref,
-  int body: @expr ref
-);
-
-#keyset[id]
-static_is_mut(
-  int id: @static ref
-);
-
-#keyset[id]
-static_is_static(
-  int id: @static ref
-);
-
-#keyset[id]
-static_is_unsafe(
-  int id: @static ref
-);
-
-#keyset[id]
-static_names(
-  int id: @static ref,
-  int name: @name ref
-);
-
-#keyset[id]
-static_type_reprs(
-  int id: @static ref,
-  int type_repr: @type_repr ref
-);
-
-#keyset[id]
-static_visibilities(
-  int id: @static ref,
-  int visibility: @visibility ref
 );
 
 structs(
@@ -3519,58 +3576,6 @@ struct_visibilities(
 #keyset[id]
 struct_where_clauses(
   int id: @struct ref,
-  int where_clause: @where_clause ref
-);
-
-type_aliases(
-  unique int id: @type_alias
-);
-
-#keyset[id, index]
-type_alias_attrs(
-  int id: @type_alias ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-type_alias_generic_param_lists(
-  int id: @type_alias ref,
-  int generic_param_list: @generic_param_list ref
-);
-
-#keyset[id]
-type_alias_is_default(
-  int id: @type_alias ref
-);
-
-#keyset[id]
-type_alias_names(
-  int id: @type_alias ref,
-  int name: @name ref
-);
-
-#keyset[id]
-type_alias_type_reprs(
-  int id: @type_alias ref,
-  int type_repr: @type_repr ref
-);
-
-#keyset[id]
-type_alias_type_bound_lists(
-  int id: @type_alias ref,
-  int type_bound_list: @type_bound_list ref
-);
-
-#keyset[id]
-type_alias_visibilities(
-  int id: @type_alias ref,
-  int visibility: @visibility ref
-);
-
-#keyset[id]
-type_alias_where_clauses(
-  int id: @type_alias ref,
   int where_clause: @where_clause ref
 );
 
