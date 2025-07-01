@@ -19,7 +19,7 @@ class BadBinaryFormatter2
     public static object Deserialize(TextBox type, TextBox data)
     {
         var ds = new BinaryFormatter();
-        // BAD - BUT NOT DETECTED
+        // BAD
         return ds.Deserialize(new MemoryStream(Convert.FromBase64String(data.Text)));
     }
 }
