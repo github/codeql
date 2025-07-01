@@ -26,12 +26,6 @@ private newtype LibraryT =
   LibraryTElement(LibraryElement lib, string name, string version) {
     lib.getName() = name and
     lib.getVersion() = version
-  } or
-  LibraryTExternalPackage(@external_package ep, string name, string version) {
-    exists(string package_name |
-      external_packages(ep, _, package_name, version) and
-      name = package_name
-    )
   }
 
 /**
@@ -41,10 +35,7 @@ class Library extends LibraryT {
   string name;
   string version;
 
-  Library() {
-    this = LibraryTElement(_, name, version) or
-    this = LibraryTExternalPackage(_, name, version)
-  }
+  Library() { this = LibraryTElement(_, name, version) }
 
   string getName() { result = name }
 
@@ -62,11 +53,6 @@ class Library extends LibraryT {
     exists(LibraryElement lib |
       this = LibraryTElement(lib, _, _) and
       result = lib.getAFile()
-    )
-    or
-    exists(@external_package ep |
-      this = LibraryTExternalPackage(ep, _, _) and
-      header_to_external_package(unresolveElement(result), ep)
     )
   }
 }

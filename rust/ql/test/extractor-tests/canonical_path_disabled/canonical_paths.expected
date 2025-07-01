@@ -1,9 +1,13 @@
 canonicalPath
 | anonymous.rs:6:1:35:1 | fn canonicals | test::anonymous::canonicals |
 | anonymous.rs:37:1:39:1 | fn other | test::anonymous::other |
+| {EXTERNAL LOCATION} | fn trim | <core::str>::trim |
 | lib.rs:1:1:1:14 | mod anonymous | test::anonymous |
 | lib.rs:2:1:2:12 | mod regular | test::regular |
 | regular.rs:4:1:5:18 | struct Struct | test::regular::Struct |
+| regular.rs:5:12:5:17 | fn eq | <test::regular::Struct as core::cmp::PartialEq>::eq |
+| regular.rs:5:12:5:17 | impl ...::Eq for Struct::<...> { ... } | <test::regular::Struct as core::cmp::Eq> |
+| regular.rs:5:12:5:17 | impl ...::PartialEq for Struct::<...> { ... } | <test::regular::Struct as core::cmp::PartialEq> |
 | regular.rs:7:1:9:1 | trait Trait | test::regular::Trait |
 | regular.rs:8:5:8:16 | fn f | <_ as test::regular::Trait>::f |
 | regular.rs:11:1:13:1 | impl Trait for Struct { ... } | <test::regular::Struct as test::regular::Trait> |
@@ -41,6 +45,9 @@ canonicalPaths
 | lib.rs:1:1:1:14 | mod anonymous | None | None |
 | lib.rs:2:1:2:12 | mod regular | None | None |
 | regular.rs:4:1:5:18 | struct Struct | None | None |
+| regular.rs:5:12:5:17 | fn eq | None | None |
+| regular.rs:5:12:5:17 | impl ...::Eq for Struct::<...> { ... } | None | None |
+| regular.rs:5:12:5:17 | impl ...::PartialEq for Struct::<...> { ... } | None | None |
 | regular.rs:7:1:9:1 | trait Trait | None | None |
 | regular.rs:8:5:8:16 | fn f | None | None |
 | regular.rs:11:1:13:1 | impl Trait for Struct { ... } | None | None |
@@ -65,6 +72,8 @@ resolvedPaths
 | anonymous.rs:32:9:32:9 | s | None | None |
 | anonymous.rs:32:9:32:13 | s.g() | None | None |
 | anonymous.rs:33:9:33:14 | nested | None | None |
+| regular.rs:4:1:4:24 | other | None | None |
+| regular.rs:4:1:4:24 | self | None | None |
 | regular.rs:30:13:30:21 | Struct {...} | None | None |
 | regular.rs:31:5:31:5 | s | None | None |
 | regular.rs:31:5:31:9 | s.f() | None | None |

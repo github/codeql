@@ -55,7 +55,8 @@ def _get_field(cls: schema.Class, p: schema.Property) -> rust.Field:
 
 
 def _get_properties(
-    cls: schema.Class, lookup: dict[str, schema.ClassBase],
+    cls: schema.Class,
+    lookup: dict[str, schema.ClassBase],
 ) -> typing.Iterable[tuple[schema.Class, schema.Property]]:
     for b in cls.bases:
         yield from _get_properties(lookup[b], lookup)
@@ -92,8 +93,9 @@ class Processor:
                 # only generate detached fields in the actual class defining them, not the derived ones
                 if c is cls:
                     # TODO lift this restriction if required (requires change in dbschemegen as well)
-                    assert c.derived or not p.is_single, \
-                        f"property {p.name} in concrete class marked as detached but not optional"
+                    assert (
+                        c.derived or not p.is_single
+                    ), f"property {p.name} in concrete class marked as detached but not optional"
                     detached_fields.append(_get_field(c, p))
             elif not cls.derived:
                 # for non-detached ones, only generate fields in the concrete classes
@@ -123,10 +125,12 @@ def generate(opts, renderer):
     processor = Processor(schemaloader.load_file(opts.schema))
     out = opts.rust_output
     groups = set()
-    with renderer.manage(generated=out.rglob("*.rs"),
-                         stubs=(),
-                         registry=out / ".generated.list",
-                         force=opts.force) as renderer:
+    with renderer.manage(
+        generated=out.rglob("*.rs"),
+        stubs=(),
+        registry=out / ".generated.list",
+        force=opts.force,
+    ) as renderer:
         for group, classes in processor.get_classes().items():
             group = group or "top"
             groups.add(group)

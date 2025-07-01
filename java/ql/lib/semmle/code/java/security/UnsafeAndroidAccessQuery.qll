@@ -15,6 +15,8 @@ module FetchUntrustedResourceConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof UrlResourceSink }
 
   predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof RequestForgerySanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

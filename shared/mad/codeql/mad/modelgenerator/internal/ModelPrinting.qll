@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 signature module ModelPrintingLangSig {
   /**
    * A class of callables.

@@ -382,6 +382,14 @@ abstract class TranslatedValueCategoryAdjustment extends TranslatedExpr {
 }
 
 /**
+ * Holds if `expr` requires an `SehExceptionEdge` to be generated.
+ */
+private predicate hasSehExceptionEdge(Expr expr) {
+  expr instanceof PointerDereferenceExpr and
+  exists(MicrosoftTryStmt tryStmt | tryStmt.getStmt() = expr.getEnclosingStmt().getParent*())
+}
+
+/**
  * IR translation of an implicit lvalue-to-rvalue conversion on the result of
  * an expression.
  */
@@ -400,7 +408,13 @@ class TranslatedLoad extends TranslatedValueCategoryAdjustment, TTranslatedLoad 
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = LoadTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      hasSehExceptionEdge(expr) and
+      kind instanceof SehExceptionEdge and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e))
+    )
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -1945,7 +1959,13 @@ class TranslatedAssignExpr extends TranslatedNonConstantExpr {
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = AssignmentStoreTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      hasSehExceptionEdge(expr.getLValue()) and
+      kind instanceof SehExceptionEdge and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e))
+    )
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -2483,14 +2503,14 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
         result = getTranslatedExpr(expr.getAllocatorCall().getArgument(index).getFullyConverted())
   }
 
-  final override predicate mayThrowException() {
+  final override predicate mayThrowException(ExceptionEdge e) {
     // We assume that a call to `new` or `new[]` will never throw. This is not
     // sound in general, but this will greatly reduce the number of exceptional
     // edges.
     none()
   }
 
-  final override predicate mustThrowException() { none() }
+  final override predicate mustThrowException(ExceptionEdge e) { none() }
 }
 
 TranslatedAllocatorCall getTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
@@ -2556,14 +2576,14 @@ class TranslatedDeleteOrDeleteArrayExpr extends TranslatedNonConstantExpr, Trans
     result = getTranslatedExpr(expr.getExprWithReuse().getFullyConverted())
   }
 
-  final override predicate mayThrowException() {
+  final override predicate mayThrowException(ExceptionEdge e) {
     // We assume that a call to `delete` or `delete[]` will never throw. This is not
     // sound in general, but this will greatly reduce the number of exceptional
     // edges.
     none()
   }
 
-  final override predicate mustThrowException() { none() }
+  final override predicate mustThrowException(ExceptionEdge e) { none() }
 }
 
 TranslatedDeleteOrDeleteArrayExpr getTranslatedDeleteOrDeleteArray(DeleteOrDeleteArrayExpr newExpr) {

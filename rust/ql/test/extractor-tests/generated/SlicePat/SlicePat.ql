@@ -2,9 +2,8 @@
 import codeql.rust.elements
 import TestUtils
 
-from SlicePat x, int getNumberOfPats
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfPats = x.getNumberOfPats()
-select x, "getNumberOfPats:", getNumberOfPats
+query predicate instances(SlicePat x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getPat(SlicePat x, int index, Pat getPat) {
+  toBeTested(x) and not x.isUnknown() and getPat = x.getPat(index)
+}

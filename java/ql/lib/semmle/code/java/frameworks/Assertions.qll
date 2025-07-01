@@ -5,6 +5,8 @@
  * `org.junit.jupiter.api.Assertions`, `com.google.common.base.Preconditions`,
  * and `java.util.Objects`.
  */
+overlay[local?]
+module;
 
 import java
 
@@ -110,11 +112,17 @@ predicate assertFail(BasicBlock bb, ControlFlowNode n) {
   (
     exists(AssertTrueMethod m |
       n.asExpr() = m.getACheck(any(BooleanLiteral b | b.getBooleanValue() = false))
-    ) or
+    )
+    or
     exists(AssertFalseMethod m |
       n.asExpr() = m.getACheck(any(BooleanLiteral b | b.getBooleanValue() = true))
-    ) or
-    exists(AssertFailMethod m | n.asExpr() = m.getACheck()) or
-    n.asStmt().(AssertStmt).getExpr().(BooleanLiteral).getBooleanValue() = false
+    )
+    or
+    exists(AssertFailMethod m | n.asExpr() = m.getACheck())
+    or
+    exists(AssertStmt a |
+      n.asExpr() = a.getExpr() and
+      a.getExpr().(BooleanLiteral).getBooleanValue() = false
+    )
   )
 }

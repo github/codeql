@@ -8,7 +8,9 @@
  * @id java/continue-in-false-loop
  * @problem.severity warning
  * @precision high
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

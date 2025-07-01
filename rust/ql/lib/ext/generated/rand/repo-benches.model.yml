@@ -1,9 +1,0 @@
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-extensions:
-  - addsTo:
-      pack: codeql/rust-all
-      extensible: summaryModel
-    data:
-      - ["repo::benches", "<crate::UnhintedIterator as crate::iter::traits::iterator::Iterator>::next", "Argument[self].Field[crate::UnhintedIterator::iter].Element", "ReturnValue.Field[crate::option::Option::Some(0)]", "value", "dfc-generated"]
-      - ["repo::benches", "<crate::WindowHintedIterator as crate::iter::traits::iterator::Iterator>::next", "Argument[self].Field[crate::WindowHintedIterator::iter].Element", "ReturnValue.Field[crate::option::Option::Some(0)]", "value", "dfc-generated"]
-      - ["repo::benches", "<crate::WindowHintedIterator as crate::iter::traits::iterator::Iterator>::size_hint", "Argument[self].Field[crate::WindowHintedIterator::window_size]", "ReturnValue.Field[0]", "value", "dfc-generated"]

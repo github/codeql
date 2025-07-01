@@ -1,3 +1,15 @@
-| object_literals.swift:5:5:5:42 | #fileLiteral(...) | hasType: | yes | getKind: | 0 | getNumberOfArguments: | 1 |
-| object_literals.swift:6:5:6:61 | #colorLiteral(...) | hasType: | yes | getKind: | 2 | getNumberOfArguments: | 4 |
-| object_literals.swift:7:5:7:44 | #imageLiteral(...) | hasType: | yes | getKind: | 1 | getNumberOfArguments: | 1 |
+instances
+| object_literals.swift:5:5:5:42 | #fileLiteral(...) | getKind: | 0 |
+| object_literals.swift:6:5:6:61 | #colorLiteral(...) | getKind: | 2 |
+| object_literals.swift:7:5:7:44 | #imageLiteral(...) | getKind: | 1 |
+getType
+| object_literals.swift:5:5:5:42 | #fileLiteral(...) | <<error type>> |
+| object_literals.swift:6:5:6:61 | #colorLiteral(...) | <<error type>> |
+| object_literals.swift:7:5:7:44 | #imageLiteral(...) | <<error type>> |
+getArgument
+| object_literals.swift:5:5:5:42 | #fileLiteral(...) | 0 | object_literals.swift:5:18:5:32 | resourceName: file.txt |
+| object_literals.swift:6:5:6:61 | #colorLiteral(...) | 0 | object_literals.swift:6:19:6:24 | red: 255 |
+| object_literals.swift:6:5:6:61 | #colorLiteral(...) | 1 | object_literals.swift:6:29:6:36 | green: 255 |
+| object_literals.swift:6:5:6:61 | #colorLiteral(...) | 2 | object_literals.swift:6:41:6:47 | blue: 255 |
+| object_literals.swift:6:5:6:61 | #colorLiteral(...) | 3 | object_literals.swift:6:52:6:59 | alpha: 50 |
+| object_literals.swift:7:5:7:44 | #imageLiteral(...) | 0 | object_literals.swift:7:19:7:33 | resourceName: image.gif |

@@ -1,6 +1,6 @@
 private import experimental.quantum.Language
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 
-abstract class OpenSSLAlgorithmInstance extends Crypto::AlgorithmInstance {
-  abstract OpenSSLAlgorithmValueConsumer getAVC();
+abstract class OpenSslAlgorithmInstance extends Crypto::AlgorithmInstance {
+  abstract OpenSslAlgorithmValueConsumer getAvc();
 }

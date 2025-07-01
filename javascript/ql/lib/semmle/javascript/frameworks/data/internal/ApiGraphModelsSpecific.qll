@@ -60,9 +60,7 @@ predicate isPackageUsed(string package) {
   or
   package = any(JS::Import imp).getImportedPathString()
   or
-  any(JS::TypeName t).hasQualifiedName(package, _)
-  or
-  any(JS::TypeAnnotation t).hasQualifiedName(package, _)
+  any(JS::TypeAnnotation t).hasUnderlyingType(package, _)
   or
   exists(JS::PackageJson json | json.getPackageName() = package)
 }
@@ -138,7 +136,7 @@ API::Node getExtraNodeFromType(string type) {
     parseRelevantTypeString(type, package, qualifiedName)
   |
     qualifiedName = "" and
-    result = [API::moduleImport(package), API::moduleExport(package)]
+    result = [API::Internal::getAModuleImportRaw(package), API::moduleExport(package)]
     or
     // Access instance of a type based on type annotations
     result = API::Internal::getANodeOfTypeRaw(package, qualifiedName)

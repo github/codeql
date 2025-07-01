@@ -69,6 +69,8 @@ module ImproperArrayIndexValidationConfig implements DataFlow::ConfigSig {
       not offsetIsAlwaysInBounds(arrayExpr, offsetExpr)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module ImproperArrayIndexValidation = TaintTracking::Global<ImproperArrayIndexValidationConfig>;

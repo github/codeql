@@ -6,7 +6,8 @@
  * @problem.severity error
  * @precision very-high
  * @id java/non-final-call-in-constructor
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       logic
  */
