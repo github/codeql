@@ -127,7 +127,6 @@ class IOType extends TIOType {
   }
 }
 
-//TODO: add more initializers as needed
 /**
  * The type of step in an `OperationStep`.
  * - `ContextCreationStep`: the creation of a context from an algorithm or key.
@@ -249,8 +248,10 @@ abstract class OperationStep extends Call {
 
   /**
    * Gets an AVC for the primary algorithm for this operation.
-   * A primary algorithm is an AVC that flows to a ctx input directly or
-   * an AVC that flows to a primary algorithm input directly.
+   * A primary algorithm is an AVC that either:
+   * 1) flows to a ctx input directly or
+   * 2) flows to a primary algorithm input directly
+   * 3) flows to a key input directly (algorithm held in a key will be considered primary)
    * See `AvcContextCreationStep` for details about resetting scenarios.
    * Gets the first OperationStep an AVC flows to. If a context input,
    * the AVC is considered primary.
@@ -259,15 +260,16 @@ abstract class OperationStep extends Call {
    */
   Crypto::AlgorithmValueConsumer getPrimaryAlgorithmValueConsumer() {
     exists(DataFlow::Node src, DataFlow::Node sink, IOType t, OperationStep avcConsumingPred |
-      (t = PrimaryAlgorithmIO() or t = ContextIO()) and
+      (t = PrimaryAlgorithmIO() or t = ContextIO() or t = KeyIO()) and
       avcConsumingPred.flowsToOperationStep(this) and
       src.asExpr() = result and
       sink = avcConsumingPred.getInput(t) and
       AvcToOperationStepFlow::flow(src, sink) and
       (
-        // Case 1: the avcConsumingPred step is a dominating initialization step
-        t = PrimaryAlgorithmIO() and
-        avcConsumingPred = this.getDominatingInitializersToStep(PrimaryAlgorithmIO())
+        // Case 1: the avcConsumingPred step is a dominating primary algorithm initialization step
+        // or dominating key initialization step
+        (t = PrimaryAlgorithmIO() or t = KeyIO()) and
+        avcConsumingPred = this.getDominatingInitializersToStep(t)
         or
         // Case 2: the pred is a context input
         t = ContextIO()
@@ -393,7 +395,9 @@ private class CtxCopyReturnCall extends CtxPassThroughCall, CtxPointerExpr {
   override DataFlow::Node getNode2() { result.asExpr() = this }
 }
 
-// TODO: is this still needed?
+// TODO: is this still needed? It appears to be (tests fail without it) but
+// I don't know why as EVP_PKEY_paramgen is an operation step and we pass through
+// operation steps already.
 /**
  * A call to `EVP_PKEY_paramgen` acts as a kind of pass through.
  * It's output pkey is eventually used in a new operation generating
@@ -413,28 +417,6 @@ private class CtxParamGenCall extends CtxPassThroughCall {
       or
       n2.asDefiningArgument() = this.getArgument(1)
     )
-  }
-
-  override DataFlow::Node getNode1() { result = n1 }
-
-  override DataFlow::Node getNode2() { result = n2 }
-}
-
-//TODO: I am not sure CallArgToCtxRet is needed anymore
-/**
- * If the current node is an argument to a function
- * that returns a pointer type, immediately flow through.
- * NOTE: this passthrough is required if we allow
- * intermediate steps to go into variables that are not a CTX type.
- * See for example `CtxParamGenCall`.
- */
-private class CallArgToCtxRet extends CtxPassThroughCall, CtxPointerExpr {
-  DataFlow::Node n1;
-  DataFlow::Node n2;
-
-  CallArgToCtxRet() {
-    this.getAnArgument() = n1.asExpr() and
-    n2.asExpr() = this
   }
 
   override DataFlow::Node getNode1() { result = n1 }

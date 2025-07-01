@@ -1612,12 +1612,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   final class MacOperationNode extends SignatureOrMacOperationNode {
     MacOperationNode() {
       this.getKeyOperationSubtype() = TMacMode() and
-      // Consider any operation a mac operation only if all algorithms going to the sink
-      // are MAC or unknown. This addresses the issue where an API allows for reuse of
-      // MAC operations for signatures.
-      forex(KeyOperationAlgorithmNode n | n = this.getAnAlgorithmOrGenericSource() |
-        n.getAlgorithmType() = KeyOpAlg::TMac(_)
-      )
+      // If the type type could be a mac, then we will not consider it a mac operation exclusively.
+      not exists(KeyOperationSubtype t | t = this.getKeyOperationSubtype() and t = TMacMode())
     }
 
     final override string getInternalType() { result = "MACOperation" }
@@ -1628,7 +1624,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result.asElement() = instance.getInputConsumer().getConsumer()
     }
 
-    //KeyArtifactNode getAKey() { result.asElement() = instance.getKeyConsumer().getConsumer() }
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
       or
@@ -1638,10 +1633,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
-  final class HmacAlgorithmNode extends KeyAgreementAlgorithmNode {
+  abstract class MacAlgorithmNode extends KeyOperationAlgorithmNode {
+    MacAlgorithmNode() {
+      instance.(KeyOperationAlgorithmInstance).getAlgorithmType() = KeyOpAlg::TMac(_)
+    }
+
+    override string getInternalType() { result = "MACAlgorithm" }
+  }
+
+  final class HmacAlgorithmNode extends MacAlgorithmNode {
     HmacAlgorithmInstance hmacInstance;
 
     HmacAlgorithmNode() { hmacInstance = instance.asAlg() }
+
+    override string getInternalType() { result = "HMACAlgorithm" }
 
     NodeBase getHashAlgorithmOrUnknown() {
       result.asElement() = hmacInstance.getHashAlgorithmValueConsumer().getASource()
@@ -1658,6 +1663,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
+  // TODO: CMAC model
   class KeyAgreementOperationNode extends OperationNode, TKeyAgreementOperation {
     KeyAgreementSecretGenerationOperationInstance instance;
 
@@ -2008,6 +2014,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   class SignatureOrMacOperationNode extends KeyOperationNode {
+    override SignatureOrMacOperationInstance instance;
+
     SignatureOrMacOperationNode() {
       this.getKeyOperationSubtype() = TSignMode()
       or
@@ -2017,6 +2025,18 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
 
     override string getInternalType() { result = "SignatureOrMACOperation" }
+
+    HashAlgorithmNode getHashAlgorithm() {
+      result = instance.getHashAlgorithmValueConsumer().getAKnownSourceNode()
+    }
+
+    override NodeBase getChild(string key) {
+      result = super.getChild(key)
+      or
+      // [KNOWN_OR_UNKNOWN]
+      key = "HashAlgorithm" and
+      (if exists(this.getHashAlgorithm()) then result = this.getHashAlgorithm() else result = this)
+    }
   }
 
   class SignatureOperationNode extends SignatureOrMacOperationNode {
@@ -2029,19 +2049,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
         or
         this.getKeyOperationSubtype() = TVerifyMode() and nodeName = "VerifyOperation"
       ) and
-      not exists(KeyOperationAlgorithmNode n |
-        n = this.getAnAlgorithmOrGenericSource() and n.getAlgorithmType() = KeyOpAlg::TMac(_)
-      )
+      // If the type could be a mac, then we will not consider it a signature operation exclusively.
+      not exists(KeyOperationSubtype t | t = this.getKeyOperationSubtype() and t = TMacMode())
     }
 
     override string getInternalType() { result = nodeName }
 
     SignatureArtifactNode getASignatureArtifact() {
       result.asElement() = instance.getSignatureConsumer().getConsumer()
-    }
-
-    HashAlgorithmNode getHashAlgorithm() {
-      result = instance.getHashAlgorithmValueConsumer().getAKnownSourceNode()
     }
 
     override NodeBase getChild(string key) {
