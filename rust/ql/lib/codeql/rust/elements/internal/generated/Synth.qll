@@ -718,17 +718,16 @@ module Synth {
    */
   class TAstNode =
     TAbi or TAddressable or TArgList or TAsmDirSpec or TAsmOperand or TAsmOperandExpr or
-        TAsmOption or TAsmPiece or TAsmRegSpec or TAssocItem or TAssocItemList or TAttr or
-        TCallable or TClosureBinder or TExpr or TExternItem or TExternItemList or TFieldList or
-        TFormatArgsArg or TGenericArg or TGenericArgList or TGenericParam or TGenericParamList or
-        TItemList or TLabel or TLetElse or TMacroItems or TMatchArm or TMatchArmList or
-        TMatchGuard or TMeta or TName or TParamBase or TParamList or TParenthesizedArgList or
-        TPat or TPath or TPathSegment or TRename or TResolvable or TRetTypeRepr or
-        TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or TStructExprField or
-        TStructExprFieldList or TStructField or TStructPatField or TStructPatFieldList or TToken or
-        TTokenTree or TTupleField or TTypeBound or TTypeBoundList or TTypeRepr or
-        TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or TUseTreeList or TVariantList or
-        TVisibility or TWhereClause or TWherePred;
+        TAsmOption or TAsmPiece or TAsmRegSpec or TAssocItemList or TAttr or TCallable or
+        TClosureBinder or TExpr or TExternItemList or TFieldList or TFormatArgsArg or TGenericArg or
+        TGenericArgList or TGenericParam or TGenericParamList or TItemList or TLabel or TLetElse or
+        TMacroItems or TMatchArm or TMatchArmList or TMatchGuard or TMeta or TName or TParamBase or
+        TParamList or TParenthesizedArgList or TPat or TPath or TPathSegment or TRename or
+        TResolvable or TRetTypeRepr or TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or
+        TStructExprField or TStructExprFieldList or TStructField or TStructPatField or
+        TStructPatFieldList or TToken or TTokenTree or TTupleField or TTypeBound or
+        TTypeBoundList or TTypeRepr or TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or
+        TUseTreeList or TVariantList or TVisibility or TWhereClause or TWherePred;
 
   /**
    * INTERNAL: Do not use.
@@ -775,9 +774,8 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TItem =
-    TAdt or TConst or TExternBlock or TExternCrate or TFunction or TImpl or TMacroCall or
-        TMacroDef or TMacroRules or TModule or TStatic or TTrait or TTraitAlias or TTypeAlias or
-        TUse;
+    TAdt or TAssocItem or TExternBlock or TExternCrate or TExternItem or TImpl or TMacroDef or
+        TMacroRules or TModule or TTrait or TTraitAlias or TUse;
 
   /**
    * INTERNAL: Do not use.
@@ -1949,8 +1947,6 @@ module Synth {
     or
     result = convertAsmRegSpecFromRaw(e)
     or
-    result = convertAssocItemFromRaw(e)
-    or
     result = convertAssocItemListFromRaw(e)
     or
     result = convertAttrFromRaw(e)
@@ -1960,8 +1956,6 @@ module Synth {
     result = convertClosureBinderFromRaw(e)
     or
     result = convertExprFromRaw(e)
-    or
-    result = convertExternItemFromRaw(e)
     or
     result = convertExternItemListFromRaw(e)
     or
@@ -2225,17 +2219,15 @@ module Synth {
   TItem convertItemFromRaw(Raw::Element e) {
     result = convertAdtFromRaw(e)
     or
-    result = convertConstFromRaw(e)
+    result = convertAssocItemFromRaw(e)
     or
     result = convertExternBlockFromRaw(e)
     or
     result = convertExternCrateFromRaw(e)
     or
-    result = convertFunctionFromRaw(e)
+    result = convertExternItemFromRaw(e)
     or
     result = convertImplFromRaw(e)
-    or
-    result = convertMacroCallFromRaw(e)
     or
     result = convertMacroDefFromRaw(e)
     or
@@ -2243,13 +2235,9 @@ module Synth {
     or
     result = convertModuleFromRaw(e)
     or
-    result = convertStaticFromRaw(e)
-    or
     result = convertTraitFromRaw(e)
     or
     result = convertTraitAliasFromRaw(e)
-    or
-    result = convertTypeAliasFromRaw(e)
     or
     result = convertUseFromRaw(e)
   }
@@ -3543,8 +3531,6 @@ module Synth {
     or
     result = convertAsmRegSpecToRaw(e)
     or
-    result = convertAssocItemToRaw(e)
-    or
     result = convertAssocItemListToRaw(e)
     or
     result = convertAttrToRaw(e)
@@ -3554,8 +3540,6 @@ module Synth {
     result = convertClosureBinderToRaw(e)
     or
     result = convertExprToRaw(e)
-    or
-    result = convertExternItemToRaw(e)
     or
     result = convertExternItemListToRaw(e)
     or
@@ -3819,17 +3803,15 @@ module Synth {
   Raw::Element convertItemToRaw(TItem e) {
     result = convertAdtToRaw(e)
     or
-    result = convertConstToRaw(e)
+    result = convertAssocItemToRaw(e)
     or
     result = convertExternBlockToRaw(e)
     or
     result = convertExternCrateToRaw(e)
     or
-    result = convertFunctionToRaw(e)
+    result = convertExternItemToRaw(e)
     or
     result = convertImplToRaw(e)
-    or
-    result = convertMacroCallToRaw(e)
     or
     result = convertMacroDefToRaw(e)
     or
@@ -3837,13 +3819,9 @@ module Synth {
     or
     result = convertModuleToRaw(e)
     or
-    result = convertStaticToRaw(e)
-    or
     result = convertTraitToRaw(e)
     or
     result = convertTraitAliasToRaw(e)
-    or
-    result = convertTypeAliasToRaw(e)
     or
     result = convertUseToRaw(e)
   }

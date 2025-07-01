@@ -14,6 +14,16 @@ query predicate instances(
   getInterfaceType = x.getInterfaceType()
 }
 
+query predicate getGenericTypeParam(
+  NamedFunction x, int index, GenericTypeParamDecl getGenericTypeParam
+) {
+  toBeTested(x) and not x.isUnknown() and getGenericTypeParam = x.getGenericTypeParam(index)
+}
+
+query predicate getMember(NamedFunction x, int index, Decl getMember) {
+  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
+}
+
 query predicate getName(NamedFunction x, string getName) {
   toBeTested(x) and not x.isUnknown() and getName = x.getName()
 }
@@ -32,14 +42,4 @@ query predicate getBody(NamedFunction x, BraceStmt getBody) {
 
 query predicate getCapture(NamedFunction x, int index, CapturedDecl getCapture) {
   toBeTested(x) and not x.isUnknown() and getCapture = x.getCapture(index)
-}
-
-query predicate getGenericTypeParam(
-  NamedFunction x, int index, GenericTypeParamDecl getGenericTypeParam
-) {
-  toBeTested(x) and not x.isUnknown() and getGenericTypeParam = x.getGenericTypeParam(index)
-}
-
-query predicate getMember(NamedFunction x, int index, Decl getMember) {
-  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
 }

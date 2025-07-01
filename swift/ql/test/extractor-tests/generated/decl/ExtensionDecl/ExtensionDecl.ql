@@ -14,14 +14,14 @@ query predicate instances(
   getExtendedTypeDecl = x.getExtendedTypeDecl()
 }
 
-query predicate getMember(ExtensionDecl x, int index, Decl getMember) {
-  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
-}
-
 query predicate getGenericTypeParam(
   ExtensionDecl x, int index, GenericTypeParamDecl getGenericTypeParam
 ) {
   toBeTested(x) and not x.isUnknown() and getGenericTypeParam = x.getGenericTypeParam(index)
+}
+
+query predicate getMember(ExtensionDecl x, int index, Decl getMember) {
+  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
 }
 
 query predicate getProtocol(ExtensionDecl x, int index, ProtocolDecl getProtocol) {

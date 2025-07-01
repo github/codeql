@@ -1,11 +1,13 @@
 {
   "files": [
+    "cpp/ql/lib/semmlecode.cpp.dbscheme",
     "javascript/ql/lib/semmlecode.javascript.dbscheme",
     "python/ql/lib/semmlecode.python.dbscheme",
     "ruby/ql/lib/ruby.dbscheme",
     "ql/ql/src/ql.dbscheme"
   ],
   "fragments": [
+    "/*- Compilations -*/",
     "/*- External data -*/",
     "/*- Files and folders -*/",
     "/*- Diagnostic messages -*/",
@@ -21,6 +23,7 @@
     "/*- DEPRECATED: Snapshot date -*/",
     "/*- DEPRECATED: Duplicate code -*/",
     "/*- DEPRECATED: Version control data -*/",
+    "/*- C++ dbscheme -*/",
     "/*- JavaScript-specific part -*/",
     "/*- Ruby dbscheme -*/",
     "/*- Erb dbscheme -*/",

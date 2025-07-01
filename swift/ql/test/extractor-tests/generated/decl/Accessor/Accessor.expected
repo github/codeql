@@ -35,6 +35,8 @@ instances
 | accessors.swift:38:9:38:9 | set | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> (Int) -> () | isGetter: | no | isSetter: | yes | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | no |
 | accessors.swift:39:9:41:9 | unsafeAddress | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (Foo) -> () -> UnsafePointer<Int> | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | yes | isUnsafeMutableAddress: | no |
 | accessors.swift:42:9:44:9 | unsafeMutableAddress | getModule: | file://:0:0:0:0 | accessors | getInterfaceType: | (inout Foo) -> () -> UnsafeMutablePointer<Int> | isGetter: | no | isSetter: | no | isWillSet: | no | isDidSet: | no | isRead: | no | isModify: | no | isUnsafeAddress: | no | isUnsafeMutableAddress: | yes |
+getGenericTypeParam
+getMember
 getName
 | accessors.swift:2:9:2:9 | _modify | (unnamed function decl) |
 | accessors.swift:2:9:2:9 | get | (unnamed function decl) |
@@ -161,5 +163,3 @@ getBody
 | accessors.swift:39:9:41:9 | unsafeAddress | accessors.swift:39:23:41:9 | { ... } |
 | accessors.swift:42:9:44:9 | unsafeMutableAddress | accessors.swift:42:30:44:9 | { ... } |
 getCapture
-getGenericTypeParam
-getMember

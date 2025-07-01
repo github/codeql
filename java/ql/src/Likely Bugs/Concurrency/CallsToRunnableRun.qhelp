@@ -49,6 +49,15 @@ continue while the child thread is waiting, so that "Main thread activity" is pr
 <li>
   The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/runthread.html">Defining and Starting a Thread</a>.
 </li>
+<li>
+  SEI CERT Oracle Coding Standard for Java: <a href="https://wiki.sei.cmu.edu/confluence/display/java/THI00-J.+Do+not+invoke+Thread.run()">THI00-J. Do not invoke Thread.run()</a>.
+</li>
+<li>
+  Java API Specification: <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Thread.html">Thread</a>.
+</li>
+<li>
+  Java API Specification: <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html">Runnable</a>.
+</li>
 
 
 </references>

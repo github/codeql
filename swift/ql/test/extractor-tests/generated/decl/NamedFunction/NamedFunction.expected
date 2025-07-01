@@ -4,6 +4,10 @@ instances
 | functions.swift:10:5:10:28 | noBody(x:) | getModule: | file://:0:0:0:0 | functions | getInterfaceType: | <Self where Self : Beep> (Self) -> (Int) -> Int |
 | functions.swift:13:1:15:1 | variadic(_:) | getModule: | file://:0:0:0:0 | functions | getInterfaceType: | (Int...) -> () |
 | functions.swift:17:1:19:1 | generic(x:y:) | getModule: | file://:0:0:0:0 | functions | getInterfaceType: | <X, Y> (X, Y) -> () |
+getGenericTypeParam
+| functions.swift:17:1:19:1 | generic(x:y:) | 0 | functions.swift:17:14:17:14 | X |
+| functions.swift:17:1:19:1 | generic(x:y:) | 1 | functions.swift:17:17:17:17 | Y |
+getMember
 getName
 | functions.swift:1:1:3:1 | foo() | foo() |
 | functions.swift:5:1:7:1 | bar(_:d:) | bar(_:d:) |
@@ -25,7 +29,3 @@ getBody
 | functions.swift:13:1:15:1 | variadic(_:) | functions.swift:13:31:15:1 | { ... } |
 | functions.swift:17:1:19:1 | generic(x:y:) | functions.swift:17:32:19:1 | { ... } |
 getCapture
-getGenericTypeParam
-| functions.swift:17:1:19:1 | generic(x:y:) | 0 | functions.swift:17:14:17:14 | X |
-| functions.swift:17:1:19:1 | generic(x:y:) | 1 | functions.swift:17:17:17:17 | Y |
-getMember
