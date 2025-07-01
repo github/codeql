@@ -194,7 +194,7 @@ abstract class ItemNode extends Locatable {
     Stages::PathResolutionStage::ref() and
     result = this.getASuccessorRec(name)
     or
-    preludeEdge(this, name, result) and not declares(this, _, name)
+    preludeEdge(this, name, result)
     or
     this instanceof SourceFile and
     builtin(name, result)
@@ -1505,12 +1505,8 @@ private predicate externCrateEdge(ExternCrateItemNode ec, string name, CrateItem
  */
 pragma[nomagic]
 private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
+  not declares(f, _, name) and
   exists(Crate stdOrCore, ModuleLikeNode mod, ModuleItemNode prelude, ModuleItemNode rust |
-    f = any(Crate c0 | stdOrCore = c0.getDependency(_) or stdOrCore = c0).getASourceFile()
-    or
-    // Give builtin files access to the prelude
-    f instanceof BuiltinSourceFile
-  |
     stdOrCore.getName() = ["std", "core"] and
     mod = stdOrCore.getSourceFile() and
     prelude = mod.getASuccessorRec("prelude") and
