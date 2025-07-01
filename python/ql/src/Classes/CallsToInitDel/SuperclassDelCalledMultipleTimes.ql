@@ -1,6 +1,6 @@
 /**
  * @name Multiple calls to `__del__` during object destruction
- * @description A duplicated call to a super-class `__del__` method may lead to class instances not be cleaned up properly.
+ * @description A duplicated call to a superclass `__del__` method may lead to class instances not be cleaned up properly.
  * @kind problem
  * @tags quality
  *       reliability
@@ -14,16 +14,17 @@
 import python
 import MethodCallOrder
 
-from ClassObject self, FunctionObject multi
+predicate multipleCallsToSuperclassDel(Function meth, Function calledMulti) {
+  multipleCallsToSuperclassMethod(meth, calledMulti, "__sel__")
+}
+
+from Function meth, Function calledMulti
 where
-  multiple_calls_to_superclass_method(self, multi, "__del__") and
-  not multiple_calls_to_superclass_method(self.getABaseType(), multi, "__del__") and
-  not exists(FunctionObject better |
-    multiple_calls_to_superclass_method(self, better, "__del__") and
-    better.overrides(multi)
-  ) and
-  not self.failedInference()
-select self,
-  "Class " + self.getName() +
-    " may not be cleaned up properly as $@ may be called multiple times during destruction.", multi,
-  multi.descriptiveString()
+  multipleCallsToSuperclassDel(meth, calledMulti) and
+  // Don't alert for multiple calls to a superclass del when a subclass will do.
+  not exists(Function subMulti |
+    multipleCallsToSuperclassDel(meth, subMulti) and
+    calledMulti.getScope() = getADirectSuperclass+(subMulti.getScope())
+  )
+select meth, "This delete method calls $@ multiple times.", calledMulti,
+  calledMulti.getQualifiedName()

@@ -4,37 +4,32 @@ import python
 import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 
-// Helper predicates for multiple call to __init__/__del__ queries.
-pragma[noinline]
-private predicate multiple_invocation_paths_helper(
-  FunctionInvocation top, FunctionInvocation i1, FunctionInvocation i2, FunctionObject multi
-) {
-  i1 != i2 and
-  i1 = top.getACallee+() and
-  i2 = top.getACallee+() and
-  i1.getFunction() = multi
+predicate multipleCallsToSuperclassMethod(Function meth, Function calledMulti, string name) {
+  exists(DataFlow::MethodCallNode call1, DataFlow::MethodCallNode call2, Class cls |
+    meth.getName() = name and
+    meth.getScope() = cls and
+    not call1 = call2 and
+    calledMulti = getASuperCallTarget(cls, meth, call1) and
+    calledMulti = getASuperCallTarget(cls, meth, call2) and
+    nonTrivial(calledMulti)
+  )
 }
 
-pragma[noinline]
-private predicate multiple_invocation_paths(
-  FunctionInvocation top, FunctionInvocation i1, FunctionInvocation i2, FunctionObject multi
-) {
-  multiple_invocation_paths_helper(top, i1, i2, multi) and
-  i2.getFunction() = multi
-}
-
-/** Holds if `self.name` calls `multi` by multiple paths, and thus calls it more than once. */
-predicate multiple_calls_to_superclass_method(ClassObject self, FunctionObject multi, string name) {
-  exists(FunctionInvocation top, FunctionInvocation i1, FunctionInvocation i2 |
-    multiple_invocation_paths(top, i1, i2, multi) and
-    top.runtime(self.declaredAttribute(name)) and
-    self.getASuperType().declaredAttribute(name) = multi
+Function getASuperCallTarget(Class mroBase, Function meth, DataFlow::MethodCallNode call) {
+  meth = call.getScope() and
+  getADirectSuperclass*(mroBase) = meth.getScope() and
+  call.calls(_, meth.getName()) and
+  exists(Function target, Class nextMroBase |
+    (result = target or result = getASuperCallTarget(nextMroBase, target, _))
   |
-    // Only called twice if called from different functions,
-    // or if one call-site can reach the other.
-    i1.getCall().getScope() != i2.getCall().getScope()
+    superCall(call, _) and
+    nextMroBase = mroBase and
+    target =
+      findFunctionAccordingToMroKnownStartingClass(getNextClassInMroKnownStartingClass(meth.getScope(),
+          mroBase), mroBase, meth.getName())
     or
-    i1.getCall().strictlyReaches(i2.getCall())
+    callsMethodOnClassWithSelf(meth, call, nextMroBase, _) and
+    target = findFunctionAccordingToMro(nextMroBase, meth.getName())
   )
 }
 

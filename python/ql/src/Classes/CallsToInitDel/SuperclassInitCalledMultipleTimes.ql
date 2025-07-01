@@ -1,6 +1,6 @@
 /**
  * @name Multiple calls to `__init__` during object initialization
- * @description A duplicated call to a super-class `__init__` method may lead to objects of this class not being properly initialized.
+ * @description A duplicated call to a superclass `__init__` method may lead to objects of this class not being properly initialized.
  * @kind problem
  * @tags quality
  *       reliability
@@ -14,17 +14,17 @@
 import python
 import MethodCallOrder
 
-from ClassObject self, FunctionObject multi
+predicate multipleCallsToSuperclassInit(Function meth, Function calledMulti) {
+  multipleCallsToSuperclassMethod(meth, calledMulti, "__init__")
+}
+
+from Function meth, Function calledMulti
 where
-  multi != theObjectType().lookupAttribute("__init__") and
-  multiple_calls_to_superclass_method(self, multi, "__init__") and
-  not multiple_calls_to_superclass_method(self.getABaseType(), multi, "__init__") and
-  not exists(FunctionObject better |
-    multiple_calls_to_superclass_method(self, better, "__init__") and
-    better.overrides(multi)
-  ) and
-  not self.failedInference()
-select self,
-  "Class " + self.getName() +
-    " may not be initialized properly as $@ may be called multiple times during initialization.",
-  multi, multi.descriptiveString()
+  multipleCallsToSuperclassInit(meth, calledMulti) and
+  // Don't alert for multiple calls to a superclass init when a subclass will do.
+  not exists(Function subMulti |
+    multipleCallsToSuperclassInit(meth, subMulti) and
+    calledMulti.getScope() = getADirectSuperclass+(subMulti.getScope())
+  )
+select meth, "This initializer method calls $@ multiple times.", calledMulti,
+  calledMulti.getQualifiedName()
