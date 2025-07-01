@@ -1,24 +1,7 @@
 - description: Security-and-quality queries for JavaScript
 - queries: .
-- include:
-    kind:
-    - problem
-    - path-problem
-    precision:
-    - high
-    - very-high
-    tags contain:
-    - security
-- include:
-    kind:
-    - problem
-    - path-problem
-    precision: medium
-    problem.severity:
-    - error
-    - warning
-    tags contain:
-    - security
+- apply: security-and-frozen-quality-selectors.yml
+  from: codeql/suite-helpers
 - include:
     id:
       - js/node/assignment-to-exports-variable
@@ -123,16 +106,3 @@
       - js/diagnostics/successfully-extracted-files
       - js/summary/lines-of-code
       - js/summary/lines-of-user-code
-- include:
-    kind:
-    - diagnostic
-- include:
-    kind:
-    - metric
-    tags contain:
-    - summary
-- exclude:
-    deprecated: //
-- exclude:
-    query path:
-      - /^experimental\/.*/
