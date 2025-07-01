@@ -9459,6 +9459,19 @@ ir.cpp:
 #  745|       getExpr(): [ConstructorCall] call to String
 #  745|           Type = [VoidType] void
 #  745|           ValueCategory = prvalue
+#  745|         getArgument(0): [VariableAccess] (unnamed parameter 0)
+#  745|             Type = [LValueReferenceType] const String &
+#  745|             ValueCategory = prvalue(load)
+#  745|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#  745|             Type = [LValueReferenceType] const String &
+#  745|             ValueCategory = prvalue
+#  745|           getExpr(): [CStyleCast] (const String)...
+#  745|               Conversion = [BaseClassConversion] base class conversion
+#  745|               Type = [SpecifiedType] const String
+#  745|               ValueCategory = lvalue
+#  745|             getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#  745|                 Type = [SpecifiedType] const String
+#  745|                 ValueCategory = lvalue
 #  745|   getEntryPoint(): [BlockStmt] { ... }
 #  745|     getStmt(0): [ReturnStmt] return ...
 #  748| [Constructor] void Base::Base()
@@ -11996,6 +12009,19 @@ ir.cpp:
 # 1045|               getAFieldExpr(s): [ConstructorCall] call to String
 # 1045|                   Type = [VoidType] void
 # 1045|                   ValueCategory = prvalue
+# 1045|                 getArgument(0): [VariableAccess] (unnamed parameter 0)
+# 1045|                     Type = [LValueReferenceType] const String &
+# 1045|                     ValueCategory = prvalue(load)
+#-----|                 getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#-----|                     Type = [LValueReferenceType] const String &
+#-----|                     ValueCategory = prvalue
+#-----|                   getExpr(): [CStyleCast] (const String)...
+#-----|                       Conversion = [BaseClassConversion] base class conversion
+#-----|                       Type = [SpecifiedType] const String
+#-----|                       ValueCategory = lvalue
+#-----|                     getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                         Type = [SpecifiedType] const String
+#-----|                         ValueCategory = lvalue
 # 1045|               getAFieldExpr(x): [VariableAccess] x
 # 1045|                   Type = [IntType] int
 # 1045|                   ValueCategory = prvalue(load)
@@ -12071,6 +12097,19 @@ ir.cpp:
 # 1049|               getAFieldExpr(s): [ConstructorCall] call to String
 # 1049|                   Type = [VoidType] void
 # 1049|                   ValueCategory = prvalue
+# 1049|                 getArgument(0): [VariableAccess] (unnamed parameter 0)
+# 1049|                     Type = [LValueReferenceType] const String &
+# 1049|                     ValueCategory = prvalue(load)
+#-----|                 getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#-----|                     Type = [LValueReferenceType] const String &
+#-----|                     ValueCategory = prvalue
+#-----|                   getExpr(): [CStyleCast] (const String)...
+#-----|                       Conversion = [BaseClassConversion] base class conversion
+#-----|                       Type = [SpecifiedType] const String
+#-----|                       ValueCategory = lvalue
+#-----|                     getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                         Type = [SpecifiedType] const String
+#-----|                         ValueCategory = lvalue
 # 1050|     getStmt(9): [ExprStmt] ExprStmt
 # 1050|       getExpr(): [FunctionCall] call to operator()
 # 1050|           Type = [PlainCharType] char
