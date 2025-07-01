@@ -1198,3 +1198,7 @@ databaseMetadata(
   string metadataKey: string ref,
   string value: string ref
 );
+
+overlayChangedFiles(
+  string path: string ref
+);
