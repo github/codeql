@@ -1,3 +1,27 @@
+## 2.6.6
+
+### Minor Analysis Improvements
+
+* Calls to `sinon.match()` are no longer incorrectly identified as regular expression operations.
+* Improved data flow tracking through middleware to handle default value and similar patterns.
+* Added `req._parsedUrl` as a remote input source.
+* Improved taint tracking through calls to `serialize-javascript`.
+* Removed `encodeURI` and `escape` functions from the sanitizer list for request forgery.
+* The JavaScript extractor now skips generated JavaScript files if the original TypeScript files are already present. It also skips any files in the output directory specified in the `compilerOptions` part of the `tsconfig.json` file.
+* Added support for Axios instances in the `axios` module.
+
+## 2.6.5
+
+### Minor Analysis Improvements
+
+* Added taint flow through the `URL` constructor from the `url` package, improving the identification of SSRF vulnerabilities.
+
+## 2.6.4
+
+### Minor Analysis Improvements
+
+* Improved analysis for `ES6 classes` mixed with `function prototypes`, leading to more accurate call graph resolution.
+
 ## 2.6.3
 
 ### Minor Analysis Improvements

@@ -1,4 +1,9 @@
 - description: Security-and-quality queries for Ruby
 - queries: .
-- apply: security-and-quality-selectors.yml
+- apply: security-and-frozen-quality-selectors.yml
   from: codeql/suite-helpers
+- include:
+    id:
+      - rb/database-query-in-loop
+      - rb/uninitialized-local-variable
+      - rb/useless-assignment-to-local

@@ -2,42 +2,77 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  Function x, string hasParamList, int getNumberOfAttrs, string hasExtendedCanonicalPath,
-  string hasCrateOrigin, string hasAttributeMacroExpansion, string hasAbi, string hasBody,
-  string hasGenericParamList, string isAsync, string isConst, string isDefault, string isGen,
-  string isUnsafe, string hasName, string hasRetType, string hasVisibility, string hasWhereClause
-where
+query predicate instances(
+  Function x, string isAsync__label, string isAsync, string isConst__label, string isConst,
+  string isDefault__label, string isDefault, string isGen__label, string isGen,
+  string isUnsafe__label, string isUnsafe, string hasImplementation__label, string hasImplementation
+) {
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.hasParamList() then hasParamList = "yes" else hasParamList = "no") and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  (
-    if x.hasAttributeMacroExpansion()
-    then hasAttributeMacroExpansion = "yes"
-    else hasAttributeMacroExpansion = "no"
-  ) and
-  (if x.hasAbi() then hasAbi = "yes" else hasAbi = "no") and
-  (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
-  (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
+  isAsync__label = "isAsync:" and
   (if x.isAsync() then isAsync = "yes" else isAsync = "no") and
+  isConst__label = "isConst:" and
   (if x.isConst() then isConst = "yes" else isConst = "no") and
+  isDefault__label = "isDefault:" and
   (if x.isDefault() then isDefault = "yes" else isDefault = "no") and
+  isGen__label = "isGen:" and
   (if x.isGen() then isGen = "yes" else isGen = "no") and
+  isUnsafe__label = "isUnsafe:" and
   (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  (if x.hasRetType() then hasRetType = "yes" else hasRetType = "no") and
-  (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
-  if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-select x, "hasParamList:", hasParamList, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "hasAbi:", hasAbi, "hasBody:", hasBody,
-  "hasGenericParamList:", hasGenericParamList, "isAsync:", isAsync, "isConst:", isConst,
-  "isDefault:", isDefault, "isGen:", isGen, "isUnsafe:", isUnsafe, "hasName:", hasName,
-  "hasRetType:", hasRetType, "hasVisibility:", hasVisibility, "hasWhereClause:", hasWhereClause
+  hasImplementation__label = "hasImplementation:" and
+  if x.hasImplementation() then hasImplementation = "yes" else hasImplementation = "no"
+}
+
+query predicate getExtendedCanonicalPath(Function x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(Function x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttributeMacroExpansion(Function x, MacroItems getAttributeMacroExpansion) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getParamList(Function x, ParamList getParamList) {
+  toBeTested(x) and not x.isUnknown() and getParamList = x.getParamList()
+}
+
+query predicate getAttr(Function x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getParam(Function x, int index, Param getParam) {
+  toBeTested(x) and not x.isUnknown() and getParam = x.getParam(index)
+}
+
+query predicate getAbi(Function x, Abi getAbi) {
+  toBeTested(x) and not x.isUnknown() and getAbi = x.getAbi()
+}
+
+query predicate getBody(Function x, BlockExpr getBody) {
+  toBeTested(x) and not x.isUnknown() and getBody = x.getBody()
+}
+
+query predicate getGenericParamList(Function x, GenericParamList getGenericParamList) {
+  toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
+}
+
+query predicate getName(Function x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getRetType(Function x, RetTypeRepr getRetType) {
+  toBeTested(x) and not x.isUnknown() and getRetType = x.getRetType()
+}
+
+query predicate getVisibility(Function x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}
+
+query predicate getWhereClause(Function x, WhereClause getWhereClause) {
+  toBeTested(x) and not x.isUnknown() and getWhereClause = x.getWhereClause()
+}

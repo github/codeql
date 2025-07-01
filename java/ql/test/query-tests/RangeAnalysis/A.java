@@ -64,7 +64,7 @@ public class A {
     int sum = 0;
     for (int i = 0; i < a.length; ) {
       sum += a[i++]; // OK
-      sum += a[i++]; // OK - FP
+      sum += a[i++]; // OK
     }
     int len = b.length;
     if ((len & 1) != 0)

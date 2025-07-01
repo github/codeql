@@ -1,18 +1,16 @@
-# Code Injection in GitHub Actions
-
-## Description
+## Overview
 
 Using user-controlled input in GitHub Actions may lead to code injection in contexts like _run:_ or _script:_.
 
 Code injection in GitHub Actions may allow an attacker to exfiltrate any secrets used in the workflow and the temporary GitHub repository authorization token. The token may have write access to the repository, allowing an attacker to make changes to the repository.
 
-## Recommendations
+## Recommendation
 
 The best practice to avoid code injection vulnerabilities in GitHub workflows is to set the untrusted input value of the expression to an intermediate environment variable and then use the environment variable using the native syntax of the shell/script interpreter (that is, not _${{ env.VAR }}_).
 
 It is also recommended to limit the permissions of any tokens used by a workflow such as the GITHUB_TOKEN.
 
-## Examples
+## Example
 
 ### Incorrect Usage
 

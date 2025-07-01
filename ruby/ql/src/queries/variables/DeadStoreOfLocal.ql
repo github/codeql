@@ -5,8 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @id rb/useless-assignment-to-local
- * @tags maintainability
- *       quality
+ * @tags quality
+ *       maintainability
+ *       useless-code
  *       external/cwe/cwe-563
  * @precision high
  */

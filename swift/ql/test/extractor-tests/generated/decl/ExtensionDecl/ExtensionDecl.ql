@@ -2,17 +2,28 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  ExtensionDecl x, ModuleDecl getModule, int getNumberOfMembers, int getNumberOfGenericTypeParams,
-  NominalTypeDecl getExtendedTypeDecl, int getNumberOfProtocols
-where
+query predicate instances(
+  ExtensionDecl x, string getModule__label, ModuleDecl getModule, string getExtendedTypeDecl__label,
+  NominalTypeDecl getExtendedTypeDecl
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers = x.getNumberOfMembers() and
-  getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
-  getExtendedTypeDecl = x.getExtendedTypeDecl() and
-  getNumberOfProtocols = x.getNumberOfProtocols()
-select x, "getModule:", getModule, "getNumberOfMembers:", getNumberOfMembers,
-  "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams, "getExtendedTypeDecl:",
-  getExtendedTypeDecl, "getNumberOfProtocols:", getNumberOfProtocols
+  getExtendedTypeDecl__label = "getExtendedTypeDecl:" and
+  getExtendedTypeDecl = x.getExtendedTypeDecl()
+}
+
+query predicate getGenericTypeParam(
+  ExtensionDecl x, int index, GenericTypeParamDecl getGenericTypeParam
+) {
+  toBeTested(x) and not x.isUnknown() and getGenericTypeParam = x.getGenericTypeParam(index)
+}
+
+query predicate getMember(ExtensionDecl x, int index, Decl getMember) {
+  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
+}
+
+query predicate getProtocol(ExtensionDecl x, int index, ProtocolDecl getProtocol) {
+  toBeTested(x) and not x.isUnknown() and getProtocol = x.getProtocol(index)
+}

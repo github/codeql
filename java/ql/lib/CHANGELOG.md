@@ -1,3 +1,20 @@
+## 7.3.2
+
+### Minor Analysis Improvements
+
+* Java `assert` statements are now assumed to be executed for the purpose of analysing control flow. This improves precision for a number of queries.
+
+## 7.3.1
+
+No user-facing changes.
+
+## 7.3.0
+
+### Deprecated APIs
+
+* The predicate `getValue()` on `SpringRequestMappingMethod` is now deprecated. Use `getAValue()` instead.
+* Java now uses the shared `BasicBlock` library. This means that the names of several member predicates have been changed to align with the names used in other languages. The old predicates have been deprecated. The `BasicBlock` class itself no longer extends `ControlFlowNode` - the predicate `getFirstNode` can be used to fix any QL code that somehow relied on this.
+
 ## 7.2.0
 
 ### New Features

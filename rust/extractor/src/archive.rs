@@ -15,7 +15,7 @@ impl Archiver {
     }
 
     fn try_archive(&self, source: &Path) -> std::io::Result<()> {
-        let dest = file_paths::path_for(&self.root, source, "");
+        let dest = file_paths::path_for(&self.root, source, "", None);
         if fs::metadata(&dest).is_ok() {
             return Ok(());
         }

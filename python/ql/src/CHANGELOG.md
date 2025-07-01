@@ -1,3 +1,25 @@
+## 1.6.0
+
+### Query Metadata Changes
+
+* The tag `quality` has been added to multiple Python quality queries for consistency. They have all been given a tag for one of the two top-level categories `reliability` or `maintainability`, and a tag for a sub-category. See [Query file metadata and alert message style guide](https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md#quality-query-sub-category-tags) for more information about these categories.
+
+### Minor Analysis Improvements
+
+* The `py/iter-returns-non-self` query has been modernized, and no longer alerts for certain cases where an equivalent iterator is returned.
+
+## 1.5.2
+
+### Minor Analysis Improvements
+
+* Added SQL injection models from the `pandas` PyPI package.
+
+## 1.5.1
+
+### Minor Analysis Improvements
+
+* The query `py/hardcoded-credentials` has been removed from all query suites.
+
 ## 1.5.0
 
 ### Query Metadata Changes

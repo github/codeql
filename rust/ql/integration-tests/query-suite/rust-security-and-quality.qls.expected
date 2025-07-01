@@ -16,6 +16,7 @@ ql/rust/ql/src/queries/security/CWE-327/BrokenCryptoAlgorithm.ql
 ql/rust/ql/src/queries/security/CWE-328/WeakSensitiveDataHashing.ql
 ql/rust/ql/src/queries/security/CWE-696/BadCtorInitialization.ql
 ql/rust/ql/src/queries/security/CWE-770/UncontrolledAllocationSize.ql
+ql/rust/ql/src/queries/security/CWE-825/AccessAfterLifetime.ql
 ql/rust/ql/src/queries/security/CWE-825/AccessInvalidPointer.ql
 ql/rust/ql/src/queries/summary/LinesOfCode.ql
 ql/rust/ql/src/queries/summary/LinesOfUserCode.ql

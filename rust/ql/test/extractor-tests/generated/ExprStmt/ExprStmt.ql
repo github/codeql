@@ -2,9 +2,8 @@
 import codeql.rust.elements
 import TestUtils
 
-from ExprStmt x, string hasExpr
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  if x.hasExpr() then hasExpr = "yes" else hasExpr = "no"
-select x, "hasExpr:", hasExpr
+query predicate instances(ExprStmt x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getExpr(ExprStmt x, Expr getExpr) {
+  toBeTested(x) and not x.isUnknown() and getExpr = x.getExpr()
+}

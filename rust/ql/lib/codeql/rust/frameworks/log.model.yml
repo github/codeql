@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/log:log", "crate::__private_api::log", "Argument[0]", "log-injection", "manual"] # logger / args (pre v0.4.27)
       - ["repo:https://github.com/rust-lang/log:log", "crate::__private_api::log", "Argument[1]", "log-injection", "manual"] # args / level (pre v0.4.27)
@@ -15,9 +15,9 @@ extensions:
       - ["lang:std", "<crate::io::stdio::StderrLock as crate::io::Write>::write", "Argument[0]", "log-injection", "manual"]
       - ["lang:std", "<crate::io::stdio::StderrLock as crate::io::Write>::write_all", "Argument[0]", "log-injection", "manual"]
       - ["lang:core", "crate::panicking::panic_fmt", "Argument[0]", "log-injection", "manual"]
-      - ["lang:core", "crate::panicking::assert_failed", "Argument[3].Field[crate::option::Option::Some(0)]", "log-injection", "manual"]
+      - ["lang:core", "crate::panicking::assert_failed", "Argument[3].Field[core::option::Option::Some(0)]", "log-injection", "manual"]
       - ["lang:core", "<crate::option::Option>::expect", "Argument[0]", "log-injection", "manual"]
       - ["repo:https://github.com/DesmondWillowbrook/rs-log_err:log_err", "<crate::option::Option as crate::LogErrOption>::log_expect", "Argument[0]", "log-injection", "manual"]
-      - ["repo:https://github.com/DesmondWillowbrook/rs-log_err:log_err", "<crate::result::Result as crate::LogErrResult>::log_unwrap", "Argument[self].Field[crate::result::Result::Err(0)]", "log-injection", "manual"]
+      - ["repo:https://github.com/DesmondWillowbrook/rs-log_err:log_err", "<crate::result::Result as crate::LogErrResult>::log_unwrap", "Argument[self].Field[core::result::Result::Err(0)]", "log-injection", "manual"]
       - ["repo:https://github.com/DesmondWillowbrook/rs-log_err:log_err", "<crate::result::Result as crate::LogErrResult>::log_expect", "Argument[0]", "log-injection", "manual"]
-      - ["repo:https://github.com/DesmondWillowbrook/rs-log_err:log_err", "<crate::result::Result as crate::LogErrResult>::log_expect", "Argument[self].Field[crate::result::Result::Err(0)]", "log-injection", "manual"]
+      - ["repo:https://github.com/DesmondWillowbrook/rs-log_err:log_err", "<crate::result::Result as crate::LogErrResult>::log_expect", "Argument[self].Field[core::result::Result::Err(0)]", "log-injection", "manual"]

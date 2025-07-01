@@ -47,18 +47,6 @@ module PolynomialRedosConfig implements DataFlow::ConfigSig {
     node instanceof SimpleTypeSanitizer or
     node.asExpr().(MethodCall).getMethod() instanceof LengthRestrictedMethod
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(SuperlinearBackTracking::PolynomialBackTrackingTerm regexp |
-      regexp.getRootTerm() = sink.(PolynomialRedosSink).getRegExp()
-    |
-      result = sink.getLocation()
-      or
-      result = regexp.getLocation()
-    )
-  }
 }
 
 module PolynomialRedosFlow = TaintTracking::Global<PolynomialRedosConfig>;

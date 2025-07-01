@@ -10,14 +10,14 @@ private import AlgToAVCFlow
 private import BlockAlgorithmInstance
 
 /**
- * Given a `KnownOpenSSLCipherAlgorithmConstant`, converts this to a cipher family type.
+ * Given a `KnownOpenSslCipherAlgorithmExpr`, converts this to a cipher family type.
  * Does not bind if there is no mapping (no mapping to 'unknown' or 'other').
  */
-predicate knownOpenSSLConstantToCipherFamilyType(
-  KnownOpenSSLCipherAlgorithmConstant e, Crypto::KeyOpAlg::TAlgorithm type
+predicate knownOpenSslConstantToCipherFamilyType(
+  KnownOpenSslCipherAlgorithmExpr e, Crypto::KeyOpAlg::TAlgorithm type
 ) {
   exists(string name |
-    name = e.getNormalizedName() and
+    name = e.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
     (
       name.matches("AES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::AES())
       or
@@ -33,9 +33,9 @@ predicate knownOpenSSLConstantToCipherFamilyType(
       or
       name.matches("CAST5%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::CAST5())
       or
-      name.matches("2DES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DoubleDES())
+      name.matches("2DES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DOUBLE_DES())
       or
-      name.matches("3DES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TripleDES())
+      name.matches("3DES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TRIPLE_DES())
       or
       name.matches("DES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DES())
       or
@@ -64,28 +64,29 @@ predicate knownOpenSSLConstantToCipherFamilyType(
   )
 }
 
-class KnownOpenSSLCipherConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
-  Crypto::KeyOperationAlgorithmInstance instanceof KnownOpenSSLCipherAlgorithmConstant
+class KnownOpenSslCipherConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
+  Crypto::KeyOperationAlgorithmInstance instanceof KnownOpenSslCipherAlgorithmExpr
 {
-  OpenSSLAlgorithmValueConsumer getterCall;
+  OpenSslAlgorithmValueConsumer getterCall;
 
-  KnownOpenSSLCipherConstantAlgorithmInstance() {
+  KnownOpenSslCipherConstantAlgorithmInstance() {
     // Two possibilities:
     // 1) The source is a literal and flows to a getter, then we know we have an instance
-    // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
+    // 2) The source is a KnownOpenSslAlgorithm is call, and we know we have an instance immediately from that
     // Possibility 1:
-    this instanceof Literal and
+    this instanceof OpenSslAlgorithmLiteral and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
-      sink = getterCall.(OpenSSLAlgorithmValueConsumer).getInputNode() and
+      sink = getterCall.getInputNode() and
       // Source is `this`
       src.asExpr() = this and
       // This traces to a getter
-      KnownOpenSSLAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
+      KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
     )
     or
     // Possibility 2:
-    this instanceof DirectAlgorithmValueConsumer and getterCall = this
+    this instanceof OpenSslAlgorithmCall and
+    getterCall = this
   }
 
   override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() {
@@ -109,17 +110,17 @@ class KnownOpenSSLCipherConstantAlgorithmInstance extends OpenSSLAlgorithmInstan
   }
 
   override int getKeySizeFixed() {
-    this.(KnownOpenSSLCipherAlgorithmConstant).getExplicitKeySize() = result
+    this.(KnownOpenSslCipherAlgorithmExpr).getExplicitKeySize() = result
   }
 
-  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
-    knownOpenSSLConstantToCipherFamilyType(this, result)
+  override KeyOpAlg::AlgorithmType getAlgorithmType() {
+    knownOpenSslConstantToCipherFamilyType(this, result)
     or
-    not knownOpenSSLConstantToCipherFamilyType(this, _) and
+    not knownOpenSslConstantToCipherFamilyType(this, _) and
     result = Crypto::KeyOpAlg::TUnknownKeyOperationAlgorithmType()
   }
 
-  override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
+  override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
 
   override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
     // TODO: trace to any key size initializer, symmetric and asymmetric

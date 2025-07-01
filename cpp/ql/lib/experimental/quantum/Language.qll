@@ -8,12 +8,14 @@ module CryptoInput implements InputSig<Language::Location> {
 
   class LocatableElement = Language::Locatable;
 
-  class UnknownLocation = Language::UnknownDefaultLocation;
+  class UnknownLocation = Language::UnknownLocation;
 
   LocatableElement dfn_to_element(DataFlow::Node node) {
     result = node.asExpr() or
     result = node.asParameter() or
-    result = node.asVariable()
+    result = node.asVariable() or
+    result = node.asDefiningArgument()
+    // TODO: do we need asIndirectExpr()?
   }
 
   string locationToFileBaseNameAndLineNumberString(Location location) {
@@ -54,7 +56,7 @@ module ArtifactFlowConfig implements DataFlow::ConfigSig {
 module ArtifactFlow = DataFlow::Global<ArtifactFlowConfig>;
 
 /**
- * Artifact output to node input configuration
+ * An artifact output to node input configuration
  */
 abstract class AdditionalFlowInputStep extends DataFlow::Node {
   abstract DataFlow::Node getOutput();
@@ -89,9 +91,8 @@ module GenericDataSourceFlowConfig implements DataFlow::ConfigSig {
 
 module GenericDataSourceFlow = TaintTracking::Global<GenericDataSourceFlowConfig>;
 
-private class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof Literal {
-  ConstantDataSource() { this instanceof OpenSSLGenericSourceCandidateLiteral }
-
+private class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof OpenSslGenericSourceCandidateLiteral
+{
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 
   override predicate flowsTo(Crypto::FlowAwareElement other) {

@@ -1,2 +1,16 @@
-| gen_type_alias.rs:4:5:5:26 | type Point | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasGenericParamList: | no | isDefault: | no | hasName: | yes | hasTypeRepr: | yes | hasTypeBoundList: | no | hasVisibility: | no | hasWhereClause: | no |
-| gen_type_alias.rs:8:9:8:20 | type Output | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasGenericParamList: | no | isDefault: | no | hasName: | yes | hasTypeRepr: | no | hasTypeBoundList: | no | hasVisibility: | no | hasWhereClause: | no |
+instances
+| gen_type_alias.rs:4:5:5:26 | type Point | isDefault: | no |
+| gen_type_alias.rs:8:9:8:20 | type Output | isDefault: | no |
+getExtendedCanonicalPath
+getCrateOrigin
+getAttributeMacroExpansion
+getAttr
+getGenericParamList
+getName
+| gen_type_alias.rs:4:5:5:26 | type Point | gen_type_alias.rs:5:10:5:14 | Point |
+| gen_type_alias.rs:8:9:8:20 | type Output | gen_type_alias.rs:8:14:8:19 | Output |
+getTypeRepr
+| gen_type_alias.rs:4:5:5:26 | type Point | gen_type_alias.rs:5:18:5:25 | TupleTypeRepr |
+getTypeBoundList
+getVisibility
+getWhereClause

@@ -5,26 +5,42 @@
 
 <overview>
 <p>
-Character classes in regular expressions represent sets of characters, so there is no need to specify
-the same character twice in one character class. Duplicate characters in character classes are at best
-useless, and may even indicate a latent bug.
+Character classes in regular expressions (denoted by square brackets <code>[]</code>) represent sets of characters where the pattern matches any single character from that set. Since character classes are sets, specifying the same character multiple times is redundant and often indicates a programming error.
 </p>
+
+<p>
+Common mistakes include:
+</p>
+<ul>
+<li>Using square brackets <code>[]</code> instead of parentheses <code>()</code> for grouping alternatives</li>
+<li>Misunderstanding that special regex characters like <code>|</code>, <code>*</code>, <code>+</code>, <code>()</code>, and <code>-</code> work differently when appearing inside a character class</li>
+<li>Accidentally duplicating characters or escape sequences that represent the same character</li>
+</ul>
 
 </overview>
 <recommendation>
 
-<p>If the character was accidentally duplicated, remove it. If the character class was meant to be a
-group, replace the brackets with parentheses.</p>
+<p>
+Examine each duplicate character to determine the intended behavior:
+</p>
+<ul>
+<li>If you see <code>|</code> inside square brackets (e.g., <code>[a|b|c]</code>): This is usually a mistake. The author likely intended alternation. Replace the character class with a group: <code>(a|b|c)</code></li>
+<li>If trying to match alternative strings, use parentheses <code>()</code> for grouping instead of square brackets</li>
+<li>If the duplicate was truly accidental, remove the redundant characters</li>
+<li>If trying to use special regex operators inside square brackets, note that most operators (like <code>|</code>) are treated as literal characters</li>
+</ul>
 
+<p>
+Note that simply removing <code>|</code> characters from character classes is rarely the correct fix. Instead, analyze the pattern to understand what the author intended to match.
+</p>
 
 </recommendation>
 <example>
 <p>
-In the following example, the character class <code>[password|pwd]</code> contains two instances each
-of the characters <code>d</code>, <code>p</code>, <code>s</code>, and <code>w</code>. The programmer
-most likely meant to write <code>(password|pwd)</code> (a pattern that matches either the string
-<code>"password"</code> or the string <code>"pwd"</code>), and accidentally mistyped the enclosing
-brackets.
+<strong>Example 1: Confusing character classes with groups</strong>
+</p>
+<p>
+The pattern <code>[password|pwd]</code> does not match "password" or "pwd" as intended. Instead, it matches any single character from the set <code>{p, a, s, w, o, r, d, |}</code>. Note that <code>|</code> has no special meaning inside character classes.
 </p>
 
 <sample src="examples/DuplicateCharacterInCharacterClass.js" />
@@ -33,10 +49,23 @@ brackets.
 To fix this problem, the regular expression should be rewritten to <code>/(password|pwd) =/</code>.
 </p>
 
+<p>
+<strong>Example 2: CSS unit matching</strong>
+</p>
+<p>
+The pattern <code>r?e[m|x]</code> appears to be trying to match "rem" or "rex", but actually matches "re" followed by any of the characters <code>{m, |, x}</code>. The correct pattern should be <code>r?e(m|x)</code> or <code>r?e[mx]</code>.
+</p>
+
+<p>
+Similarly, <code>v[h|w|min|max]</code> should be <code>v(h|w|min|max)</code> to properly match "vh", "vw", "vmin", or "vmax".
+</p>
+
 </example>
 <references>
 
 <li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">JavaScript Regular Expressions</a>.</li>
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Character_Classes">Character Classes</a> - Details on how character classes work.</li>
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges">Groups and Ranges</a> - Proper use of grouping with parentheses.</li>
 
 </references>
 </qhelp>

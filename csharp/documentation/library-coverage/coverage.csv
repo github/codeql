@@ -15,6 +15,7 @@ Microsoft.AspNetCore.Http,,,1,,,,,,,,,,,,,,,,,,,1,
 Microsoft.AspNetCore.Mvc,,,2,,,,,,,,,,,,,,,,,,,,2
 Microsoft.AspNetCore.WebUtilities,,,2,,,,,,,,,,,,,,,,,,,2,
 Microsoft.CSharp,,,2,,,,,,,,,,,,,,,,,,,2,
+Microsoft.Data.SqlClient,7,,4,,,,,,,,,,7,,,,,,,,,4,
 Microsoft.Diagnostics.Tools.Pgo,,,21,,,,,,,,,,,,,,,,,,,,21
 Microsoft.DotNet.Build.Tasks,,,11,,,,,,,,,,,,,,,,,,,9,2
 Microsoft.DotNet.PlatformAbstractions,,,1,,,,,,,,,,,,,,,,,,,1,

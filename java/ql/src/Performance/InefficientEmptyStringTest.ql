@@ -5,8 +5,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/inefficient-empty-string-test
- * @tags efficiency
+ * @tags quality
  *       maintainability
+ *       readability
  */
 
 import java

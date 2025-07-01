@@ -6,7 +6,8 @@
  * @problem.severity warning
  * @precision high
  * @id java/unreachable-catch-clause
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       exceptions
  *       external/cwe/cwe-561

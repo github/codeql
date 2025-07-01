@@ -2,23 +2,44 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  NamedFunction x, string hasName, string hasSelfParam, int getNumberOfParams, string hasBody,
-  int getNumberOfCaptures, int getNumberOfGenericTypeParams, ModuleDecl getModule,
-  int getNumberOfMembers, Type getInterfaceType
-where
+query predicate instances(
+  NamedFunction x, string getModule__label, ModuleDecl getModule, string getInterfaceType__label,
+  Type getInterfaceType
+) {
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  (if x.hasSelfParam() then hasSelfParam = "yes" else hasSelfParam = "no") and
-  getNumberOfParams = x.getNumberOfParams() and
-  (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
-  getNumberOfCaptures = x.getNumberOfCaptures() and
-  getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
+  getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers = x.getNumberOfMembers() and
+  getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType()
-select x, "hasName:", hasName, "hasSelfParam:", hasSelfParam, "getNumberOfParams:",
-  getNumberOfParams, "hasBody:", hasBody, "getNumberOfCaptures:", getNumberOfCaptures,
-  "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams, "getModule:", getModule,
-  "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:", getInterfaceType
+}
+
+query predicate getGenericTypeParam(
+  NamedFunction x, int index, GenericTypeParamDecl getGenericTypeParam
+) {
+  toBeTested(x) and not x.isUnknown() and getGenericTypeParam = x.getGenericTypeParam(index)
+}
+
+query predicate getMember(NamedFunction x, int index, Decl getMember) {
+  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
+}
+
+query predicate getName(NamedFunction x, string getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getSelfParam(NamedFunction x, ParamDecl getSelfParam) {
+  toBeTested(x) and not x.isUnknown() and getSelfParam = x.getSelfParam()
+}
+
+query predicate getParam(NamedFunction x, int index, ParamDecl getParam) {
+  toBeTested(x) and not x.isUnknown() and getParam = x.getParam(index)
+}
+
+query predicate getBody(NamedFunction x, BraceStmt getBody) {
+  toBeTested(x) and not x.isUnknown() and getBody = x.getBody()
+}
+
+query predicate getCapture(NamedFunction x, int index, CapturedDecl getCapture) {
+  toBeTested(x) and not x.isUnknown() and getCapture = x.getCapture(index)
+}

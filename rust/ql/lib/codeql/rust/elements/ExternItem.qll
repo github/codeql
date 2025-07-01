@@ -4,7 +4,7 @@
  */
 
 private import internal.ExternItemImpl
-import codeql.rust.elements.AstNode
+import codeql.rust.elements.Item
 
 /**
  * An item inside an extern block.

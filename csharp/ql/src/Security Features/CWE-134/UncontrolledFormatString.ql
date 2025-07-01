@@ -4,7 +4,7 @@
  *              and cause a denial of service.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 9.3
+ * @security-severity 7.3
  * @precision high
  * @id cs/uncontrolled-format-string
  * @tags security
@@ -22,6 +22,8 @@ module FormatStringConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(FormatStringParseCall call).getFormatExpr()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module FormatString = TaintTracking::Global<FormatStringConfig>;

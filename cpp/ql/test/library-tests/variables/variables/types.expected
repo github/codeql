@@ -6,10 +6,13 @@
 | _Complex _Float64 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
 | _Complex _Float64x | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
 | _Complex _Float128 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
+| _Complex __bf16 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
 | _Complex __float128 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
+| _Complex __fp16 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
 | _Complex double | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
 | _Complex float | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
 | _Complex long double | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
+| _Complex std::float16_t | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
 | _Decimal32 | Decimal32Type |  |  |  |  |
 | _Decimal64 | Decimal64Type |  |  |  |  |
 | _Decimal128 | Decimal128Type |  |  |  |  |
@@ -22,10 +25,12 @@
 | _Imaginary double | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |
 | _Imaginary float | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |
 | _Imaginary long double | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |
+| __SVCount_t | ScalableVectorCount |  |  |  |  |
 | __bf16 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | __float128 | Float128Type |  |  |  |  |
 | __fp16 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | __int128 | Int128Type |  |  |  |  |
+| __mfp8 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | __va_list_tag | DirectAccessHolder, MetricClass, Struct, StructLikeClass |  |  |  |  |
 | __va_list_tag & | LValueReferenceType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | __va_list_tag |  |  |
 | __va_list_tag && | PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection, RValueReferenceType |  | __va_list_tag |  |  |

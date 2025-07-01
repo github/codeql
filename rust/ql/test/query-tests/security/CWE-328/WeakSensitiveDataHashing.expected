@@ -33,9 +33,9 @@ edges
 | test.rs:83:26:83:33 | password | test.rs:83:26:83:44 | password.as_bytes() | provenance | MaD:4 |
 | test.rs:83:26:83:44 | password.as_bytes() | test.rs:83:9:83:24 | ...::digest | provenance | MaD:1 Sink:MaD:1 |
 models
-| 1 | Sink: repo:https://github.com/RustCrypto/traits:digest; <_ as crate::digest::Digest>::digest; hasher-input; Argument[0] |
-| 2 | Sink: repo:https://github.com/RustCrypto/traits:digest; <_ as crate::digest::Digest>::new_with_prefix; hasher-input; Argument[0] |
-| 3 | Sink: repo:https://github.com/stainless-steel/md5:md5; crate::compute; hasher-input; Argument[0] |
+| 1 | Sink: repo:https://github.com/RustCrypto/traits:digest; <_ as crate::digest::Digest>::digest; Argument[0]; hasher-input |
+| 2 | Sink: repo:https://github.com/RustCrypto/traits:digest; <_ as crate::digest::Digest>::new_with_prefix; Argument[0]; hasher-input |
+| 3 | Sink: repo:https://github.com/stainless-steel/md5:md5; crate::compute; Argument[0]; hasher-input |
 | 4 | Summary: lang:core; <str>::as_bytes; Argument[self]; ReturnValue; taint |
 | 5 | Summary: lang:core; <str>::trim; Argument[self]; ReturnValue.Reference; taint |
 nodes

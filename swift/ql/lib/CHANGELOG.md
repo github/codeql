@@ -1,3 +1,30 @@
+## 5.0.2
+
+No user-facing changes.
+
+## 5.0.1
+
+### Minor Analysis Improvements
+
+* Updated to allow analysis of Swift 6.1.2.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `parseContent` predicate from the `ExternalFlow.qll`.
+* Deleted the deprecated `hasLocationInfo` predicate from the `DataFlowPublic.qll`.
+* Deleted the deprecated `SummaryComponent` class from the `FlowSummary.qll`.
+* Deleted the deprecated `SummaryComponentStack` class from the `FlowSummary.qll`.
+* Deleted the deprecated `SummaryComponent` module from the `FlowSummary.qll`.
+* Deleted the deprecated `SummaryComponentStack` module from the `FlowSummary.qll`.
+* Deleted the deprecated `RequiredSummaryComponentStack` class from the `FlowSummary.qll`.
+
+### Minor Analysis Improvements
+
+* Updated to allow analysis of Swift 6.1.1.
+* `TypeValueExpr` experimental AST leaf is now implemented in the control flow library
+
 ## 4.3.0
 
 ### New Features

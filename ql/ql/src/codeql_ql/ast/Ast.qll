@@ -2538,6 +2538,22 @@ private class NoOptArg extends AnnotationArg {
   NoOptArg() { this.getValue() = "noopt" }
 }
 
+private class CallerArg extends AnnotationArg {
+  CallerArg() { this.getValue() = "caller" }
+}
+
+private class CallerQArg extends AnnotationArg {
+  CallerQArg() { this.getValue() = "caller?" }
+}
+
+private class LocalArg extends AnnotationArg {
+  LocalArg() { this.getValue() = "local" }
+}
+
+private class LocalQArg extends AnnotationArg {
+  LocalQArg() { this.getValue() = "local?" }
+}
+
 private class MonotonicAggregatesArg extends AnnotationArg {
   MonotonicAggregatesArg() { this.getValue() = "monotonicAggregates" }
 }
@@ -2595,6 +2611,34 @@ class NoOpt extends Annotation {
   NoOpt() { this.getArgs(0) instanceof NoOptArg }
 
   override string toString() { result = "noopt" }
+}
+
+/** An `overlay[caller]` annotation. */
+class OverlayCaller extends Annotation {
+  OverlayCaller() { this.getName() = "overlay" and this.getArgs(0) instanceof CallerArg }
+
+  override string toString() { result = "overlay[caller]" }
+}
+
+/** An `overlay[caller?]` annotation. */
+class OverlayCallerQ extends Annotation {
+  OverlayCallerQ() { this.getName() = "overlay" and this.getArgs(0) instanceof CallerQArg }
+
+  override string toString() { result = "overlay[caller?]" }
+}
+
+/** An `overlay[local]` annotation. */
+class OverlayLocal extends Annotation {
+  OverlayLocal() { this.getName() = "overlay" and this.getArgs(0) instanceof LocalArg }
+
+  override string toString() { result = "overlay[local]" }
+}
+
+/** An `overlay[local?]` annotation. */
+class OverlayLocalQ extends Annotation {
+  OverlayLocalQ() { this.getName() = "overlay" and this.getArgs(0) instanceof LocalQArg }
+
+  override string toString() { result = "overlay[local?]" }
 }
 
 /** A `language[monotonicAggregates]` annotation. */

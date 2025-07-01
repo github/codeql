@@ -1,17 +1,15 @@
-# Untrusted Checkout TOCTOU (Time-of-check to time-of-use)
-
-## Description
+## Overview
 
 Untrusted Checkout is protected by a security check but the checked-out branch can be changed after the check.
 
-## Recommendations
+## Recommendation
 
 Verify that the code has not been modified after the security check. This may be achieved differently depending on the type of check:
 
 - Deployment Environment Approval: Make sure to use a non-mutable reference to the code to be executed. For example use a `sha` instead of a `ref`.
 - Label Gates: Make sure to use a non-mutable reference to the code to be executed. For example use a `sha` instead of a `ref`.
 
-## Examples
+## Example
 
 ### Incorrect Usage (Deployment Environment Approval)
 
@@ -99,4 +97,4 @@ jobs:
 
 ## References
 
-- [ActionsTOCTOU](https://github.com/AdnaneKhan/ActionsTOCTOU)
+- [ActionsTOCTOU](https://github.com/AdnaneKhan/ActionsTOCTOU).

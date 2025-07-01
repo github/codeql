@@ -1,3 +1,27 @@
+## 1.3.0
+
+### Query Metadata Changes
+
+* Query metadata tags have been systematically updated for many C# queries. Primary categorization as either `reliability` or `maintainability`, and relevant sub-category tags such as `readability`, `useless-code`, `complexity`, `performance`, `correctness`, `error-handling`, and `concurrency`. Aligns with the established [Query file metadata and alert message style guide](https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md#quality-query-sub-category-tags).
+* Adjusts the `@security-severity` from 9.3 to 7.3 for `cs/uncontrolled-format-string` to align `CWE-134` severity for memory safe languages to better reflect their impact.
+
+### Minor Analysis Improvements
+
+* The queries `cs/dereferenced-value-is-always-null` and `cs/dereferenced-value-may-be-null` have been improved to reduce false positives. The queries no longer assume that expressions are dereferenced when passed as the receiver (`this` parameter) to extension methods where that parameter is a nullable type.
+
+## 1.2.2
+
+No user-facing changes.
+
+## 1.2.1
+
+### Minor Analysis Improvements
+
+* The precision of the query `cs/missed-readonly-modifier` has been improved. Some false positives related to static fields and struct type fields have been removed.
+* The queries `cs/password-in-configuration`, `cs/hardcoded-credentials` and `cs/hardcoded-connection-string-credentials` have been removed from all query suites.
+* The precision of the query `cs/gethashcode-is-not-defined` has been improved (false negative reduction). Calls to more methods (and indexers) that rely on the invariant `e1.Equals(e2)` implies `e1.GetHashCode() == e2.GetHashCode()` are taken into account.
+* The precision of the query `cs/uncontrolled-format-string` has been improved (false negative reduction). Calls to `System.Text.CompositeFormat.Parse` are now considered a format like method call.
+
 ## 1.2.0
 
 ### Query Metadata Changes

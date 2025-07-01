@@ -2,10 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from Comment x, AstNode getParent, string getText
-where
+query predicate instances(
+  Comment x, string getParent__label, AstNode getParent, string getText__label, string getText
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getParent__label = "getParent:" and
   getParent = x.getParent() and
+  getText__label = "getText:" and
   getText = x.getText()
-select x, "getParent:", getParent, "getText:", getText
+}

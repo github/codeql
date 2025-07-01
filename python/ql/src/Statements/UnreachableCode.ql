@@ -2,7 +2,8 @@
  * @name Unreachable code
  * @description Code is unreachable
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-561
  * @problem.severity warning

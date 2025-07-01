@@ -58,6 +58,123 @@
 #-----|         Type = [LongType] unsigned long
 #-----|     getParameter(1): [Parameter] (unnamed parameter 1)
 #-----|         Type = [ScopedEnum] align_val_t
+arm_neon.cpp:
+#    6| [TopLevelFunction] uint8x8_t vadd_u8(uint8x8_t, uint8x8_t)
+#    6|   <params>: 
+#    6|     getParameter(0): [Parameter] a
+#    6|         Type = [CTypedefType] uint8x8_t
+#    6|     getParameter(1): [Parameter] b
+#    6|         Type = [CTypedefType] uint8x8_t
+#    6|   getEntryPoint(): [BlockStmt] { ... }
+#    7|     getStmt(0): [ReturnStmt] return ...
+#    7|       getExpr(): [AddExpr] ... + ...
+#    7|           Type = [GNUVectorType] __attribute((neon_vector_type(8))) unsigned char
+#    7|           ValueCategory = prvalue
+#    7|         getLeftOperand(): [VariableAccess] a
+#    7|             Type = [CTypedefType] uint8x8_t
+#    7|             ValueCategory = prvalue(load)
+#    7|         getRightOperand(): [VariableAccess] b
+#    7|             Type = [CTypedefType] uint8x8_t
+#    7|             ValueCategory = prvalue(load)
+#   10| [TopLevelFunction] uint16x8_t vaddl_u8(uint8x8_t, uint8x8_t)
+#   10|   <params>: 
+#   10|     getParameter(0): [Parameter] a
+#   10|         Type = [CTypedefType] uint8x8_t
+#   10|     getParameter(1): [Parameter] b
+#   10|         Type = [CTypedefType] uint8x8_t
+#   12| [TopLevelFunction] uint16x8_t arm_add(uint8x8_t, uint8x8_t*)
+#   12|   <params>: 
+#   12|     getParameter(0): [Parameter] a
+#   12|         Type = [CTypedefType] uint8x8_t
+#   12|     getParameter(1): [Parameter] b
+#   12|         Type = [PointerType] uint8x8_t *
+#   12|   getEntryPoint(): [BlockStmt] { ... }
+#   13|     getStmt(0): [DeclStmt] declaration
+#   13|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+#   13|           Type = [CTypedefType] uint8x8_t
+#   13|         getVariable().getInitializer(): [Initializer] initializer for c
+#   13|           getExpr(): [FunctionCall] call to vadd_u8
+#   13|               Type = [CTypedefType] uint8x8_t
+#   13|               ValueCategory = prvalue
+#   13|             getArgument(0): [VariableAccess] a
+#   13|                 Type = [CTypedefType] uint8x8_t
+#   13|                 ValueCategory = prvalue(load)
+#   13|             getArgument(1): [PointerDereferenceExpr] * ...
+#   13|                 Type = [CTypedefType] uint8x8_t
+#   13|                 ValueCategory = prvalue(load)
+#   13|               getOperand(): [VariableAccess] b
+#   13|                   Type = [PointerType] uint8x8_t *
+#   13|                   ValueCategory = prvalue(load)
+#   14|     getStmt(1): [ReturnStmt] return ...
+#   14|       getExpr(): [FunctionCall] call to vaddl_u8
+#   14|           Type = [CTypedefType] uint16x8_t
+#   14|           ValueCategory = prvalue
+#   14|         getArgument(0): [VariableAccess] a
+#   14|             Type = [CTypedefType] uint8x8_t
+#   14|             ValueCategory = prvalue(load)
+#   14|         getArgument(1): [VariableAccess] c
+#   14|             Type = [CTypedefType] uint8x8_t
+#   14|             ValueCategory = prvalue(load)
+#   20| [TopLevelFunction] mfloat8x8_t vreinterpret_mf8_s8(int8x8_t)
+#   20|   <params>: 
+#   20|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   20|         Type = [CTypedefType] int8x8_t
+#   22| [TopLevelFunction] mfloat8x8_t arm_reinterpret(int8x8_t*)
+#   22|   <params>: 
+#   22|     getParameter(0): [Parameter] a
+#   22|         Type = [PointerType] int8x8_t *
+#   22|   getEntryPoint(): [BlockStmt] { ... }
+#   23|     getStmt(0): [ReturnStmt] return ...
+#   23|       getExpr(): [FunctionCall] call to vreinterpret_mf8_s8
+#   23|           Type = [CTypedefType] mfloat8x8_t
+#   23|           ValueCategory = prvalue
+#   23|         getArgument(0): [PointerDereferenceExpr] * ...
+#   23|             Type = [CTypedefType] int8x8_t
+#   23|             ValueCategory = prvalue(load)
+#   23|           getOperand(): [VariableAccess] a
+#   23|               Type = [PointerType] int8x8_t *
+#   23|               ValueCategory = prvalue(load)
+arm_sve.cpp:
+#    6| [TopLevelFunction] svuint8x2_t svsel_u8_x2(svcount_t, svuint8x2_t, svuint8x2_t)
+#    6|   <params>: 
+#    6|     getParameter(0): [Parameter] (unnamed parameter 0)
+#    6|         Type = [CTypedefType] svcount_t
+#    6|     getParameter(1): [Parameter] (unnamed parameter 1)
+#    6|         Type = [CTypedefType] svuint8x2_t
+#    6|     getParameter(2): [Parameter] (unnamed parameter 2)
+#    6|         Type = [CTypedefType] svuint8x2_t
+#    8| [TopLevelFunction] svuint8x2_t arm_sel(svcount_t, svuint8x2_t, svuint8x2_t*)
+#    8|   <params>: 
+#    8|     getParameter(0): [Parameter] a
+#    8|         Type = [CTypedefType] svcount_t
+#    8|     getParameter(1): [Parameter] b
+#    8|         Type = [CTypedefType] svuint8x2_t
+#    8|     getParameter(2): [Parameter] c
+#    8|         Type = [PointerType] svuint8x2_t *
+#    8|   getEntryPoint(): [BlockStmt] { ... }
+#    9|     getStmt(0): [DeclStmt] declaration
+#    9|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of d
+#    9|           Type = [CTypedefType] svuint8x2_t
+#    9|         getVariable().getInitializer(): [Initializer] initializer for d
+#    9|           getExpr(): [FunctionCall] call to svsel_u8_x2
+#    9|               Type = [CTypedefType] svuint8x2_t
+#    9|               ValueCategory = prvalue
+#    9|             getArgument(0): [VariableAccess] a
+#    9|                 Type = [CTypedefType] svcount_t
+#    9|                 ValueCategory = prvalue(load)
+#    9|             getArgument(1): [VariableAccess] b
+#    9|                 Type = [CTypedefType] svuint8x2_t
+#    9|                 ValueCategory = prvalue(load)
+#    9|             getArgument(2): [PointerDereferenceExpr] * ...
+#    9|                 Type = [CTypedefType] svuint8x2_t
+#    9|                 ValueCategory = prvalue(load)
+#    9|               getOperand(): [VariableAccess] c
+#    9|                   Type = [PointerType] svuint8x2_t *
+#    9|                   ValueCategory = prvalue(load)
+#   10|     getStmt(1): [ReturnStmt] return ...
+#   10|       getExpr(): [VariableAccess] d
+#   10|           Type = [CTypedefType] svuint8x2_t
+#   10|           ValueCategory = prvalue(load)
 bad_asts.cpp:
 #    5| [CopyAssignmentOperator] Bad::S& Bad::S::operator=(Bad::S const&)
 #    5|   <params>: 
@@ -10736,22 +10853,22 @@ ir.cpp:
 #  885|             Type = [FunctionPointerType] ..(*)(..)
 #  885|             ValueCategory = prvalue
 #  886|     getStmt(2): [ReturnStmt] return ...
-#  888| [TopLevelFunction] void VAListUsage(int, __va_list_tag[1])
+#  888| [TopLevelFunction] void VAListUsage(int, __builtin_va_list)
 #  888|   <params>: 
 #  888|     getParameter(0): [Parameter] x
 #  888|         Type = [IntType] int
 #  888|     getParameter(1): [Parameter] args
-#  888|         Type = [ArrayType] __va_list_tag[1]
+#  888|         Type = [BuiltInVarArgsList,CTypedefType] __builtin_va_list
 #  888|   getEntryPoint(): [BlockStmt] { ... }
 #  889|     getStmt(0): [DeclStmt] declaration
 #  889|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of args2
-#  889|           Type = [ArrayType] __va_list_tag[1]
+#  889|           Type = [BuiltInVarArgsList,CTypedefType] __builtin_va_list
 #  890|     getStmt(1): [ExprStmt] ExprStmt
 #  890|       getExpr(): [BuiltInVarArgCopy] __builtin_va_copy
 #  890|           Type = [VoidType] void
 #  890|           ValueCategory = prvalue
 #  890|         getDestinationVAList(): [VariableAccess] args2
-#  890|             Type = [ArrayType] __va_list_tag[1]
+#  890|             Type = [BuiltInVarArgsList,CTypedefType] __builtin_va_list
 #  890|             ValueCategory = lvalue
 #  890|         getSourceVAList(): [VariableAccess] args
 #  890|             Type = [PointerType] __va_list_tag *
@@ -10788,7 +10905,7 @@ ir.cpp:
 #  893|           Type = [VoidType] void
 #  893|           ValueCategory = prvalue
 #  893|         getVAList(): [VariableAccess] args2
-#  893|             Type = [ArrayType] __va_list_tag[1]
+#  893|             Type = [BuiltInVarArgsList,CTypedefType] __builtin_va_list
 #  893|             ValueCategory = lvalue
 #  893|         getVAList().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #  893|             Type = [PointerType] __va_list_tag *
@@ -10801,13 +10918,13 @@ ir.cpp:
 #  896|   getEntryPoint(): [BlockStmt] { ... }
 #  897|     getStmt(0): [DeclStmt] declaration
 #  897|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of args
-#  897|           Type = [ArrayType] __va_list_tag[1]
+#  897|           Type = [BuiltInVarArgsList,CTypedefType] __builtin_va_list
 #  899|     getStmt(1): [ExprStmt] ExprStmt
 #  899|       getExpr(): [BuiltInVarArgsStart] __builtin_va_start
 #  899|           Type = [VoidType] void
 #  899|           ValueCategory = prvalue
 #  899|         getVAList(): [VariableAccess] args
-#  899|             Type = [ArrayType] __va_list_tag[1]
+#  899|             Type = [BuiltInVarArgsList,CTypedefType] __builtin_va_list
 #  899|             ValueCategory = lvalue
 #  899|         getLastNamedParameter(): [VariableAccess] x
 #  899|             Type = [IntType] int
@@ -10817,16 +10934,16 @@ ir.cpp:
 #  899|             ValueCategory = prvalue
 #  900|     getStmt(2): [DeclStmt] declaration
 #  900|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of args2
-#  900|           Type = [ArrayType] __va_list_tag[1]
+#  900|           Type = [BuiltInVarArgsList,CTypedefType] __builtin_va_list
 #  901|     getStmt(3): [ExprStmt] ExprStmt
 #  901|       getExpr(): [BuiltInVarArgCopy] __builtin_va_copy
 #  901|           Type = [VoidType] void
 #  901|           ValueCategory = prvalue
 #  901|         getDestinationVAList(): [VariableAccess] args2
-#  901|             Type = [ArrayType] __va_list_tag[1]
+#  901|             Type = [BuiltInVarArgsList,CTypedefType] __builtin_va_list
 #  901|             ValueCategory = lvalue
 #  901|         getSourceVAList(): [VariableAccess] args
-#  901|             Type = [ArrayType] __va_list_tag[1]
+#  901|             Type = [BuiltInVarArgsList,CTypedefType] __builtin_va_list
 #  901|             ValueCategory = lvalue
 #  901|         getDestinationVAList().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #  901|             Type = [PointerType] __va_list_tag *
@@ -10842,7 +10959,7 @@ ir.cpp:
 #  902|               Type = [DoubleType] double
 #  902|               ValueCategory = prvalue(load)
 #  902|             getVAList(): [VariableAccess] args
-#  902|                 Type = [ArrayType] __va_list_tag[1]
+#  902|                 Type = [BuiltInVarArgsList,CTypedefType] __builtin_va_list
 #  902|                 ValueCategory = lvalue
 #  902|             getVAList().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #  902|                 Type = [PointerType] __va_list_tag *
@@ -10855,7 +10972,7 @@ ir.cpp:
 #  903|               Type = [IntType] int
 #  903|               ValueCategory = prvalue(load)
 #  903|             getVAList(): [VariableAccess] args
-#  903|                 Type = [ArrayType] __va_list_tag[1]
+#  903|                 Type = [BuiltInVarArgsList,CTypedefType] __builtin_va_list
 #  903|                 ValueCategory = lvalue
 #  903|             getVAList().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #  903|                 Type = [PointerType] __va_list_tag *
@@ -10869,7 +10986,7 @@ ir.cpp:
 #  904|           Type = [VoidType] void
 #  904|           ValueCategory = prvalue
 #  904|         getVAList(): [VariableAccess] args
-#  904|             Type = [ArrayType] __va_list_tag[1]
+#  904|             Type = [BuiltInVarArgsList,CTypedefType] __builtin_va_list
 #  904|             ValueCategory = lvalue
 #  904|         getVAList().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #  904|             Type = [PointerType] __va_list_tag *
@@ -10882,7 +10999,7 @@ ir.cpp:
 #  905|             Type = [IntType] int
 #  905|             ValueCategory = prvalue(load)
 #  905|         getArgument(1): [VariableAccess] args2
-#  905|             Type = [ArrayType] __va_list_tag[1]
+#  905|             Type = [BuiltInVarArgsList,CTypedefType] __builtin_va_list
 #  905|             ValueCategory = lvalue
 #  905|         getArgument(1).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #  905|             Type = [PointerType] __va_list_tag *
@@ -10892,7 +11009,7 @@ ir.cpp:
 #  906|           Type = [VoidType] void
 #  906|           ValueCategory = prvalue
 #  906|         getVAList(): [VariableAccess] args2
-#  906|             Type = [ArrayType] __va_list_tag[1]
+#  906|             Type = [BuiltInVarArgsList,CTypedefType] __builtin_va_list
 #  906|             ValueCategory = lvalue
 #  906|         getVAList().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #  906|             Type = [PointerType] __va_list_tag *
@@ -15017,7 +15134,7 @@ ir.cpp:
 # 1506| [Constructor] void Inheritance_Test_A::Inheritance_Test_A()
 # 1506|   <params>: 
 # 1506|   <initializations>: 
-# 1506|     getInitializer(0): (no string representation)
+# 1506|     getInitializer(0): [ConstructorInit] constructor init
 # 1506|         Type = [Struct] Inheritance_Test_B
 # 1506|         ValueCategory = prvalue
 # 1506|     getInitializer(1): [ConstructorFieldInit] constructor init of field x
@@ -17088,7 +17205,7 @@ ir.cpp:
 # 1785|           getExpr(): [ReferenceDereferenceExpr] (reference dereference)
 # 1785|               Type = [SpecifiedType] const CopyConstructorTestNonVirtualClass
 # 1785|               ValueCategory = lvalue
-# 1785|     getInitializer(1): (no string representation)
+# 1785|     getInitializer(1): [ConstructorInit] constructor init
 # 1785|         Type = [VirtualBaseClass] CopyConstructorWithBitwiseCopyClass
 # 1785|         ValueCategory = prvalue
 # 1785|   getEntryPoint(): [BlockStmt] { ... }
@@ -17137,7 +17254,7 @@ ir.cpp:
 # 1792|           getExpr(): [ReferenceDereferenceExpr] (reference dereference)
 # 1792|               Type = [SpecifiedType] const CopyConstructorTestVirtualClass
 # 1792|               ValueCategory = lvalue
-# 1792|     getInitializer(1): (no string representation)
+# 1792|     getInitializer(1): [ConstructorInit] constructor init
 # 1792|         Type = [VirtualBaseClass] CopyConstructorWithBitwiseCopyClass
 # 1792|         ValueCategory = prvalue
 # 1792|   getEntryPoint(): [BlockStmt] { ... }
@@ -49581,6 +49698,111 @@ try_except.c:
 #   40|                 Type = [IntType] int
 #   40|                 ValueCategory = prvalue(load)
 #   42|     getStmt(2): [ReturnStmt] return ...
+#   44| [TopLevelFunction] int i()
+#   44|   <params>: 
+#   46| [TopLevelFunction] void j(int)
+#   46|   <params>: 
+#   46|     getParameter(0): [Parameter] b
+#   46|         Type = [IntType] int
+#   46|   getEntryPoint(): [BlockStmt] { ... }
+#   47|     getStmt(0): [DeclStmt] declaration
+#   47|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#   47|           Type = [IntType] int
+#   47|         getVariable().getInitializer(): [Initializer] initializer for x
+#   47|           getExpr(): [Literal] 0
+#   47|               Type = [IntType] int
+#   47|               Value = [Literal] 0
+#   47|               ValueCategory = prvalue
+#   48|     getStmt(1): [MicrosoftTryExceptStmt] __try { ... } __except( ... ) { ... }
+#   48|       getStmt(): [BlockStmt] { ... }
+#   49|         getStmt(0): [DeclStmt] declaration
+#   49|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+#   49|               Type = [IntType] int
+#   49|             getVariable().getInitializer(): [Initializer] initializer for y
+#   49|               getExpr(): [FunctionCall] call to i
+#   49|                   Type = [IntType] int
+#   49|                   ValueCategory = prvalue
+#   51|       getCondition(): [Literal] 1
+#   51|           Type = [IntType] int
+#   51|           Value = [Literal] 1
+#   51|           ValueCategory = prvalue
+#   51|       getExcept(): [BlockStmt] { ... }
+#   52|         getStmt(0): [ExprStmt] ExprStmt
+#   52|           getExpr(): [FunctionCall] call to sink
+#   52|               Type = [VoidType] void
+#   52|               ValueCategory = prvalue
+#   52|             getArgument(0): [VariableAccess] x
+#   52|                 Type = [IntType] int
+#   52|                 ValueCategory = prvalue(load)
+#   54|     getStmt(2): [ReturnStmt] return ...
+#   56| [TopLevelFunction] void k(int*, int*, int*)
+#   56|   <params>: 
+#   56|     getParameter(0): [Parameter] b
+#   56|         Type = [IntPointerType] int *
+#   56|     getParameter(1): [Parameter] c
+#   56|         Type = [IntPointerType] int *
+#   56|     getParameter(2): [Parameter] d
+#   56|         Type = [IntPointerType] int *
+#   56|   getEntryPoint(): [BlockStmt] { ... }
+#   57|     getStmt(0): [DeclStmt] declaration
+#   57|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#   57|           Type = [IntType] int
+#   57|         getVariable().getInitializer(): [Initializer] initializer for x
+#   57|           getExpr(): [Literal] 0
+#   57|               Type = [IntType] int
+#   57|               Value = [Literal] 0
+#   57|               ValueCategory = prvalue
+#   58|     getStmt(1): [MicrosoftTryExceptStmt] __try { ... } __except( ... ) { ... }
+#   58|       getStmt(): [BlockStmt] { ... }
+#   59|         getStmt(0): [ExprStmt] ExprStmt
+#   59|           getExpr(): [AssignExpr] ... = ...
+#   59|               Type = [IntType] int
+#   59|               ValueCategory = prvalue
+#   59|             getLValue(): [VariableAccess] x
+#   59|                 Type = [IntType] int
+#   59|                 ValueCategory = lvalue
+#   59|             getRValue(): [PointerDereferenceExpr] * ...
+#   59|                 Type = [IntType] int
+#   59|                 ValueCategory = prvalue(load)
+#   59|               getOperand(): [VariableAccess] b
+#   59|                   Type = [IntPointerType] int *
+#   59|                   ValueCategory = prvalue(load)
+#   60|         getStmt(1): [ExprStmt] ExprStmt
+#   60|           getExpr(): [AssignExpr] ... = ...
+#   60|               Type = [IntType] int
+#   60|               ValueCategory = prvalue
+#   60|             getLValue(): [PointerDereferenceExpr] * ...
+#   60|                 Type = [IntType] int
+#   60|                 ValueCategory = lvalue
+#   60|               getOperand(): [VariableAccess] c
+#   60|                   Type = [IntPointerType] int *
+#   60|                   ValueCategory = prvalue(load)
+#   60|             getRValue(): [VariableAccess] x
+#   60|                 Type = [IntType] int
+#   60|                 ValueCategory = prvalue(load)
+#   61|         getStmt(2): [DeclStmt] declaration
+#   61|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+#   61|               Type = [IntType] int
+#   61|             getVariable().getInitializer(): [Initializer] initializer for y
+#   61|               getExpr(): [PointerDereferenceExpr] * ...
+#   61|                   Type = [IntType] int
+#   61|                   ValueCategory = prvalue(load)
+#   61|                 getOperand(): [VariableAccess] d
+#   61|                     Type = [IntPointerType] int *
+#   61|                     ValueCategory = prvalue(load)
+#   63|       getCondition(): [Literal] 1
+#   63|           Type = [IntType] int
+#   63|           Value = [Literal] 1
+#   63|           ValueCategory = prvalue
+#   63|       getExcept(): [BlockStmt] { ... }
+#   64|         getStmt(0): [ExprStmt] ExprStmt
+#   64|           getExpr(): [FunctionCall] call to sink
+#   64|               Type = [VoidType] void
+#   64|               ValueCategory = prvalue
+#   64|             getArgument(0): [VariableAccess] x
+#   64|                 Type = [IntType] int
+#   64|                 ValueCategory = prvalue(load)
+#   66|     getStmt(2): [ReturnStmt] return ...
 try_except.cpp:
 #    3| [TopLevelFunction] void ProbeFunction()
 #    3|   <params>: 

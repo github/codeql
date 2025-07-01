@@ -29,24 +29,24 @@ class XMLParser {
 // --- tests ---
 
 func testData() {
-    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!) // $ Source
     let remoteData = Data(remoteString)
-    let parser = XMLParser(data: remoteData) // $ hasXXE=32
+    let parser = XMLParser(data: remoteData) // $ Alert
     parser.shouldResolveExternalEntities = true
 }
 
 func testInputStream() {
-    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!) // $ Source
     let remoteData = Data(remoteString)
     let remoteStream = InputStream(data: remoteData)
-    let parser = XMLParser(stream: remoteStream) // $ hasXXE=39
+    let parser = XMLParser(stream: remoteStream) // $ Alert
     parser.shouldResolveExternalEntities = true
 }
 
 func testUrl() {
-    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!) // $ Source
     let remoteUrl = URL(string: remoteString)!
-    let parser = XMLParser(contentsOf: remoteUrl) // $ hasXXE=47
+    let parser = XMLParser(contentsOf: remoteUrl) // $ Alert
     parser?.shouldResolveExternalEntities = true
 }
 

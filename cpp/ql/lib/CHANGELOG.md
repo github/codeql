@@ -1,3 +1,50 @@
+## 5.2.0
+
+### Deprecated APIs
+
+* The `ThrowingFunction` class (`semmle.code.cpp.models.interfaces.Throwing`) has been deprecated. Please use the `AlwaysSehThrowingFunction` class instead.
+
+### New Features
+
+* Added a predicate `getAnAttribute` to `Namespace` to retrieve a namespace attribute.
+* The Microsoft-specific `__leave` statement is now supported.
+* A new class `LeaveStmt` extending `JumpStmt` was added to represent `__leave` statements.
+* Added a predicate `hasParameterList` to `LambdaExpression` to capture whether a lambda has an explicitly specified parameter list.
+
+### Bug Fixes
+
+* `resolveTypedefs` now properly resolves typedefs for `ArrayType`s.
+
+## 5.1.0
+
+### New Features
+
+* Added a predicate `getReferencedMember` to `UsingDeclarationEntry`, which yields a member depending on a type template parameter.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `userInputArgument` predicate and its convenience accessor from the `Security.qll`.
+* Deleted the deprecated `userInputReturned` predicate and its convenience accessor from the `Security.qll`.
+* Deleted the deprecated `userInputReturn` predicate from the `Security.qll`.
+* Deleted the deprecated `isUserInput` predicate and its convenience accessor from the `Security.qll`.
+* Deleted the deprecated `userInputArgument` predicate from the `SecurityOptions.qll`.
+* Deleted the deprecated `userInputReturned` predicate from the `SecurityOptions.qll`.
+
+### New Features
+
+* Added local flow source models for `ReadFile`, `ReadFileEx`, `MapViewOfFile`, `MapViewOfFile2`, `MapViewOfFile3`, `MapViewOfFile3FromApp`, `MapViewOfFileEx`, `MapViewOfFileFromApp`, `MapViewOfFileNuma2`, and `NtReadFile`.
+* Added the `pCmdLine` arguments of `WinMain` and `wWinMain` as local flow sources.
+* Added source models for `GetCommandLineA`, `GetCommandLineW`, `GetEnvironmentStringsA`, `GetEnvironmentStringsW`, `GetEnvironmentVariableA`, and `GetEnvironmentVariableW`.
+* Added summary models for `CommandLineToArgvA` and `CommandLineToArgvW`.
+* Added support for `wmain` as part of the ArgvSource model.
+
+### Bug Fixes
+
+* Fixed a problem where `asExpr()` on `DataFlow::Node` would never return `ArrayAggregateLiteral`s.
+* Fixed a problem where `asExpr()` on `DataFlow::Node` would never return `ClassAggregateLiteral`s.
+
 ## 4.3.1
 
 ### Bug Fixes
