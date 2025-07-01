@@ -89,7 +89,7 @@ from TryStmt try, int first, int second, RefType masking, RefType masked, string
 where
   try.getFile().isJavaSourceFile() and
   masking = caughtType(try, first) and
-  masking.getAStrictAncestor() = masked and
+  masking.getAStrictAncestorI() = masked and
   masked = caughtType(try, second) and
   forall(RefType thrownType |
     thrownType = getAThrownExceptionType(try) and
