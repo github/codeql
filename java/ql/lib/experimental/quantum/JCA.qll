@@ -5,7 +5,6 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.controlflow.Dominance
-private import Crypto::KeyOpAlg as KeyOpAlg
 
 module JCAModel {
   import Language
