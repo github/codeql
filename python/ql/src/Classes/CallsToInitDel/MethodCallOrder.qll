@@ -8,7 +8,7 @@ predicate multipleCallsToSuperclassMethod(Function meth, Function calledMulti, s
   exists(DataFlow::MethodCallNode call1, DataFlow::MethodCallNode call2, Class cls |
     meth.getName() = name and
     meth.getScope() = cls and
-    not call1 = call2 and
+    call1.asExpr() != call2.asExpr() and
     calledMulti = getASuperCallTarget(cls, meth, call1) and
     calledMulti = getASuperCallTarget(cls, meth, call2) and
     nonTrivial(calledMulti)
