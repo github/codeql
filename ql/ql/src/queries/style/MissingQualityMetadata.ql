@@ -10,10 +10,6 @@
 
 import ql
 
-private predicate unInterestingLocation(File f) {
-  f.getRelativePath().matches("%/" + ["experimental", "examples", "test"] + "/%")
-}
-
 private predicate hasQualityTag(QueryDoc doc) { doc.getQueryTags() = "quality" }
 
 private predicate incorrectTopLevelCategorisation(QueryDoc doc) {
@@ -31,7 +27,7 @@ private predicate maintainabilitySubCategory(QueryDoc doc) {
 from TopLevel t, QueryDoc doc, string msg
 where
   doc = t.getQLDoc() and
-  not unInterestingLocation(t.getLocation().getFile()) and
+  not t.getLocation().getFile() instanceof TestFile and
   hasQualityTag(doc) and
   (
     incorrectTopLevelCategorisation(doc) and
