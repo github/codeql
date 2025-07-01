@@ -217,29 +217,6 @@ diagnostics(
 
 /*- C++ dbscheme -*/
 
-/**
- * Information about packages that provide code used during compilation.
- * The `id` is just a unique identifier.
- * The `namespace` is typically the name of the package manager that
- * provided the package (e.g. "dpkg" or "yum").
- * The `package_name` is the name of the package, and `version` is its
- * version (as a string).
- */
-external_packages(
-    unique int id: @external_package,
-    string namespace : string ref,
-    string package_name : string ref,
-    string version : string ref
-);
-
-/**
- * Holds if File `fileid` was provided by package `package`.
- */
-header_to_external_package(
-    int fileid : @file ref,
-    int package : @external_package ref
-);
-
 /*
  * C++ dbscheme
  */
