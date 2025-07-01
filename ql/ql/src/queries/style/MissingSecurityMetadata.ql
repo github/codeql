@@ -10,10 +10,6 @@
 
 import ql
 
-private predicate unInterestingLocation(File f) {
-  f.getRelativePath().matches("%/" + ["experimental", "examples", "test"] + "/%")
-}
-
 predicate missingSecuritySeverity(QueryDoc doc) {
   doc.getQueryTags() = "security" and
   exists(doc.getQueryPrecision()) and
@@ -29,7 +25,7 @@ predicate missingSecurityTag(QueryDoc doc) {
 from TopLevel t, QueryDoc doc, string msg
 where
   doc = t.getQLDoc() and
-  not unInterestingLocation(t.getLocation().getFile()) and
+  not t.getLocation().getFile() instanceof TestFile and
   (
     missingSecuritySeverity(doc) and
     msg = "This query file is missing a `@security-severity` tag."
