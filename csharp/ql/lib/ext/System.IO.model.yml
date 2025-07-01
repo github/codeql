@@ -47,7 +47,7 @@ extensions:
       - ["System.IO", "FileStream", False, "FileStream", "(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["System.IO", "FileStream", False, "FileStream", "(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["System.IO", "FileStream", False, "FileStream", "(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32,System.IO.FileOptions)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
-      - ["System.IO", "MemoryStream", False, "MemoryStream", "(System.Byte[])", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "MemoryStream", False, "MemoryStream", "(System.Byte[])", "", "Argument[0].Element", "Argument[this]", "taint", "manual"]
       - ["System.IO", "MemoryStream", False, "MemoryStream", "(System.Byte[],System.Boolean)", "", "Argument[0].Element", "Argument[this]", "taint", "manual"]
       - ["System.IO", "MemoryStream", False, "MemoryStream", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[0].Element", "Argument[this]", "taint", "manual"]
       - ["System.IO", "MemoryStream", False, "MemoryStream", "(System.Byte[],System.Int32,System.Int32,System.Boolean)", "", "Argument[0].Element", "Argument[this]", "taint", "manual"]
