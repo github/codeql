@@ -1,0 +1,116 @@
+lib.rs:
+#    1| [SourceFile] SourceFile
+#    1|   getItem(0): [Module] mod macro_in_library
+#    1|     getName(): [Name] macro_in_library
+#    1|     getVisibility(): [Visibility] Visibility
+macro_in_library.rs:
+#    1| [SourceFile] SourceFile
+#    4|   getItem(1): [Function] fn bar
+#    4|     getParamList(): [ParamList] ParamList
+#    4|     getName(): [Name] bar
+#    4|     getVisibility(): [Visibility] Visibility
+#    2| [MacroItems] MacroItems
+#    2|   getItem(0): [Function] fn foo
+#    2|     getParamList(): [ParamList] ParamList
+#    2|     getName(): [Name] foo
+#    2|     getVisibility(): [Visibility] Visibility
+#    2|   getItem(1): [Function] fn foo_new
+#    2|     getParamList(): [ParamList] ParamList
+#    2|     getName(): [Name] foo_new
+#    2|     getVisibility(): [Visibility] Visibility
+proc_macro.rs:
+#    1| [SourceFile] SourceFile
+#    1|   getItem(0): [Use] use ...::TokenStream
+#    1|     getUseTree(): [UseTree] ...::TokenStream
+#    1|       getPath(): [Path] ...::TokenStream
+#    1|         getQualifier(): [Path] proc_macro
+#    1|           getSegment(): [PathSegment] proc_macro
+#    1|             getIdentifier(): [NameRef] proc_macro
+#    1|         getSegment(): [PathSegment] TokenStream
+#    1|           getIdentifier(): [NameRef] TokenStream
+#    2|   getItem(1): [Use] use ...::quote
+#    2|     getUseTree(): [UseTree] ...::quote
+#    2|       getPath(): [Path] ...::quote
+#    2|         getQualifier(): [Path] quote
+#    2|           getSegment(): [PathSegment] quote
+#    2|             getIdentifier(): [NameRef] quote
+#    2|         getSegment(): [PathSegment] quote
+#    2|           getIdentifier(): [NameRef] quote
+#    4|   getItem(2): [Function] fn add_one
+#    5|     getParamList(): [ParamList] ParamList
+#    5|       getParam(0): [Param] : TokenStream
+#    5|         getTypeRepr(): [PathTypeRepr] TokenStream
+#    5|           getPath(): [Path] TokenStream
+#    5|             getSegment(): [PathSegment] TokenStream
+#    5|               getIdentifier(): [NameRef] TokenStream
+#    5|       getParam(1): [Param] : TokenStream
+#    5|         getTypeRepr(): [PathTypeRepr] TokenStream
+#    5|           getPath(): [Path] TokenStream
+#    5|             getSegment(): [PathSegment] TokenStream
+#    5|               getIdentifier(): [NameRef] TokenStream
+#    4|     getAttr(0): [Attr] Attr
+#    4|       getMeta(): [Meta] Meta
+#    4|         getPath(): [Path] proc_macro_attribute
+#    4|           getSegment(): [PathSegment] proc_macro_attribute
+#    4|             getIdentifier(): [NameRef] proc_macro_attribute
+#    5|     getName(): [Name] add_one
+#    5|     getRetType(): [RetTypeRepr] RetTypeRepr
+#    5|       getTypeRepr(): [PathTypeRepr] TokenStream
+#    5|         getPath(): [Path] TokenStream
+#    5|           getSegment(): [PathSegment] TokenStream
+#    5|             getIdentifier(): [NameRef] TokenStream
+#    5|     getVisibility(): [Visibility] Visibility
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/allocator-api2-0.2.21/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-if-1.0.0/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/compiler_builtins-0.1.146/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/getopts-0.2.21/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hashbrown-0.15.2/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.169/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.95/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.40/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rand-0.9.0/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rand_core-0.9.0/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rand_xorshift-0.4.0/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustc-demangle-0.1.24/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/syn-2.0.104/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.18/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-width-0.1.14/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.17/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.rustup/toolchains/1.86-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.rustup/toolchains/1.86-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.rustup/toolchains/1.86-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/panic_abort/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.rustup/toolchains/1.86-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/panic_unwind/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.rustup/toolchains/1.86-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/proc_macro/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.rustup/toolchains/1.86-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.rustup/toolchains/1.86-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/stdarch/crates/std_detect/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.rustup/toolchains/1.86-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/test/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crates/home/redsun82/.rustup/toolchains/1.86-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/unwind/src/lib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/crateslib.rs:
+#    1| [SourceFile] SourceFile
+resolved/macro-in-library.testproj/trap/rust/cratesproc_macro.rs:
+#    1| [SourceFile] SourceFile
