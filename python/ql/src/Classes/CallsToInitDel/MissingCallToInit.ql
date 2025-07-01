@@ -29,6 +29,6 @@ where
     // Only alert for a different mro base if there are no alerts for direct overrides
     not missingCallToSuperclassInit(base, _, base.getScope()) and
     msg =
-      "This initialization method does not call $@, which follows it in the MRO of $@, leaving it partially initialized."
+      "This initialization method does not call super().__init__, which may cause $@ to be missed during the initialization of $@."
   )
 select base, msg, shouldCall, shouldCall.getQualifiedName(), mroStart, mroStart.getName()

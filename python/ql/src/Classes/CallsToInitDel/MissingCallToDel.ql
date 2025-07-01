@@ -25,11 +25,11 @@ where
   (
     // Simple case: the method that should be called is directly overridden
     mroStart = base.getScope() and
-    msg = "This deletion method does not call $@, which may leave $@ not properly cleaned up."
+    msg = "This delete method does not call $@, which may leave $@ not properly cleaned up."
     or
     // Only alert for a different mro base if there are no alerts for direct overrides
     not missingCallToSuperclassDel(base, _, base.getScope()) and
     msg =
-      "This deletion method does not call $@, which follows it in the MRO of $@, leaving it not properly cleaned up."
+      "This delete method does not call super().__del__, which may cause $@ to be missed during the cleanup of $@."
   )
 select base, msg, shouldCall, shouldCall.getQualifiedName(), mroStart, mroStart.getName()
