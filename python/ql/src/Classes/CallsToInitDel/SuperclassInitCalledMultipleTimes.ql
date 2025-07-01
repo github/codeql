@@ -26,5 +26,5 @@ where
     multipleCallsToSuperclassInit(meth, subMulti) and
     calledMulti.getScope() = getADirectSuperclass+(subMulti.getScope())
   )
-select meth, "This initializer method calls $@ multiple times.", calledMulti,
+select meth, "This initialization method calls $@ multiple times.", calledMulti,
   calledMulti.getQualifiedName()
