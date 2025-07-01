@@ -1597,7 +1597,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   final class MacOperationNode extends SignatureOrMacOperationNode {
     MacOperationNode() {
       this.getKeyOperationSubtype() = TMacMode() and
-      // If the type type could be a mac, then we will not consider it a mac operation exclusively.
+      // If the type could be a mac, then we will not consider it a mac operation exclusively.
       not exists(KeyOperationSubtype t | t = this.getKeyOperationSubtype() and t = TMacMode())
     }
 
