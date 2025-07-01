@@ -15,7 +15,7 @@ extensions:
       - ["<std::io::stdio::StdinLock as std::io::Read>::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
       - ["<std::fs::File as std::io::Read>::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
       - ["<_ as std::io::Read>::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
-      - ["<std::io::stdio::Stdin as std::io::Read>::read_to_string", "", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["<std::io::stdio::Stdin as std::io::Read>::read_to_string", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
       - ["<std::io::stdio::StdinLock as std::io::Read>::read_to_string", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
       - ["<std::fs::File as std::io::Read>::read_to_string", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
       - ["<_ as std::io::Read>::read_to_string", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
