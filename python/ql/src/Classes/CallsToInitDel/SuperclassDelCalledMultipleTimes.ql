@@ -15,7 +15,7 @@ import python
 import MethodCallOrder
 
 predicate multipleCallsToSuperclassDel(Function meth, Function calledMulti) {
-  multipleCallsToSuperclassMethod(meth, calledMulti, "__sel__")
+  multipleCallsToSuperclassMethod(meth, calledMulti, "__del__")
 }
 
 from Function meth, Function calledMulti
