@@ -44,7 +44,8 @@ from ReservedUnicodeInLiteral literal, int charIndex, int codePoint
 where
   literal.getIndexStart() = charIndex and
   literal.getLiteral().codePointAt(charIndex) = codePoint and
-  not literal.getEnclosingCallable() instanceof LikelyTestMethod
+  not literal.getEnclosingCallable() instanceof LikelyTestMethod and
+  not literal.getFile().isKotlinSourceFile()
 select literal,
   "Literal value contains control or non-printable whitespace character(s) starting with Unicode code point "
     + codePoint + " at index " + charIndex + "."
