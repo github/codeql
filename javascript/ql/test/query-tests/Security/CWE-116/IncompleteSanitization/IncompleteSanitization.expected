@@ -35,3 +35,4 @@
 | tst.js:353:9:353:17 | s.replace | This does not escape backslash characters in the input. | tst.js:353:19:353:50 | new Reg ... lags()) |  |
 | tst.js:362:2:362:10 | x.replace | This replaces only the first occurrence of $@. | tst.js:362:12:362:27 | new RegExp("\\n") | this node |
 | tst.js:363:2:363:24 | x.repla ... replace | This replaces only the first occurrence of $@. | tst.js:363:26:363:41 | new RegExp("\\n") | this node |
+| tst.js:367:2:367:24 | x.repla ... replace | This replaces only the first occurrence of $@. | tst.js:367:26:367:28 | '}' | '}' |

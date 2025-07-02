@@ -364,4 +364,5 @@ function newlinesNewReGexp(s) {
 
 	x.replace(new RegExp("\n", unknownFlags()), "").replace(x, y);
 	x.replace(x, y).replace(new RegExp("\n", unknownFlags()), "");
+	x.replace(x, y).replace('}', ""); // $ Alert[js/incomplete-sanitization]
 }
