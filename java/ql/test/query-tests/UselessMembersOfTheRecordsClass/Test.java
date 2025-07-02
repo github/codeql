@@ -4,16 +4,16 @@ public class Test {
     record T1() implements Serializable {
 
     @Serial
-    private static final ObjectStreamField[] serialPersistentFields = new ObjectStreamField[0]; // NON_COMPLIANT
+    private static final ObjectStreamField[] serialPersistentFields = new ObjectStreamField[0]; // $ Alert
 
     @Serial
-    private void writeObject(ObjectOutputStream out) throws IOException {} // NON_COMPLIANT
+    private void writeObject(ObjectOutputStream out) throws IOException {} // $ Alert
 
     @Serial
-    private void readObject(ObjectOutputStream out) throws IOException {}// NON_COMPLIANT
+    private void readObject(ObjectOutputStream out) throws IOException {} // $ Alert
 
     @Serial
-    private void readObjectNoData(ObjectOutputStream out) throws IOException { // NON_COMPLIANT
+    private void readObjectNoData(ObjectOutputStream out) throws IOException { // $ Alert
     }
 
 }
@@ -21,11 +21,11 @@ public class Test {
     record T2() implements Externalizable {
 
     @Override
-    public void writeExternal(ObjectOutput out) throws IOException { // NON_COMPLIANT
+    public void writeExternal(ObjectOutput out) throws IOException { // $ Alert
     }
 
     @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException { // NON_COMPLIANT
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException { // $ Alert
     }
 
     }
