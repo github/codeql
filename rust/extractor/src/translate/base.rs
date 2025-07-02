@@ -910,9 +910,9 @@ impl<'a> Translator<'a> {
                     path: None,
                     token_tree: None,
                 });
-                generated::MacroCall::emit_macro_call_expansion(
-                    label,
-                    expanded.into(),
+                generated::Item::emit_attribute_macro_expansion(
+                    label.into(),
+                    expanded,
                     &mut self.trap.writer,
                 );
                 self.emit_location(label, node);
