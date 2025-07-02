@@ -232,8 +232,8 @@ class QueryDoc extends QLDoc {
     result = this.getContents().regexpCapture("(?s).*@security\\-severity ([\\d\\.]+)\\s.*", 1)
   }
 
-  /** Gets the individual @tags for the query. */
-  string getQueryTags() {
+  /** Gets the individual @tags for the query, if any. */
+  string getAQueryTag() {
     exists(string tags | tags = this.getContents().regexpCapture("(?s).*@tags ([^@]+)", 1) |
       result = tags.splitAt("*").trim() and
       result.regexpMatch("[\\w\\s\\-]+")

@@ -1,6 +1,6 @@
 /**
  * @name Missing security metadata
- * @description Security queries should have both a `@tag security` and a `@security-severity` tag.
+ * @description Security queries should have both a `@tags security` and a `@security-severity` tag.
  * @kind problem
  * @problem.severity warning
  * @precision very-high
@@ -11,7 +11,7 @@
 import ql
 
 predicate missingSecuritySeverity(QueryDoc doc) {
-  doc.getQueryTags() = "security" and
+  doc.getAQueryTag() = "security" and
   exists(doc.getQueryPrecision()) and
   not exists(doc.getQuerySecuritySeverity())
 }
@@ -19,7 +19,7 @@ predicate missingSecuritySeverity(QueryDoc doc) {
 predicate missingSecurityTag(QueryDoc doc) {
   exists(doc.getQuerySecuritySeverity()) and
   exists(doc.getQueryPrecision()) and
-  not doc.getQueryTags() = "security"
+  not doc.getAQueryTag() = "security"
 }
 
 from TopLevel t, QueryDoc doc, string msg
@@ -32,4 +32,4 @@ where
     or
     missingSecurityTag(doc) and msg = "This query file is missing a `@tags security`."
   )
-select t, msg
+select doc, msg
