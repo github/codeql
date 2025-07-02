@@ -31,20 +31,10 @@ private module ValidationMethod<DataFlow::guardChecksSig/3 validationGuard> {
    * Holds if `m` validates its `arg`th parameter by using `validationGuard`.
    */
   private predicate validationMethod(Method m, int arg) {
-    exists(
-      Guard g, SsaImplicitInit var, ControlFlow::ExitNode exit, ControlFlowNode normexit,
-      boolean branch
-    |
+    exists(Guard g, SsaImplicitInit var, ControlFlow::NormalExitNode normexit, boolean branch |
       validationGuard(g, var.getAUse(), branch) and
       var.isParameterDefinition(m.getParameter(arg)) and
-      exit.getEnclosingCallable() = m and
-      normexit.getANormalSuccessor() = exit and
-      1 = strictcount(ControlFlowNode n | n.getANormalSuccessor() = exit)
-    |
-      exists(ConditionNode conditionNode |
-        g = conditionNode.getCondition() and conditionNode.getABranchSuccessor(branch) = exit
-      )
-      or
+      normexit.getEnclosingCallable() = m and
       g.controls(normexit.getBasicBlock(), branch)
     )
   }
