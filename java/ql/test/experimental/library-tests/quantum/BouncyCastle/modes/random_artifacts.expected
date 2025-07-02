@@ -1,8 +1,0 @@
-| AESCBCEncryption.java:22:50:22:52 | Key | AESCBCEncryption.java:60:30:60:32 | RandomNumberGeneration |
-| AESCBCEncryption.java:23:66:23:67 | Nonce | AESCBCEncryption.java:62:30:62:31 | RandomNumberGeneration |
-| AESCBCEncryption.java:41:50:41:52 | Key | AESCBCEncryption.java:60:30:60:32 | RandomNumberGeneration |
-| AESCBCEncryption.java:42:66:42:67 | Nonce | AESCBCEncryption.java:62:30:62:31 | RandomNumberGeneration |
-| AESGCMEncryption.java:18:34:18:36 | Key | AESGCMEncryption.java:58:30:58:32 | RandomNumberGeneration |
-| AESGCMEncryption.java:20:17:20:21 | Nonce | AESGCMEncryption.java:60:30:60:34 | RandomNumberGeneration |
-| AESGCMEncryption.java:37:34:37:36 | Key | AESGCMEncryption.java:58:30:58:32 | RandomNumberGeneration |
-| AESGCMEncryption.java:39:17:39:21 | Nonce | AESGCMEncryption.java:60:30:60:34 | RandomNumberGeneration |
