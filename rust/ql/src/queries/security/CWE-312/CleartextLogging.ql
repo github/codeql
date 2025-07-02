@@ -45,6 +45,8 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
     isSink(node) and
     c.getAReadContent() instanceof DataFlow::TuplePositionContent
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module CleartextLoggingFlow = TaintTracking::Global<CleartextLoggingConfig>;
