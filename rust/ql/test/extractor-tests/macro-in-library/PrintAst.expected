@@ -5,19 +5,20 @@ lib.rs:
 #    1|     getVisibility(): [Visibility] Visibility
 macro_in_library.rs:
 #    1| [SourceFile] SourceFile
+#    1|   getItem(0): [MacroCall] 
+#    2|     getAttributeMacroExpansion(): [MacroItems] MacroItems
+#    2|       getItem(0): [Function] fn foo
+#    2|         getParamList(): [ParamList] ParamList
+#    2|         getName(): [Name] foo
+#    2|         getVisibility(): [Visibility] Visibility
+#    2|       getItem(1): [Function] fn foo_new
+#    2|         getParamList(): [ParamList] ParamList
+#    2|         getName(): [Name] foo_new
+#    2|         getVisibility(): [Visibility] Visibility
 #    4|   getItem(1): [Function] fn bar
 #    4|     getParamList(): [ParamList] ParamList
 #    4|     getName(): [Name] bar
 #    4|     getVisibility(): [Visibility] Visibility
-#    2| [MacroItems] MacroItems
-#    2|   getItem(0): [Function] fn foo
-#    2|     getParamList(): [ParamList] ParamList
-#    2|     getName(): [Name] foo
-#    2|     getVisibility(): [Visibility] Visibility
-#    2|   getItem(1): [Function] fn foo_new
-#    2|     getParamList(): [ParamList] ParamList
-#    2|     getName(): [Name] foo_new
-#    2|     getVisibility(): [Visibility] Visibility
 proc_macro.rs:
 #    1| [SourceFile] SourceFile
 #    1|   getItem(0): [Use] use ...::TokenStream
