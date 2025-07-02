@@ -39,6 +39,18 @@ module InsecureRandomness {
         n2.getType() instanceof IntegerType
       )
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 26 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-338/InsecureRandomness.ql@33:8:33:21), Column 5 does not select a source or sink originating from the flow call on line 26 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-338/InsecureRandomness.ql@34:75:34:90)
+    }
+
+    Location getASelectedSourceLocation(DataFlow::Node source) {
+      none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 26 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-338/InsecureRandomness.ql@33:8:33:21), Column 5 does not select a source or sink originating from the flow call on line 26 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-338/InsecureRandomness.ql@34:75:34:90)
+    }
+
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 26 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-338/InsecureRandomness.ql@33:8:33:21), Column 5 does not select a source or sink originating from the flow call on line 26 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-338/InsecureRandomness.ql@34:75:34:90)
+    }
   }
 
   /**

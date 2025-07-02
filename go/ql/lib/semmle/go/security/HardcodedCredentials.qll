@@ -30,6 +30,18 @@ module HardcodedCredentials {
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+    predicate observeDiffInformedIncrementalMode() {
+      any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 62 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-798/HardcodedCredentials.ql@65:8:65:11), Column 3 does not select a source or sink originating from the flow call on line 62 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-798/HardcodedCredentials.ql@65:23:65:28)
+    }
+
+    Location getASelectedSourceLocation(DataFlow::Node source) {
+      none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 62 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-798/HardcodedCredentials.ql@65:8:65:11), Column 3 does not select a source or sink originating from the flow call on line 62 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-798/HardcodedCredentials.ql@65:23:65:28)
+    }
+
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 62 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-798/HardcodedCredentials.ql@65:8:65:11), Column 3 does not select a source or sink originating from the flow call on line 62 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-798/HardcodedCredentials.ql@65:23:65:28)
+    }
   }
 
   /** Tracks taint flow for reasoning about hardcoded credentials. */
