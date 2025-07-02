@@ -1,1 +1,5 @@
-| CallsToRunnableRun.java:15:3:15:15 | run(...) | Calling 'Thread.run()' rather than 'Thread.start()' will not spawn a new thread. |
+| CallsToRunnableRun.java:67:5:67:16 | run(...) | Calling 'Thread.run()' rather than 'Thread.start()' will not spawn a new thread. |
+| CallsToRunnableRun.java:71:5:71:24 | run(...) | Calling 'Thread.run()' rather than 'Thread.start()' will not spawn a new thread. |
+| CallsToRunnableRun.java:75:5:75:24 | run(...) | Calling 'Thread.run()' rather than 'Thread.start()' will not spawn a new thread. |
+| CallsToRunnableRun.java:79:5:79:27 | run(...) | Calling 'Thread.run()' rather than 'Thread.start()' will not spawn a new thread. |
+| CallsToRunnableRun.java:83:5:83:27 | run(...) | Calling 'Thread.run()' rather than 'Thread.start()' will not spawn a new thread. |

@@ -406,12 +406,12 @@ mod impl_overlap {
     impl OverlappingTrait for S1 {
         // <S1_as_OverlappingTrait>::common_method
         fn common_method(self) -> S1 {
-            panic!("not called");
+            S1
         }
 
         // <S1_as_OverlappingTrait>::common_method_2
         fn common_method_2(self, s1: S1) -> S1 {
-            panic!("not called");
+            S1
         }
     }
 
@@ -427,10 +427,78 @@ mod impl_overlap {
         }
     }
 
+    struct S2<T2>(T2);
+
+    impl S2<i32> {
+        // S2<i32>::common_method
+        fn common_method(self) -> S1 {
+            S1
+        }
+
+        // S2<i32>::common_method
+        fn common_method_2(self) -> S1 {
+            S1
+        }
+    }
+
+    impl OverlappingTrait for S2<i32> {
+        // <S2<i32>_as_OverlappingTrait>::common_method
+        fn common_method(self) -> S1 {
+            S1
+        }
+
+        // <S2<i32>_as_OverlappingTrait>::common_method_2
+        fn common_method_2(self, s1: S1) -> S1 {
+            S1
+        }
+    }
+
+    impl OverlappingTrait for S2<S1> {
+        // <S2<S1>_as_OverlappingTrait>::common_method
+        fn common_method(self) -> S1 {
+            S1
+        }
+
+        // <S2<S1>_as_OverlappingTrait>::common_method_2
+        fn common_method_2(self, s1: S1) -> S1 {
+            S1
+        }
+    }
+
+    #[derive(Debug)]
+    struct S3<T3>(T3);
+
+    trait OverlappingTrait2<T> {
+        fn m(&self, x: &T) -> &Self;
+    }
+
+    impl<T> OverlappingTrait2<T> for S3<T> {
+        // <S3<T>_as_OverlappingTrait2<T>>::m
+        fn m(&self, x: &T) -> &Self {
+            self
+        }
+    }
+
+    impl<T> S3<T> {
+        // S3<T>::m
+        fn m(&self, x: T) -> &Self {
+            self
+        }
+    }
+
     pub fn f() {
         let x = S1;
         println!("{:?}", x.common_method()); // $ method=S1::common_method
         println!("{:?}", x.common_method_2()); // $ method=S1::common_method_2
+
+        let y = S2(S1);
+        println!("{:?}", y.common_method()); // $ method=<S2<S1>_as_OverlappingTrait>::common_method
+
+        let z = S2(0);
+        println!("{:?}", z.common_method()); // $ method=S2<i32>::common_method
+
+        let w = S3(S1);
+        println!("{:?}", w.m(x)); // $ method=S3<T>::m
     }
 }
 
@@ -869,7 +937,6 @@ mod method_supertraits {
 }
 
 mod function_trait_bounds_2 {
-    use std::convert::From;
     use std::fmt::Debug;
 
     #[derive(Debug)]
@@ -1889,28 +1956,69 @@ mod macros {
 }
 
 mod method_determined_by_argument_type {
-    trait MyAdd<T> {
-        fn my_add(&self, value: T) -> Self;
+    trait MyAdd<Rhs = Self> {
+        type Output;
+
+        // MyAdd::my_add
+        fn my_add(self, rhs: Rhs) -> Self::Output;
     }
 
     impl MyAdd<i64> for i64 {
+        type Output = i64;
+
         // MyAdd<i64>::my_add
-        fn my_add(&self, value: i64) -> Self {
+        fn my_add(self, value: i64) -> Self {
             value
         }
     }
 
     impl MyAdd<&i64> for i64 {
+        type Output = i64;
+
         // MyAdd<&i64>::my_add
-        fn my_add(&self, value: &i64) -> Self {
+        fn my_add(self, value: &i64) -> Self {
             *value // $ method=deref
         }
     }
 
     impl MyAdd<bool> for i64 {
+        type Output = i64;
+
         // MyAdd<bool>::my_add
-        fn my_add(&self, value: bool) -> Self {
+        fn my_add(self, value: bool) -> Self {
             if value { 1 } else { 0 }
+        }
+    }
+
+    struct S<T>(T);
+
+    impl<T: MyAdd> MyAdd for S<T> {
+        type Output = S<T::Output>;
+
+        // S::my_add1
+        fn my_add(self, other: Self) -> Self::Output {
+            S((self.0).my_add(other.0)) // $ method=MyAdd::my_add $ fieldof=S
+        }
+    }
+
+    impl<T: MyAdd> MyAdd<T> for S<T> {
+        type Output = S<T::Output>;
+
+        // S::my_add2
+        fn my_add(self, other: T) -> Self::Output {
+            S((self.0).my_add(other)) // $ method=MyAdd::my_add $ fieldof=S
+        }
+    }
+
+    impl<'a, T> MyAdd<&'a T> for S<T>
+    where
+        T: MyAdd<&'a T>,
+    {
+        type Output = S<<T as MyAdd<&'a T>>::Output>;
+
+        // S::my_add3
+        fn my_add(self, other: &'a T) -> Self::Output {
+            S((self.0).my_add(other)) // $ method=MyAdd::my_add $ fieldof=S
         }
     }
 
@@ -1919,6 +2027,10 @@ mod method_determined_by_argument_type {
         x.my_add(5i64); // $ method=MyAdd<i64>::my_add
         x.my_add(&5i64); // $ method=MyAdd<&i64>::my_add
         x.my_add(true); // $ method=MyAdd<bool>::my_add
+
+        S(1i64).my_add(S(2i64)); // $ method=S::my_add1
+        S(1i64).my_add(3i64); // $ MISSING: method=S::my_add2
+        S(1i64).my_add(&3i64); // $ method=S::my_add3
     }
 }
 
@@ -1959,14 +2071,16 @@ mod loops {
         for s in &mut strings1 {} // $ MISSING: type=s:&T.str
         for s in strings1 {} // $ type=s:str
 
-        let strings2 = [ // $ type=strings2:[T;...].String
+        let strings2 = // $ type=strings2:[T;...].String
+        [
             String::from("foo"),
             String::from("bar"),
             String::from("baz"),
         ];
         for s in strings2 {} // $ type=s:String
 
-        let strings3 = &[ // $ type=strings3:&T.[T;...].String
+        let strings3 = // $ type=strings3:&T.[T;...].String
+        &[
             String::from("foo"),
             String::from("bar"),
             String::from("baz"),
@@ -1974,7 +2088,8 @@ mod loops {
         for s in strings3 {} // $ MISSING: type=s:String
 
         let callables = [MyCallable::new(), MyCallable::new(), MyCallable::new()]; // $ MISSING: type=callables:[T;...].MyCallable; 3
-        for c in callables // $ type=c:MyCallable
+        for c // $ type=c:MyCallable
+        in callables
         {
             let result = c.call(); // $ type=result:i64 method=call
         }
@@ -1986,7 +2101,8 @@ mod loops {
         let range = 0..10; // $ MISSING: type=range:Range type=range:Idx.i32
         for i in range {} // $ MISSING: type=i:i32
 
-        let range1 = std::ops::Range { // $ type=range1:Range type=range1:Idx.u16
+        let range1 = // $ type=range1:Range type=range1:Idx.u16
+        std::ops::Range {
             start: 0u16,
             end: 10u16,
         };
@@ -2031,10 +2147,11 @@ mod loops {
         // while loops
 
         let mut a: i64 = 0; // $ type=a:i64
-        while a < 10 // $ method=lt type=a:i64
+        #[rustfmt::skip]
+        let _ = while a < 10 // $ method=lt type=a:i64
         {
             a += 1; // $ type=a:i64 method=add_assign
-        }
+        };
     }
 }
 

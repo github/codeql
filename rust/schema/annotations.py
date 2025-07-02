@@ -914,7 +914,7 @@ class _:
     """
 
 
-@annotate(AssocItem)
+@annotate(AssocItem, replace_bases={AstNode: Item})
 class _:
     """
     An associated item in a `Trait` or `Impl`.
@@ -985,7 +985,7 @@ class _:
     """
 
 
-@annotate(Const)
+@annotate(Const, replace_bases={Item: None})
 class _:
     """
     A constant item declaration.
@@ -1078,7 +1078,7 @@ class _:
     """
 
 
-@annotate(ExternItem)
+@annotate(ExternItem, replace_bases={AstNode: Item})
 class _:
     """
     An item inside an extern block.
@@ -1359,7 +1359,7 @@ class _:
     """
 
 
-@annotate(MacroCall, cfg=True)
+@annotate(MacroCall, cfg=True, replace_bases={Item: None})
 class _:
     """
     A macro invocation.
@@ -1807,7 +1807,7 @@ class _:
     """
 
 
-@annotate(Static)
+@annotate(Static, replace_bases={Item: None})
 class _:
     """
     A static item declaration.
@@ -1947,7 +1947,7 @@ class _:
     """
 
 
-@annotate(TypeAlias)
+@annotate(TypeAlias, replace_bases={Item: None})
 class _:
     """
     A type alias. For example:
@@ -2143,7 +2143,7 @@ class _:
     loop_body: drop
 
 
-@annotate(Function, add_bases=[Callable])
+@annotate(Function, add_bases=[Callable], replace_bases={Item: None})
 class _:
     param_list: drop
     attrs: drop

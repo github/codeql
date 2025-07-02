@@ -11,7 +11,7 @@ import json
 import yaml
 
 # To add more languages, add them to this list:
-languages = ['cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ql', 'ruby', 'swift']
+languages = ['cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ql', 'ruby', 'rust', 'swift']
 
 repo_location = Path(__file__).parent.parent.parent
 
