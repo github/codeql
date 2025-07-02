@@ -10,18 +10,18 @@
 
 import ql
 
-private predicate hasQualityTag(QueryDoc doc) { doc.getQueryTags() = "quality" }
+private predicate hasQualityTag(QueryDoc doc) { doc.getAQueryTag() = "quality" }
 
-private predicate incorrectTopLevelCategorisation(QueryDoc doc) {
-  count(string s | s = doc.getQueryTags() and s = ["maintainability", "reliability"]) != 1
+private predicate correctTopLevelCategorisation(QueryDoc doc) {
+  strictcount(string s | s = doc.getAQueryTag() and s = ["maintainability", "reliability"]) = 1
 }
 
 private predicate reliabilitySubCategory(QueryDoc doc) {
-  doc.getQueryTags() = ["correctness", "performance", "concurrency", "error-handling"]
+  doc.getAQueryTag() = ["correctness", "performance", "concurrency", "error-handling"]
 }
 
 private predicate maintainabilitySubCategory(QueryDoc doc) {
-  doc.getQueryTags() = ["readability", "useless-code", "complexity"]
+  doc.getAQueryTag() = ["readability", "useless-code", "complexity"]
 }
 
 from TopLevel t, QueryDoc doc, string msg
@@ -30,18 +30,18 @@ where
   not t.getLocation().getFile() instanceof TestFile and
   hasQualityTag(doc) and
   (
-    incorrectTopLevelCategorisation(doc) and
+    not correctTopLevelCategorisation(doc) and
     msg =
       "This query file has incorrect top-level categorisation. It should have exactly one top-level category, either `@tags maintainability` or `@tags reliability`."
     or
     maintainabilitySubCategory(doc) and
-    not doc.getQueryTags() = "maintainability" and
+    not doc.getAQueryTag() = "maintainability" and
     msg =
       "This query file has a sub-category of maintainability but is missing the `@tags maintainability` tag."
     or
     reliabilitySubCategory(doc) and
-    not doc.getQueryTags() = "reliability" and
+    not doc.getAQueryTag() = "reliability" and
     msg =
       "This query file has a sub-category of reliability but is missing the `@tags reliability` tag."
   )
-select t, msg
+select doc, msg
