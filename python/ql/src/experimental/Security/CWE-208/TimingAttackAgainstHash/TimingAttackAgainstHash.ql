@@ -25,6 +25,10 @@ private module TimingAttackAgainstHashConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ProduceCryptoCall }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 selects source.getResultType (/Users/d10c/src/semmle-code/ql/python/ql/src/experimental/Security/CWE-208/TimingAttackAgainstHash/TimingAttackAgainstHash.ql@39:3:39:54)
+  }
 }
 
 module TimingAttackAgainstHashFlow = TaintTracking::Global<TimingAttackAgainstHashConfig>;

@@ -33,8 +33,6 @@ module NormalHashFunction {
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       sensitiveDataExtraStepForCalls(node1, node2)
     }
-
-    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Global taint-tracking for detecting "use of a broken or weak cryptographic hashing algorithm on sensitive data" vulnerabilities. */
@@ -65,8 +63,6 @@ module ComputationallyExpensiveHashFunction {
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       sensitiveDataExtraStepForCalls(node1, node2)
     }
-
-    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Global taint-tracking for detecting "use of a broken or weak cryptographic hashing algorithm on passwords" vulnerabilities. */

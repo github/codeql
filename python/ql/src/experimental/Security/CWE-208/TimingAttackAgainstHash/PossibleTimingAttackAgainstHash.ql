@@ -26,6 +26,10 @@ private module PossibleTimingAttackAgainstHashConfig implements DataFlow::Config
   predicate isSource(DataFlow::Node source) { source instanceof ProduceCryptoCall }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 selects source.getResultType (/Users/d10c/src/semmle-code/ql/python/ql/src/experimental/Security/CWE-208/TimingAttackAgainstHash/PossibleTimingAttackAgainstHash.ql@41:3:41:54)
+  }
 }
 
 module PossibleTimingAttackAgainstHashFlow =
