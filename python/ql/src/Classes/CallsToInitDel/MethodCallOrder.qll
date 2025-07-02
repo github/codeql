@@ -19,17 +19,16 @@ Function getASuperCallTarget(Class mroBase, Function meth, DataFlow::MethodCallN
   meth = call.getScope() and
   getADirectSuperclass*(mroBase) = meth.getScope() and
   call.calls(_, meth.getName()) and
-  exists(Function target, Class nextMroBase |
-    (result = target or result = getASuperCallTarget(nextMroBase, target, _))
-  |
+  exists(Function target | (result = target or result = getASuperCallTarget(mroBase, target, _)) |
     superCall(call, _) and
-    nextMroBase = mroBase and
     target =
       findFunctionAccordingToMroKnownStartingClass(getNextClassInMroKnownStartingClass(meth.getScope(),
           mroBase), mroBase, meth.getName())
     or
-    callsMethodOnClassWithSelf(meth, call, nextMroBase, _) and
-    target = findFunctionAccordingToMro(nextMroBase, meth.getName())
+    exists(Class called |
+      callsMethodOnClassWithSelf(meth, call, called, _) and
+      target = findFunctionAccordingToMroKnownStartingClass(called, mroBase, meth.getName())
+    )
   )
 }
 
