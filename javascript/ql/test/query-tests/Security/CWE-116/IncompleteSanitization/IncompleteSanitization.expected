@@ -1,5 +1,5 @@
 | tst.js:5:10:5:18 | s.replace | This replaces only the first occurrence of $@. | tst.js:5:20:5:22 | "'" | "'" |
-| tst.js:9:10:9:18 | s.replace | This replaces only the first occurrence of $@. | tst.js:9:20:9:22 | /'/ | /'/ |
+| tst.js:9:10:9:18 | s.replace | This replaces only the first occurrence of $@. | tst.js:9:20:9:22 | /'/ | this node |
 | tst.js:13:10:13:18 | s.replace | This does not escape backslash characters in the input. | tst.js:13:20:13:23 | /'/g |  |
 | tst.js:17:10:17:18 | s.replace | This does not escape backslash characters in the input. | tst.js:17:20:17:23 | /'/g |  |
 | tst.js:21:10:21:18 | s.replace | This does not escape backslash characters in the input. | tst.js:21:20:21:26 | /['"]/g |  |
@@ -21,17 +21,17 @@
 | tst.js:135:2:135:30 | s.repla ... replace | This replaces only the first occurrence of $@. | tst.js:135:32:135:34 | ']' | ']' |
 | tst.js:136:2:136:10 | s.replace | This replaces only the first occurrence of $@. | tst.js:136:12:136:14 | '{' | '{' |
 | tst.js:136:2:136:30 | s.repla ... replace | This replaces only the first occurrence of $@. | tst.js:136:32:136:34 | '}' | '}' |
-| tst.js:140:2:140:10 | s.replace | This replaces only the first occurrence of $@. | tst.js:140:12:140:14 | /{/ | /{/ |
-| tst.js:140:2:140:27 | s.repla ... replace | This replaces only the first occurrence of $@. | tst.js:140:29:140:31 | /}/ | /}/ |
+| tst.js:140:2:140:10 | s.replace | This replaces only the first occurrence of $@. | tst.js:140:12:140:14 | /{/ | this node |
+| tst.js:140:2:140:27 | s.repla ... replace | This replaces only the first occurrence of $@. | tst.js:140:29:140:31 | /}/ | this node |
 | tst.js:141:2:141:10 | s.replace | This replaces only the first occurrence of $@. | tst.js:141:12:141:14 | ']' | ']' |
 | tst.js:141:2:141:27 | s.repla ... replace | This replaces only the first occurrence of $@. | tst.js:141:29:141:31 | '[' | '[' |
 | tst.js:148:2:148:10 | x.replace | This replaces only the first occurrence of $@. | tst.js:148:12:148:15 | "\\n" | "\\n" |
 | tst.js:149:2:149:24 | x.repla ... replace | This replaces only the first occurrence of $@. | tst.js:149:26:149:29 | "\\n" | "\\n" |
-| tst.js:193:9:193:17 | s.replace | This replaces only the first occurrence of $@. | tst.js:192:17:192:19 | /'/ | /'/ |
+| tst.js:193:9:193:17 | s.replace | This replaces only the first occurrence of $@. | tst.js:192:17:192:19 | /'/ | this node |
 | tst.js:202:10:202:18 | p.replace | This replaces only the first occurrence of $@. | tst.js:202:20:202:25 | "/../" | "/../" |
-| tst.js:341:9:341:17 | p.replace | This replaces only the first occurrence of $@. | tst.js:341:19:341:39 | new Reg ... .\\\\./") | /\\.\\.// |
+| tst.js:341:9:341:17 | p.replace | This replaces only the first occurrence of $@. | tst.js:341:19:341:39 | new Reg ... .\\\\./") | this node |
 | tst.js:345:9:345:17 | s.replace | This does not escape backslash characters in the input. | tst.js:345:19:345:38 | new RegExp("\\'","g") |  |
-| tst.js:349:9:349:17 | s.replace | This replaces only the first occurrence of $@. | tst.js:349:19:349:34 | new RegExp("\\'") | /'/ |
+| tst.js:349:9:349:17 | s.replace | This replaces only the first occurrence of $@. | tst.js:349:19:349:34 | new RegExp("\\'") | this node |
 | tst.js:353:9:353:17 | s.replace | This does not escape backslash characters in the input. | tst.js:353:19:353:50 | new Reg ... lags()) |  |
-| tst.js:362:2:362:10 | x.replace | This replaces only the first occurrence of $@. | tst.js:362:12:362:27 | new RegExp("\\n") | /\n/ |
-| tst.js:363:2:363:24 | x.repla ... replace | This replaces only the first occurrence of $@. | tst.js:363:26:363:41 | new RegExp("\\n") | /\n/ |
+| tst.js:362:2:362:10 | x.replace | This replaces only the first occurrence of $@. | tst.js:362:12:362:27 | new RegExp("\\n") | this node |
+| tst.js:363:2:363:24 | x.repla ... replace | This replaces only the first occurrence of $@. | tst.js:363:26:363:41 | new RegExp("\\n") | this node |

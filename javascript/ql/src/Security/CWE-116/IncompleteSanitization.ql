@@ -147,9 +147,7 @@ predicate whitelistedRemoval(StringReplaceCall repl) {
  * Gets a nice string representation of the pattern or value of the node.
  */
 string getPatternOrValueString(DataFlow::Node node) {
-  if node instanceof DataFlow::RegExpConstructorInvokeNode
-  then result = "/" + node.(DataFlow::RegExpConstructorInvokeNode).getRoot() + "/"
-  else result = node.toString()
+  if exists(node.getStringValue()) then result = node.toString() else result = "this node"
 }
 
 from StringReplaceCall repl, DataFlow::Node old, string msg, string pattern
