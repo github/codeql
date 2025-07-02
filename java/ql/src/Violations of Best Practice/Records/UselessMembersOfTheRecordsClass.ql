@@ -1,8 +1,9 @@
 /**
- * @id java/useless-members-of-the-records-class
- * @name Useless serialization members of `Records`
- * @description Using certain members of the `Records` class during serialization will result in
+ * @id java/useless-member-of-the-record-class
+ * @name Useless serialization member of record class
+ * @description Using certain members of a record class during serialization will result in
  *              those members being ignored.
+ * @previous-id java/useless-members-of-the-records-class
  * @kind problem
  * @precision very-high
  * @problem.severity warning
@@ -20,4 +21,5 @@ where
       "writeObject", "readObject", "readObjectNoData", "writeExternal", "readExternal",
       "serialPersistentFields"
     ])
-select record, "Declaration of useless member $@ found.", m, m.getName()
+select m, "Useless serialization member $@ found in record class $@.", m, m.getName(), record,
+  record.getName()
