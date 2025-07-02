@@ -18,6 +18,10 @@ private module PolynomialReDoSConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 selects sink.getHighlight (/Users/d10c/src/semmle-code/ql/ruby/ql/src/queries/security/cwe-1333/PolynomialReDoS.ql@27:8:27:30), Column 5 selects sink.getRegExp (/Users/d10c/src/semmle-code/ql/ruby/ql/src/queries/security/cwe-1333/PolynomialReDoS.ql@29:67:29:72)
+  }
 }
 
 /**
