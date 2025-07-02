@@ -163,6 +163,10 @@ private module EnvVarInjectionConfig implements DataFlow::ConfigSig {
       exists(run.getScript().getAFileReadCommand())
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 7 does not select a source or sink originating from the flow call on line 24 (/Users/d10c/src/semmle-code/ql/actions/ql/src/Security/CWE-077/EnvVarInjectionCritical.ql@48:36:48:40)
+  }
 }
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate an environment variable. */

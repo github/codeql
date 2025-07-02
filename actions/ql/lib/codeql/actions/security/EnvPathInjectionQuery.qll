@@ -108,6 +108,10 @@ private module EnvPathInjectionConfig implements DataFlow::ConfigSig {
       exists(run.getScript().getAFileReadCommand())
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 7 does not select a source or sink originating from the flow call on line 23 (/Users/d10c/src/semmle-code/ql/actions/ql/src/Security/CWE-077/EnvPathInjectionCritical.ql@39:36:39:40)
+  }
 }
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate the PATH environment variable. */
