@@ -152,12 +152,13 @@ string getPatternOrValueString(DataFlow::Node node) {
   else result = node.toString()
 }
 
-from StringReplaceCall repl, DataFlow::Node old, string msg
+from StringReplaceCall repl, DataFlow::Node old, string msg, string pattern
 where
   (old = repl.getArgument(0) or old = repl.getRegExp()) and
   (
     not repl.maybeGlobal() and
-    msg = "This replaces only the first occurrence of " + getPatternOrValueString(old) + "." and
+    pattern = getPatternOrValueString(old) and
+    msg = "This replaces only the first occurrence of $@." and
     // only flag if this is likely to be a sanitizer or URL encoder or decoder
     exists(string m | m = getAMatchedString(old) |
       // sanitizer
@@ -184,6 +185,7 @@ where
     or
     isBackslashEscape(repl, _) and
     not allBackslashesEscaped(repl) and
+    pattern = "" and
     msg = "This does not escape backslash characters in the input."
   )
-select repl.getCalleeNode(), msg
+select repl.getCalleeNode(), msg, old, pattern
