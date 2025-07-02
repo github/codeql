@@ -194,7 +194,7 @@ abstract class ItemNode extends Locatable {
     Stages::PathResolutionStage::ref() and
     result = this.getASuccessorRec(name)
     or
-    preludeEdge(this, name, result) and not declares(this, _, name)
+    preludeEdge(this, name, result)
     or
     this instanceof SourceFile and
     builtin(name, result)
@@ -401,7 +401,7 @@ class ExternCrateItemNode extends ItemNode instanceof ExternCrate {
 }
 
 /** An item that can occur in a trait or an `impl` block. */
-abstract private class AssocItemNode extends ItemNode, AssocItem {
+abstract private class AssocItemNode extends ItemNode instanceof AssocItem {
   /** Holds if this associated item has an implementation. */
   abstract predicate hasImplementation();
 
@@ -539,6 +539,13 @@ abstract class ImplOrTraitItemNode extends ItemNode {
 
   /** Gets an associated item belonging to this trait or `impl` block. */
   abstract AssocItemNode getAnAssocItem();
+
+  /** Gets the associated item named `name` belonging to this trait or `impl` block. */
+  pragma[nomagic]
+  AssocItemNode getAssocItem(string name) {
+    result = this.getAnAssocItem() and
+    result.getName() = name
+  }
 
   /** Holds if this trait or `impl` block declares an associated item named `name`. */
   pragma[nomagic]
@@ -1132,7 +1139,7 @@ pragma[nomagic]
 private predicate crateDependencyEdge(SourceFileItemNode file, string name, CrateItemNode dep) {
   exists(CrateItemNode c | dep = c.(Crate).getDependency(name) | file = c.getASourceFile())
   or
-  // Give builtin files, such as `await.rs`, access to `std`
+  // Give builtin files access to `std`
   file instanceof BuiltinSourceFile and
   dep.getName() = name and
   name = "std"
@@ -1498,12 +1505,8 @@ private predicate externCrateEdge(ExternCrateItemNode ec, string name, CrateItem
  */
 pragma[nomagic]
 private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
+  not declares(f, _, name) and
   exists(Crate stdOrCore, ModuleLikeNode mod, ModuleItemNode prelude, ModuleItemNode rust |
-    f = any(Crate c0 | stdOrCore = c0.getDependency(_) or stdOrCore = c0).getASourceFile()
-    or
-    // Give builtin files, such as `await.rs`, access to the prelude
-    f instanceof BuiltinSourceFile
-  |
     stdOrCore.getName() = ["std", "core"] and
     mod = stdOrCore.getSourceFile() and
     prelude = mod.getASuccessorRec("prelude") and

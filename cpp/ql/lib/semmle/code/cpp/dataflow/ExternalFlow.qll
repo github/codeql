@@ -230,6 +230,49 @@ private predicate summaryModel0(
 }
 
 /**
+ * Holds if the given extension tuple `madId` should pretty-print as `model`.
+ *
+ * This predicate should only be used in tests.
+ */
+predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance
+  |
+    Extensions::sourceModel(namespace, type, subtypes, name, signature, ext, output, kind,
+      provenance, madId)
+  |
+    model =
+      "Source: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; "
+        + ext + "; " + output + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance
+  |
+    Extensions::sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance,
+      madId)
+  |
+    model =
+      "Sink: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
+        ext + "; " + input + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance
+  |
+    Extensions::summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
+      provenance, madId)
+  |
+    model =
+      "Summary: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature +
+        "; " + ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
+  )
+}
+
+/**
  * Holds if `input` is `input0`, but with all occurrences of `@` replaced
  * by `n` repetitions of `*` (and similarly for `output` and `output0`).
  */

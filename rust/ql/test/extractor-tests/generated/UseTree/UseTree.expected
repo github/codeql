@@ -1,7 +1,20 @@
-| gen_use_tree.rs:5:9:5:33 | ...::HashMap | isGlob: | no | hasPath: | yes | hasRename: | no | hasUseTreeList: | no |
-| gen_use_tree.rs:6:9:6:27 | ...::collections::* | isGlob: | yes | hasPath: | yes | hasRename: | no | hasUseTreeList: | no |
-| gen_use_tree.rs:7:9:7:46 | ...::HashMap as MyHashMap | isGlob: | no | hasPath: | yes | hasRename: | yes | hasUseTreeList: | no |
-| gen_use_tree.rs:8:9:8:50 | ...::collections::{...} | isGlob: | no | hasPath: | yes | hasRename: | no | hasUseTreeList: | yes |
-| gen_use_tree.rs:8:28:8:31 | self | isGlob: | no | hasPath: | yes | hasRename: | no | hasUseTreeList: | no |
-| gen_use_tree.rs:8:34:8:40 | HashMap | isGlob: | no | hasPath: | yes | hasRename: | no | hasUseTreeList: | no |
-| gen_use_tree.rs:8:43:8:49 | HashSet | isGlob: | no | hasPath: | yes | hasRename: | no | hasUseTreeList: | no |
+instances
+| gen_use_tree.rs:5:9:5:33 | ...::HashMap | isGlob: | no |
+| gen_use_tree.rs:6:9:6:27 | ...::collections::* | isGlob: | yes |
+| gen_use_tree.rs:7:9:7:46 | ...::HashMap as MyHashMap | isGlob: | no |
+| gen_use_tree.rs:8:9:8:50 | ...::collections::{...} | isGlob: | no |
+| gen_use_tree.rs:8:28:8:31 | self | isGlob: | no |
+| gen_use_tree.rs:8:34:8:40 | HashMap | isGlob: | no |
+| gen_use_tree.rs:8:43:8:49 | HashSet | isGlob: | no |
+getPath
+| gen_use_tree.rs:5:9:5:33 | ...::HashMap | gen_use_tree.rs:5:9:5:33 | ...::HashMap |
+| gen_use_tree.rs:6:9:6:27 | ...::collections::* | gen_use_tree.rs:6:9:6:24 | ...::collections |
+| gen_use_tree.rs:7:9:7:46 | ...::HashMap as MyHashMap | gen_use_tree.rs:7:9:7:33 | ...::HashMap |
+| gen_use_tree.rs:8:9:8:50 | ...::collections::{...} | gen_use_tree.rs:8:9:8:24 | ...::collections |
+| gen_use_tree.rs:8:28:8:31 | self | gen_use_tree.rs:8:28:8:31 | self |
+| gen_use_tree.rs:8:34:8:40 | HashMap | gen_use_tree.rs:8:34:8:40 | HashMap |
+| gen_use_tree.rs:8:43:8:49 | HashSet | gen_use_tree.rs:8:43:8:49 | HashSet |
+getRename
+| gen_use_tree.rs:7:9:7:46 | ...::HashMap as MyHashMap | gen_use_tree.rs:7:35:7:46 | Rename |
+getUseTreeList
+| gen_use_tree.rs:8:9:8:50 | ...::collections::{...} | gen_use_tree.rs:8:27:8:50 | UseTreeList |

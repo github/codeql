@@ -579,12 +579,27 @@ abstract class StringlikeLiteralImpl extends Expr, TStringlikeLiteral {
     )
   }
 
+  pragma[nomagic]
+  private StringComponentImpl getComponentImplRestricted(int n) {
+    result = this.getComponentImpl(n) and
+    strictsum(int length, int i | length = this.getComponentImpl(i).getValue().length() | length) <
+      10000
+  }
+
   // 0 components results in the empty string
-  // if all interpolations have a known string value, we will get a result
+  // if all interpolations have a known string value, we will get a result, unless the
+  // combined length exceeds 10,000 characters
   language[monotonicAggregates]
   final string getStringValue() {
+    not exists(this.getComponentImpl(_)) and
+    result = ""
+    or
     result =
-      concat(StringComponentImpl c, int i | c = this.getComponentImpl(i) | c.getValue() order by i)
+      strictconcat(StringComponentImpl c, int i |
+        c = this.getComponentImplRestricted(i)
+      |
+        c.getValue() order by i
+      )
   }
 }
 

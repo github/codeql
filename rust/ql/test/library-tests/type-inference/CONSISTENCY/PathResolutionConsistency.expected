@@ -1,3 +1,9 @@
-multipleMethodCallTargets
-| dereference.rs:61:15:61:24 | e1.deref() | file://:0:0:0:0 | fn deref |
-| dereference.rs:61:15:61:24 | e1.deref() | file://:0:0:0:0 | fn deref |
+multipleCallTargets
+| dereference.rs:61:15:61:24 | e1.deref() |
+| main.rs:2076:13:2076:31 | ...::from(...) |
+| main.rs:2077:13:2077:31 | ...::from(...) |
+| main.rs:2078:13:2078:31 | ...::from(...) |
+| main.rs:2084:13:2084:31 | ...::from(...) |
+| main.rs:2085:13:2085:31 | ...::from(...) |
+| main.rs:2086:13:2086:31 | ...::from(...) |
+| main.rs:2122:21:2122:43 | ...::from(...) |

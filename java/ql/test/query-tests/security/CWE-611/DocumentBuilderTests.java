@@ -11,7 +11,7 @@ class DocumentBuilderTests {
   public void unconfiguredParse(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
-    builder.parse(sock.getInputStream()); // $ hasTaintFlow
+    builder.parse(sock.getInputStream()); // $ Alert
   }
 
   public void disableDTD(Socket sock) throws Exception {
@@ -25,7 +25,7 @@ class DocumentBuilderTests {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    builder.parse(sock.getInputStream()); // $ hasTaintFlow -- secure-processing by itself is
+    builder.parse(sock.getInputStream()); // $ Alert -- secure-processing by itself is
                                           // insufficient
   }
 
@@ -33,7 +33,7 @@ class DocumentBuilderTests {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    builder.parse(sock.getInputStream()); // $ hasTaintFlow -- secure-processing by itself is
+    builder.parse(sock.getInputStream()); // $ Alert -- secure-processing by itself is
                                           // insufficient
   }
 
@@ -41,14 +41,14 @@ class DocumentBuilderTests {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    builder.parse(sock.getInputStream()); // $ hasTaintFlow
+    builder.parse(sock.getInputStream()); // $ Alert
   }
 
   public void disableSecurityFeature(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", false);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    builder.parse(sock.getInputStream()); // $ hasTaintFlow
+    builder.parse(sock.getInputStream()); // $ Alert
   }
 
   public void disableExternalEntities(Socket sock) throws Exception {
@@ -63,14 +63,14 @@ class DocumentBuilderTests {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    builder.parse(sock.getInputStream()); // $ hasTaintFlow
+    builder.parse(sock.getInputStream()); // $ Alert
   }
 
   public void partialDisableExternalEntities2(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    builder.parse(sock.getInputStream()); // $ hasTaintFlow
+    builder.parse(sock.getInputStream()); // $ Alert
   }
 
   public void misConfigureExternalEntities1(Socket sock) throws Exception {
@@ -78,7 +78,7 @@ class DocumentBuilderTests {
     factory.setFeature("http://xml.org/sax/features/external-parameter-entities", true);
     factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    builder.parse(sock.getInputStream()); // $ hasTaintFlow
+    builder.parse(sock.getInputStream()); // $ Alert
   }
 
   public void misConfigureExternalEntities2(Socket sock) throws Exception {
@@ -86,22 +86,22 @@ class DocumentBuilderTests {
     factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
     factory.setFeature("http://xml.org/sax/features/external-general-entities", true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    builder.parse(sock.getInputStream()); // $ hasTaintFlow
+    builder.parse(sock.getInputStream()); // $ Alert
   }
 
   public void taintedSAXInputSource1(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
-    SAXSource source = new SAXSource(new InputSource(sock.getInputStream()));
-    builder.parse(source.getInputSource()); // $ hasTaintFlow
+    SAXSource source = new SAXSource(new InputSource(sock.getInputStream())); // $ Source
+    builder.parse(source.getInputSource()); // $ Alert
   }
 
   public void taintedSAXInputSource2(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
-    StreamSource source = new StreamSource(sock.getInputStream());
-    builder.parse(SAXSource.sourceToInputSource(source)); // $ hasTaintFlow
-    builder.parse(source.getInputStream()); // $ hasTaintFlow
+    StreamSource source = new StreamSource(sock.getInputStream()); // $ Source
+    builder.parse(SAXSource.sourceToInputSource(source)); // $ Alert
+    builder.parse(source.getInputStream()); // $ Alert
   }
 
   private static DocumentBuilderFactory getDocumentBuilderFactory() throws Exception {

@@ -145,9 +145,13 @@ final class ArgumentPosition extends ParameterPosition {
  * as the synthetic `ReceiverNode` is the argument for the `self` parameter.
  */
 predicate isArgumentForCall(ExprCfgNode arg, CallCfgNode call, ParameterPosition pos) {
-  call.getPositionalArgument(pos.getPosition()) = arg
-  or
-  call.getReceiver() = arg and pos.isSelf() and not call.getCall().receiverImplicitlyBorrowed()
+  // TODO: Handle index expressions as calls in data flow.
+  not call.getCall() instanceof IndexExpr and
+  (
+    call.getPositionalArgument(pos.getPosition()) = arg
+    or
+    call.getReceiver() = arg and pos.isSelf() and not call.getCall().receiverImplicitlyBorrowed()
+  )
 }
 
 /** Provides logic related to SSA. */
@@ -400,10 +404,20 @@ module RustDataFlow implements InputSig<Location> {
 
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall call) {
-    exists(Callable target | target = call.asCallCfgNode().getCall().getStaticTarget() |
-      target = result.asCfgScope()
+    exists(Call c | c = call.asCallCfgNode().getCall() |
+      result.asCfgScope() = c.getARuntimeTarget()
       or
-      target = result.asSummarizedCallable()
+      exists(SummarizedCallable sc, Function staticTarget |
+        staticTarget = c.getStaticTarget() and
+        sc = result.asSummarizedCallable()
+      |
+        sc = staticTarget
+        or
+        // only apply trait models to concrete implementations when they are not
+        // defined in source code
+        staticTarget.implements(sc) and
+        not staticTarget.fromSource()
+      )
     )
   }
 
@@ -896,7 +910,11 @@ module VariableCapture {
       CapturedVariable v;
 
       VariableRead() {
-        exists(VariableReadAccess read | this.getExpr() = read and v = read.getVariable())
+        exists(VariableAccess read | this.getExpr() = read and v = read.getVariable() |
+          read instanceof VariableReadAccess
+          or
+          read = any(RefExpr re).getExpr()
+        )
       }
 
       CapturedVariable getVariable() { result = v }
@@ -959,7 +977,11 @@ private module Cached {
 
   cached
   newtype TDataFlowCall =
-    TCall(CallCfgNode c) { Stages::DataFlowStage::ref() } or
+    TCall(CallCfgNode c) {
+      Stages::DataFlowStage::ref() and
+      // TODO: Handle index expressions as calls in data flow.
+      not c.getCall() instanceof IndexExpr
+    } or
     TSummaryCall(
       FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
     ) {

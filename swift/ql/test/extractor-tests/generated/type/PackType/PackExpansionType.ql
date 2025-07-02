@@ -2,14 +2,19 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  PackExpansionType x, string getName, Type getCanonicalType, Type getPatternType, Type getCountType
-where
+query predicate instances(
+  PackExpansionType x, string getName__label, string getName, string getCanonicalType__label,
+  Type getCanonicalType, string getPatternType__label, Type getPatternType,
+  string getCountType__label, Type getCountType
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getName__label = "getName:" and
   getName = x.getName() and
+  getCanonicalType__label = "getCanonicalType:" and
   getCanonicalType = x.getCanonicalType() and
+  getPatternType__label = "getPatternType:" and
   getPatternType = x.getPatternType() and
+  getCountType__label = "getCountType:" and
   getCountType = x.getCountType()
-select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getPatternType:",
-  getPatternType, "getCountType:", getCountType
+}

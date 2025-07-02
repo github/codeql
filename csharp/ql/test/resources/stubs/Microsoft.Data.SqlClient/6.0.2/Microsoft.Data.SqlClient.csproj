@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Azure.Identity/1.11.4/Azure.Identity.csproj" />
+    <ProjectReference Include="../../Microsoft.Bcl.Cryptography/9.0.4/Microsoft.Bcl.Cryptography.csproj" />
+    <ProjectReference Include="../../Microsoft.Data.SqlClient.SNI.runtime/6.0.2/Microsoft.Data.SqlClient.SNI.runtime.csproj" />
+    <ProjectReference Include="../../Microsoft.Extensions.Caching.Memory/9.0.4/Microsoft.Extensions.Caching.Memory.csproj" />
+    <ProjectReference Include="../../Microsoft.IdentityModel.JsonWebTokens/7.5.0/Microsoft.IdentityModel.JsonWebTokens.csproj" />
+    <ProjectReference Include="../../Microsoft.IdentityModel.Protocols.OpenIdConnect/7.5.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.csproj" />
+    <ProjectReference Include="../../Microsoft.SqlServer.Server/1.0.0/Microsoft.SqlServer.Server.csproj" />
+    <ProjectReference Include="../../System.Configuration.ConfigurationManager/9.0.4/System.Configuration.ConfigurationManager.csproj" />
+    <ProjectReference Include="../../System.Security.Cryptography.Pkcs/9.0.4/System.Security.Cryptography.Pkcs.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,14 +1,12 @@
-# Unmasked Secret Exposure
-
-## Description
+## Overview
 
 Secrets derived from other secrets are not known to the workflow runner, and therefore are not masked unless explicitly registered.
 
-## Recommendations
+## Recommendation
 
 Avoid defining non-plain secrets. For example, do not define a new secret containing a JSON object and then read properties out of it from the workflow, since these read values will not be masked by the workflow runner.
 
-## Examples
+## Example
 
 ### Incorrect Usage
 
@@ -34,4 +32,4 @@ Avoid defining non-plain secrets. For example, do not define a new secret contai
 
 ## References
 
-- [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#using-encrypted-secrets-in-a-workflow)
+- GitHub Docs: [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#using-encrypted-secrets-in-a-workflow).

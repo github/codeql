@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import codeql.dataflow.DataFlow
 private import codeql.typetracking.TypeTracking as Tt
 private import codeql.util.Location
@@ -288,6 +291,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * to `lambdaCall`, if any. That is, `lastCall` is able to target the enclosing
      * callable of `lambdaCall`.
      */
+    overlay[global]
     pragma[nomagic]
     predicate revLambdaFlow(
       Call lambdaCall, LambdaCallKind kind, Node node, Type t, boolean toReturn, boolean toJump,
@@ -674,6 +678,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
       class CcCall = CallContextCall;
 
+      overlay[caller?]
       pragma[inline]
       predicate matchesCall(CcCall cc, Call call) {
         cc = Input2::getSpecificCallContextCall(call, _) or
@@ -885,6 +890,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     pragma[nomagic]
     private Callable getEnclosingCallable0() { nodeEnclosingCallable(this.projectToNode(), result) }
 
+    overlay[caller?]
     pragma[inline]
     Callable getEnclosingCallable() {
       pragma[only_bind_out](this).getEnclosingCallable0() = pragma[only_bind_into](result)
@@ -899,6 +905,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       isTopType(result) and this.isImplicitReadNode(_)
     }
 
+    overlay[caller?]
     pragma[inline]
     Type getType() { pragma[only_bind_out](this).getType0() = pragma[only_bind_into](result) }
 
@@ -2410,12 +2417,14 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
    * predicate ensures that joins go from `n` to the result instead of the other
    * way around.
    */
+  overlay[caller?]
   pragma[inline]
   Callable getNodeEnclosingCallable(Node n) {
     nodeEnclosingCallable(pragma[only_bind_out](n), pragma[only_bind_into](result))
   }
 
   /** Gets the type of `n` used for type pruning. */
+  overlay[caller?]
   pragma[inline]
   Type getNodeDataFlowType(Node n) {
     nodeType(pragma[only_bind_out](n), pragma[only_bind_into](result))

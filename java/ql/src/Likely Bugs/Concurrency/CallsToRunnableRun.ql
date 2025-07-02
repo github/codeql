@@ -6,6 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/call-to-thread-run
+ * @previous-id java/run-method-called-on-java-lang-thread-directly
  * @tags quality
  *       reliability
  *       concurrency

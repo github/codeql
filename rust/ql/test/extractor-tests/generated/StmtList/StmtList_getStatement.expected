@@ -1,2 +1,0 @@
-| gen_stmt_list.rs:7:5:10:5 | StmtList | 0 | gen_stmt_list.rs:8:9:8:18 | let ... = 1 |
-| gen_stmt_list.rs:7:5:10:5 | StmtList | 1 | gen_stmt_list.rs:9:9:9:18 | let ... = 2 |

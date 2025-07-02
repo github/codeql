@@ -12,3 +12,7 @@ predicate bar(int x) { x = 43 }
 
 pragma[inline]
 private predicate baz(int x) { x = 44 }
+
+overlay[caller?]
+pragma[inline]
+predicate baw(int x) { x = 45 }

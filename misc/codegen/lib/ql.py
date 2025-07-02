@@ -37,7 +37,6 @@ class Property:
     is_optional: bool = False
     is_predicate: bool = False
     is_unordered: bool = False
-    prev_child: Optional[str] = None
     qltest_skip: bool = False
     description: List[str] = field(default_factory=list)
     doc: Optional[str] = None
@@ -48,6 +47,7 @@ class Property:
     type_is_self: bool = False
     internal: bool = False
     cfg: bool = False
+    is_child: bool = False
 
     def __post_init__(self):
         if self.tableparams:
@@ -77,16 +77,18 @@ class Property:
         return not (self.is_optional or self.is_repeated or self.is_predicate)
 
     @property
-    def is_child(self):
-        return self.prev_child is not None
-
-    @property
     def is_indexed(self) -> bool:
         return self.is_repeated and not self.is_unordered
 
     @property
     def type_alias(self) -> Optional[str]:
         return self.type + "Alias" if self.type_is_self else self.type
+
+
+@dataclass
+class Child:
+    property: Property
+    prev: str = ""
 
 
 @dataclass
@@ -107,6 +109,7 @@ class Class:
     bases_impl: List[Base] = field(default_factory=list)
     final: bool = False
     properties: List[Property] = field(default_factory=list)
+    all_children: List[Child] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
     imports: List[str] = field(default_factory=list)
     import_prefix: Optional[str] = None
@@ -148,7 +151,7 @@ class Class:
 
     @property
     def has_children(self) -> bool:
-        return any(p.is_child for p in self.properties)
+        return bool(self.all_children)
 
     @property
     def last_base(self) -> str:
@@ -243,13 +246,6 @@ class ClassTester(TesterBase):
 
     properties: List[PropertyForTest] = field(default_factory=list)
     show_ql_class: bool = False
-
-
-@dataclass
-class PropertyTester(TesterBase):
-    template: ClassVar = "ql_test_property"
-
-    property: PropertyForTest
 
 
 @dataclass

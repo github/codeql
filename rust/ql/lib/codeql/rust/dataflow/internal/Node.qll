@@ -17,13 +17,19 @@ private import codeql.rust.dataflow.FlowSummary
 private import Node as Node
 private import DataFlowImpl
 private import FlowSummaryImpl as FlowSummaryImpl
+private import codeql.rust.internal.CachedStages
 
 /** An element, viewed as a node in a data flow graph. */
-abstract class NodePublic extends TNode {
+// It is important to not make this class `abstract`, as it otherwise results in
+// a needless charpred, which will result in recomputation of internal non-cached
+// predicates
+class NodePublic extends TNode {
   /** Gets the location of this node. */
+  cached
   abstract Location getLocation();
 
   /** Gets a textual representation of this node. */
+  cached
   abstract string toString();
 
   /**
@@ -53,17 +59,6 @@ abstract class Node extends NodePublic {
    * Gets the control flow node that corresponds to this data flow node.
    */
   CfgNode getCfgNode() { none() }
-}
-
-/** A node type that is not implemented. */
-final class NaNode extends Node {
-  NaNode() { none() }
-
-  override CfgScope getCfgScope() { none() }
-
-  override string toString() { result = "N/A" }
-
-  override Location getLocation() { none() }
 }
 
 /** A data flow node used to model flow summaries. */
@@ -108,6 +103,7 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   }
 
   override Location getLocation() {
+    Stages::DataFlowStage::ref() and
     exists(this.getSummarizedCallable()) and
     result instanceof EmptyLocation
     or
@@ -116,7 +112,10 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
     result = this.getSinkElement().getLocation()
   }
 
-  override string toString() { result = this.getSummaryNode().toString() }
+  override string toString() {
+    Stages::DataFlowStage::ref() and
+    result = this.getSummaryNode().toString()
+  }
 }
 
 /** A data flow node that corresponds directly to a CFG node for an AST node. */
@@ -440,9 +439,9 @@ private class CapturePostUpdateNode extends PostUpdateNode, CaptureNode {
   final override string toString() { result = PostUpdateNode.super.toString() }
 }
 
-final class CastNode = NaNode;
-
-private import codeql.rust.internal.CachedStages
+final class CastNode extends ExprNode {
+  CastNode() { none() }
+}
 
 cached
 newtype TNode =
@@ -472,7 +471,11 @@ newtype TNode =
         getPostUpdateReverseStep(any(PostUpdateNode n).getPreUpdateNode().asExpr(), _)
       ]
   } or
-  TReceiverNode(CallCfgNode mc, Boolean isPost) { mc.getCall().receiverImplicitlyBorrowed() } or
+  TReceiverNode(CallCfgNode mc, Boolean isPost) {
+    mc.getCall().receiverImplicitlyBorrowed() and
+    // TODO: Handle index expressions as calls in data flow.
+    not mc.getCall() instanceof IndexExpr
+  } or
   TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
   TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
   TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c, _) } or

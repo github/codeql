@@ -447,6 +447,61 @@ module NestJS {
   }
 
   /**
+   * A NestJS Middleware Class
+   */
+  private class NestMiddlewareClass extends DataFlow::ClassNode {
+    NestMiddlewareClass() {
+      exists(ClassDefinition cls |
+        this = cls.flow() and
+        cls.getASuperInterface().hasUnderlyingType("@nestjs/common", "NestMiddleware")
+      )
+    }
+
+    DataFlow::FunctionNode getUseFunction() { result = this.getInstanceMethod("use") }
+  }
+
+  /**
+   * A NestJS Middleware Class route handler (the `use` method)
+   */
+  private class MiddlewareRouteHandler extends Http::RouteHandler, DataFlow::FunctionNode {
+    MiddlewareRouteHandler() { this = any(NestMiddlewareClass m).getUseFunction() }
+
+    override Http::HeaderDefinition getAResponseHeader(string name) { none() }
+
+    /**
+     * Gets the request object used by this route
+     */
+    DataFlow::ParameterNode getRequest() { result = this.getParameter(0) }
+
+    /**
+     * Gets the response object used by this route
+     */
+    DataFlow::ParameterNode getResponse() { result = this.getParameter(1) }
+  }
+
+  /**
+   * A source of `express` request objects for NestJS middlewares
+   */
+  private class MiddlewareRequestSource extends Express::RequestSource {
+    MiddlewareRouteHandler middlewareRouteHandler;
+
+    MiddlewareRequestSource() { this = middlewareRouteHandler.getRequest() }
+
+    override Http::RouteHandler getRouteHandler() { result = middlewareRouteHandler }
+  }
+
+  /**
+   * A source of `express` response objects for NestJS middlewares
+   */
+  private class MiddlewareResponseSource extends Express::ResponseSource {
+    MiddlewareRouteHandler middlewareRouteHandler;
+
+    MiddlewareResponseSource() { this = middlewareRouteHandler.getResponse() }
+
+    override Http::RouteHandler getRouteHandler() { result = middlewareRouteHandler }
+  }
+
+  /**
    * A value passed in the `providers` array in:
    * ```js
    * @Module({ providers: [ ... ] })
@@ -454,21 +509,53 @@ module NestJS {
    * ```
    */
   private DataFlow::Node providerTuple() {
-    result =
-      DataFlow::moduleImport("@nestjs/common")
-          .getAPropertyRead("Module")
-          .getACall()
-          .getOptionArgument(0, "providers")
-          .getALocalSource()
-          .(DataFlow::ArrayCreationNode)
-          .getAnElement()
+    exists(DataFlow::CallNode moduleCall |
+      moduleCall = DataFlow::moduleImport("@nestjs/common").getAPropertyRead("Module").getACall() and
+      result = providerTupleAux(moduleCall.getArgument(0).getALocalSource())
+    )
+  }
+
+  private DataFlow::Node providerTupleAux(DataFlow::ObjectLiteralNode o) {
+    (
+      result =
+        o.getAPropertyWrite("providers")
+            .getRhs()
+            .getALocalSource()
+            .(DataFlow::ArrayCreationNode)
+            .getAnElement()
+      or
+      result =
+        providerTupleAux(o.getAPropertyWrite("imports")
+              .getRhs()
+              .getALocalSource()
+              .(DataFlow::ArrayCreationNode)
+              .getAnElement()
+              .(DataFlow::CallNode)
+              .getCalleeNode()
+              .getAFunctionValue()
+              .getFunction()
+              .getAReturnedExpr()
+              .flow())
+    )
+  }
+
+  private DataFlow::Node getConcreteClassFromProviderTuple(DataFlow::SourceNode tuple) {
+    result = tuple.getAPropertyWrite("useClass").getRhs()
+    or
+    exists(DataFlow::FunctionNode f |
+      f = tuple.getAPropertyWrite("useFactory").getRhs().getAFunctionValue() and
+      result.getAstNode() = f.getFunction().getAReturnedExpr().getType().(ClassType).getClass()
+    )
+    or
+    result.getAstNode() =
+      tuple.getAPropertyWrite("useValue").getRhs().asExpr().getType().(ClassType).getClass()
   }
 
   private predicate providerPair(DataFlow::Node interface, DataFlow::Node concreteClass) {
     exists(DataFlow::SourceNode tuple |
       tuple = providerTuple().getALocalSource() and
       interface = tuple.getAPropertyWrite("provide").getRhs() and
-      concreteClass = tuple.getAPropertyWrite("useClass").getRhs()
+      concreteClass = getConcreteClassFromProviderTuple(tuple)
     )
   }
 

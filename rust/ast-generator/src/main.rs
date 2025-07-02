@@ -52,6 +52,32 @@ fn property_name(type_name: &str, field_name: &str) -> String {
     name.to_owned()
 }
 
+fn has_special_emission(type_name: &str) -> bool {
+    matches!(
+        type_name,
+        "Item"
+            | "AssocItem"
+            | "ExternItem"
+            | "Meta"
+            | "MacroCall"
+            | "Fn"
+            | "Struct"
+            | "Enum"
+            | "Union"
+            | "Trait"
+            | "Module"
+            | "Variant"
+            | "PathExpr"
+            | "RecordExpr"
+            | "PathPat"
+            | "RecordPat"
+            | "TupleStructPat"
+            | "MethodCallExpr"
+            | "PathSegment"
+            | "Const"
+    )
+}
+
 fn to_lower_snake_case(s: &str) -> String {
     let mut buf = String::with_capacity(s.len());
     let mut prev = false;
@@ -295,7 +321,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         let name = field.method_name();
         match (node.name.as_str(), name.as_str()) {
             ("ArrayExpr", "expr") // The ArrayExpr type also has an 'exprs' field
-            | ("PathSegment", "ty" | "path_type")  // these are broken, handling them manually
+            | ("PathSegment", "type_anchor")  // we flatten TypeAnchor into PathSegment in the extractor
             | ("Param", "pat") | ("MacroCall", "token_tree") // handled manually to use `body`
             => continue,
             _ => {}
@@ -355,6 +381,7 @@ struct ExtractorEnumInfo {
     snake_case_name: String,
     ast_name: String,
     variants: Vec<EnumVariantInfo>,
+    has_special_emission: bool,
 }
 
 #[derive(Serialize, Default)]
@@ -376,6 +403,7 @@ struct ExtractorNodeInfo {
     ast_name: String,
     fields: Vec<ExtractorNodeFieldInfo>,
     has_attrs: bool,
+    has_special_emission: bool,
 }
 
 #[derive(Serialize)]
@@ -406,6 +434,7 @@ fn enum_to_extractor_info(node: &AstEnumSrc) -> Option<ExtractorEnumInfo> {
                 }
             })
             .collect(),
+        has_special_emission: has_special_emission(&node.name),
     })
 }
 
@@ -460,6 +489,7 @@ fn node_to_extractor_info(node: &AstNodeSrc) -> ExtractorNodeInfo {
         ast_name: node.name.clone(),
         fields,
         has_attrs,
+        has_special_emission: has_special_emission(&node.name),
     }
 }
 
@@ -486,6 +516,9 @@ fn main() -> anyhow::Result<()> {
     let mut grammar = codegen::grammar::lower(&grammar);
     // remove the VariantDef enum, there is no use for it at the moment
     grammar.enums.retain(|e| e.name != "VariantDef");
+
+    // we flatten TypeAnchor into PathSegment in the extractor
+    grammar.nodes.retain(|x| x.name != "TypeAnchor");
 
     let mut super_types: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
     for node in &grammar.enums {

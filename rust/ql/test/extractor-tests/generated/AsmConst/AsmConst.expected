@@ -1,1 +1,4 @@
-| gen_asm_const.rs:8:30:8:37 | AsmConst | hasExpr: | yes | isConst: | yes |
+instances
+| gen_asm_const.rs:8:30:8:37 | AsmConst | isConst: | yes |
+getExpr
+| gen_asm_const.rs:8:30:8:37 | AsmConst | gen_asm_const.rs:8:36:8:37 | 42 |

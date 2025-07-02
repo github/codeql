@@ -1,10 +1,3 @@
-multipleMethodCallTargets
-| main.rs:64:16:64:25 | s.as_str() | file://:0:0:0:0 | fn as_str |
-| main.rs:64:16:64:25 | s.as_str() | file://:0:0:0:0 | fn as_str |
-multiplePathResolutions
-| main.rs:52:14:52:25 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:52:14:52:25 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:52:14:52:25 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:52:14:52:25 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:52:14:52:25 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:52:14:52:25 | ...::from | file://:0:0:0:0 | fn from |
+multipleCallTargets
+| main.rs:52:14:52:29 | ...::from(...) |
+| main.rs:64:16:64:25 | s.as_str() |

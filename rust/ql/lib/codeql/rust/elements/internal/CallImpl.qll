@@ -65,6 +65,17 @@ module Impl {
       not exists(TypeInference::resolveMethodCallTarget(this)) and
       result = this.(CallExpr).getStaticTarget()
     }
+
+    /** Gets a runtime target of this call, if any. */
+    pragma[nomagic]
+    Function getARuntimeTarget() {
+      result.hasImplementation() and
+      (
+        result = this.getStaticTarget()
+        or
+        result.implements(this.getStaticTarget())
+      )
+    }
   }
 
   /** Holds if the call expression dispatches to a trait method. */
@@ -158,6 +169,22 @@ module Impl {
       pos.isSelf() and result = super.getOperand(0)
       or
       pos.asPosition() = 0 and result = super.getOperand(1)
+    }
+  }
+
+  private class IndexCall extends Call instanceof IndexExpr {
+    override string getMethodName() { result = "index" }
+
+    override Trait getTrait() { result.getCanonicalPath() = "core::ops::index::Index" }
+
+    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) {
+      pos.isSelf() and certain = true
+    }
+
+    override Expr getArgument(ArgumentPosition pos) {
+      pos.isSelf() and result = super.getBase()
+      or
+      pos.asPosition() = 0 and result = super.getIndex()
     }
   }
 }

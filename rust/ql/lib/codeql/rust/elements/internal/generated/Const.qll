@@ -9,10 +9,11 @@ private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AssocItemImpl::Impl as AssocItemImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
-import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
+import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
+import codeql.rust.elements.WhereClause
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Const` and should not
@@ -29,7 +30,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Const` class directly.
    * Use the subclass `Const`, where the following predicates are available.
    */
-  class Const extends Synth::TConst, AssocItemImpl::AssocItem, ItemImpl::Item {
+  class Const extends Synth::TConst, AssocItemImpl::AssocItem {
     override string getAPrimaryQlClass() { result = "Const" }
 
     /**
@@ -60,6 +61,21 @@ module Generated {
      * Holds if `getBody()` exists.
      */
     final predicate hasBody() { exists(this.getBody()) }
+
+    /**
+     * Gets the generic parameter list of this const, if it exists.
+     */
+    GenericParamList getGenericParamList() {
+      result =
+        Synth::convertGenericParamListFromRaw(Synth::convertConstToRaw(this)
+              .(Raw::Const)
+              .getGenericParamList())
+    }
+
+    /**
+     * Holds if `getGenericParamList()` exists.
+     */
+    final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
 
     /**
      * Holds if this const is const.
@@ -108,6 +124,21 @@ module Generated {
      * Holds if `getVisibility()` exists.
      */
     final predicate hasVisibility() { exists(this.getVisibility()) }
+
+    /**
+     * Gets the where clause of this const, if it exists.
+     */
+    WhereClause getWhereClause() {
+      result =
+        Synth::convertWhereClauseFromRaw(Synth::convertConstToRaw(this)
+              .(Raw::Const)
+              .getWhereClause())
+    }
+
+    /**
+     * Holds if `getWhereClause()` exists.
+     */
+    final predicate hasWhereClause() { exists(this.getWhereClause()) }
 
     /**
      * Holds if this constant has an implementation.
