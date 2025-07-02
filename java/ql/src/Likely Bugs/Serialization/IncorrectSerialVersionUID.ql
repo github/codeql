@@ -21,5 +21,5 @@ where
     not f.isStatic() or
     not f.getType().hasName("long")
   ) and
-  f.getDeclaringType().getAStrictAncestor() instanceof TypeSerializable
+  f.getDeclaringType().getAStrictAncestorI() instanceof TypeSerializable
 select f, "'serialVersionUID' should be final, static, and of type long."

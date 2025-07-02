@@ -65,7 +65,7 @@ where
   ) and
   not exists(Method mid |
     confusing(m1, mid) and
-    mid.getDeclaringType().getAStrictAncestor() = m2.getDeclaringType()
+    mid.getDeclaringType().getAStrictAncestorI() = m2.getDeclaringType()
   ) and
   not exists(Method notConfusing |
     notConfusing.getDeclaringType() = m1.getDeclaringType() and

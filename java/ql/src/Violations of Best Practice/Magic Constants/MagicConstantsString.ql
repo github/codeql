@@ -52,7 +52,7 @@ predicate trivialContext(Literal e) {
   or
   // Message in an exception.
   exists(ClassInstanceExpr constr |
-    constr.getType().(RefType).getAStrictAncestor().hasName("Exception") and
+    constr.getType().(RefType).getAStrictAncestorI().hasName("Exception") and
     e = constr.getArgument(0)
   )
 }

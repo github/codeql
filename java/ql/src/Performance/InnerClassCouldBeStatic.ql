@@ -22,7 +22,7 @@ pragma[nomagic]
 predicate inherits(Class c, Field f) {
   f = c.getAField()
   or
-  not f.isPrivate() and c.getAStrictAncestor().getAField() = f
+  not f.isPrivate() and c.getAStrictAncestorI().getAField() = f
 }
 
 /**
