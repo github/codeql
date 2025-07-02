@@ -288,13 +288,12 @@ macro_argument_expanded(
 
 /*
 case @function.kind of
-  0 = @unknown_function
-| 1 = @normal_function
+  1 = @normal_function
 | 2 = @constructor
 | 3 = @destructor
 | 4 = @conversion_function
 | 5 = @operator
-// ... 6 = @builtin_function deprecated    // GCC built-in functions, e.g. __builtin___memcpy_chk
+| 6 = @builtin_function     // GCC built-in functions, e.g. __builtin___memcpy_chk
 | 7 = @user_defined_literal
 | 8 = @deduction_guide
 ;
@@ -305,10 +304,6 @@ functions(
     string name: string ref,
     int kind: int ref
 );
-
-builtin_functions(
-    int id: @function ref
-)
 
 function_entry_point(
     int id: @function ref,
