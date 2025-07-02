@@ -335,3 +335,135 @@ void mapViewOfFile(HANDLE hMapFile) {
     sink(*buffer); // $ ir
   }
 }
+
+typedef struct _SECURITY_ATTRIBUTES
+{
+  DWORD nLength;
+  LPVOID lpSecurityDescriptor;
+  BOOL bInheritHandle;
+} SECURITY_ATTRIBUTES, *PSECURITY_ATTRIBUTES, *LPSECURITY_ATTRIBUTES;
+
+typedef DWORD (*LPTHREAD_START_ROUTINE)(
+    LPVOID lpThreadParameter);
+
+HANDLE CreateThread(
+    LPSECURITY_ATTRIBUTES lpThreadAttributes,
+    SIZE_T dwStackSize,
+    LPTHREAD_START_ROUTINE lpStartAddress,
+    LPVOID lpParameter,
+    DWORD dwCreationFlags,
+    LPDWORD lpThreadId);
+
+HANDLE CreateRemoteThread(
+  HANDLE                 hProcess,
+  LPSECURITY_ATTRIBUTES  lpThreadAttributes,
+  SIZE_T                 dwStackSize,
+  LPTHREAD_START_ROUTINE lpStartAddress,
+  LPVOID                 lpParameter,
+  DWORD                  dwCreationFlags,
+  LPDWORD                lpThreadId
+);
+
+typedef ULONG_PTR DWORD_PTR;
+
+typedef struct _PROC_THREAD_ATTRIBUTE_ENTRY
+{
+    DWORD_PTR   Attribute;
+    SIZE_T      cbSize;
+    PVOID       lpValue;
+} PROC_THREAD_ATTRIBUTE_ENTRY, *LPPROC_THREAD_ATTRIBUTE_ENTRY;
+ 
+// This structure contains a list of attributes that have been added using UpdateProcThreadAttribute
+typedef struct _PROC_THREAD_ATTRIBUTE_LIST
+{
+    DWORD                          dwFlags;
+    ULONG                          Size;
+    ULONG                          Count;
+    ULONG                          Reserved;  
+    PULONG                         Unknown;
+    PROC_THREAD_ATTRIBUTE_ENTRY    Entries[1];
+} PROC_THREAD_ATTRIBUTE_LIST, *LPPROC_THREAD_ATTRIBUTE_LIST;
+
+HANDLE CreateRemoteThreadEx(
+  HANDLE                       hProcess,
+  LPSECURITY_ATTRIBUTES        lpThreadAttributes,
+  SIZE_T                       dwStackSize,
+  LPTHREAD_START_ROUTINE       lpStartAddress,
+  LPVOID                       lpParameter,
+  DWORD                        dwCreationFlags,
+  LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList,
+  LPDWORD                      lpThreadId
+);
+
+struct S
+{
+  int x;
+};
+
+DWORD ThreadProc1(LPVOID lpParameter)
+{
+  S *s = (S *)lpParameter;
+  sink(s->x); // $ MISSING: ir
+  return 0;
+}
+
+DWORD ThreadProc2(LPVOID lpParameter)
+{
+  S *s = (S *)lpParameter;
+  sink(s->x); // $ MISSING: ir
+  return 0;
+}
+
+DWORD ThreadProc3(LPVOID lpParameter)
+{
+  S *s = (S *)lpParameter;
+  sink(s->x); // $ MISSING: ir
+  return 0;
+}
+
+int source();
+
+void test_create_thread()
+{
+  SECURITY_ATTRIBUTES sa;
+
+  S s;
+  s.x = source();
+
+  {
+  DWORD threadId;
+  HANDLE threadHandle = CreateThread(
+      &sa,
+      0,
+      ThreadProc1,
+      &s,
+      0,
+      &threadId);
+  }
+
+  {
+  DWORD threadId;
+  HANDLE threadHandle = CreateRemoteThread(
+      nullptr,
+      &sa,
+      0,
+      ThreadProc2,
+      &s,
+      0,
+      &threadId);
+  }
+
+  {
+  DWORD threadId;
+  PROC_THREAD_ATTRIBUTE_LIST attrList;
+  HANDLE threadHandle = CreateRemoteThreadEx(
+      nullptr,
+      &sa,
+      0,
+      ThreadProc3,
+      &s,
+      0,
+      &attrList,
+      &threadId);
+  }
+}
