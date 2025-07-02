@@ -403,21 +403,21 @@ struct S
 DWORD ThreadProc1(LPVOID lpParameter)
 {
   S *s = (S *)lpParameter;
-  sink(s->x); // $ MISSING: ir
+  sink(s->x); // $ ir
   return 0;
 }
 
 DWORD ThreadProc2(LPVOID lpParameter)
 {
   S *s = (S *)lpParameter;
-  sink(s->x); // $ MISSING: ir
+  sink(s->x); // $ ir
   return 0;
 }
 
 DWORD ThreadProc3(LPVOID lpParameter)
 {
   S *s = (S *)lpParameter;
-  sink(s->x); // $ MISSING: ir
+  sink(s->x); // $ ir
   return 0;
 }
 
