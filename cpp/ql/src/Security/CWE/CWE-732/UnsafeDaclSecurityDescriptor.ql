@@ -37,6 +37,18 @@ module NullDaclConfig implements DataFlow::ConfigSig {
       val = call.getArgument(2)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 91 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-732/UnsafeDaclSecurityDescriptor.ql@94:8:94:11)
+  }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 91 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-732/UnsafeDaclSecurityDescriptor.ql@94:8:94:11)
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 91 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-732/UnsafeDaclSecurityDescriptor.ql@94:8:94:11)
+  }
 }
 
 module NullDaclFlow = DataFlow::Global<NullDaclConfig>;
@@ -67,6 +79,18 @@ module NonNullDaclConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     exists(SetSecurityDescriptorDaclFunctionCall call | sink.asExpr() = call.getArgument(2))
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 92 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-732/UnsafeDaclSecurityDescriptor.ql@94:8:94:11)
+  }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 92 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-732/UnsafeDaclSecurityDescriptor.ql@94:8:94:11)
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 92 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-732/UnsafeDaclSecurityDescriptor.ql@94:8:94:11)
   }
 }
 

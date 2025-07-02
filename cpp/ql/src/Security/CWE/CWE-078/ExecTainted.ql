@@ -150,6 +150,10 @@ module ExecTaintConfig implements DataFlow::StateConfigSig {
   predicate isBarrierOut(DataFlow::Node node) {
     isSink(node, _) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 161 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-078/ExecTainted.ql@165:8:165:14), Column 7 does not select a source or sink originating from the flow call on line 161 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-078/ExecTainted.ql@167:71:167:82)
+  }
 }
 
 module ExecTaint = TaintTracking::GlobalWithState<ExecTaintConfig>;

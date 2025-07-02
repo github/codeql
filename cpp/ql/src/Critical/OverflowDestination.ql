@@ -82,6 +82,10 @@ module OverflowDestinationConfig implements DataFlow::ConfigSig {
       nodeIsBarrierEqualityCandidate(node, access, checkedVar)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 91 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Critical/OverflowDestination.ql@93:8:93:9)
+  }
 }
 
 module OverflowDestination = TaintTracking::Global<OverflowDestinationConfig>;

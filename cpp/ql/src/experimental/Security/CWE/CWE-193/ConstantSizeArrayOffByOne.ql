@@ -183,6 +183,18 @@ module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
       pointerArithOverflow(pai, _)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 194 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql@199:8:199:10), Column 5 does not select a source or sink originating from the flow call on line 194 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql@201:53:201:53), Column 7 does not select a source or sink originating from the flow call on line 194 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql@201:69:201:73)
+  }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 194 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql@199:8:199:10), Column 5 does not select a source or sink originating from the flow call on line 194 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql@201:53:201:53), Column 7 does not select a source or sink originating from the flow call on line 194 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql@201:69:201:73)
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 194 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql@199:8:199:10), Column 5 does not select a source or sink originating from the flow call on line 194 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql@201:53:201:53), Column 7 does not select a source or sink originating from the flow call on line 194 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql@201:69:201:73)
+  }
 }
 
 module ArrayAddressToDerefFlow = DataFlow::GlobalWithState<ArrayAddressToDerefConfig>;
