@@ -29,11 +29,16 @@ module IndirectCommandInjectionConfig implements DataFlow::ConfigSig {
 
   predicate observeDiffInformedIncrementalMode() { any() }
 
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 25 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/Security/CWE-078/IndirectCommandInjection.ql@29:8:29:16)
+  }
+
   Location getASelectedSinkLocation(DataFlow::Node sink) {
     exists(DataFlow::Node node |
       isSinkWithHighlight(sink, node) and
       result = node.getLocation()
     )
+    // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 25 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/Security/CWE-078/IndirectCommandInjection.ql@29:8:29:16)
   }
 }
 

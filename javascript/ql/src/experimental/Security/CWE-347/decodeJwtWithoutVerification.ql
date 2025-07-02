@@ -27,6 +27,14 @@ module VerifiedDecodeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink = verifiedDecode() }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 39 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/experimental/Security/CWE-347/decodeJwtWithoutVerification.ql@40:60:40:73)
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    none() // TODO: Make sure that this sink location matches the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 39 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/experimental/Security/CWE-347/decodeJwtWithoutVerification.ql@40:60:40:73)
+  }
 }
 
 module VerifiedDecodeFlow = TaintTracking::Global<VerifiedDecodeConfig>;
