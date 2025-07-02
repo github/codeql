@@ -123,6 +123,10 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
       content.(DataFlow::FieldContent).getField() = getRecField(t.stripType())
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 134 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-313/CleartextSqliteDatabase.ql@137:8:137:17), Column 5 does not select a source or sink originating from the flow call on line 134 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-313/CleartextSqliteDatabase.ql@138:72:138:80)
+  }
 }
 
 module FromSensitiveFlow = TaintTracking::Global<FromSensitiveConfig>;

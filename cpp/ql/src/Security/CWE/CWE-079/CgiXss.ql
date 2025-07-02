@@ -39,6 +39,10 @@ module Config implements DataFlow::ConfigSig {
     or
     node.asCertainDefinition().getUnspecifiedType() instanceof ArithmeticType
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 selects source.asIndirectExpr (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-079/CgiXss.ql@51:3:51:7)
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;

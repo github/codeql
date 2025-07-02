@@ -215,6 +215,18 @@ private module LeapYearCheckConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(ChecksForLeapYearFunctionCall fc | sink.asExpr() = fc.getAnArgument())
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 34 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@57:8:57:10), Column 1 does not select a source or sink originating from the flow call on line 41 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@57:8:57:10), Column 3 does not select a source or sink originating from the flow call on line 34 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@59:3:59:17), Column 3 does not select a source or sink originating from the flow call on line 41 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@59:3:59:17), Column 5 does not select a source or sink originating from the flow call on line 34 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@59:48:59:50), Column 5 does not select a source or sink originating from the flow call on line 41 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@59:48:59:50)
+  }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 34 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@57:8:57:10), Column 1 does not select a source or sink originating from the flow call on line 41 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@57:8:57:10), Column 3 does not select a source or sink originating from the flow call on line 34 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@59:3:59:17), Column 3 does not select a source or sink originating from the flow call on line 41 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@59:3:59:17), Column 5 does not select a source or sink originating from the flow call on line 34 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@59:48:59:50), Column 5 does not select a source or sink originating from the flow call on line 41 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@59:48:59:50)
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 34 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@57:8:57:10), Column 1 does not select a source or sink originating from the flow call on line 41 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@57:8:57:10), Column 3 does not select a source or sink originating from the flow call on line 34 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@59:3:59:17), Column 3 does not select a source or sink originating from the flow call on line 41 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@59:3:59:17), Column 5 does not select a source or sink originating from the flow call on line 34 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@59:48:59:50), Column 5 does not select a source or sink originating from the flow call on line 41 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql@59:48:59:50)
+  }
 }
 
 module LeapYearCheckFlow = DataFlow::Global<LeapYearCheckConfig>;
@@ -285,6 +297,8 @@ private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::C
       aexpr.getLValue() = fa
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module PossibleYearArithmeticOperationCheckFlow =

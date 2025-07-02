@@ -223,6 +223,14 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
       state1 = state2 + delta
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 263 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-119/OverrunWriteProductFlow.ql@269:8:269:41), Column 5 does not select a source or sink originating from the flow call on line 263 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-119/OverrunWriteProductFlow.ql@270:58:270:63), Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-119/OverrunWriteProductFlow.ql@249:5:249:76)
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 263 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-119/OverrunWriteProductFlow.ql@269:8:269:41), Column 5 does not select a source or sink originating from the flow call on line 263 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-119/OverrunWriteProductFlow.ql@270:58:270:63), Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-119/OverrunWriteProductFlow.ql@249:5:249:76)
+  }
 }
 
 module StringSizeFlow = ProductFlow::GlobalWithState<StringSizeConfig>;

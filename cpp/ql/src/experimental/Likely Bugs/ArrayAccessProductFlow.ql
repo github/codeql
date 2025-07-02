@@ -59,6 +59,14 @@ module ArraySizeConfig implements ProductFlow::ConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 81 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/experimental/Likely Bugs/ArrayAccessProductFlow.ql@83:8:83:22), Column 7 does not select a source or sink originating from the flow call on line 81 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/experimental/Likely Bugs/ArrayAccessProductFlow.ql@84:23:84:27)
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 81 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/experimental/Likely Bugs/ArrayAccessProductFlow.ql@83:8:83:22), Column 7 does not select a source or sink originating from the flow call on line 81 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/experimental/Likely Bugs/ArrayAccessProductFlow.ql@84:23:84:27)
+  }
 }
 
 module ArraySizeFlow = ProductFlow::Global<ArraySizeConfig>;
