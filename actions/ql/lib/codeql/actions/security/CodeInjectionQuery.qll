@@ -35,6 +35,10 @@ private module CodeInjectionConfig implements DataFlow::ConfigSig {
       exists(run.getScript().getAFileReadCommand())
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 7 does not select a source or sink originating from the flow call on line 23 (/Users/d10c/src/semmle-code/ql/actions/ql/src/Security/CWE-349/CachePoisoningViaCodeInjection.ql@48:60:48:64), Column 7 does not select a source or sink originating from the flow call on line 24 (/Users/d10c/src/semmle-code/ql/actions/ql/src/Security/CWE-094/CodeInjectionCritical.ql@36:60:36:64)
+  }
 }
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate a code script. */

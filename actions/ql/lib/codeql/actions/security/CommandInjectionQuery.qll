@@ -16,6 +16,10 @@ private module CommandInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CommandInjectionSink }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 7 does not select a source or sink originating from the flow call on line 23 (/Users/d10c/src/semmle-code/ql/actions/ql/src/experimental/Security/CWE-078/CommandInjectionCritical.ql@30:60:30:64)
+  }
 }
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate a system command. */

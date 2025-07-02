@@ -316,6 +316,10 @@ private module ArtifactPoisoningConfig implements DataFlow::ConfigSig {
       exists(run.getScript().getAFileReadCommand())
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 7 does not select a source or sink originating from the flow call on line 21 (/Users/d10c/src/semmle-code/ql/actions/ql/src/Security/CWE-829/ArtifactPoisoningCritical.ql@28:30:28:34)
+  }
 }
 
 /** Tracks flow of unsafe artifacts that is used in an insecure way. */
