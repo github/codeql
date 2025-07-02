@@ -77,7 +77,6 @@ public class Main {
   private PathMatcher includeMatcher, excludeMatcher;
   private FileExtractor fileExtractor;
   private ExtractorState extractorState;
-  private Set<File> projectFiles = new LinkedHashSet<>();
   private Set<File> files = new LinkedHashSet<>();
   private final Set<File> extractedFiles = new LinkedHashSet<>();
 
@@ -119,10 +118,6 @@ public class Main {
     }
 
     // Sort files for determinism
-    projectFiles = projectFiles.stream()
-          .sorted(AutoBuild.FILE_ORDERING)
-          .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
-
     files = files.stream()
         .sorted(AutoBuild.FILE_ORDERING)
         .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
@@ -256,11 +251,8 @@ public class Main {
     includes.add("**/.babelrc*.json");
 
 
-    // extract TypeScript if `--typescript` or `--typescript-full` was specified
-    if (getTypeScriptMode(ap) != TypeScriptMode.NONE) {
-      addIncludesFor(includes, FileType.TYPESCRIPT);
-      includes.add("**/*tsconfig*.json");
-    }
+    addIncludesFor(includes, FileType.TYPESCRIPT);
+    includes.add("**/*tsconfig*.json");
 
     // add explicit include patterns
     for (String pattern : ap.getZeroOrMore(P_INCLUDE))
@@ -394,12 +386,6 @@ public class Main {
     return ap.has(P_EXPERIMENTAL) || ap.has(P_JSCRIPT) || ap.has(P_MOZ_EXTENSIONS);
   }
 
-  private static TypeScriptMode getTypeScriptMode(ArgsParser ap) {
-    if (ap.has(P_TYPESCRIPT_FULL)) return TypeScriptMode.FULL;
-    if (ap.has(P_TYPESCRIPT)) return TypeScriptMode.BASIC;
-    return TypeScriptMode.NONE;
-  }
-
   private Path inferSourceRoot(ArgsParser ap) {
     List<File> files = getFilesArg(ap);
     Path sourceRoot = files.iterator().next().toPath().toAbsolutePath().getParent();
@@ -430,7 +416,6 @@ public class Main {
             .withFileType(getFileType(ap))
             .withSourceType(ap.getEnum(P_SOURCE_TYPE, SourceType.class, SourceType.AUTO))
             .withExtractLines(ap.has(P_EXTRACT_PROGRAM_TEXT))
-            .withTypeScriptMode(getTypeScriptMode(ap))
             .withTypeScriptRam(
                 ap.has(P_TYPESCRIPT_RAM)
                     ? UnitParser.parseOpt(ap.getString(P_TYPESCRIPT_RAM), UnitParser.MEGABYTES)
@@ -493,12 +478,6 @@ public class Main {
       if (fileExtractor.supports(root)
           && (explicit || includeMatcher.matches(path) && !excludeMatcher.matches(path))) {
         files.add(normalizeFile(root));
-      }
-
-      if (extractorConfig.getTypeScriptMode() == TypeScriptMode.FULL
-          && AutoBuild.treatAsTSConfig(root.getName())
-          && !excludeMatcher.matches(path)) {
-        projectFiles.add(root);
       }
     }
   }
