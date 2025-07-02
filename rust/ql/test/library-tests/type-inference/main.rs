@@ -1911,7 +1911,7 @@ mod impl_trait {
         let a = get_a_my_trait();
         let c = uses_my_trait2(a); // $ type=c:S2
         let d = uses_my_trait2(S1); // $ type=d:S2
-        let e = get_a_my_trait2(S1).get_a(); // $ method=MyTrait::get_a $ MISSING: type=e:S1
+        let e = get_a_my_trait2(S1).get_a(); // $ method=MyTrait::get_a $ type=e:S1
     }
 }
 

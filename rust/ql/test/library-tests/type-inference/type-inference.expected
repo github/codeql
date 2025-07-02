@@ -2777,10 +2777,8 @@ inferType
 | main.rs:1811:25:1813:5 | { ... } |  | main.rs:1805:5:1805:14 | S1 |
 | main.rs:1812:9:1812:10 | S1 |  | main.rs:1805:5:1805:14 | S1 |
 | main.rs:1815:41:1817:5 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1815:41:1817:5 | { ... } |  | main.rs:1815:16:1815:39 | ImplTraitTypeRepr |
 | main.rs:1815:41:1817:5 | { ... } | Output | main.rs:1805:5:1805:14 | S1 |
 | main.rs:1816:9:1816:20 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1816:9:1816:20 | { ... } |  | main.rs:1815:16:1815:39 | ImplTraitTypeRepr |
 | main.rs:1816:9:1816:20 | { ... } | Output | main.rs:1805:5:1805:14 | S1 |
 | main.rs:1816:17:1816:18 | S1 |  | main.rs:1805:5:1805:14 | S1 |
 | main.rs:1825:13:1825:42 | SelfParam |  | {EXTERNAL LOCATION} | Pin |
@@ -2793,16 +2791,20 @@ inferType
 | main.rs:1828:13:1828:38 | ...::Ready(...) |  | {EXTERNAL LOCATION} | Poll |
 | main.rs:1828:13:1828:38 | ...::Ready(...) | T | main.rs:1805:5:1805:14 | S1 |
 | main.rs:1828:36:1828:37 | S1 |  | main.rs:1805:5:1805:14 | S1 |
+| main.rs:1832:41:1834:5 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
 | main.rs:1832:41:1834:5 | { ... } |  | main.rs:1819:5:1819:14 | S2 |
-| main.rs:1832:41:1834:5 | { ... } |  | main.rs:1832:16:1832:39 | ImplTraitTypeRepr |
+| main.rs:1832:41:1834:5 | { ... } | Output | main.rs:1805:5:1805:14 | S1 |
+| main.rs:1833:9:1833:10 | S2 |  | {EXTERNAL LOCATION} | trait Future |
 | main.rs:1833:9:1833:10 | S2 |  | main.rs:1819:5:1819:14 | S2 |
-| main.rs:1833:9:1833:10 | S2 |  | main.rs:1832:16:1832:39 | ImplTraitTypeRepr |
+| main.rs:1833:9:1833:10 | S2 | Output | main.rs:1805:5:1805:14 | S1 |
 | main.rs:1837:9:1837:12 | f1(...) |  | {EXTERNAL LOCATION} | trait Future |
 | main.rs:1837:9:1837:12 | f1(...) | Output | main.rs:1805:5:1805:14 | S1 |
 | main.rs:1837:9:1837:18 | await ... |  | main.rs:1805:5:1805:14 | S1 |
-| main.rs:1838:9:1838:12 | f2(...) |  | main.rs:1815:16:1815:39 | ImplTraitTypeRepr |
+| main.rs:1838:9:1838:12 | f2(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1838:9:1838:12 | f2(...) | Output | main.rs:1805:5:1805:14 | S1 |
 | main.rs:1838:9:1838:18 | await ... |  | main.rs:1805:5:1805:14 | S1 |
-| main.rs:1839:9:1839:12 | f3(...) |  | main.rs:1832:16:1832:39 | ImplTraitTypeRepr |
+| main.rs:1839:9:1839:12 | f3(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1839:9:1839:12 | f3(...) | Output | main.rs:1805:5:1805:14 | S1 |
 | main.rs:1839:9:1839:18 | await ... |  | main.rs:1805:5:1805:14 | S1 |
 | main.rs:1840:9:1840:10 | S2 |  | main.rs:1819:5:1819:14 | S2 |
 | main.rs:1840:9:1840:16 | await S2 |  | main.rs:1805:5:1805:14 | S1 |
@@ -2823,9 +2825,11 @@ inferType
 | main.rs:1865:15:1865:19 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1865:15:1865:19 | SelfParam | &T | main.rs:1847:5:1848:14 | S1 |
 | main.rs:1868:37:1870:5 | { ... } |  | main.rs:1847:5:1848:14 | S1 |
-| main.rs:1868:37:1870:5 | { ... } |  | main.rs:1868:16:1868:35 | ImplTraitTypeRepr |
+| main.rs:1868:37:1870:5 | { ... } |  | main.rs:1852:5:1854:5 | trait Trait1 |
+| main.rs:1868:37:1870:5 | { ... } |  | main.rs:1856:5:1858:5 | trait Trait2 |
 | main.rs:1869:9:1869:10 | S1 |  | main.rs:1847:5:1848:14 | S1 |
-| main.rs:1869:9:1869:10 | S1 |  | main.rs:1868:16:1868:35 | ImplTraitTypeRepr |
+| main.rs:1869:9:1869:10 | S1 |  | main.rs:1852:5:1854:5 | trait Trait1 |
+| main.rs:1869:9:1869:10 | S1 |  | main.rs:1856:5:1858:5 | trait Trait2 |
 | main.rs:1873:18:1873:22 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1873:18:1873:22 | SelfParam | &T | main.rs:1872:5:1874:5 | Self [trait MyTrait] |
 | main.rs:1877:18:1877:22 | SelfParam |  | file://:0:0:0:0 | & |
@@ -2844,15 +2848,19 @@ inferType
 | main.rs:1884:25:1884:28 | self | &T.T3 | main.rs:1882:10:1882:17 | T |
 | main.rs:1885:13:1885:21 | t.clone() |  | main.rs:1882:10:1882:17 | T |
 | main.rs:1889:45:1891:5 | { ... } |  | main.rs:1847:5:1848:14 | S1 |
-| main.rs:1889:45:1891:5 | { ... } |  | main.rs:1889:28:1889:43 | ImplTraitTypeRepr |
+| main.rs:1889:45:1891:5 | { ... } |  | main.rs:1872:5:1874:5 | trait MyTrait |
+| main.rs:1889:45:1891:5 | { ... } | A | main.rs:1849:5:1849:14 | S2 |
 | main.rs:1890:9:1890:10 | S1 |  | main.rs:1847:5:1848:14 | S1 |
-| main.rs:1890:9:1890:10 | S1 |  | main.rs:1889:28:1889:43 | ImplTraitTypeRepr |
+| main.rs:1890:9:1890:10 | S1 |  | main.rs:1872:5:1874:5 | trait MyTrait |
+| main.rs:1890:9:1890:10 | S1 | A | main.rs:1849:5:1849:14 | S2 |
 | main.rs:1893:34:1893:34 | x |  | main.rs:1893:24:1893:31 | T |
 | main.rs:1893:59:1895:5 | { ... } |  | main.rs:1850:5:1850:22 | S3 |
-| main.rs:1893:59:1895:5 | { ... } |  | main.rs:1893:43:1893:57 | ImplTraitTypeRepr |
+| main.rs:1893:59:1895:5 | { ... } |  | main.rs:1872:5:1874:5 | trait MyTrait |
+| main.rs:1893:59:1895:5 | { ... } | A | main.rs:1893:24:1893:31 | T |
 | main.rs:1893:59:1895:5 | { ... } | T3 | main.rs:1893:24:1893:31 | T |
 | main.rs:1894:9:1894:13 | S3(...) |  | main.rs:1850:5:1850:22 | S3 |
-| main.rs:1894:9:1894:13 | S3(...) |  | main.rs:1893:43:1893:57 | ImplTraitTypeRepr |
+| main.rs:1894:9:1894:13 | S3(...) |  | main.rs:1872:5:1874:5 | trait MyTrait |
+| main.rs:1894:9:1894:13 | S3(...) | A | main.rs:1893:24:1893:31 | T |
 | main.rs:1894:9:1894:13 | S3(...) | T3 | main.rs:1893:24:1893:31 | T |
 | main.rs:1894:12:1894:12 | x |  | main.rs:1893:24:1893:31 | T |
 | main.rs:1897:41:1897:41 | t |  | main.rs:1897:26:1897:38 | B |
@@ -2863,26 +2871,37 @@ inferType
 | main.rs:1901:51:1903:5 | { ... } |  | main.rs:1901:23:1901:23 | A |
 | main.rs:1902:9:1902:9 | t |  | main.rs:1901:29:1901:43 | ImplTraitTypeRepr |
 | main.rs:1902:9:1902:17 | t.get_a() |  | main.rs:1901:23:1901:23 | A |
-| main.rs:1906:13:1906:13 | x |  | main.rs:1868:16:1868:35 | ImplTraitTypeRepr |
-| main.rs:1906:17:1906:20 | f1(...) |  | main.rs:1868:16:1868:35 | ImplTraitTypeRepr |
-| main.rs:1907:9:1907:9 | x |  | main.rs:1868:16:1868:35 | ImplTraitTypeRepr |
-| main.rs:1908:9:1908:9 | x |  | main.rs:1868:16:1868:35 | ImplTraitTypeRepr |
-| main.rs:1909:13:1909:13 | a |  | main.rs:1889:28:1889:43 | ImplTraitTypeRepr |
-| main.rs:1909:17:1909:32 | get_a_my_trait(...) |  | main.rs:1889:28:1889:43 | ImplTraitTypeRepr |
+| main.rs:1906:13:1906:13 | x |  | main.rs:1852:5:1854:5 | trait Trait1 |
+| main.rs:1906:13:1906:13 | x |  | main.rs:1856:5:1858:5 | trait Trait2 |
+| main.rs:1906:17:1906:20 | f1(...) |  | main.rs:1852:5:1854:5 | trait Trait1 |
+| main.rs:1906:17:1906:20 | f1(...) |  | main.rs:1856:5:1858:5 | trait Trait2 |
+| main.rs:1907:9:1907:9 | x |  | main.rs:1852:5:1854:5 | trait Trait1 |
+| main.rs:1907:9:1907:9 | x |  | main.rs:1856:5:1858:5 | trait Trait2 |
+| main.rs:1908:9:1908:9 | x |  | main.rs:1852:5:1854:5 | trait Trait1 |
+| main.rs:1908:9:1908:9 | x |  | main.rs:1856:5:1858:5 | trait Trait2 |
+| main.rs:1909:13:1909:13 | a |  | main.rs:1872:5:1874:5 | trait MyTrait |
+| main.rs:1909:13:1909:13 | a | A | main.rs:1849:5:1849:14 | S2 |
+| main.rs:1909:17:1909:32 | get_a_my_trait(...) |  | main.rs:1872:5:1874:5 | trait MyTrait |
+| main.rs:1909:17:1909:32 | get_a_my_trait(...) | A | main.rs:1849:5:1849:14 | S2 |
 | main.rs:1910:13:1910:13 | b |  | main.rs:1849:5:1849:14 | S2 |
 | main.rs:1910:17:1910:33 | uses_my_trait1(...) |  | main.rs:1849:5:1849:14 | S2 |
-| main.rs:1910:32:1910:32 | a |  | main.rs:1889:28:1889:43 | ImplTraitTypeRepr |
-| main.rs:1911:13:1911:13 | a |  | main.rs:1889:28:1889:43 | ImplTraitTypeRepr |
-| main.rs:1911:17:1911:32 | get_a_my_trait(...) |  | main.rs:1889:28:1889:43 | ImplTraitTypeRepr |
+| main.rs:1910:32:1910:32 | a |  | main.rs:1872:5:1874:5 | trait MyTrait |
+| main.rs:1910:32:1910:32 | a | A | main.rs:1849:5:1849:14 | S2 |
+| main.rs:1911:13:1911:13 | a |  | main.rs:1872:5:1874:5 | trait MyTrait |
+| main.rs:1911:13:1911:13 | a | A | main.rs:1849:5:1849:14 | S2 |
+| main.rs:1911:17:1911:32 | get_a_my_trait(...) |  | main.rs:1872:5:1874:5 | trait MyTrait |
+| main.rs:1911:17:1911:32 | get_a_my_trait(...) | A | main.rs:1849:5:1849:14 | S2 |
 | main.rs:1912:13:1912:13 | c |  | main.rs:1849:5:1849:14 | S2 |
 | main.rs:1912:17:1912:33 | uses_my_trait2(...) |  | main.rs:1849:5:1849:14 | S2 |
-| main.rs:1912:32:1912:32 | a |  | main.rs:1889:28:1889:43 | ImplTraitTypeRepr |
+| main.rs:1912:32:1912:32 | a |  | main.rs:1872:5:1874:5 | trait MyTrait |
+| main.rs:1912:32:1912:32 | a | A | main.rs:1849:5:1849:14 | S2 |
 | main.rs:1913:13:1913:13 | d |  | main.rs:1849:5:1849:14 | S2 |
 | main.rs:1913:17:1913:34 | uses_my_trait2(...) |  | main.rs:1849:5:1849:14 | S2 |
 | main.rs:1913:32:1913:33 | S1 |  | main.rs:1847:5:1848:14 | S1 |
-| main.rs:1914:13:1914:13 | e |  | main.rs:1893:24:1893:31 | T |
-| main.rs:1914:17:1914:35 | get_a_my_trait2(...) |  | main.rs:1893:43:1893:57 | ImplTraitTypeRepr |
-| main.rs:1914:17:1914:43 | ... .get_a() |  | main.rs:1893:24:1893:31 | T |
+| main.rs:1914:13:1914:13 | e |  | main.rs:1847:5:1848:14 | S1 |
+| main.rs:1914:17:1914:35 | get_a_my_trait2(...) |  | main.rs:1872:5:1874:5 | trait MyTrait |
+| main.rs:1914:17:1914:35 | get_a_my_trait2(...) | A | main.rs:1847:5:1848:14 | S1 |
+| main.rs:1914:17:1914:43 | ... .get_a() |  | main.rs:1847:5:1848:14 | S1 |
 | main.rs:1914:33:1914:34 | S1 |  | main.rs:1847:5:1848:14 | S1 |
 | main.rs:1925:16:1925:20 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1925:16:1925:20 | SelfParam | &T | main.rs:1921:5:1922:13 | S |
