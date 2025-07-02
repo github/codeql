@@ -2,7 +2,7 @@
 class Base(object):
 
     def __init__(self):
-        pass
+        print("Base init")
 
 class C1(Base):
 
