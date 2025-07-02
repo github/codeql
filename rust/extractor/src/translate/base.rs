@@ -915,6 +915,7 @@ impl<'a> Translator<'a> {
                     expanded.into(),
                     &mut self.trap.writer,
                 );
+                self.emit_location(label, node);
                 return Some(label);
             }
         }
