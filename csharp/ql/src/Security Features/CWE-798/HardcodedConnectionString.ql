@@ -38,6 +38,10 @@ module ConnectionStringConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof StringFormatSanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 49 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-798/HardcodedConnectionString.ql@52:3:52:73)
+  }
 }
 
 /**
