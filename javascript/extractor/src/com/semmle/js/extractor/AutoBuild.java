@@ -218,7 +218,6 @@ public class AutoBuild {
   private final Set<String> xmlExtensions = new LinkedHashSet<>();
   private ProjectLayout filters;
   private final Path LGTM_SRC, SEMMLE_DIST;
-  private final TypeScriptMode typeScriptMode;
   private final String defaultEncoding;
   private ExecutorService threadPool;
   private volatile boolean seenCode = false;
@@ -236,8 +235,6 @@ public class AutoBuild {
     this.SEMMLE_DIST = Paths.get(EnvironmentVariables.getExtractorRoot());
     this.outputConfig = new ExtractorOutputConfig(LegacyLanguage.JAVASCRIPT);
     this.trapCache = ITrapCache.fromExtractorOptions();
-    this.typeScriptMode =
-        getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.BASIC);
     this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
     this.installDependencies = Boolean.valueOf(getEnvVar("LGTM_INDEX_TYPESCRIPT_INSTALL_DEPS"));
     this.virtualSourceRoot = makeVirtualSourceRoot();
@@ -393,7 +390,7 @@ public class AutoBuild {
     defaultExtract.add(FileType.HTML);
     defaultExtract.add(FileType.JS);
     defaultExtract.add(FileType.YAML);
-    if (typeScriptMode != TypeScriptMode.NONE) defaultExtract.add(FileType.TYPESCRIPT);
+    defaultExtract.add(FileType.TYPESCRIPT);
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
@@ -1042,7 +1039,6 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
   private ExtractorConfig mkExtractorConfig() {
     ExtractorConfig config = new ExtractorConfig(true);
     config = config.withSourceType(getSourceType());
-    config = config.withTypeScriptMode(typeScriptMode);
     config = config.withVirtualSourceRoot(virtualSourceRoot);
     if (defaultEncoding != null) config = config.withDefaultEncoding(defaultEncoding);
     return config;
@@ -1135,8 +1131,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
             }
 
             // extract TypeScript projects from 'tsconfig.json'
-            if (typeScriptMode != TypeScriptMode.NONE
-                && treatAsTSConfig(file.getFileName().toString())
+            if (treatAsTSConfig(file.getFileName().toString())
                 && !excludes.contains(file)
                 && isFileIncluded(file)) {
               tsconfigFiles.add(file);
