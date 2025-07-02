@@ -4638,7 +4638,13 @@
 | Dubious signature "(z_streamp,int *)" in summary model. |
 | Dubious signature "(z_streamp,unsigned int *,int *)" in summary model. |
 | Dubious signature "(z_streamp,unsigned int)" in summary model. |
+| Unrecognized input specification "Argument[***3]" in summary model. |
+| Unrecognized input specification "Argument[***4]" in summary model. |
+| Unrecognized input specification "Argument[****3]" in summary model. |
+| Unrecognized input specification "Argument[****4]" in summary model. |
 | Unrecognized input specification "Field[****hEvent]" in summary model. |
 | Unrecognized input specification "Field[***hEvent]" in summary model. |
 | Unrecognized output specification "Field[****hEvent]" in summary model. |
 | Unrecognized output specification "Field[***hEvent]" in summary model. |
+| Unrecognized output specification "Parameter[***0]" in summary model. |
+| Unrecognized output specification "Parameter[****0]" in summary model. |
