@@ -937,7 +937,6 @@ mod method_supertraits {
 }
 
 mod function_trait_bounds_2 {
-    use std::convert::From;
     use std::fmt::Debug;
 
     #[derive(Debug)]
@@ -1957,28 +1956,69 @@ mod macros {
 }
 
 mod method_determined_by_argument_type {
-    trait MyAdd<T> {
-        fn my_add(&self, value: T) -> Self;
+    trait MyAdd<Rhs = Self> {
+        type Output;
+
+        // MyAdd::my_add
+        fn my_add(self, rhs: Rhs) -> Self::Output;
     }
 
     impl MyAdd<i64> for i64 {
+        type Output = i64;
+
         // MyAdd<i64>::my_add
-        fn my_add(&self, value: i64) -> Self {
+        fn my_add(self, value: i64) -> Self {
             value
         }
     }
 
     impl MyAdd<&i64> for i64 {
+        type Output = i64;
+
         // MyAdd<&i64>::my_add
-        fn my_add(&self, value: &i64) -> Self {
+        fn my_add(self, value: &i64) -> Self {
             *value // $ method=deref
         }
     }
 
     impl MyAdd<bool> for i64 {
+        type Output = i64;
+
         // MyAdd<bool>::my_add
-        fn my_add(&self, value: bool) -> Self {
+        fn my_add(self, value: bool) -> Self {
             if value { 1 } else { 0 }
+        }
+    }
+
+    struct S<T>(T);
+
+    impl<T: MyAdd> MyAdd for S<T> {
+        type Output = S<T::Output>;
+
+        // S::my_add1
+        fn my_add(self, other: Self) -> Self::Output {
+            S((self.0).my_add(other.0)) // $ method=MyAdd::my_add $ fieldof=S
+        }
+    }
+
+    impl<T: MyAdd> MyAdd<T> for S<T> {
+        type Output = S<T::Output>;
+
+        // S::my_add2
+        fn my_add(self, other: T) -> Self::Output {
+            S((self.0).my_add(other)) // $ method=MyAdd::my_add $ fieldof=S
+        }
+    }
+
+    impl<'a, T> MyAdd<&'a T> for S<T>
+    where
+        T: MyAdd<&'a T>,
+    {
+        type Output = S<<T as MyAdd<&'a T>>::Output>;
+
+        // S::my_add3
+        fn my_add(self, other: &'a T) -> Self::Output {
+            S((self.0).my_add(other)) // $ method=MyAdd::my_add $ fieldof=S
         }
     }
 
@@ -1987,6 +2027,10 @@ mod method_determined_by_argument_type {
         x.my_add(5i64); // $ method=MyAdd<i64>::my_add
         x.my_add(&5i64); // $ method=MyAdd<&i64>::my_add
         x.my_add(true); // $ method=MyAdd<bool>::my_add
+
+        S(1i64).my_add(S(2i64)); // $ method=S::my_add1
+        S(1i64).my_add(3i64); // $ MISSING: method=S::my_add2
+        S(1i64).my_add(&3i64); // $ method=S::my_add3
     }
 }
 
