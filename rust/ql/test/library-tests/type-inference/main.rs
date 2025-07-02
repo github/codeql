@@ -1971,7 +1971,7 @@ mod indexers {
 
 mod macros {
     pub fn f() {
-        let x = format!("Hello, {}", "World!"); // $ MISSING: type=x:String -- needs https://github.com/github/codeql/pull/19658
+        let x = format!("Hello, {}", "World!"); // $ type=x:String
     }
 }
 
@@ -2229,15 +2229,15 @@ mod loops {
         let vals4b = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4b:Vec type=vals4b:T.u16
         for u in vals4b {} // $ MISSING: type=u:u16
 
-        let vals5 = Vec::from([1u32, 2, 3]); // $ type=vals5:Vec method=from MISSING: type=vals5:T.u32
-        for u in vals5 {} // $ MISSING: type=u:u32
+        let vals5 = Vec::from([1u32, 2, 3]); // $ type=vals5:Vec method=from type=vals5:T.u32
+        for u in vals5 {} // $ type=u:u32
 
         let vals6: Vec<&u64> = [1u64, 2, 3].iter().collect(); // $ type=vals6:Vec type=vals6:T.&T.u64
         for u in vals6 {} // $ type=u:&T.u64
 
-        let mut vals7 = Vec::new(); // $ method=new type=vals7:Vec MISSING: type=vals7:T.u8
+        let mut vals7 = Vec::new(); // $ method=new type=vals7:Vec type=vals7:T.u8
         vals7.push(1u8); // $ method=push
-        for u in vals7 {} // $ MISSING: type=u:u8
+        for u in vals7 {} // $ type=u:u8
 
         let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ MISSING: type=matrix1:Vec type=matrix1:T.Vec type=matrix1:T.T.i32
         #[rustfmt::skip]
@@ -2246,7 +2246,7 @@ mod loops {
             }
         };
 
-        let mut map1 = std::collections::HashMap::new(); // $ method=new $ MISSING: type=map1:Hashmap type=map1:K.i32 type=map1:V.Box type1=map1:V.T.&T.str
+        let mut map1 = std::collections::HashMap::new(); // $ method=new type=map1:K.i32 type=map1:V.Box $ MISSING: type=map1:Hashmap type1=map1:V.T.&T.str
         map1.insert(1, Box::new("one")); // $ method=insert method=new
         map1.insert(2, Box::new("two")); // $ method=insert method=new
         for key in map1.keys() {} // $ method=keys MISSING: type=key:i32
