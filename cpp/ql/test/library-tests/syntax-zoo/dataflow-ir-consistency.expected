@@ -20,8 +20,11 @@ argHasPostUpdate
 postWithInFlow
 | cpp11.cpp:77:19:77:21 | call to Val | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:82:11:82:14 | call to Val | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:82:17:82:17 | call to Val | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:82:17:82:55 | call to Val | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:82:45:82:48 | call to Val | PostUpdateNode should not be the target of local flow. |
 | cpp11.cpp:82:51:82:51 | call to Val | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:747:8:747:8 | call to String | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:811:7:811:13 | call to Base | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:812:7:812:26 | call to Base | PostUpdateNode should not be the target of local flow. |
 | ir.cpp:825:7:825:13 | call to Base | PostUpdateNode should not be the target of local flow. |
