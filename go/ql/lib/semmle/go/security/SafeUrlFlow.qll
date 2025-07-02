@@ -36,6 +36,14 @@ module SafeUrlFlow {
       or
       node instanceof SanitizerEdge
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 selects sink.getARequest (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-918/RequestForgery.ql@25:8:25:14), Column 5 does not select a source or sink originating from the flow call on line 24 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-601/OpenUrlRedirect.ql@26:3:26:18), Column 7 does not select a source or sink originating from the flow call on line 24 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-918/RequestForgery.ql@26:52:26:57)
+    }
+
+    Location getASelectedSourceLocation(DataFlow::Node source) {
+      none() // TODO: Make sure that this source location matches the query's select clause: Column 1 selects sink.getARequest (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-918/RequestForgery.ql@25:8:25:14), Column 5 does not select a source or sink originating from the flow call on line 24 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-601/OpenUrlRedirect.ql@26:3:26:18), Column 7 does not select a source or sink originating from the flow call on line 24 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-918/RequestForgery.ql@26:52:26:57)
+    }
   }
 
   /** Tracks taint flow for reasoning about safe URLs. */

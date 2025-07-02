@@ -31,6 +31,10 @@ module RequestForgery {
         w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
       )
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 selects sink.getARequest (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-918/RequestForgery.ql@25:8:25:14)
+    }
   }
 
   /** Tracks taint flow from untrusted data to request forgery attack vectors. */

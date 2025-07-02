@@ -22,6 +22,14 @@ module Config implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(ComparisonExpr c | c.getAnOperand() = sink.asExpr())
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 34 (/Users/d10c/src/semmle-code/ql/go/ql/src/experimental/CWE-840/ConditionalBypass.ql@38:8:38:8), Column 1 does not select a source or sink originating from the flow call on line 36 (/Users/d10c/src/semmle-code/ql/go/ql/src/experimental/CWE-840/ConditionalBypass.ql@38:8:38:8), Column 3 does not select a source or sink originating from the flow call on line 34 (/Users/d10c/src/semmle-code/ql/go/ql/src/experimental/CWE-840/ConditionalBypass.ql@38:91:38:99), Column 5 does not select a source or sink originating from the flow call on line 36 (/Users/d10c/src/semmle-code/ql/go/ql/src/experimental/CWE-840/ConditionalBypass.ql@39:28:39:36)
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 34 (/Users/d10c/src/semmle-code/ql/go/ql/src/experimental/CWE-840/ConditionalBypass.ql@38:8:38:8), Column 1 does not select a source or sink originating from the flow call on line 36 (/Users/d10c/src/semmle-code/ql/go/ql/src/experimental/CWE-840/ConditionalBypass.ql@38:8:38:8), Column 3 does not select a source or sink originating from the flow call on line 34 (/Users/d10c/src/semmle-code/ql/go/ql/src/experimental/CWE-840/ConditionalBypass.ql@38:91:38:99), Column 5 does not select a source or sink originating from the flow call on line 36 (/Users/d10c/src/semmle-code/ql/go/ql/src/experimental/CWE-840/ConditionalBypass.ql@39:28:39:36)
+  }
 }
 
 /** Tracks taint flow for reasoning about conditional bypass. */

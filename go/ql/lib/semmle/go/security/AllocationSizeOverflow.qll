@@ -56,6 +56,10 @@ module AllocationSizeOverflow {
         succ = c
       )
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 22 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-190/AllocationSizeOverflow.ql@25:80:25:86)
+    }
   }
 
   /** Tracks taint flow to find allocation-size overflows. */

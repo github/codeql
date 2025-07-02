@@ -123,6 +123,18 @@ module Config implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof OpenUrlRedirect::Sink }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 175 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-601/BadRedirectCheck.ql@176:8:176:12)
+  }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 175 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-601/BadRedirectCheck.ql@176:8:176:12)
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 175 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-601/BadRedirectCheck.ql@176:8:176:12)
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;
