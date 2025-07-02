@@ -460,15 +460,6 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
     default Location getASelectedSourceLocation(Node source) { result = source.getLocation() }
 
     /**
-     * Like `getASelectedSourceLocation`, but only has to get a location _containing_ the
-     * actual location associated with `source`.
-     *
-     * This prunes fewer sources than `getASelectedSourceLocation` but leaves room for the possibility
-     * that a more precise location can be selected in the query.
-     */
-    default Location getASelectedSourceLocationApprox(Node source) { none() }
-
-    /**
      * Gets a location that will be associated with the given `sink` in a
      * diff-informed query that uses this configuration (see
      * `observeDiffInformedIncrementalMode`). By default, this is the location
@@ -478,15 +469,6 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * report the sink at all, this predicate can be `none()`.
      */
     default Location getASelectedSinkLocation(Node sink) { result = sink.getLocation() }
-
-    /**
-     * Like `getASelectedSinkLocation`, but only has to get a location _containing_ the
-     * actual location associated with `sink`.
-     *
-     * This prunes fewer sinks than `getASelectedSinkLocation` but leaves room for the possibility
-     * that a more precise location can be selected in the query.
-     */
-    default Location getASelectedSinkLocationApprox(Node sink) { none() }
   }
 
   /** An input configuration for data flow using flow state. */
@@ -627,15 +609,6 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
     default Location getASelectedSourceLocation(Node source) { result = source.getLocation() }
 
     /**
-     * Like `getASelectedSourceLocation`, but only has to get a location _containing_ the
-     * actual location associated with `source`.
-     *
-     * This prunes fewer sources than `getASelectedSourceLocation` but leaves room for the possibility
-     * that a more precise location can be selected in the query.
-     */
-    default Location getASelectedSourceLocationApprox(Node source) { none() }
-
-    /**
      * Gets a location that will be associated with the given `sink` in a
      * diff-informed query that uses this configuration (see
      * `observeDiffInformedIncrementalMode`). By default, this is the location
@@ -645,15 +618,6 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * report the sink at all, this predicate can be `none()`.
      */
     default Location getASelectedSinkLocation(Node sink) { result = sink.getLocation() }
-
-    /**
-     * Like `getASelectedSinkLocation`, but only has to get a location _containing_ the
-     * actual location associated with `sink`.
-     *
-     * This prunes fewer sinks than `getASelectedSinkLocation` but leaves room for the possibility
-     * that a more precise location can be selected in the query.
-     */
-    default Location getASelectedSinkLocationApprox(Node sink) { none() }
   }
 }
 

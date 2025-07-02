@@ -133,9 +133,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       private predicate isFilteredSource(Node source) {
         Config::isSource(source, _) and
         if Config::observeDiffInformedIncrementalMode()
-        then
-          AlertFiltering::filterByLocation(Config::getASelectedSourceLocation(source)) or
-          AlertFiltering::filterByLocationApprox(Config::getASelectedSourceLocationApprox(source))
+        then AlertFiltering::filterByLocation(Config::getASelectedSourceLocation(source))
         else any()
       }
 
@@ -146,9 +144,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
           Config::isSink(sink)
         ) and
         if Config::observeDiffInformedIncrementalMode()
-        then
-          AlertFiltering::filterByLocation(Config::getASelectedSinkLocation(sink)) or
-          AlertFiltering::filterByLocationApprox(Config::getASelectedSinkLocationApprox(sink))
+        then AlertFiltering::filterByLocation(Config::getASelectedSinkLocation(sink))
         else any()
       }
 

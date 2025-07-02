@@ -145,11 +145,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     Location getASelectedSourceLocation(Node source);
 
-    Location getASelectedSourceLocationApprox(Node source);
-
     Location getASelectedSinkLocation(Node sink);
-
-    Location getASelectedSinkLocationApprox(Node sink);
   }
 
   /**
