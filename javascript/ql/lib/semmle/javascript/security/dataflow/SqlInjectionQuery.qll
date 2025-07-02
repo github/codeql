@@ -32,7 +32,17 @@ module SqlInjectionConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 28 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/Security/CWE-089/SqlInjection.ql@35:8:35:21), Column 1 does not select a source or sink originating from the flow call on line 30 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/experimental/heuristics/ql/src/Security/CWE-089/SqlInjection.ql@37:8:37:21), Column 5 does not select a source or sink originating from the flow call on line 28 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/Security/CWE-089/SqlInjection.ql@35:82:35:97), Column 5 does not select a source or sink originating from the flow call on line 30 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/experimental/heuristics/ql/src/Security/CWE-089/SqlInjection.ql@37:82:37:97)
+  }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 28 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/Security/CWE-089/SqlInjection.ql@35:8:35:21), Column 1 does not select a source or sink originating from the flow call on line 30 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/experimental/heuristics/ql/src/Security/CWE-089/SqlInjection.ql@37:8:37:21), Column 5 does not select a source or sink originating from the flow call on line 28 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/Security/CWE-089/SqlInjection.ql@35:82:35:97), Column 5 does not select a source or sink originating from the flow call on line 30 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/experimental/heuristics/ql/src/Security/CWE-089/SqlInjection.ql@37:82:37:97)
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 28 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/Security/CWE-089/SqlInjection.ql@35:8:35:21), Column 1 does not select a source or sink originating from the flow call on line 30 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/experimental/heuristics/ql/src/Security/CWE-089/SqlInjection.ql@37:8:37:21), Column 5 does not select a source or sink originating from the flow call on line 28 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/Security/CWE-089/SqlInjection.ql@35:82:35:97), Column 5 does not select a source or sink originating from the flow call on line 30 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/experimental/heuristics/ql/src/Security/CWE-089/SqlInjection.ql@37:82:37:97)
+  }
 }
 
 /**
