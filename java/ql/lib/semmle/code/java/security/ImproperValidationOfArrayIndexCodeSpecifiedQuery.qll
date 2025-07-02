@@ -14,6 +14,10 @@ module BoundedFlowSourceConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(CheckableArrayAccess arrayAccess | arrayAccess.canThrowOutOfBounds(sink.asExpr()))
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 26 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-129/ImproperValidationOfArrayIndexCodeSpecified.ql@48:8:48:33)
+  }
 }
 
 /**
