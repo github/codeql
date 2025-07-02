@@ -21,6 +21,10 @@ module InsecureTlsConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(InsecureTlsExtensionsAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 }
 
 module InsecureTlsFlow = TaintTracking::Global<InsecureTlsConfig>;
