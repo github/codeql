@@ -15134,7 +15134,7 @@ ir.cpp:
 # 1506| [Constructor] void Inheritance_Test_A::Inheritance_Test_A()
 # 1506|   <params>: 
 # 1506|   <initializations>: 
-# 1506|     getInitializer(0): (no string representation)
+# 1506|     getInitializer(0): [ConstructorInit] constructor init
 # 1506|         Type = [Struct] Inheritance_Test_B
 # 1506|         ValueCategory = prvalue
 # 1506|     getInitializer(1): [ConstructorFieldInit] constructor init of field x
@@ -17205,7 +17205,7 @@ ir.cpp:
 # 1785|           getExpr(): [ReferenceDereferenceExpr] (reference dereference)
 # 1785|               Type = [SpecifiedType] const CopyConstructorTestNonVirtualClass
 # 1785|               ValueCategory = lvalue
-# 1785|     getInitializer(1): (no string representation)
+# 1785|     getInitializer(1): [ConstructorInit] constructor init
 # 1785|         Type = [VirtualBaseClass] CopyConstructorWithBitwiseCopyClass
 # 1785|         ValueCategory = prvalue
 # 1785|   getEntryPoint(): [BlockStmt] { ... }
@@ -17254,7 +17254,7 @@ ir.cpp:
 # 1792|           getExpr(): [ReferenceDereferenceExpr] (reference dereference)
 # 1792|               Type = [SpecifiedType] const CopyConstructorTestVirtualClass
 # 1792|               ValueCategory = lvalue
-# 1792|     getInitializer(1): (no string representation)
+# 1792|     getInitializer(1): [ConstructorInit] constructor init
 # 1792|         Type = [VirtualBaseClass] CopyConstructorWithBitwiseCopyClass
 # 1792|         ValueCategory = prvalue
 # 1792|   getEntryPoint(): [BlockStmt] { ... }
