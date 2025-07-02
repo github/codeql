@@ -6,16 +6,6 @@
 (module) @mod
 { let @mod.node = (ast-node @mod "Module") }
 
-(_) @anynode
-{
-    scan (node-type @anynode) {
-        "^(ERROR|MISSING)$" {
-            let @anynode.node = (ast-node @anynode "SyntaxErrorNode")
-            attr (@anynode.node) source = (source-text @anynode)
-        }
-    }
-}
-
 (parenthesized_expression) @nd
 { let @nd.node = (ast-node @nd "Expr") }
 
