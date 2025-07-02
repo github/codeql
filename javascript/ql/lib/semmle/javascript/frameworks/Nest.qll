@@ -539,38 +539,24 @@ module NestJS {
     )
   }
 
-  private DataFlow::Node getConcreteClassFromProviderTuple(DataFlow::SourceNode tuple) {
-    result = tuple.getAPropertyWrite("useClass").getRhs()
+  private DataFlow::ClassNode getConcreteClassFromProviderTuple(DataFlow::SourceNode tuple) {
+    result = tuple.getAPropertyWrite("useClass").getRhs().asExpr().getNameBinding().getClassNode()
     or
     exists(DataFlow::FunctionNode f |
       f = tuple.getAPropertyWrite("useFactory").getRhs().getAFunctionValue() and
-      result.getAstNode() = f.getFunction().getAReturnedExpr().getType().(ClassType).getClass()
+      result = f.getFunction().getAReturnedExpr().getTypeBinding().getAnUnderlyingClass()
     )
     or
-    result.getAstNode() =
-      tuple.getAPropertyWrite("useValue").getRhs().asExpr().getType().(ClassType).getClass()
+    result =
+      tuple.getAPropertyWrite("useValue").getRhs().asExpr().getTypeBinding().getAnUnderlyingClass()
   }
 
-  private predicate providerPair(DataFlow::Node interface, DataFlow::Node concreteClass) {
+  private predicate providerPair(DataFlow::ClassNode interface, DataFlow::ClassNode concreteClass) {
     exists(DataFlow::SourceNode tuple |
       tuple = providerTuple().getALocalSource() and
-      interface = tuple.getAPropertyWrite("provide").getRhs() and
+      interface =
+        tuple.getAPropertyWrite("provide").getRhs().asExpr().getNameBinding().getClassNode() and
       concreteClass = getConcreteClassFromProviderTuple(tuple)
-    )
-  }
-
-  /** Gets the class being referenced at `node` without relying on the call graph. */
-  private DataFlow::ClassNode getClassFromNode(DataFlow::Node node) {
-    result = node.asExpr().getNameBinding().getClassNode()
-  }
-
-  private predicate providerClassPair(
-    DataFlow::ClassNode interface, DataFlow::ClassNode concreteClass
-  ) {
-    exists(DataFlow::Node interfaceNode, DataFlow::Node concreteClassNode |
-      providerPair(interfaceNode, concreteClassNode) and
-      interface = getClassFromNode(interfaceNode) and
-      concreteClass = getClassFromNode(concreteClassNode)
     )
   }
 
@@ -578,7 +564,7 @@ module NestJS {
     override predicate classInstanceSource(DataFlow::ClassNode cls, DataFlow::Node node) {
       exists(DataFlow::ClassNode interfaceClass |
         node.asExpr().getTypeBinding().getTypeDefinition() = interfaceClass.getAstNode() and
-        providerClassPair(interfaceClass, cls)
+        providerPair(interfaceClass, cls)
       )
     }
   }
