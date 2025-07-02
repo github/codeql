@@ -30,6 +30,10 @@ module CleartextStoragePreferencesConfig implements DataFlow::ConfigSig {
     // make sources barriers so that we only report the closest instance
     isSource(node)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 32 (/Users/d10c/src/semmle-code/ql/swift/ql/src/queries/Security/CWE-312/CleartextStoragePreferences.ql@34:8:34:16)
+  }
 }
 
 /**
