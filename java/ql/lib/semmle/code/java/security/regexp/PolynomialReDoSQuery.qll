@@ -55,13 +55,7 @@ module PolynomialRedosConfig implements DataFlow::ConfigSig {
       regexp.getRootTerm() = sink.(PolynomialRedosSink).getRegExp()
     |
       result = sink.getLocation()
-    )
-  }
-
-  Location getASelectedSinkLocationApprox(DataFlow::Node sink) {
-    exists(SuperlinearBackTracking::PolynomialBackTrackingTerm regexp |
-      regexp.getRootTerm() = sink.(PolynomialRedosSink).getRegExp()
-    |
+      or
       result = regexp.getLocation()
     )
   }

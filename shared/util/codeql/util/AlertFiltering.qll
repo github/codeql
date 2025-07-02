@@ -95,32 +95,6 @@ module AlertFilteringImpl<LocationSig Location> {
       restrictAlertsToEntireFile(filePath) and
       location.hasLocationInfo(filePath, _, _, _, _)
       or
-      exists(int line |
-        restrictAlertsToStartLine(filePath, line) and
-        location.hasLocationInfo(filePath, line, _, _, _)
-      )
-    )
-    or
-    exists(string filePath, int startLine, int startColumn, int endLine, int endColumn |
-      restrictAlertsToExactLocation(filePath, startLine, startColumn, endLine, endColumn)
-    |
-      location.hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
-    )
-  }
-
-  /**
-   * Holds if some subrange within `location` would be accepted by alert filtering.
-   *
-   * There does not need to exist a `Location` corresponding to that subrange.
-   */
-  bindingset[location]
-  predicate filterByLocationApprox(Location location) {
-    not restrictAlertsTo(_, _, _) and not restrictAlertsToExactLocation(_, _, _, _, _)
-    or
-    exists(string filePath |
-      restrictAlertsToEntireFile(filePath) and
-      location.hasLocationInfo(filePath, _, _, _, _)
-      or
       exists(int locStartLine, int locEndLine |
         location.hasLocationInfo(filePath, locStartLine, _, locEndLine, _)
       |

@@ -25,9 +25,7 @@ private module PolynomialReDoSConfig implements DataFlow::ConfigSig {
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
     result = sink.(Sink).getHighlight().getLocation()
-  }
-
-  Location getASelectedSinkLocationApprox(DataFlow::Node sink) {
+    or
     result = sink.(Sink).getRegExp().getRootTerm().getLocation()
   }
 }
