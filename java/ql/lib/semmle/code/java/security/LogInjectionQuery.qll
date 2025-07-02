@@ -19,6 +19,8 @@ module LogInjectionConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

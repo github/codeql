@@ -47,6 +47,10 @@ module ConditionalBypassFlowConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     endsWithStep(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 25 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-807/ConditionalBypass.ql@26:8:26:8)
+  }
 }
 
 /**

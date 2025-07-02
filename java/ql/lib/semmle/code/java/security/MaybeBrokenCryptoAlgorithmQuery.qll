@@ -77,6 +77,10 @@ module InsecureCryptoConfig implements DataFlow::ConfigSig {
     objectToString(n.asExpr()) or
     n.getType().getErasure() instanceof TypeObject
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 24 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-327/MaybeBrokenCryptoAlgorithm.ql@25:8:25:8)
+  }
 }
 
 /**

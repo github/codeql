@@ -101,6 +101,10 @@ module UntrustedDataToExternalApiConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/java/ql/lib/semmle/code/java/security/ExternalAPIs.qll@113:36:113:79), Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/java/ql/lib/semmle/code/java/security/ExternalAPIs.qll@116:43:116:92)
+  }
 }
 
 /**
