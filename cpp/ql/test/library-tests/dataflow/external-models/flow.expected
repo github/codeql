@@ -17,13 +17,16 @@ models
 | 16 | Source: ; ; false; ymlSource; ; ; ReturnValue; local; manual |
 | 17 | Source: boost::asio; ; false; read_until; ; ; Argument[*1]; remote; manual |
 | 18 | Summary: ; ; false; CommandLineToArgvA; ; ; Argument[*0]; ReturnValue[**]; taint; manual |
-| 19 | Summary: ; ; false; ReadFileEx; ; ; Argument[*3].Field[@hEvent]; Argument[4].Parameter[*2].Field[@hEvent]; value; manual |
-| 20 | Summary: ; ; false; ymlStepGenerated; ; ; Argument[0]; ReturnValue; taint; df-generated |
-| 21 | Summary: ; ; false; ymlStepManual; ; ; Argument[0]; ReturnValue; taint; manual |
-| 22 | Summary: ; ; false; ymlStepManual_with_body; ; ; Argument[0]; ReturnValue; taint; manual |
-| 23 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 19 | Summary: ; ; false; CreateRemoteThread; ; ; Argument[@4]; Argument[3].Parameter[@0]; value; manual |
+| 20 | Summary: ; ; false; CreateRemoteThreadEx; ; ; Argument[@4]; Argument[3].Parameter[@0]; value; manual |
+| 21 | Summary: ; ; false; CreateThread; ; ; Argument[@3]; Argument[2].Parameter[@0]; value; manual |
+| 22 | Summary: ; ; false; ReadFileEx; ; ; Argument[*3].Field[@hEvent]; Argument[4].Parameter[*2].Field[@hEvent]; value; manual |
+| 23 | Summary: ; ; false; ymlStepGenerated; ; ; Argument[0]; ReturnValue; taint; df-generated |
+| 24 | Summary: ; ; false; ymlStepManual; ; ; Argument[0]; ReturnValue; taint; manual |
+| 25 | Summary: ; ; false; ymlStepManual_with_body; ; ; Argument[0]; ReturnValue; taint; manual |
+| 26 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
 edges
-| asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | provenance | MaD:23 |
+| asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | provenance | MaD:26 |
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:17  |
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | *recv_buffer | provenance | Src:MaD:17 Sink:MaD:2 |
 | asio_streams.cpp:97:37:97:44 | call to source | asio_streams.cpp:98:7:98:14 | send_str | provenance | TaintFunction |
@@ -32,10 +35,10 @@ edges
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:101:7:101:17 | send_buffer | provenance |  |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:103:29:103:39 | *send_buffer | provenance | Sink:MaD:2 |
 | asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | provenance |  |
-| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:23 |
-| test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | provenance | MaD:21 |
-| test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | test.cpp:5:5:5:20 | [summary] to write: ReturnValue in ymlStepGenerated | provenance | MaD:20 |
-| test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | test.cpp:6:5:6:27 | [summary] to write: ReturnValue in ymlStepManual_with_body | provenance | MaD:22 |
+| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:26 |
+| test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | provenance | MaD:24 |
+| test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | test.cpp:5:5:5:20 | [summary] to write: ReturnValue in ymlStepGenerated | provenance | MaD:23 |
+| test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | test.cpp:6:5:6:27 | [summary] to write: ReturnValue in ymlStepManual_with_body | provenance | MaD:25 |
 | test.cpp:7:47:7:52 | value2 | test.cpp:7:64:7:69 | value2 | provenance |  |
 | test.cpp:7:64:7:69 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:16  |
@@ -47,15 +50,15 @@ edges
 | test.cpp:17:10:17:22 | call to ymlStepManual | test.cpp:17:10:17:22 | call to ymlStepManual | provenance |  |
 | test.cpp:17:10:17:22 | call to ymlStepManual | test.cpp:18:10:18:10 | y | provenance | Sink:MaD:1 |
 | test.cpp:17:24:17:24 | x | test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | provenance |  |
-| test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual | provenance | MaD:21 |
+| test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual | provenance | MaD:24 |
 | test.cpp:21:10:21:25 | call to ymlStepGenerated | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance |  |
 | test.cpp:21:10:21:25 | call to ymlStepGenerated | test.cpp:22:10:22:10 | z | provenance | Sink:MaD:1 |
 | test.cpp:21:27:21:27 | x | test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | provenance |  |
-| test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance | MaD:20 |
+| test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance | MaD:23 |
 | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance |  |
 | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | test.cpp:26:10:26:11 | y2 | provenance | Sink:MaD:1 |
 | test.cpp:25:35:25:35 | x | test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | provenance |  |
-| test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance | MaD:22 |
+| test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance | MaD:25 |
 | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | provenance |  |
 | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | test.cpp:33:10:33:11 | z2 | provenance | Sink:MaD:1 |
 | test.cpp:32:41:32:41 | x | test.cpp:7:47:7:52 | value2 | provenance |  |
@@ -73,8 +76,8 @@ edges
 | windows.cpp:39:36:39:38 | GetEnvironmentVariableA output argument | windows.cpp:41:10:41:13 | * ... | provenance | Src:MaD:5  |
 | windows.cpp:90:6:90:15 | [summary param] *3 in ReadFileEx [*hEvent] | windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[*hEvent] in ReadFileEx | provenance |  |
 | windows.cpp:90:6:90:15 | [summary param] *3 in ReadFileEx [hEvent] | windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[hEvent] in ReadFileEx | provenance |  |
-| windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[*hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[*hEvent] in ReadFileEx | provenance | MaD:19 |
-| windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[hEvent] in ReadFileEx | provenance | MaD:19 |
+| windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[*hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[*hEvent] in ReadFileEx | provenance | MaD:22 |
+| windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[hEvent] in ReadFileEx | provenance | MaD:22 |
 | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2] in ReadFileEx [*hEvent] | windows.cpp:147:16:147:27 | *lpOverlapped [*hEvent] | provenance |  |
 | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2] in ReadFileEx [hEvent] | windows.cpp:157:16:157:27 | *lpOverlapped [hEvent] | provenance |  |
 | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[*hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2] in ReadFileEx [*hEvent] | provenance |  |
@@ -122,6 +125,29 @@ edges
 | windows.cpp:332:23:332:40 | *call to MapViewOfFileNuma2 | windows.cpp:332:23:332:40 | *call to MapViewOfFileNuma2 | provenance | Src:MaD:12  |
 | windows.cpp:332:23:332:40 | *call to MapViewOfFileNuma2 | windows.cpp:333:20:333:52 | *pMapView | provenance |  |
 | windows.cpp:333:20:333:52 | *pMapView | windows.cpp:335:10:335:16 | * ... | provenance |  |
+| windows.cpp:349:8:349:19 | [summary param] *3 in CreateThread [x] | windows.cpp:349:8:349:19 | [summary] to write: Argument[2].Parameter[*0] in CreateThread [x] | provenance | MaD:21 |
+| windows.cpp:349:8:349:19 | [summary] to write: Argument[2].Parameter[*0] in CreateThread [x] | windows.cpp:403:26:403:36 | *lpParameter [x] | provenance |  |
+| windows.cpp:357:8:357:25 | [summary param] *4 in CreateRemoteThread [x] | windows.cpp:357:8:357:25 | [summary] to write: Argument[3].Parameter[*0] in CreateRemoteThread [x] | provenance | MaD:19 |
+| windows.cpp:357:8:357:25 | [summary] to write: Argument[3].Parameter[*0] in CreateRemoteThread [x] | windows.cpp:410:26:410:36 | *lpParameter [x] | provenance |  |
+| windows.cpp:387:8:387:27 | [summary param] *4 in CreateRemoteThreadEx [x] | windows.cpp:387:8:387:27 | [summary] to write: Argument[3].Parameter[*0] in CreateRemoteThreadEx [x] | provenance | MaD:20 |
+| windows.cpp:387:8:387:27 | [summary] to write: Argument[3].Parameter[*0] in CreateRemoteThreadEx [x] | windows.cpp:417:26:417:36 | *lpParameter [x] | provenance |  |
+| windows.cpp:403:26:403:36 | *lpParameter [x] | windows.cpp:405:10:405:25 | *lpParameter [x] | provenance |  |
+| windows.cpp:405:10:405:25 | *lpParameter [x] | windows.cpp:406:8:406:8 | *s [x] | provenance |  |
+| windows.cpp:406:8:406:8 | *s [x] | windows.cpp:406:8:406:11 | x | provenance |  |
+| windows.cpp:410:26:410:36 | *lpParameter [x] | windows.cpp:412:10:412:25 | *lpParameter [x] | provenance |  |
+| windows.cpp:412:10:412:25 | *lpParameter [x] | windows.cpp:413:8:413:8 | *s [x] | provenance |  |
+| windows.cpp:413:8:413:8 | *s [x] | windows.cpp:413:8:413:11 | x | provenance |  |
+| windows.cpp:417:26:417:36 | *lpParameter [x] | windows.cpp:419:10:419:25 | *lpParameter [x] | provenance |  |
+| windows.cpp:419:10:419:25 | *lpParameter [x] | windows.cpp:420:8:420:8 | *s [x] | provenance |  |
+| windows.cpp:420:8:420:8 | *s [x] | windows.cpp:420:8:420:11 | x | provenance |  |
+| windows.cpp:431:3:431:3 | *s [post update] [x] | windows.cpp:439:7:439:8 | *& ... [x] | provenance |  |
+| windows.cpp:431:3:431:3 | *s [post update] [x] | windows.cpp:451:7:451:8 | *& ... [x] | provenance |  |
+| windows.cpp:431:3:431:3 | *s [post update] [x] | windows.cpp:464:7:464:8 | *& ... [x] | provenance |  |
+| windows.cpp:431:3:431:16 | ... = ... | windows.cpp:431:3:431:3 | *s [post update] [x] | provenance |  |
+| windows.cpp:431:9:431:14 | call to source | windows.cpp:431:3:431:16 | ... = ... | provenance |  |
+| windows.cpp:439:7:439:8 | *& ... [x] | windows.cpp:349:8:349:19 | [summary param] *3 in CreateThread [x] | provenance |  |
+| windows.cpp:451:7:451:8 | *& ... [x] | windows.cpp:357:8:357:25 | [summary param] *4 in CreateRemoteThread [x] | provenance |  |
+| windows.cpp:464:7:464:8 | *& ... [x] | windows.cpp:387:8:387:27 | [summary param] *4 in CreateRemoteThreadEx [x] | provenance |  |
 nodes
 | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | semmle.label | [summary param] *0 in buffer |
 | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | semmle.label | [summary] to write: ReturnValue in buffer |
@@ -238,6 +264,30 @@ nodes
 | windows.cpp:332:23:332:40 | *call to MapViewOfFileNuma2 | semmle.label | *call to MapViewOfFileNuma2 |
 | windows.cpp:333:20:333:52 | *pMapView | semmle.label | *pMapView |
 | windows.cpp:335:10:335:16 | * ... | semmle.label | * ... |
+| windows.cpp:349:8:349:19 | [summary param] *3 in CreateThread [x] | semmle.label | [summary param] *3 in CreateThread [x] |
+| windows.cpp:349:8:349:19 | [summary] to write: Argument[2].Parameter[*0] in CreateThread [x] | semmle.label | [summary] to write: Argument[2].Parameter[*0] in CreateThread [x] |
+| windows.cpp:357:8:357:25 | [summary param] *4 in CreateRemoteThread [x] | semmle.label | [summary param] *4 in CreateRemoteThread [x] |
+| windows.cpp:357:8:357:25 | [summary] to write: Argument[3].Parameter[*0] in CreateRemoteThread [x] | semmle.label | [summary] to write: Argument[3].Parameter[*0] in CreateRemoteThread [x] |
+| windows.cpp:387:8:387:27 | [summary param] *4 in CreateRemoteThreadEx [x] | semmle.label | [summary param] *4 in CreateRemoteThreadEx [x] |
+| windows.cpp:387:8:387:27 | [summary] to write: Argument[3].Parameter[*0] in CreateRemoteThreadEx [x] | semmle.label | [summary] to write: Argument[3].Parameter[*0] in CreateRemoteThreadEx [x] |
+| windows.cpp:403:26:403:36 | *lpParameter [x] | semmle.label | *lpParameter [x] |
+| windows.cpp:405:10:405:25 | *lpParameter [x] | semmle.label | *lpParameter [x] |
+| windows.cpp:406:8:406:8 | *s [x] | semmle.label | *s [x] |
+| windows.cpp:406:8:406:11 | x | semmle.label | x |
+| windows.cpp:410:26:410:36 | *lpParameter [x] | semmle.label | *lpParameter [x] |
+| windows.cpp:412:10:412:25 | *lpParameter [x] | semmle.label | *lpParameter [x] |
+| windows.cpp:413:8:413:8 | *s [x] | semmle.label | *s [x] |
+| windows.cpp:413:8:413:11 | x | semmle.label | x |
+| windows.cpp:417:26:417:36 | *lpParameter [x] | semmle.label | *lpParameter [x] |
+| windows.cpp:419:10:419:25 | *lpParameter [x] | semmle.label | *lpParameter [x] |
+| windows.cpp:420:8:420:8 | *s [x] | semmle.label | *s [x] |
+| windows.cpp:420:8:420:11 | x | semmle.label | x |
+| windows.cpp:431:3:431:3 | *s [post update] [x] | semmle.label | *s [post update] [x] |
+| windows.cpp:431:3:431:16 | ... = ... | semmle.label | ... = ... |
+| windows.cpp:431:9:431:14 | call to source | semmle.label | call to source |
+| windows.cpp:439:7:439:8 | *& ... [x] | semmle.label | *& ... [x] |
+| windows.cpp:451:7:451:8 | *& ... [x] | semmle.label | *& ... [x] |
+| windows.cpp:464:7:464:8 | *& ... [x] | semmle.label | *& ... [x] |
 subpaths
 | asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | asio_streams.cpp:100:44:100:62 | call to buffer |
 | test.cpp:17:24:17:24 | x | test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | test.cpp:17:10:17:22 | call to ymlStepManual |
