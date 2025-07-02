@@ -28,6 +28,10 @@ module AccessAfterLifetimeConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node node) { node instanceof AccessAfterLifetime::Sink }
 
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof AccessAfterLifetime::Barrier }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 40 (/Users/d10c/src/semmle-code/ql/rust/ql/src/queries/security/CWE-825/AccessAfterLifetime.ql@52:62:52:67)
+  }
 }
 
 module AccessAfterLifetimeFlow = TaintTracking::Global<AccessAfterLifetimeConfig>;
