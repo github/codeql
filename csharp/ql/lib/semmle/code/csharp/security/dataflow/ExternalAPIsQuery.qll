@@ -78,6 +78,10 @@ private module RemoteSourceToExternalApiConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/csharp/ql/lib/semmle/code/csharp/security/dataflow/ExternalAPIsQuery.qll@88:36:88:75), Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/csharp/ql/lib/semmle/code/csharp/security/dataflow/ExternalAPIsQuery.qll@91:43:91:87)
+  }
 }
 
 /** A module for tracking flow from `ActiveThreatModelSource`s to `ExternalApiDataNode`s. */

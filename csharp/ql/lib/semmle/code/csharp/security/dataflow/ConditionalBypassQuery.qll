@@ -39,6 +39,10 @@ private module ConditionalBypassConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 selects sink.getSensitiveMethodCall (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-807/ConditionalBypass.ql@23:3:23:48)
+  }
 }
 
 /**
