@@ -217,6 +217,10 @@ diagnostics(
 
 /*- C++ dbscheme -*/
 
+/*
+ * C++ dbscheme
+ */
+
 extractor_version(
     string codeql_version: string ref,
     string frontend_version: string ref
@@ -282,6 +286,7 @@ macro_argument_expanded(
     string text: string ref
 );
 
+/*
 case @function.kind of
   0 = @unknown_function
 | 1 = @normal_function
@@ -293,6 +298,7 @@ case @function.kind of
 | 7 = @user_defined_literal
 | 8 = @deduction_guide
 ;
+*/
 
 functions(
     unique int id: @function,
@@ -712,8 +718,9 @@ decltypes(
     boolean parentheses_would_change_meaning: boolean ref
 );
 
+/*
 case @type_operator.kind of
-   0 = @typeof // The frontend does not differentiate between typeof and typeof_unqual
+|  0 = @typeof // The frontend does not differentiate between typeof and typeof_unqual
 |  1 = @underlying_type
 |  2 = @bases
 |  3 = @direct_bases
@@ -734,6 +741,7 @@ case @type_operator.kind of
 | 18 = @remove_volatile
 | 19 = @remove_reference
 ;
+*/
 
 type_operators(
     unique int id: @type_operator,
@@ -742,8 +750,9 @@ type_operators(
     int base_type: @type ref
 )
 
+/*
 case @usertype.kind of
-   0 = @unknown_usertype
+|  0 = @unknown_usertype
 |  1 = @struct
 |  2 = @class
 |  3 = @union
@@ -763,6 +772,7 @@ case @usertype.kind of
 | 17 = @template_union
 | 18 = @alias
 ;
+*/
 
 usertypes(
     unique int id: @usertype,
