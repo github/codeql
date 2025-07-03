@@ -14,21 +14,30 @@
 import python
 import MethodCallOrder
 
-predicate missingCallToSuperclassInit(Function base, Function shouldCall, Class mroStart) {
-  missingCallToSuperclassMethod(base, shouldCall, mroStart, "__init__")
-}
-
-from Function base, Function shouldCall, Class mroStart, string msg
+from Class base, Function shouldCall, FunctionOption possibleIssue, string msg
 where
-  missingCallToSuperclassInit(base, shouldCall, mroStart) and
-  (
-    // Simple case: the method that should be called is directly overridden
-    mroStart = base.getScope() and
-    msg = "This initialization method does not call $@, which may leave $@ partially initialized."
-    or
-    // Only alert for a different mro base if there are no alerts for direct overrides
-    not missingCallToSuperclassInit(base, _, base.getScope()) and
-    msg =
-      "This initialization method does not call super().__init__, which may cause $@ to be missed during the initialization of $@."
+  not exists(Function newMethod | newMethod = base.getAMethod() and newMethod.getName() = "__new__") and
+  exists(FunctionOption possiblyMissingSuper |
+    missingCallToSuperclassMethodRestricted(base, shouldCall, "__init__") and
+    possiblyMissingSuper = getPossibleMissingSuperOption(base, shouldCall, "__init__") and
+    (
+      not possiblyMissingSuper.isNone() and
+      possibleIssue = possiblyMissingSuper and
+      msg =
+        "This class does not call $@ during initialization. ($@ may be missing a call to super().__init__)"
+      or
+      possiblyMissingSuper.isNone() and
+      (
+        possibleIssue.asSome() = base.getInitMethod() and
+        msg =
+          "This class does not call $@ during initialization. ($@ may be missing a call to a base class __init__)"
+        or
+        not exists(base.getInitMethod()) and
+        possibleIssue.isNone() and
+        msg =
+          "This class does not call $@ during initialization. (The class lacks an __init__ method to ensure every base class __init__ is called.)"
+      )
+    )
   )
-select base, msg, shouldCall, shouldCall.getQualifiedName(), mroStart, mroStart.getName()
+select base, msg, shouldCall, shouldCall.getQualifiedName(), possibleIssue,
+  possibleIssue.getQualifiedName()
