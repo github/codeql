@@ -4,6 +4,7 @@ import codeql.actions.DataFlow
 import codeql.actions.dataflow.FlowSources
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.UntrustedCheckoutQuery
+import codeql.actions.security.ControlChecks
 
 string unzipRegexp() { result = "(unzip|tar)\\s+.*" }
 
@@ -317,8 +318,17 @@ private module ArtifactPoisoningConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 7 does not select a source or sink originating from the flow call on line 21 (/Users/d10c/src/semmle-code/ql/actions/ql/src/Security/CWE-829/ArtifactPoisoningCritical.ql@28:30:28:34)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    exists(Event event | result = event.getLocation() |
+      inPrivilegedContext(sink.asExpr(), event) and
+      not exists(ControlCheck check | check.protects(sink.asExpr(), event, "artifact-poisoning"))
+    )
   }
 }
 
