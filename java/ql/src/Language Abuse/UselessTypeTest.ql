@@ -18,7 +18,7 @@ from InstanceOfExpr ioe, RefType t, RefType ct
 where
   t = ioe.getExpr().getType() and
   ct = ioe.getCheckedType() and
-  ct = t.getAStrictAncestor()
+  ct = t.getAStrictAncestorI()
 select ioe,
   "There is no need to test whether an instance of $@ is also an instance of $@ - it always is.", t,
   t.getName(), ct, ct.getName()

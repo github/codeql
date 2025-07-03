@@ -17,7 +17,7 @@ from FinalizeMethod m, Class c, FinalizeMethod mSuper, Class cSuper
 where
   m.getDeclaringType() = c and
   mSuper.getDeclaringType() = cSuper and
-  c.getAStrictAncestor() = cSuper and
+  c.getAStrictAncestorI() = cSuper and
   not cSuper instanceof TypeObject and
   not exists(m.getBody().getAChild())
 select m, "Finalize in " + c.getName() + " nullifies finalize in " + cSuper.getName() + "."

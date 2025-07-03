@@ -425,6 +425,15 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   RefType getAStrictAncestor() { result = this.getASupertype().getAnAncestor() }
 
   /**
+   * Gets a direct or indirect supertype of this type.
+   * This does not include itself, unless this type is part of a cycle
+   * in the type hierarchy.
+   */
+  overlay[caller?]
+  pragma[inline]
+  RefType getAStrictAncestorI() { result = this.getASupertype().getAnAncestor() }
+
+  /**
    * Gets the source declaration of a direct supertype of this type, excluding itself.
    *
    * Note, that a generic type is the source declaration of a direct supertype

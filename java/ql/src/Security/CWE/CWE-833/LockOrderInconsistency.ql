@@ -134,7 +134,7 @@ predicate inDifferentBranches(MethodCall ma1, MethodCall ma2) {
 /** The method access `ma` occurs in method `runnable`, which is an implementation of `Runnable.run()`. */
 predicate inRunnable(MethodCall ma, Method runnable) {
   runnable.getName() = "run" and
-  runnable.getDeclaringType().getAStrictAncestor().hasQualifiedName("java.lang", "Runnable") and
+  runnable.getDeclaringType().getAStrictAncestorI().hasQualifiedName("java.lang", "Runnable") and
   ma.getEnclosingCallable() = runnable
 }
 

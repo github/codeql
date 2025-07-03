@@ -12,6 +12,8 @@
  *       external/cwe/cwe-093
  *       external/cwe/cwe-113
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.dataflow.FlowSources
