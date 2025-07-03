@@ -104,8 +104,8 @@ The following list outlines the _**explicit exclusions from query scope**_:
 
 ## References
 
-- [Unicode Control Characters](https://www.unicode.org/charts/PDF/U0000.pdf).
-- [Unicode C0 control codes](https://en.wikipedia.org/wiki/C0_and_C1_control_codes).
-- [Unicode characters with property "WSpace=yes" or "White_Space=yes"](https://en.wikipedia.org/wiki/Unicode_character_property#Whitespace).
-- [Java String Literals](https://docs.oracle.com/javase/tutorial/java/data/characters.html).
-- [Java Class Charset](https://docs.oracle.com/javase/8/docs/api///?java/nio/charset/Charset.html).
+- Unicode: [Unicode Control Characters](https://www.unicode.org/charts/PDF/U0000.pdf).
+- Wikipedia: [Unicode C0 control codes](https://en.wikipedia.org/wiki/C0_and_C1_control_codes).
+- Wikipedia: [Unicode characters with property "WSpace=yes" or "White_Space=yes"](https://en.wikipedia.org/wiki/Unicode_character_property#Whitespace).
+- Java API Specification: [Java String Literals](https://docs.oracle.com/javase/tutorial/java/data/characters.html).
+- Java API Specification: [Java Class Charset](https://docs.oracle.com/javase/8/docs/api///?java/nio/charset/Charset.html).
