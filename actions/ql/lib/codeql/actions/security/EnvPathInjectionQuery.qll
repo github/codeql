@@ -3,6 +3,7 @@ private import codeql.actions.TaintTracking
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.security.ArtifactPoisoningQuery
 private import codeql.actions.security.UntrustedCheckoutQuery
+private import codeql.actions.security.ControlChecks
 
 abstract class EnvPathInjectionSink extends DataFlow::Node { }
 
@@ -109,8 +110,28 @@ private module EnvPathInjectionConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 7 does not select a source or sink originating from the flow call on line 23 (/Users/d10c/src/semmle-code/ql/actions/ql/src/Security/CWE-077/EnvPathInjectionCritical.ql@39:36:39:40)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    // where clause from EnvPathInjectionCritical.ql
+    exists(Event event, RemoteFlowSource source | result = event.getLocation() |
+      inPrivilegedContext(sink.asExpr(), event) and
+      isSource(source) and
+      (
+        not source.getSourceType() = "artifact" and
+        not exists(ControlCheck check | check.protects(sink.asExpr(), event, "code-injection"))
+        or
+        source.getSourceType() = "artifact" and
+        not exists(ControlCheck check |
+          check.protects(sink.asExpr(), event, ["untrusted-checkout", "artifact-poisoning"])
+        ) and
+        sink instanceof EnvPathInjectionFromFileReadSink
+      )
+    )
   }
 }
 
