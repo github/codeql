@@ -1,41 +1,41 @@
 ## Overview
 
-This query detects non-explicit control and whitespace characters in java literals.
+This query detects non-explicit control and whitespace characters in Java literals.
 Such characters are often introduced accidentally and can be invisible or hard to recognize, leading to bugs when the actual contents of the string contain control characters.
 
 ## Recommendation
 
-To avoid issues, use the encoded versions of control characters (e.g., ASCII `\n`, `\t`, or Unicode `U+000D`, `U+0009`).
-This makes the literals (e.g., string literals) more readable, and also helps to make the surrounding code less error-prone and more maintainable.
+To avoid issues, use the encoded versions of control characters (e.g. ASCII `\n`, `\t`, or Unicode `U+000D`, `U+0009`).
+This makes the literals (e.g. string literals) more readable, and also helps to make the surrounding code less error-prone and more maintainable.
 
 ## Example
 
-The following examples illustrate `NON_COMPLIANT` and `COMPLIANT` code:
+The following examples illustrate good and bad code:
 
-`NON_COMPLIANT`:
+Bad:
 
 ```java
-char tabulationChar = '	'; // NON_COMPLIANT
-String tabulationCharInsideString = "A	B";  // NON_COMPLIANT
-String fooZeroWidthSpacebar = "foo​bar"; // NON_COMPLIANT
+char tabulationChar = '	'; // Non compliant
+String tabulationCharInsideString = "A	B";  // Non compliant
+String fooZeroWidthSpacebar = "foo​bar"; // Non compliant
 ```
 
-`COMPLIANT`:
+Good:
 
 ```java
 char escapedTabulationChar = '\t';
-String escapedTabulationCharInsideString = "A\tB";  // COMPLIANT
-String fooUnicodeSpacebar = "foo\u0020bar";  // COMPLIANT
-String foo2Spacebar = "foo  bar";  // COMPLIANT
-String foo3Spacebar = "foo   bar";  // COMPLIANT
+String escapedTabulationCharInsideString = "A\tB";  // Compliant
+String fooUnicodeSpacebar = "foo\u0020bar";  // Compliant
+String foo2Spacebar = "foo  bar";  // Compliant
+String foo3Spacebar = "foo   bar";  // Compliant
 ```
 
-## Implementation Notes
+## Implementation notes
 
-This query detects java literals that contain reserved control characters and/or non-printable whitespace characters, such as:
+This query detects Java literals that contain reserved control characters and/or non-printable whitespace characters, such as:
 
 - Decimal and hexidecimal representations of ASCII control characters (code points 0-8, 11, 14-31, and 127).
-- Invisible characters (e.g., zero-width space, zero-width joiner).
+- Invisible characters (e.g. zero-width space, zero-width joiner).
 - Unicode C0 control codes, plus the delete character (U+007F), such as:
 
   | Escaped Unicode | ASCII Decimal | Description               |
@@ -70,7 +70,7 @@ This query detects java literals that contain reserved control characters and/or
   | `\u001F`        | 31            | unit separator            |
   | `\u007F`        | 127           | delete                    |
 
-- Zero-width Unicode characters (e.g., zero-width space, zero-width joiner), such as:
+- Zero-width Unicode characters (e.g. zero-width space, zero-width joiner), such as:
 
   | Escaped Unicode | Description               |
   | --------------- | ------------------------- |
@@ -85,7 +85,7 @@ This query detects java literals that contain reserved control characters and/or
 The following list outlines the _**explicit exclusions from query scope**_:
 
 - any number of simple space characters (`U+0020`, ASCII 32).
-- an escape character sequence (e.g., `\t`), or the Unicode equivalent (e.g., `\u0009`), for printable whitespace characters:
+- an escape character sequence (e.g. `\t`), or the Unicode equivalent (e.g. `\u0009`), for printable whitespace characters:
 
   | Character Sequence | Escaped Unicode | ASCII Decimal | Description     |
   | ------------------ | --------------- | ------------- | --------------- |
