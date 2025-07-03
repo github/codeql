@@ -15,21 +15,35 @@
 import python
 import MethodCallOrder
 
-predicate missingCallToSuperclassDel(Function base, Function shouldCall, Class mroStart) {
-  missingCallToSuperclassMethod(base, shouldCall, mroStart, "__del__")
+Function getDelMethod(Class c) {
+  result = c.getAMethod() and
+  result.getName() = "__del__"
 }
 
-from Function base, Function shouldCall, Class mroStart, string msg
+from Class base, Function shouldCall, FunctionOption possibleIssue, string msg
 where
-  missingCallToSuperclassDel(base, shouldCall, mroStart) and
-  (
-    // Simple case: the method that should be called is directly overridden
-    mroStart = base.getScope() and
-    msg = "This delete method does not call $@, which may leave $@ not properly cleaned up."
-    or
-    // Only alert for a different mro base if there are no alerts for direct overrides
-    not missingCallToSuperclassDel(base, _, base.getScope()) and
-    msg =
-      "This delete method does not call super().__del__, which may cause $@ to be missed during the cleanup of $@."
+  not exists(Function newMethod | newMethod = base.getAMethod() and newMethod.getName() = "__new__") and
+  exists(FunctionOption possiblyMissingSuper |
+    missingCallToSuperclassMethodRestricted(base, shouldCall, "__del__") and
+    possiblyMissingSuper = getPossibleMissingSuperOption(base, shouldCall, "__del__") and
+    (
+      not possiblyMissingSuper.isNone() and
+      possibleIssue = possiblyMissingSuper and
+      msg =
+        "This class does not call $@ during destruction. ($@ may be missing a call to super().__del__)"
+      or
+      possiblyMissingSuper.isNone() and
+      (
+        possibleIssue.asSome() = getDelMethod(base) and
+        msg =
+          "This class does not call $@ during destruction. ($@ may be missing a call to a base class __del__)"
+        or
+        not getDelMethod(base) and
+        possibleIssue.isNone() and
+        msg =
+          "This class does not call $@ during destruction. (The class lacks an __del__ method to ensure every base class __del__ is called.)"
+      )
+    )
   )
-select base, msg, shouldCall, shouldCall.getQualifiedName(), mroStart, mroStart.getName()
+select base, msg, shouldCall, shouldCall.getQualifiedName(), possibleIssue,
+  possibleIssue.getQualifiedName()
