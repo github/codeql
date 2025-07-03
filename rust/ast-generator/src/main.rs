@@ -1,8 +1,8 @@
 use std::{fs, path::PathBuf};
 
 pub mod codegen;
-mod flags;
 mod field_info;
+mod flags;
 
 use crate::codegen::grammar::ast_src::{AstEnumSrc, Cardinality};
 use crate::field_info::{FieldInfo, FieldType};
@@ -77,16 +77,15 @@ fn has_special_emission(type_name: &str) -> bool {
 }
 
 fn should_enum_be_skipped(name: &str) -> bool {
-    name == "VariantDef"  // remove the VariantDef enum, there is no use for it at the moment
-
+    name == "VariantDef" // remove the VariantDef enum, there is no use for it at the moment
 }
 
 fn should_node_be_skipped(name: &str) -> bool {
-    name == "TypeAnchor"  // we flatten TypeAnchor into PathSegment in the extractor
+    name == "TypeAnchor" // we flatten TypeAnchor into PathSegment in the extractor
 }
 
 fn should_node_be_skipped_in_extractor(name: &str) -> bool {
-    name == "Adt"   // no fields have `Adt` type, so we don't need extraction for it
+    name == "Adt" // no fields have `Adt` type, so we don't need extraction for it
 }
 
 fn should_field_be_skipped(node_name: &str, field_name: &str) -> bool {
@@ -166,9 +165,10 @@ fn get_trait_fields(trait_name: &str) -> Vec<FieldInfo> {
         "HasGenericArgs" => vec![FieldInfo::optional("generic_arg_list", "GenericArgList")],
         "HasTypeBounds" => vec![FieldInfo::optional("type_bound_list", "TypeBoundList")],
         "HasModuleItem" => vec![FieldInfo::list("items", "Item")],
-        "HasLoopBody" =>
-            vec![FieldInfo::optional("label", "Label"),
-                FieldInfo::optional("loop_body", "BlockExpr")],
+        "HasLoopBody" => vec![
+            FieldInfo::optional("label", "Label"),
+            FieldInfo::optional("loop_body", "BlockExpr"),
+        ],
         "HasArgList" => vec![FieldInfo::optional("arg_list", "ArgList")],
         "HasDocComments" => vec![],
         _ => panic!("Unknown trait {}", trait_name),
@@ -316,7 +316,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
     let mut result = Vec::new();
     for field in &node.fields {
         if let Field::Token(name) = field {
-            if should_predicate_be_extracted(&name) {
+            if should_predicate_be_extracted(name) {
                 result.push(FieldInfo {
                     name: format!("is_{name}"),
                     ty: FieldType::Predicate,
@@ -329,7 +329,9 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
 
     for field in &node.fields {
         let name = field.method_name();
-        if should_field_be_skipped(&node.name, &name) { continue; }
+        if should_field_be_skipped(&node.name, &name) {
+            continue;
+        }
         let ty = match field {
             Field::Token(_) => continue,
             Field::Node {
@@ -342,7 +344,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         result.push(FieldInfo { name, ty });
     }
     for trait_ in &node.traits {
-        result.extend(get_trait_fields(&trait_));
+        result.extend(get_trait_fields(trait_));
     }
     result.sort_by(|x, y| x.name.cmp(&y.name));
     result
