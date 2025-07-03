@@ -187,3 +187,19 @@ class G3(G1, G2):
         for cls in self.__class__.__bases__:
             cls.__init__(self) # We dont track which classes this could refer to, but assume it calls all required init methods and don't alert.
 
+G3()
+
+class H1:
+    def __init__(self):
+        print("H1 init")
+
+class H2:
+    def __init__(self):
+        print("H2 init")
+
+class H3(H1, H2): # $ Alert # The alert should also mention that H1.__init__ may be missing a call to super().__init__
+    def __init__(self): 
+        print("H3 init")
+        super().__init__()
+
+H3()
