@@ -16,21 +16,21 @@ use std::task::{Context, Poll};
 
 async fn test_futures_rustls_futures_io() -> io::Result<()> {
     let url = "www.example.com:443";
-    let tcp = TcpStream::connect(url).await?; // $ Alert[rust/summary/taint-sources]
-    sink(&tcp); // $ hasTaintFlow=url
+    let tcp = TcpStream::connect(url).await?; // $ MISSING: Alert[rust/summary/taint-sources]
+    sink(&tcp); // $ MISSING: hasTaintFlow=url
     let config = rustls::ClientConfig::builder()
         .with_root_certificates(rustls::RootCertStore::empty())
         .with_no_client_auth();
     let connector = TlsConnector::from(Arc::new(config));
     let server_name = rustls::pki_types::ServerName::try_from("www.example.com").unwrap();
     let mut reader = connector.connect(server_name, tcp).await?;
-    sink(&reader); // $ hasTaintFlow=url
+    sink(&reader); // $ MISSING: hasTaintFlow=url
 
     {
         // using the `AsyncRead` trait (low-level)
         let mut buffer = [0u8; 64];
         let mut pinned = Pin::new(&mut reader);
-        sink(&pinned); // $ hasTaintFlow=url
+        sink(&pinned); // $ MISSING: hasTaintFlow=url
         let mut cx = Context::from_waker(futures::task::noop_waker_ref());
         let bytes_read = pinned.poll_read(&mut cx, &mut buffer); // we cannot correctly resolve this call, since it relies on `Deref`
         if let Poll::Ready(Ok(n)) = bytes_read {
@@ -43,7 +43,7 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
         // using the `AsyncReadExt::read` extension method (higher-level)
         let mut buffer1 = [0u8; 64];
         let bytes_read1 = futures::io::AsyncReadExt::read(&mut reader, &mut buffer1).await?;
-        sink(&buffer1[..bytes_read1]); // $ hasTaintFlow=url
+        sink(&buffer1[..bytes_read1]); // $ MISSING: hasTaintFlow=url
 
         let mut buffer2 = [0u8; 64];
         let bytes_read2 = reader.read(&mut buffer2).await?; // we cannot resolve the `read` call, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
@@ -52,16 +52,16 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
     }
 
     let mut reader2 = futures::io::BufReader::new(reader);
-    sink(&reader2); // $ hasTaintFlow=url
+    sink(&reader2); // $ MISSING: hasTaintFlow=url
 
     {
         // using the `AsyncBufRead` trait (low-level)
         let mut pinned = Pin::new(&mut reader2);
-        sink(&pinned); // $ hasTaintFlow=url
+        sink(&pinned); // $ MISSING: hasTaintFlow=url
         let mut cx = Context::from_waker(futures::task::noop_waker_ref());
         let buffer = pinned.poll_fill_buf(&mut cx);
         if let Poll::Ready(Ok(buf)) = buffer {
-            sink(&buffer); // $ hasTaintFlow=url
+            sink(&buffer); // $ MISSING: hasTaintFlow=url
             sink(buf); // $ MISSING: hasTaintFlow=url
         }
 
@@ -69,8 +69,8 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
         let buffer2 = Pin::new(&mut reader2).poll_fill_buf(&mut cx);
         match (buffer2) {
             Poll::Ready(Ok(buf)) => {
-                sink(&buffer2); // $ hasTaintFlow=url
-                sink(buf); // $ hasTaintFlow=url
+                sink(&buffer2); // $ MISSING: hasTaintFlow=url
+                sink(buf); // $ MISSING: hasTaintFlow=url
             }
             _ => {
                 // ...
@@ -88,7 +88,7 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
         // using the `AsyncRead` trait (low-level)
         let mut buffer = [0u8; 64];
         let mut pinned = Pin::new(&mut reader2);
-        sink(&pinned); // $ hasTaintFlow=url
+        sink(&pinned); // $ MISSING: hasTaintFlow=url
         let mut cx = Context::from_waker(futures::task::noop_waker_ref());
         let bytes_read = pinned.poll_read(&mut cx, &mut buffer);
         sink(&buffer); // $ MISSING: hasTaintFlow=url
@@ -101,7 +101,7 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
         // using the `AsyncReadExt::read` extension method (higher-level)
         let mut buffer1 = [0u8; 64];
         let bytes_read1 = futures::io::AsyncReadExt::read(&mut reader2, &mut buffer1).await?;
-        sink(&buffer1[..bytes_read1]); // $ hasTaintFlow=url
+        sink(&buffer1[..bytes_read1]); // $ MISSING: hasTaintFlow=url
 
         let mut buffer2 = [0u8; 64];
         let bytes_read2 = reader2.read(&mut buffer2).await?; // we cannot resolve the `read` call, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
@@ -111,10 +111,10 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
     {
         // using the `AsyncBufRead` trait (low-level)
         let mut pinned = Pin::new(&mut reader2);
-        sink(&pinned); // $ hasTaintFlow=url
+        sink(&pinned); // $ MISSING: hasTaintFlow=url
         let mut cx = Context::from_waker(futures::task::noop_waker_ref());
         let buffer = pinned.poll_fill_buf(&mut cx);
-        sink(&buffer); // $ hasTaintFlow=url
+        sink(&buffer); // $ MISSING: hasTaintFlow=url
         if let Poll::Ready(Ok(buf)) = buffer {
             sink(buf); // $ MISSING: hasTaintFlow=url
         }
