@@ -21,8 +21,7 @@ where
     missingCallToSuperclassMethodRestricted(base, shouldCall, "__init__") and
     possiblyMissingSuper = getPossibleMissingSuperOption(base, shouldCall, "__init__") and
     (
-      not possiblyMissingSuper.isNone() and
-      possibleIssue = possiblyMissingSuper and
+      possibleIssue.asSome() = possiblyMissingSuper.asSome() and
       msg =
         "This class does not call $@ during initialization. ($@ may be missing a call to super().__init__)"
       or

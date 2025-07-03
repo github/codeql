@@ -38,7 +38,7 @@ where
         msg =
           "This class does not call $@ during destruction. ($@ may be missing a call to a base class __del__)"
         or
-        not getDelMethod(base) and
+        not exists(getDelMethod(base)) and
         possibleIssue.isNone() and
         msg =
           "This class does not call $@ during destruction. (The class lacks an __del__ method to ensure every base class __del__ is called.)"
