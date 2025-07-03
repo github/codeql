@@ -1,6 +1,7 @@
 private import actions
 private import codeql.actions.TaintTracking
 private import codeql.actions.dataflow.ExternalFlow
+private import codeql.actions.security.ControlChecks
 import codeql.actions.dataflow.FlowSources
 import codeql.actions.DataFlow
 
@@ -89,8 +90,17 @@ private module ArgumentInjectionConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 7 does not select a source or sink originating from the flow call on line 22 (/Users/d10c/src/semmle-code/ql/actions/ql/src/experimental/Security/CWE-088/ArgumentInjectionCritical.ql@29:62:29:66)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    exists(Event event | result = event.getLocation() |
+      inPrivilegedContext(sink.asExpr(), event) and
+      not exists(ControlCheck check | check.protects(sink.asExpr(), event, "argument-injection"))
+    )
   }
 }
 
