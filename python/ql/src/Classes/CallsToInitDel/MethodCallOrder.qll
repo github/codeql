@@ -95,13 +95,15 @@ predicate missingCallToSuperclassMethod(Class base, Function shouldCall, string 
 
 predicate missingCallToSuperclassMethodRestricted(Class base, Function shouldCall, string name) {
   missingCallToSuperclassMethod(base, shouldCall, name) and
-  not exists(Class subBase |
-    subBase = getADirectSubclass+(base) and
-    missingCallToSuperclassMethod(subBase, shouldCall, name)
+  not exists(Class superBase |
+    // Alert only on the highest base class that has the issue
+    superBase = getADirectSuperclass+(base) and
+    missingCallToSuperclassMethod(superBase, shouldCall, name)
   ) and
-  not exists(Function superShouldCall |
-    superShouldCall.getScope() = getADirectSuperclass+(shouldCall.getScope()) and
-    missingCallToSuperclassMethod(base, superShouldCall, name)
+  not exists(Function subShouldCall |
+    // Mention in the alert only the lowest method we're missing the call to
+    subShouldCall.getScope() = getADirectSubclass+(shouldCall.getScope()) and
+    missingCallToSuperclassMethod(base, subShouldCall, name)
   )
 }
 
