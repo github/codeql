@@ -21,5 +21,4 @@ where
       "writeObject", "readObject", "readObjectNoData", "writeExternal", "readExternal",
       "serialPersistentFields"
     ])
-select m, "Useless serialization member $@ found in record class $@.", m, m.getName(), record,
-  record.getName()
+select m, "Useless serialization member found in record class $@.", record, record.getName()
