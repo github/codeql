@@ -164,8 +164,38 @@ private module EnvVarInjectionConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 7 does not select a source or sink originating from the flow call on line 24 (/Users/d10c/src/semmle-code/ql/actions/ql/src/Security/CWE-077/EnvVarInjectionCritical.ql@48:36:48:40)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    // where clause from EnvVarInjectionCritical.ql
+    exists(Event event, RemoteFlowSource source | result = event.getLocation() |
+      inPrivilegedContext(sink.asExpr(), event) and
+      isSource(source) and
+      // exclude paths to file read sinks from non-artifact sources
+      (
+        // source is text
+        not source.getSourceType() = "artifact" and
+        not exists(ControlCheck check |
+          check.protects(sink.asExpr(), event, ["envvar-injection", "code-injection"])
+        )
+        or
+        // source is an artifact or a file from an untrusted checkout
+        source.getSourceType() = "artifact" and
+        not exists(ControlCheck check |
+          check
+              .protects(sink.asExpr(), event,
+                ["envvar-injection", "untrusted-checkout", "artifact-poisoning"])
+        ) and
+        (
+          sink instanceof EnvVarInjectionFromFileReadSink or
+          madSink(sink, "envvar-injection")
+        )
+      )
+    )
   }
 }
 
