@@ -226,7 +226,7 @@ fn test_std(password: String, i: i32, opt_i: Option<i32>) {
             debug_assert_ne!(1, 1, "message = {}", password); // $ Alert[rust/cleartext-logging]
         }
         11 => {
-            _ = opt_i.expect(format!("message = {}", password).as_str()); // $ MISSING: Alert[rust/cleartext-logging] (https://github.com/github/codeql/pull/19658)
+            _ = opt_i.expect(format!("message = {}", password).as_str()); // $ Alert[rust/cleartext-logging]
         }
         _ => {}
     }
@@ -239,16 +239,16 @@ fn test_std(password: String, i: i32, opt_i: Option<i32>) {
         .write_fmt(format_args!("message = {}\n", password)); // $ MISSING: Alert[rust/cleartext-logging]
     std::io::stdout()
         .lock()
-        .write(format!("message = {}\n", password).as_bytes()); // $ MISSING: Alert[rust/cleartext-logging] (https://github.com/github/codeql/pull/19658)
+        .write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
     std::io::stdout()
         .lock()
-        .write_all(format!("message = {}\n", password).as_bytes()); // $ MISSING: Alert[rust/cleartext-logging] (https://github.com/github/codeql/pull/19658)
+        .write_all(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
 
     let mut out = std::io::stdout().lock();
-    out.write(format!("message = {}\n", password).as_bytes()); // $ MISSING: Alert[rust/cleartext-logging] (https://github.com/github/codeql/pull/19658)
+    out.write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
 
     let mut err = std::io::stderr().lock();
-    err.write(format!("message = {}\n", password).as_bytes()); // $ MISSING: Alert[rust/cleartext-logging] (https://github.com/github/codeql/pull/19658)
+    err.write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
 }
 
 fn main() {

@@ -1,0 +1,7 @@
+multipleCallTargets
+| main.rs:22:18:22:31 | query.as_str() |
+| main.rs:23:24:23:37 | query.as_str() |
+| main.rs:25:18:25:31 | query.as_str() |
+| main.rs:28:16:28:29 | query.as_str() |
+| main.rs:29:20:29:33 | query.as_str() |
+| main.rs:30:20:30:33 | query.as_str() |
