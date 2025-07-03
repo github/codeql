@@ -2,8 +2,8 @@ canonicalPath
 | anonymous.rs:3:1:32:1 | fn canonicals | test::anonymous::canonicals |
 | anonymous.rs:34:1:36:1 | fn other | test::anonymous::other |
 | {EXTERNAL LOCATION} | fn trim | <core::str>::trim |
-| lib.rs:1:1:1:14 | mod anonymous | test::anonymous |
-| lib.rs:2:1:2:12 | mod regular | test::regular |
+| lib.rs:1:1:1:18 | mod anonymous | test::anonymous |
+| lib.rs:2:1:2:16 | mod regular | test::regular |
 | regular.rs:1:1:2:18 | struct Struct | test::regular::Struct |
 | regular.rs:2:12:2:17 | fn eq | <test::regular::Struct as core::cmp::PartialEq>::eq |
 | regular.rs:2:12:2:17 | impl ...::Eq for Struct::<...> { ... } | <test::regular::Struct as core::cmp::Eq> |
@@ -42,8 +42,8 @@ canonicalPaths
 | anonymous.rs:26:5:31:5 | fn usage | None | None |
 | anonymous.rs:34:1:36:1 | fn other | repo::test | crate::anonymous::other |
 | anonymous.rs:35:5:35:23 | struct OtherStruct | None | None |
-| lib.rs:1:1:1:14 | mod anonymous | repo::test | crate::anonymous |
-| lib.rs:2:1:2:12 | mod regular | repo::test | crate::regular |
+| lib.rs:1:1:1:18 | mod anonymous | repo::test | crate::anonymous |
+| lib.rs:2:1:2:16 | mod regular | repo::test | crate::regular |
 | regular.rs:1:1:2:18 | struct Struct | repo::test | crate::regular::Struct |
 | regular.rs:2:12:2:17 | fn eq | repo::test | <crate::regular::Struct as crate::cmp::PartialEq>::eq |
 | regular.rs:2:12:2:17 | impl ...::Eq for Struct::<...> { ... } | None | None |

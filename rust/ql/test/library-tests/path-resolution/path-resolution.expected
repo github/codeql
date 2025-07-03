@@ -1,5 +1,5 @@
 mod
-| lib.rs:1:1:1:7 | mod my |
+| lib.rs:1:1:1:11 | mod my |
 | main.rs:1:1:1:7 | mod my |
 | main.rs:7:1:7:8 | mod my2 |
 | main.rs:13:1:37:1 | mod m1 |

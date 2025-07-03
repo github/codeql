@@ -33,3 +33,7 @@ extensions:
       - ["", "", False, "CommandLineToArgvW", "", "", "Argument[*0]", "ReturnValue[**]", "taint", "manual"]
       # fileapi.h
       - ["", "", False, "ReadFileEx", "", "", "Argument[*3].Field[@hEvent]", "Argument[4].Parameter[*2].Field[@hEvent]", "value", "manual"]
+      # processthreadsapi.h
+      - ["", "", False, "CreateThread", "", "", "Argument[@3]", "Argument[2].Parameter[@0]", "value", "manual"]
+      - ["", "", False, "CreateRemoteThread", "", "", "Argument[@4]", "Argument[3].Parameter[@0]", "value", "manual"]
+      - ["", "", False, "CreateRemoteThreadEx", "", "", "Argument[@4]", "Argument[3].Parameter[@0]", "value", "manual"]
