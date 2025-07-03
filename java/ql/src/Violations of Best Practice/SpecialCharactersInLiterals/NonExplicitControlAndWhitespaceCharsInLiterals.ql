@@ -7,6 +7,7 @@
  * @precision medium
  * @problem.severity warning
  * @tags quality
+ *       correctness
  *       maintainability
  *       readability
  */
