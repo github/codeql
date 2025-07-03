@@ -85,9 +85,8 @@ predicate callsMethodOnUnknownClassWithSelf(Function meth, string name) {
 }
 
 predicate missingCallToSuperclassMethod(Class base, Function shouldCall, string name) {
-  base.getName() = name and
   shouldCall.getName() = name and
-  base = getADirectSuperclass*(base.getScope()) and
+  shouldCall.getScope() = getADirectSuperclass+(base) and
   not shouldCall = getASuperCallTargetFromClass(base, base, name) and
   nonTrivial(shouldCall) and
   // "Benefit of the doubt" - if somewhere in the chain we call an unknown superclass, assume all the necessary parent methods are called from it
