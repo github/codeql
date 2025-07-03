@@ -8,7 +8,6 @@
 | deallocation.rs:86:7:86:8 | m2 | deallocation.rs:70:3:70:21 | ...::dealloc | deallocation.rs:86:7:86:8 | m2 | This operation dereferences a pointer that may be $@. | deallocation.rs:70:3:70:21 | ...::dealloc | invalid |
 | deallocation.rs:90:7:90:8 | m2 | deallocation.rs:70:3:70:21 | ...::dealloc | deallocation.rs:90:7:90:8 | m2 | This operation dereferences a pointer that may be $@. | deallocation.rs:70:3:70:21 | ...::dealloc | invalid |
 | deallocation.rs:95:5:95:31 | ...::write::<...> | deallocation.rs:70:3:70:21 | ...::dealloc | deallocation.rs:95:5:95:31 | ...::write::<...> | This operation dereferences a pointer that may be $@. | deallocation.rs:70:3:70:21 | ...::dealloc | invalid |
-| deallocation.rs:115:13:115:18 | my_ptr | deallocation.rs:112:3:112:12 | ...::free | deallocation.rs:115:13:115:18 | my_ptr | This operation dereferences a pointer that may be $@. | deallocation.rs:112:3:112:12 | ...::free | invalid |
 | deallocation.rs:130:14:130:15 | p1 | deallocation.rs:123:23:123:40 | ...::dangling | deallocation.rs:130:14:130:15 | p1 | This operation dereferences a pointer that may be $@. | deallocation.rs:123:23:123:40 | ...::dangling | invalid |
 | deallocation.rs:130:14:130:15 | p1 | deallocation.rs:123:23:123:40 | ...::dangling | deallocation.rs:130:14:130:15 | p1 | This operation dereferences a pointer that may be $@. | deallocation.rs:123:23:123:40 | ...::dangling | invalid |
 | deallocation.rs:131:14:131:15 | p2 | deallocation.rs:124:21:124:42 | ...::dangling_mut | deallocation.rs:131:14:131:15 | p2 | This operation dereferences a pointer that may be $@. | deallocation.rs:124:21:124:42 | ...::dangling_mut | invalid |
@@ -32,8 +31,6 @@ edges
 | deallocation.rs:70:23:70:35 | [post] m2 as ... | deallocation.rs:90:7:90:8 | m2 | provenance |  |
 | deallocation.rs:70:23:70:35 | [post] m2 as ... | deallocation.rs:95:33:95:34 | m2 | provenance |  |
 | deallocation.rs:95:33:95:34 | m2 | deallocation.rs:95:5:95:31 | ...::write::<...> | provenance | MaD:2 Sink:MaD:2 |
-| deallocation.rs:112:3:112:12 | ...::free | deallocation.rs:112:14:112:40 | [post] my_ptr as ... | provenance | Src:MaD:10 MaD:10 |
-| deallocation.rs:112:14:112:40 | [post] my_ptr as ... | deallocation.rs:115:13:115:18 | my_ptr | provenance |  |
 | deallocation.rs:123:6:123:7 | p1 | deallocation.rs:130:14:130:15 | p1 | provenance |  |
 | deallocation.rs:123:23:123:40 | ...::dangling | deallocation.rs:123:23:123:42 | ...::dangling(...) | provenance | Src:MaD:6 MaD:6 |
 | deallocation.rs:123:23:123:40 | ...::dangling | deallocation.rs:123:23:123:42 | ...::dangling(...) | provenance | Src:MaD:3 MaD:3 |
@@ -60,7 +57,6 @@ models
 | 7 | Source: lang:core; crate::ptr::dangling_mut; ReturnValue; pointer-invalidate |
 | 8 | Source: lang:core; crate::ptr::drop_in_place; Argument[0]; pointer-invalidate |
 | 9 | Source: lang:core; crate::ptr::null; ReturnValue; pointer-invalidate |
-| 10 | Source: repo:https://github.com/rust-lang/libc:libc; ::free; Argument[0]; pointer-invalidate |
 nodes
 | deallocation.rs:20:3:20:21 | ...::dealloc | semmle.label | ...::dealloc |
 | deallocation.rs:20:23:20:24 | [post] m1 | semmle.label | [post] m1 |
@@ -78,9 +74,6 @@ nodes
 | deallocation.rs:90:7:90:8 | m2 | semmle.label | m2 |
 | deallocation.rs:95:5:95:31 | ...::write::<...> | semmle.label | ...::write::<...> |
 | deallocation.rs:95:33:95:34 | m2 | semmle.label | m2 |
-| deallocation.rs:112:3:112:12 | ...::free | semmle.label | ...::free |
-| deallocation.rs:112:14:112:40 | [post] my_ptr as ... | semmle.label | [post] my_ptr as ... |
-| deallocation.rs:115:13:115:18 | my_ptr | semmle.label | my_ptr |
 | deallocation.rs:123:6:123:7 | p1 | semmle.label | p1 |
 | deallocation.rs:123:23:123:40 | ...::dangling | semmle.label | ...::dangling |
 | deallocation.rs:123:23:123:40 | ...::dangling | semmle.label | ...::dangling |

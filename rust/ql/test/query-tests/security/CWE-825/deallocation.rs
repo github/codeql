@@ -109,10 +109,10 @@ pub fn test_libc() {
 		let v1 = *my_ptr; // GOOD
 		println!("	v1 = {v1}");
 
-		libc::free(my_ptr as *mut libc::c_void); // $ Source[rust/access-invalid-pointer]=free
+		libc::free(my_ptr as *mut libc::c_void); // $ MISSING: Source[rust/access-invalid-pointer]=free
 		// (my_ptr is now dangling)
 
-		let v2 = *my_ptr; // $ Alert[rust/access-invalid-pointer]=free
+		let v2 = *my_ptr; // $ MISSING: Alert[rust/access-invalid-pointer]=free
 		println!("	v2 = {v2} (!)"); // corrupt in practice
 	}
 }
