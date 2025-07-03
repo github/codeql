@@ -26,7 +26,7 @@ class TypeNameBindingNode extends NameResolution::Node {
   }
 
   /**
-   * Holds if this refers a value exported by the given module, with the given
+   * Holds if this refers to a value exported by the given module, with the given
    * qualified name. If the `qualifiedName` is empty, this refers to the module itself.
    *
    * For example, the type annotations below have the following name bindings:
@@ -151,8 +151,8 @@ class ExprNameBindingNode extends NameResolution::Node {
    * ```ts
    * import * as f from "foo";
    *
-   * var x = f; // hasQualifiedName(f, "")
-   * var x = f.x.y; // hasQualifiedName(f, "x.y")
+   * var x = f; // hasQualifiedName("f", "")
+   * var x = f.x.y; // hasQualifiedName("f", "x.y")
    * ```
    */
   predicate hasQualifiedName(string moduleName, string qualifiedName) {
