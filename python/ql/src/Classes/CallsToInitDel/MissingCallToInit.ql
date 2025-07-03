@@ -16,7 +16,6 @@ import MethodCallOrder
 
 from Class base, Function shouldCall, FunctionOption possibleIssue, string msg
 where
-  not exists(Function newMethod | newMethod = base.getAMethod() and newMethod.getName() = "__new__") and
   exists(FunctionOption possiblyMissingSuper |
     missingCallToSuperclassMethodRestricted(base, shouldCall, "__init__") and
     possiblyMissingSuper = getPossibleMissingSuperOption(base, shouldCall, "__init__") and
