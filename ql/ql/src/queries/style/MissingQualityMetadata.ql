@@ -34,14 +34,19 @@ where
     msg =
       "This query file has incorrect top-level categorisation. It should have exactly one top-level category, either `@tags maintainability` or `@tags reliability`."
     or
-    maintainabilitySubCategory(doc) and
-    not doc.getAQueryTag() = "maintainability" and
-    msg =
-      "This query file has a sub-category of maintainability but is missing the `@tags maintainability` tag."
-    or
-    reliabilitySubCategory(doc) and
-    not doc.getAQueryTag() = "reliability" and
-    msg =
-      "This query file has a sub-category of reliability but is missing the `@tags reliability` tag."
+    correctTopLevelCategorisation(doc) and
+    (
+      doc.getAQueryTag() = "reliability" and
+      not reliabilitySubCategory(doc) and
+      maintainabilitySubCategory(doc) and
+      msg =
+        "This query file has a sub-category of maintainability but has the `@tags reliability` tag."
+      or
+      doc.getAQueryTag() = "maintainability" and
+      not maintainabilitySubCategory(doc) and
+      reliabilitySubCategory(doc) and
+      msg =
+        "This query file has a sub-category of reliability but has the `@tags maintainability` tag."
+    )
   )
 select doc, msg
