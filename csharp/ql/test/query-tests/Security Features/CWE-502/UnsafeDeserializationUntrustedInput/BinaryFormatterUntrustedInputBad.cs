@@ -10,7 +10,7 @@ class BadBinaryFormatter1
     {
         var ds = new BinaryFormatter();
         // BAD
-        return ds.Deserialize(new MemoryStream(Encoding.UTF8.GetBytes(textBox.Text)));
+        return ds.Deserialize(new MemoryStream(Encoding.UTF8.GetBytes(textBox.Text))); // $ Alert[cs/unsafe-deserialization-untrusted-input]
     }
 }
 
@@ -20,6 +20,6 @@ class BadBinaryFormatter2
     {
         var ds = new BinaryFormatter();
         // BAD
-        return ds.Deserialize(new MemoryStream(Convert.FromBase64String(data.Text)));
+        return ds.Deserialize(new MemoryStream(Convert.FromBase64String(data.Text))); // $ Alert[cs/unsafe-deserialization-untrusted-input]
     }
 }
