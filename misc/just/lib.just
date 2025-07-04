@@ -28,25 +28,31 @@ _build LANGUAGE: _require_semmle_code (_maybe_build LANGUAGE)
 
 [no-exit-message]
 _maybe_build LANGUAGE:
-    {{ cmd_sep }}{{ if SEMMLE_CODE == "" { '# using codeql from PATH, if any' } else { 'cd $SEMMLE_CODE; ./build target/intree/codeql-' + LANGUAGE } }}{{ cmd_sep }}
+    {{ cmd_sep }}{{ if SEMMLE_CODE == "" { '# using codeql from PATH, if any' } else { 'cd "$SEMMLE_CODE"; ./build target/intree/codeql-' + LANGUAGE } }}{{ cmd_sep }}
+
+
+default_db_checks := """\
+    --check-databases \
+    --check-diff-informed \
+    --fail-on-trap-errors \
+"""
 
 [no-cd, positional-arguments, no-exit-message]
-@_codeql_test LANGUAGE +ARGS: (_maybe_build LANGUAGE)
-    {{ tsx }} "{{ source_dir() }}/codeql-test-run.ts" "$@"
-
-[no-cd, positional-arguments, no-exit-message]
-@_codeql_test_run_only LANGUAGE +ARGS:
+@_codeql_test LANGUAGE +ARGS:
     {{ tsx }} "{{ source_dir() }}/codeql-test-run.ts" "$@"
 
 
 [no-cd, no-exit-message]
 _ql_format +ARGS: (_maybe_build "nolang")
-    {{ cmd_sep }}{{ if SEMMLE_CODE != "" { '$SEMMLE_CODE/target/intree/codeql-nolang/' } else { '' } }}codeql query format --in-place $(find {{ ARGS }} -type f -name '*.ql' -or -name '*.qll'){{ cmd_sep }}
+    {{ cmd_sep }}{{ if SEMMLE_CODE != "" { '"$SEMMLE_CODE/target/intree/codeql-nolang/codeql"' } else { 'codeql' } }} query format --in-place $(find {{ ARGS }} -type f -name '*.ql' -or -name '*.qll'){{ cmd_sep }}
 
 
 [no-cd, no-exit-message]
 _bazel COMMAND *ARGS:
-    {{ cmd_sep }}{{ if SEMMLE_CODE != "" { '$SEMMLE_CODE/tools/' } else { '' } }}bazel {{ COMMAND }} {{ ARGS }}{{ cmd_sep }}
+    {{ cmd_sep }}{{ if SEMMLE_CODE != "" { '"$SEMMLE_CODE/tools/bazel"' } else { 'bazel' } }} {{ COMMAND }} {{ ARGS }}{{ cmd_sep }}
+
+[no-cd, no-exit-message]
+_sembuild *ARGS: (_run_in_semmle_code "./build" ARGS)
 
 [no-cd, no-exit-message]
 _integration_test *ARGS: _require_semmle_code (_run "$SEMMLE_CODE/tools/pytest" ARGS)
@@ -55,9 +61,14 @@ _integration_test *ARGS: _require_semmle_code (_run "$SEMMLE_CODE/tools/pytest" 
 _run +ARGS:
     {{ cmd_sep }}{{ ARGS }}{{ cmd_sep }}
 
+[no-cd]
+_run_in_semmle_code +ARGS: _require_semmle_code
+    {{ cmd_sep }}cd "$SEMMLE_CODE"; {{ ARGS }}{{ cmd_sep }}
+
+
 [no-cd, positional-arguments, no-exit-message]
 _just +ARGS:
-    {{ JUST_EXECUTABLE }} "$@"
+    "{{ JUST_EXECUTABLE }}" "$@"
 
 [no-cd]
 _black *ARGS=".": (_run "uv" "run" "black" ARGS)

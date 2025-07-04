@@ -36,9 +36,10 @@ function forwardCommand(args: string[]): number {
   }
   process.env[envVariable] = "true";
   const cmdArgs = args.slice(1);
-  const is_flag = /^(-.*|\++)$/;  // + is used for testing level in some langauge tests
-  const flags = cmdArgs.filter(arg => is_flag.test(arg));
-  const positionalArgs = cmdArgs.filter(arg => !is_flag.test(arg));
+  // non-positional arguments are flags, repeated + (used by language tests) or environment variable settings
+  const is_non_positional = /^(-.*|\++|[A-Z_][A-Z_0-9]*=.*)$/;
+  const flags = cmdArgs.filter(arg => is_non_positional.test(arg));
+  const positionalArgs = cmdArgs.filter(arg => !is_non_positional.test(arg));
 
   if (positionalArgs.length === 0) {
     console.error("No positional arguments provided");
