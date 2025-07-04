@@ -61,15 +61,7 @@ private module TaintToObjectMethodTrackingConfig implements DataFlow::ConfigSig 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 33 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 33 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
-  }
-
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 33 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 33 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
-  }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) {
-    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 33 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 33 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
+    any() // used in one of the disjuncts in UnsafeDeserializationUntrustedInput.ql
   }
 }
 
@@ -91,15 +83,7 @@ private module JsonConvertTrackingConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 55 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 55 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
-  }
-
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 55 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 55 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
-  }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) {
-    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 55 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 55 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
+    any() // used in one of the disjuncts in UnsafeDeserializationUntrustedInput.ql
   }
 }
 
@@ -159,15 +143,7 @@ private module TypeNameTrackingConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 56 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 56 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
-  }
-
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 56 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 56 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
-  }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) {
-    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 56 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 56 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
+    none() // Only used as secondary config in UnsafeDeserializationUntrustedInput.ql
   }
 }
 
@@ -187,15 +163,7 @@ private module TaintToConstructorOrStaticMethodTrackingConfig implements DataFlo
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 50 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 50 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
-  }
-
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 50 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 50 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
-  }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) {
-    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 50 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 50 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
+    any() // used in one of the disjuncts in UnsafeDeserializationUntrustedInput.ql
   }
 }
 
@@ -236,15 +204,7 @@ private module TaintToObjectTypeTrackingConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 43 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 43 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
-  }
-
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 43 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 43 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
-  }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) {
-    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 43 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 43 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
+    none() // only used as secondary config in UnsafeDeserializationUntrustedInput.ql
   }
 }
 
@@ -272,15 +232,7 @@ private module WeakTypeCreationToUsageTrackingConfig implements DataFlow::Config
   }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 37 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 37 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
-  }
-
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 37 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 37 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
-  }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) {
-    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 37 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@59:8:59:25), Column 5 does not select a source or sink originating from the flow call on line 37 (/Users/d10c/src/semmle-code/ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql@60:3:60:11)
+    none() // only used as secondary config in UnsafeDeserializationUntrustedInput.ql
   }
 }
 
