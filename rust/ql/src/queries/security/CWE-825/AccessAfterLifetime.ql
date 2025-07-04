@@ -29,8 +29,13 @@ module AccessAfterLifetimeConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof AccessAfterLifetime::Barrier }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 40 (/Users/d10c/src/semmle-code/ql/rust/ql/src/queries/security/CWE-825/AccessAfterLifetime.ql@52:62:52:67)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    exists(Variable target, DataFlow::Node sink | result = target.getLocation() |
+      isSink(sink) and
+      AccessAfterLifetime::dereferenceAfterLifetime(source, sink, target)
+    )
   }
 }
 
