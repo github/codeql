@@ -233,5 +233,5 @@ private predicate discardableLocation(string file, @location l) {
 /** Discard base locations in files fully extracted in the overlay. */
 overlay[discard_entity]
 private predicate discardLocation(@location l) {
-  exists(string file | discardableLocation(file, l) and extractedInOverlay(file))
+  exists(string file | discardableLocation(file, l) and overlayChangedFiles(file))
 }
