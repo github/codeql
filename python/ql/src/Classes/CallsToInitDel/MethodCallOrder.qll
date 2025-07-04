@@ -5,11 +5,14 @@ import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 import codeql.util.Option
 
-predicate multipleCallsToSuperclassMethod(Function meth, Function calledMulti, string name) {
-  exists(DataFlow::MethodCallNode call1, DataFlow::MethodCallNode call2, Class cls |
+predicate multipleCallsToSuperclassMethod(
+  Function meth, Function calledMulti, DataFlow::MethodCallNode call1,
+  DataFlow::MethodCallNode call2, string name
+) {
+  exists(Class cls |
     meth.getName() = name and
     meth.getScope() = cls and
-    call1.asExpr() != call2.asExpr() and
+    call1.getLocation().toString() < call2.getLocation().toString() and
     calledMulti = getASuperCallTargetFromCall(cls, meth, call1, name) and
     calledMulti = getASuperCallTargetFromCall(cls, meth, call2, name) and
     nonTrivial(calledMulti)
@@ -19,22 +22,43 @@ predicate multipleCallsToSuperclassMethod(Function meth, Function calledMulti, s
 Function getASuperCallTargetFromCall(
   Class mroBase, Function meth, DataFlow::MethodCallNode call, string name
 ) {
+  exists(Function target | target = getDirectSuperCallTargetFromCall(mroBase, meth, call, name) |
+    result = target
+    or
+    result = getASuperCallTargetFromCall(mroBase, target, _, name)
+  )
+}
+
+Function getDirectSuperCallTargetFromCall(
+  Class mroBase, Function meth, DataFlow::MethodCallNode call, string name
+) {
   meth = call.getScope() and
   getADirectSuperclass*(mroBase) = meth.getScope() and
   meth.getName() = name and
   call.calls(_, name) and
-  exists(Class targetCls | result = getASuperCallTargetFromClass(mroBase, targetCls, name) |
+  mroBase = getADirectSubclass*(meth.getScope()) and
+  exists(Class targetCls |
+    // the differences between 0-arg and 2-arg super is not considered; we assume each super uses the mro of the instance `self`
     superCall(call, _) and
-    targetCls = getNextClassInMroKnownStartingClass(meth.getScope(), mroBase)
+    targetCls = getNextClassInMroKnownStartingClass(meth.getScope(), mroBase) and
+    result = findFunctionAccordingToMroKnownStartingClass(targetCls, mroBase, name)
     or
-    callsMethodOnClassWithSelf(meth, call, targetCls, _)
+    // targetCls is the mro base for this lookup.
+    // note however that if the call we find uses super(), that still uses the mro of the instance `self` will sill be used
+    // assuming it's 0-arg or is 2-arg with `self` as second arg.
+    callsMethodOnClassWithSelf(meth, call, targetCls, _) and
+    result = findFunctionAccordingToMroKnownStartingClass(targetCls, targetCls, name)
   )
 }
 
 Function getASuperCallTargetFromClass(Class mroBase, Class cls, string name) {
   exists(Function target |
     target = findFunctionAccordingToMroKnownStartingClass(cls, mroBase, name) and
-    (result = target or result = getASuperCallTargetFromCall(mroBase, target, _, name))
+    (
+      result = target
+      or
+      result = getASuperCallTargetFromCall(mroBase, target, _, name)
+    )
   )
 }
 
