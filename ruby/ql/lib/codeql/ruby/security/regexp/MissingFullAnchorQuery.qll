@@ -19,7 +19,7 @@ private module MissingFullAnchorConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 7 selects sink.getCallNode (/Users/d10c/src/semmle-code/ql/ruby/ql/src/queries/security/cwe-020/MissingFullAnchor.ql@20:41:20:62), Column 9 selects sink.getRegex (/Users/d10c/src/semmle-code/ql/ruby/ql/src/queries/security/cwe-020/MissingFullAnchor.ql@20:76:20:94)
+    none() // can't be made diff-informed because the locations of Ruby RegExpTerms aren't correct when the regexp is parsed from a string arising from constant folding
   }
 }
 
