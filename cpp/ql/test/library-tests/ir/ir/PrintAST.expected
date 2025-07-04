@@ -24262,6 +24262,180 @@ ir.cpp:
 # 2725|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 2725|           Type = [PlainCharType] char
 # 2725|           ValueCategory = prvalue(load)
+# 2728| [TopLevelFunction] void test_postfix_crement(int*, int)
+# 2728|   <params>: 
+# 2728|     getParameter(0): [Parameter] p
+# 2728|         Type = [IntPointerType] int *
+# 2728|     getParameter(1): [Parameter] q
+# 2728|         Type = [IntType] int
+# 2728|   getEntryPoint(): [BlockStmt] { ... }
+# 2729|     getStmt(0): [ExprStmt] ExprStmt
+# 2729|       getExpr(): [PostfixIncrExpr] ... ++
+# 2729|           Type = [IntPointerType] int *
+# 2729|           ValueCategory = prvalue
+# 2729|         getOperand(): [VariableAccess] p
+# 2729|             Type = [IntPointerType] int *
+# 2729|             ValueCategory = lvalue
+# 2730|     getStmt(1): [ExprStmt] ExprStmt
+# 2730|       getExpr(): [PostfixIncrExpr] ... ++
+# 2730|           Type = [IntType] int
+# 2730|           ValueCategory = prvalue
+# 2730|         getOperand(): [VariableAccess] q
+# 2730|             Type = [IntType] int
+# 2730|             ValueCategory = lvalue
+# 2731|     getStmt(2): [ExprStmt] ExprStmt
+# 2731|       getExpr(): [PostfixIncrExpr] ... ++
+# 2731|           Type = [IntPointerType] int *
+# 2731|           ValueCategory = prvalue
+# 2731|         getOperand(): [VariableAccess] p
+# 2731|             Type = [IntPointerType] int *
+# 2731|             ValueCategory = lvalue
+# 2731|       getExpr().getFullyConverted(): [ParenthesisExpr] (...)
+# 2731|           Type = [IntPointerType] int *
+# 2731|           ValueCategory = prvalue
+# 2732|     getStmt(3): [ExprStmt] ExprStmt
+# 2732|       getExpr(): [PostfixIncrExpr] ... ++
+# 2732|           Type = [IntType] int
+# 2732|           ValueCategory = prvalue
+# 2732|         getOperand(): [VariableAccess] q
+# 2732|             Type = [IntType] int
+# 2732|             ValueCategory = lvalue
+# 2732|       getExpr().getFullyConverted(): [ParenthesisExpr] (...)
+# 2732|           Type = [IntType] int
+# 2732|           ValueCategory = prvalue
+# 2733|     getStmt(4): [ExprStmt] ExprStmt
+# 2733|       getExpr(): [PostfixIncrExpr] ... ++
+# 2733|           Type = [IntPointerType] int *
+# 2733|           ValueCategory = prvalue
+# 2733|         getOperand(): [VariableAccess] p
+# 2733|             Type = [IntPointerType] int *
+# 2733|             ValueCategory = lvalue
+# 2733|       getExpr().getFullyConverted(): [CStyleCast] (void)...
+# 2733|           Conversion = [VoidConversion] conversion to void
+# 2733|           Type = [VoidType] void
+# 2733|           ValueCategory = prvalue
+# 2733|         getExpr(): [ParenthesisExpr] (...)
+# 2733|             Type = [IntPointerType] int *
+# 2733|             ValueCategory = prvalue
+# 2734|     getStmt(5): [ExprStmt] ExprStmt
+# 2734|       getExpr(): [PostfixIncrExpr] ... ++
+# 2734|           Type = [IntType] int
+# 2734|           ValueCategory = prvalue
+# 2734|         getOperand(): [VariableAccess] q
+# 2734|             Type = [IntType] int
+# 2734|             ValueCategory = lvalue
+# 2734|       getExpr().getFullyConverted(): [CStyleCast] (void)...
+# 2734|           Conversion = [VoidConversion] conversion to void
+# 2734|           Type = [VoidType] void
+# 2734|           ValueCategory = prvalue
+# 2734|         getExpr(): [ParenthesisExpr] (...)
+# 2734|             Type = [IntType] int
+# 2734|             ValueCategory = prvalue
+# 2735|     getStmt(6): [ExprStmt] ExprStmt
+# 2735|       getExpr(): [PostfixIncrExpr] ... ++
+# 2735|           Type = [IntPointerType] int *
+# 2735|           ValueCategory = prvalue
+# 2735|         getOperand(): [VariableAccess] p
+# 2735|             Type = [IntPointerType] int *
+# 2735|             ValueCategory = lvalue
+# 2735|       getExpr().getFullyConverted(): [CStyleCast] (void)...
+# 2735|           Conversion = [VoidConversion] conversion to void
+# 2735|           Type = [VoidType] void
+# 2735|           ValueCategory = prvalue
+# 2736|     getStmt(7): [ExprStmt] ExprStmt
+# 2736|       getExpr(): [PostfixIncrExpr] ... ++
+# 2736|           Type = [IntType] int
+# 2736|           ValueCategory = prvalue
+# 2736|         getOperand(): [VariableAccess] q
+# 2736|             Type = [IntType] int
+# 2736|             ValueCategory = lvalue
+# 2736|       getExpr().getFullyConverted(): [CStyleCast] (void)...
+# 2736|           Conversion = [VoidConversion] conversion to void
+# 2736|           Type = [VoidType] void
+# 2736|           ValueCategory = prvalue
+# 2737|     getStmt(8): [DeclStmt] declaration
+# 2737|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of p1
+# 2737|           Type = [IntPointerType] int *
+# 2737|         getVariable().getInitializer(): [Initializer] initializer for p1
+# 2737|           getExpr(): [PostfixIncrExpr] ... ++
+# 2737|               Type = [IntPointerType] int *
+# 2737|               ValueCategory = prvalue
+# 2737|             getOperand(): [VariableAccess] p
+# 2737|                 Type = [IntPointerType] int *
+# 2737|                 ValueCategory = lvalue
+# 2738|     getStmt(9): [DeclStmt] declaration
+# 2738|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of q1
+# 2738|           Type = [IntType] int
+# 2738|         getVariable().getInitializer(): [Initializer] initializer for q1
+# 2738|           getExpr(): [PostfixIncrExpr] ... ++
+# 2738|               Type = [IntType] int
+# 2738|               ValueCategory = prvalue
+# 2738|             getOperand(): [VariableAccess] q
+# 2738|                 Type = [IntType] int
+# 2738|                 ValueCategory = lvalue
+# 2739|     getStmt(10): [ExprStmt] ExprStmt
+# 2739|       getExpr(): [PostfixIncrExpr] ... ++
+# 2739|           Type = [IntPointerType] int *
+# 2739|           ValueCategory = prvalue
+# 2739|         getOperand(): [VariableAccess] p
+# 2739|             Type = [IntPointerType] int *
+# 2739|             ValueCategory = lvalue
+# 2739|       getExpr().getFullyConverted(): [CStyleCast] (int *)...
+# 2739|           Conversion = [PointerConversion] pointer conversion
+# 2739|           Type = [IntPointerType] int *
+# 2739|           ValueCategory = prvalue
+# 2739|         getExpr(): [ParenthesisExpr] (...)
+# 2739|             Type = [IntPointerType] int *
+# 2739|             ValueCategory = prvalue
+# 2740|     getStmt(11): [ExprStmt] ExprStmt
+# 2740|       getExpr(): [PostfixIncrExpr] ... ++
+# 2740|           Type = [IntType] int
+# 2740|           ValueCategory = prvalue
+# 2740|         getOperand(): [VariableAccess] q
+# 2740|             Type = [IntType] int
+# 2740|             ValueCategory = lvalue
+# 2740|       getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2740|           Conversion = [IntegralConversion] integral conversion
+# 2740|           Type = [IntType] int
+# 2740|           ValueCategory = prvalue
+# 2740|         getExpr(): [ParenthesisExpr] (...)
+# 2740|             Type = [IntType] int
+# 2740|             ValueCategory = prvalue
+# 2741|     getStmt(12): [DeclStmt] declaration
+# 2741|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of p2
+# 2741|           Type = [IntPointerType] int *
+# 2741|         getVariable().getInitializer(): [Initializer] initializer for p2
+# 2741|           getExpr(): [PostfixIncrExpr] ... ++
+# 2741|               Type = [IntPointerType] int *
+# 2741|               ValueCategory = prvalue
+# 2741|             getOperand(): [VariableAccess] p
+# 2741|                 Type = [IntPointerType] int *
+# 2741|                 ValueCategory = lvalue
+# 2741|           getExpr().getFullyConverted(): [CStyleCast] (int *)...
+# 2741|               Conversion = [PointerConversion] pointer conversion
+# 2741|               Type = [IntPointerType] int *
+# 2741|               ValueCategory = prvalue
+# 2741|             getExpr(): [ParenthesisExpr] (...)
+# 2741|                 Type = [IntPointerType] int *
+# 2741|                 ValueCategory = prvalue
+# 2742|     getStmt(13): [DeclStmt] declaration
+# 2742|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of q2
+# 2742|           Type = [IntType] int
+# 2742|         getVariable().getInitializer(): [Initializer] initializer for q2
+# 2742|           getExpr(): [PostfixIncrExpr] ... ++
+# 2742|               Type = [IntType] int
+# 2742|               ValueCategory = prvalue
+# 2742|             getOperand(): [VariableAccess] q
+# 2742|                 Type = [IntType] int
+# 2742|                 ValueCategory = lvalue
+# 2742|           getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2742|               Conversion = [IntegralConversion] integral conversion
+# 2742|               Type = [IntType] int
+# 2742|               ValueCategory = prvalue
+# 2742|             getExpr(): [ParenthesisExpr] (...)
+# 2742|                 Type = [IntType] int
+# 2742|                 ValueCategory = prvalue
+# 2743|     getStmt(14): [ReturnStmt] return ...
 ir23.cpp:
 #    1| [TopLevelFunction] bool consteval_1()
 #    1|   <params>: 
