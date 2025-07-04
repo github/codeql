@@ -68,3 +68,22 @@ class E3(E2, E1):
 E3()
 
 
+class F1:
+    pass 
+
+class F2(F1):
+    def __init__(self):
+        print("F2 init") 
+        super().__init__()
+
+class F3(F1):
+    def __init__(self):
+        print("F3 init")
+
+class F4(F2, F3):
+    def __init__(self): # $ Alert # F2's super call calls F3
+        print("F4 init")
+        F2.__init__(self)
+        F3.__init__(self)
+
+F4()
