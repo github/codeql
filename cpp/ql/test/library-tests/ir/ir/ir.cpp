@@ -2725,4 +2725,21 @@ char UseBracketOperator(const WithBracketOperator x, int i) {
   return x[i];
 }
 
+void test_postfix_crement(int *p, int q) {
+  p++;
+  q++;
+  (p++);
+  (q++);
+  (void)(p++);
+  (void)(q++);
+  (void)p++;
+  (void)q++;
+  int *p1 = p++;
+  int q1 = q++;
+  (int*)(p++);
+  (int)(q++);
+  int *p2 = (int*)(p++);
+  int q2 = (int)(q++);
+}
+
 // semmle-extractor-options: -std=c++20 --clang
