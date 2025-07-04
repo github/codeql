@@ -700,7 +700,6 @@ module Modes {
 
     override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
       // The key operation sub-type is determined by the `encrypting` argument to `init()`.
-      exists(this.getInitCall()) and
       result = this.getInitCall().getKeyOperationSubtype()
       or
       not exists(this.getInitCall()) and
