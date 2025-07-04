@@ -35,11 +35,7 @@ module EnvValueAndKeyInjectionConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 66 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/experimental/Security/CWE-099/EnvValueAndKeyInjection.ql@69:8:69:23)
-  }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) {
-    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 66 (/Users/d10c/src/semmle-code/ql/javascript/ql/src/experimental/Security/CWE-099/EnvValueAndKeyInjection.ql@69:8:69:23)
+    none() // can't override location accurately because of secondary use in select.
   }
 }
 
