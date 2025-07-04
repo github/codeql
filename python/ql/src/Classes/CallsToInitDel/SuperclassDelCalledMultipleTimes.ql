@@ -14,17 +14,34 @@
 import python
 import MethodCallOrder
 
-predicate multipleCallsToSuperclassDel(Function meth, Function calledMulti) {
-  multipleCallsToSuperclassMethod(meth, calledMulti, "__del__")
+predicate multipleCallsToSuperclassDel(
+  Function meth, Function calledMulti, DataFlow::MethodCallNode call1,
+  DataFlow::MethodCallNode call2
+) {
+  multipleCallsToSuperclassMethod(meth, calledMulti, call1, call2, "__del__")
 }
 
-from Function meth, Function calledMulti
+from
+  Function meth, Function calledMulti, DataFlow::MethodCallNode call1,
+  DataFlow::MethodCallNode call2, Function target1, Function target2, string msg
 where
-  multipleCallsToSuperclassDel(meth, calledMulti) and
-  // Don't alert for multiple calls to a superclass del when a subclass will do.
+  multipleCallsToSuperclassDel(meth, calledMulti, call1, call2) and
+  // Only alert for the lowest method in the hierarchy that both calls will call.
   not exists(Function subMulti |
-    multipleCallsToSuperclassDel(meth, subMulti) and
+    multipleCallsToSuperclassDel(meth, subMulti, _, _) and
     calledMulti.getScope() = getADirectSuperclass+(subMulti.getScope())
+  ) and
+  target1 = getDirectSuperCallTargetFromCall(meth.getScope(), meth, call1, _) and
+  target2 = getDirectSuperCallTargetFromCall(meth.getScope(), meth, call2, _) and
+  (
+    target1 != target2 and
+    msg =
+      "This deletion method calls $@ multiple times, via $@ and $@, resolving to $@ and $@ respectively."
+    or
+    target1 = target2 and
+    // The targets themselves are called multiple times (either is calledMulti, or something earlier in the MRO)
+    // Mentioning them again would be redundant.
+    msg = "This deletion method calls $@ multiple times, via $@ and $@."
   )
-select meth, "This delete method calls $@ multiple times.", calledMulti,
-  calledMulti.getQualifiedName()
+select meth, msg, calledMulti, calledMulti.getQualifiedName(), call1, "this call", call2,
+  "this call", target1, target1.getQualifiedName(), target2, target2.getQualifiedName()
