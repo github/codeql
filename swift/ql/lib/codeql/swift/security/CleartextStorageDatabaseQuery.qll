@@ -49,8 +49,15 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
     c.getAReadContent().(DataFlow::Content::TupleContent).getIndex() = 1
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 33 (/Users/d10c/src/semmle-code/ql/swift/ql/src/queries/Security/CWE-311/CleartextStorageDatabase.ql@35:8:35:16)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(DataFlow::Node cleanSink | result = cleanSink.getLocation() |
+      cleanSink = sink.(DataFlow::PostUpdateNode).getPreUpdateNode()
+      or
+      not sink instanceof DataFlow::PostUpdateNode and
+      cleanSink = sink
+    )
   }
 }
 
