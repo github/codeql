@@ -42,8 +42,16 @@ void test_aggregate_literal() {
 void test_postfix_crement(int *p, int q) {
   p++; // $ asExpr="... ++" asIndirectExpr="... ++" asExpr=p asIndirectExpr=p
   q++; // $ asExpr="... ++" asExpr=q
+  (p++); // $ numberOfNodes="... ++: 2" numberOfIndirectNodes="... ++: 2" asExpr="... ++" asIndirectExpr="... ++" MISSING: asExpr=p asIndirectExpr=p
+  (q++); // $ numberOfNodes="... ++: 2" asExpr="... ++" MISSING: asExpr=q
   (void)(p++); // $ numberOfNodes="... ++: 2" asExpr="... ++" numberOfIndirectNodes="... ++: 2" asIndirectExpr="... ++" MISSING: asExpr=p asIndirectExpr=p
   (void)(q++); // $ numberOfNodes="... ++: 2" asExpr="... ++" MISSING: asExpr=q
+  (void)p++; // $ asExpr="... ++" asIndirectExpr="... ++" asExpr=p asIndirectExpr=p
+  (void)q++; // $ asExpr="... ++" asExpr=q
   int *p1 = p++; // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
   int q1 = q++; // $ asExpr="... ++" asExpr="q(... ++)"
+  (int*)(p++); // $ numberOfIndirectNodes="... ++: 2" asExpr="... ++" asIndirectExpr="... ++" MISSING: asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  (int)(q++); // $ asExpr="... ++" MISSING: asExpr="q(... ++)"
+  int *p2 = (int*)(p++); // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  int q2 = (int)(q++); // $ asExpr="... ++" asExpr="q(... ++)"
 }
