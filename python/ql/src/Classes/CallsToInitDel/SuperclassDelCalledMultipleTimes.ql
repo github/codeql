@@ -36,12 +36,12 @@ where
   (
     target1 != target2 and
     msg =
-      "This deletion method calls $@ multiple times, via $@ and $@, resolving to $@ and $@ respectively."
+      "This finalization method calls $@ multiple times, via $@ and $@, resolving to $@ and $@ respectively."
     or
     target1 = target2 and
     // The targets themselves are called multiple times (either is calledMulti, or something earlier in the MRO)
     // Mentioning them again would be redundant.
-    msg = "This deletion method calls $@ multiple times, via $@ and $@."
+    msg = "This finalization method calls $@ multiple times, via $@ and $@."
   )
 select meth, msg, calledMulti, calledMulti.getQualifiedName(), call1, "this call", call2,
   "this call", target1, target1.getQualifiedName(), target2, target2.getQualifiedName()
