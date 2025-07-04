@@ -7,7 +7,6 @@ db_checks := default_db_checks + """\
     --check-repeated-labels \
     --check-redefined-labels \
     --check-use-before-definition \
-    --consistency-queries=ql/swift/ql/consistency-queries \
 """
 
 consistency := "--consistency-queries=" + source_dir() / "consistency-queries"
