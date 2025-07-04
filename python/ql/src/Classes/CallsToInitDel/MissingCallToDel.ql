@@ -30,18 +30,18 @@ where
       not possiblyMissingSuper.isNone() and
       possibleIssue = possiblyMissingSuper and
       msg =
-        "This class does not call $@ during destruction. ($@ may be missing a call to super().__del__)"
+        "This class does not call $@ during finalization. ($@ may be missing a call to super().__del__)"
       or
       possiblyMissingSuper.isNone() and
       (
         possibleIssue.asSome() = getDelMethod(base) and
         msg =
-          "This class does not call $@ during destruction. ($@ may be missing a call to a base class __del__)"
+          "This class does not call $@ during finalization. ($@ may be missing a call to a base class __del__)"
         or
         not exists(getDelMethod(base)) and
         possibleIssue.isNone() and
         msg =
-          "This class does not call $@ during destruction. (The class lacks an __del__ method to ensure every base class __del__ is called.)"
+          "This class does not call $@ during finalization. (The class lacks an __del__ method to ensure every base class __del__ is called.)"
       )
     )
   )

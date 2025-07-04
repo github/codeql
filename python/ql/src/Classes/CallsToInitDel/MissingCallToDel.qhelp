@@ -4,47 +4,49 @@
 <qhelp>
 
 <overview>
-<p>Python, unlike statically typed languages such as Java, allows complete freedom when calling methods during object destruction.
-However, standard object-oriented principles apply to Python classes using deep inheritance hierarchies.
-Therefore the developer has responsibility for ensuring that objects are properly cleaned up when
-there are multiple <code>__del__</code> methods that need to be called.
+<p>
+Python, unlike some other object-oriented languages such as Java, allows the developer complete freedom in 
+when and how superclass finalizers are called during object finalization.
+However, the developer has responsibility for ensuring that objects are properly cleaned up, and that all superclass <code>__del__</code> 
+methods are called.
 </p>
 <p>
-If the  <code>__del__</code> method of a superclass is not called during object destruction it is likely that
+Classes with a <code>__del__</code> method (a finalizer) typically hold some resource such as a file handle that needs to be cleaned up. 
+If the  <code>__del__</code> method of a superclass is not called during object finalization, it is likely that
 that resources may be leaked.
 </p>
 
-<p>A call to the <code>__del__</code> method of a superclass during object destruction may be omitted:
+<p>A call to the <code>__init__</code> method of a superclass during object initialization may be unintentionally skipped:
 </p>
 <ul>
-        <li>When a subclass calls the <code>__del__</code> method of the wrong class.</li>
-        <li>When a call to the <code>__del__</code> method of one its base classes is omitted.</li>
+        <li>If a subclass calls the <code>__del__</code> method of the wrong class.</li>
+        <li>If a call to the <code>__del__</code> method of one its base classes is omitted.</li>
+        <li>If a call to <code>super().__del__</code> is used, but not all <code>__del__</code> methods in the Method Resolution Order (MRO)
+        chain themselves call <code>super()</code>. This in particular arises more often in cases of multiple inheritance. </li>
 </ul>
 
 
 </overview>
 <recommendation>
-<p>Either be careful to explicitly call the <code>__del__</code> of the correct base class, or
-use <code>super()</code> throughout the inheritance hierarchy.</p>
-
-<p>Alternatively refactor one or more of the classes to use composition rather than inheritance.</p>
+<p>Ensure that all superclass <code>__del__</code> methods are properly called. 
+Either each base class's finalize method should be explicitly called, or <code>super()</code> calls 
+should be consistently used throughout the inheritance hierarchy.</p>
 
 
 </recommendation>
 <example>
-<p>In this example, explicit calls to <code>__del__</code> are used, but <code>SportsCar</code> erroneously calls
+<p>In the following example, explicit calls to <code>__del__</code> are used, but <code>SportsCar</code> erroneously calls
 <code>Vehicle.__del__</code>. This is fixed in <code>FixedSportsCar</code> by calling <code>Car.__del__</code>.
 </p>
 
-<sample src="MissingCallToDel.py" />
+<sample src="examples/MissingCallToDel.py" />
 
 </example>
 <references>
 
-        <li>Python Tutorial: <a href="https://docs.python.org/2/tutorial/classes.html">Classes</a>.</li>
-        <li>Python Standard Library: <a href="https://docs.python.org/2/library/functions.html#super">super</a>.</li>
-        <li>Artima Developer: <a href="http://www.artima.com/weblogs/viewpost.jsp?thread=236275">Things to Know About Python Super</a>.</li>
-        <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>.</li>
+        <li>Python Reference: <a href="https://docs.python.org/3/reference/datamodel.html#object.__del__">__del__</a>.</li>
+        <li>Python Standard Library: <a href="https://docs.python.org/3/library/functions.html#super">super</a>.</li>
+        <li>Python Glossary: <a href="https://docs.python.org/3/glossary.html#term-method-resolution-order">Method resolution order</a>.</li>
 
 </references>
 </qhelp>

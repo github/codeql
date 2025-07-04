@@ -10,14 +10,14 @@ class Car(Vehicle):
         recycle(self.car_parts)
         Vehicle.__del__(self)
         
-#Car.__del__ is missed out.
+#BAD: Car.__del__ is not called.
 class SportsCar(Car, Vehicle):
     
     def __del__(self):
         recycle(self.sports_car_parts)
         Vehicle.__del__(self)
         
-#Fix SportsCar by calling Car.__del__
+#GOOD: Car.__del__ is called correctly.
 class FixedSportsCar(Car, Vehicle):
     
     def __del__(self):
