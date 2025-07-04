@@ -51,6 +51,72 @@ class ResultEnum extends Enum {
 }
 
 /**
+ * The [`Range` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/core/ops/struct.Range.html
+ */
+class RangeStruct extends Struct {
+  RangeStruct() { this.getCanonicalPath() = "core::ops::range::Range" }
+
+  /** Gets the `start` field. */
+  StructField getStart() { result = this.getStructField("start") }
+
+  /** Gets the `end` field. */
+  StructField getEnd() { result = this.getStructField("end") }
+}
+
+/**
+ * The [`RangeFrom` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/core/ops/struct.RangeFrom.html
+ */
+class RangeFromStruct extends Struct {
+  RangeFromStruct() { this.getCanonicalPath() = "core::ops::range::RangeFrom" }
+
+  /** Gets the `start` field. */
+  StructField getStart() { result = this.getStructField("start") }
+}
+
+/**
+ * The [`RangeTo` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/core/ops/struct.RangeTo.html
+ */
+class RangeToStruct extends Struct {
+  RangeToStruct() { this.getCanonicalPath() = "core::ops::range::RangeTo" }
+
+  /** Gets the `end` field. */
+  StructField getEnd() { result = this.getStructField("end") }
+}
+
+/**
+ * The [`RangeInclusive` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/core/ops/struct.RangeInclusive.html
+ */
+class RangeInclusiveStruct extends Struct {
+  RangeInclusiveStruct() { this.getCanonicalPath() = "core::ops::range::RangeInclusive" }
+
+  /** Gets the `start` field. */
+  StructField getStart() { result = this.getStructField("start") }
+
+  /** Gets the `end` field. */
+  StructField getEnd() { result = this.getStructField("end") }
+}
+
+/**
+ * The [`RangeToInclusive` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/core/ops/struct.RangeToInclusive.html
+ */
+class RangeToInclusiveStruct extends Struct {
+  RangeToInclusiveStruct() { this.getCanonicalPath() = "core::ops::range::RangeToInclusive" }
+
+  /** Gets the `end` field. */
+  StructField getEnd() { result = this.getStructField("end") }
+}
+
+/**
  * The [`Future` trait][1].
  *
  * [1]: https://doc.rust-lang.org/std/future/trait.Future.html
@@ -63,6 +129,38 @@ class FutureTrait extends Trait {
   TypeAlias getOutputType() {
     result = this.getAssocItemList().getAnAssocItem() and
     result.getName().getText() = "Output"
+  }
+}
+
+/**
+ * The [`Iterator` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/iter/trait.Iterator.html
+ */
+class IteratorTrait extends Trait {
+  IteratorTrait() { this.getCanonicalPath() = "core::iter::traits::iterator::Iterator" }
+
+  /** Gets the `Item` associated type. */
+  pragma[nomagic]
+  TypeAlias getItemType() {
+    result = this.getAssocItemList().getAnAssocItem() and
+    result.getName().getText() = "Item"
+  }
+}
+
+/**
+ * The [`IntoIterator` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/iter/trait.IntoIterator.html
+ */
+class IntoIteratorTrait extends Trait {
+  IntoIteratorTrait() { this.getCanonicalPath() = "core::iter::traits::collect::IntoIterator" }
+
+  /** Gets the `Item` associated type. */
+  pragma[nomagic]
+  TypeAlias getItemType() {
+    result = this.getAssocItemList().getAnAssocItem() and
+    result.getName().getText() = "Item"
   }
 }
 
