@@ -909,17 +909,17 @@ class TranslatedTransparentUnaryOperation extends TranslatedTransparentExpr {
   }
 }
 
+private predicate isTransparentConversion(Conversion expr) {
+  expr instanceof ParenthesisExpr or
+  expr instanceof ReferenceDereferenceExpr or
+  expr instanceof ReferenceToExpr or
+  expr instanceof C11GenericExpr
+}
+
 class TranslatedTransparentConversion extends TranslatedTransparentExpr {
   override Conversion expr;
 
-  TranslatedTransparentConversion() {
-    (
-      expr instanceof ParenthesisExpr or
-      expr instanceof ReferenceDereferenceExpr or
-      expr instanceof ReferenceToExpr or
-      expr instanceof C11GenericExpr
-    )
-  }
+  TranslatedTransparentConversion() { isTransparentConversion(expr) }
 
   override TranslatedExpr getOperand() { result = getTranslatedExpr(expr.getExpr()) }
 }
