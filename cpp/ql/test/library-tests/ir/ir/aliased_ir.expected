@@ -20184,11 +20184,13 @@ ir.cpp:
 # 2731|     r2731_3(int)          = Constant[1]              : 
 # 2731|     r2731_4(int *)        = PointerAdd[4]            : r2731_2, r2731_3
 # 2731|     m2731_5(int *)        = Store[p]                 : &:r2731_1, r2731_4
+# 2731|     r2731_6(int *)        = CopyValue                : r2731_2
 # 2732|     r2732_1(glval<int>)   = VariableAddress[q]       : 
 # 2732|     r2732_2(int)          = Load[q]                  : &:r2732_1, m2730_5
 # 2732|     r2732_3(int)          = Constant[1]              : 
 # 2732|     r2732_4(int)          = Add                      : r2732_2, r2732_3
 # 2732|     m2732_5(int)          = Store[q]                 : &:r2732_1, r2732_4
+# 2732|     r2732_6(int)          = CopyValue                : r2732_2
 # 2733|     r2733_1(glval<int *>) = VariableAddress[p]       : 
 # 2733|     r2733_2(int *)        = Load[p]                  : &:r2733_1, m2731_5
 # 2733|     r2733_3(int)          = Constant[1]              : 
