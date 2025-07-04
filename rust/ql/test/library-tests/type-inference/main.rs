@@ -1844,8 +1844,10 @@ mod async_ {
 }
 
 mod impl_trait {
+    #[derive(Clone)]
     struct S1;
     struct S2;
+    struct S3<T3>(T3);
 
     trait Trait1 {
         fn f1(&self) {} // Trait1f1
@@ -1877,8 +1879,19 @@ mod impl_trait {
         }
     }
 
+    impl<T: Clone> MyTrait<T> for S3<T> {
+        fn get_a(&self) -> T {
+            let S3(t) = self;
+            t.clone()
+        }
+    }
+
     fn get_a_my_trait() -> impl MyTrait<S2> {
         S1
+    }
+
+    fn get_a_my_trait2<T: Clone>(x: T) -> impl MyTrait<T> {
+        S3(x)
     }
 
     fn uses_my_trait1<A, B: MyTrait<A>>(t: B) -> A {
@@ -1898,6 +1911,7 @@ mod impl_trait {
         let a = get_a_my_trait();
         let c = uses_my_trait2(a); // $ type=c:S2
         let d = uses_my_trait2(S1); // $ type=d:S2
+        let e = get_a_my_trait2(S1).get_a(); // $ method=MyTrait::get_a $ type=e:S1
     }
 }
 
