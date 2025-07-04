@@ -1,5 +1,0 @@
-| ECDSASignAndVerify.java:57:16:57:49 | Key | secp256r1 |
-| ECDSASignAndVerify.java:80:16:80:49 | Key | secp256k1 |
-| Ed448SignAndVerify.java:21:47:21:80 | Key | Ed448 |
-| Ed25519SignAndVerify.java:21:47:21:80 | Key | Ed25519 |
-| LMSSignAndVerify.java:33:47:33:74 | Key | LMS |
