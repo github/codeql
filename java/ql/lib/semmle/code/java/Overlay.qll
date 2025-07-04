@@ -30,15 +30,6 @@ string getRawFileForLoc(@location l) {
   exists(@file f | locations_default(l, f, _, _, _, _) and files(f, result))
 }
 
-/** Holds for files fully extracted in the overlay. */
-overlay[local]
-predicate extractedInOverlay(string file) {
-  isOverlay() and
-  // numlines is used to restrict attention to fully extracted files and
-  // ignore skeleton extracted files in the overlay
-  exists(@locatable l | numlines(l, _, _, _) and file = getRawFile(l))
-}
-
 /**
  * A `@locatable` that should be discarded in the base variant if its file is
  * extracted in the overlay variant.
@@ -54,7 +45,7 @@ abstract class DiscardableLocatable extends @locatable {
 
 overlay[discard_entity]
 private predicate discardLocatable(@locatable el) {
-  extractedInOverlay(el.(DiscardableLocatable).getRawFileInBase())
+  overlayChangedFiles(el.(DiscardableLocatable).getRawFileInBase())
 }
 
 /**
@@ -77,7 +68,7 @@ abstract class DiscardableReferableLocatable extends @locatable {
 overlay[discard_entity]
 private predicate discardReferableLocatable(@locatable el) {
   exists(DiscardableReferableLocatable drl | drl = el |
-    extractedInOverlay(drl.getRawFileInBase()) and
+    overlayChangedFiles(drl.getRawFileInBase()) and
     not drl.existsInOverlay()
   )
 }
