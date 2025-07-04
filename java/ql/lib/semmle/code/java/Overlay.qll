@@ -72,3 +72,21 @@ private predicate discardReferableLocatable(@locatable el) {
     not drl.existsInOverlay()
   )
 }
+
+overlay[local]
+private predicate baseConfigLocatable(@configLocatable l) { not isOverlay() and l = l }
+
+overlay[local]
+private predicate overlayHasConfigLocatables() {
+  isOverlay() and
+  exists(@configLocatable el)
+}
+
+overlay[discard_entity]
+private predicate discardBaseConfigLocatable(@configLocatable el) {
+  // The properties extractor is currently not incremental, so if
+  // the overlay contains any config locatables, the overlay should
+  // contain a full extraction and all config locatables from base
+  // should be discarded.
+  baseConfigLocatable(el) and overlayHasConfigLocatables()
+}
