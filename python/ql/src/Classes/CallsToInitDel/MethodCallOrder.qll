@@ -5,6 +5,7 @@ import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 import codeql.util.Option
 
+/** Holds if `meth` is a method named `name` that transitively calls `calledMulti` of the same name via the calls `call1` and `call2`. */
 predicate multipleCallsToSuperclassMethod(
   Function meth, Function calledMulti, DataFlow::MethodCallNode call1,
   DataFlow::MethodCallNode call2, string name
@@ -19,6 +20,7 @@ predicate multipleCallsToSuperclassMethod(
   )
 }
 
+/** Gets a method transitively called by `meth` named `name` with `call` that it overrides, with `mroBase` as the type determining the MRO to search. */
 Function getASuperCallTargetFromCall(
   Class mroBase, Function meth, DataFlow::MethodCallNode call, string name
 ) {
@@ -29,6 +31,7 @@ Function getASuperCallTargetFromCall(
   )
 }
 
+/** Gets the method called by `meth` named `name` with `call`, with `mroBase` as the type determining the MRO to search.  */
 Function getDirectSuperCallTargetFromCall(
   Class mroBase, Function meth, DataFlow::MethodCallNode call, string name
 ) {
@@ -51,6 +54,7 @@ Function getDirectSuperCallTargetFromCall(
   )
 }
 
+/** Gets a method that is transitively called by a call to `cls.<name>`, with `mroBase` as the type determining the MRO to search.  */
 Function getASuperCallTargetFromClass(Class mroBase, Class cls, string name) {
   exists(Function target |
     target = findFunctionAccordingToMroKnownStartingClass(cls, mroBase, name) and
@@ -62,6 +66,7 @@ Function getASuperCallTargetFromClass(Class mroBase, Class cls, string name) {
   )
 }
 
+/** Holds if `meth` does something besides calling a superclass method. */
 predicate nonTrivial(Function meth) {
   exists(Stmt s | s = meth.getAStmt() |
     not s instanceof Pass and
@@ -74,6 +79,7 @@ predicate nonTrivial(Function meth) {
   exists(meth.getANormalExit()) // doesn't always raise an exception
 }
 
+/** Holds if `call` is a call to `super().<name>`. No distinction is made btween 0- and 2- arg super calls. */
 predicate superCall(DataFlow::MethodCallNode call, string name) {
   exists(DataFlow::Node sup |
     call.calls(sup, name) and
@@ -81,6 +87,7 @@ predicate superCall(DataFlow::MethodCallNode call, string name) {
   )
 }
 
+/** Holds if `meth` calls `super().<name>` where `name` is the name of the method. */
 predicate callsSuper(Function meth) {
   exists(DataFlow::MethodCallNode call |
     call.getScope() = meth and
@@ -88,6 +95,7 @@ predicate callsSuper(Function meth) {
   )
 }
 
+/** Holds if `meth` calls `target.<name>(self, ...)` with the call `call`. */
 predicate callsMethodOnClassWithSelf(
   Function meth, DataFlow::MethodCallNode call, Class target, string name
 ) {
@@ -99,6 +107,7 @@ predicate callsMethodOnClassWithSelf(
   )
 }
 
+/** Holds if `meth` calls a method named `name` passing its `self` argument as its first parameter, but the class it refers to is unknown. */
 predicate callsMethodOnUnknownClassWithSelf(Function meth, string name) {
   exists(DataFlow::MethodCallNode call, DataFlow::Node callTarget, DataFlow::ParameterNode self |
     call.calls(callTarget, name) and
@@ -108,6 +117,7 @@ predicate callsMethodOnUnknownClassWithSelf(Function meth, string name) {
   )
 }
 
+/** Holds if `base` does not call a superclass method `shouldCall` named `name` when it appears it should. */
 predicate missingCallToSuperclassMethod(Class base, Function shouldCall, string name) {
   shouldCall.getName() = name and
   shouldCall.getScope() = getADirectSuperclass+(base) and
@@ -117,6 +127,9 @@ predicate missingCallToSuperclassMethod(Class base, Function shouldCall, string 
   not callsMethodOnUnknownClassWithSelf(getASuperCallTargetFromClass(base, base, name), name)
 }
 
+/** Holds if `base` does not call a superclass method `shouldCall` named `name` when it appears it should.
+ * Results are restricted to hold only for the highest `base` class and the lowest `shouldCall` method in the heirarchy for which this applies.
+ */
 predicate missingCallToSuperclassMethodRestricted(Class base, Function shouldCall, string name) {
   missingCallToSuperclassMethod(base, shouldCall, name) and
   not exists(Class superBase |
@@ -131,6 +144,11 @@ predicate missingCallToSuperclassMethodRestricted(Class base, Function shouldCal
   )
 }
 
+/** 
+ * If `base` contains a `super()` call, gets a method in the inheritence heirarchy of `name` in the MRO of `base`
+ * that does not contain a `super()` call, but would call `shouldCall` if it did, which does not otherwise get called
+ * during a call to `base.<name>`. 
+ * */
 Function getPossibleMissingSuper(Class base, Function shouldCall, string name) {
   missingCallToSuperclassMethod(base, shouldCall, name) and
   exists(Function baseMethod |
@@ -151,6 +169,7 @@ Function getPossibleMissingSuper(Class base, Function shouldCall, string name) {
 
 private module FunctionOption = Option<Function>;
 
+/** An optional `Function`. */
 class FunctionOption extends FunctionOption::Option {
   /**
    * Holds if this element is at the specified location.
@@ -174,6 +193,7 @@ class FunctionOption extends FunctionOption::Option {
     endcolumn = 0
   }
 
+  /** Gets the qualified name of this function. */
   string getQualifiedName() {
     result = this.asSome().getQualifiedName()
     or
@@ -182,6 +202,7 @@ class FunctionOption extends FunctionOption::Option {
   }
 }
 
+/** Gets the result of `getPossibleMissingSuper`, or None if none exists. */
 bindingset[name]
 FunctionOption getPossibleMissingSuperOption(Class base, Function shouldCall, string name) {
   result.asSome() = getPossibleMissingSuper(base, shouldCall, name)
