@@ -1,20 +1,19 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModelDeprecated
+      extensible: sinkModel
     data:
-      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::Connection>::execute", "Argument[0]", "sql-injection", "manual"]
-      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::Connection>::execute_batch", "Argument[0]", "sql-injection", "manual"]
-      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::Connection>::prepare", "Argument[0]", "sql-injection", "manual"]
-      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::Connection>::prepare_with_flags", "Argument[0]", "sql-injection", "manual"]
-      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::Connection>::query_row", "Argument[0]", "sql-injection", "manual"]
-      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::Connection>::query_row_and_then", "Argument[0]", "sql-injection", "manual"]
-
+      - ["<rusqlite::Connection>::execute", "Argument[0]", "sql-injection", "manual"]
+      - ["<rusqlite::Connection>::execute_batch", "Argument[0]", "sql-injection", "manual"]
+      - ["<rusqlite::Connection>::prepare", "Argument[0]", "sql-injection", "manual"]
+      - [<rusqlite::Connection>::prepare_with_flags", "Argument[0]", "sql-injection", "manual"]
+      - ["<rusqlite::Connection>::query_row", "Argument[0]", "sql-injection", "manual"]
+      - ["<rusqlite::Connection>::query_row_and_then", "Argument[0]", "sql-injection", "manual"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModelDeprecated
+      extensible: sourceModel
     data:
-      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::row::Row>::get", "ReturnValue.Field[core::result::Result::Ok(0)]", "database", "manual"]
-      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::row::Row>::get_unwrap", "ReturnValue", "database", "manual"]
-      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::row::Row>::get_ref", "ReturnValue.Field[core::result::Result::Ok(0)]", "database", "manual"]
-      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::row::Row>::get_ref_unwrap", "ReturnValue", "database", "manual"]
+      - ["<rusqlite::row::Row>::get", "ReturnValue.Field[core::result::Result::Ok(0)]", "database", "manual"]
+      - ["<rusqlite::row::Row>::get_unwrap", "ReturnValue", "database", "manual"]
+      - ["<rusqlite::row::Row>::get_ref", "ReturnValue.Field[core::result::Result::Ok(0)]", "database", "manual"]
+      - ["<rusqlite::row::Row>::get_ref_unwrap", "ReturnValue", "database", "manual"]
