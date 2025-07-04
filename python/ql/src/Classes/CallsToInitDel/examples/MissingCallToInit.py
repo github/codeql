@@ -10,14 +10,14 @@ class Car(Vehicle):
         Vehicle.__init__(self)
         self.car_init()
         
-#Car.__init__ is missed out.
+# BAD: Car.__init__ is not called.
 class SportsCar(Car, Vehicle):
     
     def __init__(self):
         Vehicle.__init__(self)
         self.sports_car_init()
         
-#Fix SportsCar by calling Car.__init__
+# GOOD: Car.__init__ is called correctly.
 class FixedSportsCar(Car, Vehicle):
     
     def __init__(self):
