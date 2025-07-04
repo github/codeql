@@ -1036,8 +1036,6 @@ class TranslatedDestructorBaseDestruction extends TranslatedBaseStructorCall,
 
 /**
  * A constructor base init call where no base constructor has been generated.
- *
- * Workaround for an extractor issue.
  */
 class TranslatedConstructorBareInit extends TranslatedElement, TTranslatedConstructorBareInit {
   ConstructorInit init;
