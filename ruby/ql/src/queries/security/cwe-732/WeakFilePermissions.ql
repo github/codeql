@@ -59,16 +59,11 @@ private module PermissivePermissionsConfig implements DataFlow::ConfigSig {
 
   predicate observeDiffInformedIncrementalMode() { any() }
 
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 78 (/Users/d10c/src/semmle-code/ql/ruby/ql/src/queries/security/cwe-732/WeakFilePermissions.ql@81:84:81:86)
-  }
-
   Location getASelectedSinkLocation(DataFlow::Node sink) {
     exists(FileSystemPermissionModification mod |
       sinkDef(sink, mod) and
       result = mod.getLocation()
     )
-    // TODO: Make sure that this sink location matches the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 78 (/Users/d10c/src/semmle-code/ql/ruby/ql/src/queries/security/cwe-732/WeakFilePermissions.ql@81:84:81:86)
   }
 }
 
