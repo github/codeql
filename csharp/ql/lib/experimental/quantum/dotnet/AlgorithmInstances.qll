@@ -7,8 +7,6 @@ private import FlowAnalysis
 
 class NamedCurveAlgorithmInstance extends Crypto::EllipticCurveInstance instanceof NamedCurvePropertyAccess
 {
-  NamedCurveAlgorithmInstance() { this instanceof NamedCurvePropertyAccess }
-
   override string getRawEllipticCurveName() { result = super.getCurveName() }
 
   override Crypto::TEllipticCurveType getEllipticCurveType() {

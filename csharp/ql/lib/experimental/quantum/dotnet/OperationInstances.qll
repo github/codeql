@@ -210,8 +210,8 @@ class AeadOperationInstance extends Crypto::KeyOperationInstance instanceof Aead
   }
 }
 
-class HMACOperationInstance extends Crypto::MACOperationInstance instanceof MacUse {
-  HMACOperationInstance() { not super.isIntermediate() }
+class HmacOperationInstance extends Crypto::MACOperationInstance instanceof MacUse {
+  HmacOperationInstance() { not super.isIntermediate() }
 
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     result = super.getQualifier()

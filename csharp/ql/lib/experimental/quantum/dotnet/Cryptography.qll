@@ -6,16 +6,16 @@ class CryptographyType extends Type {
   CryptographyType() { this.hasFullyQualifiedName("System.Security.Cryptography", _) }
 }
 
-class ECParameters extends CryptographyType {
-  ECParameters() { this.hasName("ECParameters") }
+class EcParameters extends CryptographyType {
+  EcParameters() { this.hasName("ECParameters") }
 }
 
-class RSAParameters extends CryptographyType {
-  RSAParameters() { this.hasName("RSAParameters") }
+class RsaParameters extends CryptographyType {
+  RsaParameters() { this.hasName("RSAParameters") }
 }
 
-class ECCurve extends CryptographyType {
-  ECCurve() { this.hasName("ECCurve") }
+class EcCurve extends CryptographyType {
+  EcCurve() { this.hasName("ECCurve") }
 }
 
 class HashAlgorithmType extends CryptographyType {
@@ -71,12 +71,12 @@ class EcdsaCreateCall extends CryptographyCreateCall {
 }
 
 // This class is used to model the `ECDsa.Create(ECParameters)` call
-class ECDsaCreateCallWithParameters extends EcdsaCreateCall {
-  ECDsaCreateCallWithParameters() { this.getArgument(0).getType() instanceof ECParameters }
+class EcdsaCreateCallWithParameters extends EcdsaCreateCall {
+  EcdsaCreateCallWithParameters() { this.getArgument(0).getType() instanceof EcParameters }
 }
 
-class ECDsaCreateCallWithECCurve extends EcdsaCreateCall {
-  ECDsaCreateCallWithECCurve() { this.getArgument(0).getType() instanceof ECCurve }
+class EcdsaCreateCallWithECCurve extends EcdsaCreateCall {
+  EcdsaCreateCallWithECCurve() { this.getArgument(0).getType() instanceof EcCurve }
 }
 
 class RsaCreateCall extends CryptographyCreateCall {
@@ -127,7 +127,7 @@ class NamedCurvePropertyAccess extends PropertyAccess {
 
   NamedCurvePropertyAccess() {
     super.getType().getName() = "ECCurve" and
-    eccurveNameMapping(super.getProperty().toString().toUpperCase(), curveName)
+    ecCurveNameMapping(super.getProperty().toString().toUpperCase(), curveName)
   }
 
   string getCurveName() { result = curveName }
@@ -196,7 +196,7 @@ class HashAlgorithmNameUser extends MethodCall {
  * Private predicate mapping NIST names to SEC names and leaving all others the same.
  */
 bindingset[nist]
-private predicate eccurveNameMapping(string nist, string secp) {
+private predicate ecCurveNameMapping(string nist, string secp) {
   if nist.matches("NIST%")
   then
     nist = "NISTP256" and secp = "secp256r1"
@@ -208,28 +208,28 @@ private predicate eccurveNameMapping(string nist, string secp) {
 }
 
 // OPERATION INSTANCES
-private class ECDsaClass extends CryptographyType {
-  ECDsaClass() { this.hasName("ECDsa") }
+private class EcdsaClass extends CryptographyType {
+  EcdsaClass() { this.hasName("ECDsa") }
 }
 
-private class RSAClass extends CryptographyType {
-  RSAClass() { this.hasName("RSA") }
+private class RsaClass extends CryptographyType {
+  RsaClass() { this.hasName("RSA") }
 }
 
-private class RSAPKCS1SignatureFormatter extends CryptographyType {
-  RSAPKCS1SignatureFormatter() { this.hasName("RSAPKCS1SignatureFormatter") }
+private class RsaPkcs1SignatureFormatter extends CryptographyType {
+  RsaPkcs1SignatureFormatter() { this.hasName("RSAPKCS1SignatureFormatter") }
 }
 
-private class RSAPKCS1SignatureDeformatter extends CryptographyType {
-  RSAPKCS1SignatureDeformatter() { this.hasName("RSAPKCS1SignatureDeformatter") }
+private class RsaPkcs1SignatureDeformatter extends CryptographyType {
+  RsaPkcs1SignatureDeformatter() { this.hasName("RSAPKCS1SignatureDeformatter") }
 }
 
 private class SignerType extends Type {
   SignerType() {
-    this instanceof ECDsaClass or
-    this instanceof RSAClass or
-    this instanceof RSAPKCS1SignatureFormatter or
-    this instanceof RSAPKCS1SignatureDeformatter
+    this instanceof EcdsaClass or
+    this instanceof RsaClass or
+    this instanceof RsaPkcs1SignatureFormatter or
+    this instanceof RsaPkcs1SignatureDeformatter
   }
 }
 
@@ -631,8 +631,8 @@ class MacAlgorithmType extends CryptographyType {
   MacAlgorithmType() { this.getName().matches(["HMAC%", "KeyedHashAlgorithm"]) }
 }
 
-class HMACCreation extends ObjectCreation {
-  HMACCreation() { this.getObjectType() instanceof MacAlgorithmType }
+class HmacCreation extends ObjectCreation {
+  HmacCreation() { this.getObjectType() instanceof MacAlgorithmType }
 
   Expr getKeyArg() { if this.hasNoArguments() then result = this else result = this.getArgument(0) }
 
@@ -674,7 +674,7 @@ class MacUse extends Crypto::AlgorithmValueConsumer instanceof MethodCall {
   Expr getKeyArg() {
     if not super.getTarget().getName().matches("ComputeHash%")
     then result = super.getArgument(0)
-    else result = HMACFlow::getCreationFromUse(this, _, _).getKeyArg()
+    else result = HmacFlow::getCreationFromUse(this, _, _).getKeyArg()
   }
 
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = super.getQualifier() }
@@ -684,16 +684,16 @@ class MacUse extends Crypto::AlgorithmValueConsumer instanceof MethodCall {
   Expr getQualifier() { result = super.getQualifier() }
 }
 
-class HMACAlgorithmInstance extends Crypto::MACAlgorithmInstance instanceof Expr {
-  HMACAlgorithmInstance() { this = any(MacUse c).getQualifier() }
+class HmacAlgorithmInstance extends Crypto::MACAlgorithmInstance instanceof Expr {
+  HmacAlgorithmInstance() { this = any(MacUse c).getQualifier() }
 
   override Crypto::TMACType getMACType() { result instanceof Crypto::THMAC }
 
   override string getRawMACAlgorithmName() { result = super.getType().getName() }
 }
 
-class HMACAlgorithmQualifier extends Crypto::HMACAlgorithmInstance, Crypto::AlgorithmValueConsumer,
-  HMACAlgorithmInstance, Crypto::HashAlgorithmInstance instanceof Expr
+class HmacAlgorithmQualifier extends Crypto::HMACAlgorithmInstance, Crypto::AlgorithmValueConsumer,
+  HmacAlgorithmInstance, Crypto::HashAlgorithmInstance instanceof Expr
 {
   override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() { result = this }
 
@@ -718,7 +718,7 @@ class HMACAlgorithmQualifier extends Crypto::HMACAlgorithmInstance, Crypto::Algo
   private string getOriginalRawHashAlgorithmName() {
     exists(MacUse use |
       use.getQualifier() = this and
-      result = HMACFlow::getCreationFromUse(use, _, _).getRawAlgorithmName().replaceAll("HMAC", "")
+      result = HmacFlow::getCreationFromUse(use, _, _).getRawAlgorithmName().replaceAll("HMAC", "")
     )
   }
 }

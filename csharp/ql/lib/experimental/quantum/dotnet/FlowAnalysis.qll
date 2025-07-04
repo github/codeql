@@ -70,7 +70,7 @@ module CryptoStreamFlow = CreationToUseFlow<CryptoStreamCreation, CryptoStreamUs
 
 module AeadFlow = CreationToUseFlow<AeadCreation, AeadUse>;
 
-module HMACFlow = CreationToUseFlow<HMACCreation, MacUse>;
+module HmacFlow = CreationToUseFlow<HmacCreation, MacUse>;
 
 module SymmetricAlgorithmFlow =
   CreationToUseFlow<SymmetricAlgorithmCreation, SymmetricAlgorithmUse>;
@@ -263,17 +263,16 @@ module SigningCreateToUseFlow {
       sink.asExpr() = any(SignerUse use).(QualifiableExpr).getQualifier()
     }
 
-    /**
-     * An additional flow step across new object creations that use the original objects.
-     *
-     * Example:
-     * ```
-     * RSA rsa = RSA.Create()
-     * RSAPKCS1SignatureFormatter rsaFormatter = new(rsa);
-     * rsaFormatter.SetHashAlgorithm(nameof(SHA256));
-     * signedHash = rsaFormatter.CreateSignature(hash);
-     * ```
-     */
+    // Holds if the incoming node is an argument of the constructor call
+    // represented by the outgoing node.
+    //
+    // Example:
+    // ```
+    // RSA rsa = RSA.Create()
+    // RSAPKCS1SignatureFormatter rsaFormatter = new(rsa);
+    // rsaFormatter.SetHashAlgorithm(nameof(SHA256));
+    // signedHash = rsaFormatter.CreateSignature(hash);
+    // ```
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       exists(ObjectCreation create |
         node2.asExpr() = create and node1.asExpr() = create.getAnArgument()
