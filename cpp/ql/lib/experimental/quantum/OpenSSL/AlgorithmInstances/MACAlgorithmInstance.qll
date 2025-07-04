@@ -2,12 +2,13 @@ import cpp
 private import experimental.quantum.Language
 private import KnownAlgorithmConstants
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
-private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstanceBase
+private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstances
 private import experimental.quantum.OpenSSL.Operations.OpenSSLOperations
+private import Crypto::KeyOpAlg as KeyOpAlg
 private import AlgToAVCFlow
 
 class KnownOpenSslMacConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
-  Crypto::MacAlgorithmInstance instanceof KnownOpenSslMacAlgorithmExpr
+  Crypto::KeyOperationAlgorithmInstance instanceof KnownOpenSslMacAlgorithmExpr
 {
   OpenSslAlgorithmValueConsumer getterCall;
 
@@ -33,17 +34,34 @@ class KnownOpenSslMacConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
 
   override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
 
-  override string getRawMacAlgorithmName() {
+  override string getRawAlgorithmName() {
     result = this.(Literal).getValue().toString()
     or
     result = this.(Call).getTarget().getName()
   }
 
-  override Crypto::MacType getMacType() {
-    this instanceof KnownOpenSslHMacAlgorithmExpr and result = Crypto::HMAC()
-    or
-    this instanceof KnownOpenSslCMacAlgorithmExpr and result = Crypto::CMAC()
+  override Crypto::KeyOpAlg::AlgorithmType getAlgorithmType() {
+    if this instanceof KnownOpenSslHMacAlgorithmExpr
+    then result = KeyOpAlg::TMac(KeyOpAlg::HMAC())
+    else
+      if this instanceof KnownOpenSslCMacAlgorithmExpr
+      then result = KeyOpAlg::TMac(KeyOpAlg::CMAC())
+      else result = KeyOpAlg::TMac(KeyOpAlg::OtherMacAlgorithmType())
   }
+
+  override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
+    // TODO: trace to any key size initializer?
+    none()
+  }
+
+  override int getKeySizeFixed() {
+    // TODO: are there known fixed key sizes to consider?
+    none()
+  }
+
+  override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
+
+  override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
 }
 
 class KnownOpenSslHMacConstantAlgorithmInstance extends Crypto::HmacAlgorithmInstance,
@@ -60,9 +78,13 @@ class KnownOpenSslHMacConstantAlgorithmInstance extends Crypto::HmacAlgorithmIns
       // where the current AVC traces to a HashAlgorithmIO consuming operation step.
       // TODO: need to consider getting reset values, tracing down to the first set for now
       exists(OperationStep s, AvcContextCreationStep avc |
-        avc = this.getAvc() and
+        avc = super.getAvc() and
         avc.flowsToOperationStep(s) and
         s.getAlgorithmValueConsumerForInput(HashAlgorithmIO()) = result
       )
   }
+
+  override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
+
+  override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
 }
