@@ -144,12 +144,6 @@ private predicate writesCapturedVariable(BasicBlock bb, Variable v) {
   getACapturedVariableAccess(bb, v) instanceof VariableWriteAccess
 }
 
-/** Holds if `bb` contains a captured read to variable `v`. */
-pragma[nomagic]
-private predicate readsCapturedVariable(BasicBlock bb, Variable v) {
-  variableReadCertain(_, _, getACapturedVariableAccess(bb, v), _)
-}
-
 /**
  * Holds if captured variable `v` is read directly inside `scope`,
  * or inside a (transitively) nested scope of `scope`.
@@ -229,7 +223,7 @@ private module Cached {
    */
   cached
   predicate capturedEntryWrite(EntryBasicBlock bb, int i, Variable v) {
-    readsCapturedVariable(bb.getASuccessor*(), v) and
+    exists(getACapturedVariableAccess(bb.getASuccessor*(), v)) and
     i = -1
   }
 
