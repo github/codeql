@@ -762,6 +762,17 @@ class Annotation extends Expr {
     or
     this = any(FunctionExpr f).getReturns()
   }
+
+  /** Gets the expression that this annotation annotates. */
+  Expr getAnnotatedExpression() {
+    result = any(AnnAssign a | a.getAnnotation() = this).getTarget()
+    or
+    result = any(Parameter p | p.getAnnotation() = this)
+    or
+    exists(FunctionExpr f |
+      this = f.getReturns() and result = f.getInnerScope().getReturnNode().getNode()
+    )
+  }
 }
 
 /* Expression Contexts */

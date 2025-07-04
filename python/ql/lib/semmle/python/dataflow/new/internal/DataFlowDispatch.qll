@@ -580,6 +580,11 @@ private module TrackClassInstanceInput implements CallGraphConstruction::Simple:
   class State = Class;
 
   predicate start(Node start, Class cls) {
+    exists(Annotation ann |
+      ann = classTracker(cls).asExpr() and
+      start.asExpr() = ann.getAnnotatedExpression()
+    )
+    or
     resolveClassCall(start.(CallCfgNode).asCfgNode(), cls)
     or
     // result of `super().__new__` as used in a `__new__` method implementation
