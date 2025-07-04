@@ -167,6 +167,7 @@ definition
 | main.rs:621:5:621:5 | x | main.rs:620:9:620:9 | x |
 | main.rs:626:13:626:13 | x | main.rs:626:13:626:13 | x |
 | main.rs:627:13:627:15 | cap | main.rs:627:13:627:15 | cap |
+| main.rs:627:19:632:5 | <captured entry> x | main.rs:626:13:626:13 | x |
 | main.rs:627:20:627:20 | b | main.rs:627:20:627:20 | b |
 | main.rs:629:17:631:9 | SSA phi(x) | main.rs:626:13:626:13 | x |
 | main.rs:630:13:630:13 | x | main.rs:626:13:626:13 | x |
@@ -548,6 +549,7 @@ phi
 | main.rs:284:20:284:55 | SSA phi(a9) | main.rs:284:20:284:55 | a9 | main.rs:284:53:284:54 | a9 |
 | main.rs:494:13:503:5 | SSA phi(x) | main.rs:490:13:490:13 | x | main.rs:496:9:496:9 | x |
 | main.rs:494:13:503:5 | SSA phi(x) | main.rs:490:13:490:13 | x | main.rs:500:9:500:9 | x |
+| main.rs:629:17:631:9 | SSA phi(x) | main.rs:626:13:626:13 | x | main.rs:627:19:632:5 | <captured entry> x |
 | main.rs:629:17:631:9 | SSA phi(x) | main.rs:626:13:626:13 | x | main.rs:630:13:630:13 | x |
 phiReadNode
 | main.rs:108:11:109:12 | SSA phi read(s1) | main.rs:106:9:106:10 | s1 |
@@ -591,6 +593,7 @@ ultimateDef
 | main.rs:284:20:284:55 | SSA phi(a9) | main.rs:284:53:284:54 | a9 |
 | main.rs:494:13:503:5 | SSA phi(x) | main.rs:496:9:496:9 | x |
 | main.rs:494:13:503:5 | SSA phi(x) | main.rs:500:9:500:9 | x |
+| main.rs:629:17:631:9 | SSA phi(x) | main.rs:627:19:632:5 | <captured entry> x |
 | main.rs:629:17:631:9 | SSA phi(x) | main.rs:630:13:630:13 | x |
 assigns
 | main.rs:18:9:18:10 | x1 | main.rs:18:14:18:16 | "a" |
