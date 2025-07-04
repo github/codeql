@@ -75,25 +75,46 @@ extensible predicate restrictAlertsToExactLocation(
 
 /** Module for applying alert location filtering. */
 module AlertFilteringImpl<LocationSig Location> {
+  pragma[nomagic]
+  private predicate restrictAlertsToEntireFile(string filePath) { restrictAlertsTo(filePath, 0, 0) }
+
+  pragma[nomagic]
+  private predicate restrictAlertsToStartLine(string filePath, int line) {
+    exists(int startLineStart, int startLineEnd |
+      restrictAlertsTo(filePath, startLineStart, startLineEnd) and
+      line = [startLineStart .. startLineEnd]
+    )
+  }
+
   /** Applies alert filtering to the given location. */
   bindingset[location]
   predicate filterByLocation(Location location) {
     not restrictAlertsTo(_, _, _) and not restrictAlertsToExactLocation(_, _, _, _, _)
     or
-    exists(string filePath, int startLineStart, int startLineEnd |
-      restrictAlertsTo(filePath, startLineStart, startLineEnd)
-    |
-      startLineStart = 0 and
-      startLineEnd = 0 and
+    exists(string filePath |
+      restrictAlertsToEntireFile(filePath) and
       location.hasLocationInfo(filePath, _, _, _, _)
       or
-      location.hasLocationInfo(filePath, [startLineStart .. startLineEnd], _, _, _)
+      exists(int locStartLine, int locEndLine |
+        location.hasLocationInfo(filePath, locStartLine, _, locEndLine, _)
+      |
+        restrictAlertsToStartLine(filePath, [locStartLine .. locEndLine])
+      )
     )
     or
-    exists(string filePath, int startLine, int startColumn, int endLine, int endColumn |
-      restrictAlertsToExactLocation(filePath, startLine, startColumn, endLine, endColumn)
+    // Check if an exact filter-location is fully contained in `location`.
+    // This is slow but only used for testing.
+    exists(
+      string filePath, int startLine, int startColumn, int endLine, int endColumn,
+      int filterStartLine, int filterStartColumn, int filterEndLine, int filterEndColumn
     |
-      location.hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
+      location.hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn) and
+      restrictAlertsToExactLocation(filePath, filterStartLine, filterStartColumn, filterEndLine,
+        filterEndColumn) and
+      startLine <= filterStartLine and
+      (startLine != filterStartLine or startColumn <= filterStartColumn) and
+      endLine >= filterEndLine and
+      (endLine != filterEndLine or endColumn >= filterEndColumn)
     )
   }
 }
