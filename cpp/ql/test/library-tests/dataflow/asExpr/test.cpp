@@ -42,8 +42,8 @@ void test_aggregate_literal() {
 void test_postfix_crement(int *p, int q) {
   p++; // $ asExpr="... ++" asIndirectExpr="... ++" asExpr=p asIndirectExpr=p
   q++; // $ asExpr="... ++" asExpr=q
-  (p++); // $ numberOfNodes="... ++: 2" numberOfIndirectNodes="... ++: 2" asExpr="... ++" asIndirectExpr="... ++"
-  (q++); // $ numberOfNodes="... ++: 2" asExpr="... ++"
+  (p++); // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  (q++); // $ asExpr="... ++" asExpr="q(... ++)"
   (void)(p++); // $ asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
   (void)(q++); // $ asExpr="q(... ++)"
   (void)p++; // $ asExpr="p(... ++)" asIndirectExpr="p(*... ++)"

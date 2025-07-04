@@ -4147,7 +4147,7 @@ private predicate exprImmediatelyDiscarded(Expr expr) {
   exists(ExprStmt s |
     s = expr.getParent() and
     not exists(StmtExpr se | s = se.getStmt().(BlockStmt).getLastStmt()) and
-    not exists(Conversion c | c = expr.getConversion*() and not isTransparentConversion(c))
+    not exists(expr.getConversion())
   )
   or
   exists(CommaExpr c | c.getLeftOperand() = expr)
