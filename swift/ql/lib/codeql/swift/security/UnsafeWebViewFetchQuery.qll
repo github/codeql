@@ -29,17 +29,9 @@ module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
     any(UnsafeWebViewFetchAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 36 (/Users/d10c/src/semmle-code/ql/swift/ql/src/queries/Security/CWE-079/UnsafeWebViewFetch.ql@39:8:39:11)
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 36 (/Users/d10c/src/semmle-code/ql/swift/ql/src/queries/Security/CWE-079/UnsafeWebViewFetch.ql@39:8:39:11)
-  }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) {
-    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 36 (/Users/d10c/src/semmle-code/ql/swift/ql/src/queries/Security/CWE-079/UnsafeWebViewFetch.ql@39:8:39:11)
-  }
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 }
 
 /**
