@@ -3376,23 +3376,80 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     import S6
 
     /**
-     * Holds if data can flow from `source` to `sink`.
+     * Holds if data can flow from `source` to `sink`. When running in overlay
+     * incremental mode on a supported language, this predicate only has
+     * results where either the source or sink is in the overlay database.
      */
-    predicate flow(Node source, Node sink) {
+    private predicate flowIncremental(Node source, Node sink) {
       exists(PathNode source0, PathNode sink0 |
         flowPath(source0, sink0) and source0.getNode() = source and sink0.getNode() = sink
       )
     }
 
+    overlay[local]
+    private predicate flowLocal(Node source, Node sink) =
+      forceLocal(flowIncremental/2)(source, sink)
+
+    /**
+     * Holds if data can flow from `source` to `sink`.
+     */
+    predicate flow(Node source, Node sink) {
+      flowIncremental(source, sink)
+      or
+      flowLocal(source, sink)
+    }
+
+    /**
+     * Holds if data can flow from some source to `sink`. When running in
+     * overlay incremental mode on a supported language, this predicate only
+     * has results where either the source or sink is in the overlay database.
+     */
+    private predicate flowToIncremental(Node sink) {
+      exists(PathNode n | n.isSink() and n.getNode() = sink)
+    }
+
+    overlay[local]
+    private predicate flowToLocal(Node sink) = forceLocal(flowToIncremental/1)(sink)
+
     /**
      * Holds if data can flow from some source to `sink`.
      */
-    predicate flowTo(Node sink) { exists(PathNode n | n.isSink() and n.getNode() = sink) }
+    predicate flowTo(Node sink) {
+      flowToIncremental(sink)
+      or
+      flowToLocal(sink)
+    }
 
     /**
      * Holds if data can flow from some source to `sink`.
      */
     predicate flowToExpr(Expr sink) { flowTo(exprNode(sink)) }
+
+    /**
+     * Holds if data can flow from `source` to some sink. When running in
+     * overlay incremental mode on a supported language, this predicate only
+     * has results where either the source or sink is in the overlay database.
+     */
+    private predicate flowFromIncremental(Node source) {
+      exists(PathNode n | n.isSource() and n.getNode() = source)
+    }
+
+    overlay[local]
+    private predicate flowFromLocal(Node source) = forceLocal(flowFromIncremental/1)(source)
+
+    /**
+     * Holds if data can flow from `source` to some sink.
+     */
+    predicate flowFrom(Node source) {
+      flowFromIncremental(source)
+      or
+      flowFromLocal(source)
+    }
+
+    /**
+     * Holds if data can flow from `source` to some sink.
+     */
+    predicate flowFromExpr(Expr source) { flowFrom(exprNode(source)) }
 
     /**
      * INTERNAL: Only for debugging.
