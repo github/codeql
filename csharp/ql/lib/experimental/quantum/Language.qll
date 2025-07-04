@@ -145,8 +145,8 @@ class InsecureRandomnessSource extends RandomnessSource {
 }
 
 /**
- * An instance of random number generation, modelled as the expression
- * tied to an output node (i.e., the RNG output)
+ * An instance of random number generation, modeled as the expression tied to an
+ * output node (i.e., the RNG output)
  */
 abstract class RandomnessInstance extends Crypto::RandomNumberGenerationInstance {
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
