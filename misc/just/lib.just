@@ -11,7 +11,7 @@ cmd_sep := "\n#--------------------------------------------------------\n"
 export CMD_BEGIN := style("command") + cmd_sep
 export CMD_END := cmd_sep + NORMAL
 
-tsx := "npx tsx@4.19.0 "
+tsx := "npx tsx@4.19.0"
 
 import? '../../../semmle-code.just'  # internal repo just file, if present
 import 'semmle-code-stub.just'
@@ -32,11 +32,11 @@ _maybe_build LANGUAGE:
 
 [no-cd, positional-arguments, no-exit-message]
 @_codeql_test LANGUAGE +ARGS: (_maybe_build LANGUAGE)
-    {{ tsx + source_dir() }}/codeql-test-run.ts "$@"
+    {{ tsx }} "{{ source_dir() }}/codeql-test-run.ts" "$@"
 
 [no-cd, positional-arguments, no-exit-message]
 @_codeql_test_run_only LANGUAGE +ARGS:
-    {{ tsx + source_dir() }}/codeql-test-run.ts "$@"
+    {{ tsx }} "{{ source_dir() }}/codeql-test-run.ts" "$@"
 
 
 [no-cd, no-exit-message]
