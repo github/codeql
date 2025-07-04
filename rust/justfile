@@ -1,0 +1,11 @@
+import '../misc/just/lib.just'
+
+install: (_bazel "run" "@codeql//rust:install")
+
+build: generate (_build "rust")
+
+generate: (_bazel "run" "@codeql//rust/codegen")
+
+lint: (_run "python3" "lint.py")
+
+format: (_run "python3" "lint.py" "--format-only")
