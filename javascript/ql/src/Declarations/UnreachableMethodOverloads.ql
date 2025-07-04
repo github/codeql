@@ -45,20 +45,22 @@ string getKind(MemberDeclaration m) {
 /**
  * A call-signature that originates from a MethodSignature in the AST.
  */
-private class MethodCallSig extends CallSignatureType {
-  string name;
+private class MethodCallSig extends Function {
+  private MethodSignature signature;
 
-  MethodCallSig() {
-    exists(MethodSignature sig |
-      this = sig.getBody().getCallSignature() and
-      name = sig.getName()
-    )
+  MethodCallSig() { this = signature.getBody() }
+
+  int getNumOptionalParameter() {
+    result = count(Parameter p | p = this.getParameter(_) and p.isDeclaredOptional())
   }
 
-  /**
-   * Gets the name of any member that has this signature.
-   */
-  string getName() { result = name }
+  int getNumRequiredParameter() {
+    result = count(Parameter p | p = this.getParameter(_) and not p.isDeclaredOptional())
+  }
+
+  SignatureKind getKind() { result = SignatureKind::function() }
+
+  TypeExpr getTypeParameterBound(int i) { result = this.getTypeParameter(i).getBound() }
 }
 
 pragma[noinline]
@@ -75,6 +77,7 @@ private MethodCallSig getMethodCallSigWithFingerprint(
 /**
  * Holds if the two call signatures could be overloads of each other and have the same parameter types.
  */
+pragma[inline]
 predicate matchingCallSignature(MethodCallSig method, MethodCallSig other) {
   other =
     getMethodCallSigWithFingerprint(method.getName(), method.getNumOptionalParameter(),
@@ -109,6 +112,16 @@ private MethodSignature getMethodSignatureWithFingerprint(
   result.getBody().getNumParameter() = numParameters
 }
 
+bindingset[t1, t2]
+pragma[inline_late]
+private predicate sameType(TypeExpr t1, TypeExpr t2) {
+  t1.(PredefinedTypeExpr).getName() = t2.(PredefinedTypeExpr).getName()
+  or
+  t1 instanceof ThisTypeExpr and t2 instanceof ThisTypeExpr
+  or
+  t1.(LocalTypeAccess).getLocalTypeName() = t2.(LocalTypeAccess).getLocalTypeName()
+}
+
 /**
  * Holds if the two method signatures are overloads of each other and have the same parameter types.
  */
@@ -122,14 +135,13 @@ predicate signaturesMatch(MethodSignature method, MethodSignature other) {
     not exists(method.getBody().getThisTypeAnnotation()) and
     not exists(other.getBody().getThisTypeAnnotation())
     or
-    method.getBody().getThisTypeAnnotation().getType() =
-      other.getBody().getThisTypeAnnotation().getType()
+    sameType(method.getBody().getThisTypeAnnotation(), other.getBody().getThisTypeAnnotation())
   ) and
   // The types are compared in matchingCallSignature. This is a consistency check that the textual representation of the type-annotations are somewhat similar.
   forall(int i | i in [0 .. -1 + method.getBody().getNumParameter()] |
     getParameterTypeAnnotation(method, i) = getParameterTypeAnnotation(other, i)
   ) and
-  matchingCallSignature(method.getBody().getCallSignature(), other.getBody().getCallSignature())
+  matchingCallSignature(method.getBody(), other.getBody())
 }
 
 from ClassOrInterface decl, string name, MethodSignature previous, MethodSignature unreachable

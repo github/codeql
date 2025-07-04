@@ -51,10 +51,8 @@ import com.semmle.js.extractor.trapcache.DummyTrapCache;
 import com.semmle.js.extractor.trapcache.ITrapCache;
 import com.semmle.js.parser.ParseError;
 import com.semmle.js.parser.ParsedProject;
-import com.semmle.ts.extractor.TypeExtractor;
 import com.semmle.ts.extractor.TypeScriptParser;
 import com.semmle.ts.extractor.TypeScriptWrapperOOMError;
-import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.diagnostic.DiagnosticLevel;
 import com.semmle.util.diagnostic.DiagnosticLocation;
@@ -220,7 +218,6 @@ public class AutoBuild {
   private final Set<String> xmlExtensions = new LinkedHashSet<>();
   private ProjectLayout filters;
   private final Path LGTM_SRC, SEMMLE_DIST;
-  private final TypeScriptMode typeScriptMode;
   private final String defaultEncoding;
   private ExecutorService threadPool;
   private volatile boolean seenCode = false;
@@ -238,8 +235,6 @@ public class AutoBuild {
     this.SEMMLE_DIST = Paths.get(EnvironmentVariables.getExtractorRoot());
     this.outputConfig = new ExtractorOutputConfig(LegacyLanguage.JAVASCRIPT);
     this.trapCache = ITrapCache.fromExtractorOptions();
-    this.typeScriptMode =
-        getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.FULL);
     this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
     this.installDependencies = Boolean.valueOf(getEnvVar("LGTM_INDEX_TYPESCRIPT_INSTALL_DEPS"));
     this.virtualSourceRoot = makeVirtualSourceRoot();
@@ -395,7 +390,7 @@ public class AutoBuild {
     defaultExtract.add(FileType.HTML);
     defaultExtract.add(FileType.JS);
     defaultExtract.add(FileType.YAML);
-    if (typeScriptMode != TypeScriptMode.NONE) defaultExtract.add(FileType.TYPESCRIPT);
+    defaultExtract.add(FileType.TYPESCRIPT);
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
@@ -785,7 +780,7 @@ public class AutoBuild {
     extractTypeScript(filesToExtract, extractedFiles,
               extractors, tsconfigFiles, dependencyInstallationResult);
 
-    boolean hasTypeScriptFiles = extractedFiles.size() > 0;
+    boolean hasTypeScriptFiles = hasTypeScriptFiles(filesToExtract);
 
     // extract remaining files
     return extractFiles(
@@ -1044,7 +1039,6 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
   private ExtractorConfig mkExtractorConfig() {
     ExtractorConfig config = new ExtractorConfig(true);
     config = config.withSourceType(getSourceType());
-    config = config.withTypeScriptMode(typeScriptMode);
     config = config.withVirtualSourceRoot(virtualSourceRoot);
     if (defaultEncoding != null) config = config.withDefaultEncoding(defaultEncoding);
     return config;
@@ -1065,75 +1059,26 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       FileExtractors extractors,
       List<Path> tsconfig,
       DependencyInstallationResult deps) {
-    if (hasTypeScriptFiles(files) || !tsconfig.isEmpty()) {
+
+    List<Path> typeScriptFiles = new ArrayList<>();
+    // Get all TypeScript files.
+    for (Path f : files) {
+      if (extractors.fileType(f) == FileType.TYPESCRIPT) {
+        typeScriptFiles.add(f);
+      }
+    }
+    // Also get TypeScript files from HTML file snippets.
+    for (Map.Entry<Path, FileSnippet> entry : state.getSnippets().entrySet()) {
+      if (!extractedFiles.contains(entry.getKey())
+          && FileType.forFileExtension(entry.getKey().toFile()) == FileType.TYPESCRIPT) {
+          typeScriptFiles.add(entry.getKey());
+      }
+    }
+
+    if (!typeScriptFiles.isEmpty()) {
       TypeScriptParser tsParser = state.getTypeScriptParser();
       verifyTypeScriptInstallation(state);
-
-      // Collect all files included in a tsconfig.json inclusion pattern.
-      // If a given file is referenced by multiple tsconfig files, we prefer to extract it using
-      // one that includes it rather than just references it.
-      Set<File> explicitlyIncludedFiles = new LinkedHashSet<>();
-      if (tsconfig.size() > 1) { // No prioritization needed if there's only one tsconfig.
-        for (Path projectPath : tsconfig) {
-          explicitlyIncludedFiles.addAll(tsParser.getOwnFiles(projectPath.toFile(), deps, virtualSourceRoot));
-        }
-      }
-
-      // Extract TypeScript projects
-      for (Path projectPath : tsconfig) {
-        File projectFile = projectPath.toFile();
-        long start = logBeginProcess("Opening project " + projectFile);
-        ParsedProject project = tsParser.openProject(projectFile, deps, virtualSourceRoot);
-        logEndProcess(start, "Done opening project " + projectFile);
-        // Extract all files belonging to this project which are also matched
-        // by our include/exclude filters.
-        List<Path> typeScriptFiles = new ArrayList<Path>();
-        for (File sourceFile : project.getAllFiles()) {
-          Path sourcePath = sourceFile.toPath();
-          Path normalizedFile = normalizePath(sourcePath);
-          if (!files.contains(normalizedFile) && !state.getSnippets().containsKey(normalizedFile)) {
-            continue;
-          }
-          if (!project.getOwnFiles().contains(sourceFile) && explicitlyIncludedFiles.contains(sourceFile)) continue;
-          if (extractors.fileType(sourcePath) != FileType.TYPESCRIPT) {
-            // For the time being, skip non-TypeScript files, even if the TypeScript
-            // compiler can parse them for us.
-            continue;
-          }
-          if (extractedFiles.contains(sourcePath)) {
-            continue;
-          }
-          typeScriptFiles.add(sourcePath);
-        }
-        typeScriptFiles.sort(PATH_ORDERING);
-        extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractors);
-        tsParser.closeProject(projectFile);
-      }
-
-      // Extract all the types discovered when extracting the ASTs.
-      if (!tsconfig.isEmpty()) {
-        TypeTable typeTable = tsParser.getTypeTable();
-        extractTypeTable(tsconfig.iterator().next(), typeTable);
-      }
-
-      // Extract remaining TypeScript files.
-      List<Path> remainingTypeScriptFiles = new ArrayList<>();
-      for (Path f : files) {
-        if (!extractedFiles.contains(f)
-            && extractors.fileType(f) == FileType.TYPESCRIPT) {
-          remainingTypeScriptFiles.add(f);
-        }
-      }
-      for (Map.Entry<Path, FileSnippet> entry : state.getSnippets().entrySet()) {
-        if (!extractedFiles.contains(entry.getKey())
-            && FileType.forFileExtension(entry.getKey().toFile()) == FileType.TYPESCRIPT) {
-            remainingTypeScriptFiles.add(entry.getKey());
-        }
-      }
-      if (!remainingTypeScriptFiles.isEmpty()) {
-        extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractors);
-      }
-
+      extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractors);
       // The TypeScript compiler instance is no longer needed.
       tsParser.killProcess();
     }
@@ -1186,8 +1131,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
             }
 
             // extract TypeScript projects from 'tsconfig.json'
-            if (typeScriptMode != TypeScriptMode.NONE
-                && treatAsTSConfig(file.getFileName().toString())
+            if (treatAsTSConfig(file.getFileName().toString())
                 && !excludes.contains(file)
                 && isFileIncluded(file)) {
               tsconfigFiles.add(file);
@@ -1244,18 +1188,6 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
 
   private Path normalizePath(Path path) {
     return path.toAbsolutePath().normalize();
-  }
-
-  private void extractTypeTable(Path fileHandle, TypeTable table) {
-    TrapWriter trapWriter =
-        outputConfig
-            .getTrapWriterFactory()
-            .mkTrapWriter(new File(fileHandle.toString() + ".codeql-typescript-typetable"));
-    try {
-      new TypeExtractor(trapWriter, table).extract();
-    } finally {
-      FileUtil.close(trapWriter);
-    }
   }
 
   /**

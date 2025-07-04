@@ -2,6 +2,6 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModelDeprecated
+      extensible: summaryModel
     data:
-      - ["repo:https://github.com/rust-lang/regex:regex", "crate::escape", "Argument[0].Reference", "ReturnValue", "taint", "manual"]
+      - ["regex::escape", "Argument[0].Reference", "ReturnValue", "taint", "manual"]

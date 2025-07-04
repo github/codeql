@@ -38,3 +38,12 @@ void test_aggregate_literal() {
   int xs[] = {1, 2, 3}; // $ asExpr=1 asExpr=2 asExpr=3 asExpr={...}
   const int ys[] = {[0] = 4, [1] = 5, [0] = 6}; // $ asExpr=4 asExpr=5 asExpr=6 asExpr={...}
 }
+
+void test_postfix_crement(int *p, int q) {
+  p++; // $ asExpr="... ++" asIndirectExpr="... ++" asExpr=p asIndirectExpr=p
+  q++; // $ asExpr="... ++" asExpr=q
+  (void)(p++); // $ numberOfNodes="... ++: 2" asExpr="... ++" numberOfIndirectNodes="... ++: 2" asIndirectExpr="... ++" MISSING: asExpr=p asIndirectExpr=p
+  (void)(q++); // $ numberOfNodes="... ++: 2" asExpr="... ++" MISSING: asExpr=q
+  int *p1 = p++; // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  int q1 = q++; // $ asExpr="... ++" asExpr="q(... ++)"
+}
