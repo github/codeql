@@ -4,13 +4,12 @@ edges
 | src/main.rs:6:11:6:19 | file_name | src/main.rs:8:35:8:43 | file_name | provenance |  |
 | src/main.rs:8:9:8:17 | file_path | src/main.rs:10:24:10:32 | file_path | provenance |  |
 | src/main.rs:8:21:8:44 | ...::from(...) | src/main.rs:8:9:8:17 | file_path | provenance |  |
-| src/main.rs:8:35:8:43 | file_name | src/main.rs:8:21:8:44 | ...::from(...) | provenance | MaD:3 |
+| src/main.rs:8:35:8:43 | file_name | src/main.rs:8:21:8:44 | ...::from(...) | provenance | MaD:2 |
 | src/main.rs:8:35:8:43 | file_name | src/main.rs:8:21:8:44 | ...::from(...) | provenance | MaD:2 |
 | src/main.rs:10:24:10:32 | file_path | src/main.rs:10:5:10:22 | ...::read_to_string | provenance | MaD:1 Sink:MaD:1 |
 models
-| 1 | Sink: lang:std; crate::fs::read_to_string; Argument[0]; path-injection |
+| 1 | Sink: std::fs::read_to_string; Argument[0]; path-injection |
 | 2 | Summary: <std::path::PathBuf as core::convert::From>::from; Argument[0]; ReturnValue; taint |
-| 3 | Summary: lang:std; <crate::path::PathBuf as crate::convert::From>::from; Argument[0]; ReturnValue; taint |
 nodes
 | src/main.rs:6:11:6:19 | file_name | semmle.label | file_name |
 | src/main.rs:8:9:8:17 | file_path | semmle.label | file_path |
