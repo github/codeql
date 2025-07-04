@@ -139,9 +139,6 @@ class TraitType extends Type, TTrait {
 
   override TypeParameter getTypeParameter(int i) {
     result = TTypeParamTypeParameter(trait.getGenericParamList().getTypeParam(i))
-    or
-    result =
-      any(AssociatedTypeTypeParameter param | param.getTrait() = trait and param.getIndex() = i)
   }
 
   override TypeMention getTypeParameterDefault(int i) {
@@ -300,20 +297,6 @@ class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
 }
 
 /**
- * Gets the type alias that is the `i`th type parameter of `trait`. Type aliases
- * are numbered consecutively but in arbitrary order, starting from the index
- * following the last ordinary type parameter.
- */
-predicate traitAliasIndex(Trait trait, int i, TypeAlias typeAlias) {
-  typeAlias =
-    rank[i + 1 - trait.getNumberOfGenericParams()](TypeAlias alias |
-      trait.(TraitItemNode).getADescendant() = alias
-    |
-      alias order by idOfTypeParameterAstNode(alias)
-    )
-}
-
-/**
  * A type parameter corresponding to an associated type in a trait.
  *
  * We treat associated type declarations in traits as type parameters. E.g., a
@@ -340,8 +323,6 @@ class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypePara
 
   /** Gets the trait that contains this associated type declaration. */
   TraitItemNode getTrait() { result.getAnAssocItem() = typeAlias }
-
-  int getIndex() { traitAliasIndex(_, result, typeAlias) }
 
   override string toString() { result = typeAlias.getName().getText() }
 
