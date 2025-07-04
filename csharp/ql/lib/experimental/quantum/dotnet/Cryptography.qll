@@ -467,18 +467,13 @@ class SymmetricAlgorithmUse extends QualifiableExpr {
     this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "Mode"
   }
 
-  predicate isCreationCall() {
-    // TODO: Matching using `hasName` does not work here for some reason.
-    this.getQualifiedDeclaration().getName().matches("Create%")
-  }
+  predicate isCreationCall() { this.getQualifiedDeclaration().getName().matches("Create%") }
 
   predicate isEncryptionCall() {
-    // TODO: Matching using `hasName` does not work here for some reason.
     this.getQualifiedDeclaration().getName().matches(["Encrypt%", "TryEncrypt%"])
   }
 
   predicate isDecryptionCall() {
-    // TODO: Matching using `hasName` does not work here for some reason.
     this.getQualifiedDeclaration().getName().matches(["Decrypt%", "TryDecrypt%"])
   }
 

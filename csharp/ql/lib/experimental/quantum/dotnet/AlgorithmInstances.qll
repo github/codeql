@@ -213,8 +213,10 @@ class AeadAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance,
   override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
 }
 
+bindingset[algorithmName]
 private Crypto::KeyOpAlg::Algorithm symmetricAlgorithmNameToType(string algorithmName) {
-  algorithmName = "Aes%" and result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES())
+  algorithmName.matches("Aes%") and
+  result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES())
   or
   algorithmName = "DES" and result = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::DES())
   or
