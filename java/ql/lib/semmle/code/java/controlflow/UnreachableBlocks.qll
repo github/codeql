@@ -209,7 +209,7 @@ class UnreachableBasicBlock extends BasicBlock {
     or
     // This block is not reachable in the CFG, and is not the entrypoint in a callable, an
     // expression in an assert statement, or a catch clause.
-    forall(BasicBlock bb | bb = this.getABBPredecessor() | bb instanceof UnreachableBasicBlock) and
+    forall(BasicBlock bb | bb = this.getAPredecessor() | bb instanceof UnreachableBasicBlock) and
     not exists(Callable c | c.getBody().getControlFlowNode() = this.getFirstNode()) and
     not this.getFirstNode().asExpr().getEnclosingStmt() instanceof AssertStmt and
     not this.getFirstNode().asStmt() instanceof CatchClause
@@ -219,11 +219,10 @@ class UnreachableBasicBlock extends BasicBlock {
       // Not accessible from the switch expression
       unreachableCaseBlock = constSwitchStmt.getAFailingCase().getBasicBlock() and
       // Not accessible from the successful case
-      not constSwitchStmt.getMatchingCase().getBasicBlock().getABBSuccessor*() =
-        unreachableCaseBlock
+      not constSwitchStmt.getMatchingCase().getBasicBlock().getASuccessor*() = unreachableCaseBlock
     |
       // Blocks dominated by an unreachable case block are unreachable
-      unreachableCaseBlock.bbDominates(this)
+      unreachableCaseBlock.dominates(this)
     )
   }
 }

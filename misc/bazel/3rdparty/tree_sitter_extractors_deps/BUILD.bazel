@@ -672,3 +672,15 @@ alias(
     actual = "@vendor_ts__ungrammar-1.16.1//:ungrammar",
     tags = ["manual"],
 )
+
+alias(
+    name = "zstd-0.13.3",
+    actual = "@vendor_ts__zstd-0.13.3//:zstd",
+    tags = ["manual"],
+)
+
+alias(
+    name = "zstd",
+    actual = "@vendor_ts__zstd-0.13.3//:zstd",
+    tags = ["manual"],
+)

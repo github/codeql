@@ -9,9 +9,16 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.MatchArm
 
 /**
- * A MatchArmList. For example:
+ * A list of arms in a match expression.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * match x {
+ *     1 => "one",
+ *     2 => "two",
+ *     _ => "other",
+ * }
+ * //  ^^^^^^^^^^^
  * ```
  */
 final class MatchArmList = Impl::MatchArmList;

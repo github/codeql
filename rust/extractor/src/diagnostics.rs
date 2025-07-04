@@ -1,4 +1,5 @@
 use crate::config::Config;
+use crate::translate::SourceKind;
 use anyhow::Context;
 use chrono::{DateTime, Utc};
 use ra_ap_project_model::ProjectManifest;
@@ -83,6 +84,8 @@ pub enum ExtractionStepKind {
     LoadSource,
     Parse,
     Extract,
+    ParseLibrary,
+    ExtractLibrary,
     CrateGraph,
 }
 
@@ -113,18 +116,24 @@ impl ExtractionStep {
         )
     }
 
-    pub fn parse(start: Instant, target: &Path) -> Self {
+    pub fn parse(start: Instant, source_kind: SourceKind, target: &Path) -> Self {
         Self::new(
             start,
-            ExtractionStepKind::Parse,
+            match source_kind {
+                SourceKind::Source => ExtractionStepKind::Parse,
+                SourceKind::Library => ExtractionStepKind::ParseLibrary,
+            },
             Some(PathBuf::from(target)),
         )
     }
 
-    pub fn extract(start: Instant, target: &Path) -> Self {
+    pub fn extract(start: Instant, source_kind: SourceKind, target: &Path) -> Self {
         Self::new(
             start,
-            ExtractionStepKind::Extract,
+            match source_kind {
+                SourceKind::Source => ExtractionStepKind::Extract,
+                SourceKind::Library => ExtractionStepKind::ExtractLibrary,
+            },
             Some(PathBuf::from(target)),
         )
     }

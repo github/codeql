@@ -427,7 +427,9 @@ module Trees {
     override predicate last(AstNode last, Completion c) {
       // Exit the loop body when the condition is false
       last(this.getCondition(), last, c) and
-      this.entersLoopWhenConditionIs(c.(BooleanCompletion).getValue().booleanNot())
+      this.entersLoopWhenConditionIs(pragma[only_bind_into](c.(BooleanCompletion)
+            .getValue()
+            .booleanNot()))
       or
       super.last(last, c)
     }
@@ -435,7 +437,7 @@ module Trees {
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
       // Condition -> body
       last(this.getCondition(), pred, c) and
-      this.entersLoopWhenConditionIs(c.(BooleanCompletion).getValue()) and
+      this.entersLoopWhenConditionIs(pragma[only_bind_into](c.(BooleanCompletion).getValue())) and
       first(this.getBody(), succ)
       or
       // Body -> condition

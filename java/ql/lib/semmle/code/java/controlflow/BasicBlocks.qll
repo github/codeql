@@ -4,91 +4,128 @@
 
 import java
 import Dominance
+private import codeql.controlflow.BasicBlock as BB
 
-cached
-private module BasicBlockStage {
-  cached
-  predicate ref() { any() }
+private module Input implements BB::InputSig<Location> {
+  import SuccessorType
 
-  cached
-  predicate backref() {
-    (exists(any(BasicBlock bb).getABBSuccessor()) implies any()) and
-    (exists(any(BasicBlock bb).getNode(_)) implies any()) and
-    (exists(any(BasicBlock bb).length()) implies any())
+  /** Hold if `t` represents a conditional successor type. */
+  predicate successorTypeIsCondition(SuccessorType t) { none() }
+
+  /** A delineated part of the AST with its own CFG. */
+  class CfgScope = Callable;
+
+  /** The class of control flow nodes. */
+  class Node = ControlFlowNode;
+
+  /** Gets the CFG scope in which this node occurs. */
+  CfgScope nodeGetCfgScope(Node node) { node.getEnclosingCallable() = result }
+
+  private Node getASpecificSuccessor(Node node, SuccessorType t) {
+    node.(ConditionNode).getABranchSuccessor(t.(BooleanSuccessor).getValue()) = result
+    or
+    node.getAnExceptionSuccessor() = result and t instanceof ExceptionSuccessor
   }
+
+  /** Gets an immediate successor of this node. */
+  Node nodeGetASuccessor(Node node, SuccessorType t) {
+    result = getASpecificSuccessor(node, t)
+    or
+    node.getASuccessor() = result and
+    t instanceof NormalSuccessor and
+    not result = getASpecificSuccessor(node, _)
+  }
+
+  /**
+   * Holds if `node` represents an entry node to be used when calculating
+   * dominance.
+   */
+  predicate nodeIsDominanceEntry(Node node) {
+    exists(Stmt entrystmt | entrystmt = node.asStmt() |
+      exists(Callable c | entrystmt = c.getBody())
+      or
+      // This disjunct is technically superfluous, but safeguards against extractor problems.
+      entrystmt instanceof BlockStmt and
+      not exists(entrystmt.getEnclosingCallable()) and
+      not entrystmt.getParent() instanceof Stmt
+    )
+  }
+
+  /**
+   * Holds if `node` represents an exit node to be used when calculating
+   * post dominance.
+   */
+  predicate nodeIsPostDominanceExit(Node node) { node instanceof ControlFlow::ExitNode }
+}
+
+private module BbImpl = BB::Make<Location, Input>;
+
+import BbImpl
+
+/** Holds if the dominance relation is calculated for `bb`. */
+predicate hasDominanceInformation(BasicBlock bb) {
+  exists(BasicBlock entry |
+    Input::nodeIsDominanceEntry(entry.getFirstNode()) and entry.getASuccessor*() = bb
+  )
 }
 
 /**
- * A control-flow node that represents the start of a basic block.
- *
- * A basic block is a series of nodes with no control-flow branching, which can
- * often be treated as a unit in analyses.
+ * A basic block, that is, a maximal straight-line sequence of control flow nodes
+ * without branches or joins.
  */
-class BasicBlock extends ControlFlowNode {
-  cached
-  BasicBlock() {
-    BasicBlockStage::ref() and
-    not exists(this.getAPredecessor()) and
-    exists(this.getASuccessor())
-    or
-    strictcount(this.getAPredecessor()) > 1
-    or
-    exists(ControlFlowNode pred | pred = this.getAPredecessor() |
-      strictcount(pred.getASuccessor()) > 1
-    )
-  }
+class BasicBlock extends BbImpl::BasicBlock {
+  /** Gets the immediately enclosing callable whose body contains this node. */
+  Callable getEnclosingCallable() { result = this.getScope() }
 
-  /** Gets an immediate successor of this basic block. */
-  cached
-  BasicBlock getABBSuccessor() {
-    BasicBlockStage::ref() and
-    result = this.getLastNode().getASuccessor()
-  }
+  /**
+   * Holds if this basic block dominates basic block `bb`.
+   *
+   * That is, all paths reaching `bb` from the entry point basic block must
+   * go through this basic block.
+   */
+  predicate dominates(BasicBlock bb) { super.dominates(bb) }
 
-  /** Gets an immediate predecessor of this basic block. */
-  BasicBlock getABBPredecessor() { result.getABBSuccessor() = this }
+  /**
+   * DEPRECATED: Use `getASuccessor` instead.
+   *
+   * Gets an immediate successor of this basic block.
+   */
+  deprecated BasicBlock getABBSuccessor() { result = this.getASuccessor() }
 
-  /** Gets a control-flow node contained in this basic block. */
-  ControlFlowNode getANode() { result = this.getNode(_) }
+  /**
+   * DEPRECATED: Use `getAPredecessor` instead.
+   *
+   * Gets an immediate predecessor of this basic block.
+   */
+  deprecated BasicBlock getABBPredecessor() { result.getASuccessor() = this }
 
-  /** Gets the control-flow node at a specific (zero-indexed) position in this basic block. */
-  cached
-  ControlFlowNode getNode(int pos) {
-    BasicBlockStage::ref() and
-    result = this and
-    pos = 0
-    or
-    exists(ControlFlowNode mid, int mid_pos | pos = mid_pos + 1 |
-      this.getNode(mid_pos) = mid and
-      mid.getASuccessor() = result and
-      not result instanceof BasicBlock
-    )
-  }
+  /**
+   * DEPRECATED: Use `strictlyDominates` instead.
+   *
+   * Holds if this basic block strictly dominates `node`.
+   */
+  deprecated predicate bbStrictlyDominates(BasicBlock node) { this.strictlyDominates(node) }
 
-  /** Gets the first control-flow node in this basic block. */
-  ControlFlowNode getFirstNode() { result = this }
+  /**
+   * DEPRECATED: Use `dominates` instead.
+   *
+   * Holds if this basic block dominates `node`. (This is reflexive.)
+   */
+  deprecated predicate bbDominates(BasicBlock node) { this.dominates(node) }
 
-  /** Gets the last control-flow node in this basic block. */
-  ControlFlowNode getLastNode() { result = this.getNode(this.length() - 1) }
+  /**
+   * DEPRECATED: Use `strictlyPostDominates` instead.
+   *
+   * Holds if this basic block strictly post-dominates `node`.
+   */
+  deprecated predicate bbStrictlyPostDominates(BasicBlock node) { this.strictlyPostDominates(node) }
 
-  /** Gets the number of control-flow nodes contained in this basic block. */
-  cached
-  int length() {
-    BasicBlockStage::ref() and
-    result = strictcount(this.getANode())
-  }
-
-  /** Holds if this basic block strictly dominates `node`. */
-  predicate bbStrictlyDominates(BasicBlock node) { bbStrictlyDominates(this, node) }
-
-  /** Holds if this basic block dominates `node`. (This is reflexive.) */
-  predicate bbDominates(BasicBlock node) { bbDominates(this, node) }
-
-  /** Holds if this basic block strictly post-dominates `node`. */
-  predicate bbStrictlyPostDominates(BasicBlock node) { bbStrictlyPostDominates(this, node) }
-
-  /** Holds if this basic block post-dominates `node`. (This is reflexive.) */
-  predicate bbPostDominates(BasicBlock node) { bbPostDominates(this, node) }
+  /**
+   * DEPRECATED: Use `postDominates` instead.
+   *
+   * Holds if this basic block post-dominates `node`. (This is reflexive.)
+   */
+  deprecated predicate bbPostDominates(BasicBlock node) { this.postDominates(node) }
 }
 
 /** A basic block that ends in an exit node. */

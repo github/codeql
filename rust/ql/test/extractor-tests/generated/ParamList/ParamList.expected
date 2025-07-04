@@ -1,1 +1,2 @@
 | gen_param_list.rs:3:19:3:20 | ParamList | getNumberOfParams: | 0 | hasSelfParam: | no |
+| gen_param_list.rs:7:11:7:26 | ParamList | getNumberOfParams: | 2 | hasSelfParam: | no |

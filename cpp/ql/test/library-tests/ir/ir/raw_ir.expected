@@ -17775,8 +17775,8 @@ ir.cpp:
 # 2691|     mu2691_2(unknown)   = AliasedDefinition        : 
 # 2691|     mu2691_3(unknown)   = InitializeNonLocal       : 
 # 2692|     r2692_1(glval<int>) = VariableAddress[y]       : 
-#-----|     r0_1(int)           = Constant[1]              : 
-#-----|     mu0_2(int)          = Store[y]                 : &:r2692_1, r0_1
+# 2692|     r2692_2(int)        = Constant[1]              : 
+# 2692|     mu2692_3(int)       = Store[y]                 : &:r2692_1, r2692_2
 # 2693|     r2693_1(glval<int>) = VariableAddress[#return] : 
 # 2693|     r2693_2(glval<int>) = VariableAddress[y]       : 
 # 2693|     r2693_3(int)        = Load[y]                  : &:r2693_2, ~m?

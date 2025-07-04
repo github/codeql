@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.AssocItem
  */
 module Impl {
   /**
-   * A AssocItem. For example:
+   * An associated item in a `Trait` or `Impl`.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * trait T {fn foo(&self);}
+   * //       ^^^^^^^^^^^^^
    * ```
    */
   class AssocItem extends Generated::AssocItem { }

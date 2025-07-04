@@ -36,3 +36,4 @@ extensions:
       - ["lang:std", "crate::io::Read::chain", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["lang:std", "crate::io::Read::take", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["lang:std", "<crate::io::stdio::Stdin>::lock", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "<crate::io::Split as crate::iter::traits::iterator::Iterator>::next", "Argument[self]", "ReturnValue.Field[crate::option::Option::Some(0)].Field[crate::result::Result::Ok(0)]", "taint", "manual"]

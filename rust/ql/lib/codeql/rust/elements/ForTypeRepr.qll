@@ -8,9 +8,17 @@ import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.TypeRepr
 
 /**
- * A ForTypeRepr. For example:
+ * A higher-ranked trait bound.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn foo<T>(value: T)
+ * where
+ *     T: for<'a> Fn(&'a str) -> &'a str
+ * //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ * {
+ *     // ...
+ * }
  * ```
  */
 final class ForTypeRepr = Impl::ForTypeRepr;

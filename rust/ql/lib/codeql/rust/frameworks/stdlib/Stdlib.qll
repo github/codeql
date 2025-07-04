@@ -7,6 +7,7 @@ private import codeql.rust.Concepts
 private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 private import codeql.rust.controlflow.CfgNodes as CfgNodes
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.internal.PathResolution
 
 /**
  * A call to the `starts_with` method on a `Path`.
@@ -28,16 +29,7 @@ private class StartswithCall extends Path::SafeAccessCheck::Range, CfgNodes::Met
  * [1]: https://doc.rust-lang.org/std/option/enum.Option.html
  */
 class OptionEnum extends Enum {
-  OptionEnum() {
-    // todo: replace with canonical path, once calculated in QL
-    exists(Crate core, Module m |
-      core.getName() = "core" and
-      m = core.getModule().getItemList().getAnItem() and
-      m.getName().getText() = "option" and
-      this = m.getItemList().getAnItem() and
-      this.getName().getText() = "Option"
-    )
-  }
+  OptionEnum() { this.getCanonicalPath() = "core::option::Option" }
 
   /** Gets the `Some` variant. */
   Variant getSome() { result = this.getVariant("Some") }
@@ -49,16 +41,7 @@ class OptionEnum extends Enum {
  * [1]: https://doc.rust-lang.org/stable/std/result/enum.Result.html
  */
 class ResultEnum extends Enum {
-  ResultEnum() {
-    // todo: replace with canonical path, once calculated in QL
-    exists(Crate core, Module m |
-      core.getName() = "core" and
-      m = core.getModule().getItemList().getAnItem() and
-      m.getName().getText() = "result" and
-      this = m.getItemList().getAnItem() and
-      this.getName().getText() = "Result"
-    )
-  }
+  ResultEnum() { this.getCanonicalPath() = "core::result::Result" }
 
   /** Gets the `Ok` variant. */
   Variant getOk() { result = this.getVariant("Ok") }

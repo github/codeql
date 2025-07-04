@@ -13,9 +13,9 @@ private import codeql.rust.elements.internal.generated.Use
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A Use. For example:
+   * A `use` statement. For example:
    * ```rust
-   * todo!()
+   * use std::collections::HashMap;
    * ```
    */
   class Use extends Generated::Use {

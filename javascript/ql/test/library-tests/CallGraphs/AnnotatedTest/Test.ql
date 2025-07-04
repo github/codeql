@@ -31,7 +31,7 @@ class AnnotatedCall extends DataFlow::Node {
 
   AnnotatedCall() {
     this instanceof DataFlow::InvokeNode and
-    calls = getAnnotation(this.asExpr(), kind) and
+    calls = getAnnotation(this.getEnclosingExpr(), kind) and
     kind = "calls"
     or
     this instanceof DataFlow::PropRef and
@@ -79,12 +79,14 @@ query predicate spuriousCallee(AnnotatedCall call, Function target, int boundArg
 }
 
 query predicate missingCallee(
-  AnnotatedCall call, AnnotatedFunction target, int boundArgs, string kind
+  InvokeExpr invoke, AnnotatedFunction target, int boundArgs, string kind
 ) {
-  not callEdge(call, target, boundArgs) and
-  kind = call.getKind() and
-  target = call.getAnExpectedCallee(kind) and
-  boundArgs = call.getBoundArgsOrMinusOne()
+  forex(AnnotatedCall call | call.getEnclosingExpr() = invoke |
+    not callEdge(call, target, boundArgs) and
+    kind = call.getKind() and
+    target = call.getAnExpectedCallee(kind) and
+    boundArgs = call.getBoundArgsOrMinusOne()
+  )
 }
 
 query predicate badAnnotation(string name) {

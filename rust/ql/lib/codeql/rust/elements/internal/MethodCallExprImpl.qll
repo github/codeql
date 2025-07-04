@@ -14,8 +14,6 @@ private import codeql.rust.internal.TypeInference
  * be referenced directly.
  */
 module Impl {
-  private predicate isImplFunction(Function f) { f = any(ImplItemNode impl).getAnAssocItem() }
-
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * A method call expression. For example:
@@ -25,22 +23,7 @@ module Impl {
    * ```
    */
   class MethodCallExpr extends Generated::MethodCallExpr {
-    override Function getStaticTarget() {
-      result = resolveMethodCallExpr(this) and
-      (
-        // prioritize `impl` methods first
-        isImplFunction(result)
-        or
-        not isImplFunction(resolveMethodCallExpr(this)) and
-        (
-          // then trait methods with default implementations
-          result.hasBody()
-          or
-          // and finally trait methods without default implementations
-          not resolveMethodCallExpr(this).hasBody()
-        )
-      )
-    }
+    override Function getStaticTarget() { result = resolveMethodCallTarget(this) }
 
     private string toStringPart(int index) {
       index = 0 and

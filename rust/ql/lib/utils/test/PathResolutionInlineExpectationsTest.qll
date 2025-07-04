@@ -18,7 +18,8 @@ private module ResolveTest implements TestSig {
   private predicate commmentAt(string text, string filepath, int line) {
     exists(Comment c |
       c.getLocation().hasLocationInfo(filepath, line, _, _, _) and
-      c.getCommentText().trim() = text
+      c.getCommentText().trim() = text and
+      c.fromSource()
     )
   }
 
@@ -35,6 +36,8 @@ private module ResolveTest implements TestSig {
     exists(AstNode n |
       not n = any(Path parent).getQualifier() and
       location = n.getLocation() and
+      n.fromSource() and
+      not n.isFromMacroExpansion() and
       element = n.toString() and
       tag = "item"
     |

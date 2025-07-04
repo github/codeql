@@ -8,5 +8,5 @@
 import rust
 
 from MacroCall mc
-where not mc.hasExpanded()
+where mc.fromSource() and not mc.hasMacroCallExpansion()
 select mc, "Macro call was not resolved to a target."

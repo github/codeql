@@ -59,8 +59,9 @@ module Private {
 
     PipelineParameterImpl() {
       exists(int index |
-        i = FunParam(index) and
-        any(Synthesis s).pipelineParameterHasIndex(super.getDeclaringScopeImpl(), index)
+        i = FunParam(pragma[only_bind_into](index)) and
+        any(Synthesis s)
+            .pipelineParameterHasIndex(super.getDeclaringScopeImpl(), pragma[only_bind_into](index))
       )
     }
 

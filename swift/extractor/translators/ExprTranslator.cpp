@@ -691,7 +691,9 @@ codeql::CurrentContextIsolationExpr ExprTranslator::translateCurrentContextIsola
 
 codeql::TypeValueExpr ExprTranslator::translateTypeValueExpr(const swift::TypeValueExpr& expr) {
   auto entry = createExprEntry(expr);
-  entry.type_repr = dispatcher.fetchLabel(expr.getParamTypeRepr());
+  if (expr.getParamTypeRepr() && expr.getParamType()) {
+    entry.type_repr = dispatcher.fetchLabel(expr.getParamTypeRepr(), expr.getParamType());
+  }
   return entry;
 }
 

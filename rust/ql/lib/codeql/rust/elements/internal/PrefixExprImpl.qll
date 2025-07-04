@@ -26,6 +26,6 @@ module Impl {
 
     override string getOperatorName() { result = Generated::PrefixExpr.super.getOperatorName() }
 
-    override Expr getAnOperand() { result = this.getExpr() }
+    override Expr getOperand(int n) { n = 0 and result = this.getExpr() }
   }
 }

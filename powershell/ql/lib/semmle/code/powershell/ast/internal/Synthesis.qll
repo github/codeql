@@ -26,7 +26,8 @@ newtype VarKind =
   PipelineIteratorKind() or
   PipelineByPropertyNameIteratorKind(string name) {
     exists(Raw::ProcessBlock pb |
-      name = pb.getScriptBlock().getParamBlock().getAPipelineByPropertyNameParameter().getLowerCaseName()
+      name =
+        pb.getScriptBlock().getParamBlock().getAPipelineByPropertyNameParameter().getLowerCaseName()
     )
   }
 
@@ -771,28 +772,35 @@ private module IteratorAccessSynth {
     // TODO: We could join on something other than the string if we wanted (i.e., the raw parameter).
     v.getPropertyName().toLowerCase() = result and
     result =
-      pb.getScriptBlock()
-          .getParamBlock()
-          .getAPipelineByPropertyNameParameter()
-          .getLowerCaseName()
+      pb.getScriptBlock().getParamBlock().getAPipelineByPropertyNameParameter().getLowerCaseName()
   }
+
+  private Raw::Ast getParent(Raw::Ast a) { a.getParent() = result }
+
+  private predicate isVarAccess(Raw::VarAccess va) { any() }
+
+  private predicate isProcessBlock(Raw::ProcessBlock pb) { any() }
+
+  private Raw::ProcessBlock getProcessBlock(Raw::VarAccess va) =
+    doublyBoundedFastTC(getParent/1, isVarAccess/1, isProcessBlock/1)(va, result)
 
   private class IteratorAccessSynth extends Synthesis {
     final override predicate isRelevant(Raw::Ast a) {
-      exists(Raw::ProcessBlock pb, Raw::VarAccess va |
-        va = a and
-        pb = va.getParent+()
-      |
+      exists(Raw::VarAccess va | va = a |
         va.getUserPath() = "_"
         or
-        va.getUserPath().toLowerCase() =
-          pb.getScriptBlock().getParamBlock().getPipelineParameter().getLowerCaseName()
-        or
-        va.getUserPath().toLowerCase() =
-          pb.getScriptBlock()
-              .getParamBlock()
-              .getAPipelineByPropertyNameParameter()
-              .getLowerCaseName()
+        exists(Raw::ProcessBlock pb |
+          pragma[only_bind_into](pb) = getProcessBlock(pragma[only_bind_into](va))
+        |
+          va.getUserPath().toLowerCase() =
+            pb.getScriptBlock().getParamBlock().getPipelineParameter().getLowerCaseName()
+          or
+          va.getUserPath().toLowerCase() =
+            pb.getScriptBlock()
+                .getParamBlock()
+                .getAPipelineByPropertyNameParameter()
+                .getLowerCaseName()
+        )
       )
     }
 
@@ -810,7 +818,7 @@ private module IteratorAccessSynth {
 
     private PipelineOrPipelineByPropertyNameIteratorVariable varAccess(Raw::VarAccess va) {
       exists(Raw::ProcessBlock pb |
-        pb = va.getParent+() and
+        pb = getProcessBlock(va) and
         result = TVariableSynth(pb, _) and
         va.getUserPath().toLowerCase() = getAPipelineIteratorName(pb, result)
       )
@@ -896,6 +904,7 @@ private module PipelineAccess {
         exists(PipelineByPropertyNameParameter pipelineVar, Raw::PipelineByPropertyNameParameter p |
           i = processBlockPipelineByPropertyNameVarReadAccess(p.getLowerCaseName()) and
           getResultAst(p) = pipelineVar and
+          pipelineVar = TVariableSynth(pb.getScriptBlock(), _) and
           child = SynthChild(VarAccessSynthKind(pipelineVar))
         )
       )

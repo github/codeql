@@ -13,9 +13,11 @@ import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
 
 /**
- * A Static. For example:
+ * A static item declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * static X: i32 = 42;
  * ```
  */
 final class Static = Impl::Static;

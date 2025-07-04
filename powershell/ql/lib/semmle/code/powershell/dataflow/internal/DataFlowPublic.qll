@@ -536,6 +536,8 @@ class CallNode extends ExprNode {
    * Note that this predicate doesn't get the pipeline argument, if any.
    */
   Node getAnArgument() { result.asExpr() = call.getAnArgument() }
+
+  Node getCallee() { result.asExpr() = call.getCallee() }
 }
 
 /** A call to operator `&`, viwed as a node in a data flow graph. */

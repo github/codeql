@@ -40,8 +40,4 @@ module WeakSensitiveDataHashingConfig implements DataFlow::ConfigSig {
   }
 }
 
-deprecated module WeakHashingConfig = WeakSensitiveDataHashingConfig;
-
 module WeakSensitiveDataHashingFlow = TaintTracking::Global<WeakSensitiveDataHashingConfig>;
-
-deprecated module WeakHashingFlow = WeakSensitiveDataHashingFlow;

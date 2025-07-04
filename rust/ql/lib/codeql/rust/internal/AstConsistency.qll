@@ -24,10 +24,7 @@ query predicate multipleLocations(Locatable e) { strictcount(e.getLocation()) > 
 /**
  * Holds if `e` does not have a `Location`.
  */
-query predicate noLocation(Locatable e) {
-  not exists(e.getLocation()) and
-  not e.(AstNode).getParentNode*() = any(Crate c).getModule()
-}
+query predicate noLocation(Locatable e) { not exists(e.getLocation()) }
 
 private predicate multiplePrimaryQlClasses(Element e) {
   strictcount(string cls | cls = e.getAPrimaryQlClass() and cls != "VariableAccess") > 1

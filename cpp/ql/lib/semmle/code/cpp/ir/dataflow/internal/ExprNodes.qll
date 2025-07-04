@@ -45,6 +45,28 @@ private module Cached {
     )
   }
 
+  private Expr getRankedElementExpr(ArrayAggregateLiteral aggr, int rnk) {
+    result =
+      rank[rnk + 1](Expr e, int elementIndex, int position |
+        e = aggr.getElementExpr(elementIndex, position)
+      |
+        e order by elementIndex, position
+      )
+  }
+
+  private class LastArrayAggregateStore extends StoreInstruction {
+    ArrayAggregateLiteral aggr;
+
+    LastArrayAggregateStore() {
+      exists(int rnk |
+        this.getSourceValue().getUnconvertedResultExpression() = getRankedElementExpr(aggr, rnk) and
+        not exists(getRankedElementExpr(aggr, rnk + 1))
+      )
+    }
+
+    ArrayAggregateLiteral getArrayAggregateLiteral() { result = aggr }
+  }
+
   private Expr getConvertedResultExpressionImpl0(Instruction instr) {
     // IR construction inserts an additional cast to a `size_t` on the extent
     // of a `new[]` expression. The resulting `ConvertInstruction` doesn't have
@@ -95,6 +117,16 @@ private module Cached {
       tco.producesExprResult() and
       result = asDefinitionImpl0(instr)
     )
+    or
+    // IR construction breaks an array aggregate literal `{1, 2, 3}` into a
+    // sequence of `StoreInstruction`s. So there's no instruction `i` for which
+    // `i.getUnconvertedResultExpression() instanceof ArrayAggregateLiteral`.
+    // So we map the instruction node corresponding to the last `Store`
+    // instruction of the sequence to the result of the array aggregate
+    // literal. This makes sense since this store will immediately flow into
+    // the indirect node representing the array. So this node does represent
+    // the array after it has been fully initialized.
+    result = instr.(LastArrayAggregateStore).getArrayAggregateLiteral()
   }
 
   private Expr getConvertedResultExpressionImpl(Instruction instr) {
@@ -264,6 +296,41 @@ private module Cached {
     e = getConvertedResultExpression(node.asInstruction(), n)
   }
 
+  /**
+   * The IR doesn't have an instruction `i` for which this holds:
+   * ```
+   * i.getUnconvertedResultExpression() instanceof ClassAggregateLiteral
+   * ```
+   * and thus we don't automatically get a dataflow node for which:
+   * ```
+   * node.asExpr() instanceof ClassAggregateLiteral
+   * ```
+   * This is because the IR represents a `ClassAggregateLiteral` as a sequence
+   * of field writes. To work around this we map `asExpr` on the
+   * `PostUpdateNode` for the last field write to the class aggregate literal.
+   */
+  private class ClassAggregateInitializerPostUpdateNode extends PostFieldUpdateNode {
+    ClassAggregateLiteral aggr;
+
+    ClassAggregateInitializerPostUpdateNode() {
+      exists(Node node1, FieldContent fc, int position, StoreInstruction store |
+        store.getSourceValue().getUnconvertedResultExpression() =
+          aggr.getFieldExpr(fc.getField(), position) and
+        node1.asInstruction() = store and
+        // This is the last field write from the aggregate initialization.
+        not exists(aggr.getFieldExpr(_, position + 1)) and
+        storeStep(node1, fc, this)
+      )
+    }
+
+    ClassAggregateLiteral getClassAggregateLiteral() { result = aggr }
+  }
+
+  private predicate exprNodeShouldBePostUpdateNode(Node node, Expr e, int n) {
+    node.(ClassAggregateInitializerPostUpdateNode).getClassAggregateLiteral() = e and
+    n = 0
+  }
+
   /** Holds if `node` should be an `IndirectInstruction` that maps `node.asIndirectExpr()` to `e`. */
   private predicate indirectExprNodeShouldBeIndirectInstruction(
     IndirectInstruction node, Expr e, int n, int indirectionIndex
@@ -294,7 +361,8 @@ private module Cached {
     exprNodeShouldBeInstruction(_, e, n) or
     exprNodeShouldBeOperand(_, e, n) or
     exprNodeShouldBeIndirectOutNode(_, e, n) or
-    exprNodeShouldBeIndirectOperand(_, e, n)
+    exprNodeShouldBeIndirectOperand(_, e, n) or
+    exprNodeShouldBePostUpdateNode(_, e, n)
   }
 
   private class InstructionExprNode extends ExprNodeBase, InstructionNode {
@@ -440,6 +508,12 @@ private module Cached {
     IndirectOperandExprNode() { exprNodeShouldBeIndirectOperand(this, _, _) }
 
     final override Expr getConvertedExpr(int n) { exprNodeShouldBeIndirectOperand(this, result, n) }
+  }
+
+  private class PostUpdateExprNode extends ExprNodeBase instanceof PostUpdateNode {
+    PostUpdateExprNode() { exprNodeShouldBePostUpdateNode(this, _, _) }
+
+    final override Expr getConvertedExpr(int n) { exprNodeShouldBePostUpdateNode(this, result, n) }
   }
 
   /**

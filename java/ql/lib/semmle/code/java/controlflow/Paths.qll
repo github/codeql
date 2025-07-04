@@ -47,7 +47,7 @@ private predicate callAlwaysPerformsAction(Call call, ActionConfiguration conf) 
 private predicate actionDominatesExit(Callable callable, ActionConfiguration conf) {
   exists(ExitBlock exit |
     exit.getEnclosingCallable() = callable and
-    actionBlock(conf).bbDominates(exit)
+    actionBlock(conf).dominates(exit)
   )
 }
 
@@ -56,12 +56,12 @@ private BasicBlock nonDominatingActionBlock(ActionConfiguration conf) {
   exists(ExitBlock exit |
     result = actionBlock(conf) and
     exit.getEnclosingCallable() = result.getEnclosingCallable() and
-    not result.bbDominates(exit)
+    not result.dominates(exit)
   )
 }
 
 private class JoinBlock extends BasicBlock {
-  JoinBlock() { 2 <= strictcount(this.getABBPredecessor()) }
+  JoinBlock() { 2 <= strictcount(this.getAPredecessor()) }
 }
 
 /**
@@ -72,8 +72,8 @@ private predicate postActionBlock(BasicBlock bb, ActionConfiguration conf) {
   bb = nonDominatingActionBlock(conf)
   or
   if bb instanceof JoinBlock
-  then forall(BasicBlock pred | pred = bb.getABBPredecessor() | postActionBlock(pred, conf))
-  else postActionBlock(bb.getABBPredecessor(), conf)
+  then forall(BasicBlock pred | pred = bb.getAPredecessor() | postActionBlock(pred, conf))
+  else postActionBlock(bb.getAPredecessor(), conf)
 }
 
 /** Holds if every path through `callable` goes through at least one action node. */

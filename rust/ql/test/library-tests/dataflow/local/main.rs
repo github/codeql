@@ -87,7 +87,7 @@ fn block_expression3(b: bool) -> i64 {
 
 fn box_deref() {
     let i = Box::new(source(7));
-    sink(*i); // $ MISSING: hasValueFlow=7
+    sink(*i); // $ hasValueFlow=7
 }
 
 // -----------------------------------------------------------------------------

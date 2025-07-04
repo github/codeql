@@ -49,7 +49,7 @@ extensions:
       - ["System.Data.Odbc", "OdbcParameter", False, "ToString", "()", "", "Argument[this].Property[System.Data.Odbc.OdbcParameter.ParameterName]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Data.Odbc", "OdbcParameter", False, "ToString", "()", "", "Argument[this].SyntheticField[System.Data.Odbc.OdbcParameter._parameterName]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Data.Odbc", "OdbcParameterCollection", False, "Add", "(System.Data.Odbc.OdbcParameter)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Data.Odbc", "OdbcParameterCollection", False, "Add", "(System.Data.Odbc.OdbcParameter)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Data.Odbc", "OdbcParameterCollection", False, "Add", "(System.Data.Odbc.OdbcParameter)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
       - ["System.Data.Odbc", "OdbcParameterCollection", False, "Add", "(System.Data.Odbc.OdbcParameter)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Data.Odbc", "OdbcParameterCollection", False, "Add", "(System.Data.Odbc.OdbcParameter)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Data.Odbc", "OdbcParameterCollection", False, "Add", "(System.String,System.Data.Odbc.OdbcType)", "", "Argument[0]", "ReturnValue.SyntheticField[System.Data.Odbc.OdbcParameter._parameterName]", "value", "dfc-generated"]

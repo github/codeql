@@ -7,6 +7,7 @@ _args = [
     "//rust/ast-generator:Cargo.toml",
     "//misc/codegen",
     "//rust:codegen-conf",
+    "@rules_rust//tools/rustfmt:upstream_rustfmt",
 ]
 
 sh_binary(

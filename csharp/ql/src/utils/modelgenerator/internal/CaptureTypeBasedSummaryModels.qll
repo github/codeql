@@ -39,7 +39,7 @@ private predicate localTypeParameter(Callable callable, TypeParameter tp) {
  */
 private predicate parameter(Callable callable, string input, TypeParameter tp) {
   exists(Parameter p |
-    input = ModelGeneratorInput::parameterAccess(p) and
+    input = ModelGeneratorInput::parameterApproximateAccess(p) and
     p = callable.getAParameter() and
     (
       // Parameter of type tp

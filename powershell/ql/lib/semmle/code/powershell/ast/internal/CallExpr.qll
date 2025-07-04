@@ -26,10 +26,16 @@ class CallExpr extends Expr, TCallExpr {
    */
   Expr getCallee() { none() }
 
-  /** Holds if an argument with name `name` is provided to this call. */
+  /**
+   * Holds if an argument with name `name` is provided to this call.
+   * Note: `name` is normalized to lower case.
+   */
   final predicate hasNamedArgument(string name) { exists(this.getNamedArgument(name)) }
 
-  /** Gets the argument to this call with the name `name`. */
+  /**
+   * Gets the named argument with the given name.
+   * Note: `name` is normalized to lower case.
+   */
   Expr getNamedArgument(string name) { none() }
 
   /** Gets any argument to this call. */

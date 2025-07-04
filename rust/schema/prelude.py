@@ -116,7 +116,6 @@ class ExtractorStep(Element):
 class Crate(Locatable):
     name: optional[string]
     version: optional[string]
-    module: optional["Module"]
     cfg_options: list[string]
     named_dependencies: list["NamedCrate"] | ql.internal
 

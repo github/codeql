@@ -1,0 +1,35 @@
+# partial model of windows system calls
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sourceModel
+    data: # namespace, type, subtypes, name, signature, ext, output, kind, provenance
+      # processenv.h
+      - ["", "", False, "GetCommandLineA", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "GetCommandLineW", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "GetEnvironmentStringsA", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "GetEnvironmentStringsW", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "GetEnvironmentVariableA", "", "", "Argument[*1]", "local", "manual"]
+      - ["", "", False, "GetEnvironmentVariableW", "", "", "Argument[*1]", "local", "manual"]
+      # fileapi.h
+      - ["", "", False, "ReadFile", "", "", "Argument[*1]", "local", "manual"]
+      - ["", "", False, "ReadFileEx", "", "", "Argument[*1]", "local", "manual"]
+      # memoryapi.h
+      - ["", "", False, "MapViewOfFile", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "MapViewOfFile2", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "MapViewOfFile3", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "MapViewOfFile3FromApp", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "MapViewOfFileEx", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "MapViewOfFileFromApp", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "MapViewOfFileNuma2", "", "", "ReturnValue[*]", "local", "manual"]
+      # ntifs.h
+      - ["", "", False, "NtReadFile", "", "", "Argument[*5]", "local", "manual"]
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      # shellapi.h
+      - ["", "", False, "CommandLineToArgvA", "", "", "Argument[*0]", "ReturnValue[**]", "taint", "manual"]
+      - ["", "", False, "CommandLineToArgvW", "", "", "Argument[*0]", "ReturnValue[**]", "taint", "manual"]
+      # fileapi.h
+      - ["", "", False, "ReadFileEx", "", "", "Argument[*3].Field[@hEvent]", "Argument[4].Parameter[*2].Field[@hEvent]", "value", "manual"]

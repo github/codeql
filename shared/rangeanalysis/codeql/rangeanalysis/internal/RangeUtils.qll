@@ -52,10 +52,6 @@ module MakeUtils<LocationSig Location, Semantic<Location> Lang, DeltaSig D> {
       (testIsTrue = true or testIsTrue = false) and
       eqpolarity.booleanXor(testIsTrue).booleanNot() = isEq
     )
-    or
-    exists(boolean testIsTrue0 |
-      implies_v2(result, testIsTrue, eqFlowCond(v, e, delta, isEq, testIsTrue0), testIsTrue0)
-    )
   }
 
   /**
@@ -174,28 +170,16 @@ module MakeUtils<LocationSig Location, Semantic<Location> Lang, DeltaSig D> {
   }
 
   /**
-   * Holds if `guard` directly controls the position `controlled` with the
-   * value `testIsTrue`.
-   */
-  pragma[nomagic]
-  predicate guardDirectlyControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-    guard.directlyControls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
-    or
-    exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
-      guard.directlyControls(controlledEdge.getOrigBlock(), testIsTrue) or
-      guard.hasBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(), testIsTrue)
-    )
-  }
-
-  /**
    * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
    */
   predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-    guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
+    guard.controls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
     or
-    exists(Guard guard0, boolean testIsTrue0 |
-      implies_v2(guard0, testIsTrue0, guard, testIsTrue) and
-      guardControlsSsaRead(guard0, controlled, testIsTrue0)
+    exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
+      guard.controls(controlledEdge.getOrigBlock(), testIsTrue) or
+      guard
+          .controlsBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(),
+            testIsTrue)
     )
   }
 
@@ -205,7 +189,7 @@ module MakeUtils<LocationSig Location, Semantic<Location> Lang, DeltaSig D> {
   predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
     edge.phiInput(phi, inp) and
     (
-      phi.getBasicBlock().bbDominates(edge.getOrigBlock()) or
+      phi.getBasicBlock().dominates(edge.getOrigBlock()) or
       irreducibleSccEdge(edge.getOrigBlock(), phi.getBasicBlock())
     )
   }
@@ -227,7 +211,7 @@ module MakeUtils<LocationSig Location, Semantic<Location> Lang, DeltaSig D> {
 
   private predicate trimmedEdge(BasicBlock pred, BasicBlock succ) {
     getABasicBlockSuccessor(pred) = succ and
-    not succ.bbDominates(pred)
+    not succ.dominates(pred)
   }
 
   /**

@@ -43,7 +43,6 @@ ql/python/ql/src/Security/CWE-730/ReDoS.ql
 ql/python/ql/src/Security/CWE-730/RegexInjection.ql
 ql/python/ql/src/Security/CWE-732/WeakFilePermissions.ql
 ql/python/ql/src/Security/CWE-776/XmlBomb.ql
-ql/python/ql/src/Security/CWE-798/HardcodedCredentials.ql
 ql/python/ql/src/Security/CWE-918/FullServerSideRequestForgery.ql
 ql/python/ql/src/Security/CWE-918/PartialServerSideRequestForgery.ql
 ql/python/ql/src/Security/CWE-943/NoSqlInjection.ql

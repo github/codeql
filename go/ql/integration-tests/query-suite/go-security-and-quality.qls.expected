@@ -30,6 +30,7 @@ ql/go/ql/src/Security/CWE-022/TaintedPath.ql
 ql/go/ql/src/Security/CWE-022/UnsafeUnzipSymlink.ql
 ql/go/ql/src/Security/CWE-022/ZipSlip.ql
 ql/go/ql/src/Security/CWE-078/CommandInjection.ql
+ql/go/ql/src/Security/CWE-079/HtmlTemplateEscapingBypassXss.ql
 ql/go/ql/src/Security/CWE-079/ReflectedXss.ql
 ql/go/ql/src/Security/CWE-089/SqlInjection.ql
 ql/go/ql/src/Security/CWE-089/StringBreak.ql
@@ -50,6 +51,5 @@ ql/go/ql/src/Security/CWE-640/EmailInjection.ql
 ql/go/ql/src/Security/CWE-643/XPathInjection.ql
 ql/go/ql/src/Security/CWE-681/IncorrectIntegerConversionQuery.ql
 ql/go/ql/src/Security/CWE-770/UncontrolledAllocationSize.ql
-ql/go/ql/src/Security/CWE-798/HardcodedCredentials.ql
 ql/go/ql/src/Security/CWE-918/RequestForgery.ql
 ql/go/ql/src/Summary/LinesOfCode.ql

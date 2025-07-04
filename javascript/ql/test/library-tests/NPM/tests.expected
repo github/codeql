@@ -39,7 +39,6 @@ modules
 | src/node_modules/nested | nested | src/node_modules/nested/tst3.js:1:1:2:13 | <toplevel> |
 | src/node_modules/nested/node_modules/a | a | src/node_modules/nested/node_modules/a/index.js:1:1:1:25 | <toplevel> |
 | src/node_modules/parent-module | parent-module | src/node_modules/parent-module/main.js:1:1:2:0 | <toplevel> |
-| src/node_modules/parent-module | parent-module | src/node_modules/parent-module/sub-module/main.js:1:1:2:0 | <toplevel> |
 | src/node_modules/parent-module/sub-module | parent-module/sub-module | src/node_modules/parent-module/sub-module/main.js:1:1:2:0 | <toplevel> |
 | src/node_modules/third-party-module | third-party-module | src/node_modules/third-party-module/fancy.js:1:1:4:0 | <toplevel> |
 npm

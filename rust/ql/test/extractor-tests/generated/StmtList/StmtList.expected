@@ -1,1 +1,2 @@
-| gen_stmt_list.rs:3:27:6:1 | StmtList | getNumberOfAttrs: | 0 | getNumberOfStatements: | 0 | hasTailExpr: | yes |
+| gen_stmt_list.rs:3:27:12:1 | StmtList | getNumberOfAttrs: | 0 | getNumberOfStatements: | 0 | hasTailExpr: | yes |
+| gen_stmt_list.rs:7:5:10:5 | StmtList | getNumberOfAttrs: | 0 | getNumberOfStatements: | 2 | hasTailExpr: | no |

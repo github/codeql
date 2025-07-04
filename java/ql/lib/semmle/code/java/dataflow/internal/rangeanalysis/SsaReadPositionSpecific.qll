@@ -19,7 +19,7 @@ private predicate id(BB::ExprParent x, BB::ExprParent y) { x = y }
 
 private predicate idOfAst(BB::ExprParent x, int y) = equivalenceRelation(id/2)(x, y)
 
-private predicate idOf(BasicBlock x, int y) { idOfAst(x.getAstNode(), y) }
+private predicate idOf(BasicBlock x, int y) { idOfAst(x.getFirstNode().getAstNode(), y) }
 
 private int getId(BasicBlock bb) { idOf(bb, result) }
 

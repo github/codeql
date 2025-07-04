@@ -2,7 +2,7 @@ package p;
 
 public class MultiPaths {
 
-  // heuristic-summary=p;MultiPaths;true;cond;(String,String);;Argument[0];ReturnValue;taint;df-generated
+  // heuristic-summary=p;MultiPaths;true;cond;(String,String);;Argument[0];ReturnValue;value;df-generated
   // contentbased-summary=p;MultiPaths;true;cond;(String,String);;Argument[0];ReturnValue;value;dfc-generated
   public String cond(String x, String other) {
     if (x == other) {

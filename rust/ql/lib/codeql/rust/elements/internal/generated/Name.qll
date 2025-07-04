@@ -14,9 +14,12 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
-   * A Name. For example:
+   * An identifier name.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let foo = 1;
+   * //  ^^^
    * ```
    * INTERNAL: Do not reference the `Generated::Name` class directly.
    * Use the subclass `Name`, where the following predicates are available.

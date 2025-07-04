@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["repo:https://github.com/rust-random/rand:rand_core", "<crate::UnwrapMut>::re", "Argument[self].Field[0]", "ReturnValue.Field[crate::UnwrapMut(0)]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_core", "<crate::UnwrapMut>::re", "Argument[self].Field[crate::UnwrapMut(0)]", "ReturnValue.Field[crate::UnwrapMut(0)]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_core", "<crate::block::BlockRng64 as crate::RngCore>::next_u32", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_core", "<crate::block::BlockRng64>::generate_and_set", "Argument[0]", "Argument[self].Field[crate::block::BlockRng64::index]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_core", "<crate::block::BlockRng64>::index", "Argument[self].Field[crate::block::BlockRng64::index]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_core", "<crate::block::BlockRng64>::new", "Argument[0]", "ReturnValue.Field[crate::block::BlockRng64::core]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_core", "<crate::block::BlockRng>::generate_and_set", "Argument[0]", "Argument[self].Field[crate::block::BlockRng::index]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_core", "<crate::block::BlockRng>::index", "Argument[self].Field[crate::block::BlockRng::index]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_core", "<crate::block::BlockRng>::new", "Argument[0]", "ReturnValue.Field[crate::block::BlockRng::core]", "value", "dfc-generated"]

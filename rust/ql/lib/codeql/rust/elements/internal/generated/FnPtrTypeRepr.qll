@@ -17,9 +17,12 @@ import codeql.rust.elements.internal.TypeReprImpl::Impl as TypeReprImpl
  */
 module Generated {
   /**
-   * A FnPtrTypeRepr. For example:
+   * A function pointer type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let f: fn(i32) -> i32;
+   * //     ^^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::FnPtrTypeRepr` class directly.
    * Use the subclass `FnPtrTypeRepr`, where the following predicates are available.

@@ -19,8 +19,6 @@ predicate ssaUpdateStep = U::ssaUpdateStep/3;
 
 predicate valueFlowStep = U::valueFlowStep/3;
 
-predicate guardDirectlyControlsSsaRead = U::guardDirectlyControlsSsaRead/3;
-
 predicate guardControlsSsaRead = U::guardControlsSsaRead/3;
 
 predicate eqFlowCond = U::eqFlowCond/5;

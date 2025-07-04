@@ -1,9 +1,8 @@
 import cpp
-import experimental.quantum.Language
-import experimental.quantum.OpenSSL.LibraryDetector
-import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
-import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstanceBase
-import OpenSSLAlgorithmValueConsumerBase
+private import experimental.quantum.Language
+private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
+private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstanceBase
+private import OpenSSLAlgorithmValueConsumerBase
 
 abstract class CipherAlgorithmValueConsumer extends OpenSSLAlgorithmValueConsumer { }
 
@@ -14,7 +13,6 @@ class EVPCipherAlgorithmValueConsumer extends CipherAlgorithmValueConsumer {
 
   EVPCipherAlgorithmValueConsumer() {
     resultNode.asExpr() = this and
-    isPossibleOpenSSLFunction(this.(Call).getTarget()) and
     (
       this.(Call).getTarget().getName() in [
           "EVP_get_cipherbyname", "EVP_get_cipherbyobj", "EVP_get_cipherbynid"

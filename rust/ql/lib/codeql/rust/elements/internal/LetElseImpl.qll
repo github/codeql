@@ -13,9 +13,14 @@ private import codeql.rust.elements.internal.generated.LetElse
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A LetElse. For example:
+   * An else block in a let-else statement.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let Some(x) = opt else {
+   *     return;
+   * };
+   * //                ^^^^^^
    * ```
    */
   class LetElse extends Generated::LetElse {

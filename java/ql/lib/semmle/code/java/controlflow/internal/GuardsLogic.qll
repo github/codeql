@@ -239,7 +239,7 @@ SsaVariable getADefinition(SsaVariable v, boolean fromBackEdge) {
   exists(SsaVariable inp, BasicBlock bb, boolean fbe |
     v.(SsaPhiNode).hasInputFromBlock(inp, bb) and
     result = getADefinition(inp, fbe) and
-    (if v.getBasicBlock().bbDominates(bb) then fromBackEdge = true else fromBackEdge = fbe)
+    (if v.getBasicBlock().dominates(bb) then fromBackEdge = true else fromBackEdge = fbe)
   )
 }
 
@@ -290,10 +290,10 @@ private predicate guardImpliesEqual(Guard guard, boolean branch, SsaVariable v, 
   )
 }
 
-private ControlFlowNode getAGuardBranchSuccessor(Guard g, boolean branch) {
-  result = g.(Expr).getControlFlowNode().(ConditionNode).getABranchSuccessor(branch)
+private BasicBlock getAGuardBranchSuccessor(Guard g, boolean branch) {
+  result.getFirstNode() = g.(Expr).getControlFlowNode().(ConditionNode).getABranchSuccessor(branch)
   or
-  result = g.(SwitchCase).getControlFlowNode() and branch = true
+  result.getFirstNode() = g.(SwitchCase).getControlFlowNode() and branch = true
 }
 
 /**
@@ -306,7 +306,7 @@ private predicate guardControlsPhiBranch(
   guard.directlyControls(upd.getBasicBlock(), branch) and
   upd.getDefiningExpr().(VariableAssign).getSource() = e and
   upd = phi.getAPhiInput() and
-  guard.getBasicBlock().bbStrictlyDominates(phi.getBasicBlock())
+  guard.getBasicBlock().strictlyDominates(phi.getBasicBlock())
 }
 
 /**
@@ -331,7 +331,7 @@ private predicate conditionalAssign(SsaVariable v, Guard guard, boolean branch, 
     forall(SsaVariable other | other != upd and other = phi.getAPhiInput() |
       guard.directlyControls(other.getBasicBlock(), branch.booleanNot())
       or
-      other.getBasicBlock().bbDominates(guard.getBasicBlock()) and
+      other.getBasicBlock().dominates(guard.getBasicBlock()) and
       not other.isLiveAtEndOfBlock(getAGuardBranchSuccessor(guard, branch))
     )
   )

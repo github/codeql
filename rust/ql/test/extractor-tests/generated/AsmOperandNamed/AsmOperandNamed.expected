@@ -1,0 +1,2 @@
+| gen_asm_operand_named.rs:8:34:8:43 | AsmOperandNamed | hasAsmOperand: | yes | hasName: | no |
+| gen_asm_operand_named.rs:8:46:8:62 | AsmOperandNamed | hasAsmOperand: | yes | hasName: | yes |

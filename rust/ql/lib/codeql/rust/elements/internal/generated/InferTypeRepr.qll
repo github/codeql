@@ -14,9 +14,12 @@ import codeql.rust.elements.internal.TypeReprImpl::Impl as TypeReprImpl
  */
 module Generated {
   /**
-   * A InferTypeRepr. For example:
+   * An inferred type (`_`).
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let x: _ = 42;
+   * //     ^
    * ```
    * INTERNAL: Do not reference the `Generated::InferTypeRepr` class directly.
    * Use the subclass `InferTypeRepr`, where the following predicates are available.

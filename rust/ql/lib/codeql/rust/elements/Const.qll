@@ -13,9 +13,11 @@ import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
 
 /**
- * A Const. For example:
+ * A constant item declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * const X: i32 = 42;
  * ```
  */
 final class Const = Impl::Const;

@@ -7,4 +7,14 @@ private import internal.AsmRegSpecImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.NameRef
 
+/**
+ * A register specification in an inline assembly block.
+ *
+ * For example:
+ * ```rust
+ * use core::arch::asm;
+ * asm!("mov {0}, {1}", out("eax") x, in(EBX) y);
+ * //                        ^^^         ^^^
+ * ```
+ */
 final class AsmRegSpec = Impl::AsmRegSpec;

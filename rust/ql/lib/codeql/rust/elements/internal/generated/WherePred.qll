@@ -18,9 +18,12 @@ import codeql.rust.elements.TypeRepr
  */
 module Generated {
   /**
-   * A WherePred. For example:
+   * A predicate in a where clause.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T, U>(t: T, u: U) where T: Debug, U: Clone {}
+   * //                             ^^^^^^^^  ^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::WherePred` class directly.
    * Use the subclass `WherePred`, where the following predicates are available.

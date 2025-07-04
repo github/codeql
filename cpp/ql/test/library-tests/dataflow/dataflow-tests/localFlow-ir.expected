@@ -17,7 +17,6 @@
 | example.c:17:11:17:16 | *definition of coords | example.c:17:11:17:16 | *definition of coords |
 | example.c:17:11:17:16 | *definition of coords | example.c:17:11:17:16 | *definition of coords |
 | example.c:17:11:17:16 | *definition of coords | example.c:24:13:24:18 | *coords |
-| example.c:17:11:17:16 | *definition of coords [post update] | example.c:17:11:17:16 | *definition of coords |
 | example.c:17:11:17:16 | *definition of coords [post update] | example.c:24:13:24:18 | *coords |
 | example.c:17:11:17:16 | definition of coords | example.c:17:11:17:16 | *definition of coords |
 | example.c:17:11:17:16 | definition of coords | example.c:17:11:17:16 | definition of coords |
@@ -27,6 +26,7 @@
 | example.c:17:11:17:16 | definition of coords | example.c:24:13:24:18 | coords |
 | example.c:17:11:17:16 | definition of coords [post update] | example.c:17:11:17:16 | definition of coords |
 | example.c:17:11:17:16 | definition of coords [post update] | example.c:24:13:24:18 | coords |
+| example.c:17:11:17:16 | {...} | example.c:17:11:17:16 | *definition of coords |
 | example.c:17:19:17:22 | {...} | example.c:17:19:17:22 | {...} |
 | example.c:17:21:17:21 | 0 | example.c:17:21:17:21 | 0 |
 | example.c:19:6:19:6 | *b | example.c:15:37:15:37 | *b |

@@ -37,6 +37,7 @@ Go framework & library support
    `XPath <https://github.com/antchfx/xpath>`_,``github.com/antchfx/xpath*``,,,4
    `appleboy/gin-jwt <https://github.com/appleboy/gin-jwt>`_,``github.com/appleboy/gin-jwt*``,,,1
    `beego <https://beego.me/>`_,"``github.com/astaxie/beego*``, ``github.com/beego/beego*``",102,63,213
+   `bigquery <https://pkg.go.dev/cloud.google.com/go/bigquery>`_,``cloud.google.com/go/bigquery*``,,,1
    `chi <https://go-chi.io/>`_,``github.com/go-chi/chi*``,3,,
    `cristalhq/jwt <https://github.com/cristalhq/jwt>`_,``github.com/cristalhq/jwt*``,,,1
    `env <https://github.com/caarlos0/env>`_,``github.com/caarlos0/env*``,5,2,
@@ -53,7 +54,7 @@ Go framework & library support
    `goproxy <https://github.com/elazarl/goproxy>`_,``github.com/elazarl/goproxy*``,2,2,2
    `gorilla/mux <https://github.com/gorilla/mux>`_,``github.com/gorilla/mux*``,1,,
    `gorilla/websocket <https://github.com/gorilla/websocket>`_,``github.com/gorilla/websocket*``,3,,
-   `gorqlite <https://github.com/rqlite/gorqlite>`_,"``github.com/raindog308/gorqlite*``, ``github.com/rqlite/gorqlite*``",16,4,48
+   `gorqlite <https://github.com/rqlite/gorqlite>`_,"``github.com/raindog308/gorqlite*``, ``github.com/rqlite/gorqlite*``, ``github.com/kanikanema/gorqlite*``",24,6,72
    `goxpath <https://github.com/ChrisTrenkamp/goxpath/wiki>`_,``github.com/ChrisTrenkamp/goxpath*``,,,3
    `htmlquery <https://github.com/antchfx/htmlquery>`_,``github.com/antchfx/htmlquery*``,,,4
    `json-iterator <https://github.com/json-iterator/go>`_,``github.com/json-iterator/go*``,,4,
@@ -73,6 +74,5 @@ Go framework & library support
    `xpathparser <https://github.com/santhosh-tekuri/xpathparser>`_,``github.com/santhosh-tekuri/xpathparser*``,,,2
    `yaml <https://gopkg.in/yaml.v3>`_,``gopkg.in/yaml*``,,9,
    `zap <https://go.uber.org/zap>`_,``go.uber.org/zap*``,,11,33
-   Others,``github.com/kanikanema/gorqlite``,8,2,24
-   Totals,,688,1069,1556
+   Totals,,688,1069,1557
 

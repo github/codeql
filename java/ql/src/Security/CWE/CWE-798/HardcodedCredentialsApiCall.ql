@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.8
- * @precision medium
+ * @precision low
  * @id java/hardcoded-credential-api-call
  * @tags security
  *       external/cwe/cwe-798

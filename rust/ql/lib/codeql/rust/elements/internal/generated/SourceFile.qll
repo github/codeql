@@ -16,9 +16,12 @@ import codeql.rust.elements.Item
  */
 module Generated {
   /**
-   * A SourceFile. For example:
+   * A source file.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * // main.rs
+   * fn main() {}
    * ```
    * INTERNAL: Do not reference the `Generated::SourceFile` class directly.
    * Use the subclass `SourceFile`, where the following predicates are available.

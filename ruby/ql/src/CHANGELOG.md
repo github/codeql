@@ -1,3 +1,13 @@
+## 1.3.2
+
+No user-facing changes.
+
+## 1.3.1
+
+### Minor Analysis Improvements
+
+* The query `rb/hardcoded-credentials` has been removed from all query suites.
+
 ## 1.3.0
 
 ### Query Metadata Changes

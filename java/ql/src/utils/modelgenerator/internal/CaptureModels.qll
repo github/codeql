@@ -92,7 +92,7 @@ module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Locatio
 
   string qualifierString() { result = "Argument[this]" }
 
-  string parameterAccess(J::Parameter p) {
+  string parameterApproximateAccess(J::Parameter p) {
     if
       p.getType() instanceof J::Array and
       not isPrimitiveTypeUsedForBulkData(p.getType().(J::Array).getElementType())
@@ -103,20 +103,20 @@ module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Locatio
       else result = "Argument[" + p.getPosition() + "]"
   }
 
-  string parameterContentAccess(J::Parameter p) { result = "Argument[" + p.getPosition() + "]" }
+  string parameterExactAccess(J::Parameter p) { result = "Argument[" + p.getPosition() + "]" }
 
   class InstanceParameterNode = DataFlow::InstanceParameterNode;
 
   bindingset[c]
-  string paramReturnNodeAsOutput(Callable c, ParameterPosition pos) {
-    result = parameterAccess(c.getParameter(pos))
+  string paramReturnNodeAsApproximateOutput(Callable c, ParameterPosition pos) {
+    result = parameterApproximateAccess(c.getParameter(pos))
     or
     result = qualifierString() and pos = -1
   }
 
   bindingset[c]
-  string paramReturnNodeAsContentOutput(Callable c, ParameterPosition pos) {
-    result = parameterContentAccess(c.getParameter(pos))
+  string paramReturnNodeAsExactOutput(Callable c, ParameterPosition pos) {
+    result = parameterExactAccess(c.getParameter(pos))
     or
     result = qualifierString() and pos = -1
   }

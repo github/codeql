@@ -1,8 +1,9 @@
 import cpp
-import experimental.quantum.Language
-import KnownAlgorithmConstants
-import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
-import AlgToAVCFlow
+private import experimental.quantum.Language
+private import KnownAlgorithmConstants
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstanceBase
+private import AlgToAVCFlow
 
 predicate knownOpenSSLConstantToHashFamilyType(
   KnownOpenSSLHashAlgorithmConstant e, Crypto::THashType type
@@ -75,7 +76,11 @@ class KnownOpenSSLHashConstantAlgorithmInstance extends OpenSSLAlgorithmInstance
     not knownOpenSSLConstantToHashFamilyType(this, _) and result = Crypto::OtherHashType()
   }
 
-  override string getRawHashAlgorithmName() { result = this.(Literal).getValue().toString() }
+  override string getRawHashAlgorithmName() {
+    result = this.(Literal).getValue().toString()
+    or
+    result = this.(Call).getTarget().getName()
+  }
 
   override int getFixedDigestLength() {
     this.(KnownOpenSSLHashAlgorithmConstant).getExplicitDigestLength() = result

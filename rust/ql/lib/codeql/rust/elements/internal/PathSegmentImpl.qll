@@ -14,6 +14,12 @@ module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * A path segment, which is one part of a whole path.
+   * For example:
+   * - `HashMap`
+   * - `HashMap<K, V>`
+   * - `Fn(i32) -> i32`
+   * - `widgets(..)`
+   * - `<T as Iterator>`
    */
   class PathSegment extends Generated::PathSegment {
     override string toStringImpl() { result = this.toAbbreviatedString() }

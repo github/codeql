@@ -1,3 +1,13 @@
+## 1.1.5
+
+No user-facing changes.
+
+## 1.1.4
+
+### Minor Analysis Improvements
+
+* The queries `swift/hardcoded-key` and `swift/constant-password` have been removed from all query suites.
+
 ## 1.1.3
 
 No user-facing changes.

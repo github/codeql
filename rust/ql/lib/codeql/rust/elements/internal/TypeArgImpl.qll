@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.TypeArg
  */
 module Impl {
   /**
-   * A TypeArg. For example:
+   * A type argument in a generic argument list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * Foo::<u32>
+   * //    ^^^
    * ```
    */
   class TypeArg extends Generated::TypeArg { }

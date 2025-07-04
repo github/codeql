@@ -9,3 +9,6 @@
 | multi.c:5:27:5:36 | // Multi 3 | declaration of multi3 |
 | templates.cpp:3:3:3:8 | // Foo | declaration of foo |
 | templates.cpp:7:3:7:8 | // Bar | definition of bar |
+| templates.cpp:16:3:16:20 | // using T::member | using member |
+| templates.cpp:19:3:19:28 | // using T::nested::member | using member |
+| templates.cpp:25:3:25:20 | // using T::member | using member |

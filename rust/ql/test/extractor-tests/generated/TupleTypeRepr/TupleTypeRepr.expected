@@ -1,1 +1,2 @@
 | gen_tuple_type_repr.rs:3:30:3:31 | TupleTypeRepr | getNumberOfFields: | 0 |
+| gen_tuple_type_repr.rs:7:12:7:24 | TupleTypeRepr | getNumberOfFields: | 2 |

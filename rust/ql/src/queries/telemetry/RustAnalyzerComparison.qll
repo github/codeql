@@ -145,3 +145,8 @@ private module QlCallGraph implements CompareSig<CallGraph> {
 }
 
 module CallGraphCompare = Compare<CallGraph, RustAnalyzerCallGraph, QlCallGraph>;
+
+predicate qlMissingCanonicalPath(Addressable a, string path) {
+  path = a.getExtendedCanonicalPath() and
+  not exists(a.getCanonicalPath(_))
+}

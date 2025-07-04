@@ -7,6 +7,7 @@ qltest_dependencies:
     - http = { version = "1.2.0" }
     - tokio = { version = "1.43.0", features = ["full"] }
     - futures = { version = "0.3" }
+    - bytes = { version = "1.10.1" }
     - poem = { version = "3.1.10" }
     - serde = { version = "1.0.219" }
     - actix-web = { version = "4.10.2" }

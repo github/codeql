@@ -36,7 +36,7 @@ where
   not exists(r.getImportedModule()) and
   // no enclosing NPM package declares a dependency on `mod`
   forex(NpmPackage pkg, PackageJson pkgJson |
-    pkg.getAModule() = r.getTopLevel() and pkgJson = pkg.getPackageJson()
+    pkg.getAModule() = r.getTopLevel() and pkgJson = pkg.getPackageJson().getEnclosingPackage*()
   |
     not pkgJson.declaresDependency(mod, _) and
     not pkgJson.getPeerDependencies().getADependency(mod, _) and

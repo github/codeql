@@ -19,22 +19,22 @@ public class BasicFlow
         return this;
     }
 
-    // heuristic-summary=Models;BasicFlow;false;ReturnParam0;(System.String,System.Object);;Argument[0];ReturnValue;taint;df-generated
+    // heuristic-summary=Models;BasicFlow;false;ReturnParam0;(System.String,System.Object);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;BasicFlow;false;ReturnParam0;(System.String,System.Object);;Argument[0];ReturnValue;value;dfc-generated
     public string ReturnParam0(string input0, object input1)
     {
         return input0;
     }
 
-    // heuristic-summary=Models;BasicFlow;false;ReturnParam1;(System.String,System.Object);;Argument[1];ReturnValue;taint;df-generated
+    // heuristic-summary=Models;BasicFlow;false;ReturnParam1;(System.String,System.Object);;Argument[1];ReturnValue;value;df-generated
     // contentbased-summary=Models;BasicFlow;false;ReturnParam1;(System.String,System.Object);;Argument[1];ReturnValue;value;dfc-generated
     public object ReturnParam1(string input0, object input1)
     {
         return input1;
     }
 
-    // heuristic-summary=Models;BasicFlow;false;ReturnParamMultiple;(System.Object,System.Object);;Argument[0];ReturnValue;taint;df-generated
-    // heuristic-summary=Models;BasicFlow;false;ReturnParamMultiple;(System.Object,System.Object);;Argument[1];ReturnValue;taint;df-generated
+    // heuristic-summary=Models;BasicFlow;false;ReturnParamMultiple;(System.Object,System.Object);;Argument[0];ReturnValue;value;df-generated
+    // heuristic-summary=Models;BasicFlow;false;ReturnParamMultiple;(System.Object,System.Object);;Argument[1];ReturnValue;value;df-generated
     // contentbased-summary=Models;BasicFlow;false;ReturnParamMultiple;(System.Object,System.Object);;Argument[0];ReturnValue;value;dfc-generated
     // contentbased-summary=Models;BasicFlow;false;ReturnParamMultiple;(System.Object,System.Object);;Argument[1];ReturnValue;value;dfc-generated
     public object ReturnParamMultiple(object input0, object input1)
@@ -133,35 +133,35 @@ public class CollectionFlow
         return new List<string> { tainted };
     }
 
-    // SPURIOUS-heuristic-summary=Models;CollectionFlow;false;ReturnComplexTypeArray;(System.String[]);;Argument[0].Element;ReturnValue;taint;df-generated
+    // heuristic-summary=Models;CollectionFlow;false;ReturnComplexTypeArray;(System.String[]);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;CollectionFlow;false;ReturnComplexTypeArray;(System.String[]);;Argument[0];ReturnValue;value;dfc-generated
     public string[] ReturnComplexTypeArray(string[] a)
     {
         return a;
     }
 
-    // SPURIOUS-heuristic-summary=Models;CollectionFlow;false;ReturnBulkTypeList;(System.Collections.Generic.List<System.Byte>);;Argument[0].Element;ReturnValue;taint;df-generated
+    // heuristic-summary=Models;CollectionFlow;false;ReturnBulkTypeList;(System.Collections.Generic.List<System.Byte>);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;CollectionFlow;false;ReturnBulkTypeList;(System.Collections.Generic.List<System.Byte>);;Argument[0];ReturnValue;value;dfc-generated
     public List<byte> ReturnBulkTypeList(List<byte> a)
     {
         return a;
     }
 
-    // SPURIOUS-heuristic-summary=Models;CollectionFlow;false;ReturnComplexTypeDictionary;(System.Collections.Generic.Dictionary<System.Int32,System.String>);;Argument[0].Element;ReturnValue;taint;df-generated
+    // heuristic-summary=Models;CollectionFlow;false;ReturnComplexTypeDictionary;(System.Collections.Generic.Dictionary<System.Int32,System.String>);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;CollectionFlow;false;ReturnComplexTypeDictionary;(System.Collections.Generic.Dictionary<System.Int32,System.String>);;Argument[0];ReturnValue;value;dfc-generated
     public Dictionary<int, string> ReturnComplexTypeDictionary(Dictionary<int, string> a)
     {
         return a;
     }
 
-    // SPURIOUS-heuristic-summary=Models;CollectionFlow;false;ReturnUntypedArray;(System.Array);;Argument[0].Element;ReturnValue;taint;df-generated
+    // heuristic-summary=Models;CollectionFlow;false;ReturnUntypedArray;(System.Array);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;CollectionFlow;false;ReturnUntypedArray;(System.Array);;Argument[0];ReturnValue;value;dfc-generated
     public Array ReturnUntypedArray(Array a)
     {
         return a;
     }
 
-    // SPURIOUS-heuristic-summary=Models;CollectionFlow;false;ReturnUntypedList;(System.Collections.IList);;Argument[0].Element;ReturnValue;taint;df-generated
+    // heuristic-summary=Models;CollectionFlow;false;ReturnUntypedList;(System.Collections.IList);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;CollectionFlow;false;ReturnUntypedList;(System.Collections.IList);;Argument[0];ReturnValue;value;dfc-generated
     public IList ReturnUntypedList(IList a)
     {
@@ -202,7 +202,7 @@ public class IEnumerableFlow
         tainted = s;
     }
 
-    // SPURIOUS-heuristic-summary=Models;IEnumerableFlow;false;ReturnIEnumerable;(System.Collections.Generic.IEnumerable<System.String>);;Argument[0].Element;ReturnValue;taint;df-generated
+    // heuristic-summary=Models;IEnumerableFlow;false;ReturnIEnumerable;(System.Collections.Generic.IEnumerable<System.String>);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;IEnumerableFlow;false;ReturnIEnumerable;(System.Collections.Generic.IEnumerable<System.String>);;Argument[0];ReturnValue;value;dfc-generated
     public IEnumerable<string> ReturnIEnumerable(IEnumerable<string> input)
     {
@@ -256,7 +256,7 @@ public class GenericFlow<T>
         return new List<T> { tainted };
     }
 
-    // heuristic-summary=Models;GenericFlow<T>;false;ReturnGenericParam<S>;(S);;Argument[0];ReturnValue;taint;df-generated
+    // heuristic-summary=Models;GenericFlow<T>;false;ReturnGenericParam<S>;(S);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;GenericFlow<T>;false;ReturnGenericParam<S>;(S);;Argument[0];ReturnValue;value;dfc-generated
     public S ReturnGenericParam<S>(S input)
     {
@@ -280,7 +280,7 @@ public class GenericFlow<T>
 
 public abstract class BaseClassFlow
 {
-    // heuristic-summary=Models;BaseClassFlow;true;ReturnParam;(System.Object);;Argument[0];ReturnValue;taint;df-generated
+    // heuristic-summary=Models;BaseClassFlow;true;ReturnParam;(System.Object);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;BaseClassFlow;true;ReturnParam;(System.Object);;Argument[0];ReturnValue;value;dfc-generated
     public virtual object ReturnParam(object input)
     {
@@ -290,7 +290,7 @@ public abstract class BaseClassFlow
 
 public class DerivedClass1Flow : BaseClassFlow
 {
-    // heuristic-summary=Models;DerivedClass1Flow;false;ReturnParam1;(System.String,System.String);;Argument[1];ReturnValue;taint;df-generated
+    // heuristic-summary=Models;DerivedClass1Flow;false;ReturnParam1;(System.String,System.String);;Argument[1];ReturnValue;value;df-generated
     // contentbased-summary=Models;DerivedClass1Flow;false;ReturnParam1;(System.String,System.String);;Argument[1];ReturnValue;value;dfc-generated
     public string ReturnParam1(string input0, string input1)
     {
@@ -300,14 +300,14 @@ public class DerivedClass1Flow : BaseClassFlow
 
 public class DerivedClass2Flow : BaseClassFlow
 {
-    // heuristic-summary=Models;BaseClassFlow;true;ReturnParam;(System.Object);;Argument[0];ReturnValue;taint;df-generated
+    // heuristic-summary=Models;BaseClassFlow;true;ReturnParam;(System.Object);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;BaseClassFlow;true;ReturnParam;(System.Object);;Argument[0];ReturnValue;value;dfc-generated
     public override object ReturnParam(object input)
     {
         return input;
     }
 
-    // heuristic-summary=Models;DerivedClass2Flow;false;ReturnParam0;(System.String,System.Int32);;Argument[0];ReturnValue;taint;df-generated
+    // heuristic-summary=Models;DerivedClass2Flow;false;ReturnParam0;(System.String,System.Int32);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;DerivedClass2Flow;false;ReturnParam0;(System.String,System.Int32);;Argument[0];ReturnValue;value;dfc-generated
     public string ReturnParam0(string input0, int input1)
     {
@@ -327,7 +327,7 @@ public class OperatorFlow
     }
 
     // Flow Summary.
-    // heuristic-summary=Models;OperatorFlow;false;op_Addition;(Models.OperatorFlow,Models.OperatorFlow);;Argument[0];ReturnValue;taint;df-generated
+    // heuristic-summary=Models;OperatorFlow;false;op_Addition;(Models.OperatorFlow,Models.OperatorFlow);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;OperatorFlow;false;op_Addition;(Models.OperatorFlow,Models.OperatorFlow);;Argument[0];ReturnValue;value;dfc-generated
     public static OperatorFlow operator +(OperatorFlow a, OperatorFlow b)
     {
@@ -368,7 +368,7 @@ public class EqualsGetHashCodeNoFlow
         return boolTainted;
     }
 
-    // heuristic-summary=Models;EqualsGetHashCodeNoFlow;false;Equals;(System.String);;Argument[0];ReturnValue;taint;df-generated
+    // heuristic-summary=Models;EqualsGetHashCodeNoFlow;false;Equals;(System.String);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;EqualsGetHashCodeNoFlow;false;Equals;(System.String);;Argument[0];ReturnValue;value;dfc-generated
     public string Equals(string s)
     {
@@ -606,7 +606,7 @@ public class Inheritance
 
     public class AImplBasePublic : BasePublic
     {
-        // heuristic-summary=Models;Inheritance+BasePublic;true;Id;(System.String);;Argument[0];ReturnValue;taint;df-generated
+        // heuristic-summary=Models;Inheritance+BasePublic;true;Id;(System.String);;Argument[0];ReturnValue;value;df-generated
         // contentbased-summary=Models;Inheritance+BasePublic;true;Id;(System.String);;Argument[0];ReturnValue;value;dfc-generated
         public override string Id(string x)
         {
@@ -636,7 +636,7 @@ public class Inheritance
 
     public class BImpl : B
     {
-        // heuristic-summary=Models;Inheritance+IPublic1;true;Id;(System.String);;Argument[0];ReturnValue;taint;df-generated
+        // heuristic-summary=Models;Inheritance+IPublic1;true;Id;(System.String);;Argument[0];ReturnValue;value;df-generated
         // contentbased-summary=Models;Inheritance+IPublic1;true;Id;(System.String);;Argument[0];ReturnValue;value;dfc-generated
         public override string Id(string x)
         {
@@ -646,7 +646,7 @@ public class Inheritance
 
     private class CImpl : C
     {
-        // heuristic-summary=Models;Inheritance+IPublic2;true;Id;(System.String);;Argument[0];ReturnValue;taint;df-generated
+        // heuristic-summary=Models;Inheritance+IPublic2;true;Id;(System.String);;Argument[0];ReturnValue;value;df-generated
         // contentbased-summary=Models;Inheritance+IPublic2;true;Id;(System.String);;Argument[0];ReturnValue;value;dfc-generated
         public override string Id(string x)
         {
@@ -1035,14 +1035,14 @@ public class AvoidDuplicateLifted
 public class ParameterModifiers
 {
     // contentbased-summary=Models;ParameterModifiers;false;Copy;(System.Object,System.Object);;Argument[0];Argument[1];value;dfc-generated
-    // heuristic-summary=Models;ParameterModifiers;false;Copy;(System.Object,System.Object);;Argument[0];Argument[1];taint;df-generated
+    // heuristic-summary=Models;ParameterModifiers;false;Copy;(System.Object,System.Object);;Argument[0];Argument[1];value;df-generated
     public void Copy(object key, out object value)
     {
         value = key;
     }
 
     // contentbased-summary=Models;ParameterModifiers;false;CopyToRef;(System.Object,System.Object);;Argument[0];Argument[1];value;dfc-generated
-    // heuristic-summary=Models;ParameterModifiers;false;CopyToRef;(System.Object,System.Object);;Argument[0];Argument[1];taint;df-generated
+    // heuristic-summary=Models;ParameterModifiers;false;CopyToRef;(System.Object,System.Object);;Argument[0];Argument[1];value;df-generated
     public void CopyToRef(object key, ref object value)
     {
         value = key;
@@ -1062,7 +1062,7 @@ public class ParameterModifiers
     }
 
     // contentbased-summary=Models;ParameterModifiers;false;InReturn;(System.Object);;Argument[0];ReturnValue;value;dfc-generated
-    // heuristic-summary=Models;ParameterModifiers;false;InReturn;(System.Object);;Argument[0];ReturnValue;taint;df-generated
+    // heuristic-summary=Models;ParameterModifiers;false;InReturn;(System.Object);;Argument[0];ReturnValue;value;df-generated
     public object InReturn(in object v)
     {
         return v;

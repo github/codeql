@@ -1,5 +1,5 @@
 name: codeql/quantum
-version: 0.0.1
+version: 0.0.3
 groups: shared
 library: true
 dependencies:

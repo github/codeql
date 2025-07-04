@@ -13,6 +13,8 @@ private import semmle.code.cpp.ir.dataflow.internal.TaintTrackingImplSpecific
 private import semmle.code.cpp.dataflow.new.TaintTracking as Tt
 private import semmle.code.cpp.dataflow.new.DataFlow as Df
 private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
+private import semmle.code.cpp.models.interfaces.Taint as Taint
+private import semmle.code.cpp.models.interfaces.DataFlow as DataFlow
 
 /**
  * Holds if `f` is a "private" function.
@@ -45,6 +47,26 @@ private predicate isUninterestingForModels(Callable api) {
   api = any(Cpp::LambdaExpression lambda).getLambdaFunction()
   or
   api.isFromUninstantiatedTemplate(_)
+  or
+  // No need to generate models for functions modeled by hand in QL
+  api instanceof Taint::TaintFunction
+  or
+  api instanceof DataFlow::DataFlowFunction
+  or
+  // Don't generate models for main functions
+  api.hasGlobalName("main")
+  or
+  // Don't generate models for system-provided functions. If we want to
+  // generate models for these we should use a database containing the
+  // implementations of those system-provided functions in the source root.
+  not exists(api.getLocation().getFile().getRelativePath())
+  or
+  // Exclude functions in test directories (but not the ones in the CodeQL test directory)
+  exists(Cpp::File f |
+    f = api.getFile() and
+    f.getAbsolutePath().matches("%test%") and
+    not f.getAbsolutePath().matches("%test/library-tests/dataflow/modelgenerator/dataflow/%")
+  )
 }
 
 private predicate relevant(Callable api) {
@@ -189,15 +211,15 @@ module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Cpp::Lo
     )
   }
 
-  string parameterAccess(Parameter p) { parameterContentAccessImpl(p, result) }
+  string parameterApproximateAccess(Parameter p) { parameterContentAccessImpl(p, result) }
 
-  string parameterContentAccess(Parameter p) { parameterContentAccessImpl(p, result) }
+  string parameterExactAccess(Parameter p) { parameterContentAccessImpl(p, result) }
 
   bindingset[c]
-  string paramReturnNodeAsOutput(Callable c, DataFlowPrivate::Position pos) {
+  string paramReturnNodeAsExactOutput(Callable c, DataFlowPrivate::Position pos) {
     exists(Parameter p |
       p.isSourceParameterOf(c, pos) and
-      result = parameterAccess(p)
+      result = parameterExactAccess(p)
     )
     or
     pos.getArgumentIndex() = -1 and
@@ -206,8 +228,8 @@ module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Cpp::Lo
   }
 
   bindingset[c]
-  string paramReturnNodeAsContentOutput(Callable c, DataFlowPrivate::ParameterPosition pos) {
-    result = paramReturnNodeAsOutput(c, pos)
+  string paramReturnNodeAsApproximateOutput(Callable c, DataFlowPrivate::ParameterPosition pos) {
+    result = paramReturnNodeAsExactOutput(c, pos)
   }
 
   pragma[nomagic]

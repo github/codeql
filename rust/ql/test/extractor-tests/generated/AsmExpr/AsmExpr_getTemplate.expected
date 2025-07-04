@@ -1,1 +1,1 @@
-| gen_asm_expr.rs:6:9:6:24 | AsmExpr | 0 | gen_asm_expr.rs:6:23:6:23 | _ |
+| gen_asm_expr.rs:6:9:7:59 | AsmExpr | 0 | gen_asm_expr.rs:7:23:7:36 | "cmp {0}, {1}" |

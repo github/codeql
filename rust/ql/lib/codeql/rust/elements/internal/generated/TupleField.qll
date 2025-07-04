@@ -17,9 +17,12 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A TupleField. For example:
+   * A field in a tuple struct or tuple enum variant.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct S(i32, String);
+   * //       ^^^  ^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::TupleField` class directly.
    * Use the subclass `TupleField`, where the following predicates are available.

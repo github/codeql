@@ -209,24 +209,18 @@ module Sem implements Semantic<Location> {
 
   class BasicBlock = J::BasicBlock;
 
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getABBSuccessor() }
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
   private predicate id(ExprParent x, ExprParent y) { x = y }
 
   private predicate idOfAst(ExprParent x, int y) = equivalenceRelation(id/2)(x, y)
 
-  private predicate idOf(BasicBlock x, int y) { idOfAst(x.getAstNode(), y) }
+  private predicate idOf(BasicBlock x, int y) { idOfAst(x.getFirstNode().getAstNode(), y) }
 
   int getBlockId1(BasicBlock bb) { idOf(bb, result) }
 
-  final private class FinalGuard = GL::Guard;
-
-  class Guard extends FinalGuard {
+  class Guard extends GL::Guard_v2 {
     Expr asExpr() { result = this }
-  }
-
-  predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2) {
-    GL::implies_v2(g1, b1, g2, b2)
   }
 
   class Type = J::Type;

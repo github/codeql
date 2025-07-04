@@ -75,7 +75,7 @@ fn i() {
 
     {
         struct Foo {
-            x: i32,
+            x: i32, // $ item=i32
         } // I30
 
         let _ = Foo { x: 0 }; // $ item=I30
@@ -121,9 +121,13 @@ mod m6 {
 
 mod m7 {
     pub enum MyEnum {
-        A(i32),       // I42
-        B { x: i32 }, // I43
-        C,            // I44
+        A(
+            i32, // $ item=i32
+        ), // I42
+        B {
+            x: i32, // $ item=i32
+        }, // I43
+        C, // I44
     } // I41
 
     #[rustfmt::skip]
@@ -606,8 +610,8 @@ mod m24 {
         let impl_obj = Implementor; // $ item=I118
         let generic = GenericStruct { data: impl_obj }; // $ item=I115
         
-        generic.call_trait_a(); // $ MISSING: item=I116
-        generic.call_both(); // $ MISSING: item=I117
+        generic.call_trait_a(); // $ item=I116
+        generic.call_both(); // $ item=I117
         
         // Access through where clause type parameter constraint
         GenericStruct::<Implementor>::call_trait_a(&generic); // $ item=I116 item=I118

@@ -50,8 +50,8 @@ class Expression extends AstNode instanceof ExpressionImpl {
   string getNormalizedExpression() { result = normalizeExpr(expression) }
 }
 
-/** A common class for `env` in workflow, job or step. */
-abstract class Env extends AstNode instanceof EnvImpl {
+/** An `env` in workflow, job or step. */
+class Env extends AstNode instanceof EnvImpl {
   /** Gets an environment variable value given its name. */
   ScalarValueImpl getEnvVarValue(string name) { result = super.getEnvVarValue(name) }
 

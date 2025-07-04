@@ -1,1 +1,3 @@
-| gen_arg_list.rs:5:5:5:11 | ArgList | 0 | gen_arg_list.rs:5:5:5:11 | "not yet implemented" |
+| gen_arg_list.rs:7:8:7:16 | ArgList | 0 | gen_arg_list.rs:7:9:7:9 | 1 |
+| gen_arg_list.rs:7:8:7:16 | ArgList | 1 | gen_arg_list.rs:7:12:7:12 | 2 |
+| gen_arg_list.rs:7:8:7:16 | ArgList | 2 | gen_arg_list.rs:7:15:7:15 | 3 |

@@ -43,7 +43,7 @@ module Impl {
     File getFile() { result = this.getLocation().getFile() }
 
     /** Holds if this element is from source code. */
-    predicate fromSource() { exists(this.getFile().getRelativePath()) }
+    predicate fromSource() { this.getFile().fromSource() }
   }
 
   private @location_default getDbLocation(Locatable l) {

@@ -2,7 +2,7 @@ load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 
 alias(
     name = "ripunzip",
-    actual = select({"@platforms//os:" + os: "@ripunzip-" + os for os in ("linux", "windows", "macos")}),
+    actual = select({"@platforms//os:" + os: "@ripunzip-%s//:ripunzip" % os for os in ("linux", "windows", "macos")}),
     visibility = ["//visibility:public"],
 )
 

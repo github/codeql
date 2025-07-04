@@ -30,10 +30,10 @@ edges
 | contenttype.go:73:10:73:28 | call to FormValue | contenttype.go:79:11:79:14 | data | provenance | Src:MaD:8  |
 | contenttype.go:88:10:88:28 | call to FormValue | contenttype.go:91:4:91:7 | data | provenance | Src:MaD:8  |
 | contenttype.go:113:10:113:28 | call to FormValue | contenttype.go:114:50:114:53 | data | provenance | Src:MaD:8  |
-| reflectedxsstest.go:31:2:31:44 | ... := ...[0] | reflectedxsstest.go:32:34:32:37 | file | provenance | Src:MaD:7  |
+| reflectedxsstest.go:31:2:31:44 | ... := ...[0] | reflectedxsstest.go:32:30:32:33 | file | provenance | Src:MaD:7  |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[1] | reflectedxsstest.go:34:46:34:60 | selection of Filename | provenance | Src:MaD:7  |
-| reflectedxsstest.go:32:2:32:38 | ... := ...[0] | reflectedxsstest.go:33:49:33:55 | content | provenance |  |
-| reflectedxsstest.go:32:34:32:37 | file | reflectedxsstest.go:32:2:32:38 | ... := ...[0] | provenance | MaD:13 |
+| reflectedxsstest.go:32:2:32:34 | ... := ...[0] | reflectedxsstest.go:33:49:33:55 | content | provenance |  |
+| reflectedxsstest.go:32:30:32:33 | file | reflectedxsstest.go:32:2:32:34 | ... := ...[0] | provenance | MaD:13 |
 | reflectedxsstest.go:33:17:33:56 | []type{args} [array] | reflectedxsstest.go:33:17:33:56 | call to Sprintf | provenance | MaD:12 |
 | reflectedxsstest.go:33:17:33:56 | call to Sprintf | reflectedxsstest.go:33:10:33:57 | type conversion | provenance |  |
 | reflectedxsstest.go:33:49:33:55 | content | reflectedxsstest.go:33:17:33:56 | []type{args} [array] | provenance |  |
@@ -81,7 +81,7 @@ models
 | 10 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
 | 11 | Source: nhooyr.io/websocket; Conn; true; Read; ; ; ReturnValue[1]; remote; manual |
 | 12 | Summary: fmt; ; false; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
-| 13 | Summary: io/ioutil; ; false; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 13 | Summary: io; ; false; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
 | 14 | Summary: io; Reader; true; Read; ; ; Argument[receiver]; Argument[0]; taint; manual |
 | 15 | Summary: mime/multipart; Part; true; FileName; ; ; Argument[receiver]; ReturnValue; taint; manual |
 | 16 | Summary: mime/multipart; Reader; true; NextPart; ; ; Argument[receiver]; ReturnValue[0]; taint; manual |
@@ -108,8 +108,8 @@ nodes
 | contenttype.go:114:50:114:53 | data | semmle.label | data |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[0] | semmle.label | ... := ...[0] |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[1] | semmle.label | ... := ...[1] |
-| reflectedxsstest.go:32:2:32:38 | ... := ...[0] | semmle.label | ... := ...[0] |
-| reflectedxsstest.go:32:34:32:37 | file | semmle.label | file |
+| reflectedxsstest.go:32:2:32:34 | ... := ...[0] | semmle.label | ... := ...[0] |
+| reflectedxsstest.go:32:30:32:33 | file | semmle.label | file |
 | reflectedxsstest.go:33:10:33:57 | type conversion | semmle.label | type conversion |
 | reflectedxsstest.go:33:17:33:56 | []type{args} [array] | semmle.label | []type{args} [array] |
 | reflectedxsstest.go:33:17:33:56 | call to Sprintf | semmle.label | call to Sprintf |

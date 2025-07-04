@@ -13,9 +13,13 @@ private import codeql.rust.elements.internal.generated.ForExpr
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A ForExpr. For example:
+   * A for loop expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * for x in 0..10 {
+   *     println!("{}", x);
+   * }
    * ```
    */
   class ForExpr extends Generated::ForExpr {

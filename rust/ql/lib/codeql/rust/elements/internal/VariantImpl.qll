@@ -14,9 +14,12 @@ private import codeql.rust.elements.internal.generated.Variant
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A Variant. For example:
+   * A variant in an enum declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * enum E { A, B(i32), C { x: i32 } }
+   * //       ^  ^^^^^^  ^^^^^^^^^^^^
    * ```
    */
   class Variant extends Generated::Variant {

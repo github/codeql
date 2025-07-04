@@ -4,11 +4,11 @@ Amazon.Lambda.Core,10,,,,,,,,,,,10,,,,,,,,,,,
 Dapper,55,42,1,,,,,,,,,,55,,42,,,,,,,,1
 ILCompiler,,,121,,,,,,,,,,,,,,,,,,,77,44
 ILLink.RoslynAnalyzer,,,107,,,,,,,,,,,,,,,,,,,31,76
-ILLink.Shared,,,37,,,,,,,,,,,,,,,,,,,11,26
+ILLink.Shared,,,37,,,,,,,,,,,,,,,,,,,9,28
 ILLink.Tasks,,,5,,,,,,,,,,,,,,,,,,,4,1
 Internal.IL,,,54,,,,,,,,,,,,,,,,,,,28,26
 Internal.Pgo,,,9,,,,,,,,,,,,,,,,,,,2,7
-Internal.TypeSystem,,,342,,,,,,,,,,,,,,,,,,,205,137
+Internal.TypeSystem,,,343,,,,,,,,,,,,,,,,,,,197,146
 Microsoft.ApplicationBlocks.Data,28,,,,,,,,,,,,28,,,,,,,,,,
 Microsoft.AspNetCore.Components,2,4,2,,,,,,,2,,,,,,,,,4,,,1,1
 Microsoft.AspNetCore.Http,,,1,,,,,,,,,,,,,,,,,,,1,
@@ -21,7 +21,7 @@ Microsoft.DotNet.PlatformAbstractions,,,1,,,,,,,,,,,,,,,,,,,1,
 Microsoft.EntityFrameworkCore,6,,12,,,,,,,,,,6,,,,,,,,,,12
 Microsoft.Extensions.Caching.Distributed,,,3,,,,,,,,,,,,,,,,,,,,3
 Microsoft.Extensions.Caching.Memory,,,37,,,,,,,,,,,,,,,,,,,5,32
-Microsoft.Extensions.Configuration,,3,118,,,,,,,,,,,,,3,,,,,,41,77
+Microsoft.Extensions.Configuration,,3,118,,,,,,,,,,,,,3,,,,,,39,79
 Microsoft.Extensions.DependencyInjection,,,209,,,,,,,,,,,,,,,,,,,15,194
 Microsoft.Extensions.DependencyModel,,1,57,,,,,,,,,,,,,1,,,,,,13,44
 Microsoft.Extensions.Diagnostics.Metrics,,,14,,,,,,,,,,,,,,,,,,,1,13
@@ -37,10 +37,10 @@ Microsoft.JSInterop,2,,,,,,,,,,2,,,,,,,,,,,,
 Microsoft.NET.Build.Tasks,,,5,,,,,,,,,,,,,,,,,,,3,2
 Microsoft.VisualBasic,,,6,,,,,,,,,,,,,,,,,,,1,5
 Microsoft.Win32,,4,2,,,,,,,,,,,,,,,,,,4,,2
-Mono.Linker,,,278,,,,,,,,,,,,,,,,,,,130,148
+Mono.Linker,,,278,,,,,,,,,,,,,,,,,,,127,151
 MySql.Data.MySqlClient,48,,,,,,,,,,,,48,,,,,,,,,,
 Newtonsoft.Json,,,91,,,,,,,,,,,,,,,,,,,73,18
 ServiceStack,194,,7,27,,,,,75,,,,92,,,,,,,,,7,
 SourceGenerators,,,5,,,,,,,,,,,,,,,,,,,,5
-System,54,47,12111,,6,5,5,,,4,1,,33,2,,6,15,17,4,3,,5993,6118
+System,54,47,12139,,6,5,5,,,4,1,,33,2,,6,15,17,4,3,,5903,6236
 Windows.Security.Cryptography.Core,1,,,,,,,1,,,,,,,,,,,,,,,

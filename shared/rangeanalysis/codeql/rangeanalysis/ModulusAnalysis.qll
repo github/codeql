@@ -34,7 +34,7 @@ module ModulusAnalysis<
     exists(Sem::Guard guard, boolean testIsTrue |
       hasReadOfVarInlineLate(pos, v) and
       guard = eqFlowCond(v, e, D::fromInt(delta), true, testIsTrue) and
-      guardDirectlyControlsSsaRead(guard, pos, testIsTrue)
+      guardControlsSsaRead(guard, pos, testIsTrue)
     )
   }
 

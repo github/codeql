@@ -610,7 +610,7 @@ module Impl {
     exists(Expr mid |
       assignmentExprDescendant(mid) and
       getImmediateParent(e) = mid and
-      not mid.(PrefixExpr).getOperatorName() = "*" and
+      not mid instanceof DerefExpr and
       not mid instanceof FieldExpr and
       not mid instanceof IndexExpr
     )

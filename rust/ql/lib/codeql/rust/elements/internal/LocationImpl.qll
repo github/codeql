@@ -77,13 +77,76 @@ module LocationImpl {
       )
     }
 
-    /** Holds if this location starts strictly before the specified location. */
+    /** Holds if this location starts before location `that`. */
     pragma[inline]
-    predicate strictlyBefore(Location other) {
-      this.getStartLine() < other.getStartLine()
-      or
-      this.getStartLine() = other.getStartLine() and this.getStartColumn() < other.getStartColumn()
+    predicate startsBefore(Location that) {
+      exists(string f, int sl1, int sc1, int sl2, int sc2 |
+        this.hasLocationInfo(f, sl1, sc1, _, _) and
+        that.hasLocationInfo(f, sl2, sc2, _, _)
+      |
+        sl1 < sl2
+        or
+        sl1 = sl2 and sc1 <= sc2
+      )
     }
+
+    /** Holds if this location starts strictly before location `that`. */
+    pragma[inline]
+    predicate startsStrictlyBefore(Location that) {
+      exists(string f, int sl1, int sc1, int sl2, int sc2 |
+        this.hasLocationInfo(f, sl1, sc1, _, _) and
+        that.hasLocationInfo(f, sl2, sc2, _, _)
+      |
+        sl1 < sl2
+        or
+        sl1 = sl2 and sc1 < sc2
+      )
+    }
+
+    /** Holds if this location ends after location `that`. */
+    pragma[inline]
+    predicate endsAfter(Location that) {
+      exists(string f, int el1, int ec1, int el2, int ec2 |
+        this.hasLocationInfo(f, _, _, el1, ec1) and
+        that.hasLocationInfo(f, _, _, el2, ec2)
+      |
+        el1 > el2
+        or
+        el1 = el2 and ec1 >= ec2
+      )
+    }
+
+    /** Holds if this location ends strictly after location `that`. */
+    pragma[inline]
+    predicate endsStrictlyAfter(Location that) {
+      exists(string f, int el1, int ec1, int el2, int ec2 |
+        this.hasLocationInfo(f, _, _, el1, ec1) and
+        that.hasLocationInfo(f, _, _, el2, ec2)
+      |
+        el1 > el2
+        or
+        el1 = el2 and ec1 > ec2
+      )
+    }
+
+    /**
+     * Holds if this location contains location `that`, meaning that it starts
+     * before and ends after it.
+     */
+    pragma[inline]
+    predicate contains(Location that) { this.startsBefore(that) and this.endsAfter(that) }
+
+    /**
+     * Holds if this location strictlycontains location `that`, meaning that it starts
+     * strictly before and ends strictly after it.
+     */
+    pragma[inline]
+    predicate strictlyContains(Location that) {
+      this.startsStrictlyBefore(that) and this.endsStrictlyAfter(that)
+    }
+
+    /** Holds if this location is from source code. */
+    predicate fromSource() { this.getFile().fromSource() }
   }
 
   class LocationDefault extends Location, TLocationDefault {

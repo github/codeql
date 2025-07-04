@@ -8,9 +8,15 @@ import codeql.rust.elements.MacroCall
 import codeql.rust.elements.TypeRepr
 
 /**
- * A MacroTypeRepr. For example:
+ * A type produced by a macro.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * macro_rules! macro_type {
+ *     () => { i32 };
+ * }
+ * type T = macro_type!();
+ * //       ^^^^^^^^^^^^^
  * ```
  */
 final class MacroTypeRepr = Impl::MacroTypeRepr;
