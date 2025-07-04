@@ -421,21 +421,25 @@ final class ImplTypeAbstraction extends TypeAbstraction, Impl {
 }
 
 final class TraitTypeAbstraction extends TypeAbstraction, Trait {
-  override TypeParamTypeParameter getATypeParameter() {
-    result.getTypeParam() = this.getGenericParamList().getATypeParam()
+  override TypeParameter getATypeParameter() {
+    result.(TypeParamTypeParameter).getTypeParam() = this.getGenericParamList().getATypeParam()
+    or
+    result.(AssociatedTypeTypeParameter).getTrait() = this
   }
 }
 
 final class TypeBoundTypeAbstraction extends TypeAbstraction, TypeBound {
-  override TypeParamTypeParameter getATypeParameter() { none() }
+  override TypeParameter getATypeParameter() { none() }
 }
 
 final class SelfTypeBoundTypeAbstraction extends TypeAbstraction, Name {
-  SelfTypeBoundTypeAbstraction() { any(Trait trait).getName() = this }
+  private TraitTypeAbstraction trait;
 
-  override TypeParamTypeParameter getATypeParameter() { none() }
+  SelfTypeBoundTypeAbstraction() { trait.getName() = this }
+
+  override TypeParameter getATypeParameter() { none() }
 }
 
 final class ImplTraitTypeReprAbstraction extends TypeAbstraction, ImplTraitTypeRepr {
-  override TypeParamTypeParameter getATypeParameter() { none() }
+  override TypeParameter getATypeParameter() { none() }
 }
