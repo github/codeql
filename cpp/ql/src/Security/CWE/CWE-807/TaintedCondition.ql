@@ -65,6 +65,10 @@ module Config implements DataFlow::ConfigSig {
       iFrom1 != iFrom2
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 7 does not select a source or sink originating from the flow call on line 86 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-807/TaintedCondition.ql@88:3:88:7)
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;

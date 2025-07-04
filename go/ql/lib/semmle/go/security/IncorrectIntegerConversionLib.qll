@@ -440,6 +440,10 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
     state2 = node2.(FlowStateTransformer).transform(state1) and
     DataFlow::simpleLocalFlowStep(node1, node2, _)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 selects sink.getASuccessor (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-681/IncorrectIntegerConversionQuery.ql@26:8:26:20)
+  }
 }
 
 /**

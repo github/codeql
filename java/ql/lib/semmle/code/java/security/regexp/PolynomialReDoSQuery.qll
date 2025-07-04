@@ -47,6 +47,10 @@ module PolynomialRedosConfig implements DataFlow::ConfigSig {
     node instanceof SimpleTypeSanitizer or
     node.asExpr().(MethodCall).getMethod() instanceof LengthRestrictedMethod
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 24 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-730/PolynomialReDoS.ql@28:67:28:72)
+  }
 }
 
 module PolynomialRedosFlow = TaintTracking::Global<PolynomialRedosConfig>;

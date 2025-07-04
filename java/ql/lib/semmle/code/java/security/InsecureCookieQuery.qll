@@ -35,6 +35,18 @@ module SecureCookieConfig implements DataFlow::ConfigSig {
     sink.asExpr() =
       any(MethodCall add | add.getMethod() instanceof ResponseAddCookieMethod).getArgument(0)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 21 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-614/InsecureCookie.ql@22:8:22:10)
+  }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 21 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-614/InsecureCookie.ql@22:8:22:10)
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 21 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-614/InsecureCookie.ql@22:8:22:10)
+  }
 }
 
 /** Data flow to reason about the failure to use secure cookies. */

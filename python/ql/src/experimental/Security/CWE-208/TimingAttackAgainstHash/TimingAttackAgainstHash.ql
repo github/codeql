@@ -25,6 +25,8 @@ private module TimingAttackAgainstHashConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ProduceCryptoCall }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module TimingAttackAgainstHashFlow = TaintTracking::Global<TimingAttackAgainstHashConfig>;
@@ -35,5 +37,5 @@ from TimingAttackAgainstHashFlow::PathNode source, TimingAttackAgainstHashFlow::
 where
   TimingAttackAgainstHashFlow::flowPath(source, sink) and
   sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()
-select sink.getNode(), source, sink, "Timing attack against $@ validation.",
-  source.getNode().(ProduceCryptoCall).getResultType(), "message"
+select sink.getNode(), source, sink, "Timing attack against $@ validation.", source.getNode(),
+  source.getNode().(ProduceCryptoCall).getResultType() + " message"

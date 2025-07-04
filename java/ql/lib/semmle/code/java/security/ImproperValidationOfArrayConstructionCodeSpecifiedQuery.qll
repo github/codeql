@@ -17,6 +17,10 @@ module BoundedFlowSourceConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     any(CheckableArrayAccess caa).canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), _)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 27 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-129/ImproperValidationOfArrayConstructionCodeSpecified.ql@28:8:28:33), Column 5 does not select a source or sink originating from the flow call on line 27 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-129/ImproperValidationOfArrayConstructionCodeSpecified.ql@29:85:29:97)
+  }
 }
 
 /**

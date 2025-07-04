@@ -72,6 +72,10 @@ module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSource(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 84 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-290/AuthenticationBypass.ql@86:8:86:16)
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;

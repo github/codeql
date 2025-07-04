@@ -68,6 +68,10 @@ module Config implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { writeIsSink(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-322/InsecureHostKeyCallback.ql@90:7:90:34), Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-322/InsecureHostKeyCallback.ql@96:9:96:41)
+  }
 }
 
 /**

@@ -62,6 +62,18 @@ module NullAppNameCreateProcessFunctionConfig implements DataFlow::ConfigSig {
       val = call.getArgument(call.getApplicationNameArgumentId())
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 101 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-428/UnsafeCreateProcessCall.ql@111:8:111:11)
+  }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 101 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-428/UnsafeCreateProcessCall.ql@111:8:111:11)
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 101 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-428/UnsafeCreateProcessCall.ql@111:8:111:11)
+  }
 }
 
 module NullAppNameCreateProcessFunction = DataFlow::Global<NullAppNameCreateProcessFunctionConfig>;
@@ -81,6 +93,18 @@ module QuotedCommandInCreateProcessFunctionConfig implements DataFlow::ConfigSig
     exists(CreateProcessFunctionCall call, Expr val | val = sink.asExpr() |
       val = call.getArgument(call.getCommandLineArgumentId())
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 106 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-428/UnsafeCreateProcessCall.ql@111:8:111:11)
+  }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 106 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-428/UnsafeCreateProcessCall.ql@111:8:111:11)
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 106 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-428/UnsafeCreateProcessCall.ql@111:8:111:11)
   }
 }
 

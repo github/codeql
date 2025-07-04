@@ -128,6 +128,10 @@ module UnhandledFileCloseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isWritableFileHandle(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isCloseSink(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 147 (/Users/d10c/src/semmle-code/ql/go/ql/src/InconsistentCode/UnhandledCloseWritableHandle.ql@153:3:153:10)
+  }
 }
 
 /**

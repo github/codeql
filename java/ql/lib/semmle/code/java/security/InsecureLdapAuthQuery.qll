@@ -40,6 +40,14 @@ private module BasicAuthConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 21 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-522/InsecureLdapAuth.ql@23:79:23:94)
+  }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    none() // TODO: Make sure that this source location matches the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 21 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-522/InsecureLdapAuth.ql@23:79:23:94)
+  }
 }
 
 module BasicAuthFlow = DataFlow::Global<BasicAuthConfig>;
@@ -56,6 +64,14 @@ private module RequiresSslConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 22 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-522/InsecureLdapAuth.ql@23:79:23:94)
+  }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    none() // TODO: Make sure that this source location matches the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 22 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-522/InsecureLdapAuth.ql@23:79:23:94)
+  }
 }
 
 module RequiresSslFlow = DataFlow::Global<RequiresSslConfig>;

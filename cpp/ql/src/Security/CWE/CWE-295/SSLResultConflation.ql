@@ -31,6 +31,14 @@ module VerifyResultConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(GuardCondition guard | guard.getAChild*() = sink.asExpr())
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 42 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-295/SSLResultConflation.ql@48:8:48:12), Column 1 does not select a source or sink originating from the flow call on line 43 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-295/SSLResultConflation.ql@48:8:48:12)
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 42 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-295/SSLResultConflation.ql@48:8:48:12), Column 1 does not select a source or sink originating from the flow call on line 43 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-295/SSLResultConflation.ql@48:8:48:12)
+  }
 }
 
 module VerifyResult = DataFlow::Global<VerifyResultConfig>;

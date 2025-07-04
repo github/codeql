@@ -30,6 +30,10 @@ module ServerSideRequestForgery {
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
     predicate isBarrierOut(DataFlow::Node node) { node instanceof SanitizerEdge }
+
+    predicate observeDiffInformedIncrementalMode() {
+      any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 selects sink.getARequest (/Users/d10c/src/semmle-code/ql/go/ql/src/experimental/CWE-918/SSRF.ql@23:8:23:14)
+    }
   }
 
   /** Tracks taint flow for reasoning about request forgery vulnerabilities. */
