@@ -27,9 +27,7 @@ private module PossibleTimingAttackAgainstHashConfig implements DataFlow::Config
 
   predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 selects source.getResultType (/Users/d10c/src/semmle-code/ql/python/ql/src/experimental/Security/CWE-208/TimingAttackAgainstHash/PossibleTimingAttackAgainstHash.ql@41:3:41:54)
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module PossibleTimingAttackAgainstHashFlow =
@@ -42,4 +40,4 @@ from
   PossibleTimingAttackAgainstHashFlow::PathNode sink
 where PossibleTimingAttackAgainstHashFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Possible Timing attack against $@ validation.",
-  source.getNode().(ProduceCryptoCall).getResultType(), "message"
+  source.getNode(), source.getNode().(ProduceCryptoCall).getResultType() + " message"
