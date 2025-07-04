@@ -31,7 +31,7 @@ Function getASuperCallTargetFromCall(
   )
 }
 
-/** Gets the method called by `meth` named `name` with `call`, with `mroBase` as the type determining the MRO to search.  */
+/** Gets the method called by `meth` named `name` with `call`, with `mroBase` as the type determining the MRO to search. */
 Function getDirectSuperCallTargetFromCall(
   Class mroBase, Function meth, DataFlow::MethodCallNode call, string name
 ) {
@@ -54,7 +54,7 @@ Function getDirectSuperCallTargetFromCall(
   )
 }
 
-/** Gets a method that is transitively called by a call to `cls.<name>`, with `mroBase` as the type determining the MRO to search.  */
+/** Gets a method that is transitively called by a call to `cls.<name>`, with `mroBase` as the type determining the MRO to search. */
 Function getASuperCallTargetFromClass(Class mroBase, Class cls, string name) {
   exists(Function target |
     target = findFunctionAccordingToMroKnownStartingClass(cls, mroBase, name) and
@@ -79,7 +79,7 @@ predicate nonTrivial(Function meth) {
   exists(meth.getANormalExit()) // doesn't always raise an exception
 }
 
-/** Holds if `call` is a call to `super().<name>`. No distinction is made btween 0- and 2- arg super calls. */
+/** Holds if `call` is a call to `super().<name>`. No distinction is made between 0- and 2- arg super calls. */
 predicate superCall(DataFlow::MethodCallNode call, string name) {
   exists(DataFlow::Node sup |
     call.calls(sup, name) and
@@ -127,8 +127,9 @@ predicate missingCallToSuperclassMethod(Class base, Function shouldCall, string 
   not callsMethodOnUnknownClassWithSelf(getASuperCallTargetFromClass(base, base, name), name)
 }
 
-/** Holds if `base` does not call a superclass method `shouldCall` named `name` when it appears it should.
- * Results are restricted to hold only for the highest `base` class and the lowest `shouldCall` method in the heirarchy for which this applies.
+/**
+ * Holds if `base` does not call a superclass method `shouldCall` named `name` when it appears it should.
+ * Results are restricted to hold only for the highest `base` class and the lowest `shouldCall` method in the hierarchy for which this applies.
  */
 predicate missingCallToSuperclassMethodRestricted(Class base, Function shouldCall, string name) {
   missingCallToSuperclassMethod(base, shouldCall, name) and
@@ -144,11 +145,11 @@ predicate missingCallToSuperclassMethodRestricted(Class base, Function shouldCal
   )
 }
 
-/** 
- * If `base` contains a `super()` call, gets a method in the inheritence heirarchy of `name` in the MRO of `base`
+/**
+ * If `base` contains a `super()` call, gets a method in the inheritance hierarchy of `name` in the MRO of `base`
  * that does not contain a `super()` call, but would call `shouldCall` if it did, which does not otherwise get called
- * during a call to `base.<name>`. 
- * */
+ * during a call to `base.<name>`.
+ */
 Function getPossibleMissingSuper(Class base, Function shouldCall, string name) {
   missingCallToSuperclassMethod(base, shouldCall, name) and
   exists(Function baseMethod |
