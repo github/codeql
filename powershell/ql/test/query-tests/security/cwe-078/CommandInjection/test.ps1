@@ -123,12 +123,12 @@ function Invoke-MethodInjection2
     (Get-Process -Id $pid).$UserInput()
 }
 
-#TODO: currently a FN
+
 function Invoke-MethodInjection3
 {
     param($UserInput)
 
-    (Get-Process -Id $pid).$UserInput.Invoke()
+    (Get-Process -Id $pid).$UserInput.Invoke() # BAD
 }
 
 function Invoke-ExpandStringInjection1
