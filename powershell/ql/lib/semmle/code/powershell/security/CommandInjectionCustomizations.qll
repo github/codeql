@@ -142,9 +142,11 @@ module CommandInjection {
   class InvokeSink extends Sink {
     InvokeSink() {
       exists(InvokeMemberExpr ie |
-        this.asExpr().getExpr() = ie.getCallee() or 
-        this.asExpr().getExpr() = ie.getQualifier()
-      ) 
+        this.asExpr().getExpr() = ie.getCallee()
+        or
+        ie.getAName() = "Invoke" and
+        ie.getQualifier().(MemberExprReadAccess).getMemberExpr() = this.asExpr().getExpr()
+      )
     }
 
     override string getSinkType() { result = "call to Invoke" }
