@@ -26,9 +26,7 @@ private module TimingAttackAgainstHashConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 selects source.getResultType (/Users/d10c/src/semmle-code/ql/python/ql/src/experimental/Security/CWE-208/TimingAttackAgainstHash/TimingAttackAgainstHash.ql@39:3:39:54)
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module TimingAttackAgainstHashFlow = TaintTracking::Global<TimingAttackAgainstHashConfig>;
@@ -39,5 +37,5 @@ from TimingAttackAgainstHashFlow::PathNode source, TimingAttackAgainstHashFlow::
 where
   TimingAttackAgainstHashFlow::flowPath(source, sink) and
   sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()
-select sink.getNode(), source, sink, "Timing attack against $@ validation.",
-  source.getNode().(ProduceCryptoCall).getResultType(), "message"
+select sink.getNode(), source, sink, "Timing attack against $@ validation.", source.getNode(),
+  source.getNode().(ProduceCryptoCall).getResultType() + " message"
