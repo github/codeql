@@ -61,3 +61,8 @@ class File extends Container, Impl::File {
   /** Holds if this file was extracted from ordinary source code. */
   predicate fromSource() { any() }
 }
+
+/** A test file. */
+class TestFile extends File {
+  TestFile() { this.getRelativePath().matches("%/" + ["experimental", "examples", "test"] + "/%") }
+}
