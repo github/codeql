@@ -1,4 +1,5 @@
 {
+  "name": "VaultNet Registry",
   "extensions": [
     "rust-lang.rust-analyzer",
     "bungcip.better-toml",
@@ -8,13 +9,18 @@
     "slevesque.vscode-zipexplorer"
   ],
   "build": {
-    // Path is relative to the devcontainer.json file.
     "dockerfile": "Dockerfile.codespaces"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "settings": {
     "files.watcherExclude": {
       "**/target/**": true
     },
-    "codeQL.runningQueries.memory": 2048
-  }
+    "codeQL.runningQueries.memory": 2048,
+    "editor.formatOnSave": true,
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "postCreateCommand": "gh auth status || echo 'GitHub CLI not authenticated bash registry-setup.sh'"
 }
