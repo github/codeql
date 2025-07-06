@@ -10,7 +10,7 @@
  */
 
 import javascript
-import semmle.javascript.security.internal.SensitiveDataHeuristics
+import codeql.concepts.internal.SensitiveDataHeuristics
 private import HeuristicNames
 
 /** An expression that might contain sensitive data. */
