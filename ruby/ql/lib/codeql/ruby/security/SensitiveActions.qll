@@ -11,7 +11,7 @@
 
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
-import codeql.ruby.security.internal.SensitiveDataHeuristics
+import codeql.concepts.internal.SensitiveDataHeuristics
 private import HeuristicNames
 private import codeql.ruby.CFG
 
