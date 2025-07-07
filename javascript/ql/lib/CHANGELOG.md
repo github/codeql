@@ -1,3 +1,9 @@
+## 2.6.7
+
+### Minor Analysis Improvements
+
+* Enhanced modeling for the `execa` library, adding support for command execution methods `execaCommand`, `execaCommandSync`, `$`, and `$.sync`, as well as file system operations through `inputFile`, `pipeStdout`, `pipeAll`, and `pipeStderr`.
+
 ## 2.6.6
 
 ### Minor Analysis Improvements
