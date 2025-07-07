@@ -1,4 +1,4 @@
-import '../misc/just/lib.just'
+import '../lib.just'
 
 install: (_bazel "run" "@codeql//swift:install")
 
@@ -12,4 +12,3 @@ generate: (_bazel "run" "@codeql//swift/codegen")
     fi
 
 format ARGS=".": _check_clang_format (_run "clang-format" "-i" ("$(find " + ARGS + " -type f -name '*.h' -or -name '*.cpp')"))
-

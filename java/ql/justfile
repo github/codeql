@@ -1,4 +1,4 @@
-import "../../misc/just/lib.just"
+import "../../lib.just"
 
 [no-cd]
 format *ARGS=".": (_ql_format ARGS)

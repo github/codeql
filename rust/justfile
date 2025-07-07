@@ -1,4 +1,4 @@
-import '../misc/just/lib.just'
+import '../lib.just'
 
 install: (_bazel "run" "@codeql//rust:install")
 
