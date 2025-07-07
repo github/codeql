@@ -32,8 +32,12 @@ module RequestForgery {
       )
     }
 
-    predicate observeDiffInformedIncrementalMode() {
-      any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 selects sink.getARequest (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-918/RequestForgery.ql@25:8:25:14)
+    predicate observeDiffInformedIncrementalMode() { any() }
+
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.getLocation()
+      or
+      result = sink.(Sink).getARequest().getLocation()
     }
   }
 
