@@ -1,10 +1,10 @@
 ## Overview
 
-Record types were introduced in Java 16 as a mechanism to provide simpler data handling that is an alternative to regular classes. Record classes behave slightly differently during serialization however, namely any `writeObject`, `readObject`, `readObjectNoData`, `writeExternal`, and `readExternal` methods and `serialPersistentFields` fields declared in these classes cannot be used to affect the serialization process of any `Record` data type.
+Record types were introduced in Java 16 as a mechanism to provide simpler data handling as an alternative to regular classes. However, record classes behave slightly differently during serialization. Namely any `writeObject`, `readObject`, `readObjectNoData`, `writeExternal`, and `readExternal` methods and `serialPersistentFields` fields declared in these classes cannot be used to affect the serialization process of any `Record` data type.
 
 ## Recommendation
 
-Some level of serialization customization is offered by the Java 16 Record feature; the `writeReplace` and `readResolve` methods in a record that implements `java.io.Serializable` can be used to replace the object to be serialized. Otherwise no further customization of serialization of records is possible, and it is better to consider using a regular class implementing `java.io.Serializable` or `java.io.Externalizable` when customization is needed.
+Some level of serialization customization is offered by the Java 16 Record feature. The `writeReplace` and `readResolve` methods in a record that implements `java.io.Serializable` can be used to replace the object to be serialized. Otherwise, no further customization of serialization of records is possible, and it is better to consider using a regular class implementing `java.io.Serializable` or `java.io.Externalizable` when customization is needed.
 
 ## Example
 
