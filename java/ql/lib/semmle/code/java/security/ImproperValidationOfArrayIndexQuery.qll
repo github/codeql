@@ -19,8 +19,13 @@ module ImproperValidationOfArrayIndexConfig implements DataFlow::ConfigSig {
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 23 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-129/ImproperValidationOfArrayIndex.ql@24:8:24:33)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(CheckableArrayAccess arrayAccess |
+      result = arrayAccess.getIndexExpr().getLocation() and
+      arrayAccess.canThrowOutOfBounds(sink.asExpr())
+    )
   }
 }
 

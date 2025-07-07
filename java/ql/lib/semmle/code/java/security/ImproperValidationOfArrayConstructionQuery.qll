@@ -15,8 +15,13 @@ module ImproperValidationOfArrayConstructionConfig implements DataFlow::ConfigSi
     any(CheckableArrayAccess caa).canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), _)
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 25 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-129/ImproperValidationOfArrayConstruction.ql@26:8:26:33), Column 5 does not select a source or sink originating from the flow call on line 25 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-129/ImproperValidationOfArrayConstruction.ql@27:87:27:99)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(ArrayCreationExpr arrayCreation, CheckableArrayAccess arrayAccess |
+      result = [arrayCreation, arrayAccess.getIndexExpr()].getLocation() and
+      arrayAccess.canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), arrayCreation)
+    )
   }
 }
 
