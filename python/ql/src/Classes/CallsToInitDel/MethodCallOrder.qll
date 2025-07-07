@@ -13,11 +13,19 @@ predicate multipleCallsToSuperclassMethod(
   exists(Class cls |
     meth.getName() = name and
     meth.getScope() = cls and
-    call1.getLocation().toString() < call2.getLocation().toString() and
+    locationBefore(call1.getLocation(), call2.getLocation()) and
     calledMulti = getASuperCallTargetFromCall(cls, meth, call1, name) and
     calledMulti = getASuperCallTargetFromCall(cls, meth, call2, name) and
     nonTrivial(calledMulti)
   )
+}
+
+/** Holds if l1 comes before l2, assuming they're in the same file. */
+private predicate locationBefore(Location l1, Location l2) {
+  l1.getStartLine() < l2.getStartLine()
+  or
+  l1.getStartLine() = l2.getStartLine() and
+  l1.getStartColumn() < l2.getStartColumn()
 }
 
 /** Gets a method transitively called by `meth` named `name` with `call` that it overrides, with `mroBase` as the type determining the MRO to search. */
