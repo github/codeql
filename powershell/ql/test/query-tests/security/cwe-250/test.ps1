@@ -4,7 +4,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force # GOOD
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force # GOOD
 Set-ExecutionPolicy Bypass -Scope MachinePolicy -Force # BAD
 
-Set-ExecutionPolicy Bypass -Force:$true # BAD [NOT DETECTED]
+Set-ExecutionPolicy Bypass -Force:$true # BAD
 Set-ExecutionPolicy Bypass -Force:$false # GOOD
 
 Set-ExecutionPolicy Bypass # GOOD
