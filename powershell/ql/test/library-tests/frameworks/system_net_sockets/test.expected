@@ -1,1 +1,1 @@
-| test.ps1:1:1:18:0 | [synth] pipeline | Unexpected result: type="command line argument" |
+| test.ps1:1:1:20:93 | [synth] pipeline | Unexpected result: type="command line argument" |

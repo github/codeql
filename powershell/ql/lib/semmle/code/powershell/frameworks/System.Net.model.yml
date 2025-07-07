@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: sourceModel
+    data:
+      - ["system.net.sockets.tcpclient", "Method[getstream].ReturnValue", "remote"]
+      - ["system.net.sockets.udpclient", "Method[endreceive].ReturnValue", "remote"]
+      - ["system.net.sockets.udpclient", "Method[receive].ReturnValue", "remote"]
+      - ["system.net.sockets.udpclient", "Method[receiveasync].ReturnValue", "remote"]
+      - ["system.net.webclient", "Method[downloaddata].ReturnValue", "remote"]
+      - ["system.net.webclient", "Method[downloaddataasync].ReturnValue", "remote"]
+      - ["system.net.webclient", "Method[downloaddatataskasync].ReturnValue", "remote"]
+      - ["system.net.webclient", "Method[downloadfile].ReturnValue", "remote"]
+      - ["system.net.webclient", "Method[downloadfileasync].ReturnValue", "remote"]
+      - ["system.net.webclient", "Method[downloadfiletaskasync].ReturnValue", "remote"]
+      - ["system.net.webclient", "Method[downloadstring].ReturnValue", "remote"]
+      - ["system.net.webclient", "Method[downloadstringasync].ReturnValue", "remote"]
+      - ["system.net.webclient", "Method[downloadstringtaskasync].ReturnValue", "remote"]
