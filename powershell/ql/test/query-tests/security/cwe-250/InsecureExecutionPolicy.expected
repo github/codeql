@@ -1,0 +1,3 @@
+| test.ps1:1:1:1:33 | Call to set-executionpolicy | Insecure use of 'Set-ExecutionPolicy'. |
+| test.ps1:5:1:5:54 | Call to set-executionpolicy | Insecure use of 'Set-ExecutionPolicy'. |
+| test.ps1:7:1:7:39 | Call to set-executionpolicy | Insecure use of 'Set-ExecutionPolicy'. |

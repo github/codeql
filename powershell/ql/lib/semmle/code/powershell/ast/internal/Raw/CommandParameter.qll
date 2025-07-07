@@ -5,8 +5,11 @@ class CmdParameter extends @command_parameter, CmdElement {
 
   string getName() { command_parameter(this, result) }
 
-  Ast getExpr() {
-    command_parameter_argument(this, result)
+  Ast getExpr() { command_parameter_argument(this, result) }
+
+  final override Ast getChild(ChildIndex i) {
+    i instanceof CmdParameterExpr and
+    result = this.getExpr()
   }
 
   Cmd getCmd() { result.getElement(_) = this }

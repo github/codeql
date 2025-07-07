@@ -14,6 +14,7 @@ newtype ChildIndex =
   CatchClauseBody() or
   CatchClauseType(int i) { exists(any(CatchClause c).getCatchType(i)) } or
   CmdElement_(int i) { exists(any(Cmd cmd).getElement(i)) } or // TODO: Get rid of this?
+  CmdParameterExpr() or
   CmdCallee() or
   CmdRedirection(int i) { exists(any(Cmd cmd).getRedirection(i)) } or
   CmdExprExpr() or
@@ -126,6 +127,8 @@ string stringOfChildIndex(ChildIndex i) {
   i = CatchClauseType(_) and result = "CatchClauseType"
   or
   i = CmdElement_(_) and result = "CmdElement"
+  or
+  i = CmdParameterExpr() and result = "CmdParameterExpr"
   or
   i = CmdCallee() and result = "CmdCallee"
   or
