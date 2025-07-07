@@ -28,8 +28,10 @@ module ResolveTest implements TestSig {
       source.fromSource() and
       not source.isFromMacroExpansion()
     |
-      target = resolveMethodCallTarget(source) and
+      target = source.(Call).getStaticTarget() and
       functionHasValue(target, value) and
+      // `isFromMacroExpansion` does not always work
+      not target.(Function).getName().getText() = ["panic_fmt", "_print", "format", "must_use"] and
       tag = "method"
       or
       target = resolveStructFieldExpr(source) and
