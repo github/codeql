@@ -25,6 +25,7 @@ canonicalPath
 | regular.rs:40:1:46:1 | fn enum_qualified_usage | test::regular::enum_qualified_usage |
 | regular.rs:48:1:55:1 | fn enum_unqualified_usage | test::regular::enum_unqualified_usage |
 | regular.rs:57:1:63:1 | fn enum_match | test::regular::enum_match |
+| regular.rs:66:5:66:40 | fn is_alphanum | test::regular::is_alphanum |
 | regular.rs:69:1:71:1 | fn is_number_or_letter | test::regular::is_number_or_letter |
 canonicalPaths
 | anonymous.rs:1:1:1:26 | use ...::Trait | None | None |

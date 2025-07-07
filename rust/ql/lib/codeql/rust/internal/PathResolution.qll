@@ -567,7 +567,7 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   TraitItemNode resolveTraitTy() { result = resolvePath(this.getTraitPath()) }
 
-  override AssocItemNode getAnAssocItem() { result = super.getAssocItemList().getAnAssocItem() }
+  override AssocItemNode getAnAssocItem() { result = this.getADescendant() }
 
   override string getName() { result = "(impl)" }
 
@@ -760,7 +760,7 @@ class TraitItemNode extends ImplOrTraitItemNode, TypeItemNode instanceof Trait {
   pragma[nomagic]
   ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
 
-  override AssocItemNode getAnAssocItem() { result = super.getAssocItemList().getAnAssocItem() }
+  override AssocItemNode getAnAssocItem() { result = this.getADescendant() }
 
   override string getName() { result = Trait.super.getName().getText() }
 
@@ -956,7 +956,7 @@ class TypeParamItemNode extends TypeItemNode instanceof TypeParam {
 
 /** Holds if `item` has the name `name` and is a top-level item inside `f`. */
 private predicate sourceFileEdge(SourceFile f, string name, ItemNode item) {
-  item = f.getAnItem() and
+  item = f.(ItemNode).getADescendant() and
   name = item.getName()
 }
 
