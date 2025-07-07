@@ -61,3 +61,11 @@ fn enum_match(e: MyEnum) {
         MyEnum::Variant3 { .. } => {}
     }
 }
+
+extern "C" {
+    pub fn is_alphanum(chr: u8) -> bool;
+}
+
+pub fn is_number_or_letter(chr: u8) -> bool {
+    unsafe { is_alphanum(chr) }
+}
