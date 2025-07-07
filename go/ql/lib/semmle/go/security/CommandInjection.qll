@@ -25,17 +25,7 @@ module CommandInjection {
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    predicate observeDiffInformedIncrementalMode() {
-      any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 26 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-078/CommandInjection.ql@28:8:28:21), Column 5 does not select a source or sink originating from the flow call on line 26 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-078/CommandInjection.ql@28:71:28:86)
-    }
-
-    Location getASelectedSourceLocation(DataFlow::Node source) {
-      none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 26 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-078/CommandInjection.ql@28:8:28:21), Column 5 does not select a source or sink originating from the flow call on line 26 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-078/CommandInjection.ql@28:71:28:86)
-    }
-
-    Location getASelectedSinkLocation(DataFlow::Node sink) {
-      none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 26 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-078/CommandInjection.ql@28:8:28:21), Column 5 does not select a source or sink originating from the flow call on line 26 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-078/CommandInjection.ql@28:71:28:86)
-    }
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /**
@@ -93,17 +83,7 @@ module CommandInjection {
       node = any(ArgumentArrayWithDoubleDash array).getASanitizedElement()
     }
 
-    predicate observeDiffInformedIncrementalMode() {
-      any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 27 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-078/CommandInjection.ql@28:8:28:21), Column 5 does not select a source or sink originating from the flow call on line 27 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-078/CommandInjection.ql@28:71:28:86)
-    }
-
-    Location getASelectedSourceLocation(DataFlow::Node source) {
-      none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 27 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-078/CommandInjection.ql@28:8:28:21), Column 5 does not select a source or sink originating from the flow call on line 27 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-078/CommandInjection.ql@28:71:28:86)
-    }
-
-    Location getASelectedSinkLocation(DataFlow::Node sink) {
-      none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 27 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-078/CommandInjection.ql@28:8:28:21), Column 5 does not select a source or sink originating from the flow call on line 27 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-078/CommandInjection.ql@28:71:28:86)
-    }
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /**
