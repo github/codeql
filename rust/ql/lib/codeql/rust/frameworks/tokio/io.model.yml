@@ -14,7 +14,7 @@ extensions:
       - ["<_ as tokio::io::util::async_read_ext::AsyncReadExt>::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
       - ["<_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_to_string", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
       - ["<_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_to_end", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
-      - ["<_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_exact	", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["<_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_exact", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
       - ["<_ as tokio::io::util::async_buf_read_ext::AsyncBufReadExt>::read_line", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
       - ["<_ as tokio::io::util::async_buf_read_ext::AsyncBufReadExt>::read_until", "Argument[self]", "Argument[1].Reference", "taint", "manual"]
       - ["<_ as tokio::io::util::async_buf_read_ext::AsyncBufReadExt>::split", "Argument[self]", "ReturnValue", "taint", "manual"]
