@@ -9,6 +9,8 @@
  * each language, but we will maintain a discipline of moving those concepts to
  * `ConceptsShared.qll` ASAP.
  */
+overlay[local?]
+module;
 
 private import CryptoAlgorithms as CA
 private import codeql.dataflow.DataFlow as DF
