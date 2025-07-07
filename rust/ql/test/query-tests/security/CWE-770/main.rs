@@ -216,12 +216,12 @@ unsafe fn test_system_alloc(v: usize) {
 
 unsafe fn test_libc_alloc(v: usize) {
     let m1 = libc::malloc(256);
-    let _ = libc::malloc(v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
-    let _ = libc::aligned_alloc(8, v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = libc::malloc(v); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = libc::aligned_alloc(8, v); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     let _ = libc::aligned_alloc(v, 8);
-    let _ = libc::calloc(64, v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
-    let _ = libc::calloc(v, std::mem::size_of::<i64>()); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
-    let _ = libc::realloc(m1, v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = libc::calloc(64, v); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = libc::calloc(v, std::mem::size_of::<i64>()); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = libc::realloc(m1, v); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 }
 
 unsafe fn test_vectors(v: usize) {
