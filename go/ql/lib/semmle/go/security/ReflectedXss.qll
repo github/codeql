@@ -23,8 +23,12 @@ module ReflectedXss {
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    predicate observeDiffInformedIncrementalMode() {
-      any() // TODO: Make sure that the location overrides match the query's select clause: Column 7 selects sink.getAssociatedLoc (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-079/ReflectedXss.ql@36:84:36:90)
+    predicate observeDiffInformedIncrementalMode() { any() }
+
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.getLocation()
+      or
+      result = sink.(SharedXss::Sink).getAssociatedLoc().getLocation()
     }
   }
 
