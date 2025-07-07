@@ -151,7 +151,7 @@ private module Cached {
     )
     or
     // Similarly for `i++` and `++i` we pretend that the generated
-    // `StoreInstruction` is contains the result of the expression even though
+    // `StoreInstruction` contains the result of the expression even though
     // this isn't totally aligned with the C/C++ standard.
     exists(TranslatedCrementOperation tco |
       store = tco.getInstruction(CrementStoreTag()) and

@@ -146,8 +146,10 @@ lib.rs:
 #    1| [SourceFile] SourceFile
 #    1|   getItem(0): [Module] mod call
 #    1|     getName(): [Name] call
+#    1|     getVisibility(): [Visibility] Visibility
 #    2|   getItem(1): [Module] mod macro_expansion
 #    2|     getName(): [Name] macro_expansion
+#    2|     getVisibility(): [Visibility] Visibility
 macro_expansion.rs:
 #    1| [SourceFile] SourceFile
 #    1|   getItem(0): [Use] use proc_macro::{...}

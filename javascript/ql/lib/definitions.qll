@@ -126,7 +126,7 @@ private predicate propertyLookup(Expr prop, AstNode write, string kind) {
 private predicate typeLookup(AstNode ref, AstNode decl, string kind) {
   exists(TypeAccess typeAccess |
     ref = typeAccess.getIdentifier() and
-    decl = typeAccess.getTypeName().getADefinition() and
+    decl = typeAccess.getTypeBinding().getTypeDefinition() and
     kind = "T"
   )
 }

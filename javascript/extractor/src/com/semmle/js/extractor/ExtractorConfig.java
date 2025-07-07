@@ -221,9 +221,6 @@ public class ExtractorConfig {
   /** Should textual information be extracted into the lines/4 relation? */
   private boolean extractLines;
 
-  /** Should TypeScript files be extracted? */
-  private TypeScriptMode typescriptMode;
-
   /** Override amount of RAM to allocate to the TypeScript compiler. */
   private int typescriptRam;
 
@@ -245,7 +242,6 @@ public class ExtractorConfig {
       this.esnext = true;
       this.v8Extensions = true;
     }
-    this.typescriptMode = TypeScriptMode.NONE;
     this.e4x = experimental;
     this.defaultEncoding = StandardCharsets.UTF_8.name();
     this.virtualSourceRoot = VirtualSourceRoot.none;
@@ -266,7 +262,6 @@ public class ExtractorConfig {
     this.sourceType = that.sourceType;
     this.htmlHandling = that.htmlHandling;
     this.extractLines = that.extractLines;
-    this.typescriptMode = that.typescriptMode;
     this.typescriptRam = that.typescriptRam;
     this.defaultEncoding = that.defaultEncoding;
     this.virtualSourceRoot = that.virtualSourceRoot;
@@ -416,18 +411,8 @@ public class ExtractorConfig {
     return res;
   }
 
-  public TypeScriptMode getTypeScriptMode() {
-    return typescriptMode;
-  }
-
   public int getTypeScriptRam() {
     return typescriptRam;
-  }
-
-  public ExtractorConfig withTypeScriptMode(TypeScriptMode typescriptMode) {
-    ExtractorConfig res = new ExtractorConfig(this);
-    res.typescriptMode = typescriptMode;
-    return res;
   }
 
   public ExtractorConfig withTypeScriptRam(int ram) {
@@ -490,8 +475,6 @@ public class ExtractorConfig {
         + sourceType
         + ", extractLines="
         + extractLines
-        + ", typescriptMode="
-        + typescriptMode
         + ", defaultEncoding="
         + defaultEncoding
         + ", virtualSourceRoot="
