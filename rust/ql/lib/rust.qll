@@ -15,3 +15,6 @@ import codeql.rust.elements.AsyncBlockExpr
 import codeql.rust.elements.Variable
 import codeql.rust.elements.NamedFormatArgument
 import codeql.rust.elements.PositionalFormatArgument
+private import codeql.rust.elements.Call as Call
+
+class Call = Call::Call;
