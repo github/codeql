@@ -4,7 +4,7 @@
  * The classification into strong and weak are based on Wikipedia, OWASP and Google (2021).
  */
 
-private import internal.CryptoAlgorithmNames
+private import codeql.concepts.internal.CryptoAlgorithmNames
 
 /**
  * A cryptographic algorithm.
