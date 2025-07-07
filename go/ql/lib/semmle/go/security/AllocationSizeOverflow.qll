@@ -57,8 +57,15 @@ module AllocationSizeOverflow {
       )
     }
 
-    predicate observeDiffInformedIncrementalMode() {
-      any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 22 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-190/AllocationSizeOverflow.ql@25:80:25:86)
+    predicate observeDiffInformedIncrementalMode() { any() }
+
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.getLocation()
+      or
+      exists(DataFlow::Node allocsz |
+        isSinkWithAllocationSize(sink, allocsz) and
+        result = allocsz.getLocation()
+      )
     }
   }
 
