@@ -1,0 +1,80 @@
+#select
+| SensitiveCommunication.java:14:31:14:36 | intent | SensitiveCommunication.java:12:34:12:38 | token : String | SensitiveCommunication.java:14:31:14:36 | intent | This call may leak $@. | SensitiveCommunication.java:12:34:12:38 | token | sensitive information |
+| SensitiveCommunication.java:14:31:14:36 | intent | SensitiveCommunication.java:13:41:13:52 | refreshToken : String | SensitiveCommunication.java:14:31:14:36 | intent | This call may leak $@. | SensitiveCommunication.java:13:41:13:52 | refreshToken | sensitive information |
+| SensitiveCommunication.java:26:31:26:36 | intent | SensitiveCommunication.java:25:32:25:39 | password : String | SensitiveCommunication.java:26:31:26:36 | intent | This call may leak $@. | SensitiveCommunication.java:25:32:25:39 | password | sensitive information |
+| SensitiveCommunication.java:38:31:38:36 | intent | SensitiveCommunication.java:36:35:36:39 | email : String | SensitiveCommunication.java:38:31:38:36 | intent | This call may leak $@. | SensitiveCommunication.java:36:35:36:39 | email | sensitive information |
+| SensitiveCommunication.java:52:31:52:36 | intent | SensitiveCommunication.java:50:22:50:29 | password : String | SensitiveCommunication.java:52:31:52:36 | intent | This call may leak $@. | SensitiveCommunication.java:50:22:50:29 | password | sensitive information |
+| SensitiveCommunication.java:98:54:98:59 | intent | SensitiveCommunication.java:97:35:97:40 | ticket : String | SensitiveCommunication.java:98:54:98:59 | intent | This call may leak $@. | SensitiveCommunication.java:97:35:97:40 | ticket | sensitive information |
+| SensitiveCommunication.java:111:54:111:59 | intent | SensitiveCommunication.java:109:32:109:39 | passcode : String | SensitiveCommunication.java:111:54:111:59 | intent | This call may leak $@. | SensitiveCommunication.java:109:32:109:39 | passcode | sensitive information |
+| SensitiveCommunication.java:140:54:140:59 | intent | SensitiveCommunication.java:136:33:136:38 | passwd : String | SensitiveCommunication.java:140:54:140:59 | intent | This call may leak $@. | SensitiveCommunication.java:136:33:136:38 | passwd | sensitive information |
+| SensitiveCommunication.java:158:54:158:59 | intent | SensitiveCommunication.java:155:45:155:52 | password : String | SensitiveCommunication.java:158:54:158:59 | intent | This call may leak $@. | SensitiveCommunication.java:155:45:155:52 | password | sensitive information |
+edges
+| SensitiveCommunication.java:12:9:12:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | SensitiveCommunication.java:14:31:14:36 | intent | provenance | Sink:MaD:1 Sink:MaD:1 |
+| SensitiveCommunication.java:12:34:12:38 | token : String | SensitiveCommunication.java:12:9:12:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | provenance | MaD:3 |
+| SensitiveCommunication.java:13:9:13:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | SensitiveCommunication.java:14:31:14:36 | intent | provenance | Sink:MaD:1 Sink:MaD:1 |
+| SensitiveCommunication.java:13:41:13:52 | refreshToken : String | SensitiveCommunication.java:13:9:13:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | provenance | MaD:3 |
+| SensitiveCommunication.java:25:9:25:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | SensitiveCommunication.java:26:31:26:36 | intent | provenance | Sink:MaD:1 Sink:MaD:1 |
+| SensitiveCommunication.java:25:32:25:39 | password : String | SensitiveCommunication.java:25:9:25:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | provenance | MaD:3 |
+| SensitiveCommunication.java:36:9:36:14 | bundle [post update] : Bundle [<map.value>] : String | SensitiveCommunication.java:37:26:37:31 | bundle : Bundle [<map.value>] : String | provenance |  |
+| SensitiveCommunication.java:36:35:36:39 | email : String | SensitiveCommunication.java:36:9:36:14 | bundle [post update] : Bundle [<map.value>] : String | provenance | MaD:6 |
+| SensitiveCommunication.java:37:9:37:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | SensitiveCommunication.java:38:31:38:36 | intent | provenance | Sink:MaD:1 Sink:MaD:1 |
+| SensitiveCommunication.java:37:26:37:31 | bundle : Bundle [<map.value>] : String | SensitiveCommunication.java:37:9:37:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | provenance | MaD:4 |
+| SensitiveCommunication.java:50:9:50:16 | userinfo [post update] : ArrayList [<element>] : String | SensitiveCommunication.java:51:52:51:59 | userinfo : ArrayList [<element>] : String | provenance |  |
+| SensitiveCommunication.java:50:22:50:29 | password : String | SensitiveCommunication.java:50:9:50:16 | userinfo [post update] : ArrayList [<element>] : String | provenance | MaD:7 |
+| SensitiveCommunication.java:51:9:51:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>, <element>] : String | SensitiveCommunication.java:52:31:52:36 | intent | provenance | Sink:MaD:1 Sink:MaD:1 |
+| SensitiveCommunication.java:51:9:51:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>, <element>] : String | SensitiveCommunication.java:52:31:52:36 | intent | provenance | Sink:MaD:1 Sink:MaD:1 Sink:MaD:1 |
+| SensitiveCommunication.java:51:52:51:59 | userinfo : ArrayList [<element>] : String | SensitiveCommunication.java:51:9:51:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>, <element>] : String | provenance | MaD:5 |
+| SensitiveCommunication.java:97:9:97:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | SensitiveCommunication.java:98:54:98:59 | intent | provenance | Sink:MaD:2 Sink:MaD:2 |
+| SensitiveCommunication.java:97:35:97:40 | ticket : String | SensitiveCommunication.java:97:9:97:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | provenance | MaD:3 |
+| SensitiveCommunication.java:109:9:109:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | SensitiveCommunication.java:111:54:111:59 | intent | provenance | Sink:MaD:2 Sink:MaD:2 |
+| SensitiveCommunication.java:109:32:109:39 | passcode : String | SensitiveCommunication.java:109:9:109:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | provenance | MaD:3 |
+| SensitiveCommunication.java:136:9:136:14 | bundle [post update] : Bundle [<map.value>] : String | SensitiveCommunication.java:137:26:137:31 | bundle : Bundle [<map.value>] : String | provenance |  |
+| SensitiveCommunication.java:136:33:136:38 | passwd : String | SensitiveCommunication.java:136:9:136:14 | bundle [post update] : Bundle [<map.value>] : String | provenance | MaD:6 |
+| SensitiveCommunication.java:137:9:137:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | SensitiveCommunication.java:140:54:140:59 | intent | provenance | Sink:MaD:2 Sink:MaD:2 |
+| SensitiveCommunication.java:137:26:137:31 | bundle : Bundle [<map.value>] : String | SensitiveCommunication.java:137:9:137:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | provenance | MaD:4 |
+| SensitiveCommunication.java:155:9:155:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | SensitiveCommunication.java:158:54:158:59 | intent | provenance | Sink:MaD:2 Sink:MaD:2 |
+| SensitiveCommunication.java:155:9:155:26 | getExtras(...) [post update] : Bundle [<map.value>] : String | SensitiveCommunication.java:155:9:155:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | provenance |  |
+| SensitiveCommunication.java:155:45:155:52 | password : String | SensitiveCommunication.java:155:9:155:26 | getExtras(...) [post update] : Bundle [<map.value>] : String | provenance | MaD:6 |
+models
+| 1 | Sink: android.content; Context; true; sendBroadcast; ; ; Argument[0]; intent-redirection; manual |
+| 2 | Sink: android.content; Context; true; sendBroadcastWithMultiplePermissions; ; ; Argument[0]; intent-redirection; manual |
+| 3 | Summary: android.content; Intent; true; putExtra; ; ; Argument[1]; Argument[this].SyntheticField[android.content.Intent.extras].MapValue; value; manual |
+| 4 | Summary: android.content; Intent; true; putExtras; (Bundle); ; Argument[0].MapValue; Argument[this].SyntheticField[android.content.Intent.extras].MapValue; value; manual |
+| 5 | Summary: android.content; Intent; true; putStringArrayListExtra; ; ; Argument[1]; Argument[this].SyntheticField[android.content.Intent.extras].MapValue; value; manual |
+| 6 | Summary: android.os; BaseBundle; true; putString; ; ; Argument[1]; Argument[this].MapValue; value; manual |
+| 7 | Summary: java.util; Collection; true; add; ; ; Argument[0]; Argument[this].Element; value; manual |
+nodes
+| SensitiveCommunication.java:12:9:12:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | semmle.label | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String |
+| SensitiveCommunication.java:12:34:12:38 | token : String | semmle.label | token : String |
+| SensitiveCommunication.java:13:9:13:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | semmle.label | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String |
+| SensitiveCommunication.java:13:41:13:52 | refreshToken : String | semmle.label | refreshToken : String |
+| SensitiveCommunication.java:14:31:14:36 | intent | semmle.label | intent |
+| SensitiveCommunication.java:25:9:25:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | semmle.label | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String |
+| SensitiveCommunication.java:25:32:25:39 | password : String | semmle.label | password : String |
+| SensitiveCommunication.java:26:31:26:36 | intent | semmle.label | intent |
+| SensitiveCommunication.java:36:9:36:14 | bundle [post update] : Bundle [<map.value>] : String | semmle.label | bundle [post update] : Bundle [<map.value>] : String |
+| SensitiveCommunication.java:36:35:36:39 | email : String | semmle.label | email : String |
+| SensitiveCommunication.java:37:9:37:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | semmle.label | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String |
+| SensitiveCommunication.java:37:26:37:31 | bundle : Bundle [<map.value>] : String | semmle.label | bundle : Bundle [<map.value>] : String |
+| SensitiveCommunication.java:38:31:38:36 | intent | semmle.label | intent |
+| SensitiveCommunication.java:50:9:50:16 | userinfo [post update] : ArrayList [<element>] : String | semmle.label | userinfo [post update] : ArrayList [<element>] : String |
+| SensitiveCommunication.java:50:22:50:29 | password : String | semmle.label | password : String |
+| SensitiveCommunication.java:51:9:51:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>, <element>] : String | semmle.label | intent [post update] : Intent [android.content.Intent.extras, <map.value>, <element>] : String |
+| SensitiveCommunication.java:51:52:51:59 | userinfo : ArrayList [<element>] : String | semmle.label | userinfo : ArrayList [<element>] : String |
+| SensitiveCommunication.java:52:31:52:36 | intent | semmle.label | intent |
+| SensitiveCommunication.java:97:9:97:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | semmle.label | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String |
+| SensitiveCommunication.java:97:35:97:40 | ticket : String | semmle.label | ticket : String |
+| SensitiveCommunication.java:98:54:98:59 | intent | semmle.label | intent |
+| SensitiveCommunication.java:109:9:109:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | semmle.label | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String |
+| SensitiveCommunication.java:109:32:109:39 | passcode : String | semmle.label | passcode : String |
+| SensitiveCommunication.java:111:54:111:59 | intent | semmle.label | intent |
+| SensitiveCommunication.java:136:9:136:14 | bundle [post update] : Bundle [<map.value>] : String | semmle.label | bundle [post update] : Bundle [<map.value>] : String |
+| SensitiveCommunication.java:136:33:136:38 | passwd : String | semmle.label | passwd : String |
+| SensitiveCommunication.java:137:9:137:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | semmle.label | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String |
+| SensitiveCommunication.java:137:26:137:31 | bundle : Bundle [<map.value>] : String | semmle.label | bundle : Bundle [<map.value>] : String |
+| SensitiveCommunication.java:140:54:140:59 | intent | semmle.label | intent |
+| SensitiveCommunication.java:155:9:155:14 | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String | semmle.label | intent [post update] : Intent [android.content.Intent.extras, <map.value>] : String |
+| SensitiveCommunication.java:155:9:155:26 | getExtras(...) [post update] : Bundle [<map.value>] : String | semmle.label | getExtras(...) [post update] : Bundle [<map.value>] : String |
+| SensitiveCommunication.java:155:45:155:52 | password : String | semmle.label | password : String |
+| SensitiveCommunication.java:158:54:158:59 | intent | semmle.label | intent |
+subpaths
