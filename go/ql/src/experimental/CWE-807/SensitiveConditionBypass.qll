@@ -60,16 +60,12 @@ private module Config implements DataFlow::ConfigSig {
     )
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 24 (/Users/d10c/src/semmle-code/ql/go/ql/src/experimental/CWE-807/SensitiveConditionBypass.ql@33:8:33:11)
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 24 (/Users/d10c/src/semmle-code/ql/go/ql/src/experimental/CWE-807/SensitiveConditionBypass.ql@33:8:33:11)
-  }
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 24 (/Users/d10c/src/semmle-code/ql/go/ql/src/experimental/CWE-807/SensitiveConditionBypass.ql@33:8:33:11)
+    exists(ComparisonExpr comp | result = comp.getLocation() | sink.asExpr() = comp.getAnOperand())
   }
 }
 
