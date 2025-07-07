@@ -147,12 +147,6 @@ abstract class ItemNode extends Locatable {
       )
     )
     or
-    // items made available through macro calls are available to nodes that contain the macro call
-    exists(MacroCallItemNode call |
-      call = this.getASuccessorRec(_) and
-      result = call.(ItemNode).getASuccessorRec(name)
-    )
-    or
     // a trait has access to the associated items of its supertraits
     this =
       any(TraitItemNode trait |
@@ -680,32 +674,6 @@ private class ImplTraitTypeReprItemNode extends ItemNode instanceof ImplTraitTyp
   override string getCanonicalPath(Crate c) { none() }
 }
 
-private class MacroCallItemNode extends AssocItemNode instanceof MacroCall {
-  override string getName() { result = "(macro call)" }
-
-  override predicate hasImplementation() { none() }
-
-  override Namespace getNamespace() { none() }
-
-  override TypeParam getTypeParam(int i) { none() }
-
-  override Visibility getVisibility() { none() }
-
-  override predicate providesCanonicalPathPrefixFor(Crate c, ItemNode child) {
-    any(ItemNode parent).providesCanonicalPathPrefixFor(c, this) and
-    child.getImmediateParent() = this
-  }
-
-  override string getCanonicalPathPrefixFor(Crate c, ItemNode child) {
-    result = this.getCanonicalPathPrefix(c) and
-    this.providesCanonicalPathPrefixFor(c, child)
-  }
-
-  override predicate hasCanonicalPath(Crate c) { none() }
-
-  override string getCanonicalPath(Crate c) { none() }
-}
-
 private class ModuleItemNode extends ModuleLikeNode instanceof Module {
   override string getName() { result = Module.super.getName().getText() }
 
@@ -726,11 +694,6 @@ private class ModuleItemNode extends ModuleLikeNode instanceof Module {
       )
       or
       this = child.getImmediateParent()
-      or
-      exists(ItemNode mid |
-        this.providesCanonicalPathPrefixFor(c, mid) and
-        mid.(MacroCallItemNode) = child.getImmediateParent()
-      )
     )
   }
 
@@ -1185,11 +1148,6 @@ private predicate declares(ItemNode item, Namespace ns, string name) {
     or
     useTreeDeclares(child.(Use).getUseTree(), name) and
     exists(ns) // `use foo::bar` can refer to both a value and a type
-  )
-  or
-  exists(MacroCallItemNode call |
-    declares(call, ns, name) and
-    call.getImmediateParent() = item
   )
 }
 
