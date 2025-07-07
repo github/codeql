@@ -15,15 +15,11 @@ module ArithmeticOverflowConfig implements DataFlow::ConfigSig {
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 28 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql@35:8:35:10), Column 5 does not select a source or sink originating from the flow call on line 28 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql@37:3:37:18)
-  }
-
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 28 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql@35:8:35:10), Column 5 does not select a source or sink originating from the flow call on line 28 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql@37:3:37:18)
+    any() // merged with ArithmeticUnderflow in ArithmeticTainted.ql
   }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 28 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql@35:8:35:10), Column 5 does not select a source or sink originating from the flow call on line 28 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql@37:3:37:18)
+    exists(ArithExpr exp | result = exp.getLocation() | overflowSink(exp, sink.asExpr()))
   }
 }
 
@@ -43,15 +39,11 @@ module ArithmeticUnderflowConfig implements DataFlow::ConfigSig {
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 32 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql@35:8:35:10), Column 5 does not select a source or sink originating from the flow call on line 32 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql@37:3:37:18)
-  }
-
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 32 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql@35:8:35:10), Column 5 does not select a source or sink originating from the flow call on line 32 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql@37:3:37:18)
+    any() // merged with ArithmeticOverflow in ArithmeticTainted.ql
   }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 32 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql@35:8:35:10), Column 5 does not select a source or sink originating from the flow call on line 32 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql@37:3:37:18)
+    exists(ArithExpr exp | result = exp.getLocation() | underflowSink(exp, sink.asExpr()))
   }
 }
 
