@@ -38,7 +38,7 @@ default_db_checks := """\
 """
 
 [no-cd, positional-arguments, no-exit-message]
-@_codeql_test LANGUAGE +ARGS:
+@_codeql_test LANGUAGE BASE_FLAGS ALL_CHECKS_FLAGS EXTRA_ARGS:
     {{ tsx }} "{{ source_dir() }}/codeql-test-run.ts" "$@"
 
 

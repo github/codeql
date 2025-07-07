@@ -36,8 +36,8 @@ function forwardCommand(args: string[]): number {
     }
     process.env[envVariable] = "true";
     const cmdArgs = args.slice(1);
-    // non-positional arguments are flags, repeated + (used by language tests) or environment variable settings
-    const is_non_positional = /^(-.*|\++|[A-Z_][A-Z_0-9]*=.*)$/;
+    // non-positional arguments are flags, + (used by language tests) or environment variable settings
+    const is_non_positional = /^(-.*|\+|[A-Z_][A-Z_0-9]*=.*)$/;
     const flags = cmdArgs.filter((arg) => is_non_positional.test(arg));
     const positionalArgs = cmdArgs.filter(
         (arg) => !is_non_positional.test(arg),
@@ -55,11 +55,26 @@ function forwardCommand(args: string[]): number {
     if (relativeArgs.length === 1 && relativeArgs[0] === ".") {
         relativeArgs = [];
     }
+    let relativeFlags = flags.map((arg) => {
+        // this might break in specific corner cases, but is good enough for most uses
+        // workaround if this doesn't work is to not use the forwarder (call just directly in the relevant directory)
+        if (arg.includes("=") && arg.includes(path.sep)) {
+            let [flags, flag_arg] = arg.split("=", 2);
+            flag_arg = flag_arg
+                .split(path.delimiter)
+                .map((p) =>
+                    path.isAbsolute(p) ? p : path.relative(commonPath, p),
+                )
+                .join(path.delimiter);
+            return `${flags}=${flag_arg}`;
+        }
+        return arg;
+    });
 
     const invocation = [
         process.env["JUST_EXECUTABLE"] || "just",
         cmd,
-        ...flags,
+        ...relativeFlags,
         ...relativeArgs,
     ];
     console.log(`-> ${commonPath}: just ${invocation.slice(1).join(" ")}`);
