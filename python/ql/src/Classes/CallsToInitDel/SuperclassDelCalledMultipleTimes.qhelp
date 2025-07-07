@@ -30,7 +30,7 @@ cleaned up properly as expected.
 </overview>
 <recommendation>
 <p>Ensure that each finalizer method is called exactly once during finalization. 
-This can be ensured by calling <code>super().__del__</code> for each finalizer methid in the inheritance chain.
+This can be ensured by calling <code>super().__del__</code> for each finalizer method in the inheritance chain.
 </p>
 
 </recommendation>
@@ -41,7 +41,7 @@ being called twice.
 <code>FixedSportsCar.__del__</code> fixes this by using <code>super()</code> consistently with the other delete methods.
 </p>
 
-<sample src="SuperclassInitCalledMultipleTimes2.py" />
+<sample src="examples/SuperclassDelCalledMultipleTimes.py" />
 
 </example>
 <references>

@@ -13,7 +13,7 @@ methods are called.
 <p>
 Classes with a <code>__del__</code> method (a finalizer) typically hold some resource such as a file handle that needs to be cleaned up. 
 If the  <code>__del__</code> method of a superclass is not called during object finalization, it is likely that
-that resources may be leaked.
+resources may be leaked.
 </p>
 
 <p>A call to the <code>__init__</code> method of a superclass during object initialization may be unintentionally skipped:
