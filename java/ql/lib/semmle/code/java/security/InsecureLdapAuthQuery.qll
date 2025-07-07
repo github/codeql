@@ -41,12 +41,18 @@ private module BasicAuthConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 21 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-522/InsecureLdapAuth.ql@23:79:23:94)
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 21 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-522/InsecureLdapAuth.ql@23:79:23:94)
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    exists(InsecureLdapUrlFlow::PathNode pathSource, InsecureLdapUrlFlow::PathNode pathSink |
+      result = pathSource.getNode().getLocation() and
+      pathSink.getNode() = sink and
+      InsecureLdapUrlFlow::flowPath(pathSource, pathSink)
+    )
   }
 }
 
@@ -66,11 +72,7 @@ private module RequiresSslConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 22 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-522/InsecureLdapAuth.ql@23:79:23:94)
-  }
-
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 22 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-522/InsecureLdapAuth.ql@23:79:23:94)
+    none() // only used negatively in InsecureLdapAuth.ql
   }
 }
 
