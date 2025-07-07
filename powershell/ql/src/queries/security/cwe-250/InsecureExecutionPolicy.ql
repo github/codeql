@@ -41,6 +41,9 @@ class SetExecutionPolicy extends CmdCall {
       else result = this.getPositionalArgument(1)
     )
   }
+
+  /** Holds if the argument `flag` is supplied with a `$true` value. */
+  predicate isForced() { this.getNamedArgument("force").getValue().asBoolean() = true }
 }
 
 class Process extends Expr {
@@ -56,5 +59,7 @@ class BypassSetExecutionPolicy extends SetExecutionPolicy {
 }
 
 from BypassSetExecutionPolicy setExecutionPolicy
-where not setExecutionPolicy.getScope() instanceof Process
+where
+  not setExecutionPolicy.getScope() instanceof Process and
+  setExecutionPolicy.isForced()
 select setExecutionPolicy, "Insecure use of 'Set-ExecutionPolicy'."
