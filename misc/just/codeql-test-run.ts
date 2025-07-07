@@ -12,7 +12,7 @@ function invoke(invocation: string[], options: {cwd?: string, log_prefix?: strin
     } catch (error) {
         return 1;
     }
-    return 0;   
+    return 0;
 }
 
 type Args = {
@@ -55,7 +55,7 @@ function codeqlTestRun(argv: string[]): number {
     let args: Args = {
         tests: [],
         flags: [
-            `--ram=${ram_per_thread}`,
+            `--ram=${ram_per_thread * cpus}`,
             `-j${cpus}`,
         ],
         env: [],
