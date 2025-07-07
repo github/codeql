@@ -1,3 +1,12 @@
+## 1.4.4
+
+### Minor Analysis Improvements
+
+* Added flow models for the Win32 API functions `CreateThread`, `CreateRemoteThread`, and `CreateRemoteThreadEx`.
+* Added flow models for the GNU C Library.
+* Fixed a number of false positives and false negatives in `cpp/global-use-before-init`. Note that this query is not part of any of the default query suites.
+* The query `cpp/sql-injection` now can be extended using the `sql-injection` Models as Data (MaD) sink kind.
+
 ## 1.4.3
 
 ### Minor Analysis Improvements
