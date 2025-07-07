@@ -187,9 +187,7 @@ private module UntrustedDataConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/go/ql/lib/semmle/go/security/ExternalAPIs.qll@212:36:212:80), Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/go/ql/lib/semmle/go/security/ExternalAPIs.qll@215:43:215:92)
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
