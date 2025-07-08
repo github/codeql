@@ -17,25 +17,16 @@ models
 | 16 | Summary: core::ptr::write; Argument[1]; Argument[0].Reference; value |
 edges
 | main.rs:12:9:12:9 | a [Some] | main.rs:13:10:13:19 | a.unwrap() | provenance | MaD:5 |
-| main.rs:12:9:12:9 | a [Some] | main.rs:14:13:14:13 | a [Some] | provenance |  |
 | main.rs:12:13:12:28 | Some(...) [Some] | main.rs:12:9:12:9 | a [Some] | provenance |  |
 | main.rs:12:18:12:27 | source(...) | main.rs:12:13:12:28 | Some(...) [Some] | provenance |  |
-| main.rs:14:9:14:9 | b [Some] | main.rs:15:10:15:19 | b.unwrap() | provenance | MaD:5 |
-| main.rs:14:13:14:13 | a [Some] | main.rs:14:13:14:21 | a.clone() [Some] | provenance | generated |
-| main.rs:14:13:14:21 | a.clone() [Some] | main.rs:14:9:14:9 | b [Some] | provenance |  |
 | main.rs:19:9:19:9 | a [Ok] | main.rs:20:10:20:19 | a.unwrap() | provenance | MaD:14 |
-| main.rs:19:9:19:9 | a [Ok] | main.rs:21:13:21:13 | a [Ok] | provenance |  |
 | main.rs:19:31:19:44 | Ok(...) [Ok] | main.rs:19:9:19:9 | a [Ok] | provenance |  |
 | main.rs:19:34:19:43 | source(...) | main.rs:19:31:19:44 | Ok(...) [Ok] | provenance |  |
-| main.rs:21:9:21:9 | b [Ok] | main.rs:22:10:22:19 | b.unwrap() | provenance | MaD:14 |
-| main.rs:21:13:21:13 | a [Ok] | main.rs:21:13:21:21 | a.clone() [Ok] | provenance | generated |
-| main.rs:21:13:21:21 | a.clone() [Ok] | main.rs:21:9:21:9 | b [Ok] | provenance |  |
 | main.rs:26:9:26:9 | a | main.rs:27:10:27:10 | a | provenance |  |
 | main.rs:26:9:26:9 | a | main.rs:28:13:28:13 | a | provenance |  |
 | main.rs:26:13:26:22 | source(...) | main.rs:26:9:26:9 | a | provenance |  |
 | main.rs:28:9:28:9 | b | main.rs:29:10:29:10 | b | provenance |  |
 | main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() | provenance | MaD:4 |
-| main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() | provenance | generated |
 | main.rs:28:13:28:21 | a.clone() | main.rs:28:9:28:9 | b | provenance |  |
 | main.rs:43:18:43:22 | SelfParam [Wrapper] | main.rs:44:26:44:29 | self [Wrapper] | provenance |  |
 | main.rs:44:13:44:33 | Wrapper {...} [Wrapper] | main.rs:43:33:45:9 | { ... } [Wrapper] | provenance |  |
@@ -46,12 +37,10 @@ edges
 | main.rs:49:30:49:39 | source(...) | main.rs:49:17:49:41 | Wrapper {...} [Wrapper] | provenance |  |
 | main.rs:50:15:50:15 | w [Wrapper] | main.rs:43:18:43:22 | SelfParam [Wrapper] | provenance |  |
 | main.rs:50:15:50:15 | w [Wrapper] | main.rs:51:13:51:28 | Wrapper {...} [Wrapper] | provenance |  |
-| main.rs:50:15:50:15 | w [Wrapper] | main.rs:53:17:53:17 | w [Wrapper] | provenance |  |
 | main.rs:50:15:50:15 | w [Wrapper] | main.rs:53:17:53:25 | w.clone() [Wrapper] | provenance |  |
 | main.rs:51:13:51:28 | Wrapper {...} [Wrapper] | main.rs:51:26:51:26 | n | provenance |  |
 | main.rs:51:26:51:26 | n | main.rs:51:38:51:38 | n | provenance |  |
 | main.rs:53:13:53:13 | u [Wrapper] | main.rs:54:15:54:15 | u [Wrapper] | provenance |  |
-| main.rs:53:17:53:17 | w [Wrapper] | main.rs:53:17:53:25 | w.clone() [Wrapper] | provenance | generated |
 | main.rs:53:17:53:25 | w.clone() [Wrapper] | main.rs:53:13:53:13 | u [Wrapper] | provenance |  |
 | main.rs:54:15:54:15 | u [Wrapper] | main.rs:55:13:55:28 | Wrapper {...} [Wrapper] | provenance |  |
 | main.rs:55:13:55:28 | Wrapper {...} [Wrapper] | main.rs:55:26:55:26 | n | provenance |  |
@@ -120,18 +109,10 @@ nodes
 | main.rs:12:13:12:28 | Some(...) [Some] | semmle.label | Some(...) [Some] |
 | main.rs:12:18:12:27 | source(...) | semmle.label | source(...) |
 | main.rs:13:10:13:19 | a.unwrap() | semmle.label | a.unwrap() |
-| main.rs:14:9:14:9 | b [Some] | semmle.label | b [Some] |
-| main.rs:14:13:14:13 | a [Some] | semmle.label | a [Some] |
-| main.rs:14:13:14:21 | a.clone() [Some] | semmle.label | a.clone() [Some] |
-| main.rs:15:10:15:19 | b.unwrap() | semmle.label | b.unwrap() |
 | main.rs:19:9:19:9 | a [Ok] | semmle.label | a [Ok] |
 | main.rs:19:31:19:44 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
 | main.rs:19:34:19:43 | source(...) | semmle.label | source(...) |
 | main.rs:20:10:20:19 | a.unwrap() | semmle.label | a.unwrap() |
-| main.rs:21:9:21:9 | b [Ok] | semmle.label | b [Ok] |
-| main.rs:21:13:21:13 | a [Ok] | semmle.label | a [Ok] |
-| main.rs:21:13:21:21 | a.clone() [Ok] | semmle.label | a.clone() [Ok] |
-| main.rs:22:10:22:19 | b.unwrap() | semmle.label | b.unwrap() |
 | main.rs:26:9:26:9 | a | semmle.label | a |
 | main.rs:26:13:26:22 | source(...) | semmle.label | source(...) |
 | main.rs:27:10:27:10 | a | semmle.label | a |
@@ -152,7 +133,6 @@ nodes
 | main.rs:51:26:51:26 | n | semmle.label | n |
 | main.rs:51:38:51:38 | n | semmle.label | n |
 | main.rs:53:13:53:13 | u [Wrapper] | semmle.label | u [Wrapper] |
-| main.rs:53:17:53:17 | w [Wrapper] | semmle.label | w [Wrapper] |
 | main.rs:53:17:53:25 | w.clone() [Wrapper] | semmle.label | w.clone() [Wrapper] |
 | main.rs:54:15:54:15 | u [Wrapper] | semmle.label | u [Wrapper] |
 | main.rs:55:13:55:28 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |
@@ -224,11 +204,11 @@ nodes
 subpaths
 | main.rs:50:15:50:15 | w [Wrapper] | main.rs:43:18:43:22 | SelfParam [Wrapper] | main.rs:43:33:45:9 | { ... } [Wrapper] | main.rs:53:17:53:25 | w.clone() [Wrapper] |
 testFailures
+| main.rs:15:23:15:42 | //... | Missing result: hasValueFlow=88 |
+| main.rs:22:23:22:42 | //... | Missing result: hasValueFlow=37 |
 #select
 | main.rs:13:10:13:19 | a.unwrap() | main.rs:12:18:12:27 | source(...) | main.rs:13:10:13:19 | a.unwrap() | $@ | main.rs:12:18:12:27 | source(...) | source(...) |
-| main.rs:15:10:15:19 | b.unwrap() | main.rs:12:18:12:27 | source(...) | main.rs:15:10:15:19 | b.unwrap() | $@ | main.rs:12:18:12:27 | source(...) | source(...) |
 | main.rs:20:10:20:19 | a.unwrap() | main.rs:19:34:19:43 | source(...) | main.rs:20:10:20:19 | a.unwrap() | $@ | main.rs:19:34:19:43 | source(...) | source(...) |
-| main.rs:22:10:22:19 | b.unwrap() | main.rs:19:34:19:43 | source(...) | main.rs:22:10:22:19 | b.unwrap() | $@ | main.rs:19:34:19:43 | source(...) | source(...) |
 | main.rs:27:10:27:10 | a | main.rs:26:13:26:22 | source(...) | main.rs:27:10:27:10 | a | $@ | main.rs:26:13:26:22 | source(...) | source(...) |
 | main.rs:29:10:29:10 | b | main.rs:26:13:26:22 | source(...) | main.rs:29:10:29:10 | b | $@ | main.rs:26:13:26:22 | source(...) | source(...) |
 | main.rs:51:38:51:38 | n | main.rs:49:30:49:39 | source(...) | main.rs:51:38:51:38 | n | $@ | main.rs:49:30:49:39 | source(...) | source(...) |
