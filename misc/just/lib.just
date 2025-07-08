@@ -52,7 +52,7 @@ _ql_format +ARGS: (_maybe_build "nolang")
 
 [no-cd, no-exit-message]
 _bazel COMMAND *ARGS:
-    {{ cmd_sep }}{{ if SEMMLE_CODE != "" { '"$SEMMLE_CODE/tools/bazel"' } else { 'bazel' } }} {{ COMMAND }} {{ ARGS }}{{ cmd_sep }}
+    {{ cmd_sep }}{{ if SEMMLE_CODE != "" { 'cd "$SEMMLE_CODE"; tools/bazel' } else { 'bazel' } }} {{ COMMAND }} {{ ARGS }}{{ cmd_sep }}
 
 [no-cd, no-exit-message]
 _sembuild *ARGS: (_run_in_semmle_code "./build" ARGS)
@@ -65,9 +65,11 @@ _run +ARGS:
     {{ cmd_sep }}{{ ARGS }}{{ cmd_sep }}
 
 [no-cd]
-_run_in_semmle_code +ARGS: _require_semmle_code
-    {{ cmd_sep }}cd "$SEMMLE_CODE"; {{ ARGS }}{{ cmd_sep }}
+_run_in DIR +ARGS:
+    {{ cmd_sep }}cd "{{ DIR }}"; {{ ARGS }}{{ cmd_sep }}
 
+[no-cd]
+_run_in_semmle_code +ARGS: _require_semmle_code (_run_in "$SEMMLE_CODE" ARGS)
 
 [no-cd, positional-arguments, no-exit-message]
 _just +ARGS:

@@ -6,9 +6,9 @@ build: (_build "rust")
 
 generate: (_bazel "run" "@codeql//rust/codegen")
 
-lint: (_run "python3" "lint.py")
+lint: (_run_in source_dir() "python3" "lint.py")
 
-format: (_run "python3" "lint.py" "--format-only")
+format: (_run_in source_dir() "python3" "lint.py" "--format-only")
 
 [group('test')]
 language-tests *EXTRA_ARGS: (_language_tests EXTRA_ARGS source_dir() 'ql/test')
