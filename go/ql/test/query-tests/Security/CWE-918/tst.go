@@ -17,12 +17,18 @@ func handler2(w http.ResponseWriter, req *http.Request) {
 
 	http.Post(tainted, "text/basic", nil) // $ Alert
 
-	client := &http.Client{}
-	rq, _ := http.NewRequest("GET", tainted, nil) // $ Sink
-	client.Do(rq)                                 // $ Alert
+	http.PostForm(tainted, nil) // $ Alert
 
-	rq, _ = http.NewRequestWithContext(context.Background(), "GET", tainted, nil) // $ Sink
-	client.Do(rq)                                                                 // $ Alert
+	client := &http.Client{}
+	rq1, _ := http.NewRequest("GET", tainted, nil) // $ Sink
+	client.Do(rq1)                                 // $ Alert
+
+	rq2, _ := http.NewRequestWithContext(context.Background(), "GET", tainted, nil) // $ Sink
+	client.Do(rq2)                                                                  // $ Alert
+
+	client.Get(tainted)                     // $ Alert
+	client.Post(tainted, "text/basic", nil) // $ Alert
+	client.PostForm(tainted, nil)           // $ Alert
 
 	http.Get("http://" + tainted) // $ Alert
 
