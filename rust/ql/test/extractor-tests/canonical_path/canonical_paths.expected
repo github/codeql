@@ -29,6 +29,8 @@ canonicalPath
 | regular.rs:69:1:71:1 | fn is_number_or_letter | test::regular::is_number_or_letter |
 | regular.rs:73:1:75:1 | trait Abs | test::regular::Abs |
 | regular.rs:74:5:74:25 | fn abs | <_ as test::regular::Abs>::abs |
+| regular.rs:77:1:85:1 | impl Abs for i32 { ... } | <core::i32 as test::regular::Abs> |
+| regular.rs:78:5:84:5 | fn abs | <core::i32 as test::regular::Abs>::abs |
 canonicalPaths
 | anonymous.rs:1:1:1:26 | use ...::Trait | None | None |
 | anonymous.rs:3:1:32:1 | fn canonicals | repo::test | crate::anonymous::canonicals |
