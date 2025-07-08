@@ -14,7 +14,6 @@ private import codeql.rust.elements.PathExpr
 module Impl {
   private import rust
   private import codeql.rust.internal.PathResolution as PathResolution
-  private import codeql.rust.internal.TypeInference as TypeInference
 
   pragma[nomagic]
   Path getFunctionPath(CallExpr ce) { result = ce.getFunction().(PathExpr).getPath() }
@@ -36,15 +35,6 @@ module Impl {
    */
   class CallExpr extends Generated::CallExpr {
     override string toStringImpl() { result = this.getFunction().toAbbreviatedString() + "(...)" }
-
-    override Callable getStaticTarget() {
-      // If this call is to a trait method, e.g., `Trait::foo(bar)`, then check
-      // if type inference can resolve it to the correct trait implementation.
-      result = TypeInference::resolveMethodCallTarget(this)
-      or
-      not exists(TypeInference::resolveMethodCallTarget(this)) and
-      result = getResolvedFunction(this)
-    }
 
     /** Gets the struct that this call resolves to, if any. */
     Struct getStruct() { result = getResolvedFunction(this) }
