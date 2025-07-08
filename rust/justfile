@@ -1,7 +1,8 @@
-import '../lib.just'
+import '../justfile'
 
 install: (_bazel "run" "@codeql//rust:install")
 
+[group('build')]
 build: generate (_build "rust")
 
 generate: (_bazel "run" "@codeql//rust/codegen")
@@ -9,3 +10,6 @@ generate: (_bazel "run" "@codeql//rust/codegen")
 lint: (_run "python3" "lint.py")
 
 format: (_run "python3" "lint.py" "--format-only")
+
+[group('test')]
+language-tests *EXTRA_ARGS: (_language_tests EXTRA_ARGS source_dir() 'ql/test')

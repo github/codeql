@@ -2,6 +2,7 @@ import '../lib.just'
 
 install: (_bazel "run" "@codeql//swift:install")
 
+[group('build')]
 build: (_build "swift")
 
 generate: (_bazel "run" "@codeql//swift/codegen")
@@ -12,3 +13,10 @@ generate: (_bazel "run" "@codeql//swift/codegen")
     fi
 
 format ARGS=".": _check_clang_format (_run "clang-format" "-i" ("$(find " + ARGS + " -type f -name '*.h' -or -name '*.cpp')"))
+import "../../ql/swift/ql/justfile"
+
+[group('test')]
+language-tests *EXTRA_ARGS: (_language_tests EXTRA_ARGS source_dir() 'ql/test')
+
+[group('test')]
+extra-tests: (_sembuild "target/test/check-queries-swift") (_sembuild "target/test/check-db-upgrades-swift") (_sembuild "target/test/check-db-downgrades-swift")

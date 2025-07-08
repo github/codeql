@@ -3,12 +3,4 @@ import "../../lib.just"
 [no-cd]
 format *ARGS=".": (_ql_format ARGS)
 
-all_checks := default_db_checks + """\
-    --check-repeated-labels \
-    --check-redefined-labels \
-    --check-use-before-definition \
-    --consistency-queries=""" + source_dir() / "consistency-queries"
-
-
-[no-cd]
-test *ARGS=".": (_codeql_test "swift" "" all_checks ARGS)
+consistency_queries := source_dir() / "consistency-queries"

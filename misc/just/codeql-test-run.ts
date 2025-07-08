@@ -79,7 +79,7 @@ function codeqlTestRun(argv: string[]): number {
     }
     if (args.codeql === "build") {
         if (
-            invoke(["python3", "build", `target/intree/codeql-${language}`], {
+            invoke([process.env["JUST_EXECUTABLE"] || "just", language, "build"], {
                 cwd: semmle_code,
             }) !== 0
         ) {
@@ -114,6 +114,10 @@ function codeqlTestRun(argv: string[]): number {
             `codeql-${language}`,
             "codeql",
         );
+        if (!fs.existsSync(codeql)) {
+            console.error(`CodeQL executable not found: ${codeql}`);
+            return 1;
+        }
     } else if (args.codeql === "host") {
         codeql = "codeql";
     } else {

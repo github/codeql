@@ -39,9 +39,11 @@ default_db_checks := """\
 
 [no-cd, positional-arguments, no-exit-message]
 @_codeql_test LANGUAGE BASE_FLAGS ALL_CHECKS_FLAGS EXTRA_ARGS:
-    #$language-tests|{{ LANGUAGE }}|{{{{ BASE_FLAGS }}|{{ ALL_CHECKS_FLAGS }}
     {{ tsx }} "{{ source_dir() }}/codeql-test-run.ts" "$@"
 
+[no-cd, positional-arguments, no-exit-message]
+@_language_tests EXTRA_ARGS SOURCE_DIR +ROOTS: _require_semmle_code
+    {{ tsx }} "{{ source_dir() }}/language-tests.ts" "$@"
 
 [no-cd, no-exit-message]
 _ql_format +ARGS: (_maybe_build "nolang")

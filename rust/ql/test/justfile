@@ -1,0 +1,7 @@
+import "../justfile"
+
+all_checks := default_db_checks + """\
+     --consistency-queries=""" + consistency_queries
+
+[no-cd]
+test *ARGS=".": (_codeql_test "rust" "" all_checks ARGS)

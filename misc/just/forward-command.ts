@@ -7,7 +7,7 @@ function commonJustfile(paths: string[]): string {
     const splitPaths = paths.map((p) => p.split(path.sep));
     let justfile: string | undefined = undefined;
     for (let i = 0; i < splitPaths[0].length; i++) {
-        let candidate = path.join(...splitPaths[0].slice(0, i), "justfile");
+        let candidate = path.resolve(path.join(splitPaths[0].slice(0, i).join(path.sep), "justfile"));
         if (fs.existsSync(candidate)) {
             justfile = candidate;
         }
@@ -57,7 +57,7 @@ function forwardCommand(args: string[]): number {
         ...flags,
         ...positionalArgs,
     ];
-    console.log(`-> ${justfile}: ${invocation.slice(1).join(" ")}`);
+    console.log(`-> just ${invocation.slice(1).join(" ")}`);
     try {
         child_process.execFileSync(invocation[0], invocation.slice(1), {
             stdio: "inherit",
