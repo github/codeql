@@ -1,9 +1,8 @@
-import '../justfile'
+import '../lib.just'
 
 install: (_bazel "run" "@codeql//rust:install")
 
-[group('build')]
-build: generate (_build "rust")
+build: (_build "rust")
 
 generate: (_bazel "run" "@codeql//rust/codegen")
 
