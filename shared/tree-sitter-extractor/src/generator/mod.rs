@@ -51,9 +51,11 @@ pub fn generate(
 
     ql::write(
         &mut ql_writer,
-        &[ql::TopLevel::Predicate(
-            ql_gen::create_is_overlay_predicate(),
-        )],
+        &[
+            ql::TopLevel::Predicate(ql_gen::create_is_overlay_predicate()),
+            ql::TopLevel::Predicate(ql_gen::create_discardable_location_predicate()),
+            ql::TopLevel::Predicate(ql_gen::create_discard_location_predicate()),
+        ],
     )?;
 
     for language in languages {
@@ -103,9 +105,6 @@ pub fn generate(
         // Overlay discard predicates
         body.push(ql::TopLevel::Predicate(
             ql_gen::create_get_node_file_predicate(&ast_node_name, &node_location_table_name),
-        ));
-        body.push(ql::TopLevel::Predicate(
-            ql_gen::create_discard_file_predicate(),
         ));
         body.push(ql::TopLevel::Predicate(
             ql_gen::create_discardable_ast_node_predicate(&ast_node_name),

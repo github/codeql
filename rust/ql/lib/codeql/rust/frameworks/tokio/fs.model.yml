@@ -1,11 +1,11 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModelDeprecated
+      extensible: sourceModel
     data:
-      - ["repo:https://github.com/tokio-rs/tokio:tokio", "crate::fs::read::read", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
-      - ["repo:https://github.com/tokio-rs/tokio:tokio", "crate::fs::read_to_string::read_to_string", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
-      - ["repo:https://github.com/tokio-rs/tokio:tokio", "crate::fs::read_link::read_link", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
-      - ["repo:https://github.com/tokio-rs/tokio:tokio", "<crate::fs::read_dir::DirEntry>::path", "ReturnValue", "file", "manual"]
-      - ["repo:https://github.com/tokio-rs/tokio:tokio", "<crate::fs::read_dir::DirEntry>::file_name", "ReturnValue", "file", "manual"]
-      - ["repo:https://github.com/tokio-rs/tokio:tokio", "<crate::fs::file::File>::open", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
+      - ["tokio::fs::read::read", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
+      - ["tokio::fs::read_to_string::read_to_string", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
+      - ["tokio::fs::read_link::read_link", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
+      - ["<tokio::fs::read_dir::DirEntry>::path", "ReturnValue", "file", "manual"]
+      - ["<tokio::fs::read_dir::DirEntry>::file_name", "ReturnValue", "file", "manual"]
+      - ["<tokio::fs::file::File>::open", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]

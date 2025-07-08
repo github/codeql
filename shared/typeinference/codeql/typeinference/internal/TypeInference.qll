@@ -649,6 +649,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * - `Pair<int, bool>`   is _not_ an instantiation of `Pair<A, A>`
        * - `Pair<int, string>` is _not_ an instantiation of `Pair<string, string>`
        */
+      pragma[nomagic]
       predicate isInstantiationOf(App app, TypeAbstraction abs, TypeMention tm) {
         // We only need to check equality if the concrete types are satisfied.
         satisfiesConcreteTypes(app, abs, tm) and
@@ -664,6 +665,27 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           exists(int n | n = max(int i | exists(getNthTypeParameter(abs, i))) |
             typeParametersHaveEqualInstantiationFromIndex(app, abs, tm, n)
           )
+        )
+      }
+
+      /**
+       * Holds if `app` is _not_ a possible instantiation of `tm`.
+       */
+      pragma[nomagic]
+      predicate isNotInstantiationOf(App app, TypeAbstraction abs, TypeMention tm) {
+        // `app` and `tm` differ on a concrete type
+        exists(Type t, TypePath path |
+          t = resolveNthTypeAt(app, abs, tm, _, path) and
+          not t = abs.getATypeParameter() and
+          not path.isEmpty() and
+          app.getTypeAt(path) != t
+        )
+        or
+        // `app` uses inconsistent type parameter instantiations
+        exists(TypeParameter tp |
+          potentialInstantiationOf(app, abs, tm) and
+          app.getTypeAt(getNthTypeParameterPath(tm, tp, _)) !=
+            app.getTypeAt(getNthTypeParameterPath(tm, tp, _))
         )
       }
     }
