@@ -231,6 +231,24 @@ private Type inferAssignmentOperationType(AstNode n, TypePath path) {
   result = TUnit()
 }
 
+pragma[nomagic]
+private Struct getRangeType(RangeExpr re) {
+  re instanceof RangeFromExpr and
+  result instanceof RangeFromStruct
+  or
+  re instanceof RangeToExpr and
+  result instanceof RangeToStruct
+  or
+  re instanceof RangeFromToExpr and
+  result instanceof RangeStruct
+  or
+  re instanceof RangeInclusiveExpr and
+  result instanceof RangeInclusiveStruct
+  or
+  re instanceof RangeToInclusiveExpr and
+  result instanceof RangeToInclusiveStruct
+}
+
 /**
  * Holds if the type tree of `n1` at `prefix1` should be equal to the type tree
  * of `n2` at `prefix2` and type information should propagate in both directions
@@ -300,22 +318,8 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
   exists(Struct s |
     n2 = [n1.(RangeExpr).getStart(), n1.(RangeExpr).getEnd()] and
     prefix1 = TypePath::singleton(TTypeParamTypeParameter(s.getGenericParamList().getATypeParam())) and
-    prefix2.isEmpty()
-  |
-    n1 instanceof RangeFromExpr and
-    s instanceof RangeFromStruct
-    or
-    n1 instanceof RangeToExpr and
-    s instanceof RangeToStruct
-    or
-    n1 instanceof RangeFromToExpr and
-    s instanceof RangeStruct
-    or
-    n1 instanceof RangeInclusiveExpr and
-    s instanceof RangeInclusiveStruct
-    or
-    n1 instanceof RangeToInclusiveExpr and
-    s instanceof RangeToInclusiveStruct
+    prefix2.isEmpty() and
+    s = getRangeType(n1)
   )
 }
 
@@ -1123,24 +1127,7 @@ private Type inferArrayExprType(ArrayExpr ae) { exists(ae) and result = TArrayTy
  * Gets the root type of the range expression `re`.
  */
 pragma[nomagic]
-private Type inferRangeExprType(RangeExpr re) {
-  exists(Struct s | result = TStruct(s) |
-    re instanceof RangeFromExpr and
-    s instanceof RangeFromStruct
-    or
-    re instanceof RangeToExpr and
-    s instanceof RangeToStruct
-    or
-    re instanceof RangeFromToExpr and
-    s instanceof RangeStruct
-    or
-    re instanceof RangeInclusiveExpr and
-    s instanceof RangeInclusiveStruct
-    or
-    re instanceof RangeToInclusiveExpr and
-    s instanceof RangeToInclusiveStruct
-  )
-}
+private Type inferRangeExprType(RangeExpr re) { result = TStruct(getRangeType(re)) }
 
 /**
  * According to [the Rust reference][1]: _"array and slice-typed expressions

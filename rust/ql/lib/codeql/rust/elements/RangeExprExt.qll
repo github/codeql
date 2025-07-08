@@ -13,6 +13,7 @@ private import rust
 final class RangeFromExpr extends RangeExpr {
   RangeFromExpr() {
     this.getOperatorName() = ".." and
+    this.hasStart() and
     not this.hasEnd()
   }
 }
@@ -26,7 +27,8 @@ final class RangeFromExpr extends RangeExpr {
 final class RangeToExpr extends RangeExpr {
   RangeToExpr() {
     this.getOperatorName() = ".." and
-    not this.hasStart()
+    not this.hasStart() and
+    this.hasEnd()
   }
 }
 
