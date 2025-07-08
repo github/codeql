@@ -2,17 +2,29 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  StructField x, int getNumberOfAttrs, string hasDefault, string isUnsafe, string hasName,
-  string hasTypeRepr, string hasVisibility
-where
+query predicate instances(StructField x, string isUnsafe__label, string isUnsafe) {
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasDefault() then hasDefault = "yes" else hasDefault = "no") and
-  (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
-  if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasDefault:", hasDefault, "isUnsafe:", isUnsafe,
-  "hasName:", hasName, "hasTypeRepr:", hasTypeRepr, "hasVisibility:", hasVisibility
+  isUnsafe__label = "isUnsafe:" and
+  if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
+}
+
+query predicate getAttr(StructField x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getDefault(StructField x, Expr getDefault) {
+  toBeTested(x) and not x.isUnknown() and getDefault = x.getDefault()
+}
+
+query predicate getName(StructField x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getTypeRepr(StructField x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}
+
+query predicate getVisibility(StructField x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}

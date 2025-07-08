@@ -1,0 +1,69 @@
+#select
+| InsecureRandomCookies.java:21:44:21:62 | toString(...) | InsecureRandomCookies.java:19:17:19:27 | nextInt(...) : Number | InsecureRandomCookies.java:21:44:21:62 | toString(...) | Potential Insecure randomness due to a $@. | InsecureRandomCookies.java:19:17:19:27 | nextInt(...) | Insecure randomness source. |
+| InsecureRandomCookies.java:22:25:22:43 | toString(...) | InsecureRandomCookies.java:19:17:19:27 | nextInt(...) : Number | InsecureRandomCookies.java:22:25:22:43 | toString(...) | Potential Insecure randomness due to a $@. | InsecureRandomCookies.java:19:17:19:27 | nextInt(...) | Insecure randomness source. |
+| InsecureRandomCookies.java:25:71:25:89 | toString(...) | InsecureRandomCookies.java:19:17:19:27 | nextInt(...) : Number | InsecureRandomCookies.java:25:71:25:89 | toString(...) | Potential Insecure randomness due to a $@. | InsecureRandomCookies.java:19:17:19:27 | nextInt(...) | Insecure randomness source. |
+| InsecureRandomCookies.java:26:30:26:48 | toString(...) | InsecureRandomCookies.java:19:17:19:27 | nextInt(...) : Number | InsecureRandomCookies.java:26:30:26:48 | toString(...) | Potential Insecure randomness due to a $@. | InsecureRandomCookies.java:19:17:19:27 | nextInt(...) | Insecure randomness source. |
+| InsecureRandomCookies.java:28:78:28:96 | toString(...) | InsecureRandomCookies.java:19:17:19:27 | nextInt(...) : Number | InsecureRandomCookies.java:28:78:28:96 | toString(...) | Potential Insecure randomness due to a $@. | InsecureRandomCookies.java:19:17:19:27 | nextInt(...) | Insecure randomness source. |
+| InsecureRandomCookies.java:29:31:29:49 | toString(...) | InsecureRandomCookies.java:19:17:19:27 | nextInt(...) : Number | InsecureRandomCookies.java:29:31:29:49 | toString(...) | Potential Insecure randomness due to a $@. | InsecureRandomCookies.java:19:17:19:27 | nextInt(...) | Insecure randomness source. |
+| InsecureRandomCookies.java:35:45:35:49 | value | InsecureRandomCookies.java:32:18:32:28 | nextInt(...) : Number | InsecureRandomCookies.java:35:45:35:49 | value | Potential Insecure randomness due to a $@. | InsecureRandomCookies.java:32:18:32:28 | nextInt(...) | Insecure randomness source. |
+| InsecureRandomCookies.java:40:45:40:61 | new String(...) | InsecureRandomCookies.java:38:21:38:25 | bytes : byte[] | InsecureRandomCookies.java:40:45:40:61 | new String(...) | Potential Insecure randomness due to a $@. | InsecureRandomCookies.java:38:21:38:25 | bytes | Insecure randomness source. |
+| InsecureRandomCookies.java:51:45:51:75 | toString(...) | InsecureRandomCookies.java:51:62:51:74 | nextInt(...) : Number | InsecureRandomCookies.java:51:45:51:75 | toString(...) | Potential Insecure randomness due to a $@. | InsecureRandomCookies.java:51:62:51:74 | nextInt(...) | Insecure randomness source. |
+| InsecureRandomCookies.java:53:45:53:72 | random(...) | InsecureRandomCookies.java:53:45:53:72 | random(...) | InsecureRandomCookies.java:53:45:53:72 | random(...) | Potential Insecure randomness due to a $@. | InsecureRandomCookies.java:53:45:53:72 | random(...) | Insecure randomness source. |
+| InsecureRandomCookies.java:55:45:55:77 | randomAscii(...) | InsecureRandomCookies.java:55:45:55:77 | randomAscii(...) | InsecureRandomCookies.java:55:45:55:77 | randomAscii(...) | Potential Insecure randomness due to a $@. | InsecureRandomCookies.java:55:45:55:77 | randomAscii(...) | Insecure randomness source. |
+| InsecureRandomCookies.java:59:45:59:65 | toString(...) | InsecureRandomCookies.java:57:19:57:30 | nextLong(...) : Number | InsecureRandomCookies.java:59:45:59:65 | toString(...) | Potential Insecure randomness due to a $@. | InsecureRandomCookies.java:57:19:57:30 | nextLong(...) | Insecure randomness source. |
+| InsecureRandomCookies.java:63:45:63:63 | toString(...) | InsecureRandomCookies.java:61:21:61:33 | random(...) : Number | InsecureRandomCookies.java:63:45:63:63 | toString(...) | Potential Insecure randomness due to a $@. | InsecureRandomCookies.java:61:21:61:33 | random(...) | Insecure randomness source. |
+| InsecureRandomCookies.java:67:46:67:66 | toString(...) | InsecureRandomCookies.java:65:21:65:33 | random(...) : Number | InsecureRandomCookies.java:67:46:67:66 | toString(...) | Potential Insecure randomness due to a $@. | InsecureRandomCookies.java:65:21:65:33 | random(...) | Insecure randomness source. |
+edges
+| InsecureRandomCookies.java:19:17:19:27 | nextInt(...) : Number | InsecureRandomCookies.java:21:44:21:62 | toString(...) | provenance | TaintPreservingCallable |
+| InsecureRandomCookies.java:19:17:19:27 | nextInt(...) : Number | InsecureRandomCookies.java:22:25:22:43 | toString(...) | provenance | TaintPreservingCallable |
+| InsecureRandomCookies.java:19:17:19:27 | nextInt(...) : Number | InsecureRandomCookies.java:25:71:25:89 | toString(...) | provenance | TaintPreservingCallable |
+| InsecureRandomCookies.java:19:17:19:27 | nextInt(...) : Number | InsecureRandomCookies.java:26:30:26:48 | toString(...) | provenance | TaintPreservingCallable |
+| InsecureRandomCookies.java:19:17:19:27 | nextInt(...) : Number | InsecureRandomCookies.java:28:78:28:96 | toString(...) | provenance | TaintPreservingCallable |
+| InsecureRandomCookies.java:19:17:19:27 | nextInt(...) : Number | InsecureRandomCookies.java:29:31:29:49 | toString(...) | provenance | TaintPreservingCallable |
+| InsecureRandomCookies.java:32:18:32:28 | nextInt(...) : Number | InsecureRandomCookies.java:33:42:33:61 | toString(...) : String | provenance | TaintPreservingCallable |
+| InsecureRandomCookies.java:33:24:33:62 | encodeForHTML(...) : String | InsecureRandomCookies.java:35:45:35:49 | value | provenance |  |
+| InsecureRandomCookies.java:33:42:33:61 | toString(...) : String | InsecureRandomCookies.java:33:24:33:62 | encodeForHTML(...) : String | provenance | Config |
+| InsecureRandomCookies.java:33:42:33:61 | toString(...) : String | InsecureRandomCookies.java:33:24:33:62 | encodeForHTML(...) : String | provenance | MaD:2 |
+| InsecureRandomCookies.java:38:21:38:25 | bytes : byte[] | InsecureRandomCookies.java:40:56:40:60 | bytes : byte[] | provenance |  |
+| InsecureRandomCookies.java:40:56:40:60 | bytes : byte[] | InsecureRandomCookies.java:40:45:40:61 | new String(...) | provenance | MaD:1 |
+| InsecureRandomCookies.java:51:62:51:74 | nextInt(...) : Number | InsecureRandomCookies.java:51:45:51:75 | toString(...) | provenance | TaintPreservingCallable |
+| InsecureRandomCookies.java:57:19:57:30 | nextLong(...) : Number | InsecureRandomCookies.java:59:59:59:60 | c3 : Number | provenance |  |
+| InsecureRandomCookies.java:59:59:59:60 | c3 : Number | InsecureRandomCookies.java:59:59:59:64 | ... * ... : Number | provenance | Config |
+| InsecureRandomCookies.java:59:59:59:64 | ... * ... : Number | InsecureRandomCookies.java:59:45:59:65 | toString(...) | provenance | TaintPreservingCallable |
+| InsecureRandomCookies.java:61:21:61:33 | random(...) : Number | InsecureRandomCookies.java:63:45:63:63 | toString(...) | provenance | TaintPreservingCallable |
+| InsecureRandomCookies.java:65:21:65:33 | random(...) : Number | InsecureRandomCookies.java:67:64:67:65 | c5 : Number | provenance |  |
+| InsecureRandomCookies.java:67:62:67:65 | ++... : Number | InsecureRandomCookies.java:67:46:67:66 | toString(...) | provenance | TaintPreservingCallable |
+| InsecureRandomCookies.java:67:64:67:65 | c5 : Number | InsecureRandomCookies.java:67:62:67:65 | ++... : Number | provenance | Config |
+models
+| 1 | Summary: java.lang; String; false; String; ; ; Argument[0]; Argument[this]; taint; manual |
+| 2 | Summary: org.owasp.esapi; Encoder; true; encodeForHTML; (String); ; Argument[0]; ReturnValue; taint; manual |
+nodes
+| InsecureRandomCookies.java:19:17:19:27 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| InsecureRandomCookies.java:21:44:21:62 | toString(...) | semmle.label | toString(...) |
+| InsecureRandomCookies.java:22:25:22:43 | toString(...) | semmle.label | toString(...) |
+| InsecureRandomCookies.java:25:71:25:89 | toString(...) | semmle.label | toString(...) |
+| InsecureRandomCookies.java:26:30:26:48 | toString(...) | semmle.label | toString(...) |
+| InsecureRandomCookies.java:28:78:28:96 | toString(...) | semmle.label | toString(...) |
+| InsecureRandomCookies.java:29:31:29:49 | toString(...) | semmle.label | toString(...) |
+| InsecureRandomCookies.java:32:18:32:28 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| InsecureRandomCookies.java:33:24:33:62 | encodeForHTML(...) : String | semmle.label | encodeForHTML(...) : String |
+| InsecureRandomCookies.java:33:42:33:61 | toString(...) : String | semmle.label | toString(...) : String |
+| InsecureRandomCookies.java:35:45:35:49 | value | semmle.label | value |
+| InsecureRandomCookies.java:38:21:38:25 | bytes : byte[] | semmle.label | bytes : byte[] |
+| InsecureRandomCookies.java:40:45:40:61 | new String(...) | semmle.label | new String(...) |
+| InsecureRandomCookies.java:40:56:40:60 | bytes : byte[] | semmle.label | bytes : byte[] |
+| InsecureRandomCookies.java:51:45:51:75 | toString(...) | semmle.label | toString(...) |
+| InsecureRandomCookies.java:51:62:51:74 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| InsecureRandomCookies.java:53:45:53:72 | random(...) | semmle.label | random(...) |
+| InsecureRandomCookies.java:55:45:55:77 | randomAscii(...) | semmle.label | randomAscii(...) |
+| InsecureRandomCookies.java:57:19:57:30 | nextLong(...) : Number | semmle.label | nextLong(...) : Number |
+| InsecureRandomCookies.java:59:45:59:65 | toString(...) | semmle.label | toString(...) |
+| InsecureRandomCookies.java:59:59:59:60 | c3 : Number | semmle.label | c3 : Number |
+| InsecureRandomCookies.java:59:59:59:64 | ... * ... : Number | semmle.label | ... * ... : Number |
+| InsecureRandomCookies.java:61:21:61:33 | random(...) : Number | semmle.label | random(...) : Number |
+| InsecureRandomCookies.java:63:45:63:63 | toString(...) | semmle.label | toString(...) |
+| InsecureRandomCookies.java:65:21:65:33 | random(...) : Number | semmle.label | random(...) : Number |
+| InsecureRandomCookies.java:67:46:67:66 | toString(...) | semmle.label | toString(...) |
+| InsecureRandomCookies.java:67:62:67:65 | ++... : Number | semmle.label | ++... : Number |
+| InsecureRandomCookies.java:67:64:67:65 | c5 : Number | semmle.label | c5 : Number |
+subpaths

@@ -1,31 +1,6 @@
-multiplePathResolutions
-| main.rs:13:13:13:24 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:13:13:13:24 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:13:13:13:24 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:13:13:13:24 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:13:13:13:24 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:13:13:13:24 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:14:13:14:24 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:14:13:14:24 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:14:13:14:24 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:14:13:14:24 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:14:13:14:24 | ...::from | file://:0:0:0:0 | fn from |
-| main.rs:14:13:14:24 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:165:20:165:31 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:165:20:165:31 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:165:20:165:31 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:165:20:165:31 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:165:20:165:31 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:165:20:165:31 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:171:9:171:17 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:171:9:171:17 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:171:9:171:17 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:171:9:171:17 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:171:9:171:17 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:171:9:171:17 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:177:9:177:26 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:177:9:177:26 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:177:9:177:26 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:177:9:177:26 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:177:9:177:26 | ...::from | file://:0:0:0:0 | fn from |
-| unreachable.rs:177:9:177:26 | ...::from | file://:0:0:0:0 | fn from |
+multipleCallTargets
+| main.rs:13:13:13:29 | ...::from(...) |
+| main.rs:14:13:14:29 | ...::from(...) |
+| unreachable.rs:165:20:165:42 | ...::from(...) |
+| unreachable.rs:171:9:171:17 | ...::from(...) |
+| unreachable.rs:177:17:177:25 | ...::from(...) |

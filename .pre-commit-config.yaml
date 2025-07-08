@@ -9,7 +9,7 @@ repos:
       - id: trailing-whitespace
         exclude: /test/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
       - id: end-of-file-fixer
-        exclude: /test/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
+        exclude: Cargo.lock$|/test/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v17.0.6
@@ -20,7 +20,7 @@ repos:
     rev: 25.1.0
     hooks:
       - id: black
-        files: ^(misc/codegen/.*|misc/scripts/models-as-data/bulk_generate_mad)\.py$
+        files: ^(misc/codegen/.*|misc/scripts/models-as-data/.*)\.py$
 
   - repo: local
     hooks:

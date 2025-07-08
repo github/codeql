@@ -1,6 +1,8 @@
 /**
  * Provides classes representing various flow steps for taint tracking.
  */
+overlay[local?]
+module;
 
 private import java
 private import semmle.code.java.dataflow.DataFlow
@@ -160,7 +162,7 @@ private class NumberTaintPreservingCallable extends TaintPreservingCallable {
   int argument;
 
   NumberTaintPreservingCallable() {
-    this.getDeclaringType().getAnAncestor().hasQualifiedName("java.lang", "Number") and
+    this.getDeclaringType().getASourceSupertype*().hasQualifiedName("java.lang", "Number") and
     (
       this instanceof Constructor and
       argument = 0

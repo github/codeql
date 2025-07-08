@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.frameworks.struts.StrutsAnnotations
 import semmle.code.java.frameworks.struts.StrutsXML

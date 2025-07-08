@@ -1,3 +1,18 @@
+## 4.3.0
+
+### Deprecated APIs
+
+* The class `BuiltinType` is now deprecated. Use the new replacement `BuiltinTypeEntity` instead.
+* The class `DeclaredType` is now deprecated. Use the new replacement `DeclaredTypeEntity` instead.
+
+### Minor Analysis Improvements
+
+* Previously, `DefinedType.getBaseType` gave the underlying type. It now gives the right hand side of the type declaration, as the documentation indicated that it should.
+
+## 4.2.8
+
+No user-facing changes.
+
 ## 4.2.7
 
 ### Minor Analysis Improvements

@@ -50,29 +50,32 @@ class FileWrapperCall extends DataFlow::CallCfgNode {
 
 /** A node where a file is closed. */
 abstract class FileClose extends DataFlow::CfgNode {
-  /** Holds if this file close will occur if an exception is thrown at `raises`. */
+  /** Holds if this file close will occur if an exception is raised at `raises`. */
   predicate guardsExceptions(DataFlow::CfgNode raises) {
-    cfgGetASuccessorStar(raises.asCfgNode().getAnExceptionalSuccessor(), this.asCfgNode())
+    // The close call occurs after an exception edge in the cfg (a catch or finally)
+    bbReachableRefl(raises.asCfgNode().getBasicBlock().getAnExceptionalSuccessor(),
+      this.asCfgNode().getBasicBlock())
     or
-    // The expression is after the close call.
-    // This also covers the body of a `with` statement.
-    cfgGetASuccessorStar(this.asCfgNode(), raises.asCfgNode())
+    // The exception is after the close call.
+    // A full cfg reachability check is not in general feasible for performance, so we approximate it with:
+    // - A basic block reachability check (here) that works if the expression and close call are in different basic blocks
+    // - A check (in the `WithStatement` override of `guardsExceptions`) for the case where the exception call
+    //   is lexically contained in the body of a `with` statement that closes the file.
+    // This may cause FPs in a case such as:
+    //   f.close()
+    //   f.write("...")
+    // We presume this to not be very common.
+    bbReachableStrict(this.asCfgNode().getBasicBlock(), raises.asCfgNode().getBasicBlock())
   }
 }
 
-private predicate cfgGetASuccessor(ControlFlowNode src, ControlFlowNode sink) {
-  sink = src.getASuccessor()
-}
+private predicate bbSuccessor(BasicBlock src, BasicBlock sink) { sink = src.getASuccessor() }
 
-pragma[inline]
-private predicate cfgGetASuccessorPlus(ControlFlowNode src, ControlFlowNode sink) =
-  fastTC(cfgGetASuccessor/2)(src, sink)
+private predicate bbReachableStrict(BasicBlock src, BasicBlock sink) =
+  fastTC(bbSuccessor/2)(src, sink)
 
-pragma[inline]
-private predicate cfgGetASuccessorStar(ControlFlowNode src, ControlFlowNode sink) {
-  src = sink
-  or
-  cfgGetASuccessorPlus(src, sink)
+private predicate bbReachableRefl(BasicBlock src, BasicBlock sink) {
+  bbReachableStrict(src, sink) or src = sink
 }
 
 /** A call to the `.close()` method of a file object. */
@@ -87,7 +90,16 @@ class OsCloseCall extends FileClose {
 
 /** A `with` statement. */
 class WithStatement extends FileClose {
-  WithStatement() { this.asExpr() = any(With w).getContextExpr() }
+  With w;
+
+  WithStatement() { this.asExpr() = w.getContextExpr() }
+
+  override predicate guardsExceptions(DataFlow::CfgNode raises) {
+    super.guardsExceptions(raises)
+    or
+    // Check whether the exception is raised in the body of the with statement.
+    raises.asExpr().getParent*() = w.getBody().getAnItem()
+  }
 }
 
 /** Holds if an exception may be raised at `raises` if `file` is a file object. */

@@ -6,6 +6,10 @@
 | apollo.serverSide.ts:8:39:8:64 | get(fil ...  => {}) | apollo.serverSide.ts:7:36:7:44 | { files } | apollo.serverSide.ts:8:43:8:50 | file.url | The $@ of this request depends on a $@. | apollo.serverSide.ts:8:43:8:50 | file.url | URL | apollo.serverSide.ts:7:36:7:44 | { files } | user-provided value |
 | apollo.serverSide.ts:18:37:18:62 | get(fil ...  => {}) | apollo.serverSide.ts:17:34:17:42 | { files } | apollo.serverSide.ts:18:41:18:48 | file.url | The $@ of this request depends on a $@. | apollo.serverSide.ts:18:41:18:48 | file.url | URL | apollo.serverSide.ts:17:34:17:42 | { files } | user-provided value |
 | axiosInterceptors.serverSide.js:11:26:11:40 | userProvidedUrl | axiosInterceptors.serverSide.js:19:21:19:28 | req.body | axiosInterceptors.serverSide.js:11:26:11:40 | userProvidedUrl | The $@ of this request depends on a $@. | axiosInterceptors.serverSide.js:11:26:11:40 | userProvidedUrl | endpoint | axiosInterceptors.serverSide.js:19:21:19:28 | req.body | user-provided value |
+| serverSide2.js:17:28:17:47 | axios.get(targetUrl) | serverSide2.js:10:25:10:31 | req.url | serverSide2.js:17:38:17:46 | targetUrl | The $@ of this request depends on a $@. | serverSide2.js:17:38:17:46 | targetUrl | URL | serverSide2.js:10:25:10:31 | req.url | user-provided value |
+| serverSide2.js:20:29:20:49 | axios.g ... etUrl1) | serverSide2.js:9:43:9:56 | req._parsedUrl | serverSide2.js:20:39:20:48 | targetUrl1 | The $@ of this request depends on a $@. | serverSide2.js:20:39:20:48 | targetUrl1 | URL | serverSide2.js:9:43:9:56 | req._parsedUrl | user-provided value |
+| serverSide2.js:23:29:23:49 | axios.g ... etUrl2) | serverSide2.js:22:24:22:30 | req.url | serverSide2.js:23:39:23:48 | targetUrl2 | The $@ of this request depends on a $@. | serverSide2.js:23:39:23:48 | targetUrl2 | URL | serverSide2.js:22:24:22:30 | req.url | user-provided value |
+| serverSide2.js:26:29:26:49 | axios.g ... etUrl3) | serverSide2.js:11:24:11:30 | req.url | serverSide2.js:26:39:26:48 | targetUrl3 | The $@ of this request depends on a $@. | serverSide2.js:26:39:26:48 | targetUrl3 | URL | serverSide2.js:11:24:11:30 | req.url | user-provided value |
 | serverSide.js:18:5:18:20 | request(tainted) | serverSide.js:14:29:14:35 | req.url | serverSide.js:18:13:18:19 | tainted | The $@ of this request depends on a $@. | serverSide.js:18:13:18:19 | tainted | URL | serverSide.js:14:29:14:35 | req.url | user-provided value |
 | serverSide.js:20:5:20:24 | request.get(tainted) | serverSide.js:14:29:14:35 | req.url | serverSide.js:20:17:20:23 | tainted | The $@ of this request depends on a $@. | serverSide.js:20:17:20:23 | tainted | URL | serverSide.js:14:29:14:35 | req.url | user-provided value |
 | serverSide.js:24:5:24:20 | request(options) | serverSide.js:14:29:14:35 | req.url | serverSide.js:23:19:23:25 | tainted | The $@ of this request depends on a $@. | serverSide.js:23:19:23:25 | tainted | URL | serverSide.js:14:29:14:35 | req.url | user-provided value |
@@ -33,6 +37,8 @@
 | serverSide.js:141:3:141:30 | axios.g ... ring()) | serverSide.js:139:17:139:29 | req.query.url | serverSide.js:141:13:141:29 | target.toString() | The $@ of this request depends on a $@. | serverSide.js:141:13:141:29 | target.toString() | URL | serverSide.js:139:17:139:29 | req.query.url | user-provided value |
 | serverSide.js:142:3:142:19 | axios.get(target) | serverSide.js:139:17:139:29 | req.query.url | serverSide.js:142:13:142:18 | target | The $@ of this request depends on a $@. | serverSide.js:142:13:142:18 | target | URL | serverSide.js:139:17:139:29 | req.query.url | user-provided value |
 | serverSide.js:143:3:143:24 | axios.g ... t.href) | serverSide.js:139:17:139:29 | req.query.url | serverSide.js:143:13:143:23 | target.href | The $@ of this request depends on a $@. | serverSide.js:143:13:143:23 | target.href | URL | serverSide.js:139:17:139:29 | req.query.url | user-provided value |
+| serverSide.js:145:3:145:23 | axios.g ... dedUrl) | serverSide.js:139:17:139:29 | req.query.url | serverSide.js:145:13:145:22 | encodedUrl | The $@ of this request depends on a $@. | serverSide.js:145:13:145:22 | encodedUrl | URL | serverSide.js:139:17:139:29 | req.query.url | user-provided value |
+| serverSide.js:147:3:147:23 | axios.g ... pedUrl) | serverSide.js:139:17:139:29 | req.query.url | serverSide.js:147:13:147:22 | escapedUrl | The $@ of this request depends on a $@. | serverSide.js:147:13:147:22 | escapedUrl | URL | serverSide.js:139:17:139:29 | req.query.url | user-provided value |
 edges
 | Request/app/api/proxy/route2.serverSide.ts:4:9:4:15 | { url } | Request/app/api/proxy/route2.serverSide.ts:4:9:4:34 | url | provenance |  |
 | Request/app/api/proxy/route2.serverSide.ts:4:9:4:34 | url | Request/app/api/proxy/route2.serverSide.ts:5:27:5:29 | url | provenance |  |
@@ -61,6 +67,18 @@ edges
 | axiosInterceptors.serverSide.js:19:21:19:28 | req.body | axiosInterceptors.serverSide.js:19:11:19:17 | { url } | provenance |  |
 | axiosInterceptors.serverSide.js:20:5:20:25 | userProvidedUrl | axiosInterceptors.serverSide.js:11:26:11:40 | userProvidedUrl | provenance |  |
 | axiosInterceptors.serverSide.js:20:23:20:25 | url | axiosInterceptors.serverSide.js:20:5:20:25 | userProvidedUrl | provenance |  |
+| serverSide2.js:9:34:9:63 | qs.pars ... .query) | serverSide2.js:19:24:19:51 | req.par ... rsedUrl | provenance |  |
+| serverSide2.js:9:43:9:56 | req._parsedUrl | serverSide2.js:9:34:9:63 | qs.pars ... .query) | provenance |  |
+| serverSide2.js:10:25:10:31 | req.url | serverSide2.js:16:23:16:41 | req.parsedQuery.url | provenance |  |
+| serverSide2.js:11:24:11:30 | req.url | serverSide2.js:25:24:25:41 | req.SomeObject.url | provenance |  |
+| serverSide2.js:16:11:16:41 | targetUrl | serverSide2.js:17:38:17:46 | targetUrl | provenance |  |
+| serverSide2.js:16:23:16:41 | req.parsedQuery.url | serverSide2.js:16:11:16:41 | targetUrl | provenance |  |
+| serverSide2.js:19:11:19:55 | targetUrl1 | serverSide2.js:20:39:20:48 | targetUrl1 | provenance |  |
+| serverSide2.js:19:24:19:51 | req.par ... rsedUrl | serverSide2.js:19:11:19:55 | targetUrl1 | provenance |  |
+| serverSide2.js:22:11:22:36 | targetUrl2 | serverSide2.js:23:39:23:48 | targetUrl2 | provenance |  |
+| serverSide2.js:22:24:22:30 | req.url | serverSide2.js:22:11:22:36 | targetUrl2 | provenance |  |
+| serverSide2.js:25:11:25:47 | targetUrl3 | serverSide2.js:26:39:26:48 | targetUrl3 | provenance |  |
+| serverSide2.js:25:24:25:41 | req.SomeObject.url | serverSide2.js:25:11:25:47 | targetUrl3 | provenance |  |
 | serverSide.js:14:9:14:52 | tainted | serverSide.js:18:13:18:19 | tainted | provenance |  |
 | serverSide.js:14:9:14:52 | tainted | serverSide.js:20:17:20:23 | tainted | provenance |  |
 | serverSide.js:14:9:14:52 | tainted | serverSide.js:23:19:23:25 | tainted | provenance |  |
@@ -110,6 +128,8 @@ edges
 | serverSide.js:130:9:130:45 | myUrl | serverSide.js:131:15:131:19 | myUrl | provenance |  |
 | serverSide.js:130:37:130:43 | tainted | serverSide.js:130:9:130:45 | myUrl | provenance |  |
 | serverSide.js:139:9:139:29 | input | serverSide.js:140:26:140:30 | input | provenance |  |
+| serverSide.js:139:9:139:29 | input | serverSide.js:144:32:144:36 | input | provenance |  |
+| serverSide.js:139:9:139:29 | input | serverSide.js:146:29:146:33 | input | provenance |  |
 | serverSide.js:139:17:139:29 | req.query.url | serverSide.js:139:9:139:29 | input | provenance |  |
 | serverSide.js:140:9:140:31 | target | serverSide.js:141:13:141:18 | target | provenance |  |
 | serverSide.js:140:9:140:31 | target | serverSide.js:142:13:142:18 | target | provenance |  |
@@ -118,6 +138,12 @@ edges
 | serverSide.js:140:26:140:30 | input | serverSide.js:140:18:140:31 | new URL(input) | provenance | Config |
 | serverSide.js:141:13:141:18 | target | serverSide.js:141:13:141:29 | target.toString() | provenance |  |
 | serverSide.js:143:13:143:18 | target | serverSide.js:143:13:143:23 | target.href | provenance |  |
+| serverSide.js:144:9:144:37 | encodedUrl | serverSide.js:145:13:145:22 | encodedUrl | provenance |  |
+| serverSide.js:144:22:144:37 | encodeURI(input) | serverSide.js:144:9:144:37 | encodedUrl | provenance |  |
+| serverSide.js:144:32:144:36 | input | serverSide.js:144:22:144:37 | encodeURI(input) | provenance |  |
+| serverSide.js:146:9:146:34 | escapedUrl | serverSide.js:147:13:147:22 | escapedUrl | provenance |  |
+| serverSide.js:146:22:146:34 | escape(input) | serverSide.js:146:9:146:34 | escapedUrl | provenance |  |
+| serverSide.js:146:29:146:33 | input | serverSide.js:146:22:146:34 | escape(input) | provenance |  |
 nodes
 | Request/app/api/proxy/route2.serverSide.ts:4:9:4:15 | { url } | semmle.label | { url } |
 | Request/app/api/proxy/route2.serverSide.ts:4:9:4:34 | url | semmle.label | url |
@@ -153,6 +179,22 @@ nodes
 | axiosInterceptors.serverSide.js:19:21:19:28 | req.body | semmle.label | req.body |
 | axiosInterceptors.serverSide.js:20:5:20:25 | userProvidedUrl | semmle.label | userProvidedUrl |
 | axiosInterceptors.serverSide.js:20:23:20:25 | url | semmle.label | url |
+| serverSide2.js:9:34:9:63 | qs.pars ... .query) | semmle.label | qs.pars ... .query) |
+| serverSide2.js:9:43:9:56 | req._parsedUrl | semmle.label | req._parsedUrl |
+| serverSide2.js:10:25:10:31 | req.url | semmle.label | req.url |
+| serverSide2.js:11:24:11:30 | req.url | semmle.label | req.url |
+| serverSide2.js:16:11:16:41 | targetUrl | semmle.label | targetUrl |
+| serverSide2.js:16:23:16:41 | req.parsedQuery.url | semmle.label | req.parsedQuery.url |
+| serverSide2.js:17:38:17:46 | targetUrl | semmle.label | targetUrl |
+| serverSide2.js:19:11:19:55 | targetUrl1 | semmle.label | targetUrl1 |
+| serverSide2.js:19:24:19:51 | req.par ... rsedUrl | semmle.label | req.par ... rsedUrl |
+| serverSide2.js:20:39:20:48 | targetUrl1 | semmle.label | targetUrl1 |
+| serverSide2.js:22:11:22:36 | targetUrl2 | semmle.label | targetUrl2 |
+| serverSide2.js:22:24:22:30 | req.url | semmle.label | req.url |
+| serverSide2.js:23:39:23:48 | targetUrl2 | semmle.label | targetUrl2 |
+| serverSide2.js:25:11:25:47 | targetUrl3 | semmle.label | targetUrl3 |
+| serverSide2.js:25:24:25:41 | req.SomeObject.url | semmle.label | req.SomeObject.url |
+| serverSide2.js:26:39:26:48 | targetUrl3 | semmle.label | targetUrl3 |
 | serverSide.js:14:9:14:52 | tainted | semmle.label | tainted |
 | serverSide.js:14:19:14:42 | url.par ... , true) | semmle.label | url.par ... , true) |
 | serverSide.js:14:29:14:35 | req.url | semmle.label | req.url |
@@ -221,4 +263,12 @@ nodes
 | serverSide.js:142:13:142:18 | target | semmle.label | target |
 | serverSide.js:143:13:143:18 | target | semmle.label | target |
 | serverSide.js:143:13:143:23 | target.href | semmle.label | target.href |
+| serverSide.js:144:9:144:37 | encodedUrl | semmle.label | encodedUrl |
+| serverSide.js:144:22:144:37 | encodeURI(input) | semmle.label | encodeURI(input) |
+| serverSide.js:144:32:144:36 | input | semmle.label | input |
+| serverSide.js:145:13:145:22 | encodedUrl | semmle.label | encodedUrl |
+| serverSide.js:146:9:146:34 | escapedUrl | semmle.label | escapedUrl |
+| serverSide.js:146:22:146:34 | escape(input) | semmle.label | escape(input) |
+| serverSide.js:146:29:146:33 | input | semmle.label | input |
+| serverSide.js:147:13:147:22 | escapedUrl | semmle.label | escapedUrl |
 subpaths

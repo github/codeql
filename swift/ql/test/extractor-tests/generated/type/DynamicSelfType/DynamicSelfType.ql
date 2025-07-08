@@ -2,12 +2,16 @@
 import codeql.swift.elements
 import TestUtils
 
-from DynamicSelfType x, string getName, Type getCanonicalType, Type getStaticSelfType
-where
+query predicate instances(
+  DynamicSelfType x, string getName__label, string getName, string getCanonicalType__label,
+  Type getCanonicalType, string getStaticSelfType__label, Type getStaticSelfType
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getName__label = "getName:" and
   getName = x.getName() and
+  getCanonicalType__label = "getCanonicalType:" and
   getCanonicalType = x.getCanonicalType() and
+  getStaticSelfType__label = "getStaticSelfType:" and
   getStaticSelfType = x.getStaticSelfType()
-select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getStaticSelfType:",
-  getStaticSelfType
+}

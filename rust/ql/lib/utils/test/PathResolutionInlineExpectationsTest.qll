@@ -37,6 +37,7 @@ private module ResolveTest implements TestSig {
       not n = any(Path parent).getQualifier() and
       location = n.getLocation() and
       n.fromSource() and
+      not location.getFile().getAbsolutePath().matches("%proc_macro.rs") and
       not n.isFromMacroExpansion() and
       element = n.toString() and
       tag = "item"

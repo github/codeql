@@ -6,7 +6,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/jdk-internal-api-access
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  */
 
 import java

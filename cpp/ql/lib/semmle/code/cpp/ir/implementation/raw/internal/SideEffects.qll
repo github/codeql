@@ -54,6 +54,8 @@ private predicate isDeeplyConstBelow(Type t) {
   or
   isDeeplyConst(t.(GNUVectorType).getBaseType())
   or
+  isDeeplyConst(t.(ScalableVectorType).getBaseType())
+  or
   isDeeplyConst(t.(FunctionPointerIshType).getBaseType())
   or
   isDeeplyConst(t.(PointerWrapper).getTemplateArgument(0))

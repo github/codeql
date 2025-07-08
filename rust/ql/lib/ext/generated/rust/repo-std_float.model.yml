@@ -1,7 +1,0 @@
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-extensions:
-  - addsTo:
-      pack: codeql/rust-all
-      extensible: summaryModel
-    data:
-      - ["repo::std_float", "<crate::core_simd::vector::Simd as crate::StdFloat>::fract", "Argument[self]", "ReturnValue", "taint", "df-generated"]

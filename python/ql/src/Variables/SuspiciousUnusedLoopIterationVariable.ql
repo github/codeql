@@ -2,7 +2,8 @@
  * @name Suspicious unused loop iteration variable
  * @description A loop iteration variable is unused, which suggests an error.
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low

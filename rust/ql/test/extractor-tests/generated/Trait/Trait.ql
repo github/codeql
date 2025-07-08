@@ -2,36 +2,55 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  Trait x, string hasExtendedCanonicalPath, string hasCrateOrigin,
-  string hasAttributeMacroExpansion, string hasAssocItemList, int getNumberOfAttrs,
-  string hasGenericParamList, string isAuto, string isUnsafe, string hasName,
-  string hasTypeBoundList, string hasVisibility, string hasWhereClause
-where
+query predicate instances(
+  Trait x, string isAuto__label, string isAuto, string isUnsafe__label, string isUnsafe
+) {
   toBeTested(x) and
   not x.isUnknown() and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  (
-    if x.hasAttributeMacroExpansion()
-    then hasAttributeMacroExpansion = "yes"
-    else hasAttributeMacroExpansion = "no"
-  ) and
-  (if x.hasAssocItemList() then hasAssocItemList = "yes" else hasAssocItemList = "no") and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
+  isAuto__label = "isAuto:" and
   (if x.isAuto() then isAuto = "yes" else isAuto = "no") and
-  (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  (if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no") and
-  (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
-  if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "hasAssocItemList:", hasAssocItemList,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:", hasGenericParamList, "isAuto:",
-  isAuto, "isUnsafe:", isUnsafe, "hasName:", hasName, "hasTypeBoundList:", hasTypeBoundList,
-  "hasVisibility:", hasVisibility, "hasWhereClause:", hasWhereClause
+  isUnsafe__label = "isUnsafe:" and
+  if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
+}
+
+query predicate getExtendedCanonicalPath(Trait x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(Trait x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttributeMacroExpansion(Trait x, MacroItems getAttributeMacroExpansion) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getAssocItemList(Trait x, AssocItemList getAssocItemList) {
+  toBeTested(x) and not x.isUnknown() and getAssocItemList = x.getAssocItemList()
+}
+
+query predicate getAttr(Trait x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getGenericParamList(Trait x, GenericParamList getGenericParamList) {
+  toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
+}
+
+query predicate getName(Trait x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getTypeBoundList(Trait x, TypeBoundList getTypeBoundList) {
+  toBeTested(x) and not x.isUnknown() and getTypeBoundList = x.getTypeBoundList()
+}
+
+query predicate getVisibility(Trait x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}
+
+query predicate getWhereClause(Trait x, WhereClause getWhereClause) {
+  toBeTested(x) and not x.isUnknown() and getWhereClause = x.getWhereClause()
+}

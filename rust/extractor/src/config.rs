@@ -52,7 +52,7 @@ pub struct Config {
     pub cargo_target: Option<String>,
     pub cargo_features: Vec<String>,
     pub cargo_cfg_overrides: Vec<String>,
-    pub cargo_extra_env: FxHashMap<String, String>,
+    pub cargo_extra_env: FxHashMap<String, Option<String>>,
     pub cargo_extra_args: Vec<String>,
     pub cargo_all_targets: bool,
     pub logging_flamegraph: Option<PathBuf>,
@@ -62,6 +62,7 @@ pub struct Config {
     pub qltest: bool,
     pub qltest_cargo_check: bool,
     pub qltest_dependencies: Vec<String>,
+    pub qltest_use_nightly: bool,
     pub sysroot: Option<PathBuf>,
     pub sysroot_src: Option<PathBuf>,
     pub rustc_src: Option<PathBuf>,
@@ -70,6 +71,7 @@ pub struct Config {
     pub proc_macro_server: Option<PathBuf>,
     pub skip_path_resolution: bool,
     pub extract_dependencies_as_source: bool,
+    pub force_library_mode: bool, // for testing purposes
 }
 
 impl Config {

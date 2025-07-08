@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import java as Language
 private import semmle.code.java.security.InsecureRandomnessQuery
 private import semmle.code.java.security.RandomQuery

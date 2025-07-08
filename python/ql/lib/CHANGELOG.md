@@ -1,3 +1,13 @@
+## 4.0.11
+
+### Bug Fixes
+
+- The Python parser is now able to correctly parse expressions such as `match[1]` and `match()` where `match` is not used as a keyword.
+
+## 4.0.10
+
+No user-facing changes.
+
 ## 4.0.9
 
 No user-facing changes.

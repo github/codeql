@@ -1,7 +1,0 @@
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-extensions:
-  - addsTo:
-      pack: codeql/rust-all
-      extensible: sinkModel
-    data:
-      - ["repo::static-files", "crate::manual::second", "Argument[0]", "path-injection", "df-generated"]

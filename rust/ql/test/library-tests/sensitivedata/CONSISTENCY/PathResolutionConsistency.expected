@@ -1,53 +1,27 @@
-multipleMethodCallTargets
-| test.rs:55:7:55:26 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:55:7:55:26 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:56:7:56:21 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:56:7:56:21 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:72:7:72:26 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:72:7:72:26 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:73:7:73:36 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:73:7:73:36 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:74:7:74:34 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:74:7:74:34 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:75:7:75:27 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:75:7:75:27 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:254:7:254:36 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:254:7:254:36 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:256:7:256:33 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:256:7:256:33 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:257:7:257:36 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:257:7:257:36 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:258:7:258:26 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:258:7:258:26 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:262:7:262:28 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:262:7:262:28 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:263:7:263:37 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:263:7:263:37 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:264:7:264:36 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:264:7:264:36 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:267:7:267:32 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:267:7:267:32 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:277:7:277:34 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:277:7:277:34 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:280:7:280:36 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:280:7:280:36 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:284:7:284:39 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:284:7:284:39 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:291:7:291:53 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:291:7:291:53 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:292:7:292:45 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:292:7:292:45 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:294:7:294:39 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:294:7:294:39 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:295:7:295:34 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:295:7:295:34 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:296:7:296:42 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:296:7:296:42 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:298:7:298:48 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:298:7:298:48 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:299:7:299:35 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:299:7:299:35 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:300:7:300:35 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:300:7:300:35 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:339:7:339:39 | ... .as_str() | file://:0:0:0:0 | fn as_str |
-| test.rs:339:7:339:39 | ... .as_str() | file://:0:0:0:0 | fn as_str |
+multipleCallTargets
+| test.rs:55:7:55:26 | ... .as_str() |
+| test.rs:56:7:56:21 | ... .as_str() |
+| test.rs:72:7:72:26 | ... .as_str() |
+| test.rs:73:7:73:36 | ... .as_str() |
+| test.rs:74:7:74:34 | ... .as_str() |
+| test.rs:75:7:75:27 | ... .as_str() |
+| test.rs:254:7:254:36 | ... .as_str() |
+| test.rs:256:7:256:33 | ... .as_str() |
+| test.rs:257:7:257:36 | ... .as_str() |
+| test.rs:258:7:258:26 | ... .as_str() |
+| test.rs:262:7:262:28 | ... .as_str() |
+| test.rs:263:7:263:37 | ... .as_str() |
+| test.rs:264:7:264:36 | ... .as_str() |
+| test.rs:267:7:267:32 | ... .as_str() |
+| test.rs:277:7:277:34 | ... .as_str() |
+| test.rs:280:7:280:36 | ... .as_str() |
+| test.rs:284:7:284:39 | ... .as_str() |
+| test.rs:291:7:291:53 | ... .as_str() |
+| test.rs:292:7:292:45 | ... .as_str() |
+| test.rs:294:7:294:39 | ... .as_str() |
+| test.rs:295:7:295:34 | ... .as_str() |
+| test.rs:296:7:296:42 | ... .as_str() |
+| test.rs:298:7:298:48 | ... .as_str() |
+| test.rs:299:7:299:35 | ... .as_str() |
+| test.rs:300:7:300:35 | ... .as_str() |
+| test.rs:339:7:339:39 | ... .as_str() |

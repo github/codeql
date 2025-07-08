@@ -103,6 +103,7 @@ impl<'a> Extractor<'a> {
             }
         }
         translator.emit_source_file(&ast);
+        translator.emit_truncated_diagnostics_message();
         translator.trap.commit().unwrap_or_else(|err| {
             error!(
                 "Failed to write trap file for: {}: {}",
@@ -167,9 +168,19 @@ impl<'a> Extractor<'a> {
         let Some(id) = path_to_file_id(file, vfs) else {
             return Err("not included in files loaded from manifest".to_string());
         };
-        if semantics.file_to_module_def(id).is_none() {
-            return Err("not included as a module".to_string());
-        }
+        match semantics.file_to_module_def(id) {
+            None => return Err("not included as a module".to_string()),
+            Some(module)
+                if module
+                    .as_source_file_id(semantics.db)
+                    .is_none_or(|mod_file_id| mod_file_id.file_id(semantics.db) != id) =>
+            {
+                return Err(
+                    "not loaded as its own module, probably included by `!include`".to_string(),
+                );
+            }
+            _ => {}
+        };
         self.steps.push(ExtractionStep::load_source(before, file));
         Ok(())
     }
@@ -282,6 +293,11 @@ fn main() -> anyhow::Result<()> {
     } else {
         (SourceKind::Library, ResolvePaths::No)
     };
+    let (source_mode, source_resolve_paths) = if cfg.force_library_mode {
+        (library_mode, library_resolve_paths)
+    } else {
+        (SourceKind::Source, resolve_paths)
+    };
     let mut processed_files: HashSet<PathBuf, RandomState> =
         HashSet::from_iter(files.iter().cloned());
     for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
@@ -300,12 +316,10 @@ fn main() -> anyhow::Result<()> {
                         file,
                         &semantics,
                         vfs,
-                        resolve_paths,
-                        SourceKind::Source,
+                        source_resolve_paths,
+                        source_mode,
                     ),
-                    Err(reason) => {
-                        extractor.extract_without_semantics(file, SourceKind::Source, &reason)
-                    }
+                    Err(reason) => extractor.extract_without_semantics(file, source_mode, &reason),
                 };
             }
             for (file_id, file) in vfs.iter() {

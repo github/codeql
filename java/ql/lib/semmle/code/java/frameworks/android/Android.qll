@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with Android components.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.xml.AndroidManifest

@@ -6,9 +6,9 @@
  * @problem.severity error
  * @precision high
  * @id cs/invalid-string-formatting
- * @tags reliability
- *       maintainability
- *       quality
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp

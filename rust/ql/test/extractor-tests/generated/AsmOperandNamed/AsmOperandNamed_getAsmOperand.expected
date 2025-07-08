@@ -1,2 +1,0 @@
-| gen_asm_operand_named.rs:8:34:8:43 | AsmOperandNamed | gen_asm_operand_named.rs:8:34:8:43 | AsmRegOperand |
-| gen_asm_operand_named.rs:8:46:8:62 | AsmOperandNamed | gen_asm_operand_named.rs:8:54:8:62 | AsmRegOperand |

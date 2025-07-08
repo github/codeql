@@ -1,5 +1,5 @@
 use serde::Deserializer;
-use serde::de::{Error, Unexpected, Visitor};
+use serde::de::Visitor;
 use std::collections::HashMap;
 use std::fmt::Formatter;
 use std::hash::BuildHasher;
@@ -36,23 +36,22 @@ impl<'de, T: From<String>> Visitor<'de> for VectorVisitor<T> {
 }
 
 impl<'de, S: BuildHasher + Default> Visitor<'de> for MapVisitor<S> {
-    type Value = HashMap<String, String, S>;
+    type Value = HashMap<String, Option<String>, S>;
 
     fn expecting(&self, formatter: &mut Formatter) -> std::fmt::Result {
         formatter.write_str(
-            "either a sequence, or a comma or newline separated string of key=value entries",
+            "either a sequence, or a comma or newline separated string of key[=value] entries",
         )
     }
 
     fn visit_str<E: serde::de::Error>(self, value: &str) -> Result<Self::Value, E> {
-        value
+        Ok(value
             .split(['\n', ','])
-            .map(|s| {
-                s.split_once('=')
-                    .ok_or_else(|| E::custom(format!("key=value expected, found {s}")))
-                    .map(|(key, value)| (key.to_owned(), value.to_owned()))
+            .map(|s| match s.split_once('=') {
+                Some((key, value)) => (key.to_owned(), Some(value.to_owned())),
+                None => (s.to_owned(), None),
             })
-            .collect()
+            .collect())
     }
 
     fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
@@ -61,10 +60,14 @@ impl<'de, S: BuildHasher + Default> Visitor<'de> for MapVisitor<S> {
     {
         let mut ret = HashMap::with_hasher(Default::default());
         while let Some(el) = seq.next_element::<String>()? {
-            let (key, value) = el
-                .split_once('=')
-                .ok_or_else(|| A::Error::invalid_value(Unexpected::Str(&el), &self))?;
-            ret.insert(key.to_owned(), value.to_owned());
+            match el.split_once('=') {
+                None => {
+                    ret.insert(el.to_owned(), None);
+                }
+                Some((key, value)) => {
+                    ret.insert(key.to_owned(), Some(value.to_owned()));
+                }
+            }
         }
         Ok(ret)
     }
@@ -83,7 +86,7 @@ pub(crate) fn deserialize_newline_or_comma_separated_vec<
     deserializer.deserialize_seq(VectorVisitor(PhantomData))
 }
 
-/// deserialize into a map of `String`s to `String`s either of:
+/// deserialize into a map of `String`s to `Option<String>`s either of:
 /// * a sequence of elements serializable into `String`s, or
 /// * a single element serializable into `String`, then split on `,` and `\n`
 pub(crate) fn deserialize_newline_or_comma_separated_map<
@@ -92,6 +95,6 @@ pub(crate) fn deserialize_newline_or_comma_separated_map<
     S: BuildHasher + Default,
 >(
     deserializer: D,
-) -> Result<HashMap<String, String, S>, D::Error> {
+) -> Result<HashMap<String, Option<String>, S>, D::Error> {
     deserializer.deserialize_map(MapVisitor(PhantomData))
 }

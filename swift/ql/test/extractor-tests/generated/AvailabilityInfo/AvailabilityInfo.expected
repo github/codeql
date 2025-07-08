@@ -1,2 +1,9 @@
-| test.swift:1:4:1:27 | #available | isUnavailable: | no | getNumberOfSpecs: | 2 |
-| test.swift:5:4:5:45 | #unavailable | isUnavailable: | yes | getNumberOfSpecs: | 3 |
+instances
+| test.swift:1:4:1:27 | #available | isUnavailable: | no |
+| test.swift:5:4:5:45 | #unavailable | isUnavailable: | yes |
+getSpec
+| test.swift:1:4:1:27 | #available | 0 | test.swift:1:15:1:21 | macOS 142 |
+| test.swift:1:4:1:27 | #available | 1 | test.swift:1:26:1:26 | * |
+| test.swift:5:4:5:45 | #unavailable | 0 | test.swift:5:17:5:21 | iOS 10 |
+| test.swift:5:4:5:45 | #unavailable | 1 | test.swift:5:25:5:33 | watchOS 10 |
+| test.swift:5:4:5:45 | #unavailable | 2 | test.swift:5:37:5:43 | macOS 10 |

@@ -9,6 +9,7 @@ import TypeInference::Consistency
 
 query predicate illFormedTypeMention(TypeMention tm) {
   Consistency::illFormedTypeMention(tm) and
+  not tm instanceof PathTypeReprMention and // avoid overlap with `PathTypeMention`
   // Only include inconsistencies in the source, as we otherwise get
   // inconsistencies from library code in every project.
   tm.fromSource()

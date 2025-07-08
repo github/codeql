@@ -1,0 +1,59 @@
+#select
+| Test.java:33:45:33:47 | uri | Test.java:32:29:32:39 | getIntent(...) : Intent | Test.java:33:45:33:47 | uri | This ContentResolver method that resolves a URI depends on a $@. | Test.java:32:29:32:39 | getIntent(...) | user-provided value |
+| Test.java:34:46:34:48 | uri | Test.java:32:29:32:39 | getIntent(...) : Intent | Test.java:34:46:34:48 | uri | This ContentResolver method that resolves a URI depends on a $@. | Test.java:32:29:32:39 | getIntent(...) | user-provided value |
+| Test.java:35:43:35:45 | uri | Test.java:32:29:32:39 | getIntent(...) : Intent | Test.java:35:43:35:45 | uri | This ContentResolver method that resolves a URI depends on a $@. | Test.java:32:29:32:39 | getIntent(...) | user-provided value |
+| Test.java:36:53:36:55 | uri | Test.java:32:29:32:39 | getIntent(...) : Intent | Test.java:36:53:36:55 | uri | This ContentResolver method that resolves a URI depends on a $@. | Test.java:32:29:32:39 | getIntent(...) | user-provided value |
+| Test.java:37:38:37:40 | uri | Test.java:32:29:32:39 | getIntent(...) : Intent | Test.java:37:38:37:40 | uri | This ContentResolver method that resolves a URI depends on a $@. | Test.java:32:29:32:39 | getIntent(...) | user-provided value |
+| Test.java:38:48:38:50 | uri | Test.java:32:29:32:39 | getIntent(...) : Intent | Test.java:38:48:38:50 | uri | This ContentResolver method that resolves a URI depends on a $@. | Test.java:32:29:32:39 | getIntent(...) | user-provided value |
+| Test.java:39:48:39:50 | uri | Test.java:32:29:32:39 | getIntent(...) : Intent | Test.java:39:48:39:50 | uri | This ContentResolver method that resolves a URI depends on a $@. | Test.java:32:29:32:39 | getIntent(...) | user-provided value |
+| Test.java:40:58:40:60 | uri | Test.java:32:29:32:39 | getIntent(...) : Intent | Test.java:40:58:40:60 | uri | This ContentResolver method that resolves a URI depends on a $@. | Test.java:32:29:32:39 | getIntent(...) | user-provided value |
+| Test.java:48:45:48:47 | uri | Test.java:44:29:44:39 | getIntent(...) : Intent | Test.java:48:45:48:47 | uri | This ContentResolver method that resolves a URI depends on a $@. | Test.java:44:29:44:39 | getIntent(...) | user-provided value |
+| Test.java:71:45:71:47 | uri | Test.java:67:29:67:39 | getIntent(...) : Intent | Test.java:71:45:71:47 | uri | This ContentResolver method that resolves a URI depends on a $@. | Test.java:67:29:67:39 | getIntent(...) | user-provided value |
+| Test.java:96:45:96:47 | uri | Test.java:92:29:92:39 | getIntent(...) : Intent | Test.java:96:45:96:47 | uri | This ContentResolver method that resolves a URI depends on a $@. | Test.java:92:29:92:39 | getIntent(...) | user-provided value |
+edges
+| Test.java:32:23:32:71 | (...)... : Uri | Test.java:33:45:33:47 | uri | provenance |  |
+| Test.java:32:23:32:71 | (...)... : Uri | Test.java:34:46:34:48 | uri | provenance |  |
+| Test.java:32:23:32:71 | (...)... : Uri | Test.java:35:43:35:45 | uri | provenance |  |
+| Test.java:32:23:32:71 | (...)... : Uri | Test.java:36:53:36:55 | uri | provenance |  |
+| Test.java:32:23:32:71 | (...)... : Uri | Test.java:37:38:37:40 | uri | provenance |  |
+| Test.java:32:23:32:71 | (...)... : Uri | Test.java:38:48:38:50 | uri | provenance |  |
+| Test.java:32:23:32:71 | (...)... : Uri | Test.java:39:48:39:50 | uri | provenance |  |
+| Test.java:32:23:32:71 | (...)... : Uri | Test.java:40:58:40:60 | uri | provenance |  |
+| Test.java:32:29:32:39 | getIntent(...) : Intent | Test.java:32:29:32:71 | getParcelableExtra(...) : Parcelable | provenance | MaD:1 |
+| Test.java:32:29:32:71 | getParcelableExtra(...) : Parcelable | Test.java:32:23:32:71 | (...)... : Uri | provenance |  |
+| Test.java:44:23:44:71 | (...)... : Uri | Test.java:48:45:48:47 | uri | provenance |  |
+| Test.java:44:29:44:39 | getIntent(...) : Intent | Test.java:44:29:44:71 | getParcelableExtra(...) : Parcelable | provenance | MaD:1 |
+| Test.java:44:29:44:71 | getParcelableExtra(...) : Parcelable | Test.java:44:23:44:71 | (...)... : Uri | provenance |  |
+| Test.java:67:23:67:71 | (...)... : Uri | Test.java:71:45:71:47 | uri | provenance |  |
+| Test.java:67:29:67:39 | getIntent(...) : Intent | Test.java:67:29:67:71 | getParcelableExtra(...) : Parcelable | provenance | MaD:1 |
+| Test.java:67:29:67:71 | getParcelableExtra(...) : Parcelable | Test.java:67:23:67:71 | (...)... : Uri | provenance |  |
+| Test.java:92:23:92:71 | (...)... : Uri | Test.java:96:45:96:47 | uri | provenance |  |
+| Test.java:92:29:92:39 | getIntent(...) : Intent | Test.java:92:29:92:71 | getParcelableExtra(...) : Parcelable | provenance | MaD:1 |
+| Test.java:92:29:92:71 | getParcelableExtra(...) : Parcelable | Test.java:92:23:92:71 | (...)... : Uri | provenance |  |
+models
+| 1 | Summary: android.content; Intent; true; getParcelableExtra; (String); ; Argument[this].SyntheticField[android.content.Intent.extras].MapValue; ReturnValue; value; manual |
+nodes
+| Test.java:32:23:32:71 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:32:29:32:39 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| Test.java:32:29:32:71 | getParcelableExtra(...) : Parcelable | semmle.label | getParcelableExtra(...) : Parcelable |
+| Test.java:33:45:33:47 | uri | semmle.label | uri |
+| Test.java:34:46:34:48 | uri | semmle.label | uri |
+| Test.java:35:43:35:45 | uri | semmle.label | uri |
+| Test.java:36:53:36:55 | uri | semmle.label | uri |
+| Test.java:37:38:37:40 | uri | semmle.label | uri |
+| Test.java:38:48:38:50 | uri | semmle.label | uri |
+| Test.java:39:48:39:50 | uri | semmle.label | uri |
+| Test.java:40:58:40:60 | uri | semmle.label | uri |
+| Test.java:44:23:44:71 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:44:29:44:39 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| Test.java:44:29:44:71 | getParcelableExtra(...) : Parcelable | semmle.label | getParcelableExtra(...) : Parcelable |
+| Test.java:48:45:48:47 | uri | semmle.label | uri |
+| Test.java:67:23:67:71 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:67:29:67:39 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| Test.java:67:29:67:71 | getParcelableExtra(...) : Parcelable | semmle.label | getParcelableExtra(...) : Parcelable |
+| Test.java:71:45:71:47 | uri | semmle.label | uri |
+| Test.java:92:23:92:71 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:92:29:92:39 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| Test.java:92:29:92:71 | getParcelableExtra(...) : Parcelable | semmle.label | getParcelableExtra(...) : Parcelable |
+| Test.java:96:45:96:47 | uri | semmle.label | uri |
+subpaths

@@ -5,8 +5,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/evaluation-to-constant
- * @tags maintainability
- *       useless-code
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

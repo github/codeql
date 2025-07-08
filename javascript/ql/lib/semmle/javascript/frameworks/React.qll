@@ -875,3 +875,22 @@ private class ReactPropAsViewComponentInput extends ViewComponentInput {
 
   override string getSourceType() { result = "React props" }
 }
+
+private predicate isServerFunction(DataFlow::FunctionNode func) {
+  exists(Directive::UseServerDirective useServer |
+    useServer.getContainer() = func.getFunction()
+    or
+    useServer.getContainer().(Module).getAnExportedValue(_).getAFunctionValue() = func
+  )
+}
+
+private class ServerFunctionRemoteFlowSource extends RemoteFlowSource {
+  ServerFunctionRemoteFlowSource() {
+    exists(DataFlow::FunctionNode func |
+      isServerFunction(func) and
+      this = func.getAParameter()
+    )
+  }
+
+  override string getSourceType() { result = "React server function parameter" }
+}

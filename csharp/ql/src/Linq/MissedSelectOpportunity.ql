@@ -6,7 +6,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/linq/missed-select
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  *       language-features
  */
 

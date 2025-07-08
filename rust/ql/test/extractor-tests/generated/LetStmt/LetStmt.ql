@@ -2,16 +2,24 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  LetStmt x, int getNumberOfAttrs, string hasInitializer, string hasLetElse, string hasPat,
-  string hasTypeRepr
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasInitializer() then hasInitializer = "yes" else hasInitializer = "no") and
-  (if x.hasLetElse() then hasLetElse = "yes" else hasLetElse = "no") and
-  (if x.hasPat() then hasPat = "yes" else hasPat = "no") and
-  if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasInitializer:", hasInitializer, "hasLetElse:",
-  hasLetElse, "hasPat:", hasPat, "hasTypeRepr:", hasTypeRepr
+query predicate instances(LetStmt x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getAttr(LetStmt x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getInitializer(LetStmt x, Expr getInitializer) {
+  toBeTested(x) and not x.isUnknown() and getInitializer = x.getInitializer()
+}
+
+query predicate getLetElse(LetStmt x, LetElse getLetElse) {
+  toBeTested(x) and not x.isUnknown() and getLetElse = x.getLetElse()
+}
+
+query predicate getPat(LetStmt x, Pat getPat) {
+  toBeTested(x) and not x.isUnknown() and getPat = x.getPat()
+}
+
+query predicate getTypeRepr(LetStmt x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}
