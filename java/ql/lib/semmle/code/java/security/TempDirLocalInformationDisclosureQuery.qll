@@ -146,17 +146,15 @@ module TempDirSystemGetPropertyToCreateConfig implements DataFlow::ConfigSig {
     sanitizer instanceof WindowsOsSanitizer
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 56 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-200/TempDirLocalInformationDisclosure.ql@67:8:67:23), Column 5 does not select a source or sink originating from the flow call on line 56 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-200/TempDirLocalInformationDisclosure.ql@67:49:67:64)
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 56 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-200/TempDirLocalInformationDisclosure.ql@67:8:67:23), Column 5 does not select a source or sink originating from the flow call on line 56 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-200/TempDirLocalInformationDisclosure.ql@67:49:67:64)
+    result = source.getLocation()
+    or
+    result = any(MethodCallInsecureFileCreation m).getLocation()
   }
 
-  Location getASelectedSinkLocation(DataFlow::Node sink) {
-    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 56 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-200/TempDirLocalInformationDisclosure.ql@67:8:67:23), Column 5 does not select a source or sink originating from the flow call on line 56 (/Users/d10c/src/semmle-code/ql/java/ql/src/Security/CWE/CWE-200/TempDirLocalInformationDisclosure.ql@67:49:67:64)
-  }
+  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
 }
 
 /**
