@@ -7,4 +7,4 @@ all_checks := default_db_checks + """\
      --consistency-queries=""" + source_dir() / "consistency-queries"
 
 [no-cd]
-test *ARGS=".": (_codeql_test "rust" "" all_checks ARGS)
+test *ARGS=".": (_just "generate") (_codeql_test "rust" "" all_checks ARGS)
