@@ -24,10 +24,10 @@ import 'semmle-code-stub.just'
         exit 1
     ''' } else { "" } }}
 
-_build LANGUAGE: _require_semmle_code (_maybe_build LANGUAGE)
+_build_dist LANGUAGE: _require_semmle_code (_maybe_build_dist LANGUAGE)
 
 [no-exit-message]
-_maybe_build LANGUAGE:
+_maybe_build_dist LANGUAGE:
     {{ cmd_sep }}{{ if SEMMLE_CODE == "" { '# using codeql from PATH, if any' } else { 'cd "$SEMMLE_CODE"; ./build target/intree/codeql-' + LANGUAGE } }}{{ cmd_sep }}
 
 
@@ -46,7 +46,7 @@ default_db_checks := """\
     {{ tsx }} "{{ source_dir() }}/language-tests.ts" "$@"
 
 [no-cd, no-exit-message]
-_ql_format +ARGS: (_maybe_build "nolang")
+_ql_format +ARGS: (_maybe_build_dist "nolang")
     {{ cmd_sep }}{{ if SEMMLE_CODE != "" { '"$SEMMLE_CODE/target/intree/codeql-nolang/codeql"' } else { 'codeql' } }} query format --in-place $(find {{ ARGS }} -type f -name '*.ql' -or -name '*.qll'){{ cmd_sep }}
 
 

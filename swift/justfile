@@ -3,7 +3,7 @@ import '../lib.just'
 install: (_bazel "run" "@codeql//swift:install")
 
 [group('build')]
-build: (_build "swift")
+build: (_build_dist "swift")
 
 generate: (_bazel "run" "@codeql//swift/codegen")
 

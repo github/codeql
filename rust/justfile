@@ -2,7 +2,7 @@ import '../lib.just'
 
 install: (_bazel "run" "@codeql//rust:install")
 
-build: (_build "rust")
+build: (_build_dist "rust")
 
 generate: (_bazel "run" "@codeql//rust/codegen")
 
