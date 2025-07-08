@@ -13,7 +13,7 @@ func handler2(w http.ResponseWriter, req *http.Request) {
 
 	http.Get(tainted) // $ Alert
 
-	http.Head(tainted) // OK
+	http.Head(tainted) // $ Alert
 
 	http.Post(tainted, "text/basic", nil) // $ Alert
 
@@ -27,6 +27,7 @@ func handler2(w http.ResponseWriter, req *http.Request) {
 	client.Do(rq2)                                                                  // $ Alert
 
 	client.Get(tainted)                     // $ Alert
+	client.Head(tainted)                    // $ Alert
 	client.Post(tainted, "text/basic", nil) // $ Alert
 	client.PostForm(tainted, nil)           // $ Alert
 

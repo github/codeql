@@ -183,7 +183,7 @@ module NetHttp {
         or
         this.getTarget().(Method).hasQualifiedName("net/http", "Client", functionName)
       |
-        functionName = ["Get", "Post", "PostForm"]
+        functionName = ["Get", "Head", "Post", "PostForm"]
       )
     }
 
