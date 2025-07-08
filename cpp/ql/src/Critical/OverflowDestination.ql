@@ -83,8 +83,14 @@ module OverflowDestinationConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 91 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Critical/OverflowDestination.ql@93:8:93:9)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(FunctionCall fc | result = fc.getLocation() |
+      sourceSized(fc, sink.asIndirectConvertedExpr())
+    )
   }
 }
 
