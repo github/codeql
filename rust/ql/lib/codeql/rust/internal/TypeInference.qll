@@ -1045,13 +1045,11 @@ private Type inferTryExprType(TryExpr te, TypePath path) {
 }
 
 pragma[nomagic]
-private StructType inferLiteralType(LiteralExpr le) {
+private Type inferLiteralType(LiteralExpr le, TypePath path) {
+  path.isEmpty() and
   exists(Builtins::BuiltinType t | result = TStruct(t) |
     le instanceof CharLiteralExpr and
     t instanceof Builtins::Char
-    or
-    le instanceof StringLiteralExpr and
-    t instanceof Builtins::Str
     or
     le =
       any(NumberLiteralExpr ne |
@@ -1069,6 +1067,14 @@ private StructType inferLiteralType(LiteralExpr le) {
     or
     le instanceof BooleanLiteralExpr and
     t instanceof Builtins::Bool
+  )
+  or
+  le instanceof StringLiteralExpr and
+  (
+    path.isEmpty() and result = TRefType()
+    or
+    path = TypePath::singleton(TRefTypeParameter()) and
+    result = TStruct(any(Builtins::Str s))
   )
 }
 
@@ -1635,8 +1641,7 @@ private module Cached {
     or
     result = inferTryExprType(n, path)
     or
-    result = inferLiteralType(n) and
-    path.isEmpty()
+    result = inferLiteralType(n, path)
     or
     result = inferAsyncBlockExprRootType(n) and
     path.isEmpty()
