@@ -2,7 +2,8 @@
  * @name Inconsistent equality and inequality
  * @description Defining only an equality method or an inequality method for a class violates the object model.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity warning
  * @sub-severity high
@@ -11,38 +12,29 @@
  */
 
 import python
-import Equality
+import Comparisons
+import semmle.python.dataflow.new.internal.DataFlowDispatch
+import Classes.Equality
 
-string equals_or_ne() { result = "__eq__" or result = "__ne__" }
-
-predicate total_ordering(Class cls) {
-  exists(Attribute a | a = cls.getADecorator() | a.getName() = "total_ordering")
+predicate missingEquality(Class cls, Function defined, string missing) {
+  defined = cls.getMethod("__ne__") and
+  not exists(cls.getMethod("__eq__")) and
+  missing = "__eq__"
   or
-  exists(Name n | n = cls.getADecorator() | n.getId() = "total_ordering")
+  // In python 3, __ne__ automatically delegates to __eq__ if its not defined in the hierarchy
+  // However if it is defined in a superclass (and isn't a delegation method) then it will use the superclass method (which may be incorrect)
+  defined = cls.getMethod("__eq__") and
+  not exists(cls.getMethod("__ne__")) and
+  exists(Function neMeth |
+    neMeth = getADirectSuperclass+(cls).getMethod("__ne__") and
+    not neMeth instanceof DelegatingEqualityMethod
+  ) and
+  missing = "__ne__"
 }
 
-CallableValue implemented_method(ClassValue c, string name) {
-  result = c.declaredAttribute(name) and name = equals_or_ne()
-}
-
-string unimplemented_method(ClassValue c) {
-  not c.declaresAttribute(result) and result = equals_or_ne()
-}
-
-predicate violates_equality_contract(
-  ClassValue c, string present, string missing, CallableValue method
-) {
-  missing = unimplemented_method(c) and
-  method = implemented_method(c, present) and
-  not c.failedInference(_) and
-  not total_ordering(c.getScope()) and
-  /* Python 3 automatically implements __ne__ if __eq__ is defined, but not vice-versa */
-  not (major_version() = 3 and present = "__eq__" and missing = "__ne__") and
-  not method.getScope() instanceof DelegatingEqualityMethod and
-  not c.lookup(missing).(CallableValue).getScope() instanceof DelegatingEqualityMethod
-}
-
-from ClassValue c, string present, string missing, CallableValue method
-where violates_equality_contract(c, present, missing, method)
-select method, "Class $@ implements " + present + " but does not implement " + missing + ".", c,
-  c.getName()
+from Class cls, Function defined, string missing
+where
+  not totalOrdering(cls) and
+  missingEquality(cls, defined, missing)
+select cls, "This class implements $@, but does not implement " + missing + ".", defined,
+  defined.getName()

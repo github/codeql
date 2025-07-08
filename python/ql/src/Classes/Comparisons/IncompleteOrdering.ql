@@ -14,29 +14,20 @@
 import python
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 import semmle.python.ApiGraphs
-
-predicate totalOrdering(Class cls) {
-  cls.getADecorator() =
-    API::moduleImport("functools").getMember("total_ordering").asSource().asExpr()
-}
-
-Function getMethod(Class cls, string name) {
-  result = cls.getAMethod() and
-  result.getName() = name
-}
+import Comparisons
 
 predicate definesStrictOrdering(Class cls, Function meth) {
-  meth = getMethod(cls, "__lt__")
+  meth = cls.getMethod("__lt__")
   or
-  not exists(getMethod(cls, "__lt__")) and
-  meth = getMethod(cls, "__gt__")
+  not exists(cls.getMethod("__lt__")) and
+  meth = cls.getMethod("__gt__")
 }
 
 predicate definesNonStrictOrdering(Class cls, Function meth) {
-  meth = getMethod(cls, "__le__")
+  meth = cls.getMethod("__le__")
   or
-  not exists(getMethod(cls, "__le__")) and
-  meth = getMethod(cls, "__ge__")
+  not exists(cls.getMethod("__le__")) and
+  meth = cls.getMethod("__ge__")
 }
 
 predicate missingComparison(Class cls, Function defined, string missing) {
@@ -53,5 +44,5 @@ from Class cls, Function defined, string missing
 where
   not totalOrdering(cls) and
   missingComparison(cls, defined, missing)
-select cls, "This class implements $@, but does not implement an " + missing + " method.", defined,
+select cls, "This class implements $@, but does not implement " + missing + ".", defined,
   defined.getName()
