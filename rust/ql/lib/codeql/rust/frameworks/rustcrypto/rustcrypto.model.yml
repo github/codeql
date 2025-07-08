@@ -3,8 +3,8 @@ extensions:
       pack: codeql/rust-all
       extensible: sinkModel
     data:
-      - ["<_ as digest::digest::Digest>::new_with_prefix::new_with_prefix", "Argument[0]", "hasher-input", "manual"]
-      - ["<_ as digest::digest::Digest>::new_with_prefix::update", "Argument[0]", "hasher-input", "manual"]
-      - ["<_ as digest::digest::Digest>::new_with_prefix::chain_update", "Argument[0]", "hasher-input", "manual"]
-      - ["<_ as digest::digest::Digest>::new_with_prefix::digest", "Argument[0]", "hasher-input", "manual"]
+      - ["<_ as digest::digest::Digest>::new_with_prefix", "Argument[0]", "hasher-input", "manual"]
+      - ["<_ as digest::digest::Digest>::update", "Argument[0]", "hasher-input", "manual"]
+      - ["<_ as digest::digest::Digest>::chain_update", "Argument[0]", "hasher-input", "manual"]
+      - ["<_ as digest::digest::Digest>::digest", "Argument[0]", "hasher-input", "manual"]
       - ["md5::compute", "Argument[0]", "hasher-input", "manual"]
