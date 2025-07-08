@@ -5,24 +5,30 @@ import "lib.just"
 
 _forward := tsx + ' "' + source_dir() + '/forward-command.ts"'
 
+alias t := test
+alias b := build
+alias g := generate
+alias gen := generate
+alias f := format
+alias l := lint
 
 [no-cd, positional-arguments, no-exit-message]
-@test *ARGS=".":
+@test *ARGS:
     {{ _forward }} test "$@"
 
 
 [no-cd, positional-arguments, no-exit-message]
-@build *ARGS=".":
+@build *ARGS:
     {{ _forward }} build "$@"
 
 [no-cd, positional-arguments, no-exit-message]
-@generate *ARGS=".":
+@generate *ARGS:
     {{ _forward }} generate "$@"
 
 [no-cd, positional-arguments, no-exit-message]
-@lint *ARGS=".":
+@lint *ARGS:
     {{ _forward }} lint "$@"
 
 [no-cd, positional-arguments, no-exit-message]
-@format *ARGS=".":
+@format *ARGS:
     {{ _forward }} format "$@"
