@@ -2042,6 +2042,80 @@ mod method_determined_by_argument_type {
         }
     }
 
+    trait MyFrom<T> {
+        // MyFrom::my_from
+        fn my_from(value: T) -> Self;
+    }
+
+    impl MyFrom<i64> for i64 {
+        // MyFrom<i64>::my_from
+        fn my_from(value: i64) -> Self {
+            value
+        }
+    }
+
+    impl MyFrom<bool> for i64 {
+        // MyFrom<bool>::my_from
+        fn my_from(value: bool) -> Self {
+            if value { 1 } else { 0 }
+        }
+    }
+
+    trait MyFrom2<T> {
+        // MyFrom2::my_from2
+        fn my_from2(value: T, x: Self) -> ();
+    }
+
+    impl MyFrom2<i64> for i64 {
+        // MyFrom2<i64>::my_from2
+        fn my_from2(value: i64, _: Self) -> () {
+            value;
+        }
+    }
+
+    impl MyFrom2<bool> for i64 {
+        // MyFrom2<bool>::my_from2
+        fn my_from2(value: bool, _: Self) -> () {
+            if value {
+                1
+            } else {
+                0
+            };
+        }
+    }
+
+    trait MySelfTrait {
+        // MySelfTrait::f1
+        fn f1(x: Self) -> i64;
+
+        // MySelfTrait::f2
+        fn f2(x: Self) -> Self;
+    }
+
+    impl MySelfTrait for i64 {
+        // MySelfTrait<i64>::f1
+        fn f1(x: Self) -> i64 {
+            x + 1
+        }
+
+        // MySelfTrait<i64>::f2
+        fn f2(x: Self) -> Self {
+            x + 1
+        }
+    }
+
+    impl MySelfTrait for bool {
+        // MySelfTrait<bool>::f1
+        fn f1(x: Self) -> i64 {
+            0
+        }
+
+        // MySelfTrait<bool>::f2
+        fn f2(x: Self) -> Self {
+            x
+        }
+    }
+
     pub fn f() {
         let x: i64 = 73;
         x.my_add(5i64); // $ method=MyAdd<i64>::my_add
@@ -2051,6 +2125,22 @@ mod method_determined_by_argument_type {
         S(1i64).my_add(S(2i64)); // $ method=S::my_add1
         S(1i64).my_add(3i64); // $ MISSING: method=S::my_add2
         S(1i64).my_add(&3i64); // $ method=S::my_add3
+
+        let x = i64::my_from(73i64); // $ method=MyFrom<i64>::my_from $ SPURIOUS: method=MyFrom<bool>::my_from
+        let y = i64::my_from(true); // $ method=MyFrom<bool>::my_from $ SPURIOUS: method=MyFrom<i64>::my_from
+        let z: i64 = MyFrom::my_from(73i64); // $ MISSING: method=MyFrom<i64>::my_from $ SPURIOUS: method=MyFrom::my_from
+        i64::my_from2(73i64, 0i64); // $ method=MyFrom2<i64>::my_from2 $ SPURIOUS: method=MyFrom2<bool>::my_from2
+        i64::my_from2(true, 0i64); // $ method=MyFrom2<bool>::my_from2 $ SPURIOUS: method=MyFrom2<i64>::my_from2
+        MyFrom2::my_from2(73i64, 0i64); // $ MISSING: method=MyFrom2<i64>::my_from2 $ SPURIOUS: method=MyFrom2::my_from2
+
+        i64::f1(73i64); // $ method=MySelfTrait<i64>::f1
+        i64::f2(73i64); // $ method=MySelfTrait<i64>::f2
+        bool::f1(true); // $ method=MySelfTrait<bool>::f1
+        bool::f2(true); // $ method=MySelfTrait<bool>::f2
+        MySelfTrait::f1(73i64); // $ SPURIOUS method=MySelfTrait::f1 MISSING: method=MySelfTrait<i64>::f1
+        MySelfTrait::f2(73i64); // $ SPURIOUS method=MySelfTrait::f2 MISSING: method=MySelfTrait<i64>::f2
+        MySelfTrait::f1(true); // $ SPURIOUS method=MySelfTrait::f1 MISSING: method=MySelfTrait<bool>::f1
+        MySelfTrait::f2(true); // $ SPURIOUS method=MySelfTrait::f2 MISSING: method=MySelfTrait<bool>::f2
     }
 }
 
