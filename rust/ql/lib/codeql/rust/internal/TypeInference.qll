@@ -1045,6 +1045,9 @@ private Type inferTryExprType(TryExpr te, TypePath path) {
 }
 
 pragma[nomagic]
+private StructType getStrStruct() { result = TStruct(any(Builtins::Str s)) }
+
+pragma[nomagic]
 private Type inferLiteralType(LiteralExpr le, TypePath path) {
   path.isEmpty() and
   exists(Builtins::BuiltinType t | result = TStruct(t) |
@@ -1074,7 +1077,7 @@ private Type inferLiteralType(LiteralExpr le, TypePath path) {
     path.isEmpty() and result = TRefType()
     or
     path = TypePath::singleton(TRefTypeParameter()) and
-    result = TStruct(any(Builtins::Str s))
+    result = getStrStruct()
   )
 }
 
