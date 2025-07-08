@@ -20,7 +20,9 @@ module LogInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    none() // straightforward case; but the large test source is causing OOMs under `--check-diff-informed`.
+  }
 }
 
 /**
