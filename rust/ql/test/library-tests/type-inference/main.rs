@@ -1413,7 +1413,7 @@ mod builtins {
         let z = x + y; // $ type=z:i32 method=add
         let z = x.abs(); // $ method=abs $ type=z:i32
         let c = 'c'; // $ type=c:char
-        let hello = "Hello"; // $ type=hello:str
+        let hello = "Hello"; // $ type=hello:&T.str
         let f = 123.0f64; // $ type=f:f64
         let t = true; // $ type=t:bool
         let f = false; // $ type=f:bool
@@ -2086,10 +2086,10 @@ mod loops {
         let vals4: [u64; 3] = [1; 3]; // $ type=vals4:[T;...].u64
         for u in vals4 {} // $ type=u:u64
 
-        let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1:[T;...].str
-        for s in &strings1 {} // $ type=s:&T.str
-        for s in &mut strings1 {} // $ type=s:&T.str
-        for s in strings1 {} // $ type=s:str
+        let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1:[T;...].&T.str
+        for s in &strings1 {} // $ type=s:&T.&T.str
+        for s in &mut strings1 {} // $ type=s:&T.&T.str
+        for s in strings1 {} // $ type=s:&T.str
 
         let strings2 = // $ type=strings2:[T;...].String
         [
