@@ -1,0 +1,22 @@
+name: Secure Workflow
+
+on:
+  workflow_run:
+    workflows: ["Prev"]
+    types:
+      - completed
+
+jobs:
+  Download:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: mkdir -p ${{ runner.temp }}/artifacts/
+      - uses: dawidd6/action-download-artifact@v2
+        with:
+          name: pr_number
+          path: ${{ runner.temp }}/artifacts/
+
+      - name: Run command
+        run: |
+          sh cmd.sh
