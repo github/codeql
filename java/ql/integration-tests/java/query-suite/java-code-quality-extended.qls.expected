@@ -6,6 +6,7 @@ ql/java/ql/src/Compatibility/JDK9/UnderscoreIdentifier.ql
 ql/java/ql/src/DeadCode/UselessParameter.ql
 ql/java/ql/src/Language Abuse/EmptyMethod.ql
 ql/java/ql/src/Language Abuse/IterableIterator.ql
+ql/java/ql/src/Language Abuse/LabelInSwitch.ql
 ql/java/ql/src/Language Abuse/TypeVariableHidesType.ql
 ql/java/ql/src/Language Abuse/UselessNullCheck.ql
 ql/java/ql/src/Language Abuse/UselessTypeTest.ql
