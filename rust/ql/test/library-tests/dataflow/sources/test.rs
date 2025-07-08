@@ -214,7 +214,7 @@ fn test_io_stdin() -> std::io::Result<()> {
     {
         let mut buffer = Vec::<u8>::new();
         let _bytes = std::io::stdin().read_to_end(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
     }
 
     {
