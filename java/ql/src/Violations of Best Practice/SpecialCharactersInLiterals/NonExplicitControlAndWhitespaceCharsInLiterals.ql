@@ -4,7 +4,7 @@
  * @description Non-explicit control and whitespace characters in literals make code more difficult
  *              to read and may lead to incorrect program behavior.
  * @kind problem
- * @precision medium
+ * @precision very-high
  * @problem.severity warning
  * @tags quality
  *       correctness
