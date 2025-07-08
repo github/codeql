@@ -72,8 +72,16 @@ _run_in DIR +ARGS:
 _run_in_semmle_code +ARGS: _require_semmle_code (_run_in "$SEMMLE_CODE" ARGS)
 
 [no-cd, positional-arguments, no-exit-message]
-_just +ARGS:
+@_just +ARGS:
+    echo "-> just $@"
     "{{ JUST_EXECUTABLE }}" "$@"
+
+[no-cd, positional-arguments]
+@_if_not_on_ci_just +ARGS:
+    if [ "${GITHUB_ACTIONS:-}" != "true" ]; then \
+        echo "-> just $@"; \
+        "$JUST_EXECUTABLE" "$@"; \
+    fi
 
 [no-cd]
 _black *ARGS=".": (_run "uv" "run" "black" ARGS)
