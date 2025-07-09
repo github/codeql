@@ -246,8 +246,12 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
     isSource(node)
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 293 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-311/CleartextTransmission.ql@308:8:308:22), Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-311/CleartextTransmission.ql@256:47:256:80), Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-311/CleartextTransmission.ql@279:43:279:73)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(NetworkSendRecv networkSendRecv | result = networkSendRecv.getLocation() |
+      isSinkSendRecv(sink, networkSendRecv)
+    )
   }
 }
 
@@ -272,11 +276,7 @@ module ToEncryptionConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 296 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-311/CleartextTransmission.ql@308:8:308:22)
-  }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) {
-    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 296 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-311/CleartextTransmission.ql@308:8:308:22)
+    none() // only used negatively
   }
 }
 
@@ -295,11 +295,7 @@ module FromEncryptionConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 297 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-311/CleartextTransmission.ql@308:8:308:22), Column 5 does not select a source or sink originating from the flow call on line 297 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-311/CleartextTransmission.ql@308:44:308:59)
-  }
-
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 297 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-311/CleartextTransmission.ql@308:8:308:22), Column 5 does not select a source or sink originating from the flow call on line 297 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-311/CleartextTransmission.ql@308:44:308:59)
+    none() // only used negatively
   }
 }
 
