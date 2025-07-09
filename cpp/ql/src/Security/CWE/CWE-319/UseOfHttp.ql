@@ -88,9 +88,13 @@ module HttpStringToUrlOpenConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 selects source.asIndirectExpr (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-319/UseOfHttp.ql@98:8:98:10)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    result = source.asIndirectExpr().getLocation()
   }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
 }
 
 module HttpStringToUrlOpen = TaintTracking::Global<HttpStringToUrlOpenConfig>;
