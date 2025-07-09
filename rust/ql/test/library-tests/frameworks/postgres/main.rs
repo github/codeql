@@ -33,14 +33,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // conn.query_typed_raw(query.as_str(), &[])?;
 
     for row in &conn.query("SELECT id, name, age FROM person", &[])? {  // $ sql-sink
-        let row: &postgres::Row = row;
-        let id: i32 = row.get("id"); // $ database-read
-        let name: &str = row.try_get("name")?; // $ database-read
-        let age: i32 = row.try_get("age").unwrap(); // $ database-read
-        println!("found person: {} {} {}", id, name, age);
-    }
-
-    for row in &conn.query("SELECT id, name, age FROM person", &[])? {  // $ sql-sink
         let id: i32 = row.get("id"); // $ database-read
         let name: &str = row.try_get("name")?; // $ database-read
         let age: i32 = row.try_get("age").unwrap(); // $ database-read
