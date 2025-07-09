@@ -88,7 +88,7 @@ fn get_next_token() -> String { get_string() }
 
 fn test_credentials(
 	account_key: &str, accnt_key: &str, license_key: &str, secret_key: &str, is_secret: bool, num_accounts: i64,
-	username: String, user_name: String, userid: i64, user_id: i64, my_user_id_64: i64, unique_id: i64, uid: i64,
+	username: String, user_name: String, userid: i64, user_id: i64, my_user_id_64: i64, id: i64, uid: i64, uuid: i64, guid: i64, unique_id: i64,
 	sessionkey: &[u64; 4], session_key: &[u64; 4], hashkey: &[u64; 4], hash_key: &[u64; 4], sessionkeypath: &[u64; 4], account_key_path: &[u64; 4],
 	ms: &MyStruct
 ) {
@@ -119,8 +119,12 @@ fn test_credentials(
 
 	sink(is_secret);
 	sink(num_accounts); // $ SPURIOUS: sensitive=id
-	sink(unique_id);
+	sink(id);
 	sink(uid); // $ SPURIOUS: sensitive=id
+	sink(uuid); // $ SPURIOUS: sensitive=id
+	sink(guid);
+	sink(unique_id);
+
 	sink(hashkey);
 	sink(hash_key);
 	sink(sessionkeypath); // $ SPURIOUS: sensitive=id
