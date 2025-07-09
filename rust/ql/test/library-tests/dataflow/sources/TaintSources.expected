@@ -1,3 +1,4 @@
+#select
 | test.rs:8:10:8:22 | ...::var | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
 | test.rs:9:10:9:25 | ...::var_os | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
 | test.rs:11:16:11:28 | ...::var | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
@@ -21,8 +22,6 @@
 | test.rs:77:26:77:37 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:80:24:80:35 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:99:18:99:47 | ...::connect | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:113:31:113:42 | send_request | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:120:31:120:42 | send_request | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:210:22:210:35 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
 | test.rs:216:22:216:35 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
 | test.rs:222:22:222:35 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
@@ -92,3 +91,6 @@
 | web_frameworks.rs:58:14:58:15 | ms | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | web_frameworks.rs:68:15:68:15 | a | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | web_frameworks.rs:68:15:68:15 | a | Flow source 'RemoteSource' of type remote (DEFAULT). |
+testFailures
+| test.rs:113:61:113:98 | //... | Missing result: Alert[rust/summary/taint-sources] |
+| test.rs:120:61:120:98 | //... | Missing result: Alert[rust/summary/taint-sources] |
