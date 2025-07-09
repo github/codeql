@@ -10,6 +10,7 @@ private import codeql.typeinference.internal.TypeInference
 private import codeql.rust.frameworks.stdlib.Stdlib
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 private import codeql.rust.elements.Call
+private import codeql.rust.elements.internal.CallImpl::Impl as CallImpl
 
 class Type = T::Type;
 
@@ -230,6 +231,24 @@ private Type inferAssignmentOperationType(AstNode n, TypePath path) {
   result = TUnit()
 }
 
+pragma[nomagic]
+private Struct getRangeType(RangeExpr re) {
+  re instanceof RangeFromExpr and
+  result instanceof RangeFromStruct
+  or
+  re instanceof RangeToExpr and
+  result instanceof RangeToStruct
+  or
+  re instanceof RangeFromToExpr and
+  result instanceof RangeStruct
+  or
+  re instanceof RangeInclusiveExpr and
+  result instanceof RangeInclusiveStruct
+  or
+  re instanceof RangeToInclusiveExpr and
+  result instanceof RangeToInclusiveStruct
+}
+
 /**
  * Holds if the type tree of `n1` at `prefix1` should be equal to the type tree
  * of `n2` at `prefix2` and type information should propagate in both directions
@@ -295,6 +314,13 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
   n1.(ArrayRepeatExpr).getRepeatOperand() = n2 and
   prefix1 = TypePath::singleton(TArrayTypeParameter()) and
   prefix2.isEmpty()
+  or
+  exists(Struct s |
+    n2 = [n1.(RangeExpr).getStart(), n1.(RangeExpr).getEnd()] and
+    prefix1 = TypePath::singleton(TTypeParamTypeParameter(s.getGenericParamList().getATypeParam())) and
+    prefix2.isEmpty() and
+    s = getRangeType(n1)
+  )
 }
 
 pragma[nomagic]
@@ -351,19 +377,6 @@ private Type inferImplicitSelfType(SelfParam self, TypePath path) {
     or
     t = TSelfTypeParameter(i) and suffix.isEmpty()
   )
-}
-
-/**
- * Gets any of the types mentioned in `path` that corresponds to the type
- * parameter `tp`.
- */
-private TypeMention getExplicitTypeArgMention(Path path, TypeParam tp) {
-  exists(int i |
-    result = path.getSegment().getGenericArgList().getTypeArg(pragma[only_bind_into](i)) and
-    tp = resolvePath(path).getTypeParam(pragma[only_bind_into](i))
-  )
-  or
-  result = getExplicitTypeArgMention(path.getQualifier(), tp)
 }
 
 /**
@@ -452,9 +465,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
   class AccessPosition = DeclarationPosition;
 
   class Access extends StructExpr {
-    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
-      result = getExplicitTypeArgMention(this.getPath(), apos.asTypeParam()).resolveTypeAt(path)
-    }
+    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
 
     AstNode getNodeAt(AccessPosition apos) {
       result = this.getFieldExpr(apos.asFieldPos()).getExpr()
@@ -465,6 +476,16 @@ private module StructExprMatchingInput implements MatchingInputSig {
 
     Type getInferredType(AccessPosition apos, TypePath path) {
       result = inferType(this.getNodeAt(apos), path)
+      or
+      // The struct type is supplied explicitly as a type qualifier, e.g.
+      // `Foo<Bar>::Variant { ... }`.
+      apos.isStructPos() and
+      exists(Path p, TypeMention tm |
+        p = this.getPath() and
+        if resolvePath(p) instanceof Variant then tm = p.getQualifier() else tm = p
+      |
+        result = tm.resolveTypeAt(path)
+      )
     }
 
     Declaration getTarget() { result = resolvePath(this.getPath()) }
@@ -537,7 +558,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
 
     abstract Type getReturnType(TypePath path);
 
-    final Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
+    Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
       result = this.getParameterType(dpos, path)
       or
       dpos.isReturn() and
@@ -545,7 +566,16 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
   }
 
-  private class TupleStructDecl extends Declaration, Struct {
+  abstract private class TupleDeclaration extends Declaration {
+    override Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
+      result = super.getDeclaredType(dpos, path)
+      or
+      dpos.isSelf() and
+      result = this.getReturnType(path)
+    }
+  }
+
+  private class TupleStructDecl extends TupleDeclaration, Struct {
     TupleStructDecl() { this.isTuple() }
 
     override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
@@ -568,7 +598,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
   }
 
-  private class TupleVariantDecl extends Declaration, Variant {
+  private class TupleVariantDecl extends TupleDeclaration, Variant {
     TupleVariantDecl() { this.isTuple() }
 
     override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
@@ -597,13 +627,13 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
       typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
       or
-      exists(TraitItemNode trait | this = trait.getAnAssocItem() |
-        typeParamMatchPosition(trait.getTypeParam(_), result, ppos)
+      exists(ImplOrTraitItemNode i | this = i.getAnAssocItem() |
+        typeParamMatchPosition(i.getTypeParam(_), result, ppos)
         or
-        ppos.isImplicit() and result = TSelfTypeParameter(trait)
+        ppos.isImplicit() and result = TSelfTypeParameter(i)
         or
         ppos.isImplicit() and
-        result.(AssociatedTypeTypeParameter).getTrait() = trait
+        result.(AssociatedTypeTypeParameter).getTrait() = i
       )
       or
       ppos.isImplicit() and
@@ -624,6 +654,33 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
         result = inferAnnotatedType(self, path) // `self` parameter with type annotation
         or
         result = inferImplicitSelfType(self, path) // `self` parameter without type annotation
+      )
+      or
+      // For associated functions, we may also need to match type arguments against
+      // the `Self` type. For example, in
+      //
+      // ```rust
+      // struct Foo<T>(T);
+      //
+      // impl<T : Default> Foo<T> {
+      //   fn default() -> Self {
+      //     Foo(Default::default())
+      //   }
+      // }
+      //
+      // Foo::<i32>::default();
+      // ```
+      //
+      // we need to match `i32` against the type parameter `T` of the `impl` block.
+      exists(ImplOrTraitItemNode i |
+        this = i.getAnAssocItem() and
+        dpos.isSelf() and
+        not this.getParamList().hasSelfParam()
+      |
+        result = TSelfTypeParameter(i) and
+        path.isEmpty()
+        or
+        result = resolveImplSelfType(i, path)
       )
     }
 
@@ -670,9 +727,14 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 
   final class Access extends Call {
+    pragma[nomagic]
     Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       exists(TypeMention arg | result = arg.resolveTypeAt(path) |
-        arg = getExplicitTypeArgMention(CallExprImpl::getFunctionPath(this), apos.asTypeParam())
+        exists(Path p, int i |
+          p = CallExprImpl::getFunctionPath(this) and
+          arg = p.getSegment().getGenericArgList().getTypeArg(pragma[only_bind_into](i)) and
+          apos.asTypeParam() = resolvePath(p).getTypeParam(pragma[only_bind_into](i))
+        )
         or
         arg =
           this.(MethodCallExpr).getGenericArgList().getTypeArg(apos.asMethodTypeArgumentPosition())
@@ -696,6 +758,14 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
 
     Type getInferredType(AccessPosition apos, TypePath path) {
       result = inferType(this.getNodeAt(apos), path)
+      or
+      // The `Self` type is supplied explicitly as a type qualifier, e.g. `Foo::<Bar>::baz()`
+      apos = TArgumentAccessPosition(CallImpl::TSelfArgumentPosition(), false, false) and
+      exists(PathExpr pe, TypeMention tm |
+        pe = this.(CallExpr).getFunction() and
+        tm = pe.getPath().getQualifier() and
+        result = tm.resolveTypeAt(path)
+      )
     }
 
     Declaration getTarget() {
@@ -975,13 +1045,14 @@ private Type inferTryExprType(TryExpr te, TypePath path) {
 }
 
 pragma[nomagic]
-private StructType inferLiteralType(LiteralExpr le) {
+private StructType getStrStruct() { result = TStruct(any(Builtins::Str s)) }
+
+pragma[nomagic]
+private Type inferLiteralType(LiteralExpr le, TypePath path) {
+  path.isEmpty() and
   exists(Builtins::BuiltinType t | result = TStruct(t) |
     le instanceof CharLiteralExpr and
     t instanceof Builtins::Char
-    or
-    le instanceof StringLiteralExpr and
-    t instanceof Builtins::Str
     or
     le =
       any(NumberLiteralExpr ne |
@@ -1000,6 +1071,14 @@ private StructType inferLiteralType(LiteralExpr le) {
     le instanceof BooleanLiteralExpr and
     t instanceof Builtins::Bool
   )
+  or
+  le instanceof StringLiteralExpr and
+  (
+    path.isEmpty() and result = TRefType()
+    or
+    path = TypePath::singleton(TRefTypeParameter()) and
+    result = getStrStruct()
+  )
 }
 
 pragma[nomagic]
@@ -1017,7 +1096,7 @@ private TraitType inferAsyncBlockExprRootType(AsyncBlockExpr abe) {
   result = getFutureTraitType()
 }
 
-final class AwaitTarget extends Expr {
+final private class AwaitTarget extends Expr {
   AwaitTarget() { this = any(AwaitExpr ae).getExpr() }
 
   Type getTypeAt(TypePath path) { result = inferType(this, path) }
@@ -1052,6 +1131,12 @@ private class Vec extends Struct {
  */
 pragma[nomagic]
 private Type inferArrayExprType(ArrayExpr ae) { exists(ae) and result = TArrayType() }
+
+/**
+ * Gets the root type of the range expression `re`.
+ */
+pragma[nomagic]
+private Type inferRangeExprType(RangeExpr re) { result = TStruct(getRangeType(re)) }
 
 /**
  * According to [the Rust reference][1]: _"array and slice-typed expressions
@@ -1089,33 +1174,54 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
   )
 }
 
+final private class ForIterableExpr extends Expr {
+  ForIterableExpr() { this = any(ForExpr fe).getIterable() }
+
+  Type getTypeAt(TypePath path) { result = inferType(this, path) }
+}
+
+private module ForIterableSatisfiesConstraintInput implements
+  SatisfiesConstraintInputSig<ForIterableExpr>
+{
+  predicate relevantConstraint(ForIterableExpr term, Type constraint) {
+    exists(term) and
+    exists(Trait t | t = constraint.(TraitType).getTrait() |
+      // TODO: Remove the line below once we can handle the `impl<I: Iterator> IntoIterator for I` implementation
+      t instanceof IteratorTrait or
+      t instanceof IntoIteratorTrait
+    )
+  }
+}
+
+pragma[nomagic]
+private AssociatedTypeTypeParameter getIteratorItemTypeParameter() {
+  result.getTypeAlias() = any(IteratorTrait t).getItemType()
+}
+
+pragma[nomagic]
+private AssociatedTypeTypeParameter getIntoIteratorItemTypeParameter() {
+  result.getTypeAlias() = any(IntoIteratorTrait t).getItemType()
+}
+
 pragma[nomagic]
 private Type inferForLoopExprType(AstNode n, TypePath path) {
   // type of iterable -> type of pattern (loop variable)
-  exists(ForExpr fe, Type iterableType, TypePath iterablePath |
+  exists(ForExpr fe, TypePath exprPath, AssociatedTypeTypeParameter tp |
     n = fe.getPat() and
-    iterableType = inferType(fe.getIterable(), iterablePath) and
-    result = iterableType and
-    (
-      iterablePath.isCons(any(Vec v).getElementTypeParameter(), path)
-      or
-      iterablePath.isCons(any(ArrayTypeParameter tp), path)
-      or
-      iterablePath
-          .stripPrefix(TypePath::cons(TRefTypeParameter(),
-              TypePath::singleton(any(SliceTypeParameter tp)))) = path
-      // TODO: iterables (general case for containers, ranges etc)
-    )
+    SatisfiesConstraint<ForIterableExpr, ForIterableSatisfiesConstraintInput>::satisfiesConstraintType(fe.getIterable(),
+      _, exprPath, result) and
+    exprPath.isCons(tp, path)
+  |
+    tp = getIntoIteratorItemTypeParameter()
+    or
+    // TODO: Remove once we can handle the `impl<I: Iterator> IntoIterator for I` implementation
+    tp = getIteratorItemTypeParameter() and
+    inferType(fe.getIterable()) != TArrayType()
   )
 }
 
 final class MethodCall extends Call {
-  MethodCall() {
-    exists(this.getReceiver()) and
-    // We want the method calls that don't have a path to a concrete method in
-    // an impl block. We need to exclude calls like `MyType::my_method(..)`.
-    (this instanceof CallExpr implies exists(this.getTrait()))
-  }
+  MethodCall() { exists(this.getReceiver()) }
 
   /** Gets the type of the receiver of the method call at `path`. */
   Type getTypeAt(TypePath path) {
@@ -1538,8 +1644,7 @@ private module Cached {
     or
     result = inferTryExprType(n, path)
     or
-    result = inferLiteralType(n) and
-    path.isEmpty()
+    result = inferLiteralType(n, path)
     or
     result = inferAsyncBlockExprRootType(n) and
     path.isEmpty()
@@ -1547,6 +1652,9 @@ private module Cached {
     result = inferAwaitExprType(n, path)
     or
     result = inferArrayExprType(n) and
+    path.isEmpty()
+    or
+    result = inferRangeExprType(n) and
     path.isEmpty()
     or
     result = inferIndexExprType(n, path)
@@ -1582,19 +1690,51 @@ private module Debug {
     result = resolveMethodCallTarget(mce)
   }
 
+  predicate debugInferImplicitSelfType(SelfParam self, TypePath path, Type t) {
+    self = getRelevantLocatable() and
+    t = inferImplicitSelfType(self, path)
+  }
+
+  predicate debugInferCallExprBaseType(AstNode n, TypePath path, Type t) {
+    n = getRelevantLocatable() and
+    t = inferCallExprBaseType(n, path)
+  }
+
   predicate debugTypeMention(TypeMention tm, TypePath path, Type type) {
     tm = getRelevantLocatable() and
     tm.resolveTypeAt(path) = type
   }
 
   pragma[nomagic]
-  private int countTypes(AstNode n, TypePath path, Type t) {
+  private int countTypesAtPath(AstNode n, TypePath path, Type t) {
     t = inferType(n, path) and
     result = strictcount(Type t0 | t0 = inferType(n, path))
   }
 
   predicate maxTypes(AstNode n, TypePath path, Type t, int c) {
-    c = countTypes(n, path, t) and
-    c = max(countTypes(_, _, _))
+    c = countTypesAtPath(n, path, t) and
+    c = max(countTypesAtPath(_, _, _))
+  }
+
+  pragma[nomagic]
+  private predicate typePathLength(AstNode n, TypePath path, Type t, int len) {
+    t = inferType(n, path) and
+    len = path.length()
+  }
+
+  predicate maxTypePath(AstNode n, TypePath path, Type t, int len) {
+    typePathLength(n, path, t, len) and
+    len = max(int i | typePathLength(_, _, _, i))
+  }
+
+  pragma[nomagic]
+  private int countTypePaths(AstNode n, TypePath path, Type t) {
+    t = inferType(n, path) and
+    result = strictcount(TypePath path0, Type t0 | t0 = inferType(n, path0))
+  }
+
+  predicate maxTypePaths(AstNode n, TypePath path, Type t, int c) {
+    c = countTypePaths(n, path, t) and
+    c = max(countTypePaths(_, _, _))
   }
 }

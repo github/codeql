@@ -111,12 +111,17 @@ public class AutoBuildTests {
     try {
       Set<String> actual = new LinkedHashSet<>();
       new AutoBuild() {
+        private void markExtracted(Path file, FileExtractor extractor) {
+          String extracted = file.toString();
+          if (extractor.getConfig().hasFileType()) {
+            extracted += ":" + extractor.getFileType(file.toFile());
+          }
+          actual.add(extracted);
+        }
+
         @Override
         protected CompletableFuture<?> extract(FileExtractor extractor, Path file, boolean concurrent) {
-          String extracted = file.toString();
-          if (extractor.getConfig().hasFileType())
-            extracted += ":" + extractor.getFileType(file.toFile());
-          actual.add(extracted);
+          markExtracted(file, extractor);
           return CompletableFuture.completedFuture(null);
         }
 
@@ -134,7 +139,7 @@ public class AutoBuildTests {
             java.util.Set<Path> extractedFiles,
             FileExtractors extractors) {
           for (Path f : files) {
-            actual.add(f.toString());
+            markExtracted(f, extractors.forFile(f));
             extractedFiles.add(f);
           }
         }
@@ -190,15 +195,6 @@ public class AutoBuildTests {
 
   @Test
   public void typescript() throws IOException {
-    envVars.put("LGTM_INDEX_TYPESCRIPT", "basic");
-    addFile(true, LGTM_SRC, "tst.ts");
-    addFile(true, LGTM_SRC, "tst.tsx");
-    runTest();
-  }
-
-  @Test(expected = UserError.class)
-  public void typescriptWrongConfig() throws IOException {
-    envVars.put("LGTM_INDEX_TYPESCRIPT", "true");
     addFile(true, LGTM_SRC, "tst.ts");
     addFile(true, LGTM_SRC, "tst.tsx");
     runTest();
@@ -207,7 +203,6 @@ public class AutoBuildTests {
   @Test
   public void skipJsFilesDerivedFromTypeScriptFiles() throws IOException {
     // JS-derived files (.js, .cjs, .mjs, .jsx, .cjsx, .mjsx) should be skipped when TS indexing
-    envVars.put("LGTM_INDEX_TYPESCRIPT", "basic");
     // Add TypeScript sources
     addFile(true, LGTM_SRC, "foo.ts");
     addFile(true, LGTM_SRC, "bar.tsx");
@@ -225,7 +220,6 @@ public class AutoBuildTests {
 
   @Test
   public void skipFilesInTsconfigOutDir() throws IOException {
-    envVars.put("LGTM_INDEX_TYPESCRIPT", "basic");
     // Files under outDir in tsconfig.json should be excluded
     // Create tsconfig.json with outDir set to "dist"
     addFile(true, LGTM_SRC, "tsconfig.json");
@@ -503,15 +497,6 @@ public class AutoBuildTests {
   public void hiddenFiles() throws IOException {
     Path eslintrc = addFile(true, LGTM_SRC, ".eslintrc.json");
     hide(eslintrc);
-    runTest();
-  }
-
-  @Test
-  public void noTypescriptExtraction() throws IOException {
-    envVars.put("LGTM_INDEX_TYPESCRIPT", "none");
-    addFile(false, LGTM_SRC, "tst.ts");
-    addFile(false, LGTM_SRC, "sub.js", "tst.ts");
-    addFile(false, LGTM_SRC, "tst.js.ts");
     runTest();
   }
 

@@ -71,15 +71,15 @@ fn explicit_ref_dereference() {
 
 fn explicit_box_dereference() {
     // Explicit dereference with type parameter
-    let g1: Box<char> = Box::new('a');
+    let g1: Box<char> = Box::new('a'); // $ method=new
     let _h1 = g1.deref(); // $ method=deref type=_h1:&T.char
 
     // Explicit dereference with type parameter
-    let g2: Box<char> = Box::new('a');
+    let g2: Box<char> = Box::new('a'); // $ method=new
     let _h2 = *g2; // $ method=deref type=_h2:char
 
     // Call method on explicitly dereferenced value with type parameter
-    let g3: Box<i64> = Box::new(34i64);
+    let g3: Box<i64> = Box::new(34i64); // $ method=new
     let _h3 = (*g3).is_positive(); // $ method=deref method=is_positive type=_h3:bool
 }
 
@@ -94,9 +94,9 @@ fn implicit_dereference() {
 }
 
 pub fn test() {
-    explicit_monomorphic_dereference();
-    explicit_polymorphic_dereference();
-    explicit_ref_dereference();
-    explicit_box_dereference();
-    implicit_dereference();
+    explicit_monomorphic_dereference(); // $ method=explicit_monomorphic_dereference
+    explicit_polymorphic_dereference(); // $ method=explicit_polymorphic_dereference
+    explicit_ref_dereference(); // $ method=explicit_ref_dereference
+    explicit_box_dereference(); // $ method=explicit_box_dereference
+    implicit_dereference(); // $ method=implicit_dereference
 }
