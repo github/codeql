@@ -53,7 +53,7 @@ private module UntrustedDataToExternalApiConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-020/ExternalAPIs.qll@13:36:13:80), Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-020/ExternalAPIs.qll@16:43:16:92)
+    any() // normal use in UntrustedDataToExternalApi.ql; used via ExternalApiUsedWithUntrustedData (no location) in CountUntrustedDataToExternalAPI.ql
   }
 }
 
