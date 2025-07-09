@@ -2285,3 +2285,26 @@ fn main() {
     tuples::f(); // $ method=f
     dereference::test(); // $ method=test
 }
+
+pub mod unwrap {
+    pub fn test_unwrapping() -> Option<()> {
+        let value = Some(42);
+        if let Some(mesg) = value {
+            let mesg = mesg; // $ MISSING: type=mesg:i32
+            println!("{mesg}");
+        }
+        match value {
+            Some(mesg) => {
+                let mesg = mesg; // $ MISSING: type=mesg:i32
+                println!("{mesg}");
+            }
+            None => (),
+        };
+        let mesg = value.unwrap(); // $ method=unwrap
+        let mesg = mesg; // $ type=mesg:i32
+        println!("{mesg}");
+        let mesg = value?; // $ type=mesg:i32
+        println!("{mesg}");
+        None
+    }
+}
