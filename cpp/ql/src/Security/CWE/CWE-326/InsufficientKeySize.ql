@@ -45,8 +45,10 @@ module KeyStrengthFlowConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 55 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-326/InsufficientKeySize.ql@62:8:62:9)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(FunctionCall fc | result = fc.getLocation() | sink.asExpr() = fc.getArgument(_))
   }
 }
 
