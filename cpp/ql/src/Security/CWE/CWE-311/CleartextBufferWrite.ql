@@ -48,8 +48,10 @@ module ToBufferConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 62 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-311/CleartextBufferWrite.ql@65:8:65:8)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(SensitiveBufferWrite w | result = w.getLocation() | isSinkImpl(sink, w))
   }
 }
 
