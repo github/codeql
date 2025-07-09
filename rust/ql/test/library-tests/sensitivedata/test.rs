@@ -345,3 +345,18 @@ fn test_private_info(
 
 	sink(ContactDetails::FavouriteColor("blue".to_string()));
 }
+
+struct MyArray {
+	data: [i32; 10],
+}
+
+impl MyArray {
+	fn from_trusted_iterator(iter: impl Iterator<Item = i32>) -> Self {
+		MyArray { data: [0; 10] }
+	}
+}
+
+fn test_iterator() {
+	let iter = std::iter::repeat(1).take(10);
+	sink(MyArray::from_trusted_iterator(iter)); // $ SPURIOUS: sensitive=secret
+}
