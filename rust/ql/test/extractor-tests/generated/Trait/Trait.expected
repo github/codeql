@@ -1,2 +1,24 @@
-| gen_trait.rs:3:1:8:1 | trait Frobinizable | hasExtendedCanonicalPath: | yes | hasCrateOrigin: | yes | hasAttributeMacroExpansion: | no | hasAssocItemList: | yes | getNumberOfAttrs: | 0 | hasGenericParamList: | no | isAuto: | no | isUnsafe: | no | hasName: | yes | hasTypeBoundList: | no | hasVisibility: | no | hasWhereClause: | no |
-| gen_trait.rs:10:1:10:57 | trait Foo | hasExtendedCanonicalPath: | yes | hasCrateOrigin: | yes | hasAttributeMacroExpansion: | no | hasAssocItemList: | yes | getNumberOfAttrs: | 0 | hasGenericParamList: | yes | isAuto: | no | isUnsafe: | no | hasName: | yes | hasTypeBoundList: | no | hasVisibility: | yes | hasWhereClause: | yes |
+instances
+| gen_trait.rs:3:1:8:1 | trait Frobinizable | isAuto: | no | isUnsafe: | no |
+| gen_trait.rs:10:1:10:57 | trait Foo | isAuto: | no | isUnsafe: | no |
+getExtendedCanonicalPath
+| gen_trait.rs:3:1:8:1 | trait Frobinizable | crate::gen_trait::Frobinizable |
+| gen_trait.rs:10:1:10:57 | trait Foo | crate::gen_trait::Foo |
+getCrateOrigin
+| gen_trait.rs:3:1:8:1 | trait Frobinizable | repo::test |
+| gen_trait.rs:10:1:10:57 | trait Foo | repo::test |
+getAttributeMacroExpansion
+getAssocItemList
+| gen_trait.rs:3:1:8:1 | trait Frobinizable | gen_trait.rs:4:20:8:1 | AssocItemList |
+| gen_trait.rs:10:1:10:57 | trait Foo | gen_trait.rs:10:56:10:57 | AssocItemList |
+getAttr
+getGenericParamList
+| gen_trait.rs:10:1:10:57 | trait Foo | gen_trait.rs:10:14:10:30 | <...> |
+getName
+| gen_trait.rs:3:1:8:1 | trait Frobinizable | gen_trait.rs:4:7:4:18 | Frobinizable |
+| gen_trait.rs:10:1:10:57 | trait Foo | gen_trait.rs:10:11:10:13 | Foo |
+getTypeBoundList
+getVisibility
+| gen_trait.rs:10:1:10:57 | trait Foo | gen_trait.rs:10:1:10:3 | Visibility |
+getWhereClause
+| gen_trait.rs:10:1:10:57 | trait Foo | gen_trait.rs:10:32:10:54 | WhereClause |

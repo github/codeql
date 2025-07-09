@@ -4,8 +4,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/missing-await
- * @tags correctness
- *       quality
+ * @tags quality
+ *       reliability
+ *       correctness
  * @precision high
  */
 
@@ -28,7 +29,7 @@ predicate isPromise(DataFlow::SourceNode node, boolean nullable) {
   isAsyncCall(node, nullable)
   or
   not isAsyncCall(node, _) and
-  node.asExpr().getType() instanceof PromiseType and
+  node.asExpr().getTypeBinding().isPromiseType() and
   nullable = true
 }
 

@@ -70,14 +70,14 @@ fn bad2_4() {
 
 use std::fs;
 
-#[ctor] // $ MISSING: Source=source2_5
+#[ctor] // $ Source=source2_5
 fn bad2_5() {
-    let _buff = fs::File::create("hello.txt").unwrap(); // $ MISSING: Alert[rust/ctor-initialization]=source2_5
+    let _buff = fs::File::create("hello.txt").unwrap(); // $ Alert[rust/ctor-initialization]=source2_5
 }
 
-#[ctor] // $ MISSING: Source=source2_6
+#[ctor] // $ Source=source2_6
 fn bad2_6() {
-    let _t = std::time::Instant::now(); // $ MISSING: Alert[rust/ctor-initialization]=source2_6
+    let _t = std::time::Instant::now(); // $ Alert[rust/ctor-initialization]=source2_6
 }
 
 use std::time::Duration;
@@ -165,7 +165,7 @@ macro_rules! macro4_1 {
     };
 }
 
-#[ctor] // $ Source=source4_1
+#[ctor] // $ Alert[rust/ctor-initialization]
 fn bad4_1() {
-    macro4_1!(); // $ Alert[rust/ctor-initialization]=source4_1
+    macro4_1!();
 }

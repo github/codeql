@@ -15,9 +15,11 @@ import codeql.rust.elements.MacroCall
  */
 module Generated {
   /**
-   * A MacroExpr. For example:
+   * A macro expression, representing the invocation of a macro that produces an expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let y = vec![1, 2, 3];
    * ```
    * INTERNAL: Do not reference the `Generated::MacroExpr` class directly.
    * Use the subclass `MacroExpr`, where the following predicates are available.

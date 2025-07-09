@@ -264,10 +264,6 @@ module SemanticExprConfig {
 
   Guard comparisonGuard(Expr e) { getSemanticExpr(result) = e }
 
-  predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2) {
-    none() // TODO
-  }
-
   /** Gets the expression associated with `instr`. */
   SemExpr getSemanticExpr(IR::Instruction instr) { result = instr }
 }

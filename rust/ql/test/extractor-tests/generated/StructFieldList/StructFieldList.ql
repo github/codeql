@@ -2,9 +2,8 @@
 import codeql.rust.elements
 import TestUtils
 
-from StructFieldList x, int getNumberOfFields
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfFields = x.getNumberOfFields()
-select x, "getNumberOfFields:", getNumberOfFields
+query predicate instances(StructFieldList x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getField(StructFieldList x, int index, StructField getField) {
+  toBeTested(x) and not x.isUnknown() and getField = x.getField(index)
+}

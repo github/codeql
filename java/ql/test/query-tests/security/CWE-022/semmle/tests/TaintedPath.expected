@@ -1,0 +1,474 @@
+#select
+| TaintedPath.java:16:71:16:78 | filename | TaintedPath.java:13:58:13:78 | getInputStream(...) : InputStream | TaintedPath.java:16:71:16:78 | filename | This path depends on a $@. | TaintedPath.java:13:58:13:78 | getInputStream(...) | user-provided value |
+| Test.java:37:52:37:68 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:37:52:37:68 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:39:32:39:48 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:39:32:39:48 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:41:47:41:63 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:41:47:41:63 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:43:10:43:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:43:10:43:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:45:10:45:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:45:10:45:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:47:10:47:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:47:10:47:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:49:10:49:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:49:10:49:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:51:39:51:53 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:51:39:51:53 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:53:10:53:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:53:10:53:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:55:10:55:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:55:10:55:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:57:10:57:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:57:10:57:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:59:10:59:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:59:10:59:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:61:10:61:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:61:10:61:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:63:10:63:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:63:10:63:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:65:10:65:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:65:10:65:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:67:10:67:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:67:10:67:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:69:31:69:45 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:69:31:69:45 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:71:10:71:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:71:10:71:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:73:10:73:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:73:10:73:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:75:10:75:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:75:10:75:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:77:10:77:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:77:10:77:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:79:10:79:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:79:10:79:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:81:10:81:24 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:81:10:81:24 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:83:31:83:45 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:83:31:83:45 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:85:29:85:43 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:85:29:85:43 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:87:29:87:53 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:87:29:87:53 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:89:29:89:45 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:89:29:89:45 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:91:24:91:38 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:91:24:91:38 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:93:24:93:48 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:93:24:93:48 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:95:24:95:38 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:95:24:95:38 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:97:24:97:40 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:97:24:97:40 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:99:24:99:40 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:99:24:99:40 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:101:20:101:34 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:101:20:101:34 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:102:20:102:34 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:102:20:102:34 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:104:33:104:47 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:104:33:104:47 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:105:40:105:54 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:105:40:105:54 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:107:33:107:47 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:107:33:107:47 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:109:31:109:45 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:109:31:109:45 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:111:26:111:40 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:111:26:111:40 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:113:26:113:40 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:113:26:113:40 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:115:34:115:48 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:115:34:115:48 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:117:35:117:49 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:117:35:117:49 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:119:30:119:44 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:119:30:119:44 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:121:22:121:36 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:121:22:121:36 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:123:30:123:44 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:123:30:123:44 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:125:21:125:35 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:125:21:125:35 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:127:26:127:40 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:127:26:127:40 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:129:33:129:47 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:129:33:129:47 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:131:33:131:47 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:131:33:131:47 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:132:33:132:47 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:132:33:132:47 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:134:31:134:45 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:134:31:134:45 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:136:21:136:35 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:136:21:136:35 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:137:21:137:35 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:137:21:137:35 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:138:21:138:35 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:138:21:138:35 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:140:27:140:41 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:140:27:140:41 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:141:27:141:41 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:141:27:141:41 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:143:26:143:40 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:143:26:143:40 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:145:35:145:49 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:145:35:145:49 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:147:41:147:57 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:147:41:147:57 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:149:45:149:61 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:149:45:149:61 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:151:43:151:57 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:151:43:151:57 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:153:28:153:42 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:153:28:153:42 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:155:41:155:55 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:155:41:155:55 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:160:30:160:44 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:160:30:160:44 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:162:40:162:81 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:162:40:162:81 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:164:34:164:75 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:164:34:164:75 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:166:34:166:75 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:166:34:166:75 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:168:23:168:37 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:168:23:168:37 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:181:23:181:37 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:181:23:181:37 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:186:23:186:40 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:186:23:186:40 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:188:20:188:34 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:188:20:188:34 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:190:21:190:35 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:190:21:190:35 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:192:22:192:36 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:192:22:192:36 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:197:20:197:34 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:197:20:197:34 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:199:19:199:33 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:199:19:199:33 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+| Test.java:204:20:204:36 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:204:20:204:36 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
+edges
+| TaintedPath.java:13:17:13:89 | new BufferedReader(...) : BufferedReader | TaintedPath.java:14:27:14:40 | filenameReader : BufferedReader | provenance |  |
+| TaintedPath.java:13:36:13:88 | new InputStreamReader(...) : InputStreamReader | TaintedPath.java:13:17:13:89 | new BufferedReader(...) : BufferedReader | provenance | MaD:74 |
+| TaintedPath.java:13:58:13:78 | getInputStream(...) : InputStream | TaintedPath.java:13:36:13:88 | new InputStreamReader(...) : InputStreamReader | provenance | Src:MaD:72 MaD:76 |
+| TaintedPath.java:14:27:14:40 | filenameReader : BufferedReader | TaintedPath.java:14:27:14:51 | readLine(...) : String | provenance | MaD:75 |
+| TaintedPath.java:14:27:14:51 | readLine(...) : String | TaintedPath.java:16:71:16:78 | filename | provenance | Sink:MaD:27 |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:37:61:37:68 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:39:41:39:48 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:41:56:41:63 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:43:17:43:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:45:17:45:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:47:17:47:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:49:17:49:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:51:46:51:53 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:53:17:53:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:55:17:55:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:57:17:57:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:59:17:59:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:61:17:61:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:63:17:63:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:65:17:65:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:67:17:67:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:69:38:69:45 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:71:17:71:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:73:17:73:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:75:17:75:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:77:17:77:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:79:17:79:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:81:17:81:24 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:83:38:83:45 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:85:36:85:43 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:87:46:87:53 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:89:38:89:45 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:91:31:91:38 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:93:41:93:48 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:95:31:95:38 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:97:33:97:40 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:99:33:99:40 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:101:27:101:34 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:102:27:102:34 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:104:40:104:47 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:105:47:105:54 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:107:40:107:47 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:109:38:109:45 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:111:33:111:40 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:113:33:113:40 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:115:41:115:48 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:117:42:117:49 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:119:37:119:44 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:121:29:121:36 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:123:37:123:44 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:125:28:125:35 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:127:33:127:40 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:129:40:129:47 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:131:40:131:47 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:132:40:132:47 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:134:38:134:45 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:136:28:136:35 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:137:28:137:35 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:138:28:138:35 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:140:34:140:41 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:141:34:141:41 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:143:33:143:40 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:145:42:145:49 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:147:50:147:57 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:149:54:149:61 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:151:50:151:57 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:153:35:153:42 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:155:48:155:55 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:160:37:160:44 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:162:74:162:81 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:164:68:164:75 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:166:68:166:75 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:168:30:168:37 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:181:30:181:37 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:186:33:186:40 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:188:27:188:34 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:190:28:190:35 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:192:29:192:36 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:197:27:197:34 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:199:26:199:33 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:32:16:32:45 | getParameter(...) : String | Test.java:204:29:204:36 | source(...) : String | provenance | Src:MaD:73  |
+| Test.java:37:61:37:68 | source(...) : String | Test.java:37:52:37:68 | (...)... | provenance | Sink:MaD:31 |
+| Test.java:39:41:39:48 | source(...) : String | Test.java:39:32:39:48 | (...)... | provenance | Sink:MaD:29 |
+| Test.java:41:56:41:63 | source(...) : String | Test.java:41:47:41:63 | (...)... | provenance | Sink:MaD:30 |
+| Test.java:43:17:43:24 | source(...) : String | Test.java:43:10:43:24 | (...)... | provenance | Sink:MaD:1 |
+| Test.java:45:17:45:24 | source(...) : String | Test.java:45:10:45:24 | (...)... | provenance | Sink:MaD:2 |
+| Test.java:47:17:47:24 | source(...) : String | Test.java:47:10:47:24 | (...)... | provenance | Sink:MaD:3 |
+| Test.java:49:17:49:24 | source(...) : String | Test.java:49:10:49:24 | (...)... | provenance | Sink:MaD:4 |
+| Test.java:51:46:51:53 | source(...) : String | Test.java:51:39:51:53 | (...)... | provenance | Sink:MaD:5 |
+| Test.java:53:17:53:24 | source(...) : String | Test.java:53:10:53:24 | (...)... | provenance | Sink:MaD:6 |
+| Test.java:55:17:55:24 | source(...) : String | Test.java:55:10:55:24 | (...)... | provenance | Sink:MaD:7 |
+| Test.java:57:17:57:24 | source(...) : String | Test.java:57:10:57:24 | (...)... | provenance | Sink:MaD:8 |
+| Test.java:59:17:59:24 | source(...) : String | Test.java:59:10:59:24 | (...)... | provenance | Sink:MaD:9 |
+| Test.java:61:17:61:24 | source(...) : String | Test.java:61:10:61:24 | (...)... | provenance | Sink:MaD:10 |
+| Test.java:63:17:63:24 | source(...) : String | Test.java:63:10:63:24 | (...)... | provenance | Sink:MaD:11 |
+| Test.java:65:17:65:24 | source(...) : String | Test.java:65:10:65:24 | (...)... | provenance | Sink:MaD:12 |
+| Test.java:67:17:67:24 | source(...) : String | Test.java:67:10:67:24 | (...)... | provenance | Sink:MaD:13 |
+| Test.java:69:38:69:45 | source(...) : String | Test.java:69:31:69:45 | (...)... | provenance | Sink:MaD:14 |
+| Test.java:71:17:71:24 | source(...) : String | Test.java:71:10:71:24 | (...)... | provenance | Sink:MaD:15 |
+| Test.java:73:17:73:24 | source(...) : String | Test.java:73:10:73:24 | (...)... | provenance | Sink:MaD:16 |
+| Test.java:75:17:75:24 | source(...) : String | Test.java:75:10:75:24 | (...)... | provenance | Sink:MaD:17 |
+| Test.java:77:17:77:24 | source(...) : String | Test.java:77:10:77:24 | (...)... | provenance | Sink:MaD:19 |
+| Test.java:79:17:79:24 | source(...) : String | Test.java:79:10:79:24 | (...)... | provenance | Sink:MaD:18 |
+| Test.java:81:17:81:24 | source(...) : String | Test.java:81:10:81:24 | (...)... | provenance | Sink:MaD:20 |
+| Test.java:83:38:83:45 | source(...) : String | Test.java:83:31:83:45 | (...)... | provenance | Sink:MaD:14 |
+| Test.java:85:36:85:43 | source(...) : String | Test.java:85:29:85:43 | (...)... | provenance | Sink:MaD:21 |
+| Test.java:87:46:87:53 | source(...) : String | Test.java:87:29:87:53 | (...)... | provenance | Sink:MaD:22 |
+| Test.java:89:38:89:45 | source(...) : String | Test.java:89:29:89:45 | (...)... | provenance | Sink:MaD:23 |
+| Test.java:91:31:91:38 | source(...) : String | Test.java:91:24:91:38 | (...)... | provenance | Sink:MaD:24 |
+| Test.java:93:41:93:48 | source(...) : String | Test.java:93:24:93:48 | (...)... | provenance | Sink:MaD:26 |
+| Test.java:95:31:95:38 | source(...) : String | Test.java:95:24:95:38 | (...)... | provenance | Sink:MaD:25 |
+| Test.java:97:33:97:40 | source(...) : String | Test.java:97:24:97:40 | (...)... | provenance | Sink:MaD:27 |
+| Test.java:99:33:99:40 | source(...) : String | Test.java:99:24:99:40 | (...)... | provenance | Sink:MaD:28 |
+| Test.java:101:27:101:34 | source(...) : String | Test.java:101:20:101:34 | (...)... | provenance | Sink:MaD:34 |
+| Test.java:102:27:102:34 | source(...) : String | Test.java:102:20:102:34 | (...)... | provenance | Sink:MaD:33 |
+| Test.java:104:40:104:47 | source(...) : String | Test.java:104:33:104:47 | (...)... | provenance | Sink:MaD:35 |
+| Test.java:105:47:105:54 | source(...) : String | Test.java:105:40:105:54 | (...)... | provenance | Sink:MaD:32 |
+| Test.java:107:40:107:47 | source(...) : String | Test.java:107:33:107:47 | (...)... | provenance | Sink:MaD:36 |
+| Test.java:109:38:109:45 | source(...) : String | Test.java:109:31:109:45 | (...)... | provenance | Sink:MaD:37 |
+| Test.java:111:33:111:40 | source(...) : String | Test.java:111:26:111:40 | (...)... | provenance | Sink:MaD:38 |
+| Test.java:113:33:113:40 | source(...) : String | Test.java:113:26:113:40 | (...)... | provenance | Sink:MaD:39 |
+| Test.java:115:41:115:48 | source(...) : String | Test.java:115:34:115:48 | (...)... | provenance | Sink:MaD:40 |
+| Test.java:117:42:117:49 | source(...) : String | Test.java:117:35:117:49 | (...)... | provenance | Sink:MaD:41 |
+| Test.java:119:37:119:44 | source(...) : String | Test.java:119:30:119:44 | (...)... | provenance | Sink:MaD:42 |
+| Test.java:121:29:121:36 | source(...) : String | Test.java:121:22:121:36 | (...)... | provenance | Sink:MaD:43 |
+| Test.java:123:37:123:44 | source(...) : String | Test.java:123:30:123:44 | (...)... | provenance | Sink:MaD:44 |
+| Test.java:125:28:125:35 | source(...) : String | Test.java:125:21:125:35 | (...)... | provenance | Sink:MaD:45 |
+| Test.java:127:33:127:40 | source(...) : String | Test.java:127:26:127:40 | (...)... | provenance | Sink:MaD:46 |
+| Test.java:129:40:129:47 | source(...) : String | Test.java:129:33:129:47 | (...)... | provenance | Sink:MaD:47 |
+| Test.java:131:40:131:47 | source(...) : String | Test.java:131:33:131:47 | (...)... | provenance | Sink:MaD:48 |
+| Test.java:132:40:132:47 | source(...) : String | Test.java:132:33:132:47 | (...)... | provenance | Sink:MaD:48 |
+| Test.java:134:38:134:45 | source(...) : String | Test.java:134:31:134:45 | (...)... | provenance | Sink:MaD:49 |
+| Test.java:136:28:136:35 | source(...) : String | Test.java:136:21:136:35 | (...)... | provenance | Sink:MaD:50 |
+| Test.java:137:28:137:35 | source(...) : String | Test.java:137:21:137:35 | (...)... | provenance | Sink:MaD:50 |
+| Test.java:138:28:138:35 | source(...) : String | Test.java:138:21:138:35 | (...)... | provenance | Sink:MaD:50 |
+| Test.java:140:34:140:41 | source(...) : String | Test.java:140:27:140:41 | (...)... | provenance | Sink:MaD:51 |
+| Test.java:141:34:141:41 | source(...) : String | Test.java:141:27:141:41 | (...)... | provenance | Sink:MaD:51 |
+| Test.java:143:33:143:40 | source(...) : String | Test.java:143:26:143:40 | (...)... | provenance | Sink:MaD:52 |
+| Test.java:145:42:145:49 | source(...) : String | Test.java:145:35:145:49 | (...)... | provenance | Sink:MaD:53 |
+| Test.java:147:50:147:57 | source(...) : String | Test.java:147:41:147:57 | (...)... | provenance | Sink:MaD:65 |
+| Test.java:149:54:149:61 | source(...) : String | Test.java:149:45:149:61 | (...)... | provenance | Sink:MaD:66 |
+| Test.java:151:50:151:57 | source(...) : String | Test.java:151:43:151:57 | (...)... | provenance | Sink:MaD:71 |
+| Test.java:153:35:153:42 | source(...) : String | Test.java:153:28:153:42 | (...)... | provenance | Sink:MaD:69 |
+| Test.java:155:48:155:55 | source(...) : String | Test.java:155:41:155:55 | (...)... | provenance | Sink:MaD:70 |
+| Test.java:160:37:160:44 | source(...) : String | Test.java:160:30:160:44 | (...)... | provenance | Sink:MaD:63 |
+| Test.java:162:74:162:81 | source(...) : String | Test.java:162:40:162:81 | (...)... | provenance | Sink:MaD:60 |
+| Test.java:164:68:164:75 | source(...) : String | Test.java:164:34:164:75 | (...)... | provenance | Sink:MaD:62 |
+| Test.java:166:68:166:75 | source(...) : String | Test.java:166:34:166:75 | (...)... | provenance | Sink:MaD:61 |
+| Test.java:168:30:168:37 | source(...) : String | Test.java:168:23:168:37 | (...)... | provenance | Sink:MaD:67 |
+| Test.java:181:30:181:37 | source(...) : String | Test.java:181:23:181:37 | (...)... | provenance | Sink:MaD:64 |
+| Test.java:186:33:186:40 | source(...) : String | Test.java:186:23:186:40 | (...)... | provenance | Sink:MaD:54 |
+| Test.java:188:27:188:34 | source(...) : String | Test.java:188:20:188:34 | (...)... | provenance | Sink:MaD:55 |
+| Test.java:190:28:190:35 | source(...) : String | Test.java:190:21:190:35 | (...)... | provenance | Sink:MaD:56 |
+| Test.java:192:29:192:36 | source(...) : String | Test.java:192:22:192:36 | (...)... | provenance | Sink:MaD:57 |
+| Test.java:197:27:197:34 | source(...) : String | Test.java:197:20:197:34 | (...)... | provenance | Sink:MaD:58 |
+| Test.java:199:26:199:33 | source(...) : String | Test.java:199:19:199:33 | (...)... | provenance | Sink:MaD:59 |
+| Test.java:204:29:204:36 | source(...) : String | Test.java:204:20:204:36 | (...)... | provenance | Sink:MaD:68 |
+models
+| 1 | Sink: java.io; File; true; canExecute; (); ; Argument[this]; path-injection; manual |
+| 2 | Sink: java.io; File; true; canRead; (); ; Argument[this]; path-injection; manual |
+| 3 | Sink: java.io; File; true; canWrite; (); ; Argument[this]; path-injection; manual |
+| 4 | Sink: java.io; File; true; createNewFile; (); ; Argument[this]; path-injection; ai-manual |
+| 5 | Sink: java.io; File; true; createTempFile; (String,String,File); ; Argument[2]; path-injection; ai-manual |
+| 6 | Sink: java.io; File; true; delete; (); ; Argument[this]; path-injection; manual |
+| 7 | Sink: java.io; File; true; deleteOnExit; (); ; Argument[this]; path-injection; manual |
+| 8 | Sink: java.io; File; true; exists; (); ; Argument[this]; path-injection; manual |
+| 9 | Sink: java.io; File; true; isDirectory; (); ; Argument[this]; path-injection; manual |
+| 10 | Sink: java.io; File; true; isFile; (); ; Argument[this]; path-injection; manual |
+| 11 | Sink: java.io; File; true; isHidden; (); ; Argument[this]; path-injection; manual |
+| 12 | Sink: java.io; File; true; mkdir; (); ; Argument[this]; path-injection; manual |
+| 13 | Sink: java.io; File; true; mkdirs; (); ; Argument[this]; path-injection; manual |
+| 14 | Sink: java.io; File; true; renameTo; (File); ; Argument[0]; path-injection; ai-manual |
+| 15 | Sink: java.io; File; true; renameTo; (File); ; Argument[this]; path-injection; ai-manual |
+| 16 | Sink: java.io; File; true; setExecutable; ; ; Argument[this]; path-injection; manual |
+| 17 | Sink: java.io; File; true; setLastModified; ; ; Argument[this]; path-injection; manual |
+| 18 | Sink: java.io; File; true; setReadOnly; ; ; Argument[this]; path-injection; manual |
+| 19 | Sink: java.io; File; true; setReadable; ; ; Argument[this]; path-injection; manual |
+| 20 | Sink: java.io; File; true; setWritable; ; ; Argument[this]; path-injection; manual |
+| 21 | Sink: java.io; FileInputStream; true; FileInputStream; (File); ; Argument[0]; path-injection; ai-manual |
+| 22 | Sink: java.io; FileInputStream; true; FileInputStream; (FileDescriptor); ; Argument[0]; path-injection; manual |
+| 23 | Sink: java.io; FileInputStream; true; FileInputStream; (String); ; Argument[0]; path-injection; ai-manual |
+| 24 | Sink: java.io; FileReader; true; FileReader; (File); ; Argument[0]; path-injection; ai-manual |
+| 25 | Sink: java.io; FileReader; true; FileReader; (File,Charset); ; Argument[0]; path-injection; manual |
+| 26 | Sink: java.io; FileReader; true; FileReader; (FileDescriptor); ; Argument[0]; path-injection; manual |
+| 27 | Sink: java.io; FileReader; true; FileReader; (String); ; Argument[0]; path-injection; ai-manual |
+| 28 | Sink: java.io; FileReader; true; FileReader; (String,Charset); ; Argument[0]; path-injection; manual |
+| 29 | Sink: java.lang; Class; false; getResource; (String); ; Argument[0]; path-injection; ai-manual |
+| 30 | Sink: java.lang; ClassLoader; true; getSystemResourceAsStream; (String); ; Argument[0]; path-injection; ai-manual |
+| 31 | Sink: java.lang; Module; true; getResourceAsStream; (String); ; Argument[0]; path-injection; ai-manual |
+| 32 | Sink: java.nio.file; Files; false; copy; (InputStream,Path,CopyOption[]); ; Argument[1]; path-injection; manual |
+| 33 | Sink: java.nio.file; Files; false; copy; (Path,OutputStream); ; Argument[0]; path-injection; manual |
+| 34 | Sink: java.nio.file; Files; false; copy; (Path,Path,CopyOption[]); ; Argument[0]; path-injection; manual |
+| 35 | Sink: java.nio.file; Files; false; copy; (Path,Path,CopyOption[]); ; Argument[1]; path-injection; manual |
+| 36 | Sink: java.nio.file; Files; false; createDirectories; ; ; Argument[0]; path-injection; manual |
+| 37 | Sink: java.nio.file; Files; false; createDirectory; ; ; Argument[0]; path-injection; manual |
+| 38 | Sink: java.nio.file; Files; false; createFile; ; ; Argument[0]; path-injection; manual |
+| 39 | Sink: java.nio.file; Files; false; createLink; ; ; Argument[0]; path-injection; manual |
+| 40 | Sink: java.nio.file; Files; false; createSymbolicLink; ; ; Argument[0]; path-injection; manual |
+| 41 | Sink: java.nio.file; Files; false; createTempDirectory; (Path,String,FileAttribute[]); ; Argument[0]; path-injection; manual |
+| 42 | Sink: java.nio.file; Files; false; createTempFile; (Path,String,String,FileAttribute[]); ; Argument[0]; path-injection; manual |
+| 43 | Sink: java.nio.file; Files; false; delete; (Path); ; Argument[0]; path-injection; ai-manual |
+| 44 | Sink: java.nio.file; Files; false; deleteIfExists; (Path); ; Argument[0]; path-injection; ai-manual |
+| 45 | Sink: java.nio.file; Files; false; lines; (Path,Charset); ; Argument[0]; path-injection; ai-manual |
+| 46 | Sink: java.nio.file; Files; false; move; ; ; Argument[1]; path-injection; manual |
+| 47 | Sink: java.nio.file; Files; false; newBufferedReader; (Path,Charset); ; Argument[0]; path-injection; ai-manual |
+| 48 | Sink: java.nio.file; Files; false; newBufferedWriter; ; ; Argument[0]; path-injection; manual |
+| 49 | Sink: java.nio.file; Files; false; newOutputStream; ; ; Argument[0]; path-injection; manual |
+| 50 | Sink: java.nio.file; Files; false; write; ; ; Argument[0]; path-injection; manual |
+| 51 | Sink: java.nio.file; Files; false; writeString; ; ; Argument[0]; path-injection; manual |
+| 52 | Sink: javax.xml.transform.stream; StreamResult; true; StreamResult; (File); ; Argument[0]; path-injection; ai-manual |
+| 53 | Sink: org.apache.commons.io; FileUtils; true; openInputStream; (File); ; Argument[0]; path-injection; ai-manual |
+| 54 | Sink: org.apache.tools.ant.taskdefs; Copy; true; addFileset; (FileSet); ; Argument[0]; path-injection; ai-manual |
+| 55 | Sink: org.apache.tools.ant.taskdefs; Copy; true; setFile; (File); ; Argument[0]; path-injection; ai-manual |
+| 56 | Sink: org.apache.tools.ant.taskdefs; Copy; true; setTodir; (File); ; Argument[0]; path-injection; ai-manual |
+| 57 | Sink: org.apache.tools.ant.taskdefs; Copy; true; setTofile; (File); ; Argument[0]; path-injection; ai-manual |
+| 58 | Sink: org.apache.tools.ant.taskdefs; Expand; true; setDest; (File); ; Argument[0]; path-injection; ai-manual |
+| 59 | Sink: org.apache.tools.ant.taskdefs; Expand; true; setSrc; (File); ; Argument[0]; path-injection; ai-manual |
+| 60 | Sink: org.apache.tools.ant; AntClassLoader; true; AntClassLoader; (ClassLoader,Project,Path,boolean); ; Argument[2]; path-injection; ai-manual |
+| 61 | Sink: org.apache.tools.ant; AntClassLoader; true; AntClassLoader; (Project,Path); ; Argument[1]; path-injection; ai-manual |
+| 62 | Sink: org.apache.tools.ant; AntClassLoader; true; AntClassLoader; (Project,Path,boolean); ; Argument[1]; path-injection; ai-manual |
+| 63 | Sink: org.apache.tools.ant; AntClassLoader; true; addPathComponent; (File); ; Argument[0]; path-injection; ai-manual |
+| 64 | Sink: org.apache.tools.ant; DirectoryScanner; true; setBasedir; (File); ; Argument[0]; path-injection; ai-manual |
+| 65 | Sink: org.codehaus.cargo.container.installer; ZipURLInstaller; true; ZipURLInstaller; (URL,String,String); ; Argument[1]; path-injection; ai-manual |
+| 66 | Sink: org.codehaus.cargo.container.installer; ZipURLInstaller; true; ZipURLInstaller; (URL,String,String); ; Argument[2]; path-injection; ai-manual |
+| 67 | Sink: org.kohsuke.stapler.framework.io; LargeText; true; LargeText; (File,Charset,boolean,boolean); ; Argument[0]; path-injection; ai-manual |
+| 68 | Sink: org.openjdk.jmh.runner.options; ChainedOptionsBuilder; true; result; (String); ; Argument[0]; path-injection; ai-manual |
+| 69 | Sink: org.springframework.util; FileCopyUtils; false; copy; (File,File); ; Argument[0]; path-injection; manual |
+| 70 | Sink: org.springframework.util; FileCopyUtils; false; copy; (File,File); ; Argument[1]; path-injection; manual |
+| 71 | Sink: org.springframework.util; FileCopyUtils; false; copy; (byte[],File); ; Argument[1]; path-injection; manual |
+| 72 | Source: java.net; Socket; false; getInputStream; (); ; ReturnValue; remote; manual |
+| 73 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 74 | Summary: java.io; BufferedReader; false; BufferedReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 75 | Summary: java.io; BufferedReader; true; readLine; ; ; Argument[this]; ReturnValue; taint; manual |
+| 76 | Summary: java.io; InputStreamReader; false; InputStreamReader; ; ; Argument[0]; Argument[this]; taint; manual |
+nodes
+| TaintedPath.java:13:17:13:89 | new BufferedReader(...) : BufferedReader | semmle.label | new BufferedReader(...) : BufferedReader |
+| TaintedPath.java:13:36:13:88 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| TaintedPath.java:13:58:13:78 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TaintedPath.java:14:27:14:40 | filenameReader : BufferedReader | semmle.label | filenameReader : BufferedReader |
+| TaintedPath.java:14:27:14:51 | readLine(...) : String | semmle.label | readLine(...) : String |
+| TaintedPath.java:16:71:16:78 | filename | semmle.label | filename |
+| Test.java:32:16:32:45 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| Test.java:37:52:37:68 | (...)... | semmle.label | (...)... |
+| Test.java:37:61:37:68 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:39:32:39:48 | (...)... | semmle.label | (...)... |
+| Test.java:39:41:39:48 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:41:47:41:63 | (...)... | semmle.label | (...)... |
+| Test.java:41:56:41:63 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:43:10:43:24 | (...)... | semmle.label | (...)... |
+| Test.java:43:17:43:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:45:10:45:24 | (...)... | semmle.label | (...)... |
+| Test.java:45:17:45:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:47:10:47:24 | (...)... | semmle.label | (...)... |
+| Test.java:47:17:47:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:49:10:49:24 | (...)... | semmle.label | (...)... |
+| Test.java:49:17:49:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:51:39:51:53 | (...)... | semmle.label | (...)... |
+| Test.java:51:46:51:53 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:53:10:53:24 | (...)... | semmle.label | (...)... |
+| Test.java:53:17:53:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:55:10:55:24 | (...)... | semmle.label | (...)... |
+| Test.java:55:17:55:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:57:10:57:24 | (...)... | semmle.label | (...)... |
+| Test.java:57:17:57:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:59:10:59:24 | (...)... | semmle.label | (...)... |
+| Test.java:59:17:59:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:61:10:61:24 | (...)... | semmle.label | (...)... |
+| Test.java:61:17:61:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:63:10:63:24 | (...)... | semmle.label | (...)... |
+| Test.java:63:17:63:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:65:10:65:24 | (...)... | semmle.label | (...)... |
+| Test.java:65:17:65:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:67:10:67:24 | (...)... | semmle.label | (...)... |
+| Test.java:67:17:67:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:69:31:69:45 | (...)... | semmle.label | (...)... |
+| Test.java:69:38:69:45 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:71:10:71:24 | (...)... | semmle.label | (...)... |
+| Test.java:71:17:71:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:73:10:73:24 | (...)... | semmle.label | (...)... |
+| Test.java:73:17:73:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:75:10:75:24 | (...)... | semmle.label | (...)... |
+| Test.java:75:17:75:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:77:10:77:24 | (...)... | semmle.label | (...)... |
+| Test.java:77:17:77:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:79:10:79:24 | (...)... | semmle.label | (...)... |
+| Test.java:79:17:79:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:81:10:81:24 | (...)... | semmle.label | (...)... |
+| Test.java:81:17:81:24 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:83:31:83:45 | (...)... | semmle.label | (...)... |
+| Test.java:83:38:83:45 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:85:29:85:43 | (...)... | semmle.label | (...)... |
+| Test.java:85:36:85:43 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:87:29:87:53 | (...)... | semmle.label | (...)... |
+| Test.java:87:46:87:53 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:89:29:89:45 | (...)... | semmle.label | (...)... |
+| Test.java:89:38:89:45 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:91:24:91:38 | (...)... | semmle.label | (...)... |
+| Test.java:91:31:91:38 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:93:24:93:48 | (...)... | semmle.label | (...)... |
+| Test.java:93:41:93:48 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:95:24:95:38 | (...)... | semmle.label | (...)... |
+| Test.java:95:31:95:38 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:97:24:97:40 | (...)... | semmle.label | (...)... |
+| Test.java:97:33:97:40 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:99:24:99:40 | (...)... | semmle.label | (...)... |
+| Test.java:99:33:99:40 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:101:20:101:34 | (...)... | semmle.label | (...)... |
+| Test.java:101:27:101:34 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:102:20:102:34 | (...)... | semmle.label | (...)... |
+| Test.java:102:27:102:34 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:104:33:104:47 | (...)... | semmle.label | (...)... |
+| Test.java:104:40:104:47 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:105:40:105:54 | (...)... | semmle.label | (...)... |
+| Test.java:105:47:105:54 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:107:33:107:47 | (...)... | semmle.label | (...)... |
+| Test.java:107:40:107:47 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:109:31:109:45 | (...)... | semmle.label | (...)... |
+| Test.java:109:38:109:45 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:111:26:111:40 | (...)... | semmle.label | (...)... |
+| Test.java:111:33:111:40 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:113:26:113:40 | (...)... | semmle.label | (...)... |
+| Test.java:113:33:113:40 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:115:34:115:48 | (...)... | semmle.label | (...)... |
+| Test.java:115:41:115:48 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:117:35:117:49 | (...)... | semmle.label | (...)... |
+| Test.java:117:42:117:49 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:119:30:119:44 | (...)... | semmle.label | (...)... |
+| Test.java:119:37:119:44 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:121:22:121:36 | (...)... | semmle.label | (...)... |
+| Test.java:121:29:121:36 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:123:30:123:44 | (...)... | semmle.label | (...)... |
+| Test.java:123:37:123:44 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:125:21:125:35 | (...)... | semmle.label | (...)... |
+| Test.java:125:28:125:35 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:127:26:127:40 | (...)... | semmle.label | (...)... |
+| Test.java:127:33:127:40 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:129:33:129:47 | (...)... | semmle.label | (...)... |
+| Test.java:129:40:129:47 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:131:33:131:47 | (...)... | semmle.label | (...)... |
+| Test.java:131:40:131:47 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:132:33:132:47 | (...)... | semmle.label | (...)... |
+| Test.java:132:40:132:47 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:134:31:134:45 | (...)... | semmle.label | (...)... |
+| Test.java:134:38:134:45 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:136:21:136:35 | (...)... | semmle.label | (...)... |
+| Test.java:136:28:136:35 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:137:21:137:35 | (...)... | semmle.label | (...)... |
+| Test.java:137:28:137:35 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:138:21:138:35 | (...)... | semmle.label | (...)... |
+| Test.java:138:28:138:35 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:140:27:140:41 | (...)... | semmle.label | (...)... |
+| Test.java:140:34:140:41 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:141:27:141:41 | (...)... | semmle.label | (...)... |
+| Test.java:141:34:141:41 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:143:26:143:40 | (...)... | semmle.label | (...)... |
+| Test.java:143:33:143:40 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:145:35:145:49 | (...)... | semmle.label | (...)... |
+| Test.java:145:42:145:49 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:147:41:147:57 | (...)... | semmle.label | (...)... |
+| Test.java:147:50:147:57 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:149:45:149:61 | (...)... | semmle.label | (...)... |
+| Test.java:149:54:149:61 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:151:43:151:57 | (...)... | semmle.label | (...)... |
+| Test.java:151:50:151:57 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:153:28:153:42 | (...)... | semmle.label | (...)... |
+| Test.java:153:35:153:42 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:155:41:155:55 | (...)... | semmle.label | (...)... |
+| Test.java:155:48:155:55 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:160:30:160:44 | (...)... | semmle.label | (...)... |
+| Test.java:160:37:160:44 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:162:40:162:81 | (...)... | semmle.label | (...)... |
+| Test.java:162:74:162:81 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:164:34:164:75 | (...)... | semmle.label | (...)... |
+| Test.java:164:68:164:75 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:166:34:166:75 | (...)... | semmle.label | (...)... |
+| Test.java:166:68:166:75 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:168:23:168:37 | (...)... | semmle.label | (...)... |
+| Test.java:168:30:168:37 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:181:23:181:37 | (...)... | semmle.label | (...)... |
+| Test.java:181:30:181:37 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:186:23:186:40 | (...)... | semmle.label | (...)... |
+| Test.java:186:33:186:40 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:188:20:188:34 | (...)... | semmle.label | (...)... |
+| Test.java:188:27:188:34 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:190:21:190:35 | (...)... | semmle.label | (...)... |
+| Test.java:190:28:190:35 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:192:22:192:36 | (...)... | semmle.label | (...)... |
+| Test.java:192:29:192:36 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:197:20:197:34 | (...)... | semmle.label | (...)... |
+| Test.java:197:27:197:34 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:199:19:199:33 | (...)... | semmle.label | (...)... |
+| Test.java:199:26:199:33 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:204:20:204:36 | (...)... | semmle.label | (...)... |
+| Test.java:204:29:204:36 | source(...) : String | semmle.label | source(...) : String |
+subpaths

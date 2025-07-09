@@ -6,7 +6,8 @@
  * @kind problem
  * @problem.severity warning
  * @id js/redundant-operation
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-480
  *       external/cwe/cwe-561

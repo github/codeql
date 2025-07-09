@@ -8,6 +8,7 @@ import semmle.code.java.arithmetic.Overflow
 import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.controlflow.Guards
 
+overlay[local?]
 private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "thread-resource-abuse" }
 }

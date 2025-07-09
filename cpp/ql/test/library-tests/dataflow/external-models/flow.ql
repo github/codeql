@@ -1,7 +1,7 @@
 import utils.test.dataflow.FlowTestCommon
 import cpp
 import semmle.code.cpp.security.FlowSources
-import IRTest::IRFlow::PathGraph
+import codeql.dataflow.test.ProvenancePathGraph
 
 module IRTest {
   private import semmle.code.cpp.ir.IR
@@ -33,3 +33,4 @@ module IRTest {
 }
 
 import MakeTest<IRFlowTest<IRTest::IRFlow>>
+import ShowProvenance<interpretModelForTest/2, IRTest::IRFlow::PathNode, IRTest::IRFlow::PathGraph>

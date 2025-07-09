@@ -8,9 +8,14 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.BlockExpr
 
 /**
- * A LetElse. For example:
+ * An else block in a let-else statement.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let Some(x) = opt else {
+ *     return;
+ * };
+ * //                ^^^^^^
  * ```
  */
 final class LetElse = Impl::LetElse;

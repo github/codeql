@@ -1,6 +1,4 @@
 | Cargo.toml:0:0:0:0 | LoadManifest(Cargo.toml) |
-| file:///types.rs:0:0:0:0 | Extract(/types.rs) |
-| file:///types.rs:0:0:0:0 | Parse(/types.rs) |
 | file://:0:0:0:0 | CrateGraph |
 | file://:0:0:0:0 | FindManifests |
 | src/directory_module/mod.rs:0:0:0:0 | Extract(src/directory_module/mod.rs) |

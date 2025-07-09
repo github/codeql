@@ -29,6 +29,7 @@ rust_library(
         ],
     ),
     crate_features = [
+        "inline",
         "raw-api",
     ],
     crate_root = "src/lib.rs",
@@ -84,7 +85,7 @@ rust_library(
     }),
     version = "6.1.0",
     deps = [
-        "@vendor_ts__cfg-if-1.0.0//:cfg_if",
+        "@vendor_ts__cfg-if-1.0.1//:cfg_if",
         "@vendor_ts__crossbeam-utils-0.8.21//:crossbeam_utils",
         "@vendor_ts__hashbrown-0.14.5//:hashbrown",
         "@vendor_ts__lock_api-0.4.12//:lock_api",

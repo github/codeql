@@ -87,11 +87,6 @@ module Raw {
     string getVersion() { crate_versions(this, result) }
 
     /**
-     * Gets the module of this crate, if it exists.
-     */
-    Module getModule() { crate_modules(this, result) }
-
-    /**
      * Gets the `index`th cfg option of this crate (0-based).
      */
     string getCfgOption(int index) { crate_cfg_options(this, index, result) }
@@ -120,9 +115,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Abi. For example:
+   * An ABI specification for an extern function or block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * extern "C" fn foo() {}
+   * //     ^^^
    * ```
    */
   class Abi extends @abi, AstNode {
@@ -160,9 +158,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ArgList. For example:
+   * A list of arguments in a function or method call.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * foo(1, 2, 3);
+   * // ^^^^^^^^^
    * ```
    */
   class ArgList extends @arg_list, AstNode {
@@ -176,6 +177,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An inline assembly direction specifier.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("mov {input:x}, {input:x}", output = out(reg) x, input = in(reg) y);
+   * //                                        ^^^                 ^^
+   * ```
    */
   class AsmDirSpec extends @asm_dir_spec, AstNode {
     override string toString() { result = "AsmDirSpec" }
@@ -188,6 +197,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An operand expression in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("mov {0}, {1}", out(reg) x, in(reg) y);
+   * //                            ^          ^
+   * ```
    */
   class AsmOperandExpr extends @asm_operand_expr, AstNode {
     override string toString() { result = "AsmOperandExpr" }
@@ -205,6 +222,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An option in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("", options(nostack, nomem));
+   * //              ^^^^^^^^^^^^^^^^
+   * ```
    */
   class AsmOption extends @asm_option, AstNode {
     override string toString() { result = "AsmOption" }
@@ -222,6 +247,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A register specification in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("mov {0}, {1}", out("eax") x, in(EBX) y);
+   * //                        ^^^         ^^^
+   * ```
    */
   class AsmRegSpec extends @asm_reg_spec, AstNode {
     override string toString() { result = "AsmRegSpec" }
@@ -234,16 +267,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A AssocItem. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class AssocItem extends @assoc_item, AstNode { }
-
-  /**
-   * INTERNAL: Do not use.
-   * A list of  `AssocItem` elements, as appearing for example in a `Trait`.
+   * A list of `AssocItem` elements, as appearing in a `Trait` or `Impl`.
    */
   class AssocItemList extends @assoc_item_list, AstNode {
     override string toString() { result = "AssocItemList" }
@@ -261,9 +285,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Attr. For example:
+   * An attribute applied to an item.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * #[derive(Debug)]
+   * //^^^^^^^^^^^^^
+   * struct S;
    * ```
    */
   class Attr extends @attr, AstNode {
@@ -293,9 +321,17 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ClosureBinder. For example:
+   * A closure binder, specifying lifetime or type parameters for a closure.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let print_any = for<T: std::fmt::Debug> |x: T| {
+   * //              ^^^^^^^^^^^^^^^^^^^^^^^
+   *     println!("{:?}", x);
+   * };
+   *
+   * print_any(42);
+   * print_any("hello");
    * ```
    */
   class ClosureBinder extends @closure_binder, AstNode {
@@ -315,18 +351,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ExternItem. For example:
+   * A list of items inside an extern block.
+   *
+   * For example:
    * ```rust
-   * todo!()
-   * ```
-   */
-  class ExternItem extends @extern_item, AstNode { }
-
-  /**
-   * INTERNAL: Do not use.
-   * A ExternItemList. For example:
-   * ```rust
-   * todo!()
+   * extern "C" {
+   *     fn foo();
+   *     static BAR: i32;
+   * }
    * ```
    */
   class ExternItemList extends @extern_item_list, AstNode {
@@ -345,9 +377,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A field of a variant. For example:
+   * A list of fields in a struct or enum variant.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct S {x: i32, y: i32}
+   * //       ^^^^^^^^^^^^^^^^
+   * enum E {A(i32, i32)}
+   * //     ^^^^^^^^^^^^^
    * ```
    */
   class FieldList extends @field_list, AstNode { }
@@ -375,9 +412,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A GenericArg. For example:
+   * A generic argument in a generic argument list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * Foo:: <u32, 3, 'a>
+   * //    ^^^^^^^^^^^
    * ```
    */
   class GenericArg extends @generic_arg, AstNode { }
@@ -400,9 +440,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A GenericParam. For example:
+   * A generic parameter in a generic parameter list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T, U>(t: T, u: U) {}
+   * //     ^  ^
    * ```
    */
   class GenericParam extends @generic_param, AstNode { }
@@ -430,9 +473,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ItemList. For example:
+   * A list of items in a module or block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * mod m {
+   *     fn foo() {}
+   *     struct S;
+   * }
    * ```
    */
   class ItemList extends @item_list, AstNode {
@@ -470,9 +518,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A LetElse. For example:
+   * An else block in a let-else statement.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let Some(x) = opt else {
+   *     return;
+   * };
+   * //                ^^^^^^
    * ```
    */
   class LetElse extends @let_else, AstNode {
@@ -552,9 +605,16 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A MatchArmList. For example:
+   * A list of arms in a match expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * match x {
+   *     1 => "one",
+   *     2 => "two",
+   *     _ => "other",
+   * }
+   * //  ^^^^^^^^^^^
    * ```
    */
   class MatchArmList extends @match_arm_list, AstNode {
@@ -573,9 +633,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A MatchGuard. For example:
+   * A guard condition in a match arm.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * match x {
+   *     y if y > 0 => "positive",
+   * //    ^^^^^^^
+   *     _ => "non-positive",
+   * }
    * ```
    */
   class MatchGuard extends @match_guard, AstNode {
@@ -589,9 +655,17 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Meta. For example:
+   * A meta item in an attribute.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * #[unsafe(lint::name = "reason_for_bypass")]
+   * //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * #[deprecated(since = "1.2.0", note = "Use bar instead", unsafe=true)]
+   * //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * fn foo() {
+   *     // ...
+   * }
    * ```
    */
   class Meta extends @meta, AstNode {
@@ -620,9 +694,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Name. For example:
+   * An identifier name.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let foo = 1;
+   * //  ^^^
    * ```
    */
   class Name extends @name, AstNode {
@@ -652,9 +729,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ParamList. For example:
+   * A list of parameters in a function, method, or closure declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo(x: i32, y: i32) {}
+   * //      ^^^^^^^^^^^^^
    * ```
    */
   class ParamList extends @param_list, AstNode {
@@ -673,6 +753,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A parenthesized argument list as used in function traits.
+   *
+   * For example:
+   * ```rust
+   * fn call_with_42<F>(f: F) -> i32
+   * where
+   *     F: Fn(i32, String) -> i32,
+   * //        ^^^^^^^^^^^
+   * {
+   *     f(42, "Don't panic".to_string())
+   * }
+   * ```
    */
   class ParenthesizedArgList extends @parenthesized_arg_list, AstNode {
     override string toString() { result = "ParenthesizedArgList" }
@@ -714,6 +806,12 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A path segment, which is one part of a whole path.
+   * For example:
+   * - `HashMap`
+   * - `HashMap<K, V>`
+   * - `Fn(i32) -> i32`
+   * - `widgets(..)`
+   * - `<T as Iterator>`
    */
   class PathSegment extends @path_segment, AstNode {
     override string toString() { result = "PathSegment" }
@@ -758,9 +856,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Rename. For example:
+   * A rename in a use declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * use foo as bar;
+   * //      ^^^^^^
    * ```
    */
   class Rename extends @rename, AstNode {
@@ -790,9 +891,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A RetTypeRepr. For example:
+   * A return type in a function signature.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo() -> i32 {}
+   * //       ^^^^^^
    * ```
    */
   class RetTypeRepr extends @ret_type_repr, AstNode {
@@ -806,9 +910,22 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ReturnTypeSyntax. For example:
+   * A return type notation `(..)` to reference or bound the type returned by a trait method
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct ReverseWidgets<F: Factory<widgets(..): DoubleEndedIterator>> {
+   *     factory: F,
+   * }
+   *
+   * impl<F> Factory for ReverseWidgets<F>
+   * where
+   *   F: Factory<widgets(..): DoubleEndedIterator>,
+   * {
+   *   fn widgets(&self) -> impl Iterator<Item = Widget> {
+   *     self.factory.widgets().rev()
+   *   }
+   * }
    * ```
    */
   class ReturnTypeSyntax extends @return_type_syntax, AstNode {
@@ -817,9 +934,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A SourceFile. For example:
+   * A source file.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * // main.rs
+   * fn main() {}
    * ```
    */
   class SourceFile extends @source_file, AstNode {
@@ -844,9 +964,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A StmtList. For example:
+   * A list of statements in a block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * {
+   *     let x = 1;
+   *     let y = 2;
+   * }
+   * //  ^^^^^^^^^
    * ```
    */
   class StmtList extends @stmt_list, AstNode {
@@ -896,9 +1022,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A StructExprFieldList. For example:
+   * A list of fields in a struct expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * Foo { a: 1, b: 2 }
+   * //    ^^^^^^^^^^^
    * ```
    */
   class StructExprFieldList extends @struct_expr_field_list, AstNode {
@@ -922,9 +1051,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A StructField. For example:
+   * A field in a struct declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct S { x: i32 }
+   * //         ^^^^^^^
    * ```
    */
   class StructField extends @struct_field, AstNode {
@@ -989,9 +1121,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A StructPatFieldList. For example:
+   * A list of fields in a struct pattern.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let Foo { a, b } = foo;
+   * //        ^^^^^
    * ```
    */
   class StructPatFieldList extends @struct_pat_field_list, AstNode {
@@ -1016,9 +1151,16 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A TokenTree. For example:
+   * A token tree in a macro definition or invocation.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * println!("{} {}!", "Hello", "world");
+   * //      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * ```
+   * ```rust
+   * macro_rules! foo { ($x:expr) => { $x + 1 }; }
+   * //               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class TokenTree extends @token_tree, AstNode {
@@ -1027,9 +1169,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A TupleField. For example:
+   * A field in a tuple struct or tuple enum variant.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct S(i32, String);
+   * //       ^^^  ^^^^^^
    * ```
    */
   class TupleField extends @tuple_field, AstNode {
@@ -1053,9 +1198,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A TypeBound. For example:
+   * A type bound in a trait or generic parameter.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T: Debug>(t: T) {}
+   * //        ^^^^^
    * ```
    */
   class TypeBound extends @type_bound, AstNode {
@@ -1089,9 +1237,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A TypeBoundList. For example:
+   * A list of type bounds.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T: Debug + Clone>(t: T) {}
+   * //        ^^^^^^^^^^^^^
    * ```
    */
   class TypeBoundList extends @type_bound_list, AstNode {
@@ -1121,6 +1272,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A use<..> bound to control which generic parameters are captured by an impl Trait return type.
+   *
+   * For example:
+   * ```rust
+   * pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> {}
+   * //                                                        ^^^^^^^^
+   * ```
    */
   class UseBoundGenericArgs extends @use_bound_generic_args, AstNode {
     override string toString() { result = "UseBoundGenericArgs" }
@@ -1135,7 +1293,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A UseTree. For example:
+   * A `use` tree, that is, the part after the `use` keyword in a `use` statement. For example:
    * ```rust
    * use std::collections::HashMap;
    * use std::collections::*;
@@ -1169,9 +1327,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A UseTreeList. For example:
+   * A list of use trees in a use declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * use std::{fs, io};
+   * //       ^^^^^^^^
    * ```
    */
   class UseTreeList extends @use_tree_list, AstNode {
@@ -1185,14 +1346,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   */
-  class VariantDef extends @variant_def, AstNode { }
-
-  /**
-   * INTERNAL: Do not use.
-   * A VariantList. For example:
+   * A list of variants in an enum declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * enum E { A, B, C }
+   * //     ^^^^^^^^^^^
    * ```
    */
   class VariantList extends @variant_list, AstNode {
@@ -1206,9 +1365,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Visibility. For example:
+   * A visibility modifier.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   *   pub struct S;
+   * //^^^
    * ```
    */
   class Visibility extends @visibility, AstNode {
@@ -1222,9 +1384,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A WhereClause. For example:
+   * A where clause in a generic declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T>(t: T) where T: Debug {}
+   * //              ^^^^^^^^^^^^^^
    * ```
    */
   class WhereClause extends @where_clause, AstNode {
@@ -1238,9 +1403,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A WherePred. For example:
+   * A predicate in a where clause.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T, U>(t: T, u: U) where T: Debug, U: Clone {}
+   * //                             ^^^^^^^^  ^^^^^^^^
    * ```
    */
   class WherePred extends @where_pred, AstNode {
@@ -1291,9 +1459,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ArrayTypeRepr. For example:
+   * An array type representation.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let arr: [i32; 4];
+   * //       ^^^^^^^^
    * ```
    */
   class ArrayTypeRepr extends @array_type_repr, TypeRepr {
@@ -1312,6 +1483,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A clobbered ABI in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("", clobber_abi("C"));
+   * //       ^^^^^^^^^^^^^^^^
+   * ```
    */
   class AsmClobberAbi extends @asm_clobber_abi, AsmPiece {
     override string toString() { result = "AsmClobberAbi" }
@@ -1319,6 +1498,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A constant operand in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("mov eax, {const}", const 42);
+   * //                       ^^^^^^^
+   * ```
    */
   class AsmConst extends @asm_const, AsmOperand {
     override string toString() { result = "AsmConst" }
@@ -1339,7 +1526,8 @@ module Raw {
    * An inline assembly expression. For example:
    * ```rust
    * unsafe {
-   *     builtin # asm(_);
+   *     #[inline(always)]
+   *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
    * }
    * ```
    */
@@ -1364,6 +1552,17 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A label in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!(
+   *     "jmp {}",
+   *     label { println!("Jumped from asm!"); }
+   * //  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * );
+   * ```
    */
   class AsmLabel extends @asm_label, AsmOperand {
     override string toString() { result = "AsmLabel" }
@@ -1376,6 +1575,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A named operand in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("mov {0:x}, {input:x}", out(reg) x, input = in(reg) y);
+   * //                           ^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^
+   * ```
    */
   class AsmOperandNamed extends @asm_operand_named, AsmPiece {
     override string toString() { result = "AsmOperandNamed" }
@@ -1393,6 +1600,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A list of options in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("", options(nostack, nomem));
+   * //              ^^^^^^^^^^^^^^^^
+   * ```
    */
   class AsmOptionsList extends @asm_options_list, AsmPiece {
     override string toString() { result = "AsmOptionsList" }
@@ -1405,6 +1620,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A register operand in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("mov {0}, {1}", out(reg) x, in(reg) y);
+   * //                            ^         ^
+   * ```
    */
   class AsmRegOperand extends @asm_reg_operand, AsmOperand {
     override string toString() { result = "AsmRegOperand" }
@@ -1427,6 +1650,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A symbol operand in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("call {sym}", sym = sym my_function);
+   * //                 ^^^^^^^^^^^^^^^^^^^^^^
+   * ```
    */
   class AsmSym extends @asm_sym, AsmOperand {
     override string toString() { result = "AsmSym" }
@@ -1439,9 +1670,17 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A AssocTypeArg. For example:
+   * An associated type argument in a path.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn process_cloneable<T>(iter: T)
+   * where
+   *     T: Iterator<Item: Clone>
+   * //              ^^^^^^^^^^^
+   * {
+   *     // ...
+   * }
    * ```
    */
   class AssocTypeArg extends @assoc_type_arg, GenericArg {
@@ -1761,9 +2000,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ConstArg. For example:
+   * A constant argument in a generic argument list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * Foo::<3>
+   * //    ^
    * ```
    */
   class ConstArg extends @const_arg, GenericArg {
@@ -1801,9 +2043,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ConstParam. For example:
+   * A constant parameter in a generic parameter list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct Foo <const N: usize>;
+   * //          ^^^^^^^^^^^^^^
    * ```
    */
   class ConstParam extends @const_param, GenericParam {
@@ -1869,9 +2114,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A DynTraitTypeRepr. For example:
+   * A dynamic trait object type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let x: &dyn Debug;
+   * //      ^^^^^^^^^
    * ```
    */
   class DynTraitTypeRepr extends @dyn_trait_type_repr, TypeRepr {
@@ -1929,9 +2177,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A FnPtrTypeRepr. For example:
+   * A function pointer type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let f: fn(i32) -> i32;
+   * //     ^^^^^^^^^^^^^^
    * ```
    */
   class FnPtrTypeRepr extends @fn_ptr_type_repr, TypeRepr {
@@ -1970,9 +2221,17 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ForTypeRepr. For example:
+   * A higher-ranked trait bound.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T>(value: T)
+   * where
+   *     T: for<'a> Fn(&'a str) -> &'a str
+   * //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * {
+   *     // ...
+   * }
    * ```
    */
   class ForTypeRepr extends @for_type_repr, TypeRepr {
@@ -2106,9 +2365,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ImplTraitTypeRepr. For example:
+   * An `impl Trait` type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo() -> impl Iterator<Item = i32> { 0..10 }
+   * //          ^^^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class ImplTraitTypeRepr extends @impl_trait_type_repr, TypeRepr {
@@ -2149,9 +2411,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A InferTypeRepr. For example:
+   * An inferred type (`_`).
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let x: _ = 42;
+   * //     ^
    * ```
    */
   class InferTypeRepr extends @infer_type_repr, TypeRepr {
@@ -2160,9 +2425,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Item. For example:
+   * An item such as a function, struct, enum, etc.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo() {}
+   * struct S;
+   * enum E {}
    * ```
    */
   class Item extends @item, Stmt, Addressable {
@@ -2256,9 +2525,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Lifetime. For example:
+   * A lifetime annotation.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<'a>(x: &'a str) {}
+   * //     ^^      ^^
    * ```
    */
   class Lifetime extends @lifetime, UseBoundGenericArg {
@@ -2272,9 +2544,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A LifetimeArg. For example:
+   * A lifetime argument in a generic argument list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let text: Text<'a>;
+   * //             ^^
    * ```
    */
   class LifetimeArg extends @lifetime_arg, GenericArg {
@@ -2288,9 +2563,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A LifetimeParam. For example:
+   * A lifetime parameter in a generic parameter list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<'a>(x: &'a str) {}
+   * //     ^^
    * ```
    */
   class LifetimeParam extends @lifetime_param, GenericParam {
@@ -2384,9 +2662,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A MacroExpr. For example:
+   * A macro expression, representing the invocation of a macro that produces an expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let y = vec![1, 2, 3];
    * ```
    */
   class MacroExpr extends @macro_expr, Expr {
@@ -2400,9 +2680,20 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A MacroPat. For example:
+   * A macro pattern, representing the invocation of a macro that produces a pattern.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * macro_rules! my_macro {
+   *     () => {
+   *         Ok(_)
+   *     };
+   * }
+   * match x {
+   *     my_macro!() => "matched",
+   * //  ^^^^^^^^^^^
+   *     _ => "not matched",
+   * }
    * ```
    */
   class MacroPat extends @macro_pat, Pat {
@@ -2416,9 +2707,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A MacroTypeRepr. For example:
+   * A type produced by a macro.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * macro_rules! macro_type {
+   *     () => { i32 };
+   * }
+   * type T = macro_type!();
+   * //       ^^^^^^^^^^^^^
    * ```
    */
   class MacroTypeRepr extends @macro_type_repr, TypeRepr {
@@ -2467,9 +2764,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A NameRef. For example:
+   * A reference to a name.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   *   foo();
+   * //^^^
    * ```
    */
   class NameRef extends @name_ref, UseBoundGenericArg {
@@ -2483,9 +2783,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A NeverTypeRepr. For example:
+   * The never type `!`.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo() -> ! { panic!() }
+   * //          ^
    * ```
    */
   class NeverTypeRepr extends @never_type_repr, TypeRepr {
@@ -2556,9 +2859,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ParenExpr. For example:
+   * A parenthesized expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * (x + y)
    * ```
    */
   class ParenExpr extends @paren_expr, Expr {
@@ -2577,9 +2882,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ParenPat. For example:
+   * A parenthesized pattern.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let (x) = 1;
+   * //  ^^^
    * ```
    */
   class ParenPat extends @paren_pat, Pat {
@@ -2593,9 +2901,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ParenTypeRepr. For example:
+   * A parenthesized type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let x: (i32);
+   * //     ^^^^^
    * ```
    */
   class ParenTypeRepr extends @paren_type_repr, TypeRepr {
@@ -2626,7 +2937,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A type referring to a path. For example:
+   * A path referring to a type. For example:
    * ```rust
    * type X = std::collections::HashMap<i32, i32>;
    * type Y = X::Item;
@@ -2671,9 +2982,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A PtrTypeRepr. For example:
+   * A pointer type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let p: *const i32;
+   * let q: *mut i32;
+   * //     ^^^^^^^^^
    * ```
    */
   class PtrTypeRepr extends @ptr_type_repr, TypeRepr {
@@ -2826,9 +3141,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A RefTypeRepr. For example:
+   * A reference type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let r: &i32;
+   * let m: &mut i32;
+   * //     ^^^^^^^^
    * ```
    */
   class RefTypeRepr extends @ref_type_repr, TypeRepr {
@@ -2852,9 +3171,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A RestPat. For example:
+   * A rest pattern (`..`) in a tuple, slice, or struct pattern.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let (a, .., z) = (1, 2, 3);
+   * //      ^^
    * ```
    */
   class RestPat extends @rest_pat, Pat {
@@ -2954,9 +3276,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A SliceTypeRepr. For example:
+   * A slice type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let s: &[i32];
+   * //      ^^^^^
    * ```
    */
   class SliceTypeRepr extends @slice_type_repr, TypeRepr {
@@ -2970,9 +3295,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A field list of a struct expression. For example:
+   * A list of fields in a struct declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct S { x: i32, y: i32 }
+   * //         ^^^^^^^^^^^^^^^
    * ```
    */
   class StructFieldList extends @struct_field_list, FieldList {
@@ -2986,9 +3314,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A TryExpr. For example:
+   * A try expression using the `?` operator.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let x = foo()?;
+   * //           ^
    * ```
    */
   class TryExpr extends @try_expr, Expr {
@@ -3029,9 +3360,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A TupleFieldList. For example:
+   * A list of fields in a tuple struct or tuple enum variant.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct S(i32, String);
+   * //      ^^^^^^^^^^^^^
    * ```
    */
   class TupleFieldList extends @tuple_field_list, FieldList {
@@ -3062,9 +3396,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A TupleTypeRepr. For example:
+   * A tuple type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let t: (i32, String);
+   * //     ^^^^^^^^^^^^^
    * ```
    */
   class TupleTypeRepr extends @tuple_type_repr, TypeRepr {
@@ -3078,9 +3415,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A TypeArg. For example:
+   * A type argument in a generic argument list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * Foo::<u32>
+   * //    ^^^
    * ```
    */
   class TypeArg extends @type_arg, GenericArg {
@@ -3094,9 +3434,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A TypeParam. For example:
+   * A type parameter in a generic parameter list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T>(t: T) {}
+   * //     ^
    * ```
    */
   class TypeParam extends @type_param, GenericParam {
@@ -3141,12 +3484,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Variant. For example:
+   * A variant in an enum declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * enum E { A, B(i32), C { x: i32 } }
+   * //       ^  ^^^^^^  ^^^^^^^^^^^^
    * ```
    */
-  class Variant extends @variant, VariantDef, Addressable {
+  class Variant extends @variant, Addressable {
     override string toString() { result = "Variant" }
 
     /**
@@ -3235,6 +3581,31 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An ADT (Abstract Data Type) definition, such as `Struct`, `Enum`, or `Union`.
+   */
+  class Adt extends @adt, Item {
+    /**
+     * Gets the `index`th derive macro expansion of this adt (0-based).
+     */
+    MacroItems getDeriveMacroExpansion(int index) {
+      adt_derive_macro_expansions(this, index, result)
+    }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An associated item in a `Trait` or `Impl`.
+   *
+   * For example:
+   * ```rust
+   * trait T {fn foo(&self);}
+   * //       ^^^^^^^^^^^^^
+   * ```
+   */
+  class AssocItem extends @assoc_item, Item { }
+
+  /**
+   * INTERNAL: Do not use.
    * A block expression. For example:
    * ```rust
    * {
@@ -3313,96 +3684,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Const. For example:
+   * An extern block containing foreign function declarations.
+   *
+   * For example:
    * ```rust
-   * todo!()
-   * ```
-   */
-  class Const extends @const, AssocItem, Item {
-    override string toString() { result = "Const" }
-
-    /**
-     * Gets the `index`th attr of this const (0-based).
-     */
-    Attr getAttr(int index) { const_attrs(this, index, result) }
-
-    /**
-     * Gets the body of this const, if it exists.
-     */
-    Expr getBody() { const_bodies(this, result) }
-
-    /**
-     * Holds if this const is const.
-     */
-    predicate isConst() { const_is_const(this) }
-
-    /**
-     * Holds if this const is default.
-     */
-    predicate isDefault() { const_is_default(this) }
-
-    /**
-     * Gets the name of this const, if it exists.
-     */
-    Name getName() { const_names(this, result) }
-
-    /**
-     * Gets the type representation of this const, if it exists.
-     */
-    TypeRepr getTypeRepr() { const_type_reprs(this, result) }
-
-    /**
-     * Gets the visibility of this const, if it exists.
-     */
-    Visibility getVisibility() { const_visibilities(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A Enum. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class Enum extends @enum, Item {
-    override string toString() { result = "Enum" }
-
-    /**
-     * Gets the `index`th attr of this enum (0-based).
-     */
-    Attr getAttr(int index) { enum_attrs(this, index, result) }
-
-    /**
-     * Gets the generic parameter list of this enum, if it exists.
-     */
-    GenericParamList getGenericParamList() { enum_generic_param_lists(this, result) }
-
-    /**
-     * Gets the name of this enum, if it exists.
-     */
-    Name getName() { enum_names(this, result) }
-
-    /**
-     * Gets the variant list of this enum, if it exists.
-     */
-    VariantList getVariantList() { enum_variant_lists(this, result) }
-
-    /**
-     * Gets the visibility of this enum, if it exists.
-     */
-    Visibility getVisibility() { enum_visibilities(this, result) }
-
-    /**
-     * Gets the where clause of this enum, if it exists.
-     */
-    WhereClause getWhereClause() { enum_where_clauses(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A ExternBlock. For example:
-   * ```rust
-   * todo!()
+   * extern "C" {
+   *     fn foo();
+   * }
    * ```
    */
   class ExternBlock extends @extern_block, Item {
@@ -3431,9 +3719,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ExternCrate. For example:
+   * An extern crate declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * extern crate serde;
    * ```
    */
   class ExternCrate extends @extern_crate, Item {
@@ -3462,86 +3752,27 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A function declaration. For example
+   * An item inside an extern block.
+   *
+   * For example:
    * ```rust
-   * fn foo(x: u32) -> u64 {(x + 1).into()}
-   * ```
-   * A function declaration within a trait might not have a body:
-   * ```rust
-   * trait Trait {
-   *     fn bar();
+   * extern "C" {
+   *     fn foo();
+   *     static BAR: i32;
    * }
    * ```
    */
-  class Function extends @function, AssocItem, ExternItem, Item, Callable {
-    override string toString() { result = "Function" }
-
-    /**
-     * Gets the abi of this function, if it exists.
-     */
-    Abi getAbi() { function_abis(this, result) }
-
-    /**
-     * Gets the body of this function, if it exists.
-     */
-    BlockExpr getBody() { function_bodies(this, result) }
-
-    /**
-     * Gets the generic parameter list of this function, if it exists.
-     */
-    GenericParamList getGenericParamList() { function_generic_param_lists(this, result) }
-
-    /**
-     * Holds if this function is async.
-     */
-    predicate isAsync() { function_is_async(this) }
-
-    /**
-     * Holds if this function is const.
-     */
-    predicate isConst() { function_is_const(this) }
-
-    /**
-     * Holds if this function is default.
-     */
-    predicate isDefault() { function_is_default(this) }
-
-    /**
-     * Holds if this function is gen.
-     */
-    predicate isGen() { function_is_gen(this) }
-
-    /**
-     * Holds if this function is unsafe.
-     */
-    predicate isUnsafe() { function_is_unsafe(this) }
-
-    /**
-     * Gets the name of this function, if it exists.
-     */
-    Name getName() { function_names(this, result) }
-
-    /**
-     * Gets the ret type of this function, if it exists.
-     */
-    RetTypeRepr getRetType() { function_ret_types(this, result) }
-
-    /**
-     * Gets the visibility of this function, if it exists.
-     */
-    Visibility getVisibility() { function_visibilities(this, result) }
-
-    /**
-     * Gets the where clause of this function, if it exists.
-     */
-    WhereClause getWhereClause() { function_where_clauses(this, result) }
-  }
+  class ExternItem extends @extern_item, Item { }
 
   /**
    * INTERNAL: Do not use.
-   * A Impl. For example:
+   * An `impl`` block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * impl MyTrait for MyType {
+   *     fn foo(&self) {}
+   * }
    * ```
    */
   class Impl extends @impl, Item {
@@ -3611,40 +3842,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A MacroCall. For example:
+   * A Rust 2.0 style declarative macro definition.
+   *
+   * For example:
    * ```rust
-   * todo!()
-   * ```
-   */
-  class MacroCall extends @macro_call, AssocItem, ExternItem, Item {
-    override string toString() { result = "MacroCall" }
-
-    /**
-     * Gets the `index`th attr of this macro call (0-based).
-     */
-    Attr getAttr(int index) { macro_call_attrs(this, index, result) }
-
-    /**
-     * Gets the path of this macro call, if it exists.
-     */
-    Path getPath() { macro_call_paths(this, result) }
-
-    /**
-     * Gets the token tree of this macro call, if it exists.
-     */
-    TokenTree getTokenTree() { macro_call_token_trees(this, result) }
-
-    /**
-     * Gets the macro call expansion of this macro call, if it exists.
-     */
-    AstNode getMacroCallExpansion() { macro_call_macro_call_expansions(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A MacroDef. For example:
-   * ```rust
-   * todo!()
+   * pub macro vec_of_two($element:expr) {
+   *     vec![$element, $element]
+   * }
    * ```
    */
   class MacroDef extends @macro_def, Item {
@@ -3678,9 +3882,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A MacroRules. For example:
+   * A macro definition using the `macro_rules!` syntax.
    * ```rust
-   * todo!()
+   * macro_rules! my_macro {
+   *     () => {
+   *         println!("This is a macro!");
+   *     };
+   * }
    * ```
    */
   class MacroRules extends @macro_rules, Item {
@@ -3805,98 +4013,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Static. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class Static extends @static, ExternItem, Item {
-    override string toString() { result = "Static" }
-
-    /**
-     * Gets the `index`th attr of this static (0-based).
-     */
-    Attr getAttr(int index) { static_attrs(this, index, result) }
-
-    /**
-     * Gets the body of this static, if it exists.
-     */
-    Expr getBody() { static_bodies(this, result) }
-
-    /**
-     * Holds if this static is mut.
-     */
-    predicate isMut() { static_is_mut(this) }
-
-    /**
-     * Holds if this static is static.
-     */
-    predicate isStatic() { static_is_static(this) }
-
-    /**
-     * Holds if this static is unsafe.
-     */
-    predicate isUnsafe() { static_is_unsafe(this) }
-
-    /**
-     * Gets the name of this static, if it exists.
-     */
-    Name getName() { static_names(this, result) }
-
-    /**
-     * Gets the type representation of this static, if it exists.
-     */
-    TypeRepr getTypeRepr() { static_type_reprs(this, result) }
-
-    /**
-     * Gets the visibility of this static, if it exists.
-     */
-    Visibility getVisibility() { static_visibilities(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A Struct. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class Struct extends @struct, Item, VariantDef {
-    override string toString() { result = "Struct" }
-
-    /**
-     * Gets the `index`th attr of this struct (0-based).
-     */
-    Attr getAttr(int index) { struct_attrs(this, index, result) }
-
-    /**
-     * Gets the field list of this struct, if it exists.
-     */
-    FieldList getFieldList() { struct_field_lists_(this, result) }
-
-    /**
-     * Gets the generic parameter list of this struct, if it exists.
-     */
-    GenericParamList getGenericParamList() { struct_generic_param_lists(this, result) }
-
-    /**
-     * Gets the name of this struct, if it exists.
-     */
-    Name getName() { struct_names(this, result) }
-
-    /**
-     * Gets the visibility of this struct, if it exists.
-     */
-    Visibility getVisibility() { struct_visibilities(this, result) }
-
-    /**
-     * Gets the where clause of this struct, if it exists.
-     */
-    WhereClause getWhereClause() { struct_where_clauses(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A struct expression. For example:
    * ```rust
    * let first = Foo { a: 1, b: 2 };
@@ -3999,9 +4115,11 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A TraitAlias. For example:
+   * A trait alias.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * trait Foo = Bar + Baz;
    * ```
    */
   class TraitAlias extends @trait_alias, Item {
@@ -4060,6 +4178,420 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A `use` statement. For example:
+   * ```rust
+   * use std::collections::HashMap;
+   * ```
+   */
+  class Use extends @use, Item {
+    override string toString() { result = "Use" }
+
+    /**
+     * Gets the `index`th attr of this use (0-based).
+     */
+    Attr getAttr(int index) { use_attrs(this, index, result) }
+
+    /**
+     * Gets the use tree of this use, if it exists.
+     */
+    UseTree getUseTree() { use_use_trees(this, result) }
+
+    /**
+     * Gets the visibility of this use, if it exists.
+     */
+    Visibility getVisibility() { use_visibilities(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A constant item declaration.
+   *
+   * For example:
+   * ```rust
+   * const X: i32 = 42;
+   * ```
+   */
+  class Const extends @const, AssocItem {
+    override string toString() { result = "Const" }
+
+    /**
+     * Gets the `index`th attr of this const (0-based).
+     */
+    Attr getAttr(int index) { const_attrs(this, index, result) }
+
+    /**
+     * Gets the body of this const, if it exists.
+     */
+    Expr getBody() { const_bodies(this, result) }
+
+    /**
+     * Gets the generic parameter list of this const, if it exists.
+     */
+    GenericParamList getGenericParamList() { const_generic_param_lists(this, result) }
+
+    /**
+     * Holds if this const is const.
+     */
+    predicate isConst() { const_is_const(this) }
+
+    /**
+     * Holds if this const is default.
+     */
+    predicate isDefault() { const_is_default(this) }
+
+    /**
+     * Gets the name of this const, if it exists.
+     */
+    Name getName() { const_names(this, result) }
+
+    /**
+     * Gets the type representation of this const, if it exists.
+     */
+    TypeRepr getTypeRepr() { const_type_reprs(this, result) }
+
+    /**
+     * Gets the visibility of this const, if it exists.
+     */
+    Visibility getVisibility() { const_visibilities(this, result) }
+
+    /**
+     * Gets the where clause of this const, if it exists.
+     */
+    WhereClause getWhereClause() { const_where_clauses(this, result) }
+
+    /**
+     * Holds if this constant has an implementation.
+     *
+     * This is the same as `hasBody` for source code, but for library code (for which we always skip
+     * the body), this will hold when the body was present in the original code.
+     */
+    predicate hasImplementation() { const_has_implementation(this) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An enum declaration.
+   *
+   * For example:
+   * ```rust
+   * enum E {A, B(i32), C {x: i32}}
+   * ```
+   */
+  class Enum extends @enum, Adt {
+    override string toString() { result = "Enum" }
+
+    /**
+     * Gets the `index`th attr of this enum (0-based).
+     */
+    Attr getAttr(int index) { enum_attrs(this, index, result) }
+
+    /**
+     * Gets the generic parameter list of this enum, if it exists.
+     */
+    GenericParamList getGenericParamList() { enum_generic_param_lists(this, result) }
+
+    /**
+     * Gets the name of this enum, if it exists.
+     */
+    Name getName() { enum_names(this, result) }
+
+    /**
+     * Gets the variant list of this enum, if it exists.
+     */
+    VariantList getVariantList() { enum_variant_lists(this, result) }
+
+    /**
+     * Gets the visibility of this enum, if it exists.
+     */
+    Visibility getVisibility() { enum_visibilities(this, result) }
+
+    /**
+     * Gets the where clause of this enum, if it exists.
+     */
+    WhereClause getWhereClause() { enum_where_clauses(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A for loop expression.
+   *
+   * For example:
+   * ```rust
+   * for x in 0..10 {
+   *     println!("{}", x);
+   * }
+   * ```
+   */
+  class ForExpr extends @for_expr, LoopingExpr {
+    override string toString() { result = "ForExpr" }
+
+    /**
+     * Gets the `index`th attr of this for expression (0-based).
+     */
+    Attr getAttr(int index) { for_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the iterable of this for expression, if it exists.
+     */
+    Expr getIterable() { for_expr_iterables(this, result) }
+
+    /**
+     * Gets the pattern of this for expression, if it exists.
+     */
+    Pat getPat() { for_expr_pats(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A function declaration. For example
+   * ```rust
+   * fn foo(x: u32) -> u64 {(x + 1).into()}
+   * ```
+   * A function declaration within a trait might not have a body:
+   * ```rust
+   * trait Trait {
+   *     fn bar();
+   * }
+   * ```
+   */
+  class Function extends @function, AssocItem, ExternItem, Callable {
+    override string toString() { result = "Function" }
+
+    /**
+     * Gets the abi of this function, if it exists.
+     */
+    Abi getAbi() { function_abis(this, result) }
+
+    /**
+     * Gets the body of this function, if it exists.
+     */
+    BlockExpr getBody() { function_bodies(this, result) }
+
+    /**
+     * Gets the generic parameter list of this function, if it exists.
+     */
+    GenericParamList getGenericParamList() { function_generic_param_lists(this, result) }
+
+    /**
+     * Holds if this function is async.
+     */
+    predicate isAsync() { function_is_async(this) }
+
+    /**
+     * Holds if this function is const.
+     */
+    predicate isConst() { function_is_const(this) }
+
+    /**
+     * Holds if this function is default.
+     */
+    predicate isDefault() { function_is_default(this) }
+
+    /**
+     * Holds if this function is gen.
+     */
+    predicate isGen() { function_is_gen(this) }
+
+    /**
+     * Holds if this function is unsafe.
+     */
+    predicate isUnsafe() { function_is_unsafe(this) }
+
+    /**
+     * Gets the name of this function, if it exists.
+     */
+    Name getName() { function_names(this, result) }
+
+    /**
+     * Gets the ret type of this function, if it exists.
+     */
+    RetTypeRepr getRetType() { function_ret_types(this, result) }
+
+    /**
+     * Gets the visibility of this function, if it exists.
+     */
+    Visibility getVisibility() { function_visibilities(this, result) }
+
+    /**
+     * Gets the where clause of this function, if it exists.
+     */
+    WhereClause getWhereClause() { function_where_clauses(this, result) }
+
+    /**
+     * Holds if this function has an implementation.
+     *
+     * This is the same as `hasBody` for source code, but for library code (for which we always skip
+     * the body), this will hold when the body was present in the original code.
+     */
+    predicate hasImplementation() { function_has_implementation(this) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A loop expression. For example:
+   * ```rust
+   * loop {
+   *     println!("Hello, world (again)!");
+   * };
+   * ```
+   * ```rust
+   * 'label: loop {
+   *     println!("Hello, world (once)!");
+   *     break 'label;
+   * };
+   * ```
+   * ```rust
+   * let mut x = 0;
+   * loop {
+   *     if x < 10 {
+   *         x += 1;
+   *     } else {
+   *         break;
+   *     }
+   * };
+   * ```
+   */
+  class LoopExpr extends @loop_expr, LoopingExpr {
+    override string toString() { result = "LoopExpr" }
+
+    /**
+     * Gets the `index`th attr of this loop expression (0-based).
+     */
+    Attr getAttr(int index) { loop_expr_attrs(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A macro invocation.
+   *
+   * For example:
+   * ```rust
+   * println!("Hello, world!");
+   * ```
+   */
+  class MacroCall extends @macro_call, AssocItem, ExternItem {
+    override string toString() { result = "MacroCall" }
+
+    /**
+     * Gets the `index`th attr of this macro call (0-based).
+     */
+    Attr getAttr(int index) { macro_call_attrs(this, index, result) }
+
+    /**
+     * Gets the path of this macro call, if it exists.
+     */
+    Path getPath() { macro_call_paths(this, result) }
+
+    /**
+     * Gets the token tree of this macro call, if it exists.
+     */
+    TokenTree getTokenTree() { macro_call_token_trees(this, result) }
+
+    /**
+     * Gets the macro call expansion of this macro call, if it exists.
+     */
+    AstNode getMacroCallExpansion() { macro_call_macro_call_expansions(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A static item declaration.
+   *
+   * For example:
+   * ```rust
+   * static X: i32 = 42;
+   * ```
+   */
+  class Static extends @static, ExternItem {
+    override string toString() { result = "Static" }
+
+    /**
+     * Gets the `index`th attr of this static (0-based).
+     */
+    Attr getAttr(int index) { static_attrs(this, index, result) }
+
+    /**
+     * Gets the body of this static, if it exists.
+     */
+    Expr getBody() { static_bodies(this, result) }
+
+    /**
+     * Holds if this static is mut.
+     */
+    predicate isMut() { static_is_mut(this) }
+
+    /**
+     * Holds if this static is static.
+     */
+    predicate isStatic() { static_is_static(this) }
+
+    /**
+     * Holds if this static is unsafe.
+     */
+    predicate isUnsafe() { static_is_unsafe(this) }
+
+    /**
+     * Gets the name of this static, if it exists.
+     */
+    Name getName() { static_names(this, result) }
+
+    /**
+     * Gets the type representation of this static, if it exists.
+     */
+    TypeRepr getTypeRepr() { static_type_reprs(this, result) }
+
+    /**
+     * Gets the visibility of this static, if it exists.
+     */
+    Visibility getVisibility() { static_visibilities(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A Struct. For example:
+   * ```rust
+   * struct Point {
+   *     x: i32,
+   *     y: i32,
+   * }
+   * ```
+   */
+  class Struct extends @struct, Adt {
+    override string toString() { result = "Struct" }
+
+    /**
+     * Gets the `index`th attr of this struct (0-based).
+     */
+    Attr getAttr(int index) { struct_attrs(this, index, result) }
+
+    /**
+     * Gets the field list of this struct, if it exists.
+     */
+    FieldList getFieldList() { struct_field_lists_(this, result) }
+
+    /**
+     * Gets the generic parameter list of this struct, if it exists.
+     */
+    GenericParamList getGenericParamList() { struct_generic_param_lists(this, result) }
+
+    /**
+     * Gets the name of this struct, if it exists.
+     */
+    Name getName() { struct_names(this, result) }
+
+    /**
+     * Gets the visibility of this struct, if it exists.
+     */
+    Visibility getVisibility() { struct_visibilities(this, result) }
+
+    /**
+     * Gets the where clause of this struct, if it exists.
+     */
+    WhereClause getWhereClause() { struct_where_clauses(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A type alias. For example:
    * ```rust
    * type Point = (u8, u8);
@@ -4070,7 +4602,7 @@ module Raw {
    * }
    * ```
    */
-  class TypeAlias extends @type_alias, AssocItem, ExternItem, Item {
+  class TypeAlias extends @type_alias, AssocItem, ExternItem {
     override string toString() { result = "TypeAlias" }
 
     /**
@@ -4116,12 +4648,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Union. For example:
+   * A union declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * union U { f1: u32, f2: f32 }
    * ```
    */
-  class Union extends @union, Item, VariantDef {
+  class Union extends @union, Adt {
     override string toString() { result = "Union" }
 
     /**
@@ -4157,95 +4691,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Use. For example:
+   * A while loop expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
-   * ```
-   */
-  class Use extends @use, Item {
-    override string toString() { result = "Use" }
-
-    /**
-     * Gets the `index`th attr of this use (0-based).
-     */
-    Attr getAttr(int index) { use_attrs(this, index, result) }
-
-    /**
-     * Gets the use tree of this use, if it exists.
-     */
-    UseTree getUseTree() { use_use_trees(this, result) }
-
-    /**
-     * Gets the visibility of this use, if it exists.
-     */
-    Visibility getVisibility() { use_visibilities(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A ForExpr. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class ForExpr extends @for_expr, LoopingExpr {
-    override string toString() { result = "ForExpr" }
-
-    /**
-     * Gets the `index`th attr of this for expression (0-based).
-     */
-    Attr getAttr(int index) { for_expr_attrs(this, index, result) }
-
-    /**
-     * Gets the iterable of this for expression, if it exists.
-     */
-    Expr getIterable() { for_expr_iterables(this, result) }
-
-    /**
-     * Gets the pattern of this for expression, if it exists.
-     */
-    Pat getPat() { for_expr_pats(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A loop expression. For example:
-   * ```rust
-   * loop {
-   *     println!("Hello, world (again)!");
-   * };
-   * ```
-   * ```rust
-   * 'label: loop {
-   *     println!("Hello, world (once)!");
-   *     break 'label;
-   * };
-   * ```
-   * ```rust
-   * let mut x = 0;
-   * loop {
-   *     if x < 10 {
-   *         x += 1;
-   *     } else {
-   *         break;
-   *     }
-   * };
-   * ```
-   */
-  class LoopExpr extends @loop_expr, LoopingExpr {
-    override string toString() { result = "LoopExpr" }
-
-    /**
-     * Gets the `index`th attr of this loop expression (0-based).
-     */
-    Attr getAttr(int index) { loop_expr_attrs(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A WhileExpr. For example:
-   * ```rust
-   * todo!()
+   * while x < 10 {
+   *     x += 1;
+   * }
    * ```
    */
   class WhileExpr extends @while_expr, LoopingExpr {

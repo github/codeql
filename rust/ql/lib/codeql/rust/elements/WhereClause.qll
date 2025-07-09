@@ -8,9 +8,12 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.WherePred
 
 /**
- * A WhereClause. For example:
+ * A where clause in a generic declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn foo<T>(t: T) where T: Debug {}
+ * //              ^^^^^^^^^^^^^^
  * ```
  */
 final class WhereClause = Impl::WhereClause;

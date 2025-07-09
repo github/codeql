@@ -2,14 +2,24 @@
 import codeql.rust.elements
 import TestUtils
 
-from RefExpr x, int getNumberOfAttrs, string hasExpr, string isConst, string isMut, string isRaw
-where
+query predicate instances(
+  RefExpr x, string isConst__label, string isConst, string isMut__label, string isMut,
+  string isRaw__label, string isRaw
+) {
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
+  isConst__label = "isConst:" and
   (if x.isConst() then isConst = "yes" else isConst = "no") and
+  isMut__label = "isMut:" and
   (if x.isMut() then isMut = "yes" else isMut = "no") and
+  isRaw__label = "isRaw:" and
   if x.isRaw() then isRaw = "yes" else isRaw = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "isConst:", isConst, "isMut:",
-  isMut, "isRaw:", isRaw
+}
+
+query predicate getAttr(RefExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getExpr(RefExpr x, Expr getExpr) {
+  toBeTested(x) and not x.isUnknown() and getExpr = x.getExpr()
+}

@@ -5,7 +5,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id js/angular/duplicate-dependency
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  *       frameworks/angularjs
  */
 

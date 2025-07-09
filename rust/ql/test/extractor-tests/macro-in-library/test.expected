@@ -1,0 +1,4 @@
+macro_items
+| macro_in_library.rs:2:1:2:14 | MacroItems | 0 | macro_in_library.rs:2:1:2:14 | fn foo |
+| macro_in_library.rs:2:1:2:14 | MacroItems | 1 | macro_in_library.rs:2:1:2:14 | fn foo_new |
+warnings

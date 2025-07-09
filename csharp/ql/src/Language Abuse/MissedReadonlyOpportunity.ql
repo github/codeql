@@ -6,7 +6,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/missed-readonly-modifier
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  *       language-features
  */
 
@@ -19,13 +21,17 @@ predicate defTargetsField(AssignableDefinition def, Field f) {
 predicate isReadonlyCompatibleDefinition(AssignableDefinition def, Field f) {
   defTargetsField(def, f) and
   (
-    def.getEnclosingCallable().(Constructor).getDeclaringType() = f.getDeclaringType()
+    def.getEnclosingCallable().(StaticConstructor).getDeclaringType() = f.getDeclaringType()
+    or
+    def.getEnclosingCallable().(InstanceConstructor).getDeclaringType() = f.getDeclaringType() and
+    def.getTargetAccess().(QualifiableExpr).getQualifier() instanceof ThisAccess
     or
     def instanceof AssignableDefinitions::InitializerDefinition
   )
 }
 
 predicate canBeReadonly(Field f) {
+  exists(Type t | t = f.getType() | not t instanceof Struct or t.(Struct).isReadonly()) and
   forex(AssignableDefinition def | defTargetsField(def, f) | isReadonlyCompatibleDefinition(def, f))
 }
 

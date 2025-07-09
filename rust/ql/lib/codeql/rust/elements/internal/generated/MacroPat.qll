@@ -15,9 +15,20 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
-   * A MacroPat. For example:
+   * A macro pattern, representing the invocation of a macro that produces a pattern.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * macro_rules! my_macro {
+   *     () => {
+   *         Ok(_)
+   *     };
+   * }
+   * match x {
+   *     my_macro!() => "matched",
+   * //  ^^^^^^^^^^^
+   *     _ => "not matched",
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::MacroPat` class directly.
    * Use the subclass `MacroPat`, where the following predicates are available.

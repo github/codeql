@@ -4,6 +4,7 @@
 
 import javascript
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.internal.TypeResolution
 
 /**
  * A program element that is either an expression or a type annotation.
@@ -170,12 +171,14 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   predicate mayReferToParameter(Parameter p) { DataFlow::parameterNode(p).flowsToExpr(this) }
 
   /**
+   * DEPRECATED. Use `getTypeBinding()` instead.
+   *
    * Gets the static type of this expression, as determined by the TypeScript type system.
    *
    * Has no result if the expression is in a JavaScript file or in a TypeScript
    * file that was extracted without type information.
    */
-  Type getType() { ast_node_type(this, result) }
+  deprecated Type getType() { ast_node_type(this, result) }
 
   /**
    * Holds if the syntactic context that the expression appears in relies on the expression
@@ -987,12 +990,14 @@ class InvokeExpr extends @invokeexpr, Expr {
   }
 
   /**
+   * DEPRECATED. No longer supported.
+   *
    * Gets the call signature of the invoked function, as determined by the TypeScript
    * type system, with overloading resolved and type parameters substituted.
    *
    * This predicate is only populated for files extracted with full TypeScript extraction.
    */
-  CallSignatureType getResolvedSignature() { invoke_expr_signature(this, result) }
+  deprecated CallSignatureType getResolvedSignature() { invoke_expr_signature(this, result) }
 
   /**
    * Gets the index of the targeted call signature among the overload signatures
@@ -1003,21 +1008,21 @@ class InvokeExpr extends @invokeexpr, Expr {
   int getResolvedOverloadIndex() { invoke_expr_overload_index(this, result) }
 
   /**
+   * DEPRECATED. No longer directly supported, but `getResolvedCallee()` may be usable as an alternative.
+   *
    * Gets the canonical name of the static call target, as determined by the TypeScript type system.
    *
    * This predicate is only populated for files extracted with full TypeScript extraction.
    */
-  CanonicalFunctionName getResolvedCalleeName() { ast_node_symbol(this, result) }
+  deprecated CanonicalFunctionName getResolvedCalleeName() { ast_node_symbol(this, result) }
 
   /**
    * Gets the statically resolved target function, as determined by the TypeScript type system, if any.
    *
-   * This predicate is only populated for files extracted with full TypeScript extraction.
-   *
    * Note that the resolved function may be overridden in a subclass and thus is not
    * necessarily the actual target of this invocation at runtime.
    */
-  Function getResolvedCallee() { result = this.getResolvedCalleeName().getImplementation() }
+  Function getResolvedCallee() { TypeResolution::callTarget(this, result) }
 }
 
 /**

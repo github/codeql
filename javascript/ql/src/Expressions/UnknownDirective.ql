@@ -4,7 +4,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/unknown-directive
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  * @precision high
  */
 

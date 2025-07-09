@@ -3,9 +3,9 @@
  * @description Using a 'try-finally' block to ensure only that a resource is closed makes code more
  *              difficult to read.
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
- *       convention
  * @problem.severity recommendation
  * @sub-severity high
  * @precision very-high

@@ -1,4 +1,6 @@
 /** Provides predicates and classes to reason about the sizing and indexing of arrays. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

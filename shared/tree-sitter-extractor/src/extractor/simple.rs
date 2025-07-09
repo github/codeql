@@ -1,4 +1,4 @@
-use crate::trap;
+use crate::{file_paths, trap};
 use globset::{GlobBuilder, GlobSetBuilder};
 use rayon::prelude::*;
 use std::fs::File;
@@ -111,6 +111,8 @@ impl Extractor {
             )
         };
 
+        let path_transformer = file_paths::load_path_transformer()?;
+
         let lines: std::io::Result<Vec<String>> = file_lists
             .iter()
             .flat_map(|file_list| std::io::BufReader::new(file_list).lines())
@@ -122,8 +124,12 @@ impl Extractor {
             .try_for_each(|line| {
                 let mut diagnostics_writer = diagnostics.logger();
                 let path = PathBuf::from(line).canonicalize()?;
-                let src_archive_file =
-                    crate::file_paths::path_for(&self.source_archive_dir, &path, "");
+                let src_archive_file = crate::file_paths::path_for(
+                    &self.source_archive_dir,
+                    &path,
+                    "",
+                    path_transformer.as_ref(),
+                );
                 let source = std::fs::read(&path)?;
                 let mut trap_writer = trap::Writer::new();
 
@@ -152,6 +158,7 @@ impl Extractor {
                                     &schemas[i],
                                     &mut diagnostics_writer,
                                     &mut trap_writer,
+                                    None,
                                     &path,
                                     &source,
                                     &[],
@@ -183,7 +190,7 @@ fn write_trap(
     trap_writer: &trap::Writer,
     trap_compression: trap::Compression,
 ) -> std::io::Result<()> {
-    let trap_file = crate::file_paths::path_for(trap_dir, path, trap_compression.extension());
+    let trap_file = crate::file_paths::path_for(trap_dir, path, trap_compression.extension(), None);
     std::fs::create_dir_all(trap_file.parent().unwrap())?;
     trap_writer.write_to_file(&trap_file, trap_compression)
 }

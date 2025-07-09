@@ -1,20 +1,18 @@
 import cpp
-import experimental.quantum.Language
-import experimental.quantum.OpenSSL.LibraryDetector
-import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
-import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstanceBase
-import OpenSSLAlgorithmValueConsumerBase
+private import experimental.quantum.Language
+private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
+private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstanceBase
+private import OpenSSLAlgorithmValueConsumerBase
 
-abstract class CipherAlgorithmValueConsumer extends OpenSSLAlgorithmValueConsumer { }
+abstract class CipherAlgorithmValueConsumer extends OpenSslAlgorithmValueConsumer { }
 
 // https://www.openssl.org/docs/manmaster/man3/EVP_CIPHER_fetch.html
-class EVPCipherAlgorithmValueConsumer extends CipherAlgorithmValueConsumer {
+class EvpCipherAlgorithmValueConsumer extends CipherAlgorithmValueConsumer {
   DataFlow::Node valueArgNode;
   DataFlow::Node resultNode;
 
-  EVPCipherAlgorithmValueConsumer() {
+  EvpCipherAlgorithmValueConsumer() {
     resultNode.asExpr() = this and
-    isPossibleOpenSSLFunction(this.(Call).getTarget()) and
     (
       this.(Call).getTarget().getName() in [
           "EVP_get_cipherbyname", "EVP_get_cipherbyobj", "EVP_get_cipherbynid"
@@ -32,8 +30,8 @@ class EVPCipherAlgorithmValueConsumer extends CipherAlgorithmValueConsumer {
 
   // override DataFlow::Node getInputNode() { result = valueArgNode }
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-    exists(OpenSSLAlgorithmInstance i | i.getAVC() = this and result = i)
-    //TODO: As a potential alternative, for OpenSSL only, add a generic source node for literals and only create flow (flowsTo) to
-    // OpenSSL AVCs... the unknown literal sources would have to be any literals not in the known set.
+    exists(OpenSslAlgorithmInstance i | i.getAvc() = this and result = i)
+    //TODO: As a potential alternative, for OpenSsl only, add a generic source node for literals and only create flow (flowsTo) to
+    // OpenSsl AVCs... the unknown literal sources would have to be any literals not in the known set.
   }
 }

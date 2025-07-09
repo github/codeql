@@ -10,7 +10,6 @@ import codeql.rust.elements.internal.AssocItemImpl::Impl as AssocItemImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Attr
 import codeql.rust.elements.internal.ExternItemImpl::Impl as ExternItemImpl
-import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Path
 import codeql.rust.elements.TokenTree
 
@@ -20,16 +19,16 @@ import codeql.rust.elements.TokenTree
  */
 module Generated {
   /**
-   * A MacroCall. For example:
+   * A macro invocation.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * println!("Hello, world!");
    * ```
    * INTERNAL: Do not reference the `Generated::MacroCall` class directly.
    * Use the subclass `MacroCall`, where the following predicates are available.
    */
-  class MacroCall extends Synth::TMacroCall, AssocItemImpl::AssocItem, ExternItemImpl::ExternItem,
-    ItemImpl::Item
-  {
+  class MacroCall extends Synth::TMacroCall, AssocItemImpl::AssocItem, ExternItemImpl::ExternItem {
     override string getAPrimaryQlClass() { result = "MacroCall" }
 
     /**

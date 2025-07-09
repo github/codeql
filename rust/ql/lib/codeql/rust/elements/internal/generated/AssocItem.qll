@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
+import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `AssocItem` and should not
@@ -14,12 +14,15 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
-   * A AssocItem. For example:
+   * An associated item in a `Trait` or `Impl`.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * trait T {fn foo(&self);}
+   * //       ^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::AssocItem` class directly.
    * Use the subclass `AssocItem`, where the following predicates are available.
    */
-  class AssocItem extends Synth::TAssocItem, AstNodeImpl::AstNode { }
+  class AssocItem extends Synth::TAssocItem, ItemImpl::Item { }
 }

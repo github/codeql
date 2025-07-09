@@ -516,7 +516,7 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
     result = unique( | | p.getLocation())
     or
     not exists(unique( | | p.getLocation())) and
-    result instanceof UnknownDefaultLocation
+    result instanceof UnknownLocation
   }
 
   override BaseIRVariable getBaseSourceVariable() { result.getIRVariable().getAst() = p }
@@ -991,12 +991,16 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
   class Guard instanceof IRGuards::IRGuardCondition {
     string toString() { result = super.toString() }
 
-    predicate controlsBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+    predicate hasBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
       exists(EdgeKind kind |
         super.getBlock() = bb1 and
         kind = getConditionalEdge(branch) and
         bb1.getSuccessor(kind) = bb2
       )
+    }
+
+    predicate controlsBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+      this.hasBranchEdge(bb1, bb2, branch)
     }
   }
 

@@ -35,8 +35,8 @@ namespace Test
             using (var connection = new SqlConnection(connectionString))
             {
                 var query1 = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
-                  + categoryTextBox.Text + "' ORDER BY PRICE";
-                var adapter = new SqlDataAdapter(query1, connection);
+                  + categoryTextBox.Text + "' ORDER BY PRICE"; // $ Source[cs/sql-injection]
+                var adapter = new SqlDataAdapter(query1, connection); // $ Alert[cs/sql-injection]
                 var result = new DataSet();
                 adapter.Fill(result);
             }
@@ -70,9 +70,9 @@ namespace Test
                 {
                     // BAD: Use EntityFramework direct Sql execution methods
                     var query1 = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
-                              + categoryTextBox.Text + "' ORDER BY PRICE";
-                    context.Database.ExecuteSqlCommand(query1);
-                    context.Database.SqlQuery<string>(query1);
+                              + categoryTextBox.Text + "' ORDER BY PRICE"; // $ Source[cs/sql-injection]
+                    context.Database.ExecuteSqlCommand(query1); // $ Alert[cs/sql-injection]
+                    context.Database.SqlQuery<string>(query1); // $ Alert[cs/sql-injection]
                     // GOOD: Use EntityFramework direct Sql execution methods with parameter
                     var query2 = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY="
                             + "@p0 ORDER BY PRICE";
@@ -84,8 +84,8 @@ namespace Test
             using (var connection = new SqlConnection(connectionString))
             {
                 var query1 = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
-                  + box1.Text + "' ORDER BY PRICE";
-                var adapter = new SqlDataAdapter(query1, connection);
+                  + box1.Text + "' ORDER BY PRICE"; // $ Source[cs/sql-injection]
+                var adapter = new SqlDataAdapter(query1, connection); // $ Alert[cs/sql-injection]
                 var result = new DataSet();
                 adapter.Fill(result);
             }
@@ -94,9 +94,9 @@ namespace Test
             using (var connection = new SqlConnection(connectionString))
             {
                 var queryString = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
-                  + box1.Text + "' ORDER BY PRICE";
-                var cmd = new SqlCommand(queryString);
-                var adapter = new SqlDataAdapter(cmd);
+                  + box1.Text + "' ORDER BY PRICE"; // $ Source[cs/sql-injection]
+                var cmd = new SqlCommand(queryString); // $ Alert[cs/sql-injection]
+                var adapter = new SqlDataAdapter(cmd); // $ Alert[cs/sql-injection]
                 var result = new DataSet();
                 adapter.Fill(result);
             }
@@ -105,9 +105,9 @@ namespace Test
             using (var connection = new SqlConnection(connectionString))
             {
                 var queryString = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
-                  + Console.ReadLine()! + "' ORDER BY PRICE";
-                var cmd = new SqlCommand(queryString);
-                var adapter = new SqlDataAdapter(cmd);
+                  + Console.ReadLine()! + "' ORDER BY PRICE"; // $ Source[cs/sql-injection]
+                var cmd = new SqlCommand(queryString); // $ Alert[cs/sql-injection]
+                var adapter = new SqlDataAdapter(cmd); // $ Alert[cs/sql-injection]
                 var result = new DataSet();
                 adapter.Fill(result);
             }
@@ -119,14 +119,14 @@ namespace Test
     public abstract class MyController : Controller
     {
         [HttpPost("{userId:string}")]
-        public async Task<IActionResult> GetUserById([FromRoute] string userId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetUserById([FromRoute] string userId, CancellationToken cancellationToken) // $ Source[cs/sql-injection]
         {
             // This is a vulnerable method due to SQL injection
             string query = "SELECT * FROM Users WHERE UserId = '" + userId + "'";
 
             using (SqlConnection connection = new SqlConnection("YourConnectionString"))
             {
-                SqlCommand command = new SqlCommand(query, connection);
+                SqlCommand command = new SqlCommand(query, connection); // $ Alert[cs/sql-injection]
                 connection.Open();
 
                 SqlDataReader reader = command.ExecuteReader();

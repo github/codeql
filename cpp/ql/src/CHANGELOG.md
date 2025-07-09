@@ -1,3 +1,28 @@
+## 1.4.4
+
+### Minor Analysis Improvements
+
+* Added flow models for the Win32 API functions `CreateThread`, `CreateRemoteThread`, and `CreateRemoteThreadEx`.
+* Added flow models for the GNU C Library.
+* Fixed a number of false positives and false negatives in `cpp/global-use-before-init`. Note that this query is not part of any of the default query suites.
+* The query `cpp/sql-injection` now can be extended using the `sql-injection` Models as Data (MaD) sink kind.
+
+## 1.4.3
+
+### Minor Analysis Improvements
+
+* Added flow model for the following libraries: `madler/zlib`, `google/brotli`, `libidn/libidn2`, `libssh2/libssh2/`, `nghttp2/nghttp2`, `libuv/libuv/`, and `curl/curl`. This may result in more alerts when running queries on codebases that use these libraries.
+
+## 1.4.2
+
+No user-facing changes.
+
+## 1.4.1
+
+### Minor Analysis Improvements
+
+* Added flow model for the `SQLite` and `OpenSSL` libraries. This may result in more alerts when running queries on codebases that use these libraries.
+
 ## 1.4.0
 
 ### Query Metadata Changes

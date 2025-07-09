@@ -99,7 +99,6 @@ ql/java/ql/src/Security/CWE/CWE-730/RegexInjection.ql
 ql/java/ql/src/Security/CWE/CWE-732/ReadingFromWorldWritableFile.ql
 ql/java/ql/src/Security/CWE/CWE-749/UnsafeAndroidAccess.ql
 ql/java/ql/src/Security/CWE/CWE-780/RsaWithoutOaep.ql
-ql/java/ql/src/Security/CWE/CWE-798/HardcodedCredentialsApiCall.ql
 ql/java/ql/src/Security/CWE/CWE-807/ConditionalBypass.ql
 ql/java/ql/src/Security/CWE/CWE-807/TaintedPermissionsCheck.ql
 ql/java/ql/src/Security/CWE/CWE-829/InsecureDependencyResolution.ql

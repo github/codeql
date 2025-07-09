@@ -7,6 +7,8 @@
  * type has a subtype or if an inferred upper bound passed through at least one
  * explicit or implicit cast that lost type information.
  */
+overlay[local?]
+module;
 
 import java as J
 private import semmle.code.java.dispatch.VirtualDispatch
@@ -321,14 +323,14 @@ private module Input implements TypeFlowInput<Location> {
    */
   private predicate instanceofDisjunct(InstanceOfExpr ioe, BasicBlock bb, BaseSsaVariable v) {
     ioe.getExpr() = v.getAUse() and
-    strictcount(bb.getABBPredecessor()) > 1 and
+    strictcount(bb.getAPredecessor()) > 1 and
     exists(ConditionBlock cb | cb.getCondition() = ioe and cb.getTestSuccessor(true) = bb)
   }
 
   /** Holds if `bb` is disjunctively guarded by multiple `instanceof` tests on `v`. */
   private predicate instanceofDisjunction(BasicBlock bb, BaseSsaVariable v) {
     strictcount(InstanceOfExpr ioe | instanceofDisjunct(ioe, bb, v)) =
-      strictcount(bb.getABBPredecessor())
+      strictcount(bb.getAPredecessor())
   }
 
   /**
@@ -338,7 +340,7 @@ private module Input implements TypeFlowInput<Location> {
   predicate instanceofDisjunctionGuarded(TypeFlowNode n, RefType t) {
     exists(BasicBlock bb, InstanceOfExpr ioe, BaseSsaVariable v, VarAccess va |
       instanceofDisjunction(bb, v) and
-      bb.bbDominates(va.getBasicBlock()) and
+      bb.dominates(va.getBasicBlock()) and
       va = v.getAUse() and
       instanceofDisjunct(ioe, bb, v) and
       t = ioe.getSyntacticCheckedType() and

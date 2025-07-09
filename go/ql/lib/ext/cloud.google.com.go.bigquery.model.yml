@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["cloud.google.com/go/bigquery", "Client", True, "Query", "", "", "Argument[0]", "sql-injection", "manual"]

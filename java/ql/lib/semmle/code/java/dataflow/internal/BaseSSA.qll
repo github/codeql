@@ -10,6 +10,8 @@
  * This is a restricted version of SSA.qll that only handles `LocalScopeVariable`s
  * in order to not depend on virtual dispatch.
  */
+overlay[local?]
+module;
 
 import java
 private import codeql.ssa.Ssa as SsaImplCommon
@@ -145,7 +147,7 @@ private module BaseSsaImpl {
   /** Holds if `v` has an implicit definition at the entry, `b`, of the callable. */
   predicate hasEntryDef(BaseSsaSourceVariable v, BasicBlock b) {
     exists(LocalScopeVariable l, Callable c |
-      v = TLocalVar(c, l) and c.getBody().getControlFlowNode() = b
+      v = TLocalVar(c, l) and c.getBody().getBasicBlock() = b
     |
       l instanceof Parameter or
       l.getCallable() != c
@@ -157,15 +159,14 @@ private import BaseSsaImpl
 
 private module SsaInput implements SsaImplCommon::InputSig<Location> {
   private import java as J
-  private import semmle.code.java.controlflow.Dominance as Dom
 
   class BasicBlock = J::BasicBlock;
 
   class ControlFlowNode = J::ControlFlowNode;
 
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { Dom::bbIDominates(result, bb) }
+  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
 
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getABBSuccessor() }
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
   class SourceVariable = BaseSsaSourceVariable;
 
@@ -373,5 +374,10 @@ class BaseSsaImplicitInit extends BaseSsaVariable instanceof Impl::WriteDefiniti
 /** An SSA phi node. */
 class BaseSsaPhiNode extends BaseSsaVariable instanceof Impl::PhiNode {
   /** Gets an input to the phi node defining the SSA variable. */
-  BaseSsaVariable getAPhiInput() { phiHasInputFromBlock(this, result, _) }
+  BaseSsaVariable getAPhiInput() { this.hasInputFromBlock(result, _) }
+
+  /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
+  predicate hasInputFromBlock(BaseSsaVariable inp, BasicBlock bb) {
+    phiHasInputFromBlock(this, inp, bb)
+  }
 }

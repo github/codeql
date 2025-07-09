@@ -79,4 +79,4 @@ JavaScript/TypeScript
 *   Added taint-steps for :code:`Array.prototype.toReversed`.
 *   Added taint-steps for :code:`Array.prototype.toSorted`.
 *   Added support for :code:`String.prototype.matchAll`.
-*   Added taint-steps for :code:`Array.prototype.reverse`.
+*   Added taint-steps for :code:`Array.prototype.reverse`. 

@@ -18,21 +18,17 @@ class SemGuard instanceof Specific::Guard {
     Specific::equalityGuard(this, e1, e2, polarity)
   }
 
-  final predicate directlyControls(SemBasicBlock controlled, boolean branch) {
+  final predicate controls(SemBasicBlock controlled, boolean branch) {
     Specific::guardDirectlyControlsBlock(this, controlled, branch)
   }
 
-  final predicate hasBranchEdge(SemBasicBlock bb1, SemBasicBlock bb2, boolean branch) {
+  final predicate controlsBranchEdge(SemBasicBlock bb1, SemBasicBlock bb2, boolean branch) {
     Specific::guardHasBranchEdge(this, bb1, bb2, branch)
   }
 
   final SemBasicBlock getBasicBlock() { result = block }
 
   final SemExpr asExpr() { result = Specific::getGuardAsExpr(this) }
-}
-
-predicate semImplies_v2(SemGuard g1, boolean b1, SemGuard g2, boolean b2) {
-  Specific::implies_v2(g1, b1, g2, b2)
 }
 
 SemGuard semGetComparisonGuard(SemRelationalExpr e) { result = Specific::comparisonGuard(e) }

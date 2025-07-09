@@ -62,6 +62,8 @@
 | dragAndDrop.ts:73:29:73:39 | droppedHtml | dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | dragAndDrop.ts:73:29:73:39 | droppedHtml | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | user-provided value |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | Cross-site scripting vulnerability due to $@. | event-handler-receiver.js:2:49:2:61 | location.href | user-provided value |
 | express.js:6:15:6:33 | req.param("wobble") | express.js:6:15:6:33 | req.param("wobble") | express.js:6:15:6:33 | req.param("wobble") | Cross-site scripting vulnerability due to $@. | express.js:6:15:6:33 | req.param("wobble") | user-provided value |
+| jquery-declare-any.ts:6:7:6:17 | window.name | jquery-declare-any.ts:6:7:6:17 | window.name | jquery-declare-any.ts:6:7:6:17 | window.name | Cross-site scripting vulnerability due to $@. | jquery-declare-any.ts:6:7:6:17 | window.name | user-provided value |
+| jquery-declare-type.ts:6:7:6:17 | window.name | jquery-declare-type.ts:6:7:6:17 | window.name | jquery-declare-type.ts:6:7:6:17 | window.name | Cross-site scripting vulnerability due to $@. | jquery-declare-type.ts:6:7:6:17 | window.name | user-provided value |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:40 | documen ... .search | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:40 | documen ... .search | user-provided value |
 | jquery.js:8:18:8:34 | "XSS: " + tainted | jquery.js:2:17:2:40 | documen ... .search | jquery.js:8:18:8:34 | "XSS: " + tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:40 | documen ... .search | user-provided value |
 | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" | jquery.js:10:13:10:20 | location | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" | Cross-site scripting vulnerability due to $@. | jquery.js:10:13:10:20 | location | user-provided value |
@@ -954,6 +956,8 @@ nodes
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | semmle.label | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | semmle.label | location.href |
 | express.js:6:15:6:33 | req.param("wobble") | semmle.label | req.param("wobble") |
+| jquery-declare-any.ts:6:7:6:17 | window.name | semmle.label | window.name |
+| jquery-declare-type.ts:6:7:6:17 | window.name | semmle.label | window.name |
 | jquery.js:2:7:2:40 | tainted | semmle.label | tainted |
 | jquery.js:2:17:2:40 | documen ... .search | semmle.label | documen ... .search |
 | jquery.js:4:5:4:11 | tainted | semmle.label | tainted |

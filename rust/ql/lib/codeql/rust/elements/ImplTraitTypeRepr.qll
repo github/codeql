@@ -8,9 +8,12 @@ import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.TypeRepr
 
 /**
- * A ImplTraitTypeRepr. For example:
+ * An `impl Trait` type.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn foo() -> impl Iterator<Item = i32> { 0..10 }
+ * //          ^^^^^^^^^^^^^^^^^^^^^^^^^^
  * ```
  */
 final class ImplTraitTypeRepr = Impl::ImplTraitTypeRepr;

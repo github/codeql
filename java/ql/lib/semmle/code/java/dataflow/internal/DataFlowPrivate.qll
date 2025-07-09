@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import java
 private import DataFlowUtil
 private import DataFlowImplCommon
@@ -83,11 +86,11 @@ private module CaptureInput implements VariableCapture::InputSig<Location> {
 
   class ControlFlowNode = J::ControlFlowNode;
 
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { bbIDominates(result, bb) }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) {
-    result = bb.(J::BasicBlock).getABBSuccessor()
+  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
+    result.(J::BasicBlock).immediatelyDominates(bb)
   }
+
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.(J::BasicBlock).getASuccessor() }
 
   //TODO: support capture of `this` in lambdas
   class CapturedVariable instanceof LocalScopeVariable {

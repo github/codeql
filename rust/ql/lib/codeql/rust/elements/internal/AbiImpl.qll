@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.Abi
  */
 module Impl {
   /**
-   * A Abi. For example:
+   * An ABI specification for an extern function or block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * extern "C" fn foo() {}
+   * //     ^^^
    * ```
    */
   class Abi extends Generated::Abi { }

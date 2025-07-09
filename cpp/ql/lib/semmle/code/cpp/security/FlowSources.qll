@@ -55,7 +55,7 @@ private class LocalModelSource extends LocalFlowSource {
 }
 
 /**
- * A local data flow source that the `argv` parameter to `main` or `wmain`.
+ * A local data flow source that is the `argv` parameter to `main` or `wmain`.
  */
 private class ArgvSource extends LocalFlowSource {
   ArgvSource() {
@@ -67,6 +67,21 @@ private class ArgvSource extends LocalFlowSource {
   }
 
   override string getSourceType() { result = "a command-line argument" }
+}
+
+/**
+ * A local data flow source that is the `pCmdLine` parameter to `WinMain` or `wWinMain`.
+ */
+private class CmdLineSource extends LocalFlowSource {
+  CmdLineSource() {
+    exists(Function main, Parameter pCmdLine |
+      main.hasGlobalName(["WinMain", "wWinMain"]) and
+      main.getParameter(2) = pCmdLine and
+      this.asParameter(1) = pCmdLine
+    )
+  }
+
+  override string getSourceType() { result = "a command-line" }
 }
 
 /**

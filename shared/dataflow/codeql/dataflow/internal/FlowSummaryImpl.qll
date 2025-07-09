@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for defining flow summaries.
  */
+overlay[local?]
+module;
 
 private import codeql.dataflow.DataFlow as DF
 private import codeql.util.Location
@@ -53,6 +55,20 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
 
   /** Gets the return kind corresponding to specification `"ReturnValue"`. */
   Lang::ReturnKind getStandardReturnValueKind();
+
+  /**
+   * Gets the return kind corresponding to specification `"ReturnValue"` when
+   * supplied with the argument `arg`.
+   *
+   * Note that it is expected that the following equality holds:
+   * ```
+   * getReturnValueKind("") = getStandardReturnValueKind()
+   * ```
+   */
+  default Lang::ReturnKind getReturnValueKind(string arg) {
+    arg = "" and
+    result = getStandardReturnValueKind()
+  }
 
   /** Gets the textual representation of parameter position `pos` used in MaD. */
   string encodeParameterPosition(Lang::ParameterPosition pos);
@@ -672,6 +688,11 @@ module Make<
         derivedFluentFlowPush(_, _, _, head, tail, _)
       }
 
+    pragma[nomagic]
+    private string getUniqueMadRepresentation(SummaryComponent c) {
+      result = strictconcat(string s | s = c.getMadRepresentation() | s, "/")
+    }
+
     /**
      * A (non-empty) stack of summary components.
      *
@@ -718,7 +739,7 @@ module Make<
         exists(SummaryComponent head, SummaryComponentStack tail |
           head = this.head() and
           tail = this.tail() and
-          result = tail.getMadRepresentation() + "." + head.getMadRepresentation()
+          result = tail.getMadRepresentation() + "." + getUniqueMadRepresentation(head)
         )
         or
         exists(SummaryComponent c |
@@ -2164,9 +2185,15 @@ module Make<
               )
             )
             or
-            c = "ReturnValue" and
-            node.asNode() =
-              getAnOutNodeExt(mid.asCall(), TValueReturn(getStandardReturnValueKind()))
+            c.getName() = "ReturnValue" and
+            exists(ReturnKind rk |
+              not exists(c.getAnArgument()) and
+              rk = getStandardReturnValueKind()
+              or
+              rk = getReturnValueKind(c.getAnArgument())
+            |
+              node.asNode() = getAnOutNodeExt(mid.asCall(), TValueReturn(rk))
+            )
             or
             SourceSinkInterpretationInput::interpretOutput(c, mid, node)
           )
@@ -2198,12 +2225,16 @@ module Make<
               )
             )
             or
-            exists(ReturnNode ret, ValueReturnKind kind |
-              c = "ReturnValue" and
+            exists(ReturnNode ret, ReturnKind kind |
+              c.getName() = "ReturnValue" and
               ret = node.asNode() and
-              kind.getKind() = ret.getKind() and
-              kind.getKind() = getStandardReturnValueKind() and
+              kind = ret.getKind() and
               mid.asCallable() = getNodeEnclosingCallable(ret)
+            |
+              not exists(c.getAnArgument()) and
+              kind = getStandardReturnValueKind()
+              or
+              kind = getReturnValueKind(c.getAnArgument())
             )
             or
             SourceSinkInterpretationInput::interpretInput(c, mid, node)

@@ -1,0 +1,102 @@
+#select
+| RegexInjectionTest.java:17:26:17:47 | ... + ... | RegexInjectionTest.java:14:22:14:52 | getParameter(...) : String | RegexInjectionTest.java:17:26:17:47 | ... + ... | This regular expression is constructed from a $@. | RegexInjectionTest.java:14:22:14:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:24:24:24:30 | pattern | RegexInjectionTest.java:21:22:21:52 | getParameter(...) : String | RegexInjectionTest.java:24:24:24:30 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:21:22:21:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:31:24:31:30 | pattern | RegexInjectionTest.java:28:22:28:52 | getParameter(...) : String | RegexInjectionTest.java:31:24:31:30 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:28:22:28:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:38:31:38:37 | pattern | RegexInjectionTest.java:35:22:35:52 | getParameter(...) : String | RegexInjectionTest.java:38:31:38:37 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:35:22:35:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:45:29:45:35 | pattern | RegexInjectionTest.java:42:22:42:52 | getParameter(...) : String | RegexInjectionTest.java:45:29:45:35 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:42:22:42:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:52:34:52:40 | pattern | RegexInjectionTest.java:49:22:49:52 | getParameter(...) : String | RegexInjectionTest.java:52:34:52:40 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:49:22:49:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:62:28:62:34 | pattern | RegexInjectionTest.java:59:22:59:52 | getParameter(...) : String | RegexInjectionTest.java:62:28:62:34 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:59:22:59:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:69:28:69:34 | pattern | RegexInjectionTest.java:66:22:66:52 | getParameter(...) : String | RegexInjectionTest.java:69:28:69:34 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:66:22:66:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:76:28:76:34 | pattern | RegexInjectionTest.java:73:22:73:52 | getParameter(...) : String | RegexInjectionTest.java:76:28:76:34 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:73:22:73:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:83:26:83:52 | ... + ... | RegexInjectionTest.java:80:22:80:52 | getParameter(...) : String | RegexInjectionTest.java:83:26:83:52 | ... + ... | This regular expression is constructed from a $@. | RegexInjectionTest.java:80:22:80:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:94:40:94:46 | pattern | RegexInjectionTest.java:91:22:91:52 | getParameter(...) : String | RegexInjectionTest.java:94:40:94:46 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:91:22:91:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:101:42:101:48 | pattern | RegexInjectionTest.java:98:22:98:52 | getParameter(...) : String | RegexInjectionTest.java:101:42:101:48 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:98:22:98:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:108:44:108:50 | pattern | RegexInjectionTest.java:105:22:105:52 | getParameter(...) : String | RegexInjectionTest.java:108:44:108:50 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:105:22:105:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:115:41:115:47 | pattern | RegexInjectionTest.java:112:22:112:52 | getParameter(...) : String | RegexInjectionTest.java:115:41:115:47 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:112:22:112:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:122:43:122:49 | pattern | RegexInjectionTest.java:119:22:119:52 | getParameter(...) : String | RegexInjectionTest.java:122:43:122:49 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:119:22:119:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:137:45:137:51 | pattern | RegexInjectionTest.java:134:22:134:52 | getParameter(...) : String | RegexInjectionTest.java:137:45:137:51 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:134:22:134:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:158:31:158:37 | pattern | RegexInjectionTest.java:157:22:157:52 | getParameter(...) : String | RegexInjectionTest.java:158:31:158:37 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:157:22:157:52 | getParameter(...) | user-provided value |
+| RegexInjectionTest.java:164:41:164:47 | pattern | RegexInjectionTest.java:162:22:162:52 | getParameter(...) : String | RegexInjectionTest.java:164:41:164:47 | pattern | This regular expression is constructed from a $@. | RegexInjectionTest.java:162:22:162:52 | getParameter(...) | user-provided value |
+edges
+| RegexInjectionTest.java:14:22:14:52 | getParameter(...) : String | RegexInjectionTest.java:17:26:17:47 | ... + ... | provenance | Src:MaD:16 Sink:MaD:2 |
+| RegexInjectionTest.java:21:22:21:52 | getParameter(...) : String | RegexInjectionTest.java:24:24:24:30 | pattern | provenance | Src:MaD:16 Sink:MaD:5 |
+| RegexInjectionTest.java:28:22:28:52 | getParameter(...) : String | RegexInjectionTest.java:31:24:31:30 | pattern | provenance | Src:MaD:16 Sink:MaD:6 |
+| RegexInjectionTest.java:35:22:35:52 | getParameter(...) : String | RegexInjectionTest.java:38:31:38:37 | pattern | provenance | Src:MaD:16 Sink:MaD:4 |
+| RegexInjectionTest.java:42:22:42:52 | getParameter(...) : String | RegexInjectionTest.java:45:29:45:35 | pattern | provenance | Src:MaD:16 Sink:MaD:3 |
+| RegexInjectionTest.java:49:22:49:52 | getParameter(...) : String | RegexInjectionTest.java:52:34:52:40 | pattern | provenance | Src:MaD:16 Sink:MaD:7 |
+| RegexInjectionTest.java:59:22:59:52 | getParameter(...) : String | RegexInjectionTest.java:62:28:62:34 | pattern | provenance | Src:MaD:16 Sink:MaD:7 |
+| RegexInjectionTest.java:66:22:66:52 | getParameter(...) : String | RegexInjectionTest.java:69:28:69:34 | pattern | provenance | Src:MaD:16 Sink:MaD:8 |
+| RegexInjectionTest.java:73:22:73:52 | getParameter(...) : String | RegexInjectionTest.java:76:28:76:34 | pattern | provenance | Src:MaD:16 Sink:MaD:9 |
+| RegexInjectionTest.java:80:22:80:52 | getParameter(...) : String | RegexInjectionTest.java:83:36:83:42 | pattern : String | provenance | Src:MaD:16  |
+| RegexInjectionTest.java:83:32:83:43 | foo(...) : String | RegexInjectionTest.java:83:26:83:52 | ... + ... | provenance | Sink:MaD:2 |
+| RegexInjectionTest.java:83:36:83:42 | pattern : String | RegexInjectionTest.java:83:32:83:43 | foo(...) : String | provenance |  |
+| RegexInjectionTest.java:83:36:83:42 | pattern : String | RegexInjectionTest.java:86:14:86:23 | str : String | provenance |  |
+| RegexInjectionTest.java:86:14:86:23 | str : String | RegexInjectionTest.java:87:12:87:14 | str : String | provenance |  |
+| RegexInjectionTest.java:91:22:91:52 | getParameter(...) : String | RegexInjectionTest.java:94:40:94:46 | pattern | provenance | Src:MaD:16 Sink:MaD:10 |
+| RegexInjectionTest.java:98:22:98:52 | getParameter(...) : String | RegexInjectionTest.java:101:42:101:48 | pattern | provenance | Src:MaD:16 Sink:MaD:11 |
+| RegexInjectionTest.java:105:22:105:52 | getParameter(...) : String | RegexInjectionTest.java:108:44:108:50 | pattern | provenance | Src:MaD:16 Sink:MaD:12 |
+| RegexInjectionTest.java:112:22:112:52 | getParameter(...) : String | RegexInjectionTest.java:115:41:115:47 | pattern | provenance | Src:MaD:16 Sink:MaD:13 |
+| RegexInjectionTest.java:119:22:119:52 | getParameter(...) : String | RegexInjectionTest.java:122:43:122:49 | pattern | provenance | Src:MaD:16 Sink:MaD:14 |
+| RegexInjectionTest.java:134:22:134:52 | getParameter(...) : String | RegexInjectionTest.java:137:45:137:51 | pattern | provenance | Src:MaD:16 Sink:MaD:15 |
+| RegexInjectionTest.java:157:22:157:52 | getParameter(...) : String | RegexInjectionTest.java:158:31:158:37 | pattern | provenance | Src:MaD:16 Sink:MaD:1 |
+| RegexInjectionTest.java:162:22:162:52 | getParameter(...) : String | RegexInjectionTest.java:164:41:164:47 | pattern | provenance | Src:MaD:16 Sink:MaD:7 |
+models
+| 1 | Sink: com.google.common.base; Splitter; false; onPattern; (String); ; Argument[0]; regex-use[]; manual |
+| 2 | Sink: java.lang; String; false; matches; (String); ; Argument[0]; regex-use[f-1]; manual |
+| 3 | Sink: java.lang; String; false; replaceAll; (String,String); ; Argument[0]; regex-use[-1]; manual |
+| 4 | Sink: java.lang; String; false; replaceFirst; (String,String); ; Argument[0]; regex-use[-1]; manual |
+| 5 | Sink: java.lang; String; false; split; (String); ; Argument[0]; regex-use[-1]; manual |
+| 6 | Sink: java.lang; String; false; split; (String,int); ; Argument[0]; regex-use[-1]; manual |
+| 7 | Sink: java.util.regex; Pattern; false; compile; (String); ; Argument[0]; regex-use[]; manual |
+| 8 | Sink: java.util.regex; Pattern; false; compile; (String,int); ; Argument[0]; regex-use[]; manual |
+| 9 | Sink: java.util.regex; Pattern; false; matches; (String,CharSequence); ; Argument[0]; regex-use[f1]; manual |
+| 10 | Sink: org.apache.commons.lang3; RegExUtils; false; removeAll; (String,String); ; Argument[1]; regex-use; manual |
+| 11 | Sink: org.apache.commons.lang3; RegExUtils; false; removeFirst; (String,String); ; Argument[1]; regex-use; manual |
+| 12 | Sink: org.apache.commons.lang3; RegExUtils; false; removePattern; (String,String); ; Argument[1]; regex-use; manual |
+| 13 | Sink: org.apache.commons.lang3; RegExUtils; false; replaceAll; (String,String,String); ; Argument[1]; regex-use; manual |
+| 14 | Sink: org.apache.commons.lang3; RegExUtils; false; replaceFirst; (String,String,String); ; Argument[1]; regex-use; manual |
+| 15 | Sink: org.apache.commons.lang3; RegExUtils; false; replacePattern; (String,String,String); ; Argument[1]; regex-use; manual |
+| 16 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+nodes
+| RegexInjectionTest.java:14:22:14:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:17:26:17:47 | ... + ... | semmle.label | ... + ... |
+| RegexInjectionTest.java:21:22:21:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:24:24:24:30 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:28:22:28:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:31:24:31:30 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:35:22:35:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:38:31:38:37 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:42:22:42:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:45:29:45:35 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:49:22:49:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:52:34:52:40 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:59:22:59:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:62:28:62:34 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:66:22:66:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:69:28:69:34 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:73:22:73:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:76:28:76:34 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:80:22:80:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:83:26:83:52 | ... + ... | semmle.label | ... + ... |
+| RegexInjectionTest.java:83:32:83:43 | foo(...) : String | semmle.label | foo(...) : String |
+| RegexInjectionTest.java:83:36:83:42 | pattern : String | semmle.label | pattern : String |
+| RegexInjectionTest.java:86:14:86:23 | str : String | semmle.label | str : String |
+| RegexInjectionTest.java:87:12:87:14 | str : String | semmle.label | str : String |
+| RegexInjectionTest.java:91:22:91:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:94:40:94:46 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:98:22:98:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:101:42:101:48 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:105:22:105:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:108:44:108:50 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:112:22:112:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:115:41:115:47 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:119:22:119:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:122:43:122:49 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:134:22:134:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:137:45:137:51 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:157:22:157:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:158:31:158:37 | pattern | semmle.label | pattern |
+| RegexInjectionTest.java:162:22:162:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| RegexInjectionTest.java:164:41:164:47 | pattern | semmle.label | pattern |
+subpaths
+| RegexInjectionTest.java:83:36:83:42 | pattern : String | RegexInjectionTest.java:86:14:86:23 | str : String | RegexInjectionTest.java:87:12:87:14 | str : String | RegexInjectionTest.java:83:32:83:43 | foo(...) : String |

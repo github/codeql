@@ -1,0 +1,428 @@
+#select
+| CdaUtilTests.java:12:22:12:23 | is | CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:12:22:12:23 | is | XML parsing depends on a $@ without guarding against external entity expansion. | CdaUtilTests.java:10:26:10:46 | getInputStream(...) | user-provided value |
+| CdaUtilTests.java:13:22:13:25 | iSrc | CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:13:22:13:25 | iSrc | XML parsing depends on a $@ without guarding against external entity expansion. | CdaUtilTests.java:10:26:10:46 | getInputStream(...) | user-provided value |
+| CdaUtilTests.java:14:22:14:23 | is | CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:14:22:14:23 | is | XML parsing depends on a $@ without guarding against external entity expansion. | CdaUtilTests.java:10:26:10:46 | getInputStream(...) | user-provided value |
+| CdaUtilTests.java:15:22:15:23 | is | CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:15:22:15:23 | is | XML parsing depends on a $@ without guarding against external entity expansion. | CdaUtilTests.java:10:26:10:46 | getInputStream(...) | user-provided value |
+| CdaUtilTests.java:16:34:16:35 | is | CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:16:34:16:35 | is | XML parsing depends on a $@ without guarding against external entity expansion. | CdaUtilTests.java:10:26:10:46 | getInputStream(...) | user-provided value |
+| CdaUtilTests.java:17:22:17:25 | iSrc | CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:17:22:17:25 | iSrc | XML parsing depends on a $@ without guarding against external entity expansion. | CdaUtilTests.java:10:26:10:46 | getInputStream(...) | user-provided value |
+| CdaUtilTests.java:18:22:18:25 | iSrc | CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:18:22:18:25 | iSrc | XML parsing depends on a $@ without guarding against external entity expansion. | CdaUtilTests.java:10:26:10:46 | getInputStream(...) | user-provided value |
+| CdaUtilTests.java:19:34:19:37 | iSrc | CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:19:34:19:37 | iSrc | XML parsing depends on a $@ without guarding against external entity expansion. | CdaUtilTests.java:10:26:10:46 | getInputStream(...) | user-provided value |
+| CdaUtilTests.java:20:24:20:25 | is | CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:20:24:20:25 | is | XML parsing depends on a $@ without guarding against external entity expansion. | CdaUtilTests.java:10:26:10:46 | getInputStream(...) | user-provided value |
+| CdaUtilTests.java:21:24:21:25 | is | CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:21:24:21:25 | is | XML parsing depends on a $@ without guarding against external entity expansion. | CdaUtilTests.java:10:26:10:46 | getInputStream(...) | user-provided value |
+| DigesterTests.java:16:24:16:41 | servletInputStream | DigesterTests.java:14:49:14:72 | getInputStream(...) : ServletInputStream | DigesterTests.java:16:24:16:41 | servletInputStream | XML parsing depends on a $@ without guarding against external entity expansion. | DigesterTests.java:14:49:14:72 | getInputStream(...) | user-provided value |
+| DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | user-provided value |
+| DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | user-provided value |
+| DocumentBuilderTests.java:36:19:36:39 | getInputStream(...) | DocumentBuilderTests.java:36:19:36:39 | getInputStream(...) | DocumentBuilderTests.java:36:19:36:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:36:19:36:39 | getInputStream(...) | user-provided value |
+| DocumentBuilderTests.java:44:19:44:39 | getInputStream(...) | DocumentBuilderTests.java:44:19:44:39 | getInputStream(...) | DocumentBuilderTests.java:44:19:44:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:44:19:44:39 | getInputStream(...) | user-provided value |
+| DocumentBuilderTests.java:51:19:51:39 | getInputStream(...) | DocumentBuilderTests.java:51:19:51:39 | getInputStream(...) | DocumentBuilderTests.java:51:19:51:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:51:19:51:39 | getInputStream(...) | user-provided value |
+| DocumentBuilderTests.java:66:19:66:39 | getInputStream(...) | DocumentBuilderTests.java:66:19:66:39 | getInputStream(...) | DocumentBuilderTests.java:66:19:66:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:66:19:66:39 | getInputStream(...) | user-provided value |
+| DocumentBuilderTests.java:73:19:73:39 | getInputStream(...) | DocumentBuilderTests.java:73:19:73:39 | getInputStream(...) | DocumentBuilderTests.java:73:19:73:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:73:19:73:39 | getInputStream(...) | user-provided value |
+| DocumentBuilderTests.java:81:19:81:39 | getInputStream(...) | DocumentBuilderTests.java:81:19:81:39 | getInputStream(...) | DocumentBuilderTests.java:81:19:81:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:81:19:81:39 | getInputStream(...) | user-provided value |
+| DocumentBuilderTests.java:89:19:89:39 | getInputStream(...) | DocumentBuilderTests.java:89:19:89:39 | getInputStream(...) | DocumentBuilderTests.java:89:19:89:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:89:19:89:39 | getInputStream(...) | user-provided value |
+| DocumentBuilderTests.java:96:19:96:41 | getInputSource(...) | DocumentBuilderTests.java:95:54:95:74 | getInputStream(...) : InputStream | DocumentBuilderTests.java:96:19:96:41 | getInputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:95:54:95:74 | getInputStream(...) | user-provided value |
+| DocumentBuilderTests.java:103:19:103:55 | sourceToInputSource(...) | DocumentBuilderTests.java:102:44:102:64 | getInputStream(...) : InputStream | DocumentBuilderTests.java:103:19:103:55 | sourceToInputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:102:44:102:64 | getInputStream(...) | user-provided value |
+| DocumentBuilderTests.java:104:19:104:41 | getInputStream(...) | DocumentBuilderTests.java:102:44:102:64 | getInputStream(...) : InputStream | DocumentBuilderTests.java:104:19:104:41 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:102:44:102:64 | getInputStream(...) | user-provided value |
+| ParserHelperTests.java:12:55:12:78 | getInputStream(...) | ParserHelperTests.java:12:55:12:78 | getInputStream(...) | ParserHelperTests.java:12:55:12:78 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | ParserHelperTests.java:12:55:12:78 | getInputStream(...) | user-provided value |
+| SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | user-provided value |
+| SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | user-provided value |
+| SAXParserTests.java:13:18:13:38 | getInputStream(...) | SAXParserTests.java:13:18:13:38 | getInputStream(...) | SAXParserTests.java:13:18:13:38 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXParserTests.java:13:18:13:38 | getInputStream(...) | user-provided value |
+| SAXParserTests.java:30:18:30:38 | getInputStream(...) | SAXParserTests.java:30:18:30:38 | getInputStream(...) | SAXParserTests.java:30:18:30:38 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXParserTests.java:30:18:30:38 | getInputStream(...) | user-provided value |
+| SAXParserTests.java:38:18:38:38 | getInputStream(...) | SAXParserTests.java:38:18:38:38 | getInputStream(...) | SAXParserTests.java:38:18:38:38 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXParserTests.java:38:18:38:38 | getInputStream(...) | user-provided value |
+| SAXParserTests.java:46:18:46:38 | getInputStream(...) | SAXParserTests.java:46:18:46:38 | getInputStream(...) | SAXParserTests.java:46:18:46:38 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXParserTests.java:46:18:46:38 | getInputStream(...) | user-provided value |
+| SAXParserTests.java:55:18:55:38 | getInputStream(...) | SAXParserTests.java:55:18:55:38 | getInputStream(...) | SAXParserTests.java:55:18:55:38 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXParserTests.java:55:18:55:38 | getInputStream(...) | user-provided value |
+| SAXParserTests.java:64:18:64:38 | getInputStream(...) | SAXParserTests.java:64:18:64:38 | getInputStream(...) | SAXParserTests.java:64:18:64:38 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXParserTests.java:64:18:64:38 | getInputStream(...) | user-provided value |
+| SAXParserTests.java:73:18:73:38 | getInputStream(...) | SAXParserTests.java:73:18:73:38 | getInputStream(...) | SAXParserTests.java:73:18:73:38 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXParserTests.java:73:18:73:38 | getInputStream(...) | user-provided value |
+| SAXReaderTests.java:8:17:8:37 | getInputStream(...) | SAXReaderTests.java:8:17:8:37 | getInputStream(...) | SAXReaderTests.java:8:17:8:37 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXReaderTests.java:8:17:8:37 | getInputStream(...) | user-provided value |
+| SAXReaderTests.java:23:17:23:37 | getInputStream(...) | SAXReaderTests.java:23:17:23:37 | getInputStream(...) | SAXReaderTests.java:23:17:23:37 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXReaderTests.java:23:17:23:37 | getInputStream(...) | user-provided value |
+| SAXReaderTests.java:30:17:30:37 | getInputStream(...) | SAXReaderTests.java:30:17:30:37 | getInputStream(...) | SAXReaderTests.java:30:17:30:37 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXReaderTests.java:30:17:30:37 | getInputStream(...) | user-provided value |
+| SAXReaderTests.java:37:17:37:37 | getInputStream(...) | SAXReaderTests.java:37:17:37:37 | getInputStream(...) | SAXReaderTests.java:37:17:37:37 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXReaderTests.java:37:17:37:37 | getInputStream(...) | user-provided value |
+| SAXReaderTests.java:45:17:45:37 | getInputStream(...) | SAXReaderTests.java:45:17:45:37 | getInputStream(...) | SAXReaderTests.java:45:17:45:37 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXReaderTests.java:45:17:45:37 | getInputStream(...) | user-provided value |
+| SAXReaderTests.java:53:17:53:37 | getInputStream(...) | SAXReaderTests.java:53:17:53:37 | getInputStream(...) | SAXReaderTests.java:53:17:53:37 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXReaderTests.java:53:17:53:37 | getInputStream(...) | user-provided value |
+| SAXReaderTests.java:61:17:61:37 | getInputStream(...) | SAXReaderTests.java:61:17:61:37 | getInputStream(...) | SAXReaderTests.java:61:17:61:37 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXReaderTests.java:61:17:61:37 | getInputStream(...) | user-provided value |
+| SAXSourceTests.java:20:18:20:23 | source | SAXSourceTests.java:17:62:17:82 | getInputStream(...) : InputStream | SAXSourceTests.java:20:18:20:23 | source | XML parsing depends on a $@ without guarding against external entity expansion. | SAXSourceTests.java:17:62:17:82 | getInputStream(...) | user-provided value |
+| SchemaTests.java:12:39:12:77 | new StreamSource(...) | SchemaTests.java:12:56:12:76 | getInputStream(...) : InputStream | SchemaTests.java:12:39:12:77 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SchemaTests.java:12:56:12:76 | getInputStream(...) | user-provided value |
+| SchemaTests.java:25:39:25:77 | new StreamSource(...) | SchemaTests.java:25:56:25:76 | getInputStream(...) : InputStream | SchemaTests.java:25:39:25:77 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SchemaTests.java:25:56:25:76 | getInputStream(...) | user-provided value |
+| SchemaTests.java:31:39:31:77 | new StreamSource(...) | SchemaTests.java:31:56:31:76 | getInputStream(...) : InputStream | SchemaTests.java:31:39:31:77 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SchemaTests.java:31:56:31:76 | getInputStream(...) | user-provided value |
+| SchemaTests.java:38:39:38:77 | new StreamSource(...) | SchemaTests.java:38:56:38:76 | getInputStream(...) : InputStream | SchemaTests.java:38:39:38:77 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SchemaTests.java:38:56:38:76 | getInputStream(...) | user-provided value |
+| SchemaTests.java:45:39:45:77 | new StreamSource(...) | SchemaTests.java:45:56:45:76 | getInputStream(...) : InputStream | SchemaTests.java:45:39:45:77 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SchemaTests.java:45:56:45:76 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:14:41:14:61 | getInputStream(...) | SimpleXMLTests.java:14:41:14:61 | getInputStream(...) | SimpleXMLTests.java:14:41:14:61 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:14:41:14:61 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:19:41:19:61 | getInputStream(...) | SimpleXMLTests.java:19:41:19:61 | getInputStream(...) | SimpleXMLTests.java:19:41:19:61 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:19:41:19:61 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:24:41:24:84 | new InputStreamReader(...) | SimpleXMLTests.java:24:63:24:83 | getInputStream(...) : InputStream | SimpleXMLTests.java:24:41:24:84 | new InputStreamReader(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:24:63:24:83 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:31:41:31:53 | new String(...) | SimpleXMLTests.java:30:5:30:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:31:41:31:53 | new String(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:30:5:30:25 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:38:41:38:53 | new String(...) | SimpleXMLTests.java:37:5:37:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:38:41:38:53 | new String(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:37:5:37:25 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:43:41:43:84 | new InputStreamReader(...) | SimpleXMLTests.java:43:63:43:83 | getInputStream(...) : InputStream | SimpleXMLTests.java:43:41:43:84 | new InputStreamReader(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:43:63:43:83 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:48:37:48:57 | getInputStream(...) | SimpleXMLTests.java:48:37:48:57 | getInputStream(...) | SimpleXMLTests.java:48:37:48:57 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:48:37:48:57 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:53:37:53:57 | getInputStream(...) | SimpleXMLTests.java:53:37:53:57 | getInputStream(...) | SimpleXMLTests.java:53:37:53:57 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:53:37:53:57 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:58:26:58:46 | getInputStream(...) | SimpleXMLTests.java:58:26:58:46 | getInputStream(...) | SimpleXMLTests.java:58:26:58:46 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:58:26:58:46 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:63:26:63:46 | getInputStream(...) | SimpleXMLTests.java:63:26:63:46 | getInputStream(...) | SimpleXMLTests.java:63:26:63:46 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:63:26:63:46 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:68:37:68:80 | new InputStreamReader(...) | SimpleXMLTests.java:68:59:68:79 | getInputStream(...) : InputStream | SimpleXMLTests.java:68:37:68:80 | new InputStreamReader(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:68:59:68:79 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:73:37:73:80 | new InputStreamReader(...) | SimpleXMLTests.java:73:59:73:79 | getInputStream(...) : InputStream | SimpleXMLTests.java:73:37:73:80 | new InputStreamReader(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:73:59:73:79 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:78:26:78:69 | new InputStreamReader(...) | SimpleXMLTests.java:78:48:78:68 | getInputStream(...) : InputStream | SimpleXMLTests.java:78:26:78:69 | new InputStreamReader(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:78:48:78:68 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:83:26:83:69 | new InputStreamReader(...) | SimpleXMLTests.java:83:48:83:68 | getInputStream(...) : InputStream | SimpleXMLTests.java:83:26:83:69 | new InputStreamReader(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:83:48:83:68 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:90:37:90:49 | new String(...) | SimpleXMLTests.java:89:5:89:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:90:37:90:49 | new String(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:89:5:89:25 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:97:37:97:49 | new String(...) | SimpleXMLTests.java:96:5:96:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:97:37:97:49 | new String(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:96:5:96:25 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:104:26:104:38 | new String(...) | SimpleXMLTests.java:103:5:103:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:104:26:104:38 | new String(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:103:5:103:25 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:111:26:111:38 | new String(...) | SimpleXMLTests.java:110:5:110:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:111:26:111:38 | new String(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:110:5:110:25 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:115:22:115:42 | getInputStream(...) | SimpleXMLTests.java:115:22:115:42 | getInputStream(...) | SimpleXMLTests.java:115:22:115:42 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:115:22:115:42 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:119:22:119:65 | new InputStreamReader(...) | SimpleXMLTests.java:119:44:119:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:119:22:119:65 | new InputStreamReader(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:119:44:119:64 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:124:22:124:42 | getInputStream(...) | SimpleXMLTests.java:124:22:124:42 | getInputStream(...) | SimpleXMLTests.java:124:22:124:42 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:124:22:124:42 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:129:22:129:65 | new InputStreamReader(...) | SimpleXMLTests.java:129:44:129:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:129:22:129:65 | new InputStreamReader(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:129:44:129:64 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:134:22:134:42 | getInputStream(...) | SimpleXMLTests.java:134:22:134:42 | getInputStream(...) | SimpleXMLTests.java:134:22:134:42 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:134:22:134:42 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:139:22:139:65 | new InputStreamReader(...) | SimpleXMLTests.java:139:44:139:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:139:22:139:65 | new InputStreamReader(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:139:44:139:64 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:146:22:146:34 | new String(...) | SimpleXMLTests.java:145:5:145:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:146:22:146:34 | new String(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:145:5:145:25 | getInputStream(...) | user-provided value |
+| SimpleXMLTests.java:153:22:153:34 | new String(...) | SimpleXMLTests.java:152:5:152:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:153:22:153:34 | new String(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SimpleXMLTests.java:152:5:152:25 | getInputStream(...) | user-provided value |
+| TransformerTests.java:20:27:20:65 | new StreamSource(...) | TransformerTests.java:20:44:20:64 | getInputStream(...) : InputStream | TransformerTests.java:20:27:20:65 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:20:44:20:64 | getInputStream(...) | user-provided value |
+| TransformerTests.java:21:23:21:61 | new StreamSource(...) | TransformerTests.java:21:40:21:60 | getInputStream(...) : InputStream | TransformerTests.java:21:23:21:61 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:21:40:21:60 | getInputStream(...) | user-provided value |
+| TransformerTests.java:71:27:71:65 | new StreamSource(...) | TransformerTests.java:71:44:71:64 | getInputStream(...) : InputStream | TransformerTests.java:71:27:71:65 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:71:44:71:64 | getInputStream(...) | user-provided value |
+| TransformerTests.java:72:23:72:61 | new StreamSource(...) | TransformerTests.java:72:40:72:60 | getInputStream(...) : InputStream | TransformerTests.java:72:23:72:61 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:72:40:72:60 | getInputStream(...) | user-provided value |
+| TransformerTests.java:79:27:79:65 | new StreamSource(...) | TransformerTests.java:79:44:79:64 | getInputStream(...) : InputStream | TransformerTests.java:79:27:79:65 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:79:44:79:64 | getInputStream(...) | user-provided value |
+| TransformerTests.java:80:23:80:61 | new StreamSource(...) | TransformerTests.java:80:40:80:60 | getInputStream(...) : InputStream | TransformerTests.java:80:23:80:61 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:80:40:80:60 | getInputStream(...) | user-provided value |
+| TransformerTests.java:88:27:88:65 | new StreamSource(...) | TransformerTests.java:88:44:88:64 | getInputStream(...) : InputStream | TransformerTests.java:88:27:88:65 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:88:44:88:64 | getInputStream(...) | user-provided value |
+| TransformerTests.java:89:23:89:61 | new StreamSource(...) | TransformerTests.java:89:40:89:60 | getInputStream(...) : InputStream | TransformerTests.java:89:23:89:61 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:89:40:89:60 | getInputStream(...) | user-provided value |
+| TransformerTests.java:97:27:97:65 | new StreamSource(...) | TransformerTests.java:97:44:97:64 | getInputStream(...) : InputStream | TransformerTests.java:97:27:97:65 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:97:44:97:64 | getInputStream(...) | user-provided value |
+| TransformerTests.java:98:23:98:61 | new StreamSource(...) | TransformerTests.java:98:40:98:60 | getInputStream(...) : InputStream | TransformerTests.java:98:23:98:61 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:98:40:98:60 | getInputStream(...) | user-provided value |
+| TransformerTests.java:103:21:103:59 | new StreamSource(...) | TransformerTests.java:103:38:103:58 | getInputStream(...) : InputStream | TransformerTests.java:103:21:103:59 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:103:38:103:58 | getInputStream(...) | user-provided value |
+| TransformerTests.java:116:21:116:59 | new StreamSource(...) | TransformerTests.java:116:38:116:58 | getInputStream(...) : InputStream | TransformerTests.java:116:21:116:59 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:116:38:116:58 | getInputStream(...) | user-provided value |
+| TransformerTests.java:122:21:122:59 | new StreamSource(...) | TransformerTests.java:122:38:122:58 | getInputStream(...) : InputStream | TransformerTests.java:122:21:122:59 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:122:38:122:58 | getInputStream(...) | user-provided value |
+| TransformerTests.java:129:21:129:59 | new StreamSource(...) | TransformerTests.java:129:38:129:58 | getInputStream(...) : InputStream | TransformerTests.java:129:21:129:59 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:129:38:129:58 | getInputStream(...) | user-provided value |
+| TransformerTests.java:136:21:136:59 | new StreamSource(...) | TransformerTests.java:136:38:136:58 | getInputStream(...) : InputStream | TransformerTests.java:136:21:136:59 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:136:38:136:58 | getInputStream(...) | user-provided value |
+| TransformerTests.java:141:21:141:73 | new SAXSource(...) | TransformerTests.java:141:51:141:71 | getInputStream(...) : InputStream | TransformerTests.java:141:21:141:73 | new SAXSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:141:51:141:71 | getInputStream(...) | user-provided value |
+| UnmarshallerTests.java:29:18:29:38 | getInputStream(...) | UnmarshallerTests.java:29:18:29:38 | getInputStream(...) | UnmarshallerTests.java:29:18:29:38 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | UnmarshallerTests.java:29:18:29:38 | getInputStream(...) | user-provided value |
+| ValidatorTests.java:22:28:22:33 | source | ValidatorTests.java:17:49:17:72 | getInputStream(...) : ServletInputStream | ValidatorTests.java:22:28:22:33 | source | XML parsing depends on a $@ without guarding against external entity expansion. | ValidatorTests.java:17:49:17:72 | getInputStream(...) | user-provided value |
+| XMLDecoderTests.java:18:9:18:18 | xmlDecoder | XMLDecoderTests.java:16:49:16:72 | getInputStream(...) : ServletInputStream | XMLDecoderTests.java:18:9:18:18 | xmlDecoder | XML parsing depends on a $@ without guarding against external entity expansion. | XMLDecoderTests.java:16:49:16:72 | getInputStream(...) | user-provided value |
+| XMLReaderTests.java:16:18:16:55 | new InputSource(...) | XMLReaderTests.java:16:34:16:54 | getInputStream(...) : InputStream | XMLReaderTests.java:16:18:16:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XMLReaderTests.java:16:34:16:54 | getInputStream(...) | user-provided value |
+| XMLReaderTests.java:56:18:56:55 | new InputSource(...) | XMLReaderTests.java:56:34:56:54 | getInputStream(...) : InputStream | XMLReaderTests.java:56:18:56:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XMLReaderTests.java:56:34:56:54 | getInputStream(...) | user-provided value |
+| XMLReaderTests.java:63:18:63:55 | new InputSource(...) | XMLReaderTests.java:63:34:63:54 | getInputStream(...) : InputStream | XMLReaderTests.java:63:18:63:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XMLReaderTests.java:63:34:63:54 | getInputStream(...) | user-provided value |
+| XMLReaderTests.java:70:18:70:55 | new InputSource(...) | XMLReaderTests.java:70:34:70:54 | getInputStream(...) : InputStream | XMLReaderTests.java:70:18:70:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XMLReaderTests.java:70:34:70:54 | getInputStream(...) | user-provided value |
+| XMLReaderTests.java:78:18:78:55 | new InputSource(...) | XMLReaderTests.java:78:34:78:54 | getInputStream(...) : InputStream | XMLReaderTests.java:78:18:78:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XMLReaderTests.java:78:34:78:54 | getInputStream(...) | user-provided value |
+| XMLReaderTests.java:86:18:86:55 | new InputSource(...) | XMLReaderTests.java:86:34:86:54 | getInputStream(...) : InputStream | XMLReaderTests.java:86:18:86:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XMLReaderTests.java:86:34:86:54 | getInputStream(...) | user-provided value |
+| XMLReaderTests.java:94:18:94:55 | new InputSource(...) | XMLReaderTests.java:94:34:94:54 | getInputStream(...) : InputStream | XMLReaderTests.java:94:18:94:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XMLReaderTests.java:94:34:94:54 | getInputStream(...) | user-provided value |
+| XMLReaderTests.java:100:18:100:55 | new InputSource(...) | XMLReaderTests.java:100:34:100:54 | getInputStream(...) : InputStream | XMLReaderTests.java:100:18:100:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XMLReaderTests.java:100:34:100:54 | getInputStream(...) | user-provided value |
+| XPathExpressionTests.java:27:19:27:56 | new InputSource(...) | XPathExpressionTests.java:27:35:27:55 | getInputStream(...) : InputStream | XPathExpressionTests.java:27:19:27:56 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XPathExpressionTests.java:27:35:27:55 | getInputStream(...) | user-provided value |
+| XPathExpressionTests.java:42:23:42:60 | new InputSource(...) | XPathExpressionTests.java:42:39:42:59 | getInputStream(...) : InputStream | XPathExpressionTests.java:42:23:42:60 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XPathExpressionTests.java:42:39:42:59 | getInputStream(...) | user-provided value |
+| XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | user-provided value |
+| XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | user-provided value |
+| XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | user-provided value |
+| XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | user-provided value |
+| XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | user-provided value |
+| XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | user-provided value |
+| XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | user-provided value |
+| XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | user-provided value |
+| XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | user-provided value |
+| XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | user-provided value |
+| XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | user-provided value |
+| XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | user-provided value |
+edges
+| CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:11:66:11:67 | is : InputStream | provenance | Src:MaD:1  |
+| CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:12:22:12:23 | is | provenance | Src:MaD:1  |
+| CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:14:22:14:23 | is | provenance | Src:MaD:1  |
+| CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:15:22:15:23 | is | provenance | Src:MaD:1  |
+| CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:16:34:16:35 | is | provenance | Src:MaD:1  |
+| CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:20:24:20:25 | is | provenance | Src:MaD:1  |
+| CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | CdaUtilTests.java:21:24:21:25 | is | provenance | Src:MaD:1  |
+| CdaUtilTests.java:11:28:11:69 | new InputSource(...) : InputSource | CdaUtilTests.java:13:22:13:25 | iSrc | provenance |  |
+| CdaUtilTests.java:11:28:11:69 | new InputSource(...) : InputSource | CdaUtilTests.java:17:22:17:25 | iSrc | provenance |  |
+| CdaUtilTests.java:11:28:11:69 | new InputSource(...) : InputSource | CdaUtilTests.java:18:22:18:25 | iSrc | provenance |  |
+| CdaUtilTests.java:11:28:11:69 | new InputSource(...) : InputSource | CdaUtilTests.java:19:34:19:37 | iSrc | provenance |  |
+| CdaUtilTests.java:11:44:11:68 | new InputStreamReader(...) : InputStreamReader | CdaUtilTests.java:11:28:11:69 | new InputSource(...) : InputSource | provenance | MaD:13 |
+| CdaUtilTests.java:11:66:11:67 | is : InputStream | CdaUtilTests.java:11:44:11:68 | new InputStreamReader(...) : InputStreamReader | provenance | MaD:5 |
+| DigesterTests.java:14:49:14:72 | getInputStream(...) : ServletInputStream | DigesterTests.java:16:24:16:41 | servletInputStream | provenance | Src:MaD:2  |
+| DocumentBuilderTests.java:95:24:95:76 | new SAXSource(...) : SAXSource | DocumentBuilderTests.java:96:19:96:24 | source : SAXSource | provenance |  |
+| DocumentBuilderTests.java:95:38:95:75 | new InputSource(...) : InputSource | DocumentBuilderTests.java:95:24:95:76 | new SAXSource(...) : SAXSource | provenance | MaD:7 |
+| DocumentBuilderTests.java:95:54:95:74 | getInputStream(...) : InputStream | DocumentBuilderTests.java:95:38:95:75 | new InputSource(...) : InputSource | provenance | Src:MaD:1 MaD:13 |
+| DocumentBuilderTests.java:96:19:96:24 | source : SAXSource | DocumentBuilderTests.java:96:19:96:41 | getInputSource(...) | provenance | MaD:9 |
+| DocumentBuilderTests.java:102:27:102:65 | new StreamSource(...) : StreamSource | DocumentBuilderTests.java:103:49:103:54 | source : StreamSource | provenance |  |
+| DocumentBuilderTests.java:102:27:102:65 | new StreamSource(...) : StreamSource | DocumentBuilderTests.java:104:19:104:24 | source : StreamSource | provenance |  |
+| DocumentBuilderTests.java:102:44:102:64 | getInputStream(...) : InputStream | DocumentBuilderTests.java:102:27:102:65 | new StreamSource(...) : StreamSource | provenance | Src:MaD:1 MaD:11 |
+| DocumentBuilderTests.java:103:49:103:54 | source : StreamSource | DocumentBuilderTests.java:103:19:103:55 | sourceToInputSource(...) | provenance | MaD:10 |
+| DocumentBuilderTests.java:104:19:104:24 | source : StreamSource | DocumentBuilderTests.java:104:19:104:41 | getInputStream(...) | provenance | MaD:12 |
+| SAXSourceTests.java:17:24:17:84 | new SAXSource(...) : SAXSource | SAXSourceTests.java:20:18:20:23 | source | provenance |  |
+| SAXSourceTests.java:17:46:17:83 | new InputSource(...) : InputSource | SAXSourceTests.java:17:24:17:84 | new SAXSource(...) : SAXSource | provenance | MaD:8 |
+| SAXSourceTests.java:17:62:17:82 | getInputStream(...) : InputStream | SAXSourceTests.java:17:46:17:83 | new InputSource(...) : InputSource | provenance | Src:MaD:1 MaD:13 |
+| SchemaTests.java:12:56:12:76 | getInputStream(...) : InputStream | SchemaTests.java:12:39:12:77 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| SchemaTests.java:25:56:25:76 | getInputStream(...) : InputStream | SchemaTests.java:25:39:25:77 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| SchemaTests.java:31:56:31:76 | getInputStream(...) : InputStream | SchemaTests.java:31:39:31:77 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| SchemaTests.java:38:56:38:76 | getInputStream(...) : InputStream | SchemaTests.java:38:39:38:77 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| SchemaTests.java:45:56:45:76 | getInputStream(...) : InputStream | SchemaTests.java:45:39:45:77 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| SimpleXMLTests.java:24:63:24:83 | getInputStream(...) : InputStream | SimpleXMLTests.java:24:41:24:84 | new InputStreamReader(...) | provenance | Src:MaD:1 MaD:5 |
+| SimpleXMLTests.java:30:5:30:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:30:32:30:32 | b [post update] : byte[] | provenance | Src:MaD:1 MaD:4 |
+| SimpleXMLTests.java:30:32:30:32 | b [post update] : byte[] | SimpleXMLTests.java:31:52:31:52 | b : byte[] | provenance |  |
+| SimpleXMLTests.java:31:52:31:52 | b : byte[] | SimpleXMLTests.java:31:41:31:53 | new String(...) | provenance | MaD:6 |
+| SimpleXMLTests.java:37:5:37:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:37:32:37:32 | b [post update] : byte[] | provenance | Src:MaD:1 MaD:4 |
+| SimpleXMLTests.java:37:32:37:32 | b [post update] : byte[] | SimpleXMLTests.java:38:52:38:52 | b : byte[] | provenance |  |
+| SimpleXMLTests.java:38:52:38:52 | b : byte[] | SimpleXMLTests.java:38:41:38:53 | new String(...) | provenance | MaD:6 |
+| SimpleXMLTests.java:43:63:43:83 | getInputStream(...) : InputStream | SimpleXMLTests.java:43:41:43:84 | new InputStreamReader(...) | provenance | Src:MaD:1 MaD:5 |
+| SimpleXMLTests.java:68:59:68:79 | getInputStream(...) : InputStream | SimpleXMLTests.java:68:37:68:80 | new InputStreamReader(...) | provenance | Src:MaD:1 MaD:5 |
+| SimpleXMLTests.java:73:59:73:79 | getInputStream(...) : InputStream | SimpleXMLTests.java:73:37:73:80 | new InputStreamReader(...) | provenance | Src:MaD:1 MaD:5 |
+| SimpleXMLTests.java:78:48:78:68 | getInputStream(...) : InputStream | SimpleXMLTests.java:78:26:78:69 | new InputStreamReader(...) | provenance | Src:MaD:1 MaD:5 |
+| SimpleXMLTests.java:83:48:83:68 | getInputStream(...) : InputStream | SimpleXMLTests.java:83:26:83:69 | new InputStreamReader(...) | provenance | Src:MaD:1 MaD:5 |
+| SimpleXMLTests.java:89:5:89:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:89:32:89:32 | b [post update] : byte[] | provenance | Src:MaD:1 MaD:4 |
+| SimpleXMLTests.java:89:32:89:32 | b [post update] : byte[] | SimpleXMLTests.java:90:48:90:48 | b : byte[] | provenance |  |
+| SimpleXMLTests.java:90:48:90:48 | b : byte[] | SimpleXMLTests.java:90:37:90:49 | new String(...) | provenance | MaD:6 |
+| SimpleXMLTests.java:96:5:96:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:96:32:96:32 | b [post update] : byte[] | provenance | Src:MaD:1 MaD:4 |
+| SimpleXMLTests.java:96:32:96:32 | b [post update] : byte[] | SimpleXMLTests.java:97:48:97:48 | b : byte[] | provenance |  |
+| SimpleXMLTests.java:97:48:97:48 | b : byte[] | SimpleXMLTests.java:97:37:97:49 | new String(...) | provenance | MaD:6 |
+| SimpleXMLTests.java:103:5:103:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:103:32:103:32 | b [post update] : byte[] | provenance | Src:MaD:1 MaD:4 |
+| SimpleXMLTests.java:103:32:103:32 | b [post update] : byte[] | SimpleXMLTests.java:104:37:104:37 | b : byte[] | provenance |  |
+| SimpleXMLTests.java:104:37:104:37 | b : byte[] | SimpleXMLTests.java:104:26:104:38 | new String(...) | provenance | MaD:6 |
+| SimpleXMLTests.java:110:5:110:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:110:32:110:32 | b [post update] : byte[] | provenance | Src:MaD:1 MaD:4 |
+| SimpleXMLTests.java:110:32:110:32 | b [post update] : byte[] | SimpleXMLTests.java:111:37:111:37 | b : byte[] | provenance |  |
+| SimpleXMLTests.java:111:37:111:37 | b : byte[] | SimpleXMLTests.java:111:26:111:38 | new String(...) | provenance | MaD:6 |
+| SimpleXMLTests.java:119:44:119:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:119:22:119:65 | new InputStreamReader(...) | provenance | Src:MaD:1 MaD:5 |
+| SimpleXMLTests.java:129:44:129:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:129:22:129:65 | new InputStreamReader(...) | provenance | Src:MaD:1 MaD:5 |
+| SimpleXMLTests.java:139:44:139:64 | getInputStream(...) : InputStream | SimpleXMLTests.java:139:22:139:65 | new InputStreamReader(...) | provenance | Src:MaD:1 MaD:5 |
+| SimpleXMLTests.java:145:5:145:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:145:32:145:32 | b [post update] : byte[] | provenance | Src:MaD:1 MaD:4 |
+| SimpleXMLTests.java:145:32:145:32 | b [post update] : byte[] | SimpleXMLTests.java:146:33:146:33 | b : byte[] | provenance |  |
+| SimpleXMLTests.java:146:33:146:33 | b : byte[] | SimpleXMLTests.java:146:22:146:34 | new String(...) | provenance | MaD:6 |
+| SimpleXMLTests.java:152:5:152:25 | getInputStream(...) : InputStream | SimpleXMLTests.java:152:32:152:32 | b [post update] : byte[] | provenance | Src:MaD:1 MaD:4 |
+| SimpleXMLTests.java:152:32:152:32 | b [post update] : byte[] | SimpleXMLTests.java:153:33:153:33 | b : byte[] | provenance |  |
+| SimpleXMLTests.java:153:33:153:33 | b : byte[] | SimpleXMLTests.java:153:22:153:34 | new String(...) | provenance | MaD:6 |
+| TransformerTests.java:20:44:20:64 | getInputStream(...) : InputStream | TransformerTests.java:20:27:20:65 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:21:40:21:60 | getInputStream(...) : InputStream | TransformerTests.java:21:23:21:61 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:71:44:71:64 | getInputStream(...) : InputStream | TransformerTests.java:71:27:71:65 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:72:40:72:60 | getInputStream(...) : InputStream | TransformerTests.java:72:23:72:61 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:79:44:79:64 | getInputStream(...) : InputStream | TransformerTests.java:79:27:79:65 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:80:40:80:60 | getInputStream(...) : InputStream | TransformerTests.java:80:23:80:61 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:88:44:88:64 | getInputStream(...) : InputStream | TransformerTests.java:88:27:88:65 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:89:40:89:60 | getInputStream(...) : InputStream | TransformerTests.java:89:23:89:61 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:97:44:97:64 | getInputStream(...) : InputStream | TransformerTests.java:97:27:97:65 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:98:40:98:60 | getInputStream(...) : InputStream | TransformerTests.java:98:23:98:61 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:103:38:103:58 | getInputStream(...) : InputStream | TransformerTests.java:103:21:103:59 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:116:38:116:58 | getInputStream(...) : InputStream | TransformerTests.java:116:21:116:59 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:122:38:122:58 | getInputStream(...) : InputStream | TransformerTests.java:122:21:122:59 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:129:38:129:58 | getInputStream(...) : InputStream | TransformerTests.java:129:21:129:59 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:136:38:136:58 | getInputStream(...) : InputStream | TransformerTests.java:136:21:136:59 | new StreamSource(...) | provenance | Src:MaD:1 MaD:11 |
+| TransformerTests.java:141:35:141:72 | new InputSource(...) : InputSource | TransformerTests.java:141:21:141:73 | new SAXSource(...) | provenance | MaD:7 |
+| TransformerTests.java:141:51:141:71 | getInputStream(...) : InputStream | TransformerTests.java:141:35:141:72 | new InputSource(...) : InputSource | provenance | Src:MaD:1 MaD:13 |
+| ValidatorTests.java:17:49:17:72 | getInputStream(...) : ServletInputStream | ValidatorTests.java:21:48:21:65 | servletInputStream : ServletInputStream | provenance | Src:MaD:2  |
+| ValidatorTests.java:21:31:21:66 | new StreamSource(...) : StreamSource | ValidatorTests.java:22:28:22:33 | source | provenance |  |
+| ValidatorTests.java:21:48:21:65 | servletInputStream : ServletInputStream | ValidatorTests.java:21:31:21:66 | new StreamSource(...) : StreamSource | provenance | MaD:11 |
+| XMLDecoderTests.java:16:49:16:72 | getInputStream(...) : ServletInputStream | XMLDecoderTests.java:17:48:17:65 | servletInputStream : ServletInputStream | provenance | Src:MaD:2  |
+| XMLDecoderTests.java:17:33:17:66 | new XMLDecoder(...) : XMLDecoder | XMLDecoderTests.java:18:9:18:18 | xmlDecoder | provenance |  |
+| XMLDecoderTests.java:17:48:17:65 | servletInputStream : ServletInputStream | XMLDecoderTests.java:17:33:17:66 | new XMLDecoder(...) : XMLDecoder | provenance | MaD:3 |
+| XMLReaderTests.java:16:34:16:54 | getInputStream(...) : InputStream | XMLReaderTests.java:16:18:16:55 | new InputSource(...) | provenance | Src:MaD:1 MaD:13 |
+| XMLReaderTests.java:56:34:56:54 | getInputStream(...) : InputStream | XMLReaderTests.java:56:18:56:55 | new InputSource(...) | provenance | Src:MaD:1 MaD:13 |
+| XMLReaderTests.java:63:34:63:54 | getInputStream(...) : InputStream | XMLReaderTests.java:63:18:63:55 | new InputSource(...) | provenance | Src:MaD:1 MaD:13 |
+| XMLReaderTests.java:70:34:70:54 | getInputStream(...) : InputStream | XMLReaderTests.java:70:18:70:55 | new InputSource(...) | provenance | Src:MaD:1 MaD:13 |
+| XMLReaderTests.java:78:34:78:54 | getInputStream(...) : InputStream | XMLReaderTests.java:78:18:78:55 | new InputSource(...) | provenance | Src:MaD:1 MaD:13 |
+| XMLReaderTests.java:86:34:86:54 | getInputStream(...) : InputStream | XMLReaderTests.java:86:18:86:55 | new InputSource(...) | provenance | Src:MaD:1 MaD:13 |
+| XMLReaderTests.java:94:34:94:54 | getInputStream(...) : InputStream | XMLReaderTests.java:94:18:94:55 | new InputSource(...) | provenance | Src:MaD:1 MaD:13 |
+| XMLReaderTests.java:100:34:100:54 | getInputStream(...) : InputStream | XMLReaderTests.java:100:18:100:55 | new InputSource(...) | provenance | Src:MaD:1 MaD:13 |
+| XPathExpressionTests.java:27:35:27:55 | getInputStream(...) : InputStream | XPathExpressionTests.java:27:19:27:56 | new InputSource(...) | provenance | Src:MaD:1 MaD:13 |
+| XPathExpressionTests.java:42:39:42:59 | getInputStream(...) : InputStream | XPathExpressionTests.java:42:23:42:60 | new InputSource(...) | provenance | Src:MaD:1 MaD:13 |
+models
+| 1 | Source: java.net; Socket; false; getInputStream; (); ; ReturnValue; remote; manual |
+| 2 | Source: javax.servlet; ServletRequest; false; getInputStream; (); ; ReturnValue; remote; manual |
+| 3 | Summary: java.beans; XMLDecoder; false; XMLDecoder; ; ; Argument[0]; Argument[this]; taint; manual |
+| 4 | Summary: java.io; InputStream; true; read; (byte[]); ; Argument[this]; Argument[0]; taint; manual |
+| 5 | Summary: java.io; InputStreamReader; false; InputStreamReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 6 | Summary: java.lang; String; false; String; ; ; Argument[0]; Argument[this]; taint; manual |
+| 7 | Summary: javax.xml.transform.sax; SAXSource; false; SAXSource; (InputSource); ; Argument[0]; Argument[this]; taint; manual |
+| 8 | Summary: javax.xml.transform.sax; SAXSource; false; SAXSource; (XMLReader,InputSource); ; Argument[1]; Argument[this]; taint; manual |
+| 9 | Summary: javax.xml.transform.sax; SAXSource; false; getInputSource; ; ; Argument[this]; ReturnValue; taint; manual |
+| 10 | Summary: javax.xml.transform.sax; SAXSource; false; sourceToInputSource; ; ; Argument[0]; ReturnValue; taint; manual |
+| 11 | Summary: javax.xml.transform.stream; StreamSource; false; StreamSource; ; ; Argument[0]; Argument[this]; taint; manual |
+| 12 | Summary: javax.xml.transform.stream; StreamSource; false; getInputStream; ; ; Argument[this]; ReturnValue; taint; manual |
+| 13 | Summary: org.xml.sax; InputSource; false; InputSource; ; ; Argument[0]; Argument[this]; taint; manual |
+nodes
+| CdaUtilTests.java:10:26:10:46 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| CdaUtilTests.java:11:28:11:69 | new InputSource(...) : InputSource | semmle.label | new InputSource(...) : InputSource |
+| CdaUtilTests.java:11:44:11:68 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| CdaUtilTests.java:11:66:11:67 | is : InputStream | semmle.label | is : InputStream |
+| CdaUtilTests.java:12:22:12:23 | is | semmle.label | is |
+| CdaUtilTests.java:13:22:13:25 | iSrc | semmle.label | iSrc |
+| CdaUtilTests.java:14:22:14:23 | is | semmle.label | is |
+| CdaUtilTests.java:15:22:15:23 | is | semmle.label | is |
+| CdaUtilTests.java:16:34:16:35 | is | semmle.label | is |
+| CdaUtilTests.java:17:22:17:25 | iSrc | semmle.label | iSrc |
+| CdaUtilTests.java:18:22:18:25 | iSrc | semmle.label | iSrc |
+| CdaUtilTests.java:19:34:19:37 | iSrc | semmle.label | iSrc |
+| CdaUtilTests.java:20:24:20:25 | is | semmle.label | is |
+| CdaUtilTests.java:21:24:21:25 | is | semmle.label | is |
+| DigesterTests.java:14:49:14:72 | getInputStream(...) : ServletInputStream | semmle.label | getInputStream(...) : ServletInputStream |
+| DigesterTests.java:16:24:16:41 | servletInputStream | semmle.label | servletInputStream |
+| DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:36:19:36:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:44:19:44:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:51:19:51:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:66:19:66:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:73:19:73:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:81:19:81:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:89:19:89:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| DocumentBuilderTests.java:95:24:95:76 | new SAXSource(...) : SAXSource | semmle.label | new SAXSource(...) : SAXSource |
+| DocumentBuilderTests.java:95:38:95:75 | new InputSource(...) : InputSource | semmle.label | new InputSource(...) : InputSource |
+| DocumentBuilderTests.java:95:54:95:74 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| DocumentBuilderTests.java:96:19:96:24 | source : SAXSource | semmle.label | source : SAXSource |
+| DocumentBuilderTests.java:96:19:96:41 | getInputSource(...) | semmle.label | getInputSource(...) |
+| DocumentBuilderTests.java:102:27:102:65 | new StreamSource(...) : StreamSource | semmle.label | new StreamSource(...) : StreamSource |
+| DocumentBuilderTests.java:102:44:102:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| DocumentBuilderTests.java:103:19:103:55 | sourceToInputSource(...) | semmle.label | sourceToInputSource(...) |
+| DocumentBuilderTests.java:103:49:103:54 | source : StreamSource | semmle.label | source : StreamSource |
+| DocumentBuilderTests.java:104:19:104:24 | source : StreamSource | semmle.label | source : StreamSource |
+| DocumentBuilderTests.java:104:19:104:41 | getInputStream(...) | semmle.label | getInputStream(...) |
+| ParserHelperTests.java:12:55:12:78 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXParserTests.java:13:18:13:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXParserTests.java:30:18:30:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXParserTests.java:38:18:38:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXParserTests.java:46:18:46:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXParserTests.java:55:18:55:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXParserTests.java:64:18:64:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXParserTests.java:73:18:73:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXReaderTests.java:8:17:8:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXReaderTests.java:23:17:23:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXReaderTests.java:30:17:30:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXReaderTests.java:37:17:37:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXReaderTests.java:45:17:45:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXReaderTests.java:53:17:53:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXReaderTests.java:61:17:61:37 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SAXSourceTests.java:17:24:17:84 | new SAXSource(...) : SAXSource | semmle.label | new SAXSource(...) : SAXSource |
+| SAXSourceTests.java:17:46:17:83 | new InputSource(...) : InputSource | semmle.label | new InputSource(...) : InputSource |
+| SAXSourceTests.java:17:62:17:82 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SAXSourceTests.java:20:18:20:23 | source | semmle.label | source |
+| SchemaTests.java:12:39:12:77 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| SchemaTests.java:12:56:12:76 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SchemaTests.java:25:39:25:77 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| SchemaTests.java:25:56:25:76 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SchemaTests.java:31:39:31:77 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| SchemaTests.java:31:56:31:76 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SchemaTests.java:38:39:38:77 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| SchemaTests.java:38:56:38:76 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SchemaTests.java:45:39:45:77 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| SchemaTests.java:45:56:45:76 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:14:41:14:61 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:19:41:19:61 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:24:41:24:84 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:24:63:24:83 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:30:5:30:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:30:32:30:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:31:41:31:53 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:31:52:31:52 | b : byte[] | semmle.label | b : byte[] |
+| SimpleXMLTests.java:37:5:37:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:37:32:37:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:38:41:38:53 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:38:52:38:52 | b : byte[] | semmle.label | b : byte[] |
+| SimpleXMLTests.java:43:41:43:84 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:43:63:43:83 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:48:37:48:57 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:53:37:53:57 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:58:26:58:46 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:63:26:63:46 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:68:37:68:80 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:68:59:68:79 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:73:37:73:80 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:73:59:73:79 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:78:26:78:69 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:78:48:78:68 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:83:26:83:69 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:83:48:83:68 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:89:5:89:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:89:32:89:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:90:37:90:49 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:90:48:90:48 | b : byte[] | semmle.label | b : byte[] |
+| SimpleXMLTests.java:96:5:96:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:96:32:96:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:97:37:97:49 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:97:48:97:48 | b : byte[] | semmle.label | b : byte[] |
+| SimpleXMLTests.java:103:5:103:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:103:32:103:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:104:26:104:38 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:104:37:104:37 | b : byte[] | semmle.label | b : byte[] |
+| SimpleXMLTests.java:110:5:110:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:110:32:110:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:111:26:111:38 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:111:37:111:37 | b : byte[] | semmle.label | b : byte[] |
+| SimpleXMLTests.java:115:22:115:42 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:119:22:119:65 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:119:44:119:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:124:22:124:42 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:129:22:129:65 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:129:44:129:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:134:22:134:42 | getInputStream(...) | semmle.label | getInputStream(...) |
+| SimpleXMLTests.java:139:22:139:65 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| SimpleXMLTests.java:139:44:139:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:145:5:145:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:145:32:145:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:146:22:146:34 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:146:33:146:33 | b : byte[] | semmle.label | b : byte[] |
+| SimpleXMLTests.java:152:5:152:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SimpleXMLTests.java:152:32:152:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| SimpleXMLTests.java:153:22:153:34 | new String(...) | semmle.label | new String(...) |
+| SimpleXMLTests.java:153:33:153:33 | b : byte[] | semmle.label | b : byte[] |
+| TransformerTests.java:20:27:20:65 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:20:44:20:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:21:23:21:61 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:21:40:21:60 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:71:27:71:65 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:71:44:71:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:72:23:72:61 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:72:40:72:60 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:79:27:79:65 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:79:44:79:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:80:23:80:61 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:80:40:80:60 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:88:27:88:65 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:88:44:88:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:89:23:89:61 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:89:40:89:60 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:97:27:97:65 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:97:44:97:64 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:98:23:98:61 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:98:40:98:60 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:103:21:103:59 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:103:38:103:58 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:116:21:116:59 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:116:38:116:58 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:122:21:122:59 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:122:38:122:58 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:129:21:129:59 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:129:38:129:58 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:136:21:136:59 | new StreamSource(...) | semmle.label | new StreamSource(...) |
+| TransformerTests.java:136:38:136:58 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TransformerTests.java:141:21:141:73 | new SAXSource(...) | semmle.label | new SAXSource(...) |
+| TransformerTests.java:141:35:141:72 | new InputSource(...) : InputSource | semmle.label | new InputSource(...) : InputSource |
+| TransformerTests.java:141:51:141:71 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| UnmarshallerTests.java:29:18:29:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| ValidatorTests.java:17:49:17:72 | getInputStream(...) : ServletInputStream | semmle.label | getInputStream(...) : ServletInputStream |
+| ValidatorTests.java:21:31:21:66 | new StreamSource(...) : StreamSource | semmle.label | new StreamSource(...) : StreamSource |
+| ValidatorTests.java:21:48:21:65 | servletInputStream : ServletInputStream | semmle.label | servletInputStream : ServletInputStream |
+| ValidatorTests.java:22:28:22:33 | source | semmle.label | source |
+| XMLDecoderTests.java:16:49:16:72 | getInputStream(...) : ServletInputStream | semmle.label | getInputStream(...) : ServletInputStream |
+| XMLDecoderTests.java:17:33:17:66 | new XMLDecoder(...) : XMLDecoder | semmle.label | new XMLDecoder(...) : XMLDecoder |
+| XMLDecoderTests.java:17:48:17:65 | servletInputStream : ServletInputStream | semmle.label | servletInputStream : ServletInputStream |
+| XMLDecoderTests.java:18:9:18:18 | xmlDecoder | semmle.label | xmlDecoder |
+| XMLReaderTests.java:16:18:16:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:16:34:16:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XMLReaderTests.java:56:18:56:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:56:34:56:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XMLReaderTests.java:63:18:63:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:63:34:63:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XMLReaderTests.java:70:18:70:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:70:34:70:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XMLReaderTests.java:78:18:78:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:78:34:78:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XMLReaderTests.java:86:18:86:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:86:34:86:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XMLReaderTests.java:94:18:94:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:94:34:94:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XMLReaderTests.java:100:18:100:55 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XMLReaderTests.java:100:34:100:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XPathExpressionTests.java:27:19:27:56 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XPathExpressionTests.java:27:35:27:55 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XPathExpressionTests.java:42:23:42:60 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XPathExpressionTests.java:42:39:42:59 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:25:34:25:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:31:35:31:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:32:34:32:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:39:35:39:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:40:34:40:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:47:35:47:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | semmle.label | getInputStream(...) |
+| XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+subpaths

@@ -10,10 +10,10 @@ import java.nio.file.Paths;
 public class TaintedPath {
     public void sendUserFile(Socket sock, String user) throws IOException {
         BufferedReader filenameReader =
-                new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-8"));
+                new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-8")); // $ Source
         String filename = filenameReader.readLine();
         // BAD: read from a file without checking its path
-        BufferedReader fileReader = new BufferedReader(new FileReader(filename)); // $ hasTaintFlow
+        BufferedReader fileReader = new BufferedReader(new FileReader(filename)); // $ Alert
         String fileLine = fileReader.readLine();
         while (fileLine != null) {
             sock.getOutputStream().write(fileLine.getBytes());

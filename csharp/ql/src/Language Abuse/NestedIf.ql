@@ -5,7 +5,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/nested-if-statements
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  *       language-features
  */
 

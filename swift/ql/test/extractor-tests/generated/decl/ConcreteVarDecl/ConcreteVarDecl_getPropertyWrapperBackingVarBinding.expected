@@ -1,5 +1,0 @@
-| var_decls.swift:24:15:24:15 | wrapped | file://:0:0:0:0 | var ... = ... |
-| var_decls.swift:54:10:54:10 | w1 | file://:0:0:0:0 | var ... = ... |
-| var_decls.swift:55:24:55:24 | w2 | file://:0:0:0:0 | var ... = ... |
-| var_decls.swift:56:29:56:29 | w3 | file://:0:0:0:0 | var ... = ... |
-| var_decls.swift:57:36:57:36 | w4 | file://:0:0:0:0 | var ... = ... |

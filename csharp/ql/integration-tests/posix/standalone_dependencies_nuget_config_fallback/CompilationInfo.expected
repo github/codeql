@@ -1,8 +1,8 @@
-| All Nuget feeds reachable | 0.0 |
+| All NuGet feeds reachable | 0.0 |
 | Fallback nuget restore | 1.0 |
 | NuGet feed responsiveness checked | 1.0 |
 | Project files on filesystem | 1.0 |
-| Reachable fallback Nuget feed count | 2.0 |
+| Reachable fallback NuGet feed count | 2.0 |
 | Resolved assembly conflicts | 7.0 |
 | Resource extraction enabled | 0.0 |
 | Restored .NET framework variants | 0.0 |

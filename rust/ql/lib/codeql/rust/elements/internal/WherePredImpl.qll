@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.WherePred
  */
 module Impl {
   /**
-   * A WherePred. For example:
+   * A predicate in a where clause.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T, U>(t: T, u: U) where T: Debug, U: Clone {}
+   * //                             ^^^^^^^^  ^^^^^^^^
    * ```
    */
   class WherePred extends Generated::WherePred { }

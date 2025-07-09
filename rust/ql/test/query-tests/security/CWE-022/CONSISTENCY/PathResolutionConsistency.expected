@@ -1,41 +1,9 @@
-multiplePathResolutions
-| src/main.rs:8:21:8:33 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:8:21:8:33 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:8:21:8:33 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:8:21:8:33 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:8:21:8:33 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:19:21:19:33 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:19:21:19:33 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:19:21:19:33 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:19:21:19:33 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:19:21:19:33 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:25:23:25:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:25:23:25:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:25:23:25:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:25:23:25:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:25:23:25:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:26:38:26:50 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:26:38:26:50 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:26:38:26:50 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:26:38:26:50 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:26:38:26:50 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:39:23:39:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:39:23:39:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:39:23:39:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:39:23:39:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:39:23:39:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:40:38:40:50 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:40:38:40:50 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:40:38:40:50 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:40:38:40:50 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:40:38:40:50 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:52:23:52:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:52:23:52:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:52:23:52:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:52:23:52:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:52:23:52:35 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:53:38:53:50 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:53:38:53:50 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:53:38:53:50 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:53:38:53:50 | ...::from | file://:0:0:0:0 | fn from |
-| src/main.rs:53:38:53:50 | ...::from | file://:0:0:0:0 | fn from |
+multipleCallTargets
+| src/main.rs:8:21:8:44 | ...::from(...) |
+| src/main.rs:19:21:19:44 | ...::from(...) |
+| src/main.rs:25:23:25:59 | ...::from(...) |
+| src/main.rs:26:38:26:61 | ...::from(...) |
+| src/main.rs:39:23:39:59 | ...::from(...) |
+| src/main.rs:40:38:40:61 | ...::from(...) |
+| src/main.rs:52:23:52:59 | ...::from(...) |
+| src/main.rs:53:38:53:61 | ...::from(...) |

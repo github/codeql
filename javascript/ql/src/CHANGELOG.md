@@ -1,3 +1,54 @@
+## 2.0.0
+
+### Breaking Changes
+
+* The `Type` and `Symbol` classes have been deprecated and will be empty in newly extracted databases, since the TypeScript extractor no longer populates them.
+  This is a breaking change for custom queries that explicitly relied on these classes.
+  Such queries will still compile, but with deprecation warnings, and may have different query results due to type information no longer being available.
+  We expect most custom queries will not be affected, however. If a custom query has no deprecation warnings, it should not be affected by this change.
+  Uses of `getType()` should be rewritten to use the new `getTypeBinding()` or `getNameBinding()` APIs instead.
+  If the new API is not sufficient, please consider opening an issue in `github/codeql` describing your use-case.
+
+### Major Analysis Improvements
+
+* The TypeScript extractor no longer relies on the TypeScript compiler for extracting type information.
+  Instead, the information we need from types is now derived by an algorithm written in QL.
+  This results in more robust extraction with faster extraction times, in some cases significantly faster.
+* Taint is now tracked through the React `use` function.
+* Parameters of React server functions, marked with the `"use server"` directive, are now seen as taint sources.
+
+### Minor Analysis Improvements
+
+* Removed three queries from the JS qlpack, which have been superseded by newer queries that are part of the Actions qlpack:
+  * `js/actions/pull-request-target` has been superseded by `actions/untrusted-checkout/{medium,high,critical}`
+  * `js/actions/actions-artifact-leak` has been superseded by `actions/secrets-in-artifacts`
+  * `js/actions/command-injection` has been superseded by `actions/command-injection/{medium,critical}`
+
+## 1.7.0
+
+### Query Metadata Changes
+
+* The `quality` tag has been added to multiple JavaScript quality queries, with tags for `reliability` or `maintainability` categories and their sub-categories. See [Query file metadata and alert message style guide](https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md#quality-query-sub-category-tags) for more information about these categories.
+* Added `reliability` tag to the `js/suspicious-method-name-declaration` query.
+* Added `reliability` and `language-features` tags to the `js/template-syntax-in-string-literal` query.
+
+### Minor Analysis Improvements
+
+* The `js/loop-iteration-skipped-due-to-shifting` query now has the `reliability` tag.
+* Fixed false positives in the `js/loop-iteration-skipped-due-to-shifting` query when the return value of `splice` is used to decide whether to adjust the loop counter.
+* Fixed false positives in the `js/template-syntax-in-string-literal` query where template syntax in string concatenation and "manual string interpolation" patterns were incorrectly flagged.
+* The `js/useless-expression` query now correctly flags only the innermost expressions with no effect, avoiding duplicate alerts on compound expressions.
+
+## 1.6.2
+
+No user-facing changes.
+
+## 1.6.1
+
+### Minor Analysis Improvements
+
+* The queries `js/hardcoded-credentials` and `js/password-in-configuration-file` have been removed from all query suites.
+
 ## 1.6.0
 
 ### Query Metadata Changes

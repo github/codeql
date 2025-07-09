@@ -1,3 +1,4 @@
+| dom.js:2:33:2:50 | a.clientTop === !0 | This expression has no effect. |
 | try.js:22:9:22:26 | x.ordinaryProperty | This expression has no effect. |
 | tst2.js:2:4:2:4 | 0 | This expression has no effect. |
 | tst.js:3:1:3:2 | 23 | This expression has no effect. |
@@ -11,4 +12,4 @@
 | tst.js:50:3:50:36 | new Err ... age(e)) | This expression has no effect. |
 | tst.js:61:2:61:20 | o.trivialNonGetter1 | This expression has no effect. |
 | tst.js:77:24:77:24 | o | This expression has no effect. |
-| uselessfn.js:1:1:1:26 | (functi ... .");\\n}) | This expression has no effect. |
+| uselessfn.js:1:2:1:26 | functio ... d.");\\n} | This expression has no effect. |

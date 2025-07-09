@@ -1,3 +1,5 @@
 import OpenSSLOperationBase
-import EVPCipherOperation
-import EVPHashOperation
+import CipherOperation
+import HashOperation
+import SignatureOperation
+import KeyGenOperation

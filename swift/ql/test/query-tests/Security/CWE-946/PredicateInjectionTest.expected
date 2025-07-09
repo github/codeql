@@ -1,0 +1,20 @@
+#select
+| predicateInjection.swift:26:25:26:25 | remoteString | predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | predicateInjection.swift:26:25:26:25 | remoteString | This predicate depends on a $@. | predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | user-provided value |
+| predicateInjection.swift:29:25:29:25 | remoteString | predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | predicateInjection.swift:29:25:29:25 | remoteString | This predicate depends on a $@. | predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | user-provided value |
+| predicateInjection.swift:31:25:31:25 | remoteString | predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | predicateInjection.swift:31:25:31:25 | remoteString | This predicate depends on a $@. | predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | user-provided value |
+| predicateInjection.swift:33:25:33:25 | remoteString | predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | predicateInjection.swift:33:25:33:25 | remoteString | This predicate depends on a $@. | predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | user-provided value |
+| predicateInjection.swift:36:42:36:42 | remoteString | predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | predicateInjection.swift:36:42:36:42 | remoteString | This predicate depends on a $@. | predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | user-provided value |
+edges
+| predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | predicateInjection.swift:26:25:26:25 | remoteString | provenance |  |
+| predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | predicateInjection.swift:29:25:29:25 | remoteString | provenance |  |
+| predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | predicateInjection.swift:31:25:31:25 | remoteString | provenance |  |
+| predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | predicateInjection.swift:33:25:33:25 | remoteString | provenance |  |
+| predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | predicateInjection.swift:36:42:36:42 | remoteString | provenance |  |
+nodes
+| predicateInjection.swift:23:24:23:78 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| predicateInjection.swift:26:25:26:25 | remoteString | semmle.label | remoteString |
+| predicateInjection.swift:29:25:29:25 | remoteString | semmle.label | remoteString |
+| predicateInjection.swift:31:25:31:25 | remoteString | semmle.label | remoteString |
+| predicateInjection.swift:33:25:33:25 | remoteString | semmle.label | remoteString |
+| predicateInjection.swift:36:42:36:42 | remoteString | semmle.label | remoteString |
+subpaths

@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the JavaEE Persistence API.
  */
+overlay[local?]
+module;
 
 import java
 

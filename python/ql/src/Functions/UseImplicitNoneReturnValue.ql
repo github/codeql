@@ -2,7 +2,9 @@
  * @name Use of the return value of a procedure
  * @description The return value of a procedure (a function that does not return a value) is used. This is confusing to the reader as the value (None) has no meaning.
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  * @problem.severity warning
  * @sub-severity low
  * @precision high

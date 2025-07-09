@@ -2,7 +2,8 @@
  * @name Inconsistent method resolution order
  * @description Class definition will raise a type error at runtime due to inconsistent method resolution order(MRO)
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity error
  * @sub-severity high

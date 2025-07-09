@@ -1,2 +1,0 @@
-| gen_struct_expr_field.rs:5:11:5:14 | a: 1 | gen_struct_expr_field.rs:5:11:5:11 | a |
-| gen_struct_expr_field.rs:5:17:5:20 | b: 2 | gen_struct_expr_field.rs:5:17:5:17 | b |

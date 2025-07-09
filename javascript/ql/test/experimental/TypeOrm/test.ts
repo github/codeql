@@ -217,4 +217,9 @@ AppDataSource.initialize().then(async () => {
                 qb.where(BadInput).orWhere(BadInput)   // test: SQLInjectionPoint
             }),
         ).getMany()
+
+    // Repository.query sink
+    await AppDataSource.getRepository(User2)
+        .query(BadInput)    // test: SQLInjectionPoint
+
 }).catch(error => console.log(error))

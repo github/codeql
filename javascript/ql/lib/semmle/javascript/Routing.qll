@@ -925,7 +925,7 @@ module Routing {
   private DataFlow::Node getAnAccessPathRhs(Node base, int n, string path) {
     // Assigned in the body of a route handler function, which is a middleware
     exists(RouteHandler handler | base = handler |
-      result = AccessPath::getAnAssignmentTo(handler.getParameter(n).ref(), path) and
+      result = AccessPath::getAnAssignmentTo(handler.getParameter(n).ref(), path).getALocalSource() and
       (
         exists(handler.getAContinuationInvocation())
         or

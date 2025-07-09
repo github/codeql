@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.ArgList
  */
 module Impl {
   /**
-   * A ArgList. For example:
+   * A list of arguments in a function or method call.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * foo(1, 2, 3);
+   * // ^^^^^^^^^
    * ```
    */
   class ArgList extends Generated::ArgList { }

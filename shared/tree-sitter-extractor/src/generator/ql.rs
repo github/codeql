@@ -6,6 +6,7 @@ pub enum TopLevel<'a> {
     Class(Class<'a>),
     Import(Import<'a>),
     Module(Module<'a>),
+    Predicate(Predicate<'a>),
 }
 
 impl fmt::Display for TopLevel<'_> {
@@ -14,6 +15,7 @@ impl fmt::Display for TopLevel<'_> {
             TopLevel::Import(imp) => write!(f, "{}", imp),
             TopLevel::Class(cls) => write!(f, "{}", cls),
             TopLevel::Module(m) => write!(f, "{}", m),
+            TopLevel::Predicate(pred) => write!(f, "{}", pred),
         }
     }
 }
@@ -68,10 +70,12 @@ impl fmt::Display for Class<'_> {
                     qldoc: None,
                     name: self.name,
                     overridden: false,
+                    is_private: false,
                     is_final: false,
                     return_type: None,
                     formal_parameters: vec![],
                     body: charpred.clone(),
+                    overlay: None,
                 }
             )?;
         }
@@ -150,6 +154,7 @@ pub enum Expression<'a> {
         expr: Box<Expression<'a>>,
         second_expr: Option<Box<Expression<'a>>>,
     },
+    Negation(Box<Expression<'a>>),
 }
 
 impl fmt::Display for Expression<'_> {
@@ -231,8 +236,15 @@ impl fmt::Display for Expression<'_> {
                 }
                 write!(f, ")")
             }
+            Expression::Negation(e) => write!(f, "not ({})", e),
         }
     }
+}
+
+#[derive(Clone, Eq, PartialEq, Hash)]
+pub enum OverlayAnnotation {
+    Local,
+    DiscardEntity,
 }
 
 #[derive(Clone, Eq, PartialEq, Hash)]
@@ -240,16 +252,29 @@ pub struct Predicate<'a> {
     pub qldoc: Option<String>,
     pub name: &'a str,
     pub overridden: bool,
+    pub is_private: bool,
     pub is_final: bool,
     pub return_type: Option<Type<'a>>,
     pub formal_parameters: Vec<FormalParameter<'a>>,
     pub body: Expression<'a>,
+    pub overlay: Option<OverlayAnnotation>,
 }
 
 impl fmt::Display for Predicate<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if let Some(qldoc) = &self.qldoc {
             write!(f, "/** {} */", qldoc)?;
+        }
+        if let Some(overlay_annotation) = &self.overlay {
+            write!(f, "overlay[")?;
+            match overlay_annotation {
+                OverlayAnnotation::Local => write!(f, "local")?,
+                OverlayAnnotation::DiscardEntity => write!(f, "discard_entity")?,
+            }
+            write!(f, "] ")?;
+        }
+        if self.is_private {
+            write!(f, "private ")?;
         }
         if self.is_final {
             write!(f, "final ")?;

@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with annotations in the `javax` package.
  */
+overlay[local?]
+module;
 
 import java
 

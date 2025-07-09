@@ -15,9 +15,12 @@ module Impl {
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A TupleField. For example:
+   * A field in a tuple struct or tuple enum variant.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct S(i32, String);
+   * //       ^^^  ^^^^^^
    * ```
    */
   class TupleField extends Generated::TupleField {

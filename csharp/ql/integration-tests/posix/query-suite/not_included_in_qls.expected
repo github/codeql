@@ -26,6 +26,7 @@ ql/csharp/ql/src/Bad Practices/Naming Conventions/DefaultControlNames.ql
 ql/csharp/ql/src/Bad Practices/Naming Conventions/VariableNameTooShort.ql
 ql/csharp/ql/src/Bad Practices/UseOfHtmlInputHidden.ql
 ql/csharp/ql/src/Bad Practices/UseOfSystemOutputStream.ql
+ql/csharp/ql/src/Configuration/PasswordInConfigurationFile.ql
 ql/csharp/ql/src/Dead Code/DeadRefTypes.ql
 ql/csharp/ql/src/Dead Code/NonAssignedFields.ql
 ql/csharp/ql/src/Dead Code/UnusedField.ql
@@ -89,6 +90,8 @@ ql/csharp/ql/src/Security Features/CWE-321/HardcodedSymmetricEncryptionKey.ql
 ql/csharp/ql/src/Security Features/CWE-327/DontInstallRootCert.ql
 ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserialization.ql
 ql/csharp/ql/src/Security Features/CWE-611/UseXmlSecureResolver.ql
+ql/csharp/ql/src/Security Features/CWE-798/HardcodedConnectionString.ql
+ql/csharp/ql/src/Security Features/CWE-798/HardcodedCredentials.ql
 ql/csharp/ql/src/Security Features/CWE-838/InappropriateEncoding.ql
 ql/csharp/ql/src/Useless code/PointlessForwardingMethod.ql
 ql/csharp/ql/src/definitions.ql

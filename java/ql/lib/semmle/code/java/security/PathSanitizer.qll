@@ -1,4 +1,6 @@
 /** Provides classes and predicates to reason about sanitization of path injection vulnerabilities. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.controlflow.Guards
@@ -21,7 +23,7 @@ private module ValidationMethod<DataFlow::guardChecksSig/3 validationGuard> {
       validationMethod(ma.getMethod(), pos) and
       ma.getArgument(pos) = rv and
       adjacentUseUseSameVar(rv, result.asExpr()) and
-      ma.getBasicBlock().bbDominates(result.asExpr().getBasicBlock())
+      ma.getBasicBlock().dominates(result.asExpr().getBasicBlock())
     )
   }
 

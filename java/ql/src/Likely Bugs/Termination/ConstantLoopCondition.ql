@@ -7,7 +7,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/constant-loop-condition
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-835
  */
 

@@ -1,7 +1,3 @@
-# Use of `String#replaceAll` with a first argument which is not a regular expression
-
-Using `String#replaceAll` is less performant than `String#replace` when the first argument is not a regular expression.
-
 ## Overview
 
 The `String#replaceAll` method is designed to work with regular expressions as its first parameter. When you use a simple string without any regex patterns (like special characters or syntax), it's more efficient to use `String#replace` instead. This is because `replaceAll` has to compile the input as a regular expression first, which adds unnecessary overhead when you are just replacing literal text.
@@ -18,6 +14,7 @@ public class Test {
         String s1 = "test";
         s1 = s1.replaceAll("t", "x"); // NON_COMPLIANT
         s1 = s1.replaceAll(".*", "x"); // COMPLIANT
+        s1 = s1.replace("t", "x"); // COMPLIANT
     }
 }
 

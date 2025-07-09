@@ -36,7 +36,7 @@ jobs:
   unit-tests:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-2019]
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -66,6 +66,6 @@ jobs:
           # Update existing stubs in the repo with the freshly generated ones
           mv "$STUBS_PATH/output/stubs/_frameworks" ql/test/resources/stubs/
           git status
-          codeql test run --threads=0 --search-path "${{ github.workspace }}" --check-databases --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries -- ql/test/library-tests/dataflow/flowsources/aspremote
+          codeql test run --threads=0 --search-path "${{ github.workspace }}" --check-databases --check-diff-informed --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries -- ql/test/library-tests/dataflow/flowsources/aspremote
         env:
           GITHUB_TOKEN: ${{ github.token }}

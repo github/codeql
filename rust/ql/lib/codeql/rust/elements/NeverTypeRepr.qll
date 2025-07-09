@@ -7,9 +7,12 @@ private import internal.NeverTypeReprImpl
 import codeql.rust.elements.TypeRepr
 
 /**
- * A NeverTypeRepr. For example:
+ * The never type `!`.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn foo() -> ! { panic!() }
+ * //          ^
  * ```
  */
 final class NeverTypeRepr = Impl::NeverTypeRepr;

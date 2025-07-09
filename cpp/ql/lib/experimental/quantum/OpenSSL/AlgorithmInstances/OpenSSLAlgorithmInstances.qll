@@ -3,3 +3,6 @@ import CipherAlgorithmInstance
 import PaddingAlgorithmInstance
 import BlockAlgorithmInstance
 import HashAlgorithmInstance
+import EllipticCurveAlgorithmInstance
+import SignatureAlgorithmInstance
+import MACAlgorithmInstance

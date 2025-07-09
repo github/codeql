@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.ParamList
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A ParamList. For example:
+   * A list of parameters in a function, method, or closure declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo(x: i32, y: i32) {}
+   * //      ^^^^^^^^^^^^^
    * ```
    */
   class ParamList extends Generated::ParamList {

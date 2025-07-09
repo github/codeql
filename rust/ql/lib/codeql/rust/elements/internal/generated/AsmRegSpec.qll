@@ -15,6 +15,14 @@ import codeql.rust.elements.NameRef
  */
 module Generated {
   /**
+   * A register specification in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("mov {0}, {1}", out("eax") x, in(EBX) y);
+   * //                        ^^^         ^^^
+   * ```
    * INTERNAL: Do not reference the `Generated::AsmRegSpec` class directly.
    * Use the subclass `AsmRegSpec`, where the following predicates are available.
    */

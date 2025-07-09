@@ -5,7 +5,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/lshift-larger-than-type-width
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

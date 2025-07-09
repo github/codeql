@@ -14,6 +14,14 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
+   * An option in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("", options(nostack, nomem));
+   * //              ^^^^^^^^^^^^^^^^
+   * ```
    * INTERNAL: Do not reference the `Generated::AsmOption` class directly.
    * Use the subclass `AsmOption`, where the following predicates are available.
    */

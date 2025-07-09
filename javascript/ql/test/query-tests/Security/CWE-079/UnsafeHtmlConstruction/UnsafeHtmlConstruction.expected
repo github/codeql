@@ -22,7 +22,6 @@
 | main.js:111:37:111:37 | x | main.js:98:43:98:43 | x | main.js:111:37:111:37 | x | This markdown rendering which depends on $@ might later allow $@. | main.js:98:43:98:43 | x | library input | main.js:112:24:112:26 | svg | cross-site scripting |
 | main.js:117:34:117:34 | s | main.js:116:47:116:47 | s | main.js:117:34:117:34 | s | This markdown rendering which depends on $@ might later allow $@. | main.js:116:47:116:47 | s | library input | main.js:118:53:118:56 | html | cross-site scripting |
 | typed.ts:2:29:2:29 | s | typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s | This HTML construction which depends on $@ might later allow $@. | typed.ts:1:39:1:39 | s | library input | typed.ts:3:31:3:34 | html | cross-site scripting |
-| typed.ts:8:40:8:40 | s | typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s | This HTML construction which depends on $@ might later allow $@. | typed.ts:6:43:6:43 | s | library input | typed.ts:8:29:8:52 | "<span> ... /span>" | cross-site scripting |
 edges
 | jquery-plugin.js:11:27:11:31 | stuff | jquery-plugin.js:14:31:14:35 | stuff | provenance |  |
 | jquery-plugin.js:11:34:11:40 | options | jquery-plugin.js:12:31:12:37 | options | provenance |  |
@@ -69,7 +68,6 @@ edges
 | main.js:98:43:98:43 | x | main.js:111:37:111:37 | x | provenance |  |
 | main.js:116:47:116:47 | s | main.js:117:34:117:34 | s | provenance |  |
 | typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s | provenance |  |
-| typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s | provenance |  |
 nodes
 | jquery-plugin.js:11:27:11:31 | stuff | semmle.label | stuff |
 | jquery-plugin.js:11:34:11:40 | options | semmle.label | options |
@@ -128,6 +126,4 @@ nodes
 | main.js:117:34:117:34 | s | semmle.label | s |
 | typed.ts:1:39:1:39 | s | semmle.label | s |
 | typed.ts:2:29:2:29 | s | semmle.label | s |
-| typed.ts:6:43:6:43 | s | semmle.label | s |
-| typed.ts:8:40:8:40 | s | semmle.label | s |
 subpaths

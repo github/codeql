@@ -34,6 +34,10 @@ module InsufficientHashIterationsConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(InsufficientHashIterationsAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 module InsufficientHashIterationsFlow = TaintTracking::Global<InsufficientHashIterationsConfig>;

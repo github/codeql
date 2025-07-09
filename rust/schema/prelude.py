@@ -73,6 +73,7 @@ class Callable(AstNode):
     """
     param_list: optional["ParamList"] | child
     attrs: list["Attr"] | child
+    params: list["Param"] | synth
 
 
 class Addressable(AstNode):
@@ -116,7 +117,6 @@ class ExtractorStep(Element):
 class Crate(Locatable):
     name: optional[string]
     version: optional[string]
-    module: optional["Module"]
     cfg_options: list[string]
     named_dependencies: list["NamedCrate"] | ql.internal
 

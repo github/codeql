@@ -8,6 +8,8 @@
  * If an inferred bound relies directly on a condition, then this condition is
  * reported as the reason for the bound.
  */
+overlay[local?]
+module;
 
 /*
  * This library tackles range analysis as a flow problem. Consider e.g.:
@@ -66,7 +68,6 @@
 import java
 private import SSA
 private import RangeUtils
-private import semmle.code.java.controlflow.internal.GuardsLogic
 private import semmle.code.java.security.RandomDataSource
 private import SignAnalysis
 private import semmle.code.java.Reflection
@@ -79,7 +80,7 @@ module Sem implements Semantic<Location> {
   private import java as J
   private import SSA as SSA
   private import RangeUtils as RU
-  private import semmle.code.java.controlflow.internal.GuardsLogic as GL
+  private import semmle.code.java.controlflow.Guards as G
 
   class Expr = J::Expr;
 
@@ -209,24 +210,18 @@ module Sem implements Semantic<Location> {
 
   class BasicBlock = J::BasicBlock;
 
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getABBSuccessor() }
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
   private predicate id(ExprParent x, ExprParent y) { x = y }
 
   private predicate idOfAst(ExprParent x, int y) = equivalenceRelation(id/2)(x, y)
 
-  private predicate idOf(BasicBlock x, int y) { idOfAst(x.getAstNode(), y) }
+  private predicate idOf(BasicBlock x, int y) { idOfAst(x.getFirstNode().getAstNode(), y) }
 
   int getBlockId1(BasicBlock bb) { idOf(bb, result) }
 
-  final private class FinalGuard = GL::Guard;
-
-  class Guard extends FinalGuard {
+  class Guard extends G::Guards_v2::Guard {
     Expr asExpr() { result = this }
-  }
-
-  predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2) {
-    GL::implies_v2(g1, b1, g2, b2)
   }
 
   class Type = J::Type;

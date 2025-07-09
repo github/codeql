@@ -47,7 +47,7 @@ import semmle.javascript.NodeJS
 import semmle.javascript.NPM
 import semmle.javascript.Paths
 import semmle.javascript.Promises
-import semmle.javascript.CanonicalNames
+deprecated import semmle.javascript.CanonicalNames
 import semmle.javascript.RangeAnalysis
 import semmle.javascript.Regexp
 import semmle.javascript.Routing
@@ -92,6 +92,7 @@ import semmle.javascript.frameworks.DigitalOcean
 import semmle.javascript.frameworks.DomEvents
 import semmle.javascript.frameworks.Electron
 import semmle.javascript.frameworks.EventEmitter
+import semmle.javascript.frameworks.Execa
 import semmle.javascript.frameworks.Files
 import semmle.javascript.frameworks.Firebase
 import semmle.javascript.frameworks.FormParsers

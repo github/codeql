@@ -9,9 +9,13 @@ import codeql.rust.elements.MacroItems
 import codeql.rust.elements.Stmt
 
 /**
- * A Item. For example:
+ * An item such as a function, struct, enum, etc.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn foo() {}
+ * struct S;
+ * enum E {}
  * ```
  */
 final class Item = Impl::Item;

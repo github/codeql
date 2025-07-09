@@ -18,9 +18,12 @@ import codeql.rust.elements.TypeRepr
  */
 module Generated {
   /**
-   * A TypeParam. For example:
+   * A type parameter in a generic parameter list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T>(t: T) {}
+   * //     ^
    * ```
    * INTERNAL: Do not reference the `Generated::TypeParam` class directly.
    * Use the subclass `TypeParam`, where the following predicates are available.

@@ -9,7 +9,6 @@ private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExternItemImpl::Impl as ExternItemImpl
-import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
@@ -20,14 +19,16 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A Static. For example:
+   * A static item declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * static X: i32 = 42;
    * ```
    * INTERNAL: Do not reference the `Generated::Static` class directly.
    * Use the subclass `Static`, where the following predicates are available.
    */
-  class Static extends Synth::TStatic, ExternItemImpl::ExternItem, ItemImpl::Item {
+  class Static extends Synth::TStatic, ExternItemImpl::ExternItem {
     override string getAPrimaryQlClass() { result = "Static" }
 
     /**

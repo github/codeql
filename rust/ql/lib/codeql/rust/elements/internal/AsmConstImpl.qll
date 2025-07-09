@@ -12,5 +12,15 @@ private import codeql.rust.elements.internal.generated.AsmConst
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A constant operand in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("mov eax, {const}", const 42);
+   * //                       ^^^^^^^
+   * ```
+   */
   class AsmConst extends Generated::AsmConst { }
 }

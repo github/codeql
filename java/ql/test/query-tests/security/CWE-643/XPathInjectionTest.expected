@@ -1,0 +1,197 @@
+#select
+| XPathInjectionTest.java:91:24:91:33 | expression | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:91:24:91:33 | expression | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:91:24:91:33 | expression | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:91:24:91:33 | expression | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:92:34:92:43 | expression | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:92:34:92:43 | expression | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:92:34:92:43 | expression | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:92:34:92:43 | expression | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:93:23:93:82 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:93:23:93:82 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:93:23:93:82 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:93:23:93:82 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:96:28:96:37 | expression | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:96:28:96:37 | expression | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:96:28:96:37 | expression | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:96:28:96:37 | expression | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:97:38:97:47 | expression | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:97:38:97:47 | expression | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:97:38:97:47 | expression | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:97:38:97:47 | expression | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:98:27:98:86 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:98:27:98:86 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:98:27:98:86 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:98:27:98:86 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:107:23:107:27 | query | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:107:23:107:27 | query | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:107:23:107:27 | query | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:107:23:107:27 | query | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:108:27:108:31 | query | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:108:27:108:31 | query | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:108:27:108:31 | query | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:108:27:108:31 | query | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:125:31:125:90 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:125:31:125:90 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:125:31:125:90 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:125:31:125:90 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:126:30:126:89 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:126:30:126:89 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:126:30:126:89 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:126:30:126:89 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:127:59:127:93 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:127:59:127:93 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:128:35:128:94 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:128:35:128:94 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:128:35:128:94 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:128:35:128:94 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:129:26:129:85 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:129:26:129:85 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:129:26:129:85 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:129:26:129:85 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:130:32:130:91 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:130:32:130:91 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:130:32:130:91 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:130:32:130:91 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:131:26:131:85 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:131:26:131:85 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:131:26:131:85 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:131:26:131:85 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:132:30:132:89 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:132:30:132:89 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:132:30:132:89 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:132:30:132:89 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:134:26:134:85 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:134:26:134:85 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:134:26:134:85 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:134:26:134:85 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:135:26:135:85 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:135:26:135:85 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:135:26:135:85 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:135:26:135:85 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:139:34:139:93 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:139:34:139:93 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:139:34:139:93 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:139:34:139:93 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:140:32:140:91 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:140:32:140:91 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:140:32:140:91 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:140:32:140:91 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:141:38:141:97 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:141:38:141:97 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:141:38:141:97 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:141:38:141:97 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:143:38:143:97 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:143:38:143:97 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:143:38:143:97 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:143:38:143:97 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:144:36:144:95 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:144:36:144:95 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:144:36:144:95 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:144:36:144:95 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:145:42:145:101 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:145:42:145:101 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:145:42:145:101 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:145:42:145:101 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:146:36:146:95 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:146:36:146:95 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:146:36:146:95 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:146:36:146:95 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:147:52:147:111 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:147:52:147:111 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:147:52:147:111 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:147:52:147:111 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:150:39:150:98 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:150:39:150:98 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:150:39:150:98 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:150:39:150:98 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:151:37:151:96 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:151:37:151:96 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:151:37:151:96 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:151:37:151:96 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:152:43:152:102 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:152:43:152:102 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:152:43:152:102 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:152:43:152:102 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:155:33:155:92 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:155:33:155:92 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:155:33:155:92 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:155:33:155:92 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:156:37:156:96 | ... + ... | XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:156:37:156:96 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:77:23:77:50 | getParameter(...) | user-provided value |
+| XPathInjectionTest.java:156:37:156:96 | ... + ... | XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:156:37:156:96 | ... + ... | XPath expression depends on a $@. | XPathInjectionTest.java:78:23:78:50 | getParameter(...) | user-provided value |
+edges
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:91:24:91:33 | expression | provenance | Src:MaD:24 Sink:MaD:2 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:92:34:92:43 | expression | provenance | Src:MaD:24 Sink:MaD:3 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:93:23:93:82 | ... + ... | provenance | Src:MaD:24 Sink:MaD:1 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:96:28:96:37 | expression | provenance | Src:MaD:24 Sink:MaD:2 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:97:38:97:47 | expression | provenance | Src:MaD:24 Sink:MaD:3 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:98:27:98:86 | ... + ... | provenance | Src:MaD:24 Sink:MaD:1 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:101:19:101:22 | user : String | provenance | Src:MaD:24  |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:125:31:125:90 | ... + ... | provenance | Src:MaD:24 Sink:MaD:21 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:126:30:126:89 | ... + ... | provenance | Src:MaD:24 Sink:MaD:20 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:128:35:128:94 | ... + ... | provenance | Src:MaD:24 Sink:MaD:22 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:129:26:129:85 | ... + ... | provenance | Src:MaD:24 Sink:MaD:23 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:130:32:130:91 | ... + ... | provenance | Src:MaD:24 Sink:MaD:19 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:131:26:131:85 | ... + ... | provenance | Src:MaD:24 Sink:MaD:18 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:132:30:132:89 | ... + ... | provenance | Src:MaD:24 Sink:MaD:17 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:134:26:134:85 | ... + ... | provenance | Src:MaD:24  |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:135:26:135:85 | ... + ... | provenance | Src:MaD:24  |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:139:34:139:93 | ... + ... | provenance | Src:MaD:24 Sink:MaD:9 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:140:32:140:91 | ... + ... | provenance | Src:MaD:24 Sink:MaD:10 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:141:38:141:97 | ... + ... | provenance | Src:MaD:24 Sink:MaD:11 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:143:38:143:97 | ... + ... | provenance | Src:MaD:24 Sink:MaD:12 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:144:36:144:95 | ... + ... | provenance | Src:MaD:24 Sink:MaD:13 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:145:42:145:101 | ... + ... | provenance | Src:MaD:24 Sink:MaD:14 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:146:36:146:95 | ... + ... | provenance | Src:MaD:24 Sink:MaD:15 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:147:52:147:111 | ... + ... | provenance | Src:MaD:24 Sink:MaD:16 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:150:39:150:98 | ... + ... | provenance | Src:MaD:24 Sink:MaD:6 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:151:37:151:96 | ... + ... | provenance | Src:MaD:24 Sink:MaD:7 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:152:43:152:102 | ... + ... | provenance | Src:MaD:24 Sink:MaD:8 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:155:33:155:92 | ... + ... | provenance | Src:MaD:24 Sink:MaD:4 |
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | XPathInjectionTest.java:156:37:156:96 | ... + ... | provenance | Src:MaD:24 Sink:MaD:5 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:91:24:91:33 | expression | provenance | Src:MaD:24 Sink:MaD:2 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:92:34:92:43 | expression | provenance | Src:MaD:24 Sink:MaD:3 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:93:23:93:82 | ... + ... | provenance | Src:MaD:24 Sink:MaD:1 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:96:28:96:37 | expression | provenance | Src:MaD:24 Sink:MaD:2 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:97:38:97:47 | expression | provenance | Src:MaD:24 Sink:MaD:3 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:98:27:98:86 | ... + ... | provenance | Src:MaD:24 Sink:MaD:1 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:103:19:103:22 | pass : String | provenance | Src:MaD:24  |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:125:31:125:90 | ... + ... | provenance | Src:MaD:24 Sink:MaD:21 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:126:30:126:89 | ... + ... | provenance | Src:MaD:24 Sink:MaD:20 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:127:59:127:93 | ... + ... | provenance | Src:MaD:24 Sink:MaD:20 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:128:35:128:94 | ... + ... | provenance | Src:MaD:24 Sink:MaD:22 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:129:26:129:85 | ... + ... | provenance | Src:MaD:24 Sink:MaD:23 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:130:32:130:91 | ... + ... | provenance | Src:MaD:24 Sink:MaD:19 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:131:26:131:85 | ... + ... | provenance | Src:MaD:24 Sink:MaD:18 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:132:30:132:89 | ... + ... | provenance | Src:MaD:24 Sink:MaD:17 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:134:26:134:85 | ... + ... | provenance | Src:MaD:24  |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:135:26:135:85 | ... + ... | provenance | Src:MaD:24  |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:139:34:139:93 | ... + ... | provenance | Src:MaD:24 Sink:MaD:9 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:140:32:140:91 | ... + ... | provenance | Src:MaD:24 Sink:MaD:10 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:141:38:141:97 | ... + ... | provenance | Src:MaD:24 Sink:MaD:11 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:143:38:143:97 | ... + ... | provenance | Src:MaD:24 Sink:MaD:12 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:144:36:144:95 | ... + ... | provenance | Src:MaD:24 Sink:MaD:13 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:145:42:145:101 | ... + ... | provenance | Src:MaD:24 Sink:MaD:14 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:146:36:146:95 | ... + ... | provenance | Src:MaD:24 Sink:MaD:15 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:147:52:147:111 | ... + ... | provenance | Src:MaD:24 Sink:MaD:16 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:150:39:150:98 | ... + ... | provenance | Src:MaD:24 Sink:MaD:6 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:151:37:151:96 | ... + ... | provenance | Src:MaD:24 Sink:MaD:7 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:152:43:152:102 | ... + ... | provenance | Src:MaD:24 Sink:MaD:8 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:155:33:155:92 | ... + ... | provenance | Src:MaD:24 Sink:MaD:4 |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | XPathInjectionTest.java:156:37:156:96 | ... + ... | provenance | Src:MaD:24 Sink:MaD:5 |
+| XPathInjectionTest.java:101:9:101:10 | sb [post update] : StringBuffer | XPathInjectionTest.java:105:24:105:25 | sb : StringBuffer | provenance |  |
+| XPathInjectionTest.java:101:19:101:22 | user : String | XPathInjectionTest.java:101:9:101:10 | sb [post update] : StringBuffer | provenance | MaD:25 |
+| XPathInjectionTest.java:103:9:103:10 | sb [post update] : StringBuffer | XPathInjectionTest.java:105:24:105:25 | sb : StringBuffer | provenance |  |
+| XPathInjectionTest.java:103:19:103:22 | pass : String | XPathInjectionTest.java:103:9:103:10 | sb [post update] : StringBuffer | provenance | MaD:25 |
+| XPathInjectionTest.java:105:24:105:25 | sb : StringBuffer | XPathInjectionTest.java:105:24:105:36 | toString(...) : String | provenance | MaD:26 |
+| XPathInjectionTest.java:105:24:105:36 | toString(...) : String | XPathInjectionTest.java:107:23:107:27 | query | provenance | Sink:MaD:1 |
+| XPathInjectionTest.java:105:24:105:36 | toString(...) : String | XPathInjectionTest.java:108:27:108:31 | query | provenance | Sink:MaD:1 |
+models
+| 1 | Sink: javax.xml.xpath; XPath; true; compile; ; ; Argument[0]; xpath-injection; manual |
+| 2 | Sink: javax.xml.xpath; XPath; true; evaluate; ; ; Argument[0]; xpath-injection; manual |
+| 3 | Sink: javax.xml.xpath; XPath; true; evaluateExpression; ; ; Argument[0]; xpath-injection; manual |
+| 4 | Sink: org.dom4j.tree; AbstractNode; true; createPattern; ; ; Argument[0]; xpath-injection; manual |
+| 5 | Sink: org.dom4j.tree; AbstractNode; true; createXPathFilter; ; ; Argument[0]; xpath-injection; manual |
+| 6 | Sink: org.dom4j.util; ProxyDocumentFactory; true; createPattern; ; ; Argument[0]; xpath-injection; manual |
+| 7 | Sink: org.dom4j.util; ProxyDocumentFactory; true; createXPath; ; ; Argument[0]; xpath-injection; manual |
+| 8 | Sink: org.dom4j.util; ProxyDocumentFactory; true; createXPathFilter; ; ; Argument[0]; xpath-injection; manual |
+| 9 | Sink: org.dom4j; DocumentFactory; true; createPattern; ; ; Argument[0]; xpath-injection; manual |
+| 10 | Sink: org.dom4j; DocumentFactory; true; createXPath; ; ; Argument[0]; xpath-injection; manual |
+| 11 | Sink: org.dom4j; DocumentFactory; true; createXPathFilter; ; ; Argument[0]; xpath-injection; manual |
+| 12 | Sink: org.dom4j; DocumentHelper; false; createPattern; ; ; Argument[0]; xpath-injection; manual |
+| 13 | Sink: org.dom4j; DocumentHelper; false; createXPath; ; ; Argument[0]; xpath-injection; manual |
+| 14 | Sink: org.dom4j; DocumentHelper; false; createXPathFilter; ; ; Argument[0]; xpath-injection; manual |
+| 15 | Sink: org.dom4j; DocumentHelper; false; selectNodes; ; ; Argument[0]; xpath-injection; manual |
+| 16 | Sink: org.dom4j; DocumentHelper; false; sort; ; ; Argument[1]; xpath-injection; manual |
+| 17 | Sink: org.dom4j; Node; true; createXPath; ; ; Argument[0]; xpath-injection; manual |
+| 18 | Sink: org.dom4j; Node; true; matches; ; ; Argument[0]; xpath-injection; manual |
+| 19 | Sink: org.dom4j; Node; true; numberValueOf; ; ; Argument[0]; xpath-injection; manual |
+| 20 | Sink: org.dom4j; Node; true; selectNodes; ; ; Argument[0..1]; xpath-injection; manual |
+| 21 | Sink: org.dom4j; Node; true; selectObject; ; ; Argument[0]; xpath-injection; manual |
+| 22 | Sink: org.dom4j; Node; true; selectSingleNode; ; ; Argument[0]; xpath-injection; manual |
+| 23 | Sink: org.dom4j; Node; true; valueOf; ; ; Argument[0]; xpath-injection; manual |
+| 24 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 25 | Summary: java.lang; AbstractStringBuilder; true; append; ; ; Argument[0]; Argument[this]; taint; manual |
+| 26 | Summary: java.lang; CharSequence; true; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+nodes
+| XPathInjectionTest.java:77:23:77:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| XPathInjectionTest.java:78:23:78:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| XPathInjectionTest.java:91:24:91:33 | expression | semmle.label | expression |
+| XPathInjectionTest.java:92:34:92:43 | expression | semmle.label | expression |
+| XPathInjectionTest.java:93:23:93:82 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:96:28:96:37 | expression | semmle.label | expression |
+| XPathInjectionTest.java:97:38:97:47 | expression | semmle.label | expression |
+| XPathInjectionTest.java:98:27:98:86 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:101:9:101:10 | sb [post update] : StringBuffer | semmle.label | sb [post update] : StringBuffer |
+| XPathInjectionTest.java:101:19:101:22 | user : String | semmle.label | user : String |
+| XPathInjectionTest.java:103:9:103:10 | sb [post update] : StringBuffer | semmle.label | sb [post update] : StringBuffer |
+| XPathInjectionTest.java:103:19:103:22 | pass : String | semmle.label | pass : String |
+| XPathInjectionTest.java:105:24:105:25 | sb : StringBuffer | semmle.label | sb : StringBuffer |
+| XPathInjectionTest.java:105:24:105:36 | toString(...) : String | semmle.label | toString(...) : String |
+| XPathInjectionTest.java:107:23:107:27 | query | semmle.label | query |
+| XPathInjectionTest.java:108:27:108:31 | query | semmle.label | query |
+| XPathInjectionTest.java:125:31:125:90 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:126:30:126:89 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:127:59:127:93 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:128:35:128:94 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:129:26:129:85 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:130:32:130:91 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:131:26:131:85 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:132:30:132:89 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:134:26:134:85 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:135:26:135:85 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:139:34:139:93 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:140:32:140:91 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:141:38:141:97 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:143:38:143:97 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:144:36:144:95 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:145:42:145:101 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:146:36:146:95 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:147:52:147:111 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:150:39:150:98 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:151:37:151:96 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:152:43:152:102 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:155:33:155:92 | ... + ... | semmle.label | ... + ... |
+| XPathInjectionTest.java:156:37:156:96 | ... + ... | semmle.label | ... + ... |
+subpaths
