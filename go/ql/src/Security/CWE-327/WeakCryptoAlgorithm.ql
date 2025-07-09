@@ -5,7 +5,6 @@
  * @problem.severity error
  * @id go/weak-crypto-algorithm
  * @tags security
- *       experimental
  *       external/cwe/cwe-327
  *       external/cwe/cwe-328
  */
