@@ -3636,12 +3636,12 @@ inferType
 | main.rs:2224:19:2227:9 | S5 {...} |  | main.rs:2204:5:2206:5 | S5 |
 | main.rs:2224:19:2227:9 | S5 {...} | T5 | main.rs:2183:5:2184:14 | S2 |
 | main.rs:2226:20:2226:32 | ...::default(...) |  | main.rs:2183:5:2184:14 | S2 |
-| main.rs:2236:38:2236:42 | S1 {...} |  | main.rs:2232:5:2233:5 | S1 |
-| main.rs:2236:45:2236:49 | S1 {...} |  | main.rs:2232:5:2233:5 | S1 |
-| main.rs:2237:16:2237:19 | SelfParam |  | main.rs:2232:5:2233:5 | S1 |
-| main.rs:2260:5:2260:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2261:5:2261:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2261:20:2261:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2261:41:2261:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2277:5:2277:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:2236:14:2236:18 | S1 {...} |  | main.rs:2232:5:2232:16 | S1 |
+| main.rs:2236:21:2236:25 | S1 {...} |  | main.rs:2232:5:2232:16 | S1 |
+| main.rs:2238:16:2238:19 | SelfParam |  | main.rs:2232:5:2232:16 | S1 |
+| main.rs:2261:5:2261:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2262:5:2262:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2262:20:2262:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2262:41:2262:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2278:5:2278:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
 testFailures
