@@ -2228,6 +2228,33 @@ mod explicit_type_args {
     }
 }
 
+mod tuples {
+    struct S1 {
+    }
+
+    impl S1 {
+        fn get_pair() -> (S1, S1) { (S1 {}, S1 {}) }
+        fn foo(self) { }
+    }
+
+    pub fn f() {
+        let a = S1::get_pair(); // $ method=get_pair MISSING: type=a:?
+        let mut b = S1::get_pair(); // $ method=get_pair MISSING: type=b:?
+        let (c, d) = S1::get_pair(); // $ method=get_pair MISSING: type=c:? type=d:?
+        let (mut e, f) = S1::get_pair(); // $ method=get_pair MISSING: type=e: type=f:
+        let (mut g, mut h) = S1::get_pair(); // $ method=get_pair MISSING: type=g:? type=h:?
+
+        a.0.foo(); // $ MISSING: method=foo
+        b.1.foo(); // $ MISSING: method=foo
+        c.foo(); // $ MISSING: method=foo
+        d.foo(); // $ MISSING: method=foo
+        e.foo(); // $ MISSING: method=foo
+        f.foo(); // $ MISSING: method=foo
+        g.foo(); // $ MISSING: method=foo
+        h.foo(); // $ MISSING: method=foo
+    }
+}
+
 fn main() {
     field_access::f(); // $ method=f
     method_impl::f(); // $ method=f
@@ -2251,7 +2278,9 @@ fn main() {
     impl_trait::f(); // $ method=f
     indexers::f(); // $ method=f
     loops::f(); // $ method=f
+    explicit_type_args::f(); // $ method=f
     macros::f(); // $ method=f
     method_determined_by_argument_type::f(); // $ method=f
+    tuples::f(); // $ method=f
     dereference::test(); // $ method=test
 }
