@@ -2126,21 +2126,21 @@ mod method_determined_by_argument_type {
         S(1i64).my_add(3i64); // $ MISSING: method=S::my_add2
         S(1i64).my_add(&3i64); // $ method=S::my_add3
 
-        let x = i64::my_from(73i64); // $ method=MyFrom<i64>::my_from $ SPURIOUS: method=MyFrom<bool>::my_from
-        let y = i64::my_from(true); // $ method=MyFrom<bool>::my_from $ SPURIOUS: method=MyFrom<i64>::my_from
-        let z: i64 = MyFrom::my_from(73i64); // $ MISSING: method=MyFrom<i64>::my_from $ SPURIOUS: method=MyFrom::my_from
-        i64::my_from2(73i64, 0i64); // $ method=MyFrom2<i64>::my_from2 $ SPURIOUS: method=MyFrom2<bool>::my_from2
-        i64::my_from2(true, 0i64); // $ method=MyFrom2<bool>::my_from2 $ SPURIOUS: method=MyFrom2<i64>::my_from2
-        MyFrom2::my_from2(73i64, 0i64); // $ MISSING: method=MyFrom2<i64>::my_from2 $ SPURIOUS: method=MyFrom2::my_from2
+        let x = i64::my_from(73i64); // $ method=MyFrom<i64>::my_from
+        let y = i64::my_from(true); // $ method=MyFrom<bool>::my_from
+        let z: i64 = MyFrom::my_from(73i64); // $ method=MyFrom<i64>::my_from
+        i64::my_from2(73i64, 0i64); // $ method=MyFrom2<i64>::my_from2
+        i64::my_from2(true, 0i64); // $ method=MyFrom2<bool>::my_from2
+        MyFrom2::my_from2(73i64, 0i64); // $ method=MyFrom2<i64>::my_from2
 
         i64::f1(73i64); // $ method=MySelfTrait<i64>::f1
         i64::f2(73i64); // $ method=MySelfTrait<i64>::f2
         bool::f1(true); // $ method=MySelfTrait<bool>::f1
         bool::f2(true); // $ method=MySelfTrait<bool>::f2
-        MySelfTrait::f1(73i64); // $ SPURIOUS method=MySelfTrait::f1 MISSING: method=MySelfTrait<i64>::f1
-        MySelfTrait::f2(73i64); // $ SPURIOUS method=MySelfTrait::f2 MISSING: method=MySelfTrait<i64>::f2
-        MySelfTrait::f1(true); // $ SPURIOUS method=MySelfTrait::f1 MISSING: method=MySelfTrait<bool>::f1
-        MySelfTrait::f2(true); // $ SPURIOUS method=MySelfTrait::f2 MISSING: method=MySelfTrait<bool>::f2
+        MySelfTrait::f1(73i64); // $ method=MySelfTrait<i64>::f1
+        MySelfTrait::f2(73i64); // $ method=MySelfTrait<i64>::f2
+        MySelfTrait::f1(true); // $ method=MySelfTrait<bool>::f1
+        MySelfTrait::f2(true); // $ method=MySelfTrait<bool>::f2
     }
 }
 
