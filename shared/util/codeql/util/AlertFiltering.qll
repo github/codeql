@@ -8,15 +8,14 @@ module;
 private import codeql.util.Location
 
 /**
- * Holds if the query should produce alerts that match the given line ranges.
+ * Holds if the query may restrict its computation to only produce alerts that match the given line
+ * ranges. This predicate is used for implementing _diff-informed queries_ for pull requests in
+ * GitHub Code Scanning.
  *
  * This predicate is active if and only if it is nonempty. If this predicate is inactive, it has no
- * effect. If it is active, it accepts any alert that has at least one matching location.
- *
- * Note that an alert that is not accepted by this filtering predicate may still be included in the
- * query results if it is accepted by another active filtering predicate in this module. An alert is
- * excluded from the query results if only if (1) there is at least one active filtering predicate,
- * and (2) it is not accepted by any active filtering predicate.
+ * effect. If it is active, queries may omit alerts that don't have a _primary_ or _related_
+ * location (in SARIF terminology) whose start line is within a specified range. Queries are allowed
+ * to produce alerts outside this range.
  *
  * An alert location is a match if it matches a row in this predicate. If `startLineStart` and
  * `startLineEnd` are both 0, the row specifies a whole-file match, and a location is a match if
@@ -29,26 +28,24 @@ private import codeql.util.Location
  * - startLineStart: inclusive start of the range for alert location start line number (1-based).
  * - startLineEnd: inclusive end of the range for alert location start line number (1-based).
  *
- * A query should either perform no alert filtering, or adhere to all the filtering rules in this
- * module and return all and only the accepted alerts.
- *
- * This predicate is suitable for situations where we want to filter alerts at line granularity,
- * such as based on the pull request diff.
+ * Note that an alert that is not accepted by this filtering predicate may still be included in the
+ * query results if it is accepted by another active filtering predicate in this module. An alert is
+ * excluded from the query results if only if (1) there is at least one active filtering predicate,
+ * and (2) it is not accepted by any active filtering predicate.
  *
  * See also: `restrictAlertsToExactLocation`.
  */
 extensible predicate restrictAlertsTo(string filePath, int startLineStart, int startLineEnd);
 
 /**
- * Holds if the query should produce alerts that match the given locations.
+ * Holds if the query may restrict its computation to only produce alerts that match the given
+ * character ranges. This predicate is suitable for testing, where we want to filter by the exact
+ * alert location, distinguishing between alerts on the same line.
  *
  * This predicate is active if and only if it is nonempty. If this predicate is inactive, it has no
- * effect. If it is active, it accepts any alert that has at least one matching location.
- *
- * Note that an alert that is not accepted by this filtering predicate may still be included in the
- * query results if it is accepted by another active filtering predicate in this module. An alert is
- * excluded from the query results if only if (1) there is at least one active filtering predicate,
- * and (2) it is not accepted by any active filtering predicate.
+ * effect. If it is active, queries may omit alerts that don't have a _primary_ or _related_
+ * location (in SARIF terminology) whose location equals a tuple from this predicate. Queries are
+ * allowed to produce alerts outside this range.
  *
  * An alert location is a match if it matches a row in this predicate. Each row specifies an exact
  * location: an alert location is a match if its file path matches `filePath`, its start line and
@@ -61,11 +58,10 @@ extensible predicate restrictAlertsTo(string filePath, int startLineStart, int s
  * - endLine: alert location end line number (1-based).
  * - endColumn: alert location end column number (1-based).
  *
- * A query should either perform no alert filtering, or adhere to all the filtering rules in this
- * module and return all and only the accepted alerts.
- *
- * This predicate is suitable for situations where we want to filter by the exact alert location,
- * distinguishing between alerts on the same line.
+ * Note that an alert that is not accepted by this filtering predicate may still be included in the
+ * query results if it is accepted by another active filtering predicate in this module. An alert is
+ * excluded from the query results if only if (1) there is at least one active filtering predicate,
+ * and (2) it is not accepted by any active filtering predicate.
  *
  * See also: `restrictAlertsTo`.
  */
@@ -87,10 +83,15 @@ module AlertFilteringImpl<LocationSig Location> {
   }
 
   /**
-   * Holds if the given location intersects the diff range. Testing for full
-   * intersection rather than only matching the start line means that this
-   * predicate is more broadly useful than just checking whether a specific
-   * element is considered to be in the diff range of GitHub Code Scanning:
+   * Holds if the given location intersects the diff range. When that is the
+   * case, ensuring that alerts mentioning this location are included in the
+   * query results is a valid overapproximation of the requirements for
+   * _diff-informed queries_ as documented under `restrictAlertsTo`.
+   *
+   * Testing for full intersection rather than only matching the start line
+   * means that this predicate is more broadly useful than just checking whether
+   * a specific element is considered to be in the diff range of GitHub Code
+   * Scanning:
    * - If it's inconvenient to pass the exact `Location` of the element of
    *   interest, it's valid to use a `Location` of an enclosing element.
    * - This predicate could be useful for other systems of alert presentation
