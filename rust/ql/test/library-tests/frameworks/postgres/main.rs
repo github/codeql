@@ -41,9 +41,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     for row in &conn.query("SELECT id, name, age FROM person", &[])? {  // $ sql-sink
-        let id: i32 = row.get("id"); // $ MISSING: database-read
-        let name: &str = row.try_get("name")?; // $ MISSING: database-read
-        let age: i32 = row.try_get("age").unwrap(); // $ MISSING: database-read
+        let id: i32 = row.get("id"); // $ database-read
+        let name: &str = row.try_get("name")?; // $ database-read
+        let age: i32 = row.try_get("age").unwrap(); // $ database-read
         println!("found person: {} {} {}", id, name, age);
     }
 
