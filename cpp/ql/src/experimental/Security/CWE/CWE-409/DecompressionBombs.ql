@@ -29,8 +29,12 @@ module DecompressionTaintConfig implements DataFlow::ConfigSig {
     any(DecompressionFlowStep s).isAdditionalFlowStep(node1, node2)
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 38 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/experimental/Security/CWE/CWE-409/DecompressionBombs.ql@39:87:39:88)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(FunctionCall fc | result = [sink.getLocation(), fc.getLocation()] | isSink(fc, sink))
   }
 }
 
