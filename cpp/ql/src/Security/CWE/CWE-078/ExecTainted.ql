@@ -151,8 +151,15 @@ module ExecTaintConfig implements DataFlow::StateConfigSig {
     isSink(node, _) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 161 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-078/ExecTainted.ql@165:8:165:14), Column 7 does not select a source or sink originating from the flow call on line 161 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-078/ExecTainted.ql@167:71:167:82)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(DataFlow::Node concatResult, Expr command, ExecState state |
+      result = [concatResult.getLocation(), command.getLocation()] and
+      isSink(sink, state) and
+      isSinkImpl(sink, command, _) and
+      concatResult = state.getOutgoingNode()
+    )
   }
 }
 
