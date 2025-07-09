@@ -2229,12 +2229,13 @@ mod explicit_type_args {
 }
 
 mod tuples {
-    struct S1 {
-    }
+    struct S1 {}
 
     impl S1 {
-        fn get_pair() -> (S1, S1) { (S1 {}, S1 {}) }
-        fn foo(self) { }
+        fn get_pair() -> (S1, S1) {
+            (S1 {}, S1 {})
+        }
+        fn foo(self) {}
     }
 
     pub fn f() {
