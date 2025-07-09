@@ -125,8 +125,10 @@ module Config implements DataFlow::ConfigSig {
     node = DataFlow::BarrierGuard<lessThanOrEqual/3>::getABarrierNode()
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 149 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-120/UnboundedWrite.ql@152:8:152:9)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(BufferWrite bw | result = bw.getLocation() | isSink(sink, bw, _))
   }
 }
 
