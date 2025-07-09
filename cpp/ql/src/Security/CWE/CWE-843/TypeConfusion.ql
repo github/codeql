@@ -180,11 +180,7 @@ module Config implements DataFlow::ConfigSig {
   int fieldFlowBranchLimit() { result = 0 }
 
   predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 208 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-843/TypeConfusion.ql@220:72:220:84), Column 5 does not select a source or sink originating from the flow call on line 218 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-843/TypeConfusion.ql@220:72:220:84), Column 7 does not select a source or sink originating from the flow call on line 208 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-843/TypeConfusion.ql@221:29:221:36), Column 7 does not select a source or sink originating from the flow call on line 218 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-843/TypeConfusion.ql@221:29:221:36), Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-843/TypeConfusion.ql@187:5:187:28)
-  }
-
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 5 does not select a source or sink originating from the flow call on line 208 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-843/TypeConfusion.ql@220:72:220:84), Column 5 does not select a source or sink originating from the flow call on line 218 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-843/TypeConfusion.ql@220:72:220:84), Column 7 does not select a source or sink originating from the flow call on line 208 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-843/TypeConfusion.ql@221:29:221:36), Column 7 does not select a source or sink originating from the flow call on line 218 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-843/TypeConfusion.ql@221:29:221:36), Flow call outside 'select' clause (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-843/TypeConfusion.ql@187:5:187:28)
+    none() // used both positively and negatively
   }
 }
 
