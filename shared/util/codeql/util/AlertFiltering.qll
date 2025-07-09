@@ -98,7 +98,7 @@ module AlertFilteringImpl<LocationSig Location> {
       exists(int locStartLine, int locEndLine |
         location.hasLocationInfo(filePath, locStartLine, _, locEndLine, _)
       |
-        restrictAlertsToStartLine(filePath, [locStartLine .. locEndLine])
+        restrictAlertsToStartLine(pragma[only_bind_into](filePath), [locStartLine .. locEndLine])
       )
     )
     or
