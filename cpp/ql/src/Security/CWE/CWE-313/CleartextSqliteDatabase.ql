@@ -124,8 +124,18 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 134 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-313/CleartextSqliteDatabase.ql@137:8:137:17), Column 5 does not select a source or sink originating from the flow call on line 134 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-313/CleartextSqliteDatabase.ql@138:72:138:80)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    exists(SensitiveExpr sensitive | result = sensitive.getLocation() |
+      isSourceImpl(source, sensitive)
+    )
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(SqliteFunctionCall sqliteCall | result = sqliteCall.getLocation() |
+      isSinkImpl(sink, sqliteCall, _)
+    )
   }
 }
 
