@@ -94,8 +94,10 @@ module TaintedPathConfig implements DataFlow::ConfigSig {
     isSink(node)
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 selects sink.asIndirectArgument (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-022/TaintedPath.ql@108:8:108:17)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.asIndirectArgument().getLocation()
   }
 }
 
