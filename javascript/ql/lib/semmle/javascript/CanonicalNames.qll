@@ -1,6 +1,7 @@
 /**
  * Provides classes for working with name resolution of namespaces and types.
  */
+deprecated module;
 
 import javascript
 
@@ -18,7 +19,7 @@ import javascript
  *
  * This class is only populated when full TypeScript extraction is enabled.
  */
-class CanonicalName extends @symbol {
+deprecated class CanonicalName extends @symbol {
   /**
    * Gets the parent of this canonical name, that is, the prefix of its qualified name.
    */
@@ -218,7 +219,7 @@ class CanonicalName extends @symbol {
 /**
  * The canonical name for a type.
  */
-class TypeName extends CanonicalName {
+deprecated class TypeName extends CanonicalName {
   TypeName() {
     exists(TypeReference ref | type_symbol(ref, this)) or
     exists(TypeDefinition def | ast_node_symbol(def, this)) or
@@ -261,7 +262,7 @@ class TypeName extends CanonicalName {
 /**
  * The canonical name for a namespace.
  */
-class Namespace extends CanonicalName {
+deprecated class Namespace extends CanonicalName {
   Namespace() {
     this.getAChild().isExportedMember() or
     exists(NamespaceDefinition def | ast_node_symbol(def, this)) or
@@ -309,7 +310,7 @@ class Namespace extends CanonicalName {
 /**
  * The canonical name for a function.
  */
-class CanonicalFunctionName extends CanonicalName {
+deprecated class CanonicalFunctionName extends CanonicalName {
   CanonicalFunctionName() {
     exists(Function fun | ast_node_symbol(fun, this)) or
     exists(InvokeExpr invoke | ast_node_symbol(invoke, this))

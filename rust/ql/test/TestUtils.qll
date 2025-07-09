@@ -6,7 +6,7 @@ predicate toBeTested(Element e) {
   (
     not e instanceof Locatable
     or
-    e.(Locatable).fromSource()
+    exists(e.(Locatable).getFile().getRelativePath())
   )
 }
 

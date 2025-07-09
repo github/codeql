@@ -651,12 +651,12 @@ pub fn test_implicit_derefs() {
 		let str2;
 		{
 			let str1 = "bar";
-			str2 = "foo".to_string() + &str1; // $ Source[rust/access-after-lifetime-ended]=str1
+			str2 = "foo".to_string() + &str1;
 			ref1 = &raw const str2; // $ Source[rust/access-after-lifetime-ended]=str2
 		} // (str1 goes out of scope, but it's been copied into str2)
 
 		unsafe {
-			let v1 = &*ref1; // $ SPURIOUS: Alert[rust/access-after-lifetime-ended]=str1
+			let v1 = &*ref1;
 			println!("	v1 = {v1}");
 		}
 	} // (str2 goes out of scope, thus ref1 is dangling)
@@ -664,7 +664,7 @@ pub fn test_implicit_derefs() {
 	use_the_stack();
 
 	unsafe {
-		let v2 = &*ref1; // $ Alert[rust/access-after-lifetime-ended]=str2 SPURIOUS: Alert[rust/access-after-lifetime-ended]=str1
+		let v2 = &*ref1; // $ Alert[rust/access-after-lifetime-ended]=str2
 		println!("	v2 = {v2} (!)"); // corrupt in practice
 	}
 }

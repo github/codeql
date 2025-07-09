@@ -9,6 +9,20 @@ import codeql.Locations as L
 overlay[local]
 private predicate isOverlay() { databaseMetadata("isOverlay", "true") }
 
+/** Holds if `loc` is in the `file` and is part of the overlay base database. */
+overlay[local]
+private predicate discardableLocation(@file file, @location_default loc) {
+  not isOverlay() and locations_default(loc, file, _, _, _, _)
+}
+
+/** Holds if `loc` should be discarded, because it is part of the overlay base and is in a file that was also extracted as part of the overlay database. */
+overlay[discard_entity]
+private predicate discardLocation(@location_default loc) {
+  exists(@file file, string path | files(file, path) |
+    discardableLocation(file, loc) and overlayChangedFiles(path)
+  )
+}
+
 module QL {
   /** The base class for all AST nodes */
   class AstNode extends @ql_ast_node {
@@ -60,10 +74,6 @@ module QL {
     )
   }
 
-  /** Holds if `file` was extracted as part of the overlay database. */
-  overlay[local]
-  private predicate discardFile(@file file) { isOverlay() and file = getNodeFile(_) }
-
   /** Holds if `node` is in the `file` and is part of the overlay base database. */
   overlay[local]
   private predicate discardableAstNode(@file file, @ql_ast_node node) {
@@ -73,7 +83,9 @@ module QL {
   /** Holds if `node` should be discarded, because it is part of the overlay base and is in a file that was also extracted as part of the overlay database. */
   overlay[discard_entity]
   private predicate discardAstNode(@ql_ast_node node) {
-    exists(@file file | discardableAstNode(file, node) and discardFile(file))
+    exists(@file file, string path | files(file, path) |
+      discardableAstNode(file, node) and overlayChangedFiles(path)
+    )
   }
 
   /** A class representing `add_expr` nodes. */
@@ -1354,10 +1366,6 @@ module Dbscheme {
     )
   }
 
-  /** Holds if `file` was extracted as part of the overlay database. */
-  overlay[local]
-  private predicate discardFile(@file file) { isOverlay() and file = getNodeFile(_) }
-
   /** Holds if `node` is in the `file` and is part of the overlay base database. */
   overlay[local]
   private predicate discardableAstNode(@file file, @dbscheme_ast_node node) {
@@ -1367,7 +1375,9 @@ module Dbscheme {
   /** Holds if `node` should be discarded, because it is part of the overlay base and is in a file that was also extracted as part of the overlay database. */
   overlay[discard_entity]
   private predicate discardAstNode(@dbscheme_ast_node node) {
-    exists(@file file | discardableAstNode(file, node) and discardFile(file))
+    exists(@file file, string path | files(file, path) |
+      discardableAstNode(file, node) and overlayChangedFiles(path)
+    )
   }
 
   /** A class representing `annotName` tokens. */
@@ -1714,10 +1724,6 @@ module Blame {
     )
   }
 
-  /** Holds if `file` was extracted as part of the overlay database. */
-  overlay[local]
-  private predicate discardFile(@file file) { isOverlay() and file = getNodeFile(_) }
-
   /** Holds if `node` is in the `file` and is part of the overlay base database. */
   overlay[local]
   private predicate discardableAstNode(@file file, @blame_ast_node node) {
@@ -1727,7 +1733,9 @@ module Blame {
   /** Holds if `node` should be discarded, because it is part of the overlay base and is in a file that was also extracted as part of the overlay database. */
   overlay[discard_entity]
   private predicate discardAstNode(@blame_ast_node node) {
-    exists(@file file | discardableAstNode(file, node) and discardFile(file))
+    exists(@file file, string path | files(file, path) |
+      discardableAstNode(file, node) and overlayChangedFiles(path)
+    )
   }
 
   /** A class representing `blame_entry` nodes. */
@@ -1851,10 +1859,6 @@ module JSON {
     )
   }
 
-  /** Holds if `file` was extracted as part of the overlay database. */
-  overlay[local]
-  private predicate discardFile(@file file) { isOverlay() and file = getNodeFile(_) }
-
   /** Holds if `node` is in the `file` and is part of the overlay base database. */
   overlay[local]
   private predicate discardableAstNode(@file file, @json_ast_node node) {
@@ -1864,7 +1868,9 @@ module JSON {
   /** Holds if `node` should be discarded, because it is part of the overlay base and is in a file that was also extracted as part of the overlay database. */
   overlay[discard_entity]
   private predicate discardAstNode(@json_ast_node node) {
-    exists(@file file | discardableAstNode(file, node) and discardFile(file))
+    exists(@file file, string path | files(file, path) |
+      discardableAstNode(file, node) and overlayChangedFiles(path)
+    )
   }
 
   class UnderscoreValue extends @json_underscore_value, AstNode { }

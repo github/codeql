@@ -319,7 +319,7 @@ models
 | 27 | Sink: repo:https://github.com/rust-lang/libc:libc; ::calloc; Argument[0,1]; alloc-size |
 | 28 | Sink: repo:https://github.com/rust-lang/libc:libc; ::malloc; Argument[0]; alloc-size |
 | 29 | Sink: repo:https://github.com/rust-lang/libc:libc; ::realloc; Argument[1]; alloc-size |
-| 30 | Source: lang:std; crate::env::args; ReturnValue.Element; commandargs |
+| 30 | Source: std::env::args; ReturnValue.Element; commandargs |
 | 31 | Summary: <core::alloc::layout::Layout>::from_size_align_unchecked; Argument[0]; ReturnValue.Field[core::alloc::layout::Layout::size]; value |
 | 32 | Summary: <core::alloc::layout::Layout>::size; Argument[self].Field[core::alloc::layout::Layout::size]; ReturnValue; value |
 | 33 | Summary: <core::option::Option>::unwrap_or; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |

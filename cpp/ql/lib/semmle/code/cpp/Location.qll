@@ -8,7 +8,7 @@ import semmle.code.cpp.File
 /**
  * A location of a C/C++ artifact.
  */
-class Location extends @location {
+class Location extends @location_default {
   /** Gets the container corresponding to this location. */
   pragma[nomagic]
   Container getContainer() { this.fullLocationInfo(result, _, _, _, _) }
