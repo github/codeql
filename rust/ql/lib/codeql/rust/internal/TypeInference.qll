@@ -231,6 +231,24 @@ private Type inferAssignmentOperationType(AstNode n, TypePath path) {
   result = TUnit()
 }
 
+pragma[nomagic]
+private Struct getRangeType(RangeExpr re) {
+  re instanceof RangeFromExpr and
+  result instanceof RangeFromStruct
+  or
+  re instanceof RangeToExpr and
+  result instanceof RangeToStruct
+  or
+  re instanceof RangeFromToExpr and
+  result instanceof RangeStruct
+  or
+  re instanceof RangeInclusiveExpr and
+  result instanceof RangeInclusiveStruct
+  or
+  re instanceof RangeToInclusiveExpr and
+  result instanceof RangeToInclusiveStruct
+}
+
 /**
  * Holds if the type tree of `n1` at `prefix1` should be equal to the type tree
  * of `n2` at `prefix2` and type information should propagate in both directions
@@ -296,6 +314,13 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
   n1.(ArrayRepeatExpr).getRepeatOperand() = n2 and
   prefix1 = TypePath::singleton(TArrayTypeParameter()) and
   prefix2.isEmpty()
+  or
+  exists(Struct s |
+    n2 = [n1.(RangeExpr).getStart(), n1.(RangeExpr).getEnd()] and
+    prefix1 = TypePath::singleton(TTypeParamTypeParameter(s.getGenericParamList().getATypeParam())) and
+    prefix2.isEmpty() and
+    s = getRangeType(n1)
+  )
 }
 
 pragma[nomagic]
@@ -1020,13 +1045,14 @@ private Type inferTryExprType(TryExpr te, TypePath path) {
 }
 
 pragma[nomagic]
-private StructType inferLiteralType(LiteralExpr le) {
+private StructType getStrStruct() { result = TStruct(any(Builtins::Str s)) }
+
+pragma[nomagic]
+private Type inferLiteralType(LiteralExpr le, TypePath path) {
+  path.isEmpty() and
   exists(Builtins::BuiltinType t | result = TStruct(t) |
     le instanceof CharLiteralExpr and
     t instanceof Builtins::Char
-    or
-    le instanceof StringLiteralExpr and
-    t instanceof Builtins::Str
     or
     le =
       any(NumberLiteralExpr ne |
@@ -1045,6 +1071,14 @@ private StructType inferLiteralType(LiteralExpr le) {
     le instanceof BooleanLiteralExpr and
     t instanceof Builtins::Bool
   )
+  or
+  le instanceof StringLiteralExpr and
+  (
+    path.isEmpty() and result = TRefType()
+    or
+    path = TypePath::singleton(TRefTypeParameter()) and
+    result = getStrStruct()
+  )
 }
 
 pragma[nomagic]
@@ -1062,7 +1096,7 @@ private TraitType inferAsyncBlockExprRootType(AsyncBlockExpr abe) {
   result = getFutureTraitType()
 }
 
-final class AwaitTarget extends Expr {
+final private class AwaitTarget extends Expr {
   AwaitTarget() { this = any(AwaitExpr ae).getExpr() }
 
   Type getTypeAt(TypePath path) { result = inferType(this, path) }
@@ -1097,6 +1131,12 @@ private class Vec extends Struct {
  */
 pragma[nomagic]
 private Type inferArrayExprType(ArrayExpr ae) { exists(ae) and result = TArrayType() }
+
+/**
+ * Gets the root type of the range expression `re`.
+ */
+pragma[nomagic]
+private Type inferRangeExprType(RangeExpr re) { result = TStruct(getRangeType(re)) }
 
 /**
  * According to [the Rust reference][1]: _"array and slice-typed expressions
@@ -1134,23 +1174,49 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
   )
 }
 
+final private class ForIterableExpr extends Expr {
+  ForIterableExpr() { this = any(ForExpr fe).getIterable() }
+
+  Type getTypeAt(TypePath path) { result = inferType(this, path) }
+}
+
+private module ForIterableSatisfiesConstraintInput implements
+  SatisfiesConstraintInputSig<ForIterableExpr>
+{
+  predicate relevantConstraint(ForIterableExpr term, Type constraint) {
+    exists(term) and
+    exists(Trait t | t = constraint.(TraitType).getTrait() |
+      // TODO: Remove the line below once we can handle the `impl<I: Iterator> IntoIterator for I` implementation
+      t instanceof IteratorTrait or
+      t instanceof IntoIteratorTrait
+    )
+  }
+}
+
+pragma[nomagic]
+private AssociatedTypeTypeParameter getIteratorItemTypeParameter() {
+  result.getTypeAlias() = any(IteratorTrait t).getItemType()
+}
+
+pragma[nomagic]
+private AssociatedTypeTypeParameter getIntoIteratorItemTypeParameter() {
+  result.getTypeAlias() = any(IntoIteratorTrait t).getItemType()
+}
+
 pragma[nomagic]
 private Type inferForLoopExprType(AstNode n, TypePath path) {
   // type of iterable -> type of pattern (loop variable)
-  exists(ForExpr fe, Type iterableType, TypePath iterablePath |
+  exists(ForExpr fe, TypePath exprPath, AssociatedTypeTypeParameter tp |
     n = fe.getPat() and
-    iterableType = inferType(fe.getIterable(), iterablePath) and
-    result = iterableType and
-    (
-      iterablePath.isCons(any(Vec v).getElementTypeParameter(), path)
-      or
-      iterablePath.isCons(any(ArrayTypeParameter tp), path)
-      or
-      iterablePath
-          .stripPrefix(TypePath::cons(TRefTypeParameter(),
-              TypePath::singleton(any(SliceTypeParameter tp)))) = path
-      // TODO: iterables (general case for containers, ranges etc)
-    )
+    SatisfiesConstraint<ForIterableExpr, ForIterableSatisfiesConstraintInput>::satisfiesConstraintType(fe.getIterable(),
+      _, exprPath, result) and
+    exprPath.isCons(tp, path)
+  |
+    tp = getIntoIteratorItemTypeParameter()
+    or
+    // TODO: Remove once we can handle the `impl<I: Iterator> IntoIterator for I` implementation
+    tp = getIteratorItemTypeParameter() and
+    inferType(fe.getIterable()) != TArrayType()
   )
 }
 
@@ -1578,8 +1644,7 @@ private module Cached {
     or
     result = inferTryExprType(n, path)
     or
-    result = inferLiteralType(n) and
-    path.isEmpty()
+    result = inferLiteralType(n, path)
     or
     result = inferAsyncBlockExprRootType(n) and
     path.isEmpty()
@@ -1587,6 +1652,9 @@ private module Cached {
     result = inferAwaitExprType(n, path)
     or
     result = inferArrayExprType(n) and
+    path.isEmpty()
+    or
+    result = inferRangeExprType(n) and
     path.isEmpty()
     or
     result = inferIndexExprType(n, path)
