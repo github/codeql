@@ -107,8 +107,10 @@ module Config implements DataFlow::ConfigSig {
     )
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 116 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql@120:8:120:8)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(Expr e | result = e.getLocation() | isSink(sink, _, e))
   }
 }
 
