@@ -92,8 +92,10 @@ module TaintedAllocationSizeConfig implements DataFlow::ConfigSig {
     any(HeuristicAllocationFunction f).getAParameter() = node.asParameter()
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 103 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-190/TaintedAllocationSize.ql@105:8:105:12)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(Expr alloc | result = alloc.getLocation() | allocSink(alloc, sink))
   }
 }
 
