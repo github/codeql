@@ -32,8 +32,14 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 84 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-311/CleartextFileWrite.ql@87:8:87:8), Column 5 does not select a source or sink originating from the flow call on line 84 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-311/CleartextFileWrite.ql@88:91:88:96)
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sourceNode) {
+    exists(SensitiveExpr source | result = source.getLocation() | isSourceImpl(sourceNode, source))
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(FileWrite w | result = w.getLocation() | isSinkImpl(sink, w, _))
   }
 }
 
