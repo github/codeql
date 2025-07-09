@@ -79,14 +79,27 @@ module AlertFilteringImpl<LocationSig Location> {
   private predicate restrictAlertsToEntireFile(string filePath) { restrictAlertsTo(filePath, 0, 0) }
 
   pragma[nomagic]
-  private predicate restrictAlertsToStartLine(string filePath, int line) {
+  private predicate restrictAlertsToLine(string filePath, int line) {
     exists(int startLineStart, int startLineEnd |
       restrictAlertsTo(filePath, startLineStart, startLineEnd) and
       line = [startLineStart .. startLineEnd]
     )
   }
 
-  /** Applies alert filtering to the given location. */
+  /**
+   * Holds if the given location intersects the diff range. Testing for full
+   * intersection rather than only matching the start line means that this
+   * predicate is more broadly useful than just checking whether a specific
+   * element is considered to be in the diff range of GitHub Code Scanning:
+   * - If it's inconvenient to pass the exact `Location` of the element of
+   *   interest, it's valid to use a `Location` of an enclosing element.
+   * - This predicate could be useful for other systems of alert presentation
+   *   where the rules don't exactly match GitHub Code Scanning.
+   *
+   * If there is no diff range, this predicate holds for all locations. Note
+   * that this predicate has a bindingset and will therefore be inlined;
+   * callers should include enough context to ensure efficient evaluation.
+   */
   bindingset[location]
   predicate filterByLocation(Location location) {
     not restrictAlertsTo(_, _, _) and not restrictAlertsToExactLocation(_, _, _, _, _)
@@ -98,7 +111,7 @@ module AlertFilteringImpl<LocationSig Location> {
       exists(int locStartLine, int locEndLine |
         location.hasLocationInfo(filePath, locStartLine, _, locEndLine, _)
       |
-        restrictAlertsToStartLine(pragma[only_bind_into](filePath), [locStartLine .. locEndLine])
+        restrictAlertsToLine(pragma[only_bind_into](filePath), [locStartLine .. locEndLine])
       )
     )
     or
