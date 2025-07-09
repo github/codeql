@@ -150,12 +150,14 @@ module Config implements DataFlow::StateConfigSig {
     any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 154 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-416/IteratorToExpiredContainer.ql@157:8:157:10)
   }
 
-  Location getASelectedSourceLocation(DataFlow::Node source) {
-    none() // TODO: Make sure that this source location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 154 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-416/IteratorToExpiredContainer.ql@157:8:157:10)
-  }
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    none() // TODO: Make sure that this sink location matches the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 154 (/Users/d10c/src/semmle-code/ql/cpp/ql/src/Security/CWE/CWE-416/IteratorToExpiredContainer.ql@157:8:157:10)
+    exists(DataFlow::Node mid, FlowState state | result = mid.getLocation() |
+      destroyedToBeginSink(sink) and
+      isSink(sink, state) and
+      state = Config::DestroyedToBegin(mid)
+    )
   }
 }
 
