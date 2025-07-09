@@ -1,4 +1,1 @@
-| test.rs:114:26:114:50 | //... | Missing result: hasTaintFlow=request |
-| test.rs:115:25:115:49 | //... | Missing result: hasTaintFlow=request |
-| test.rs:121:22:121:46 | //... | Missing result: hasTaintFlow=request |
-| test.rs:217:24:217:89 | //... | Missing result: hasTaintFlow |
+| test.rs:218:24:218:89 | //... | Missing result: hasTaintFlow |
