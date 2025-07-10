@@ -26,8 +26,8 @@ public class Test {
 }
 ```
 
-In the example, `case2` is most likely a typo and should be fixed. For the intensional `notcaselabel`, placing the labelled code into a function and then calling that function is more readable.
+In the example, `case2` is most likely a typo and should be fixed. For the intentional `notcaselabel`, placing the labelled code into a function and then calling that function is more readable.
 
 ## References
 
-Similar to the JS CodeQL query - [js/label-in-switch](https://codeql.github.com/codeql-query-help/javascript/js-label-in-switch/).
+CodeQL query help for JavaScript and TypeScript - [Non-case label in switch statement](https://codeql.github.com/codeql-query-help/javascript/js-label-in-switch/).
