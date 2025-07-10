@@ -3644,4 +3644,35 @@ inferType
 | main.rs:2262:20:2262:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
 | main.rs:2262:41:2262:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
 | main.rs:2278:5:2278:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:2290:44:2309:5 | { ... } |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2291:13:2291:17 | value |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2291:13:2291:17 | value | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2291:21:2291:28 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2291:21:2291:28 | Some(...) | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2291:26:2291:27 | 42 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2292:29:2292:33 | value |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2292:29:2292:33 | value | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2294:22:2294:29 | "{mesg}\\n" |  | file://:0:0:0:0 | & |
+| main.rs:2294:22:2294:29 | "{mesg}\\n" | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2296:15:2296:19 | value |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2296:15:2296:19 | value | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2299:26:2299:33 | "{mesg}\\n" |  | file://:0:0:0:0 | & |
+| main.rs:2299:26:2299:33 | "{mesg}\\n" | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2303:13:2303:16 | mesg |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2303:20:2303:24 | value |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2303:20:2303:24 | value | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2303:20:2303:33 | value.unwrap() |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2304:13:2304:16 | mesg |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2304:20:2304:23 | mesg |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2305:18:2305:25 | "{mesg}\\n" |  | file://:0:0:0:0 | & |
+| main.rs:2305:18:2305:25 | "{mesg}\\n" | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2305:20:2305:23 | mesg |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2306:13:2306:16 | mesg |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2306:20:2306:24 | value |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2306:20:2306:24 | value | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2306:20:2306:25 | TryExpr |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2307:18:2307:25 | "{mesg}\\n" |  | file://:0:0:0:0 | & |
+| main.rs:2307:18:2307:25 | "{mesg}\\n" | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2307:20:2307:23 | mesg |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2308:9:2308:12 | None |  | {EXTERNAL LOCATION} | Option |
 testFailures
