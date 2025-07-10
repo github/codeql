@@ -77,19 +77,24 @@ edges
 | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | provenance | MaD:23 |
 | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | provenance | MaD:23 |
 | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | provenance | MaD:23 |
+| test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | provenance | MaD:23 |
 | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | test.cpp:68:22:68:22 | y | provenance |  |
 | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | test.cpp:74:22:74:22 | y | provenance |  |
 | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | test.cpp:82:22:82:22 | y | provenance |  |
+| test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | test.cpp:88:22:88:22 | y | provenance |  |
 | test.cpp:68:22:68:22 | y | test.cpp:69:11:69:11 | y | provenance | Sink:MaD:1 |
 | test.cpp:74:22:74:22 | y | test.cpp:75:11:75:11 | y | provenance | Sink:MaD:1 |
 | test.cpp:82:22:82:22 | y | test.cpp:83:11:83:11 | y | provenance | Sink:MaD:1 |
+| test.cpp:88:22:88:22 | y | test.cpp:89:11:89:11 | y | provenance | Sink:MaD:1 |
 | test.cpp:94:10:94:18 | call to ymlSource | test.cpp:94:10:94:18 | call to ymlSource | provenance | Src:MaD:16  |
 | test.cpp:94:10:94:18 | call to ymlSource | test.cpp:97:26:97:26 | x | provenance |  |
 | test.cpp:94:10:94:18 | call to ymlSource | test.cpp:101:26:101:26 | x | provenance |  |
 | test.cpp:94:10:94:18 | call to ymlSource | test.cpp:103:63:103:63 | x | provenance |  |
+| test.cpp:94:10:94:18 | call to ymlSource | test.cpp:104:62:104:62 | x | provenance |  |
 | test.cpp:97:26:97:26 | x | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | provenance |  |
 | test.cpp:101:26:101:26 | x | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | provenance |  |
 | test.cpp:103:63:103:63 | x | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | provenance |  |
+| test.cpp:104:62:104:62 | x | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | provenance |  |
 | windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | windows.cpp:17:8:17:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | provenance | MaD:18 |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:22:15:22:29 | *call to GetCommandLineA | provenance | Src:MaD:3  |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:24:8:24:11 | * ... | provenance |  |
@@ -229,6 +234,8 @@ nodes
 | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | semmle.label | [summary param] 1 in callWithArgument |
 | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | semmle.label | [summary param] 1 in callWithArgument |
 | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | semmle.label | [summary param] 1 in callWithArgument |
+| test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | semmle.label | [summary param] 1 in callWithArgument |
+| test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | semmle.label | [summary] to write: Argument[0].Parameter[0] in callWithArgument |
 | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | semmle.label | [summary] to write: Argument[0].Parameter[0] in callWithArgument |
 | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | semmle.label | [summary] to write: Argument[0].Parameter[0] in callWithArgument |
 | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | semmle.label | [summary] to write: Argument[0].Parameter[0] in callWithArgument |
@@ -238,11 +245,14 @@ nodes
 | test.cpp:75:11:75:11 | y | semmle.label | y |
 | test.cpp:82:22:82:22 | y | semmle.label | y |
 | test.cpp:83:11:83:11 | y | semmle.label | y |
+| test.cpp:88:22:88:22 | y | semmle.label | y |
+| test.cpp:89:11:89:11 | y | semmle.label | y |
 | test.cpp:94:10:94:18 | call to ymlSource | semmle.label | call to ymlSource |
 | test.cpp:94:10:94:18 | call to ymlSource | semmle.label | call to ymlSource |
 | test.cpp:97:26:97:26 | x | semmle.label | x |
 | test.cpp:101:26:101:26 | x | semmle.label | x |
 | test.cpp:103:63:103:63 | x | semmle.label | x |
+| test.cpp:104:62:104:62 | x | semmle.label | x |
 | windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | semmle.label | [summary param] *0 in CommandLineToArgvA |
 | windows.cpp:17:8:17:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | semmle.label | [summary] to write: ReturnValue[**] in CommandLineToArgvA |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | semmle.label | *call to GetCommandLineA |
