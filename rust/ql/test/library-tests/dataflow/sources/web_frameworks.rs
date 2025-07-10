@@ -10,8 +10,8 @@ mod poem_test {
     #[handler]
     fn my_poem_handler_1(Path(a): Path<String>, // $ Alert[rust/summary/taint-sources]
     ) -> String {
-        sink(a.as_str()); // $ MISSING: hasTaintFlow -- no type inference for patterns
-        sink(a.as_bytes()); // $ MISSING: hasTaintFlow -- no type inference for patterns
+        sink(a.as_str()); // $ hasTaintFlow
+        sink(a.as_bytes()); // $ hasTaintFlow
         sink(a); // $ hasTaintFlow
 
         "".to_string()
