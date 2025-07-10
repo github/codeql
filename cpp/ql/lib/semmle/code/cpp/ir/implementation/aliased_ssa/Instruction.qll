@@ -725,6 +725,20 @@ class UninitializedInstruction extends VariableInstruction {
    * Gets the variable that is uninitialized.
    */
   final Language::Variable getLocalVariable() { result = var.(IRUserVariable).getVariable() }
+
+  /**
+   * Gets the operand that provides the address of the location to which the
+   * uninitialized value will be stored.
+   */
+  final AddressOperand getDestinationAddressOperand() { result = this.getAnOperand() }
+
+  /**
+   * Gets the instruction whose result provides the address of the location to
+   * which the value will be stored, if an exact definition is available.
+   */
+  final Instruction getDestinationAddress() {
+    result = this.getDestinationAddressOperand().getDef()
+  }
 }
 
 /**
