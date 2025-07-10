@@ -111,11 +111,9 @@ predicate hasConfidentialEndPointExposed(SpringBootPom pom, ApplicationPropertie
   )
 }
 
-deprecated query predicate problems(Dependency d, string message) {
-  exists(SpringBootPom pom |
-    hasConfidentialEndPointExposed(pom, _) and
-    d = pom.getADependency() and
-    d.getArtifact().getValue() = "spring-boot-starter-actuator"
-  ) and
-  message = "Insecure configuration of Spring Boot Actuator exposes sensitive endpoints."
-}
+from SpringBootPom pom, ApplicationProperties ap, Dependency d
+where
+  hasConfidentialEndPointExposed(pom, ap) and
+  d = pom.getADependency() and
+  d.getArtifact().getValue() = "spring-boot-starter-actuator"
+select d, "Insecure configuration of Spring Boot Actuator exposes sensitive endpoints."
