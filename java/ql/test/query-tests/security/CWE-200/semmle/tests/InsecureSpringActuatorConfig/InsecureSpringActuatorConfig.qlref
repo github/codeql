@@ -1,1 +1,1 @@
-experimental/Security/CWE/CWE-016/InsecureSpringActuatorConfig.ql
+Security/CWE/CWE-200/InsecureSpringActuatorConfig/InsecureSpringActuatorConfig.ql
