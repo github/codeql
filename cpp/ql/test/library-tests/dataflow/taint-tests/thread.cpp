@@ -28,6 +28,6 @@ void test_thread() {
   std::thread t3(thread_function_3, &s, 42);
 
   std::thread t4([](S* p) {
-    sink(p->x); // $ MISSING: ir
+    sink(p->x); // $ ir
   }, &s);
 }
