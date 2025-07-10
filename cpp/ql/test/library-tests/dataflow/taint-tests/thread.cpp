@@ -8,15 +8,15 @@ struct S {
 };
 
 void thread_function_1(S* s) {
-  sink(s->x); // $ MISSING: ir
+  sink(s->x); // $ ir
 }
 
 void thread_function_2(S s) {
-  sink(s.x); // $ MISSING: ir
+  sink(s.x); // $ ir
 }
 
 void thread_function_3(S* s, int y) {
-  sink(s->x); // $ MISSING: ir
+  sink(s->x); // $ ir
   sink(y); // clean
 }
 
