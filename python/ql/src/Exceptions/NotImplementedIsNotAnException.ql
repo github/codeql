@@ -6,8 +6,9 @@
  * @sub-severity high
  * @precision very-high
  * @id py/raise-not-implemented
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       error-handling
  */
 
 import python

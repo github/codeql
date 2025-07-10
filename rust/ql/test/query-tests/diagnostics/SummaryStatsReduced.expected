@@ -6,7 +6,7 @@
 | Files extracted - without errors % | 57 |
 | Inconsistencies - AST | 0 |
 | Inconsistencies - CFG | 0 |
-| Inconsistencies - Path resolution | 0 |
+| Inconsistencies - Path resolution | 1 |
 | Inconsistencies - SSA | 0 |
 | Inconsistencies - data flow | 0 |
 | Lines of code extracted | 60 |

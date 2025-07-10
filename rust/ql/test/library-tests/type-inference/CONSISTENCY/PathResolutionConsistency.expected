@@ -1,0 +1,2 @@
+multipleCallTargets
+| dereference.rs:61:15:61:24 | e1.deref() |

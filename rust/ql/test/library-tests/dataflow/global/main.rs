@@ -41,7 +41,11 @@ fn data_out_of_call_side_effect1() {
 
 fn data_out_of_call_side_effect2() {
     let mut a = MyStruct { data: 0 };
-    ({ 42; &mut a}).set_data(source(9));
+    ({
+        42;
+        &mut a
+    })
+    .set_data(source(9));
     sink(a.get_data()); // $ hasValueFlow=9
 }
 
@@ -144,7 +148,7 @@ fn data_through_method_called_as_function() {
     sink(b); // $ hasValueFlow=12
 }
 
-use std::ops::Add;
+use std::ops::{Add, Deref, MulAssign};
 
 struct MyInt {
     value: i64,
@@ -172,11 +176,26 @@ impl Add for MyInt {
     }
 }
 
+impl MulAssign<MyInt> for MyInt {
+    fn mul_assign(&mut self, rhs: MyInt) {
+        (*self).value = rhs.value; // todo: implicit deref not yet supported
+    }
+}
+
+impl Deref for MyInt {
+    type Target = i64;
+
+    fn deref(&self) -> &Self::Target {
+        &(*self).value
+    }
+}
+
 fn test_operator_overloading() {
+    // Tests for simple binary operator.
     let a = MyInt { value: source(5) };
     let b = MyInt { value: 2 };
     let c = a + b;
-    sink(c.value); // $ MISSING: hasValueFlow=5
+    sink(c.value); // $ hasValueFlow=5
 
     let a = MyInt { value: 2 };
     let b = MyInt { value: source(6) };
@@ -187,6 +206,28 @@ fn test_operator_overloading() {
     let b = MyInt { value: 2 };
     let d = a.add(b);
     sink(d.value); // $ hasValueFlow=7
+
+    // Tests for assignment operator.
+    let mut a = MyInt { value: 0 };
+    let b = MyInt { value: source(34) };
+    // The line below is what `*=` desugars to.
+    MulAssign::mul_assign(&mut a, b);
+    sink(a.value); // $ MISSING: hasValueFlow=34
+
+    let mut a = MyInt { value: 0 };
+    let b = MyInt { value: source(35) };
+    a *= b;
+    sink(a.value); // $ MISSING: hasValueFlow=35
+
+    // Tests for deref operator.
+    let a = MyInt { value: source(27) };
+    // The line below is what the prefix `*` desugars to.
+    let c = *Deref::deref(&a);
+    sink(c); // $ MISSING: hasValueFlow=27
+
+    let a = MyInt { value: source(28) };
+    let c = *a;
+    sink(c); // $ hasTaintFlow=28 MISSING: hasValueFlow=28
 }
 
 trait MyTrait {

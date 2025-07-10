@@ -3,8 +3,6 @@ ql/rust/ql/src/queries/summary/LinesOfUserCodeInFiles.ql
 ql/rust/ql/src/queries/summary/QuerySinks.ql
 ql/rust/ql/src/queries/summary/SensitiveData.ql
 ql/rust/ql/src/queries/summary/TaintSources.ql
-ql/rust/ql/src/queries/unusedentities/UnreachableCode.ql
-ql/rust/ql/src/queries/unusedentities/UnusedValue.ql
 ql/rust/ql/src/utils/modelgenerator/CaptureContentSummaryModels.ql
 ql/rust/ql/src/utils/modelgenerator/CaptureNeutralModels.ql
 ql/rust/ql/src/utils/modelgenerator/CaptureSinkModels.ql

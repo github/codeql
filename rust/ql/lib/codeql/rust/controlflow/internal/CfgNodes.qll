@@ -59,7 +59,7 @@ class BreakExprTargetChildMapping extends ParentAstNode, Expr {
 }
 
 class CallExprBaseChildMapping extends ParentAstNode, CallExprBase {
-  override predicate relevantChild(AstNode child) { child = this.getArgList().getAnArg() }
+  override predicate relevantChild(AstNode child) { child = this.getAnArg() }
 }
 
 class StructExprChildMapping extends ParentAstNode, StructExpr {

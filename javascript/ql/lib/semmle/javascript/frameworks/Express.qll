@@ -618,9 +618,9 @@ module Express {
         kind = "body" and
         this = ref.getAPropertyRead("body")
         or
-        // `req.path`
+        // `req.path` and `req._parsedUrl`
         kind = "url" and
-        this = ref.getAPropertyRead("path")
+        this = ref.getAPropertyRead(["path", "_parsedUrl"])
       )
     }
 

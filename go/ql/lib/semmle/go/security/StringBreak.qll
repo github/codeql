@@ -26,6 +26,8 @@ module StringBreak {
     predicate isBarrier(DataFlow::Node node, FlowState state) {
       state = node.(Sanitizer).getQuote()
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /**

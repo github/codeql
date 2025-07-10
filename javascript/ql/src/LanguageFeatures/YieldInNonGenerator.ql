@@ -4,7 +4,9 @@
  * @kind problem
  * @problem.severity error
  * @id js/yield-outside-generator
- * @tags maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       language-features
  *       external/cwe/cwe-758
  * @precision very-high

@@ -115,7 +115,7 @@ fn test_pin() {
         sink(*Pin::into_inner(pin1)); // $ hasValueFlow=40
         sink(*pin2); // $ hasValueFlow=40
         sink(*pin3); // $ hasValueFlow=40
-        sink(*pin4); // $ MISSING: hasValueFlow=40
+        sink(*pin4); // $ hasTaintFlow=40
     }
 
     {

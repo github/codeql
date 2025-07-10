@@ -842,6 +842,41 @@ private Stmt getEnclosingBreakable(Stmt s) {
 }
 
 /**
+ * A Microsoft C/C++ `__leave` statement.
+ *
+ * For example, the `__leave` statement in the following code:
+ * ```
+ * __try {
+ *   if (err) __leave;
+ *   ...
+ * }
+ * __finally {
+ *
+ * }
+ * ```
+ */
+class LeaveStmt extends JumpStmt, @stmt_leave {
+  override string getAPrimaryQlClass() { result = "LeaveStmt" }
+
+  override string toString() { result = "__leave;" }
+
+  override predicate mayBeImpure() { none() }
+
+  override predicate mayBeGloballyImpure() { none() }
+
+  /**
+   * Gets the `__try` statement that this `__leave` exits.
+   */
+  MicrosoftTryStmt getEnclosingTry() { result = getEnclosingTry(this) }
+}
+
+private MicrosoftTryStmt getEnclosingTry(Stmt s) {
+  if s.getParent().getEnclosingStmt() instanceof MicrosoftTryStmt
+  then result = s.getParent().getEnclosingStmt()
+  else result = getEnclosingTry(s.getParent().getEnclosingStmt())
+}
+
+/**
  * A C/C++ 'label' statement.
  *
  * For example, the `somelabel:` statement in the following code:

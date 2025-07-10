@@ -5,11 +5,11 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
 private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstanceBase
 private import AlgToAVCFlow
 
-predicate knownOpenSSLConstantToHashFamilyType(
-  KnownOpenSSLHashAlgorithmConstant e, Crypto::THashType type
+predicate knownOpenSslConstantToHashFamilyType(
+  KnownOpenSslHashAlgorithmExpr e, Crypto::THashType type
 ) {
   exists(string name |
-    name = e.getNormalizedName() and
+    name = e.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
     (
       name.matches("BLAKE2B") and type instanceof Crypto::BLAKE2B
       or
@@ -29,7 +29,7 @@ predicate knownOpenSSLConstantToHashFamilyType(
       or
       name.matches(["SHA", "SHA1"]) and type instanceof Crypto::SHA1
       or
-      name.matches("SHA+%") and not name.matches(["SHA1", "SHA3-"]) and type instanceof Crypto::SHA2
+      name.matches("SHA_%") and not name.matches(["SHA1", "SHA3-"]) and type instanceof Crypto::SHA2
       or
       name.matches("SHA3-%") and type instanceof Crypto::SHA3
       or
@@ -44,36 +44,37 @@ predicate knownOpenSSLConstantToHashFamilyType(
   )
 }
 
-class KnownOpenSSLHashConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
-  Crypto::HashAlgorithmInstance instanceof KnownOpenSSLHashAlgorithmConstant
+class KnownOpenSslHashConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
+  Crypto::HashAlgorithmInstance instanceof KnownOpenSslHashAlgorithmExpr
 {
-  OpenSSLAlgorithmValueConsumer getterCall;
+  OpenSslAlgorithmValueConsumer getterCall;
 
-  KnownOpenSSLHashConstantAlgorithmInstance() {
+  KnownOpenSslHashConstantAlgorithmInstance() {
     // Two possibilities:
     // 1) The source is a literal and flows to a getter, then we know we have an instance
-    // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
+    // 2) The source is a KnownOpenSslAlgorithm is call, and we know we have an instance immediately from that
     // Possibility 1:
-    this instanceof Literal and
+    this instanceof OpenSslAlgorithmLiteral and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
-      sink = getterCall.(OpenSSLAlgorithmValueConsumer).getInputNode() and
+      sink = getterCall.getInputNode() and
       // Source is `this`
       src.asExpr() = this and
       // This traces to a getter
-      KnownOpenSSLAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
+      KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
     )
     or
     // Possibility 2:
-    this instanceof DirectAlgorithmValueConsumer and getterCall = this
+    this instanceof OpenSslAlgorithmCall and
+    getterCall = this
   }
 
-  override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
+  override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
 
   override Crypto::THashType getHashFamily() {
-    knownOpenSSLConstantToHashFamilyType(this, result)
+    knownOpenSslConstantToHashFamilyType(this, result)
     or
-    not knownOpenSSLConstantToHashFamilyType(this, _) and result = Crypto::OtherHashType()
+    not knownOpenSslConstantToHashFamilyType(this, _) and result = Crypto::OtherHashType()
   }
 
   override string getRawHashAlgorithmName() {
@@ -83,6 +84,6 @@ class KnownOpenSSLHashConstantAlgorithmInstance extends OpenSSLAlgorithmInstance
   }
 
   override int getFixedDigestLength() {
-    this.(KnownOpenSSLHashAlgorithmConstant).getExplicitDigestLength() = result
+    this.(KnownOpenSslHashAlgorithmExpr).getExplicitDigestLength() = result
   }
 }

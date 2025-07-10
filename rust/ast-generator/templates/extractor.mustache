@@ -36,23 +36,27 @@ impl Translator<'_> {
 
     pub(crate) fn emit_{{snake_case_name}}(&mut self, node: &ast::{{ast_name}}) -> Option<Label<generated::{{name}}>> {
         pre_emit!({{name}}, self, node);
-        if self.should_be_excluded(node) { return None; }
         {{#has_attrs}}
-        if self.should_be_excluded_attrs(node) { return None; }
+        if self.should_be_excluded(node) { return None; }
         {{/has_attrs}}
         {{#fields}}
-        {{#predicate}}
-        let {{name}} = node.{{method}}().is_some();
-        {{/predicate}}
-        {{#string}}
-        let {{name}} = node.try_get_text();
-        {{/string}}
-        {{#list}}
-        let {{name}} = node.{{method}}().filter_map(|x| self.emit_{{snake_case_ty}}(&x)).collect();
-        {{/list}}
-        {{#optional}}
-        let {{name}} = node.{{method}}().and_then(|x| self.emit_{{snake_case_ty}}(&x));
-        {{/optional}}
+        let {{name}} =
+            {{#predicate}}
+            node.{{method}}().is_some()
+            {{/predicate}}
+            {{#string}}
+            node.try_get_text()
+            {{/string}}
+            {{#list}}
+            node.{{method}}().filter_map(|x| self.emit_{{snake_case_ty}}(&x)).collect()
+            {{/list}}
+            {{#optional}}
+            node.{{method}}().and_then(|x| self.emit_{{snake_case_ty}}(&x))
+            {{/optional}}
+            {{#body}}
+            if self.should_skip_bodies() { None } else { node.{{method}}().and_then(|x| self.emit_{{snake_case_ty}}(&x)) }
+            {{/body}}
+            ;
         {{/fields}}
         let label = self.trap.emit(generated::{{name}} {
             id: TrapId::Star,

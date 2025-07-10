@@ -1,5 +1,7 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+default_language_version:
+  python: python3.12
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
@@ -7,18 +9,18 @@ repos:
       - id: trailing-whitespace
         exclude: /test/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
       - id: end-of-file-fixer
-        exclude: /test/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
+        exclude: Cargo.lock$|/test/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v17.0.6
     hooks:
       - id: clang-format
 
-  - repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v2.0.4
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
     hooks:
-      - id: autopep8
-        files: ^misc/codegen/.*\.py
+      - id: black
+        files: ^(misc/codegen/.*|misc/scripts/models-as-data/.*)\.py$
 
   - repo: local
     hooks:

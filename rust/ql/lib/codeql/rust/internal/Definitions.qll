@@ -135,10 +135,32 @@ private class PositionalFormatArgumentUse extends Use instanceof PositionalForma
   override string getUseType() { result = "format argument" }
 }
 
-private class PathUse extends Use instanceof Path {
-  override Definition getDefinition() { result.asItemNode() = resolvePath(this) }
+private class PathUse extends Use instanceof PathSegment {
+  private Path path;
+
+  PathUse() { this = path.getSegment() }
+
+  private CallExpr getCall() { result.getFunction().(PathExpr).getPath() = path }
+
+  override Definition getDefinition() {
+    // Our call resolution logic may disambiguate some calls, so only use those
+    result.asItemNode() = this.getCall().getStaticTarget()
+    or
+    not exists(this.getCall()) and
+    result.asItemNode() = resolvePath(path)
+  }
 
   override string getUseType() { result = "path" }
+}
+
+private class MethodUse extends Use instanceof NameRef {
+  private MethodCallExpr mc;
+
+  MethodUse() { this = mc.getIdentifier() }
+
+  override Definition getDefinition() { result.asItemNode() = mc.getStaticTarget() }
+
+  override string getUseType() { result = "method" }
 }
 
 private class FileUse extends Use instanceof Name {

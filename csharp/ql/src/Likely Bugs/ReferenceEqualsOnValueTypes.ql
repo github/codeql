@@ -5,9 +5,9 @@
  * @problem.severity error
  * @precision high
  * @id cs/reference-equality-on-valuetypes
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       quality
  *       external/cwe/cwe-595
  */
 

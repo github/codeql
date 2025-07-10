@@ -179,6 +179,9 @@ module Public {
     /** Holds if this represents values stored at an unknown array index. */
     predicate isUnknownArrayElement() { this = MkArrayElementUnknown() }
 
+    /** Holds if this represents the value of a resolved promise. */
+    predicate isPromiseValue() { this = MkPromiseValue() }
+
     /** Holds if this represents values stored in a `Map` at an unknown key. */
     predicate isMapValueWithUnknownKey() { this = MkMapValueWithUnknownKey() }
 
@@ -266,6 +269,11 @@ module Public {
       or
       this = ContentSet::anyCapturedContent() and
       result instanceof Private::MkCapturedContent
+      or
+      // Although data flow will never use the special `Awaited` ContentSet in a read or store step,
+      // it may appear in type-tracking and type resolution, and here it helps to treat is as `Awaited[value]`.
+      this = MkAwaited() and
+      result = MkPromiseValue()
     }
 
     /** Gets the singleton content to be accessed. */

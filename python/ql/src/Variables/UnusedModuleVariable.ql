@@ -2,7 +2,8 @@
  * @name Unused global variable
  * @description Global variable is defined but not used
  * @kind problem
- * @tags efficiency
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-563
  * @problem.severity recommendation

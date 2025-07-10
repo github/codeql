@@ -39,6 +39,8 @@ maintained by GitHub are:
 - ``codeql/python-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/lib>`__)
 - ``codeql/ruby-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/src>`__)
 - ``codeql/ruby-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/lib>`__)
+- ``codeql/rust-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/src>`__)
+- ``codeql/rust-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/lib>`__)
 - ``codeql/swift-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/src>`__)
 - ``codeql/swift-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/lib>`__)
 
