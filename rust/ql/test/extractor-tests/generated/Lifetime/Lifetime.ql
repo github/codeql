@@ -2,8 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(Lifetime x) { toBeTested(x) and not x.isUnknown() }
-
-query predicate getText(Lifetime x, string getText) {
-  toBeTested(x) and not x.isUnknown() and getText = x.getText()
-}
+from Lifetime x, string hasText
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  if x.hasText() then hasText = "yes" else hasText = "no"
+select x, "hasText:", hasText

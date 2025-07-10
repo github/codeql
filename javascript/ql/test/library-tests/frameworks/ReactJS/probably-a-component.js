@@ -1,6 +1,6 @@
-class Hello extends Component { // $ threatModelSource=view-component-input
+class Hello extends Component {
     render() {
-        this.props.name; // $ threatModelSource=view-component-input
+        this.props.name;
         return <div/>;
     }
-} // $ reactComponent
+}

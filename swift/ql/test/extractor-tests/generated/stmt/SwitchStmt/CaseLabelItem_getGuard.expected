@@ -1,0 +1,2 @@
+| switch.swift:8:9:8:26 | x where ... | switch.swift:8:21:8:26 | ... .>=(_:_:) ... |
+| switch.swift:24:8:24:40 | .two(...) where ... | switch.swift:24:33:24:40 | ... .==(_:_:) ... |

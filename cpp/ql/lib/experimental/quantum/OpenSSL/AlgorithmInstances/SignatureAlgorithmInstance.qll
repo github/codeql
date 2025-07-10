@@ -73,7 +73,7 @@ class KnownOpenSslSignatureConstantAlgorithmInstance extends OpenSslAlgorithmIns
     none()
   }
 
-  override KeyOpAlg::AlgorithmType getAlgorithmType() {
+  override KeyOpAlg::Algorithm getAlgorithmType() {
     knownOpenSslConstantToSignatureFamilyType(this, result)
     or
     not knownOpenSslConstantToSignatureFamilyType(this, _) and

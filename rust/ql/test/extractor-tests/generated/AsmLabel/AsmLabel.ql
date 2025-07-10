@@ -2,8 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(AsmLabel x) { toBeTested(x) and not x.isUnknown() }
-
-query predicate getBlockExpr(AsmLabel x, BlockExpr getBlockExpr) {
-  toBeTested(x) and not x.isUnknown() and getBlockExpr = x.getBlockExpr()
-}
+from AsmLabel x, string hasBlockExpr
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  if x.hasBlockExpr() then hasBlockExpr = "yes" else hasBlockExpr = "no"
+select x, "hasBlockExpr:", hasBlockExpr

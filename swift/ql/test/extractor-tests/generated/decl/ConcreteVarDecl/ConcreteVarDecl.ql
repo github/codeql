@@ -2,75 +2,55 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  ConcreteVarDecl x, string getModule__label, ModuleDecl getModule, string getInterfaceType__label,
-  Type getInterfaceType, string getName__label, string getName, string getType__label, Type getType,
-  string getIntroducerInt__label, int getIntroducerInt
-) {
+from
+  ConcreteVarDecl x, ModuleDecl getModule, int getNumberOfMembers, Type getInterfaceType,
+  int getNumberOfAccessors, string getName, Type getType, string hasAttachedPropertyWrapperType,
+  string hasParentPattern, string hasParentInitializer, string hasPropertyWrapperBackingVarBinding,
+  string hasPropertyWrapperBackingVar, string hasPropertyWrapperProjectionVarBinding,
+  string hasPropertyWrapperProjectionVar, int getIntroducerInt
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getInterfaceType__label = "getInterfaceType:" and
+  getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType = x.getInterfaceType() and
-  getName__label = "getName:" and
+  getNumberOfAccessors = x.getNumberOfAccessors() and
   getName = x.getName() and
-  getType__label = "getType:" and
   getType = x.getType() and
-  getIntroducerInt__label = "getIntroducerInt:" and
+  (
+    if x.hasAttachedPropertyWrapperType()
+    then hasAttachedPropertyWrapperType = "yes"
+    else hasAttachedPropertyWrapperType = "no"
+  ) and
+  (if x.hasParentPattern() then hasParentPattern = "yes" else hasParentPattern = "no") and
+  (if x.hasParentInitializer() then hasParentInitializer = "yes" else hasParentInitializer = "no") and
+  (
+    if x.hasPropertyWrapperBackingVarBinding()
+    then hasPropertyWrapperBackingVarBinding = "yes"
+    else hasPropertyWrapperBackingVarBinding = "no"
+  ) and
+  (
+    if x.hasPropertyWrapperBackingVar()
+    then hasPropertyWrapperBackingVar = "yes"
+    else hasPropertyWrapperBackingVar = "no"
+  ) and
+  (
+    if x.hasPropertyWrapperProjectionVarBinding()
+    then hasPropertyWrapperProjectionVarBinding = "yes"
+    else hasPropertyWrapperProjectionVarBinding = "no"
+  ) and
+  (
+    if x.hasPropertyWrapperProjectionVar()
+    then hasPropertyWrapperProjectionVar = "yes"
+    else hasPropertyWrapperProjectionVar = "no"
+  ) and
   getIntroducerInt = x.getIntroducerInt()
-}
-
-query predicate getMember(ConcreteVarDecl x, int index, Decl getMember) {
-  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
-}
-
-query predicate getAccessor(ConcreteVarDecl x, int index, Accessor getAccessor) {
-  toBeTested(x) and not x.isUnknown() and getAccessor = x.getAccessor(index)
-}
-
-query predicate getAttachedPropertyWrapperType(
-  ConcreteVarDecl x, Type getAttachedPropertyWrapperType
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getAttachedPropertyWrapperType = x.getAttachedPropertyWrapperType()
-}
-
-query predicate getParentPattern(ConcreteVarDecl x, Pattern getParentPattern) {
-  toBeTested(x) and not x.isUnknown() and getParentPattern = x.getParentPattern()
-}
-
-query predicate getParentInitializer(ConcreteVarDecl x, Expr getParentInitializer) {
-  toBeTested(x) and not x.isUnknown() and getParentInitializer = x.getParentInitializer()
-}
-
-query predicate getPropertyWrapperBackingVarBinding(
-  ConcreteVarDecl x, PatternBindingDecl getPropertyWrapperBackingVarBinding
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getPropertyWrapperBackingVarBinding = x.getPropertyWrapperBackingVarBinding()
-}
-
-query predicate getPropertyWrapperBackingVar(ConcreteVarDecl x, VarDecl getPropertyWrapperBackingVar) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getPropertyWrapperBackingVar = x.getPropertyWrapperBackingVar()
-}
-
-query predicate getPropertyWrapperProjectionVarBinding(
-  ConcreteVarDecl x, PatternBindingDecl getPropertyWrapperProjectionVarBinding
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getPropertyWrapperProjectionVarBinding = x.getPropertyWrapperProjectionVarBinding()
-}
-
-query predicate getPropertyWrapperProjectionVar(
-  ConcreteVarDecl x, VarDecl getPropertyWrapperProjectionVar
-) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getPropertyWrapperProjectionVar = x.getPropertyWrapperProjectionVar()
-}
+select x, "getModule:", getModule, "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:",
+  getInterfaceType, "getNumberOfAccessors:", getNumberOfAccessors, "getName:", getName, "getType:",
+  getType, "hasAttachedPropertyWrapperType:", hasAttachedPropertyWrapperType, "hasParentPattern:",
+  hasParentPattern, "hasParentInitializer:", hasParentInitializer,
+  "hasPropertyWrapperBackingVarBinding:", hasPropertyWrapperBackingVarBinding,
+  "hasPropertyWrapperBackingVar:", hasPropertyWrapperBackingVar,
+  "hasPropertyWrapperProjectionVarBinding:", hasPropertyWrapperProjectionVarBinding,
+  "hasPropertyWrapperProjectionVar:", hasPropertyWrapperProjectionVar, "getIntroducerInt:",
+  getIntroducerInt

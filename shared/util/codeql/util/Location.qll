@@ -1,6 +1,4 @@
 /** Provides classes for working with locations. */
-overlay[local?]
-module;
 
 /**
  * A location as given by a file, a start line, a start column,

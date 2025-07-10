@@ -1,11 +1,8 @@
 /**
  * Provides classes and predicates for working with Java variables and their declarations.
  */
-overlay[local?]
-module;
 
 import Element
-private import semmle.code.java.Overlay
 
 /** A variable is a field, a local variable or a parameter. */
 class Variable extends @variable, Annotatable, Element, Modifiable {
@@ -134,6 +131,3 @@ class Parameter extends Element, @param, LocalScopeVariable {
   /** Holds if this is an anonymous parameter, `_` */
   predicate isAnonymous() { this.getName() = "" }
 }
-
-overlay[local]
-private class DiscardableLocalScopeVariable extends DiscardableLocatable, @localscopevariable { }

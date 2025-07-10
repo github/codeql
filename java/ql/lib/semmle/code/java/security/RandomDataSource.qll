@@ -1,8 +1,6 @@
 /**
  * Defines classes representing random data sources.
  */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.dataflow.TypeFlow

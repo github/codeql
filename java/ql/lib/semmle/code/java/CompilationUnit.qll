@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for working with Java compilation units.
  */
-overlay[local?]
-module;
 
 import Element
 import Package

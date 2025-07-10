@@ -2,8 +2,6 @@
  * Provides modules for computing dense `rank`s. See the `DenseRank` module
  * below for a more detailed explanation.
  */
-overlay[local?]
-module;
 
 /** Provides the input to `DenseRank`. */
 signature module DenseRankInputSig {

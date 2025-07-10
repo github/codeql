@@ -2,18 +2,11 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  EnumIsCaseExpr x, string getSubExpr__label, Expr getSubExpr, string getElement__label,
-  EnumElementDecl getElement
-) {
+from EnumIsCaseExpr x, string hasType, Expr getSubExpr, EnumElementDecl getElement
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getSubExpr__label = "getSubExpr:" and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getSubExpr = x.getSubExpr() and
-  getElement__label = "getElement:" and
   getElement = x.getElement()
-}
-
-query predicate getType(EnumIsCaseExpr x, Type getType) {
-  toBeTested(x) and not x.isUnknown() and getType = x.getType()
-}
+select x, "hasType:", hasType, "getSubExpr:", getSubExpr, "getElement:", getElement

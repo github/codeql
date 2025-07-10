@@ -1,8 +1,6 @@
 /**
  * Basic definitions for use in the data flow library.
  */
-overlay[local?]
-module;
 
 private import java
 private import DataFlowPrivate
@@ -79,7 +77,6 @@ private module ThisFlow {
  * Holds if data can flow from `node1` to `node2` in zero or more
  * local (intra-procedural) steps.
  */
-overlay[caller?]
 pragma[inline]
 predicate localFlow(Node node1, Node node2) { node1 = node2 or localFlowStepPlus(node1, node2) }
 
@@ -89,7 +86,6 @@ private predicate localFlowStepPlus(Node node1, Node node2) = fastTC(localFlowSt
  * Holds if data can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
-overlay[caller?]
 pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 

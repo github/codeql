@@ -1,0 +1,8 @@
+| key_path_expr.swift:11:12:11:17 | #keyPath(...) | WritableKeyPath<Foo, Int> |
+| key_path_expr.swift:12:18:12:26 | #keyPath(...) | WritableKeyPath<[Int], Int> |
+| key_path_expr.swift:13:19:13:38 | #keyPath(...) | WritableKeyPath<[String : Int], Int?> |
+| key_path_expr.swift:14:16:14:35 | #keyPath(...) | WritableKeyPath<Optional<Int>, Int> |
+| key_path_expr.swift:15:16:15:26 | #keyPath(...) | KeyPath<Foo, Int?> |
+| key_path_expr.swift:16:20:16:30 | #keyPath(...) | KeyPath<Foo, Int?> |
+| key_path_expr.swift:17:11:17:16 | #keyPath(...) | WritableKeyPath<Int, Int> |
+| key_path_expr.swift:18:20:18:32 | #keyPath(...) | WritableKeyPath<(Int, Int), Int> |

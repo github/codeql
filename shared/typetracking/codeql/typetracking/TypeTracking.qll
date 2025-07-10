@@ -2,8 +2,6 @@
  * Provides classes and predicates for simple data-flow reachability suitable
  * for tracking types.
  */
-overlay[local?]
-module;
 
 private import codeql.util.Location
 

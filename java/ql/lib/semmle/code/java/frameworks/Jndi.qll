@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for working with the Java JNDI API.
  */
-overlay[local?]
-module;
 
 import java
 

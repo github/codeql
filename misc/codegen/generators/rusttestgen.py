@@ -59,12 +59,13 @@ def generate(opts, renderer):
         registry=opts.ql_test_output / ".generated_tests.list",
         force=opts.force,
     ) as renderer:
-
-        resolver = qlgen.Resolver(schema.classes)
         for cls in schema.classes.values():
             if cls.imported:
                 continue
-            if resolver.should_skip_qltest(cls) or "rust_skip_doc_test" in cls.pragmas:
+            if (
+                qlgen.should_skip_qltest(cls, schema.classes)
+                or "rust_skip_doc_test" in cls.pragmas
+            ):
                 continue
             code = _get_code(cls.doc)
             for p in schema.iter_properties(cls.name):

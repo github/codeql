@@ -2,35 +2,28 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(ExternBlock x, string isUnsafe__label, string isUnsafe) {
+from
+  ExternBlock x, string hasExtendedCanonicalPath, string hasCrateOrigin,
+  string hasAttributeMacroExpansion, string hasAbi, int getNumberOfAttrs, string hasExternItemList,
+  string isUnsafe
+where
   toBeTested(x) and
   not x.isUnknown() and
-  isUnsafe__label = "isUnsafe:" and
+  (
+    if x.hasExtendedCanonicalPath()
+    then hasExtendedCanonicalPath = "yes"
+    else hasExtendedCanonicalPath = "no"
+  ) and
+  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  (
+    if x.hasAttributeMacroExpansion()
+    then hasAttributeMacroExpansion = "yes"
+    else hasAttributeMacroExpansion = "no"
+  ) and
+  (if x.hasAbi() then hasAbi = "yes" else hasAbi = "no") and
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  (if x.hasExternItemList() then hasExternItemList = "yes" else hasExternItemList = "no") and
   if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
-}
-
-query predicate getExtendedCanonicalPath(ExternBlock x, string getExtendedCanonicalPath) {
-  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
-}
-
-query predicate getCrateOrigin(ExternBlock x, string getCrateOrigin) {
-  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
-}
-
-query predicate getAttributeMacroExpansion(ExternBlock x, MacroItems getAttributeMacroExpansion) {
-  toBeTested(x) and
-  not x.isUnknown() and
-  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
-}
-
-query predicate getAbi(ExternBlock x, Abi getAbi) {
-  toBeTested(x) and not x.isUnknown() and getAbi = x.getAbi()
-}
-
-query predicate getAttr(ExternBlock x, int index, Attr getAttr) {
-  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
-}
-
-query predicate getExternItemList(ExternBlock x, ExternItemList getExternItemList) {
-  toBeTested(x) and not x.isUnknown() and getExternItemList = x.getExternItemList()
-}
+select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
+  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "hasAbi:", hasAbi, "getNumberOfAttrs:",
+  getNumberOfAttrs, "hasExternItemList:", hasExternItemList, "isUnsafe:", isUnsafe

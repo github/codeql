@@ -1,6 +1,4 @@
 /** Definitions related to the Apache Commons Collections library. */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.dataflow.FlowSteps

@@ -2,18 +2,12 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  ProtocolCompositionType x, string getName__label, string getName, string getCanonicalType__label,
-  Type getCanonicalType
-) {
+from ProtocolCompositionType x, string getName, Type getCanonicalType, int getNumberOfMembers
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getName__label = "getName:" and
   getName = x.getName() and
-  getCanonicalType__label = "getCanonicalType:" and
-  getCanonicalType = x.getCanonicalType()
-}
-
-query predicate getMember(ProtocolCompositionType x, int index, Type getMember) {
-  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
-}
+  getCanonicalType = x.getCanonicalType() and
+  getNumberOfMembers = x.getNumberOfMembers()
+select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getNumberOfMembers:",
+  getNumberOfMembers

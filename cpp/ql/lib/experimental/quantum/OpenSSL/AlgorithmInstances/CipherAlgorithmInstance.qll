@@ -33,9 +33,9 @@ predicate knownOpenSslConstantToCipherFamilyType(
       or
       name.matches("CAST5%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::CAST5())
       or
-      name.matches("2DES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DOUBLE_DES())
+      name.matches("2DES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DoubleDES())
       or
-      name.matches("3DES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TRIPLE_DES())
+      name.matches("3DES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TripleDES())
       or
       name.matches("DES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DES())
       or
@@ -113,7 +113,7 @@ class KnownOpenSslCipherConstantAlgorithmInstance extends OpenSslAlgorithmInstan
     this.(KnownOpenSslCipherAlgorithmExpr).getExplicitKeySize() = result
   }
 
-  override KeyOpAlg::AlgorithmType getAlgorithmType() {
+  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
     knownOpenSslConstantToCipherFamilyType(this, result)
     or
     not knownOpenSslConstantToCipherFamilyType(this, _) and

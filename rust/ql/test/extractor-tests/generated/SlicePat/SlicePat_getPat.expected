@@ -1,0 +1,13 @@
+| gen_slice_pat.rs:6:9:6:23 | SlicePat | 0 | gen_slice_pat.rs:6:10:6:10 | 1 |
+| gen_slice_pat.rs:6:9:6:23 | SlicePat | 1 | gen_slice_pat.rs:6:13:6:13 | 2 |
+| gen_slice_pat.rs:6:9:6:23 | SlicePat | 2 | gen_slice_pat.rs:6:16:6:16 | 3 |
+| gen_slice_pat.rs:6:9:6:23 | SlicePat | 3 | gen_slice_pat.rs:6:19:6:19 | 4 |
+| gen_slice_pat.rs:6:9:6:23 | SlicePat | 4 | gen_slice_pat.rs:6:22:6:22 | 5 |
+| gen_slice_pat.rs:7:9:7:18 | SlicePat | 0 | gen_slice_pat.rs:7:10:7:10 | 1 |
+| gen_slice_pat.rs:7:9:7:18 | SlicePat | 1 | gen_slice_pat.rs:7:13:7:13 | 2 |
+| gen_slice_pat.rs:7:9:7:18 | SlicePat | 2 | gen_slice_pat.rs:7:16:7:17 | .. |
+| gen_slice_pat.rs:8:9:8:24 | SlicePat | 0 | gen_slice_pat.rs:8:10:8:10 | x |
+| gen_slice_pat.rs:8:9:8:24 | SlicePat | 1 | gen_slice_pat.rs:8:13:8:13 | y |
+| gen_slice_pat.rs:8:9:8:24 | SlicePat | 2 | gen_slice_pat.rs:8:16:8:17 | .. |
+| gen_slice_pat.rs:8:9:8:24 | SlicePat | 3 | gen_slice_pat.rs:8:20:8:20 | z |
+| gen_slice_pat.rs:8:9:8:24 | SlicePat | 4 | gen_slice_pat.rs:8:23:8:23 | 7 |

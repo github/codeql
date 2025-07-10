@@ -2,16 +2,12 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(StructExprField x) { toBeTested(x) and not x.isUnknown() }
-
-query predicate getAttr(StructExprField x, int index, Attr getAttr) {
-  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
-}
-
-query predicate getExpr(StructExprField x, Expr getExpr) {
-  toBeTested(x) and not x.isUnknown() and getExpr = x.getExpr()
-}
-
-query predicate getIdentifier(StructExprField x, NameRef getIdentifier) {
-  toBeTested(x) and not x.isUnknown() and getIdentifier = x.getIdentifier()
-}
+from StructExprField x, int getNumberOfAttrs, string hasExpr, string hasIdentifier
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
+  if x.hasIdentifier() then hasIdentifier = "yes" else hasIdentifier = "no"
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasIdentifier:",
+  hasIdentifier

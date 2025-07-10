@@ -4,8 +4,6 @@
  *
  * See the Java Language Specification, Section 5, for details.
  */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.arithmetic.Overflow

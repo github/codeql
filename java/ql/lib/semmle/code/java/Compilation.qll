@@ -1,8 +1,6 @@
 /**
  * Provides a class representing individual compiler invocations that occurred during the build.
  */
-overlay[local?]
-module;
 
 import semmle.code.FileSystem
 

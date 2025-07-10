@@ -1,6 +1,4 @@
 /** Provides classes and predicates to work with email */
-overlay[local?]
-module;
 
 import java
 

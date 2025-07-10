@@ -2,8 +2,6 @@
  * This library provides predicates for reasoning about the set of all paths
  * through a callable.
  */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.dispatch.VirtualDispatch

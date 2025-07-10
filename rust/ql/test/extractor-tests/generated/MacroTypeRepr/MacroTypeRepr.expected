@@ -1,4 +1,1 @@
-instances
-| gen_macro_type_repr.rs:10:14:10:26 | MacroTypeRepr |
-getMacroCall
-| gen_macro_type_repr.rs:10:14:10:26 | MacroTypeRepr | gen_macro_type_repr.rs:10:14:10:26 | macro_type!... |
+| gen_macro_type_repr.rs:10:14:10:26 | MacroTypeRepr | hasMacroCall: | yes |

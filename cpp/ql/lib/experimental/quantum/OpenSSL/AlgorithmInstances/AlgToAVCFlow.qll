@@ -48,7 +48,7 @@ module KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig implements DataFlow::
 module KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow =
   DataFlow::Global<KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig>;
 
-module RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
+module RSAPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof OpenSslPaddingLiteral }
 
   predicate isSink(DataFlow::Node sink) {
@@ -60,8 +60,8 @@ module RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig implements DataF
   }
 }
 
-module RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerFlow =
-  DataFlow::Global<RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig>;
+module RSAPaddingAlgorithmToPaddingAlgorithmValueConsumerFlow =
+  DataFlow::Global<RSAPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig>;
 
 class OpenSslAlgorithmAdditionalFlowStep extends AdditionalFlowInputStep {
   OpenSslAlgorithmAdditionalFlowStep() { exists(AlgorithmPassthroughCall c | c.getInNode() = this) }
@@ -114,11 +114,11 @@ class CopyAndDupAlgorithmPassthroughCall extends AlgorithmPassthroughCall {
   override DataFlow::Node getOutNode() { result = outNode }
 }
 
-class NidToPointerPassthroughCall extends AlgorithmPassthroughCall {
+class NIDToPointerPassthroughCall extends AlgorithmPassthroughCall {
   DataFlow::Node inNode;
   DataFlow::Node outNode;
 
-  NidToPointerPassthroughCall() {
+  NIDToPointerPassthroughCall() {
     this.getTarget().getName() in ["OBJ_nid2obj", "OBJ_nid2ln", "OBJ_nid2sn"] and
     inNode.asExpr() = this.getArgument(0) and
     outNode.asExpr() = this
@@ -150,11 +150,11 @@ class PointerToPointerPassthroughCall extends AlgorithmPassthroughCall {
   override DataFlow::Node getOutNode() { result = outNode }
 }
 
-class PointerToNidPassthroughCall extends AlgorithmPassthroughCall {
+class PointerToNIDPassthroughCall extends AlgorithmPassthroughCall {
   DataFlow::Node inNode;
   DataFlow::Node outNode;
 
-  PointerToNidPassthroughCall() {
+  PointerToNIDPassthroughCall() {
     this.getTarget().getName() in ["OBJ_obj2nid", "OBJ_ln2nid", "OBJ_sn2nid", "OBJ_txt2nid"] and
     (
       inNode.asIndirectExpr() = this.getArgument(0)

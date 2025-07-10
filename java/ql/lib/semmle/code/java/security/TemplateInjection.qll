@@ -1,6 +1,4 @@
 /** Definitions related to the server-side template injection (SST) query. */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.dataflow.FlowSources

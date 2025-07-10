@@ -2,9 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(AsmOption x, string isRaw__label, string isRaw) {
+from AsmOption x, string isRaw
+where
   toBeTested(x) and
   not x.isUnknown() and
-  isRaw__label = "isRaw:" and
   if x.isRaw() then isRaw = "yes" else isRaw = "no"
-}
+select x, "isRaw:", isRaw

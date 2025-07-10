@@ -9,6 +9,7 @@ use std::process::Command;
 use tracing::info;
 
 const EDITION: &str = "2021";
+const NIGHTLY: &str = "nightly-2025-06-01";
 
 fn dump_lib() -> anyhow::Result<()> {
     let path_iterator = glob("*.rs").context("globbing test sources")?;
@@ -75,7 +76,7 @@ fn dump_cargo_manifest(dependencies: &[String]) -> anyhow::Result<()> {
 fn dump_nightly_toolchain() -> anyhow::Result<()> {
     fs::write(
         "rust-toolchain.toml",
-        include_str!("nightly-toolchain/rust-toolchain.toml"),
+        format!("[toolchain]\nchannel = \"{NIGHTLY}\"\n"),
     )
     .context("writing rust-toolchain.toml")?;
     Ok(())

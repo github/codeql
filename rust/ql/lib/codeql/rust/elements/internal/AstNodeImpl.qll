@@ -59,17 +59,6 @@ module Impl {
       )
     }
 
-    /** Gets the block that encloses this node, if any. */
-    cached
-    BlockExpr getEnclosingBlock() {
-      exists(AstNode p | p = this.getParentNode() |
-        result = p
-        or
-        not p instanceof BlockExpr and
-        result = p.getEnclosingBlock()
-      )
-    }
-
     /** Holds if this node is inside a macro expansion. */
     predicate isInMacroExpansion() { MacroCallImpl::isInMacroExpansion(_, this) }
 

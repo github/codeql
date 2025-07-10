@@ -1,8 +1,6 @@
 /**
  * Provides classes for working with the Jabsorb JSON-RPC ORB framework.
  */
-overlay[local?]
-module;
 
 import java
 

@@ -1,14 +1,16 @@
-## Overview
+# Artifact poisoning
+
+## Description
 
 The workflow downloads artifacts that may be poisoned by an attacker in previously triggered workflows. If the contents of these artifacts are not correctly extracted, stored and verified, they may lead to repository compromise if untrusted code gets executed in a privileged job.
 
-## Recommendation
+## Recommendations
 
 - Always consider artifacts content as untrusted.
 - Extract the contents of artifacts to a temporary folder so they cannot override existing files.
 - Verify the contents of the artifacts downloaded. If an artifact is expected to contain a numeric value, verify it before using it.
 
-## Example
+## Examples
 
 ### Incorrect Usage
 
@@ -67,4 +69,4 @@ jobs:
 
 ## References
 
-- GitHub Security Lab Research: [Keeping your GitHub Actions and workflows secure Part 1: Preventing pwn requests](https://securitylab.github.com/research/github-actions-preventing-pwn-requests/).
+- [Keeping your GitHub Actions and workflows secure Part 1: Preventing pwn requests](https://securitylab.github.com/research/github-actions-preventing-pwn-requests/)

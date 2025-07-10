@@ -1,0 +1,2 @@
+| gen_box_pat.rs:6:9:6:27 | box ... | gen_box_pat.rs:6:13:6:27 | ...::Some(...) |
+| gen_box_pat.rs:7:9:7:24 | box ...::None | gen_box_pat.rs:7:13:7:24 | ...::None |

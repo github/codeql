@@ -1,8 +1,6 @@
 /**
  * Provides shared predicates related to contextual queries in the code viewer.
  */
-overlay[local?]
-module;
 
 import semmle.files.FileSystem
 private import codeql.util.FileSystem

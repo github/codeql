@@ -1,6 +1,3 @@
-overlay[local?]
-module;
-
 import java
 import semmle.code.java.frameworks.struts.StrutsConventions
 import semmle.code.java.frameworks.struts.StrutsXML
@@ -133,7 +130,7 @@ class Struts2PrepareMethod extends Method {
  */
 class Struts2ActionSupportClass extends Class {
   Struts2ActionSupportClass() {
-    this.getASourceSupertype+().hasQualifiedName("com.opensymphony.xwork2", "ActionSupport")
+    this.getAStrictAncestor().hasQualifiedName("com.opensymphony.xwork2", "ActionSupport")
   }
 
   /**

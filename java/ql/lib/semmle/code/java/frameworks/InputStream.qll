@@ -1,6 +1,4 @@
 /** Provides definitions related to `java.io.InputStream`. */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

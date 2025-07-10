@@ -8,7 +8,7 @@ import semmle.code.cpp.File
 /**
  * A location of a C/C++ artifact.
  */
-class Location extends @location_default {
+class Location extends @location {
   /** Gets the container corresponding to this location. */
   pragma[nomagic]
   Container getContainer() { this.fullLocationInfo(result, _, _, _, _) }
@@ -53,7 +53,9 @@ class Location extends @location_default {
   predicate fullLocationInfo(
     Container container, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    locations_default(this, unresolveElement(container), startline, startcolumn, endline, endcolumn)
+    locations_default(this, unresolveElement(container), startline, startcolumn, endline, endcolumn) or
+    locations_expr(this, unresolveElement(container), startline, startcolumn, endline, endcolumn) or
+    locations_stmt(this, unresolveElement(container), startline, startcolumn, endline, endcolumn)
   }
 
   /**
@@ -144,32 +146,30 @@ class Locatable extends Element { }
  * expressions, one for statements and one for other program elements.
  */
 class UnknownLocation extends Location {
-  UnknownLocation() {
-    this.getFile().getAbsolutePath() = "" and locations_default(this, _, 0, 0, 0, 0)
-  }
+  UnknownLocation() { this.getFile().getAbsolutePath() = "" }
 }
 
 /**
  * A dummy location which is used when something doesn't have a location in
  * the source code but needs to have a `Location` associated with it.
- *
- * DEPRECATED: use `UnknownLocation`
  */
-deprecated class UnknownDefaultLocation extends UnknownLocation { }
+class UnknownDefaultLocation extends UnknownLocation {
+  UnknownDefaultLocation() { locations_default(this, _, 0, 0, 0, 0) }
+}
 
 /**
  * A dummy location which is used when an expression doesn't have a
  * location in the source code but needs to have a `Location` associated
  * with it.
- *
- * DEPRECATED: use `UnknownLocation`
  */
-deprecated class UnknownExprLocation extends UnknownLocation { }
+class UnknownExprLocation extends UnknownLocation {
+  UnknownExprLocation() { locations_expr(this, _, 0, 0, 0, 0) }
+}
 
 /**
  * A dummy location which is used when a statement doesn't have a location
  * in the source code but needs to have a `Location` associated with it.
- *
- * DEPRECATED: use `UnknownLocation`
  */
-deprecated class UnknownStmtLocation extends UnknownLocation { }
+class UnknownStmtLocation extends UnknownLocation {
+  UnknownStmtLocation() { locations_stmt(this, _, 0, 0, 0, 0) }
+}

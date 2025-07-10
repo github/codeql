@@ -38,22 +38,6 @@ predicate variableWrite(AstNode write, Variable v) {
   )
 }
 
-private predicate variableReadCertain(BasicBlock bb, int i, VariableAccess va, Variable v) {
-  bb.getNode(i).getAstNode() = va and
-  va = v.getAnAccess() and
-  (
-    va instanceof VariableReadAccess
-    or
-    // For immutable variables, we model a read when they are borrowed
-    // (although the actual read happens later, if at all).
-    va = any(RefExpr re).getExpr()
-    or
-    // Although compound assignments, like `x += y`, may in fact not read `x`,
-    // it makes sense to treat them as such
-    va = any(CompoundAssignmentExpr cae).getLhs()
-  )
-}
-
 module SsaInput implements SsaImplCommon::InputSig<Location> {
   class BasicBlock = BasicBlocks::BasicBlock;
 
@@ -82,7 +66,20 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
   }
 
   predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
-    variableReadCertain(bb, i, _, v) and
+    exists(VariableAccess va |
+      bb.getNode(i).getAstNode() = va and
+      va = v.getAnAccess()
+    |
+      va instanceof VariableReadAccess
+      or
+      // For immutable variables, we model a read when they are borrowed
+      // (although the actual read happens later, if at all).
+      va = any(RefExpr re).getExpr()
+      or
+      // Although compound assignments, like `x += y`, may in fact not read `x`,
+      // it makes sense to treat them as such
+      va = any(CompoundAssignmentExpr cae).getLhs()
+    ) and
     certain = true
     or
     capturedCallRead(_, bb, i, v) and certain = false
@@ -103,6 +100,16 @@ class PhiDefinition = Impl::PhiNode;
 
 module Consistency = Impl::Consistency;
 
+/** Holds if `v` is read at index `i` in basic block `bb`. */
+private predicate variableReadActual(BasicBlock bb, int i, Variable v) {
+  exists(VariableAccess read |
+    read instanceof VariableReadAccess or read = any(RefExpr re).getExpr()
+  |
+    read.getVariable() = v and
+    read = bb.getNode(i).getAstNode()
+  )
+}
+
 /**
  * Holds if captured variable `v` is written directly inside `scope`,
  * or inside a (transitively) nested scope of `scope`.
@@ -118,10 +125,10 @@ private predicate hasCapturedWrite(Variable v, Cfg::CfgScope scope) {
  * immediate outer CFG scope of `scope`.
  */
 pragma[noinline]
-private predicate variableReadCertainInOuterScope(
+private predicate variableReadActualInOuterScope(
   BasicBlock bb, int i, Variable v, Cfg::CfgScope scope
 ) {
-  variableReadCertain(bb, i, _, v) and bb.getScope() = scope.getEnclosingCfgScope()
+  variableReadActual(bb, i, v) and bb.getScope() = scope.getEnclosingCfgScope()
 }
 
 pragma[noinline]
@@ -129,7 +136,7 @@ private predicate hasVariableReadWithCapturedWrite(
   BasicBlock bb, int i, Variable v, Cfg::CfgScope scope
 ) {
   hasCapturedWrite(v, scope) and
-  variableReadCertainInOuterScope(bb, i, v, scope)
+  variableReadActualInOuterScope(bb, i, v, scope)
 }
 
 private VariableAccess getACapturedVariableAccess(BasicBlock bb, Variable v) {
@@ -147,7 +154,7 @@ private predicate writesCapturedVariable(BasicBlock bb, Variable v) {
 /** Holds if `bb` contains a captured read to variable `v`. */
 pragma[nomagic]
 private predicate readsCapturedVariable(BasicBlock bb, Variable v) {
-  variableReadCertain(_, _, getACapturedVariableAccess(bb, v), _)
+  getACapturedVariableAccess(bb, v) instanceof VariableReadAccess
 }
 
 /**
@@ -247,7 +254,7 @@ private module Cached {
   CfgNode getARead(Definition def) {
     exists(Variable v, BasicBlock bb, int i |
       Impl::ssaDefReachesRead(v, def, bb, i) and
-      variableReadCertain(bb, i, v.getAnAccess(), v) and
+      variableReadActual(bb, i, v) and
       result = bb.getNode(i)
     )
   }

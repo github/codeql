@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for defining flow summaries.
  */
-overlay[local?]
-module;
 
 import java
 private import internal.FlowSummaryImpl as Impl

@@ -1,0 +1,2 @@
+| gen_trait.rs:3:1:8:1 | trait Frobinizable | crate::gen_trait::Frobinizable |
+| gen_trait.rs:10:1:10:57 | trait Foo | crate::gen_trait::Foo |

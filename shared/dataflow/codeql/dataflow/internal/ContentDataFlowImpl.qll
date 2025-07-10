@@ -22,8 +22,6 @@
  * steps, followed by 0 or more stores, with value-preserving steps allowed in
  * between all other steps.
  */
-overlay[local?]
-module;
 
 private import codeql.dataflow.DataFlow
 private import codeql.util.Boolean

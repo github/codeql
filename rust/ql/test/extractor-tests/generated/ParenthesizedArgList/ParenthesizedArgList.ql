@@ -2,8 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(ParenthesizedArgList x) { toBeTested(x) and not x.isUnknown() }
-
-query predicate getTypeArg(ParenthesizedArgList x, int index, TypeArg getTypeArg) {
-  toBeTested(x) and not x.isUnknown() and getTypeArg = x.getTypeArg(index)
-}
+from ParenthesizedArgList x, int getNumberOfTypeArgs
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  getNumberOfTypeArgs = x.getNumberOfTypeArgs()
+select x, "getNumberOfTypeArgs:", getNumberOfTypeArgs

@@ -1,0 +1,2 @@
+| gen_type_alias.rs:4:5:5:26 | type Point | gen_type_alias.rs:5:10:5:14 | Point |
+| gen_type_alias.rs:8:9:8:20 | type Output | gen_type_alias.rs:8:14:8:19 | Output |

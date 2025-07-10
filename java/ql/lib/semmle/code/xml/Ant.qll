@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for working with targets in Apache Ant build files.
  */
-overlay[local?]
-module;
 
 import XML
 

@@ -11,5 +11,5 @@ import java
 import experimental.quantum.Language
 
 from Crypto::KeyOperationAlgorithmNode a
-where a.getAlgorithmType() instanceof Crypto::KeyOpAlg::SymmetricCipherAlgorithmType
+where a.getAlgorithmType() instanceof Crypto::KeyOpAlg::SymmetricCipherAlgorithm
 select a, a.getAlgorithmName()

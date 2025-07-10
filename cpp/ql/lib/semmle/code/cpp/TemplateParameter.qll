@@ -105,7 +105,7 @@ class AutoType extends TypeTemplateParameter {
 
   override string getAPrimaryQlClass() { result = "AutoType" }
 
-  override Location getLocation() { result instanceof UnknownLocation }
+  override Location getLocation() { result instanceof UnknownDefaultLocation }
 }
 
 /**

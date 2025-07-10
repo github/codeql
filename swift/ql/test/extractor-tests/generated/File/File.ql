@@ -2,17 +2,13 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  File x, string primaryQlClasses, string getName__label, string getName,
-  string isSuccessfullyExtracted__label, string isSuccessfullyExtracted
-) {
+from File x, string getName, string isSuccessfullyExtracted
+where
   toBeTested(x) and
   not x.isUnknown() and
-  primaryQlClasses = x.getPrimaryQlClasses() and
-  getName__label = "getName:" and
   getName = x.getName() and
-  isSuccessfullyExtracted__label = "isSuccessfullyExtracted:" and
   if x.isSuccessfullyExtracted()
   then isSuccessfullyExtracted = "yes"
   else isSuccessfullyExtracted = "no"
-}
+select x, x.getPrimaryQlClasses(), "getName:", getName, "isSuccessfullyExtracted:",
+  isSuccessfullyExtracted

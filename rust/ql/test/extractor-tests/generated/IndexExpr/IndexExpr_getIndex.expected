@@ -1,0 +1,2 @@
+| gen_index_expr.rs:5:5:5:12 | list[42] | gen_index_expr.rs:5:10:5:11 | 42 |
+| gen_index_expr.rs:6:5:6:12 | list[42] | gen_index_expr.rs:6:10:6:11 | 42 |

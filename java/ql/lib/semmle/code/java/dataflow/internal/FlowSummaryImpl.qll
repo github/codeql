@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for defining flow summaries.
  */
-overlay[local?]
-module;
 
 private import java
 private import codeql.dataflow.internal.FlowSummaryImpl

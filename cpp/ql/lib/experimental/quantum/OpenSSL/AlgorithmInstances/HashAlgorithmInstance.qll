@@ -11,21 +11,21 @@ predicate knownOpenSslConstantToHashFamilyType(
   exists(string name |
     name = e.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
     (
-      name = "BLAKE2B" and type instanceof Crypto::BLAKE2B
+      name.matches("BLAKE2B") and type instanceof Crypto::BLAKE2B
       or
-      name = "BLAKE2S" and type instanceof Crypto::BLAKE2S
+      name.matches("BLAKE2S") and type instanceof Crypto::BLAKE2S
       or
-      name.matches("GOST%") and type instanceof Crypto::GOST_HASH
+      name.matches("GOST%") and type instanceof Crypto::GOSTHash
       or
-      name = "MD2" and type instanceof Crypto::MD2
+      name.matches("MD2") and type instanceof Crypto::MD2
       or
-      name = "MD4" and type instanceof Crypto::MD4
+      name.matches("MD4") and type instanceof Crypto::MD4
       or
-      name = "MD5" and type instanceof Crypto::MD5
+      name.matches("MD5") and type instanceof Crypto::MD5
       or
-      name = "MDC2" and type instanceof Crypto::MDC2
+      name.matches("MDC2") and type instanceof Crypto::MDC2
       or
-      name = "POLY1305" and type instanceof Crypto::POLY1305
+      name.matches("POLY1305") and type instanceof Crypto::POLY1305
       or
       name.matches(["SHA", "SHA1"]) and type instanceof Crypto::SHA1
       or
@@ -33,13 +33,13 @@ predicate knownOpenSslConstantToHashFamilyType(
       or
       name.matches("SHA3-%") and type instanceof Crypto::SHA3
       or
-      name = "SHAKE" and type instanceof Crypto::SHAKE
+      name.matches(["SHAKE"]) and type instanceof Crypto::SHAKE
       or
-      name = "SM3" and type instanceof Crypto::SM3
+      name.matches("SM3") and type instanceof Crypto::SM3
       or
-      name = "RIPEMD160" and type instanceof Crypto::RIPEMD160
+      name.matches("RIPEMD160") and type instanceof Crypto::RIPEMD160
       or
-      name = "WHIRLPOOL" and type instanceof Crypto::WHIRLPOOL
+      name.matches("WHIRLPOOL") and type instanceof Crypto::WHIRLPOOL
     )
   )
 }

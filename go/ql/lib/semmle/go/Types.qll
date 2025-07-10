@@ -1038,15 +1038,8 @@ deprecated class NamedType = DefinedType;
 
 /** A defined type. */
 class DefinedType extends @definedtype, CompositeType {
-  /**
-   * Gets the type which this type is defined to be, if available.
-   *
-   * Note that this is only defined for types declared in the project being
-   * analyzed. It will not be defined for types declared in external packages.
-   */
-  Type getBaseType() {
-    result = this.getEntity().(DeclaredTypeEntity).getSpec().getTypeExpr().getType()
-  }
+  /** Gets the type which this type is defined to be. */
+  Type getBaseType() { underlying_type(this, result) }
 
   override Method getMethod(string m) {
     result = CompositeType.super.getMethod(m)
@@ -1056,7 +1049,7 @@ class DefinedType extends @definedtype, CompositeType {
     or
     // handle promoted methods
     exists(StructType s, Type embedded |
-      s = this.getUnderlyingType() and
+      s = this.getBaseType() and
       s.hasOwnField(_, _, embedded, true) and
       // ensure `m` can be promoted
       not s.hasOwnField(_, m, _, _) and
@@ -1070,7 +1063,7 @@ class DefinedType extends @definedtype, CompositeType {
     )
   }
 
-  override Type getUnderlyingType() { underlying_type(this, result) }
+  override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
 }
 
 /**

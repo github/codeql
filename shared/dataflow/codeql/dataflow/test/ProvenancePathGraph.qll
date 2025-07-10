@@ -5,8 +5,6 @@
  * In addition to the `PathGraph`, a `query predicate models` is provided to
  * list the contents of the referenced MaD rows.
  */
-overlay[local?]
-module;
 
 private import codeql.dataflow.DataFlow as DF
 

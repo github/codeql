@@ -2,8 +2,6 @@
  * Definitions for reasoning about untrusted data used in APIs defined outside the
  * database.
  */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.dataflow.FlowSources

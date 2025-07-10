@@ -88,13 +88,13 @@ final class DataFlowCall extends TDataFlowCall {
     )
   }
 
+  Location getLocation() { result = this.asCallCfgNode().getLocation() }
+
   //** TODO JB1: Move to subclass, monkey patching for #153 */
   DataFlowCallable getARuntimeTarget(){ none() }
   ArgumentNode getAnArgumentNode(){ none() }
   int totalorder(){ none() }
   //** TODO JB1: end stubs for #153 */
-
-  Location getLocation() { result = this.asCallCfgNode().getLocation() }
 }
 
 /**
@@ -415,20 +415,10 @@ module RustDataFlow implements InputSig<Location> {
 
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall call) {
-    exists(Call c | c = call.asCallCfgNode().getCall() |
-      result.asCfgScope() = c.getARuntimeTarget()
+    exists(Callable target | target = call.asCallCfgNode().getCall().getStaticTarget() |
+      target = result.asCfgScope()
       or
-      exists(SummarizedCallable sc, Function staticTarget |
-        staticTarget = c.getStaticTarget() and
-        sc = result.asSummarizedCallable()
-      |
-        sc = staticTarget
-        or
-        // only apply trait models to concrete implementations when they are not
-        // defined in source code
-        staticTarget.implements(sc) and
-        not staticTarget.fromSource()
-      )
+      target = result.asSummarizedCallable()
     )
   }
 
@@ -925,11 +915,7 @@ module VariableCapture {
       CapturedVariable v;
 
       VariableRead() {
-        exists(VariableAccess read | this.getExpr() = read and v = read.getVariable() |
-          read instanceof VariableReadAccess
-          or
-          read = any(RefExpr re).getExpr()
-        )
+        exists(VariableReadAccess read | this.getExpr() = read and v = read.getVariable())
       }
 
       CapturedVariable getVariable() { result = v }

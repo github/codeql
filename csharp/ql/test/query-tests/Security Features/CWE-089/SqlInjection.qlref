@@ -1,4 +1,2 @@
 query: Security Features/CWE-089/SqlInjection.ql
-postprocess:
-  - utils/test/PrettyPrintModels.ql
-  - utils/test/InlineExpectationsTestQuery.ql
+postprocess: utils/test/PrettyPrintModels.ql

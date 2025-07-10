@@ -12,6 +12,7 @@ import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.internal.CallableImpl::Impl as CallableImpl
 import codeql.rust.elements.internal.ExternItemImpl::Impl as ExternItemImpl
 import codeql.rust.elements.GenericParamList
+import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
 import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.Visibility
@@ -37,7 +38,7 @@ module Generated {
    * Use the subclass `Function`, where the following predicates are available.
    */
   class Function extends Synth::TFunction, AssocItemImpl::AssocItem, ExternItemImpl::ExternItem,
-    CallableImpl::Callable
+    ItemImpl::Item, CallableImpl::Callable
   {
     override string getAPrimaryQlClass() { result = "Function" }
 

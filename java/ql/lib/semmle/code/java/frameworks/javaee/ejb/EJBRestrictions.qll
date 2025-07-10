@@ -2,8 +2,6 @@
  * Provides classes and predicates for modeling
  * EJB Programming Restrictions (see EJB 3.0 specification, section 21.1.2).
  */
-overlay[local?]
-module;
 
 import java
 import EJB

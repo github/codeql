@@ -5,8 +5,6 @@
  * This file is used by the shared data flow library and by the JavaScript libraries
  * (which does not use the shared data flow libraries).
  */
-overlay[local?]
-module;
 
 /**
  * Convenience-predicate for extracting two capture groups at once.

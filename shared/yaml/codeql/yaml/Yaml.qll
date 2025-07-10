@@ -4,8 +4,6 @@
  * YAML documents are represented as abstract syntax trees whose nodes
  * are either YAML values or alias nodes referring to another YAML value.
  */
-overlay[local?]
-module;
 
 /** Provides the input specification of YAML implementation. */
 signature module InputSig {

@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates to detect comparing a parameter to a hard-coded credential.
  */
-overlay[local?]
-module;
 
 import java
 import HardcodedCredentials

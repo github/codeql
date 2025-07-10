@@ -1,6 +1,4 @@
 /** Provides classes and predicates to reason about email vulnerabilities. */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.frameworks.Mail

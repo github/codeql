@@ -1,6 +1,4 @@
 /** Provides the empty `Void` class. */
-overlay[local?]
-module;
 
 /** The empty void type. */
 private newtype TVoid = TMkVoid() { none() }

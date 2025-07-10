@@ -186,9 +186,7 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      exists(any(Node n).toString())
-      or
-      exists(any(Node n).getLocation())
+      exists(Node n)
       or
       RustTaintTracking::defaultAdditionalTaintStep(_, _, _)
       or

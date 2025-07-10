@@ -182,7 +182,7 @@ abstract class InstructionNode0 extends Node0Impl {
   override Location getLocationImpl() {
     if exists(instr.getAst().getLocation())
     then result = instr.getAst().getLocation()
-    else result instanceof UnknownLocation
+    else result instanceof UnknownDefaultLocation
   }
 
   final override predicate isGLValue() { exists(getInstructionType(instr, true)) }
@@ -227,7 +227,7 @@ abstract class OperandNode0 extends Node0Impl {
   override Location getLocationImpl() {
     if exists(op.getDef().getAst().getLocation())
     then result = op.getDef().getAst().getLocation()
-    else result instanceof UnknownLocation
+    else result instanceof UnknownDefaultLocation
   }
 
   final override predicate isGLValue() { exists(getOperandType(op, true)) }

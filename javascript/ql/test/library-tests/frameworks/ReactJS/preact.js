@@ -1,11 +1,11 @@
-class Hello extends Preact.Component { // $ threatModelSource=view-component-input
-    render(props, state) { // $ threatModelSource=view-component-input
+class Hello extends Preact.Component {
+    render(props, state) {
         props.name;
         state.name;
         return <div/>;
     }
-} // $ reactComponent
+}
 
-class Hello extends preact.Component { // $ threatModelSource=view-component-input
+class Hello extends preact.Component {
 
-} // $ reactComponent
+}

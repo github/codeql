@@ -52,32 +52,6 @@ fn property_name(type_name: &str, field_name: &str) -> String {
     name.to_owned()
 }
 
-fn has_special_emission(type_name: &str) -> bool {
-    matches!(
-        type_name,
-        "Item"
-            | "AssocItem"
-            | "ExternItem"
-            | "Meta"
-            | "MacroCall"
-            | "Fn"
-            | "Struct"
-            | "Enum"
-            | "Union"
-            | "Trait"
-            | "Module"
-            | "Variant"
-            | "PathExpr"
-            | "RecordExpr"
-            | "PathPat"
-            | "RecordPat"
-            | "TupleStructPat"
-            | "MethodCallExpr"
-            | "PathSegment"
-            | "Const"
-    )
-}
-
 fn to_lower_snake_case(s: &str) -> String {
     let mut buf = String::with_capacity(s.len());
     let mut prev = false;
@@ -381,7 +355,6 @@ struct ExtractorEnumInfo {
     snake_case_name: String,
     ast_name: String,
     variants: Vec<EnumVariantInfo>,
-    has_special_emission: bool,
 }
 
 #[derive(Serialize, Default)]
@@ -403,7 +376,6 @@ struct ExtractorNodeInfo {
     ast_name: String,
     fields: Vec<ExtractorNodeFieldInfo>,
     has_attrs: bool,
-    has_special_emission: bool,
 }
 
 #[derive(Serialize)]
@@ -434,7 +406,6 @@ fn enum_to_extractor_info(node: &AstEnumSrc) -> Option<ExtractorEnumInfo> {
                 }
             })
             .collect(),
-        has_special_emission: has_special_emission(&node.name),
     })
 }
 
@@ -489,7 +460,6 @@ fn node_to_extractor_info(node: &AstNodeSrc) -> ExtractorNodeInfo {
         ast_name: node.name.clone(),
         fields,
         has_attrs,
-        has_special_emission: has_special_emission(&node.name),
     }
 }
 

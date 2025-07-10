@@ -10,15 +10,15 @@ import io.jsonwebtoken.impl.DefaultJwtParserBuilder;
 public class MissingJWTSignatureCheckTest {
 
     private JwtParser getASignedParser() {
-        return Jwts.parser().setSigningKey("someBase64EncodedKey"); // $ Source
+        return Jwts.parser().setSigningKey("someBase64EncodedKey");
     }
 
     private JwtParser getASignedParserFromParserBuilder() {
-        return Jwts.parserBuilder().setSigningKey("someBase64EncodedKey").build(); // $ Source
+        return Jwts.parserBuilder().setSigningKey("someBase64EncodedKey").build();
     }
 
     private JwtParser getASignedNewParser() {
-        return new DefaultJwtParser().setSigningKey("someBase64EncodedKey"); // $ Source
+        return new DefaultJwtParser().setSigningKey("someBase64EncodedKey");
     }
 
     private void callSignedParsers() {
@@ -80,11 +80,11 @@ public class MissingJWTSignatureCheckTest {
     }
 
     private void badJwtOnParserBuilder(JwtParser parser, String token) {
-        parser.parse(token); // $ Alert
+        parser.parse(token); // $hasMissingJwtSignatureCheck
     }
 
     private void badJwtHandlerOnParserBuilder(JwtParser parser, String token) {
-        parser.parse(token, new JwtHandlerAdapter<Jwt<Header, String>>() { // $ Alert
+        parser.parse(token, new JwtHandlerAdapter<Jwt<Header, String>>() { // $hasMissingJwtSignatureCheck
             @Override
             public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
                 return jwt;
@@ -107,15 +107,15 @@ public class MissingJWTSignatureCheckTest {
     }
 
     private void badJwtOnParserBuilder(String token) {
-        Jwts.parserBuilder().setSigningKey("someBase64EncodedKey").build().parse(token); // $ Alert
+        Jwts.parserBuilder().setSigningKey("someBase64EncodedKey").build().parse(token); // $hasMissingJwtSignatureCheck
     }
 
     private void badJwtOnDefaultParserBuilder(String token) {
-        new DefaultJwtParserBuilder().setSigningKey("someBase64EncodedKey").build().parse(token); // $ Alert
+        new DefaultJwtParserBuilder().setSigningKey("someBase64EncodedKey").build().parse(token); // $hasMissingJwtSignatureCheck
     }
 
     private void badJwtHandlerOnParser(String token) {
-        Jwts.parser().setSigningKey("someBase64EncodedKey").parse(token, // $ Alert
+        Jwts.parser().setSigningKey("someBase64EncodedKey").parse(token, // $hasMissingJwtSignatureCheck
                 new JwtHandlerAdapter<Jwt<Header, String>>() {
                     @Override
                     public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {

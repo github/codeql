@@ -7,7 +7,7 @@ private import experimental.quantum.OpenSSL.Operations.OpenSSLOperations
 private import AlgToAVCFlow
 
 class KnownOpenSslMacConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
-  Crypto::MacAlgorithmInstance instanceof KnownOpenSslMacAlgorithmExpr
+  Crypto::MACAlgorithmInstance instanceof KnownOpenSslMacAlgorithmExpr
 {
   OpenSslAlgorithmValueConsumer getterCall;
 
@@ -39,14 +39,14 @@ class KnownOpenSslMacConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
     result = this.(Call).getTarget().getName()
   }
 
-  override Crypto::MacType getMacType() {
-    this instanceof KnownOpenSslHMacAlgorithmExpr and result = Crypto::HMAC()
+  override Crypto::TMACType getMacType() {
+    this instanceof KnownOpenSslHMacAlgorithmExpr and result instanceof Crypto::THMAC
     or
-    this instanceof KnownOpenSslCMacAlgorithmExpr and result = Crypto::CMAC()
+    this instanceof KnownOpenSslCMacAlgorithmExpr and result instanceof Crypto::TCMAC
   }
 }
 
-class KnownOpenSslHMacConstantAlgorithmInstance extends Crypto::HmacAlgorithmInstance,
+class KnownOpenSslHMacConstantAlgorithmInstance extends Crypto::HMACAlgorithmInstance,
   KnownOpenSslMacConstantAlgorithmInstance
 {
   override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
@@ -54,15 +54,13 @@ class KnownOpenSslHMacConstantAlgorithmInstance extends Crypto::HmacAlgorithmIns
     then
       // ASSUMPTION: if there is an explicit hash algorithm, it is already modeled
       // and we can simply grab that model's AVC
-      this.(OpenSslAlgorithmInstance).getAvc() = result
+      exists(OpenSslAlgorithmInstance inst | inst.getAvc() = result and inst = this)
     else
-      // ASSUMPTION: If no explicit algorithm is given, then find
-      // where the current AVC traces to a HashAlgorithmIO consuming operation step.
-      // TODO: need to consider getting reset values, tracing down to the first set for now
-      exists(OperationStep s, AvcContextCreationStep avc |
-        avc = this.getAvc() and
-        avc.flowsToOperationStep(s) and
-        s.getAlgorithmValueConsumerForInput(HashAlgorithmIO()) = result
+      // ASSUMPTION: If no explicit algorithm is given, then it is assumed to be configured by
+      // a signature operation
+      exists(Crypto::SignatureOperationInstance s |
+        s.getHashAlgorithmValueConsumer() = result and
+        s.getAnAlgorithmValueConsumer() = this.getAvc()
       )
   }
 }

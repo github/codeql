@@ -1,6 +1,3 @@
-overlay[local?]
-module;
-
 import java
 
 /**

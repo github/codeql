@@ -1,4 +1,0 @@
-query: Security/CWE/CWE-094/JexlInjection.ql
-postprocess:
-  - utils/test/PrettyPrintModels.ql
-  - utils/test/InlineExpectationsTestQuery.ql

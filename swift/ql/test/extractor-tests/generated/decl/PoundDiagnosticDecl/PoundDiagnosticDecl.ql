@@ -2,20 +2,15 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  PoundDiagnosticDecl x, string getModule__label, ModuleDecl getModule, string getKind__label,
-  int getKind, string getMessage__label, StringLiteralExpr getMessage
-) {
+from
+  PoundDiagnosticDecl x, ModuleDecl getModule, int getNumberOfMembers, int getKind,
+  StringLiteralExpr getMessage
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getKind__label = "getKind:" and
+  getNumberOfMembers = x.getNumberOfMembers() and
   getKind = x.getKind() and
-  getMessage__label = "getMessage:" and
   getMessage = x.getMessage()
-}
-
-query predicate getMember(PoundDiagnosticDecl x, int index, Decl getMember) {
-  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
-}
+select x, "getModule:", getModule, "getNumberOfMembers:", getNumberOfMembers, "getKind:", getKind,
+  "getMessage:", getMessage

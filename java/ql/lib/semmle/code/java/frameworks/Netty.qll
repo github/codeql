@@ -1,6 +1,4 @@
 /** Provides definitions related to the Netty framework. */
-overlay[local?]
-module;
 
 import java
 

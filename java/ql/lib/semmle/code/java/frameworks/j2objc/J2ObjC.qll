@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for working with OCNI (Objective-C Native Interface).
  */
-overlay[local?]
-module;
 
 import java
 

@@ -2,20 +2,12 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  AppliedPropertyWrapperExpr x, string getKind__label, int getKind, string getValue__label,
-  Expr getValue, string getParam__label, ParamDecl getParam
-) {
+from AppliedPropertyWrapperExpr x, string hasType, int getKind, Expr getValue, ParamDecl getParam
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getKind__label = "getKind:" and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getKind = x.getKind() and
-  getValue__label = "getValue:" and
   getValue = x.getValue() and
-  getParam__label = "getParam:" and
   getParam = x.getParam()
-}
-
-query predicate getType(AppliedPropertyWrapperExpr x, Type getType) {
-  toBeTested(x) and not x.isUnknown() and getType = x.getType()
-}
+select x, "hasType:", hasType, "getKind:", getKind, "getValue:", getValue, "getParam:", getParam

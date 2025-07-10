@@ -2,8 +2,6 @@
  * Provides modules for performing local (intra-procedural) and
  * global (inter-procedural) taint-tracking analyses.
  */
-overlay[local?]
-module;
 
 private import DataFlow as DF
 private import internal.DataFlowImpl

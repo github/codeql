@@ -154,9 +154,8 @@ class MacroInvocation extends MacroAccess {
    * well.
    */
   Locatable getAnAffectedElement() {
-    inmacroexpansion(unresolveElement(result), underlyingElement(this))
-    or
-    macrolocationbind(underlyingElement(this), result.getLocation()) and this != result
+    inmacroexpansion(unresolveElement(result), underlyingElement(this)) or
+    macrolocationbind(underlyingElement(this), result.getLocation())
   }
 
   /**
@@ -260,8 +259,7 @@ predicate inMacroExpansion(Locatable element) {
   inmacroexpansion(unresolveElement(element), _)
   or
   macroLocation(element.getLocation()) and
-  not topLevelMacroAccess(element) and
-  not element.getLocation() instanceof UnknownLocation
+  not topLevelMacroAccess(element)
 }
 
 /**

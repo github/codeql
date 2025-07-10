@@ -1,5 +1,1 @@
-instances
-| gen_yeet_expr.rs:6:8:6:36 | YeetExpr |
-getAttr
-getExpr
-| gen_yeet_expr.rs:6:8:6:36 | YeetExpr | gen_yeet_expr.rs:6:16:6:36 | "index out of bounds" |
+| gen_yeet_expr.rs:6:8:6:36 | YeetExpr | getNumberOfAttrs: | 0 | hasExpr: | yes |

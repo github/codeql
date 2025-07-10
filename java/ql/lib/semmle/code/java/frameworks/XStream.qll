@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for working with the XStream XML serialization framework.
  */
-overlay[local?]
-module;
 
 import java
 

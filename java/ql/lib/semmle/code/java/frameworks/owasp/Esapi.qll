@@ -1,6 +1,4 @@
 /** Classes and predicates for reasoning about the `owasp.easpi` package. */
-overlay[local?]
-module;
 
 import java
 

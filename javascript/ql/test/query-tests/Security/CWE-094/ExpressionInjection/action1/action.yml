@@ -1,0 +1,14 @@
+name: 'test'
+description: 'test'
+branding:
+  icon: 'test'
+  color: 'test'
+inputs:
+  test:
+    description: test
+    required: false
+    default: 'test'
+runs:
+  using: "composite"
+  steps:
+    - run: echo '${{ github.event.comment.body }}'

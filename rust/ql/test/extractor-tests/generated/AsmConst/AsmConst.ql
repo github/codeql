@@ -2,13 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(AsmConst x, string isConst__label, string isConst) {
+from AsmConst x, string hasExpr, string isConst
+where
   toBeTested(x) and
   not x.isUnknown() and
-  isConst__label = "isConst:" and
+  (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
   if x.isConst() then isConst = "yes" else isConst = "no"
-}
-
-query predicate getExpr(AsmConst x, Expr getExpr) {
-  toBeTested(x) and not x.isUnknown() and getExpr = x.getExpr()
-}
+select x, "hasExpr:", hasExpr, "isConst:", isConst

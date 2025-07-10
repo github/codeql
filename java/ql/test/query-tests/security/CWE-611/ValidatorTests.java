@@ -14,12 +14,12 @@ public class ValidatorTests {
 
     @PostMapping(value = "bad")
     public void bad2(HttpServletRequest request) throws Exception {
-        ServletInputStream servletInputStream = request.getInputStream(); // $ Source
+        ServletInputStream servletInputStream = request.getInputStream();
         SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
         Schema schema = factory.newSchema();
         Validator validator = schema.newValidator();
         StreamSource source = new StreamSource(servletInputStream);
-        validator.validate(source); // $ Alert
+        validator.validate(source); // $ hasTaintFlow
     }
 
     @PostMapping(value = "good")

@@ -1,6 +1,3 @@
-overlay[local?]
-module;
-
 import java
 
 /** A subclass of `PrimitiveType` with width-based ordering methods. */

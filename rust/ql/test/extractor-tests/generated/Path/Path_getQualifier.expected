@@ -1,0 +1,10 @@
+| gen_path.rs:5:9:5:31 | ...::some_module | gen_path.rs:5:9:5:18 | some_crate |
+| gen_path.rs:5:9:5:42 | ...::some_item | gen_path.rs:5:9:5:31 | ...::some_module |
+| gen_path.rs:6:5:6:12 | ...::bar | gen_path.rs:6:5:6:7 | foo |
+| gen_path_expr.rs:6:13:6:20 | ...::bar | gen_path_expr.rs:6:13:6:15 | foo |
+| gen_path_expr.rs:7:13:7:20 | ...::foo | gen_path_expr.rs:7:13:7:15 | <...> |
+| gen_path_expr.rs:8:13:8:36 | ...::foo | gen_path_expr.rs:8:13:8:31 | <...> |
+| gen_path_pat.rs:6:9:6:16 | ...::Bar | gen_path_pat.rs:6:9:6:11 | Foo |
+| gen_path_type_repr.rs:5:14:5:29 | ...::collections | gen_path_type_repr.rs:5:14:5:16 | std |
+| gen_path_type_repr.rs:5:14:5:48 | ...::HashMap::<...> | gen_path_type_repr.rs:5:14:5:29 | ...::collections |
+| gen_path_type_repr.rs:6:14:6:20 | ...::Item | gen_path_type_repr.rs:6:14:6:14 | X |

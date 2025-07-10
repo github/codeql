@@ -1,6 +1,4 @@
 /** Provides classes and predicates to track Android fragments. */
-overlay[local?]
-module;
 
 import java
 

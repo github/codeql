@@ -1,0 +1,3 @@
+| gen_prefix_expr.rs:5:13:5:15 | - ... | gen_prefix_expr.rs:5:14:5:15 | 42 |
+| gen_prefix_expr.rs:6:13:6:17 | ! ... | gen_prefix_expr.rs:6:14:6:17 | true |
+| gen_prefix_expr.rs:7:13:7:16 | * ... | gen_prefix_expr.rs:7:14:7:16 | ptr |

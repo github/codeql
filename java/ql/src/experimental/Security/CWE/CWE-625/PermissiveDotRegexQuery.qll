@@ -9,7 +9,6 @@ import semmle.code.java.controlflow.Guards
 import semmle.code.java.security.UrlRedirect
 import Regex
 
-overlay[local?]
 private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "permissive-dot-regex-query" }
 }

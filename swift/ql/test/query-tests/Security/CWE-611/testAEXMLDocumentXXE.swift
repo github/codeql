@@ -47,8 +47,8 @@ func testString() {
     var options = AEXMLOptions()
     options.parserSettings.shouldResolveExternalEntities = true
 
-    let remoteString = String(contentsOf: URL(string: "http://example.com/")!) // $ Source
-    let _ = AEXMLDocument(xml: remoteString, encoding: String.Encoding.utf8, options: options) // $ Alert
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
+    let _ = AEXMLDocument(xml: remoteString, encoding: String.Encoding.utf8, options: options) // $ hasXXE=50
 }
 
 func testStringSafeImplicit() {
@@ -67,11 +67,11 @@ func testStringSafeExplicit() {
 }
 
 func testData() {
-    let remoteString = String(contentsOf: URL(string: "http://example.com/")!) // $ Source
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
     let remoteData = Data(remoteString)
     var options = AEXMLOptions()
     options.parserSettings.shouldResolveExternalEntities = true
-    let _ = AEXMLDocument(xml: remoteData, options: options) // $ Alert
+    let _ = AEXMLDocument(xml: remoteData, options: options) // $ hasXXE=70
 }
 
 func testDataSafeImplicit() {
@@ -94,9 +94,9 @@ func testDataLoadXml() {
     options.parserSettings.shouldResolveExternalEntities = true
     let doc = AEXMLDocument(root: nil, options: options)
 
-    let remoteString = String(contentsOf: URL(string: "http://example.com/")!) // $ Source
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
     let remoteData = Data(remoteString)
-    doc.loadXML(remoteData) // $ Alert
+    doc.loadXML(remoteData) // $ hasXXE=97
 }
 
 func testDataLoadXmlSafeImplicit() {
@@ -123,9 +123,9 @@ func testParser() {
     options.parserSettings.shouldResolveExternalEntities = true
     let doc = AEXMLDocument(root: nil, options: options)
 
-    let remoteString = String(contentsOf: URL(string: "http://example.com/")!) // $ Source
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
     let remoteData = Data(remoteString)
-    let _ = AEXMLParser(document: doc, data: remoteData) // $ Alert
+    let _ = AEXMLParser(document: doc, data: remoteData) // $ hasXXE=126
 }
 
 func testParserSafeImplicit() {

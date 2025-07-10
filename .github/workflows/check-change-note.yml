@@ -16,6 +16,7 @@ on:
       - "shared/**/*.qll"
       - "!**/experimental/**"
       - "!ql/**"
+      - "!rust/**"
       - ".github/workflows/check-change-note.yml"
 
 jobs:

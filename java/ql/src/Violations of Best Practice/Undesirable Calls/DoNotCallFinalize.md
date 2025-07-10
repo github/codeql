@@ -8,8 +8,6 @@ Avoid calling `finalize()` in application code. Allow the JVM to determine a gar
 
 ## Example
 
-### Incorrect Usage
-
 ```java
 class LocalCache {
     private Collection<File> cacheFiles = ...;
@@ -21,9 +19,8 @@ void main() {
     // ...
     cache.finalize(); // NON_COMPLIANT
 }
-```
 
-### Correct Usage
+```
 
 ```java
 import java.lang.AutoCloseable;
@@ -46,9 +43,10 @@ void main() {
         // ...
     }
 }
+
 ```
 
-## Implementation Notes
+# Implementation Notes
 
 This rule ignores `super.finalize()` calls that occur within `finalize()` overrides since calling the superclass finalizer is required when overriding `finalize()`. Also, although overriding `finalize()` is not recommended, this rule only alerts on direct calls to `finalize()` and does not alert on method declarations overriding `finalize()`.
 

@@ -2,12 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(SourceFile x) { toBeTested(x) and not x.isUnknown() }
-
-query predicate getAttr(SourceFile x, int index, Attr getAttr) {
-  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
-}
-
-query predicate getItem(SourceFile x, int index, Item getItem) {
-  toBeTested(x) and not x.isUnknown() and getItem = x.getItem(index)
-}
+from SourceFile x, int getNumberOfAttrs, int getNumberOfItems
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  getNumberOfItems = x.getNumberOfItems()
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "getNumberOfItems:", getNumberOfItems

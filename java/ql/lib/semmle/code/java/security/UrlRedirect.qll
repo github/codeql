@@ -1,6 +1,4 @@
 /** Provides classes to reason about URL redirect attacks. */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.dataflow.DataFlow

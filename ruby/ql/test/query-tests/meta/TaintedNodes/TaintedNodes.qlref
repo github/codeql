@@ -1,4 +1,0 @@
-query: queries/meta/TaintedNodes.ql
-postprocess:
-  - utils/test/PrettyPrintModels.ql
-  - utils/test/InlineExpectationsTestQuery.ql

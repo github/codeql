@@ -2,8 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(UnderscoreExpr x) { toBeTested(x) and not x.isUnknown() }
-
-query predicate getAttr(UnderscoreExpr x, int index, Attr getAttr) {
-  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
-}
+from UnderscoreExpr x, int getNumberOfAttrs
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  getNumberOfAttrs = x.getNumberOfAttrs()
+select x, "getNumberOfAttrs:", getNumberOfAttrs

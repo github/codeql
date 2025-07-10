@@ -14,10 +14,10 @@ public class SAXSourceTests {
 
   public void unsafeSource(Socket sock) throws Exception {
     XMLReader reader = XMLReaderFactory.createXMLReader();
-    SAXSource source = new SAXSource(reader, new InputSource(sock.getInputStream())); // $ Source
+    SAXSource source = new SAXSource(reader, new InputSource(sock.getInputStream()));
     JAXBContext jc = JAXBContext.newInstance(Object.class);
     Unmarshaller um = jc.createUnmarshaller();
-    um.unmarshal(source); // $ Alert
+    um.unmarshal(source); // $ hasTaintFlow
   }
 
   public void explicitlySafeSource1(Socket sock) throws Exception {

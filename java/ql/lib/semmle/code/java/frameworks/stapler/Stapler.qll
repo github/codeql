@@ -1,6 +1,4 @@
 /** Provides classes and predicates related to the Stapler framework. */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

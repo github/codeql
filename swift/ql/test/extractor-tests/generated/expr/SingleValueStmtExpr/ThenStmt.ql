@@ -2,9 +2,9 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(ThenStmt x, string getResult__label, Expr getResult) {
+from ThenStmt x, Expr getResult
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getResult__label = "getResult:" and
   getResult = x.getResult()
-}
+select x, "getResult:", getResult

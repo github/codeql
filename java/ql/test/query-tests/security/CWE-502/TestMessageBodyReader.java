@@ -17,9 +17,9 @@ public class TestMessageBodyReader implements MessageBodyReader<Object> {
 
   @Override
   public Object readFrom(Class<Object> type, Type genericType, Annotation[] annotations, MediaType mediaType,
-          MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException { // $ Source
+          MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException {
       try {
-          return new ObjectInputStream(entityStream).readObject(); // $ Alert
+          return new ObjectInputStream(entityStream).readObject(); // $unsafeDeserialization
       } catch (ClassNotFoundException e) {
           e.printStackTrace();
       }

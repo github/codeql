@@ -1,6 +1,4 @@
 /** Provides classes to reason about SpEL injection attacks. */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

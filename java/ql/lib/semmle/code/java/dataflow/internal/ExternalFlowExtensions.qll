@@ -1,8 +1,6 @@
 /**
  * This module provides extensible predicates for defining MaD models.
  */
-overlay[local?]
-module;
 
 /**
  * Holds if a source model exists for the given parameters.

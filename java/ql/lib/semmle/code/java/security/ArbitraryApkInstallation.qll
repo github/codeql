@@ -1,6 +1,4 @@
 /** Provide classes to reason about Android Intents that can install APKs. */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.frameworks.android.Intent
