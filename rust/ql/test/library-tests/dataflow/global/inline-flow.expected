@@ -1,5 +1,5 @@
 models
-| 1 | Summary: repo:https://github.com/rust-lang/futures-rs:futures-executor; crate::local_pool::block_on; Argument[0]; ReturnValue; value |
+| 1 | Summary: futures_executor::local_pool::block_on; Argument[0]; ReturnValue; value |
 edges
 | main.rs:12:28:14:1 | { ... } | main.rs:17:13:17:23 | get_data(...) | provenance |  |
 | main.rs:13:5:13:13 | source(...) | main.rs:12:28:14:1 | { ... } | provenance |  |

@@ -2554,6 +2554,10 @@ private class LocalQArg extends AnnotationArg {
   LocalQArg() { this.getValue() = "local?" }
 }
 
+private class DiscardEntityArg extends AnnotationArg {
+  DiscardEntityArg() { this.getValue() = "discard_entity" }
+}
+
 private class MonotonicAggregatesArg extends AnnotationArg {
   MonotonicAggregatesArg() { this.getValue() = "monotonicAggregates" }
 }
@@ -2639,6 +2643,15 @@ class OverlayLocalQ extends Annotation {
   OverlayLocalQ() { this.getName() = "overlay" and this.getArgs(0) instanceof LocalQArg }
 
   override string toString() { result = "overlay[local?]" }
+}
+
+/** An `overlay[discard_entity]` annotation. */
+class OverlayDiscardEntity extends Annotation {
+  OverlayDiscardEntity() {
+    this.getName() = "overlay" and this.getArgs(0) instanceof DiscardEntityArg
+  }
+
+  override string toString() { result = "overlay[discard_entity]" }
 }
 
 /** A `language[monotonicAggregates]` annotation. */
