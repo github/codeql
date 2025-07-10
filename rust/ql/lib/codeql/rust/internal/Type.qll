@@ -425,6 +425,8 @@ final class TraitTypeAbstraction extends TypeAbstraction, Trait {
     result.(TypeParamTypeParameter).getTypeParam() = this.getGenericParamList().getATypeParam()
     or
     result.(AssociatedTypeTypeParameter).getTrait() = this
+    or
+    result.(SelfTypeParameter).getTrait() = this
   }
 }
 
