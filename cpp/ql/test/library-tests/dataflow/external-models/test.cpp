@@ -66,7 +66,7 @@ struct StructWithOperatorCall_has_constructor {
 	StructWithOperatorCall_has_constructor();
 
 	void operator()(int y) {
-		ymlSink(y); // $ MISSING: ir
+		ymlSink(y); // $ ir
 	}
 };
 
@@ -80,7 +80,7 @@ struct StructWithOperatorCall_has_constructor_2 {
 	StructWithOperatorCall_has_constructor_2();
 
 	void operator()(int y) {
-		ymlSink(y); // $ MISSING: ir
+		ymlSink(y); // $ ir
 	}
 };
 
