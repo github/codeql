@@ -118,7 +118,7 @@ size_t strlen(const char* str);
 template<typename C>
 size_t str_len(const C *str) {
 	if (sizeof(C) != 1) {
-		return wcslen((const wchar_t *)str); // $ SPURIOUS: Alert
+		return wcslen((const wchar_t *)str); // GOOD -- unreachable code
 	}
 
 	return strlen((const char *)str);
