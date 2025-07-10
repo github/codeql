@@ -1,14 +1,26 @@
 import * as child_process from "child_process";
 import * as path from "path";
+import * as fs from "fs";
 
-const just = process.env["JUST_EXECUTABLE"]!;
+const vars = {
+    just: process.env["JUST_EXECUTABLE"] || "just",
+    error: process.env["JUST_ERROR"] || "",
+};
 
 console.debug = (...args: any[]) => {}  // comment out to debug script
+const old_console_error = console.error;
+console.error = (message: string) => {
+    old_console_error(vars.error + message);
+};
+
 
 function checkJustCommand(justfile: string, command: string, postitionalArgs: string[]): boolean {
+    if (!fs.existsSync(justfile)) {
+        return false;
+    }
     let {cwd, args} = getJustContext(justfile, command, [], postitionalArgs);
     console.debug(`Checking: ${cwd ? `cd ${cwd}; ` : ""}just ${args.join(", ")}`);
-    const res = child_process.spawnSync(just, ["--dry-run", ...args], {
+    const res = child_process.spawnSync(vars.just, ["--dry-run", ...args], {
         stdio: ["ignore", "ignore", "pipe"],
         encoding: "utf8",
         cwd,
@@ -18,24 +30,10 @@ function checkJustCommand(justfile: string, command: string, postitionalArgs: st
     return res.status === 0 && !res.stderr.includes(`forward-command.ts" ${command} "$@"`);
 }
 
-function commonPath(paths: string[]): string {
-    if (paths.length === 0) return "";
-    if (paths.length === 1) return paths[0];
-    const splitPaths = paths.map((p) => p.split(path.sep));
-    let i;
-    for (i = 0; i <= splitPaths[0].length; i++) {
-        if (!splitPaths.every((parts) => parts[i] === splitPaths[0][i])) {
-            break;
-        }
-    }
-    return splitPaths[0].slice(0, i).join(path.sep);
-}
-
-function findJustfile(command: string, paths: string[]): string | undefined {
-    const common = commonPath(paths);
-    for (let p = common;; p = path.dirname(p)) {
+function findJustfile(command: string, arg: string): string | undefined {
+    for (let p = arg;; p = path.dirname(p)) {
         const candidate = path.join(p, "justfile");
-        if (checkJustCommand(candidate, command, paths)) {
+        if (checkJustCommand(candidate, command, [arg])) {
             return candidate;
         }
         if (p === "/" || p === ".") {
@@ -59,29 +57,26 @@ function forward(cmd: string, args: string[]): number {
     const positionalArgs = args.filter(
         (arg) => !is_non_positional.test(arg),
     );
-
-    const justfile = findJustfile(cmd, positionalArgs.length !== 0 ? positionalArgs : ["."]);
-    if (!justfile) {
-        if (positionalArgs.length <= 1) {
-            console.error(`No justfile found for ${cmd}${positionalArgs.length === 0 ? "" : " on " + positionalArgs[0]}`);
+    let justfiles: Map<string, string[]> = new Map();
+    for(const arg of positionalArgs.length > 0 ? positionalArgs : ["."]) {
+        const justfile = findJustfile(cmd, arg);
+        if (!justfile) {
+            console.error(`No justfile found for ${cmd} on ${arg}`);
             return 1;
         }
-        console.log(`no common justfile recipe found for ${cmd} for all arguments, trying one argument at a time`);
-        const runs: [string, string | undefined][] = positionalArgs.map(arg => [arg, findJustfile(cmd, [arg])]);
-        for (const [arg, justfile] of runs) {
-            if (!justfile) {
-                console.error(`No justfile found for ${cmd} on ${arg}`);
-                return 1;
-            }
-        }
-        for (const [arg, justfile] of runs) {
-            if (invokeJust(justfile!, cmd, flags, [arg]) !== 0) {
-                return 1;
-            }
-        }
-        return 0;
+        justfiles.set(justfile, [...justfiles.get(justfile) || [], arg]);
     }
-    return invokeJust(justfile, cmd, flags, positionalArgs);
+    const invocations = Array.from(justfiles.entries()).map(([justfile, positionalArgs]) => {
+        const {cwd, args} = getJustContext(justfile, cmd, flags, positionalArgs);
+        console.log(`-> ${cwd ? `cd ${cwd}; ` : ""}just ${args.join(" ")}`);
+        return { cwd, args };
+    });
+    for (const { cwd, args } of invocations) {
+        if (invokeJust(cwd, args) !== 0) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 function getJustContext(justfile: string, cmd: string, flags: string[], positionalArgs: string[]): {args: string[], cwd?: string} {
@@ -109,11 +104,9 @@ function getJustContext(justfile: string, cmd: string, flags: string[], position
     }
 }
 
-function invokeJust(justfile: string, cmd: string, flags: string[], positionalArgs: string[]): number {
-    const { cwd, args } = getJustContext(justfile, cmd, flags, positionalArgs);
-    console.log(`-> ${cwd ? `cd ${cwd}; ` : ""}just ${args.join(" ")}`);
+function invokeJust(cwd: string | undefined, args: string[]): number {
     try {
-        child_process.execFileSync(just, args, {
+        child_process.execFileSync(vars.just, args, {
             stdio: "inherit",
             cwd,
         });

@@ -10,6 +10,7 @@ error := style("error") + "error" + NORMAL + ": "
 cmd_sep := "\n#--------------------------------------------------------\n"
 export CMD_BEGIN := style("command") + cmd_sep
 export CMD_END := cmd_sep + NORMAL
+export JUST_ERROR := error
 
 tsx := "npx tsx@4.19.0"
 

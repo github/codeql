@@ -3,6 +3,14 @@ import * as path from "path";
 import * as os from "os";
 import * as fs from "fs";
 
+const vars = {
+    just: process.env["JUST_EXECUTABLE"] || "just",
+    error: process.env["JUST_ERROR"] || "error",
+    cmd_begin: process.env["CMD_BEGIN"] || "",
+    cmd_end: process.env["CMD_END"] || "",
+    semmle_code: process.env["SEMMLE_CODE"],
+}
+
 function invoke(
     invocation: string[],
     options: { cwd?: string; log_prefix?: string } = {},
@@ -12,7 +20,7 @@ function invoke(
             ? `${options.log_prefix} `
             : "";
     console.log(
-        `${process.env["CMD_BEGIN"] || ""}${log_prefix}${invocation.join(" ")}${process.env["CMD_END"] || ""}`,
+        `${vars.cmd_begin}${log_prefix}${invocation.join(" ")}${vars.cmd_end}`,
     );
     try {
         child_process.execFileSync(invocation[0], invocation.slice(1), {
@@ -31,6 +39,12 @@ type Args = {
     env: string[];
     codeql: string;
     all: boolean;
+};
+
+const old_console_error = console.error;
+
+console.error = (message: string) => {
+    old_console_error(vars.error + message);
 };
 
 function parseArgs(args: Args, argv: string) {
@@ -52,7 +66,6 @@ function parseArgs(args: Args, argv: string) {
 }
 
 function codeqlTestRun(argv: string[]): number {
-    const semmle_code = process.env["SEMMLE_CODE"];
     const [language, base_args, all_args, extra_args] = argv;
     const ram_per_thread = process.platform === "linux" ? 3000 : 2048;
     const cpus = os.cpus().length;
@@ -60,7 +73,7 @@ function codeqlTestRun(argv: string[]): number {
         tests: [],
         flags: [`--ram=${ram_per_thread * cpus}`, `-j${cpus}`],
         env: [],
-        codeql: semmle_code ? "build" : "host",
+        codeql: vars.semmle_code ? "build" : "host",
         all: false,
     };
     parseArgs(args, base_args);
@@ -68,7 +81,7 @@ function codeqlTestRun(argv: string[]): number {
     if (args.all) {
         parseArgs(args, all_args);
     }
-    if (!semmle_code && (args.codeql === "build" || args.codeql === "built")) {
+    if (!vars.semmle_code && (args.codeql === "build" || args.codeql === "built")) {
         console.error(
             "Using `--codeql=build` or `--codeql=built` requires working with the internal repository",
         );
@@ -79,8 +92,8 @@ function codeqlTestRun(argv: string[]): number {
     }
     if (args.codeql === "build") {
         if (
-            invoke([process.env["JUST_EXECUTABLE"] || "just", language, "build"], {
-                cwd: semmle_code,
+            invoke([vars.just, language, "build"], {
+                cwd: vars.semmle_code,
             }) !== 0
         ) {
             return 1;
@@ -106,32 +119,33 @@ function codeqlTestRun(argv: string[]): number {
         }
     });
     let codeql;
+    function check_codeql() {
+        if (!fs.existsSync(codeql)) {
+            console.error(`CodeQL executable not found: ${codeql}`);
+            process.exit(1);
+        }
+    }
     if (args.codeql === "built" || args.codeql === "build") {
         codeql = path.join(
-            semmle_code!,
+            vars.semmle_code!,
             "target",
             "intree",
             `codeql-${language}`,
             "codeql",
         );
-        if (!fs.existsSync(codeql)) {
-            console.error(`CodeQL executable not found: ${codeql}`);
-            return 1;
-        }
+        check_codeql();
     } else if (args.codeql === "host") {
         codeql = "codeql";
     } else {
         codeql = args.codeql;
-        if (fs.lstatSync(codeql).isDirectory()) {
-            codeql = path.join(codeql, "codeql");
-            if (process.platform === "win32") {
-                codeql += ".exe";
-            }
+        check_codeql();
+    }
+    if (fs.lstatSync(codeql).isDirectory()) {
+        codeql = path.join(codeql, "codeql");
+        if (process.platform === "win32") {
+            codeql += ".exe";
         }
-        if (!fs.existsSync(codeql)) {
-            console.error(`CodeQL executable not found: ${codeql}`);
-            return 1;
-        }
+        check_codeql();
     }
 
     return invoke([codeql, "test", "run", ...args.flags, "--", ...args.tests], {
