@@ -18,13 +18,13 @@ void Test()
 	wchar_t *lpWchar = NULL;
 	LPCSTR lpcstr = "b";
 
-	lpWchar = (LPWSTR)"a"; // BUG
-	lpWchar = (LPWSTR)lpcstr; // BUG
+	lpWchar = (LPWSTR)"a"; // $ Alert
+	lpWchar = (LPWSTR)lpcstr; // $ Alert
 
-	lpWchar = (wchar_t*)lpChar;	// BUG
+	lpWchar = (wchar_t*)lpChar;	// $ Alert
 
-	fconstWChar((LPCWSTR)lpChar);	// BUG
-	fWChar((LPWSTR)lpChar);			// BUG
+	fconstWChar((LPCWSTR)lpChar);	// $ Alert
+	fWChar((LPWSTR)lpChar);			// $ Alert
 
 	lpChar = (LPSTR)"a"; // Valid
 	lpWchar = (LPWSTR)L"a"; // Valid
@@ -79,33 +79,33 @@ void CheckedConversionFalsePositiveTest3(unsigned short flags, LPTSTR buffer)
 	if(flags & UNICODE)
 		lpWchar = (LPWSTR)buffer; // GOOD
 	else
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // $ Alert
 
 	if((flags & UNICODE) == 0x8)
 		lpWchar = (LPWSTR)buffer; // GOOD
 	else
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // $ Alert
 
 	if((flags & UNICODE) != 0x8)
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // $ Alert
 	else
 		lpWchar = (LPWSTR)buffer; // GOOD
 
 	// Bad operator precedence
 	if(flags & UNICODE == 0x8)
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // $ Alert
 	else
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // $ Alert
 
 	if((flags & UNICODE) != 0)
 		lpWchar = (LPWSTR)buffer; // GOOD
 	else
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // $ Alert
 
 	if((flags & UNICODE) == 0)
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // $ Alert
 	else
 		lpWchar = (LPWSTR)buffer; // GOOD
 
-	lpWchar = (LPWSTR)buffer; // BUG
+	lpWchar = (LPWSTR)buffer; // $ Alert
 }
