@@ -29,6 +29,7 @@ private class StartswithCall extends Path::SafeAccessCheck::Range, CfgNodes::Met
  * [1]: https://doc.rust-lang.org/std/option/enum.Option.html
  */
 class OptionEnum extends Enum {
+  pragma[nomagic]
   OptionEnum() { this.getCanonicalPath() = "core::option::Option" }
 
   /** Gets the `Some` variant. */
@@ -41,6 +42,7 @@ class OptionEnum extends Enum {
  * [1]: https://doc.rust-lang.org/stable/std/result/enum.Result.html
  */
 class ResultEnum extends Enum {
+  pragma[nomagic]
   ResultEnum() { this.getCanonicalPath() = "core::result::Result" }
 
   /** Gets the `Ok` variant. */
@@ -56,6 +58,7 @@ class ResultEnum extends Enum {
  * [1]: https://doc.rust-lang.org/core/ops/struct.Range.html
  */
 class RangeStruct extends Struct {
+  pragma[nomagic]
   RangeStruct() { this.getCanonicalPath() = "core::ops::range::Range" }
 
   /** Gets the `start` field. */
@@ -71,6 +74,7 @@ class RangeStruct extends Struct {
  * [1]: https://doc.rust-lang.org/core/ops/struct.RangeFrom.html
  */
 class RangeFromStruct extends Struct {
+  pragma[nomagic]
   RangeFromStruct() { this.getCanonicalPath() = "core::ops::range::RangeFrom" }
 
   /** Gets the `start` field. */
@@ -83,6 +87,7 @@ class RangeFromStruct extends Struct {
  * [1]: https://doc.rust-lang.org/core/ops/struct.RangeTo.html
  */
 class RangeToStruct extends Struct {
+  pragma[nomagic]
   RangeToStruct() { this.getCanonicalPath() = "core::ops::range::RangeTo" }
 
   /** Gets the `end` field. */
@@ -95,6 +100,7 @@ class RangeToStruct extends Struct {
  * [1]: https://doc.rust-lang.org/core/ops/struct.RangeInclusive.html
  */
 class RangeInclusiveStruct extends Struct {
+  pragma[nomagic]
   RangeInclusiveStruct() { this.getCanonicalPath() = "core::ops::range::RangeInclusive" }
 
   /** Gets the `start` field. */
@@ -110,6 +116,7 @@ class RangeInclusiveStruct extends Struct {
  * [1]: https://doc.rust-lang.org/core/ops/struct.RangeToInclusive.html
  */
 class RangeToInclusiveStruct extends Struct {
+  pragma[nomagic]
   RangeToInclusiveStruct() { this.getCanonicalPath() = "core::ops::range::RangeToInclusive" }
 
   /** Gets the `end` field. */
@@ -122,6 +129,7 @@ class RangeToInclusiveStruct extends Struct {
  * [1]: https://doc.rust-lang.org/std/future/trait.Future.html
  */
 class FutureTrait extends Trait {
+  pragma[nomagic]
   FutureTrait() { this.getCanonicalPath() = "core::future::future::Future" }
 
   /** Gets the `Output` associated type. */
@@ -138,6 +146,7 @@ class FutureTrait extends Trait {
  * [1]: https://doc.rust-lang.org/std/iter/trait.Iterator.html
  */
 class IteratorTrait extends Trait {
+  pragma[nomagic]
   IteratorTrait() { this.getCanonicalPath() = "core::iter::traits::iterator::Iterator" }
 
   /** Gets the `Item` associated type. */
@@ -154,6 +163,7 @@ class IteratorTrait extends Trait {
  * [1]: https://doc.rust-lang.org/std/iter/trait.IntoIterator.html
  */
 class IntoIteratorTrait extends Trait {
+  pragma[nomagic]
   IntoIteratorTrait() { this.getCanonicalPath() = "core::iter::traits::collect::IntoIterator" }
 
   /** Gets the `Item` associated type. */
@@ -170,5 +180,6 @@ class IntoIteratorTrait extends Trait {
  * [1]: https://doc.rust-lang.org/std/string/struct.String.html
  */
 class StringStruct extends Struct {
+  pragma[nomagic]
   StringStruct() { this.getCanonicalPath() = "alloc::string::String" }
 }
