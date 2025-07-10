@@ -62,7 +62,7 @@ AstNode hackyShouldBeTreatedAsAlive() {
  */
 private AstNode alive() {
   //
-  // The 5 base cases.
+  // The 6 base cases.
   //
   // 1) everything that can be imported.
   result = publicApi()
@@ -80,7 +80,8 @@ private AstNode alive() {
   // 5) discard predicates
   result = discardPredicate()
   or
-  result instanceof TopLevel // toplevel is always alive.
+  // 6) toplevel is always alive.
+  result instanceof TopLevel
   or
   // recursive cases
   result = aliveStep(alive())
