@@ -1414,6 +1414,17 @@ private class OperatorCall extends Cpp::MemberFunction {
   OperatorCall() { this.hasName("operator()") }
 }
 
+private predicate isFunctorCreationWithoutConstructor(Node creation, OperatorCall operator) {
+  exists(UninitializedInstruction init, Instruction dest |
+    // A construction of an object with no constructor. In this case we use
+    // the `UninitializedInstruction` as the creation node.
+    init = creation.asInstruction() and
+    dest = init.getDestinationAddress() and
+    not any(ConstructorCallInstruction constructorCall).getThisArgument() = dest and
+    operator.getDeclaringType() = init.getResultType()
+  )
+}
+
 private predicate isFunctorCreationWithConstructor(Node creation, OperatorCall operator) {
   exists(DataFlowCall constructorCall, IndirectionPosition pos |
     // A construction of an object with a constructor. In this case we use
@@ -1432,6 +1443,8 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
   or
   kind.isFunctor() and
   exists(OperatorCall operator | operator = c.asSourceCallable() |
+    isFunctorCreationWithoutConstructor(creation, operator)
+    or
     isFunctorCreationWithConstructor(creation, operator)
   )
 }
