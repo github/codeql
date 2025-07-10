@@ -12,7 +12,7 @@ allowing any script—including malicious or unsigned code—to run without rest
 <recommendation>
 <p>Always prefer <code>AllSigned</code> to enforce full signature verification.</p>
 <p>If this is not possible, set the execution policy to <code>RemoteSigned</code> to allow local scripts while requiring downloaded scripts to be signed.</p>
-<p>Always limit the scope of the execution policy by supplying the most restrictive <code>Scope</code> as possible. Use <code>Process</code> to limit the execution policy to the current PowerShell session. When no <code>Scope</code> is supplied the execution policy change is applied system-wide.
+<p>Always limit the scope of the execution policy by supplying the most restrictive <code>Scope</code> as possible. Use <code>Process</code> to limit the execution policy to the current PowerShell session. When no <code>Scope</code> is supplied the execution policy change is applied system-wide.</p>
 </recommendation>
 
 <example>
