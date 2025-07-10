@@ -2346,6 +2346,121 @@ mod tuples {
     }
 }
 
+pub mod pattern_matching {
+    struct MyRecordStruct<T1, T2> {
+        value1: T1,
+        value2: T2,
+    }
+
+    struct MyTupleStruct<T1, T2>(T1, T2);
+
+    enum MyEnum<T1, T2> {
+        Variant1 { value1: T1, value2: T2 },
+        Variant2(T2, T1),
+    }
+
+    pub fn f() -> Option<()> {
+        let value = Some(42);
+        if let Some(mesg) = value {
+            let mesg = mesg; // $ MISSING: type=mesg:i32
+            println!("{mesg}");
+        }
+        match value {
+            Some(mesg) => {
+                let mesg = mesg; // $ MISSING: type=mesg:i32
+                println!("{mesg}");
+            }
+            None => (),
+        };
+        let mesg = value.unwrap(); // $ method=unwrap
+        let mesg = mesg; // $ type=mesg:i32
+        println!("{mesg}");
+        let mesg = value?; // $ type=mesg:i32
+        println!("{mesg}");
+
+        let value2 = &Some(42);
+        if let &Some(mesg) = value2 {
+            let mesg = mesg; // $ MISSING: type=mesg:i32
+            println!("{mesg}");
+        }
+
+        let value3 = 42;
+        if let ref mesg = value3 {
+            let mesg = mesg; // $ MISSING: type=mesg:&T.i32
+            println!("{mesg}");
+        }
+
+        let value4 = Some(42);
+        if let Some(ref mesg) = value4 {
+            let mesg = mesg; // $ MISSING: type=mesg:&T.i32
+            println!("{mesg}");
+        }
+
+        let ref value5 = 42;
+        let x = value5; // $ MISSING: type=x:&T.i32
+
+        let my_record_struct = MyRecordStruct {
+            value1: 42,
+            value2: false,
+        };
+        if let MyRecordStruct { value1, value2 } = my_record_struct {
+            let x = value1; // $ MISSING: type=x:i32
+            let y = value2; // $ MISSING: type=y:bool
+            ();
+        }
+
+        let my_tuple_struct = MyTupleStruct(42, false);
+        if let MyTupleStruct(value1, value2) = my_tuple_struct {
+            let x = value1; // $ MISSING: type=x:i32
+            let y = value2; // $ MISSING: type=y:bool
+            ();
+        }
+
+        let my_enum1 = MyEnum::Variant1 {
+            value1: 42,
+            value2: false,
+        };
+        match my_enum1 {
+            MyEnum::Variant1 { value1, value2 } => {
+                let x = value1; // $ MISSING: type=x:i32
+                let y = value2; // $ MISSING: type=y:bool
+                ();
+            }
+            MyEnum::Variant2(value1, value2) => {
+                let x = value1; // $ MISSING: type=x:bool
+                let y = value2; // $ MISSING: type=y:i32
+                ();
+            }
+        }
+
+        let my_nested_enum = MyEnum::Variant2(
+            false,
+            MyRecordStruct {
+                value1: 42,
+                value2: "string",
+            },
+        );
+
+        match my_nested_enum {
+            MyEnum::Variant2(
+                value1,
+                MyRecordStruct {
+                    value1: x,
+                    value2: y,
+                },
+            ) => {
+                let a = value1; // $ MISSING: type=a:bool
+                let b = x; // $ MISSING: type=b:i32
+                let c = y; // $ MISSING: type=c:&T.str
+                ();
+            }
+            _ => (),
+        }
+
+        None
+    }
+}
+
 fn main() {
     field_access::f(); // $ method=f
     method_impl::f(); // $ method=f
@@ -2374,27 +2489,5 @@ fn main() {
     method_determined_by_argument_type::f(); // $ method=f
     tuples::f(); // $ method=f
     dereference::test(); // $ method=test
-}
-
-pub mod unwrap {
-    pub fn test_unwrapping() -> Option<()> {
-        let value = Some(42);
-        if let Some(mesg) = value {
-            let mesg = mesg; // $ MISSING: type=mesg:i32
-            println!("{mesg}");
-        }
-        match value {
-            Some(mesg) => {
-                let mesg = mesg; // $ MISSING: type=mesg:i32
-                println!("{mesg}");
-            }
-            None => (),
-        };
-        let mesg = value.unwrap(); // $ method=unwrap
-        let mesg = mesg; // $ type=mesg:i32
-        println!("{mesg}");
-        let mesg = value?; // $ type=mesg:i32
-        println!("{mesg}");
-        None
-    }
+    pattern_matching::f(); // $ method=f
 }
