@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import codeql.util.Location
 
 /** Provides language-specific control flow parameters. */
