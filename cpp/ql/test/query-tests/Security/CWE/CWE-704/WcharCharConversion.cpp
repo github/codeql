@@ -109,3 +109,34 @@ void CheckedConversionFalsePositiveTest3(unsigned short flags, LPTSTR buffer)
 
 	lpWchar = (LPWSTR)buffer; // $ Alert
 }
+
+typedef unsigned long long size_t;
+
+size_t wcslen(const wchar_t *str);
+size_t strlen(const char* str);
+
+template<typename C>
+size_t str_len(const C *str) {
+	if (sizeof(C) != 1) {
+		return wcslen((const wchar_t *)str); // $ SPURIOUS: Alert
+	}
+
+	return strlen((const char *)str);
+}
+
+template<typename C>
+size_t wrong_str_len(const C *str) {
+	if (sizeof(C) == 1) {
+		return wcslen((const wchar_t *)str); // $ Alert
+	}
+
+	return strlen((const char *)str);
+}
+
+void test_str_len(const wchar_t *wstr, const char *str) {
+	size_t len =
+	  str_len(wstr) + 
+	  str_len(str) +
+	  wrong_str_len(wstr) +
+	  wrong_str_len(str);
+}
