@@ -315,10 +315,10 @@ models
 | 23 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::grow_zeroed; Argument[2]; alloc-layout |
 | 24 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc; Argument[0]; alloc-layout |
 | 25 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc_zeroed; Argument[0]; alloc-layout |
-| 26 | Sink: repo:https://github.com/rust-lang/libc:libc; ::aligned_alloc; Argument[1]; alloc-size |
-| 27 | Sink: repo:https://github.com/rust-lang/libc:libc; ::calloc; Argument[0,1]; alloc-size |
-| 28 | Sink: repo:https://github.com/rust-lang/libc:libc; ::malloc; Argument[0]; alloc-size |
-| 29 | Sink: repo:https://github.com/rust-lang/libc:libc; ::realloc; Argument[1]; alloc-size |
+| 26 | Sink: libc::unix::aligned_alloc; Argument[1]; alloc-size |
+| 27 | Sink: libc::unix::calloc; Argument[0,1]; alloc-size |
+| 28 | Sink: libc::unix::malloc; Argument[0]; alloc-size |
+| 29 | Sink: libc::unix::realloc; Argument[1]; alloc-size |
 | 30 | Source: std::env::args; ReturnValue.Element; commandargs |
 | 31 | Summary: <core::alloc::layout::Layout>::from_size_align_unchecked; Argument[0]; ReturnValue.Field[core::alloc::layout::Layout::size]; value |
 | 32 | Summary: <core::alloc::layout::Layout>::size; Argument[self].Field[core::alloc::layout::Layout::size]; ReturnValue; value |
