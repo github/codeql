@@ -1423,6 +1423,19 @@ private predicate isFunctorCreationWithoutConstructor(Node creation, OperatorCal
     not any(ConstructorCallInstruction constructorCall).getThisArgument() = dest and
     operator.getDeclaringType() = init.getResultType()
   )
+  or
+  // Workaround for an extractor bug. In this snippet:
+  // ```
+  // struct S { };
+  // void f(S);
+  // f(S());
+  // ```
+  // The expression `S()` is represented as a 0 literal in the database.
+  exists(ConstantValueInstruction constant |
+    constant.getValue() = "0" and
+    creation.asInstruction() = constant and
+    constant.getResultType() = operator.getDeclaringType()
+  )
 }
 
 private predicate isFunctorCreationWithConstructor(Node creation, OperatorCall operator) {
