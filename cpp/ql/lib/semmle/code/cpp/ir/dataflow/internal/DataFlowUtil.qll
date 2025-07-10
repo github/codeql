@@ -489,7 +489,7 @@ class Node extends TIRDataFlowNode {
   }
 
   /**
-   * Holds of this node represents the `indirectionIndex`'th indirection of
+   * Holds if this node represents the `indirectionIndex`'th indirection of
    * the value of an output parameter `p` just before reaching the end of a function.
    */
   predicate isFinalValueOfParameter(Parameter p, int indirectionIndex) {
@@ -500,12 +500,10 @@ class Node extends TIRDataFlowNode {
   }
 
   /**
-   * Holds of this node represents the value of an output parameter `p`
+   * Holds if this node represents the value of an output parameter `p`
    * just before reaching the end of a function.
    */
-  predicate isFinalValueOfParameter(Parameter p) {
-    this.isFinalValueOfParameter(p, _)
-  }
+  predicate isFinalValueOfParameter(Parameter p) { this.isFinalValueOfParameter(p, _) }
 
   /**
    * Gets the variable corresponding to this node, if any. This can be used for
