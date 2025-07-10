@@ -15,6 +15,8 @@ predicate localTaint(DataFlow::Node source, DataFlow::Node sink) { localTaintSte
  * local (intra-procedural) steps.
  */
 pragma[inline]
-predicate localExprTaint(CfgNodes::ExprCfgNode e1, CfgNodes::ExprCfgNode e2) { none() }
+predicate localExprTaint(CfgNodes::ExprCfgNode e1, CfgNodes::ExprCfgNode e2) {
+  localTaintStep*(DataFlow::exprNode(e1), DataFlow::exprNode(e2))
+}
 
 predicate localTaintStep = localTaintStepCached/2;

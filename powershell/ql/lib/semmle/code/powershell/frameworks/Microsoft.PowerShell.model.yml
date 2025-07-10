@@ -6,6 +6,12 @@ extensions:
       - ["microsoft.powershell.utility!", "Method[read-host].ReturnValue", "stdin"]
       - ["microsoft.powershell.utility!", "Method[select-xml].ReturnValue[path]", "file"]
       - ["microsoft.powershell.utility!", "Method[format-hex].ReturnValue[path]", "file"]
+      - ["microsoft.powershell.utility!", "Method[invoke-webrequest].ReturnValue", "remote"]
+      - ["microsoft.powershell.utility!", "Method[iwr].ReturnValue", "remote"]
+      - ["microsoft.powershell.utility!", "Method[wget].ReturnValue", "remote"]
+      - ["microsoft.powershell.utility!", "Method[curl].ReturnValue", "remote"]
+      - ["microsoft.powershell.utility!", "Method[invoke-restmethod].ReturnValue", "remote"]
+      - ["microsoft.powershell.utility!", "Method[irm].ReturnValue", "remote"]
 
   - addsTo:
       pack: microsoft/powershell-all

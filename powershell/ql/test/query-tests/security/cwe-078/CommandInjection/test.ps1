@@ -1,43 +1,43 @@
 function Invoke-InvokeExpressionInjection1
 {
     param($UserInput)
-    Invoke-Expression "Get-Process -Name $UserInput"
+    Invoke-Expression "Get-Process -Name $UserInput" # BAD
 }
 
 function Invoke-InvokeExpressionInjection2
 {
     param($UserInput)
-    iex "Get-Process -Name $UserInput"
+    iex "Get-Process -Name $UserInput" # BAD
 }
 
 function Invoke-InvokeExpressionInjection3
 {
     param($UserInput)
-    $executionContext.InvokeCommand.InvokeScript("Get-Process -Name $UserInput")
+    $executionContext.InvokeCommand.InvokeScript("Get-Process -Name $UserInput") # BAD
 }
 
 function Invoke-InvokeExpressionInjection4
 {
     param($UserInput)
-    $host.Runspace.CreateNestedPipeline("Get-Process -Name $UserInput", $false).Invoke()
+    $host.Runspace.CreateNestedPipeline("Get-Process -Name $UserInput", $false).Invoke() # BAD
 }
 
 function Invoke-InvokeExpressionInjection5
 {
     param($UserInput)
-    [PowerShell]::Create().AddScript("Get-Process -Name $UserInput").Invoke()
+    [PowerShell]::Create().AddScript("Get-Process -Name $UserInput").Invoke() # BAD
 }
 
 function Invoke-InvokeExpressionInjection6
 {
     param($UserInput)
-    Add-Type "public class Foo { $UserInput }"
+    Add-Type "public class Foo { $UserInput }" # BAD
 }
 
 function Invoke-InvokeExpressionInjection7
 {
     param($UserInput)
-    Add-Type -TypeDefinition "public class Foo { $UserInput }"
+    Add-Type -TypeDefinition "public class Foo { $UserInput }" # BAD
 }
 
 function Invoke-InvokeExpressionInjection8
@@ -45,7 +45,7 @@ function Invoke-InvokeExpressionInjection8
     param($UserInput)
 
     $code = "public class Foo { $UserInput }"
-    Add-Type -TypeDefinition $code
+    Add-Type -TypeDefinition $code # BAD
 }
 
 function Invoke-InvokeExpressionInjectionFP
@@ -72,21 +72,21 @@ function Invoke-ExploitableCommandInjection1
 {
     param($UserInput)
 
-    powershell -command "Get-Process -Name $UserInput"
+    powershell -command "Get-Process -Name $UserInput" # BAD
 }
 
 function Invoke-ExploitableCommandInjection2
 {
     param($UserInput)
 
-    powershell "Get-Process -Name $UserInput"
+    powershell "Get-Process -Name $UserInput" # BAD
 }
 
 function Invoke-ExploitableCommandInjection3
 {
     param($UserInput)
 
-    cmd /c "ping $UserInput"
+    cmd /c "ping $UserInput" # BAD
 }
 
 function Invoke-ScriptBlockInjection1
@@ -95,7 +95,7 @@ function Invoke-ScriptBlockInjection1
 
     ## Often used when making remote connections
 
-    $sb = [ScriptBlock]::Create("Get-Process -Name $UserInput")
+    $sb = [ScriptBlock]::Create("Get-Process -Name $UserInput") # BAD
     Invoke-Command RemoteServer $sb
 }
 
@@ -105,7 +105,7 @@ function Invoke-ScriptBlockInjection2
 
     ## Often used when making remote connections
 
-    $sb = $executionContext.InvokeCommand.NewScriptBlock("Get-Process -Name $UserInput")
+    $sb = $executionContext.InvokeCommand.NewScriptBlock("Get-Process -Name $UserInput") # BAD
     Invoke-Command RemoteServer $sb
 }
 
@@ -113,30 +113,30 @@ function Invoke-MethodInjection1
 {
     param($UserInput)
 
-    Get-Process | Foreach-Object $UserInput
+    Get-Process | Foreach-Object $UserInput # BAD
 }
 
 function Invoke-MethodInjection2
 {
     param($UserInput)
 
-    (Get-Process -Id $pid).$UserInput()
+    (Get-Process -Id $pid).$UserInput() # BAD
 }
+
 
 function Invoke-MethodInjection3
 {
     param($UserInput)
 
-    (Get-Process -Id $pid).$UserInput.Invoke()
+    (Get-Process -Id $pid).$UserInput.Invoke() # BAD
 }
 
-#TODO: currently a FN
 function Invoke-ExpandStringInjection1
 {
     param($UserInput)
 
     ## Used to attempt a variable resolution
-    $executionContext.InvokeCommand.ExpandString($UserInput)
+    $executionContext.InvokeCommand.ExpandString($UserInput) # BAD
 }
 
 function Invoke-ExpandStringInjection2
@@ -144,7 +144,7 @@ function Invoke-ExpandStringInjection2
     param($UserInput)
 
     ## Used to attempt a variable resolution
-    $executionContext.SessionState.InvokeCommand.ExpandString($UserInput)
+    $executionContext.SessionState.InvokeCommand.ExpandString($UserInput) # BAD
 }
 
 
