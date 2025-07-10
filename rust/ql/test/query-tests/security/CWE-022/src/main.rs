@@ -5,8 +5,8 @@ use std::{fs, path::Path, path::PathBuf};
 fn tainted_path_handler_bad(
     Query(file_name): Query<String>, // $ Source=remote1
 ) -> Result<String> {
-    let file_path = PathBuf::from(file_name as String); // TODO: Remove `as String` when type inference handles patterns
-                                                        // BAD: This could read any file on the filesystem.
+    let file_path = PathBuf::from(file_name);
+    // BAD: This could read any file on the filesystem.
     fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink Alert[rust/path-injection]=remote1
 }
 

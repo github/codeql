@@ -1,11 +1,11 @@
 #select
 | src/main.rs:10:5:10:22 | ...::read_to_string | src/main.rs:6:11:6:19 | file_name | src/main.rs:10:5:10:22 | ...::read_to_string | This path depends on a $@. | src/main.rs:6:11:6:19 | file_name | user-provided value |
 edges
-| src/main.rs:6:11:6:19 | file_name | src/main.rs:8:35:8:53 | file_name as String | provenance |  |
+| src/main.rs:6:11:6:19 | file_name | src/main.rs:8:35:8:43 | file_name | provenance |  |
 | src/main.rs:8:9:8:17 | file_path | src/main.rs:10:24:10:32 | file_path | provenance |  |
-| src/main.rs:8:21:8:54 | ...::from(...) | src/main.rs:8:9:8:17 | file_path | provenance |  |
-| src/main.rs:8:35:8:53 | file_name as String | src/main.rs:8:21:8:54 | ...::from(...) | provenance | MaD:2 |
-| src/main.rs:8:35:8:53 | file_name as String | src/main.rs:8:21:8:54 | ...::from(...) | provenance | MaD:2 |
+| src/main.rs:8:21:8:44 | ...::from(...) | src/main.rs:8:9:8:17 | file_path | provenance |  |
+| src/main.rs:8:35:8:43 | file_name | src/main.rs:8:21:8:44 | ...::from(...) | provenance | MaD:2 |
+| src/main.rs:8:35:8:43 | file_name | src/main.rs:8:21:8:44 | ...::from(...) | provenance | MaD:2 |
 | src/main.rs:10:24:10:32 | file_path | src/main.rs:10:5:10:22 | ...::read_to_string | provenance | MaD:1 Sink:MaD:1 |
 models
 | 1 | Sink: std::fs::read_to_string; Argument[0]; path-injection |
@@ -13,8 +13,8 @@ models
 nodes
 | src/main.rs:6:11:6:19 | file_name | semmle.label | file_name |
 | src/main.rs:8:9:8:17 | file_path | semmle.label | file_path |
-| src/main.rs:8:21:8:54 | ...::from(...) | semmle.label | ...::from(...) |
-| src/main.rs:8:35:8:53 | file_name as String | semmle.label | file_name as String |
+| src/main.rs:8:21:8:44 | ...::from(...) | semmle.label | ...::from(...) |
+| src/main.rs:8:35:8:43 | file_name | semmle.label | file_name |
 | src/main.rs:10:5:10:22 | ...::read_to_string | semmle.label | ...::read_to_string |
 | src/main.rs:10:24:10:32 | file_path | semmle.label | file_path |
 subpaths

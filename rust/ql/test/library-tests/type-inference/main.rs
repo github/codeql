@@ -2362,12 +2362,12 @@ pub mod pattern_matching {
     pub fn f() -> Option<()> {
         let value = Some(42);
         if let Some(mesg) = value {
-            let mesg = mesg; // $ MISSING: type=mesg:i32
+            let mesg = mesg; // $ type=mesg:i32
             println!("{mesg}");
         }
         match value {
             Some(mesg) => {
-                let mesg = mesg; // $ MISSING: type=mesg:i32
+                let mesg = mesg; // $ type=mesg:i32
                 println!("{mesg}");
             }
             None => (),
@@ -2380,39 +2380,39 @@ pub mod pattern_matching {
 
         let value2 = &Some(42);
         if let &Some(mesg) = value2 {
-            let mesg = mesg; // $ MISSING: type=mesg:i32
+            let mesg = mesg; // $ type=mesg:i32
             println!("{mesg}");
         }
 
         let value3 = 42;
         if let ref mesg = value3 {
-            let mesg = mesg; // $ MISSING: type=mesg:&T.i32
+            let mesg = mesg; // $ type=mesg:&T.i32
             println!("{mesg}");
         }
 
         let value4 = Some(42);
         if let Some(ref mesg) = value4 {
-            let mesg = mesg; // $ MISSING: type=mesg:&T.i32
+            let mesg = mesg; // $ type=mesg:&T.i32
             println!("{mesg}");
         }
 
         let ref value5 = 42;
-        let x = value5; // $ MISSING: type=x:&T.i32
+        let x = value5; // $ type=x:&T.i32
 
         let my_record_struct = MyRecordStruct {
             value1: 42,
             value2: false,
         };
         if let MyRecordStruct { value1, value2 } = my_record_struct {
-            let x = value1; // $ MISSING: type=x:i32
-            let y = value2; // $ MISSING: type=y:bool
+            let x = value1; // $ type=x:i32
+            let y = value2; // $ type=y:bool
             ();
         }
 
         let my_tuple_struct = MyTupleStruct(42, false);
         if let MyTupleStruct(value1, value2) = my_tuple_struct {
-            let x = value1; // $ MISSING: type=x:i32
-            let y = value2; // $ MISSING: type=y:bool
+            let x = value1; // $ type=x:i32
+            let y = value2; // $ type=y:bool
             ();
         }
 
@@ -2422,13 +2422,13 @@ pub mod pattern_matching {
         };
         match my_enum1 {
             MyEnum::Variant1 { value1, value2 } => {
-                let x = value1; // $ MISSING: type=x:i32
-                let y = value2; // $ MISSING: type=y:bool
+                let x = value1; // $ type=x:i32
+                let y = value2; // $ type=y:bool
                 ();
             }
             MyEnum::Variant2(value1, value2) => {
-                let x = value1; // $ MISSING: type=x:bool
-                let y = value2; // $ MISSING: type=y:i32
+                let x = value1; // $ type=x:bool
+                let y = value2; // $ type=y:i32
                 ();
             }
         }
@@ -2449,9 +2449,9 @@ pub mod pattern_matching {
                     value2: y,
                 },
             ) => {
-                let a = value1; // $ MISSING: type=a:bool
-                let b = x; // $ MISSING: type=b:i32
-                let c = y; // $ MISSING: type=c:&T.str
+                let a = value1; // $ type=a:bool
+                let b = x; // $ type=b:i32
+                let c = y; // $ type=c:&T.str
                 ();
             }
             _ => (),
