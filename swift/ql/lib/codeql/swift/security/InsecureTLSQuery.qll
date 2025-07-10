@@ -22,9 +22,9 @@ module InsecureTlsConfig implements DataFlow::ConfigSig {
     any(InsecureTlsExtensionsAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
-
-  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+  predicate observeDiffInformedIncrementalMode() {
+    none() // query selects some Swift nodes (e.g. "[post] self") that have location file://:0:0:0:0, which always fall outside the diff range.
+  }
 }
 
 module InsecureTlsFlow = TaintTracking::Global<InsecureTlsConfig>;
