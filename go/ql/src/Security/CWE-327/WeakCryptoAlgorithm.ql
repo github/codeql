@@ -1,8 +1,10 @@
 /**
- * @name Use of a weak cryptographic algorithm
- * @description Using weak cryptographic algorithms can allow an attacker to compromise security.
+ * @name Use of a broken or weak cryptographic algorithm
+ * @description Using broken or weak cryptographic algorithms can compromise security.
  * @kind path-problem
- * @problem.severity error
+ * @problem.severity warning
+ * @security-severity 7.5
+ * @precision high
  * @id go/weak-crypto-algorithm
  * @tags security
  *       external/cwe/cwe-327
