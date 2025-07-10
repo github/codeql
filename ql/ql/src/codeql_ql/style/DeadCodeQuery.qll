@@ -39,6 +39,10 @@ private AstNode queryPredicate() {
   result = queryPredicate().getAChild()
 }
 
+private AstNode discardPredicate() {
+  result.(Predicate).getAnAnnotation() instanceof OverlayDiscardEntity
+}
+
 AstNode hackyShouldBeTreatedAsAlive() {
   // Stages from the shared DataFlow impl are copy-pasted, so predicates that are dead in one stage are not dead in another.
   result = any(Module mod | mod.getName().matches("Stage%")).getAMember().(ClasslessPredicate) and
@@ -58,7 +62,7 @@ AstNode hackyShouldBeTreatedAsAlive() {
  */
 private AstNode alive() {
   //
-  // The 4 base cases.
+  // The 5 base cases.
   //
   // 1) everything that can be imported.
   result = publicApi()
@@ -72,6 +76,9 @@ private AstNode alive() {
   or
   // 4) Things that aren't really alive, but that this query treats as live.
   result = hackyShouldBeTreatedAsAlive()
+  or
+  // 5) discard predicates
+  result = discardPredicate()
   or
   result instanceof TopLevel // toplevel is always alive.
   or
