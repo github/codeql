@@ -1413,7 +1413,7 @@ mod builtins {
         let z = x + y; // $ type=z:i32 method=add
         let z = x.abs(); // $ method=abs $ type=z:i32
         let c = 'c'; // $ type=c:char
-        let hello = "Hello"; // $ type=hello:str
+        let hello = "Hello"; // $ type=hello:&T.str
         let f = 123.0f64; // $ type=f:f64
         let t = true; // $ type=t:bool
         let f = false; // $ type=f:bool
@@ -2086,10 +2086,10 @@ mod loops {
         let vals4: [u64; 3] = [1; 3]; // $ type=vals4:[T;...].u64
         for u in vals4 {} // $ type=u:u64
 
-        let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1:[T;...].str
-        for s in &strings1 {} // $ MISSING: type=s:&T.str
-        for s in &mut strings1 {} // $ MISSING: type=s:&T.str
-        for s in strings1 {} // $ type=s:str
+        let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1:[T;...].&T.str
+        for s in &strings1 {} // $ type=s:&T.&T.str
+        for s in &mut strings1 {} // $ type=s:&T.&T.str
+        for s in strings1 {} // $ type=s:&T.str
 
         let strings2 = // $ type=strings2:[T;...].String
         [
@@ -2116,17 +2116,17 @@ mod loops {
 
         // for loops with ranges
 
-        for i in 0..10 {} // $ MISSING: type=i:i32
-        for u in [0u8..10] {} // $ MISSING: type=u:u8
-        let range = 0..10; // $ MISSING: type=range:Range type=range:Idx.i32
-        for i in range {} // $ MISSING: type=i:i32
+        for i in 0..10 {} // $ type=i:i32
+        for u in [0u8..10] {} // $ type=u:Range type=u:Idx.u8
+        let range = 0..10; // $ type=range:Range type=range:Idx.i32
+        for i in range {} // $ type=i:i32
 
         let range1 = // $ type=range1:Range type=range1:Idx.u16
         std::ops::Range {
             start: 0u16,
             end: 10u16,
         };
-        for u in range1 {} // $ MISSING: type=u:u16
+        for u in range1 {} // $ type=u:u16
 
         // for loops with containers
 
@@ -2150,11 +2150,11 @@ mod loops {
         for u in vals7 {} // $ MISSING: type=u:u8
 
         let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ MISSING: type=matrix1:Vec type=matrix1:T.Vec type=matrix1:T.T.i32
-        for row in matrix1 {
-            // $ MISSING: type=row:Vec type=row:T.i32
+        #[rustfmt::skip]
+        let _ = for row in matrix1 { // $ MISSING: type=row:Vec type=row:T.i32
             for cell in row { // $ MISSING: type=cell:i32
             }
-        }
+        };
 
         let mut map1 = std::collections::HashMap::new(); // $ method=new $ MISSING: type=map1:Hashmap type=map1:K.i32 type=map1:V.Box type1=map1:V.T.&T.str
         map1.insert(1, Box::new("one")); // $ method=insert method=new
@@ -2228,6 +2228,34 @@ mod explicit_type_args {
     }
 }
 
+mod tuples {
+    struct S1 {}
+
+    impl S1 {
+        fn get_pair() -> (S1, S1) {
+            (S1 {}, S1 {})
+        }
+        fn foo(self) {}
+    }
+
+    pub fn f() {
+        let a = S1::get_pair(); // $ method=get_pair MISSING: type=a:?
+        let mut b = S1::get_pair(); // $ method=get_pair MISSING: type=b:?
+        let (c, d) = S1::get_pair(); // $ method=get_pair MISSING: type=c:? type=d:?
+        let (mut e, f) = S1::get_pair(); // $ method=get_pair MISSING: type=e: type=f:
+        let (mut g, mut h) = S1::get_pair(); // $ method=get_pair MISSING: type=g:? type=h:?
+
+        a.0.foo(); // $ MISSING: method=foo
+        b.1.foo(); // $ MISSING: method=foo
+        c.foo(); // $ MISSING: method=foo
+        d.foo(); // $ MISSING: method=foo
+        e.foo(); // $ MISSING: method=foo
+        f.foo(); // $ MISSING: method=foo
+        g.foo(); // $ MISSING: method=foo
+        h.foo(); // $ MISSING: method=foo
+    }
+}
+
 fn main() {
     field_access::f(); // $ method=f
     method_impl::f(); // $ method=f
@@ -2251,7 +2279,9 @@ fn main() {
     impl_trait::f(); // $ method=f
     indexers::f(); // $ method=f
     loops::f(); // $ method=f
+    explicit_type_args::f(); // $ method=f
     macros::f(); // $ method=f
     method_determined_by_argument_type::f(); // $ method=f
+    tuples::f(); // $ method=f
     dereference::test(); // $ method=test
 }
