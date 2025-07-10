@@ -1,4 +1,6 @@
 /** Provides predicates for synthesizing AST nodes. */
+overlay[local]
+module;
 
 private import AST
 private import TreeSitter

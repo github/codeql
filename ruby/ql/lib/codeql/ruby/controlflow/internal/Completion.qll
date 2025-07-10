@@ -3,6 +3,8 @@
  *
  * A completion represents how a statement or expression terminates.
  */
+overlay[local]
+module;
 
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST
