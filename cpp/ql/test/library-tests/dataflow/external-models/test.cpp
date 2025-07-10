@@ -45,7 +45,7 @@ using pthread_attr_t = void*;
 
 void *myThreadFunction(void *arg) {
     S* s = (S *)arg;
-		ymlSink(s->x); // $ ir
+    ymlSink(s->x); // $ ir
     return nullptr;
 }
 
