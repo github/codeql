@@ -5,9 +5,7 @@
  * @kind problem
  * @problem.severity warning
  * @id js/node/assignment-to-exports-variable
- * @tags quality
- *       reliability
- *       correctness
+ * @tags maintainability
  *       frameworks/node.js
  *       external/cwe/cwe-563
  * @precision very-high

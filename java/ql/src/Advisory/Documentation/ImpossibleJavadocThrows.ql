@@ -6,9 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/inconsistent-javadoc-throws
- * @tags quality
- *       maintainability
- *       readability
+ * @tags maintainability
  */
 
 import java

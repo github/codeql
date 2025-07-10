@@ -6,8 +6,7 @@
  * @problem.severity error
  * @precision high
  * @id java/index-out-of-bounds
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       exceptions
  *       external/cwe/cwe-193

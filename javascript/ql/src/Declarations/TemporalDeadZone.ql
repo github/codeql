@@ -5,10 +5,8 @@
  * @kind problem
  * @problem.severity error
  * @id js/variable-use-in-temporal-dead-zone
- * @tags quality
- *       reliability
+ * @tags portability
  *       correctness
- *       portability
  * @precision very-high
  */
 

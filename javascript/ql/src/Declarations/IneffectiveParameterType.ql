@@ -5,10 +5,9 @@
  * @problem.severity warning
  * @id js/ineffective-parameter-type
  * @precision high
- * @tags quality
- *       reliability
- *       correctness
+ * @tags correctness
  *       typescript
+ *       quality
  */
 
 import javascript

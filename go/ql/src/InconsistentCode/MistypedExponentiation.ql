@@ -4,10 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @id go/mistyped-exponentiation
- * @tags quality
- *       reliability
- *       correctness
- *       external/cwe/cwe-480
+ * @tags correctness
  * @precision high
  */
 

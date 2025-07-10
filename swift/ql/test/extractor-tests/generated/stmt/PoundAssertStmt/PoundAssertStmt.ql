@@ -2,14 +2,10 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  PoundAssertStmt x, string getCondition__label, Expr getCondition, string getMessage__label,
-  string getMessage
-) {
+from PoundAssertStmt x, Expr getCondition, string getMessage
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getCondition__label = "getCondition:" and
   getCondition = x.getCondition() and
-  getMessage__label = "getMessage:" and
   getMessage = x.getMessage()
-}
+select x, "getCondition:", getCondition, "getMessage:", getMessage

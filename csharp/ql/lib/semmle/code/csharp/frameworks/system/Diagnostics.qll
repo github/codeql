@@ -41,7 +41,9 @@ class SystemDiagnosticsDebugClass extends SystemDiagnosticsClass {
   /** Gets an `Assert(bool, ...)` method. */
   Method getAssertMethod() {
     result.getDeclaringType() = this and
-    result.hasName("Assert")
+    result.hasName("Assert") and
+    result.getParameter(0).getType() instanceof BoolType and
+    result.getReturnType() instanceof VoidType
   }
 }
 

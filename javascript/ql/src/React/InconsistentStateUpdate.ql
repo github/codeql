@@ -6,9 +6,7 @@
  * @kind problem
  * @problem.severity warning
  * @id js/react/inconsistent-state-update
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
  *       frameworks/react
  * @precision very-high
  */

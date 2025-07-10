@@ -1,3 +1,0 @@
-- queries: .
-- apply: code-quality-extended-selectors.yml
-  from: codeql/suite-helpers

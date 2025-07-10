@@ -4,8 +4,7 @@
  *              where the names of format items in the format string differs from the names of the values to be formatted will raise a KeyError.
  * @kind problem
  * @problem.severity error
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  * @sub-severity low
  * @precision high

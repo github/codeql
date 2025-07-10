@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Sensitive information included in a GitHub Actions artifact can allow an attacker to access
+      the sensitive information if the artifact is published.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      Only store information that is meant to be publicly available in a GitHub Actions artifact.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      The following example uses <code>actions/checkout</code> to checkout code which stores the GITHUB_TOKEN in the `.git/config` file
+      and then stores the contents of the `.git` repository into the artifact:
+    </p>
+    <sample src="examples/actions-artifact-leak.yml"/>
+    <p>
+      The issue has been fixed below, where the <code>actions/upload-artifact</code> uses a version (v4+) which does not include hidden files or
+      directories into the artifact.
+    </p>
+    <sample src="examples/actions-artifact-leak-fixed.yml"/>
+  </example>
+</qhelp>

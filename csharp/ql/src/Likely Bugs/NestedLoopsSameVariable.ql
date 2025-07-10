@@ -6,9 +6,9 @@
  * @problem.severity warning
  * @precision high
  * @id cs/nested-loops-with-same-variable
- * @tags quality
- *       reliability
+ * @tags maintainability
  *       correctness
+ *       logic
  */
 
 import csharp

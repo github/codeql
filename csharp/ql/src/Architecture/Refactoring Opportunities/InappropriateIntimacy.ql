@@ -7,7 +7,6 @@
  * @precision high
  * @id cs/coupled-types
  * @tags maintainability
- *       complexity
  *       modularity
  */
 

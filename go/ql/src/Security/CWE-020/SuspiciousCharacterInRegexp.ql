@@ -40,8 +40,6 @@ module SuspiciousCharacterInRegexpConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

@@ -1,0 +1,5 @@
+| .github/workflows/test.yml:9:9:14:2 | name: " ... tifact" | A secret may be exposed in an artifact. |
+| .github/workflows/test.yml:27:9:32:2 | name: " ... tifact" | A secret may be exposed in an artifact. |
+| .github/workflows/test.yml:38:9:43:2 | name: " ... tifact" | A secret may be exposed in an artifact. |
+| .github/workflows/test.yml:49:9:54:2 | name: " ... tifact" | A secret may be exposed in an artifact. |
+| .github/workflows/test.yml:82:9:86:18 | name: " ... tifact" | A secret may be exposed in an artifact. |

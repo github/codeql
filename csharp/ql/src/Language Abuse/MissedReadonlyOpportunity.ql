@@ -6,10 +6,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/missed-readonly-modifier
- * @tags quality
- *       maintainability
- *       readability
+ * @tags maintainability
  *       language-features
+ *       quality
  */
 
 import csharp

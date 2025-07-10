@@ -5,9 +5,9 @@
  * @problem.severity error
  * @precision high
  * @id cs/impossible-array-cast
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
+ *       logic
  */
 
 import csharp

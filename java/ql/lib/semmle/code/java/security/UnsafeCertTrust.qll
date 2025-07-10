@@ -1,6 +1,4 @@
 /** Provides classes and predicates to reason about unsafe certificate trust vulnerablities. */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.frameworks.Networking

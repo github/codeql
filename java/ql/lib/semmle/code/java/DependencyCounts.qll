@@ -1,8 +1,6 @@
 /**
  * This library provides utility predicates for representing the number of dependencies between types.
  */
-overlay[local?]
-module;
 
 import Type
 import Generics

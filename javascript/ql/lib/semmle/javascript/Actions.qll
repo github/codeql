@@ -1,6 +1,4 @@
 /**
- * PENDING DEPRECATION. Models for GitHub Actions workflow files are part of the actions qlpack now.
- *
  * Libraries for modeling GitHub Actions workflow files written in YAML.
  * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
  */

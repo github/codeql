@@ -5,9 +5,8 @@
  * @kind problem
  * @problem.severity warning
  * @id js/missing-variable-declaration
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
+ *       maintainability
  * @precision high
  */
 

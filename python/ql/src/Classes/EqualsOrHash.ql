@@ -2,8 +2,7 @@
  * @name Inconsistent equality and hashing
  * @description Defining equality for a class without also defining hashability (or vice-versa) violates the object model.
  * @kind problem
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       external/cwe/cwe-581
  * @problem.severity warning

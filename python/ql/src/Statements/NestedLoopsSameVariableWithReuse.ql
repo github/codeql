@@ -3,8 +3,7 @@
  * @description Redefining a variable in an inner loop and then using
  *              the variable in an outer loop causes unexpected behavior.
  * @kind problem
- * @tags quality
- *       reliability
+ * @tags maintainability
  *       correctness
  * @problem.severity error
  * @sub-severity low

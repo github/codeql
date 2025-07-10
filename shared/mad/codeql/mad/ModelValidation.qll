@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates related to validating models-as-data rows.
  */
-overlay[local?]
-module;
 
 /** Provides predicates for determining if a model exists for a given `kind`. */
 signature module KindValidationConfigSig {

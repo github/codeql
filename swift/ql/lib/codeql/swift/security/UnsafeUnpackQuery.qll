@@ -24,10 +24,6 @@ module UnsafeUnpackConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(UnsafeUnpackAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
-
-  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 /**

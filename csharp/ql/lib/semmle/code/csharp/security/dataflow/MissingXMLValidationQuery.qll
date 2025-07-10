@@ -39,8 +39,6 @@ private module MissingXmlValidationConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { exists(sink.(Sink).getReason()) }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

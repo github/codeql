@@ -2,8 +2,6 @@
  * Provides pretty-printed representations of the AST, in particular top-level
  * classes and interfaces.
  */
-overlay[local?]
-module;
 
 import java
 

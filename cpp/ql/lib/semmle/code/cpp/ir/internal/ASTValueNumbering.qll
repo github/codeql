@@ -76,7 +76,7 @@ class GVN extends TValueNumber {
             l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
             l.getEndColumn()
         )
-    else result instanceof UnknownLocation
+    else result instanceof UnknownDefaultLocation
   }
 
   final string getKind() {

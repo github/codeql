@@ -101,8 +101,6 @@ module UntrustedToTemplateExecWithConversionConfig implements DataFlow::StateCon
       conversion.getType().getUnderlyingType*() = unescapedType
     )
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module UntrustedToTemplateExecWithConversionFlow =

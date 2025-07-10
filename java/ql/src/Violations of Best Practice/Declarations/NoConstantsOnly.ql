@@ -6,9 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/constants-only-interface
- * @tags quality
- *       maintainability
- *       readability
+ * @tags maintainability
  *       modularity
  */
 

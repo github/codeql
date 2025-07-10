@@ -3,6 +3,6 @@
 # we want to support.
 
 [toolchain]
-channel = "1.86"
+channel = "1.85"
 profile = "minimal"
 components = [ "clippy", "rustfmt" ]

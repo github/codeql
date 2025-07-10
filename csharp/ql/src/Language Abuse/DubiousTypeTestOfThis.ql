@@ -5,10 +5,8 @@
  * @problem.severity warning
  * @precision high
  * @id cs/type-test-of-this
- * @tags quality
- *       reliability
- *       correctness
- *       testability
+ * @tags testability
+ *       maintainability
  *       language-features
  */
 

@@ -42,8 +42,6 @@ module CommandInjectionConfig implements DataFlow::ConfigSig {
    * `node` from the data flow graph.
    */
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

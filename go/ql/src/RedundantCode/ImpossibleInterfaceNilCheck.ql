@@ -4,10 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @id go/impossible-interface-nil-check
- * @tags quality
- *       reliability
- *       correctness
- *       external/cwe/cwe-570
+ * @tags correctness
  * @precision high
  */
 

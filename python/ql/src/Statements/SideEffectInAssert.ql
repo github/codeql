@@ -3,9 +3,8 @@
  * @description Side-effects in assert statements result in differences between normal
  *              and optimized behavior.
  * @kind problem
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
+ *       maintainability
  * @problem.severity error
  * @sub-severity low
  * @precision high

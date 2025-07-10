@@ -5,9 +5,7 @@
  * @kind problem
  * @problem.severity warning
  * @id js/misleading-indentation-after-control-statement
- * @tags quality
- *       maintainability
- *       readability
+ * @tags correctness
  *       statistical
  *       non-attributable
  *       external/cwe/cwe-483

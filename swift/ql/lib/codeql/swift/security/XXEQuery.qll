@@ -22,8 +22,6 @@ module XxeConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(XxeAdditionalFlowStep s).step(n1, n2)
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

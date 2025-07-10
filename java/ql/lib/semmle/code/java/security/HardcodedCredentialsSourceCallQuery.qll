@@ -14,8 +14,6 @@ module HardcodedCredentialSourceCallConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) { n.asExpr() instanceof HardcodedExpr }
 
   predicate isSink(DataFlow::Node n) { n.asExpr() instanceof FinalCredentialsSourceSink }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

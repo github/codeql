@@ -6,9 +6,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/internal-representation-exposure
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
+ *       maintainability
  *       modularity
  *       external/cwe/cwe-485
  */

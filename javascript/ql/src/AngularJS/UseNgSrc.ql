@@ -7,9 +7,7 @@
  * @problem.severity warning
  * @precision very-high
  * @id js/angular/expression-in-url-attribute
- * @tags quality
- *       reliability
- *       correctness
+ * @tags maintainability
  *       frameworks/angularjs
  */
 

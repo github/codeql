@@ -59,17 +59,6 @@ module Impl {
       )
     }
 
-    /** Gets the block that encloses this node, if any. */
-    cached
-    BlockExpr getEnclosingBlock() {
-      exists(AstNode p | p = this.getParentNode() |
-        result = p
-        or
-        not p instanceof BlockExpr and
-        result = p.getEnclosingBlock()
-      )
-    }
-
     /** Holds if this node is inside a macro expansion. */
     predicate isInMacroExpansion() { MacroCallImpl::isInMacroExpansion(_, this) }
 
@@ -81,9 +70,9 @@ module Impl {
      */
     pragma[nomagic]
     predicate isFromMacroExpansion() {
-      exists(AstNode root |
-        MacroCallImpl::isInMacroExpansion(root, this) and
-        not this = root.(MacroCall).getATokenTreeNode()
+      exists(MacroCall mc |
+        MacroCallImpl::isInMacroExpansion(mc, this) and
+        not this = mc.getATokenTreeNode()
       )
     }
 

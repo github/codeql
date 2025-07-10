@@ -4,8 +4,6 @@
  * Provides predicates for recommended encryption key sizes.
  * Such that we can share this logic across our CodeQL analysis of different languages.
  */
-overlay[local?]
-module;
 
 /** Returns the minimum recommended key size for RSA. */
 int minSecureKeySizeRsa() { result = 2048 }

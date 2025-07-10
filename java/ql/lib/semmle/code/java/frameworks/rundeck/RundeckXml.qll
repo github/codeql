@@ -1,6 +1,4 @@
 /** Provides definitions related to XML parsing in Rundeck. */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.security.XmlParsers

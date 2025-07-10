@@ -7,8 +7,8 @@
  * @problem.severity error
  * @precision very-high
  * @id java/unsynchronized-getter
- * @tags quality
- *       reliability
+ * @tags reliability
+ *       correctness
  *       concurrency
  *       language-features
  *       external/cwe/cwe-413

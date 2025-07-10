@@ -4,9 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @id go/redundant-assignment
- * @tags quality
- *       reliability
- *       correctness
+ * @tags correctness
  *       external/cwe/cwe-480
  *       external/cwe/cwe-561
  * @precision high

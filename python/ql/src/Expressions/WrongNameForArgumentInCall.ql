@@ -4,8 +4,7 @@
  *              parameter of the called function or method, will result in a
  *              TypeError at runtime.
  * @kind problem
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       external/cwe/cwe-628
  * @problem.severity error

@@ -1,6 +1,4 @@
 /** Provides classes and predicates for working with implicit `PendingIntent`s. */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow

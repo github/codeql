@@ -45,8 +45,6 @@ module XxeConfig implements DataFlow::StateConfigSig {
   }
 
   predicate neverSkip(DataFlow::Node node) { none() }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module XxeFlow = DataFlow::GlobalWithState<XxeConfig>;

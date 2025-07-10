@@ -6,8 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/confusing-method-name
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       readability
  *       naming
  */

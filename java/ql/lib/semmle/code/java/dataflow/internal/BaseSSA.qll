@@ -10,8 +10,6 @@
  * This is a restricted version of SSA.qll that only handles `LocalScopeVariable`s
  * in order to not depend on virtual dispatch.
  */
-overlay[local?]
-module;
 
 import java
 private import codeql.ssa.Ssa as SsaImplCommon
@@ -374,10 +372,5 @@ class BaseSsaImplicitInit extends BaseSsaVariable instanceof Impl::WriteDefiniti
 /** An SSA phi node. */
 class BaseSsaPhiNode extends BaseSsaVariable instanceof Impl::PhiNode {
   /** Gets an input to the phi node defining the SSA variable. */
-  BaseSsaVariable getAPhiInput() { this.hasInputFromBlock(result, _) }
-
-  /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
-  predicate hasInputFromBlock(BaseSsaVariable inp, BasicBlock bb) {
-    phiHasInputFromBlock(this, inp, bb)
-  }
+  BaseSsaVariable getAPhiInput() { phiHasInputFromBlock(this, result, _) }
 }

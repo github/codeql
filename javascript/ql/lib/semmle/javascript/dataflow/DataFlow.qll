@@ -27,9 +27,6 @@ private import internal.PreCallGraphStep
 private import semmle.javascript.internal.CachedStages
 private import semmle.javascript.dataflow.internal.DataFlowPrivate as Private
 private import semmle.javascript.dataflow.internal.VariableOrThis
-private import semmle.javascript.internal.NameResolution
-private import semmle.javascript.internal.UnderlyingTypes
-private import semmle.javascript.internal.TypeResolution
 
 module DataFlow {
   /**
@@ -193,6 +190,26 @@ module DataFlow {
     }
 
     /**
+     * Gets the static type of this node as determined by the TypeScript type system.
+     */
+    private Type getType() {
+      exists(AST::ValueNode node |
+        this = TValueNode(node) and
+        ast_node_type(node, result)
+      )
+      or
+      exists(BindingPattern pattern |
+        this = lvalueNode(pattern) and
+        ast_node_type(pattern, result)
+      )
+      or
+      exists(MethodDefinition def |
+        this = TThisNode(def.getInit()) and
+        ast_node_type(def.getDeclaringClass(), result)
+      )
+    }
+
+    /**
      * Gets the type annotation describing the type of this node,
      * provided that a static type could not be found.
      *
@@ -212,15 +229,6 @@ module DataFlow {
       )
     }
 
-    private NameResolution::Node getNameResolutionNode() {
-      this = valueNode(result)
-      or
-      exists(PropertyPattern pattern |
-        result = pattern.getValuePattern() and
-        this = TPropNode(pattern)
-      )
-    }
-
     /**
      * Holds if this node is annotated with the given named type,
      * or is declared as a subtype thereof, or is a union or intersection containing such a type.
@@ -228,10 +236,9 @@ module DataFlow {
     cached
     predicate hasUnderlyingType(string globalName) {
       Stages::TypeTracking::ref() and
-      exists(NameResolution::Node type |
-        TypeResolution::valueHasType(this.getNameResolutionNode(), type) and
-        UnderlyingTypes::nodeHasUnderlyingType(type, globalName)
-      )
+      this.getType().hasUnderlyingType(globalName)
+      or
+      this.getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(globalName)
     }
 
     /**
@@ -241,11 +248,9 @@ module DataFlow {
     cached
     predicate hasUnderlyingType(string moduleName, string typeName) {
       Stages::TypeTracking::ref() and
-      moduleName != "global" and
-      exists(NameResolution::Node type |
-        TypeResolution::valueHasType(this.getNameResolutionNode(), type) and
-        UnderlyingTypes::nodeHasUnderlyingType(type, moduleName, typeName)
-      )
+      this.getType().hasUnderlyingType(moduleName, typeName)
+      or
+      this.getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(moduleName, typeName)
     }
 
     /**

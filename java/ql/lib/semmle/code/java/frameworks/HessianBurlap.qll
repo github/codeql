@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for working with the HessianBurlap framework.
  */
-overlay[local?]
-module;
 
 import java
 

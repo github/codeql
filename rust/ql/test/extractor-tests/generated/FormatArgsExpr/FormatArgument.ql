@@ -2,13 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(FormatArgument x, string getParent__label, Format getParent) {
+from FormatArgument x, Format getParent, string hasVariable
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getParent__label = "getParent:" and
-  getParent = x.getParent()
-}
-
-query predicate getVariable(FormatArgument x, FormatTemplateVariableAccess getVariable) {
-  toBeTested(x) and not x.isUnknown() and getVariable = x.getVariable()
-}
+  getParent = x.getParent() and
+  if x.hasVariable() then hasVariable = "yes" else hasVariable = "no"
+select x, "getParent:", getParent, "hasVariable:", hasVariable

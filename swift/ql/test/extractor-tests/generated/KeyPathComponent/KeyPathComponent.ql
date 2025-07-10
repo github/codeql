@@ -2,26 +2,16 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  KeyPathComponent x, string getKind__label, int getKind, string getComponentType__label,
-  Type getComponentType
-) {
+from
+  KeyPathComponent x, int getKind, int getNumberOfSubscriptArguments, string hasTupleIndex,
+  string hasDeclRef, Type getComponentType
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getKind__label = "getKind:" and
   getKind = x.getKind() and
-  getComponentType__label = "getComponentType:" and
+  getNumberOfSubscriptArguments = x.getNumberOfSubscriptArguments() and
+  (if x.hasTupleIndex() then hasTupleIndex = "yes" else hasTupleIndex = "no") and
+  (if x.hasDeclRef() then hasDeclRef = "yes" else hasDeclRef = "no") and
   getComponentType = x.getComponentType()
-}
-
-query predicate getSubscriptArgument(KeyPathComponent x, int index, Argument getSubscriptArgument) {
-  toBeTested(x) and not x.isUnknown() and getSubscriptArgument = x.getSubscriptArgument(index)
-}
-
-query predicate getTupleIndex(KeyPathComponent x, int getTupleIndex) {
-  toBeTested(x) and not x.isUnknown() and getTupleIndex = x.getTupleIndex()
-}
-
-query predicate getDeclRef(KeyPathComponent x, ValueDecl getDeclRef) {
-  toBeTested(x) and not x.isUnknown() and getDeclRef = x.getDeclRef()
-}
+select x, "getKind:", getKind, "getNumberOfSubscriptArguments:", getNumberOfSubscriptArguments,
+  "hasTupleIndex:", hasTupleIndex, "hasDeclRef:", hasDeclRef, "getComponentType:", getComponentType

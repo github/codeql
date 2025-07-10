@@ -1,6 +1,4 @@
 /** Provides classes to reason about server-side request forgery (SSRF) attacks. */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.frameworks.Networking

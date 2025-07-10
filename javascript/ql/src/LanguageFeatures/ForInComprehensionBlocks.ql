@@ -5,10 +5,8 @@
  * @kind problem
  * @problem.severity error
  * @id js/for-in-comprehension
- * @tags quality
+ * @tags portability
  *       maintainability
- *       readability
- *       portability
  *       language-features
  *       external/cwe/cwe-758
  * @precision very-high

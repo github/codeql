@@ -5,9 +5,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/missed-using-statement
- * @tags quality
- *       maintainability
- *       readability
+ * @tags maintainability
  *       language-features
  */
 

@@ -6,9 +6,9 @@
      - Identifier
    * - GitHub Actions
      - ``actions``
-   * - C/C++
+   * - C/C++ 
      - ``cpp``
-   * - C#
+   * - C# 
      - ``csharp``
    * - Go
      - ``go``
@@ -20,7 +20,5 @@
      - ``python``
    * - Ruby
      - ``ruby``
-     - Rust
-     - ``rust``
    * - Swift
      - ``swift``

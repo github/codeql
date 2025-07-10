@@ -8,10 +8,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id go/negative-length-check
- * @tags quality
- *       reliability
- *       correctness
- *       external/cwe/cwe-571
+ * @tags correctness
+ *       quality
  */
 
 import go

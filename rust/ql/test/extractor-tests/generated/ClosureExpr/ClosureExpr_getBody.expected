@@ -1,0 +1,5 @@
+| gen_closure_expr.rs:5:5:5:13 | \|...\| ... | gen_closure_expr.rs:5:9:5:13 | ... + ... |
+| gen_closure_expr.rs:6:5:6:34 | \|...\| ... | gen_closure_expr.rs:6:26:6:34 | { ... } |
+| gen_closure_expr.rs:7:5:7:27 | \|...\| ... | gen_closure_expr.rs:7:23:7:27 | ... + ... |
+| gen_closure_expr.rs:8:6:9:15 | \|...\| ... | gen_closure_expr.rs:9:9:9:15 | YieldExpr |
+| gen_closure_expr.rs:10:6:11:23 | \|...\| ... | gen_closure_expr.rs:11:17:11:23 | YieldExpr |

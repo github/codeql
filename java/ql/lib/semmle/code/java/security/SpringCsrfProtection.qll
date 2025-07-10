@@ -1,6 +1,4 @@
 /** Provides predicates to reason about disabling CSRF protection in Spring. */
-overlay[local?]
-module;
 
 import java
 

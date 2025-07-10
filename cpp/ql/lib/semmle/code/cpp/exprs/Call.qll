@@ -504,8 +504,6 @@ class VacuousDestructorCall extends Expr, @vacuous_destructor_call {
  */
 class ConstructorInit extends Expr, @ctorinit {
   override string getAPrimaryQlClass() { result = "ConstructorInit" }
-
-  override string toString() { result = "constructor init" }
 }
 
 /**
@@ -514,8 +512,6 @@ class ConstructorInit extends Expr, @ctorinit {
  */
 class ConstructorBaseInit extends ConstructorInit, ConstructorCall {
   override string getAPrimaryQlClass() { result = "ConstructorBaseInit" }
-
-  override string toString() { result = "call to " + this.getTarget().getName() }
 }
 
 /**

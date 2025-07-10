@@ -6,7 +6,6 @@
 private import internal.CallableImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Attr
-import codeql.rust.elements.Param
 import codeql.rust.elements.ParamList
 
 /**

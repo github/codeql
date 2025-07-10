@@ -39,8 +39,6 @@ import java.util.stream.Stream;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.semmle.js.extractor.tsconfig.TsConfigJson;
-import com.semmle.js.extractor.tsconfig.CompilerOptions;
 import com.semmle.js.dependencies.AsyncFetcher;
 import com.semmle.js.dependencies.DependencyResolver;
 import com.semmle.js.dependencies.packument.PackageJson;
@@ -747,26 +745,6 @@ public class AutoBuild {
         .filter(p -> !isFileTooLarge(p))
         .sorted(PATH_ORDERING)
         .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
-    // gather all output directories specified in tsconfig.json files
-    final List<Path> outDirs = new ArrayList<>();
-    for (Path cfg : tsconfigFiles) {
-      try {
-        String txt = new WholeIO().read(cfg);
-        TsConfigJson root = new Gson().fromJson(txt, TsConfigJson.class);
-        if (root != null && root.getCompilerOptions() != null) {
-          if (root.getCompilerOptions().getOutDir() == null) {
-            // no outDir specified, so skip this tsconfig.json
-            continue;
-          }
-          Path odir = cfg.getParent().resolve(root.getCompilerOptions().getOutDir()).toAbsolutePath().normalize();
-          outDirs.add(odir);
-        }
-      } catch (Exception e) {
-        // ignore malformed tsconfig or missing fields
-      }
-    }
-    // exclude files in output directories as configured in tsconfig.json
-    filesToExtract.removeIf(f -> outDirs.stream().anyMatch(od -> f.startsWith(od)));
 
     DependencyInstallationResult dependencyInstallationResult = DependencyInstallationResult.empty;
     if (!tsconfigFiles.isEmpty()) {
@@ -818,19 +796,9 @@ public class AutoBuild {
    */
   private boolean isFileDerivedFromTypeScriptFile(Path path, Set<Path> extractedFiles) {
     String name = path.getFileName().toString();
-    // only skip JS variants when a corresponding TS/TSX file was already extracted
-    if (!(name.endsWith(".js")
-          || name.endsWith(".cjs")
-          || name.endsWith(".mjs")
-          || name.endsWith(".jsx")
-          || name.endsWith(".cjsx")
-          || name.endsWith(".mjsx"))) {
+    if (!name.endsWith(".js"))
       return false;
-    }
-    // strip off extension
-    int dot = name.lastIndexOf('.');
-    String stem = dot != -1 ? name.substring(0, dot) : name;
-    // if a TS/TSX file with same base name was extracted, skip this file
+    String stem = name.substring(0, name.length() - ".js".length());
     for (String ext : FileType.TYPESCRIPT.getExtensions()) {
       if (extractedFiles.contains(path.getParent().resolve(stem + ext))) {
         return true;
@@ -1186,7 +1154,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
             }
 
             // extract TypeScript projects from 'tsconfig.json'
-            if (typeScriptMode != TypeScriptMode.NONE
+            if (typeScriptMode == TypeScriptMode.FULL
                 && treatAsTSConfig(file.getFileName().toString())
                 && !excludes.contains(file)
                 && isFileIncluded(file)) {

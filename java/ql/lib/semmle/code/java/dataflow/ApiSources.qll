@@ -1,6 +1,4 @@
 /** Provides classes representing various flow sources for data flow / taint tracking. */
-overlay[local?]
-module;
 
 private import semmle.code.java.dataflow.FlowSources as FlowSources
 

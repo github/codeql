@@ -8,8 +8,6 @@
  * Each annotation type has zero or more annotation elements that contain a
  * name and possibly a value.
  */
-overlay[local?]
-module;
 
 import Element
 import Expr

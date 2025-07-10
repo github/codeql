@@ -26,8 +26,6 @@ module StoredCommand {
     predicate isSink(DataFlow::Node sink) { sink instanceof CommandInjection::Sink }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof CommandInjection::Sanitizer }
-
-    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Tracks taint flow for reasoning about command-injection vulnerabilities. */

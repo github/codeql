@@ -1,0 +1,2 @@
+| gen_generic_arg_list.rs:5:10:5:21 | <...> | 0 | gen_generic_arg_list.rs:5:13:5:15 | TypeArg |
+| gen_generic_arg_list.rs:5:10:5:21 | <...> | 1 | gen_generic_arg_list.rs:5:18:5:20 | TypeArg |

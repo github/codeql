@@ -6,8 +6,7 @@
  * @problem.severity error
  * @precision high
  * @id cs/loss-of-precision
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       external/cwe/cwe-190
  *       external/cwe/cwe-192

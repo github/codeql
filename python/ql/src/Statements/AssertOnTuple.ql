@@ -2,9 +2,8 @@
  * @name Asserting a tuple
  * @description Using an assert statement to test a tuple provides no validity checking.
  * @kind problem
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
+ *       maintainability
  *       external/cwe/cwe-670
  * @problem.severity error
  * @sub-severity low

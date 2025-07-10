@@ -6,9 +6,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/inefficient-string-constructor
- * @tags quality
+ * @tags efficiency
  *       maintainability
- *       readability
  */
 
 import java

@@ -6,9 +6,7 @@
  * @kind problem
  * @problem.severity error
  * @id js/strict-mode-call-stack-introspection
- * @tags quality
- *       reliability
- *       correctness
+ * @tags correctness
  *       language-features
  * @precision high
  */

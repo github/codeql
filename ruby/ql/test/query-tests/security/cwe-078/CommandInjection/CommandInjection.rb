@@ -3,15 +3,14 @@ require "open3"
 
 class UsersController < ActionController::Base
     def create
-        cmd = params[:cmd] # $ Source
-        `#{cmd}` # $ Alert
-        system(cmd) # $ Alert
+        cmd = params[:cmd]
+        `#{cmd}`
+        system(cmd)
         system("echo", cmd) # OK, because cmd is not shell interpreted
-        exec(cmd) # $ Alert
-        %x(echo #{cmd}) # $ Alert
+        exec(cmd)
+        %x(echo #{cmd})
         result = <<`EOF`
-        #{cmd} #{# $ Alert
-                }
+        #{cmd}
 EOF
 
         safe_cmd_1 = Shellwords.escape(cmd)
@@ -27,12 +26,12 @@ EOF
         if %w(foo bar).include? cmd
             `echo #{cmd}`
         else
-            `echo #{cmd}` # $ Alert
+            `echo #{cmd}`
         end
 
         # Open3 methods
-        Open3.capture2("echo #{cmd}") # $ Alert
-        Open3.pipeline("cat foo.txt", "grep #{cmd}") # $ Alert
+        Open3.capture2("echo #{cmd}")
+        Open3.pipeline("cat foo.txt", "grep #{cmd}")
         Open3.pipeline(["echo", cmd], "tail") # OK, because cmd is not shell interpreted
     end
 
@@ -44,20 +43,20 @@ EOF
     end
 
     def index
-        cmd = params[:key] # $ Source
+        cmd = params[:key]
         if %w(foo bar).include? cmd
             `echo #{cmd}`
         end
-        Open3.capture2("echo #{cmd}") # $ Alert
+        Open3.capture2("echo #{cmd}")
     end
 
     def update
-      cmd = params[:key] # $ Source
+      cmd = params[:key]
       case cmd
       when "foo"
         system(cmd)
       end
-      system(cmd) # $ Alert
+      system(cmd)
     end
 end
 
@@ -71,16 +70,16 @@ module Types
     field :with_arg, String, null: false, description: "A field with an argument" do
       argument :number, Int, "A number", required: true
     end
-    def with_arg(number:) # $ Source
-      system("echo #{number}") # $ Alert
+    def with_arg(number:)
+      system("echo #{number}")
       number.to_s
     end
 
     field :with_method, String, null: false, description: "A field with a custom resolver method", resolver_method: :custom_method do
       argument :blah_number, Int, "A number", required: true
     end
-    def custom_method(blah_number:, number: nil) # $ Source
-      system("echo #{blah_number}") # $ Alert
+    def custom_method(blah_number:, number: nil)
+      system("echo #{blah_number}")
       system("echo #{number}") # OK, number: is not an `argument` for this field
       blah_number.to_s
     end
@@ -89,7 +88,7 @@ module Types
       argument :something, Int, "A number", required: true
     end
     def with_splat(**args)
-      system("echo #{args[:something]}") # $ Alert
+      system("echo #{args[:something]}")
       args[:something].to_s
     end
 
@@ -101,17 +100,17 @@ end
 
 class Foo < ActionController::Base
     def create
-        file = params[:file] # $ Source
-        system("cat #{file}") # $ Alert
+        file = params[:file]
+        system("cat #{file}")
         # .shellescape
         system("cat #{file.shellescape}") # OK, because file is shell escaped
-
+        
     end
 
     def index
-      Terrapin::CommandLine.new(params[:foo], "bar") # $ Alert
+      Terrapin::CommandLine.new(params[:foo], "bar") # BAD
 
-      Terrapin::CommandLine.new("echo", "#{params[foo]}") # $ Alert
+      Terrapin::CommandLine.new("echo", "#{params[foo]}") # BAD
 
       cmd = Terrapin::CommandLine.new("echo", ":msg")
       cmd.run(msg: params[:foo]) # GOOD

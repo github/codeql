@@ -1,6 +1,4 @@
 /** Provides classes for working with files and folders. */
-overlay[local?]
-module;
 
 import Location
 private import codeql.util.FileSystem

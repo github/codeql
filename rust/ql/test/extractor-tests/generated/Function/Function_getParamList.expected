@@ -1,0 +1,2 @@
+| gen_function.rs:3:1:4:38 | fn foo | gen_function.rs:4:7:4:14 | ParamList |
+| gen_function.rs:7:5:7:13 | fn bar | gen_function.rs:7:11:7:12 | ParamList |

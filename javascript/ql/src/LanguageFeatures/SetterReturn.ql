@@ -5,9 +5,7 @@
  * @kind problem
  * @problem.severity warning
  * @id js/setter-return
- * @tags quality
- *       maintainability
- *       useless-code
+ * @tags maintainability
  *       language-features
  * @precision very-high
  */

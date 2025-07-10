@@ -6,9 +6,7 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id java/unknown-javadoc-parameter
- * @tags quality
- *       maintainability
- *       readability
+ * @tags maintainability
  */
 
 import java

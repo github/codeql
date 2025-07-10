@@ -5,10 +5,9 @@
  * @problem.severity warning
  * @precision high
  * @id cs/locked-wait
- * @tags quality
- *       reliability
- *       concurrency
+ * @tags reliability
  *       correctness
+ *       concurrency
  *       external/cwe/cwe-662
  *       external/cwe/cwe-833
  */

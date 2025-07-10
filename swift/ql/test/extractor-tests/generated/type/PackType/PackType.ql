@@ -2,18 +2,12 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  PackType x, string getName__label, string getName, string getCanonicalType__label,
-  Type getCanonicalType
-) {
+from PackType x, string getName, Type getCanonicalType, int getNumberOfElements
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getName__label = "getName:" and
   getName = x.getName() and
-  getCanonicalType__label = "getCanonicalType:" and
-  getCanonicalType = x.getCanonicalType()
-}
-
-query predicate getElement(PackType x, int index, Type getElement) {
-  toBeTested(x) and not x.isUnknown() and getElement = x.getElement(index)
-}
+  getCanonicalType = x.getCanonicalType() and
+  getNumberOfElements = x.getNumberOfElements()
+select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getNumberOfElements:",
+  getNumberOfElements

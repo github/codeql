@@ -6,9 +6,8 @@
  * @problem.severity warning
  * @precision high
  * @id cs/unused-property-value
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
+ *       maintainability
  *       language-features
  */
 

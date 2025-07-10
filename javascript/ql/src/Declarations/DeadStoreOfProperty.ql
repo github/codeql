@@ -4,9 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @id js/useless-assignment-to-property
- * @tags quality
- *       maintainability
- *       useless-code
+ * @tags maintainability
  * @precision high
  */
 

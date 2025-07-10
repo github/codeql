@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for working with the SnakeYaml serialization framework.
  */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.dataflow.DataFlow

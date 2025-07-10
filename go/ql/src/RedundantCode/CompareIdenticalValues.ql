@@ -5,9 +5,7 @@
  * @kind problem
  * @problem.severity warning
  * @id go/comparison-of-identical-expressions
- * @tags quality
- *       reliability
- *       correctness
+ * @tags correctness
  *       external/cwe/cwe-570
  *       external/cwe/cwe-571
  * @precision very-high

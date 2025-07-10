@@ -1,4 +1,5 @@
 private import codeql.util.Unit
+private import rust
 private import rust as R
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.internal.DataFlowImpl as DataFlowImpl
@@ -10,50 +11,44 @@ private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
 private import codeql.rust.dataflow.internal.FlowSummaryImpl as FlowSummary
 
-private newtype TCallable =
-  TFunction(R::Function api, string path) {
-    path = api.getCanonicalPath() and
-    (
-      // This excludes closures (these are not exported API endpoints) and
-      // functions without a `pub` visibility. A function can be `pub` without
-      // ultimately being exported by a crate, so this is an overapproximation.
-      api.hasVisibility()
-      or
-      // If a method implements a public trait it is exposed through the trait.
-      // We overapproximate this by including all trait method implementations.
-      exists(R::Impl impl | impl.hasTrait() and impl.getAssocItemList().getAssocItem(_) = api)
-    )
-  }
-
-class QualifiedCallable extends TCallable {
-  R::Function api;
-  string path;
-
-  QualifiedCallable() { this = TFunction(api, path) }
-
-  string toString() { result = path }
-
-  R::Function getFunction() { result = api }
-
-  string getCanonicalPath() { result = path }
+private predicate relevant(Function api) {
+  // Only include functions that have a resolved path.
+  api.hasCrateOrigin() and
+  api.hasExtendedCanonicalPath() and
+  // A canonical path can contain `;` as the syntax for array types use `;`. For
+  // instance `<[Foo; 1] as Bar>::baz`. This does not work with the shared model
+  // generator and it is not clear if this will also be the case when we move to
+  // QL created canoonical paths, so for now we just exclude functions with
+  // `;`s.
+  not exists(api.getExtendedCanonicalPath().indexOf(";")) and
+  (
+    // This excludes closures (these are not exported API endpoints) and
+    // functions without a `pub` visibility. A function can be `pub` without
+    // ultimately being exported by a crate, so this is an overapproximation.
+    api.hasVisibility()
+    or
+    // If a method implements a public trait it is exposed through the trait.
+    // We overapproximate this by including all trait method implementations.
+    exists(Impl impl | impl.hasTrait() and impl.getAssocItemList().getAssocItem(_) = api)
+  )
 }
 
 module ModelGeneratorCommonInput implements
-  ModelGeneratorCommonInputSig<R::Location, DataFlowImpl::RustDataFlow>
+  ModelGeneratorCommonInputSig<Location, DataFlowImpl::RustDataFlow>
 {
   // NOTE: We are not using type information for now.
   class Type = Unit;
 
   class Parameter = R::ParamBase;
 
-  class Callable = QualifiedCallable;
+  class Callable = R::Callable;
 
   class NodeExtended extends DataFlow::Node {
     Type getType() { any() }
   }
 
-  QualifiedCallable getEnclosingCallable(NodeExtended node) {
-    result.getFunction() = node.(Node::Node).getEnclosingCallable().asCfgScope()
+  Callable getEnclosingCallable(NodeExtended node) {
+    result = node.(Node::Node).getEnclosingCallable().asCfgScope()
   }
 
   predicate isRelevantType(Type t) { any() }
@@ -74,23 +69,23 @@ module ModelGeneratorCommonInput implements
   string parameterApproximateAccess(R::ParamBase p) { result = parameterExactAccess(p) }
 
   class InstanceParameterNode extends DataFlow::ParameterNode {
-    InstanceParameterNode() { this.asParameter() instanceof R::SelfParam }
+    InstanceParameterNode() { this.asParameter() instanceof SelfParam }
   }
 
   bindingset[c]
-  string paramReturnNodeAsApproximateOutput(QualifiedCallable c, DataFlowImpl::ParameterPosition pos) {
+  string paramReturnNodeAsApproximateOutput(Callable c, DataFlowImpl::ParameterPosition pos) {
     result = paramReturnNodeAsExactOutput(c, pos)
   }
 
   bindingset[c]
-  string paramReturnNodeAsExactOutput(QualifiedCallable c, DataFlowImpl::ParameterPosition pos) {
-    result = parameterExactAccess(c.getFunction().getParam(pos.getPosition()))
+  string paramReturnNodeAsExactOutput(Callable c, DataFlowImpl::ParameterPosition pos) {
+    result = parameterExactAccess(c.getParamList().getParam(pos.getPosition()))
     or
     pos.isSelf() and result = qualifierString()
   }
 
-  QualifiedCallable returnNodeEnclosingCallable(DataFlow::Node ret) {
-    result.getFunction() = ret.(Node::Node).getEnclosingCallable().asCfgScope()
+  Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
+    result = ret.(Node::Node).getEnclosingCallable().asCfgScope()
   }
 
   predicate isOwnInstanceAccessNode(DataFlowImpl::RustDataFlow::ReturnNode node) {
@@ -104,24 +99,33 @@ module ModelGeneratorCommonInput implements
     c.(SingletonContentSet).getContent() instanceof ElementContent
   }
 
-  string partialModelRow(Callable api, int i) { i = 0 and result = api.getCanonicalPath() }
+  string partialModelRow(Callable api, int i) {
+    i = 0 and result = api.(Function).getCrateOrigin() // crate
+    or
+    i = 1 and result = api.(Function).getExtendedCanonicalPath() // name
+  }
 
   string partialNeutralModelRow(Callable api, int i) { result = partialModelRow(api, i) }
 }
 
 private import ModelGeneratorCommonInput
-private import MakeModelGeneratorFactory<R::Location, DataFlowImpl::RustDataFlow, RustTaintTracking, ModelGeneratorCommonInput>
+private import MakeModelGeneratorFactory<Location, DataFlowImpl::RustDataFlow, RustTaintTracking, ModelGeneratorCommonInput>
 
 private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
-  class SummaryTargetApi extends QualifiedCallable {
-    QualifiedCallable lift() { result = this }
+  class SummaryTargetApi extends Callable {
+    private Callable lift;
 
-    predicate isRelevant() { any() }
+    SummaryTargetApi() {
+      lift = this and
+      relevant(this)
+    }
+
+    Callable lift() { result = lift }
+
+    predicate isRelevant() { relevant(this) }
   }
 
-  QualifiedCallable getAsExprEnclosingCallable(NodeExtended node) {
-    result.getFunction() = node.asExpr().getScope()
-  }
+  Callable getAsExprEnclosingCallable(NodeExtended node) { result = node.asExpr().getScope() }
 
   Parameter asParameter(NodeExtended node) { result = node.asParameter() }
 
@@ -163,13 +167,17 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
 }
 
 private module SourceModelGeneratorInput implements SourceModelGeneratorInputSig {
-  class SourceTargetApi extends QualifiedCallable { }
+  class SourceTargetApi extends Callable {
+    SourceTargetApi() { relevant(this) }
+  }
 
   predicate sourceNode(DataFlow::Node node, string kind) { FlowSource::sourceNode(node, kind) }
 }
 
 private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
-  class SinkTargetApi extends QualifiedCallable { }
+  class SinkTargetApi extends Callable {
+    SinkTargetApi() { relevant(this) }
+  }
 
   /**
    * Holds if `source` is an API entrypoint, i.e., a source of input where data

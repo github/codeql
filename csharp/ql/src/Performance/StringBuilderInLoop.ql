@@ -5,9 +5,7 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id cs/stringbuilder-creation-in-loop
- * @tags quality
- *       reliability
- *       performance
+ * @tags efficiency
  */
 
 import csharp

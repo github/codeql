@@ -33,9 +33,6 @@ class JSDoc extends @jsdoc, Locatable {
     result.getTitle() = title
   }
 
-  /** Gets the element to which this JSDoc comment is attached */
-  Documentable getDocumentedElement() { result.getDocumentation() = this }
-
   override string toString() { result = this.getComment().toString() }
 }
 
@@ -302,41 +299,6 @@ class JSDocIdentifierTypeExpr extends @jsdoc_identifier_type_expr, JSDocTypeExpr
   override predicate isRawFunction() { this.getName() = "Function" }
 }
 
-private AstNode getAncestorInScope(Documentable doc) {
-  any(JSDocLocalTypeAccess t).getJSDocComment() = doc.getDocumentation() and // restrict to cases where we need this
-  result = doc.getParent()
-  or
-  exists(AstNode mid |
-    mid = getAncestorInScope(doc) and
-    not mid = any(Scope s).getScopeElement() and
-    result = mid.getParent()
-  )
-}
-
-private Scope getScope(Documentable doc) { result.getScopeElement() = getAncestorInScope(doc) }
-
-pragma[nomagic]
-private predicate shouldResolveName(TopLevel top, string name) {
-  exists(JSDocLocalTypeAccess access |
-    access.getName() = name and
-    access.getTopLevel() = top
-  )
-}
-
-private LexicalName getOwnLocal(Scope scope, string name, DeclarationSpace space) {
-  scope = result.getScope() and
-  name = result.getName() and
-  space = result.getDeclarationSpace() and
-  shouldResolveName(scope.getScopeElement().getTopLevel(), name) // restrict size of predicate
-}
-
-private LexicalName resolveLocal(Scope scope, string name, DeclarationSpace space) {
-  result = getOwnLocal(scope, name, space)
-  or
-  result = resolveLocal(scope.getOuterScope(), name, space) and
-  not exists(getOwnLocal(scope, name, space))
-}
-
 /**
  * An unqualified identifier in a JSDoc type expression.
  *
@@ -349,12 +311,6 @@ private LexicalName resolveLocal(Scope scope, string name, DeclarationSpace spac
  */
 class JSDocLocalTypeAccess extends JSDocIdentifierTypeExpr {
   JSDocLocalTypeAccess() { not this = any(JSDocQualifiedTypeAccess a).getNameNode() }
-
-  /** Gets a variable, type-name, or namespace that this expression may resolve to. */
-  LexicalName getALexicalName() {
-    result =
-      resolveLocal(getScope(this.getJSDocComment().getDocumentedElement()), this.getName(), _)
-  }
 }
 
 /**
@@ -415,12 +371,52 @@ class JSDocNamedTypeExpr extends JSDocTypeExpr {
    * - `foo.bar.Baz` has prefix `foo` and suffix `.bar.Baz`.
    * - `Baz` has prefix `Baz` and an empty suffix.
    */
-  deprecated predicate hasNameParts(string prefix, string suffix) {
+  predicate hasNameParts(string prefix, string suffix) {
     not this = any(JSDocQualifiedTypeAccess a).getBase() and // restrict size of predicate
     exists(string regex, string name | regex = "([^.]+)(.*)" |
       name = this.getRawName() and
       prefix = name.regexpCapture(regex, 1) and
       suffix = name.regexpCapture(regex, 2)
+    )
+  }
+
+  pragma[noinline]
+  pragma[nomagic]
+  private predicate hasNamePartsAndEnv(string prefix, string suffix, JSDoc::Environment env) {
+    // Force join ordering
+    this.hasNameParts(prefix, suffix) and
+    env.isContainerInScope(this.getContainer())
+  }
+
+  /**
+   * Gets the qualified name of this name by resolving its prefix, if any.
+   */
+  cached
+  private string resolvedName() {
+    exists(string prefix, string suffix, JSDoc::Environment env |
+      this.hasNamePartsAndEnv(prefix, suffix, env) and
+      result = env.resolveAlias(prefix) + suffix
+    )
+  }
+
+  override predicate hasQualifiedName(string globalName) {
+    globalName = this.resolvedName()
+    or
+    not exists(this.resolvedName()) and
+    globalName = this.getRawName()
+  }
+
+  override DataFlow::ClassNode getClass() {
+    exists(string name |
+      this.hasQualifiedName(name) and
+      result.hasQualifiedName(name)
+    )
+    or
+    // Handle case where a local variable has a reference to the class,
+    // but the class doesn't have a globally qualified name.
+    exists(string alias, JSDoc::Environment env |
+      this.hasNamePartsAndEnv(alias, "", env) and
+      result.getAClassReference().flowsTo(env.getNodeFromAlias(alias))
     )
   }
 }
@@ -451,6 +447,12 @@ class JSDocAppliedTypeExpr extends @jsdoc_applied_type_expr, JSDocTypeExpr {
    * For example, in `Array<string>`, `string` is the only argument type.
    */
   JSDocTypeExpr getAnArgument() { result = this.getArgument(_) }
+
+  override predicate hasQualifiedName(string globalName) {
+    this.getHead().hasQualifiedName(globalName)
+  }
+
+  override DataFlow::ClassNode getClass() { result = this.getHead().getClass() }
 }
 
 /**
@@ -470,6 +472,8 @@ class JSDocNullableTypeExpr extends @jsdoc_nullable_type_expr, JSDocTypeExpr {
   predicate isPrefix() { jsdoc_prefix_qualifier(this) }
 
   override JSDocTypeExpr getAnUnderlyingType() { result = this.getTypeExpr().getAnUnderlyingType() }
+
+  override DataFlow::ClassNode getClass() { result = this.getTypeExpr().getClass() }
 }
 
 /**
@@ -489,6 +493,8 @@ class JSDocNonNullableTypeExpr extends @jsdoc_non_nullable_type_expr, JSDocTypeE
   predicate isPrefix() { jsdoc_prefix_qualifier(this) }
 
   override JSDocTypeExpr getAnUnderlyingType() { result = this.getTypeExpr().getAnUnderlyingType() }
+
+  override DataFlow::ClassNode getClass() { result = this.getTypeExpr().getClass() }
 }
 
 /**
@@ -593,6 +599,8 @@ class JSDocOptionalParameterTypeExpr extends @jsdoc_optional_type_expr, JSDocTyp
   override JSDocTypeExpr getAnUnderlyingType() {
     result = this.getUnderlyingType().getAnUnderlyingType()
   }
+
+  override DataFlow::ClassNode getClass() { result = this.getUnderlyingType().getClass() }
 }
 
 /**
@@ -627,7 +635,7 @@ module JSDoc {
   /**
    * A statement container which may declare JSDoc name aliases.
    */
-  deprecated class Environment extends StmtContainer {
+  class Environment extends StmtContainer {
     /**
      * Gets the fully qualified name aliased by the given unqualified name
      * within this container.
@@ -677,7 +685,7 @@ module JSDoc {
   }
 
   pragma[noinline]
-  deprecated private predicate isTypenamePrefix(string name) {
+  private predicate isTypenamePrefix(string name) {
     any(JSDocNamedTypeExpr expr).hasNameParts(name, _)
   }
 }

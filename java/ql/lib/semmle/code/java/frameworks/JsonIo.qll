@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for working with the Json-io framework.
  */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.Maps

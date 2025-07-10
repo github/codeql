@@ -5,8 +5,7 @@
  * @kind problem
  * @problem.severity warning
  * @id go/useless-expression
- * @tags quality
- *       reliability
+ * @tags maintainability
  *       correctness
  *       external/cwe/cwe-480
  *       external/cwe/cwe-561

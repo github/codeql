@@ -1,6 +1,3 @@
-overlay[local?]
-module;
-
 private import java
 private import DataFlowUtil
 private import DataFlowImplCommon

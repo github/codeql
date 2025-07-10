@@ -2,22 +2,13 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  MethodLookupExpr x, string getBase__label, Expr getBase, string getMethodRef__label,
-  Expr getMethodRef
-) {
+from MethodLookupExpr x, string hasType, Expr getBase, string hasMember, Expr getMethodRef
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getBase__label = "getBase:" and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getBase = x.getBase() and
-  getMethodRef__label = "getMethodRef:" and
+  (if x.hasMember() then hasMember = "yes" else hasMember = "no") and
   getMethodRef = x.getMethodRef()
-}
-
-query predicate getType(MethodLookupExpr x, Type getType) {
-  toBeTested(x) and not x.isUnknown() and getType = x.getType()
-}
-
-query predicate getMember(MethodLookupExpr x, Decl getMember) {
-  toBeTested(x) and not x.isUnknown() and getMember = x.getMember()
-}
+select x, "hasType:", hasType, "getBase:", getBase, "hasMember:", hasMember, "getMethodRef:",
+  getMethodRef

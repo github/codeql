@@ -10,8 +10,6 @@
  * in a fashion that the user can control. This includes authorization
  * methods such as logins, and sending of data, etc.
  */
-overlay[local?]
-module;
 
 import java
 

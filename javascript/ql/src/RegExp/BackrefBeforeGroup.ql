@@ -5,8 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @id js/regex/back-reference-before-group
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       regular-expressions
  * @precision very-high

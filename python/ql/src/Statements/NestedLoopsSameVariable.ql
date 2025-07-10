@@ -3,9 +3,8 @@
  * @description Nested loops in which the target variable is the same for each loop make
  *              the behavior of the loops difficult to understand.
  * @kind problem
- * @tags quality
- *       maintainability
- *       readability
+ * @tags maintainability
+ *       correctness
  * @problem.severity recommendation
  * @sub-severity high
  * @precision very-high

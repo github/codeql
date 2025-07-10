@@ -4,14 +4,14 @@ private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmCon
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstances
 
-abstract class EllipticCurveValueConsumer extends OpenSslAlgorithmValueConsumer { }
+abstract class EllipticCurveValueConsumer extends OpenSSLAlgorithmValueConsumer { }
 
 //https://docs.openssl.org/3.0/man3/EC_KEY_new/#name
-class EvpEllipticCurveAlgorithmConsumer extends EllipticCurveValueConsumer {
+class EVPEllipticCurveAlgorithmConsumer extends EllipticCurveValueConsumer {
   DataFlow::Node valueArgNode;
   DataFlow::Node resultNode;
 
-  EvpEllipticCurveAlgorithmConsumer() {
+  EVPEllipticCurveAlgorithmConsumer() {
     resultNode.asExpr() = this.(Call) and // in all cases the result is the return
     (
       this.(Call).getTarget().getName() in ["EVP_EC_gen", "EC_KEY_new_by_curve_name"] and
@@ -25,7 +25,7 @@ class EvpEllipticCurveAlgorithmConsumer extends EllipticCurveValueConsumer {
   }
 
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-    exists(OpenSslAlgorithmInstance i | i.getAvc() = this and result = i)
+    exists(OpenSSLAlgorithmInstance i | i.getAVC() = this and result = i)
   }
 
   override DataFlow::Node getResultNode() { result = resultNode }

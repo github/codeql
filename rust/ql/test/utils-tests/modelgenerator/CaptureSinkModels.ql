@@ -4,9 +4,7 @@ import SinkModels
 import utils.test.InlineMadTest
 
 module InlineMadTestConfig implements InlineMadTestConfigSig {
-  string getCapturedModel(Function f) {
-    exists(QualifiedCallable qc | f = qc.getFunction() | result = Heuristic::captureSink(qc))
-  }
+  string getCapturedModel(Function f) { result = Heuristic::captureSink(f) }
 
   string getKind() { result = "sink" }
 }

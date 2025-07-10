@@ -2,16 +2,11 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  IntegerType x, string getName__label, string getName, string getCanonicalType__label,
-  Type getCanonicalType, string getValue__label, string getValue
-) {
+from IntegerType x, string getName, Type getCanonicalType, string getValue
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getName__label = "getName:" and
   getName = x.getName() and
-  getCanonicalType__label = "getCanonicalType:" and
   getCanonicalType = x.getCanonicalType() and
-  getValue__label = "getValue:" and
   getValue = x.getValue()
-}
+select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getValue:", getValue

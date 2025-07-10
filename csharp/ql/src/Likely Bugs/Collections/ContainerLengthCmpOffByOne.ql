@@ -6,10 +6,11 @@
  * @problem.severity error
  * @precision high
  * @id cs/index-out-of-bounds
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
- *       external/cwe/cwe-193
+ *       logic
+ *       quality
+ *      external/cwe/cwe-193
  */
 
 import csharp

@@ -2,8 +2,6 @@
  * Provides predicates for working with numeric values and their string
  * representations.
  */
-overlay[local?]
-module;
 
 /**
  * Gets the integer value of `binary` when interpreted as binary. `binary` must

@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for identifying unreachable blocks under a "closed-world" assumption.
  */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.controlflow.Guards

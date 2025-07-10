@@ -6,8 +6,8 @@ import android.content.BroadcastReceiver;
 class BootReceiverXml extends BroadcastReceiver {
     void doStuff(Intent intent) {}
 
-    @Override
-    public void onReceive(Context ctx, Intent intent) { // $ Alert
+    @Override 
+    public void onReceive(Context ctx, Intent intent) { // $hasResult
         doStuff(intent);
     }
 }

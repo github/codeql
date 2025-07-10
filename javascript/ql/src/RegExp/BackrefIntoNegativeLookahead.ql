@@ -5,8 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @id js/regex/back-reference-to-negative-lookahead
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       regular-expressions
  * @precision very-high

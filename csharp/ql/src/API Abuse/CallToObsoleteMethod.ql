@@ -6,9 +6,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id cs/call-to-obsolete-method
- * @tags quality
+ * @tags changeability
  *       maintainability
- *       changeability
  *       external/cwe/cwe-477
  */
 

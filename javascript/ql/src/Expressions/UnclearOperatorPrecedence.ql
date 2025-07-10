@@ -5,9 +5,8 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/unclear-operator-precedence
- * @tags quality
- *       maintainability
- *       readability
+ * @tags maintainability
+ *       correctness
  *       statistical
  *       non-attributable
  *       external/cwe/cwe-783

@@ -7,9 +7,9 @@
  * @problem.severity warning
  * @precision high
  * @id cs/equality-on-floats
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
+ *       quality
  */
 
 import csharp

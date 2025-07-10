@@ -1,5 +1,1 @@
-query: Security/CWE/CWE-089/SqlTainted.ql
-postprocess:
- - utils/test/PrettyPrintModels.ql
- - utils/test/InlineExpectationsTestQuery.ql
- 
+Security/CWE/CWE-089/SqlTainted.ql

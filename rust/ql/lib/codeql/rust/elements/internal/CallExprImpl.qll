@@ -55,7 +55,7 @@ module Impl {
     pragma[nomagic]
     private PathResolution::ItemNode getResolvedFunctionAndPos(int pos) {
       result = getResolvedFunction(this) and
-      exists(this.getArg(pos))
+      exists(this.getArgList().getArg(pos))
     }
 
     /**

@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for working with the Apache Thrift framework.
  */
-overlay[local?]
-module;
 
 import java
 

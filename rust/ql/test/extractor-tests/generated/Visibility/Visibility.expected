@@ -1,3 +1,1 @@
-instances
-| gen_visibility.rs:7:7:7:9 | Visibility |
-getPath
+| gen_visibility.rs:7:7:7:9 | Visibility | hasPath: | no |

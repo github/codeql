@@ -4,8 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @id js/redundant-assignment
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       external/cwe/cwe-480
  *       external/cwe/cwe-561

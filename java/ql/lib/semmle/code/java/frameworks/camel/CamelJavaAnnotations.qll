@@ -14,8 +14,6 @@
  *
  * This creates a route to the `ConsumeMdb` class for messages sent to "activemq:queue:sayhello".
  */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.Reflection

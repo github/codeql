@@ -4,12 +4,12 @@ class Bad
 {
     void DoPrint(object o)
     {
-        Console.WriteLine(o.ToString()); // $ Alert[cs/dereferenced-value-may-be-null]
+        Console.WriteLine(o.ToString());
     }
 
     void M()
     {
         DoPrint("Hello");
-        DoPrint(null); // $ Source[cs/dereferenced-value-may-be-null]
+        DoPrint(null);
     }
 }

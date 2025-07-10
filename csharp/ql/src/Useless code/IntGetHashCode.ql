@@ -6,10 +6,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/useless-gethashcode-call
- * @tags quality
- *       maintainability
- *       readability
+ * @tags readability
  *       useless-code
+ *       quality
  */
 
 import csharp

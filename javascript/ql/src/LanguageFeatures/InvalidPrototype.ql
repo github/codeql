@@ -5,9 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @id js/invalid-prototype-value
- * @tags quality
- *       reliability
- *       correctness
+ * @tags correctness
  *       language-features
  *       external/cwe/cwe-704
  * @precision high

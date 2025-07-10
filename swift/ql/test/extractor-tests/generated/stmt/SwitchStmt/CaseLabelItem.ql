@@ -2,13 +2,10 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(CaseLabelItem x, string getPattern__label, Pattern getPattern) {
+from CaseLabelItem x, Pattern getPattern, string hasGuard
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getPattern__label = "getPattern:" and
-  getPattern = x.getPattern()
-}
-
-query predicate getGuard(CaseLabelItem x, Expr getGuard) {
-  toBeTested(x) and not x.isUnknown() and getGuard = x.getGuard()
-}
+  getPattern = x.getPattern() and
+  if x.hasGuard() then hasGuard = "yes" else hasGuard = "no"
+select x, "getPattern:", getPattern, "hasGuard:", hasGuard

@@ -2,7 +2,7 @@ require "excon"
 
 def foo
     def download_tools(installer)
-        Excon.get(installer[:url]) # $ MISSING: Alert (requires hash flow)
+        Excon.get(installer[:url]) # $ MISSING: BAD= (requires hash flow)
     end
 
     constants = {
@@ -24,23 +24,23 @@ def bar
 
     Excon.get("https://download.microsoft.com/download/5/f/7/5f7acaeb-8363-451f-9425-68a90f98b238/visualcppbuildtools_full.exe") # GOOD
 
-    Excon.get("http://example.org/unsafe.APK") # $ Alert
+    Excon.get("http://example.org/unsafe.APK") # $BAD=
 end
 
 def baz
-    url = "http://example.org/unsafe.APK" # $ Source
+    url = "http://example.org/unsafe.APK"
 
-    Excon.get(url) # $ Alert
+    Excon.get(url) # $BAD=
 end
 
 def test
-    File.open("foo.exe").write(Excon.get("http://example.org/unsafe").body) # $ Alert
+    File.open("foo.exe").write(Excon.get("http://example.org/unsafe").body) # $BAD=
 
     File.open("foo.safe").write(Excon.get("http://example.org/unsafe").body) # GOOD
 
-    File.write("foo.exe", Excon.get("http://example.org/unsafe").body) # $ Alert
+    File.write("foo.exe", Excon.get("http://example.org/unsafe").body) # $BAD=
 
-    resp = Excon.get("http://example.org/unsafe.unknown") # $ Alert
+    resp = Excon.get("http://example.org/unsafe.unknown") # $BAD=
     file = File.open("unsafe.exe", "w")
     file.write(resp.body)
 
@@ -50,6 +50,6 @@ def test
 end
 
 def sh
-    script = Net::HTTP.new("http://mydownload.example.org").get("/myscript.sh").body # $ Alert
+    script = Net::HTTP.new("http://mydownload.example.org").get("/myscript.sh").body # $BAD=
     system(script)
 end

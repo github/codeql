@@ -5,9 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @id js/incomplete-object-initialization
- * @tags quality
- *       reliability
- *       correctness
+ * @tags correctness
  *       language-features
  * @precision high
  */

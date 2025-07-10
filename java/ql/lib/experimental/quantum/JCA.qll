@@ -1,6 +1,3 @@
-overlay[local?]
-module;
-
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
@@ -8,7 +5,7 @@ import semmle.code.java.controlflow.Dominance
 
 module JCAModel {
   import Language
-  import codeql.quantum.experimental.Standardization::Types::KeyOpAlg as KeyOpAlg
+  import Crypto::KeyOpAlg as KeyOpAlg
 
   abstract class CipherAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer { }
 
@@ -118,7 +115,7 @@ module JCAModel {
   }
 
   bindingset[name]
-  Crypto::HashType hash_name_to_type_known(string name, int digestLength) {
+  Crypto::THashType hash_name_to_type_known(string name, int digestLength) {
     name = "SHA-1" and result instanceof Crypto::SHA1 and digestLength = 160
     or
     name = ["SHA-256", "SHA-384", "SHA-512"] and
@@ -155,22 +152,24 @@ module JCAModel {
   }
 
   bindingset[name]
-  private predicate mode_name_to_type_known(KeyOpAlg::ModeOfOperationType type, string name) {
-    type = KeyOpAlg::ECB() and name = "ECB"
+  private predicate mode_name_to_type_known(
+    Crypto::TBlockCipherModeOfOperationType type, string name
+  ) {
+    type = Crypto::ECB() and name = "ECB"
     or
-    type = KeyOpAlg::CBC() and name = "CBC"
+    type = Crypto::CBC() and name = "CBC"
     or
-    type = KeyOpAlg::GCM() and name = "GCM"
+    type = Crypto::GCM() and name = "GCM"
     or
-    type = KeyOpAlg::CTR() and name = "CTR"
+    type = Crypto::CTR() and name = "CTR"
     or
-    type = KeyOpAlg::XTS() and name = "XTS"
+    type = Crypto::XTS() and name = "XTS"
     or
-    type = KeyOpAlg::CCM() and name = "CCM"
+    type = Crypto::CCM() and name = "CCM"
     or
-    type = KeyOpAlg::SIV() and name = "SIV"
+    type = Crypto::SIV() and name = "SIV"
     or
-    type = KeyOpAlg::OCB() and name = "OCB"
+    type = Crypto::OCB() and name = "OCB"
   }
 
   bindingset[name]
@@ -183,7 +182,7 @@ module JCAModel {
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DES())
       or
       upper = "TRIPLEDES" and
-      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TRIPLE_DES())
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TripleDES())
       or
       upper = "IDEA" and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::IDEA())
@@ -206,8 +205,8 @@ module JCAModel {
   }
 
   bindingset[name]
-  predicate mac_name_to_mac_type_known(Crypto::TMacType type, string name) {
-    type = Crypto::HMAC() and
+  predicate mac_name_to_mac_type_known(Crypto::TMACType type, string name) {
+    type = Crypto::THMAC() and
     name.toUpperCase().matches("HMAC%")
   }
 
@@ -299,18 +298,18 @@ module JCAModel {
     override string getRawPaddingAlgorithmName() { result = super.getPadding() }
 
     bindingset[name]
-    private predicate paddingToNameMappingKnown(KeyOpAlg::PaddingSchemeType type, string name) {
-      type instanceof KeyOpAlg::NoPadding and name = "NOPADDING"
+    private predicate paddingToNameMappingKnown(Crypto::TPaddingType type, string name) {
+      type instanceof Crypto::NoPadding and name = "NOPADDING"
       or
-      type instanceof KeyOpAlg::PKCS7 and name = ["PKCS5Padding", "PKCS7Padding"] // TODO: misnomer in the JCA?
+      type instanceof Crypto::PKCS7 and name = ["PKCS5Padding", "PKCS7Padding"] // TODO: misnomer in the JCA?
       or
-      type instanceof KeyOpAlg::OAEP and name.matches("OAEP%") // TODO: handle OAEPWith%
+      type instanceof Crypto::OAEP and name.matches("OAEP%") // TODO: handle OAEPWith%
     }
 
-    override KeyOpAlg::PaddingSchemeType getPaddingType() {
+    override Crypto::TPaddingType getPaddingType() {
       if this.paddingToNameMappingKnown(_, super.getPadding())
       then this.paddingToNameMappingKnown(result, super.getPadding())
-      else result instanceof KeyOpAlg::OtherPadding
+      else result instanceof Crypto::OtherPadding
     }
   }
 
@@ -321,10 +320,10 @@ module JCAModel {
 
     override string getRawModeAlgorithmName() { result = super.getMode() }
 
-    override KeyOpAlg::ModeOfOperationType getModeType() {
+    override Crypto::TBlockCipherModeOfOperationType getModeType() {
       if mode_name_to_type_known(_, super.getMode())
       then mode_name_to_type_known(result, super.getMode())
-      else result instanceof KeyOpAlg::OtherMode
+      else result instanceof Crypto::OtherMode
     }
   }
 
@@ -348,7 +347,7 @@ module JCAModel {
 
     override string getRawAlgorithmName() { result = super.getValue() }
 
-    override KeyOpAlg::AlgorithmType getAlgorithmType() {
+    override KeyOpAlg::Algorithm getAlgorithmType() {
       if cipher_name_to_type_known(_, super.getAlgorithmName())
       then cipher_name_to_type_known(result, super.getAlgorithmName())
       else result instanceof KeyOpAlg::TUnknownKeyOperationAlgorithmType
@@ -374,12 +373,12 @@ module JCAModel {
     oaep_padding_string_components(any(CipherStringLiteral s).getPadding(), hash, mfg)
   }
 
-  class OaepPaddingHashAlgorithmInstance extends OaepPaddingAlgorithmInstance,
+  class OAEPPaddingHashAlgorithmInstance extends OAEPPaddingAlgorithmInstance,
     Crypto::HashAlgorithmInstance instanceof CipherStringLiteral
   {
     string hashName;
 
-    OaepPaddingHashAlgorithmInstance() {
+    OAEPPaddingHashAlgorithmInstance() {
       oaep_padding_string_components(super.getPadding(), hashName, _)
     }
 
@@ -390,12 +389,12 @@ module JCAModel {
     override int getFixedDigestLength() { exists(hash_name_to_type_known(hashName, result)) }
   }
 
-  class OaepPaddingAlgorithmInstance extends Crypto::OaepPaddingAlgorithmInstance,
+  class OAEPPaddingAlgorithmInstance extends Crypto::OAEPPaddingAlgorithmInstance,
     CipherStringLiteralPaddingAlgorithmInstance
   {
-    override Crypto::HashAlgorithmInstance getOaepEncodingHashAlgorithm() { result = this }
+    override Crypto::HashAlgorithmInstance getOAEPEncodingHashAlgorithm() { result = this }
 
-    override Crypto::HashAlgorithmInstance getMgf1HashAlgorithm() { none() } // TODO
+    override Crypto::HashAlgorithmInstance getMGF1HashAlgorithm() { none() } // TODO
   }
 
   /**
@@ -1031,7 +1030,7 @@ module JCAModel {
     KeyGeneratorGetInstanceCall getInstantiationCall() { result = instantiationCall }
   }
 
-  //TODO: Link getAlgorithm from KeyPairGenerator to algorithm instances or AVCs? High priority.
+  // TODO: Link getAlgorithm from KeyPairGenerator to algorithm instances or AVCs? High priority.
   class KeyGeneratorGetInstanceCall extends MethodCall {
     KeyGeneratorGetInstanceCall() {
       this.getCallee().hasQualifiedName("javax.crypto", "KeyGenerator", "getInstance")
@@ -1106,10 +1105,6 @@ module JCAModel {
     }
 
     override int getKeySizeFixed() { none() }
-
-    override Crypto::ConsumerInputDataFlowNode getKeyValueConsumer() { none() }
-
-    override predicate hasKeyValueConsumer() { none() }
   }
 
   class KeyGeneratorCipherAlgorithm extends CipherStringLiteralAlgorithmInstance {
@@ -1161,7 +1156,9 @@ module JCAModel {
   }
 
   module KeySpecInstantiationToGenerateSecretFlowConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof KeySpecInstantiation }
+    predicate isSource(DataFlow::Node src) {
+      exists(KeySpecInstantiation call | src.asExpr() = call)
+    }
 
     predicate isSink(DataFlow::Node sink) {
       exists(SecretKeyFactoryGenerateSecretCall call | sink.asExpr() = call.getKeySpecArg())
@@ -1210,29 +1207,29 @@ module JCAModel {
     predicate isIntermediate() { none() }
   }
 
-  class KdfAlgorithmStringLiteral extends Crypto::KeyDerivationAlgorithmInstance instanceof StringLiteral
+  class KDFAlgorithmStringLiteral extends Crypto::KeyDerivationAlgorithmInstance instanceof StringLiteral
   {
     SecretKeyFactoryKDFAlgorithmValueConsumer consumer;
 
-    KdfAlgorithmStringLiteral() {
+    KDFAlgorithmStringLiteral() {
       kdf_names(this.getValue()) and
       KDFAlgorithmStringToGetInstanceFlow::flow(DataFlow::exprNode(this), consumer.getInputNode())
     }
 
-    override string getRawKdfAlgorithmName() { result = super.getValue() }
+    override string getRawKDFAlgorithmName() { result = super.getValue() }
 
-    override Crypto::TKeyDerivationType getKdfType() {
+    override Crypto::TKeyDerivationType getKDFType() {
       result = kdf_name_to_kdf_type(super.getValue(), _)
     }
 
     SecretKeyFactoryKDFAlgorithmValueConsumer getConsumer() { result = consumer }
   }
 
-  class Pbkdf2AlgorithmStringLiteral extends KdfAlgorithmStringLiteral,
-    Crypto::Pbkdf2AlgorithmInstance, Crypto::HmacAlgorithmInstance, Crypto::HashAlgorithmInstance,
+  class PBKDF2AlgorithmStringLiteral extends KDFAlgorithmStringLiteral,
+    Crypto::PBKDF2AlgorithmInstance, Crypto::HMACAlgorithmInstance, Crypto::HashAlgorithmInstance,
     Crypto::AlgorithmValueConsumer
   {
-    Pbkdf2AlgorithmStringLiteral() { super.getKdfType() instanceof Crypto::PBKDF2 }
+    PBKDF2AlgorithmStringLiteral() { super.getKDFType() instanceof Crypto::PBKDF2 }
 
     override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
 
@@ -1246,17 +1243,17 @@ module JCAModel {
       exists(hash_name_to_type_known(this.getRawHashAlgorithmName(), result))
     }
 
-    override string getRawMacAlgorithmName() {
-      result = super.getRawKdfAlgorithmName().splitAt("PBKDF2With", 1)
+    override string getRawMACAlgorithmName() {
+      result = super.getRawKDFAlgorithmName().splitAt("PBKDF2With", 1)
     }
 
     override string getRawHashAlgorithmName() {
-      result = super.getRawKdfAlgorithmName().splitAt("WithHmac", 1)
+      result = super.getRawKDFAlgorithmName().splitAt("WithHmac", 1)
     }
 
-    override Crypto::MacType getMacType() { result = Crypto::HMAC() }
+    override Crypto::TMACType getMACType() { result instanceof Crypto::THMAC }
 
-    override Crypto::AlgorithmValueConsumer getHmacAlgorithmValueConsumer() { result = this }
+    override Crypto::AlgorithmValueConsumer getHMACAlgorithmValueConsumer() { result = this }
 
     override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() { result = this }
   }
@@ -1270,7 +1267,7 @@ module JCAModel {
     override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
 
     override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-      exists(KdfAlgorithmStringLiteral l | l.getConsumer() = this and result = l)
+      exists(KDFAlgorithmStringLiteral l | l.getConsumer() = this and result = l)
     }
 
     SecretKeyFactoryGetInstanceCall getInstantiation() { result = call }
@@ -1445,103 +1442,105 @@ module JCAModel {
    * MACs
    */
 
-  module MacKnownAlgorithmToConsumerConfig implements DataFlow::ConfigSig {
+  module MACKnownAlgorithmToConsumerConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node src) { mac_names(src.asExpr().(StringLiteral).getValue()) }
 
     predicate isSink(DataFlow::Node sink) {
-      exists(MacGetInstanceCall call | sink.asExpr() = call.getAlgorithmArg())
+      exists(MACGetInstanceCall call | sink.asExpr() = call.getAlgorithmArg())
     }
   }
 
-  module MacKnownAlgorithmToConsumerFlow = DataFlow::Global<MacKnownAlgorithmToConsumerConfig>;
+  module MACKnownAlgorithmToConsumerFlow = DataFlow::Global<MACKnownAlgorithmToConsumerConfig>;
 
-  module MacGetInstanceToMacOperationFlowConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof MacGetInstanceCall }
+  module MACGetInstanceToMACOperationFlowConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof MACGetInstanceCall }
 
     predicate isSink(DataFlow::Node sink) {
-      exists(MacOperationCall call | sink.asExpr() = call.(MethodCall).getQualifier()) or
-      exists(MacInitCall call | sink.asExpr() = call.(MethodCall).getQualifier())
+      exists(MACOperationCall call | sink.asExpr() = call.(MethodCall).getQualifier()) or
+      exists(MACInitCall call | sink.asExpr() = call.(MethodCall).getQualifier())
     }
   }
 
-  module MacGetInstanceToMacOperationFlow =
-    DataFlow::Global<MacGetInstanceToMacOperationFlowConfig>;
+  module MACGetInstanceToMACOperationFlow =
+    DataFlow::Global<MACGetInstanceToMACOperationFlowConfig>;
 
-  module MacInitCallToMacOperationFlowConfig implements DataFlow::ConfigSig {
+  module MACInitCallToMACOperationFlowConfig implements DataFlow::ConfigSig {
     // TODO: use flow state with one config
     predicate isSource(DataFlow::Node src) {
-      exists(MacInitCall init | src.asExpr() = init.getQualifier())
+      exists(MACInitCall init | src.asExpr() = init.getQualifier())
     }
 
     predicate isSink(DataFlow::Node sink) {
-      exists(MacOperationCall call | sink.asExpr() = call.(MethodCall).getQualifier())
+      exists(MACOperationCall call | sink.asExpr() = call.(MethodCall).getQualifier())
     }
   }
 
-  module MacInitCallToMacOperationFlow = DataFlow::Global<MacInitCallToMacOperationFlowConfig>;
+  module MACInitCallToMACOperationFlow = DataFlow::Global<MACInitCallToMACOperationFlowConfig>;
 
-  class KnownMacAlgorithm extends Crypto::MacAlgorithmInstance instanceof StringLiteral {
-    MacGetInstanceAlgorithmValueConsumer consumer;
+  class KnownMACAlgorithm extends Crypto::MACAlgorithmInstance instanceof StringLiteral {
+    MACGetInstanceAlgorithmValueConsumer consumer;
 
-    KnownMacAlgorithm() {
+    KnownMACAlgorithm() {
       mac_names(this.getValue()) and
-      MacKnownAlgorithmToConsumerFlow::flow(DataFlow::exprNode(this), consumer.getInputNode())
+      MACKnownAlgorithmToConsumerFlow::flow(DataFlow::exprNode(this), consumer.getInputNode())
     }
 
-    MacGetInstanceAlgorithmValueConsumer getConsumer() { result = consumer }
+    MACGetInstanceAlgorithmValueConsumer getConsumer() { result = consumer }
 
-    override string getRawMacAlgorithmName() { result = super.getValue() }
+    override string getRawMACAlgorithmName() { result = super.getValue() }
 
-    override Crypto::MacType getMacType() {
+    override Crypto::TMACType getMACType() {
       if mac_name_to_mac_type_known(_, super.getValue())
       then mac_name_to_mac_type_known(result, super.getValue())
-      else result = Crypto::OtherMacType()
+      else result instanceof Crypto::TOtherMACType
     }
   }
 
-  class MacGetInstanceCall extends MethodCall {
-    MacGetInstanceCall() { this.getCallee().hasQualifiedName("javax.crypto", "Mac", "getInstance") }
+  class MACGetInstanceCall extends MethodCall {
+    MACGetInstanceCall() { this.getCallee().hasQualifiedName("javax.crypto", "Mac", "getInstance") }
 
     Expr getAlgorithmArg() { result = this.getArgument(0) }
 
-    MacOperationCall getOperation() {
-      MacGetInstanceToMacOperationFlow::flow(DataFlow::exprNode(this),
+    MACOperationCall getOperation() {
+      MACGetInstanceToMACOperationFlow::flow(DataFlow::exprNode(this),
         DataFlow::exprNode(result.(MethodCall).getQualifier()))
     }
 
-    MacInitCall getInitCall() {
-      MacGetInstanceToMacOperationFlow::flow(DataFlow::exprNode(this),
+    MACInitCall getInitCall() {
+      MACGetInstanceToMACOperationFlow::flow(DataFlow::exprNode(this),
         DataFlow::exprNode(result.getQualifier()))
     }
   }
 
-  class MacInitCall extends MethodCall {
-    MacInitCall() { this.getCallee().hasQualifiedName("javax.crypto", "Mac", "init") }
+  class MACInitCall extends MethodCall {
+    MACInitCall() { this.getCallee().hasQualifiedName("javax.crypto", "Mac", "init") }
 
     Expr getKeyArg() {
       result = this.getArgument(0) and this.getMethod().getParameterType(0).hasName("Key")
     }
 
-    MacOperationCall getOperation() {
-      MacInitCallToMacOperationFlow::flow(DataFlow::exprNode(this.getQualifier()),
+    MACOperationCall getOperation() {
+      MACInitCallToMACOperationFlow::flow(DataFlow::exprNode(this.getQualifier()),
         DataFlow::exprNode(result.(MethodCall).getQualifier()))
     }
   }
 
-  class MacGetInstanceAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
-    MacGetInstanceAlgorithmValueConsumer() { this = any(MacGetInstanceCall c).getAlgorithmArg() }
+  class MACGetInstanceAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
+    MACGetInstanceCall call;
+
+    MACGetInstanceAlgorithmValueConsumer() { this = call.getAlgorithmArg() }
 
     override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
 
     override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-      exists(KnownMacAlgorithm l | l.getConsumer() = this and result = l)
+      exists(KnownMACAlgorithm l | l.getConsumer() = this and result = l)
     }
   }
 
-  class MacOperationCall extends Crypto::MacOperationInstance instanceof MethodCall {
+  class MACOperationCall extends Crypto::MACOperationInstance instanceof MethodCall {
     Expr output;
 
-    MacOperationCall() {
+    MACOperationCall() {
       super.getMethod().getDeclaringType().hasQualifiedName("javax.crypto", "Mac") and
       (
         super.getMethod().hasStringSignature(["doFinal()", "doFinal(byte[])"]) and this = output
@@ -1552,13 +1551,13 @@ module JCAModel {
     }
 
     override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-      exists(MacGetInstanceCall instantiation |
+      exists(MACGetInstanceCall instantiation |
         instantiation.getOperation() = this and result = instantiation.getAlgorithmArg()
       )
     }
 
     override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
-      exists(MacGetInstanceCall instantiation, MacInitCall initCall |
+      exists(MACGetInstanceCall instantiation, MACInitCall initCall |
         instantiation.getOperation() = this and
         initCall.getOperation() = this and
         instantiation.getInitCall() = initCall and
@@ -1600,18 +1599,15 @@ module JCAModel {
 
     override string getRawEllipticCurveName() { result = super.getValue() }
 
-    override Crypto::EllipticCurveFamilyType getEllipticCurveFamilyType() {
-      if
-        Crypto::ellipticCurveNameToKnownKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), _, _)
+    override Crypto::TEllipticCurveType getEllipticCurveType() {
+      if Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), _, _)
       then
-        Crypto::ellipticCurveNameToKnownKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), _,
-          result)
+        Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), _, result)
       else result = Crypto::OtherEllipticCurveType()
     }
 
     override int getKeySize() {
-      Crypto::ellipticCurveNameToKnownKeySizeAndFamilyMapping(this.getRawEllipticCurveName(),
-        result, _)
+      Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), result, _)
     }
 
     EllipticCurveAlgorithmValueConsumer getConsumer() { result = consumer }

@@ -6,9 +6,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/catch-of-all-exceptions
- * @tags quality
- *       reliability
- *       error-handling
+ * @tags reliability
+ *       maintainability
  *       external/cwe/cwe-396
  */
 

@@ -4,14 +4,12 @@
  * @kind problem
  * @problem.severity warning
  * @id js/missing-await
- * @tags quality
- *       reliability
- *       correctness
+ * @tags correctness
+ *       quality
  * @precision high
  */
 
 import javascript
-private import semmle.javascript.internal.TypeResolution
 
 /**
  * Holds if `call` is a call to an `async` function.
@@ -30,7 +28,7 @@ predicate isPromise(DataFlow::SourceNode node, boolean nullable) {
   isAsyncCall(node, nullable)
   or
   not isAsyncCall(node, _) and
-  TypeResolution::valueHasPromiseType(node.asExpr()) and
+  node.asExpr().getType() instanceof PromiseType and
   nullable = true
 }
 

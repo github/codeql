@@ -39,8 +39,6 @@ module ConstantSaltConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(ConstantSaltAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module ConstantSaltFlow = TaintTracking::Global<ConstantSaltConfig>;

@@ -6,8 +6,7 @@
  * @problem.severity error
  * @precision very-high
  * @id java/hashing-without-hashcode
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  */
 

@@ -6,8 +6,7 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/unimplementable-interface
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       useless-code
  */
 

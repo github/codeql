@@ -2,9 +2,9 @@
  * @name Iterable can be either a string or a sequence
  * @description Iteration over either a string or a sequence in the same loop can cause errors that are hard to find.
  * @kind problem
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
+ *       maintainability
+ *       non-local
  * @problem.severity error
  * @sub-severity low
  * @precision high

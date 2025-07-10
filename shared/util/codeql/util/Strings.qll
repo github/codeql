@@ -1,6 +1,3 @@
-overlay[local?]
-module;
-
 private import Numbers
 
 /**

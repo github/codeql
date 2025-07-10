@@ -1,8 +1,6 @@
 /**
  * Provides classes for working with the Spring Expression Language (SpEL).
  */
-overlay[local?]
-module;
 
 import java
 

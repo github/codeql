@@ -153,7 +153,17 @@ private predicate jsdocTypeLookup(JSDocNamedTypeExpr ref, AstNode decl, string k
   kind = "T"
 }
 
-private AstNode definitionOfRaw(Locatable e, string kind) {
+/**
+ * Gets an element, of kind `kind`, that element `e` uses, if any.
+ *
+ * The `kind` is a string representing what kind of use it is:
+ *  - `"M"` for function and method calls
+ *  - `"T"` for uses of types
+ *  - `"V"` for variable accesses
+ *  - `"I"` for imports
+ */
+cached
+AstNode definitionOf(Locatable e, string kind) {
   variableDefLookup(e, result, kind)
   or
   // prefer definitions over declarations
@@ -169,46 +179,3 @@ private AstNode definitionOfRaw(Locatable e, string kind) {
   or
   jsdocTypeLookup(e, result, kind)
 }
-
-/** Gets a more useful node to show for something that resolves to `node`. */
-private AstNode redirectOnce(AstNode node) {
-  exists(ConstructorDeclaration ctor |
-    ctor.isSynthetic() and
-    node = ctor.getBody() and
-    result = ctor.getDeclaringClass()
-  )
-  or
-  exists(ClassDefinition cls |
-    node = cls and
-    result = cls.getIdentifier()
-  )
-  or
-  exists(FunctionDeclStmt decl |
-    node = decl and
-    result = decl.getIdentifier()
-  )
-  or
-  exists(MethodDeclaration member |
-    not member instanceof ConstructorDeclaration and
-    node = member.getBody() and
-    result = member.getNameExpr()
-  )
-}
-
-private AstNode redirect(AstNode node) {
-  node = definitionOfRaw(_, _) and
-  result = redirectOnce*(node) and
-  not exists(redirectOnce(result))
-}
-
-/**
- * Gets an element, of kind `kind`, that element `e` uses, if any.
- *
- * The `kind` is a string representing what kind of use it is:
- *  - `"M"` for function and method calls
- *  - `"T"` for uses of types
- *  - `"V"` for variable accesses
- *  - `"I"` for imports
- */
-cached
-AstNode definitionOf(Locatable e, string kind) { result = redirect(definitionOfRaw(e, kind)) }

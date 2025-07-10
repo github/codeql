@@ -4,9 +4,8 @@
  * @kind problem
  * @problem.severity warning
  * @id js/deletion-of-non-property
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
+ *       maintainability
  *       language-features
  *       external/cwe/cwe-480
  * @precision very-high

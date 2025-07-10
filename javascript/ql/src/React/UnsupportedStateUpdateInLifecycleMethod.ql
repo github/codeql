@@ -4,9 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @id js/react/unsupported-state-update-in-lifecycle-method
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
  *       frameworks/react
  * @precision high
  */

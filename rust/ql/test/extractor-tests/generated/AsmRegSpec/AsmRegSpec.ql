@@ -2,8 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(AsmRegSpec x) { toBeTested(x) and not x.isUnknown() }
-
-query predicate getIdentifier(AsmRegSpec x, NameRef getIdentifier) {
-  toBeTested(x) and not x.isUnknown() and getIdentifier = x.getIdentifier()
-}
+from AsmRegSpec x, string hasIdentifier
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  if x.hasIdentifier() then hasIdentifier = "yes" else hasIdentifier = "no"
+select x, "hasIdentifier:", hasIdentifier

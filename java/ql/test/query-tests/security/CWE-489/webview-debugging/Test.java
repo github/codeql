@@ -4,20 +4,20 @@ class Test {
     boolean DEBUG_BUILD;
 
     void test1() {
-        WebView.setWebContentsDebuggingEnabled(true); // $ Alert
+        WebView.setWebContentsDebuggingEnabled(true); // $hasValueFlow
     }
 
     void test2(){
         if (DEBUG_BUILD) {
-            WebView.setWebContentsDebuggingEnabled(true);
+            WebView.setWebContentsDebuggingEnabled(true); 
         }
     }
 
     void test3(boolean enabled){
-        WebView.setWebContentsDebuggingEnabled(enabled); // $ Alert
+        WebView.setWebContentsDebuggingEnabled(enabled); // $hasValueFlow
     }
 
     void test4(){
-        test3(true); // $ Source
+        test3(true);
     }
 }

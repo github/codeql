@@ -1,4 +1,0 @@
-instances
-| gen_closure_binder.rs:7:21:7:43 | ClosureBinder |
-getGenericParamList
-| gen_closure_binder.rs:7:21:7:43 | ClosureBinder | gen_closure_binder.rs:7:24:7:43 | <...> |

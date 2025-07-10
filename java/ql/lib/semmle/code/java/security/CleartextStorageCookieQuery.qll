@@ -7,17 +7,7 @@ private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.FlowSources
 
 private class CookieCleartextStorageSink extends CleartextStorageSink {
-  Cookie cookie;
-
-  CookieCleartextStorageSink() { this.asExpr() = cookieInput(cookie) }
-
-  override Location getASelectedLocation() {
-    result = this.getLocation()
-    or
-    result = cookie.getLocation()
-    or
-    result = cookie.getAStore().getLocation()
-  }
+  CookieCleartextStorageSink() { this.asExpr() = cookieInput(_) }
 }
 
 /** The instantiation of a cookie, which can act as storage. */

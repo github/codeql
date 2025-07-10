@@ -2,8 +2,7 @@
  * @name Unused local variable
  * @description Local variable is defined but not used
  * @kind problem
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       useless-code
  *       external/cwe/cwe-563
  * @problem.severity recommendation

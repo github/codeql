@@ -6,9 +6,10 @@
  * @problem.severity error
  * @precision high
  * @id cs/non-short-circuit
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
+ *       logic
+ *       quality
  *       external/cwe/cwe-480
  *       external/cwe/cwe-691
  */

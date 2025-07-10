@@ -2,8 +2,7 @@
  * @name Unmatchable dollar in regular expression
  * @description Regular expressions containing a dollar '$' in the middle cannot be matched, whatever the input.
  * @kind problem
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low

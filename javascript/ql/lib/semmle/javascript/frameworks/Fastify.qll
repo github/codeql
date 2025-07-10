@@ -1,12 +1,12 @@
 /**
- * Provides classes for working with [Fastify](https://www.fastify.dev/) applications.
+ * Provides classes for working with [Fastify](https://www.fastify.io/) applications.
  */
 
 import javascript
 import semmle.javascript.frameworks.HTTP
 
 /**
- * Provides classes for working with [Fastify](https://www.fastify.dev/) applications.
+ * Provides classes for working with [Fastify](https://www.fastify.io/) applications.
  */
 module Fastify {
   /**

@@ -1,7 +1,7 @@
 import cpp
 
-predicate isPossibleOpenSslFunction(Function f) {
-  isPossibleOpenSslLocation(f.getADeclarationLocation())
+predicate isPossibleOpenSSLFunction(Function f) {
+  isPossibleOpenSSLLocation(f.getADeclarationLocation())
 }
 
-predicate isPossibleOpenSslLocation(Location l) { l.toString().toLowerCase().matches("%openssl%") }
+predicate isPossibleOpenSSLLocation(Location l) { l.toString().toLowerCase().matches("%openssl%") }

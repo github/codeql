@@ -4,8 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @id js/unreachable-statement
- * @tags quality
- *       reliability
+ * @tags maintainability
  *       correctness
  *       external/cwe/cwe-561
  * @precision very-high

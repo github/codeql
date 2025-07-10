@@ -1,0 +1,31 @@
+on:
+  pull_request_target:
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+      if: contains(github.event.issue.labels.*.name, 'ok')
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - uses: actions/checkout@v2
+      if: github.event.label.name == 'ok'
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - uses: actions/checkout@v2
+      if: github.actor == 'ok'
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - uses: actions/checkout@v2
+      if: github.actor == 'ok' || true
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}

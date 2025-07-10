@@ -6,9 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/expose-implementation
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
  *       external/cwe/cwe-485
  */
 

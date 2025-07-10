@@ -3,9 +3,7 @@
  * @description Using '\b' to escape the backspace character in a regular expression is confusing
  *              since it could be mistaken for a word boundary assertion.
  * @kind problem
- * @tags quality
- *       maintainability
- *       readability
+ * @tags maintainability
  * @problem.severity recommendation
  * @sub-severity high
  * @precision very-high

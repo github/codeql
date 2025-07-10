@@ -45,7 +45,7 @@ module InstructionConsistency {
   private class MissingIRFunction extends OptionalIRFunction, TMissingIRFunction {
     override string toString() { result = "<Missing IRFunction>" }
 
-    override Language::Location getLocation() { result instanceof Language::UnknownLocation }
+    override Language::Location getLocation() { result instanceof Language::UnknownDefaultLocation }
   }
 
   private OptionalIRFunction getInstructionIRFunction(Instruction instr) {

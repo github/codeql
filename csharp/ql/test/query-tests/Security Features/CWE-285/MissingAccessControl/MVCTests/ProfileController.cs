@@ -41,14 +41,6 @@ public class ProfileController : Controller
         doThings();
         return View();
     }
-
-    // GOOD: The Authorize attribute is used.
-    [Authorize("foo")]
-    public ActionResult Delete5(int id)
-    {
-        doThings();
-        return View();
-    }
 }
 
 [Authorize]

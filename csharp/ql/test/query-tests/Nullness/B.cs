@@ -10,7 +10,7 @@ class B
         B neqCallAlways = null;
 
         if (eqCallAlways == null)
-            eqCallAlways.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
+            eqCallAlways.ToString(); // BAD (always)
 
         if (b2 != null)
             b2.ToString(); // GOOD
@@ -21,7 +21,7 @@ class B
 
         if (neqCallAlways != null) { }
         else
-            neqCallAlways.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
+            neqCallAlways.ToString(); // BAD (always)
     }
 
     public static bool operator ==(B b1, B b2)

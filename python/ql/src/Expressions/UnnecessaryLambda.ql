@@ -2,8 +2,7 @@
  * @name Unnecessary lambda
  * @description A lambda is used that calls through to a function without modifying any parameters
  * @kind problem
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       useless-code
  * @problem.severity recommendation
  * @sub-severity high

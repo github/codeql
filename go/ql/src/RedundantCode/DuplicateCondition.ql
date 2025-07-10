@@ -5,8 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @id go/duplicate-condition
- * @tags quality
- *       reliability
+ * @tags maintainability
  *       correctness
  *       external/cwe/cwe-561
  * @precision very-high

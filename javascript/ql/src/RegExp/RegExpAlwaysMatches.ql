@@ -4,10 +4,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/regex/always-matches
- * @tags quality
- *       reliability
- *       correctness
+ * @tags correctness
  *       regular-expressions
+ *       quality
  * @precision high
  */
 

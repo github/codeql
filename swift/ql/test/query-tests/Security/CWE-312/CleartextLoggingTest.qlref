@@ -1,3 +1,0 @@
-query: queries/Security/CWE-312/CleartextLogging.ql
-postprocess:
-  - utils/test/InlineExpectationsTestQuery.ql

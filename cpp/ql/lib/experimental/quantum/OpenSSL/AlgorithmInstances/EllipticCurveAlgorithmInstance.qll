@@ -6,32 +6,31 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
 private import AlgToAVCFlow
 
-class KnownOpenSslEllipticCurveConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
-  Crypto::EllipticCurveInstance instanceof KnownOpenSslEllipticCurveAlgorithmExpr
+class KnownOpenSSLEllipticCurveConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
+  Crypto::EllipticCurveInstance instanceof KnownOpenSSLEllipticCurveAlgorithmConstant
 {
-  OpenSslAlgorithmValueConsumer getterCall;
+  OpenSSLAlgorithmValueConsumer getterCall;
 
-  KnownOpenSslEllipticCurveConstantAlgorithmInstance() {
+  KnownOpenSSLEllipticCurveConstantAlgorithmInstance() {
     // Two possibilities:
     // 1) The source is a literal and flows to a getter, then we know we have an instance
-    // 2) The source is a KnownOpenSslAlgorithm is call, and we know we have an instance immediately from that
+    // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
     // Possibility 1:
-    this instanceof OpenSslAlgorithmLiteral and
+    this instanceof Literal and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
       sink = getterCall.getInputNode() and
       // Source is `this`
       src.asExpr() = this and
       // This traces to a getter
-      KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
+      KnownOpenSSLAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
     )
     or
     // Possibility 2:
-    this instanceof OpenSslAlgorithmCall and
-    getterCall = this
+    this instanceof DirectAlgorithmValueConsumer and getterCall = this
   }
 
-  override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
+  override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
 
   override string getRawEllipticCurveName() {
     result = this.(Literal).getValue().toString()
@@ -39,22 +38,16 @@ class KnownOpenSslEllipticCurveConstantAlgorithmInstance extends OpenSslAlgorith
     result = this.(Call).getTarget().getName()
   }
 
-  override Crypto::EllipticCurveFamilyType getEllipticCurveFamilyType() {
-    if
-      Crypto::ellipticCurveNameToKnownKeySizeAndFamilyMapping(this.getParsedEllipticCurveName(), _,
-        _)
-    then
-      Crypto::ellipticCurveNameToKnownKeySizeAndFamilyMapping(this.getParsedEllipticCurveName(), _,
-        result)
-    else result = Crypto::OtherEllipticCurveType()
+  override Crypto::TEllipticCurveType getEllipticCurveType() {
+    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getParsedEllipticCurveName(), _, result)
   }
 
   override string getParsedEllipticCurveName() {
-    result = this.(KnownOpenSslAlgorithmExpr).getNormalizedName()
+    result = this.(KnownOpenSSLEllipticCurveAlgorithmConstant).getNormalizedName()
   }
 
   override int getKeySize() {
-    Crypto::ellipticCurveNameToKnownKeySizeAndFamilyMapping(this.(KnownOpenSslAlgorithmExpr)
+    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.(KnownOpenSSLEllipticCurveAlgorithmConstant)
           .getNormalizedName(), result, _)
   }
 }

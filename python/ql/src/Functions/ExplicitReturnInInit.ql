@@ -2,8 +2,7 @@
  * @name `__init__` method returns a value
  * @description Explicitly returning a value from an `__init__` method will raise a TypeError.
  * @kind problem
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low

@@ -70,8 +70,6 @@ private module SymmetricKeyConfig implements DataFlow::ConfigSig {
 
   /** Holds if the node is a key sanitizer. */
   predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof KeySanitizer }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

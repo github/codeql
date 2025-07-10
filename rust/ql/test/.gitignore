@@ -1,9 +1,4 @@
-target/
-
-# these are all generated, see `rust/extractor/src/qltest.rs` for details
 Cargo.toml
-rust-toolchain.toml
+Cargo.lock
 lib.rs
-.proc_macro/
-.lib/
-
+target/

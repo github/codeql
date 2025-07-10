@@ -2,22 +2,15 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(
-  ArrayRepeatExpr x, string getRepeatOperand__label, Expr getRepeatOperand,
-  string getRepeatLength__label, Expr getRepeatLength
-) {
+from
+  ArrayRepeatExpr x, int getNumberOfExprs, int getNumberOfAttrs, Expr getRepeatOperand,
+  Expr getRepeatLength
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getRepeatOperand__label = "getRepeatOperand:" and
+  getNumberOfExprs = x.getNumberOfExprs() and
+  getNumberOfAttrs = x.getNumberOfAttrs() and
   getRepeatOperand = x.getRepeatOperand() and
-  getRepeatLength__label = "getRepeatLength:" and
   getRepeatLength = x.getRepeatLength()
-}
-
-query predicate getExpr(ArrayRepeatExpr x, int index, Expr getExpr) {
-  toBeTested(x) and not x.isUnknown() and getExpr = x.getExpr(index)
-}
-
-query predicate getAttr(ArrayRepeatExpr x, int index, Attr getAttr) {
-  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
-}
+select x, "getNumberOfExprs:", getNumberOfExprs, "getNumberOfAttrs:", getNumberOfAttrs,
+  "getRepeatOperand:", getRepeatOperand, "getRepeatLength:", getRepeatLength

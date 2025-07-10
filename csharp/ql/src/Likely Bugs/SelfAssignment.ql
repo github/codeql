@@ -5,9 +5,10 @@
  * @problem.severity error
  * @precision high
  * @id cs/self-assignment
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
+ *       logic
+ *       quality
  */
 
 import csharp

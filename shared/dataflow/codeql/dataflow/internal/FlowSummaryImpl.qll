@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for defining flow summaries.
  */
-overlay[local?]
-module;
 
 private import codeql.dataflow.DataFlow as DF
 private import codeql.util.Location
@@ -688,11 +686,6 @@ module Make<
         derivedFluentFlowPush(_, _, _, head, tail, _)
       }
 
-    pragma[nomagic]
-    private string getUniqueMadRepresentation(SummaryComponent c) {
-      result = strictconcat(string s | s = c.getMadRepresentation() | s, "/")
-    }
-
     /**
      * A (non-empty) stack of summary components.
      *
@@ -739,7 +732,7 @@ module Make<
         exists(SummaryComponent head, SummaryComponentStack tail |
           head = this.head() and
           tail = this.tail() and
-          result = tail.getMadRepresentation() + "." + getUniqueMadRepresentation(head)
+          result = tail.getMadRepresentation() + "." + head.getMadRepresentation()
         )
         or
         exists(SummaryComponent c |

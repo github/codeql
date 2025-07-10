@@ -5,9 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @id js/node/missing-exports-qualifier
- * @tags quality
- *       reliability
- *       correctness
+ * @tags maintainability
  *       frameworks/node.js
  * @precision high
  */

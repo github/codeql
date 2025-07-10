@@ -6,9 +6,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/abstract-to-concrete-cast
- * @tags quality
+ * @tags reliability
  *       maintainability
- *       complexity
  *       modularity
  *       external/cwe/cwe-485
  */

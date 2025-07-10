@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.github.codeql.utils.versions.copyParameterToFunction
 import com.github.codeql.utils.versions.createImplicitParameterDeclarationWithWrappedDescriptor
+import com.github.codeql.utils.versions.getAnnotationType
 import java.lang.annotation.ElementType
 import java.util.HashSet
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -374,7 +375,7 @@ class MetaAnnotationSupport(
                     .apply {
                         createImplicitParameterDeclarationWithWrappedDescriptor()
                         parent = annotationClass
-                        superTypes = listOf(pluginContext.irBuiltIns.annotationType)
+                        superTypes = listOf(getAnnotationType(pluginContext))
                     }
 
             val propertyName = Name.identifier("value")

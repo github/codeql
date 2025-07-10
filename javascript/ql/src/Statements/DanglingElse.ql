@@ -4,9 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @id js/misleading-indentation-of-dangling-else
- * @tags quality
- *       maintainability
- *       readability
+ * @tags readability
  *       statistical
  *       non-attributable
  *       external/cwe/cwe-483

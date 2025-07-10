@@ -1,6 +1,3 @@
-overlay[local?]
-module;
-
 import java
 import semmle.code.java.frameworks.spring.SpringBeanFile
 import semmle.code.java.frameworks.spring.SpringBean

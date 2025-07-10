@@ -2,8 +2,7 @@
  * @name Encoding error
  * @description Encoding errors cause failures at runtime and prevent analysis of the code.
  * @kind problem
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low

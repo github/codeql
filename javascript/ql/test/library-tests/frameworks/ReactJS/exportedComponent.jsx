@@ -1,3 +1,3 @@
-export function MyComponent(props) { // $ threatModelSource=view-component-input
+export function MyComponent(props) {
     return <div style={{color: props.color}}/>
-} // $ reactComponent
+}

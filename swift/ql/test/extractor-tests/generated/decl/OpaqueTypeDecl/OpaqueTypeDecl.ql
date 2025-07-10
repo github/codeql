@@ -2,39 +2,22 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  OpaqueTypeDecl x, string getModule__label, ModuleDecl getModule, string getInterfaceType__label,
-  Type getInterfaceType, string getName__label, string getName, string getNamingDeclaration__label,
-  ValueDecl getNamingDeclaration
-) {
+from
+  OpaqueTypeDecl x, int getNumberOfGenericTypeParams, ModuleDecl getModule, int getNumberOfMembers,
+  Type getInterfaceType, string getName, int getNumberOfInheritedTypes,
+  ValueDecl getNamingDeclaration, int getNumberOfOpaqueGenericParams
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getModule__label = "getModule:" and
+  getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
   getModule = x.getModule() and
-  getInterfaceType__label = "getInterfaceType:" and
+  getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType = x.getInterfaceType() and
-  getName__label = "getName:" and
   getName = x.getName() and
-  getNamingDeclaration__label = "getNamingDeclaration:" and
-  getNamingDeclaration = x.getNamingDeclaration()
-}
-
-query predicate getGenericTypeParam(
-  OpaqueTypeDecl x, int index, GenericTypeParamDecl getGenericTypeParam
-) {
-  toBeTested(x) and not x.isUnknown() and getGenericTypeParam = x.getGenericTypeParam(index)
-}
-
-query predicate getMember(OpaqueTypeDecl x, int index, Decl getMember) {
-  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
-}
-
-query predicate getInheritedType(OpaqueTypeDecl x, int index, Type getInheritedType) {
-  toBeTested(x) and not x.isUnknown() and getInheritedType = x.getInheritedType(index)
-}
-
-query predicate getOpaqueGenericParam(
-  OpaqueTypeDecl x, int index, GenericTypeParamType getOpaqueGenericParam
-) {
-  toBeTested(x) and not x.isUnknown() and getOpaqueGenericParam = x.getOpaqueGenericParam(index)
-}
+  getNumberOfInheritedTypes = x.getNumberOfInheritedTypes() and
+  getNamingDeclaration = x.getNamingDeclaration() and
+  getNumberOfOpaqueGenericParams = x.getNumberOfOpaqueGenericParams()
+select x, "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams, "getModule:", getModule,
+  "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:", getInterfaceType, "getName:",
+  getName, "getNumberOfInheritedTypes:", getNumberOfInheritedTypes, "getNamingDeclaration:",
+  getNamingDeclaration, "getNumberOfOpaqueGenericParams:", getNumberOfOpaqueGenericParams

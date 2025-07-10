@@ -5,8 +5,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/equals-on-arrays
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  */
 

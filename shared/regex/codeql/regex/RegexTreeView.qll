@@ -1,8 +1,6 @@
 /**
  * This file contains a `RegexTreeViewSig` module describing the syntax tree of regular expressions.
  */
-overlay[local?]
-module;
 
 /**
  * A signature describing the syntax tree of regular expressions.

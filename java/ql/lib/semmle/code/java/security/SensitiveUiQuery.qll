@@ -19,8 +19,6 @@ private module NotificationTrackingConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Taint tracking flow for sensitive data flowing to system notifications. */
@@ -77,8 +75,6 @@ private module TextFieldTrackingConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** A local flow step that also flows through access to fields containing `View`s */

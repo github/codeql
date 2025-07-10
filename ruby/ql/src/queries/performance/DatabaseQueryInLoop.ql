@@ -5,9 +5,8 @@
  * @problem.severity info
  * @precision high
  * @id rb/database-query-in-loop
- * @tags quality
- *       reliability
- *       performance
+ * @tags performance
+ *       quality
  */
 
 import ruby

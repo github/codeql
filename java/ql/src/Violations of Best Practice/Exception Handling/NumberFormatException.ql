@@ -6,9 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/uncaught-number-format-exception
- * @tags quality
- *       reliability
- *       error-handling
+ * @tags reliability
  *       external/cwe/cwe-248
  */
 

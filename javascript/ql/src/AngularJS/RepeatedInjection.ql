@@ -5,9 +5,7 @@
  * @problem.severity warning
  * @precision high
  * @id js/angular/repeated-dependency-injection
- * @tags quality
- *       maintainability
- *       readability
+ * @tags maintainability
  *       frameworks/angularjs
  */
 

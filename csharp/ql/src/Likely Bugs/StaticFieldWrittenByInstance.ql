@@ -7,7 +7,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/static-field-written-by-instance
- * @tags quality
+ * @tags reliability
  *       maintainability
  *       modularity
  */

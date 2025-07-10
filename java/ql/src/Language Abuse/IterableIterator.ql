@@ -7,9 +7,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/iterator-implements-iterable
- * @tags quality
+ * @tags correctness
  *       reliability
- *       correctness
  */
 
 import java

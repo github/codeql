@@ -4,9 +4,7 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/automatic-semicolon-insertion
- * @tags quality
- *       maintainability
- *       readability
+ * @tags maintainability
  *       language-features
  *       statistical
  *       non-attributable

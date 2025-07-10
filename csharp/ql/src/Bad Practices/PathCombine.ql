@@ -5,9 +5,7 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id cs/path-combine
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
  */
 
 import csharp

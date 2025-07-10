@@ -1,36 +1,36 @@
 function ES2015() {
-    class C extends React.Component { // $ threatModelSource=view-component-input
-    } // $ reactComponent
+    class C extends React.Component {
+    }
 
-    C.defaultProps = { propFromDefaultProps: "propFromDefaultProps" }; // $ getACandidatePropsValue
+    C.defaultProps = { propFromDefaultProps: "propFromDefaultProps" };
 
-    (<C propFromJSX={"propFromJSX"}/>); // $ getACandidatePropsValue
+    (<C propFromJSX={"propFromJSX"}/>);
 
-    new C({propFromConstructor: "propFromConstructor"}); // $ getACandidatePropsValue
+    new C({propFromConstructor: "propFromConstructor"});
 }
 
 function ES5() {
     var C = React.createClass({
         getDefaultProps() {
-            return { propFromDefaultProps: "propFromDefaultProps" }; // $ getACandidatePropsValue
+            return { propFromDefaultProps: "propFromDefaultProps" };
         }
-    }); // $ reactComponent
+    });
 
-    (<C propFromJSX={"propFromJSX"}/>); // $ getACandidatePropsValue
+    (<C propFromJSX={"propFromJSX"}/>);
 
-    C({propFromConstructor: "propFromConstructor"}); // $ getACandidatePropsValue
+    C({propFromConstructor: "propFromConstructor"});
 
 }
 
 function Functional() {
-    function C(props) { // $ threatModelSource=view-component-input
+    function C(props) {
         return <div/>;
-    } // $ reactComponent
+    }
 
-    C.defaultProps = { propFromDefaultProps: "propFromDefaultProps" }; // $ getACandidatePropsValue
+    C.defaultProps = { propFromDefaultProps: "propFromDefaultProps" };
 
-    (<C propFromJSX={"propFromJSX"}/>); // $ getACandidatePropsValue
+    (<C propFromJSX={"propFromJSX"}/>);
 
-    new C({propFromConstructor: "propFromConstructor"}); // $ getACandidatePropsValue
+    new C({propFromConstructor: "propFromConstructor"});
 
 }

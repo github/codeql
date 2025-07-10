@@ -5,8 +5,7 @@
  * @kind problem
  * @problem.severity warning
  * @id js/duplicate-html-attribute
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       readability
  * @precision very-high
  */

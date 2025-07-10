@@ -6,7 +6,7 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id cs/class-implements-icloneable
- * @tags quality
+ * @tags reliability
  *       maintainability
  */
 

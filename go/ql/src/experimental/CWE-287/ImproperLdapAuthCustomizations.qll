@@ -74,8 +74,6 @@ module ImproperLdapAuth {
     predicate isSink(DataFlow::Node sink) { sink instanceof LdapAuthSink }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof LdapSanitizer }
-
-    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /**

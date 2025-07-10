@@ -10,8 +10,6 @@
  * of the field in case the field is not amenable to a non-trivial SSA
  * representation.
  */
-overlay[local?]
-module;
 
 import java
 private import internal.SsaImpl

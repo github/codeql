@@ -1,6 +1,4 @@
 /** Provides a class hierarchy corresponding to a parse tree of regular expressions. */
-overlay[local?]
-module;
 
 private import semmle.code.java.regex.regex as RE // importing under a namescape to avoid naming conflict for `Top`.
 private import codeql.regex.nfa.NfaUtils as NfaUtils

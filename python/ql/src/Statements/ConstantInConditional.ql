@@ -2,8 +2,7 @@
  * @name Constant in conditional expression or statement
  * @description The conditional is always true or always false
  * @kind problem
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       useless-code
  *       external/cwe/cwe-561
  *       external/cwe/cwe-570

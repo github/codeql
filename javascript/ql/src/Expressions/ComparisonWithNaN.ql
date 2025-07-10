@@ -5,8 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @id js/comparison-with-nan
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       external/cwe/cwe-570
  *       external/cwe/cwe-571

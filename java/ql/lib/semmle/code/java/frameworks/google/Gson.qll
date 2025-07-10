@@ -1,8 +1,6 @@
 /**
  * Provides classes for working with the Gson framework.
  */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.dataflow.DataFlow

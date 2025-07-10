@@ -1,8 +1,6 @@
 /**
  * Classes and predicates for working with suspicious character ranges.
  */
-overlay[local?]
-module;
 
 private import RegexTreeView
 

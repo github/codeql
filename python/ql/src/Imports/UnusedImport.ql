@@ -2,8 +2,7 @@
  * @name Unused import
  * @description Import is not required as it is not used
  * @kind problem
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       useless-code
  * @problem.severity recommendation
  * @sub-severity high

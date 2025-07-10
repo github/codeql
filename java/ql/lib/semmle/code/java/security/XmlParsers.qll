@@ -1,6 +1,4 @@
 /** Provides classes and predicates for modeling XML parsers in Java. */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.dataflow.DataFlow

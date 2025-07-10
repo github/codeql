@@ -1,6 +1,4 @@
 /** Provides definitions to reason about HTTP cookies. */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.frameworks.Netty

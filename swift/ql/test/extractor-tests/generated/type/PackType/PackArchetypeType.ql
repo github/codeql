@@ -2,24 +2,16 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  PackArchetypeType x, string getName__label, string getName, string getCanonicalType__label,
-  Type getCanonicalType, string getInterfaceType__label, Type getInterfaceType
-) {
+from
+  PackArchetypeType x, string getName, Type getCanonicalType, Type getInterfaceType,
+  string hasSuperclass, int getNumberOfProtocols
+where
   toBeTested(x) and
   not x.isUnknown() and
-  getName__label = "getName:" and
   getName = x.getName() and
-  getCanonicalType__label = "getCanonicalType:" and
   getCanonicalType = x.getCanonicalType() and
-  getInterfaceType__label = "getInterfaceType:" and
-  getInterfaceType = x.getInterfaceType()
-}
-
-query predicate getSuperclass(PackArchetypeType x, Type getSuperclass) {
-  toBeTested(x) and not x.isUnknown() and getSuperclass = x.getSuperclass()
-}
-
-query predicate getProtocol(PackArchetypeType x, int index, ProtocolDecl getProtocol) {
-  toBeTested(x) and not x.isUnknown() and getProtocol = x.getProtocol(index)
-}
+  getInterfaceType = x.getInterfaceType() and
+  (if x.hasSuperclass() then hasSuperclass = "yes" else hasSuperclass = "no") and
+  getNumberOfProtocols = x.getNumberOfProtocols()
+select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getInterfaceType:",
+  getInterfaceType, "hasSuperclass:", hasSuperclass, "getNumberOfProtocols:", getNumberOfProtocols

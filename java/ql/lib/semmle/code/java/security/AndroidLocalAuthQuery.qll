@@ -1,6 +1,4 @@
 /** Definitions for the insecure local authentication query. */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

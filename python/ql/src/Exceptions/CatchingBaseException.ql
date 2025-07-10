@@ -2,9 +2,9 @@
  * @name Except block handles 'BaseException'
  * @description Handling 'BaseException' means that system exits and keyboard interrupts may be mis-handled.
  * @kind problem
- * @tags quality
- *       reliability
- *       error-handling
+ * @tags reliability
+ *       readability
+ *       convention
  *       external/cwe/cwe-396
  * @problem.severity recommendation
  * @sub-severity high

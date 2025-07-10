@@ -11,12 +11,12 @@ public class Params
 
     public void M2(params string[] args)
     {
-        var l = args.Length; // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
+        var l = args.Length; // Good
     }
 
     public void M()
     {
         M1("a", "b", "c", null);
-        M2(null); // $ Source[cs/dereferenced-value-may-be-null]
+        M2(null);
     }
 }

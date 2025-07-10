@@ -2,20 +2,11 @@
 import codeql.swift.elements
 import TestUtils
 
-query predicate instances(
-  DynamicLookupExpr x, string primaryQlClasses, string getBase__label, Expr getBase
-) {
+from DynamicLookupExpr x, string hasType, Expr getBase, string hasMember
+where
   toBeTested(x) and
   not x.isUnknown() and
-  primaryQlClasses = x.getPrimaryQlClasses() and
-  getBase__label = "getBase:" and
-  getBase = x.getBase()
-}
-
-query predicate getType(DynamicLookupExpr x, Type getType) {
-  toBeTested(x) and not x.isUnknown() and getType = x.getType()
-}
-
-query predicate getMember(DynamicLookupExpr x, Decl getMember) {
-  toBeTested(x) and not x.isUnknown() and getMember = x.getMember()
-}
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
+  getBase = x.getBase() and
+  if x.hasMember() then hasMember = "yes" else hasMember = "no"
+select x, x.getPrimaryQlClasses(), "hasType:", hasType, "getBase:", getBase, "hasMember:", hasMember

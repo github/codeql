@@ -1,8 +1,6 @@
 /**
  * Definitions related to `java.net.*`.
  */
-overlay[local?]
-module;
 
 import semmle.code.java.Type
 private import semmle.code.java.dataflow.DataFlow

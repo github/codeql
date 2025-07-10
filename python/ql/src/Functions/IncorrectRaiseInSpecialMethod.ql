@@ -2,9 +2,9 @@
  * @name Non-standard exception raised in special method
  * @description Raising a non-standard exception in a special method alters the expected interface of that method.
  * @kind problem
- * @tags quality
- *       reliability
- *       error-handling
+ * @tags reliability
+ *       maintainability
+ *       convention
  * @problem.severity recommendation
  * @sub-severity high
  * @precision very-high

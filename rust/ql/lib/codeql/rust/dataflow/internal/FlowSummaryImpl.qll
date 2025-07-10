@@ -13,7 +13,7 @@ module Input implements InputSig<Location, RustDataFlow> {
   private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
   private import codeql.rust.frameworks.stdlib.Stdlib
 
-  class SummarizedCallableBase = Function;
+  class SummarizedCallableBase = string;
 
   abstract private class SourceSinkBase extends AstNode {
     /** Gets the associated call. */
@@ -30,11 +30,6 @@ module Input implements InputSig<Location, RustDataFlow> {
         not r.hasResolvedCrateOrigin() and
         crate = ""
       )
-    }
-
-    /** Holds if the associated call resolves to `path`. */
-    final predicate callResolvesTo(string path) {
-      path = this.getCall().getStaticTarget().(Addressable).getCanonicalPath()
     }
   }
 
@@ -73,14 +68,29 @@ module Input implements InputSig<Location, RustDataFlow> {
       result = "Field" and
       (
         exists(Addressable a, int pos, string prefix |
-          arg = prefix + "(" + pos + ")" and prefix = a.getCanonicalPath()
+          // TODO: calculate in QL
+          arg = prefix + "(" + pos + ")" and
+          (
+            prefix = a.getExtendedCanonicalPath()
+            or
+            a = any(OptionEnum o).getSome() and
+            prefix = "crate::option::Option::Some"
+            or
+            exists(string name |
+              a = any(ResultEnum r).getVariant(name) and
+              prefix = "crate::result::Result::" + name
+            )
+          )
         |
           c.(TupleFieldContent).isStructField(a, pos)
           or
           c.(TupleFieldContent).isVariantField(a, pos)
         )
         or
-        exists(Addressable a, string field | arg = a.getCanonicalPath() + "::" + field |
+        exists(Addressable a, string field |
+          // TODO: calculate in QL
+          arg = a.getExtendedCanonicalPath() + "::" + field
+        |
           c.(StructFieldContent).isStructField(a, field)
           or
           c.(StructFieldContent).isVariantField(a, field)
@@ -143,7 +153,7 @@ private import Make<Location, RustDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
-    result.asCallCfgNode().getCall().getStaticTarget() = sc
+    result.asCallBaseExprCfgNode().getCallExprBase() = sc.(LibraryCallable).getACall()
   }
 
   RustDataFlow::Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) {

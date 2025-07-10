@@ -6,10 +6,9 @@
  * @problem.severity error
  * @precision high
  * @id cs/unsafe-sync-on-field
- * @tags quality
- *       reliability
- *       concurrency
+ * @tags reliability
  *       correctness
+ *       concurrency
  *       external/cwe/cwe-662
  *       external/cwe/cwe-366
  */

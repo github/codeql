@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @security-severity 9.8
- * @precision medium
+ * @precision high
  * @id java/concatenated-command-line
  * @tags security
  *       external/cwe/cwe-078

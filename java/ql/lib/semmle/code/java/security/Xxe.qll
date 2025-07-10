@@ -1,6 +1,4 @@
 /** Provides classes to reason about XML eXternal Entity (XXE) vulnerabilities. */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

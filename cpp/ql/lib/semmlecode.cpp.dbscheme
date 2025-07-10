@@ -1,4 +1,3 @@
-/*- Compilations -*/
 
 /**
  * An invocation of the compiler. Note that more than one file may be
@@ -139,7 +138,6 @@ compilation_finished(
     float elapsed_seconds : float ref
 );
 
-/*- External data -*/
 
 /**
  * External data, loaded from CSV files during snapshot creation. See
@@ -147,75 +145,69 @@ compilation_finished(
  * for more information.
  */
 externalData(
-  int id : @externalDataElement,
-  string path : string ref,
-  int column: int ref,
-  string value : string ref
+    int id : @externalDataElement,
+    string path : string ref,
+    int column: int ref,
+    string value : string ref
 );
-
-/*- Source location prefix -*/
 
 /**
  * The source location of the snapshot.
  */
 sourceLocationPrefix(string prefix : string ref);
 
-/*- Files and folders -*/
+/**
+ * Information about packages that provide code used during compilation.
+ * The `id` is just a unique identifier.
+ * The `namespace` is typically the name of the package manager that
+ * provided the package (e.g. "dpkg" or "yum").
+ * The `package_name` is the name of the package, and `version` is its
+ * version (as a string).
+ */
+external_packages(
+    unique int id: @external_package,
+    string namespace : string ref,
+    string package_name : string ref,
+    string version : string ref
+);
 
 /**
- * The location of an element.
- * The location spans column `startcolumn` of line `startline` to
- * column `endcolumn` of line `endline` in file `file`.
- * For more information, see
- * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ * Holds if File `fileid` was provided by package `package`.
  */
-locations_default(
-  unique int id: @location_default,
-  int file: @file ref,
-  int beginLine: int ref,
-  int beginColumn: int ref,
-  int endLine: int ref,
-  int endColumn: int ref
+header_to_external_package(
+    int fileid : @file ref,
+    int package : @external_package ref
 );
 
-files(
-  unique int id: @file,
-  string name: string ref
-);
+/*
+ * Version history
+ */
 
-folders(
-  unique int id: @folder,
-  string name: string ref
-);
+svnentries(
+    unique int id : @svnentry,
+    string revision : string ref,
+    string author : string ref,
+    date revisionDate : date ref,
+    int changeSize : int ref
+)
 
-@container = @file | @folder
+svnaffectedfiles(
+    int id : @svnentry ref,
+    int file : @file ref,
+    string action : string ref
+)
 
-containerparent(
-  int parent: @container ref,
-  unique int child: @container ref
-);
+svnentrymsg(
+    unique int id : @svnentry ref,
+    string message : string ref
+)
 
-/*- Lines of code -*/
-
-numlines(
-  int element_id: @sourceline ref,
-  int num_lines: int ref,
-  int num_code: int ref,
-  int num_comment: int ref
-);
-
-/*- Diagnostic messages -*/
-
-diagnostics(
-  unique int id: @diagnostic,
-  int severity: int ref,
-  string error_tag: string ref,
-  string error_message: string ref,
-  string full_error_message: string ref,
-  int location: @location_default ref
-);
-
-/*- C++ dbscheme -*/
+svnchurn(
+    int commit : @svnentry ref,
+    int file : @file ref,
+    int addedLines : int ref,
+    int deletedLines : int ref
+)
 
 /*
  * C++ dbscheme
@@ -226,8 +218,94 @@ extractor_version(
     string frontend_version: string ref
 )
 
+@location = @location_stmt | @location_expr | @location_default ;
+
+/**
+ * The location of an element that is not an expression or a statement.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
+locations_default(
+    /** The location of an element that is not an expression or a statement. */
+    unique int id: @location_default,
+    int container: @container ref,
+    int startLine: int ref,
+    int startColumn: int ref,
+    int endLine: int ref,
+    int endColumn: int ref
+);
+
+/**
+ * The location of a statement.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
+locations_stmt(
+    /** The location of a statement. */
+    unique int id: @location_stmt,
+    int container: @container ref,
+    int startLine: int ref,
+    int startColumn: int ref,
+    int endLine: int ref,
+    int endColumn: int ref
+);
+
+/**
+ * The location of an expression.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
+locations_expr(
+    /** The location of an expression. */
+    unique int id: @location_expr,
+    int container: @container ref,
+    int startLine: int ref,
+    int startColumn: int ref,
+    int endLine: int ref,
+    int endColumn: int ref
+);
+
 /** An element for which line-count information is available. */
 @sourceline = @file | @function | @variable | @enumconstant | @xmllocatable;
+
+numlines(
+    int element_id: @sourceline ref,
+    int num_lines: int ref,
+    int num_code: int ref,
+    int num_comment: int ref
+);
+
+diagnostics(
+    unique int id: @diagnostic,
+    int severity: int ref,
+    string error_tag: string ref,
+    string error_message: string ref,
+    string full_error_message: string ref,
+    int location: @location_default ref
+);
+
+files(
+    unique int id: @file,
+    string name: string ref
+);
+
+folders(
+    unique int id: @folder,
+    string name: string ref
+);
+
+@container = @folder | @file
+
+containerparent(
+    int parent: @container ref,
+    unique int child: @container ref
+);
 
 fileannotations(
     int id: @file ref,
@@ -269,7 +347,7 @@ macroparent(
 // to which a macro invocation is bound
 macrolocationbind(
     int id: @macroinvocation ref,
-    int location: @location_default ref
+    int location: @location ref
 );
 
 #keyset[invocation, argument_index]
@@ -613,11 +691,6 @@ case @builtintype.kind of
 | 59 = @complex_std_float64   // _Complex _Float64
 | 60 = @complex_float64x      // _Complex _Float64x
 | 61 = @complex_std_float128  // _Complex _Float128
-| 62 = @mfp8                  // __mfp8
-| 63 = @scalable_vector_count // __SVCount_t
-| 64 = @complex_fp16          // _Complex __fp16
-| 65 = @complex_std_bfloat16  // _Complex __bf16
-| 66 = @complex_std_float16   // _Complex std::float16_t
 ;
 
 builtintypes(
@@ -644,7 +717,6 @@ case @derivedtype.kind of
 |  8 = @rvalue_reference // C++11
 // ... 9 type_conforming_to_protocols deprecated
 | 10 = @block
-| 11 = @scalable_vector // Arm SVE
 ;
 
 derivedtypes(
@@ -663,11 +735,6 @@ arraysizes(
     int num_elements: int ref,
     int bytesize: int ref,
     int alignment: int ref
-);
-
-tupleelements(
-    unique int id: @derivedtype ref,
-    int num_elements: int ref
 );
 
 typedefbase(
@@ -845,7 +912,7 @@ is_proxy_class_for(
 type_mentions(
     unique int id: @type_mention,
     int type_id: @type ref,
-    int location: @location_default ref,
+    int location: @location ref,
     // a_symbol_reference_kind from the frontend.
     int kind: int ref
 );
@@ -1068,11 +1135,6 @@ funcattributes(
 
 varattributes(
     int var_id: @accessible ref,
-    int spec_id: @attribute ref
-);
-
-namespaceattributes(
-    int namespace_id: @namespace ref,
     int spec_id: @attribute ref
 );
 
@@ -1594,7 +1656,7 @@ initialisers(
     unique int init: @initialiser,
     int var: @accessible ref,
     unique int expr: @expr ref,
-    int location: @location_default ref
+    int location: @location_expr ref
 );
 
 braced_initialisers(
@@ -1613,7 +1675,7 @@ expr_ancestor(
 exprs(
     unique int id: @expr,
     int kind: int ref,
-    int location: @location_default ref
+    int location: @location_expr ref
 );
 
 expr_reuse(
@@ -2076,8 +2138,7 @@ code_block(
 lambdas(
     unique int expr: @lambdaexpr ref,
     string default_capture: string ref,
-    boolean has_explicit_return_type: boolean ref,
-    boolean has_explicit_parameter_list: boolean ref
+    boolean has_explicit_return_type: boolean ref
 );
 
 lambda_capture(
@@ -2115,7 +2176,7 @@ fold(
 stmts(
     unique int id: @stmt,
     int kind: int ref,
-    int location: @location_default ref
+    int location: @location_stmt ref
 );
 
 case @stmt.kind of
@@ -2150,7 +2211,6 @@ case @stmt.kind of
 |  37 = @stmt_co_return
 |  38 = @stmt_consteval_if
 |  39 = @stmt_not_consteval_if
-|  40 = @stmt_leave
 ;
 
 type_vla(
@@ -2287,7 +2347,7 @@ blockscope(
     int enclosing: @parameterized_element ref
 );
 
-@jump = @stmt_goto | @stmt_break | @stmt_continue | @stmt_leave;
+@jump = @stmt_goto | @stmt_break | @stmt_continue;
 
 @jumporlabel = @jump | @stmt_label | @literal;
 
@@ -2356,73 +2416,76 @@ link_parent(
     int link_target : @link_target ref
 );
 
-/*- XML Files -*/
+/* XML Files */
 
-xmlEncoding(
-  unique int id: @file ref,
-  string encoding: string ref
-);
+xmlEncoding(unique int id: @file ref, string encoding: string ref);
 
 xmlDTDs(
-  unique int id: @xmldtd,
-  string root: string ref,
-  string publicId: string ref,
-  string systemId: string ref,
-  int fileid: @file ref
+    unique int id: @xmldtd,
+    string root: string ref,
+    string publicId: string ref,
+    string systemId: string ref,
+    int fileid: @file ref
 );
 
 xmlElements(
-  unique int id: @xmlelement,
-  string name: string ref,
-  int parentid: @xmlparent ref,
-  int idx: int ref,
-  int fileid: @file ref
+    unique int id: @xmlelement,
+    string name: string ref,
+    int parentid: @xmlparent ref,
+    int idx: int ref,
+    int fileid: @file ref
 );
 
 xmlAttrs(
-  unique int id: @xmlattribute,
-  int elementid: @xmlelement ref,
-  string name: string ref,
-  string value: string ref,
-  int idx: int ref,
-  int fileid: @file ref
+    unique int id: @xmlattribute,
+    int elementid: @xmlelement ref,
+    string name: string ref,
+    string value: string ref,
+    int idx: int ref,
+    int fileid: @file ref
 );
 
 xmlNs(
-  int id: @xmlnamespace,
-  string prefixName: string ref,
-  string URI: string ref,
-  int fileid: @file ref
+    int id: @xmlnamespace,
+    string prefixName: string ref,
+    string URI: string ref,
+    int fileid: @file ref
 );
 
 xmlHasNs(
-  int elementId: @xmlnamespaceable ref,
-  int nsId: @xmlnamespace ref,
-  int fileid: @file ref
+    int elementId: @xmlnamespaceable ref,
+    int nsId: @xmlnamespace ref,
+    int fileid: @file ref
 );
 
 xmlComments(
-  unique int id: @xmlcomment,
-  string text: string ref,
-  int parentid: @xmlparent ref,
-  int fileid: @file ref
+    unique int id: @xmlcomment,
+    string text: string ref,
+    int parentid: @xmlparent ref,
+    int fileid: @file ref
 );
 
 xmlChars(
-  unique int id: @xmlcharacters,
-  string text: string ref,
-  int parentid: @xmlparent ref,
-  int idx: int ref,
-  int isCDATA: int ref,
-  int fileid: @file ref
+    unique int id: @xmlcharacters,
+    string text: string ref,
+    int parentid: @xmlparent ref,
+    int idx: int ref,
+    int isCDATA: int ref,
+    int fileid: @file ref
 );
 
 @xmlparent = @file | @xmlelement;
 @xmlnamespaceable = @xmlelement | @xmlattribute;
 
 xmllocations(
-  int xmlElement: @xmllocatable ref,
-  int location: @location_default ref
+    int xmlElement: @xmllocatable ref,
+    int location: @location_default ref
 );
 
-@xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
+@xmllocatable = @xmlcharacters
+              | @xmlelement
+              | @xmlcomment
+              | @xmlattribute
+              | @xmldtd
+              | @file
+              | @xmlnamespace;

@@ -1,4 +1,0 @@
-query: queries/security/cwe-078/CommandInjection.ql
-postprocess:
-  - utils/test/PrettyPrintModels.ql
-  - utils/test/InlineExpectationsTestQuery.ql

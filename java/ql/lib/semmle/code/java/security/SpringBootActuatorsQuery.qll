@@ -1,6 +1,4 @@
 /** Provides classes and predicates to reason about exposed actuators in Spring Boot. */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.frameworks.spring.SpringSecurity

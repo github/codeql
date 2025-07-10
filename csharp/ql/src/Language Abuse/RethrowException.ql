@@ -6,10 +6,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id cs/rethrown-exception-variable
- * @tags quality
- *       reliability
- *       error-handling
+ * @tags maintainability
  *       language-features
+ *       exceptions
  */
 
 import csharp

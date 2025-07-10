@@ -6,9 +6,8 @@
  * @problem.severity error
  * @precision very-high
  * @id java/string-buffer-char-init
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
+ *       maintainability
  */
 
 import java

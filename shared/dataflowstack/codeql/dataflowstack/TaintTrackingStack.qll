@@ -1,6 +1,3 @@
-overlay[local?]
-module;
-
 private import codeql.dataflow.DataFlow as DF
 private import codeql.dataflow.TaintTracking as TT
 private import codeql.util.Location

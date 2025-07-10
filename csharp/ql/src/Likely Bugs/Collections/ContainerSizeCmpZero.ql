@@ -5,9 +5,10 @@
  * @problem.severity warning
  * @precision very-high
  * @id cs/test-for-negative-container-size
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
+ *       logic
+ *       quality
  */
 
 import csharp

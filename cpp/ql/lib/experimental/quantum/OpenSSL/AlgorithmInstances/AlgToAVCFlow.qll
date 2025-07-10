@@ -12,15 +12,13 @@ private import PaddingAlgorithmInstance
  * overlap with the known algorithm constants.
  * Padding consumers (specific padding consumers) are excluded from the set of sinks.
  */
-module KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
+module KnownOpenSSLAlgorithmToAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof KnownOpenSslAlgorithmExpr and
-    // No need to flow direct operations to AVCs
-    not source.asExpr() instanceof OpenSslDirectAlgorithmOperationCall
+    source.asExpr() instanceof KnownOpenSSLAlgorithmConstant
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(OpenSslAlgorithmValueConsumer c |
+    exists(OpenSSLAlgorithmValueConsumer c |
       c.getInputNode() = sink and
       // exclude padding algorithm consumers, since
       // these consumers take in different constant values
@@ -45,11 +43,11 @@ module KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig implements DataFlow::
   }
 }
 
-module KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow =
-  DataFlow::Global<KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig>;
+module KnownOpenSSLAlgorithmToAlgorithmValueConsumerFlow =
+  DataFlow::Global<KnownOpenSSLAlgorithmToAlgorithmValueConsumerConfig>;
 
-module RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof OpenSslPaddingLiteral }
+module RSAPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof OpenSSLPaddingLiteral }
 
   predicate isSink(DataFlow::Node sink) {
     exists(PaddingAlgorithmValueConsumer c | c.getInputNode() = sink)
@@ -60,11 +58,11 @@ module RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig implements DataF
   }
 }
 
-module RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerFlow =
-  DataFlow::Global<RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig>;
+module RSAPaddingAlgorithmToPaddingAlgorithmValueConsumerFlow =
+  DataFlow::Global<RSAPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig>;
 
-class OpenSslAlgorithmAdditionalFlowStep extends AdditionalFlowInputStep {
-  OpenSslAlgorithmAdditionalFlowStep() { exists(AlgorithmPassthroughCall c | c.getInNode() = this) }
+class OpenSSLAlgorithmAdditionalFlowStep extends AdditionalFlowInputStep {
+  OpenSSLAlgorithmAdditionalFlowStep() { exists(AlgorithmPassthroughCall c | c.getInNode() = this) }
 
   override DataFlow::Node getOutput() {
     exists(AlgorithmPassthroughCall c | c.getInNode() = this and c.getOutNode() = result)
@@ -114,11 +112,11 @@ class CopyAndDupAlgorithmPassthroughCall extends AlgorithmPassthroughCall {
   override DataFlow::Node getOutNode() { result = outNode }
 }
 
-class NidToPointerPassthroughCall extends AlgorithmPassthroughCall {
+class NIDToPointerPassthroughCall extends AlgorithmPassthroughCall {
   DataFlow::Node inNode;
   DataFlow::Node outNode;
 
-  NidToPointerPassthroughCall() {
+  NIDToPointerPassthroughCall() {
     this.getTarget().getName() in ["OBJ_nid2obj", "OBJ_nid2ln", "OBJ_nid2sn"] and
     inNode.asExpr() = this.getArgument(0) and
     outNode.asExpr() = this
@@ -150,11 +148,11 @@ class PointerToPointerPassthroughCall extends AlgorithmPassthroughCall {
   override DataFlow::Node getOutNode() { result = outNode }
 }
 
-class PointerToNidPassthroughCall extends AlgorithmPassthroughCall {
+class PointerToNIDPassthroughCall extends AlgorithmPassthroughCall {
   DataFlow::Node inNode;
   DataFlow::Node outNode;
 
-  PointerToNidPassthroughCall() {
+  PointerToNIDPassthroughCall() {
     this.getTarget().getName() in ["OBJ_obj2nid", "OBJ_ln2nid", "OBJ_sn2nid", "OBJ_txt2nid"] and
     (
       inNode.asIndirectExpr() = this.getArgument(0)

@@ -1,6 +1,4 @@
 /** Provides the `Boolean` class. */
-overlay[local?]
-module;
 
 /**
  * A utility class that is equivalent to `boolean`.

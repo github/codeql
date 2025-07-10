@@ -30,8 +30,6 @@ module MultToAllocConfig implements DataFlow::ConfigSig {
     // something that affects an allocation size
     node.asExpr() = any(HeuristicAllocationExpr ae).getSizeExpr().getAChild*()
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module MultToAlloc = DataFlow::Global<MultToAllocConfig>;

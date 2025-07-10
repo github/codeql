@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+		<p>
+			Using user-controlled input in GitHub Actions may lead to
+			code injection in contexts like <i>run:</i> or <i>script:</i>.
+		</p>
+        <p>
+            Code injection in GitHub Actions may allow an attacker to
+            exfiltrate any secrets used in the workflow and
+            the temporary GitHub repository authorization token.
+            The token might have write access to the repository, allowing an attacker
+            to use the token to make changes to the repository.
+        </p>
+	</overview>
+
+	<recommendation>
+		<p>
+			The best practice to avoid code injection vulnerabilities
+			in GitHub workflows is to set the untrusted input value of the expression
+			to an intermediate environment variable and then use the environment variable
+			using the native syntax of the shell/script interpreter (that is, not <i>${{ env.VAR }}</i>).
+		</p>
+        <p>
+            It is also recommended to limit the permissions of any tokens used 
+            by a workflow such as the GITHUB_TOKEN. 
+        </p>
+	</recommendation>
+
+	<example>
+		<p>
+			The following example lets a user inject an arbitrary shell command:
+		</p>
+		<sample src="examples/comment_issue_bad.yml" />
+
+		<p>
+			The following example uses an environment variable, but
+			<b>still allows the injection</b> because of the use of expression syntax:
+		</p>
+		<sample src="examples/comment_issue_bad_env.yml" />
+
+		<p>
+			The following example uses shell syntax to read
+			the environment variable and will prevent the attack:
+		</p>
+		<sample src="examples/comment_issue_good.yml" />
+	</example>
+
+	<references>
+		<li>GitHub Security Lab Research: <a href="https://securitylab.github.com/research/github-actions-untrusted-input">Keeping your GitHub Actions and workflows secure: Untrusted input</a>.</li>
+        <li>GitHub Docs: <a href="https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions">Security hardening for GitHub Actions</a>.</li>
+        <li>GitHub Docs: <a href="https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token">Permissions for the GITHUB_TOKEN</a>.</li>
+	</references>
+</qhelp>

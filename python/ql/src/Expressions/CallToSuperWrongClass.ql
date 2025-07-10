@@ -2,9 +2,9 @@
  * @name First argument to super() is not enclosing class
  * @description Calling super with something other than the enclosing class may cause incorrect object initialization.
  * @kind problem
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
+ *       maintainability
+ *       convention
  *       external/cwe/cwe-687
  * @problem.severity error
  * @sub-severity low

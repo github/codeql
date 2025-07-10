@@ -7,8 +7,6 @@
  * statement, an expression, or an exit node for a callable, indicating that
  * execution of the callable terminates.
  */
-overlay[local?]
-module;
 
 /*
  * The implementation is centered around the concept of a _completion_, which
@@ -102,8 +100,7 @@ module ControlFlow {
   private newtype TNode =
     TExprNode(Expr e) { hasControlFlow(e) } or
     TStmtNode(Stmt s) or
-    TExitNode(Callable c) { exists(c.getBody()) } or
-    TAssertThrowNode(AssertStmt s)
+    TExitNode(Callable c) { exists(c.getBody()) }
 
   /** A node in the expression-level control-flow graph. */
   class Node extends TNode {
@@ -206,25 +203,6 @@ module ControlFlow {
 
     /** Gets the source location for this element. */
     override Location getLocation() { result = c.getLocation() }
-  }
-
-  /** A control flow node indicating a failing assertion. */
-  class AssertThrowNode extends Node, TAssertThrowNode {
-    AssertStmt s;
-
-    AssertThrowNode() { this = TAssertThrowNode(s) }
-
-    override Stmt getEnclosingStmt() { result = s }
-
-    override Callable getEnclosingCallable() { result = s.getEnclosingCallable() }
-
-    override ExprParent getAstNode() { result = s }
-
-    /** Gets a textual representation of this element. */
-    override string toString() { result = "Assert Throw" }
-
-    /** Gets the source location for this element. */
-    override Location getLocation() { result = s.getLocation() }
   }
 }
 
@@ -349,28 +327,12 @@ private module ControlFlowGraphImpl {
     )
   }
 
-  private ThrowableType actualAssertionError() {
-    result.hasQualifiedName("java.lang", "AssertionError")
-  }
-
-  private ThrowableType assertionError() {
-    result = actualAssertionError()
-    or
-    // In case `AssertionError` is not extracted, we use `Error` as a fallback.
-    not exists(actualAssertionError()) and
-    result.hasQualifiedName("java.lang", "Error")
-  }
-
   /**
    * Gets an exception type that may be thrown during execution of the
    * body or the resources (if any) of `try`.
    */
   private ThrowableType thrownInBody(TryStmt try) {
-    exists(AstNode n |
-      mayThrow(n, result)
-      or
-      n instanceof AssertStmt and result = assertionError()
-    |
+    exists(AstNode n | mayThrow(n, result) |
       n.getEnclosingStmt().getEnclosingStmt+() = try.getBlock() or
       n.(Expr).getParent*() = try.getAResource()
     )
@@ -432,7 +394,10 @@ private module ControlFlowGraphImpl {
     exists(LogicExpr logexpr |
       logexpr.(BinaryExpr).getLeftOperand() = b
       or
-      logexpr.getAnOperand() = b and inBooleanContext(logexpr)
+      // Cannot use LogicExpr.getAnOperand or BinaryExpr.getAnOperand as they remove parentheses.
+      logexpr.(BinaryExpr).getRightOperand() = b and inBooleanContext(logexpr)
+      or
+      logexpr.(UnaryExpr).getExpr() = b and inBooleanContext(logexpr)
     )
     or
     exists(ConditionalExpr condexpr |
@@ -441,8 +406,6 @@ private module ControlFlowGraphImpl {
       condexpr.getABranchExpr() = b and
       inBooleanContext(condexpr)
     )
-    or
-    exists(AssertStmt assertstmt | assertstmt.getExpr() = b)
     or
     exists(SwitchExpr switch |
       inBooleanContext(switch) and
@@ -709,6 +672,8 @@ private module ControlFlowGraphImpl {
       this instanceof EmptyStmt
       or
       this instanceof LocalTypeDeclStmt
+      or
+      this instanceof AssertStmt
     }
 
     /** Gets child nodes in their order of execution. Indexing starts at either -1 or 0. */
@@ -779,6 +744,8 @@ private module ControlFlowGraphImpl {
       or
       index = 0 and result = this.(ThrowStmt).getExpr()
       or
+      index = 0 and result = this.(AssertStmt).getExpr()
+      or
       result = this.(RecordPatternExpr).getSubPattern(index)
     }
 
@@ -840,12 +807,9 @@ private module ControlFlowGraphImpl {
     or
     result = first(n.(SynchronizedStmt).getExpr())
     or
-    result = first(n.(AssertStmt).getExpr())
-    or
     result.asStmt() = n and
     not n instanceof PostOrderNode and
-    not n instanceof SynchronizedStmt and
-    not n instanceof AssertStmt
+    not n instanceof SynchronizedStmt
     or
     result.asExpr() = n and n instanceof SwitchExpr
   }
@@ -1148,17 +1112,7 @@ private module ControlFlowGraphImpl {
     // `return` statements give rise to a `Return` completion
     last.asStmt() = n.(ReturnStmt) and completion = ReturnCompletion()
     or
-    exists(AssertStmt assertstmt | assertstmt = n |
-      // `assert` statements may complete normally - we use the `AssertStmt` itself
-      // to represent this outcome
-      last.asStmt() = assertstmt and completion = NormalCompletion()
-      or
-      // `assert` statements may throw
-      completion = ThrowCompletion(assertionError()) and
-      last.(AssertThrowNode).getAstNode() = assertstmt
-    )
-    or
-    // `throw` statements or throwing calls give rise to `Throw` completion
+    // `throw` statements or throwing calls give rise to ` Throw` completion
     exists(ThrowableType tt | mayThrow(n, tt) |
       last = n.getCfgNode() and completion = ThrowCompletion(tt)
     )
@@ -1564,25 +1518,6 @@ private module ControlFlowGraphImpl {
       n.asStmt() = s and result = first(s.getVariable(1))
       or
       exists(int i | last(s.getVariable(i), n, completion) and result = first(s.getVariable(i + 1)))
-    )
-    or
-    // Assert statements:
-    exists(AssertStmt assertstmt |
-      last(assertstmt.getExpr(), n, completion) and
-      completion = BooleanCompletion(true, _) and
-      result.asStmt() = assertstmt
-      or
-      last(assertstmt.getExpr(), n, completion) and
-      completion = BooleanCompletion(false, _) and
-      (
-        result = first(assertstmt.getMessage())
-        or
-        not exists(assertstmt.getMessage()) and
-        result.(AssertThrowNode).getAstNode() = assertstmt
-      )
-      or
-      last(assertstmt.getMessage(), n, NormalCompletion()) and
-      result.(AssertThrowNode).getAstNode() = assertstmt
     )
     or
     // When expressions:

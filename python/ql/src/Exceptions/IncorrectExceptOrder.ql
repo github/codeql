@@ -3,9 +3,8 @@
  * @description Handling general exceptions before specific exceptions means that the specific
  *              handlers are never executed.
  * @kind problem
- * @tags quality
- *       reliability
- *       error-handling
+ * @tags reliability
+ *       maintainability
  *       external/cwe/cwe-561
  * @problem.severity error
  * @sub-severity low

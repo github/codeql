@@ -6,9 +6,7 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id java/print-array
- * @tags quality
- *       reliability
- *       correctness
+ * @tags maintainability
  */
 
 import java

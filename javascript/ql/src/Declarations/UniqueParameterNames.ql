@@ -5,8 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @id js/duplicate-parameter-name
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  * @precision very-high
  */

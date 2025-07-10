@@ -5,9 +5,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/cast-of-this-to-type-parameter
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
+ *       maintainability
  *       language-features
  */
 

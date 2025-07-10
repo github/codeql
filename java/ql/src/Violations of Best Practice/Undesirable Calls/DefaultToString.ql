@@ -6,9 +6,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/call-to-object-tostring
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
+ *       maintainability
  */
 
 import java

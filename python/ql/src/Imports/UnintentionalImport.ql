@@ -3,9 +3,8 @@
  * @description Importing a module using 'import *' may unintentionally pollute the global
  *              namespace if the module does not define `__all__`
  * @kind problem
- * @tags quality
- *       maintainability
- *       readability
+ * @tags maintainability
+ *       modularity
  * @problem.severity recommendation
  * @sub-severity high
  * @precision very-high

@@ -6,9 +6,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/iterable-wraps-iterator
- * @tags quality
+ * @tags correctness
  *       reliability
- *       correctness
  */
 
 import java

@@ -5,8 +5,7 @@
  * @problem.severity warning
  * @precision high
  * @id cs/unused-label
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       useless-code
  */
 

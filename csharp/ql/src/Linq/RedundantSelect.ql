@@ -5,9 +5,7 @@
  * @problem.severity warning
  * @precision very-high
  * @id cs/linq/useless-select
- * @tags quality
- *       maintainability
- *       useless-code
+ * @tags maintainability
  *       language-features
  *       external/cwe/cwe-561
  */

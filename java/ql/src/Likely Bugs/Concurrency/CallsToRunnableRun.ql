@@ -6,9 +6,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/call-to-thread-run
- * @previous-id java/run-method-called-on-java-lang-thread-directly
- * @tags quality
- *       reliability
+ * @tags reliability
+ *       correctness
  *       concurrency
  *       external/cwe/cwe-572
  */

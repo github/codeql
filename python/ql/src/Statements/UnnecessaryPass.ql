@@ -2,8 +2,7 @@
  * @name Unnecessary pass
  * @description Unnecessary 'pass' statement
  * @kind problem
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       useless-code
  * @problem.severity warning
  * @sub-severity low

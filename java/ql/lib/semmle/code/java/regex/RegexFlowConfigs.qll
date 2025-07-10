@@ -1,8 +1,6 @@
 /**
  * Defines configurations and steps for handling regexes
  */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.dataflow.ExternalFlow

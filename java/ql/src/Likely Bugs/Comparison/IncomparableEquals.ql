@@ -6,10 +6,9 @@
  * @problem.severity error
  * @precision very-high
  * @id java/equals-on-unrelated-types
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
- *       external/cwe/cwe-571
+ *       quality
  */
 
 import java

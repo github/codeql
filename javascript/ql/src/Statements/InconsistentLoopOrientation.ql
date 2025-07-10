@@ -8,9 +8,7 @@
  * @kind problem
  * @problem.severity error
  * @id js/inconsistent-loop-direction
- * @tags quality
- *       reliability
- *       correctness
+ * @tags correctness
  *       external/cwe/cwe-835
  * @precision very-high
  */

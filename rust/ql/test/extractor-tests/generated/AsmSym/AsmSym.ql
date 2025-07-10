@@ -2,8 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(AsmSym x) { toBeTested(x) and not x.isUnknown() }
-
-query predicate getPath(AsmSym x, Path getPath) {
-  toBeTested(x) and not x.isUnknown() and getPath = x.getPath()
-}
+from AsmSym x, string hasPath
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  if x.hasPath() then hasPath = "yes" else hasPath = "no"
+select x, "hasPath:", hasPath

@@ -2,9 +2,7 @@
  * @name Mismatch between signature and use of an overriding method
  * @description Method has a different signature from the overridden method and, if it were called, would be likely to cause an error.
  * @kind problem
- * @tags quality
- *       reliability
- *       correctness
+ * @tags maintainability
  * @problem.severity error
  * @sub-severity low
  * @precision high

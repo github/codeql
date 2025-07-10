@@ -426,6 +426,7 @@ public class ScopeManager {
       // cases where we turn on the 'declKind' flags
       @Override
       public Void visit(FunctionDeclaration nd, Void v) {
+        if (nd.hasDeclareKeyword() && !isInTypeScriptDeclarationFile()) return null;
         // strict mode functions are block-scoped, non-strict mode ones aren't
         if (blockscope == isStrict) visit(nd.getId(), DeclKind.var);
         return null;
@@ -433,6 +434,7 @@ public class ScopeManager {
 
       @Override
       public Void visit(ClassDeclaration nd, Void c) {
+        if (nd.hasDeclareKeyword() && !isInTypeScriptDeclarationFile()) return null;
         if (blockscope) visit(nd.getClassDef().getId(), DeclKind.varAndType);
         return null;
       }
@@ -481,6 +483,7 @@ public class ScopeManager {
 
       @Override
       public Void visit(VariableDeclaration nd, Void v) {
+        if (nd.hasDeclareKeyword() && !isInTypeScriptDeclarationFile()) return null;
         // in block scoping mode, only process 'let'; in non-block scoping
         // mode, only process non-'let'
         if (blockscope == nd.isBlockScoped(ecmaVersion)) visit(nd.getDeclarations());
@@ -515,7 +518,8 @@ public class ScopeManager {
       @Override
       public Void visit(NamespaceDeclaration nd, Void c) {
         if (blockscope) return null;
-        boolean hasVariable = nd.isInstantiated();
+        boolean isAmbientOutsideDtsFile = nd.hasDeclareKeyword() && !isInTypeScriptDeclarationFile();
+        boolean hasVariable = nd.isInstantiated() && !isAmbientOutsideDtsFile;
         visit(nd.getName(), hasVariable ? DeclKind.varAndNamespace : DeclKind.namespace);
         return null;
       }

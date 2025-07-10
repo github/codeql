@@ -82,8 +82,6 @@ module HardcodedSymmetricEncryptionKey {
         succ.asExpr() = mc
       )
     }
-
-    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /**

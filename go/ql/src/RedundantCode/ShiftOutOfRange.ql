@@ -6,9 +6,7 @@
  * @problem.severity warning
  * @id go/shift-out-of-range
  * @precision very-high
- * @tags quality
- *       reliability
- *       correctness
+ * @tags correctness
  *       external/cwe/cwe-197
  */
 

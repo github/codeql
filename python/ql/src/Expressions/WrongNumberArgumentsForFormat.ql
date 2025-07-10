@@ -3,8 +3,7 @@
  * @description A string formatting operation, such as '"%s: %s, %s" % (a,b)', where the number of conversion specifiers in the
  *              format string differs from the number of values to be formatted will raise a TypeError.
  * @kind problem
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       external/cwe/cwe-685
  * @problem.severity error

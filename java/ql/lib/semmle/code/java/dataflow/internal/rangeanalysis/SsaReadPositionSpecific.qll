@@ -1,8 +1,6 @@
 /**
  * Provides Java-specific definitions for use in the `SsaReadPosition`.
  */
-overlay[local?]
-module;
 
 private import semmle.code.java.dataflow.SSA as Ssa
 private import semmle.code.java.controlflow.BasicBlocks as BB

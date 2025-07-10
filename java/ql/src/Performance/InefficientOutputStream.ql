@@ -6,10 +6,7 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/inefficient-output-stream
- * @tags quality
- *       reliability
- *       performance
- *       efficiency
+ * @tags efficiency
  */
 
 import java

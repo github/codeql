@@ -4,7 +4,6 @@
  */
 
 private import rust
-private import codeql.rust.elements.Call
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl as CfgImpl
 private import internal.CfgNodes
@@ -162,30 +161,6 @@ final class CallExprBaseCfgNode extends Nodes::CallExprBaseCfgNode {
  * ```
  */
 final class MethodCallExprCfgNode extends CallExprBaseCfgNode, Nodes::MethodCallExprCfgNode { }
-
-/**
- * A CFG node that calls a function.
- *
- * This class abstract over the different ways in which a function can be called in Rust.
- */
-final class CallCfgNode extends ExprCfgNode {
-  private Call node;
-
-  CallCfgNode() { node = this.getAstNode() }
-
-  /** Gets the underlying `Call`. */
-  Call getCall() { result = node }
-
-  /** Gets the receiver of this call if it is a method call. */
-  ExprCfgNode getReceiver() {
-    any(ChildMapping mapping).hasCfgChild(node, node.getReceiver(), this, result)
-  }
-
-  /** Gets the `i`th argument of this call, if any. */
-  ExprCfgNode getPositionalArgument(int i) {
-    any(ChildMapping mapping).hasCfgChild(node, node.getPositionalArgument(i), this, result)
-  }
-}
 
 /**
  * A function call expression. For example:

@@ -11,9 +11,9 @@ public class DigesterTests {
 
     @PostMapping(value = "bad")
     public void bad1(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ServletInputStream servletInputStream = request.getInputStream(); // $ Source
+        ServletInputStream servletInputStream = request.getInputStream();
         Digester digester = new Digester();
-        digester.parse(servletInputStream); // $ Alert
+        digester.parse(servletInputStream); // $ hasTaintFlow
     }
 
     @PostMapping(value = "good")

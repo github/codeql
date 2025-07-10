@@ -2,8 +2,7 @@
  * @name Wrong number of arguments in a call
  * @description Using too many or too few arguments in a call to a function will result in a TypeError at runtime.
  * @kind problem
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       external/cwe/cwe-685
  * @problem.severity error

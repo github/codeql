@@ -1,6 +1,4 @@
 /** Definitions for the web view certificate validation query */
-overlay[local?]
-module;
 
 import java
 

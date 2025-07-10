@@ -1,0 +1,2 @@
+| gen_method_call_expr.rs:5:5:5:13 | x.foo(...) | gen_method_call_expr.rs:5:5:5:5 | x |
+| gen_method_call_expr.rs:6:5:6:25 | x.foo(...) | gen_method_call_expr.rs:6:5:6:5 | x |

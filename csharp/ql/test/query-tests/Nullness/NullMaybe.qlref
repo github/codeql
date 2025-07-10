@@ -1,2 +1,1 @@
-query: CSI/NullMaybe.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+CSI/NullMaybe.ql

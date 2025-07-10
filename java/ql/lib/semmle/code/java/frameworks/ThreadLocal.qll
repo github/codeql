@@ -1,6 +1,4 @@
 /** Definitions related to `java.lang.ThreadLocal`. */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

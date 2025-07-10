@@ -5,49 +5,17 @@
 import javascript
 
 module Closure {
-  /** A call to `goog.require` */
-  class RequireCallExpr extends CallExpr {
-    RequireCallExpr() { this.getCallee().(PropAccess).getQualifiedName() = "goog.require" }
-
-    /** Gets the imported namespace name. */
-    string getClosureNamespace() { result = this.getArgument(0).getStringValue() }
-  }
-
-  /** A call to `goog.provide` */
-  class ProvideCallExpr extends CallExpr {
-    ProvideCallExpr() { this.getCallee().(PropAccess).getQualifiedName() = "goog.provide" }
-
-    /** Gets the imported namespace name. */
-    string getClosureNamespace() { result = this.getArgument(0).getStringValue() }
-  }
-
-  /** A call to `goog.module` or `goog.declareModuleId`. */
-  private class ModuleDeclarationCall extends CallExpr {
-    private string kind;
-
-    ModuleDeclarationCall() {
-      this.getCallee().(PropAccess).getQualifiedName() = kind and
-      kind = ["goog.module", "goog.declareModuleId"]
-    }
-
-    /** Gets the declared namespace. */
-    string getClosureNamespace() { result = this.getArgument(0).getStringValue() }
-
-    /** Gets the string `goog.module` or `goog.declareModuleId` depending on which method is being called. */
-    string getModuleKind() { result = kind }
-  }
-
   /**
    * A reference to a Closure namespace.
    */
-  deprecated class ClosureNamespaceRef extends DataFlow::Node instanceof ClosureNamespaceRef::Range {
+  class ClosureNamespaceRef extends DataFlow::Node instanceof ClosureNamespaceRef::Range {
     /**
      * Gets the namespace being referenced.
      */
     string getClosureNamespace() { result = super.getClosureNamespace() }
   }
 
-  deprecated module ClosureNamespaceRef {
+  module ClosureNamespaceRef {
     /**
      * A reference to a Closure namespace.
      *
@@ -64,10 +32,10 @@ module Closure {
   /**
    * A data flow node that returns the value of a closure namespace.
    */
-  deprecated class ClosureNamespaceAccess extends ClosureNamespaceRef instanceof ClosureNamespaceAccess::Range
-  { }
+  class ClosureNamespaceAccess extends ClosureNamespaceRef instanceof ClosureNamespaceAccess::Range {
+  }
 
-  deprecated module ClosureNamespaceAccess {
+  module ClosureNamespaceAccess {
     /**
      * A data flow node that returns the value of a closure namespace.
      *
@@ -79,7 +47,7 @@ module Closure {
   /**
    * A call to a method on the `goog.` namespace, as a closure reference.
    */
-  abstract deprecated private class DefaultNamespaceRef extends DataFlow::MethodCallNode,
+  abstract private class DefaultNamespaceRef extends DataFlow::MethodCallNode,
     ClosureNamespaceRef::Range
   {
     DefaultNamespaceRef() { this = DataFlow::globalVarRef("goog").getAMethodCall() }
@@ -91,14 +59,14 @@ module Closure {
    * Holds if `node` is the data flow node corresponding to the expression in
    * a top-level expression statement.
    */
-  deprecated private predicate isTopLevelExpr(DataFlow::Node node) {
+  private predicate isTopLevelExpr(DataFlow::Node node) {
     any(TopLevel tl).getAChildStmt().(ExprStmt).getExpr().flow() = node
   }
 
   /**
    * A top-level call to `goog.provide`.
    */
-  deprecated private class DefaultClosureProvideCall extends DefaultNamespaceRef {
+  private class DefaultClosureProvideCall extends DefaultNamespaceRef {
     DefaultClosureProvideCall() {
       this.getMethodName() = "provide" and
       isTopLevelExpr(this)
@@ -108,14 +76,13 @@ module Closure {
   /**
    * A top-level call to `goog.provide`.
    */
-  deprecated class ClosureProvideCall extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureProvideCall
+  class ClosureProvideCall extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureProvideCall
   { }
 
   /**
    * A call to `goog.require`.
    */
-  deprecated private class DefaultClosureRequireCall extends DefaultNamespaceRef,
-    ClosureNamespaceAccess::Range
+  private class DefaultClosureRequireCall extends DefaultNamespaceRef, ClosureNamespaceAccess::Range
   {
     DefaultClosureRequireCall() { this.getMethodName() = "require" }
   }
@@ -123,13 +90,13 @@ module Closure {
   /**
    * A call to `goog.require`.
    */
-  deprecated class ClosureRequireCall extends ClosureNamespaceAccess, DataFlow::MethodCallNode instanceof DefaultClosureRequireCall
+  class ClosureRequireCall extends ClosureNamespaceAccess, DataFlow::MethodCallNode instanceof DefaultClosureRequireCall
   { }
 
   /**
    * A top-level call to `goog.module` or `goog.declareModuleId`.
    */
-  deprecated private class DefaultClosureModuleDeclaration extends DefaultNamespaceRef {
+  private class DefaultClosureModuleDeclaration extends DefaultNamespaceRef {
     DefaultClosureModuleDeclaration() {
       (this.getMethodName() = "module" or this.getMethodName() = "declareModuleId") and
       isTopLevelExpr(this)
@@ -139,29 +106,41 @@ module Closure {
   /**
    * A top-level call to `goog.module` or `goog.declareModuleId`.
    */
-  deprecated class ClosureModuleDeclaration extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureModuleDeclaration
+  class ClosureModuleDeclaration extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureModuleDeclaration
   { }
 
+  private GlobalVariable googVariable() { variables(result, "goog", any(GlobalScope sc)) }
+
+  pragma[nomagic]
+  private MethodCallExpr googModuleDeclExpr() {
+    result.getReceiver() = googVariable().getAnAccess() and
+    result.getMethodName() = ["module", "declareModuleId"]
+  }
+
+  pragma[nomagic]
+  private MethodCallExpr googModuleDeclExprInContainer(StmtContainer container) {
+    result = googModuleDeclExpr() and
+    container = result.getContainer()
+  }
+
   pragma[noinline]
-  private RequireCallExpr getARequireInTopLevel(ClosureModule m) { result.getTopLevel() = m }
+  private ClosureRequireCall getARequireInTopLevel(ClosureModule m) { result.getTopLevel() = m }
 
   /**
    * A module using the Closure module system, declared using `goog.module()` or `goog.declareModuleId()`.
    */
   class ClosureModule extends Module {
-    private ModuleDeclarationCall decl;
-
-    ClosureModule() { decl.getTopLevel() = this }
+    ClosureModule() { exists(googModuleDeclExprInContainer(this)) }
 
     /**
      * Gets the call to `goog.module` or `goog.declareModuleId` in this module.
      */
-    deprecated ClosureModuleDeclaration getModuleDeclaration() { result.getTopLevel() = this }
+    ClosureModuleDeclaration getModuleDeclaration() { result.getTopLevel() = this }
 
     /**
      * Gets the namespace of this module.
      */
-    string getClosureNamespace() { result = decl.getClosureNamespace() }
+    string getClosureNamespace() { result = this.getModuleDeclaration().getClosureNamespace() }
 
     override Module getAnImportedModule() {
       result.(ClosureModule).getClosureNamespace() =
@@ -177,7 +156,7 @@ module Closure {
      * Has no result for ES6 modules using `goog.declareModuleId`.
      */
     Variable getExportsVariable() {
-      decl.getModuleKind() = "goog.module" and
+      this.getModuleDeclaration().getMethodName() = "module" and
       result = this.getScope().getVariable("exports")
     }
 
@@ -206,15 +185,15 @@ module Closure {
     ClosureScript() {
       not this instanceof ClosureModule and
       (
-        any(ProvideCallExpr provide).getTopLevel() = this
+        any(ClosureProvideCall provide).getTopLevel() = this
         or
-        any(RequireCallExpr require).getTopLevel() = this
+        any(ClosureRequireCall require).getTopLevel() = this
       )
     }
 
     /** Gets the identifier of a namespace required by this module. */
     string getARequiredNamespace() {
-      exists(RequireCallExpr require |
+      exists(ClosureRequireCall require |
         require.getTopLevel() = this and
         result = require.getClosureNamespace()
       )
@@ -222,7 +201,7 @@ module Closure {
 
     /** Gets the identifer of a namespace provided by this module. */
     string getAProvidedNamespace() {
-      exists(ProvideCallExpr require |
+      exists(ClosureProvideCall require |
         require.getTopLevel() = this and
         result = require.getClosureNamespace()
       )
@@ -234,13 +213,7 @@ module Closure {
    */
   pragma[noinline]
   predicate isClosureNamespace(string name) {
-    exists(string namespace |
-      namespace =
-        [
-          any(RequireCallExpr ref).getClosureNamespace(),
-          any(ModuleDeclarationCall c).getClosureNamespace()
-        ]
-    |
+    exists(string namespace | namespace = any(ClosureNamespaceRef ref).getClosureNamespace() |
       name = namespace.substring(0, namespace.indexOf("."))
       or
       name = namespace

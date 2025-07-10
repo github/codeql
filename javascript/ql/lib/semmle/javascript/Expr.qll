@@ -4,7 +4,6 @@
 
 import javascript
 private import semmle.javascript.internal.CachedStages
-private import semmle.javascript.internal.TypeResolution
 
 /**
  * A program element that is either an expression or a type annotation.
@@ -1018,11 +1017,7 @@ class InvokeExpr extends @invokeexpr, Expr {
    * Note that the resolved function may be overridden in a subclass and thus is not
    * necessarily the actual target of this invocation at runtime.
    */
-  Function getResolvedCallee() {
-    TypeResolution::callTarget(this, result)
-    or
-    result = this.getResolvedCalleeName().getImplementation()
-  }
+  Function getResolvedCallee() { result = this.getResolvedCalleeName().getImplementation() }
 }
 
 /**

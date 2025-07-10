@@ -7,7 +7,6 @@
  * @precision high
  * @id java/deprecated-call
  * @tags maintainability
- *       readability
  *       non-attributable
  *       external/cwe/cwe-477
  */

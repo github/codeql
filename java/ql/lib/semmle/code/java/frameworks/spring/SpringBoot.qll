@@ -2,8 +2,6 @@
  * Provides classes for working with Spring classes and interfaces from
  * `org.springframework.boot.*`.
  */
-overlay[local?]
-module;
 
 import java
 

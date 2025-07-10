@@ -2,8 +2,7 @@
  * @name Module imports itself
  * @description A module imports itself
  * @kind problem
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       useless-code
  * @problem.severity recommendation
  * @sub-severity high

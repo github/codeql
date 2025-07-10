@@ -5,9 +5,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/missed-ternary-operator
- * @tags quality
- *       maintainability
- *       readability
+ * @tags maintainability
  *       language-features
  */
 

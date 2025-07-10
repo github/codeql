@@ -5,10 +5,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/inefficient-boxed-constructor
- * @tags quality
- *       reliability
- *       performance
- *       efficiency
+ * @tags efficiency
+ *       maintainability
  */
 
 import java

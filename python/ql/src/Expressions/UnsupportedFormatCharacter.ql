@@ -2,8 +2,7 @@
  * @name Unsupported format character
  * @description An unsupported format character in a format string
  * @kind problem
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low

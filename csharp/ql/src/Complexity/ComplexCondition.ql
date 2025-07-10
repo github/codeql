@@ -5,9 +5,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/complex-condition
- * @tags maintainability
+ * @tags testability
  *       readability
- *       testability
  */
 
 import csharp

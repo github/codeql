@@ -5,9 +5,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/call-to-unmanaged-code
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
+ *       maintainability
  */
 
 import csharp

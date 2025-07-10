@@ -5,9 +5,9 @@
  * @problem.severity error
  * @precision very-high
  * @id java/empty-container
- * @tags quality
- *       reliability
- *       correctness
+ * @tags reliability
+ *       maintainability
+ *       useless-code
  *       external/cwe/cwe-561
  */
 

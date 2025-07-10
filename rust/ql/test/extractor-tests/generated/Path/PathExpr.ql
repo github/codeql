@@ -2,20 +2,19 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(PathExpr x) { toBeTested(x) and not x.isUnknown() }
-
-query predicate getResolvedPath(PathExpr x, string getResolvedPath) {
-  toBeTested(x) and not x.isUnknown() and getResolvedPath = x.getResolvedPath()
-}
-
-query predicate getResolvedCrateOrigin(PathExpr x, string getResolvedCrateOrigin) {
-  toBeTested(x) and not x.isUnknown() and getResolvedCrateOrigin = x.getResolvedCrateOrigin()
-}
-
-query predicate getPath(PathExpr x, Path getPath) {
-  toBeTested(x) and not x.isUnknown() and getPath = x.getPath()
-}
-
-query predicate getAttr(PathExpr x, int index, Attr getAttr) {
-  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
-}
+from
+  PathExpr x, string hasResolvedPath, string hasResolvedCrateOrigin, string hasPath,
+  int getNumberOfAttrs
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  (if x.hasResolvedPath() then hasResolvedPath = "yes" else hasResolvedPath = "no") and
+  (
+    if x.hasResolvedCrateOrigin()
+    then hasResolvedCrateOrigin = "yes"
+    else hasResolvedCrateOrigin = "no"
+  ) and
+  (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
+  getNumberOfAttrs = x.getNumberOfAttrs()
+select x, "hasResolvedPath:", hasResolvedPath, "hasResolvedCrateOrigin:", hasResolvedCrateOrigin,
+  "hasPath:", hasPath, "getNumberOfAttrs:", getNumberOfAttrs

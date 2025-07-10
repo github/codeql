@@ -1,4 +1,0 @@
-query: queries/security/CWE-825/AccessAfterLifetime.ql
-postprocess:
- - utils/test/PrettyPrintModels.ql
- - utils/test/InlineExpectationsTestQuery.ql

@@ -2,8 +2,7 @@
  * @name Duplication in regular expression character class
  * @description Duplicate characters in a class have no effect and may indicate an error in the regular expression.
  * @kind problem
- * @tags quality
- *       maintainability
+ * @tags reliability
  *       readability
  * @problem.severity warning
  * @sub-severity low

@@ -4,8 +4,7 @@
  *              method, hides the method in the subclass.
  * @kind problem
  * @problem.severity error
- * @tags quality
- *       reliability
+ * @tags maintainability
  *       correctness
  * @sub-severity low
  * @precision high

@@ -1,15 +1,15 @@
-function Hello(props) { // $ threatModelSource=view-component-input
+function Hello(props) {
   return <div>Hello {props.name}</div>;
-} // $ reactComponent
+}
 
-function Hello2(props) { // $ threatModelSource=view-component-input
+function Hello2(props) {
     return React.createElement("div");
-} // $ reactComponent
+}
 
-function Hello3(props) { // $ threatModelSource=view-component-input
+function Hello3(props) {
     var x = React.createElement("div");
     return x;
-} // $ reactComponent
+}
 
 function NotAComponent(props) {
     if (y)
@@ -17,8 +17,8 @@ function NotAComponent(props) {
     return g();
 }
 
-function SpuriousComponent(props) { // $ threatModelSource=view-component-input
+function SpuriousComponent(props) {
     if (y)
         return React.createElement("div");
     return 42;
-} // $ reactComponent
+}

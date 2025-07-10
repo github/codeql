@@ -2,8 +2,7 @@
  * @name Comparison using is when operands support `__eq__`
  * @description Comparison using 'is' when equivalence is not the same as identity
  * @kind problem
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  * @problem.severity warning
  * @sub-severity low

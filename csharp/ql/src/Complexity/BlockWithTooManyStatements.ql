@@ -8,8 +8,8 @@
  * @precision high
  * @id cs/complex-block
  * @tags maintainability
- *       complexity
  *       testability
+ *       complexity
  */
 
 import csharp

@@ -1,4 +1,6 @@
-## Overview
+# Environment Variable Injection
+
+## Description
 
 GitHub Actions allow to define environment variables by writing to a file pointed to by the `GITHUB_ENV` environment variable:
 
@@ -35,7 +37,7 @@ steps:
 
 If an attacker can control the values assigned to environment variables and there is no sanitization in place, the attacker will be able to inject additional variables by injecting new lines or `{delimiters}`.
 
-## Recommendation
+## Recommendations
 
 1. **Do not allow untrusted data to influence environment variables**:
 
@@ -62,7 +64,7 @@ If an attacker can control the values assigned to environment variables and ther
           } >> "$GITHUB_ENV"
     ```
 
-## Example
+## Examples
 
 ### Example of Vulnerability
 
@@ -111,5 +113,5 @@ An attacker is be able to run arbitrary code by injecting environment variables 
 
 ## References
 
-- GitHub Docs: [Workflow commands for GitHub Actions](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions).
-- Synacktiv: [GitHub Actions Exploitation: Repo Jacking and Environment Manipulation](https://www.synacktiv.com/publications/github-actions-exploitation-repo-jacking-and-environment-manipulation).
+- [Workflow commands for GitHub Actions](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions)
+- [GitHub Actions Exploitation: Repo Jacking and Environment Manipulation](https://www.synacktiv.com/publications/github-actions-exploitation-repo-jacking-and-environment-manipulation)

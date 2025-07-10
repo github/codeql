@@ -1,9 +1,9 @@
+private import rust as R
 private import codeql.mad.modelgenerator.internal.ModelPrinting
 private import CaptureModels::ModelGeneratorCommonInput as ModelGeneratorInput
-private import CaptureModels
 
 private module ModelPrintingLang implements ModelPrintingLangSig {
-  class Callable = QualifiedCallable;
+  class Callable = R::Callable;
 
   predicate partialModelRow = ModelGeneratorInput::partialModelRow/2;
 

@@ -3,8 +3,7 @@
  * @description Using implicit and explicit numbering in string formatting operations, such as '"{}: {1}".format(a,b)', will raise a ValueError.
  * @kind problem
  * @problem.severity error
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  * @sub-severity low
  * @precision high

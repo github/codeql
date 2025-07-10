@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for working with the FastJson framework.
  */
-overlay[local?]
-module;
 
 import java
 

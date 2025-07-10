@@ -1,6 +1,3 @@
-overlay[local?]
-module;
-
 import default
 import semmle.code.java.deadcode.DeadCode
 import external.ExternalArtifact

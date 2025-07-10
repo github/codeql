@@ -5,8 +5,7 @@
  * @problem.severity error
  * @precision very-high
  * @id java/dereferenced-value-is-always-null
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       exceptions
  *       external/cwe/cwe-476

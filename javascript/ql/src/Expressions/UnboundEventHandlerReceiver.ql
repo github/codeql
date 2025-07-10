@@ -4,9 +4,7 @@
  * @kind problem
  * @problem.severity error
  * @id js/unbound-event-handler-receiver
- * @tags quality
- *       reliability
- *       correctness
+ * @tags correctness
  * @precision high
  */
 

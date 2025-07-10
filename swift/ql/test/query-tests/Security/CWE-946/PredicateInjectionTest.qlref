@@ -1,3 +1,0 @@
-query: queries/Security/CWE-943/PredicateInjection.ql
-postprocess:
-  - utils/test/InlineExpectationsTestQuery.ql

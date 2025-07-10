@@ -41,8 +41,6 @@ module AssemblyPathInjectionConfig implements DataFlow::ConfigSig {
       name = "UnsafeLoadFrom" and arg = 0
     )
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

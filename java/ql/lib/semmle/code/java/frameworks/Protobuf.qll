@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for working with the Protobuf framework.
  */
-overlay[local?]
-module;
 
 import java
 import semmle.code.java.dataflow.FlowSteps

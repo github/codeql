@@ -6,8 +6,7 @@
  * @kind problem
  * @problem.severity error
  * @id js/useless-type-test
- * @tags quality
- *       reliability
+ * @tags maintainability
  *       correctness
  *       language-features
  *       external/cwe/cwe-570

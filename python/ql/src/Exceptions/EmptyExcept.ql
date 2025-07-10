@@ -2,9 +2,8 @@
  * @name Empty except
  * @description Except doesn't do anything and has no comment
  * @kind problem
- * @tags quality
- *       reliability
- *       error-handling
+ * @tags reliability
+ *       maintainability
  *       external/cwe/cwe-390
  * @problem.severity recommendation
  * @sub-severity high

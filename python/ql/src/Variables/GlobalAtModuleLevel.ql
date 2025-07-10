@@ -2,8 +2,7 @@
  * @name Use of 'global' at module level
  * @description Use of the 'global' statement at module level
  * @kind problem
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       useless-code
  * @problem.severity warning
  * @sub-severity low

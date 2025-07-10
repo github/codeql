@@ -48,12 +48,9 @@ module QualifiedName<QualifiedNameInputSig Input> {
     )
   }
 
-  language[monotonicAggregates]
   pragma[nomagic]
   private string getTypeArgumentsQualifiedName(ConstructedGeneric cg, int i) {
-    // Normally, `cg.getTypeArgument(i)` will be unique, and in those cases the line below
-    // is simply the same as `result = getFullName(cg.getTypeArgument(i))`.
-    result = strictconcat(Type t | t = cg.getTypeArgument(i) | getFullName(t), "/")
+    result = getFullName(cg.getTypeArgument(i))
   }
 
   /** Gets the concatenation of the `getFullName` of type arguments. */

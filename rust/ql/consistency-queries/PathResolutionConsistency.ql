@@ -10,17 +10,22 @@ private import codeql.rust.internal.PathResolution
 private import codeql.rust.internal.PathResolutionConsistency as PathResolutionConsistency
 private import codeql.rust.elements.Locatable
 private import codeql.Locations
+import PathResolutionConsistency
 
 class SourceLocatable extends Locatable {
-  SourceLocatable() { this.fromSource() }
+  Location getLocation() {
+    if super.getLocation().fromSource()
+    then result = super.getLocation()
+    else result instanceof EmptyLocation
+  }
 }
 
-query predicate multipleCallTargets(SourceLocatable a) {
-  PathResolutionConsistency::multipleCallTargets(a, _)
+query predicate multipleMethodCallTargets(SourceLocatable a, SourceLocatable b) {
+  PathResolutionConsistency::multipleMethodCallTargets(a, b)
 }
 
-query predicate multiplePathResolutions(SourceLocatable a) {
-  PathResolutionConsistency::multiplePathResolutions(a, _)
+query predicate multiplePathResolutions(SourceLocatable a, SourceLocatable b) {
+  PathResolutionConsistency::multiplePathResolutions(a, b)
 }
 
 query predicate multipleCanonicalPaths(SourceLocatable i, SourceLocatable c, string path) {

@@ -6,9 +6,8 @@
  * @problem.severity warning
  * @precision high
  * @id js/angular/missing-explicit-injection
- * @tags quality
- *       reliability
- *       correctness
+ * @tags correctness
+ *         maintainability
  *       frameworks/angularjs
  */
 

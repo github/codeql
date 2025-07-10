@@ -21,8 +21,6 @@ private module BasicTaintConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
-
-  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 }
 
 private module BasicTaintFlow = TaintTracking::Global<BasicTaintConfig>;

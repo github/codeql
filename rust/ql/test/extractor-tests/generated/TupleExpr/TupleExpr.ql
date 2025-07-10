@@ -2,12 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(TupleExpr x) { toBeTested(x) and not x.isUnknown() }
-
-query predicate getAttr(TupleExpr x, int index, Attr getAttr) {
-  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
-}
-
-query predicate getField(TupleExpr x, int index, Expr getField) {
-  toBeTested(x) and not x.isUnknown() and getField = x.getField(index)
-}
+from TupleExpr x, int getNumberOfAttrs, int getNumberOfFields
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  getNumberOfFields = x.getNumberOfFields()
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "getNumberOfFields:", getNumberOfFields

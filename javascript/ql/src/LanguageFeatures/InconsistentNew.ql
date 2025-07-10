@@ -6,8 +6,7 @@
  * @kind problem
  * @problem.severity warning
  * @id js/inconsistent-use-of-new
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       language-features
  * @precision very-high

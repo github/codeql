@@ -1,0 +1,11 @@
+| file://:0:0:0:0 | Foo | file://:0:0:0:0 | Swift |
+| file://:0:0:0:0 | Foo | file://:0:0:0:0 | SwiftOnoneSupport |
+| file://:0:0:0:0 | Foo | file://:0:0:0:0 | _Concurrency |
+| file://:0:0:0:0 | Foo | file://:0:0:0:0 | _StringProcessing |
+| file://:0:0:0:0 | Foo | file://:0:0:0:0 | _SwiftConcurrencyShims |
+| file://:0:0:0:0 | __ObjC | file://:0:0:0:0 | Swift |
+| file://:0:0:0:0 | default_module_name | file://:0:0:0:0 | Swift |
+| file://:0:0:0:0 | default_module_name | file://:0:0:0:0 | SwiftOnoneSupport |
+| file://:0:0:0:0 | default_module_name | file://:0:0:0:0 | _Concurrency |
+| file://:0:0:0:0 | default_module_name | file://:0:0:0:0 | _StringProcessing |
+| file://:0:0:0:0 | default_module_name | file://:0:0:0:0 | _SwiftConcurrencyShims |

@@ -1,12 +1,11 @@
 /**
  * @name Whitespace contradicts operator precedence
  * @description Nested expressions where the formatting contradicts the grouping enforced by operator precedence
- *              are difficult to read and may indicate a bug.
+ *              are difficult to read and may even indicate a bug.
  * @kind problem
  * @problem.severity warning
  * @id go/whitespace-contradicts-precedence
- * @tags quality
- *       reliability
+ * @tags maintainability
  *       correctness
  *       external/cwe/cwe-783
  * @precision very-high

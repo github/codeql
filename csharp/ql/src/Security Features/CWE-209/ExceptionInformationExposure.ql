@@ -59,8 +59,6 @@ module ExceptionInformationExposureConfig implements DataFlow::ConfigSig {
     // Do not flow through Message
     sanitizer.asExpr().getType().(RefType).getABaseType*() instanceof SystemExceptionClass
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

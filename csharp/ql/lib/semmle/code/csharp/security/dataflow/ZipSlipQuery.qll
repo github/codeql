@@ -457,8 +457,6 @@ private module ZipSlipConfig implements DataFlow::ConfigSig {
     // If the sink is a method call, and the source is an argument to that method call
     exists(MethodCall mc | succ.asExpr() = mc and pred.asExpr() = mc.getAnArgument())
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

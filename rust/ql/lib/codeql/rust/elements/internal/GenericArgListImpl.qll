@@ -26,7 +26,6 @@ module Impl {
     override string toAbbreviatedString() { result = "<...>" }
 
     /** Gets the `i`th type argument of this list. */
-    pragma[nomagic]
     TypeRepr getTypeArg(int i) {
       result =
         rank[i + 1](TypeRepr res, int j |
@@ -38,15 +37,5 @@ module Impl {
 
     /** Gets a type argument of this list. */
     TypeRepr getATypeArg() { result = this.getTypeArg(_) }
-
-    /** Gets the associated type argument with the given `name`, if any. */
-    pragma[nomagic]
-    TypeRepr getAssocTypeArg(string name) {
-      exists(AssocTypeArg arg |
-        arg = this.getAGenericArg() and
-        result = arg.getTypeRepr() and
-        name = arg.getIdentifier().getText()
-      )
-    }
   }
 }

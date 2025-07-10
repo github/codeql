@@ -6,8 +6,7 @@
  * @kind problem
  * @problem.severity error
  * @id js/nested-function-reference-in-default-parameter
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  * @precision very-high
  */

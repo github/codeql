@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for working with the `kotlinx.serialization` plugin.
  */
-overlay[local?]
-module;
 
 import java
 

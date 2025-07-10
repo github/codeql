@@ -4,8 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @id js/ignore-array-result
- * @tags quality
- *       reliability
+ * @tags maintainability
  *       correctness
  * @precision high
  */

@@ -23,8 +23,6 @@ module SqlInjection {
     }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
-
-    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Tracks taint flow for reasoning about SQL-injection vulnerabilities. */

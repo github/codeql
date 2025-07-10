@@ -14,7 +14,6 @@ packages = [
     "Amazon.Lambda.APIGatewayEvents",
     "Dapper",
     "EntityFramework",
-    "Microsoft.Data.SqlClient",
     "Newtonsoft.Json",
     "NHibernate",
     "System.Data.OleDb",

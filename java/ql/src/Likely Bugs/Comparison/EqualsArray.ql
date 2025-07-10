@@ -6,8 +6,7 @@
  * @problem.severity error
  * @precision very-high
  * @id java/equals-on-arrays
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  */
 

@@ -60,7 +60,11 @@ private predicate neverReturnsJQuery(string name) {
     decl.getBaseName() = "jQuery" and
     decl.getName() = name
   |
-    not decl.getDocumentation().getATagByTitle("return").getType().hasUnderlyingType("jQuery")
+    not decl.getDocumentation()
+        .getATagByTitle("return")
+        .getType()
+        .getAnUnderlyingType()
+        .hasQualifiedName("jQuery")
   )
 }
 
@@ -410,8 +414,6 @@ module JQuery {
         this = DataFlow::moduleImport(["jquery", "zepto", "cash-dom"])
         or
         this.hasUnderlyingType("JQueryStatic")
-        or
-        this.hasUnderlyingType("jquery", "")
       }
     }
   }

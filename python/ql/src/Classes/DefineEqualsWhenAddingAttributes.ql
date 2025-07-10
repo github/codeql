@@ -2,8 +2,7 @@
  * @name `__eq__` not overridden when adding attributes
  * @description When adding new attributes to instances of a class, equality for that class needs to be defined.
  * @kind problem
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  * @problem.severity warning
  * @sub-severity high

@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for reasoning about temporary file/directory creations.
  */
-overlay[local?]
-module;
 
 import java
 private import semmle.code.java.environment.SystemProperty

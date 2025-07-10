@@ -110,12 +110,9 @@ private string getTypeArgumentsToString(ConstructedGeneric cg) {
     strictconcat(Type t, int i | t = cg.getTypeArgument(i) | t.toStringWithTypes(), ", " order by i)
 }
 
-language[monotonicAggregates]
 pragma[nomagic]
 private string getTypeArgumentName(ConstructedGeneric cg, int i) {
-  // Normally, `cg.getTypeArgument(i)` will be unique, and in those cases the line below
-  // is simply the same as `result = cg.getTypeArgument(i).getName()`.
-  result = strictconcat(Type t | t = cg.getTypeArgument(i) | t.getName(), "/")
+  result = cg.getTypeArgument(i).getName()
 }
 
 /** Gets the concatenation of the `getName()` of type arguments. */

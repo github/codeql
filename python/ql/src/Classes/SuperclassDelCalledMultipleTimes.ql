@@ -2,8 +2,7 @@
  * @name Multiple calls to `__del__` during object destruction
  * @description A duplicated call to a super-class `__del__` method may lead to class instances not be cleaned up properly.
  * @kind problem
- * @tags quality
- *       reliability
+ * @tags efficiency
  *       correctness
  * @problem.severity warning
  * @sub-severity high

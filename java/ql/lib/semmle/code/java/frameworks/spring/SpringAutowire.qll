@@ -1,8 +1,6 @@
 /**
  * Provides classes and predicates for identifying methods and constructors called by Spring injection.
  */
-overlay[local?]
-module;
 
 import java
 import SpringComponentScan

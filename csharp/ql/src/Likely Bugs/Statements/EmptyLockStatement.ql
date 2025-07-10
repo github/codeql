@@ -6,10 +6,9 @@
  * @problem.severity warning
  * @precision high
  * @id cs/empty-lock-statement
- * @tags quality
- *       reliability
+ * @tags changeability
+ *       readability
  *       concurrency
- *       changeability
  *       language-features
  *       external/cwe/cwe-585
  */

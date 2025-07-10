@@ -5,76 +5,75 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
 private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstanceBase
 private import AlgToAVCFlow
 
-predicate knownOpenSslConstantToHashFamilyType(
-  KnownOpenSslHashAlgorithmExpr e, Crypto::THashType type
+predicate knownOpenSSLConstantToHashFamilyType(
+  KnownOpenSSLHashAlgorithmConstant e, Crypto::THashType type
 ) {
   exists(string name |
-    name = e.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
+    name = e.getNormalizedName() and
     (
-      name = "BLAKE2B" and type instanceof Crypto::BLAKE2B
+      name.matches("BLAKE2B") and type instanceof Crypto::BLAKE2B
       or
-      name = "BLAKE2S" and type instanceof Crypto::BLAKE2S
+      name.matches("BLAKE2S") and type instanceof Crypto::BLAKE2S
       or
-      name.matches("GOST%") and type instanceof Crypto::GOST_HASH
+      name.matches("GOST%") and type instanceof Crypto::GOSTHash
       or
-      name = "MD2" and type instanceof Crypto::MD2
+      name.matches("MD2") and type instanceof Crypto::MD2
       or
-      name = "MD4" and type instanceof Crypto::MD4
+      name.matches("MD4") and type instanceof Crypto::MD4
       or
-      name = "MD5" and type instanceof Crypto::MD5
+      name.matches("MD5") and type instanceof Crypto::MD5
       or
-      name = "MDC2" and type instanceof Crypto::MDC2
+      name.matches("MDC2") and type instanceof Crypto::MDC2
       or
-      name = "POLY1305" and type instanceof Crypto::POLY1305
+      name.matches("POLY1305") and type instanceof Crypto::POLY1305
       or
       name.matches(["SHA", "SHA1"]) and type instanceof Crypto::SHA1
       or
-      name.matches("SHA_%") and not name.matches(["SHA1", "SHA3-"]) and type instanceof Crypto::SHA2
+      name.matches("SHA+%") and not name.matches(["SHA1", "SHA3-"]) and type instanceof Crypto::SHA2
       or
       name.matches("SHA3-%") and type instanceof Crypto::SHA3
       or
-      name = "SHAKE" and type instanceof Crypto::SHAKE
+      name.matches(["SHAKE"]) and type instanceof Crypto::SHAKE
       or
-      name = "SM3" and type instanceof Crypto::SM3
+      name.matches("SM3") and type instanceof Crypto::SM3
       or
-      name = "RIPEMD160" and type instanceof Crypto::RIPEMD160
+      name.matches("RIPEMD160") and type instanceof Crypto::RIPEMD160
       or
-      name = "WHIRLPOOL" and type instanceof Crypto::WHIRLPOOL
+      name.matches("WHIRLPOOL") and type instanceof Crypto::WHIRLPOOL
     )
   )
 }
 
-class KnownOpenSslHashConstantAlgorithmInstance extends OpenSslAlgorithmInstance,
-  Crypto::HashAlgorithmInstance instanceof KnownOpenSslHashAlgorithmExpr
+class KnownOpenSSLHashConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
+  Crypto::HashAlgorithmInstance instanceof KnownOpenSSLHashAlgorithmConstant
 {
-  OpenSslAlgorithmValueConsumer getterCall;
+  OpenSSLAlgorithmValueConsumer getterCall;
 
-  KnownOpenSslHashConstantAlgorithmInstance() {
+  KnownOpenSSLHashConstantAlgorithmInstance() {
     // Two possibilities:
     // 1) The source is a literal and flows to a getter, then we know we have an instance
-    // 2) The source is a KnownOpenSslAlgorithm is call, and we know we have an instance immediately from that
+    // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
     // Possibility 1:
-    this instanceof OpenSslAlgorithmLiteral and
+    this instanceof Literal and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
-      sink = getterCall.getInputNode() and
+      sink = getterCall.(OpenSSLAlgorithmValueConsumer).getInputNode() and
       // Source is `this`
       src.asExpr() = this and
       // This traces to a getter
-      KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
+      KnownOpenSSLAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
     )
     or
     // Possibility 2:
-    this instanceof OpenSslAlgorithmCall and
-    getterCall = this
+    this instanceof DirectAlgorithmValueConsumer and getterCall = this
   }
 
-  override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
+  override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
 
   override Crypto::THashType getHashFamily() {
-    knownOpenSslConstantToHashFamilyType(this, result)
+    knownOpenSSLConstantToHashFamilyType(this, result)
     or
-    not knownOpenSslConstantToHashFamilyType(this, _) and result = Crypto::OtherHashType()
+    not knownOpenSSLConstantToHashFamilyType(this, _) and result = Crypto::OtherHashType()
   }
 
   override string getRawHashAlgorithmName() {
@@ -84,6 +83,6 @@ class KnownOpenSslHashConstantAlgorithmInstance extends OpenSslAlgorithmInstance
   }
 
   override int getFixedDigestLength() {
-    this.(KnownOpenSslHashAlgorithmExpr).getExplicitDigestLength() = result
+    this.(KnownOpenSSLHashAlgorithmConstant).getExplicitDigestLength() = result
   }
 }

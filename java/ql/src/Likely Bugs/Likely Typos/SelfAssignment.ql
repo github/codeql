@@ -5,8 +5,7 @@
  * @problem.severity error
  * @precision very-high
  * @id java/redundant-assignment
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       logic
  */

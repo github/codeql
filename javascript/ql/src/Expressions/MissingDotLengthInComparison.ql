@@ -6,9 +6,7 @@
  * @problem.severity warning
  * @id js/missing-dot-length-in-comparison
  * @precision high
- * @tags quality
- *       reliability
- *       correctness
+ * @tags correctness
  */
 
 import javascript

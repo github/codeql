@@ -1,6 +1,3 @@
-overlay[local?]
-module;
-
 import semmle.code.java.Expr
 import semmle.code.java.dataflow.SSA
 import semmle.code.java.controlflow.Guards

@@ -6,8 +6,7 @@
  * @kind problem
  * @problem.severity error
  * @id js/non-linear-pattern
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       language-features
  * @precision very-high

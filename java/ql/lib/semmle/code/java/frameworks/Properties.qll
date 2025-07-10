@@ -1,6 +1,4 @@
 /** Definitions related to `java.util.Properties`. */
-overlay[local?]
-module;
 
 import semmle.code.java.Type
 private import semmle.code.java.dataflow.FlowSteps

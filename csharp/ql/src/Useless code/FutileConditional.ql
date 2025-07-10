@@ -5,10 +5,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id cs/useless-if-statement
- * @tags quality
- *       maintainability
+ * @tags reliability
  *       readability
- *       useless-code
  */
 
 import csharp

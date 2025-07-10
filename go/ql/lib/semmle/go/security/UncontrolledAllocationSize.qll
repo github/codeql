@@ -27,8 +27,6 @@ module UncontrolledAllocationSize {
         node2 = cn.getResult(0)
       )
     }
-
-    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Tracks taint flow for reasoning about uncontrolled allocation size issues. */

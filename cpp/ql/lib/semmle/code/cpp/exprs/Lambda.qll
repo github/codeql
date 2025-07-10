@@ -41,17 +41,12 @@ class LambdaExpression extends Expr, @lambdaexpr {
    *   - "&amp;" if capture-by-reference is the default for implicit captures.
    *   - "=" if capture-by-value is the default for implicit captures.
    */
-  string getDefaultCaptureMode() { lambdas(underlyingElement(this), result, _, _) }
+  string getDefaultCaptureMode() { lambdas(underlyingElement(this), result, _) }
 
   /**
    * Holds if the return type (of the call operator of the resulting object) was explicitly specified.
    */
-  predicate returnTypeIsExplicit() { lambdas(underlyingElement(this), _, true, _) }
-
-  /**
-   * Holds if the lambda has an explicitly specified parameter list, even when empty.
-   */
-  predicate hasParameterList() { lambdas(underlyingElement(this), _, _, true) }
+  predicate returnTypeIsExplicit() { lambdas(underlyingElement(this), _, true) }
 
   /**
    * Gets the function which will be invoked when the resulting object is called.

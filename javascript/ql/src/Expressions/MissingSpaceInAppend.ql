@@ -7,9 +7,7 @@
  * @problem.severity warning
  * @precision very-high
  * @id js/missing-space-in-concatenation
- * @tags quality
- *       maintainability
- *       readability
+ * @tags readability
  */
 
 import javascript

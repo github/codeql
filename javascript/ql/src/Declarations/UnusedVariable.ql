@@ -5,9 +5,7 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/unused-local-variable
- * @tags quality
- *       maintainability
- *       useless-code
+ * @tags maintainability
  * @precision very-high
  */
 

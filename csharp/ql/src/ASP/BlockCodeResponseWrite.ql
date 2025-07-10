@@ -5,9 +5,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/asp/response-write
- * @tags quality
- *       maintainability
- *       readability
+ * @tags maintainability
  *       frameworks/asp.net
  */
 

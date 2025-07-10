@@ -49,8 +49,6 @@ module HardcodedCredentialApiCallConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node n) {
     n.asExpr().(MethodCall).getMethod() instanceof MethodSystemGetenv
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

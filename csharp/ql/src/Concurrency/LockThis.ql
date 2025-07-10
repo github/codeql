@@ -6,9 +6,8 @@
  * @problem.severity warning
  * @precision high
  * @id cs/lock-this
- * @tags quality
- *       reliability
- *       concurrency
+ * @tags reliability
+ *       maintainability
  *       modularity
  *       external/cwe/cwe-662
  */

@@ -1,6 +1,4 @@
 /** Definitions used by `SqlConcatenated.ql`. */
-overlay[local?]
-module;
 
 import semmle.code.java.security.ControlledString
 import semmle.code.java.dataflow.TaintTracking

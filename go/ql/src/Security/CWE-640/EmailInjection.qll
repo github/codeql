@@ -20,8 +20,6 @@ module EmailInjection {
     predicate isSource(DataFlow::Node source) { source instanceof Source }
 
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Tracks taint flow for reasoning about email-injection vulnerabilities. */

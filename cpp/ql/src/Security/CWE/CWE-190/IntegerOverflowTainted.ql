@@ -94,8 +94,6 @@ module Config implements DataFlow::ConfigSig {
       not iTo instanceof PointerArithmeticInstruction
     )
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module Flow = TaintTracking::Global<Config>;

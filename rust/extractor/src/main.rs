@@ -103,7 +103,6 @@ impl<'a> Extractor<'a> {
             }
         }
         translator.emit_source_file(&ast);
-        translator.emit_truncated_diagnostics_message();
         translator.trap.commit().unwrap_or_else(|err| {
             error!(
                 "Failed to write trap file for: {}: {}",
@@ -168,19 +167,9 @@ impl<'a> Extractor<'a> {
         let Some(id) = path_to_file_id(file, vfs) else {
             return Err("not included in files loaded from manifest".to_string());
         };
-        match semantics.file_to_module_def(id) {
-            None => return Err("not included as a module".to_string()),
-            Some(module)
-                if module
-                    .as_source_file_id(semantics.db)
-                    .is_none_or(|mod_file_id| mod_file_id.file_id(semantics.db) != id) =>
-            {
-                return Err(
-                    "not loaded as its own module, probably included by `!include`".to_string(),
-                );
-            }
-            _ => {}
-        };
+        if semantics.file_to_module_def(id).is_none() {
+            return Err("not included as a module".to_string());
+        }
         self.steps.push(ExtractionStep::load_source(before, file));
         Ok(())
     }

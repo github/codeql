@@ -44,8 +44,6 @@ module UnsafeUnzipSymlink {
     predicate isSink(DataFlow::Node sink) { sink instanceof SymlinkSink }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof SymlinkSanitizer }
-
-    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /**

@@ -5,8 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @id js/shift-out-of-range
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       external/cwe/cwe-197
  * @precision very-high
