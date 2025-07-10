@@ -67,19 +67,26 @@ pub fn default_subscriber_with_level(
             ),
         )
 }
-pub fn populate_file(writer: &mut trap::Writer, absolute_path: &Path) -> trap::Label {
+pub fn populate_file(
+    writer: &mut trap::Writer,
+    absolute_path: &Path,
+    transformer: Option<&file_paths::PathTransformer>,
+) -> trap::Label {
     let (file_label, fresh) = writer.global_id(&trap::full_id_for_file(
-        &file_paths::normalize_path(absolute_path),
+        &file_paths::normalize_and_transform_path(absolute_path, transformer),
     ));
     if fresh {
         writer.add_tuple(
             "files",
             vec![
                 trap::Arg::Label(file_label),
-                trap::Arg::String(file_paths::normalize_path(absolute_path)),
+                trap::Arg::String(file_paths::normalize_and_transform_path(
+                    absolute_path,
+                    transformer,
+                )),
             ],
         );
-        populate_parent_folders(writer, file_label, absolute_path.parent());
+        populate_parent_folders(writer, file_label, absolute_path.parent(), transformer);
     }
     file_label
 }
@@ -117,6 +124,7 @@ pub fn populate_parent_folders(
     writer: &mut trap::Writer,
     child_label: trap::Label,
     path: Option<&Path>,
+    transformer: Option<&file_paths::PathTransformer>,
 ) {
     let mut path = path;
     let mut child_label = child_label;
@@ -124,9 +132,9 @@ pub fn populate_parent_folders(
         match path {
             None => break,
             Some(folder) => {
-                let (folder_label, fresh) = writer.global_id(&trap::full_id_for_folder(
-                    &file_paths::normalize_path(folder),
-                ));
+                let parent = folder.parent();
+                let folder = file_paths::normalize_and_transform_path(folder, transformer);
+                let (folder_label, fresh) = writer.global_id(&trap::full_id_for_folder(&folder));
                 writer.add_tuple(
                     "containerparent",
                     vec![
@@ -137,12 +145,9 @@ pub fn populate_parent_folders(
                 if fresh {
                     writer.add_tuple(
                         "folders",
-                        vec![
-                            trap::Arg::Label(folder_label),
-                            trap::Arg::String(file_paths::normalize_path(folder)),
-                        ],
+                        vec![trap::Arg::Label(folder_label), trap::Arg::String(folder)],
                     );
-                    path = folder.parent();
+                    path = parent;
                     child_label = folder_label;
                 } else {
                     break;
@@ -205,11 +210,12 @@ pub fn extract(
     schema: &NodeTypeMap,
     diagnostics_writer: &mut diagnostics::LogWriter,
     trap_writer: &mut trap::Writer,
+    transformer: Option<&file_paths::PathTransformer>,
     path: &Path,
     source: &[u8],
     ranges: &[Range],
 ) {
-    let path_str = file_paths::normalize_path(path);
+    let path_str = file_paths::normalize_and_transform_path(path, transformer);
     let span = tracing::span!(
         tracing::Level::TRACE,
         "extract",
@@ -225,7 +231,7 @@ pub fn extract(
     parser.set_included_ranges(ranges).unwrap();
     let tree = parser.parse(source, None).expect("Failed to parse file");
     trap_writer.comment(format!("Auto-generated TRAP file for {}", path_str));
-    let file_label = populate_file(trap_writer, path);
+    let file_label = populate_file(trap_writer, path, transformer);
     let mut visitor = Visitor::new(
         source,
         diagnostics_writer,

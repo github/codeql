@@ -95,9 +95,9 @@ module Impl {
       not text.charAt(0).isUppercase() and
       // exclude parameters from functions without a body as these are trait method declarations
       // without implementations
-      not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = pat) and
+      not exists(Function f | not f.hasBody() and f.getAParam().getPat() = pat) and
       // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
-      not exists(FnPtrTypeRepr fp | fp.getParamList().getParam(_).getPat() = pat)
+      not exists(FnPtrTypeRepr fp | fp.getParamList().getAParam().getPat() = pat)
     )
   }
 
@@ -126,6 +126,9 @@ module Impl {
      * Normally, the name is unique, except when introduced in an or pattern.
      */
     Name getName() { variableDecl(definingNode, result, text) }
+
+    /** Gets the block that encloses this variable, if any. */
+    BlockExpr getEnclosingBlock() { result = definingNode.getEnclosingBlock() }
 
     /** Gets the `self` parameter that declares this variable, if any. */
     SelfParam getSelfParam() { result.getName() = this.getName() }

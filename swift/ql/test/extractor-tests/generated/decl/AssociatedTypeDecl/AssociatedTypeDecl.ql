@@ -2,16 +2,24 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  AssociatedTypeDecl x, ModuleDecl getModule, int getNumberOfMembers, Type getInterfaceType,
-  string getName, int getNumberOfInheritedTypes
-where
+query predicate instances(
+  AssociatedTypeDecl x, string getModule__label, ModuleDecl getModule,
+  string getInterfaceType__label, Type getInterfaceType, string getName__label, string getName
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getModule__label = "getModule:" and
   getModule = x.getModule() and
-  getNumberOfMembers = x.getNumberOfMembers() and
+  getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType() and
-  getName = x.getName() and
-  getNumberOfInheritedTypes = x.getNumberOfInheritedTypes()
-select x, "getModule:", getModule, "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:",
-  getInterfaceType, "getName:", getName, "getNumberOfInheritedTypes:", getNumberOfInheritedTypes
+  getName__label = "getName:" and
+  getName = x.getName()
+}
+
+query predicate getMember(AssociatedTypeDecl x, int index, Decl getMember) {
+  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
+}
+
+query predicate getInheritedType(AssociatedTypeDecl x, int index, Type getInheritedType) {
+  toBeTested(x) and not x.isUnknown() and getInheritedType = x.getInheritedType(index)
+}

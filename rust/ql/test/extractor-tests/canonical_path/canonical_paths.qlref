@@ -1,0 +1,2 @@
+query: canonical_paths.ql
+postprocess: utils/test/ExternalLocationPostProcessing.ql

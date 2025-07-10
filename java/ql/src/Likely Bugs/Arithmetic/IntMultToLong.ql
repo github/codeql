@@ -6,10 +6,10 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/integer-multiplication-cast-to-long
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       types
- *       quality
  *       external/cwe/cwe-190
  *       external/cwe/cwe-192
  *       external/cwe/cwe-197

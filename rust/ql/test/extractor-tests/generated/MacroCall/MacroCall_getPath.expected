@@ -1,2 +1,0 @@
-| gen_macro_call.rs:7:5:7:29 | println!... | gen_macro_call.rs:7:5:7:11 | println |
-| gen_macro_call.rs:7:14:7:28 | ...::format_args_nl!... | gen_macro_call.rs:7:5:7:29 | ...::format_args_nl |

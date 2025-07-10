@@ -7,10 +7,13 @@
 | file://:0:0:0:0 | _Complex _Float64 | _Complex _Float64 |
 | file://:0:0:0:0 | _Complex _Float64x | _Complex _Float64x |
 | file://:0:0:0:0 | _Complex _Float128 | _Complex _Float128 |
+| file://:0:0:0:0 | _Complex __bf16 | _Complex __bf16 |
 | file://:0:0:0:0 | _Complex __float128 | _Complex __float128 |
+| file://:0:0:0:0 | _Complex __fp16 | _Complex __fp16 |
 | file://:0:0:0:0 | _Complex double | _Complex double |
 | file://:0:0:0:0 | _Complex float | _Complex float |
 | file://:0:0:0:0 | _Complex long double | _Complex long double |
+| file://:0:0:0:0 | _Complex std::float16_t | _Complex std::float16_t |
 | file://:0:0:0:0 | _Decimal32 | _Decimal32 |
 | file://:0:0:0:0 | _Decimal64 | _Decimal64 |
 | file://:0:0:0:0 | _Decimal128 | _Decimal128 |
@@ -23,10 +26,12 @@
 | file://:0:0:0:0 | _Imaginary double | _Imaginary double |
 | file://:0:0:0:0 | _Imaginary float | _Imaginary float |
 | file://:0:0:0:0 | _Imaginary long double | _Imaginary long double |
+| file://:0:0:0:0 | __SVCount_t | __SVCount_t |
 | file://:0:0:0:0 | __bf16 | __bf16 |
 | file://:0:0:0:0 | __float128 | __float128 |
 | file://:0:0:0:0 | __fp16 | __fp16 |
 | file://:0:0:0:0 | __int128 | __int128 |
+| file://:0:0:0:0 | __mfp8 | __mfp8 |
 | file://:0:0:0:0 | __va_list_tag & | __va_list_tag & |
 | file://:0:0:0:0 | __va_list_tag && | __va_list_tag && |
 | file://:0:0:0:0 | auto | auto |

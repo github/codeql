@@ -2,7 +2,8 @@
  * @name Mutation of descriptor in `__get__` or `__set__` method.
  * @description Descriptor objects can be shared across many instances. Mutating them can cause strange side effects or race conditions.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low

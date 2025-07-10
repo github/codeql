@@ -5,7 +5,7 @@ public class SAXBuilderTests {
 
   public void unconfiguredSAXBuilder(Socket sock) throws Exception {
     SAXBuilder builder = new SAXBuilder();
-    builder.build(sock.getInputStream()); // $ hasTaintFlow
+    builder.build(sock.getInputStream()); // $ Alert
   }
 
   public void safeBuilder(Socket sock) throws Exception {
@@ -17,6 +17,6 @@ public class SAXBuilderTests {
   public void misConfiguredBuilder(Socket sock) throws Exception {
     SAXBuilder builder = new SAXBuilder();
     builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
-    builder.build(sock.getInputStream()); // $ hasTaintFlow
+    builder.build(sock.getInputStream()); // $ Alert
   }
 }

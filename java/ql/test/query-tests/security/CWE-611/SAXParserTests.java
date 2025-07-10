@@ -10,7 +10,7 @@ public class SAXParserTests {
   public void unconfiguredParser(Socket sock) throws Exception {
     SAXParserFactory factory = SAXParserFactory.newInstance();
     SAXParser parser = factory.newSAXParser();
-    parser.parse(sock.getInputStream(), new DefaultHandler()); // $ hasTaintFlow
+    parser.parse(sock.getInputStream(), new DefaultHandler()); // $ Alert
   }
 
   public void safeParser(Socket sock) throws Exception {
@@ -27,7 +27,7 @@ public class SAXParserTests {
     factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
     factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
     SAXParser parser = factory.newSAXParser();
-    parser.parse(sock.getInputStream(), new DefaultHandler()); // $ hasTaintFlow
+    parser.parse(sock.getInputStream(), new DefaultHandler()); // $ Alert
   }
 
   public void partialConfiguredParser2(Socket sock) throws Exception {
@@ -35,7 +35,7 @@ public class SAXParserTests {
     factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
     factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
     SAXParser parser = factory.newSAXParser();
-    parser.parse(sock.getInputStream(), new DefaultHandler()); // $ hasTaintFlow
+    parser.parse(sock.getInputStream(), new DefaultHandler()); // $ Alert
   }
 
   public void partialConfiguredParser3(Socket sock) throws Exception {
@@ -43,7 +43,7 @@ public class SAXParserTests {
     factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
     factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
     SAXParser parser = factory.newSAXParser();
-    parser.parse(sock.getInputStream(), new DefaultHandler()); // $ hasTaintFlow
+    parser.parse(sock.getInputStream(), new DefaultHandler()); // $ Alert
   }
 
   public void misConfiguredParser1(Socket sock) throws Exception {
@@ -52,7 +52,7 @@ public class SAXParserTests {
     factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
     factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
     SAXParser parser = factory.newSAXParser();
-    parser.parse(sock.getInputStream(), new DefaultHandler()); // $ hasTaintFlow
+    parser.parse(sock.getInputStream(), new DefaultHandler()); // $ Alert
   }
 
   public void misConfiguredParser2(Socket sock) throws Exception {
@@ -61,7 +61,7 @@ public class SAXParserTests {
     factory.setFeature("http://xml.org/sax/features/external-parameter-entities", true);
     factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
     SAXParser parser = factory.newSAXParser();
-    parser.parse(sock.getInputStream(), new DefaultHandler()); // $ hasTaintFlow
+    parser.parse(sock.getInputStream(), new DefaultHandler()); // $ Alert
   }
 
   public void misConfiguredParser3(Socket sock) throws Exception {
@@ -70,7 +70,7 @@ public class SAXParserTests {
     factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
     factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", true);
     SAXParser parser = factory.newSAXParser();
-    parser.parse(sock.getInputStream(), new DefaultHandler()); // $ hasTaintFlow
+    parser.parse(sock.getInputStream(), new DefaultHandler()); // $ Alert
   }
 
   public void safeParser2(Socket sock) throws Exception {

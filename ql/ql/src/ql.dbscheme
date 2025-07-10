@@ -108,6 +108,12 @@ yaml_locations(unique int locatable: @yaml_locatable ref,
 
 @yaml_locatable = @yaml_node | @yaml_error;
 
+/*- Database metadata -*/
+databaseMetadata(
+  string metadataKey: string ref,
+  string value: string ref
+);
+
 /*- QL dbscheme -*/
 @ql_add_expr_left_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
 

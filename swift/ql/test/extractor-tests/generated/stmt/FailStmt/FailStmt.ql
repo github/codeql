@@ -2,6 +2,4 @@
 import codeql.swift.elements
 import TestUtils
 
-from FailStmt x
-where toBeTested(x) and not x.isUnknown()
-select x
+query predicate instances(FailStmt x) { toBeTested(x) and not x.isUnknown() }

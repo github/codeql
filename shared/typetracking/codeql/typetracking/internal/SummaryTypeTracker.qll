@@ -3,6 +3,8 @@
  * To use this, you must implement the `Input` signature. You can then use the predicates in the `Output`
  * signature to implement the predicates of the same names inside `TypeTrackerSpecific.qll`.
  */
+overlay[local?]
+module;
 
 /** The classes and predicates needed to generate type-tracking steps from summaries. */
 signature module Input {

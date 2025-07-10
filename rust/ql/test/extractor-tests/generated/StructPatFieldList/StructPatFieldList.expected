@@ -1,1 +1,6 @@
-| gen_struct_pat_field_list.rs:7:13:7:20 | StructPatFieldList | getNumberOfFields: | 2 | hasRestPat: | no |
+instances
+| gen_struct_pat_field_list.rs:7:13:7:20 | StructPatFieldList |
+getField
+| gen_struct_pat_field_list.rs:7:13:7:20 | StructPatFieldList | 0 | gen_struct_pat_field_list.rs:7:15:7:15 | ... |
+| gen_struct_pat_field_list.rs:7:13:7:20 | StructPatFieldList | 1 | gen_struct_pat_field_list.rs:7:18:7:18 | ... |
+getRestPat

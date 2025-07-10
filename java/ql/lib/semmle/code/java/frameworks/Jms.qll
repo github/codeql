@@ -1,4 +1,6 @@
 /** Provides definitions for working with the JMS library. */
+overlay[local?]
+module;
 
 import java
 

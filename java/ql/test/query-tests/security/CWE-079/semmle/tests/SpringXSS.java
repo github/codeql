@@ -13,17 +13,17 @@ import java.util.Optional;
 public class SpringXSS {
 
   @GetMapping
-  public static ResponseEntity<String> specificContentType(boolean safeContentType, boolean chainDirectly, String userControlled) {
+  public static ResponseEntity<String> specificContentType(boolean safeContentType, boolean chainDirectly, String userControlled) { // $ Source
 
     ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
 
     if(!safeContentType) {
       if(chainDirectly) {
-        return builder.contentType(MediaType.TEXT_HTML).body(userControlled); // $ xss
+        return builder.contentType(MediaType.TEXT_HTML).body(userControlled); // $ Alert
       }
       else {
         ResponseEntity.BodyBuilder builder2 = builder.contentType(MediaType.TEXT_HTML);
-        return builder2.body(userControlled); // $ xss
+        return builder2.body(userControlled); // $ Alert
       }
     }
     else {
@@ -59,23 +59,23 @@ public class SpringXSS {
   }
 
   @GetMapping(value = "/xyz", produces = MediaType.TEXT_HTML_VALUE)
-  public static ResponseEntity<String> methodContentTypeUnsafe(String userControlled) {
-    return ResponseEntity.ok(userControlled); // $ xss
+  public static ResponseEntity<String> methodContentTypeUnsafe(String userControlled) { // $ Source
+    return ResponseEntity.ok(userControlled); // $ Alert
   }
 
   @GetMapping(value = "/xyz", produces = "text/html")
-  public static ResponseEntity<String> methodContentTypeUnsafeStringLiteral(String userControlled) {
-    return ResponseEntity.ok(userControlled); // $ xss
+  public static ResponseEntity<String> methodContentTypeUnsafeStringLiteral(String userControlled) { // $ Source
+    return ResponseEntity.ok(userControlled); // $ Alert
   }
 
   @GetMapping(value = "/xyz", produces = {MediaType.TEXT_HTML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-  public static ResponseEntity<String> methodContentTypeMaybeSafe(String userControlled) {
-    return ResponseEntity.ok(userControlled); // $ xss
+  public static ResponseEntity<String> methodContentTypeMaybeSafe(String userControlled) { // $ Source
+    return ResponseEntity.ok(userControlled); // $ Alert
   }
 
   @GetMapping(value = "/xyz", produces = MediaType.APPLICATION_JSON_VALUE)
-  public static ResponseEntity<String> methodContentTypeSafeOverriddenWithUnsafe(String userControlled) {
-    return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(userControlled); // $ xss
+  public static ResponseEntity<String> methodContentTypeSafeOverriddenWithUnsafe(String userControlled) { // $ Source
+    return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(userControlled); // $ Alert
   }
 
   @GetMapping(value = "/xyz", produces = MediaType.TEXT_HTML_VALUE)
@@ -84,17 +84,17 @@ public class SpringXSS {
   }
 
   @GetMapping(value = "/xyz", produces = {"text/html", "application/json"})
-  public static ResponseEntity<String> methodContentTypeMaybeSafeStringLiterals(String userControlled, int constructionMethod) {
+  public static ResponseEntity<String> methodContentTypeMaybeSafeStringLiterals(String userControlled, int constructionMethod) { // $ Source
     // Also try out some alternative constructors for the ResponseEntity:
     switch(constructionMethod) {
       case 0:
-      return ResponseEntity.ok(userControlled); // $ xss
+      return ResponseEntity.ok(userControlled); // $ Alert
       case 1:
-      return ResponseEntity.of(Optional.of(userControlled)); // $ xss
+      return ResponseEntity.of(Optional.of(userControlled)); // $ Alert
       case 2:
-      return ResponseEntity.ok().body(userControlled); // $ xss
+      return ResponseEntity.ok().body(userControlled); // $ Alert
       case 3:
-      return new ResponseEntity<String>(userControlled, HttpStatus.OK); // $ xss
+      return new ResponseEntity<String>(userControlled, HttpStatus.OK); // $ Alert
       default:
       return null;
     }
@@ -114,13 +114,13 @@ public class SpringXSS {
     }
 
     @GetMapping(value = "/xyz", produces = {"text/html"})
-    public ResponseEntity<String> overridesWithUnsafe(String userControlled) {
-      return ResponseEntity.ok(userControlled); // $ xss
+    public ResponseEntity<String> overridesWithUnsafe(String userControlled) { // $ Source
+      return ResponseEntity.ok(userControlled); // $ Alert
     }
 
     @GetMapping(value = "/abc")
-    public ResponseEntity<String> overridesWithUnsafe2(String userControlled) {
-      return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(userControlled); // $ xss
+    public ResponseEntity<String> overridesWithUnsafe2(String userControlled) { // $ Source
+      return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(userControlled); // $ Alert
     }
   }
 
@@ -128,13 +128,13 @@ public class SpringXSS {
   @RequestMapping(produces = {"text/html"})
   private static class ClassContentTypeUnsafe {
     @GetMapping(value = "/abc")
-    public ResponseEntity<String> test(String userControlled) {
-      return ResponseEntity.ok(userControlled); // $ xss
+    public ResponseEntity<String> test(String userControlled) { // $ Source
+      return ResponseEntity.ok(userControlled); // $ Alert
     }
 
     @GetMapping(value = "/abc")
-    public String testDirectReturn(String userControlled) {
-      return userControlled; // $ xss
+    public String testDirectReturn(String userControlled) { // $ Source
+      return userControlled; // $ Alert
     }
 
     @GetMapping(value = "/xyz", produces = {"application/json"})
@@ -149,13 +149,13 @@ public class SpringXSS {
   }
 
   @GetMapping(value = "/abc")
-  public static ResponseEntity<String> entityWithNoMediaType(String userControlled) {
-    return ResponseEntity.ok(userControlled); // $ xss
+  public static ResponseEntity<String> entityWithNoMediaType(String userControlled) { // $ Source
+    return ResponseEntity.ok(userControlled); // $ Alert
   }
 
   @GetMapping(value = "/abc")
-  public static String stringWithNoMediaType(String userControlled) {
-    return userControlled; // $ xss
+  public static String stringWithNoMediaType(String userControlled) { // $ Source
+    return userControlled; // $ Alert
   }
 
   @GetMapping(value = "/abc")

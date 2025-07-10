@@ -6,9 +6,9 @@
  * @problem.severity error
  * @precision high
  * @id java/unchecked-cast-in-equals
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       quality
  */
 
 import java

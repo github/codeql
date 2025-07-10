@@ -503,7 +503,7 @@ fn phi_read(b1 : bool, b2 : bool) {
     }
 }
 
-#[derive(Debug)]
+
 struct MyStruct {
     val: i64,
 }

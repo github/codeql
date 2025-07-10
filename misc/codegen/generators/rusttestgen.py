@@ -42,7 +42,9 @@ def _get_code(doc: list[str]) -> list[str]:
                 code.append(f"// {line}")
             case _, True:
                 code.append(line)
-    assert not adding_code, "Unterminated code block in docstring:\n  " + "\n  ".join(doc)
+    assert not adding_code, "Unterminated code block in docstring:\n  " + "\n  ".join(
+        doc
+    )
     if has_code:
         return code
     return []
@@ -51,15 +53,18 @@ def _get_code(doc: list[str]) -> list[str]:
 def generate(opts, renderer):
     assert opts.ql_test_output
     schema = schemaloader.load_file(opts.schema)
-    with renderer.manage(generated=opts.ql_test_output.rglob("gen_*.rs"),
-                         stubs=(),
-                         registry=opts.ql_test_output / ".generated_tests.list",
-                         force=opts.force) as renderer:
+    with renderer.manage(
+        generated=opts.ql_test_output.rglob("gen_*.rs"),
+        stubs=(),
+        registry=opts.ql_test_output / ".generated_tests.list",
+        force=opts.force,
+    ) as renderer:
+
+        resolver = qlgen.Resolver(schema.classes)
         for cls in schema.classes.values():
             if cls.imported:
                 continue
-            if (qlgen.should_skip_qltest(cls, schema.classes) or
-                    "rust_skip_doc_test" in cls.pragmas):
+            if resolver.should_skip_qltest(cls) or "rust_skip_doc_test" in cls.pragmas:
                 continue
             code = _get_code(cls.doc)
             for p in schema.iter_properties(cls.name):
@@ -79,5 +84,10 @@ def generate(opts, renderer):
                 code = [indent + l for l in code]
             test_with_name = typing.cast(str, cls.pragmas.get("qltest_test_with"))
             test_with = schema.classes[test_with_name] if test_with_name else cls
-            test = opts.ql_test_output / test_with.group / test_with.name / f"gen_{test_name}.rs"
+            test = (
+                opts.ql_test_output
+                / test_with.group
+                / test_with.name
+                / f"gen_{test_name}.rs"
+            )
             renderer.render(TestCode(code="\n".join(code), function=fn), test)

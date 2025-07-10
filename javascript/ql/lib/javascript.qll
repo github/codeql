@@ -92,6 +92,7 @@ import semmle.javascript.frameworks.DigitalOcean
 import semmle.javascript.frameworks.DomEvents
 import semmle.javascript.frameworks.Electron
 import semmle.javascript.frameworks.EventEmitter
+import semmle.javascript.frameworks.Execa
 import semmle.javascript.frameworks.Files
 import semmle.javascript.frameworks.Firebase
 import semmle.javascript.frameworks.FormParsers

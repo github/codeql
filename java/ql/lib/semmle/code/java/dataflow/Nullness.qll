@@ -6,6 +6,8 @@
  * hold, so results guarded by, for example, `assert x != null;` or
  * `if (x == null) { assert false; }` are excluded.
  */
+overlay[local?]
+module;
 
 /*
  * Implementation details:
@@ -141,11 +143,9 @@ private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
 private ControlFlowNode ensureNotNull(SsaVariable v) {
   result = varDereference(v, _)
   or
-  result.asStmt().(AssertStmt).getExpr() = nullGuard(v, true, false)
+  exists(AssertTrueMethod m | result.asCall() = m.getACheck(directNullGuard(v, true, false)))
   or
-  exists(AssertTrueMethod m | result.asCall() = m.getACheck(nullGuard(v, true, false)))
-  or
-  exists(AssertFalseMethod m | result.asCall() = m.getACheck(nullGuard(v, false, false)))
+  exists(AssertFalseMethod m | result.asCall() = m.getACheck(directNullGuard(v, false, false)))
   or
   exists(AssertNotNullMethod m | result.asCall() = m.getACheck(v.getAUse()))
   or
@@ -341,7 +341,7 @@ private predicate nullVarStep(
   not assertFail(mid, _) and
   bb = mid.getASuccessor() and
   not impossibleEdge(mid, bb) and
-  not exists(boolean branch | nullGuard(midssa, branch, false).hasBranchEdge(mid, bb, branch)) and
+  not nullGuardControlsBranchEdge(midssa, false, mid, bb) and
   not (leavingFinally(mid, bb, true) and midstoredcompletion = true) and
   if bb.getFirstNode().asStmt() = any(TryStmt try | | try.getFinally())
   then
@@ -478,6 +478,11 @@ private ConditionBlock ssaEnumConstEquality(SsaVariable v, boolean polarity, Enu
   result.getCondition() = enumConstEquality(v.getAUse(), polarity, c)
 }
 
+private predicate conditionChecksNull(ConditionBlock cond, SsaVariable v, boolean branchIsNull) {
+  nullGuardControlsBranchEdge(v, true, cond, cond.getTestSuccessor(branchIsNull)) and
+  nullGuardControlsBranchEdge(v, false, cond, cond.getTestSuccessor(branchIsNull.booleanNot()))
+}
+
 /** A pair of correlated conditions for a given NPE candidate. */
 private predicate correlatedConditions(
   SsaSourceVariable npecand, ConditionBlock cond1, ConditionBlock cond2, boolean inverted
@@ -493,10 +498,8 @@ private predicate correlatedConditions(
     )
     or
     exists(SsaVariable v, boolean branch1, boolean branch2 |
-      cond1.getCondition() = nullGuard(v, branch1, true) and
-      cond1.getCondition() = nullGuard(v, branch1.booleanNot(), false) and
-      cond2.getCondition() = nullGuard(v, branch2, true) and
-      cond2.getCondition() = nullGuard(v, branch2.booleanNot(), false) and
+      conditionChecksNull(cond1, v, branch1) and
+      conditionChecksNull(cond2, v, branch2) and
       inverted = branch1.booleanXor(branch2)
     )
     or
@@ -622,7 +625,7 @@ private Expr trackingVarGuard(
   SsaVariable trackssa, SsaSourceVariable trackvar, TrackVarKind kind, boolean branch, boolean isA
 ) {
   exists(Expr init | trackingVar(_, trackssa, trackvar, kind, init) |
-    result = basicOrCustomNullGuard(trackvar.getAnAccess(), branch, isA) and
+    result = basicNullGuard(trackvar.getAnAccess(), branch, isA) and
     kind = TrackVarKindNull()
     or
     result = trackvar.getAnAccess() and
@@ -833,15 +836,13 @@ predicate alwaysNullDeref(SsaSourceVariable v, VarAccess va) {
       def.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = alwaysNullExpr()
     )
     or
-    exists(boolean branch |
-      nullGuard(ssa, branch, true).directlyControls(bb, branch) and
-      not clearlyNotNull(ssa)
-    )
+    nullGuardControls(ssa, true, bb) and
+    not clearlyNotNull(ssa)
   |
     // Exclude fields as they might not have an accurate ssa representation.
     not v.getVariable() instanceof Field and
     firstVarDereferenceInBlock(bb, ssa, va) and
     ssa.getSourceVariable() = v and
-    not exists(boolean branch | nullGuard(ssa, branch, false).directlyControls(bb, branch))
+    not nullGuardControls(ssa, false, bb)
   )
 }

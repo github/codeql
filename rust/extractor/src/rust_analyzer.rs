@@ -77,11 +77,7 @@ impl<'a> RustAnalyzer<'a> {
                 let editioned_file_id = semantics
                     .attach_first_edition(file_id)
                     .ok_or("failed to determine rust edition")?;
-                Ok((
-                    semantics,
-                    EditionedFileId::new(semantics.db, editioned_file_id),
-                    input,
-                ))
+                Ok((semantics, editioned_file_id, input))
             }
         }
     }

@@ -6,9 +6,10 @@
  * @problem.severity warning
  * @precision high
  * @id cs/local-not-disposed
- * @tags efficiency
- *       maintainability
- *       quality
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       efficiency
  *       external/cwe/cwe-404
  *       external/cwe/cwe-459
  *       external/cwe/cwe-460

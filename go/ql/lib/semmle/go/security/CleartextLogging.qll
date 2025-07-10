@@ -46,6 +46,8 @@ module CleartextLogging {
       // Also exclude protobuf field fetches, since they amount to single field reads.
       not any(Protobuf::GetMethod gm).taintStep(src, trg)
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /**

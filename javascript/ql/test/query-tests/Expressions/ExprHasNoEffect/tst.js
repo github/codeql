@@ -79,4 +79,9 @@ function g() {
 
 	consume(testSomeCondition() ? o :
 		doSomethingDangerous());
+
+	("release" === isRelease() ? warning() : null);
+	"release" === isRelease() ? warning() : null;
+	"release" === isRelease() ? warning() : 0;
+	"release" === isRelease() ? warning() : undefined;
 };

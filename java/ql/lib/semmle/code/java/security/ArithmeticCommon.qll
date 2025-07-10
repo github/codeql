@@ -1,4 +1,6 @@
 /** Provides guards and predicates to reason about arithmetic. */
+overlay[local?]
+module;
 
 import semmle.code.java.arithmetic.Overflow
 import semmle.code.java.controlflow.Guards
@@ -7,7 +9,6 @@ private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.RangeAnalysis
 private import semmle.code.java.dataflow.RangeUtils
 private import semmle.code.java.dataflow.SignAnalysis
-private import semmle.code.java.controlflow.internal.GuardsLogic
 
 /**
  * Holds if the type of `exp` is narrower than or equal to `numType`,

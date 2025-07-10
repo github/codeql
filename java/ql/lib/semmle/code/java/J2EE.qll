@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with J2EE bean types.
  */
+overlay[local?]
+module;
 
 import Type
 

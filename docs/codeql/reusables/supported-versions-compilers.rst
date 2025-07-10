@@ -25,8 +25,9 @@
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [8]_"
    Python [9]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13",Not applicable,``.py``
    Ruby [10]_,"up to 3.3",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
-   Swift [11]_,"Swift 5.4-6.1","Swift compiler","``.swift``"
-   TypeScript [12]_,"2.6-5.8",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
+   Rust [11]_,"Rust editions 2021 and 2024","Rust compiler","``.rs``, ``Cargo.toml``"
+   Swift [12]_,"Swift 5.4-6.1","Swift compiler","``.swift``"
+   TypeScript [13]_,"2.6-5.8",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
 .. container:: footnote-group
 
@@ -40,5 +41,6 @@
     .. [8] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
     .. [9] The extractor requires Python 3 to run. To analyze Python 2.7 you should install both versions of Python.
     .. [10] Requires glibc 2.17.
-    .. [11] Support for the analysis of Swift requires macOS.
-    .. [12] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.
+    .. [11] Requires ``rustup`` and ``cargo`` to be installed. Features from nightly toolchains are not supported.
+    .. [12] Support for the analysis of Swift requires macOS.
+    .. [13] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.

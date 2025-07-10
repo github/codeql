@@ -1,13 +1,87 @@
-multipleCanonicalPaths
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as core::cmp::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as typenum::marker_traits::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as core::cmp::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as typenum::marker_traits::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as core::cmp::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as typenum::marker_traits::Ord>::to_ordering |
-| file://:0:0:0:0 | impl Ord for Equal { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as core::cmp::Ord> |
-| file://:0:0:0:0 | impl Ord for Equal { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as typenum::marker_traits::Ord> |
-| file://:0:0:0:0 | impl Ord for Greater { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as core::cmp::Ord> |
-| file://:0:0:0:0 | impl Ord for Greater { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as typenum::marker_traits::Ord> |
-| file://:0:0:0:0 | impl Ord for Less { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as core::cmp::Ord> |
-| file://:0:0:0:0 | impl Ord for Less { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as typenum::marker_traits::Ord> |
+multipleCallTargets
+| test.rs:98:14:98:43 | ...::_print(...) |
+| test.rs:109:14:109:33 | ...::_print(...) |
+| test.rs:112:62:112:77 | ...::from(...) |
+| test.rs:119:58:119:73 | ...::from(...) |
+| test.rs:135:22:135:43 | ...::_print(...) |
+| test.rs:140:22:140:43 | ...::_print(...) |
+| test.rs:144:22:144:44 | ...::_print(...) |
+| test.rs:160:26:160:110 | ...::_print(...) |
+| test.rs:168:26:168:111 | ...::_print(...) |
+| test.rs:178:30:178:68 | ...::_print(...) |
+| test.rs:187:26:187:105 | ...::_print(...) |
+| test.rs:228:22:228:72 | ... .read_to_string(...) |
+| test.rs:482:22:482:50 | file.read_to_end(...) |
+| test.rs:488:22:488:53 | file.read_to_string(...) |
+| test.rs:609:18:609:38 | ...::_print(...) |
+| test.rs:614:18:614:45 | ...::_print(...) |
+| test.rs:618:25:618:49 | address.to_socket_addrs() |
+| test.rs:632:38:632:42 | ...::_print(...) |
+| test.rs:636:38:636:54 | ...::_print(...) |
+| test.rs:641:38:641:51 | ...::_print(...) |
+| test.rs:651:34:651:52 | ...::_print(...) |
+| test.rs:670:14:670:43 | ...::_print(...) |
+| test.rs:685:18:685:42 | ...::_print(...) |
+| test.rs:689:18:689:42 | ...::_print(...) |
+| test.rs:694:18:694:45 | ...::_print(...) |
+| test.rs:701:30:701:34 | ...::_print(...) |
+| test.rs:705:30:705:52 | ...::_print(...) |
+| test.rs:714:30:714:43 | ...::_print(...) |
+| test.rs:724:30:724:34 | ...::_print(...) |
+| test.rs:728:30:728:52 | ...::_print(...) |
+| test.rs:737:30:737:43 | ...::_print(...) |
+| test.rs:752:14:752:43 | ...::_print(...) |
+| test.rs:766:14:766:34 | ...::_print(...) |
+| test.rs:777:23:777:80 | ...::try_from(...) |
+| test.rs:806:50:806:66 | ...::from(...) |
+| test.rs:806:50:806:66 | ...::from(...) |
+| test.rs:808:14:808:31 | ...::_print(...) |
+| test.rs:811:14:811:31 | ...::_print(...) |
+| test.rs:814:14:814:31 | ...::_print(...) |
+| test.rs:817:14:817:30 | ...::_print(...) |
+| test.rs:819:27:819:36 | ...::_print(...) |
+| test.rs:820:28:820:41 | ...::_print(...) |
+| test.rs:823:14:823:33 | ...::_print(...) |
+| test.rs:825:27:825:36 | ...::_print(...) |
+| test.rs:826:28:826:41 | ...::_print(...) |
+| test.rs:829:14:829:31 | ...::_print(...) |
+| test.rs:831:27:831:36 | ...::_print(...) |
+| test.rs:832:28:832:41 | ...::_print(...) |
+| test.rs:835:14:835:34 | ...::_print(...) |
+| test.rs:837:27:837:36 | ...::_print(...) |
+| test.rs:838:28:838:41 | ...::_print(...) |
+| test.rs:841:14:841:25 | ...::_print(...) |
+| test.rs:843:27:843:36 | ...::_print(...) |
+| test.rs:844:28:844:41 | ...::_print(...) |
+| test.rs:847:14:847:31 | ...::_print(...) |
+| test.rs:849:27:849:36 | ...::_print(...) |
+| test.rs:850:28:850:41 | ...::_print(...) |
+| test.rs:853:14:853:30 | ...::_print(...) |
+| test.rs:855:27:855:36 | ...::_print(...) |
+| test.rs:856:28:856:41 | ...::_print(...) |
+| test.rs:859:14:859:33 | ...::_print(...) |
+| test.rs:861:27:861:36 | ...::_print(...) |
+| test.rs:862:28:862:41 | ...::_print(...) |
+| test.rs:865:14:865:36 | ...::_print(...) |
+| test.rs:867:27:867:36 | ...::_print(...) |
+| test.rs:868:28:868:41 | ...::_print(...) |
+| test.rs:871:14:871:38 | ...::_print(...) |
+| test.rs:873:27:873:36 | ...::_print(...) |
+| test.rs:874:28:874:41 | ...::_print(...) |
+| test.rs:877:14:877:45 | ...::_print(...) |
+| test.rs:879:27:879:36 | ...::_print(...) |
+| test.rs:880:28:880:41 | ...::_print(...) |
+| test.rs:883:14:883:29 | ...::_print(...) |
+| test.rs:885:27:885:36 | ...::_print(...) |
+| test.rs:886:28:886:41 | ...::_print(...) |
+| test_futures_io.rs:25:23:25:80 | ...::try_from(...) |
+| test_futures_io.rs:35:26:35:63 | pinned.poll_read(...) |
+| test_futures_io.rs:62:22:62:50 | pinned.poll_fill_buf(...) |
+| test_futures_io.rs:69:23:69:67 | ... .poll_fill_buf(...) |
+| test_futures_io.rs:93:26:93:63 | pinned.poll_read(...) |
+| test_futures_io.rs:116:22:116:50 | pinned.poll_fill_buf(...) |
+| test_futures_io.rs:145:26:145:49 | ...::with_capacity(...) |
+| web_frameworks.rs:40:5:40:26 | ...::write_str(...) |
+| web_frameworks.rs:40:5:40:26 | ...::write_str(...) |
+| web_frameworks.rs:101:14:101:23 | a.as_str() |
+| web_frameworks.rs:102:14:102:25 | a.as_bytes() |

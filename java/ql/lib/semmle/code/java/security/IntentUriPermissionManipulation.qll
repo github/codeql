@@ -2,6 +2,8 @@
  * Provides classes and predicates to reason about Intent URI permission manipulation
  * vulnerabilities on Android.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.controlflow.Guards

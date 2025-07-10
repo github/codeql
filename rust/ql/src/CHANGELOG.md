@@ -1,3 +1,9 @@
+## 0.1.11
+
+### New Queries
+
+* Initial public preview release.
+
 ## 0.1.10
 
 No user-facing changes.

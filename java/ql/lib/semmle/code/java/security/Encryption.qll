@@ -1,6 +1,8 @@
 /**
  * Provides predicates and classes relating to encryption in Java.
  */
+overlay[local?]
+module;
 
 import java
 

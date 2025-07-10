@@ -2,7 +2,7 @@ import runs_on
 import pytest
 from query_suites import *
 
-well_known_query_suites = ['go-code-quality.qls', 'go-security-and-quality.qls', 'go-security-extended.qls', 'go-code-scanning.qls']
+well_known_query_suites = ['go-code-quality.qls', 'go-code-quality-extended.qls', 'go-security-and-quality.qls', 'go-security-extended.qls', 'go-code-scanning.qls']
 
 @runs_on.posix
 @pytest.mark.parametrize("query_suite", well_known_query_suites)

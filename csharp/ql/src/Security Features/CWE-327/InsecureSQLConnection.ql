@@ -63,6 +63,7 @@ module InsecureSqlConnectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

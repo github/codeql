@@ -34,7 +34,6 @@ ql/javascript/ql/src/Security/CWE-079/Xss.ql
 ql/javascript/ql/src/Security/CWE-079/XssThroughDom.ql
 ql/javascript/ql/src/Security/CWE-089/SqlInjection.ql
 ql/javascript/ql/src/Security/CWE-094/CodeInjection.ql
-ql/javascript/ql/src/Security/CWE-094/ExpressionInjection.ql
 ql/javascript/ql/src/Security/CWE-094/ImproperCodeSanitization.ql
 ql/javascript/ql/src/Security/CWE-094/UnsafeCodeConstruction.ql
 ql/javascript/ql/src/Security/CWE-094/UnsafeDynamicMethodAccess.ql
@@ -55,7 +54,6 @@ ql/javascript/ql/src/Security/CWE-201/PostMessageStar.ql
 ql/javascript/ql/src/Security/CWE-209/StackTraceExposure.ql
 ql/javascript/ql/src/Security/CWE-295/DisablingCertificateValidation.ql
 ql/javascript/ql/src/Security/CWE-300/InsecureDependencyResolution.ql
-ql/javascript/ql/src/Security/CWE-312/ActionsArtifactLeak.ql
 ql/javascript/ql/src/Security/CWE-312/BuildArtifactLeak.ql
 ql/javascript/ql/src/Security/CWE-312/CleartextLogging.ql
 ql/javascript/ql/src/Security/CWE-312/CleartextStorage.ql

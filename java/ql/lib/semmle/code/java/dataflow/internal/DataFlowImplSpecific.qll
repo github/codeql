@@ -1,6 +1,8 @@
 /**
  * Provides Java-specific definitions for use in the data flow library.
  */
+overlay[local?]
+module;
 
 private import semmle.code.Location
 private import codeql.dataflow.DataFlow

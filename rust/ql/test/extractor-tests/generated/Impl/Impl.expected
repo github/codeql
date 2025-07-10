@@ -1,1 +1,15 @@
-| gen_impl.rs:4:5:9:5 | impl MyTrait for MyType { ... } | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | hasAssocItemList: | yes | getNumberOfAttrs: | 0 | hasGenericParamList: | no | isConst: | no | isDefault: | no | isUnsafe: | no | hasSelfTy: | yes | hasTrait: | yes | hasVisibility: | no | hasWhereClause: | no |
+instances
+| gen_impl.rs:4:5:9:5 | impl MyTrait for MyType { ... } | isConst: | no | isDefault: | no | isUnsafe: | no |
+getExtendedCanonicalPath
+getCrateOrigin
+getAttributeMacroExpansion
+getAssocItemList
+| gen_impl.rs:4:5:9:5 | impl MyTrait for MyType { ... } | gen_impl.rs:7:29:9:5 | AssocItemList |
+getAttr
+getGenericParamList
+getSelfTy
+| gen_impl.rs:4:5:9:5 | impl MyTrait for MyType { ... } | gen_impl.rs:7:22:7:27 | MyType |
+getTrait
+| gen_impl.rs:4:5:9:5 | impl MyTrait for MyType { ... } | gen_impl.rs:7:10:7:16 | MyTrait |
+getVisibility
+getWhereClause

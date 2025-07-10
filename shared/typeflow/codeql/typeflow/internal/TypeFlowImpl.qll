@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import codeql.typeflow.TypeFlow
 private import codeql.typeflow.UniversalFlow as UniversalFlow
 private import codeql.util.Location

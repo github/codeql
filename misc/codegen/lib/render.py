@@ -1,4 +1,4 @@
-""" template renderer module, wrapping around `pystache.Renderer`
+"""template renderer module, wrapping around `pystache.Renderer`
 
 `pystache` is a python mustache engine, and mustache is a template language. More information on
 
@@ -23,14 +23,21 @@ class Error(Exception):
 
 
 class Renderer:
-    """ Template renderer using mustache templates in the `templates` directory """
+    """Template renderer using mustache templates in the `templates` directory"""
 
     def __init__(self, generator: pathlib.Path):
-        self._r = pystache.Renderer(search_dirs=str(paths.templates_dir), escape=lambda u: u)
+        self._r = pystache.Renderer(
+            search_dirs=str(paths.templates_dir), escape=lambda u: u
+        )
         self._generator = generator
 
-    def render(self, data: object, output: typing.Optional[pathlib.Path], template: typing.Optional[str] = None):
-        """ Render `data` to `output`.
+    def render(
+        self,
+        data: object,
+        output: typing.Optional[pathlib.Path],
+        template: typing.Optional[str] = None,
+    ):
+        """Render `data` to `output`.
 
         `data` must have a `template` attribute denoting which template to use from the template directory.
 
@@ -58,13 +65,18 @@ class Renderer:
             out.write(contents)
         log.debug(f"{mnemonic}: generated {output.name}")
 
-    def manage(self, generated: typing.Iterable[pathlib.Path], stubs: typing.Iterable[pathlib.Path],
-               registry: pathlib.Path, force: bool = False) -> "RenderManager":
+    def manage(
+        self,
+        generated: typing.Iterable[pathlib.Path],
+        stubs: typing.Iterable[pathlib.Path],
+        registry: pathlib.Path,
+        force: bool = False,
+    ) -> "RenderManager":
         return RenderManager(self._generator, generated, stubs, registry, force)
 
 
 class RenderManager(Renderer):
-    """ A context manager allowing to manage checked in generated files and their cleanup, able
+    """A context manager allowing to manage checked in generated files and their cleanup, able
     to skip unneeded writes.
 
     This is done by using and updating a checked in list of generated files that assigns two
@@ -74,6 +86,7 @@ class RenderManager(Renderer):
     * the other is the hash of the actual file after code generation has finished. This will be
       different from the above because of post-processing like QL formatting. This hash is used
       to detect invalid modification of generated files"""
+
     written: typing.Set[pathlib.Path]
 
     @dataclass
@@ -82,12 +95,18 @@ class RenderManager(Renderer):
         pre contains the hash of a file as rendered, post is the hash after
         postprocessing (for example QL formatting)
         """
+
         pre: str
         post: typing.Optional[str] = None
 
-    def __init__(self, generator: pathlib.Path, generated: typing.Iterable[pathlib.Path],
-                 stubs: typing.Iterable[pathlib.Path],
-                 registry: pathlib.Path, force: bool = False):
+    def __init__(
+        self,
+        generator: pathlib.Path,
+        generated: typing.Iterable[pathlib.Path],
+        stubs: typing.Iterable[pathlib.Path],
+        registry: pathlib.Path,
+        force: bool = False,
+    ):
         super().__init__(generator)
         self._registry_path = registry
         self._force = force
@@ -142,10 +161,14 @@ class RenderManager(Renderer):
             if self._force:
                 pass
             elif rel_path not in self._hashes:
-                log.warning(f"{rel_path} marked as generated but absent from the registry")
+                log.warning(
+                    f"{rel_path} marked as generated but absent from the registry"
+                )
             elif self._hashes[rel_path].post != self._hash_file(f):
-                raise Error(f"{rel_path} is generated but was modified, please revert the file "
-                            "or pass --force to overwrite")
+                raise Error(
+                    f"{rel_path} is generated but was modified, please revert the file "
+                    "or pass --force to overwrite"
+                )
 
     def _process_stubs(self, stubs: typing.Iterable[pathlib.Path]):
         for f in stubs:
@@ -159,8 +182,10 @@ class RenderManager(Renderer):
             elif rel_path not in self._hashes:
                 log.warning(f"{rel_path} marked as stub but absent from the registry")
             elif self._hashes[rel_path].post != self._hash_file(f):
-                raise Error(f"{rel_path} is a stub marked as generated, but it was modified, "
-                            "please remove the `// generated` header, revert the file or pass --force to overwrite it")
+                raise Error(
+                    f"{rel_path} is a stub marked as generated, but it was modified, "
+                    "please remove the `// generated` header, revert the file or pass --force to overwrite it"
+                )
 
     @staticmethod
     def is_customized_stub(file: pathlib.Path) -> bool:
@@ -191,13 +216,17 @@ class RenderManager(Renderer):
                 for line in reg:
                     if line.strip():
                         filename, prehash, posthash = line.split()
-                        self._hashes[pathlib.Path(filename)] = self.Hashes(prehash, posthash)
+                        self._hashes[pathlib.Path(filename)] = self.Hashes(
+                            prehash, posthash
+                        )
         except FileNotFoundError:
             pass
 
     def _dump_registry(self):
         self._registry_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(self._registry_path, 'w') as out, open(self._registry_path.parent / ".gitattributes", "w") as attrs:
+        with open(self._registry_path, "w") as out, open(
+            self._registry_path.parent / ".gitattributes", "w"
+        ) as attrs:
             print(f"/{self._registry_path.name}", "linguist-generated", file=attrs)
             print("/.gitattributes", "linguist-generated", file=attrs)
             for f, hashes in sorted(self._hashes.items()):

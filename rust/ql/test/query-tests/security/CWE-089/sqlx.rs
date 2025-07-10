@@ -63,23 +63,23 @@ async fn test_sqlx_mysql(url: &str, enable_remote: bool) -> Result<(), sqlx::Err
     // direct execution
     let _ = conn.execute(safe_query_1.as_str()).await?; // $ sql-sink
     let _ = conn.execute(safe_query_2.as_str()).await?; // $ sql-sink
-    let _ = conn.execute(safe_query_3.as_str()).await?; // $ sql-sink SPURIOUS: Alert[rust/sql-injection]=remote1
+    let _ = conn.execute(safe_query_3.as_str()).await?; // $ sql-sink
     let _ = conn.execute(unsafe_query_1.as_str()).await?; // $ sql-sink Alert[rust/sql-injection]=args1
     if enable_remote {
         let _ = conn.execute(unsafe_query_2.as_str()).await?; // $ sql-sink Alert[rust/sql-injection]=remote1
         let _ = conn.execute(unsafe_query_3.as_str()).await?; // $ sql-sink MISSING: Alert[rust/sql-injection]=remote1
-        let _ = conn.execute(unsafe_query_4.as_str()).await?; // $ sql-sink Alert[rust/sql-injection]=remote1
+        let _ = conn.execute(unsafe_query_4.as_str()).await?; // $ sql-sink MISSING: Alert[rust/sql-injection]=remote1
     }
 
     // prepared queries
     let _ = sqlx::query(safe_query_1.as_str()).execute(&pool).await?; // $ sql-sink
     let _ = sqlx::query(safe_query_2.as_str()).execute(&pool).await?; // $ sql-sink
-    let _ = sqlx::query(safe_query_3.as_str()).execute(&pool).await?; // $ sql-sink SPURIOUS: Alert[rust/sql-injection]=remote1
+    let _ = sqlx::query(safe_query_3.as_str()).execute(&pool).await?; // $ sql-sink
     let _ = sqlx::query(unsafe_query_1.as_str()).execute(&pool).await?; // $ sql-sink Alert[rust/sql-injection]=args1
     if enable_remote {
         let _ = sqlx::query(unsafe_query_2.as_str()).execute(&pool).await?; // $ sql-sink Alert[rust/sql-injection]=remote1
         let _ = sqlx::query(unsafe_query_3.as_str()).execute(&pool).await?; // $ sql-sink MISSING: Alert[rust/sql-injection]=remote1
-        let _ = sqlx::query(unsafe_query_4.as_str()).execute(&pool).await?; // $ sql-sink Alert[rust/sql-injection]=remote1
+        let _ = sqlx::query(unsafe_query_4.as_str()).execute(&pool).await?; // $ sql-sink MISSING: Alert[rust/sql-injection]=remote1
     }
     let _ = sqlx::query(prepared_query_1.as_str()).bind(const_string).execute(&pool).await?; // $ sql-sink
     let _ = sqlx::query(prepared_query_1.as_str()).bind(arg_string).execute(&pool).await?; // $ sql-sink

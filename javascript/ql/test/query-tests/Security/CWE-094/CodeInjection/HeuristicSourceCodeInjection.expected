@@ -58,6 +58,12 @@ edges
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted | provenance |  |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted | provenance |  |
+| react-server-function.js:3:35:3:35 | x | react-server-function.js:4:12:4:12 | x | provenance |  |
+| react-server-function.js:4:12:4:12 | x | react-server-function.js:4:12:4:29 | x + " from server" | provenance |  |
+| react-server-function.js:4:12:4:29 | x + " from server" | react.js:24:20:24:44 | echoSer ... value") [PromiseValue] | provenance |  |
+| react.js:24:9:24:45 | data | react.js:25:8:25:11 | data | provenance |  |
+| react.js:24:16:24:45 | use(ech ... alue")) | react.js:24:9:24:45 | data | provenance |  |
+| react.js:24:20:24:44 | echoSer ... value") [PromiseValue] | react.js:24:16:24:45 | use(ech ... alue")) | provenance |  |
 | template-sinks.js:18:9:18:31 | tainted | template-sinks.js:20:17:20:23 | tainted | provenance |  |
 | template-sinks.js:18:9:18:31 | tainted | template-sinks.js:21:16:21:22 | tainted | provenance |  |
 | template-sinks.js:18:9:18:31 | tainted | template-sinks.js:22:18:22:24 | tainted | provenance |  |
@@ -191,7 +197,14 @@ nodes
 | react-native.js:7:17:7:33 | req.param("code") | semmle.label | req.param("code") |
 | react-native.js:8:32:8:38 | tainted | semmle.label | tainted |
 | react-native.js:10:23:10:29 | tainted | semmle.label | tainted |
-| react.js:10:56:10:77 | documen ... on.hash | semmle.label | documen ... on.hash |
+| react-server-function.js:3:35:3:35 | x | semmle.label | x |
+| react-server-function.js:4:12:4:12 | x | semmle.label | x |
+| react-server-function.js:4:12:4:29 | x + " from server" | semmle.label | x + " from server" |
+| react.js:11:56:11:77 | documen ... on.hash | semmle.label | documen ... on.hash |
+| react.js:24:9:24:45 | data | semmle.label | data |
+| react.js:24:16:24:45 | use(ech ... alue")) | semmle.label | use(ech ... alue")) |
+| react.js:24:20:24:44 | echoSer ... value") [PromiseValue] | semmle.label | echoSer ... value") [PromiseValue] |
+| react.js:25:8:25:11 | data | semmle.label | data |
 | template-sinks.js:18:9:18:31 | tainted | semmle.label | tainted |
 | template-sinks.js:18:19:18:31 | req.query.foo | semmle.label | req.query.foo |
 | template-sinks.js:20:17:20:23 | tainted | semmle.label | tainted |

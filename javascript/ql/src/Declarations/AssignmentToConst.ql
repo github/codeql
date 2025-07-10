@@ -5,7 +5,8 @@
  * @kind problem
  * @problem.severity error
  * @id js/assignment-to-constant
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @precision very-high
  */

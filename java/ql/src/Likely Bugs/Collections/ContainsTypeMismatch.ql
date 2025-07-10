@@ -7,7 +7,8 @@
  * @problem.severity error
  * @precision very-high
  * @id java/type-mismatch-access
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       logic
  */

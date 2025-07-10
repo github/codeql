@@ -1,4 +1,6 @@
 /** Provides all default Java QL imports. */
+overlay[local?]
+module;
 
 import Customizations
 import semmle.code.FileSystem

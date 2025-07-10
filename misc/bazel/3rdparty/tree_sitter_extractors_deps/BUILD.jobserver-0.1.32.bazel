@@ -82,76 +82,76 @@ rust_library(
     version = "0.1.32",
     deps = select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios-sim": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-linux-android": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-unknown-fuchsia": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:armv7-linux-androideabi": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:i686-apple-darwin": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:i686-linux-android": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:i686-unknown-freebsd": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-apple-ios": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-linux-android": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-unknown-fuchsia": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu": [
-            "@vendor_ts__libc-0.2.171//:libc",  # cfg(unix)
+            "@vendor_ts__libc-0.2.174//:libc",  # cfg(unix)
         ],
         "//conditions:default": [],
     }),

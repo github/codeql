@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import codeql.rangeanalysis.RangeAnalysis
 private import codeql.util.Location
 

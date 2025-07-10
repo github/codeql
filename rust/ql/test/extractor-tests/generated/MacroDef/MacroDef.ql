@@ -2,30 +2,38 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  MacroDef x, string hasExtendedCanonicalPath, string hasCrateOrigin,
-  string hasAttributeMacroExpansion, string hasArgs, int getNumberOfAttrs, string hasBody,
-  string hasName, string hasVisibility
-where
+query predicate instances(MacroDef x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getExtendedCanonicalPath(MacroDef x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(MacroDef x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttributeMacroExpansion(MacroDef x, MacroItems getAttributeMacroExpansion) {
   toBeTested(x) and
   not x.isUnknown() and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  (
-    if x.hasAttributeMacroExpansion()
-    then hasAttributeMacroExpansion = "yes"
-    else hasAttributeMacroExpansion = "no"
-  ) and
-  (if x.hasArgs() then hasArgs = "yes" else hasArgs = "no") and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "hasArgs:", hasArgs,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasBody:", hasBody, "hasName:", hasName, "hasVisibility:",
-  hasVisibility
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getArgs(MacroDef x, TokenTree getArgs) {
+  toBeTested(x) and not x.isUnknown() and getArgs = x.getArgs()
+}
+
+query predicate getAttr(MacroDef x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getBody(MacroDef x, TokenTree getBody) {
+  toBeTested(x) and not x.isUnknown() and getBody = x.getBody()
+}
+
+query predicate getName(MacroDef x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getVisibility(MacroDef x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}

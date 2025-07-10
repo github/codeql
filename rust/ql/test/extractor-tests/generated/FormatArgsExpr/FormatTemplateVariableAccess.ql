@@ -2,6 +2,4 @@
 import codeql.rust.elements
 import TestUtils
 
-from FormatTemplateVariableAccess x
-where toBeTested(x) and not x.isUnknown()
-select x
+query predicate instances(FormatTemplateVariableAccess x) { toBeTested(x) and not x.isUnknown() }
