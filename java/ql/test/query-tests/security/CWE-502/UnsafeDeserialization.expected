@@ -1,26 +1,26 @@
 #select
-| A.java:16:12:16:26 | readObject(...) | A.java:14:31:14:51 | getInputStream(...) : InputStream | A.java:16:12:16:13 | in | Unsafe deserialization depends on a $@. | A.java:14:31:14:51 | getInputStream(...) | user-provided value |
-| A.java:22:12:22:28 | readUnshared(...) | A.java:20:31:20:51 | getInputStream(...) : InputStream | A.java:22:12:22:13 | in | Unsafe deserialization depends on a $@. | A.java:20:31:20:51 | getInputStream(...) | user-provided value |
-| A.java:34:12:34:25 | readObject(...) | A.java:32:31:32:51 | getInputStream(...) : InputStream | A.java:34:12:34:12 | d | Unsafe deserialization depends on a $@. | A.java:32:31:32:51 | getInputStream(...) | user-provided value |
-| A.java:41:12:41:29 | fromXML(...) | A.java:39:31:39:51 | getInputStream(...) : InputStream | A.java:41:23:41:28 | reader | Unsafe deserialization depends on a $@. | A.java:39:31:39:51 | getInputStream(...) | user-provided value |
-| A.java:47:12:47:42 | readObject(...) | A.java:46:29:46:49 | getInputStream(...) : InputStream | A.java:47:28:47:32 | input | Unsafe deserialization depends on a $@. | A.java:46:29:46:49 | getInputStream(...) | user-provided value |
-| A.java:48:12:48:48 | readObjectOrNull(...) | A.java:46:29:46:49 | getInputStream(...) : InputStream | A.java:48:34:48:38 | input | Unsafe deserialization depends on a $@. | A.java:46:29:46:49 | getInputStream(...) | user-provided value |
-| A.java:49:16:49:45 | readClassAndObject(...) | A.java:46:29:46:49 | getInputStream(...) : InputStream | A.java:49:40:49:44 | input | Unsafe deserialization depends on a $@. | A.java:46:29:46:49 | getInputStream(...) | user-provided value |
-| A.java:68:16:68:31 | load(...) | A.java:67:25:67:45 | getInputStream(...) : InputStream | A.java:68:26:68:30 | input | Unsafe deserialization depends on a $@. | A.java:67:25:67:45 | getInputStream(...) | user-provided value |
-| A.java:69:17:69:35 | loadAll(...) | A.java:67:25:67:45 | getInputStream(...) : InputStream | A.java:69:30:69:34 | input | Unsafe deserialization depends on a $@. | A.java:67:25:67:45 | getInputStream(...) | user-provided value |
-| A.java:70:17:70:56 | parse(...) | A.java:67:25:67:45 | getInputStream(...) : InputStream | A.java:70:28:70:55 | new InputStreamReader(...) | Unsafe deserialization depends on a $@. | A.java:67:25:67:45 | getInputStream(...) | user-provided value |
-| A.java:71:12:71:38 | loadAs(...) | A.java:67:25:67:45 | getInputStream(...) : InputStream | A.java:71:24:71:28 | input | Unsafe deserialization depends on a $@. | A.java:67:25:67:45 | getInputStream(...) | user-provided value |
-| A.java:72:12:72:61 | loadAs(...) | A.java:67:25:67:45 | getInputStream(...) : InputStream | A.java:72:24:72:51 | new InputStreamReader(...) | Unsafe deserialization depends on a $@. | A.java:67:25:67:45 | getInputStream(...) | user-provided value |
-| A.java:78:16:78:31 | load(...) | A.java:77:25:77:45 | getInputStream(...) : InputStream | A.java:78:26:78:30 | input | Unsafe deserialization depends on a $@. | A.java:77:25:77:45 | getInputStream(...) | user-provided value |
-| A.java:79:17:79:35 | loadAll(...) | A.java:77:25:77:45 | getInputStream(...) : InputStream | A.java:79:30:79:34 | input | Unsafe deserialization depends on a $@. | A.java:77:25:77:45 | getInputStream(...) | user-provided value |
-| A.java:80:17:80:56 | parse(...) | A.java:77:25:77:45 | getInputStream(...) : InputStream | A.java:80:28:80:55 | new InputStreamReader(...) | Unsafe deserialization depends on a $@. | A.java:77:25:77:45 | getInputStream(...) | user-provided value |
-| A.java:81:12:81:38 | loadAs(...) | A.java:77:25:77:45 | getInputStream(...) : InputStream | A.java:81:24:81:28 | input | Unsafe deserialization depends on a $@. | A.java:77:25:77:45 | getInputStream(...) | user-provided value |
-| A.java:82:12:82:61 | loadAs(...) | A.java:77:25:77:45 | getInputStream(...) : InputStream | A.java:82:24:82:51 | new InputStreamReader(...) | Unsafe deserialization depends on a $@. | A.java:77:25:77:45 | getInputStream(...) | user-provided value |
-| A.java:98:16:98:31 | load(...) | A.java:97:25:97:45 | getInputStream(...) : InputStream | A.java:98:26:98:30 | input | Unsafe deserialization depends on a $@. | A.java:97:25:97:45 | getInputStream(...) | user-provided value |
-| A.java:99:17:99:35 | loadAll(...) | A.java:97:25:97:45 | getInputStream(...) : InputStream | A.java:99:30:99:34 | input | Unsafe deserialization depends on a $@. | A.java:97:25:97:45 | getInputStream(...) | user-provided value |
-| A.java:100:17:100:56 | parse(...) | A.java:97:25:97:45 | getInputStream(...) : InputStream | A.java:100:28:100:55 | new InputStreamReader(...) | Unsafe deserialization depends on a $@. | A.java:97:25:97:45 | getInputStream(...) | user-provided value |
-| A.java:101:12:101:38 | loadAs(...) | A.java:97:25:97:45 | getInputStream(...) : InputStream | A.java:101:24:101:28 | input | Unsafe deserialization depends on a $@. | A.java:97:25:97:45 | getInputStream(...) | user-provided value |
-| A.java:102:12:102:61 | loadAs(...) | A.java:97:25:97:45 | getInputStream(...) : InputStream | A.java:102:24:102:51 | new InputStreamReader(...) | Unsafe deserialization depends on a $@. | A.java:97:25:97:45 | getInputStream(...) | user-provided value |
+| A.java:19:12:19:26 | readObject(...) | A.java:17:31:17:51 | getInputStream(...) : InputStream | A.java:19:12:19:13 | in | Unsafe deserialization depends on a $@. | A.java:17:31:17:51 | getInputStream(...) | user-provided value |
+| A.java:35:12:35:28 | readUnshared(...) | A.java:33:31:33:51 | getInputStream(...) : InputStream | A.java:35:12:35:13 | in | Unsafe deserialization depends on a $@. | A.java:33:31:33:51 | getInputStream(...) | user-provided value |
+| A.java:47:12:47:25 | readObject(...) | A.java:45:31:45:51 | getInputStream(...) : InputStream | A.java:47:12:47:12 | d | Unsafe deserialization depends on a $@. | A.java:45:31:45:51 | getInputStream(...) | user-provided value |
+| A.java:54:12:54:29 | fromXML(...) | A.java:52:31:52:51 | getInputStream(...) : InputStream | A.java:54:23:54:28 | reader | Unsafe deserialization depends on a $@. | A.java:52:31:52:51 | getInputStream(...) | user-provided value |
+| A.java:60:12:60:42 | readObject(...) | A.java:59:29:59:49 | getInputStream(...) : InputStream | A.java:60:28:60:32 | input | Unsafe deserialization depends on a $@. | A.java:59:29:59:49 | getInputStream(...) | user-provided value |
+| A.java:61:12:61:48 | readObjectOrNull(...) | A.java:59:29:59:49 | getInputStream(...) : InputStream | A.java:61:34:61:38 | input | Unsafe deserialization depends on a $@. | A.java:59:29:59:49 | getInputStream(...) | user-provided value |
+| A.java:62:16:62:45 | readClassAndObject(...) | A.java:59:29:59:49 | getInputStream(...) : InputStream | A.java:62:40:62:44 | input | Unsafe deserialization depends on a $@. | A.java:59:29:59:49 | getInputStream(...) | user-provided value |
+| A.java:81:16:81:31 | load(...) | A.java:80:25:80:45 | getInputStream(...) : InputStream | A.java:81:26:81:30 | input | Unsafe deserialization depends on a $@. | A.java:80:25:80:45 | getInputStream(...) | user-provided value |
+| A.java:82:17:82:35 | loadAll(...) | A.java:80:25:80:45 | getInputStream(...) : InputStream | A.java:82:30:82:34 | input | Unsafe deserialization depends on a $@. | A.java:80:25:80:45 | getInputStream(...) | user-provided value |
+| A.java:83:17:83:56 | parse(...) | A.java:80:25:80:45 | getInputStream(...) : InputStream | A.java:83:28:83:55 | new InputStreamReader(...) | Unsafe deserialization depends on a $@. | A.java:80:25:80:45 | getInputStream(...) | user-provided value |
+| A.java:84:12:84:38 | loadAs(...) | A.java:80:25:80:45 | getInputStream(...) : InputStream | A.java:84:24:84:28 | input | Unsafe deserialization depends on a $@. | A.java:80:25:80:45 | getInputStream(...) | user-provided value |
+| A.java:85:12:85:61 | loadAs(...) | A.java:80:25:80:45 | getInputStream(...) : InputStream | A.java:85:24:85:51 | new InputStreamReader(...) | Unsafe deserialization depends on a $@. | A.java:80:25:80:45 | getInputStream(...) | user-provided value |
+| A.java:91:16:91:31 | load(...) | A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:91:26:91:30 | input | Unsafe deserialization depends on a $@. | A.java:90:25:90:45 | getInputStream(...) | user-provided value |
+| A.java:92:17:92:35 | loadAll(...) | A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:92:30:92:34 | input | Unsafe deserialization depends on a $@. | A.java:90:25:90:45 | getInputStream(...) | user-provided value |
+| A.java:93:17:93:56 | parse(...) | A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:93:28:93:55 | new InputStreamReader(...) | Unsafe deserialization depends on a $@. | A.java:90:25:90:45 | getInputStream(...) | user-provided value |
+| A.java:94:12:94:38 | loadAs(...) | A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:94:24:94:28 | input | Unsafe deserialization depends on a $@. | A.java:90:25:90:45 | getInputStream(...) | user-provided value |
+| A.java:95:12:95:61 | loadAs(...) | A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:95:24:95:51 | new InputStreamReader(...) | Unsafe deserialization depends on a $@. | A.java:90:25:90:45 | getInputStream(...) | user-provided value |
+| A.java:111:16:111:31 | load(...) | A.java:110:25:110:45 | getInputStream(...) : InputStream | A.java:111:26:111:30 | input | Unsafe deserialization depends on a $@. | A.java:110:25:110:45 | getInputStream(...) | user-provided value |
+| A.java:112:17:112:35 | loadAll(...) | A.java:110:25:110:45 | getInputStream(...) : InputStream | A.java:112:30:112:34 | input | Unsafe deserialization depends on a $@. | A.java:110:25:110:45 | getInputStream(...) | user-provided value |
+| A.java:113:17:113:56 | parse(...) | A.java:110:25:110:45 | getInputStream(...) : InputStream | A.java:113:28:113:55 | new InputStreamReader(...) | Unsafe deserialization depends on a $@. | A.java:110:25:110:45 | getInputStream(...) | user-provided value |
+| A.java:114:12:114:38 | loadAs(...) | A.java:110:25:110:45 | getInputStream(...) : InputStream | A.java:114:24:114:28 | input | Unsafe deserialization depends on a $@. | A.java:110:25:110:45 | getInputStream(...) | user-provided value |
+| A.java:115:12:115:61 | loadAs(...) | A.java:110:25:110:45 | getInputStream(...) : InputStream | A.java:115:24:115:51 | new InputStreamReader(...) | Unsafe deserialization depends on a $@. | A.java:110:25:110:45 | getInputStream(...) | user-provided value |
 | B.java:8:12:8:46 | parseObject(...) | B.java:7:31:7:51 | getInputStream(...) : InputStream | B.java:8:29:8:39 | inputStream | Unsafe deserialization depends on a $@. | B.java:7:31:7:51 | getInputStream(...) | user-provided value |
 | B.java:15:12:15:28 | parse(...) | B.java:12:31:12:51 | getInputStream(...) : InputStream | B.java:15:23:15:27 | bytes | Unsafe deserialization depends on a $@. | B.java:12:31:12:51 | getInputStream(...) | user-provided value |
 | B.java:23:12:23:30 | parseObject(...) | B.java:19:31:19:51 | getInputStream(...) : InputStream | B.java:23:29:23:29 | s | Unsafe deserialization depends on a $@. | B.java:19:31:19:51 | getInputStream(...) | user-provided value |
@@ -72,45 +72,45 @@
 | ParcelableEntity.java:32:30:32:70 | fromJson(...) | GsonActivity.java:15:54:15:64 | getIntent(...) : Intent | ParcelableEntity.java:32:44:32:62 | readString(...) | Unsafe deserialization depends on a $@. | GsonActivity.java:15:54:15:64 | getIntent(...) | user-provided value |
 | TestMessageBodyReader.java:22:18:22:65 | readObject(...) | TestMessageBodyReader.java:20:55:20:78 | entityStream : InputStream | TestMessageBodyReader.java:22:18:22:52 | new ObjectInputStream(...) | Unsafe deserialization depends on a $@. | TestMessageBodyReader.java:20:55:20:78 | entityStream | user-provided value |
 edges
-| A.java:14:31:14:51 | getInputStream(...) : InputStream | A.java:15:50:15:60 | inputStream : InputStream | provenance | Src:MaD:1  |
-| A.java:14:31:14:51 | getInputStream(...) : InputStream | A.java:16:12:16:13 | in | provenance | Src:MaD:1 inputStreamWrapper |
-| A.java:15:28:15:61 | new ObjectInputStream(...) : ObjectInputStream | A.java:16:12:16:13 | in | provenance |  |
-| A.java:15:50:15:60 | inputStream : InputStream | A.java:15:28:15:61 | new ObjectInputStream(...) : ObjectInputStream | provenance | MaD:11 |
-| A.java:20:31:20:51 | getInputStream(...) : InputStream | A.java:21:50:21:60 | inputStream : InputStream | provenance | Src:MaD:1  |
-| A.java:20:31:20:51 | getInputStream(...) : InputStream | A.java:22:12:22:13 | in | provenance | Src:MaD:1 inputStreamWrapper |
-| A.java:21:28:21:61 | new ObjectInputStream(...) : ObjectInputStream | A.java:22:12:22:13 | in | provenance |  |
-| A.java:21:50:21:60 | inputStream : InputStream | A.java:21:28:21:61 | new ObjectInputStream(...) : ObjectInputStream | provenance | MaD:11 |
-| A.java:32:31:32:51 | getInputStream(...) : InputStream | A.java:33:35:33:45 | inputStream : InputStream | provenance | Src:MaD:1  |
-| A.java:33:20:33:46 | new XMLDecoder(...) : XMLDecoder | A.java:34:12:34:12 | d | provenance |  |
-| A.java:33:35:33:45 | inputStream : InputStream | A.java:33:20:33:46 | new XMLDecoder(...) : XMLDecoder | provenance | MaD:7 |
-| A.java:39:31:39:51 | getInputStream(...) : InputStream | A.java:40:43:40:53 | inputStream : InputStream | provenance | Src:MaD:1  |
-| A.java:40:21:40:54 | new InputStreamReader(...) : InputStreamReader | A.java:41:23:41:28 | reader | provenance |  |
-| A.java:40:43:40:53 | inputStream : InputStream | A.java:40:21:40:54 | new InputStreamReader(...) : InputStreamReader | provenance | MaD:10 |
-| A.java:46:19:46:50 | new Input(...) : Input | A.java:47:28:47:32 | input | provenance |  |
-| A.java:46:19:46:50 | new Input(...) : Input | A.java:48:34:48:38 | input | provenance |  |
-| A.java:46:19:46:50 | new Input(...) : Input | A.java:49:40:49:44 | input | provenance |  |
-| A.java:46:29:46:49 | getInputStream(...) : InputStream | A.java:46:19:46:50 | new Input(...) : Input | provenance | Src:MaD:1 MaD:5 |
-| A.java:67:25:67:45 | getInputStream(...) : InputStream | A.java:68:26:68:30 | input | provenance | Src:MaD:1  |
-| A.java:67:25:67:45 | getInputStream(...) : InputStream | A.java:69:30:69:34 | input | provenance | Src:MaD:1  |
-| A.java:67:25:67:45 | getInputStream(...) : InputStream | A.java:70:50:70:54 | input : InputStream | provenance | Src:MaD:1  |
-| A.java:67:25:67:45 | getInputStream(...) : InputStream | A.java:71:24:71:28 | input | provenance | Src:MaD:1  |
-| A.java:67:25:67:45 | getInputStream(...) : InputStream | A.java:72:46:72:50 | input : InputStream | provenance | Src:MaD:1  |
-| A.java:70:50:70:54 | input : InputStream | A.java:70:28:70:55 | new InputStreamReader(...) | provenance | MaD:10 |
-| A.java:72:46:72:50 | input : InputStream | A.java:72:24:72:51 | new InputStreamReader(...) | provenance | MaD:10 |
-| A.java:77:25:77:45 | getInputStream(...) : InputStream | A.java:78:26:78:30 | input | provenance | Src:MaD:1  |
-| A.java:77:25:77:45 | getInputStream(...) : InputStream | A.java:79:30:79:34 | input | provenance | Src:MaD:1  |
-| A.java:77:25:77:45 | getInputStream(...) : InputStream | A.java:80:50:80:54 | input : InputStream | provenance | Src:MaD:1  |
-| A.java:77:25:77:45 | getInputStream(...) : InputStream | A.java:81:24:81:28 | input | provenance | Src:MaD:1  |
-| A.java:77:25:77:45 | getInputStream(...) : InputStream | A.java:82:46:82:50 | input : InputStream | provenance | Src:MaD:1  |
-| A.java:80:50:80:54 | input : InputStream | A.java:80:28:80:55 | new InputStreamReader(...) | provenance | MaD:10 |
-| A.java:82:46:82:50 | input : InputStream | A.java:82:24:82:51 | new InputStreamReader(...) | provenance | MaD:10 |
-| A.java:97:25:97:45 | getInputStream(...) : InputStream | A.java:98:26:98:30 | input | provenance | Src:MaD:1  |
-| A.java:97:25:97:45 | getInputStream(...) : InputStream | A.java:99:30:99:34 | input | provenance | Src:MaD:1  |
-| A.java:97:25:97:45 | getInputStream(...) : InputStream | A.java:100:50:100:54 | input : InputStream | provenance | Src:MaD:1  |
-| A.java:97:25:97:45 | getInputStream(...) : InputStream | A.java:101:24:101:28 | input | provenance | Src:MaD:1  |
-| A.java:97:25:97:45 | getInputStream(...) : InputStream | A.java:102:46:102:50 | input : InputStream | provenance | Src:MaD:1  |
-| A.java:100:50:100:54 | input : InputStream | A.java:100:28:100:55 | new InputStreamReader(...) | provenance | MaD:10 |
-| A.java:102:46:102:50 | input : InputStream | A.java:102:24:102:51 | new InputStreamReader(...) | provenance | MaD:10 |
+| A.java:17:31:17:51 | getInputStream(...) : InputStream | A.java:18:50:18:60 | inputStream : InputStream | provenance | Src:MaD:1  |
+| A.java:17:31:17:51 | getInputStream(...) : InputStream | A.java:19:12:19:13 | in | provenance | Src:MaD:1 inputStreamWrapper |
+| A.java:18:28:18:61 | new ObjectInputStream(...) : ObjectInputStream | A.java:19:12:19:13 | in | provenance |  |
+| A.java:18:50:18:60 | inputStream : InputStream | A.java:18:28:18:61 | new ObjectInputStream(...) : ObjectInputStream | provenance | MaD:11 |
+| A.java:33:31:33:51 | getInputStream(...) : InputStream | A.java:34:50:34:60 | inputStream : InputStream | provenance | Src:MaD:1  |
+| A.java:33:31:33:51 | getInputStream(...) : InputStream | A.java:35:12:35:13 | in | provenance | Src:MaD:1 inputStreamWrapper |
+| A.java:34:28:34:61 | new ObjectInputStream(...) : ObjectInputStream | A.java:35:12:35:13 | in | provenance |  |
+| A.java:34:50:34:60 | inputStream : InputStream | A.java:34:28:34:61 | new ObjectInputStream(...) : ObjectInputStream | provenance | MaD:11 |
+| A.java:45:31:45:51 | getInputStream(...) : InputStream | A.java:46:35:46:45 | inputStream : InputStream | provenance | Src:MaD:1  |
+| A.java:46:20:46:46 | new XMLDecoder(...) : XMLDecoder | A.java:47:12:47:12 | d | provenance |  |
+| A.java:46:35:46:45 | inputStream : InputStream | A.java:46:20:46:46 | new XMLDecoder(...) : XMLDecoder | provenance | MaD:7 |
+| A.java:52:31:52:51 | getInputStream(...) : InputStream | A.java:53:43:53:53 | inputStream : InputStream | provenance | Src:MaD:1  |
+| A.java:53:21:53:54 | new InputStreamReader(...) : InputStreamReader | A.java:54:23:54:28 | reader | provenance |  |
+| A.java:53:43:53:53 | inputStream : InputStream | A.java:53:21:53:54 | new InputStreamReader(...) : InputStreamReader | provenance | MaD:10 |
+| A.java:59:19:59:50 | new Input(...) : Input | A.java:60:28:60:32 | input | provenance |  |
+| A.java:59:19:59:50 | new Input(...) : Input | A.java:61:34:61:38 | input | provenance |  |
+| A.java:59:19:59:50 | new Input(...) : Input | A.java:62:40:62:44 | input | provenance |  |
+| A.java:59:29:59:49 | getInputStream(...) : InputStream | A.java:59:19:59:50 | new Input(...) : Input | provenance | Src:MaD:1 MaD:5 |
+| A.java:80:25:80:45 | getInputStream(...) : InputStream | A.java:81:26:81:30 | input | provenance | Src:MaD:1  |
+| A.java:80:25:80:45 | getInputStream(...) : InputStream | A.java:82:30:82:34 | input | provenance | Src:MaD:1  |
+| A.java:80:25:80:45 | getInputStream(...) : InputStream | A.java:83:50:83:54 | input : InputStream | provenance | Src:MaD:1  |
+| A.java:80:25:80:45 | getInputStream(...) : InputStream | A.java:84:24:84:28 | input | provenance | Src:MaD:1  |
+| A.java:80:25:80:45 | getInputStream(...) : InputStream | A.java:85:46:85:50 | input : InputStream | provenance | Src:MaD:1  |
+| A.java:83:50:83:54 | input : InputStream | A.java:83:28:83:55 | new InputStreamReader(...) | provenance | MaD:10 |
+| A.java:85:46:85:50 | input : InputStream | A.java:85:24:85:51 | new InputStreamReader(...) | provenance | MaD:10 |
+| A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:91:26:91:30 | input | provenance | Src:MaD:1  |
+| A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:92:30:92:34 | input | provenance | Src:MaD:1  |
+| A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:93:50:93:54 | input : InputStream | provenance | Src:MaD:1  |
+| A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:94:24:94:28 | input | provenance | Src:MaD:1  |
+| A.java:90:25:90:45 | getInputStream(...) : InputStream | A.java:95:46:95:50 | input : InputStream | provenance | Src:MaD:1  |
+| A.java:93:50:93:54 | input : InputStream | A.java:93:28:93:55 | new InputStreamReader(...) | provenance | MaD:10 |
+| A.java:95:46:95:50 | input : InputStream | A.java:95:24:95:51 | new InputStreamReader(...) | provenance | MaD:10 |
+| A.java:110:25:110:45 | getInputStream(...) : InputStream | A.java:111:26:111:30 | input | provenance | Src:MaD:1  |
+| A.java:110:25:110:45 | getInputStream(...) : InputStream | A.java:112:30:112:34 | input | provenance | Src:MaD:1  |
+| A.java:110:25:110:45 | getInputStream(...) : InputStream | A.java:113:50:113:54 | input : InputStream | provenance | Src:MaD:1  |
+| A.java:110:25:110:45 | getInputStream(...) : InputStream | A.java:114:24:114:28 | input | provenance | Src:MaD:1  |
+| A.java:110:25:110:45 | getInputStream(...) : InputStream | A.java:115:46:115:50 | input : InputStream | provenance | Src:MaD:1  |
+| A.java:113:50:113:54 | input : InputStream | A.java:113:28:113:55 | new InputStreamReader(...) | provenance | MaD:10 |
+| A.java:115:46:115:50 | input : InputStream | A.java:115:24:115:51 | new InputStreamReader(...) | provenance | MaD:10 |
 | B.java:7:31:7:51 | getInputStream(...) : InputStream | B.java:8:29:8:39 | inputStream | provenance | Src:MaD:1  |
 | B.java:12:31:12:51 | getInputStream(...) : InputStream | B.java:14:5:14:15 | inputStream : InputStream | provenance | Src:MaD:1  |
 | B.java:14:5:14:15 | inputStream : InputStream | B.java:14:22:14:26 | bytes [post update] : byte[] | provenance | MaD:9 |
@@ -235,51 +235,51 @@ models
 | 15 | Summary: java.lang; String; false; split; ; ; Argument[this]; ReturnValue; taint; manual |
 | 16 | Summary: org.json; JSONObject; false; JSONObject; (String); ; Argument[0]; Argument[this]; taint; manual |
 nodes
-| A.java:14:31:14:51 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| A.java:15:28:15:61 | new ObjectInputStream(...) : ObjectInputStream | semmle.label | new ObjectInputStream(...) : ObjectInputStream |
-| A.java:15:50:15:60 | inputStream : InputStream | semmle.label | inputStream : InputStream |
-| A.java:16:12:16:13 | in | semmle.label | in |
-| A.java:20:31:20:51 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| A.java:21:28:21:61 | new ObjectInputStream(...) : ObjectInputStream | semmle.label | new ObjectInputStream(...) : ObjectInputStream |
-| A.java:21:50:21:60 | inputStream : InputStream | semmle.label | inputStream : InputStream |
-| A.java:22:12:22:13 | in | semmle.label | in |
-| A.java:32:31:32:51 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| A.java:33:20:33:46 | new XMLDecoder(...) : XMLDecoder | semmle.label | new XMLDecoder(...) : XMLDecoder |
-| A.java:33:35:33:45 | inputStream : InputStream | semmle.label | inputStream : InputStream |
-| A.java:34:12:34:12 | d | semmle.label | d |
-| A.java:39:31:39:51 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| A.java:40:21:40:54 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
-| A.java:40:43:40:53 | inputStream : InputStream | semmle.label | inputStream : InputStream |
-| A.java:41:23:41:28 | reader | semmle.label | reader |
-| A.java:46:19:46:50 | new Input(...) : Input | semmle.label | new Input(...) : Input |
-| A.java:46:29:46:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| A.java:47:28:47:32 | input | semmle.label | input |
-| A.java:48:34:48:38 | input | semmle.label | input |
-| A.java:49:40:49:44 | input | semmle.label | input |
-| A.java:67:25:67:45 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| A.java:68:26:68:30 | input | semmle.label | input |
-| A.java:69:30:69:34 | input | semmle.label | input |
-| A.java:70:28:70:55 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
-| A.java:70:50:70:54 | input : InputStream | semmle.label | input : InputStream |
-| A.java:71:24:71:28 | input | semmle.label | input |
-| A.java:72:24:72:51 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
-| A.java:72:46:72:50 | input : InputStream | semmle.label | input : InputStream |
-| A.java:77:25:77:45 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| A.java:78:26:78:30 | input | semmle.label | input |
-| A.java:79:30:79:34 | input | semmle.label | input |
-| A.java:80:28:80:55 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
-| A.java:80:50:80:54 | input : InputStream | semmle.label | input : InputStream |
-| A.java:81:24:81:28 | input | semmle.label | input |
-| A.java:82:24:82:51 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
-| A.java:82:46:82:50 | input : InputStream | semmle.label | input : InputStream |
-| A.java:97:25:97:45 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| A.java:98:26:98:30 | input | semmle.label | input |
-| A.java:99:30:99:34 | input | semmle.label | input |
-| A.java:100:28:100:55 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
-| A.java:100:50:100:54 | input : InputStream | semmle.label | input : InputStream |
-| A.java:101:24:101:28 | input | semmle.label | input |
-| A.java:102:24:102:51 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
-| A.java:102:46:102:50 | input : InputStream | semmle.label | input : InputStream |
+| A.java:17:31:17:51 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| A.java:18:28:18:61 | new ObjectInputStream(...) : ObjectInputStream | semmle.label | new ObjectInputStream(...) : ObjectInputStream |
+| A.java:18:50:18:60 | inputStream : InputStream | semmle.label | inputStream : InputStream |
+| A.java:19:12:19:13 | in | semmle.label | in |
+| A.java:33:31:33:51 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| A.java:34:28:34:61 | new ObjectInputStream(...) : ObjectInputStream | semmle.label | new ObjectInputStream(...) : ObjectInputStream |
+| A.java:34:50:34:60 | inputStream : InputStream | semmle.label | inputStream : InputStream |
+| A.java:35:12:35:13 | in | semmle.label | in |
+| A.java:45:31:45:51 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| A.java:46:20:46:46 | new XMLDecoder(...) : XMLDecoder | semmle.label | new XMLDecoder(...) : XMLDecoder |
+| A.java:46:35:46:45 | inputStream : InputStream | semmle.label | inputStream : InputStream |
+| A.java:47:12:47:12 | d | semmle.label | d |
+| A.java:52:31:52:51 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| A.java:53:21:53:54 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| A.java:53:43:53:53 | inputStream : InputStream | semmle.label | inputStream : InputStream |
+| A.java:54:23:54:28 | reader | semmle.label | reader |
+| A.java:59:19:59:50 | new Input(...) : Input | semmle.label | new Input(...) : Input |
+| A.java:59:29:59:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| A.java:60:28:60:32 | input | semmle.label | input |
+| A.java:61:34:61:38 | input | semmle.label | input |
+| A.java:62:40:62:44 | input | semmle.label | input |
+| A.java:80:25:80:45 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| A.java:81:26:81:30 | input | semmle.label | input |
+| A.java:82:30:82:34 | input | semmle.label | input |
+| A.java:83:28:83:55 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| A.java:83:50:83:54 | input : InputStream | semmle.label | input : InputStream |
+| A.java:84:24:84:28 | input | semmle.label | input |
+| A.java:85:24:85:51 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| A.java:85:46:85:50 | input : InputStream | semmle.label | input : InputStream |
+| A.java:90:25:90:45 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| A.java:91:26:91:30 | input | semmle.label | input |
+| A.java:92:30:92:34 | input | semmle.label | input |
+| A.java:93:28:93:55 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| A.java:93:50:93:54 | input : InputStream | semmle.label | input : InputStream |
+| A.java:94:24:94:28 | input | semmle.label | input |
+| A.java:95:24:95:51 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| A.java:95:46:95:50 | input : InputStream | semmle.label | input : InputStream |
+| A.java:110:25:110:45 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| A.java:111:26:111:30 | input | semmle.label | input |
+| A.java:112:30:112:34 | input | semmle.label | input |
+| A.java:113:28:113:55 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| A.java:113:50:113:54 | input : InputStream | semmle.label | input : InputStream |
+| A.java:114:24:114:28 | input | semmle.label | input |
+| A.java:115:24:115:51 | new InputStreamReader(...) | semmle.label | new InputStreamReader(...) |
+| A.java:115:46:115:50 | input : InputStream | semmle.label | input : InputStream |
 | B.java:7:31:7:51 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | B.java:8:29:8:39 | inputStream | semmle.label | inputStream |
 | B.java:12:31:12:51 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
