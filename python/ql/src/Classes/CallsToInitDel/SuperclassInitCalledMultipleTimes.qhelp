@@ -1,0 +1,74 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Python, unlike some other object-oriented languages such as Java, allows the developer complete freedom in 
+when and how superclass initializers are called during object initialization.
+However, the developer has responsibility for ensuring that objects are properly initialized. 
+</p>
+
+<p>
+Calling an <code>__init__</code> method more than once during object initialization risks the object being incorrectly 
+initialized, as the method and the rest of the inheritance chain may not have been written with the expectation
+that it could be called multiple times. For example, it may set attributes to a default value in a way that unexpectedly overwrites 
+values setting those attributes in a subclass.
+</p>
+
+<p>There are a number of ways that an <code>__init__</code> method may be be called more than once.</p>
+<ul>
+    <li>There may be more than one explicit call to the method in the hierarchy of <code>__init__</code> methods.</li>
+    <li>In situations involving multiple inheritance, an initialization method may call the initializers of each of its base types,
+     which themselves both call the initializer of a shared base type. (This is an example of the Diamond Inheritance problem)</li>
+    <li>Another situation involving multiple inheritance arises when a subclass calls the <code>__init__</code> methods of each of its base classes,
+    one of which calls <code>super().__init__</code>. This super call resolves to the next class in the Method Resolution Order (MRO) of the subclass,
+    which may be another base class that already has its initializer explicitly called.</li>
+</ul>
+
+
+</overview>
+<recommendation>
+<p>
+Take care whenever possible not to call an an initializer multiple times. If each <code>__init__</code> method in the hierarchy 
+calls <code>super().__init__()</code>, then each initializer will be called exactly once according to the MRO of the subclass. 
+
+When explicitly calling base class initializers (such as to pass different arguments to different initializers), 
+ensure this is done consistently throughout, rather than using <code>super()</code> calls in the base classes.
+</p>
+<p>
+In some cases, it may not be possible to avoid calling a base initializer multiple times without significant refactoring. 
+In this case, carefully check that the initializer does not interfere with subclass initializers
+ when called multiple times (such as by overwriting attributes), and ensure this behavior is documented.
+</p>
+
+
+</recommendation>
+<example>
+<p>In the following (BAD) example, the class <code>D</code> calls <code>B.__init__</code> and <code>C.__init__</code>, 
+which each call <code>A.__init__</code>. This results in <code>self.state</code> being set to <code>None</code> as 
+<code>A.__init__</code> is called again after <code>B.__init__</code> had finished. This may lead to unexpected results.
+</p>
+
+<sample src="examples/SuperclassInitCalledMultipleTimesBad1.py" />
+
+<p>In the following (GOOD) example, a call to <code>super().__init__</code> is made in each class 
+in the inheritance hierarchy, ensuring each initializer is called exactly once.
+</p>
+
+<sample src="examples/SuperclassInitCalledMultipleTimesGood2.py" />
+
+<p>In the following (BAD) example, explicit base class calls are mixed with <code>super()</code> calls, and <code>C.__init__</code> is called twice.</p>
+
+<sample src="examples/SuperclassInitCalledMultipleTimesBad3.py" />
+</example>
+<references>
+
+        <li>Python Reference: <a href="https://docs.python.org/3/reference/datamodel.html#object.__init__">__init__</a>.</li>
+        <li>Python Standard Library: <a href="https://docs.python.org/3/library/functions.html#super">super</a>.</li>
+        <li>Python Glossary: <a href="https://docs.python.org/3/glossary.html#term-method-resolution-order">Method resolution order</a>.</li>
+        <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem">The Diamond Problem</a>.</li>
+
+
+</references>
+</qhelp>
