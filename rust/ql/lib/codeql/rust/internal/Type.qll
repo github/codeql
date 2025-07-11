@@ -15,7 +15,9 @@ newtype TType =
   TTrait(Trait t) or
   TArrayType() or // todo: add size?
   TRefType() or // todo: add mut?
-  TImplTraitType(ImplTraitTypeRepr impl) or
+  TImplTraitArgumentType(Function function, ImplTraitTypeRepr impl) {
+    impl = function.getAParam().getTypeRepr()
+  } or
   TSliceType() or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
@@ -197,53 +199,6 @@ class RefType extends Type, TRefType {
 }
 
 /**
- * An [impl Trait][1] type.
- *
- * Each syntactic `impl Trait` type gives rise to its own type, even if
- * two `impl Trait` types have the same bounds.
- *
- * [1]: https://doc.rust-lang.org/reference/types/impl-trait.html
- */
-class ImplTraitType extends Type, TImplTraitType {
-  ImplTraitTypeRepr impl;
-
-  ImplTraitType() { this = TImplTraitType(impl) }
-
-  /** Gets the underlying AST node. */
-  ImplTraitTypeRepr getImplTraitTypeRepr() { result = impl }
-
-  /** Gets the function that this `impl Trait` belongs to. */
-  abstract Function getFunction();
-
-  override StructField getStructField(string name) { none() }
-
-  override TupleField getTupleField(int i) { none() }
-
-  override TypeParameter getTypeParameter(int i) { none() }
-
-  override string toString() { result = impl.toString() }
-
-  override Location getLocation() { result = impl.getLocation() }
-}
-
-/**
- * An [impl Trait in return position][1] type, for example:
- *
- * ```rust
- * fn foo() -> impl Trait
- * ```
- *
- * [1]: https://doc.rust-lang.org/reference/types/impl-trait.html#r-type.impl-trait.return
- */
-class ImplTraitReturnType extends ImplTraitType {
-  private Function function;
-
-  ImplTraitReturnType() { impl = function.getRetType().getTypeRepr() }
-
-  override Function getFunction() { result = function }
-}
-
-/**
  * A slice type.
  *
  * Slice types like `[i64]` are modeled as normal generic types
@@ -386,18 +341,27 @@ class SelfTypeParameter extends TypeParameter, TSelfTypeParameter {
  *
  * [1]: https://doc.rust-lang.org/reference/types/impl-trait.html#r-type.impl-trait.param
  */
-class ImplTraitTypeTypeParameter extends ImplTraitType, TypeParameter {
+class ImplTraitArgumentType extends TypeParameter, TImplTraitArgumentType {
   private Function function;
+  private ImplTraitTypeRepr impl;
 
-  ImplTraitTypeTypeParameter() { impl = function.getAParam().getTypeRepr() }
+  ImplTraitArgumentType() { this = TImplTraitArgumentType(function, impl) }
 
-  override Function getFunction() { result = function }
+  /** Gets the function that this `impl Trait` belongs to. */
+  Function getFunction() { result = function }
+
+  /** Gets the underlying AST node. */
+  ImplTraitTypeRepr getImplTraitTypeRepr() { result = impl }
 
   override StructField getStructField(string name) { none() }
 
   override TupleField getTupleField(int i) { none() }
 
   override TypeParameter getTypeParameter(int i) { none() }
+
+  override string toString() { result = impl.toString() }
+
+  override Location getLocation() { result = impl.getLocation() }
 }
 
 /**

@@ -101,7 +101,7 @@ private module Input1 implements InputSig1<Location> {
           node = tp0.(TypeParamTypeParameter).getTypeParam() or
           node = tp0.(AssociatedTypeTypeParameter).getTypeAlias() or
           node = tp0.(SelfTypeParameter).getTrait() or
-          node = tp0.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr()
+          node = tp0.(ImplTraitArgumentType).getImplTraitTypeRepr()
         )
       |
         tp0 order by kind, id
@@ -132,11 +132,7 @@ private module Input2 implements InputSig2 {
     result = tp.(SelfTypeParameter).getTrait()
     or
     result =
-      tp.(ImplTraitTypeTypeParameter)
-          .getImplTraitTypeRepr()
-          .getTypeBoundList()
-          .getABound()
-          .getTypeRepr()
+      tp.(ImplTraitArgumentType).getImplTraitTypeRepr().getTypeBoundList().getABound().getTypeRepr()
   }
 
   /**
@@ -670,7 +666,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       )
       or
       ppos.isImplicit() and
-      this = result.(ImplTraitTypeTypeParameter).getFunction()
+      this = result.(ImplTraitArgumentType).getFunction()
     }
 
     override Type getParameterType(DeclarationPosition dpos, TypePath path) {
@@ -1476,7 +1472,7 @@ private Function getTypeParameterMethod(TypeParameter tp, string name) {
   or
   result = getMethodSuccessor(tp.(SelfTypeParameter).getTrait(), name)
   or
-  result = getMethodSuccessor(tp.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr(), name)
+  result = getMethodSuccessor(tp.(ImplTraitArgumentType).getImplTraitTypeRepr(), name)
 }
 
 pragma[nomagic]
@@ -1655,8 +1651,8 @@ private Function getMethodFromImpl(MethodCall mc) {
 
 bindingset[trait, name]
 pragma[inline_late]
-private Function getTraitMethod(ImplTraitReturnType trait, string name) {
-  result = getMethodSuccessor(trait.getImplTraitTypeRepr(), name)
+private Function getTraitMethod(TraitType trait, string name) {
+  result = getMethodSuccessor(trait.getTrait(), name)
 }
 
 pragma[nomagic]
@@ -1669,7 +1665,8 @@ private Function resolveMethodCallTarget(MethodCall mc) {
   result = getTypeParameterMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
   or
   // The type of the receiver is an `impl Trait` type.
-  result = getTraitMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
+  result = getTraitMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName()) and
+  not exists(mc.getTrait())
 }
 
 pragma[nomagic]

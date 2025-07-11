@@ -216,7 +216,13 @@ class PathTypeReprMention extends TypeMention, PathTypeRepr {
 class ImplTraitTypeReprMention extends TypeMention instanceof ImplTraitTypeRepr {
   override Type resolveTypeAt(TypePath typePath) {
     typePath.isEmpty() and
-    result.(ImplTraitType).getImplTraitTypeRepr() = this
+    result.(ImplTraitArgumentType).getImplTraitTypeRepr() = this
+    or
+    exists(Function f |
+      this = f.getRetType().getTypeRepr() and
+      result =
+        super.getTypeBoundList().getABound().getTypeRepr().(TypeMention).resolveTypeAt(typePath)
+    )
   }
 }
 
