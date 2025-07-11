@@ -30,19 +30,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     connection.execute(&query, ())?;    // $ sql-sink
 
     let person = connection.query_row(&query, (), |row| {    // $ sql-sink
+        let row: &rusqlite::Row<'_> = row;
         Ok(Person {
-            id: row.get(0)?,        // $ MISSING: database-read
-            name: row.get(1)?,      // $ MISSING: database-read
-            age: row.get(2)?,       // $ MISSING: database-read
+            id: row.get(0)?,        // $ database-read
+            name: row.get(1)?,      // $ database-read
+            age: row.get(2)?,       // $ database-read
         })
     })?;
 
     let mut stmt = connection.prepare("SELECT id, name, age FROM person")?;      // $ sql-sink
     let people = stmt.query_map([], |row| {
+        let row: &rusqlite::Row<'_> = row;
         Ok(Person {
-            id: row.get_unwrap(0),      // $ MISSING: database-read
-            name: row.get_unwrap(1),    // $ MISSING: database-read
-            age: row.get_unwrap(2),     // $ MISSING: database-read
+            id: row.get_unwrap(0),      // $ database-read
+            name: row.get_unwrap(1),    // $ database-read
+            age: row.get_unwrap(2),     // $ database-read
         })
     })?;
 
