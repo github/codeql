@@ -2462,18 +2462,18 @@ pub mod pattern_matching {
             _ => (),
         }
 
-        let opt1 = Some(Default::default()); // $ MISSING: type=opt1:T.i32 method=default
+        let opt1 = Some(Default::default()); // $ type=opt1:T.i32 method=default
         #[rustfmt::skip]
         let _ = if let Some::<i32>(x) = opt1
         {
-            x; // $ MISSING: type=x:i32
+            x; // $ type=x:i32
         };
 
-        let opt2 = Some(Default::default()); // $ MISSING: type=opt2:T.i32 method=default
+        let opt2 = Some(Default::default()); // $ type=opt2:T.i32 method=default
         #[rustfmt::skip]
         let _ = if let Option::Some::<i32>(x) = opt2
         {
-            x; // $ MISSING: type=x:i32
+            x; // $ type=x:i32
         };
 
         let opt3 = Some(Default::default()); // $ type=opt3:T.i32 method=default

@@ -4303,13 +4303,27 @@ inferType
 | main.rs:2462:13:2462:13 | _ | T1.T2.&T | {EXTERNAL LOCATION} | str |
 | main.rs:2462:13:2462:13 | _ | T2 | {EXTERNAL LOCATION} | bool |
 | main.rs:2465:13:2465:16 | opt1 |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2465:13:2465:16 | opt1 | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2465:20:2465:43 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2465:20:2465:43 | Some(...) | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2465:25:2465:42 | ...::default(...) |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2467:24:2467:37 | Some::<...>(...) |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2467:24:2467:37 | Some::<...>(...) | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2467:36:2467:36 | x |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2467:41:2467:44 | opt1 |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2467:41:2467:44 | opt1 | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2469:13:2469:13 | x |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2472:13:2472:16 | opt2 |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2472:13:2472:16 | opt2 | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2472:20:2472:43 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2472:20:2472:43 | Some(...) | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2472:25:2472:42 | ...::default(...) |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2474:24:2474:45 | ...::Some::<...>(...) |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2474:24:2474:45 | ...::Some::<...>(...) | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2474:44:2474:44 | x |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2474:49:2474:52 | opt2 |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2474:49:2474:52 | opt2 | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2476:13:2476:13 | x |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2479:13:2479:16 | opt3 |  | {EXTERNAL LOCATION} | Option |
 | main.rs:2479:13:2479:16 | opt3 | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2479:20:2479:43 | Some(...) |  | {EXTERNAL LOCATION} | Option |
