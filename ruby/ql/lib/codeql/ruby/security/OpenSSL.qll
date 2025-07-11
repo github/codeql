@@ -3,7 +3,7 @@
  * an underlying OpenSSL or LibreSSL C library.
  */
 
-private import internal.CryptoAlgorithmNames
+private import codeql.concepts.internal.CryptoAlgorithmNames
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs

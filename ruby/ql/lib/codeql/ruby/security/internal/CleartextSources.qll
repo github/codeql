@@ -8,8 +8,8 @@ private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.TaintTracking::TaintTracking
 private import codeql.ruby.dataflow.RemoteFlowSources
-private import SensitiveDataHeuristics::HeuristicNames
-private import SensitiveDataHeuristics
+private import codeql.concepts.internal.SensitiveDataHeuristics::HeuristicNames
+private import codeql.concepts.internal.SensitiveDataHeuristics
 private import codeql.ruby.CFG
 private import codeql.ruby.dataflow.SSA
 

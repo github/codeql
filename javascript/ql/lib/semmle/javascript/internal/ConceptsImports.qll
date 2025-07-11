@@ -4,4 +4,4 @@
  */
 
 import semmle.javascript.dataflow.DataFlow::DataFlow as DataFlow
-import semmle.javascript.security.CryptoAlgorithms as CryptoAlgorithms
+import codeql.concepts.CryptoAlgorithms as CryptoAlgorithms

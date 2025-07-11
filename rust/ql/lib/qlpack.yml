@@ -6,6 +6,7 @@ dbscheme: rust.dbscheme
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/concepts: ${workspace}
   codeql/controlflow: ${workspace}
   codeql/dataflow: ${workspace}
   codeql/regex: ${workspace}
