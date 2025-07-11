@@ -31,26 +31,3 @@ class PointUpdated(object):
         return not self == other
 
 
-
-class A:
-    def __init__(self, a):
-        self.a = a 
-
-    def __eq__(self, other):
-        print("A eq")
-        return self.a == other.a
-
-    def __ne__(self, other):
-        print("A ne")
-        return self.a != other.a 
-
-class B(A):
-    def __init__(self, a, b):
-        self.a = a
-        self.b = b 
-
-    def __eq__(self, other):
-        print("B eq")
-        return self.a == other.a and self.b == other.b
-
-print(B(1,2) != B(1,3)) 

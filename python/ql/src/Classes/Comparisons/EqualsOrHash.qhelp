@@ -4,42 +4,40 @@
 <qhelp>
 
 <overview>
-<p>In order to conform to the object model, classes that define their own equality method should also 
-define their own hash method, or be unhashable. If the hash method is not defined then the <code>hash</code> of the 
-super class is used. This is unlikely to result in the expected behavior.</p>
+<p>A hashable class has an <code>__eq__</code> method, and a <code>__hash__</code> method that agrees with equality. 
+When a hash method is defined, an equality method should also be defined; otherwise object identity is used for equality comparisons 
+which may not be intended.
+ </p>
 
-<p>A class can be made unhashable by setting its <code>__hash__</code> attribute to <code>None</code>.</p>
-
-<p>In Python 3, if you define a class-level equality method and omit a <code>__hash__</code> method 
-then the class is automatically marked as unhashable.</p>
+<p>Note that defining an <code>__eq__</code> method without defining a <code>__hash__</code> method automatically makes the class unhashable in Python 3.
+(even if a superclass defines a hash method).</p>
 
 </overview>
 <recommendation>
 
-<p>When you define an <code>__eq__</code> method for a class, remember to implement a <code>__hash__</code> method or set 
-<code>__hash__ = None</code>.</p>
+<p>
+If a <code>__hash__</code> method is defined, ensure a compatible <code>__eq__</code> method is also defined.
+</p>
+
+<p>
+To explicitly declare a class as unhashable, set <code>__hash__ = None</code>, rather than defining a <code>__hash__</code> method that always
+raises an exception. Otherwise, the class would be incorrectly identified as hashable by an <code>isinstance(obj, collections.abc.Hashable)</code> call.
+</p>
 
 </recommendation>
 <example>
-<p>In the following example the <code>Point</code> class defines an equality method but 
-no hash method. If hash is called on this class then the hash method defined for <code>object</code> 
-is used. This is unlikely to give the required behavior. The <code>PointUpdated</code> class 
-is better as it defines both an equality and a hash method.
-If <code>Point</code> was not to be used in <code>dict</code>s or <code>set</code>s, then it could be defined as
-<code>UnhashablePoint</code> below.
+<p>In the following example, the <code>A</code> class defines an hash method but 
+no equality method. Equality will be determined by object identity, which may not be the expected behaviour.
 </p>
-<p>
-To comply fully with the object model this class should also define an inequality method (identified 
-by a separate rule).</p>
 
-<sample src="EqualsOrHash.py" />
+<sample src="examples/EqualsOrHash.py" />
 
 </example>
 <references>
 
 
 <li>Python Language Reference: <a href="http://docs.python.org/reference/datamodel.html#object.__hash__">object.__hash__</a>.</li>
-<li>Python Glossary: <a href="http://docs.python.org/2/glossary.html#term-hashable">hashable</a>.</li>
+<li>Python Glossary: <a href="http://docs.python.org/3/glossary.html#term-hashable">hashable</a>.</li>
 
 
 </references>

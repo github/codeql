@@ -1,6 +1,6 @@
 /**
  * @name Inconsistent equality and hashing
- * @description Defining equality for a class without also defining hashability (or vice-versa) violates the object model.
+ * @description Defining a hash operation without defining equality may be a mistake.
  * @kind problem
  * @tags quality
  *       reliability

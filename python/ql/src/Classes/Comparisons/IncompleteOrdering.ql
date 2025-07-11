@@ -1,6 +1,6 @@
 /**
  * @name Incomplete ordering
- * @description Class defines one or more ordering method but does not define all 4 ordering comparison methods
+ * @description Class defines ordering comparison methods, but does not define both strict and nonstrict ordering methods, to ensure all four comparison operators behave as expected.
  * @kind problem
  * @tags quality
  *       reliability

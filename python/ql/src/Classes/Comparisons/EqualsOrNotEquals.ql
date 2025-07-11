@@ -1,6 +1,6 @@
 /**
  * @name Inconsistent equality and inequality
- * @description Defining only an equality method or an inequality method for a class violates the object model.
+ * @description Class definitions of equality and inequality operators may be inconsistent.
  * @kind problem
  * @tags quality
  *       reliability
