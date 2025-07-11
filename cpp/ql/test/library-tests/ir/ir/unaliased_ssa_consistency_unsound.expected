@@ -29,5 +29,8 @@ fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 | ir.cpp:2546:34:2546:34 | Call: call to operator bool | Call instruction 'Call: call to operator bool' has a `this` argument operand that is not an address, in function '$@'. | ir.cpp:2545:6:2545:23 | void this_inconsistency(bool) | void this_inconsistency(bool) |
 nonUniqueIRVariable
+| ir.cpp:745:8:745:8 | VariableAddress: (unnamed parameter 0) | Variable address instruction 'VariableAddress: (unnamed parameter 0)' has no associated variable, in function '$@'. | ir.cpp:745:8:745:8 | void Base::Base(Base const&) | void Base::Base(Base const&) |
+| ir.cpp:1045:20:1045:57 | VariableAddress: (unnamed parameter 0) | Variable address instruction 'VariableAddress: (unnamed parameter 0)' has no associated variable, in function '$@'. | ir.cpp:1040:6:1040:11 | void Lambda(int, String const&) | void Lambda(int, String const&) |
+| ir.cpp:1049:29:1049:66 | VariableAddress: (unnamed parameter 0) | Variable address instruction 'VariableAddress: (unnamed parameter 0)' has no associated variable, in function '$@'. | ir.cpp:1040:6:1040:11 | void Lambda(int, String const&) | void Lambda(int, String const&) |
 nonBooleanOperand
 missingCppType
