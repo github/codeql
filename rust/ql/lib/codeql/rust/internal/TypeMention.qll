@@ -53,9 +53,13 @@ class SliceTypeReprMention extends TypeMention instanceof SliceTypeRepr {
 class PathTypeMention extends TypeMention, Path {
   TypeItemNode resolved;
 
-  PathTypeMention() { resolved = resolvePath(this) }
+  PathTypeMention() {
+    resolved = resolvePath(this)
+    or
+    resolved = resolvePath(this).(Variant).getEnum()
+  }
 
-  ItemNode getResolved() { result = resolved }
+  TypeItemNode getResolved() { result = resolved }
 
   pragma[nomagic]
   private TypeAlias getResolvedTraitAlias(string name) {
@@ -99,6 +103,10 @@ class PathTypeMention extends TypeMention, Path {
       this = node.getASelfPath() and
       result = node.(ImplItemNode).getSelfPath().getSegment().getGenericArgList().getTypeArg(i)
     )
+    or
+    // `Option::<i32>::Some` is valid in addition to `Option::Some::<i32>`
+    resolvePath(this) instanceof Variant and
+    result = this.getQualifier().getSegment().getGenericArgList().getTypeArg(i)
   }
 
   private TypeMention getPositionalTypeArgument(int i) {

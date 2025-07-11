@@ -509,12 +509,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
       // The struct/enum type is supplied explicitly as a type qualifier, e.g.
       // `Foo<Bar>::Variant { ... }`.
       apos.isStructPos() and
-      exists(Path p, TypeMention tm |
-        p = this.getPath() and
-        if resolvePath(p) instanceof Variant then tm = p.getQualifier() else tm = p
-      |
-        result = tm.resolveTypeAt(path)
-      )
+      result = this.getPath().(TypeMention).resolveTypeAt(path)
     }
 
     Declaration getTarget() { result = resolvePath(this.getPath()) }
@@ -1242,12 +1237,7 @@ private module StructPatMatchingInput implements MatchingInputSig {
       // The struct/enum type is supplied explicitly as a type qualifier, e.g.
       // `let Foo<Bar>::Variant { ... } = ...`.
       apos.isStructPos() and
-      exists(Path p, TypeMention tm |
-        p = this.getPath() and
-        if resolvePath(p) instanceof Variant then tm = p.getQualifier() else tm = p
-      |
-        result = tm.resolveTypeAt(path)
-      )
+      result = this.getPath().(TypeMention).resolveTypeAt(path)
     }
 
     Declaration getTarget() { result = resolvePath(this.getPath()) }
@@ -1297,14 +1287,9 @@ private module TupleStructPatMatchingInput implements MatchingInputSig {
       result = inferType(this.getNodeAt(apos), path)
       or
       // The struct/enum type is supplied explicitly as a type qualifier, e.g.
-      // `let Option::<Foo>(x) = ...`.
+      // `let Option::<Foo>::Some(x) = ...`.
       apos.isSelf() and
-      exists(Path p, TypeMention tm |
-        p = this.getPath() and
-        if resolvePath(p) instanceof Variant then tm = p.getQualifier() else tm = p
-      |
-        result = tm.resolveTypeAt(path)
-      )
+      result = this.getPath().(TypeMention).resolveTypeAt(path)
     }
 
     Declaration getTarget() { result = resolvePath(this.getPath()) }
