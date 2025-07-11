@@ -266,6 +266,21 @@ public class AutoBuildTests {
   }
 
   @Test
+  public void skipFilesInTsconfigOutDirWithRelativePath() throws IOException {
+    // Test that outDir with relative path "somedir/.." (resolves to root) is ignored
+    addFile(true, LGTM_SRC, "tsconfig.json");
+    Path config = Paths.get(LGTM_SRC.toString(), "tsconfig.json");
+    Files.write(config,
+        "{\"compilerOptions\":{\"outDir\":\"somedir/..\"}}".getBytes(StandardCharsets.UTF_8));
+
+    // All files should be extracted since outDir resolving to root should be ignored
+    addFile(true, LGTM_SRC, "src", "app.ts");
+    addFile(true, LGTM_SRC, "main.js");
+
+    runTest();
+  }
+
+  @Test
   public void includeFile() throws IOException {
     envVars.put("LGTM_INDEX_INCLUDE", "tst.js");
     addFile(true, LGTM_SRC, "tst.js");
