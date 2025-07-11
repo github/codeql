@@ -2295,6 +2295,10 @@ mod explicit_type_args {
         field: T5,
     }
 
+    fn foo<T>(x: T) -> T {
+        x
+    }
+
     pub fn f() {
         let x1: Option<S1<S2>> = S1::assoc_fun(); // $ type=x1:T.T.S2 method=assoc_fun
         let x2 = S1::<S2>::assoc_fun(); // $ type=x2:T.T.S2 method=assoc_fun
@@ -2315,6 +2319,7 @@ mod explicit_type_args {
         {
             field: S2::default(), // $ method=default
         };
+        let x14 = foo::<i32>(Default::default()); // $ type=x14:i32 method=default method=foo
     }
 }
 
@@ -2346,6 +2351,142 @@ mod tuples {
     }
 }
 
+pub mod pattern_matching {
+    struct MyRecordStruct<T1, T2> {
+        value1: T1,
+        value2: T2,
+    }
+
+    struct MyTupleStruct<T1, T2>(T1, T2);
+
+    enum MyEnum<T1, T2> {
+        Variant1 { value1: T1, value2: T2 },
+        Variant2(T2, T1),
+    }
+
+    pub fn f() -> Option<()> {
+        let value = Some(42);
+        if let Some(mesg) = value {
+            let mesg = mesg; // $ type=mesg:i32
+            println!("{mesg}");
+        }
+        match value {
+            Some(mesg) => {
+                let mesg = mesg; // $ type=mesg:i32
+                println!("{mesg}");
+            }
+            None => (),
+        };
+        let mesg = value.unwrap(); // $ method=unwrap
+        let mesg = mesg; // $ type=mesg:i32
+        println!("{mesg}");
+        let mesg = value?; // $ type=mesg:i32
+        println!("{mesg}");
+
+        let value2 = &Some(42);
+        if let &Some(mesg) = value2 {
+            let mesg = mesg; // $ type=mesg:i32
+            println!("{mesg}");
+        }
+
+        let value3 = 42;
+        if let ref mesg = value3 {
+            let mesg = mesg; // $ type=mesg:&T.i32
+            println!("{mesg}");
+        }
+
+        let value4 = Some(42);
+        if let Some(ref mesg) = value4 {
+            let mesg = mesg; // $ type=mesg:&T.i32
+            println!("{mesg}");
+        }
+
+        let ref value5 = 42;
+        let x = value5; // $ type=x:&T.i32
+
+        let my_record_struct = MyRecordStruct {
+            value1: 42,
+            value2: false,
+        };
+        if let MyRecordStruct { value1, value2 } = my_record_struct {
+            let x = value1; // $ type=x:i32
+            let y = value2; // $ type=y:bool
+            ();
+        }
+
+        let my_tuple_struct = MyTupleStruct(42, false);
+        if let MyTupleStruct(value1, value2) = my_tuple_struct {
+            let x = value1; // $ type=x:i32
+            let y = value2; // $ type=y:bool
+            ();
+        }
+
+        let my_enum1 = MyEnum::Variant1 {
+            value1: 42,
+            value2: false,
+        };
+        match my_enum1 {
+            MyEnum::Variant1 { value1, value2 } => {
+                let x = value1; // $ type=x:i32
+                let y = value2; // $ type=y:bool
+                ();
+            }
+            MyEnum::Variant2(value1, value2) => {
+                let x = value1; // $ type=x:bool
+                let y = value2; // $ type=y:i32
+                ();
+            }
+        }
+
+        let my_nested_enum = MyEnum::Variant2(
+            false,
+            MyRecordStruct {
+                value1: 42,
+                value2: "string",
+            },
+        );
+
+        match my_nested_enum {
+            MyEnum::Variant2(
+                value1,
+                MyRecordStruct {
+                    value1: x,
+                    value2: y,
+                },
+            ) => {
+                let a = value1; // $ type=a:bool
+                let b = x; // $ type=b:i32
+                let c = y; // $ type=c:&T.str
+                ();
+            }
+            _ => (),
+        }
+
+        let opt1 = Some(Default::default()); // $ type=opt1:T.i32 method=default
+        #[rustfmt::skip]
+        let _ = if let Some::<i32>(x) = opt1
+        {
+            x; // $ type=x:i32
+        };
+
+        let opt2 = Some(Default::default()); // $ type=opt2:T.i32 method=default
+        #[rustfmt::skip]
+        let _ = if let Option::Some::<i32>(x) = opt2
+        {
+            x; // $ type=x:i32
+        };
+
+        let opt3 = Some(Default::default()); // $ type=opt3:T.i32 method=default
+        #[rustfmt::skip]
+        let _ = if let Option::<i32>::Some(x) = opt3
+        {
+            x; // $ type=x:i32
+        };
+
+        None
+    }
+}
+
 fn main() {
     field_access::f(); // $ method=f
     method_impl::f(); // $ method=f
@@ -2374,27 +2515,5 @@ fn main() {
     method_determined_by_argument_type::f(); // $ method=f
     tuples::f(); // $ method=f
     dereference::test(); // $ method=test
-}
-
-pub mod unwrap {
-    pub fn test_unwrapping() -> Option<()> {
-        let value = Some(42);
-        if let Some(mesg) = value {
-            let mesg = mesg; // $ MISSING: type=mesg:i32
-            println!("{mesg}");
-        }
-        match value {
-            Some(mesg) => {
-                let mesg = mesg; // $ MISSING: type=mesg:i32
-                println!("{mesg}");
-            }
-            None => (),
-        };
-        let mesg = value.unwrap(); // $ method=unwrap
-        let mesg = mesg; // $ type=mesg:i32
-        println!("{mesg}");
-        let mesg = value?; // $ type=mesg:i32
-        println!("{mesg}");
-        None
-    }
+    pattern_matching::f(); // $ method=f
 }

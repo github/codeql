@@ -260,7 +260,7 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
   prefix2.isEmpty() and
   (
     exists(Variable v | n1 = v.getAnAccess() |
-      n2 = v.getPat()
+      n2 = v.getPat().getName()
       or
       n2 = v.getParameter().(SelfParam)
     )
@@ -276,6 +276,22 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     or
     n1 = n2.(MatchExpr).getAnArm().getExpr()
     or
+    exists(LetExpr let |
+      n1 = let.getScrutinee() and
+      n2 = let.getPat()
+    )
+    or
+    exists(MatchExpr me |
+      n1 = me.getScrutinee() and
+      n2 = me.getAnArm().getPat()
+    )
+    or
+    n1 = n2.(OrPat).getAPat()
+    or
+    n1 = n2.(ParenPat).getPat()
+    or
+    n1 = n2.(LiteralPat).getLiteral()
+    or
     exists(BreakExpr break |
       break.getExpr() = n1 and
       break.getTarget() = n2.(LoopExpr)
@@ -287,9 +303,21 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     )
     or
     n1 = n2.(MacroExpr).getMacroCall().getMacroCallExpansion()
+    or
+    n1 = n2.(MacroPat).getMacroCall().getMacroCallExpansion()
   )
   or
-  n1 = n2.(RefExpr).getExpr() and
+  n1 =
+    any(IdentPat ip |
+      n2 = ip.getName() and
+      prefix1.isEmpty() and
+      if ip.isRef() then prefix2 = TypePath::singleton(TRefTypeParameter()) else prefix2.isEmpty()
+    )
+  or
+  (
+    n1 = n2.(RefExpr).getExpr() or
+    n1 = n2.(RefPat).getPat()
+  ) and
   prefix1.isEmpty() and
   prefix2 = TypePath::singleton(TRefTypeParameter())
   or
@@ -478,15 +506,10 @@ private module StructExprMatchingInput implements MatchingInputSig {
     Type getInferredType(AccessPosition apos, TypePath path) {
       result = inferType(this.getNodeAt(apos), path)
       or
-      // The struct type is supplied explicitly as a type qualifier, e.g.
+      // The struct/enum type is supplied explicitly as a type qualifier, e.g.
       // `Foo<Bar>::Variant { ... }`.
       apos.isStructPos() and
-      exists(Path p, TypeMention tm |
-        p = this.getPath() and
-        if resolvePath(p) instanceof Variant then tm = p.getQualifier() else tm = p
-      |
-        result = tm.resolveTypeAt(path)
-      )
+      result = this.getPath().(TypeMention).resolveTypeAt(path)
     }
 
     Declaration getTarget() { result = resolvePath(this.getPath()) }
@@ -576,7 +599,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
   }
 
-  abstract private class TupleDeclaration extends Declaration {
+  abstract additional class TupleDeclaration extends Declaration {
     override Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
       result = super.getDeclaredType(dpos, path)
       or
@@ -1032,9 +1055,18 @@ private Type inferFieldExprType(AstNode n, TypePath path) {
   )
 }
 
-/** Gets the root type of the reference expression `re`. */
+/** Gets the root type of the reference node `ref`. */
 pragma[nomagic]
-private Type inferRefExprType(RefExpr re) { exists(re) and result = TRefType() }
+private Type inferRefNodeType(AstNode ref) {
+  (
+    ref = any(IdentPat ip | ip.isRef()).getName()
+    or
+    ref instanceof RefExpr
+    or
+    ref instanceof RefPat
+  ) and
+  result = TRefType()
+}
 
 pragma[nomagic]
 private Type inferTryExprType(TryExpr te, TypePath path) {
@@ -1175,6 +1207,110 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
       exprPath.isCons(any(RefTypeParameter tp), path0) and
       path0.isCons(any(SliceTypeParameter tp), path)
     )
+  )
+}
+
+/**
+ * A matching configuration for resolving types of struct patterns
+ * like `let Foo { bar } = ...`.
+ */
+private module StructPatMatchingInput implements MatchingInputSig {
+  class DeclarationPosition = StructExprMatchingInput::DeclarationPosition;
+
+  class Declaration = StructExprMatchingInput::Declaration;
+
+  class AccessPosition = DeclarationPosition;
+
+  class Access extends StructPat {
+    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
+
+    AstNode getNodeAt(AccessPosition apos) {
+      result = this.getPatField(apos.asFieldPos()).getPat()
+      or
+      result = this and
+      apos.isStructPos()
+    }
+
+    Type getInferredType(AccessPosition apos, TypePath path) {
+      result = inferType(this.getNodeAt(apos), path)
+      or
+      // The struct/enum type is supplied explicitly as a type qualifier, e.g.
+      // `let Foo<Bar>::Variant { ... } = ...`.
+      apos.isStructPos() and
+      result = this.getPath().(TypeMention).resolveTypeAt(path)
+    }
+
+    Declaration getTarget() { result = resolvePath(this.getPath()) }
+  }
+
+  predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
+    apos = dpos
+  }
+}
+
+private module StructPatMatching = Matching<StructPatMatchingInput>;
+
+/**
+ * Gets the type of `n` at `path`, where `n` is either a struct pattern or
+ * a field pattern of a struct pattern.
+ */
+pragma[nomagic]
+private Type inferStructPatType(AstNode n, TypePath path) {
+  exists(StructPatMatchingInput::Access a, StructPatMatchingInput::AccessPosition apos |
+    n = a.getNodeAt(apos) and
+    result = StructPatMatching::inferAccessType(a, apos, path)
+  )
+}
+
+/**
+ * A matching configuration for resolving types of tuple struct patterns
+ * like `let Some(x) = ...`.
+ */
+private module TupleStructPatMatchingInput implements MatchingInputSig {
+  class DeclarationPosition = CallExprBaseMatchingInput::DeclarationPosition;
+
+  class Declaration = CallExprBaseMatchingInput::TupleDeclaration;
+
+  class AccessPosition = DeclarationPosition;
+
+  class Access extends TupleStructPat {
+    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
+
+    AstNode getNodeAt(AccessPosition apos) {
+      result = this.getField(apos.asPosition())
+      or
+      result = this and
+      apos.isSelf()
+    }
+
+    Type getInferredType(AccessPosition apos, TypePath path) {
+      result = inferType(this.getNodeAt(apos), path)
+      or
+      // The struct/enum type is supplied explicitly as a type qualifier, e.g.
+      // `let Option::<Foo>::Some(x) = ...`.
+      apos.isSelf() and
+      result = this.getPath().(TypeMention).resolveTypeAt(path)
+    }
+
+    Declaration getTarget() { result = resolvePath(this.getPath()) }
+  }
+
+  predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
+    apos = dpos
+  }
+}
+
+private module TupleStructPatMatching = Matching<TupleStructPatMatchingInput>;
+
+/**
+ * Gets the type of `n` at `path`, where `n` is either a tuple struct pattern or
+ * a positional pattern of a tuple struct pattern.
+ */
+pragma[nomagic]
+private Type inferTupleStructPatType(AstNode n, TypePath path) {
+  exists(TupleStructPatMatchingInput::Access a, TupleStructPatMatchingInput::AccessPosition apos |
+    n = a.getNodeAt(apos) and
+    result = TupleStructPatMatching::inferAccessType(a, apos, path)
   )
 }
 
@@ -1813,7 +1949,7 @@ private module Cached {
     or
     result = inferFieldExprType(n, path)
     or
-    result = inferRefExprType(n) and
+    result = inferRefNodeType(n) and
     path.isEmpty()
     or
     result = inferTryExprType(n, path)
@@ -1836,6 +1972,10 @@ private module Cached {
     result = inferForLoopExprType(n, path)
     or
     result = inferCastExprType(n, path)
+    or
+    result = inferStructPatType(n, path)
+    or
+    result = inferTupleStructPatType(n, path)
   }
 }
 
