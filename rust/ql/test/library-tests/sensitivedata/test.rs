@@ -23,7 +23,7 @@ impl MyStruct {
 fn get_password() -> String { get_string() }
 
 fn test_passwords(
-	password: &str, pass_word: &str, passwd: &str, my_password: &str, password_str: &str,
+	password: &str, pass_word: &str, passwd: &str, my_password: &str, password_str: &str, password_confirmation: &str,
 	pass_phrase: &str, passphrase: &str, passPhrase: &str, backup_code: &str,
 	auth_key: &str, authkey: &str, authKey: &str, authentication_key: &str, authenticationkey: &str, authenticationKey: &str, oauth: &str,
 	one_time_code: &str,
@@ -37,6 +37,7 @@ fn test_passwords(
 	sink(passwd); // $ sensitive=password
 	sink(my_password); // $ sensitive=password
 	sink(password_str); // $ sensitive=password
+	sink(password_confirmation); // $ sensitive=password
 	sink(pass_phrase); // $ sensitive=password
 	sink(passphrase); // $ sensitive=password
 	sink(passPhrase); // $ sensitive=password
