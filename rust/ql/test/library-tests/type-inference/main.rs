@@ -2379,11 +2379,42 @@ pub mod pattern_matching_experimental {
 }
 
 mod closures {
+    struct Row {
+        data: i64,
+    }
+
+    impl Row {
+        fn get(&self) -> i64 {
+            self.data // $ fieldof=Row
+        }
+    }
+
+    struct Table {
+        rows: Vec<Row>,
+    }
+
+    impl Table {
+        fn new() -> Self {
+            Table { rows: Vec::new() } // $ method=new
+        }
+
+        fn count_with(&self, property: impl Fn(Row) -> bool) -> i64 {
+            0 // (not implemented)
+        }
+    }
+
     pub fn f() {
         Some(1).map(|x| {
             let x = x; // $ MISSING: type=x:i32
             println!("{x}");
         });  // $ method=map
+
+        let table = Table::new(); // $ method=new type=table:Table
+        let result = table.count_with(|row| // $ type=result:i64
+            {
+                let v = row.get(); // $ MISSING: method=get type=v:i64
+                v > 0 // $ MISSING: method=gt
+            }); // $ method=count_with
     }
 }
 

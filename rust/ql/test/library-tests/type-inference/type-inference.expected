@@ -4112,19 +4112,43 @@ inferType
 | main.rs:2375:26:2375:43 | "Nested boxed: {}\\n" | &T | {EXTERNAL LOCATION} | str |
 | main.rs:2375:26:2375:59 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:2375:26:2375:59 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| main.rs:2383:9:2383:15 | Some(...) |  | {EXTERNAL LOCATION} | Option |
-| main.rs:2383:9:2383:15 | Some(...) | T | {EXTERNAL LOCATION} | i32 |
-| main.rs:2383:9:2386:10 | ... .map(...) |  | {EXTERNAL LOCATION} | Option |
-| main.rs:2383:14:2383:14 | 1 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2385:22:2385:26 | "{x}\\n" |  | file://:0:0:0:0 | & |
-| main.rs:2385:22:2385:26 | "{x}\\n" | &T | {EXTERNAL LOCATION} | str |
-| main.rs:2385:22:2385:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
-| main.rs:2385:22:2385:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| main.rs:2392:5:2392:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2393:5:2393:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2393:20:2393:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2393:41:2393:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2409:5:2409:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:2387:16:2387:20 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:2387:16:2387:20 | SelfParam | &T | main.rs:2382:5:2384:5 | Row |
+| main.rs:2387:30:2389:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:2388:13:2388:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:2388:13:2388:16 | self | &T | main.rs:2382:5:2384:5 | Row |
+| main.rs:2388:13:2388:21 | self.data |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:2397:26:2399:9 | { ... } |  | main.rs:2392:5:2394:5 | Table |
+| main.rs:2398:13:2398:38 | Table {...} |  | main.rs:2392:5:2394:5 | Table |
+| main.rs:2398:27:2398:36 | ...::new(...) |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:2398:27:2398:36 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2398:27:2398:36 | ...::new(...) | T | main.rs:2382:5:2384:5 | Row |
+| main.rs:2401:23:2401:27 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:2401:23:2401:27 | SelfParam | &T | main.rs:2392:5:2394:5 | Table |
+| main.rs:2401:30:2401:37 | property |  | main.rs:2401:40:2401:59 | ImplTraitTypeRepr |
+| main.rs:2401:69:2403:9 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2401:69:2403:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:2402:13:2402:13 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2402:13:2402:13 | 0 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:2407:9:2407:15 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2407:9:2407:15 | Some(...) | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2407:9:2410:10 | ... .map(...) |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2407:14:2407:14 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2409:22:2409:26 | "{x}\\n" |  | file://:0:0:0:0 | & |
+| main.rs:2409:22:2409:26 | "{x}\\n" | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2409:22:2409:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:2409:22:2409:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:2412:13:2412:17 | table |  | main.rs:2392:5:2394:5 | Table |
+| main.rs:2412:21:2412:32 | ...::new(...) |  | main.rs:2392:5:2394:5 | Table |
+| main.rs:2413:13:2413:18 | result |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:2413:22:2413:26 | table |  | main.rs:2392:5:2394:5 | Table |
+| main.rs:2413:22:2417:14 | table.count_with(...) |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:2416:21:2416:21 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2423:5:2423:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2424:5:2424:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2424:20:2424:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2424:41:2424:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2440:5:2440:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
 | pattern_matching.rs:13:26:133:1 | { ... } |  | {EXTERNAL LOCATION} | Option |
 | pattern_matching.rs:14:9:14:13 | value |  | {EXTERNAL LOCATION} | Option |
 | pattern_matching.rs:14:9:14:13 | value | T | {EXTERNAL LOCATION} | i32 |

@@ -98,7 +98,8 @@ async fn test_hyper_http(case: i64) -> Result<(), Box<dyn std::error::Error>> {
     println!("connecting to {}...", address);
     let stream = tokio::net::TcpStream::connect(address).await?; // $ Alert[rust/summary/taint-sources]
     let io = hyper_util::rt::TokioIo::new(stream);
-    let (mut sender, conn) = hyper::client::conn::http1::handshake(io).await?;
+    let (sender, conn) = hyper::client::conn::http1::handshake(io).await?;
+    let mut sender: hyper::client::conn::http1::SendRequest<String> = sender;
 
     // drive the HTTP connection
     tokio::task::spawn(async move {
