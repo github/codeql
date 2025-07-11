@@ -654,7 +654,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       exists(Param p, int i |
         paramPos(this.getParamList(), p, i) and
         i = dpos.asPosition() and
-        result = inferAnnotatedType(p.getPat(), path)
+        result = p.getTypeRepr().(TypeMention).resolveTypeAt(path)
       )
       or
       exists(SelfParam self |
