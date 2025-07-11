@@ -2378,6 +2378,15 @@ pub mod pattern_matching_experimental {
     }
 }
 
+mod closures {
+    pub fn f() {
+        Some(1).map(|x| {
+            let x = x; // $ MISSING: type=x:i32
+            println!("{x}");
+        });  // $ method=map
+    }
+}
+
 fn main() {
     field_access::f(); // $ method=f
     method_impl::f(); // $ method=f
@@ -2408,4 +2417,5 @@ fn main() {
     dereference::test(); // $ method=test
     pattern_matching::test_all_patterns(); // $ method=test_all_patterns
     pattern_matching_experimental::box_patterns(); // $ method=box_patterns
+    closures::f() // $ method=f
 }
