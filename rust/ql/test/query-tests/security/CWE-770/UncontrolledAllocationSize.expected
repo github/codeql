@@ -14,7 +14,9 @@
 | main.rs:54:13:54:29 | ...::alloc | main.rs:317:13:317:26 | ...::args | main.rs:54:13:54:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
 | main.rs:59:13:59:29 | ...::alloc | main.rs:317:13:317:26 | ...::args | main.rs:59:13:59:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
 | main.rs:61:13:61:29 | ...::alloc | main.rs:317:13:317:26 | ...::args | main.rs:61:13:61:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
+| main.rs:63:13:63:29 | ...::alloc | main.rs:317:13:317:26 | ...::args | main.rs:63:13:63:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
 | main.rs:64:13:64:29 | ...::alloc | main.rs:317:13:317:26 | ...::args | main.rs:64:13:64:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
+| main.rs:65:13:65:29 | ...::alloc | main.rs:317:13:317:26 | ...::args | main.rs:65:13:65:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
 | main.rs:68:13:68:29 | ...::alloc | main.rs:317:13:317:26 | ...::args | main.rs:68:13:68:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
 | main.rs:88:13:88:29 | ...::alloc | main.rs:317:13:317:26 | ...::args | main.rs:88:13:88:29 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
 | main.rs:96:17:96:33 | ...::alloc | main.rs:317:13:317:26 | ...::args | main.rs:96:17:96:33 | ...::alloc | This allocation size is derived from a $@ and could allocate arbitrary amounts of memory. | main.rs:317:13:317:26 | ...::args | user-provided value |
@@ -69,7 +71,7 @@ edges
 | main.rs:20:9:20:10 | l2 | main.rs:21:31:21:32 | l2 | provenance |  |
 | main.rs:20:14:20:54 | ...::from_size_align(...) [Ok] | main.rs:20:14:20:63 | ... .unwrap() | provenance | MaD:35 |
 | main.rs:20:14:20:63 | ... .unwrap() | main.rs:20:9:20:10 | l2 | provenance |  |
-| main.rs:20:50:20:50 | v | main.rs:20:14:20:54 | ...::from_size_align(...) [Ok] | provenance | MaD:44 |
+| main.rs:20:50:20:50 | v | main.rs:20:14:20:54 | ...::from_size_align(...) [Ok] | provenance | MaD:46 |
 | main.rs:21:31:21:32 | l2 | main.rs:21:13:21:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
 | main.rs:21:31:21:32 | l2 | main.rs:22:31:22:44 | l2.align_to(...) [Ok] | provenance | MaD:40 |
 | main.rs:21:31:21:32 | l2 | main.rs:23:31:23:44 | l2.align_to(...) [Ok] | provenance | MaD:40 |
@@ -77,17 +79,17 @@ edges
 | main.rs:22:31:22:44 | l2.align_to(...) [Ok] | main.rs:22:31:22:53 | ... .unwrap() | provenance | MaD:35 |
 | main.rs:22:31:22:53 | ... .unwrap() | main.rs:22:13:22:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
 | main.rs:23:31:23:44 | l2.align_to(...) [Ok] | main.rs:23:31:23:53 | ... .unwrap() | provenance | MaD:35 |
-| main.rs:23:31:23:53 | ... .unwrap() | main.rs:23:31:23:68 | ... .pad_to_align() | provenance | MaD:46 |
+| main.rs:23:31:23:53 | ... .unwrap() | main.rs:23:31:23:68 | ... .pad_to_align() | provenance | MaD:48 |
 | main.rs:23:31:23:68 | ... .pad_to_align() | main.rs:23:13:23:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
 | main.rs:24:38:24:39 | l2 | main.rs:24:13:24:36 | ...::alloc_zeroed | provenance | MaD:18 Sink:MaD:18 |
 | main.rs:29:9:29:10 | l4 | main.rs:30:31:30:32 | l4 | provenance |  |
 | main.rs:29:14:29:64 | ...::from_size_align_unchecked(...) | main.rs:29:9:29:10 | l4 | provenance |  |
-| main.rs:29:60:29:60 | v | main.rs:29:14:29:64 | ...::from_size_align_unchecked(...) | provenance | MaD:45 |
+| main.rs:29:60:29:60 | v | main.rs:29:14:29:64 | ...::from_size_align_unchecked(...) | provenance | MaD:47 |
 | main.rs:30:31:30:32 | l4 | main.rs:30:13:30:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
 | main.rs:32:9:32:10 | l5 | main.rs:33:31:33:32 | l5 | provenance |  |
 | main.rs:32:14:32:118 | ...::from_size_align_unchecked(...) | main.rs:32:9:32:10 | l5 | provenance |  |
 | main.rs:32:60:32:60 | v | main.rs:32:60:32:89 | ... * ... | provenance | MaD:37 |
-| main.rs:32:60:32:89 | ... * ... | main.rs:32:14:32:118 | ...::from_size_align_unchecked(...) | provenance | MaD:45 |
+| main.rs:32:60:32:89 | ... * ... | main.rs:32:14:32:118 | ...::from_size_align_unchecked(...) | provenance | MaD:47 |
 | main.rs:33:31:33:32 | l5 | main.rs:33:13:33:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
 | main.rs:35:9:35:10 | s6 | main.rs:36:60:36:61 | s6 | provenance |  |
 | main.rs:35:15:35:49 | ... * ... | main.rs:35:9:35:10 | s6 | provenance |  |
@@ -96,14 +98,14 @@ edges
 | main.rs:36:9:36:10 | l6 [Layout.size] | main.rs:37:31:37:32 | l6 [Layout.size] | provenance |  |
 | main.rs:36:14:36:65 | ...::from_size_align_unchecked(...) | main.rs:36:9:36:10 | l6 | provenance |  |
 | main.rs:36:14:36:65 | ...::from_size_align_unchecked(...) [Layout.size] | main.rs:36:9:36:10 | l6 [Layout.size] | provenance |  |
-| main.rs:36:60:36:61 | s6 | main.rs:36:14:36:65 | ...::from_size_align_unchecked(...) | provenance | MaD:45 |
+| main.rs:36:60:36:61 | s6 | main.rs:36:14:36:65 | ...::from_size_align_unchecked(...) | provenance | MaD:47 |
 | main.rs:36:60:36:61 | s6 | main.rs:36:14:36:65 | ...::from_size_align_unchecked(...) [Layout.size] | provenance | MaD:31 |
 | main.rs:37:31:37:32 | l6 | main.rs:37:13:37:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
-| main.rs:37:31:37:32 | l6 | main.rs:39:60:39:68 | l6.size() | provenance | MaD:49 |
+| main.rs:37:31:37:32 | l6 | main.rs:39:60:39:68 | l6.size() | provenance | MaD:51 |
 | main.rs:37:31:37:32 | l6 [Layout.size] | main.rs:39:60:39:68 | l6.size() | provenance | MaD:32 |
 | main.rs:39:9:39:10 | l7 | main.rs:40:31:40:32 | l7 | provenance |  |
 | main.rs:39:14:39:72 | ...::from_size_align_unchecked(...) | main.rs:39:9:39:10 | l7 | provenance |  |
-| main.rs:39:60:39:68 | l6.size() | main.rs:39:14:39:72 | ...::from_size_align_unchecked(...) | provenance | MaD:45 |
+| main.rs:39:60:39:68 | l6.size() | main.rs:39:14:39:72 | ...::from_size_align_unchecked(...) | provenance | MaD:47 |
 | main.rs:40:31:40:32 | l7 | main.rs:40:13:40:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
 | main.rs:43:44:43:51 | ...: usize | main.rs:50:41:50:41 | v | provenance |  |
 | main.rs:43:44:43:51 | ...: usize | main.rs:51:41:51:45 | ... + ... | provenance |  |
@@ -114,34 +116,43 @@ edges
 | main.rs:50:31:50:42 | l2.repeat(...) [Ok, tuple.0] | main.rs:50:31:50:51 | ... .unwrap() [tuple.0] | provenance | MaD:35 |
 | main.rs:50:31:50:51 | ... .unwrap() [tuple.0] | main.rs:50:31:50:53 | ... .0 | provenance |  |
 | main.rs:50:31:50:53 | ... .0 | main.rs:50:13:50:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
-| main.rs:50:41:50:41 | v | main.rs:50:31:50:42 | l2.repeat(...) [Ok, tuple.0] | provenance | MaD:47 |
+| main.rs:50:41:50:41 | v | main.rs:50:31:50:42 | l2.repeat(...) [Ok, tuple.0] | provenance | MaD:49 |
 | main.rs:51:31:51:46 | l2.repeat(...) [Ok, tuple.0] | main.rs:51:31:51:55 | ... .unwrap() [tuple.0] | provenance | MaD:35 |
 | main.rs:51:31:51:55 | ... .unwrap() [tuple.0] | main.rs:51:31:51:57 | ... .0 | provenance |  |
 | main.rs:51:31:51:57 | ... .0 | main.rs:51:13:51:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
-| main.rs:51:41:51:45 | ... + ... | main.rs:51:31:51:46 | l2.repeat(...) [Ok, tuple.0] | provenance | MaD:47 |
+| main.rs:51:41:51:45 | ... + ... | main.rs:51:31:51:46 | l2.repeat(...) [Ok, tuple.0] | provenance | MaD:49 |
 | main.rs:53:31:53:49 | l2.repeat_packed(...) [Ok] | main.rs:53:31:53:58 | ... .unwrap() | provenance | MaD:35 |
 | main.rs:53:31:53:58 | ... .unwrap() | main.rs:53:13:53:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
-| main.rs:53:48:53:48 | v | main.rs:53:31:53:49 | l2.repeat_packed(...) [Ok] | provenance | MaD:48 |
+| main.rs:53:48:53:48 | v | main.rs:53:31:53:49 | l2.repeat_packed(...) [Ok] | provenance | MaD:50 |
 | main.rs:54:31:54:54 | l2.repeat_packed(...) [Ok] | main.rs:54:31:54:63 | ... .unwrap() | provenance | MaD:35 |
 | main.rs:54:31:54:63 | ... .unwrap() | main.rs:54:13:54:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
-| main.rs:54:48:54:53 | ... * ... | main.rs:54:31:54:54 | l2.repeat_packed(...) [Ok] | provenance | MaD:48 |
+| main.rs:54:48:54:53 | ... * ... | main.rs:54:31:54:54 | l2.repeat_packed(...) [Ok] | provenance | MaD:50 |
 | main.rs:58:9:58:20 | TuplePat [tuple.0] | main.rs:58:10:58:11 | k1 | provenance |  |
 | main.rs:58:10:58:11 | k1 | main.rs:59:31:59:32 | k1 | provenance |  |
 | main.rs:58:24:58:35 | l3.repeat(...) [Ok, tuple.0] | main.rs:58:24:58:66 | ... .expect(...) [tuple.0] | provenance | MaD:34 |
 | main.rs:58:24:58:66 | ... .expect(...) [tuple.0] | main.rs:58:9:58:20 | TuplePat [tuple.0] | provenance |  |
-| main.rs:58:34:58:34 | v | main.rs:58:24:58:35 | l3.repeat(...) [Ok, tuple.0] | provenance | MaD:47 |
+| main.rs:58:34:58:34 | v | main.rs:58:24:58:35 | l3.repeat(...) [Ok, tuple.0] | provenance | MaD:49 |
 | main.rs:59:31:59:32 | k1 | main.rs:59:13:59:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
 | main.rs:59:31:59:32 | k1 | main.rs:60:34:60:35 | k1 | provenance |  |
+| main.rs:59:31:59:32 | k1 | main.rs:62:24:62:36 | k1.extend(...) [Ok, tuple.0] | provenance | MaD:43 |
 | main.rs:59:31:59:32 | k1 | main.rs:64:48:64:49 | k1 | provenance |  |
+| main.rs:59:31:59:32 | k1 | main.rs:65:31:65:50 | k1.extend_packed(...) [Ok] | provenance | MaD:45 |
 | main.rs:60:9:60:20 | TuplePat [tuple.0] | main.rs:60:10:60:11 | k2 | provenance |  |
 | main.rs:60:10:60:11 | k2 | main.rs:61:31:61:32 | k2 | provenance |  |
 | main.rs:60:24:60:36 | l3.extend(...) [Ok, tuple.0] | main.rs:60:24:60:45 | ... .unwrap() [tuple.0] | provenance | MaD:35 |
 | main.rs:60:24:60:45 | ... .unwrap() [tuple.0] | main.rs:60:9:60:20 | TuplePat [tuple.0] | provenance |  |
 | main.rs:60:34:60:35 | k1 | main.rs:60:24:60:36 | l3.extend(...) [Ok, tuple.0] | provenance | MaD:42 |
 | main.rs:61:31:61:32 | k2 | main.rs:61:13:61:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
+| main.rs:62:9:62:20 | TuplePat [tuple.0] | main.rs:62:10:62:11 | k3 | provenance |  |
+| main.rs:62:10:62:11 | k3 | main.rs:63:31:63:32 | k3 | provenance |  |
+| main.rs:62:24:62:36 | k1.extend(...) [Ok, tuple.0] | main.rs:62:24:62:45 | ... .unwrap() [tuple.0] | provenance | MaD:35 |
+| main.rs:62:24:62:45 | ... .unwrap() [tuple.0] | main.rs:62:9:62:20 | TuplePat [tuple.0] | provenance |  |
+| main.rs:63:31:63:32 | k3 | main.rs:63:13:63:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
 | main.rs:64:31:64:50 | l3.extend_packed(...) [Ok] | main.rs:64:31:64:59 | ... .unwrap() | provenance | MaD:35 |
 | main.rs:64:31:64:59 | ... .unwrap() | main.rs:64:13:64:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
-| main.rs:64:48:64:49 | k1 | main.rs:64:31:64:50 | l3.extend_packed(...) [Ok] | provenance | MaD:43 |
+| main.rs:64:48:64:49 | k1 | main.rs:64:31:64:50 | l3.extend_packed(...) [Ok] | provenance | MaD:44 |
+| main.rs:65:31:65:50 | k1.extend_packed(...) [Ok] | main.rs:65:31:65:59 | ... .unwrap() | provenance | MaD:35 |
+| main.rs:65:31:65:59 | ... .unwrap() | main.rs:65:13:65:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
 | main.rs:67:9:67:10 | l4 | main.rs:68:31:68:32 | l4 | provenance |  |
 | main.rs:67:14:67:47 | ...::array::<...>(...) [Ok] | main.rs:67:14:67:56 | ... .unwrap() | provenance | MaD:35 |
 | main.rs:67:14:67:56 | ... .unwrap() | main.rs:67:9:67:10 | l4 | provenance |  |
@@ -151,7 +162,7 @@ edges
 | main.rs:87:9:87:14 | layout | main.rs:88:31:88:36 | layout | provenance |  |
 | main.rs:87:18:87:58 | ...::from_size_align(...) [Ok] | main.rs:87:18:87:67 | ... .unwrap() | provenance | MaD:35 |
 | main.rs:87:18:87:67 | ... .unwrap() | main.rs:87:9:87:14 | layout | provenance |  |
-| main.rs:87:54:87:54 | v | main.rs:87:18:87:58 | ...::from_size_align(...) [Ok] | provenance | MaD:44 |
+| main.rs:87:54:87:54 | v | main.rs:87:18:87:58 | ...::from_size_align(...) [Ok] | provenance | MaD:46 |
 | main.rs:88:31:88:36 | layout | main.rs:88:13:88:29 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
 | main.rs:91:38:91:45 | ...: usize | main.rs:92:47:92:47 | v | provenance |  |
 | main.rs:91:38:91:45 | ...: usize | main.rs:101:51:101:51 | v | provenance |  |
@@ -203,7 +214,7 @@ edges
 | main.rs:161:13:161:15 | l13 | main.rs:162:35:162:37 | l13 | provenance |  |
 | main.rs:161:19:161:59 | ...::from_size_align(...) [Ok] | main.rs:161:19:161:68 | ... .unwrap() | provenance | MaD:35 |
 | main.rs:161:19:161:68 | ... .unwrap() | main.rs:161:13:161:15 | l13 | provenance |  |
-| main.rs:161:55:161:55 | v | main.rs:161:19:161:59 | ...::from_size_align(...) [Ok] | provenance | MaD:44 |
+| main.rs:161:55:161:55 | v | main.rs:161:19:161:59 | ...::from_size_align(...) [Ok] | provenance | MaD:46 |
 | main.rs:162:35:162:37 | l13 | main.rs:162:17:162:33 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
 | main.rs:162:35:162:37 | l13 | main.rs:169:35:169:37 | l13 | provenance |  |
 | main.rs:169:35:169:37 | l13 | main.rs:169:17:169:33 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
@@ -256,7 +267,7 @@ edges
 | main.rs:230:46:230:46 | v | main.rs:230:13:230:44 | ...::try_with_capacity_in | provenance | MaD:3 Sink:MaD:3 |
 | main.rs:230:46:230:46 | v | main.rs:231:42:231:42 | v | provenance |  |
 | main.rs:231:42:231:42 | v | main.rs:231:13:231:40 | ...::with_capacity_in | provenance | MaD:4 Sink:MaD:4 |
-| main.rs:279:24:279:41 | ...: String | main.rs:280:21:280:47 | user_input.parse() [Ok] | provenance | MaD:50 |
+| main.rs:279:24:279:41 | ...: String | main.rs:280:21:280:47 | user_input.parse() [Ok] | provenance | MaD:52 |
 | main.rs:280:9:280:17 | num_bytes | main.rs:282:54:282:62 | num_bytes | provenance |  |
 | main.rs:280:21:280:47 | user_input.parse() [Ok] | main.rs:280:21:280:48 | TryExpr | provenance |  |
 | main.rs:280:21:280:48 | TryExpr | main.rs:280:9:280:17 | num_bytes | provenance |  |
@@ -265,10 +276,10 @@ edges
 | main.rs:282:9:282:14 | layout | main.rs:284:40:284:45 | layout | provenance |  |
 | main.rs:282:18:282:66 | ...::from_size_align(...) [Ok] | main.rs:282:18:282:75 | ... .unwrap() | provenance | MaD:35 |
 | main.rs:282:18:282:75 | ... .unwrap() | main.rs:282:9:282:14 | layout | provenance |  |
-| main.rs:282:54:282:62 | num_bytes | main.rs:282:18:282:66 | ...::from_size_align(...) [Ok] | provenance | MaD:44 |
+| main.rs:282:54:282:62 | num_bytes | main.rs:282:18:282:66 | ...::from_size_align(...) [Ok] | provenance | MaD:46 |
 | main.rs:284:40:284:45 | layout | main.rs:284:22:284:38 | ...::alloc | provenance | MaD:17 Sink:MaD:17 |
 | main.rs:308:25:308:38 | ...::args | main.rs:308:25:308:40 | ...::args(...) [element] | provenance | Src:MaD:30  |
-| main.rs:308:25:308:40 | ...::args(...) [element] | main.rs:308:25:308:47 | ... .nth(...) [Some] | provenance | MaD:51 |
+| main.rs:308:25:308:40 | ...::args(...) [element] | main.rs:308:25:308:47 | ... .nth(...) [Some] | provenance | MaD:53 |
 | main.rs:308:25:308:47 | ... .nth(...) [Some] | main.rs:308:25:308:74 | ... .unwrap_or(...) | provenance | MaD:33 |
 | main.rs:308:25:308:74 | ... .unwrap_or(...) | main.rs:279:24:279:41 | ...: String | provenance |  |
 | main.rs:317:9:317:9 | v | main.rs:320:34:320:34 | v | provenance |  |
@@ -278,9 +289,9 @@ edges
 | main.rs:317:9:317:9 | v | main.rs:324:25:324:25 | v | provenance |  |
 | main.rs:317:9:317:9 | v | main.rs:325:22:325:22 | v | provenance |  |
 | main.rs:317:13:317:26 | ...::args | main.rs:317:13:317:28 | ...::args(...) [element] | provenance | Src:MaD:30  |
-| main.rs:317:13:317:28 | ...::args(...) [element] | main.rs:317:13:317:35 | ... .nth(...) [Some] | provenance | MaD:51 |
+| main.rs:317:13:317:28 | ...::args(...) [element] | main.rs:317:13:317:35 | ... .nth(...) [Some] | provenance | MaD:53 |
 | main.rs:317:13:317:35 | ... .nth(...) [Some] | main.rs:317:13:317:65 | ... .unwrap_or(...) | provenance | MaD:33 |
-| main.rs:317:13:317:65 | ... .unwrap_or(...) | main.rs:317:13:317:82 | ... .parse() [Ok] | provenance | MaD:50 |
+| main.rs:317:13:317:65 | ... .unwrap_or(...) | main.rs:317:13:317:82 | ... .parse() [Ok] | provenance | MaD:52 |
 | main.rs:317:13:317:82 | ... .parse() [Ok] | main.rs:317:13:317:91 | ... .unwrap() | provenance | MaD:35 |
 | main.rs:317:13:317:91 | ... .unwrap() | main.rs:317:9:317:9 | v | provenance |  |
 | main.rs:320:34:320:34 | v | main.rs:12:36:12:43 | ...: usize | provenance |  |
@@ -315,10 +326,10 @@ models
 | 23 | Sink: lang:std; <crate::alloc::System as crate::alloc::Allocator>::grow_zeroed; Argument[2]; alloc-layout |
 | 24 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc; Argument[0]; alloc-layout |
 | 25 | Sink: lang:std; <crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc_zeroed; Argument[0]; alloc-layout |
-| 26 | Sink: repo:https://github.com/rust-lang/libc:libc; ::aligned_alloc; Argument[1]; alloc-size |
-| 27 | Sink: repo:https://github.com/rust-lang/libc:libc; ::calloc; Argument[0,1]; alloc-size |
-| 28 | Sink: repo:https://github.com/rust-lang/libc:libc; ::malloc; Argument[0]; alloc-size |
-| 29 | Sink: repo:https://github.com/rust-lang/libc:libc; ::realloc; Argument[1]; alloc-size |
+| 26 | Sink: libc::unix::aligned_alloc; Argument[1]; alloc-size |
+| 27 | Sink: libc::unix::calloc; Argument[0,1]; alloc-size |
+| 28 | Sink: libc::unix::malloc; Argument[0]; alloc-size |
+| 29 | Sink: libc::unix::realloc; Argument[1]; alloc-size |
 | 30 | Source: std::env::args; ReturnValue.Element; commandargs |
 | 31 | Summary: <core::alloc::layout::Layout>::from_size_align_unchecked; Argument[0]; ReturnValue.Field[core::alloc::layout::Layout::size]; value |
 | 32 | Summary: <core::alloc::layout::Layout>::size; Argument[self].Field[core::alloc::layout::Layout::size]; ReturnValue; value |
@@ -332,15 +343,17 @@ models
 | 40 | Summary: lang:core; <crate::alloc::layout::Layout>::align_to; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
 | 41 | Summary: lang:core; <crate::alloc::layout::Layout>::array; Argument[0]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
 | 42 | Summary: lang:core; <crate::alloc::layout::Layout>::extend; Argument[0]; ReturnValue.Field[core::result::Result::Ok(0)].Field[0]; taint |
-| 43 | Summary: lang:core; <crate::alloc::layout::Layout>::extend_packed; Argument[0]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
-| 44 | Summary: lang:core; <crate::alloc::layout::Layout>::from_size_align; Argument[0]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
-| 45 | Summary: lang:core; <crate::alloc::layout::Layout>::from_size_align_unchecked; Argument[0]; ReturnValue; taint |
-| 46 | Summary: lang:core; <crate::alloc::layout::Layout>::pad_to_align; Argument[self]; ReturnValue; taint |
-| 47 | Summary: lang:core; <crate::alloc::layout::Layout>::repeat; Argument[0]; ReturnValue.Field[core::result::Result::Ok(0)].Field[0]; taint |
-| 48 | Summary: lang:core; <crate::alloc::layout::Layout>::repeat_packed; Argument[0]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
-| 49 | Summary: lang:core; <crate::alloc::layout::Layout>::size; Argument[self]; ReturnValue; taint |
-| 50 | Summary: lang:core; <str>::parse; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
-| 51 | Summary: lang:core; crate::iter::traits::iterator::Iterator::nth; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 43 | Summary: lang:core; <crate::alloc::layout::Layout>::extend; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)].Field[0]; taint |
+| 44 | Summary: lang:core; <crate::alloc::layout::Layout>::extend_packed; Argument[0]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+| 45 | Summary: lang:core; <crate::alloc::layout::Layout>::extend_packed; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+| 46 | Summary: lang:core; <crate::alloc::layout::Layout>::from_size_align; Argument[0]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+| 47 | Summary: lang:core; <crate::alloc::layout::Layout>::from_size_align_unchecked; Argument[0]; ReturnValue; taint |
+| 48 | Summary: lang:core; <crate::alloc::layout::Layout>::pad_to_align; Argument[self]; ReturnValue; taint |
+| 49 | Summary: lang:core; <crate::alloc::layout::Layout>::repeat; Argument[0]; ReturnValue.Field[core::result::Result::Ok(0)].Field[0]; taint |
+| 50 | Summary: lang:core; <crate::alloc::layout::Layout>::repeat_packed; Argument[0]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+| 51 | Summary: lang:core; <crate::alloc::layout::Layout>::size; Argument[self]; ReturnValue; taint |
+| 52 | Summary: lang:core; <str>::parse; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+| 53 | Summary: lang:core; crate::iter::traits::iterator::Iterator::nth; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
 nodes
 | main.rs:12:36:12:43 | ...: usize | semmle.label | ...: usize |
 | main.rs:18:13:18:31 | ...::realloc | semmle.label | ...::realloc |
@@ -420,10 +433,19 @@ nodes
 | main.rs:60:34:60:35 | k1 | semmle.label | k1 |
 | main.rs:61:13:61:29 | ...::alloc | semmle.label | ...::alloc |
 | main.rs:61:31:61:32 | k2 | semmle.label | k2 |
+| main.rs:62:9:62:20 | TuplePat [tuple.0] | semmle.label | TuplePat [tuple.0] |
+| main.rs:62:10:62:11 | k3 | semmle.label | k3 |
+| main.rs:62:24:62:36 | k1.extend(...) [Ok, tuple.0] | semmle.label | k1.extend(...) [Ok, tuple.0] |
+| main.rs:62:24:62:45 | ... .unwrap() [tuple.0] | semmle.label | ... .unwrap() [tuple.0] |
+| main.rs:63:13:63:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:63:31:63:32 | k3 | semmle.label | k3 |
 | main.rs:64:13:64:29 | ...::alloc | semmle.label | ...::alloc |
 | main.rs:64:31:64:50 | l3.extend_packed(...) [Ok] | semmle.label | l3.extend_packed(...) [Ok] |
 | main.rs:64:31:64:59 | ... .unwrap() | semmle.label | ... .unwrap() |
 | main.rs:64:48:64:49 | k1 | semmle.label | k1 |
+| main.rs:65:13:65:29 | ...::alloc | semmle.label | ...::alloc |
+| main.rs:65:31:65:50 | k1.extend_packed(...) [Ok] | semmle.label | k1.extend_packed(...) [Ok] |
+| main.rs:65:31:65:59 | ... .unwrap() | semmle.label | ... .unwrap() |
 | main.rs:67:9:67:10 | l4 | semmle.label | l4 |
 | main.rs:67:14:67:47 | ...::array::<...>(...) [Ok] | semmle.label | ...::array::<...>(...) [Ok] |
 | main.rs:67:14:67:56 | ... .unwrap() | semmle.label | ... .unwrap() |

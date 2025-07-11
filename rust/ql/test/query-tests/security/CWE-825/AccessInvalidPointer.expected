@@ -60,7 +60,7 @@ models
 | 7 | Source: lang:core; crate::ptr::dangling_mut; ReturnValue; pointer-invalidate |
 | 8 | Source: lang:core; crate::ptr::drop_in_place; Argument[0]; pointer-invalidate |
 | 9 | Source: lang:core; crate::ptr::null; ReturnValue; pointer-invalidate |
-| 10 | Source: repo:https://github.com/rust-lang/libc:libc; ::free; Argument[0]; pointer-invalidate |
+| 10 | Source: libc::unix::free; Argument[0]; pointer-invalidate |
 nodes
 | deallocation.rs:20:3:20:21 | ...::dealloc | semmle.label | ...::dealloc |
 | deallocation.rs:20:23:20:24 | [post] m1 | semmle.label | [post] m1 |

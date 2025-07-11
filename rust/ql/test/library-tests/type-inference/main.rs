@@ -1,7 +1,7 @@
+#![feature(box_patterns)]
 mod field_access {
     #[derive(Debug)]
     struct S;
-
     #[derive(Debug)]
     struct MyThing {
         a: S,
@@ -1971,7 +1971,7 @@ mod indexers {
 
 mod macros {
     pub fn f() {
-        let x = format!("Hello, {}", "World!"); // $ MISSING: type=x:String -- needs https://github.com/github/codeql/pull/19658
+        let x = format!("Hello, {}", "World!"); // $ type=x:String
     }
 }
 
@@ -2042,6 +2042,80 @@ mod method_determined_by_argument_type {
         }
     }
 
+    trait MyFrom<T> {
+        // MyFrom::my_from
+        fn my_from(value: T) -> Self;
+    }
+
+    impl MyFrom<i64> for i64 {
+        // MyFrom<i64>::my_from
+        fn my_from(value: i64) -> Self {
+            value
+        }
+    }
+
+    impl MyFrom<bool> for i64 {
+        // MyFrom<bool>::my_from
+        fn my_from(value: bool) -> Self {
+            if value { 1 } else { 0 }
+        }
+    }
+
+    trait MyFrom2<T> {
+        // MyFrom2::my_from2
+        fn my_from2(value: T, x: Self) -> ();
+    }
+
+    impl MyFrom2<i64> for i64 {
+        // MyFrom2<i64>::my_from2
+        fn my_from2(value: i64, _: Self) -> () {
+            value;
+        }
+    }
+
+    impl MyFrom2<bool> for i64 {
+        // MyFrom2<bool>::my_from2
+        fn my_from2(value: bool, _: Self) -> () {
+            if value {
+                1
+            } else {
+                0
+            };
+        }
+    }
+
+    trait MySelfTrait {
+        // MySelfTrait::f1
+        fn f1(x: Self) -> i64;
+
+        // MySelfTrait::f2
+        fn f2(x: Self) -> Self;
+    }
+
+    impl MySelfTrait for i64 {
+        // MySelfTrait<i64>::f1
+        fn f1(x: Self) -> i64 {
+            x + 1
+        }
+
+        // MySelfTrait<i64>::f2
+        fn f2(x: Self) -> Self {
+            x + 1
+        }
+    }
+
+    impl MySelfTrait for bool {
+        // MySelfTrait<bool>::f1
+        fn f1(x: Self) -> i64 {
+            0
+        }
+
+        // MySelfTrait<bool>::f2
+        fn f2(x: Self) -> Self {
+            x
+        }
+    }
+
     pub fn f() {
         let x: i64 = 73;
         x.my_add(5i64); // $ method=MyAdd<i64>::my_add
@@ -2051,6 +2125,22 @@ mod method_determined_by_argument_type {
         S(1i64).my_add(S(2i64)); // $ method=S::my_add1
         S(1i64).my_add(3i64); // $ MISSING: method=S::my_add2
         S(1i64).my_add(&3i64); // $ method=S::my_add3
+
+        let x = i64::my_from(73i64); // $ method=MyFrom<i64>::my_from
+        let y = i64::my_from(true); // $ method=MyFrom<bool>::my_from
+        let z: i64 = MyFrom::my_from(73i64); // $ method=MyFrom<i64>::my_from
+        i64::my_from2(73i64, 0i64); // $ method=MyFrom2<i64>::my_from2
+        i64::my_from2(true, 0i64); // $ method=MyFrom2<bool>::my_from2
+        MyFrom2::my_from2(73i64, 0i64); // $ method=MyFrom2<i64>::my_from2
+
+        i64::f1(73i64); // $ method=MySelfTrait<i64>::f1
+        i64::f2(73i64); // $ method=MySelfTrait<i64>::f2
+        bool::f1(true); // $ method=MySelfTrait<bool>::f1
+        bool::f2(true); // $ method=MySelfTrait<bool>::f2
+        MySelfTrait::f1(73i64); // $ method=MySelfTrait<i64>::f1
+        MySelfTrait::f2(73i64); // $ method=MySelfTrait<i64>::f2
+        MySelfTrait::f1(true); // $ method=MySelfTrait<bool>::f1
+        MySelfTrait::f2(true); // $ method=MySelfTrait<bool>::f2
     }
 }
 
@@ -2139,15 +2229,15 @@ mod loops {
         let vals4b = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4b:Vec type=vals4b:T.u16
         for u in vals4b {} // $ MISSING: type=u:u16
 
-        let vals5 = Vec::from([1u32, 2, 3]); // $ type=vals5:Vec method=from MISSING: type=vals5:T.u32
-        for u in vals5 {} // $ MISSING: type=u:u32
+        let vals5 = Vec::from([1u32, 2, 3]); // $ type=vals5:Vec method=from type=vals5:T.u32
+        for u in vals5 {} // $ type=u:u32
 
         let vals6: Vec<&u64> = [1u64, 2, 3].iter().collect(); // $ type=vals6:Vec type=vals6:T.&T.u64
         for u in vals6 {} // $ type=u:&T.u64
 
-        let mut vals7 = Vec::new(); // $ method=new type=vals7:Vec MISSING: type=vals7:T.u8
+        let mut vals7 = Vec::new(); // $ method=new type=vals7:Vec type=vals7:T.u8
         vals7.push(1u8); // $ method=push
-        for u in vals7 {} // $ MISSING: type=u:u8
+        for u in vals7 {} // $ type=u:u8
 
         let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ MISSING: type=matrix1:Vec type=matrix1:T.Vec type=matrix1:T.T.i32
         #[rustfmt::skip]
@@ -2156,7 +2246,7 @@ mod loops {
             }
         };
 
-        let mut map1 = std::collections::HashMap::new(); // $ method=new $ MISSING: type=map1:Hashmap type=map1:K.i32 type=map1:V.Box type1=map1:V.T.&T.str
+        let mut map1 = std::collections::HashMap::new(); // $ method=new type=map1:K.i32 type=map1:V.Box $ MISSING: type=map1:Hashmap type1=map1:V.T.&T.str
         map1.insert(1, Box::new("one")); // $ method=insert method=new
         map1.insert(2, Box::new("two")); // $ method=insert method=new
         for key in map1.keys() {} // $ method=keys MISSING: type=key:i32
@@ -2205,6 +2295,10 @@ mod explicit_type_args {
         field: T5,
     }
 
+    fn foo<T>(x: T) -> T {
+        x
+    }
+
     pub fn f() {
         let x1: Option<S1<S2>> = S1::assoc_fun(); // $ type=x1:T.T.S2 method=assoc_fun
         let x2 = S1::<S2>::assoc_fun(); // $ type=x2:T.T.S2 method=assoc_fun
@@ -2225,6 +2319,71 @@ mod explicit_type_args {
         {
             field: S2::default(), // $ method=default
         };
+        let x14 = foo::<i32>(Default::default()); // $ type=x14:i32 method=default method=foo
+    }
+}
+
+mod tuples {
+    struct S1 {}
+
+    impl S1 {
+        fn get_pair() -> (S1, S1) {
+            (S1 {}, S1 {})
+        }
+        fn foo(self) {}
+    }
+
+    pub fn f() {
+        let a = S1::get_pair(); // $ method=get_pair MISSING: type=a:?
+        let mut b = S1::get_pair(); // $ method=get_pair MISSING: type=b:?
+        let (c, d) = S1::get_pair(); // $ method=get_pair MISSING: type=c:? type=d:?
+        let (mut e, f) = S1::get_pair(); // $ method=get_pair MISSING: type=e: type=f:
+        let (mut g, mut h) = S1::get_pair(); // $ method=get_pair MISSING: type=g:? type=h:?
+
+        a.0.foo(); // $ MISSING: method=foo
+        b.1.foo(); // $ MISSING: method=foo
+        c.foo(); // $ MISSING: method=foo
+        d.foo(); // $ MISSING: method=foo
+        e.foo(); // $ MISSING: method=foo
+        f.foo(); // $ MISSING: method=foo
+        g.foo(); // $ MISSING: method=foo
+        h.foo(); // $ MISSING: method=foo
+    }
+}
+
+pub mod pattern_matching;
+pub mod pattern_matching_experimental {
+    pub fn box_patterns() {
+        let boxed_value = Box::new(100i32); // $ method=new
+
+        // BoxPat - Box patterns (requires feature flag)
+        match boxed_value {
+            box 100 => {
+                println!("Boxed 100");
+            }
+            box x => {
+                let unboxed = x; // $ MISSING: type=unboxed:i32
+                println!("Boxed value: {}", unboxed);
+            }
+        }
+
+        // Nested box pattern
+        let nested_box = Box::new(Box::new(42i32)); // $ method=new
+        match nested_box {
+            box box x => {
+                let nested_unboxed = x; // $ MISSING: type=nested_unboxed:i32
+                println!("Nested boxed: {}", nested_unboxed);
+            }
+        }
+    }
+}
+
+mod closures {
+    pub fn f() {
+        Some(1).map(|x| {
+            let x = x; // $ MISSING: type=x:i32
+            println!("{x}");
+        });  // $ method=map
     }
 }
 
@@ -2251,7 +2410,12 @@ fn main() {
     impl_trait::f(); // $ method=f
     indexers::f(); // $ method=f
     loops::f(); // $ method=f
+    explicit_type_args::f(); // $ method=f
     macros::f(); // $ method=f
     method_determined_by_argument_type::f(); // $ method=f
+    tuples::f(); // $ method=f
     dereference::test(); // $ method=test
+    pattern_matching::test_all_patterns(); // $ method=test_all_patterns
+    pattern_matching_experimental::box_patterns(); // $ method=box_patterns
+    closures::f() // $ method=f
 }
