@@ -11,8 +11,6 @@ multipleCallTargets
 | test.rs:179:30:179:68 | ...::_print(...) |
 | test.rs:188:26:188:105 | ...::_print(...) |
 | test.rs:229:22:229:72 | ... .read_to_string(...) |
-| test.rs:483:22:483:50 | file.read_to_end(...) |
-| test.rs:489:22:489:53 | file.read_to_string(...) |
 | test.rs:610:18:610:38 | ...::_print(...) |
 | test.rs:615:18:615:45 | ...::_print(...) |
 | test.rs:619:25:619:49 | address.to_socket_addrs() |
