@@ -769,8 +769,8 @@ class Annotation extends Expr {
     or
     result = any(Parameter p | p.getAnnotation() = this)
     or
-    exists(FunctionExpr f |
-      this = f.getReturns() and result = f.getInnerScope().getReturnNode().getNode()
+    exists(FunctionExpr f, Return r |
+      this = f.getReturns() and r.getScope() = f.getInnerScope() and result = r.getValue()
     )
   }
 }
