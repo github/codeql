@@ -14,7 +14,14 @@
 import python
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 import semmle.python.ApiGraphs
-import Comparisons
+
+/** Holds if `cls` has the `functools.total_ordering` decorator. */
+predicate totalOrdering(Class cls) {
+  API::moduleImport("functools")
+      .getMember("total_ordering")
+      .asSource()
+      .flowsTo(DataFlow::exprNode(cls.getADecorator()))
+}
 
 predicate definesStrictOrdering(Class cls, Function meth) {
   meth = cls.getMethod("__lt__")

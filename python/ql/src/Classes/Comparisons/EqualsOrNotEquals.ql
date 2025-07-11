@@ -12,7 +12,6 @@
  */
 
 import python
-import Comparisons
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 import Classes.Equality
 
@@ -33,8 +32,6 @@ predicate missingEquality(Class cls, Function defined, string missing) {
 }
 
 from Class cls, Function defined, string missing
-where
-  not totalOrdering(cls) and
-  missingEquality(cls, defined, missing)
+where missingEquality(cls, defined, missing)
 select cls, "This class implements $@, but does not implement " + missing + ".", defined,
   defined.getName()
