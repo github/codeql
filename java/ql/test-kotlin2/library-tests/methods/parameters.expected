@@ -22,8 +22,8 @@
 | delegates.kt:8:66:11:5 | invoke | delegates.kt:9:9:9:12 | prop | 0 |
 | delegates.kt:8:66:11:5 | invoke | delegates.kt:9:15:9:17 | old | 1 |
 | delegates.kt:8:66:11:5 | invoke | delegates.kt:9:20:9:22 | new | 2 |
-| enumClass.kt:1:1:4:1 | valueOf | enumClass.kt:1:1:4:1 | value | 0 |
-| enumClass.kt:6:1:16:1 | valueOf | enumClass.kt:6:1:16:1 | value | 0 |
+| enumClass.kt:0:0:0:0 | valueOf | enumClass.kt:1:1:4:1 | value | 0 |
+| enumClass.kt:0:0:0:0 | valueOf | enumClass.kt:6:1:16:1 | value | 0 |
 | enumClass.kt:9:5:9:30 | f | enumClass.kt:9:20:9:25 | i | 0 |
 | enumClass.kt:10:5:10:42 | g | enumClass.kt:10:20:10:25 | i | 0 |
 | enumClass.kt:13:3:13:29 | f | enumClass.kt:13:18:13:23 | i | 0 |

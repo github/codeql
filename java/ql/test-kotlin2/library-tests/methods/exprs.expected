@@ -223,11 +223,16 @@
 | delegates.kt:10:23:10:25 | old | VarAccess |
 | delegates.kt:10:26:10:31 | ", now " | StringLiteral |
 | delegates.kt:10:33:10:35 | new | VarAccess |
-| enumClass.kt:1:1:4:1 | EnumClass | TypeAccess |
-| enumClass.kt:1:1:4:1 | EnumClass | TypeAccess |
-| enumClass.kt:1:1:4:1 | EnumClass | TypeAccess |
-| enumClass.kt:1:1:4:1 | EnumClass[] | TypeAccess |
-| enumClass.kt:1:1:4:1 | EnumEntries<EnumClass> | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumClass[] | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumEntries<EnumClass> | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumEntries<EnumWithFunctions> | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions[] | TypeAccess |
 | enumClass.kt:1:1:4:1 | String | TypeAccess |
 | enumClass.kt:1:21:1:32 | 0 | IntegerLiteral |
 | enumClass.kt:1:21:1:32 | Enum<EnumClass> | TypeAccess |
@@ -258,12 +263,7 @@
 | enumClass.kt:3:11:3:11 | 1 | IntegerLiteral |
 | enumClass.kt:6:1:16:1 | 0 | IntegerLiteral |
 | enumClass.kt:6:1:16:1 | Enum<EnumWithFunctions> | TypeAccess |
-| enumClass.kt:6:1:16:1 | EnumEntries<EnumWithFunctions> | TypeAccess |
 | enumClass.kt:6:1:16:1 | EnumWithFunctions | TypeAccess |
-| enumClass.kt:6:1:16:1 | EnumWithFunctions | TypeAccess |
-| enumClass.kt:6:1:16:1 | EnumWithFunctions | TypeAccess |
-| enumClass.kt:6:1:16:1 | EnumWithFunctions | TypeAccess |
-| enumClass.kt:6:1:16:1 | EnumWithFunctions[] | TypeAccess |
 | enumClass.kt:6:1:16:1 | String | TypeAccess |
 | enumClass.kt:6:1:16:1 | new Enum<EnumWithFunctions>(...) | ClassInstanceExpr |
 | enumClass.kt:6:1:16:1 | null | NullLiteral |
