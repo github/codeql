@@ -20,13 +20,13 @@ public class A {
   }
 
   public Object deserialize2() throws java.io.IOException, ClassNotFoundException {
-    ObjectInput objectInput = A.getTaintedObjectInput(); // $ MISSING: Source
-    return objectInput.readObject(); // $ MISSING: Alert
+    ObjectInput objectInput = A.getTaintedObjectInput(); // $ Source
+    return objectInput.readObject(); // $ Alert
   }
 
   public Object deserialize3() throws java.io.IOException, ClassNotFoundException {
-    MyObjectInput objectInput = A.getTaintedMyObjectInput(); // $ MISSING: Source
-    return objectInput.readObject(); // $ MISSING: Alert
+    MyObjectInput objectInput = A.getTaintedMyObjectInput(); // $ Source
+    return objectInput.readObject(); // $ Alert
   }
 
   public Object deserialize4(Socket sock) throws java.io.IOException, ClassNotFoundException {
