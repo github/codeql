@@ -149,10 +149,7 @@ predicate unsafeDeserialization(MethodCall ma, Expr sink) {
   exists(Method m | m = ma.getMethod() |
     m instanceof ObjectInputStreamReadObjectMethod and
     sink = ma.getQualifier() and
-    not exists(DataFlow::ExprNode node |
-      node.getExpr() = sink and
-      node.getTypeBound() instanceof SafeObjectInputStreamType
-    )
+    not DataFlow::exprNode(sink).getTypeBound() instanceof SafeObjectInputStreamType
     or
     m instanceof XmlDecoderReadObjectMethod and
     sink = ma.getQualifier()
