@@ -145,6 +145,16 @@ module TempDirSystemGetPropertyToCreateConfig implements DataFlow::ConfigSig {
     or
     sanitizer instanceof WindowsOsSanitizer
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    result = source.getLocation()
+    or
+    result = any(MethodCallInsecureFileCreation m).getLocation()
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
 }
 
 /**

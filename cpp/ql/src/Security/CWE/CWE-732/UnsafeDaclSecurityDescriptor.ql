@@ -37,6 +37,19 @@ module NullDaclConfig implements DataFlow::ConfigSig {
       val = call.getArgument(2)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(SetSecurityDescriptorDaclFunctionCall call | result = call.getLocation() |
+      call.getArgument(1).getValue().toInt() != 0 and
+      call.getArgument(2) instanceof NullValue
+      or
+      sink.asExpr() = call.getArgument(2)
+    )
+  }
 }
 
 module NullDaclFlow = DataFlow::Global<NullDaclConfig>;
@@ -67,6 +80,10 @@ module NonNullDaclConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     exists(SetSecurityDescriptorDaclFunctionCall call | sink.asExpr() = call.getArgument(2))
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively
   }
 }
 

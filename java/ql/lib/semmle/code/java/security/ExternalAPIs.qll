@@ -101,6 +101,10 @@ module UntrustedDataToExternalApiConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // Simple use in UntrustedDataToExternalAPI.ql; also used through ExternalApiUsedWithUntrustedData in ExternalAPIsUsedWithUntrustedData.ql
+  }
 }
 
 /**

@@ -3,6 +3,7 @@ private import codeql.actions.TaintTracking
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.security.ArtifactPoisoningQuery
 private import codeql.actions.security.UntrustedCheckoutQuery
+private import codeql.actions.security.ControlChecks
 
 abstract class EnvPathInjectionSink extends DataFlow::Node { }
 
@@ -106,6 +107,30 @@ private module EnvPathInjectionConfig implements DataFlow::ConfigSig {
       pred.asExpr().(Step).getAFollowingStep() = run and
       succ.asExpr() = run.getScript() and
       exists(run.getScript().getAFileReadCommand())
+    )
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    // where clause from EnvPathInjectionCritical.ql
+    exists(Event event, RemoteFlowSource source | result = event.getLocation() |
+      inPrivilegedContext(sink.asExpr(), event) and
+      isSource(source) and
+      (
+        not source.getSourceType() = "artifact" and
+        not exists(ControlCheck check | check.protects(sink.asExpr(), event, "code-injection"))
+        or
+        source.getSourceType() = "artifact" and
+        not exists(ControlCheck check |
+          check.protects(sink.asExpr(), event, ["untrusted-checkout", "artifact-poisoning"])
+        ) and
+        sink instanceof EnvPathInjectionFromFileReadSink
+      )
     )
   }
 }

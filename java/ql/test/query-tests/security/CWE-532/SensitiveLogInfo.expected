@@ -1,0 +1,15 @@
+#select
+| Test.java:7:21:7:53 | ... + ... | Test.java:7:46:7:53 | password : String | Test.java:7:21:7:53 | ... + ... | This $@ is written to a log file. | Test.java:7:46:7:53 | password | potentially sensitive information |
+| Test.java:8:22:8:52 | ... + ... | Test.java:8:44:8:52 | authToken : String | Test.java:8:22:8:52 | ... + ... | This $@ is written to a log file. | Test.java:8:44:8:52 | authToken | potentially sensitive information |
+edges
+| Test.java:7:46:7:53 | password : String | Test.java:7:21:7:53 | ... + ... | provenance | Sink:MaD:2 |
+| Test.java:8:44:8:52 | authToken : String | Test.java:8:22:8:52 | ... + ... | provenance | Sink:MaD:1 |
+models
+| 1 | Sink: org.apache.logging.log4j; Logger; true; error; (String); ; Argument[0]; log-injection; manual |
+| 2 | Sink: org.apache.logging.log4j; Logger; true; info; (String); ; Argument[0]; log-injection; manual |
+nodes
+| Test.java:7:21:7:53 | ... + ... | semmle.label | ... + ... |
+| Test.java:7:46:7:53 | password : String | semmle.label | password : String |
+| Test.java:8:22:8:52 | ... + ... | semmle.label | ... + ... |
+| Test.java:8:44:8:52 | authToken : String | semmle.label | authToken : String |
+subpaths

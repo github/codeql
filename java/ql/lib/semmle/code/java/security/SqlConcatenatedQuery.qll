@@ -24,6 +24,24 @@ module UncontrolledStringBuilderSourceFlowConfig implements DataFlow::ConfigSig 
   predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    exists(Expr uncontrolled, StringBuilderVar sbv | result = uncontrolled.getLocation() |
+      uncontrolledStringBuilderQuery(sbv, uncontrolled) and
+      source = DataFlow::exprNode(sbv.getToStringCall())
+    )
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(QueryInjectionSink query, Expr uncontrolled |
+      result = [query.getLocation(), uncontrolled.getLocation()] and
+      builtFromUncontrolledConcat(query.asExpr(), uncontrolled)
+    )
+    or
+    result = sink.getLocation()
+  }
 }
 
 /**

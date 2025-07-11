@@ -30,6 +30,30 @@ module HardcodedCredentials {
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+    predicate observeDiffInformedIncrementalMode() {
+      any() // TODO: Make sure that the location overrides match the query's select clause: Column 1 does not select a source or sink originating from the flow call on line 62 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-798/HardcodedCredentials.ql@65:8:65:11), Column 3 does not select a source or sink originating from the flow call on line 62 (/Users/d10c/src/semmle-code/ql/go/ql/src/Security/CWE-798/HardcodedCredentials.ql@65:23:65:28)
+    }
+
+    Location getASelectedSourceLocation(DataFlow::Node source) {
+      result = source.getLocation()
+      or
+      exists(DataFlow::Node node | result = node.getLocation() |
+        sensitiveAssignment(node, _, _)
+        or
+        hardcodedPrivateKey(node, _)
+      )
+    }
+
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.getLocation()
+      or
+      exists(DataFlow::Node node | result = node.getLocation() |
+        sensitiveAssignment(_, node, _)
+        or
+        hardcodedPrivateKey(node, _)
+      )
+    }
   }
 
   /** Tracks taint flow for reasoning about hardcoded credentials. */
@@ -129,5 +153,46 @@ module HardcodedCredentials {
         this.reads(_, index)
       )
     }
+  }
+
+  /**
+   * Holds if `sink` is used in a context that suggests it may hold sensitive data of
+   * the given `type`.
+   */
+  private predicate isSensitive(DataFlow::Node sink, SensitiveExpr::Classification type) {
+    exists(Write write, string name |
+      pragma[only_bind_out](write).getRhs() = sink and
+      name = pragma[only_bind_out](write).getLhs().getName() and
+      // allow obvious test password variables
+      not name.regexpMatch(HeuristicNames::notSensitive())
+    |
+      name.regexpMatch(HeuristicNames::maybeSensitive(type))
+    )
+  }
+
+  /**
+   * Holds if `source` locally flows to a `sink` that is used in a context that suggests
+   * it may hold sensitive data of the given `type`.
+   */
+  predicate sensitiveAssignment(
+    DataFlow::Node source, DataFlow::Node sink, SensitiveExpr::Classification type
+  ) {
+    exists(string val | val = source.getStringValue() and val != "" |
+      DataFlow::localFlow(source, sink) and
+      isSensitive(sink, type) and
+      // allow obvious dummy/test values
+      not PasswordHeuristics::isDummyPassword(val) and
+      not sink.asExpr().(Ident).getName().regexpMatch(HeuristicNames::notSensitive())
+    )
+  }
+
+  /**
+   * Holds if `node` is a hardcoded private key.
+   * The type is set to `SensitiveExpr::certificate()`.
+   */
+  predicate hardcodedPrivateKey(DataFlow::Node node, SensitiveExpr::Classification type) {
+    node.getStringValue()
+        .regexpMatch("(?s)-+BEGIN\\b.*\\bPRIVATE KEY-+.+-+END\\b.*\\bPRIVATE KEY-+\n?") and
+    type = SensitiveExpr::certificate()
   }
 }

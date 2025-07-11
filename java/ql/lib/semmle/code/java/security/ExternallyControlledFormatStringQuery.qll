@@ -25,6 +25,12 @@ module ExternallyControlledFormatStringConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(StringFormat formatCall | result = formatCall.getFormatArgument().getLocation() |
+      sink.asExpr() = formatCall.getFormatArgument()
+    )
+  }
 }
 
 /**
