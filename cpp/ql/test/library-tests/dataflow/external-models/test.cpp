@@ -58,3 +58,48 @@ int test_pthread_create() {
 	pthread_t threadId;
 	pthread_create(&threadId, nullptr, myThreadFunction, (void *)&s);
 }
+
+template<typename F>
+void callWithArgument(F f, int x);
+
+struct StructWithOperatorCall_has_constructor {
+	StructWithOperatorCall_has_constructor();
+
+	void operator()(int y) {
+		ymlSink(y); // $ ir
+	}
+};
+
+struct StructWithOperatorCall_no_constructor {
+	void operator()(int y) {
+		ymlSink(y); // $ ir
+	}
+};
+
+struct StructWithOperatorCall_has_constructor_2 {
+	StructWithOperatorCall_has_constructor_2();
+
+	void operator()(int y) {
+		ymlSink(y); // $ ir
+	}
+};
+
+struct StructWithOperatorCall_no_constructor_2 {
+	void operator()(int y) {
+		ymlSink(y); // $ ir
+	}
+};
+
+void test_callWithArgument() {
+	int x = ymlSource();
+	{
+		StructWithOperatorCall_has_constructor func;
+		callWithArgument(func, x);
+	}
+	{
+		StructWithOperatorCall_no_constructor func;
+		callWithArgument(func, x);
+	}
+	callWithArgument(StructWithOperatorCall_has_constructor_2(), x);
+	callWithArgument(StructWithOperatorCall_no_constructor_2(), x);
+}

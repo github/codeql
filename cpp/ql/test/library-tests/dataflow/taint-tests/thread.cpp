@@ -26,4 +26,8 @@ void test_thread() {
   std::thread t1(thread_function_1, &s);
   std::thread t2(thread_function_2, s);
   std::thread t3(thread_function_3, &s, 42);
+
+  std::thread t4([](S* p) {
+    sink(p->x); // $ ir
+  }, &s);
 }
