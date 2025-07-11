@@ -2295,6 +2295,10 @@ mod explicit_type_args {
         field: T5,
     }
 
+    fn foo<T>(x: T) -> T {
+        x
+    }
+
     pub fn f() {
         let x1: Option<S1<S2>> = S1::assoc_fun(); // $ type=x1:T.T.S2 method=assoc_fun
         let x2 = S1::<S2>::assoc_fun(); // $ type=x2:T.T.S2 method=assoc_fun
@@ -2315,6 +2319,7 @@ mod explicit_type_args {
         {
             field: S2::default(), // $ method=default
         };
+        let x14 = foo::<i32>(Default::default()); // $ type=x14:i32 method=default method=foo
     }
 }
 
@@ -2456,6 +2461,27 @@ pub mod pattern_matching {
             }
             _ => (),
         }
+
+        let opt1 = Some(Default::default()); // $ MISSING: type=opt1:T.i32 method=default
+        #[rustfmt::skip]
+        let _ = if let Some::<i32>(x) = opt1
+        {
+            x; // $ MISSING: type=x:i32
+        };
+
+        let opt2 = Some(Default::default()); // $ MISSING: type=opt2:T.i32 method=default
+        #[rustfmt::skip]
+        let _ = if let Option::Some::<i32>(x) = opt2
+        {
+            x; // $ MISSING: type=x:i32
+        };
+
+        let opt3 = Some(Default::default()); // $ type=opt3:T.i32 method=default
+        #[rustfmt::skip]
+        let _ = if let Option::<i32>::Some(x) = opt3
+        {
+            x; // $ type=x:i32
+        };
 
         None
     }
