@@ -23,6 +23,7 @@ private predicate discardLocation(@location_default loc) {
   )
 }
 
+overlay[local]
 module QL {
   /** The base class for all AST nodes */
   class AstNode extends @ql_ast_node {
@@ -67,7 +68,6 @@ module QL {
   }
 
   /** Gets the file containing the given `node`. */
-  overlay[local]
   private @file getNodeFile(@ql_ast_node node) {
     exists(@location_default loc | ql_ast_node_location(node, loc) |
       locations_default(loc, result, _, _, _, _)
@@ -75,7 +75,6 @@ module QL {
   }
 
   /** Holds if `node` is in the `file` and is part of the overlay base database. */
-  overlay[local]
   private predicate discardableAstNode(@file file, @ql_ast_node node) {
     not isOverlay() and file = getNodeFile(node)
   }
@@ -1315,6 +1314,7 @@ module QL {
   }
 }
 
+overlay[local]
 module Dbscheme {
   /** The base class for all AST nodes */
   class AstNode extends @dbscheme_ast_node {
@@ -1359,7 +1359,6 @@ module Dbscheme {
   }
 
   /** Gets the file containing the given `node`. */
-  overlay[local]
   private @file getNodeFile(@dbscheme_ast_node node) {
     exists(@location_default loc | dbscheme_ast_node_location(node, loc) |
       locations_default(loc, result, _, _, _, _)
@@ -1367,7 +1366,6 @@ module Dbscheme {
   }
 
   /** Holds if `node` is in the `file` and is part of the overlay base database. */
-  overlay[local]
   private predicate discardableAstNode(@file file, @dbscheme_ast_node node) {
     not isOverlay() and file = getNodeFile(node)
   }
@@ -1673,6 +1671,7 @@ module Dbscheme {
   }
 }
 
+overlay[local]
 module Blame {
   /** The base class for all AST nodes */
   class AstNode extends @blame_ast_node {
@@ -1717,7 +1716,6 @@ module Blame {
   }
 
   /** Gets the file containing the given `node`. */
-  overlay[local]
   private @file getNodeFile(@blame_ast_node node) {
     exists(@location_default loc | blame_ast_node_location(node, loc) |
       locations_default(loc, result, _, _, _, _)
@@ -1725,7 +1723,6 @@ module Blame {
   }
 
   /** Holds if `node` is in the `file` and is part of the overlay base database. */
-  overlay[local]
   private predicate discardableAstNode(@file file, @blame_ast_node node) {
     not isOverlay() and file = getNodeFile(node)
   }
@@ -1808,6 +1805,7 @@ module Blame {
   }
 }
 
+overlay[local]
 module JSON {
   /** The base class for all AST nodes */
   class AstNode extends @json_ast_node {
@@ -1852,7 +1850,6 @@ module JSON {
   }
 
   /** Gets the file containing the given `node`. */
-  overlay[local]
   private @file getNodeFile(@json_ast_node node) {
     exists(@location_default loc | json_ast_node_location(node, loc) |
       locations_default(loc, result, _, _, _, _)
@@ -1860,7 +1857,6 @@ module JSON {
   }
 
   /** Holds if `node` is in the `file` and is part of the overlay base database. */
-  overlay[local]
   private predicate discardableAstNode(@file file, @json_ast_node node) {
     not isOverlay() and file = getNodeFile(node)
   }

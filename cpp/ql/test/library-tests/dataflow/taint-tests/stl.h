@@ -682,3 +682,16 @@ namespace std {
 	template <typename... Args>
 	int same_signature_as_format_but_different_name(format_string, Args &&...args);
 }
+
+namespace std {
+	class thread {
+		public:
+		template<class F, class... Args>
+		explicit thread(F&&, Args&&...);
+
+		~thread();
+
+		void join();
+		void detach();
+	};
+}

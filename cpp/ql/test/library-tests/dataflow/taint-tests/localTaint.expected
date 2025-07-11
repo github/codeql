@@ -7767,6 +7767,34 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | taint.cpp:830:20:830:34 | call to indirect_source | taint.cpp:832:23:832:24 | in |  |
 | taint.cpp:831:15:831:17 | out | taint.cpp:832:18:832:20 | out |  |
 | taint.cpp:831:15:831:17 | out | taint.cpp:833:8:833:10 | out |  |
+| thread.cpp:10:27:10:27 | s | thread.cpp:10:27:10:27 | s |  |
+| thread.cpp:10:27:10:27 | s | thread.cpp:11:8:11:8 | s |  |
+| thread.cpp:14:26:14:26 | s | thread.cpp:15:8:15:8 | s |  |
+| thread.cpp:18:27:18:27 | s | thread.cpp:18:27:18:27 | s |  |
+| thread.cpp:18:27:18:27 | s | thread.cpp:19:8:19:8 | s |  |
+| thread.cpp:18:34:18:34 | y | thread.cpp:20:8:20:8 | y |  |
+| thread.cpp:24:5:24:5 | s | thread.cpp:25:3:25:3 | s |  |
+| thread.cpp:24:5:24:5 | s | thread.cpp:26:38:26:38 | s |  |
+| thread.cpp:24:5:24:5 | s | thread.cpp:27:37:27:37 | s |  |
+| thread.cpp:24:5:24:5 | s | thread.cpp:28:38:28:38 | s |  |
+| thread.cpp:24:5:24:5 | s | thread.cpp:32:7:32:7 | s |  |
+| thread.cpp:25:3:25:3 | s [post update] | thread.cpp:26:38:26:38 | s |  |
+| thread.cpp:25:3:25:3 | s [post update] | thread.cpp:27:37:27:37 | s |  |
+| thread.cpp:25:3:25:3 | s [post update] | thread.cpp:28:38:28:38 | s |  |
+| thread.cpp:25:3:25:3 | s [post update] | thread.cpp:32:7:32:7 | s |  |
+| thread.cpp:25:3:25:16 | ... = ... | thread.cpp:25:5:25:5 | x [post update] |  |
+| thread.cpp:25:9:25:14 | call to source | thread.cpp:25:3:25:16 | ... = ... |  |
+| thread.cpp:26:18:26:39 | call to thread | thread.cpp:33:1:33:1 | t1 |  |
+| thread.cpp:26:38:26:38 | s | thread.cpp:26:37:26:38 | & ... |  |
+| thread.cpp:27:18:27:38 | call to thread | thread.cpp:33:1:33:1 | t2 |  |
+| thread.cpp:27:37:27:37 | ref arg s | thread.cpp:28:38:28:38 | s |  |
+| thread.cpp:27:37:27:37 | ref arg s | thread.cpp:32:7:32:7 | s |  |
+| thread.cpp:28:18:28:43 | call to thread | thread.cpp:33:1:33:1 | t3 |  |
+| thread.cpp:28:38:28:38 | s | thread.cpp:28:37:28:38 | & ... |  |
+| thread.cpp:30:18:32:8 | call to thread | thread.cpp:33:1:33:1 | t4 |  |
+| thread.cpp:30:24:30:24 | p | thread.cpp:30:24:30:24 | p |  |
+| thread.cpp:30:24:30:24 | p | thread.cpp:31:10:31:10 | p |  |
+| thread.cpp:32:7:32:7 | s | thread.cpp:32:6:32:7 | & ... |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |
