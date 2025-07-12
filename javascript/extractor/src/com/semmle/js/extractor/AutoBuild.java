@@ -754,7 +754,11 @@ public class AutoBuild {
             continue;
           }
           Path odir = cfg.getParent().resolve(root.getCompilerOptions().getOutDir()).toAbsolutePath().normalize();
-          outDirs.add(odir);
+          // Only exclude outDirs that are proper subdirectories of the source root
+          // This prevents excluding all code when outDir points outside the source root or to the source root itself
+          if (tryRelativize(LGTM_SRC, odir) != null && !odir.equals(LGTM_SRC)) {
+            outDirs.add(odir);
+          }
         }
       } catch (Exception e) {
         // ignore malformed tsconfig or missing fields
