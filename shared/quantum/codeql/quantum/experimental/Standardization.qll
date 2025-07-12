@@ -14,6 +14,7 @@ module Types {
       TSymmetricCipher(TSymmetricCipherType t) or
       TAsymmetricCipher(TAsymmetricCipherType t) or
       TSignature(TSignatureAlgorithmType t) or
+      TMac(TMacAlgorithmType t) or
       TKeyEncapsulation(TKemAlgorithmType t) or
       TUnknownKeyOperationAlgorithmType()
 
@@ -54,6 +55,11 @@ module Types {
       KYBER() or
       FRODO_KEM() or
       OtherKemAlgorithmType()
+
+    newtype TMacAlgorithmType =
+      HMAC() or
+      CMAC() or
+      OtherMacAlgorithmType()
 
     newtype TCipherStructureType =
       Block() or
@@ -142,6 +148,13 @@ module Types {
         this = TKeyEncapsulation(FRODO_KEM()) and result = "FrodoKEM"
         or
         this = TKeyEncapsulation(OtherKemAlgorithmType()) and result = "UnknownKEM"
+        or
+        // MAC algorithms
+        this = TMac(HMAC()) and result = "HMAC"
+        or
+        this = TMac(CMAC()) and result = "CMAC"
+        or
+        this = TMac(OtherMacAlgorithmType()) and result = "UnknownMac"
         or
         // Unknown
         this = TUnknownKeyOperationAlgorithmType() and result = "Unknown"
@@ -302,21 +315,6 @@ module Types {
       this = WHIRLPOOL() and result = "WHIRLPOOL"
       or
       this = OtherHashType() and result = "UnknownHash"
-    }
-  }
-
-  newtype TMacType =
-    HMAC() or
-    CMAC() or
-    OtherMacType()
-
-  class MacType extends TMacType {
-    string toString() {
-      this = HMAC() and result = "HMAC"
-      or
-      this = CMAC() and result = "CMAC"
-      or
-      this = OtherMacType() and result = "UnknownMacType"
     }
   }
 
