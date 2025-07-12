@@ -57,7 +57,9 @@ class RequiresExpr extends Expr, @requires_expr {
 /**
  * A C++ requirement in a requires expression.
  */
-class RequirementExpr extends Expr { }
+class RequirementExpr extends Expr {
+  RequirementExpr() { this.getParent() instanceof RequiresExpr }
+}
 
 /**
  * A C++ simple requirement in a requires expression.
@@ -70,7 +72,6 @@ class RequirementExpr extends Expr { }
  */
 class SimpleRequirementExpr extends RequirementExpr {
   SimpleRequirementExpr() {
-    this.getParent() instanceof RequiresExpr and
     not this instanceof TypeRequirementExpr and
     not this instanceof CompoundRequirementExpr and
     not this instanceof NestedRequirementExpr
@@ -89,8 +90,6 @@ class SimpleRequirementExpr extends RequirementExpr {
  * with `T` a template parameter, then `typename T::a_field;` is a type requirement.
  */
 class TypeRequirementExpr extends RequirementExpr, TypeName {
-  TypeRequirementExpr() { this.getParent() instanceof RequiresExpr }
-
   override string getAPrimaryQlClass() { result = "TypeRequirementExpr" }
 }
 
@@ -140,7 +139,7 @@ class CompoundRequirementExpr extends RequirementExpr, @compound_requirement {
  * with `T` a template parameter, then `requires std::is_same<T, int>::value;` is
  * a nested requirement.
  */
-class NestedRequirementExpr extends Expr, @nested_requirement {
+class NestedRequirementExpr extends RequirementExpr, @nested_requirement {
   override string toString() { result = "requires ..." }
 
   override string getAPrimaryQlClass() { result = "NestedRequirementExpr" }
@@ -163,7 +162,7 @@ class NestedRequirementExpr extends Expr, @nested_requirement {
  * then `C<int, 1>` is a concept id expression that refers to
  * the concept `C`.
  */
-class ConceptIdExpr extends RequirementExpr, @concept_id {
+class ConceptIdExpr extends Expr, @concept_id {
   override string toString() {
     result = this.getConcept().getName() + "<...>"
     or
