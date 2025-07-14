@@ -1155,4 +1155,4 @@ namespace conflation_regression {
   }
 }
 
-int recursion = (sink(recursion), source()); // $ SPURIOUS: ir
+int recursion = (sink(recursion), source()); // clean
