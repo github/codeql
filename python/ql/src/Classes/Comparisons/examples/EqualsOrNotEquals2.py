@@ -10,7 +10,7 @@ class B:
     
 class C(B):
     def __init__(self, b, c):
-        super().init(b)
+        super().__init__(b)
         self.c = c 
 
     # BAD: eq is defined, but != will use superclass ne method, which is not consistent

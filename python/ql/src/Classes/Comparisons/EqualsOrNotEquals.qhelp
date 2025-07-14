@@ -14,10 +14,12 @@ then the <code>!=</code> operator will automatically delegate to the <code>__eq_
  <p>However, if the <code>__ne__</code> method is defined without a corresponding <code>__eq__</code> method, 
  the <code>==</code> operator will still default to object identity (equivalent to the <code>is</code> operator), while the <code>!=</code>
  operator will use the <code>__ne__</code> method, which may be inconsistent.
+ </p>
 
-<p>Additionally, if the <code>__ne__</code> method is defined on a superclass, and the subclass defines its own <cde>__eq__</code> method without overriding
+<p>Additionally, if the <code>__ne__</code> method is defined on a superclass, and the subclass defines its own <code>__eq__</code> method without overriding
 the superclass <code>__ne__</code> method, the <code>!=</code> operator will use this superclass <code>__ne__</code> method, rather than automatically delegating
 to <code>__eq__</code>, which may be incorrect.
+</p>
 
 </overview>
 <recommendation>
