@@ -17,7 +17,8 @@ If the ordering is not consistent with default equality, then <code>__eq__</code
   </p>
 
 <p>
-The <code>functools.total_ordering</code> class decorator can be used to automatically implement all four comparison methods from a single one,
+The <code>functools.total_ordering</code> class decorator can be used to automatically implement all four comparison methods from a 
+single one,
 which is typically the cleanest way to ensure all necessary comparison methods are implemented consistently.</p>
 
 </recommendation>
