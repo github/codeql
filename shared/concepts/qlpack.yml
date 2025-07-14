@@ -2,5 +2,7 @@ name: codeql/concepts
 version: 0.0.0-dev
 groups: shared
 library: true
-dependencies: null
+dependencies:
+  codeql/dataflow: ${workspace}
+  codeql/util: ${workspace}
 warnOnImplicitThis: true

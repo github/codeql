@@ -52,14 +52,15 @@ module Pycurl {
      *
      * See http://pycurl.io/docs/latest/curlobject.html#pycurl.Curl.setopt.
      */
-    private class OutgoingRequestCall extends Http::Client::Request::Range, DataFlow::CallCfgNode {
+    private class OutgoingRequestCall extends Http::Client::Request::Range instanceof DataFlow::CallCfgNode
+    {
       OutgoingRequestCall() {
         this = setopt().getACall() and
         this.getArg(0).asCfgNode().(AttrNode).getName() = "URL"
       }
 
       override DataFlow::Node getAUrlPart() {
-        result in [this.getArg(1), this.getArgByName("value")]
+        result in [super.getArg(1), super.getArgByName("value")]
       }
 
       override string getFramework() { result = "pycurl.Curl" }
@@ -77,7 +78,7 @@ module Pycurl {
      *
      * See http://pycurl.io/docs/latest/curlobject.html#pycurl.Curl.setopt.
      */
-    private class CurlSslCall extends Http::Client::Request::Range, DataFlow::CallCfgNode {
+    private class CurlSslCall extends Http::Client::Request::Range instanceof DataFlow::CallCfgNode {
       CurlSslCall() {
         this = setopt().getACall() and
         this.getArg(0).asCfgNode().(AttrNode).getName() = ["SSL_VERIFYPEER", "SSL_VERIFYHOST"]
@@ -90,13 +91,13 @@ module Pycurl {
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
-        sslverifypeer().getAValueReachableFromSource() = this.getArg(0) and
+        sslverifypeer().getAValueReachableFromSource() = super.getArg(0) and
         (
-          this.getArg(1).asExpr().(IntegerLiteral).getValue() = 0
+          super.getArg(1).asExpr().(IntegerLiteral).getValue() = 0
           or
-          this.getArg(1).asExpr().(BooleanLiteral).booleanValue() = false
+          super.getArg(1).asExpr().(BooleanLiteral).booleanValue() = false
         ) and
-        (disablingNode = this and argumentOrigin = this.getArg(1))
+        (disablingNode = this and argumentOrigin = super.getArg(1))
       }
     }
   }
