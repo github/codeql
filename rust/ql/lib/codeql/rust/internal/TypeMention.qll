@@ -14,6 +14,18 @@ abstract class TypeMention extends AstNode {
   final Type resolveType() { result = this.resolveTypeAt(TypePath::nil()) }
 }
 
+class TupleTypeReprMention extends TypeMention instanceof TupleTypeRepr {
+  override Type resolveTypeAt(TypePath path) {
+    path.isEmpty() and
+    result = TTuple(super.getNumberOfFields())
+    or
+    exists(TypePath suffix, int i |
+      result = super.getField(i).(TypeMention).resolveTypeAt(suffix) and
+      path = TypePath::cons(TTupleTypeParameter(i), suffix)
+    )
+  }
+}
+
 class ArrayTypeReprMention extends TypeMention instanceof ArrayTypeRepr {
   override Type resolveTypeAt(TypePath path) {
     path.isEmpty() and

@@ -2334,27 +2334,27 @@ mod tuples {
     }
 
     pub fn f() {
-        let a = S1::get_pair(); // $ target=get_pair MISSING: type=a:(T_2)
-        let mut b = S1::get_pair(); // $ target=get_pair MISSING: type=b:(T_2)
-        let (c, d) = S1::get_pair(); // $ target=get_pair MISSING: type=c:S1 type=d:S1
-        let (mut e, f) = S1::get_pair(); // $ target=get_pair MISSING: type=e:S1 type=f:S1
-        let (mut g, mut h) = S1::get_pair(); // $ target=get_pair MISSING: type=g:S1 type=h:S1
+        let a = S1::get_pair(); // $ target=get_pair type=a:(T_2)
+        let mut b = S1::get_pair(); // $ target=get_pair type=b:(T_2)
+        let (c, d) = S1::get_pair(); // $ target=get_pair type=c:S1 type=d:S1
+        let (mut e, f) = S1::get_pair(); // $ target=get_pair type=e:S1 type=f:S1
+        let (mut g, mut h) = S1::get_pair(); // $ target=get_pair type=g:S1 type=h:S1
 
-        a.0.foo(); // $ MISSING: target=foo
-        b.1.foo(); // $ MISSING: target=foo
-        c.foo(); // $ MISSING: target=foo
-        d.foo(); // $ MISSING: target=foo
-        e.foo(); // $ MISSING: target=foo
-        f.foo(); // $ MISSING: target=foo
-        g.foo(); // $ MISSING: target=foo
-        h.foo(); // $ MISSING: target=foo
+        a.0.foo(); // $ target=foo
+        b.1.foo(); // $ target=foo
+        c.foo(); // $ target=foo
+        d.foo(); // $ target=foo
+        e.foo(); // $ target=foo
+        f.foo(); // $ target=foo
+        g.foo(); // $ target=foo
+        h.foo(); // $ target=foo
 
         // Here type information must flow from `pair.0` and `pair.1` into
         // `pair` and from `(a, b)` into `a` and `b` in order for the types of
         // `a` and `b` to be inferred.
-        let a = Default::default(); // $ MISSING: target=default type=a:i64
-        let b = Default::default(); // $ MISSING: target=default MISSING: type=b:bool
-        let pair = (a, b); // $ MISSING: type=pair:0.i64 type=pair:1.bool
+        let a = Default::default(); // $ target=default type=a:i64
+        let b = Default::default(); // $ target=default type=b:bool
+        let pair = (a, b); // $ type=pair:0.i64 type=pair:1.bool
         let i: i64 = pair.0;
         let j: bool = pair.1;
     }

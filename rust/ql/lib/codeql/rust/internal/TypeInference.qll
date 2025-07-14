@@ -103,6 +103,9 @@ private module Input1 implements InputSig1<Location> {
           node = tp0.(SelfTypeParameter).getTrait() or
           node = tp0.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr()
         )
+        or
+        kind = 2 and
+        id = tp0.(TupleTypeParameter).getIndex()
       |
         tp0 order by kind, id
       )
@@ -229,7 +232,7 @@ private Type inferLogicalOperationType(AstNode n, TypePath path) {
 private Type inferAssignmentOperationType(AstNode n, TypePath path) {
   n instanceof AssignmentOperation and
   path.isEmpty() and
-  result = TUnit()
+  result instanceof UnitType
 }
 
 pragma[nomagic]
@@ -320,6 +323,14 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
   ) and
   prefix1.isEmpty() and
   prefix2 = TypePath::singleton(TRefTypeParameter())
+  or
+  exists(int i |
+    prefix1.isEmpty() and
+    prefix2 = TypePath::singleton(TTupleTypeParameter(i))
+  |
+    n1 = n2.(TupleExpr).getField(i) or
+    n1 = n2.(TuplePat).getField(i)
+  )
   or
   exists(BlockExpr be |
     n1 = be and
@@ -532,6 +543,12 @@ private Type inferStructExprType(AstNode n, TypePath path) {
     n = a.getNodeAt(apos) and
     result = StructExprMatching::inferAccessType(a, apos, path)
   )
+}
+
+pragma[nomagic]
+private Type inferTupleExprRootType(TupleExpr te) {
+  // `typeEquality` handles the non-root case
+  result = TTuple(te.getNumberOfFields())
 }
 
 pragma[nomagic]
@@ -1052,6 +1069,31 @@ private Type inferFieldExprType(AstNode n, TypePath path) {
         else path = path0
       )
     else path = path0
+  )
+}
+
+pragma[nomagic]
+private Type inferTupleIndexExprType(FieldExpr fe, TypePath path) {
+  exists(int i, TypePath path0 |
+    fe.getIdentifier().getText() = i.toString() and
+    result = inferType(fe.getContainer(), path0) and
+    path0.isCons(TTupleTypeParameter(i), path) and
+    fe.getIdentifier().getText() = i.toString()
+  )
+}
+
+/** Infers the type of `t` in `t.n` when `t` is a tuple. */
+private Type inferTupleContainerExprType(Expr e, TypePath path) {
+  // NOTE: For a field expression `t.n` where `n` is a number `t` might both be
+  // a tuple struct or a tuple. It is only correct to let type information flow
+  // from `t.n` to tuple type parameters of `t` in the latter case. Hence we
+  // include the condition that the root type of `t` must be a tuple type.
+  exists(int i, TypePath path0, FieldExpr fe |
+    e = fe.getContainer() and
+    fe.getIdentifier().getText() = i.toString() and
+    inferType(fe.getContainer()) instanceof TupleType and
+    result = inferType(fe, path0) and
+    path = TypePath::cons(TTupleTypeParameter(i), path0)
   )
 }
 
@@ -1943,11 +1985,18 @@ private module Cached {
     or
     result = inferStructExprType(n, path)
     or
+    result = inferTupleExprRootType(n) and
+    path.isEmpty()
+    or
     result = inferPathExprType(n, path)
     or
     result = inferCallExprBaseType(n, path)
     or
     result = inferFieldExprType(n, path)
+    or
+    result = inferTupleIndexExprType(n, path)
+    or
+    result = inferTupleContainerExprType(n, path)
     or
     result = inferRefNodeType(n) and
     path.isEmpty()

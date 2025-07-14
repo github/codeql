@@ -446,13 +446,13 @@ pub fn tuple_patterns() {
     // TuplePat - Tuple patterns
     match tuple {
         (1, 2, 3.0) => {
-            let exact_tuple = tuple; // $ MISSING: type=exact_tuple:?
+            let exact_tuple = tuple; // $ type=exact_tuple:(T_3)
             println!("Exact tuple: {:?}", exact_tuple);
         }
         (a, b, c) => {
-            let first_elem = a; // $ MISSING: type=first_elem:i32
-            let second_elem = b; // $ MISSING: type=second_elem:i64
-            let third_elem = c; // $ MISSING: type=third_elem:f32
+            let first_elem = a; // $ type=first_elem:i32
+            let second_elem = b; // $ type=second_elem:i64
+            let third_elem = c; // $ type=third_elem:f32
             println!("Tuple: ({}, {}, {})", first_elem, second_elem, third_elem);
         }
     }
@@ -460,7 +460,7 @@ pub fn tuple_patterns() {
     // With rest pattern
     match tuple {
         (first, ..) => {
-            let tuple_first = first; // $ MISSING: type=tuple_first:i32
+            let tuple_first = first; // $ type=tuple_first:i32
             println!("First element: {}", tuple_first);
         }
     }
@@ -469,7 +469,7 @@ pub fn tuple_patterns() {
     let unit = ();
     match unit {
         () => {
-            let unit_value = unit; // $ MISSING: type=unit_value:?
+            let unit_value = unit; // $ type=unit_value:()
             println!("Unit value: {:?}", unit_value);
         }
     }
@@ -478,7 +478,7 @@ pub fn tuple_patterns() {
     let single = (42i32,);
     match single {
         (x,) => {
-            let single_elem = x; // $ MISSING: type=single_elem:i32
+            let single_elem = x; // $ type=single_elem:i32
             println!("Single element tuple: {}", single_elem);
         }
     }
@@ -499,8 +499,8 @@ pub fn parenthesized_patterns() {
     let tuple = (1i32, 2i32);
     match tuple {
         (x, (y)) => {
-            let paren_x = x; // $ MISSING: type=paren_x:i32
-            let paren_y = y; // $ MISSING: type=paren_y:i32
+            let paren_x = x; // $ type=paren_x:i32
+            let paren_y = y; // $ type=paren_y:i32
             println!("Parenthesized in tuple: {}, {}", paren_x, paren_y);
         }
     }
@@ -630,7 +630,7 @@ pub fn rest_patterns() {
     // RestPat - Rest patterns (..)
     match tuple {
         (first, ..) => {
-            let rest_first = first; // $ MISSING: type=rest_first:i32
+            let rest_first = first; // $ type=rest_first:i32
             println!("First with rest: {}", rest_first);
         }
     }
@@ -644,7 +644,7 @@ pub fn rest_patterns() {
 
     match tuple {
         (first, .., last) => {
-            let rest_start = first; // $ MISSING: type=rest_start:i32
+            let rest_start = first; // $ type=rest_start:i32
             let rest_end = last; // $ MISSING: type=rest_end:u8
             println!("First and last: {}, {}", rest_start, rest_end);
         }
@@ -719,9 +719,9 @@ pub fn patterns_in_let_statements() {
 
     let tuple = (1i32, 2i64, 3.0f32);
     let (a, b, c) = tuple; // TuplePat in let
-    let let_a = a; // $ MISSING: type=let_a:i32
-    let let_b = b; // $ MISSING: type=let_b:i64
-    let let_c = c; // $ MISSING: type=let_c:f32
+    let let_a = a; // $ type=let_a:i32
+    let let_b = b; // $ type=let_b:i64
+    let let_c = c; // $ type=let_c:f32
 
     let array = [1i32, 2, 3, 4, 5];
     let [first, .., last] = array; // SlicePat in let
@@ -759,8 +759,8 @@ pub fn patterns_in_function_parameters() {
     }
 
     fn extract_tuple((first, _, third): (i32, f64, bool)) -> (i32, bool) {
-        let param_first = first; // $ MISSING: type=param_first:i32
-        let param_third = third; // $ MISSING: type=param_third:bool
+        let param_first = first; // $ type=param_first:i32
+        let param_third = third; // $ type=param_third:bool
         (param_first, param_third)
     }
 
@@ -772,7 +772,7 @@ pub fn patterns_in_function_parameters() {
     let red = extract_color(color); // $ target=extract_color type=red:u8
 
     let tuple = (42i32, 3.14f64, true);
-    let tuple_extracted = extract_tuple(tuple); // $ target=extract_tuple MISSING: type=tuple_extracted:?
+    let tuple_extracted = extract_tuple(tuple); // $ target=extract_tuple type=tuple_extracted:0.i32 type=tuple_extracted:1.bool
 }
 
 #[rustfmt::skip]

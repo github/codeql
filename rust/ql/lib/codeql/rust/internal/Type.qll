@@ -9,14 +9,17 @@ private import codeql.rust.elements.internal.generated.Synth
 
 cached
 newtype TType =
-  TUnit() or
-  TStruct(Struct s) { Stages::TypeInferenceStage::ref() } or
+  TTuple(int arity) {
+    exists(any(TupleTypeRepr t).getField(arity)) and Stages::TypeInferenceStage::ref()
+  } or
+  TStruct(Struct s) or
   TEnum(Enum e) or
   TTrait(Trait t) or
   TArrayType() or // todo: add size?
   TRefType() or // todo: add mut?
   TImplTraitType(ImplTraitTypeRepr impl) or
   TSliceType() or
+  TTupleTypeParameter(int i) { exists(TTuple(i)) } or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
   TArrayTypeParameter() or
@@ -56,8 +59,8 @@ abstract class Type extends TType {
 }
 
 /** The unit type `()`. */
-class UnitType extends Type, TUnit {
-  UnitType() { this = TUnit() }
+class UnitType extends Type, TTuple {
+  UnitType() { this = TTuple(0) }
 
   override StructField getStructField(string name) { none() }
 
@@ -66,6 +69,25 @@ class UnitType extends Type, TUnit {
   override TypeParameter getTypeParameter(int i) { none() }
 
   override string toString() { result = "()" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/** A tuple type `(T, ...)`. */
+class TupleType extends Type, TTuple {
+  private int arity;
+
+  TupleType() { this = TTuple(arity) and arity > 0 }
+
+  override StructField getStructField(string name) { none() }
+
+  override TupleField getTupleField(int i) { none() }
+
+  override TypeParameter getTypeParameter(int i) { result = TTupleTypeParameter(i) and i < arity }
+
+  int getArity() { result = arity }
+
+  override string toString() { result = "(T_" + arity + ")" }
 
   override Location getLocation() { result instanceof EmptyLocation }
 }
@@ -327,6 +349,21 @@ class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypePara
   override string toString() { result = typeAlias.getName().getText() }
 
   override Location getLocation() { result = typeAlias.getLocation() }
+}
+
+/**
+ * A tuple type parameter. For instance the `T` in `(T, U)`.
+ *
+ *  Since tuples are structural their parameters can be represented simply as
+ *  their positional index.
+ */
+class TupleTypeParameter extends TypeParameter, TTupleTypeParameter {
+  override string toString() { result = this.getIndex().toString() }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+
+  /** Gets the index of this tuple type parameter. */
+  int getIndex() { this = TTupleTypeParameter(result) }
 }
 
 /** An implicit array type parameter. */
