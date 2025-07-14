@@ -12,7 +12,7 @@ query predicate inferType(AstNode n, TypePath path, Type t) {
 }
 
 module ResolveTest implements TestSig {
-  string getARelevantTag() { result = ["method", "fieldof"] }
+  string getARelevantTag() { result = ["target", "fieldof"] }
 
   private predicate functionHasValue(Function f, string value) {
     f.getAPrecedingComment().getCommentText() = value and
@@ -34,7 +34,7 @@ module ResolveTest implements TestSig {
       functionHasValue(target, value) and
       // `isFromMacroExpansion` does not always work
       not target.(Function).getName().getText() = ["panic_fmt", "_print", "format", "must_use"] and
-      tag = "method"
+      tag = "target"
       or
       target = resolveStructFieldExpr(source) and
       any(Struct s | s.getStructField(_) = target).getName().getText() = value and

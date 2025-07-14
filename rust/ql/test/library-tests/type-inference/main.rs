@@ -63,8 +63,8 @@ mod field_access {
     }
 
     pub fn f() {
-        simple_field_access(); // $ method=simple_field_access
-        generic_field_access(); // $ method=generic_field_access
+        simple_field_access(); // $ target=simple_field_access
+        generic_field_access(); // $ target=generic_field_access
     }
 }
 
@@ -90,8 +90,8 @@ mod method_impl {
 
     pub fn g(x: Foo, y: Foo) -> Foo {
         println!("main.rs::m1::g");
-        x.m1(); // $ method=m1
-        y.m2() // $ method=m2
+        x.m1(); // $ target=m1
+        y.m2() // $ target=m2
     }
 }
 
@@ -114,10 +114,10 @@ mod trait_impl {
 
     pub fn f() {
         let x = MyThing { field: true };
-        let a = x.trait_method(); // $ type=a:bool method=MyThing::trait_method
+        let a = x.trait_method(); // $ type=a:bool target=MyThing::trait_method
 
         let y = MyThing { field: false };
-        let b = MyTrait::trait_method(y); // $ type=b:bool method=MyThing::trait_method
+        let b = MyTrait::trait_method(y); // $ type=b:bool target=MyThing::trait_method
     }
 }
 
@@ -160,14 +160,14 @@ mod method_non_parametric_impl {
         println!("{:?}", x.a); // $ fieldof=MyThing
         println!("{:?}", y.a); // $ fieldof=MyThing
 
-        println!("{:?}", x.m1()); // $ method=MyThing<S1>::m1
-        println!("{:?}", y.m1().a); // $ method=MyThing<S2>::m1 fieldof=MyThing
+        println!("{:?}", x.m1()); // $ target=MyThing<S1>::m1
+        println!("{:?}", y.m1().a); // $ target=MyThing<S2>::m1 fieldof=MyThing
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m2()); // $ method=m2
-        println!("{:?}", y.m2()); // $ method=m2
+        println!("{:?}", x.m2()); // $ target=m2
+        println!("{:?}", y.m2()); // $ target=m2
     }
 }
 
@@ -209,7 +209,7 @@ mod method_non_parametric_trait_impl {
     }
 
     fn call_trait_m1<T1, T2: MyTrait<T1>>(x: T2) -> T1 {
-        x.m1() // $ method=m1
+        x.m1() // $ target=m1
     }
 
     impl MyTrait<S1> for MyThing<S1> {
@@ -234,7 +234,7 @@ mod method_non_parametric_trait_impl {
     {
         // MyThing<S3>::m1
         fn m1(self) -> TD {
-            TD::default() // $ method=default
+            TD::default() // $ target=default
         }
     }
 
@@ -287,15 +287,15 @@ mod method_non_parametric_trait_impl {
     }
 
     fn get_fst<V1, V2, P: MyProduct<V1, V2>>(p: P) -> V1 {
-        p.fst() // $ method=MyProduct::fst
+        p.fst() // $ target=MyProduct::fst
     }
 
     fn get_snd<V1, V2, P: MyProduct<V1, V2>>(p: P) -> V2 {
-        p.snd() // $ method=MyProduct::snd
+        p.snd() // $ target=MyProduct::snd
     }
 
     fn get_snd_fst<V0, V1, V2, P: MyProduct<V1, V2>>(p: MyPair<V0, P>) -> V1 {
-        p.p2.fst() // $ fieldof=MyPair method=MyProduct::fst
+        p.p2.fst() // $ fieldof=MyPair target=MyProduct::fst
     }
 
     trait ConvertTo<T> {
@@ -306,17 +306,17 @@ mod method_non_parametric_trait_impl {
     impl<T: MyTrait<S1>> ConvertTo<S1> for T {
         // T::convert_to
         fn convert_to(self) -> S1 {
-            self.m1() // $ method=m1
+            self.m1() // $ target=m1
         }
     }
 
     fn convert_to<TS, T: ConvertTo<TS>>(thing: T) -> TS {
-        thing.convert_to() // $ method=ConvertTo::convert_to
+        thing.convert_to() // $ target=ConvertTo::convert_to
     }
 
     fn type_bound_type_parameter_impl<TP: MyTrait<S1>>(thing: TP) -> S1 {
         // The trait bound on `TP` makes the implementation of `ConvertTo` valid
-        thing.convert_to() // $ MISSING: method=T::convert_to
+        thing.convert_to() // $ MISSING: target=T::convert_to
     }
 
     pub fn f() {
@@ -326,28 +326,28 @@ mod method_non_parametric_trait_impl {
 
         // Tests for method resolution
 
-        println!("{:?}", thing_s1.m1()); // $ method=MyThing<S1>::m1
-        println!("{:?}", thing_s2.m1().a); // $ method=MyThing<S2>::m1 fieldof=MyThing
-        let s3: S3 = thing_s3.m1(); // $ method=MyThing<S3>::m1
+        println!("{:?}", thing_s1.m1()); // $ target=MyThing<S1>::m1
+        println!("{:?}", thing_s2.m1().a); // $ target=MyThing<S2>::m1 fieldof=MyThing
+        let s3: S3 = thing_s3.m1(); // $ target=MyThing<S3>::m1
         println!("{:?}", s3);
 
         let p1 = MyPair { p1: S1, p2: S1 };
-        println!("{:?}", p1.m1()); // $ method=MyTrait<I>::m1
+        println!("{:?}", p1.m1()); // $ target=MyTrait<I>::m1
 
         let p2 = MyPair { p1: S1, p2: S2 };
-        println!("{:?}", p2.m1()); // $ method=MyTrait<S3>::m1
+        println!("{:?}", p2.m1()); // $ target=MyTrait<S3>::m1
 
         let p3 = MyPair {
             p1: MyThing { a: S1 },
             p2: S3,
         };
-        println!("{:?}", p3.m1()); // $ method=MyTrait<TT>::m1
+        println!("{:?}", p3.m1()); // $ target=MyTrait<TT>::m1
 
         // These calls go to the first implementation of `MyProduct` for `MyPair`
         let a = MyPair { p1: S1, p2: S1 };
-        let x = a.fst(); // $ method=MyPair<A,A>::fst
+        let x = a.fst(); // $ target=MyPair<A,A>::fst
         println!("{:?}", x);
-        let y = a.snd(); // $ method=MyPair<A,A>::snd
+        let y = a.snd(); // $ target=MyPair<A,A>::snd
         println!("{:?}", y);
 
         // These calls go to the last implementation of `MyProduct` for
@@ -355,41 +355,41 @@ mod method_non_parametric_trait_impl {
         // parameters of the implementation enforce that the two generics must
         // be equal.
         let b = MyPair { p1: S2, p2: S1 };
-        let x = b.fst(); // $ method=MyPair<S2,S1>::fst
+        let x = b.fst(); // $ target=MyPair<S2,S1>::fst
         println!("{:?}", x);
-        let y = b.snd(); // $ method=MyPair<S2,S1>::snd
+        let y = b.snd(); // $ target=MyPair<S2,S1>::snd
         println!("{:?}", y);
 
         // Tests for inference of type parameters based on trait implementations.
 
-        let x = call_trait_m1(thing_s1); // $ type=x:S1 method=call_trait_m1
+        let x = call_trait_m1(thing_s1); // $ type=x:S1 target=call_trait_m1
         println!("{:?}", x);
-        let y = call_trait_m1(thing_s2); // $ type=y:MyThing type=y:A.S2 method=call_trait_m1
+        let y = call_trait_m1(thing_s2); // $ type=y:MyThing type=y:A.S2 target=call_trait_m1
         println!("{:?}", y.a); // $ fieldof=MyThing
 
         // First implementation
         let a = MyPair { p1: S1, p2: S1 };
-        let x = get_fst(a); // $ type=x:S1 method=get_fst
+        let x = get_fst(a); // $ type=x:S1 target=get_fst
         println!("{:?}", x);
-        let y = get_snd(a); // $ type=y:S1 method=get_snd
+        let y = get_snd(a); // $ type=y:S1 target=get_snd
         println!("{:?}", y);
 
         // Second implementation
         let b = MyPair { p1: S2, p2: S1 };
-        let x = get_fst(b); // $ type=x:S1 method=get_fst
+        let x = get_fst(b); // $ type=x:S1 target=get_fst
         println!("{:?}", x);
-        let y = get_snd(b); // $ type=y:S2 method=get_snd
+        let y = get_snd(b); // $ type=y:S2 target=get_snd
         println!("{:?}", y);
 
         let c = MyPair {
             p1: S3,
             p2: MyPair { p1: S2, p2: S1 },
         };
-        let x = get_snd_fst(c); // $ type=x:S1 method=get_snd_fst
+        let x = get_snd_fst(c); // $ type=x:S1 target=get_snd_fst
 
         let thing = MyThing { a: S1 };
-        let i = thing.convert_to(); // $ MISSING: type=i:S1 method=T::convert_to
-        let j = convert_to(thing); // $ type=j:S1 method=convert_to
+        let i = thing.convert_to(); // $ MISSING: type=i:S1 target=T::convert_to
+        let j = convert_to(thing); // $ type=j:S1 target=convert_to
     }
 }
 
@@ -488,17 +488,17 @@ mod impl_overlap {
 
     pub fn f() {
         let x = S1;
-        println!("{:?}", x.common_method()); // $ method=S1::common_method
-        println!("{:?}", x.common_method_2()); // $ method=S1::common_method_2
+        println!("{:?}", x.common_method()); // $ target=S1::common_method
+        println!("{:?}", x.common_method_2()); // $ target=S1::common_method_2
 
         let y = S2(S1);
-        println!("{:?}", y.common_method()); // $ method=<S2<S1>_as_OverlappingTrait>::common_method
+        println!("{:?}", y.common_method()); // $ target=<S2<S1>_as_OverlappingTrait>::common_method
 
         let z = S2(0);
-        println!("{:?}", z.common_method()); // $ method=S2<i32>::common_method
+        println!("{:?}", z.common_method()); // $ target=S2<i32>::common_method
 
         let w = S3(S1);
-        println!("{:?}", w.m(x)); // $ method=S3<T>::m
+        println!("{:?}", w.m(x)); // $ target=S3<T>::m
     }
 }
 
@@ -525,23 +525,23 @@ mod type_parameter_bounds {
 
     fn call_first_trait_per_bound<I: Debug, T: SecondTrait<I>>(x: T) {
         // The type parameter bound determines which method this call is resolved to.
-        let s1 = x.method(); // $ method=SecondTrait::method
+        let s1 = x.method(); // $ target=SecondTrait::method
         println!("{:?}", s1); // $ type=s1:I
     }
 
     fn call_second_trait_per_bound<I: Debug, T: SecondTrait<I>>(x: T) {
         // The type parameter bound determines which method this call is resolved to.
-        let s2 = x.method(); // $ method=SecondTrait::method
+        let s2 = x.method(); // $ target=SecondTrait::method
         println!("{:?}", s2); // $ type=s2:I
     }
 
     fn trait_bound_with_type<T: FirstTrait<S1>>(x: T) {
-        let s = x.method(); // $ method=FirstTrait::method
+        let s = x.method(); // $ target=FirstTrait::method
         println!("{:?}", s); // $ type=s:S1
     }
 
     fn trait_per_bound_with_type<T: FirstTrait<S1>>(x: T) {
-        let s = x.method(); // $ method=FirstTrait::method
+        let s = x.method(); // $ target=FirstTrait::method
         println!("{:?}", s); // $ type=s:S1
     }
 
@@ -553,29 +553,29 @@ mod type_parameter_bounds {
 
     fn call_trait_per_bound_with_type_1<T: Pair<S1, S2>>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
-        let s1 = x.fst(); // $ method=fst type=s1:S1
-        let s2 = y.snd(); // $ method=snd type=s2:S2
+        let s1 = x.fst(); // $ target=fst type=s1:S1
+        let s2 = y.snd(); // $ target=snd type=s2:S2
         println!("{:?}, {:?}", s1, s2);
     }
 
     fn call_trait_per_bound_with_type_2<T2: Debug, T: Pair<S1, T2>>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
-        let s1 = x.fst(); // $ method=fst
-        let s2 = y.snd(); // $ method=snd
+        let s1 = x.fst(); // $ target=fst
+        let s2 = y.snd(); // $ target=snd
         println!("{:?}, {:?}", s1, s2);
     }
 
     fn call_trait_per_bound_with_type_3<T: Pair>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
-        let s1 = x.fst(); // $ method=fst type=s1:bool
-        let s2 = y.snd(); // $ method=snd type=s2:i64
+        let s1 = x.fst(); // $ target=fst type=s1:bool
+        let s2 = y.snd(); // $ target=snd type=s2:i64
         println!("{:?}, {:?}", s1, s2);
     }
 
     fn call_trait_per_bound_with_type_4<T: Pair<u8>>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
-        let s1 = x.fst(); // $ method=fst type=s1:u8
-        let s2 = y.snd(); // $ method=snd type=s2:i64
+        let s1 = x.fst(); // $ target=fst type=s1:u8
+        let s2 = y.snd(); // $ target=snd type=s2:i64
         println!("{:?}, {:?}", s1, s2);
     }
 }
@@ -598,20 +598,20 @@ mod function_trait_bounds {
         where
             Self: Sized,
         {
-            self.m1() // $ method=m1
+            self.m1() // $ target=m1
         }
     }
 
     // Type parameter with bound occurs in the root of a parameter type.
 
     fn call_trait_m1<T1, T2: MyTrait<T1>>(x: T2) -> T1 {
-        x.m1() // $ method=m1 type=x.m1():T1
+        x.m1() // $ target=m1 type=x.m1():T1
     }
 
     // Type parameter with bound occurs nested within another type.
 
     fn call_trait_thing_m1<T1, T2: MyTrait<T1>>(x: MyThing<T2>) -> T1 {
-        x.a.m1() // $ fieldof=MyThing method=m1
+        x.a.m1() // $ fieldof=MyThing target=m1
     }
 
     impl<T> MyTrait<T> for MyThing<T> {
@@ -624,20 +624,20 @@ mod function_trait_bounds {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m1()); // $ method=m1
-        println!("{:?}", y.m1()); // $ method=m1
+        println!("{:?}", x.m1()); // $ target=m1
+        println!("{:?}", y.m1()); // $ target=m1
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m2()); // $ method=m2
-        println!("{:?}", y.m2()); // $ method=m2
+        println!("{:?}", x.m2()); // $ target=m2
+        println!("{:?}", y.m2()); // $ target=m2
 
         let x2 = MyThing { a: S1 };
         let y2 = MyThing { a: S2 };
 
-        println!("{:?}", call_trait_m1(x2)); // $ method=call_trait_m1
-        println!("{:?}", call_trait_m1(y2)); // $ method=call_trait_m1
+        println!("{:?}", call_trait_m1(x2)); // $ target=call_trait_m1
+        println!("{:?}", call_trait_m1(y2)); // $ target=call_trait_m1
 
         let x3 = MyThing {
             a: MyThing { a: S1 },
@@ -646,9 +646,9 @@ mod function_trait_bounds {
             a: MyThing { a: S2 },
         };
 
-        let a = call_trait_thing_m1(x3); // $ type=a:S1 method=call_trait_thing_m1
+        let a = call_trait_thing_m1(x3); // $ type=a:S1 target=call_trait_thing_m1
         println!("{:?}", a);
-        let b = call_trait_thing_m1(y3); // $ type=b:S2 method=call_trait_thing_m1
+        let b = call_trait_thing_m1(y3); // $ type=b:S2 target=call_trait_thing_m1
         println!("{:?}", b);
     }
 }
@@ -676,7 +676,7 @@ mod trait_associated_type {
             Self::AssociatedType: Default,
             Self: Sized,
         {
-            self.m1(); // $ method=MyTrait::m1 type=self.m1():AssociatedType
+            self.m1(); // $ target=MyTrait::m1 type=self.m1():AssociatedType
             Self::AssociatedType::default()
         }
     }
@@ -688,8 +688,8 @@ mod trait_associated_type {
         fn put<A>(&self, a: A) -> Self::GenericAssociatedType<A>;
 
         fn putTwo<A>(&self, a: A, b: A) -> Self::GenericAssociatedType<A> {
-            self.put(a); // $ method=MyTrait::put
-            self.put(b) // $ method=MyTrait::put
+            self.put(a); // $ target=MyTrait::put
+            self.put(b) // $ target=MyTrait::put
         }
     }
 
@@ -752,7 +752,7 @@ mod trait_associated_type {
     // Function that returns an associated type from a trait bound
 
     fn g<T: MyTrait>(thing: T) -> <T as MyTrait>::AssociatedType {
-        thing.m1() // $ method=MyTrait::m1
+        thing.m1() // $ target=MyTrait::m1
     }
 
     impl TraitMultipleAssoc<AT> for AT {
@@ -775,31 +775,31 @@ mod trait_associated_type {
     pub fn f() {
         let x1 = S;
         // Call to method in `impl` block
-        println!("{:?}", x1.m1()); // $ method=S::m1 type=x1.m1():AT
+        println!("{:?}", x1.m1()); // $ target=S::m1 type=x1.m1():AT
 
         let x2 = S;
         // Call to default method in `trait` block
-        let y = x2.m2(); // $ method=m2 type=y:AT
+        let y = x2.m2(); // $ target=m2 type=y:AT
         println!("{:?}", y);
 
         let x3 = S;
         // Call to the method in `impl` block
-        println!("{:?}", x3.put(1).unwrap()); // $ method=S::put method=unwrap
+        println!("{:?}", x3.put(1).unwrap()); // $ target=S::put target=unwrap
 
         // Call to default implementation in `trait` block
-        println!("{:?}", x3.putTwo(2, 3).unwrap()); // $ method=putTwo method=unwrap
+        println!("{:?}", x3.putTwo(2, 3).unwrap()); // $ target=putTwo target=unwrap
 
-        let x4 = g(S); // $ method=g $ MISSING: type=x4:AT
+        let x4 = g(S); // $ target=g $ MISSING: type=x4:AT
         println!("{:?}", x4);
 
         let x5 = S2;
-        println!("{:?}", x5.m1()); // $ method=m1 type=x5.m1():A.S2
+        println!("{:?}", x5.m1()); // $ target=m1 type=x5.m1():A.S2
         let x6 = S2;
-        println!("{:?}", x6.m2()); // $ method=m2 type=x6.m2():A.S2
+        println!("{:?}", x6.m2()); // $ target=m2 type=x6.m2():A.S2
 
-        let assoc_zero = AT.get_zero(); // $ method=get_zero type=assoc_zero:AT
-        let assoc_one = AT.get_one(); // $ method=get_one type=assoc_one:S
-        let assoc_two = AT.get_two(); // $ method=get_two type=assoc_two:S2
+        let assoc_zero = AT.get_zero(); // $ target=get_zero type=assoc_zero:AT
+        let assoc_one = AT.get_one(); // $ target=get_one type=assoc_one:S
+        let assoc_two = AT.get_two(); // $ target=get_two type=assoc_two:S2
     }
 }
 
@@ -828,8 +828,8 @@ mod generic_enum {
         let x = MyEnum::C1(S1);
         let y = MyEnum::C2 { a: S2 };
 
-        println!("{:?}", x.m1()); // $ method=m1
-        println!("{:?}", y.m1()); // $ method=m1
+        println!("{:?}", x.m1()); // $ target=m1
+        println!("{:?}", y.m1()); // $ target=m1
     }
 }
 
@@ -860,10 +860,10 @@ mod method_supertraits {
         where
             Self: Sized,
         {
-            if 3 > 2 { // $ method=gt
-                self.m1() // $ method=MyTrait1::m1
+            if 3 > 2 { // $ target=gt
+                self.m1() // $ target=MyTrait1::m1
             } else {
-                Self::m1(self) // $ method=MyTrait1::m1
+                Self::m1(self) // $ target=MyTrait1::m1
             }
         }
     }
@@ -874,10 +874,10 @@ mod method_supertraits {
         where
             Self: Sized,
         {
-            if 3 > 2 { // $ method=gt
-                self.m2().a // $ method=m2 $ fieldof=MyThing
+            if 3 > 2 { // $ target=gt
+                self.m2().a // $ target=m2 $ fieldof=MyThing
             } else {
-                Self::m2(self).a // $ method=m2 fieldof=MyThing
+                Self::m2(self).a // $ target=m2 fieldof=MyThing
             }
         }
     }
@@ -903,12 +903,12 @@ mod method_supertraits {
     impl<T> MyTrait3<T> for MyThing2<T> {}
 
     fn call_trait_m1<T1, T2: MyTrait1<T1>>(x: T2) -> T1 {
-        x.m1() // $ method=MyTrait1::m1
+        x.m1() // $ target=MyTrait1::m1
     }
 
     fn type_param_trait_to_supertrait<T: MyTrait3<S1>>(x: T) {
         // Test that `MyTrait3` is a subtrait of `MyTrait1<MyThing<S1>>`
-        let a = x.m1(); // $ method=MyTrait1::m1 type=a:MyThing type=a:A.S1
+        let a = x.m1(); // $ target=MyTrait1::m1 type=a:MyThing type=a:A.S1
         println!("{:?}", a);
     }
 
@@ -916,26 +916,26 @@ mod method_supertraits {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m1()); // $ method=MyThing::m1
-        println!("{:?}", y.m1()); // $ method=MyThing::m1
+        println!("{:?}", x.m1()); // $ target=MyThing::m1
+        println!("{:?}", y.m1()); // $ target=MyThing::m1
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m2()); // $ method=m2 type=x.m2():S1
-        println!("{:?}", y.m2()); // $ method=m2 type=y.m2():S2
+        println!("{:?}", x.m2()); // $ target=m2 type=x.m2():S1
+        println!("{:?}", y.m2()); // $ target=m2 type=y.m2():S2
 
         let x = MyThing2 { a: S1 };
         let y = MyThing2 { a: S2 };
 
-        println!("{:?}", x.m3()); // $ method=m3 type=x.m3():S1
-        println!("{:?}", y.m3()); // $ method=m3 type=y.m3():S2
+        println!("{:?}", x.m3()); // $ target=m3 type=x.m3():S1
+        println!("{:?}", y.m3()); // $ target=m3 type=y.m3():S2
 
         let x = MyThing { a: S1 };
-        let s = call_trait_m1(x); // $ type=s:S1 method=call_trait_m1
+        let s = call_trait_m1(x); // $ type=s:S1 target=call_trait_m1
 
         let x = MyThing2 { a: S2 };
-        let s = call_trait_m1(x); // $ type=s:MyThing type=s:A.S2 method=call_trait_m1
+        let s = call_trait_m1(x); // $ type=s:MyThing type=s:A.S2 target=call_trait_m1
     }
 }
 
@@ -966,25 +966,25 @@ mod function_trait_bounds_2 {
     where
         T1: Into<T2>,
     {
-        x.into() // $ method=into
+        x.into() // $ target=into
     }
 
     pub fn f() {
         let x = S1;
-        println!("{:?}", id(&x)); // $ method=id
+        println!("{:?}", id(&x)); // $ target=id
 
         let x = S1;
-        println!("{:?}", id::<S1>(&x)); // $ method=id
+        println!("{:?}", id::<S1>(&x)); // $ target=id
 
         let x = S1;
         // incorrectly has type `S1` instead of `Trait`
-        println!("{:?}", id::<dyn Trait>(&x)); // $ method=id
+        println!("{:?}", id::<dyn Trait>(&x)); // $ target=id
 
         let x = S1;
-        into::<S1, S2>(x); // $ method=into
+        into::<S1, S2>(x); // $ target=into
 
         let x = S1;
-        let y: S2 = into(x); // $ method=into
+        let y: S2 = into(x); // $ target=into
     }
 }
 
@@ -1030,7 +1030,7 @@ mod type_aliases {
     type NestedAlias<A5> = AnotherPair<AliasToAlias<A5>>;
 
     fn g(t: NestedAlias<S3>) {
-        let x = t.unwrapSnd().unwrapSnd(); // $ method=unwrapSnd type=x:S3
+        let x = t.unwrapSnd().unwrapSnd(); // $ target=unwrapSnd type=x:S3
         println!("{:?}", x);
     }
 
@@ -1059,7 +1059,7 @@ mod type_aliases {
         let p3: AnotherPair<S3> = PairOption::PairNone(); // $ type=p3:Fst.S2 type=p3:Snd.S3
         println!("{:?}", p3);
 
-        g(PairOption::PairSnd(PairOption::PairSnd(S3))); // $ method=g
+        g(PairOption::PairSnd(PairOption::PairSnd(S3))); // $ target=g
 
         let x: S7<S2>; // $ type=x:Result $ type=x:E.S1 $ type=x:T.S4 $ type=x:T.T41.S2 $ type=x:T.T42.S5 $ type=x:T.T42.T5.S2
     }
@@ -1077,7 +1077,7 @@ mod option_methods {
         fn set(&mut self, value: S);
 
         fn call_set(&mut self, value: S) {
-            self.set(value); // $ method=MyTrait::set
+            self.set(value); // $ target=MyTrait::set
         }
     }
 
@@ -1105,30 +1105,30 @@ mod option_methods {
     struct S;
 
     pub fn f() {
-        let x1 = MyOption::<S>::new(); // $ type=x1:T.S method=new
+        let x1 = MyOption::<S>::new(); // $ type=x1:T.S target=new
         println!("{:?}", x1);
 
-        let mut x2 = MyOption::new(); // $ method=new
-        x2.set(S); // $ method=MyOption::set
+        let mut x2 = MyOption::new(); // $ target=new
+        x2.set(S); // $ target=MyOption::set
         println!("{:?}", x2);
 
         // missing type `S` from `MyOption<S>` (but can resolve `MyTrait<S>`)
-        let mut x3 = MyOption::new(); // $ method=new
-        x3.call_set(S); // $ method=call_set
+        let mut x3 = MyOption::new(); // $ target=new
+        x3.call_set(S); // $ target=call_set
         println!("{:?}", x3);
 
-        let mut x4 = MyOption::new(); // $ method=new
-        MyOption::set(&mut x4, S); // $ method=MyOption::set
+        let mut x4 = MyOption::new(); // $ target=new
+        MyOption::set(&mut x4, S); // $ target=MyOption::set
         println!("{:?}", x4);
 
         let x5 = MyOption::MySome(MyOption::<S>::MyNone());
-        println!("{:?}", x5.flatten()); // $ method=flatten
+        println!("{:?}", x5.flatten()); // $ target=flatten
 
         let x6 = MyOption::MySome(MyOption::<S>::MyNone());
-        println!("{:?}", MyOption::<MyOption<S>>::flatten(x6)); // $ method=flatten
+        println!("{:?}", MyOption::<MyOption<S>>::flatten(x6)); // $ target=flatten
 
         #[rustfmt::skip]
-        let from_if = if 3 > 2 { // $ method=gt
+        let from_if = if 3 > 2 { // $ target=gt
             MyOption::MyNone()
         } else {
             MyOption::MySome(S)
@@ -1136,7 +1136,7 @@ mod option_methods {
         println!("{:?}", from_if);
 
         #[rustfmt::skip]
-        let from_match = match 3 > 2 { // $ method=gt
+        let from_match = match 3 > 2 { // $ target=gt
             true => MyOption::MyNone(),
             false => MyOption::MySome(S),
         };
@@ -1144,7 +1144,7 @@ mod option_methods {
 
         #[rustfmt::skip]
         let from_loop = loop {
-            if 3 > 2 { // $ method=gt
+            if 3 > 2 { // $ target=gt
                 break MyOption::MyNone();
             }
             break MyOption::MySome(S);
@@ -1189,64 +1189,64 @@ mod method_call_type_conversion {
     impl ATrait for &MyInt {
         // MyInt::method_on_borrow
         fn method_on_borrow(&self) -> i64 {
-            (*(*self)).a // $ method=deref fieldof=MyInt
+            (*(*self)).a // $ target=deref fieldof=MyInt
         }
 
         // MyInt::method_not_on_borrow
         fn method_not_on_borrow(self) -> i64 {
-            (*self).a // $ method=deref fieldof=MyInt
+            (*self).a // $ target=deref fieldof=MyInt
         }
     }
 
     pub fn f() {
         let x1 = S(S2);
-        println!("{:?}", x1.m1()); // $ method=m1
+        println!("{:?}", x1.m1()); // $ target=m1
 
         let x2 = S(S2);
         // implicit borrow
-        println!("{:?}", x2.m2()); // $ method=m2
-        println!("{:?}", x2.m3()); // $ method=m3
+        println!("{:?}", x2.m2()); // $ target=m2
+        println!("{:?}", x2.m3()); // $ target=m3
 
         let x3 = S(S2);
         // explicit borrow
-        println!("{:?}", S::<S2>::m2(&x3)); // $ method=m2
-        println!("{:?}", S::<S2>::m3(&x3)); // $ method=m3
+        println!("{:?}", S::<S2>::m2(&x3)); // $ target=m2
+        println!("{:?}", S::<S2>::m3(&x3)); // $ target=m3
 
         let x4 = &S(S2);
         // explicit borrow
-        println!("{:?}", x4.m2()); // $ method=m2
-        println!("{:?}", x4.m3()); // $ method=m3
+        println!("{:?}", x4.m2()); // $ target=m2
+        println!("{:?}", x4.m3()); // $ target=m3
 
         let x5 = &S(S2);
         // implicit dereference
-        println!("{:?}", x5.m1()); // $ method=m1
+        println!("{:?}", x5.m1()); // $ target=m1
         println!("{:?}", x5.0); // $ fieldof=S
 
         let x6 = &S(S2);
 
         // explicit dereference
-        println!("{:?}", (*x6).m1()); // $ method=m1 method=deref
+        println!("{:?}", (*x6).m1()); // $ target=m1 target=deref
 
         let x7 = S(&S2);
         // Non-implicit dereference with nested borrow in order to test that the
         // implicit dereference handling doesn't affect nested borrows.
-        let t = x7.m1(); // $ method=m1 type=t:& type=t:&T.S2
+        let t = x7.m1(); // $ target=m1 type=t:& type=t:&T.S2
         println!("{:?}", x7);
 
         let x9: String = "Hello".to_string(); // $ type=x9:String
 
         // Implicit `String` -> `str` conversion happens via the `Deref` trait:
         // https://doc.rust-lang.org/std/string/struct.String.html#deref.
-        let u = x9.parse::<u32>(); // $ method=parse type=u:T.u32
+        let u = x9.parse::<u32>(); // $ target=parse type=u:T.u32
 
         let my_thing = &MyInt { a: 37 };
         // implicit borrow of a `&`
-        let a = my_thing.method_on_borrow(); // $ MISSING: method=MyInt::method_on_borrow
+        let a = my_thing.method_on_borrow(); // $ MISSING: target=MyInt::method_on_borrow
         println!("{:?}", a);
 
         // no implicit borrow
         let my_thing = &MyInt { a: 38 };
-        let a = my_thing.method_not_on_borrow(); // $ MISSING: method=MyInt::method_not_on_borrow
+        let a = my_thing.method_not_on_borrow(); // $ MISSING: target=MyInt::method_not_on_borrow
         println!("{:?}", a);
     }
 }
@@ -1258,7 +1258,7 @@ mod trait_implicit_self_borrow {
 
         // MyTrait::bar
         fn bar(&self) -> &Self {
-            self.foo() // $ method=MyTrait::foo
+            self.foo() // $ target=MyTrait::foo
         }
     }
 
@@ -1273,7 +1273,7 @@ mod trait_implicit_self_borrow {
 
     pub fn f() {
         let x = MyStruct;
-        x.bar(); // $ method=MyTrait::bar
+        x.bar(); // $ target=MyTrait::bar
     }
 }
 
@@ -1290,7 +1290,7 @@ mod implicit_self_borrow {
 
     pub fn f() {
         let x = MyStruct(S);
-        x.foo(); // $ method=foo
+        x.foo(); // $ target=foo
     }
 }
 
@@ -1302,7 +1302,7 @@ mod borrowed_typed {
 
     impl MyFlag {
         fn flip(&mut self) {
-            self.bool = !self.bool; // $ fieldof=MyFlag method=not
+            self.bool = !self.bool; // $ fieldof=MyFlag target=not
         }
     }
 
@@ -1328,16 +1328,16 @@ mod borrowed_typed {
 
     pub fn f() {
         let x = S {};
-        x.f1(); // $ method=f1
-        x.f2(); // $ method=f2
-        S::f3(&x); // $ method=f3
+        x.f1(); // $ target=f1
+        x.f2(); // $ target=f2
+        S::f3(&x); // $ target=f3
 
-        let n = **&&true; // $ type=n:bool method=deref
+        let n = **&&true; // $ type=n:bool target=deref
 
         // In this example the type of `flag` must be inferred at the call to
         // `flip` and flow through the borrow in the argument.
-        let mut flag = Default::default(); // $ method=default
-        MyFlag::flip(&mut flag); // $ method=flip
+        let mut flag = Default::default(); // $ target=default
+        MyFlag::flip(&mut flag); // $ target=flip
         println!("{:?}", flag); // $ type=flag:MyFlag
     }
 }
@@ -1371,7 +1371,7 @@ mod try_expressions {
     fn try_chained() -> Result<S1, S2> {
         let x = Result::Ok(Result::Ok(S1));
         // First ? returns Result<S1, S2>, second ? returns S1
-        let y = x?.map(|s| s)?; // $ method=map
+        let y = x?.map(|s| s)?; // $ target=map
         Result::Ok(S1)
     }
 
@@ -1382,25 +1382,25 @@ mod try_expressions {
         let mapped = Result::Ok(value).and_then(|v| {
             println!("{:?}", v);
             Result::Ok::<_, S1>(v)
-        })?; // $ method=and_then
+        })?; // $ target=and_then
         Result::Err(S1)
     }
 
     #[rustfmt::skip]
     pub fn f() {
-        if let Result::Ok(result) = try_same_error() { // $ method=try_same_error
+        if let Result::Ok(result) = try_same_error() { // $ target=try_same_error
             println!("{:?}", result);
         }
 
-        if let Result::Ok(result) = try_convert_error() { // $ method=try_convert_error
+        if let Result::Ok(result) = try_convert_error() { // $ target=try_convert_error
             println!("{:?}", result);
         }
 
-        if let Result::Ok(result) = try_chained() { // $ method=try_chained
+        if let Result::Ok(result) = try_chained() { // $ target=try_chained
             println!("{:?}", result);
         }
 
-        if let Result::Ok(result) = try_complex(Result::Ok(S1)) { // $ method=try_complex
+        if let Result::Ok(result) = try_complex(Result::Ok(S1)) { // $ target=try_complex
             println!("{:?}", result);
         }
     }
@@ -1410,8 +1410,8 @@ mod builtins {
     pub fn f() {
         let x: i32 = 1; // $ type=x:i32
         let y = 2; // $ type=y:i32
-        let z = x + y; // $ type=z:i32 method=add
-        let z = x.abs(); // $ method=abs $ type=z:i32
+        let z = x + y; // $ type=z:i32 target=add
+        let z = x.abs(); // $ target=abs $ type=z:i32
         let c = 'c'; // $ type=c:char
         let hello = "Hello"; // $ type=hello:&T.str
         let f = 123.0f64; // $ type=f:f64
@@ -1427,7 +1427,7 @@ mod operators {
         let y = true || false; // $ type=y:bool
 
         let mut a;
-        let cond = 34 == 33; // $ method=eq
+        let cond = 34 == 33; // $ target=eq
         if cond {
             let z = (a = 1); // $ type=z:() type=a:i32
         } else {
@@ -1457,8 +1457,8 @@ mod overloadable_operators {
         // Vec2::add
         fn add(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x + rhs.x, // $ fieldof=Vec2 method=add
-                y: self.y + rhs.y, // $ fieldof=Vec2 method=add
+                x: self.x + rhs.x, // $ fieldof=Vec2 target=add
+                y: self.y + rhs.y, // $ fieldof=Vec2 target=add
             }
         }
     }
@@ -1466,8 +1466,8 @@ mod overloadable_operators {
         // Vec2::add_assign
         #[rustfmt::skip]
         fn add_assign(&mut self, rhs: Self) {
-            self.x += rhs.x; // $ fieldof=Vec2 method=add_assign
-            self.y += rhs.y; // $ fieldof=Vec2 method=add_assign
+            self.x += rhs.x; // $ fieldof=Vec2 target=add_assign
+            self.y += rhs.y; // $ fieldof=Vec2 target=add_assign
         }
     }
     impl Sub for Vec2 {
@@ -1475,8 +1475,8 @@ mod overloadable_operators {
         // Vec2::sub
         fn sub(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x - rhs.x, // $ fieldof=Vec2 method=sub
-                y: self.y - rhs.y, // $ fieldof=Vec2 method=sub
+                x: self.x - rhs.x, // $ fieldof=Vec2 target=sub
+                y: self.y - rhs.y, // $ fieldof=Vec2 target=sub
             }
         }
     }
@@ -1484,8 +1484,8 @@ mod overloadable_operators {
         // Vec2::sub_assign
         #[rustfmt::skip]
         fn sub_assign(&mut self, rhs: Self) {
-            self.x -= rhs.x; // $ fieldof=Vec2 method=sub_assign
-            self.y -= rhs.y; // $ fieldof=Vec2 method=sub_assign
+            self.x -= rhs.x; // $ fieldof=Vec2 target=sub_assign
+            self.y -= rhs.y; // $ fieldof=Vec2 target=sub_assign
         }
     }
     impl Mul for Vec2 {
@@ -1493,16 +1493,16 @@ mod overloadable_operators {
         // Vec2::mul
         fn mul(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x * rhs.x, // $ fieldof=Vec2 method=mul
-                y: self.y * rhs.y, // $ fieldof=Vec2 method=mul
+                x: self.x * rhs.x, // $ fieldof=Vec2 target=mul
+                y: self.y * rhs.y, // $ fieldof=Vec2 target=mul
             }
         }
     }
     impl MulAssign for Vec2 {
         // Vec2::mul_assign
         fn mul_assign(&mut self, rhs: Self) {
-            self.x *= rhs.x; // $ fieldof=Vec2 method=mul_assign
-            self.y *= rhs.y; // $ fieldof=Vec2 method=mul_assign
+            self.x *= rhs.x; // $ fieldof=Vec2 target=mul_assign
+            self.y *= rhs.y; // $ fieldof=Vec2 target=mul_assign
         }
     }
     impl Div for Vec2 {
@@ -1510,16 +1510,16 @@ mod overloadable_operators {
         // Vec2::div
         fn div(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x / rhs.x, // $ fieldof=Vec2 method=div
-                y: self.y / rhs.y, // $ fieldof=Vec2 method=div
+                x: self.x / rhs.x, // $ fieldof=Vec2 target=div
+                y: self.y / rhs.y, // $ fieldof=Vec2 target=div
             }
         }
     }
     impl DivAssign for Vec2 {
         // Vec2::div_assign
         fn div_assign(&mut self, rhs: Self) {
-            self.x /= rhs.x; // $ fieldof=Vec2 method=div_assign
-            self.y /= rhs.y; // $ fieldof=Vec2 method=div_assign
+            self.x /= rhs.x; // $ fieldof=Vec2 target=div_assign
+            self.y /= rhs.y; // $ fieldof=Vec2 target=div_assign
         }
     }
     impl Rem for Vec2 {
@@ -1527,16 +1527,16 @@ mod overloadable_operators {
         // Vec2::rem
         fn rem(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x % rhs.x, // $ fieldof=Vec2 method=rem
-                y: self.y % rhs.y, // $ fieldof=Vec2 method=rem
+                x: self.x % rhs.x, // $ fieldof=Vec2 target=rem
+                y: self.y % rhs.y, // $ fieldof=Vec2 target=rem
             }
         }
     }
     impl RemAssign for Vec2 {
         // Vec2::rem_assign
         fn rem_assign(&mut self, rhs: Self) {
-            self.x %= rhs.x; // $ fieldof=Vec2 method=rem_assign
-            self.y %= rhs.y; // $ fieldof=Vec2 method=rem_assign
+            self.x %= rhs.x; // $ fieldof=Vec2 target=rem_assign
+            self.y %= rhs.y; // $ fieldof=Vec2 target=rem_assign
         }
     }
     impl BitAnd for Vec2 {
@@ -1544,16 +1544,16 @@ mod overloadable_operators {
         // Vec2::bitand
         fn bitand(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x & rhs.x, // $ fieldof=Vec2 method=bitand
-                y: self.y & rhs.y, // $ fieldof=Vec2 method=bitand
+                x: self.x & rhs.x, // $ fieldof=Vec2 target=bitand
+                y: self.y & rhs.y, // $ fieldof=Vec2 target=bitand
             }
         }
     }
     impl BitAndAssign for Vec2 {
         // Vec2::bitand_assign
         fn bitand_assign(&mut self, rhs: Self) {
-            self.x &= rhs.x; // $ fieldof=Vec2 method=bitand_assign
-            self.y &= rhs.y; // $ fieldof=Vec2 method=bitand_assign
+            self.x &= rhs.x; // $ fieldof=Vec2 target=bitand_assign
+            self.y &= rhs.y; // $ fieldof=Vec2 target=bitand_assign
         }
     }
     impl BitOr for Vec2 {
@@ -1561,16 +1561,16 @@ mod overloadable_operators {
         // Vec2::bitor
         fn bitor(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x | rhs.x, // $ fieldof=Vec2 method=bitor
-                y: self.y | rhs.y, // $ fieldof=Vec2 method=bitor
+                x: self.x | rhs.x, // $ fieldof=Vec2 target=bitor
+                y: self.y | rhs.y, // $ fieldof=Vec2 target=bitor
             }
         }
     }
     impl BitOrAssign for Vec2 {
         // Vec2::bitor_assign
         fn bitor_assign(&mut self, rhs: Self) {
-            self.x |= rhs.x; // $ fieldof=Vec2 method=bitor_assign
-            self.y |= rhs.y; // $ fieldof=Vec2 method=bitor_assign
+            self.x |= rhs.x; // $ fieldof=Vec2 target=bitor_assign
+            self.y |= rhs.y; // $ fieldof=Vec2 target=bitor_assign
         }
     }
     impl BitXor for Vec2 {
@@ -1578,16 +1578,16 @@ mod overloadable_operators {
         // Vec2::bitxor
         fn bitxor(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x ^ rhs.x, // $ fieldof=Vec2 method=bitxor
-                y: self.y ^ rhs.y, // $ fieldof=Vec2 method=bitxor
+                x: self.x ^ rhs.x, // $ fieldof=Vec2 target=bitxor
+                y: self.y ^ rhs.y, // $ fieldof=Vec2 target=bitxor
             }
         }
     }
     impl BitXorAssign for Vec2 {
         // Vec2::bitxor_assign
         fn bitxor_assign(&mut self, rhs: Self) {
-            self.x ^= rhs.x; // $ fieldof=Vec2 method=bitxor_assign
-            self.y ^= rhs.y; // $ fieldof=Vec2 method=bitxor_assign
+            self.x ^= rhs.x; // $ fieldof=Vec2 target=bitxor_assign
+            self.y ^= rhs.y; // $ fieldof=Vec2 target=bitxor_assign
         }
     }
     impl Shl<u32> for Vec2 {
@@ -1595,16 +1595,16 @@ mod overloadable_operators {
         // Vec2::shl
         fn shl(self, rhs: u32) -> Self {
             Vec2 {
-                x: self.x << rhs, // $ fieldof=Vec2 method=shl
-                y: self.y << rhs, // $ fieldof=Vec2 method=shl
+                x: self.x << rhs, // $ fieldof=Vec2 target=shl
+                y: self.y << rhs, // $ fieldof=Vec2 target=shl
             }
         }
     }
     impl ShlAssign<u32> for Vec2 {
         // Vec2::shl_assign
         fn shl_assign(&mut self, rhs: u32) {
-            self.x <<= rhs; // $ fieldof=Vec2 method=shl_assign
-            self.y <<= rhs; // $ fieldof=Vec2 method=shl_assign
+            self.x <<= rhs; // $ fieldof=Vec2 target=shl_assign
+            self.y <<= rhs; // $ fieldof=Vec2 target=shl_assign
         }
     }
     impl Shr<u32> for Vec2 {
@@ -1612,16 +1612,16 @@ mod overloadable_operators {
         // Vec2::shr
         fn shr(self, rhs: u32) -> Self {
             Vec2 {
-                x: self.x >> rhs, // $ fieldof=Vec2 method=shr
-                y: self.y >> rhs, // $ fieldof=Vec2 method=shr
+                x: self.x >> rhs, // $ fieldof=Vec2 target=shr
+                y: self.y >> rhs, // $ fieldof=Vec2 target=shr
             }
         }
     }
     impl ShrAssign<u32> for Vec2 {
         // Vec2::shr_assign
         fn shr_assign(&mut self, rhs: u32) {
-            self.x >>= rhs; // $ fieldof=Vec2 method=shr_assign
-            self.y >>= rhs; // $ fieldof=Vec2 method=shr_assign
+            self.x >>= rhs; // $ fieldof=Vec2 target=shr_assign
+            self.y >>= rhs; // $ fieldof=Vec2 target=shr_assign
         }
     }
     impl Neg for Vec2 {
@@ -1629,8 +1629,8 @@ mod overloadable_operators {
         // Vec2::neg
         fn neg(self) -> Self {
             Vec2 {
-                x: -self.x, // $ fieldof=Vec2 method=neg
-                y: -self.y, // $ fieldof=Vec2 method=neg
+                x: -self.x, // $ fieldof=Vec2 target=neg
+                y: -self.y, // $ fieldof=Vec2 target=neg
             }
         }
     }
@@ -1639,173 +1639,173 @@ mod overloadable_operators {
         // Vec2::not
         fn not(self) -> Self {
             Vec2 {
-                x: !self.x, // $ fieldof=Vec2 method=not
-                y: !self.y, // $ fieldof=Vec2 method=not
+                x: !self.x, // $ fieldof=Vec2 target=not
+                y: !self.y, // $ fieldof=Vec2 target=not
             }
         }
     }
     impl PartialEq for Vec2 {
         // Vec2::eq
         fn eq(&self, other: &Self) -> bool {
-            self.x == other.x && self.y == other.y // $ fieldof=Vec2 method=eq
+            self.x == other.x && self.y == other.y // $ fieldof=Vec2 target=eq
         }
         // Vec2::ne
         fn ne(&self, other: &Self) -> bool {
-            self.x != other.x || self.y != other.y // $ fieldof=Vec2 method=ne
+            self.x != other.x || self.y != other.y // $ fieldof=Vec2 target=ne
         }
     }
     impl PartialOrd for Vec2 {
         // Vec2::partial_cmp
         fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-            (self.x + self.y).partial_cmp(&(other.x + other.y)) // $ fieldof=Vec2 method=partial_cmp method=add
+            (self.x + self.y).partial_cmp(&(other.x + other.y)) // $ fieldof=Vec2 target=partial_cmp target=add
         }
         // Vec2::lt
         fn lt(&self, other: &Self) -> bool {
-            self.x < other.x && self.y < other.y // $ fieldof=Vec2 method=lt
+            self.x < other.x && self.y < other.y // $ fieldof=Vec2 target=lt
         }
         // Vec2::le
         fn le(&self, other: &Self) -> bool {
-            self.x <= other.x && self.y <= other.y // $ fieldof=Vec2 method=le
+            self.x <= other.x && self.y <= other.y // $ fieldof=Vec2 target=le
         }
         // Vec2::gt
         fn gt(&self, other: &Self) -> bool {
-            self.x > other.x && self.y > other.y // $ fieldof=Vec2 method=gt
+            self.x > other.x && self.y > other.y // $ fieldof=Vec2 target=gt
         }
         // Vec2::ge
         fn ge(&self, other: &Self) -> bool {
-            self.x >= other.x && self.y >= other.y // $ fieldof=Vec2 method=ge
+            self.x >= other.x && self.y >= other.y // $ fieldof=Vec2 target=ge
         }
     }
     pub fn f() {
         // Test for all overloadable operators on `i64`
 
         // Comparison operators
-        let i64_eq = (1i64 == 2i64); // $ type=i64_eq:bool method=eq
-        let i64_ne = (3i64 != 4i64); // $ type=i64_ne:bool method=ne
-        let i64_lt = (5i64 < 6i64); // $ type=i64_lt:bool method=lt
-        let i64_le = (7i64 <= 8i64); // $ type=i64_le:bool method=le
-        let i64_gt = (9i64 > 10i64); // $ type=i64_gt:bool method=gt
-        let i64_ge = (11i64 >= 12i64); // $ type=i64_ge:bool method=ge
+        let i64_eq = (1i64 == 2i64); // $ type=i64_eq:bool target=eq
+        let i64_ne = (3i64 != 4i64); // $ type=i64_ne:bool target=ne
+        let i64_lt = (5i64 < 6i64); // $ type=i64_lt:bool target=lt
+        let i64_le = (7i64 <= 8i64); // $ type=i64_le:bool target=le
+        let i64_gt = (9i64 > 10i64); // $ type=i64_gt:bool target=gt
+        let i64_ge = (11i64 >= 12i64); // $ type=i64_ge:bool target=ge
 
         // Arithmetic operators
-        let i64_add = 13i64 + 14i64; // $ type=i64_add:i64 method=add
-        let i64_sub = 15i64 - 16i64; // $ type=i64_sub:i64 method=sub
-        let i64_mul = 17i64 * 18i64; // $ type=i64_mul:i64 method=mul
-        let i64_div = 19i64 / 20i64; // $ type=i64_div:i64 method=div
-        let i64_rem = 21i64 % 22i64; // $ type=i64_rem:i64 method=rem
+        let i64_add = 13i64 + 14i64; // $ type=i64_add:i64 target=add
+        let i64_sub = 15i64 - 16i64; // $ type=i64_sub:i64 target=sub
+        let i64_mul = 17i64 * 18i64; // $ type=i64_mul:i64 target=mul
+        let i64_div = 19i64 / 20i64; // $ type=i64_div:i64 target=div
+        let i64_rem = 21i64 % 22i64; // $ type=i64_rem:i64 target=rem
 
         // Arithmetic assignment operators
         let mut i64_add_assign = 23i64;
-        i64_add_assign += 24i64; // $ method=add_assign
+        i64_add_assign += 24i64; // $ target=add_assign
 
         let mut i64_sub_assign = 25i64;
-        i64_sub_assign -= 26i64; // $ method=sub_assign
+        i64_sub_assign -= 26i64; // $ target=sub_assign
 
         let mut i64_mul_assign = 27i64;
-        i64_mul_assign *= 28i64; // $ method=mul_assign
+        i64_mul_assign *= 28i64; // $ target=mul_assign
 
         let mut i64_div_assign = 29i64;
-        i64_div_assign /= 30i64; // $ method=div_assign
+        i64_div_assign /= 30i64; // $ target=div_assign
 
         let mut i64_rem_assign = 31i64;
-        i64_rem_assign %= 32i64; // $ method=rem_assign
+        i64_rem_assign %= 32i64; // $ target=rem_assign
 
         // Bitwise operators
-        let i64_bitand = 33i64 & 34i64; // $ type=i64_bitand:i64 method=bitand
-        let i64_bitor = 35i64 | 36i64; // $ type=i64_bitor:i64 method=bitor
-        let i64_bitxor = 37i64 ^ 38i64; // $ type=i64_bitxor:i64 method=bitxor
-        let i64_shl = 39i64 << 40i64; // $ type=i64_shl:i64 method=shl
-        let i64_shr = 41i64 >> 42i64; // $ type=i64_shr:i64 method=shr
+        let i64_bitand = 33i64 & 34i64; // $ type=i64_bitand:i64 target=bitand
+        let i64_bitor = 35i64 | 36i64; // $ type=i64_bitor:i64 target=bitor
+        let i64_bitxor = 37i64 ^ 38i64; // $ type=i64_bitxor:i64 target=bitxor
+        let i64_shl = 39i64 << 40i64; // $ type=i64_shl:i64 target=shl
+        let i64_shr = 41i64 >> 42i64; // $ type=i64_shr:i64 target=shr
 
         // Bitwise assignment operators
         let mut i64_bitand_assign = 43i64;
-        i64_bitand_assign &= 44i64; // $ method=bitand_assign
+        i64_bitand_assign &= 44i64; // $ target=bitand_assign
 
         let mut i64_bitor_assign = 45i64;
-        i64_bitor_assign |= 46i64; // $ method=bitor_assign
+        i64_bitor_assign |= 46i64; // $ target=bitor_assign
 
         let mut i64_bitxor_assign = 47i64;
-        i64_bitxor_assign ^= 48i64; // $ method=bitxor_assign
+        i64_bitxor_assign ^= 48i64; // $ target=bitxor_assign
 
         let mut i64_shl_assign = 49i64;
-        i64_shl_assign <<= 50i64; // $ method=shl_assign
+        i64_shl_assign <<= 50i64; // $ target=shl_assign
 
         let mut i64_shr_assign = 51i64;
-        i64_shr_assign >>= 52i64; // $ method=shr_assign
+        i64_shr_assign >>= 52i64; // $ target=shr_assign
 
-        let i64_neg = -53i64; // $ type=i64_neg:i64 method=neg
-        let i64_not = !54i64; // $ type=i64_not:i64 method=not
+        let i64_neg = -53i64; // $ type=i64_neg:i64 target=neg
+        let i64_not = !54i64; // $ type=i64_not:i64 target=not
 
         // Test for all overloadable operators on Vec2
         let v1 = Vec2 { x: 1, y: 2 };
         let v2 = Vec2 { x: 3, y: 4 };
 
         // Comparison operators
-        let vec2_eq = v1 == v2; // $ type=vec2_eq:bool method=Vec2::eq
-        let vec2_ne = v1 != v2; // $ type=vec2_ne:bool method=Vec2::ne
-        let vec2_lt = v1 < v2; // $ type=vec2_lt:bool method=Vec2::lt
-        let vec2_le = v1 <= v2; // $ type=vec2_le:bool method=Vec2::le
-        let vec2_gt = v1 > v2; // $ type=vec2_gt:bool method=Vec2::gt
-        let vec2_ge = v1 >= v2; // $ type=vec2_ge:bool method=Vec2::ge
+        let vec2_eq = v1 == v2; // $ type=vec2_eq:bool target=Vec2::eq
+        let vec2_ne = v1 != v2; // $ type=vec2_ne:bool target=Vec2::ne
+        let vec2_lt = v1 < v2; // $ type=vec2_lt:bool target=Vec2::lt
+        let vec2_le = v1 <= v2; // $ type=vec2_le:bool target=Vec2::le
+        let vec2_gt = v1 > v2; // $ type=vec2_gt:bool target=Vec2::gt
+        let vec2_ge = v1 >= v2; // $ type=vec2_ge:bool target=Vec2::ge
 
         // Arithmetic operators
-        let vec2_add = v1 + v2; // $ type=vec2_add:Vec2 method=Vec2::add
-        let vec2_sub = v1 - v2; // $ type=vec2_sub:Vec2 method=Vec2::sub
-        let vec2_mul = v1 * v2; // $ type=vec2_mul:Vec2 method=Vec2::mul
-        let vec2_div = v1 / v2; // $ type=vec2_div:Vec2 method=Vec2::div
-        let vec2_rem = v1 % v2; // $ type=vec2_rem:Vec2 method=Vec2::rem
+        let vec2_add = v1 + v2; // $ type=vec2_add:Vec2 target=Vec2::add
+        let vec2_sub = v1 - v2; // $ type=vec2_sub:Vec2 target=Vec2::sub
+        let vec2_mul = v1 * v2; // $ type=vec2_mul:Vec2 target=Vec2::mul
+        let vec2_div = v1 / v2; // $ type=vec2_div:Vec2 target=Vec2::div
+        let vec2_rem = v1 % v2; // $ type=vec2_rem:Vec2 target=Vec2::rem
 
         // Arithmetic assignment operators
         let mut vec2_add_assign = v1;
-        vec2_add_assign += v2; // $ method=Vec2::add_assign
+        vec2_add_assign += v2; // $ target=Vec2::add_assign
 
         let mut vec2_sub_assign = v1;
-        vec2_sub_assign -= v2; // $ method=Vec2::sub_assign
+        vec2_sub_assign -= v2; // $ target=Vec2::sub_assign
 
         let mut vec2_mul_assign = v1;
-        vec2_mul_assign *= v2; // $ method=Vec2::mul_assign
+        vec2_mul_assign *= v2; // $ target=Vec2::mul_assign
 
         let mut vec2_div_assign = v1;
-        vec2_div_assign /= v2; // $ method=Vec2::div_assign
+        vec2_div_assign /= v2; // $ target=Vec2::div_assign
 
         let mut vec2_rem_assign = v1;
-        vec2_rem_assign %= v2; // $ method=Vec2::rem_assign
+        vec2_rem_assign %= v2; // $ target=Vec2::rem_assign
 
         // Bitwise operators
-        let vec2_bitand = v1 & v2; // $ type=vec2_bitand:Vec2 method=Vec2::bitand
-        let vec2_bitor = v1 | v2; // $ type=vec2_bitor:Vec2 method=Vec2::bitor
-        let vec2_bitxor = v1 ^ v2; // $ type=vec2_bitxor:Vec2 method=Vec2::bitxor
-        let vec2_shl = v1 << 1u32; // $ type=vec2_shl:Vec2 method=Vec2::shl
-        let vec2_shr = v1 >> 1u32; // $ type=vec2_shr:Vec2 method=Vec2::shr
+        let vec2_bitand = v1 & v2; // $ type=vec2_bitand:Vec2 target=Vec2::bitand
+        let vec2_bitor = v1 | v2; // $ type=vec2_bitor:Vec2 target=Vec2::bitor
+        let vec2_bitxor = v1 ^ v2; // $ type=vec2_bitxor:Vec2 target=Vec2::bitxor
+        let vec2_shl = v1 << 1u32; // $ type=vec2_shl:Vec2 target=Vec2::shl
+        let vec2_shr = v1 >> 1u32; // $ type=vec2_shr:Vec2 target=Vec2::shr
 
         // Bitwise assignment operators
         let mut vec2_bitand_assign = v1;
-        vec2_bitand_assign &= v2; // $ method=Vec2::bitand_assign
+        vec2_bitand_assign &= v2; // $ target=Vec2::bitand_assign
 
         let mut vec2_bitor_assign = v1;
-        vec2_bitor_assign |= v2; // $ method=Vec2::bitor_assign
+        vec2_bitor_assign |= v2; // $ target=Vec2::bitor_assign
 
         let mut vec2_bitxor_assign = v1;
-        vec2_bitxor_assign ^= v2; // $ method=Vec2::bitxor_assign
+        vec2_bitxor_assign ^= v2; // $ target=Vec2::bitxor_assign
 
         let mut vec2_shl_assign = v1;
-        vec2_shl_assign <<= 1u32; // $ method=Vec2::shl_assign
+        vec2_shl_assign <<= 1u32; // $ target=Vec2::shl_assign
 
         let mut vec2_shr_assign = v1;
-        vec2_shr_assign >>= 1u32; // $ method=Vec2::shr_assign
+        vec2_shr_assign >>= 1u32; // $ target=Vec2::shr_assign
 
         // Prefix operators
-        let vec2_neg = -v1; // $ type=vec2_neg:Vec2 method=Vec2::neg
-        let vec2_not = !v1; // $ type=vec2_not:Vec2 method=Vec2::not
+        let vec2_neg = -v1; // $ type=vec2_neg:Vec2 target=Vec2::neg
+        let vec2_not = !v1; // $ type=vec2_not:Vec2 target=Vec2::not
 
         // Here the type of `default_vec2` must be inferred from the `+` call.
-        let default_vec2 = Default::default(); // $ type=default_vec2:Vec2 method=default
-        let vec2_zero_plus = Vec2 { x: 0, y: 0 } + default_vec2; // $ method=Vec2::add
+        let default_vec2 = Default::default(); // $ type=default_vec2:Vec2 target=default
+        let vec2_zero_plus = Vec2 { x: 0, y: 0 } + default_vec2; // $ target=Vec2::add
 
         // Here the type of `default_vec2` must be inferred from the `==` call
         // and the type of the borrowed second argument is unknown at the call.
-        let default_vec2 = Default::default(); // $ type=default_vec2:Vec2 method=default
-        let vec2_zero_plus = Vec2 { x: 0, y: 0 } == default_vec2; // $ method=Vec2::eq
+        let default_vec2 = Default::default(); // $ type=default_vec2:Vec2 target=default
+        let vec2_zero_plus = Vec2 { x: 0, y: 0 } == default_vec2; // $ target=Vec2::eq
     }
 }
 
@@ -1844,12 +1844,12 @@ mod async_ {
     }
 
     pub async fn f() {
-        f1().await.f(); // $ method=S1f method=f1
-        f2().await.f(); // $ method=S1f method=f2
-        f3().await.f(); // $ method=S1f method=f3
-        S2.await.f(); // $ method=S1f
+        f1().await.f(); // $ target=S1f target=f1
+        f2().await.f(); // $ target=S1f target=f2
+        f3().await.f(); // $ target=S1f target=f3
+        S2.await.f(); // $ target=S1f
         let b = async { S1 };
-        b.await.f(); // $ method=S1f
+        b.await.f(); // $ target=S1f
     }
 }
 
@@ -1892,22 +1892,22 @@ mod impl_trait {
     }
 
     fn uses_my_trait1<A, B: MyTrait<A>>(t: B) -> A {
-        t.get_a() // $ method=MyTrait::get_a
+        t.get_a() // $ target=MyTrait::get_a
     }
 
     fn uses_my_trait2<A>(t: impl MyTrait<A>) -> A {
-        t.get_a() // $ method=MyTrait::get_a
+        t.get_a() // $ target=MyTrait::get_a
     }
 
     pub fn f() {
-        let x = f1(); // $ method=f1
-        x.f1(); // $ method=Trait1f1
-        x.f2(); // $ method=Trait2f2
-        let a = get_a_my_trait(); // $ method=get_a_my_trait
-        let b = uses_my_trait1(a); // $ type=b:S2 method=uses_my_trait1
-        let a = get_a_my_trait(); // $ method=get_a_my_trait
-        let c = uses_my_trait2(a); // $ type=c:S2 method=uses_my_trait2
-        let d = uses_my_trait2(S1); // $ type=d:S2 method=uses_my_trait2
+        let x = f1(); // $ target=f1
+        x.f1(); // $ target=Trait1f1
+        x.f2(); // $ target=Trait2f2
+        let a = get_a_my_trait(); // $ target=get_a_my_trait
+        let b = uses_my_trait1(a); // $ type=b:S2 target=uses_my_trait1
+        let a = get_a_my_trait(); // $ target=get_a_my_trait
+        let c = uses_my_trait2(a); // $ type=c:S2 target=uses_my_trait2
+        let d = uses_my_trait2(S1); // $ type=d:S2 target=uses_my_trait2
     }
 }
 
@@ -1930,11 +1930,11 @@ mod indexers {
 
     impl<T> MyVec<T> {
         fn new() -> Self {
-            MyVec { data: Vec::new() } // $ method=new
+            MyVec { data: Vec::new() } // $ target=new
         }
 
         fn push(&mut self, value: T) {
-            self.data.push(value); // $ fieldof=MyVec method=push
+            self.data.push(value); // $ fieldof=MyVec target=push
         }
     }
 
@@ -1943,7 +1943,7 @@ mod indexers {
 
         // MyVec::index
         fn index(&self, index: usize) -> &Self::Output {
-            &self.data[index] // $ fieldof=MyVec method=index
+            &self.data[index] // $ fieldof=MyVec target=index
         }
     }
 
@@ -1954,18 +1954,18 @@ mod indexers {
         // implicit dereference. We cannot currently handle a position that is
         // both implicitly dereferenced and implicitly borrowed, so the extra
         // type sneaks in.
-        let x = slice[0].foo(); // $ method=foo type=x:S method=index SPURIOUS: type=slice:[]
+        let x = slice[0].foo(); // $ target=foo type=x:S target=index SPURIOUS: type=slice:[]
     }
 
     pub fn f() {
-        let mut vec = MyVec::new(); // $ type=vec:T.S method=new
-        vec.push(S); // $ method=push
-        vec[0].foo(); // $ method=MyVec::index method=foo
+        let mut vec = MyVec::new(); // $ type=vec:T.S target=new
+        vec.push(S); // $ target=push
+        vec[0].foo(); // $ target=MyVec::index target=foo
 
         let xs: [S; 1] = [S];
-        let x = xs[0].foo(); // $ method=foo type=x:S method=index
+        let x = xs[0].foo(); // $ target=foo type=x:S target=index
 
-        analyze_slice(&xs); // $ method=analyze_slice
+        analyze_slice(&xs); // $ target=analyze_slice
     }
 }
 
@@ -1997,7 +1997,7 @@ mod method_determined_by_argument_type {
 
         // MyAdd<&i64>::my_add
         fn my_add(self, value: &i64) -> Self {
-            *value // $ method=deref
+            *value // $ target=deref
         }
     }
 
@@ -2017,7 +2017,7 @@ mod method_determined_by_argument_type {
 
         // S::my_add1
         fn my_add(self, other: Self) -> Self::Output {
-            S((self.0).my_add(other.0)) // $ method=MyAdd::my_add $ fieldof=S
+            S((self.0).my_add(other.0)) // $ target=MyAdd::my_add $ fieldof=S
         }
     }
 
@@ -2026,7 +2026,7 @@ mod method_determined_by_argument_type {
 
         // S::my_add2
         fn my_add(self, other: T) -> Self::Output {
-            S((self.0).my_add(other)) // $ method=MyAdd::my_add $ fieldof=S
+            S((self.0).my_add(other)) // $ target=MyAdd::my_add $ fieldof=S
         }
     }
 
@@ -2038,7 +2038,7 @@ mod method_determined_by_argument_type {
 
         // S::my_add3
         fn my_add(self, other: &'a T) -> Self::Output {
-            S((self.0).my_add(other)) // $ method=MyAdd::my_add $ fieldof=S
+            S((self.0).my_add(other)) // $ target=MyAdd::my_add $ fieldof=S
         }
     }
 
@@ -2118,29 +2118,29 @@ mod method_determined_by_argument_type {
 
     pub fn f() {
         let x: i64 = 73;
-        x.my_add(5i64); // $ method=MyAdd<i64>::my_add
-        x.my_add(&5i64); // $ method=MyAdd<&i64>::my_add
-        x.my_add(true); // $ method=MyAdd<bool>::my_add
+        x.my_add(5i64); // $ target=MyAdd<i64>::my_add
+        x.my_add(&5i64); // $ target=MyAdd<&i64>::my_add
+        x.my_add(true); // $ target=MyAdd<bool>::my_add
 
-        S(1i64).my_add(S(2i64)); // $ method=S::my_add1
-        S(1i64).my_add(3i64); // $ MISSING: method=S::my_add2
-        S(1i64).my_add(&3i64); // $ method=S::my_add3
+        S(1i64).my_add(S(2i64)); // $ target=S::my_add1
+        S(1i64).my_add(3i64); // $ MISSING: target=S::my_add2
+        S(1i64).my_add(&3i64); // $ target=S::my_add3
 
-        let x = i64::my_from(73i64); // $ method=MyFrom<i64>::my_from
-        let y = i64::my_from(true); // $ method=MyFrom<bool>::my_from
-        let z: i64 = MyFrom::my_from(73i64); // $ method=MyFrom<i64>::my_from
-        i64::my_from2(73i64, 0i64); // $ method=MyFrom2<i64>::my_from2
-        i64::my_from2(true, 0i64); // $ method=MyFrom2<bool>::my_from2
-        MyFrom2::my_from2(73i64, 0i64); // $ method=MyFrom2<i64>::my_from2
+        let x = i64::my_from(73i64); // $ target=MyFrom<i64>::my_from
+        let y = i64::my_from(true); // $ target=MyFrom<bool>::my_from
+        let z: i64 = MyFrom::my_from(73i64); // $ target=MyFrom<i64>::my_from
+        i64::my_from2(73i64, 0i64); // $ target=MyFrom2<i64>::my_from2
+        i64::my_from2(true, 0i64); // $ target=MyFrom2<bool>::my_from2
+        MyFrom2::my_from2(73i64, 0i64); // $ target=MyFrom2<i64>::my_from2
 
-        i64::f1(73i64); // $ method=MySelfTrait<i64>::f1
-        i64::f2(73i64); // $ method=MySelfTrait<i64>::f2
-        bool::f1(true); // $ method=MySelfTrait<bool>::f1
-        bool::f2(true); // $ method=MySelfTrait<bool>::f2
-        MySelfTrait::f1(73i64); // $ method=MySelfTrait<i64>::f1
-        MySelfTrait::f2(73i64); // $ method=MySelfTrait<i64>::f2
-        MySelfTrait::f1(true); // $ method=MySelfTrait<bool>::f1
-        MySelfTrait::f2(true); // $ method=MySelfTrait<bool>::f2
+        i64::f1(73i64); // $ target=MySelfTrait<i64>::f1
+        i64::f2(73i64); // $ target=MySelfTrait<i64>::f2
+        bool::f1(true); // $ target=MySelfTrait<bool>::f1
+        bool::f2(true); // $ target=MySelfTrait<bool>::f2
+        MySelfTrait::f1(73i64); // $ target=MySelfTrait<i64>::f1
+        MySelfTrait::f2(73i64); // $ target=MySelfTrait<i64>::f2
+        MySelfTrait::f1(true); // $ target=MySelfTrait<bool>::f1
+        MySelfTrait::f2(true); // $ target=MySelfTrait<bool>::f2
     }
 }
 
@@ -2161,8 +2161,8 @@ mod loops {
         // for loops with arrays
 
         for i in [1, 2, 3] {} // $ type=i:i32
-        for i in [1, 2, 3].map(|x| x + 1) {} // $ method=map MISSING: type=i:i32
-        for i in [1, 2, 3].into_iter() {} // $ method=into_iter MISSING: type=i:i32
+        for i in [1, 2, 3].map(|x| x + 1) {} // $ target=map MISSING: type=i:i32
+        for i in [1, 2, 3].into_iter() {} // $ target=into_iter MISSING: type=i:i32
 
         let vals1 = [1u8, 2, 3]; // $ type=vals1:[T;...].u8
         for u in vals1 {} // $ type=u:u8
@@ -2183,25 +2183,25 @@ mod loops {
 
         let strings2 = // $ type=strings2:[T;...].String
         [
-            String::from("foo"), // $ method=from
-            String::from("bar"), // $ method=from
-            String::from("baz"), // $ method=from
+            String::from("foo"), // $ target=from
+            String::from("bar"), // $ target=from
+            String::from("baz"), // $ target=from
         ];
         for s in strings2 {} // $ type=s:String
 
         let strings3 = // $ type=strings3:&T.[T;...].String
         &[
-            String::from("foo"), // $ method=from
-            String::from("bar"), // $ method=from
-            String::from("baz"), // $ method=from
+            String::from("foo"), // $ target=from
+            String::from("bar"), // $ target=from
+            String::from("baz"), // $ target=from
         ];
         for s in strings3 {} // $ MISSING: type=s:String
 
-        let callables = [MyCallable::new(), MyCallable::new(), MyCallable::new()]; // $ method=new $ MISSING: type=callables:[T;...].MyCallable; 3
+        let callables = [MyCallable::new(), MyCallable::new(), MyCallable::new()]; // $ target=new $ MISSING: type=callables:[T;...].MyCallable; 3
         for c // $ type=c:MyCallable
         in callables
         {
-            let result = c.call(); // $ type=result:i64 method=call
+            let result = c.call(); // $ type=result:i64 target=call
         }
 
         // for loops with ranges
@@ -2229,14 +2229,14 @@ mod loops {
         let vals4b = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4b:Vec type=vals4b:T.u16
         for u in vals4b {} // $ MISSING: type=u:u16
 
-        let vals5 = Vec::from([1u32, 2, 3]); // $ type=vals5:Vec method=from type=vals5:T.u32
+        let vals5 = Vec::from([1u32, 2, 3]); // $ type=vals5:Vec target=from type=vals5:T.u32
         for u in vals5 {} // $ type=u:u32
 
         let vals6: Vec<&u64> = [1u64, 2, 3].iter().collect(); // $ type=vals6:Vec type=vals6:T.&T.u64
         for u in vals6 {} // $ type=u:&T.u64
 
-        let mut vals7 = Vec::new(); // $ method=new type=vals7:Vec type=vals7:T.u8
-        vals7.push(1u8); // $ method=push
+        let mut vals7 = Vec::new(); // $ target=new type=vals7:Vec type=vals7:T.u8
+        vals7.push(1u8); // $ target=push
         for u in vals7 {} // $ type=u:u8
 
         let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ MISSING: type=matrix1:Vec type=matrix1:T.Vec type=matrix1:T.T.i32
@@ -2246,21 +2246,21 @@ mod loops {
             }
         };
 
-        let mut map1 = std::collections::HashMap::new(); // $ method=new type=map1:K.i32 type=map1:V.Box $ MISSING: type=map1:Hashmap type1=map1:V.T.&T.str
-        map1.insert(1, Box::new("one")); // $ method=insert method=new
-        map1.insert(2, Box::new("two")); // $ method=insert method=new
-        for key in map1.keys() {} // $ method=keys MISSING: type=key:i32
-        for value in map1.values() {} // $ method=values MISSING: type=value:Box type=value:T.&T.str
-        for (key, value) in map1.iter() {} // $ method=iter MISSING: type=key:i32 type=value:Box type=value:T.&T.str
+        let mut map1 = std::collections::HashMap::new(); // $ target=new type=map1:K.i32 type=map1:V.Box $ MISSING: type=map1:Hashmap type1=map1:V.T.&T.str
+        map1.insert(1, Box::new("one")); // $ target=insert target=new
+        map1.insert(2, Box::new("two")); // $ target=insert target=new
+        for key in map1.keys() {} // $ target=keys MISSING: type=key:i32
+        for value in map1.values() {} // $ target=values MISSING: type=value:Box type=value:T.&T.str
+        for (key, value) in map1.iter() {} // $ target=iter MISSING: type=key:i32 type=value:Box type=value:T.&T.str
         for (key, value) in &map1 {} // $ MISSING: type=key:i32 type=value:Box type=value:T.&T.str
 
         // while loops
 
         let mut a: i64 = 0; // $ type=a:i64
         #[rustfmt::skip]
-        let _ = while a < 10 // $ method=lt type=a:i64
+        let _ = while a < 10 // $ target=lt type=a:i64
         {
-            a += 1; // $ type=a:i64 method=add_assign
+            a += 1; // $ type=a:i64 target=add_assign
         };
     }
 }
@@ -2279,7 +2279,7 @@ mod explicit_type_args {
         }
 
         fn default() -> Self {
-            S1(T::default()) // $ method=default
+            S1(T::default()) // $ target=default
         }
 
         fn method(self) -> Self {
@@ -2300,26 +2300,26 @@ mod explicit_type_args {
     }
 
     pub fn f() {
-        let x1: Option<S1<S2>> = S1::assoc_fun(); // $ type=x1:T.T.S2 method=assoc_fun
-        let x2 = S1::<S2>::assoc_fun(); // $ type=x2:T.T.S2 method=assoc_fun
-        let x3 = S3::assoc_fun(); // $ type=x3:T.T.S2 method=assoc_fun
-        let x4 = S1::<S2>::method(S1::default()); // $ method=method method=default type=x4:T.S2
-        let x5 = S3::method(S1::default()); // $ method=method method=default type=x5:T.S2
-        let x6 = S4::<S2>(Default::default()); // $ type=x6:T4.S2 method=default
+        let x1: Option<S1<S2>> = S1::assoc_fun(); // $ type=x1:T.T.S2 target=assoc_fun
+        let x2 = S1::<S2>::assoc_fun(); // $ type=x2:T.T.S2 target=assoc_fun
+        let x3 = S3::assoc_fun(); // $ type=x3:T.T.S2 target=assoc_fun
+        let x4 = S1::<S2>::method(S1::default()); // $ target=method target=default type=x4:T.S2
+        let x5 = S3::method(S1::default()); // $ target=method target=default type=x5:T.S2
+        let x6 = S4::<S2>(Default::default()); // $ type=x6:T4.S2 target=default
         let x7 = S4(S2); // $ type=x7:T4.S2
         let x8 = S4(0); // $ type=x8:T4.i32
-        let x9 = S4(S2::default()); // $ type=x9:T4.S2 method=default
+        let x9 = S4(S2::default()); // $ type=x9:T4.S2 target=default
         let x10 = S5::<S2>  // $ type=x10:T5.S2
         {
-            field: Default::default(), // $ method=default
+            field: Default::default(), // $ target=default
         };
         let x11 = S5 { field: S2 }; // $ type=x11:T5.S2
         let x12 = S5 { field: 0 }; // $ type=x12:T5.i32
         let x13 = S5 // $ type=x13:T5.S2
         {
-            field: S2::default(), // $ method=default
+            field: S2::default(), // $ target=default
         };
-        let x14 = foo::<i32>(Default::default()); // $ type=x14:i32 method=default method=foo
+        let x14 = foo::<i32>(Default::default()); // $ type=x14:i32 target=default target=foo
     }
 }
 
@@ -2334,27 +2334,27 @@ mod tuples {
     }
 
     pub fn f() {
-        let a = S1::get_pair(); // $ method=get_pair MISSING: type=a:?
-        let mut b = S1::get_pair(); // $ method=get_pair MISSING: type=b:?
-        let (c, d) = S1::get_pair(); // $ method=get_pair MISSING: type=c:? type=d:?
-        let (mut e, f) = S1::get_pair(); // $ method=get_pair MISSING: type=e: type=f:
-        let (mut g, mut h) = S1::get_pair(); // $ method=get_pair MISSING: type=g:? type=h:?
+        let a = S1::get_pair(); // $ target=get_pair MISSING: type=a:?
+        let mut b = S1::get_pair(); // $ target=get_pair MISSING: type=b:?
+        let (c, d) = S1::get_pair(); // $ target=get_pair MISSING: type=c:? type=d:?
+        let (mut e, f) = S1::get_pair(); // $ target=get_pair MISSING: type=e: type=f:
+        let (mut g, mut h) = S1::get_pair(); // $ target=get_pair MISSING: type=g:? type=h:?
 
-        a.0.foo(); // $ MISSING: method=foo
-        b.1.foo(); // $ MISSING: method=foo
-        c.foo(); // $ MISSING: method=foo
-        d.foo(); // $ MISSING: method=foo
-        e.foo(); // $ MISSING: method=foo
-        f.foo(); // $ MISSING: method=foo
-        g.foo(); // $ MISSING: method=foo
-        h.foo(); // $ MISSING: method=foo
+        a.0.foo(); // $ MISSING: target=foo
+        b.1.foo(); // $ MISSING: target=foo
+        c.foo(); // $ MISSING: target=foo
+        d.foo(); // $ MISSING: target=foo
+        e.foo(); // $ MISSING: target=foo
+        f.foo(); // $ MISSING: target=foo
+        g.foo(); // $ MISSING: target=foo
+        h.foo(); // $ MISSING: target=foo
     }
 }
 
 pub mod pattern_matching;
 pub mod pattern_matching_experimental {
     pub fn box_patterns() {
-        let boxed_value = Box::new(100i32); // $ method=new
+        let boxed_value = Box::new(100i32); // $ target=new
 
         // BoxPat - Box patterns (requires feature flag)
         match boxed_value {
@@ -2368,7 +2368,7 @@ pub mod pattern_matching_experimental {
         }
 
         // Nested box pattern
-        let nested_box = Box::new(Box::new(42i32)); // $ method=new
+        let nested_box = Box::new(Box::new(42i32)); // $ target=new
         match nested_box {
             box box x => {
                 let nested_unboxed = x; // $ MISSING: type=nested_unboxed:i32
@@ -2395,7 +2395,7 @@ mod closures {
 
     impl Table {
         fn new() -> Self {
-            Table { rows: Vec::new() } // $ method=new
+            Table { rows: Vec::new() } // $ target=new
         }
 
         fn count_with(&self, property: impl Fn(Row) -> bool) -> i64 {
@@ -2407,46 +2407,46 @@ mod closures {
         Some(1).map(|x| {
             let x = x; // $ MISSING: type=x:i32
             println!("{x}");
-        });  // $ method=map
+        });  // $ target=map
 
-        let table = Table::new(); // $ method=new type=table:Table
+        let table = Table::new(); // $ target=new type=table:Table
         let result = table.count_with(|row| // $ type=result:i64
             {
-                let v = row.get(); // $ MISSING: method=get type=v:i64
-                v > 0 // $ MISSING: method=gt
-            }); // $ method=count_with
+                let v = row.get(); // $ MISSING: target=get type=v:i64
+                v > 0 // $ MISSING: target=gt
+            }); // $ target=count_with
     }
 }
 
 fn main() {
-    field_access::f(); // $ method=f
-    method_impl::f(); // $ method=f
-    method_impl::g(method_impl::Foo {}, method_impl::Foo {}); // $ method=g
-    method_non_parametric_impl::f(); // $ method=f
-    method_non_parametric_trait_impl::f(); // $ method=f
-    function_trait_bounds::f(); // $ method=f
-    trait_associated_type::f(); // $ method=f
-    generic_enum::f(); // $ method=f
-    method_supertraits::f(); // $ method=f
-    function_trait_bounds_2::f(); // $ method=f
-    option_methods::f(); // $ method=f
-    method_call_type_conversion::f(); // $ method=f
-    trait_implicit_self_borrow::f(); // $ method=f
-    implicit_self_borrow::f(); // $ method=f
-    borrowed_typed::f(); // $ method=f
-    try_expressions::f(); // $ method=f
-    builtins::f(); // $ method=f
-    operators::f(); // $ method=f
-    async_::f(); // $ method=f
-    impl_trait::f(); // $ method=f
-    indexers::f(); // $ method=f
-    loops::f(); // $ method=f
-    explicit_type_args::f(); // $ method=f
-    macros::f(); // $ method=f
-    method_determined_by_argument_type::f(); // $ method=f
-    tuples::f(); // $ method=f
-    dereference::test(); // $ method=test
-    pattern_matching::test_all_patterns(); // $ method=test_all_patterns
-    pattern_matching_experimental::box_patterns(); // $ method=box_patterns
-    closures::f() // $ method=f
+    field_access::f(); // $ target=f
+    method_impl::f(); // $ target=f
+    method_impl::g(method_impl::Foo {}, method_impl::Foo {}); // $ target=g
+    method_non_parametric_impl::f(); // $ target=f
+    method_non_parametric_trait_impl::f(); // $ target=f
+    function_trait_bounds::f(); // $ target=f
+    trait_associated_type::f(); // $ target=f
+    generic_enum::f(); // $ target=f
+    method_supertraits::f(); // $ target=f
+    function_trait_bounds_2::f(); // $ target=f
+    option_methods::f(); // $ target=f
+    method_call_type_conversion::f(); // $ target=f
+    trait_implicit_self_borrow::f(); // $ target=f
+    implicit_self_borrow::f(); // $ target=f
+    borrowed_typed::f(); // $ target=f
+    try_expressions::f(); // $ target=f
+    builtins::f(); // $ target=f
+    operators::f(); // $ target=f
+    async_::f(); // $ target=f
+    impl_trait::f(); // $ target=f
+    indexers::f(); // $ target=f
+    loops::f(); // $ target=f
+    explicit_type_args::f(); // $ target=f
+    macros::f(); // $ target=f
+    method_determined_by_argument_type::f(); // $ target=f
+    tuples::f(); // $ target=f
+    dereference::test(); // $ target=test
+    pattern_matching::test_all_patterns(); // $ target=test_all_patterns
+    pattern_matching_experimental::box_patterns(); // $ target=box_patterns
+    closures::f() // $ target=f
 }

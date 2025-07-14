@@ -5244,9 +5244,9 @@ inferType
 | pattern_matching.rs:697:37:697:44 | nested_b |  | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:701:10:701:24 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:701:18:701:18 | x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:701:46:701:65 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:701:46:701:67 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:701:57:701:57 | x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:701:59:701:59 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:701:61:701:61 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:702:17:702:29 | alt_complex_x |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:702:33:702:33 | x |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:703:22:703:50 | "Alternative complex: x={:?}\\n... |  | file://:0:0:0:0 | & |
@@ -5354,83 +5354,83 @@ inferType
 | pattern_matching.rs:774:18:774:22 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:774:25:774:31 | 3.14f64 |  | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:774:34:774:37 | true |  | {EXTERNAL LOCATION} | bool |
-| pattern_matching.rs:780:23:780:42 | (...) |  | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:780:23:780:42 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:780:34:780:34 | 1 |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:780:40:780:40 | 2 |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:780:45:780:64 | (...) |  | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:780:45:780:64 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:780:56:780:56 | 3 |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:780:62:780:62 | 4 |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:781:9:781:22 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:781:17:781:17 | x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:781:20:781:20 | y |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:782:13:782:18 | loop_x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:782:22:782:22 | x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:783:13:783:18 | loop_y |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:783:22:783:22 | y |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:784:18:784:42 | "Point in loop: ({}, {})\\n" |  | file://:0:0:0:0 | & |
-| pattern_matching.rs:784:18:784:42 | "Point in loop: ({}, {})\\n" | &T | {EXTERNAL LOCATION} | str |
-| pattern_matching.rs:784:18:784:58 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
-| pattern_matching.rs:784:18:784:58 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| pattern_matching.rs:784:45:784:50 | loop_x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:784:53:784:58 | loop_y |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:788:9:788:20 | option_value |  | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:788:9:788:20 | option_value | T | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:788:24:788:44 | ...::Some(...) |  | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:788:24:788:44 | ...::Some(...) | T | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:788:39:788:43 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:789:12:789:33 | ...::Some(...) |  | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:789:12:789:33 | ...::Some(...) | T | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:789:27:789:27 | x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:789:31:789:32 | 42 |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:789:37:789:48 | option_value |  | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:789:37:789:48 | option_value | T | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:790:13:790:20 | if_let_x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:790:24:790:24 | x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:791:18:791:44 | "If let with @ pattern: {}\\n" |  | file://:0:0:0:0 | & |
-| pattern_matching.rs:791:18:791:44 | "If let with @ pattern: {}\\n" | &T | {EXTERNAL LOCATION} | str |
-| pattern_matching.rs:791:18:791:54 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
-| pattern_matching.rs:791:18:791:54 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| pattern_matching.rs:791:47:791:54 | if_let_x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:795:13:795:17 | stack |  | {EXTERNAL LOCATION} | Vec |
-| pattern_matching.rs:795:13:795:17 | stack | A | {EXTERNAL LOCATION} | Global |
-| pattern_matching.rs:795:13:795:17 | stack | T | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:795:31:795:46 | MacroExpr |  | {EXTERNAL LOCATION} | Vec |
-| pattern_matching.rs:795:31:795:46 | MacroExpr | A | {EXTERNAL LOCATION} | Global |
-| pattern_matching.rs:795:31:795:46 | MacroExpr | T | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:795:36:795:39 | 1i32 |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:795:42:795:42 | 2 |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:795:45:795:45 | 3 |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:796:15:796:21 | Some(...) |  | {EXTERNAL LOCATION} | Option |
-| pattern_matching.rs:796:15:796:21 | Some(...) | T | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:796:20:796:20 | x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:796:25:796:29 | stack |  | {EXTERNAL LOCATION} | Vec |
-| pattern_matching.rs:796:25:796:29 | stack | A | {EXTERNAL LOCATION} | Global |
-| pattern_matching.rs:796:25:796:29 | stack | T | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:796:25:796:35 | stack.pop() |  | {EXTERNAL LOCATION} | Option |
-| pattern_matching.rs:796:25:796:35 | stack.pop() | T | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:797:13:797:23 | while_let_x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:797:27:797:27 | x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:798:18:798:29 | "Popped: {}\\n" |  | file://:0:0:0:0 | & |
-| pattern_matching.rs:798:18:798:29 | "Popped: {}\\n" | &T | {EXTERNAL LOCATION} | str |
-| pattern_matching.rs:798:18:798:42 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
-| pattern_matching.rs:798:18:798:42 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| pattern_matching.rs:798:32:798:42 | while_let_x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:802:9:802:13 | value |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:802:17:802:21 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:803:11:803:15 | value |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:804:9:804:9 | x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:804:14:804:14 | x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:804:14:804:18 | ... > ... |  | {EXTERNAL LOCATION} | bool |
-| pattern_matching.rs:804:18:804:18 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:805:17:805:23 | guard_x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:805:27:805:27 | x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:806:22:806:35 | "Positive: {}\\n" |  | file://:0:0:0:0 | & |
-| pattern_matching.rs:806:22:806:35 | "Positive: {}\\n" | &T | {EXTERNAL LOCATION} | str |
-| pattern_matching.rs:806:22:806:44 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
-| pattern_matching.rs:806:22:806:44 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| pattern_matching.rs:806:38:806:44 | guard_x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:808:9:808:9 | _ |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:813:5:813:7 | f(...) |  | {EXTERNAL LOCATION} | Option |
+| pattern_matching.rs:781:23:781:42 | (...) |  | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:781:23:781:42 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:781:34:781:34 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:781:40:781:40 | 2 |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:781:45:781:64 | (...) |  | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:781:45:781:64 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:781:56:781:56 | 3 |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:781:62:781:62 | 4 |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:782:9:782:22 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:782:17:782:17 | x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:782:20:782:20 | y |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:783:13:783:18 | loop_x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:783:22:783:22 | x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:784:13:784:18 | loop_y |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:784:22:784:22 | y |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:785:18:785:42 | "Point in loop: ({}, {})\\n" |  | file://:0:0:0:0 | & |
+| pattern_matching.rs:785:18:785:42 | "Point in loop: ({}, {})\\n" | &T | {EXTERNAL LOCATION} | str |
+| pattern_matching.rs:785:18:785:58 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| pattern_matching.rs:785:18:785:58 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| pattern_matching.rs:785:45:785:50 | loop_x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:785:53:785:58 | loop_y |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:789:9:789:20 | option_value |  | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:789:9:789:20 | option_value | T | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:789:24:789:44 | ...::Some(...) |  | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:789:24:789:44 | ...::Some(...) | T | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:789:39:789:43 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:790:12:790:33 | ...::Some(...) |  | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:790:12:790:33 | ...::Some(...) | T | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:790:27:790:27 | x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:790:31:790:32 | 42 |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:790:37:790:48 | option_value |  | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:790:37:790:48 | option_value | T | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:791:13:791:20 | if_let_x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:791:24:791:24 | x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:792:18:792:44 | "If let with @ pattern: {}\\n" |  | file://:0:0:0:0 | & |
+| pattern_matching.rs:792:18:792:44 | "If let with @ pattern: {}\\n" | &T | {EXTERNAL LOCATION} | str |
+| pattern_matching.rs:792:18:792:54 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| pattern_matching.rs:792:18:792:54 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| pattern_matching.rs:792:47:792:54 | if_let_x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:796:13:796:17 | stack |  | {EXTERNAL LOCATION} | Vec |
+| pattern_matching.rs:796:13:796:17 | stack | A | {EXTERNAL LOCATION} | Global |
+| pattern_matching.rs:796:13:796:17 | stack | T | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:796:31:796:46 | MacroExpr |  | {EXTERNAL LOCATION} | Vec |
+| pattern_matching.rs:796:31:796:46 | MacroExpr | A | {EXTERNAL LOCATION} | Global |
+| pattern_matching.rs:796:31:796:46 | MacroExpr | T | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:796:36:796:39 | 1i32 |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:796:42:796:42 | 2 |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:796:45:796:45 | 3 |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:797:15:797:21 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| pattern_matching.rs:797:15:797:21 | Some(...) | T | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:797:20:797:20 | x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:797:25:797:29 | stack |  | {EXTERNAL LOCATION} | Vec |
+| pattern_matching.rs:797:25:797:29 | stack | A | {EXTERNAL LOCATION} | Global |
+| pattern_matching.rs:797:25:797:29 | stack | T | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:797:25:797:35 | stack.pop() |  | {EXTERNAL LOCATION} | Option |
+| pattern_matching.rs:797:25:797:35 | stack.pop() | T | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:798:13:798:23 | while_let_x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:798:27:798:27 | x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:799:18:799:29 | "Popped: {}\\n" |  | file://:0:0:0:0 | & |
+| pattern_matching.rs:799:18:799:29 | "Popped: {}\\n" | &T | {EXTERNAL LOCATION} | str |
+| pattern_matching.rs:799:18:799:42 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| pattern_matching.rs:799:18:799:42 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| pattern_matching.rs:799:32:799:42 | while_let_x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:803:9:803:13 | value |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:803:17:803:21 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:804:11:804:15 | value |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:805:9:805:9 | x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:805:14:805:14 | x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:805:14:805:18 | ... > ... |  | {EXTERNAL LOCATION} | bool |
+| pattern_matching.rs:805:18:805:18 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:806:17:806:23 | guard_x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:806:27:806:27 | x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:807:22:807:35 | "Positive: {}\\n" |  | file://:0:0:0:0 | & |
+| pattern_matching.rs:807:22:807:35 | "Positive: {}\\n" | &T | {EXTERNAL LOCATION} | str |
+| pattern_matching.rs:807:22:807:44 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| pattern_matching.rs:807:22:807:44 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| pattern_matching.rs:807:38:807:44 | guard_x |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:809:9:809:9 | _ |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:814:5:814:7 | f(...) |  | {EXTERNAL LOCATION} | Option |
 testFailures
