@@ -206,8 +206,7 @@ private module CryptographyModel {
     /**
      * An encrypt or decrypt operation from `cryptography.hazmat.primitives.ciphers`.
      */
-    class CryptographyGenericCipherOperation extends Cryptography::CryptographicOperation::Range,
-      DataFlow::MethodCallNode
+    class CryptographyGenericCipherOperation extends Cryptography::CryptographicOperation::Range instanceof DataFlow::MethodCallNode
     {
       API::CallNode init;
       string algorithmName;
@@ -225,7 +224,9 @@ private module CryptographyModel {
         result.matchesName(algorithmName)
       }
 
-      override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
+      override DataFlow::Node getAnInput() {
+        result in [super.getArg(0), super.getArgByName("data")]
+      }
 
       override Cryptography::BlockMode getBlockMode() { result = modeName }
     }
@@ -263,8 +264,7 @@ private module CryptographyModel {
     /**
      * An hashing operation from `cryptography.hazmat.primitives.hashes`.
      */
-    class CryptographyGenericHashOperation extends Cryptography::CryptographicOperation::Range,
-      DataFlow::MethodCallNode
+    class CryptographyGenericHashOperation extends Cryptography::CryptographicOperation::Range instanceof DataFlow::MethodCallNode
     {
       API::CallNode init;
       string algorithmName;
@@ -280,7 +280,9 @@ private module CryptographyModel {
         result.matchesName(algorithmName)
       }
 
-      override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
+      override DataFlow::Node getAnInput() {
+        result in [super.getArg(0), super.getArgByName("data")]
+      }
 
       override Cryptography::BlockMode getBlockMode() { none() }
     }

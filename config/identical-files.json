@@ -235,12 +235,6 @@
     "javascript/ql/src/Security/CWE-020/IncompleteUrlSubstringSanitization.qll",
     "ruby/ql/src/queries/security/cwe-020/IncompleteUrlSubstringSanitization.qll"
   ],
-  "Concepts Python/Ruby/JS": [
-    "python/ql/lib/semmle/python/internal/ConceptsShared.qll",
-    "ruby/ql/lib/codeql/ruby/internal/ConceptsShared.qll",
-    "javascript/ql/lib/semmle/javascript/internal/ConceptsShared.qll",
-    "rust/ql/lib/codeql/rust/internal/ConceptsShared.qll"
-  ],
   "ApiGraphModels": [
     "javascript/ql/lib/semmle/javascript/frameworks/data/internal/ApiGraphModels.qll",
     "ruby/ql/lib/codeql/ruby/frameworks/data/internal/ApiGraphModels.qll",
