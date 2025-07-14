@@ -857,7 +857,12 @@ class TranslatedParameterReadEffect extends TranslatedReadEffect, TTranslatedPar
   }
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {
-    tag = OnlyInstructionTag() and
+    (
+      tag = OnlyInstructionTag() or
+      tag = InitializerStoreTag() or
+      tag = InitializerVariableAddressTag() or
+      tag = InitializerIndirectStoreTag()
+    ) and
     result = getIRUserVariable(this.getFunction(), param)
   }
 }
