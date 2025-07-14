@@ -114,7 +114,7 @@ module HeuristicNames {
         // Relationships - work and family
         "employ(er|ee)|spouse|maiden.?name|" +
         // Device information
-        "([_-]|\\b)ip.?addr|mac.?addr|finger.?print" +
+        "mac.?addr" +
         // ---
         ").*"
   }
