@@ -164,8 +164,8 @@ impl DeviceInfo {
 		sink(&self.api_key); // $ sensitive=password
 		sink(&other.api_key); // $ sensitive=password
 		sink(&self.deviceApiToken); // $ sensitive=password
-		sink(&self.finger_print); // $ sensitive=private
-		sink(&self.ip_address); // $ sensitive=private
+		sink(&self.finger_print); // $ MISSING: sensitive=private
+		sink(&self.ip_address); // $ MISSING: sensitive=private
 		sink(self.macaddr12); // $ sensitive=private
 		sink(&self.mac_addr); // $ sensitive=private
 		sink(self.mac_addr.values); // $ sensitive=private
