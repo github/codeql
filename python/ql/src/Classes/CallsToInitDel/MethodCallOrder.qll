@@ -45,7 +45,6 @@ Function getDirectSuperCallTargetFromCall(
   Class mroBase, Function meth, DataFlow::MethodCallNode call, string name
 ) {
   meth = call.getScope() and
-  getADirectSuperclass*(mroBase) = meth.getScope() and
   meth.getName() = name and
   call.calls(_, name) and
   mroBase = getADirectSubclass*(meth.getScope()) and
@@ -56,7 +55,7 @@ Function getDirectSuperCallTargetFromCall(
     result = findFunctionAccordingToMroKnownStartingClass(targetCls, mroBase, name)
     or
     // targetCls is the mro base for this lookup.
-    // note however that if the call we find uses super(), that still uses the mro of the instance `self` will sill be used
+    // note however that if the call we find uses super(), that still uses the mro of the instance `self`
     // assuming it's 0-arg or is 2-arg with `self` as second arg.
     callsMethodOnClassWithSelf(meth, call, targetCls, _) and
     result = findFunctionAccordingToMroKnownStartingClass(targetCls, targetCls, name)
@@ -96,7 +95,7 @@ predicate superCall(DataFlow::MethodCallNode call, string name) {
   )
 }
 
-/** Holds if `meth` calls `super().<name>` where `name` is the name of the method. */
+/** Holds if `meth` calls a `super()` method of the same name. */
 predicate callsSuper(Function meth) {
   exists(DataFlow::MethodCallNode call |
     call.getScope() = meth and
@@ -122,7 +121,7 @@ predicate callsMethodOnUnknownClassWithSelf(Function meth, string name) {
     call.calls(callTarget, name) and
     self.getParameter() = meth.getArg(0) and
     self.(DataFlow::LocalSourceNode).flowsTo(call.getArg(0)) and
-    not exists(Class target | callTarget = classTracker(target))
+    not callTarget = classTracker(any(Class target))
   )
 }
 
