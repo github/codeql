@@ -373,6 +373,7 @@
 /lib/codeql/rust/elements/internal/RefTypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RenameConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RenameImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/ResolvableImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RestPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RetTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RetTypeReprImpl.qll linguist-generated

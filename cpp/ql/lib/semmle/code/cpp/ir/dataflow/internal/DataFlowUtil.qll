@@ -489,6 +489,23 @@ class Node extends TIRDataFlowNode {
   }
 
   /**
+   * Holds if this node represents the `indirectionIndex`'th indirection of
+   * the value of an output parameter `p` just before reaching the end of a function.
+   */
+  predicate isFinalValueOfParameter(Parameter p, int indirectionIndex) {
+    exists(FinalParameterNode n | n = this |
+      p = n.getParameter() and
+      indirectionIndex = n.getIndirectionIndex()
+    )
+  }
+
+  /**
+   * Holds if this node represents the value of an output parameter `p`
+   * just before reaching the end of a function.
+   */
+  predicate isFinalValueOfParameter(Parameter p) { this.isFinalValueOfParameter(p, _) }
+
+  /**
    * Gets the variable corresponding to this node, if any. This can be used for
    * modeling flow in and out of global variables.
    */
@@ -1225,7 +1242,7 @@ import RawIndirectNodes
 /**
  * INTERNAL: do not use.
  *
- * A node representing the value of an update parameter
+ * A node representing the value of an output parameter
  * just before reaching the end of a function.
  */
 class FinalParameterNode extends Node, TFinalParameterNode {

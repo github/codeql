@@ -1,0 +1,3 @@
+multipleCallTargets
+| test.rs:82:26:82:44 | harmless.as_bytes() |
+| test.rs:83:26:83:44 | password.as_bytes() |

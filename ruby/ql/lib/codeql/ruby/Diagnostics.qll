@@ -1,4 +1,6 @@
 /** Provides classes relating to extraction diagnostics. */
+overlay[local]
+module;
 
 private import codeql.Locations
 

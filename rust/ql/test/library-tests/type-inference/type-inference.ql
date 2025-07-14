@@ -6,7 +6,9 @@ import TypeInference
 query predicate inferType(AstNode n, TypePath path, Type t) {
   t = TypeInference::inferType(n, path) and
   n.fromSource() and
-  not n.isFromMacroExpansion()
+  not n.isFromMacroExpansion() and
+  not n instanceof IdentPat and // avoid overlap in the output with the underlying `Name` node
+  not n instanceof LiteralPat // avoid overlap in the output with the underlying `Literal` node
 }
 
 module ResolveTest implements TestSig {

@@ -24,4 +24,6 @@ multipleCallTargets
 | test.rs:306:7:306:48 | ... .as_str() |
 | test.rs:307:7:307:35 | ... .as_str() |
 | test.rs:308:7:308:35 | ... .as_str() |
+| test.rs:317:8:317:19 | num.as_str() |
+| test.rs:328:8:328:19 | num.as_str() |
 | test.rs:347:7:347:39 | ... .as_str() |
