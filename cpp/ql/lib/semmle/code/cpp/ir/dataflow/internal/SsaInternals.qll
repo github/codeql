@@ -153,6 +153,10 @@ private predicate isGlobalDefImpl(
   GlobalLikeVariable v, IRFunction f, int indirection, int indirectionIndex
 ) {
   exists(VariableAddressInstruction vai |
+    // The right-hand side of an initialization of a global variable
+    // creates its own `IRFunction`. We don't want flow into that `IRFunction`
+    // since the variable is only initialized once.
+    not vai.getEnclosingFunction() = v and
     vai.getEnclosingIRFunction() = f and
     vai.getAstVariable() = v and
     isUse(_, _, vai, indirection, indirectionIndex) and
