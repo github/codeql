@@ -15,6 +15,7 @@ def test(codeql, java_full, cwd, semmle_code_dir, test_dir):
             "@codeql//java/ql/integration-tests/kotlin/linux/custom_plugin/plugin",
         ],
         _cwd=semmle_code_dir,
+        _env={"CODEQL_BAZEL_REMOTE_CACHE": "false"},
     )
     shutil.copy(
         f"{semmle_code_dir}/bazel-bin/external/ql+/java/ql/integration-tests/kotlin/linux/custom_plugin/plugin/plugin.jar",
