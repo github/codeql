@@ -21,6 +21,7 @@ predicate multipleCallsToSuperclassMethod(
 }
 
 /** Holds if l1 comes before l2, assuming they're in the same file. */
+pragma[inline]
 private predicate locationBefore(Location l1, Location l2) {
   l1.getStartLine() < l2.getStartLine()
   or
