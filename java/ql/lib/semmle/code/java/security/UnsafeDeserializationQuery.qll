@@ -23,10 +23,17 @@ private import semmle.code.java.frameworks.google.Gson
 private import semmle.code.java.frameworks.apache.Lang
 private import semmle.code.java.Reflection
 
-private class ObjectInputStreamReadObjectMethod extends Method {
-  ObjectInputStreamReadObjectMethod() {
+private class ObjectInputReadObjectMethod extends Method {
+  ObjectInputReadObjectMethod() {
+    this.getDeclaringType().getASourceSupertype*() instanceof TypeObjectInput and
+    this.hasName("readObject")
+  }
+}
+
+private class ObjectInputStreamReadUnsharedMethod extends Method {
+  ObjectInputStreamReadUnsharedMethod() {
     this.getDeclaringType().getASourceSupertype*() instanceof TypeObjectInputStream and
-    (this.hasName("readObject") or this.hasName("readUnshared"))
+    this.hasName("readUnshared")
   }
 }
 
@@ -147,12 +154,13 @@ private module SafeKryoFlow = DataFlow::Global<SafeKryoConfig>;
  */
 predicate unsafeDeserialization(MethodCall ma, Expr sink) {
   exists(Method m | m = ma.getMethod() |
-    m instanceof ObjectInputStreamReadObjectMethod and
+    m instanceof ObjectInputReadObjectMethod and
     sink = ma.getQualifier() and
-    not exists(DataFlow::ExprNode node |
-      node.getExpr() = sink and
-      node.getTypeBound() instanceof SafeObjectInputStreamType
-    )
+    not DataFlow::exprNode(sink).getTypeBound() instanceof SafeObjectInputStreamType
+    or
+    m instanceof ObjectInputStreamReadUnsharedMethod and
+    sink = ma.getQualifier() and
+    not DataFlow::exprNode(sink).getTypeBound() instanceof SafeObjectInputStreamType
     or
     m instanceof XmlDecoderReadObjectMethod and
     sink = ma.getQualifier()
