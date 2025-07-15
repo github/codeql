@@ -250,7 +250,7 @@ module TaintedPath {
   class IsLocalCheck extends SanitizerGuard, DataFlow::CallNode {
     IsLocalCheck() {
       exists(Function f |
-        f.hasQualifiedName("filepath", "IsLocal") and
+        f.hasQualifiedName("path/filepath", "IsLocal") and
         this = f.getACall()
       )
     }
