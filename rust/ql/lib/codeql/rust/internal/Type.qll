@@ -10,7 +10,8 @@ private import codeql.rust.elements.internal.generated.Synth
 cached
 newtype TType =
   TTuple(int arity) {
-    exists(any(TupleTypeRepr t).getField(arity)) and Stages::TypeInferenceStage::ref()
+    arity = any(TupleTypeRepr t).getNumberOfFields() and
+    Stages::TypeInferenceStage::ref()
   } or
   TStruct(Struct s) or
   TEnum(Enum e) or
@@ -19,7 +20,7 @@ newtype TType =
   TRefType() or // todo: add mut?
   TImplTraitType(ImplTraitTypeRepr impl) or
   TSliceType() or
-  TTupleTypeParameter(int i) { exists(TTuple(i)) } or
+  TTupleTypeParameter(int arity, int i) { exists(TTuple(arity)) and i in [0 .. arity - 1] } or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
   TArrayTypeParameter() or
@@ -83,7 +84,7 @@ class TupleType extends Type, TTuple {
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeParameter getTypeParameter(int i) { result = TTupleTypeParameter(i) and i < arity }
+  override TypeParameter getTypeParameter(int i) { result = TTupleTypeParameter(arity, i) }
 
   int getArity() { result = arity }
 
@@ -358,12 +359,20 @@ class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypePara
  *  their positional index.
  */
 class TupleTypeParameter extends TypeParameter, TTupleTypeParameter {
-  override string toString() { result = this.getIndex().toString() }
+  private int arity;
+  private int index;
+
+  TupleTypeParameter() { this = TTupleTypeParameter(arity, index) }
+
+  override string toString() { result = index.toString() + "(" + arity + ")" }
 
   override Location getLocation() { result instanceof EmptyLocation }
 
   /** Gets the index of this tuple type parameter. */
-  int getIndex() { this = TTupleTypeParameter(result) }
+  int getIndex() { result = index }
+
+  /** Gets the arity of this tuple type parameter. */
+  int getArity() { result = arity }
 }
 
 /** An implicit array type parameter. */

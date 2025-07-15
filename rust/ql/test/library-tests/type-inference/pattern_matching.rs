@@ -460,7 +460,7 @@ pub fn tuple_patterns() {
     // With rest pattern
     match tuple {
         (first, ..) => {
-            let tuple_first = first; // $ type=tuple_first:i32
+            let tuple_first = first; // $ MISSING: type=tuple_first:i32
             println!("First element: {}", tuple_first);
         }
     }
@@ -630,7 +630,7 @@ pub fn rest_patterns() {
     // RestPat - Rest patterns (..)
     match tuple {
         (first, ..) => {
-            let rest_first = first; // $ type=rest_first:i32
+            let rest_first = first; // $ MISSING: type=rest_first:i32
             println!("First with rest: {}", rest_first);
         }
     }
@@ -644,7 +644,7 @@ pub fn rest_patterns() {
 
     match tuple {
         (first, .., last) => {
-            let rest_start = first; // $ type=rest_start:i32
+            let rest_start = first; // $ MISSING: type=rest_start:i32
             let rest_end = last; // $ MISSING: type=rest_end:u8
             println!("First and last: {}, {}", rest_start, rest_end);
         }
@@ -772,7 +772,7 @@ pub fn patterns_in_function_parameters() {
     let red = extract_color(color); // $ target=extract_color type=red:u8
 
     let tuple = (42i32, 3.14f64, true);
-    let tuple_extracted = extract_tuple(tuple); // $ target=extract_tuple type=tuple_extracted:0.i32 type=tuple_extracted:1.bool
+    let tuple_extracted = extract_tuple(tuple); // $ target=extract_tuple type=tuple_extracted:0(2).i32 type=tuple_extracted:1(2).bool
 }
 
 #[rustfmt::skip]

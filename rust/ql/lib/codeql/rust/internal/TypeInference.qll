@@ -104,8 +104,12 @@ private module Input1 implements InputSig1<Location> {
           node = tp0.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr()
         )
         or
-        kind = 2 and
-        id = tp0.(TupleTypeParameter).getIndex()
+        exists(TupleTypeParameter ttp, int maxArity |
+          maxArity = max(int i | i = any(TupleType tt).getArity()) and
+          tp0 = ttp and
+          kind = 2 and
+          id = ttp.getArity() * maxArity + ttp.getIndex()
+        )
       |
         tp0 order by kind, id
       )
@@ -324,11 +328,14 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
   prefix1.isEmpty() and
   prefix2 = TypePath::singleton(TRefTypeParameter())
   or
-  exists(int i |
+  exists(int i, int arity |
     prefix1.isEmpty() and
-    prefix2 = TypePath::singleton(TTupleTypeParameter(i))
+    prefix2 = TypePath::singleton(TTupleTypeParameter(arity, i))
   |
-    n1 = n2.(TupleExpr).getField(i) or
+    arity = n2.(TupleExpr).getNumberOfFields() and
+    n1 = n2.(TupleExpr).getField(i)
+    or
+    arity = n2.(TuplePat).getNumberOfFields() and
     n1 = n2.(TuplePat).getField(i)
   )
   or
@@ -1077,7 +1084,7 @@ private Type inferTupleIndexExprType(FieldExpr fe, TypePath path) {
   exists(int i, TypePath path0 |
     fe.getIdentifier().getText() = i.toString() and
     result = inferType(fe.getContainer(), path0) and
-    path0.isCons(TTupleTypeParameter(i), path) and
+    path0.isCons(TTupleTypeParameter(_, i), path) and
     fe.getIdentifier().getText() = i.toString()
   )
 }
@@ -1088,12 +1095,12 @@ private Type inferTupleContainerExprType(Expr e, TypePath path) {
   // a tuple struct or a tuple. It is only correct to let type information flow
   // from `t.n` to tuple type parameters of `t` in the latter case. Hence we
   // include the condition that the root type of `t` must be a tuple type.
-  exists(int i, TypePath path0, FieldExpr fe |
+  exists(int i, TypePath path0, FieldExpr fe, int arity |
     e = fe.getContainer() and
     fe.getIdentifier().getText() = i.toString() and
-    inferType(fe.getContainer()) instanceof TupleType and
+    arity = inferType(fe.getContainer()).(TupleType).getArity() and
     result = inferType(fe, path0) and
-    path = TypePath::cons(TTupleTypeParameter(i), path0)
+    path = TypePath::cons(TTupleTypeParameter(arity, i), path0) // FIXME:
   )
 }
 

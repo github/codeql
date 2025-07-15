@@ -2354,7 +2354,7 @@ mod tuples {
         // `a` and `b` to be inferred.
         let a = Default::default(); // $ target=default type=a:i64
         let b = Default::default(); // $ target=default type=b:bool
-        let pair = (a, b); // $ type=pair:0.i64 type=pair:1.bool
+        let pair = (a, b); // $ type=pair:0(2).i64 type=pair:1(2).bool
         let i: i64 = pair.0;
         let j: bool = pair.1;
     }

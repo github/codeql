@@ -21,7 +21,7 @@ class TupleTypeReprMention extends TypeMention instanceof TupleTypeRepr {
     or
     exists(TypePath suffix, int i |
       result = super.getField(i).(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(TTupleTypeParameter(i), suffix)
+      path = TypePath::cons(TTupleTypeParameter(super.getNumberOfFields(), i), suffix)
     )
   }
 }

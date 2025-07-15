@@ -3927,13 +3927,13 @@ inferType
 | main.rs:2253:22:2253:34 | map1.values() | V.T.&T | {EXTERNAL LOCATION} | str |
 | main.rs:2254:13:2254:24 | TuplePat |  | {EXTERNAL LOCATION} | Item |
 | main.rs:2254:13:2254:24 | TuplePat |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2254:13:2254:24 | TuplePat | 0 | file://:0:0:0:0 | & |
-| main.rs:2254:13:2254:24 | TuplePat | 0.&T | {EXTERNAL LOCATION} | i32 |
-| main.rs:2254:13:2254:24 | TuplePat | 1 | file://:0:0:0:0 | & |
-| main.rs:2254:13:2254:24 | TuplePat | 1.&T | {EXTERNAL LOCATION} | Box |
-| main.rs:2254:13:2254:24 | TuplePat | 1.&T.A | {EXTERNAL LOCATION} | Global |
-| main.rs:2254:13:2254:24 | TuplePat | 1.&T.T | file://:0:0:0:0 | & |
-| main.rs:2254:13:2254:24 | TuplePat | 1.&T.T.&T | {EXTERNAL LOCATION} | str |
+| main.rs:2254:13:2254:24 | TuplePat | 0(2) | file://:0:0:0:0 | & |
+| main.rs:2254:13:2254:24 | TuplePat | 0(2).&T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2254:13:2254:24 | TuplePat | 1(2) | file://:0:0:0:0 | & |
+| main.rs:2254:13:2254:24 | TuplePat | 1(2).&T | {EXTERNAL LOCATION} | Box |
+| main.rs:2254:13:2254:24 | TuplePat | 1(2).&T.A | {EXTERNAL LOCATION} | Global |
+| main.rs:2254:13:2254:24 | TuplePat | 1(2).&T.T | file://:0:0:0:0 | & |
+| main.rs:2254:13:2254:24 | TuplePat | 1(2).&T.T.&T | {EXTERNAL LOCATION} | str |
 | main.rs:2254:14:2254:16 | key |  | file://:0:0:0:0 | & |
 | main.rs:2254:14:2254:16 | key | &T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2254:19:2254:23 | value |  | file://:0:0:0:0 | & |
@@ -3956,13 +3956,13 @@ inferType
 | main.rs:2254:29:2254:39 | map1.iter() | V.T.&T | {EXTERNAL LOCATION} | str |
 | main.rs:2255:13:2255:24 | TuplePat |  | {EXTERNAL LOCATION} | Item |
 | main.rs:2255:13:2255:24 | TuplePat |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2255:13:2255:24 | TuplePat | 0 | file://:0:0:0:0 | & |
-| main.rs:2255:13:2255:24 | TuplePat | 0.&T | {EXTERNAL LOCATION} | i32 |
-| main.rs:2255:13:2255:24 | TuplePat | 1 | file://:0:0:0:0 | & |
-| main.rs:2255:13:2255:24 | TuplePat | 1.&T | {EXTERNAL LOCATION} | Box |
-| main.rs:2255:13:2255:24 | TuplePat | 1.&T.A | {EXTERNAL LOCATION} | Global |
-| main.rs:2255:13:2255:24 | TuplePat | 1.&T.T | file://:0:0:0:0 | & |
-| main.rs:2255:13:2255:24 | TuplePat | 1.&T.T.&T | {EXTERNAL LOCATION} | str |
+| main.rs:2255:13:2255:24 | TuplePat | 0(2) | file://:0:0:0:0 | & |
+| main.rs:2255:13:2255:24 | TuplePat | 0(2).&T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2255:13:2255:24 | TuplePat | 1(2) | file://:0:0:0:0 | & |
+| main.rs:2255:13:2255:24 | TuplePat | 1(2).&T | {EXTERNAL LOCATION} | Box |
+| main.rs:2255:13:2255:24 | TuplePat | 1(2).&T.A | {EXTERNAL LOCATION} | Global |
+| main.rs:2255:13:2255:24 | TuplePat | 1(2).&T.T | file://:0:0:0:0 | & |
+| main.rs:2255:13:2255:24 | TuplePat | 1(2).&T.T.&T | {EXTERNAL LOCATION} | str |
 | main.rs:2255:14:2255:16 | key |  | file://:0:0:0:0 | & |
 | main.rs:2255:14:2255:16 | key | &T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2255:19:2255:23 | value |  | file://:0:0:0:0 | & |
@@ -4092,57 +4092,57 @@ inferType
 | main.rs:2322:19:2322:48 | foo::<...>(...) |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2322:30:2322:47 | ...::default(...) |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2330:35:2332:9 | { ... } |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2330:35:2332:9 | { ... } | 0 | main.rs:2327:5:2327:16 | S1 |
-| main.rs:2330:35:2332:9 | { ... } | 1 | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2330:35:2332:9 | { ... } | 0(2) | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2330:35:2332:9 | { ... } | 1(2) | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2331:13:2331:26 | TupleExpr |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2331:13:2331:26 | TupleExpr | 0 | main.rs:2327:5:2327:16 | S1 |
-| main.rs:2331:13:2331:26 | TupleExpr | 1 | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2331:13:2331:26 | TupleExpr | 0(2) | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2331:13:2331:26 | TupleExpr | 1(2) | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2331:14:2331:18 | S1 {...} |  | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2331:21:2331:25 | S1 {...} |  | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2333:16:2333:19 | SelfParam |  | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2337:13:2337:13 | a |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2337:13:2337:13 | a | 0 | main.rs:2327:5:2327:16 | S1 |
-| main.rs:2337:13:2337:13 | a | 1 | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2337:13:2337:13 | a | 0(2) | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2337:13:2337:13 | a | 1(2) | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2337:17:2337:30 | ...::get_pair(...) |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2337:17:2337:30 | ...::get_pair(...) | 0 | main.rs:2327:5:2327:16 | S1 |
-| main.rs:2337:17:2337:30 | ...::get_pair(...) | 1 | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2337:17:2337:30 | ...::get_pair(...) | 0(2) | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2337:17:2337:30 | ...::get_pair(...) | 1(2) | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2338:17:2338:17 | b |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2338:17:2338:17 | b | 0 | main.rs:2327:5:2327:16 | S1 |
-| main.rs:2338:17:2338:17 | b | 1 | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2338:17:2338:17 | b | 0(2) | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2338:17:2338:17 | b | 1(2) | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2338:21:2338:34 | ...::get_pair(...) |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2338:21:2338:34 | ...::get_pair(...) | 0 | main.rs:2327:5:2327:16 | S1 |
-| main.rs:2338:21:2338:34 | ...::get_pair(...) | 1 | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2338:21:2338:34 | ...::get_pair(...) | 0(2) | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2338:21:2338:34 | ...::get_pair(...) | 1(2) | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2339:13:2339:18 | TuplePat |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2339:13:2339:18 | TuplePat | 0 | main.rs:2327:5:2327:16 | S1 |
-| main.rs:2339:13:2339:18 | TuplePat | 1 | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2339:13:2339:18 | TuplePat | 0(2) | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2339:13:2339:18 | TuplePat | 1(2) | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2339:14:2339:14 | c |  | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2339:17:2339:17 | d |  | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2339:22:2339:35 | ...::get_pair(...) |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2339:22:2339:35 | ...::get_pair(...) | 0 | main.rs:2327:5:2327:16 | S1 |
-| main.rs:2339:22:2339:35 | ...::get_pair(...) | 1 | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2339:22:2339:35 | ...::get_pair(...) | 0(2) | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2339:22:2339:35 | ...::get_pair(...) | 1(2) | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2340:13:2340:22 | TuplePat |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2340:13:2340:22 | TuplePat | 0 | main.rs:2327:5:2327:16 | S1 |
-| main.rs:2340:13:2340:22 | TuplePat | 1 | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2340:13:2340:22 | TuplePat | 0(2) | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2340:13:2340:22 | TuplePat | 1(2) | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2340:18:2340:18 | e |  | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2340:21:2340:21 | f |  | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2340:26:2340:39 | ...::get_pair(...) |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2340:26:2340:39 | ...::get_pair(...) | 0 | main.rs:2327:5:2327:16 | S1 |
-| main.rs:2340:26:2340:39 | ...::get_pair(...) | 1 | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2340:26:2340:39 | ...::get_pair(...) | 0(2) | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2340:26:2340:39 | ...::get_pair(...) | 1(2) | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2341:13:2341:26 | TuplePat |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2341:13:2341:26 | TuplePat | 0 | main.rs:2327:5:2327:16 | S1 |
-| main.rs:2341:13:2341:26 | TuplePat | 1 | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2341:13:2341:26 | TuplePat | 0(2) | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2341:13:2341:26 | TuplePat | 1(2) | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2341:18:2341:18 | g |  | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2341:25:2341:25 | h |  | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2341:30:2341:43 | ...::get_pair(...) |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2341:30:2341:43 | ...::get_pair(...) | 0 | main.rs:2327:5:2327:16 | S1 |
-| main.rs:2341:30:2341:43 | ...::get_pair(...) | 1 | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2341:30:2341:43 | ...::get_pair(...) | 0(2) | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2341:30:2341:43 | ...::get_pair(...) | 1(2) | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2343:9:2343:9 | a |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2343:9:2343:9 | a | 0 | main.rs:2327:5:2327:16 | S1 |
-| main.rs:2343:9:2343:9 | a | 1 | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2343:9:2343:9 | a | 0(2) | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2343:9:2343:9 | a | 1(2) | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2343:9:2343:11 | a.0 |  | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2344:9:2344:9 | b |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2344:9:2344:9 | b | 0 | main.rs:2327:5:2327:16 | S1 |
-| main.rs:2344:9:2344:9 | b | 1 | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2344:9:2344:9 | b | 0(2) | main.rs:2327:5:2327:16 | S1 |
+| main.rs:2344:9:2344:9 | b | 1(2) | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2344:9:2344:11 | b.1 |  | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2345:9:2345:9 | c |  | main.rs:2327:5:2327:16 | S1 |
 | main.rs:2346:9:2346:9 | d |  | main.rs:2327:5:2327:16 | S1 |
@@ -4155,22 +4155,22 @@ inferType
 | main.rs:2356:13:2356:13 | b |  | {EXTERNAL LOCATION} | bool |
 | main.rs:2356:17:2356:34 | ...::default(...) |  | {EXTERNAL LOCATION} | bool |
 | main.rs:2357:13:2357:16 | pair |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2357:13:2357:16 | pair | 0 | {EXTERNAL LOCATION} | i64 |
-| main.rs:2357:13:2357:16 | pair | 1 | {EXTERNAL LOCATION} | bool |
+| main.rs:2357:13:2357:16 | pair | 0(2) | {EXTERNAL LOCATION} | i64 |
+| main.rs:2357:13:2357:16 | pair | 1(2) | {EXTERNAL LOCATION} | bool |
 | main.rs:2357:20:2357:25 | TupleExpr |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2357:20:2357:25 | TupleExpr | 0 | {EXTERNAL LOCATION} | i64 |
-| main.rs:2357:20:2357:25 | TupleExpr | 1 | {EXTERNAL LOCATION} | bool |
+| main.rs:2357:20:2357:25 | TupleExpr | 0(2) | {EXTERNAL LOCATION} | i64 |
+| main.rs:2357:20:2357:25 | TupleExpr | 1(2) | {EXTERNAL LOCATION} | bool |
 | main.rs:2357:21:2357:21 | a |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2357:24:2357:24 | b |  | {EXTERNAL LOCATION} | bool |
 | main.rs:2358:13:2358:13 | i |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2358:22:2358:25 | pair |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2358:22:2358:25 | pair | 0 | {EXTERNAL LOCATION} | i64 |
-| main.rs:2358:22:2358:25 | pair | 1 | {EXTERNAL LOCATION} | bool |
+| main.rs:2358:22:2358:25 | pair | 0(2) | {EXTERNAL LOCATION} | i64 |
+| main.rs:2358:22:2358:25 | pair | 1(2) | {EXTERNAL LOCATION} | bool |
 | main.rs:2358:22:2358:27 | pair.0 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2359:13:2359:13 | j |  | {EXTERNAL LOCATION} | bool |
 | main.rs:2359:23:2359:26 | pair |  | file://:0:0:0:0 | (T_2) |
-| main.rs:2359:23:2359:26 | pair | 0 | {EXTERNAL LOCATION} | i64 |
-| main.rs:2359:23:2359:26 | pair | 1 | {EXTERNAL LOCATION} | bool |
+| main.rs:2359:23:2359:26 | pair | 0(2) | {EXTERNAL LOCATION} | i64 |
+| main.rs:2359:23:2359:26 | pair | 1(2) | {EXTERNAL LOCATION} | bool |
 | main.rs:2359:23:2359:28 | pair.1 |  | {EXTERNAL LOCATION} | bool |
 | main.rs:2366:13:2366:23 | boxed_value |  | {EXTERNAL LOCATION} | Box |
 | main.rs:2366:13:2366:23 | boxed_value | A | {EXTERNAL LOCATION} | Global |
@@ -5033,67 +5033,67 @@ inferType
 | pattern_matching.rs:438:22:438:49 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | pattern_matching.rs:438:37:438:49 | wrapped_value |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:444:9:444:13 | tuple |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:444:9:444:13 | tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:444:9:444:13 | tuple | 1 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:444:9:444:13 | tuple | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:444:9:444:13 | tuple | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:444:9:444:13 | tuple | 2 | {EXTERNAL LOCATION} | f64 |
+| pattern_matching.rs:444:9:444:13 | tuple | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:444:9:444:13 | tuple | 1(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:444:9:444:13 | tuple | 1(3) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:444:9:444:13 | tuple | 2(3) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:444:9:444:13 | tuple | 2(3) | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:444:17:444:36 | TupleExpr |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:444:17:444:36 | TupleExpr | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:444:17:444:36 | TupleExpr | 1 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:444:17:444:36 | TupleExpr | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:444:17:444:36 | TupleExpr | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:444:17:444:36 | TupleExpr | 2 | {EXTERNAL LOCATION} | f64 |
+| pattern_matching.rs:444:17:444:36 | TupleExpr | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:444:17:444:36 | TupleExpr | 1(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:444:17:444:36 | TupleExpr | 1(3) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:444:17:444:36 | TupleExpr | 2(3) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:444:17:444:36 | TupleExpr | 2(3) | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:444:18:444:21 | 1i32 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:444:24:444:27 | 2i64 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:444:24:444:27 | 2i64 |  | {EXTERNAL LOCATION} | i64 |
 | pattern_matching.rs:444:30:444:35 | 3.0f32 |  | {EXTERNAL LOCATION} | f32 |
 | pattern_matching.rs:444:30:444:35 | 3.0f32 |  | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:447:11:447:15 | tuple |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:447:11:447:15 | tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:447:11:447:15 | tuple | 1 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:447:11:447:15 | tuple | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:447:11:447:15 | tuple | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:447:11:447:15 | tuple | 2 | {EXTERNAL LOCATION} | f64 |
+| pattern_matching.rs:447:11:447:15 | tuple | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:447:11:447:15 | tuple | 1(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:447:11:447:15 | tuple | 1(3) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:447:11:447:15 | tuple | 2(3) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:447:11:447:15 | tuple | 2(3) | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:448:9:448:19 | TuplePat |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:448:9:448:19 | TuplePat | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:448:9:448:19 | TuplePat | 1 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:448:9:448:19 | TuplePat | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:448:9:448:19 | TuplePat | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:448:9:448:19 | TuplePat | 2 | {EXTERNAL LOCATION} | f64 |
+| pattern_matching.rs:448:9:448:19 | TuplePat | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:448:9:448:19 | TuplePat | 1(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:448:9:448:19 | TuplePat | 1(3) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:448:9:448:19 | TuplePat | 2(3) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:448:9:448:19 | TuplePat | 2(3) | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:448:10:448:10 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:448:13:448:13 | 2 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:448:13:448:13 | 2 |  | {EXTERNAL LOCATION} | i64 |
 | pattern_matching.rs:448:16:448:18 | 3.0 |  | {EXTERNAL LOCATION} | f32 |
 | pattern_matching.rs:448:16:448:18 | 3.0 |  | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:449:17:449:27 | exact_tuple |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:449:17:449:27 | exact_tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:449:17:449:27 | exact_tuple | 1 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:449:17:449:27 | exact_tuple | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:449:17:449:27 | exact_tuple | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:449:17:449:27 | exact_tuple | 2 | {EXTERNAL LOCATION} | f64 |
+| pattern_matching.rs:449:17:449:27 | exact_tuple | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:449:17:449:27 | exact_tuple | 1(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:449:17:449:27 | exact_tuple | 1(3) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:449:17:449:27 | exact_tuple | 2(3) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:449:17:449:27 | exact_tuple | 2(3) | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:449:31:449:35 | tuple |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:449:31:449:35 | tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:449:31:449:35 | tuple | 1 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:449:31:449:35 | tuple | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:449:31:449:35 | tuple | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:449:31:449:35 | tuple | 2 | {EXTERNAL LOCATION} | f64 |
+| pattern_matching.rs:449:31:449:35 | tuple | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:449:31:449:35 | tuple | 1(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:449:31:449:35 | tuple | 1(3) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:449:31:449:35 | tuple | 2(3) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:449:31:449:35 | tuple | 2(3) | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:450:22:450:40 | "Exact tuple: {:?}\\n" |  | file://:0:0:0:0 | & |
 | pattern_matching.rs:450:22:450:40 | "Exact tuple: {:?}\\n" | &T | {EXTERNAL LOCATION} | str |
 | pattern_matching.rs:450:22:450:53 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | pattern_matching.rs:450:22:450:53 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | pattern_matching.rs:450:43:450:53 | exact_tuple |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:450:43:450:53 | exact_tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:450:43:450:53 | exact_tuple | 1 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:450:43:450:53 | exact_tuple | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:450:43:450:53 | exact_tuple | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:450:43:450:53 | exact_tuple | 2 | {EXTERNAL LOCATION} | f64 |
+| pattern_matching.rs:450:43:450:53 | exact_tuple | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:450:43:450:53 | exact_tuple | 1(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:450:43:450:53 | exact_tuple | 1(3) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:450:43:450:53 | exact_tuple | 2(3) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:450:43:450:53 | exact_tuple | 2(3) | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:452:9:452:17 | TuplePat |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:452:9:452:17 | TuplePat | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:452:9:452:17 | TuplePat | 1 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:452:9:452:17 | TuplePat | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:452:9:452:17 | TuplePat | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:452:9:452:17 | TuplePat | 2 | {EXTERNAL LOCATION} | f64 |
+| pattern_matching.rs:452:9:452:17 | TuplePat | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:452:9:452:17 | TuplePat | 1(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:452:9:452:17 | TuplePat | 1(3) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:452:9:452:17 | TuplePat | 2(3) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:452:9:452:17 | TuplePat | 2(3) | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:452:10:452:10 | a |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:452:13:452:13 | b |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:452:13:452:13 | b |  | {EXTERNAL LOCATION} | i64 |
@@ -5119,27 +5119,21 @@ inferType
 | pattern_matching.rs:456:70:456:79 | third_elem |  | {EXTERNAL LOCATION} | f32 |
 | pattern_matching.rs:456:70:456:79 | third_elem |  | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:461:11:461:15 | tuple |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:461:11:461:15 | tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:461:11:461:15 | tuple | 1 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:461:11:461:15 | tuple | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:461:11:461:15 | tuple | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:461:11:461:15 | tuple | 2 | {EXTERNAL LOCATION} | f64 |
+| pattern_matching.rs:461:11:461:15 | tuple | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:461:11:461:15 | tuple | 1(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:461:11:461:15 | tuple | 1(3) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:461:11:461:15 | tuple | 2(3) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:461:11:461:15 | tuple | 2(3) | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:462:9:462:19 | TuplePat |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:462:9:462:19 | TuplePat | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:462:9:462:19 | TuplePat | 1 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:462:9:462:19 | TuplePat | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:462:9:462:19 | TuplePat | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:462:9:462:19 | TuplePat | 2 | {EXTERNAL LOCATION} | f64 |
-| pattern_matching.rs:462:10:462:14 | first |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:462:17:462:18 | .. |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:462:17:462:18 | .. |  | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:463:17:463:27 | tuple_first |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:463:31:463:35 | first |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:462:9:462:19 | TuplePat | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:462:9:462:19 | TuplePat | 1(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:462:9:462:19 | TuplePat | 1(3) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:462:9:462:19 | TuplePat | 2(3) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:462:9:462:19 | TuplePat | 2(3) | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:464:22:464:40 | "First element: {}\\n" |  | file://:0:0:0:0 | & |
 | pattern_matching.rs:464:22:464:40 | "First element: {}\\n" | &T | {EXTERNAL LOCATION} | str |
 | pattern_matching.rs:464:22:464:53 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | pattern_matching.rs:464:22:464:53 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| pattern_matching.rs:464:43:464:53 | tuple_first |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:469:9:469:12 | unit |  | file://:0:0:0:0 | () |
 | pattern_matching.rs:469:16:469:17 | TupleExpr |  | file://:0:0:0:0 | () |
 | pattern_matching.rs:470:11:470:14 | unit |  | file://:0:0:0:0 | () |
@@ -5152,14 +5146,14 @@ inferType
 | pattern_matching.rs:473:22:473:51 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | pattern_matching.rs:473:42:473:51 | unit_value |  | file://:0:0:0:0 | () |
 | pattern_matching.rs:478:9:478:14 | single |  | file://:0:0:0:0 | (T_1) |
-| pattern_matching.rs:478:9:478:14 | single | 0 | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:478:9:478:14 | single | 0(1) | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:478:18:478:25 | TupleExpr |  | file://:0:0:0:0 | (T_1) |
-| pattern_matching.rs:478:18:478:25 | TupleExpr | 0 | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:478:18:478:25 | TupleExpr | 0(1) | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:478:19:478:23 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:479:11:479:16 | single |  | file://:0:0:0:0 | (T_1) |
-| pattern_matching.rs:479:11:479:16 | single | 0 | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:479:11:479:16 | single | 0(1) | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:480:9:480:12 | TuplePat |  | file://:0:0:0:0 | (T_1) |
-| pattern_matching.rs:480:9:480:12 | TuplePat | 0 | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:480:9:480:12 | TuplePat | 0(1) | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:480:10:480:10 | x |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:481:17:481:27 | single_elem |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:481:31:481:31 | x |  | {EXTERNAL LOCATION} | i32 |
@@ -5181,19 +5175,19 @@ inferType
 | pattern_matching.rs:494:22:494:61 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | pattern_matching.rs:494:51:494:61 | paren_bound |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:499:9:499:13 | tuple |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:499:9:499:13 | tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:499:9:499:13 | tuple | 1 | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:499:9:499:13 | tuple | 0(2) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:499:9:499:13 | tuple | 1(2) | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:499:17:499:28 | TupleExpr |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:499:17:499:28 | TupleExpr | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:499:17:499:28 | TupleExpr | 1 | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:499:17:499:28 | TupleExpr | 0(2) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:499:17:499:28 | TupleExpr | 1(2) | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:499:18:499:21 | 1i32 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:499:24:499:27 | 2i32 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:500:11:500:15 | tuple |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:500:11:500:15 | tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:500:11:500:15 | tuple | 1 | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:500:11:500:15 | tuple | 0(2) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:500:11:500:15 | tuple | 1(2) | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:501:9:501:16 | TuplePat |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:501:9:501:16 | TuplePat | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:501:9:501:16 | TuplePat | 1 | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:501:9:501:16 | TuplePat | 0(2) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:501:9:501:16 | TuplePat | 1(2) | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:501:10:501:10 | x |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:501:13:501:15 | (...) |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:501:14:501:14 | y |  | {EXTERNAL LOCATION} | i32 |
@@ -5426,80 +5420,61 @@ inferType
 | pattern_matching.rs:621:38:621:51 | range_or_value |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:623:9:623:9 | _ |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:628:9:628:13 | tuple |  | file://:0:0:0:0 | (T_4) |
-| pattern_matching.rs:628:9:628:13 | tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:628:9:628:13 | tuple | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:628:9:628:13 | tuple | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:628:9:628:13 | tuple | 3 | {EXTERNAL LOCATION} | u8 |
+| pattern_matching.rs:628:9:628:13 | tuple | 0(4) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:628:9:628:13 | tuple | 1(4) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:628:9:628:13 | tuple | 2(4) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:628:9:628:13 | tuple | 3(4) | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:628:17:628:41 | TupleExpr |  | file://:0:0:0:0 | (T_4) |
-| pattern_matching.rs:628:17:628:41 | TupleExpr | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:628:17:628:41 | TupleExpr | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:628:17:628:41 | TupleExpr | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:628:17:628:41 | TupleExpr | 3 | {EXTERNAL LOCATION} | u8 |
+| pattern_matching.rs:628:17:628:41 | TupleExpr | 0(4) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:628:17:628:41 | TupleExpr | 1(4) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:628:17:628:41 | TupleExpr | 2(4) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:628:17:628:41 | TupleExpr | 3(4) | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:628:18:628:21 | 1i32 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:628:24:628:27 | 2i64 |  | {EXTERNAL LOCATION} | i64 |
 | pattern_matching.rs:628:30:628:35 | 3.0f32 |  | {EXTERNAL LOCATION} | f32 |
 | pattern_matching.rs:628:38:628:40 | 4u8 |  | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:631:11:631:15 | tuple |  | file://:0:0:0:0 | (T_4) |
-| pattern_matching.rs:631:11:631:15 | tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:631:11:631:15 | tuple | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:631:11:631:15 | tuple | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:631:11:631:15 | tuple | 3 | {EXTERNAL LOCATION} | u8 |
+| pattern_matching.rs:631:11:631:15 | tuple | 0(4) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:631:11:631:15 | tuple | 1(4) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:631:11:631:15 | tuple | 2(4) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:631:11:631:15 | tuple | 3(4) | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:632:9:632:19 | TuplePat |  | file://:0:0:0:0 | (T_4) |
-| pattern_matching.rs:632:9:632:19 | TuplePat | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:632:9:632:19 | TuplePat | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:632:9:632:19 | TuplePat | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:632:9:632:19 | TuplePat | 3 | {EXTERNAL LOCATION} | u8 |
-| pattern_matching.rs:632:10:632:14 | first |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:632:17:632:18 | .. |  | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:633:17:633:26 | rest_first |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:633:30:633:34 | first |  | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:632:9:632:19 | TuplePat | 0(4) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:632:9:632:19 | TuplePat | 1(4) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:632:9:632:19 | TuplePat | 2(4) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:632:9:632:19 | TuplePat | 3(4) | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:634:22:634:42 | "First with rest: {}\\n" |  | file://:0:0:0:0 | & |
 | pattern_matching.rs:634:22:634:42 | "First with rest: {}\\n" | &T | {EXTERNAL LOCATION} | str |
 | pattern_matching.rs:634:22:634:54 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | pattern_matching.rs:634:22:634:54 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| pattern_matching.rs:634:45:634:54 | rest_first |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:638:11:638:15 | tuple |  | file://:0:0:0:0 | (T_4) |
-| pattern_matching.rs:638:11:638:15 | tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:638:11:638:15 | tuple | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:638:11:638:15 | tuple | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:638:11:638:15 | tuple | 3 | {EXTERNAL LOCATION} | u8 |
+| pattern_matching.rs:638:11:638:15 | tuple | 0(4) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:638:11:638:15 | tuple | 1(4) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:638:11:638:15 | tuple | 2(4) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:638:11:638:15 | tuple | 3(4) | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:639:9:639:18 | TuplePat |  | file://:0:0:0:0 | (T_4) |
-| pattern_matching.rs:639:9:639:18 | TuplePat | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:639:9:639:18 | TuplePat | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:639:9:639:18 | TuplePat | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:639:9:639:18 | TuplePat | 3 | {EXTERNAL LOCATION} | u8 |
-| pattern_matching.rs:639:10:639:11 | .. |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:639:14:639:17 | last |  | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:640:17:640:25 | rest_last |  | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:640:29:640:32 | last |  | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:639:9:639:18 | TuplePat | 0(4) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:639:9:639:18 | TuplePat | 1(4) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:639:9:639:18 | TuplePat | 2(4) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:639:9:639:18 | TuplePat | 3(4) | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:641:22:641:41 | "Last with rest: {}\\n" |  | file://:0:0:0:0 | & |
 | pattern_matching.rs:641:22:641:41 | "Last with rest: {}\\n" | &T | {EXTERNAL LOCATION} | str |
 | pattern_matching.rs:641:22:641:52 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | pattern_matching.rs:641:22:641:52 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| pattern_matching.rs:641:44:641:52 | rest_last |  | {EXTERNAL LOCATION} | i64 |
 | pattern_matching.rs:645:11:645:15 | tuple |  | file://:0:0:0:0 | (T_4) |
-| pattern_matching.rs:645:11:645:15 | tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:645:11:645:15 | tuple | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:645:11:645:15 | tuple | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:645:11:645:15 | tuple | 3 | {EXTERNAL LOCATION} | u8 |
+| pattern_matching.rs:645:11:645:15 | tuple | 0(4) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:645:11:645:15 | tuple | 1(4) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:645:11:645:15 | tuple | 2(4) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:645:11:645:15 | tuple | 3(4) | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:646:9:646:25 | TuplePat |  | file://:0:0:0:0 | (T_4) |
-| pattern_matching.rs:646:9:646:25 | TuplePat | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:646:9:646:25 | TuplePat | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:646:9:646:25 | TuplePat | 2 | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:646:9:646:25 | TuplePat | 3 | {EXTERNAL LOCATION} | u8 |
-| pattern_matching.rs:646:10:646:14 | first |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:646:17:646:18 | .. |  | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:646:21:646:24 | last |  | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:647:17:647:26 | rest_start |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:647:30:647:34 | first |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:648:17:648:24 | rest_end |  | {EXTERNAL LOCATION} | f32 |
-| pattern_matching.rs:648:28:648:31 | last |  | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:646:9:646:25 | TuplePat | 0(4) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:646:9:646:25 | TuplePat | 1(4) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:646:9:646:25 | TuplePat | 2(4) | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:646:9:646:25 | TuplePat | 3(4) | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:649:22:649:45 | "First and last: {}, {}\\n" |  | file://:0:0:0:0 | & |
 | pattern_matching.rs:649:22:649:45 | "First and last: {}, {}\\n" | &T | {EXTERNAL LOCATION} | str |
 | pattern_matching.rs:649:22:649:67 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | pattern_matching.rs:649:22:649:67 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| pattern_matching.rs:649:48:649:57 | rest_start |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:649:60:649:67 | rest_end |  | {EXTERNAL LOCATION} | f32 |
 | pattern_matching.rs:654:9:654:13 | point |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:654:17:654:38 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:654:28:654:29 | 10 |  | {EXTERNAL LOCATION} | i32 |
@@ -5523,13 +5498,13 @@ inferType
 | pattern_matching.rs:682:21:682:25 | 10i32 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:682:28:682:28 | x |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:687:9:687:20 | complex_data |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:687:9:687:20 | complex_data | 0 | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:687:9:687:20 | complex_data | 1 | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:687:9:687:20 | complex_data | 1.T | pattern_matching.rs:142:1:143:25 | Color |
+| pattern_matching.rs:687:9:687:20 | complex_data | 0(2) | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:687:9:687:20 | complex_data | 1(2) | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:687:9:687:20 | complex_data | 1(2).T | pattern_matching.rs:142:1:143:25 | Color |
 | pattern_matching.rs:687:24:687:79 | TupleExpr |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:687:24:687:79 | TupleExpr | 0 | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:687:24:687:79 | TupleExpr | 1 | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:687:24:687:79 | TupleExpr | 1.T | pattern_matching.rs:142:1:143:25 | Color |
+| pattern_matching.rs:687:24:687:79 | TupleExpr | 0(2) | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:687:24:687:79 | TupleExpr | 1(2) | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:687:24:687:79 | TupleExpr | 1(2).T | pattern_matching.rs:142:1:143:25 | Color |
 | pattern_matching.rs:687:25:687:44 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:687:36:687:36 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:687:42:687:42 | 2 |  | {EXTERNAL LOCATION} | i32 |
@@ -5543,13 +5518,13 @@ inferType
 | pattern_matching.rs:687:76:687:76 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:687:76:687:76 | 0 |  | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:689:11:689:22 | complex_data |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:689:11:689:22 | complex_data | 0 | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:689:11:689:22 | complex_data | 1 | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:689:11:689:22 | complex_data | 1.T | pattern_matching.rs:142:1:143:25 | Color |
+| pattern_matching.rs:689:11:689:22 | complex_data | 0(2) | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:689:11:689:22 | complex_data | 1(2) | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:689:11:689:22 | complex_data | 1(2).T | pattern_matching.rs:142:1:143:25 | Color |
 | pattern_matching.rs:691:9:691:61 | TuplePat |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:691:9:691:61 | TuplePat | 0 | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:691:9:691:61 | TuplePat | 1 | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:691:9:691:61 | TuplePat | 1.T | pattern_matching.rs:142:1:143:25 | Color |
+| pattern_matching.rs:691:9:691:61 | TuplePat | 0(2) | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:691:9:691:61 | TuplePat | 1(2) | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:691:9:691:61 | TuplePat | 1(2).T | pattern_matching.rs:142:1:143:25 | Color |
 | pattern_matching.rs:691:10:691:26 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:691:21:691:21 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:691:24:691:24 | y |  | {EXTERNAL LOCATION} | i32 |
@@ -5574,21 +5549,21 @@ inferType
 | pattern_matching.rs:697:27:697:34 | nested_g |  | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:697:37:697:44 | nested_b |  | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:701:9:701:41 | TuplePat |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:701:9:701:41 | TuplePat | 0 | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:701:9:701:41 | TuplePat | 1 | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:701:9:701:41 | TuplePat | 1.T | pattern_matching.rs:142:1:143:25 | Color |
+| pattern_matching.rs:701:9:701:41 | TuplePat | 0(2) | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:701:9:701:41 | TuplePat | 1(2) | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:701:9:701:41 | TuplePat | 1(2).T | pattern_matching.rs:142:1:143:25 | Color |
 | pattern_matching.rs:701:9:701:71 | ... \| ... |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:701:9:701:71 | ... \| ... | 0 | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:701:9:701:71 | ... \| ... | 1 | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:701:9:701:71 | ... \| ... | 1.T | pattern_matching.rs:142:1:143:25 | Color |
+| pattern_matching.rs:701:9:701:71 | ... \| ... | 0(2) | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:701:9:701:71 | ... \| ... | 1(2) | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:701:9:701:71 | ... \| ... | 1(2).T | pattern_matching.rs:142:1:143:25 | Color |
 | pattern_matching.rs:701:10:701:24 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:701:18:701:18 | x |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:701:27:701:40 | ...::None |  | pattern_matching.rs:152:1:156:1 | MyOption |
 | pattern_matching.rs:701:27:701:40 | ...::None | T | pattern_matching.rs:142:1:143:25 | Color |
 | pattern_matching.rs:701:45:701:71 | TuplePat |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:701:45:701:71 | TuplePat | 0 | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:701:45:701:71 | TuplePat | 1 | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:701:45:701:71 | TuplePat | 1.T | pattern_matching.rs:142:1:143:25 | Color |
+| pattern_matching.rs:701:45:701:71 | TuplePat | 0(2) | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:701:45:701:71 | TuplePat | 1(2) | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:701:45:701:71 | TuplePat | 1(2).T | pattern_matching.rs:142:1:143:25 | Color |
 | pattern_matching.rs:701:46:701:67 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:701:57:701:57 | x |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:701:61:701:61 | 0 |  | {EXTERNAL LOCATION} | i32 |
@@ -5602,25 +5577,25 @@ inferType
 | pattern_matching.rs:703:22:703:65 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | pattern_matching.rs:703:53:703:65 | alt_complex_x |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:706:9:706:13 | other |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:706:9:706:13 | other | 0 | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:706:9:706:13 | other | 1 | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:706:9:706:13 | other | 1.T | pattern_matching.rs:142:1:143:25 | Color |
+| pattern_matching.rs:706:9:706:13 | other | 0(2) | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:706:9:706:13 | other | 1(2) | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:706:9:706:13 | other | 1(2).T | pattern_matching.rs:142:1:143:25 | Color |
 | pattern_matching.rs:707:17:707:29 | other_complex |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:707:17:707:29 | other_complex | 0 | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:707:17:707:29 | other_complex | 1 | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:707:17:707:29 | other_complex | 1.T | pattern_matching.rs:142:1:143:25 | Color |
+| pattern_matching.rs:707:17:707:29 | other_complex | 0(2) | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:707:17:707:29 | other_complex | 1(2) | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:707:17:707:29 | other_complex | 1(2).T | pattern_matching.rs:142:1:143:25 | Color |
 | pattern_matching.rs:707:33:707:37 | other |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:707:33:707:37 | other | 0 | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:707:33:707:37 | other | 1 | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:707:33:707:37 | other | 1.T | pattern_matching.rs:142:1:143:25 | Color |
+| pattern_matching.rs:707:33:707:37 | other | 0(2) | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:707:33:707:37 | other | 1(2) | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:707:33:707:37 | other | 1(2).T | pattern_matching.rs:142:1:143:25 | Color |
 | pattern_matching.rs:708:22:708:47 | "Other complex data: {:?}\\n" |  | file://:0:0:0:0 | & |
 | pattern_matching.rs:708:22:708:47 | "Other complex data: {:?}\\n" | &T | {EXTERNAL LOCATION} | str |
 | pattern_matching.rs:708:22:708:62 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | pattern_matching.rs:708:22:708:62 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | pattern_matching.rs:708:50:708:62 | other_complex |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:708:50:708:62 | other_complex | 0 | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:708:50:708:62 | other_complex | 1 | pattern_matching.rs:152:1:156:1 | MyOption |
-| pattern_matching.rs:708:50:708:62 | other_complex | 1.T | pattern_matching.rs:142:1:143:25 | Color |
+| pattern_matching.rs:708:50:708:62 | other_complex | 0(2) | pattern_matching.rs:135:1:140:1 | Point |
+| pattern_matching.rs:708:50:708:62 | other_complex | 1(2) | pattern_matching.rs:152:1:156:1 | MyOption |
+| pattern_matching.rs:708:50:708:62 | other_complex | 1(2).T | pattern_matching.rs:142:1:143:25 | Color |
 | pattern_matching.rs:715:9:715:13 | point |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:715:17:715:38 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:715:28:715:29 | 10 |  | {EXTERNAL LOCATION} | i32 |
@@ -5634,27 +5609,27 @@ inferType
 | pattern_matching.rs:718:9:718:13 | let_y |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:718:17:718:17 | y |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:720:9:720:13 | tuple |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:720:9:720:13 | tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:720:9:720:13 | tuple | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:720:9:720:13 | tuple | 2 | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:720:9:720:13 | tuple | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:720:9:720:13 | tuple | 1(3) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:720:9:720:13 | tuple | 2(3) | {EXTERNAL LOCATION} | f32 |
 | pattern_matching.rs:720:17:720:36 | TupleExpr |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:720:17:720:36 | TupleExpr | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:720:17:720:36 | TupleExpr | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:720:17:720:36 | TupleExpr | 2 | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:720:17:720:36 | TupleExpr | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:720:17:720:36 | TupleExpr | 1(3) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:720:17:720:36 | TupleExpr | 2(3) | {EXTERNAL LOCATION} | f32 |
 | pattern_matching.rs:720:18:720:21 | 1i32 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:720:24:720:27 | 2i64 |  | {EXTERNAL LOCATION} | i64 |
 | pattern_matching.rs:720:30:720:35 | 3.0f32 |  | {EXTERNAL LOCATION} | f32 |
 | pattern_matching.rs:721:9:721:17 | TuplePat |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:721:9:721:17 | TuplePat | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:721:9:721:17 | TuplePat | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:721:9:721:17 | TuplePat | 2 | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:721:9:721:17 | TuplePat | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:721:9:721:17 | TuplePat | 1(3) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:721:9:721:17 | TuplePat | 2(3) | {EXTERNAL LOCATION} | f32 |
 | pattern_matching.rs:721:10:721:10 | a |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:721:13:721:13 | b |  | {EXTERNAL LOCATION} | i64 |
 | pattern_matching.rs:721:16:721:16 | c |  | {EXTERNAL LOCATION} | f32 |
 | pattern_matching.rs:721:21:721:25 | tuple |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:721:21:721:25 | tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:721:21:721:25 | tuple | 1 | {EXTERNAL LOCATION} | i64 |
-| pattern_matching.rs:721:21:721:25 | tuple | 2 | {EXTERNAL LOCATION} | f32 |
+| pattern_matching.rs:721:21:721:25 | tuple | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:721:21:721:25 | tuple | 1(3) | {EXTERNAL LOCATION} | i64 |
+| pattern_matching.rs:721:21:721:25 | tuple | 2(3) | {EXTERNAL LOCATION} | f32 |
 | pattern_matching.rs:722:9:722:13 | let_a |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:722:17:722:17 | a |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:723:9:723:13 | let_b |  | {EXTERNAL LOCATION} | i64 |
@@ -5710,15 +5685,15 @@ inferType
 | pattern_matching.rs:750:30:750:30 | x |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:750:33:750:33 | y |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:750:59:754:5 | { ... } |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:750:59:754:5 | { ... } | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:750:59:754:5 | { ... } | 1 | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:750:59:754:5 | { ... } | 0(2) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:750:59:754:5 | { ... } | 1(2) | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:751:13:751:19 | param_x |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:751:23:751:23 | x |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:752:13:752:19 | param_y |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:752:23:752:23 | y |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:753:9:753:26 | TupleExpr |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:753:9:753:26 | TupleExpr | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:753:9:753:26 | TupleExpr | 1 | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:753:9:753:26 | TupleExpr | 0(2) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:753:9:753:26 | TupleExpr | 1(2) | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:753:10:753:16 | param_x |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:753:19:753:25 | param_y |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:756:22:756:35 | Color(...) |  | pattern_matching.rs:142:1:143:25 | Color |
@@ -5730,22 +5705,22 @@ inferType
 | pattern_matching.rs:757:23:757:23 | r |  | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:758:9:758:15 | param_r |  | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:761:22:761:38 | TuplePat |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:761:22:761:38 | TuplePat | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:761:22:761:38 | TuplePat | 1 | {EXTERNAL LOCATION} | f64 |
-| pattern_matching.rs:761:22:761:38 | TuplePat | 2 | {EXTERNAL LOCATION} | bool |
+| pattern_matching.rs:761:22:761:38 | TuplePat | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:761:22:761:38 | TuplePat | 1(3) | {EXTERNAL LOCATION} | f64 |
+| pattern_matching.rs:761:22:761:38 | TuplePat | 2(3) | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:761:23:761:27 | first |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:761:30:761:30 | _ |  | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:761:33:761:37 | third |  | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:761:74:765:5 | { ... } |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:761:74:765:5 | { ... } | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:761:74:765:5 | { ... } | 1 | {EXTERNAL LOCATION} | bool |
+| pattern_matching.rs:761:74:765:5 | { ... } | 0(2) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:761:74:765:5 | { ... } | 1(2) | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:762:13:762:23 | param_first |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:762:27:762:31 | first |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:763:13:763:23 | param_third |  | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:763:27:763:31 | third |  | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:764:9:764:34 | TupleExpr |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:764:9:764:34 | TupleExpr | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:764:9:764:34 | TupleExpr | 1 | {EXTERNAL LOCATION} | bool |
+| pattern_matching.rs:764:9:764:34 | TupleExpr | 0(2) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:764:9:764:34 | TupleExpr | 1(2) | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:764:10:764:20 | param_first |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:764:23:764:33 | param_third |  | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:768:9:768:13 | point |  | pattern_matching.rs:135:1:140:1 | Point |
@@ -5753,11 +5728,11 @@ inferType
 | pattern_matching.rs:768:28:768:28 | 5 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:768:34:768:35 | 10 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:769:9:769:17 | extracted |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:769:9:769:17 | extracted | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:769:9:769:17 | extracted | 1 | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:769:9:769:17 | extracted | 0(2) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:769:9:769:17 | extracted | 1(2) | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:769:21:769:40 | extract_point(...) |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:769:21:769:40 | extract_point(...) | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:769:21:769:40 | extract_point(...) | 1 | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:769:21:769:40 | extract_point(...) | 0(2) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:769:21:769:40 | extract_point(...) | 1(2) | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:769:35:769:39 | point |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:771:9:771:13 | color |  | pattern_matching.rs:142:1:143:25 | Color |
 | pattern_matching.rs:771:17:771:35 | Color(...) |  | pattern_matching.rs:142:1:143:25 | Color |
@@ -5771,26 +5746,26 @@ inferType
 | pattern_matching.rs:772:15:772:34 | extract_color(...) |  | {EXTERNAL LOCATION} | u8 |
 | pattern_matching.rs:772:29:772:33 | color |  | pattern_matching.rs:142:1:143:25 | Color |
 | pattern_matching.rs:774:9:774:13 | tuple |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:774:9:774:13 | tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:774:9:774:13 | tuple | 1 | {EXTERNAL LOCATION} | f64 |
-| pattern_matching.rs:774:9:774:13 | tuple | 2 | {EXTERNAL LOCATION} | bool |
+| pattern_matching.rs:774:9:774:13 | tuple | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:774:9:774:13 | tuple | 1(3) | {EXTERNAL LOCATION} | f64 |
+| pattern_matching.rs:774:9:774:13 | tuple | 2(3) | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:774:17:774:38 | TupleExpr |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:774:17:774:38 | TupleExpr | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:774:17:774:38 | TupleExpr | 1 | {EXTERNAL LOCATION} | f64 |
-| pattern_matching.rs:774:17:774:38 | TupleExpr | 2 | {EXTERNAL LOCATION} | bool |
+| pattern_matching.rs:774:17:774:38 | TupleExpr | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:774:17:774:38 | TupleExpr | 1(3) | {EXTERNAL LOCATION} | f64 |
+| pattern_matching.rs:774:17:774:38 | TupleExpr | 2(3) | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:774:18:774:22 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:774:25:774:31 | 3.14f64 |  | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:774:34:774:37 | true |  | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:775:9:775:23 | tuple_extracted |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:775:9:775:23 | tuple_extracted | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:775:9:775:23 | tuple_extracted | 1 | {EXTERNAL LOCATION} | bool |
+| pattern_matching.rs:775:9:775:23 | tuple_extracted | 0(2) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:775:9:775:23 | tuple_extracted | 1(2) | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:775:27:775:46 | extract_tuple(...) |  | file://:0:0:0:0 | (T_2) |
-| pattern_matching.rs:775:27:775:46 | extract_tuple(...) | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:775:27:775:46 | extract_tuple(...) | 1 | {EXTERNAL LOCATION} | bool |
+| pattern_matching.rs:775:27:775:46 | extract_tuple(...) | 0(2) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:775:27:775:46 | extract_tuple(...) | 1(2) | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:775:41:775:45 | tuple |  | file://:0:0:0:0 | (T_3) |
-| pattern_matching.rs:775:41:775:45 | tuple | 0 | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:775:41:775:45 | tuple | 1 | {EXTERNAL LOCATION} | f64 |
-| pattern_matching.rs:775:41:775:45 | tuple | 2 | {EXTERNAL LOCATION} | bool |
+| pattern_matching.rs:775:41:775:45 | tuple | 0(3) | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:775:41:775:45 | tuple | 1(3) | {EXTERNAL LOCATION} | f64 |
+| pattern_matching.rs:775:41:775:45 | tuple | 2(3) | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:781:23:781:42 | (...) |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:781:23:781:42 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:781:34:781:34 | 1 |  | {EXTERNAL LOCATION} | i32 |
