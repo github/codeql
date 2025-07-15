@@ -1285,7 +1285,7 @@ module Opcode {
   }
 
   /**
-   * The `Opcode` for a `TypeidInstruction`.
+   * The `Opcode` for a `TypeidExprInstruction`.
    *
    * See the `TypeidExprInstruction` documentation for more details.
    */
