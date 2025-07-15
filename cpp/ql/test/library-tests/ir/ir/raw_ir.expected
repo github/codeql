@@ -38102,3 +38102,29 @@ try_except.cpp:
 #   54|     v54_1(void) = NoOp       : 
 #   44|     v44_9(void) = ReturnVoid : 
 #-----|   Goto -> Block 1
+
+type_info_test.cpp:
+#    3| void type_info_test(int)
+#    3|   Block 0
+#    3|     v3_1(void)               = EnterFunction          : 
+#    3|     mu3_2(unknown)           = AliasedDefinition      : 
+#    3|     mu3_3(unknown)           = InitializeNonLocal     : 
+#    3|     r3_4(glval<int>)         = VariableAddress[x]     : 
+#    3|     mu3_5(int)               = InitializeParameter[x] : &:r3_4
+#    4|     r4_1(glval<type_info &>) = VariableAddress[t1]    : 
+
+#    4|   Block 1
+#    4|     r4_2(glval<int>) = VariableAddress[x] : 
+
+#    4|   Block 2
+#    4|     r4_3(type_info &)        = CopyValue           : 
+#    4|     mu4_4(type_info &)       = Store[t1]           : &:r4_1, r4_3
+#    5|     r5_1(glval<type_info &>) = VariableAddress[t2] : 
+
+#    5|   Block 3
+#    5|     r5_2(type_info &)  = CopyValue    : 
+#    5|     mu5_3(type_info &) = Store[t2]    : &:r5_1, r5_2
+#    6|     v6_1(void)         = NoOp         : 
+#    3|     v3_6(void)         = ReturnVoid   : 
+#    3|     v3_7(void)         = AliasedUse   : ~m?
+#    3|     v3_8(void)         = ExitFunction : 
