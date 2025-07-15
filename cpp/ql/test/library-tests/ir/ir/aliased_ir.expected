@@ -39973,3 +39973,14 @@ try_except.cpp:
 
 #   44|   Block 7
 #   44|     v44_10(void) = Unreached : 
+
+type_info_test.cpp:
+#    3| void type_info_test(int)
+#    3|   Block 0
+#    3|     v3_1(void)               = EnterFunction          : 
+#    3|     m3_2(unknown)            = AliasedDefinition      : 
+#    3|     m3_3(unknown)            = InitializeNonLocal     : 
+#    3|     m3_4(unknown)            = Chi                    : total:m3_2, partial:m3_3
+#    3|     r3_5(glval<int>)         = VariableAddress[x]     : 
+#    3|     m3_6(int)                = InitializeParameter[x] : &:r3_5
+#    4|     r4_1(glval<type_info &>) = VariableAddress[t1]    : 
