@@ -139,7 +139,7 @@ class ValueOrRefType extends Type, Attributable, @value_or_ref_type {
   ValueOrRefType getASubType() { result.getABaseType() = this }
 
   /** Gets an immediate supertype of this type, if any. */
-  ValueOrRefType getASupertype() { this.getABaseType() = result }
+  ValueOrRefType getASuperType() { this.getABaseType() = result }
 
   /** Gets a member of this type, if any. */
   Member getAMember() { result.getDeclaringType() = this }
