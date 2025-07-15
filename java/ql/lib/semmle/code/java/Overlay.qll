@@ -74,7 +74,7 @@ private predicate discardReferableLocatable(@locatable el) {
 }
 
 overlay[local]
-private predicate baseConfigLocatable(@configLocatable l) { not isOverlay() and l = l }
+private predicate baseConfigLocatable(@configLocatable l) { not isOverlay() and exists(l) }
 
 overlay[local]
 private predicate overlayHasConfigLocatables() {
