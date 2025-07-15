@@ -10,7 +10,7 @@ getReferencedCallable
 | Test.java:54:23:54:36 | ...::... | java.lang.Object.toString |
 | Test.java:55:23:55:36 | ...::... | java.lang.Object.hashCode |
 | Test.java:56:23:56:33 | ...::... | java.lang.Object.clone |
-| Test.java:57:23:57:59 | ...::... | java.lang.Object.toString |
+| Test.java:57:23:57:59 | ...::... | Test$Supplier.toString |
 | Test.java:57:35:57:48 | ...::... | java.lang.Object.toString |
 | Test.java:60:23:60:36 | ...::... | java.lang.Object.toString |
 | Test.java:62:23:62:40 | ...::... | Test.staticMethod |
