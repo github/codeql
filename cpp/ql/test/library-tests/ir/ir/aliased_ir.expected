@@ -39983,4 +39983,17 @@ type_info_test.cpp:
 #    3|     m3_4(unknown)            = Chi                    : total:m3_2, partial:m3_3
 #    3|     r3_5(glval<int>)         = VariableAddress[x]     : 
 #    3|     m3_6(int)                = InitializeParameter[x] : &:r3_5
+#    3|     m3_7(unknown)            = Chi                    : total:m3_4, partial:m3_6
 #    4|     r4_1(glval<type_info &>) = VariableAddress[t1]    : 
+#    4|     r4_2(glval<int>)         = VariableAddress[x]     : 
+#    4|     r4_3(glval<type_info>)   = TypeidExpr             : r4_2
+#    4|     r4_4(type_info &)        = CopyValue              : r4_3
+#    4|     m4_5(type_info &)        = Store[t1]              : &:r4_1, r4_4
+#    5|     r5_1(glval<type_info &>) = VariableAddress[t2]    : 
+#    5|     r5_2(glval<type_info>)   = TypeidType             : 
+#    5|     r5_3(type_info &)        = CopyValue              : r5_2
+#    5|     m5_4(type_info &)        = Store[t2]              : &:r5_1, r5_3
+#    6|     v6_1(void)               = NoOp                   : 
+#    3|     v3_8(void)               = ReturnVoid             : 
+#    3|     v3_9(void)               = AliasedUse             : m3_3
+#    3|     v3_10(void)              = ExitFunction           : 
