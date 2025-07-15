@@ -140,7 +140,7 @@ cargo_build_script(
     version = "0.9.1",
     visibility = ["//visibility:private"],
     deps = [
-        "@vendor_ts__autocfg-1.4.0//:autocfg",
+        "@vendor_ts__autocfg-1.5.0//:autocfg",
     ],
 )
 
