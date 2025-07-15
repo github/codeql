@@ -4,6 +4,7 @@ import codeql.actions.DataFlow
 import codeql.actions.dataflow.FlowSources
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.UntrustedCheckoutQuery
+import codeql.actions.security.ControlChecks
 
 string unzipRegexp() { result = "(unzip|tar)\\s+.*" }
 
@@ -316,6 +317,19 @@ private module ArtifactPoisoningConfig implements DataFlow::ConfigSig {
       pred.asExpr().(Step).getAFollowingStep() = run and
       succ.asExpr() = run.getScript() and
       exists(run.getScript().getAFileReadCommand())
+    )
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    exists(Event event | result = event.getLocation() |
+      inPrivilegedContext(sink.asExpr(), event) and
+      not exists(ControlCheck check | check.protects(sink.asExpr(), event, "artifact-poisoning"))
     )
   }
 }
