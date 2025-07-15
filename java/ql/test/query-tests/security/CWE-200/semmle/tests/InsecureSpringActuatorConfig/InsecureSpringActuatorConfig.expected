@@ -1,6 +1,4 @@
-#select
+| Version1.4-/bad/default/pom.xml:29:9:32:22 | dependency | Insecure configuration of Spring Boot Actuator exposes sensitive endpoints. |
 | Version1.4-/bad/false/pom.xml:29:9:32:22 | dependency | Insecure configuration of Spring Boot Actuator exposes sensitive endpoints. |
 | Version1.5/bad/pom.xml:29:9:32:22 | dependency | Insecure configuration of Spring Boot Actuator exposes sensitive endpoints. |
 | Version2+/bad/pom.xml:29:9:32:22 | dependency | Insecure configuration of Spring Boot Actuator exposes sensitive endpoints. |
-testFailures
-| Version1.4-/bad/default/pom.xml:32:23:32:39 |  $ Alert  | Missing result: Alert |
