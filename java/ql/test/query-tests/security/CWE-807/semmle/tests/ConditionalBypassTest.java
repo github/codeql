@@ -16,18 +16,18 @@ class ConditionalBypassTest {
 		String user = request.getParameter("user");
 		String password = request.getParameter("password");
 
-		String isAdmin = request.getParameter("isAdmin");
+		String isAdmin = request.getParameter("isAdmin"); // $ Source
 
 		// BAD: login is only executed if isAdmin is false, but isAdmin
 		// is controlled by the user
-		if (isAdmin == "false") // $ hasConditionalBypassTest
-			login(user, password);
+		if (isAdmin == "false") // $ Sink
+			login(user, password); // $ Alert
 
 		Cookie adminCookie = getCookies()[0];
 		// BAD: login is only executed if the cookie value is false, but the cookie
 		// is controlled by the user
-		if (adminCookie.getValue().equals("false")) // $ hasConditionalBypassTest
-			login(user, password);
+		if (adminCookie.getValue().equals("false")) // $ Source Sink
+			login(user, password); // $ Alert
 
 		// GOOD: both methods are conditionally executed, but they probably
 		// both perform the security-critical action
@@ -38,7 +38,7 @@ class ConditionalBypassTest {
 		}
 
 		// FALSE NEGATIVE: we have no way of telling that the skipped method is sensitive
-		if (adminCookie.getValue() == "false") // $ MISSING: hasConditionalBypassTest
+		if (adminCookie.getValue() == "false") // $ MISSING: Alert
 			doReallyImportantSecurityWork();
 
 		InetAddress local = InetAddress.getLocalHost();
@@ -73,8 +73,8 @@ class ConditionalBypassTest {
 	public static void test2(String user, String password) {
 		Cookie adminCookie = getCookies()[0];
 		// BAD: login may happen once or twice
-		if (adminCookie.getValue() == "false") // $ hasConditionalBypassTest
-			login(user, password);
+		if (adminCookie.getValue() == "false") // $ Source Sink
+			login(user, password); // $ Alert
 		else {
 			// do something else
 			doIt();
@@ -85,8 +85,8 @@ class ConditionalBypassTest {
 	public static void test3(String user, String password) {
 		Cookie adminCookie = getCookies()[0];
 		// BAD: login may not happen
-		if (adminCookie.getValue() == "false") // $ hasConditionalBypassTest
-			login(user, password);
+		if (adminCookie.getValue() == "false") // $ Source Sink
+			login(user, password); // $ Alert
 		else {
 			// do something else
 			doIt();
@@ -130,8 +130,8 @@ class ConditionalBypassTest {
 	public static void test7(String user, String password) {
 		Cookie adminCookie = getCookies()[0];
 		// BAD: login is bypasseable
-		if (adminCookie.getValue() == "false") { // $ hasConditionalBypassTest
-			login(user, password);
+		if (adminCookie.getValue() == "false") { // $ Source Sink
+			login(user, password); // $ Alert
 			return;
 		} else {
 			doIt();
@@ -142,8 +142,8 @@ class ConditionalBypassTest {
 		Cookie adminCookie = getCookies()[0];
 		{
 			// BAD: login may not happen
-			if (adminCookie.getValue() == "false") // $ hasConditionalBypassTest
-				authorize(user, password);
+			if (adminCookie.getValue() == "false") // $ Source Sink
+				authorize(user, password); // $ Alert
 			else {
 				// do something else
 				doIt();
