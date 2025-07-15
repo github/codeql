@@ -3616,73 +3616,6 @@ impl From<trap::Label<AsmConst>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
-pub struct AsmExpr {
-    pub id: trap::TrapId<AsmExpr>,
-    pub asm_pieces: Vec<trap::Label<AsmPiece>>,
-    pub attrs: Vec<trap::Label<Attr>>,
-    pub template: Vec<trap::Label<Expr>>,
-}
-
-impl trap::TrapEntry for AsmExpr {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("asm_exprs", vec![id.into()]);
-        for (i, v) in self.asm_pieces.into_iter().enumerate() {
-            out.add_tuple("asm_expr_asm_pieces", vec![id.into(), i.into(), v.into()]);
-        }
-        for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("asm_expr_attrs", vec![id.into(), i.into(), v.into()]);
-        }
-        for (i, v) in self.template.into_iter().enumerate() {
-            out.add_tuple("asm_expr_templates", vec![id.into(), i.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for AsmExpr {
-    fn class_name() -> &'static str { "AsmExpr" }
-}
-
-impl From<trap::Label<AsmExpr>> for trap::Label<Expr> {
-    fn from(value: trap::Label<AsmExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of Expr
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<AsmExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<AsmExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<AsmExpr>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<AsmExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<AsmExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<AsmExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
 pub struct AsmLabel {
     pub id: trap::TrapId<AsmLabel>,
     pub block_expr: Option<trap::Label<BlockExpr>>,
@@ -8825,6 +8758,100 @@ impl From<trap::Label<Adt>> for trap::Label<Element> {
 impl From<trap::Label<Adt>> for trap::Label<Addressable> {
     fn from(value: trap::Label<Adt>) -> Self {
         // SAFETY: this is safe because in the dbscheme Adt is a subclass of Addressable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct AsmExpr {
+    pub id: trap::TrapId<AsmExpr>,
+    pub asm_pieces: Vec<trap::Label<AsmPiece>>,
+    pub attrs: Vec<trap::Label<Attr>>,
+    pub template: Vec<trap::Label<Expr>>,
+}
+
+impl trap::TrapEntry for AsmExpr {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("asm_exprs", vec![id.into()]);
+        for (i, v) in self.asm_pieces.into_iter().enumerate() {
+            out.add_tuple("asm_expr_asm_pieces", vec![id.into(), i.into(), v.into()]);
+        }
+        for (i, v) in self.attrs.into_iter().enumerate() {
+            out.add_tuple("asm_expr_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        for (i, v) in self.template.into_iter().enumerate() {
+            out.add_tuple("asm_expr_templates", vec![id.into(), i.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for AsmExpr {
+    fn class_name() -> &'static str { "AsmExpr" }
+}
+
+impl From<trap::Label<AsmExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<AsmExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<AsmExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<AsmExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<AsmExpr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<AsmExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<AsmExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<AsmExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<AsmExpr>> for trap::Label<Item> {
+    fn from(value: trap::Label<AsmExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of Item
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<AsmExpr>> for trap::Label<Stmt> {
+    fn from(value: trap::Label<AsmExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of Stmt
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<AsmExpr>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<AsmExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }

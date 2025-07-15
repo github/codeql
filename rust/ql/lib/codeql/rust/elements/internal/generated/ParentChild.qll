@@ -863,27 +863,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfAsmExpr(AsmExpr e, int index, string partialPredicateCall) {
-    exists(int n, int nAsmPiece, int nAttr, int nTemplate |
-      n = 0 and
-      nAsmPiece = n + 1 + max(int i | i = -1 or exists(e.getAsmPiece(i)) | i) and
-      nAttr = nAsmPiece + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nTemplate = nAttr + 1 + max(int i | i = -1 or exists(e.getTemplate(i)) | i) and
-      (
-        none()
-        or
-        result = e.getAsmPiece(index - n) and
-        partialPredicateCall = "AsmPiece(" + (index - n).toString() + ")"
-        or
-        result = e.getAttr(index - nAsmPiece) and
-        partialPredicateCall = "Attr(" + (index - nAsmPiece).toString() + ")"
-        or
-        result = e.getTemplate(index - nAttr) and
-        partialPredicateCall = "Template(" + (index - nAttr).toString() + ")"
-      )
-    )
-  }
-
   private Element getImmediateChildOfAsmLabel(AsmLabel e, int index, string partialPredicateCall) {
     exists(int n, int nBlockExpr |
       n = 0 and
@@ -2147,6 +2126,32 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfAsmExpr(AsmExpr e, int index, string partialPredicateCall) {
+    exists(int n, int nAttributeMacroExpansion, int nAsmPiece, int nAttr, int nTemplate |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAsmPiece = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAsmPiece(i)) | i) and
+      nAttr = nAsmPiece + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nTemplate = nAttr + 1 + max(int i | i = -1 or exists(e.getTemplate(i)) | i) and
+      (
+        none()
+        or
+        index = n and
+        result = e.getAttributeMacroExpansion() and
+        partialPredicateCall = "AttributeMacroExpansion()"
+        or
+        result = e.getAsmPiece(index - nAttributeMacroExpansion) and
+        partialPredicateCall = "AsmPiece(" + (index - nAttributeMacroExpansion).toString() + ")"
+        or
+        result = e.getAttr(index - nAsmPiece) and
+        partialPredicateCall = "Attr(" + (index - nAsmPiece).toString() + ")"
+        or
+        result = e.getTemplate(index - nAttr) and
+        partialPredicateCall = "Template(" + (index - nAttr).toString() + ")"
+      )
+    )
+  }
+
   private Element getImmediateChildOfBlockExpr(BlockExpr e, int index, string partialPredicateCall) {
     exists(int n, int nLabel, int nAttr, int nStmtList |
       n = 0 and
@@ -3153,8 +3158,6 @@ private module Impl {
     or
     result = getImmediateChildOfAsmConst(e, index, partialAccessor)
     or
-    result = getImmediateChildOfAsmExpr(e, index, partialAccessor)
-    or
     result = getImmediateChildOfAsmLabel(e, index, partialAccessor)
     or
     result = getImmediateChildOfAsmOperandNamed(e, index, partialAccessor)
@@ -3308,6 +3311,8 @@ private module Impl {
     result = getImmediateChildOfArrayListExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfArrayRepeatExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAsmExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBlockExpr(e, index, partialAccessor)
     or
