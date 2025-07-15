@@ -1,0 +1,3 @@
+query: Security/CWE/CWE-020/ExternalAPIsUsedWithUntrustedData.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
