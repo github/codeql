@@ -250,6 +250,12 @@ private Struct getRangeType(RangeExpr re) {
   result instanceof RangeToInclusiveStruct
 }
 
+/** A `let` statement with an annotation without any uses of the `_` type syntax. */
+predicate fullyAnnotatedLetStmt(LetStmt let) {
+  exists(let.getTypeRepr()) and
+  not exists(InferTypeRepr t | t.getParentNode*() = let.getTypeRepr())
+}
+
 /**
  * Holds if the type tree of `n1` at `prefix1` should be equal to the type tree
  * of `n2` at `prefix2` and type information should propagate in both directions
@@ -266,6 +272,7 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     )
     or
     exists(LetStmt let |
+      not fullyAnnotatedLetStmt(let) and
       let.getPat() = n1 and
       let.getInitializer() = n2
     )
@@ -352,15 +359,35 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
   )
 }
 
+/**
+ * Similar to `typeEquality` but we only want type information to flow along the
+ * equality from left to right. That is, the type of `n2` will be inferred from
+ * the type of `n1`, but not the other way around.
+ */
+private predicate directionalTypeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+  prefix1.isEmpty() and
+  prefix2.isEmpty() and
+  exists(LetStmt let |
+    fullyAnnotatedLetStmt(let) and
+    let.getPat() = n1 and
+    let.getInitializer() = n2
+  )
+}
+
 pragma[nomagic]
 private Type inferTypeEquality(AstNode n, TypePath path) {
   exists(TypePath prefix1, AstNode n2, TypePath prefix2, TypePath suffix |
     result = inferType(n2, prefix2.appendInverse(suffix)) and
     path = prefix1.append(suffix)
   |
+    // use type equality from right to left
     typeEquality(n, prefix1, n2, prefix2)
     or
+    // use type equality from left to right
     typeEquality(n2, prefix2, n, prefix1)
+    or
+    // use type equality from left to right
+    directionalTypeEquality(n2, prefix2, n, prefix1)
   )
 }
 
