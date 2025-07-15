@@ -121,7 +121,7 @@ Alvaro Muñoz &amp; Christian Schneider, RSAConference 2016:
 </li>
 <li>
 SnakeYaml documentation on deserialization:
-<a href="https://bitbucket.org/snakeyaml/snakeyaml/wiki/Documentation#markdown-header-loading-yaml">SnakeYaml deserialization</a>.
+<a href="https://bitbucket.org/snakeyaml/snakeyaml/wiki/Documentation#markdown-header-loading-yaml">SnakeYaml deserialization</a> (not updated for new behaviour in version 2.0).
 </li>
 <li>
 Hessian deserialization and related gadget chains:
