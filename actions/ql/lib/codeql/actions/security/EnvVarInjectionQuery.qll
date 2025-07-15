@@ -163,6 +163,40 @@ private module EnvVarInjectionConfig implements DataFlow::ConfigSig {
       exists(run.getScript().getAFileReadCommand())
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    // where clause from EnvVarInjectionCritical.ql
+    exists(Event event, RemoteFlowSource source | result = event.getLocation() |
+      inPrivilegedContext(sink.asExpr(), event) and
+      isSource(source) and
+      // exclude paths to file read sinks from non-artifact sources
+      (
+        // source is text
+        not source.getSourceType() = "artifact" and
+        not exists(ControlCheck check |
+          check.protects(sink.asExpr(), event, ["envvar-injection", "code-injection"])
+        )
+        or
+        // source is an artifact or a file from an untrusted checkout
+        source.getSourceType() = "artifact" and
+        not exists(ControlCheck check |
+          check
+              .protects(sink.asExpr(), event,
+                ["envvar-injection", "untrusted-checkout", "artifact-poisoning"])
+        ) and
+        (
+          sink instanceof EnvVarInjectionFromFileReadSink or
+          madSink(sink, "envvar-injection")
+        )
+      )
+    )
+  }
 }
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate an environment variable. */
