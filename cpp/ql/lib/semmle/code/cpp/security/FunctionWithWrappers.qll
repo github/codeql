@@ -37,7 +37,7 @@ private predicate wrapperFunctionStep(
   not target.isVirtual() and
   not source.isVirtual() and
   source.hasDefinition() and
-  exists(Call call, Expr arg, Parameter sourceParam |
+  exists(FunctionCall call, Expr arg, Parameter sourceParam |
     // there is a 'call' to 'target' with argument 'arg' at index 'targetParamIndex'
     target = resolveCall(call) and
     arg = call.getArgument(targetParamIndex) and
@@ -154,7 +154,7 @@ abstract class FunctionWithWrappers extends Function {
    * Whether 'arg' is an argument in a call to an outermost wrapper function of 'this' function.
    */
   predicate outermostWrapperFunctionCall(Expr arg, string callChain) {
-    exists(Function targetFunc, Call call, int argIndex |
+    exists(Function targetFunc, FunctionCall call, int argIndex |
       targetFunc = resolveCall(call) and
       this.wrapperFunction(targetFunc, argIndex, callChain) and
       (
