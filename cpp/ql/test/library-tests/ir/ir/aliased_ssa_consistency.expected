@@ -6,7 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| type_info_test.cpp:4:25:4:26 | VariableAddress: definition of t1 | Instruction 'VariableAddress: definition of t1' has no successors in function '$@'. | type_info_test.cpp:3:6:3:19 | void type_info_test(int) | void type_info_test(int) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
