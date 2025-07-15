@@ -50174,3 +50174,42 @@ try_except.cpp:
 #   52|                 Type = [IntType] int
 #   52|                 ValueCategory = prvalue(load)
 #   54|     getStmt(2): [ReturnStmt] return ...
+type_info_test.cpp:
+#    3| [TopLevelFunction] void type_info_test(int)
+#    3|   <params>: 
+#    3|     getParameter(0): [Parameter] x
+#    3|         Type = [IntType] int
+#    3|   getEntryPoint(): [BlockStmt] { ... }
+#    4|     getStmt(0): [DeclStmt] declaration
+#    4|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of t1
+#    4|           Type = [LValueReferenceType] const type_info &
+#    4|         getVariable().getInitializer(): [Initializer] initializer for t1
+#    4|           getExpr(): [TypeidOperator] typeid ...
+#    4|               Type = [SpecifiedType] const type_info
+#    4|               ValueCategory = lvalue
+#    4|             getExpr(): [VariableAccess] x
+#    4|                 Type = [IntType] int
+#    4|                 ValueCategory = lvalue
+#    4|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+#    4|               Type = [LValueReferenceType] const type_info &
+#    4|               ValueCategory = prvalue
+#    5|     getStmt(1): [DeclStmt] declaration
+#    5|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of t2
+#    5|           Type = [LValueReferenceType] const type_info &
+#    5|         getVariable().getInitializer(): [Initializer] initializer for t2
+#    5|           getExpr(): [TypeidOperator] typeid ...
+#    5|               Type = [SpecifiedType] const type_info
+#    5|               ValueCategory = lvalue
+#    5|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+#    5|               Type = [LValueReferenceType] const type_info &
+#    5|               ValueCategory = prvalue
+#    6|     getStmt(2): [ReturnStmt] return ...
+typeinfo:
+#    4| [CopyAssignmentOperator] std::type_info& std::type_info::operator=(std::type_info const&)
+#    4|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const type_info &
+#    4| [MoveAssignmentOperator] std::type_info& std::type_info::operator=(std::type_info&&)
+#    4|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] type_info &&

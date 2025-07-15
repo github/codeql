@@ -1,4 +1,6 @@
 missingOperand
+| type_info_test.cpp:4:30:4:38 | CopyValue: (reference to) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | type_info_test.cpp:3:6:3:19 | void type_info_test(int) | void type_info_test(int) |
+| type_info_test.cpp:5:30:5:40 | CopyValue: (reference to) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | type_info_test.cpp:3:6:3:19 | void type_info_test(int) | void type_info_test(int) |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
@@ -6,6 +8,9 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| type_info_test.cpp:4:25:4:26 | VariableAddress: definition of t1 | Instruction 'VariableAddress: definition of t1' has no successors in function '$@'. | type_info_test.cpp:3:6:3:19 | void type_info_test(int) | void type_info_test(int) |
+| type_info_test.cpp:4:37:4:37 | VariableAddress: x | Instruction 'VariableAddress: x' has no successors in function '$@'. | type_info_test.cpp:3:6:3:19 | void type_info_test(int) | void type_info_test(int) |
+| type_info_test.cpp:5:25:5:26 | VariableAddress: definition of t2 | Instruction 'VariableAddress: definition of t2' has no successors in function '$@'. | type_info_test.cpp:3:6:3:19 | void type_info_test(int) | void type_info_test(int) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -21,6 +26,8 @@ lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
 | ir.cpp:1535:8:1535:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1535:8:1535:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
+| type_info_test.cpp:4:25:4:26 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | type_info_test.cpp:3:6:3:19 | void type_info_test(int) | void type_info_test(int) |
+| type_info_test.cpp:5:25:5:26 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | type_info_test.cpp:3:6:3:19 | void type_info_test(int) | void type_info_test(int) |
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated
