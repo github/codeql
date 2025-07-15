@@ -93,6 +93,7 @@ private newtype TOpcode =
   TInlineAsm() or
   TUnreached() or
   TNewObj() or
+  TTypeid() or
   TTypeidExpr() or
   TTypeidType()
 
@@ -1282,6 +1283,15 @@ module Opcode {
    */
   class NewObj extends Opcode, TNewObj {
     final override string toString() { result = "NewObj" }
+  }
+
+  /**
+   * The `Opcode` for a `TypeidInstruction`.
+   *
+   * See the `TypeidInstruction` documentation for more details.
+   */
+  class Typeid extends Opcode, TTypeid {
+    final override string toString() { result = "Typeid" }
   }
 
   /**
