@@ -214,5 +214,5 @@ function false-positive-in-call-operator($d)
     $o = Read-Host "enter input"
     & unzip -o "$o" -d $d # GOOD
 
-    . "$o" # BAD [NOT DETECTED]
+    . "$o" # BAD
 }
