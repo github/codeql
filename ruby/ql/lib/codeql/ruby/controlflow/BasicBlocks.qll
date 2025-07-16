@@ -1,4 +1,6 @@
 /** Provides classes representing basic blocks. */
+overlay[local]
+module;
 
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST

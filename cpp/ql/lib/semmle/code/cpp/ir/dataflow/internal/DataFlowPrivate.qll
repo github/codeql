@@ -1382,16 +1382,89 @@ predicate neverSkipInPathGraph(Node n) {
   exists(n.asIndirectDefinition())
 }
 
-class LambdaCallKind = Unit;
+private newtype TLambdaCallKind =
+  TFunctionPointer() or
+  TFunctor()
+
+class LambdaCallKind extends TLambdaCallKind {
+  predicate isFunctionPointer() { this = TFunctionPointer() }
+
+  predicate isFunctor() { this = TFunctor() }
+
+  string toString() {
+    this.isFunctionPointer() and
+    result = "Function pointer kind"
+    or
+    this.isFunctor() and
+    result = "Functor kind"
+  }
+}
+
+private class ConstructorCallInstruction extends CallInstruction {
+  Cpp::Class constructedType;
+
+  ConstructorCallInstruction() {
+    this.getStaticCallTarget().(Cpp::Constructor).getDeclaringType() = constructedType
+  }
+
+  Cpp::Class getConstructedType() { result = constructedType }
+}
+
+private class OperatorCall extends Cpp::MemberFunction {
+  OperatorCall() { this.hasName("operator()") }
+}
+
+private predicate isFunctorCreationWithoutConstructor(Node creation, OperatorCall operator) {
+  exists(UninitializedInstruction init, Instruction dest |
+    // A construction of an object with no constructor. In this case we use
+    // the `UninitializedInstruction` as the creation node.
+    init = creation.asInstruction() and
+    dest = init.getDestinationAddress() and
+    not any(ConstructorCallInstruction constructorCall).getThisArgument() = dest and
+    operator.getDeclaringType() = init.getResultType()
+  )
+  or
+  // Workaround for an extractor bug. In this snippet:
+  // ```
+  // struct S { };
+  // void f(S);
+  // f(S());
+  // ```
+  // The expression `S()` is represented as a 0 literal in the database.
+  exists(ConstantValueInstruction constant |
+    constant.getValue() = "0" and
+    creation.asInstruction() = constant and
+    constant.getResultType() = operator.getDeclaringType()
+  )
+}
+
+private predicate isFunctorCreationWithConstructor(Node creation, OperatorCall operator) {
+  exists(DataFlowCall constructorCall, IndirectionPosition pos |
+    // A construction of an object with a constructor. In this case we use
+    // the post-update node of the qualifier
+    pos.getArgumentIndex() = -1 and
+    isArgumentNode(creation.(PostUpdateNode).getPreUpdateNode(), constructorCall, pos) and
+    operator.getDeclaringType() =
+      constructorCall.asCallInstruction().(ConstructorCallInstruction).getConstructedType()
+  )
+}
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-  creation.asInstruction().(FunctionAddressInstruction).getFunctionSymbol() = c.asSourceCallable() and
-  exists(kind)
+  kind.isFunctionPointer() and
+  creation.asInstruction().(FunctionAddressInstruction).getFunctionSymbol() = c.asSourceCallable()
+  or
+  kind.isFunctor() and
+  exists(OperatorCall operator | operator = c.asSourceCallable() |
+    isFunctorCreationWithoutConstructor(creation, operator)
+    or
+    isFunctorCreationWithConstructor(creation, operator)
+  )
 }
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  kind.isFunctionPointer() and
   (
     call.(SummaryCall).getReceiver() = receiver.(FlowSummaryNode).getSummaryNode()
     or
@@ -1400,8 +1473,15 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
     // has a result for `getStaticCallTarget`.
     not exists(call.getStaticCallTarget()) and
     call.asCallInstruction().getCallTargetOperand() = receiver.asOperand()
-  ) and
-  exists(kind)
+  )
+  or
+  kind.isFunctor() and
+  (
+    call.(SummaryCall).getReceiver() = receiver.(FlowSummaryNode).getSummaryNode()
+    or
+    not exists(call.getStaticCallTarget()) and
+    call.asCallInstruction().getThisArgumentOperand() = receiver.asOperand()
+  )
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */

@@ -11,3 +11,4 @@
 | WcharCharConversion.cpp:103:21:103:26 | buffer | Conversion from LPTSTR to LPWSTR. Use of invalid string can lead to undefined behavior. |
 | WcharCharConversion.cpp:106:21:106:26 | buffer | Conversion from LPTSTR to LPWSTR. Use of invalid string can lead to undefined behavior. |
 | WcharCharConversion.cpp:110:20:110:25 | buffer | Conversion from LPTSTR to LPWSTR. Use of invalid string can lead to undefined behavior. |
+| WcharCharConversion.cpp:130:34:130:36 | str | Conversion from const char * to const wchar_t *. Use of invalid string can lead to undefined behavior. |

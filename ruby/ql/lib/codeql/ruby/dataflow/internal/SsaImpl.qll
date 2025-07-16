@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ssa.Ssa as SsaImplCommon
 private import codeql.ruby.AST
 private import codeql.ruby.CFG as Cfg
@@ -393,6 +396,7 @@ private module Cached {
 
     signature predicate guardChecksSig(Cfg::CfgNodes::AstCfgNode g, Cfg::CfgNode e, boolean branch);
 
+    overlay[global]
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
       private predicate guardChecksAdjTypes(

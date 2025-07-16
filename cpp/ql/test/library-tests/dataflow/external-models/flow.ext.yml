@@ -17,3 +17,4 @@ extensions:
       - ["", "", False, "ymlStepGenerated", "", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["", "", False, "ymlStepManual_with_body", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["", "", False, "ymlStepGenerated_with_body", "", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["", "", False, "callWithArgument", "", "", "Argument[1]", "Argument[0].Parameter[0]", "value", "manual"]
