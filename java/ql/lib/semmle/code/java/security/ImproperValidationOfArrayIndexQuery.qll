@@ -18,6 +18,15 @@ module ImproperValidationOfArrayIndexConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node.getType() instanceof BooleanType }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(CheckableArrayAccess arrayAccess |
+      result = arrayAccess.getIndexExpr().getLocation() and
+      arrayAccess.canThrowOutOfBounds(sink.asExpr())
+    )
+  }
 }
 
 /**
