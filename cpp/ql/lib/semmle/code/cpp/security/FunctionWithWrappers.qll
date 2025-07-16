@@ -17,7 +17,6 @@
 
 import cpp
 import PrintfLike
-private import semmle.code.cpp.ir.dataflow.ResolveCall
 
 bindingset[index]
 private string toCause(Function func, int index) {
@@ -39,7 +38,7 @@ private predicate wrapperFunctionStep(
   source.hasDefinition() and
   exists(FunctionCall call, Expr arg, Parameter sourceParam |
     // there is a 'call' to 'target' with argument 'arg' at index 'targetParamIndex'
-    target = resolveCall(call) and
+    target = call.getTarget() and
     arg = call.getArgument(targetParamIndex) and
     // 'call' is enclosed in 'source'
     source = call.getEnclosingFunction() and
@@ -155,7 +154,7 @@ abstract class FunctionWithWrappers extends Function {
    */
   predicate outermostWrapperFunctionCall(Expr arg, string callChain) {
     exists(Function targetFunc, FunctionCall call, int argIndex |
-      targetFunc = resolveCall(call) and
+      targetFunc = call.getTarget() and
       this.wrapperFunction(targetFunc, argIndex, callChain) and
       (
         exists(Function sourceFunc | sourceFunc = call.getEnclosingFunction() |
