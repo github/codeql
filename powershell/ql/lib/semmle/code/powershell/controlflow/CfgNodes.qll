@@ -605,7 +605,7 @@ module ExprNodes {
 
     override CallOperator getExpr() { result = e }
 
-    ExprCfgNode getCommand() { result = this.getArgument(0) }
+    ExprCfgNode getCommand() { result = this.getCallee() }
   }
 
   private class ToStringCallChildmapping extends CallExprChildMapping instanceof ToStringCall {

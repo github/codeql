@@ -212,5 +212,5 @@ Invoke-InvokeExpressionInjectionSafe4 -UserInput $input
 function false-positive-in-call-operator($d)
 {
     $o = Read-Host "enter input"
-    & unzip -o "$o" -d $d # GOOD [FALSE POSITIVE]
+    & unzip -o "$o" -d $d # GOOD
 }
