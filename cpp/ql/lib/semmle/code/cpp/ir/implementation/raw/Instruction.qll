@@ -2293,3 +2293,26 @@ class NextVarArgInstruction extends UnaryInstruction {
 class NewObjInstruction extends Instruction {
   NewObjInstruction() { this.getOpcode() instanceof Opcode::NewObj }
 }
+
+/**
+ * An instruction that returns the type info for its operand.
+ */
+class TypeidInstruction extends Instruction {
+  TypeidInstruction() { this.getOpcode() instanceof Opcode::Typeid }
+}
+
+/**
+ * An instruction that returns the type info for its operand, where the
+ * operand occurs as an expression in the AST.
+ */
+class TypeidExprInstruction extends TypeidInstruction, UnaryInstruction {
+  TypeidExprInstruction() { this.getOpcode() instanceof Opcode::TypeidExpr }
+}
+
+/**
+ * An instruction that returns the type info for its operand, where the
+ * operand occurs as a type in the AST.
+ */
+class TypeidTypeInstruction extends TypeidInstruction {
+  TypeidTypeInstruction() { this.getOpcode() instanceof Opcode::TypeidType }
+}
