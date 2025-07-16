@@ -1,4 +1,6 @@
 /** Provides classes and predicates to reason about Spring Boot actuators exposed in configuration files. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.configfiles.ConfigFiles
