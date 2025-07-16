@@ -13,8 +13,12 @@ class YamlBeansReader extends RefType {
   YamlBeansReader() { this.hasQualifiedName("com.esotericsoftware.yamlbeans", "YamlReader") }
 }
 
-/** A method with the name `read` declared in `com.esotericsoftware.yamlbeans.YamlReader`. */
-class YamlBeansReaderReadMethod extends Method {
+/**
+ * DEPRECATED: Now modeled using data extensions instead.
+ *
+ * A method with the name `read` declared in `com.esotericsoftware.yamlbeans.YamlReader`.
+ */
+deprecated class YamlBeansReaderReadMethod extends Method {
   YamlBeansReaderReadMethod() {
     this.getDeclaringType() instanceof YamlBeansReader and
     this.getName() = "read"

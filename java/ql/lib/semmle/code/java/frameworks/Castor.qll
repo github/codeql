@@ -1,20 +1,28 @@
 /**
+ * DEPRECATED: Now modeled using data extensions instead.
+ *
  * Provides classes and predicates for working with the Castor framework.
  */
 overlay[local?]
-module;
+deprecated module;
 
 import java
 
 /**
+ * DEPRECATED: Now modeled using data extensions instead.
+ *
  * The class `org.exolab.castor.xml.Unmarshaller`.
  */
-class CastorUnmarshaller extends RefType {
+deprecated class CastorUnmarshaller extends RefType {
   CastorUnmarshaller() { this.hasQualifiedName("org.exolab.castor.xml", "Unmarshaller") }
 }
 
-/** A method with the name `unmarshal` declared in `org.exolab.castor.xml.Unmarshaller`. */
-class CastorUnmarshalMethod extends Method {
+/**
+ * DEPRECATED: Now modeled using data extensions instead.
+ *
+ * A method with the name `unmarshal` declared in `org.exolab.castor.xml.Unmarshaller`.
+ */
+deprecated class CastorUnmarshalMethod extends Method {
   CastorUnmarshalMethod() {
     this.getDeclaringType() instanceof CastorUnmarshaller and
     this.getName() = "unmarshal"
