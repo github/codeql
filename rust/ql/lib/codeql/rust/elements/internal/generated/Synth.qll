@@ -774,8 +774,8 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TItem =
-    TAdt or TAssocItem or TExternBlock or TExternCrate or TExternItem or TImpl or TMacroDef or
-        TMacroRules or TModule or TTrait or TTraitAlias or TUse;
+    TAdt or TAsmExpr or TAssocItem or TExternBlock or TExternCrate or TExternItem or TImpl or
+        TMacroDef or TMacroRules or TModule or TTrait or TTraitAlias or TUse;
 
   /**
    * INTERNAL: Do not use.
@@ -2218,6 +2218,8 @@ module Synth {
    */
   TItem convertItemFromRaw(Raw::Element e) {
     result = convertAdtFromRaw(e)
+    or
+    result = convertAsmExprFromRaw(e)
     or
     result = convertAssocItemFromRaw(e)
     or
@@ -3802,6 +3804,8 @@ module Synth {
    */
   Raw::Element convertItemToRaw(TItem e) {
     result = convertAdtToRaw(e)
+    or
+    result = convertAsmExprToRaw(e)
     or
     result = convertAssocItemToRaw(e)
     or

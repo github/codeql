@@ -69,7 +69,7 @@ class AsmConst(AsmOperand, ):
 class AsmDirSpec(AstNode, ):
     pass
 
-class AsmExpr(Expr, ):
+class AsmExpr(Expr, Item, ):
     asm_pieces: list["AsmPiece"] | child
     attrs: list["Attr"] | child
     template: list["Expr"] | child

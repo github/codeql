@@ -1272,31 +1272,6 @@ asm_const_is_const(
   int id: @asm_const ref
 );
 
-asm_exprs(
-  unique int id: @asm_expr
-);
-
-#keyset[id, index]
-asm_expr_asm_pieces(
-  int id: @asm_expr ref,
-  int index: int ref,
-  int asm_piece: @asm_piece ref
-);
-
-#keyset[id, index]
-asm_expr_attrs(
-  int id: @asm_expr ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id, index]
-asm_expr_templates(
-  int id: @asm_expr ref,
-  int index: int ref,
-  int template: @expr ref
-);
-
 asm_labels(
   unique int id: @asm_label
 );
@@ -1905,6 +1880,7 @@ infer_type_reprs(
 
 @item =
   @adt
+| @asm_expr
 | @assoc_item
 | @extern_block
 | @extern_crate
@@ -2707,6 +2683,31 @@ adt_derive_macro_expansions(
   int id: @adt ref,
   int index: int ref,
   int derive_macro_expansion: @macro_items ref
+);
+
+asm_exprs(
+  unique int id: @asm_expr
+);
+
+#keyset[id, index]
+asm_expr_asm_pieces(
+  int id: @asm_expr ref,
+  int index: int ref,
+  int asm_piece: @asm_piece ref
+);
+
+#keyset[id, index]
+asm_expr_attrs(
+  int id: @asm_expr ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id, index]
+asm_expr_templates(
+  int id: @asm_expr ref,
+  int index: int ref,
+  int template: @expr ref
 );
 
 @assoc_item =

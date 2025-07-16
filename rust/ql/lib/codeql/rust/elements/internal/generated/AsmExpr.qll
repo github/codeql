@@ -10,6 +10,7 @@ import codeql.rust.elements.AsmPiece
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
+import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `AsmExpr` and should not
@@ -27,7 +28,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::AsmExpr` class directly.
    * Use the subclass `AsmExpr`, where the following predicates are available.
    */
-  class AsmExpr extends Synth::TAsmExpr, ExprImpl::Expr {
+  class AsmExpr extends Synth::TAsmExpr, ExprImpl::Expr, ItemImpl::Item {
     override string getAPrimaryQlClass() { result = "AsmExpr" }
 
     /**

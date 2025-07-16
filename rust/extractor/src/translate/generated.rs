@@ -212,6 +212,7 @@ impl Translator<'_> {
             return Some(label);
         }
         let label = match node {
+            ast::Item::AsmExpr(inner) => self.emit_asm_expr(inner).map(Into::into),
             ast::Item::Const(inner) => self.emit_const(inner).map(Into::into),
             ast::Item::Enum(inner) => self.emit_enum(inner).map(Into::into),
             ast::Item::ExternBlock(inner) => self.emit_extern_block(inner).map(Into::into),
