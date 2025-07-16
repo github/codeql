@@ -46,8 +46,10 @@ module CommandInjection {
         call.getAnArgument() = this
       )
       or
-      // Or the call command itself in case it's a use of operator &.
+      // Or the call command itself in case it's a use of "operator &" or "operator .".
       any(DataFlow::CallOperatorNode call).getCommand() = this
+      or
+      any(DataFlow::DotSourcingOperatorNode call).getCommand() = this
     }
 
     override string getSinkType() { result = "call to Invoke-Expression" }
