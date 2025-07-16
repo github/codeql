@@ -540,7 +540,7 @@ class CallNode extends ExprNode {
   Node getCallee() { result.asExpr() = call.getCallee() }
 }
 
-/** A call to operator `&`, viwed as a node in a data flow graph. */
+/** A call to operator `&`, viewed as a node in a data flow graph. */
 class CallOperatorNode extends CallNode {
   override CfgNodes::ExprNodes::CallOperatorCfgNode call;
 
