@@ -2358,7 +2358,7 @@ mod tuples {
         let i: i64 = pair.0;
         let j: bool = pair.1;
 
-        let pair = [1, 1].into(); // $ type=pair:0(2).i32 type=pair:1(2).i32 MISSING: target=into
+        let pair = [1, 1].into(); // $ type=pair:(T_2) type=pair:0(2).i32 type=pair:1(2).i32 MISSING: target=into
         match pair {
             (0,0) => print!("unexpected"),
             _ => print!("expected"),
