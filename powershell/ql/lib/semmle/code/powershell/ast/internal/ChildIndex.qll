@@ -26,11 +26,7 @@ newtype ChildIndex =
   ExprRedirection(int i) { exists(any(Raw::Cmd cmdExpr).getRedirection(i)) } or
   FunDefFun() or
   TypeDefType() or
-  TypeMember(int i) {
-    exists(any(Raw::TypeStmt typedef).getMember(i))
-    // or
-    // hasMemberInType(_, _, i, _)
-  } or
+  TypeMember(int i) { exists(any(Raw::TypeStmt typedef).getMember(i)) } or
   ThisVar() or
   PipelineIteratorVar() or
   PipelineByPropertyNameIteratorVar(Raw::PipelineByPropertyNameParameter p) or

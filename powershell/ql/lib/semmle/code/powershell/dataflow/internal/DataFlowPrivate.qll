@@ -1415,30 +1415,3 @@ ContentApprox getContentApprox(Content c) {
   c instanceof Content::UnknownKeyOrPositionContent and
   result = TUnknownContentApprox()
 }
-
-// TFieldContent(string name) {
-//   name = any(PropertyMember member).getName()
-//   or
-//   name = any(MemberExpr me).getMemberName()
-// } or
-// // A known map key
-// TKnownKeyContent(ConstantValue cv) { exists(cv.asString()) } or
-// // A known array index
-// TKnownPositionalContent(ConstantValue cv) { cv.asInt() = [0 .. 10] } or
-// // An unknown key
-// TUnknownKeyContent() or
-// // An unknown positional element
-// TUnknownPositionalContent() or
-// // A unknown position or key - and we dont even know what kind it is
-// TUnknownKeyOrPositionContent()
-/**
- * A unit class for adding additional jump steps.
- *
- * Extend this class to add additional jump steps.
- */
-class AdditionalJumpStep extends Unit {
-  /**
-   * Holds if data can flow from `pred` to `succ` in a way that discards call contexts.
-   */
-  abstract predicate step(Node pred, Node succ);
-}
