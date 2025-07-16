@@ -1,0 +1,1 @@
+| test.ps1:4:31:4:37 | stream | Unsafe deserializer is used. Make sure the value being deserialized comes from a trusted source. |
