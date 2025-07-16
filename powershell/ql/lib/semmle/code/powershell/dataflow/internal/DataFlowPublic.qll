@@ -544,7 +544,14 @@ class CallNode extends ExprNode {
 class CallOperatorNode extends CallNode {
   override CfgNodes::ExprNodes::CallOperatorCfgNode call;
 
-  Node getCommand() { result.asExpr() = call.getCommand() } // TODO: Alternatively, we could remap calls to & as command expressions.
+  Node getCommand() { result.asExpr() = call.getCommand() }
+}
+
+/** A call to operator `.`, viewed as a node in a data flow graph. */
+class DotSourcingOperatorNode extends CallNode {
+  override CfgNodes::ExprNodes::DotSourcingOperatorCfgNode call;
+
+  Node getCommand() { result.asExpr() = call.getCommand() }
 }
 
 /**

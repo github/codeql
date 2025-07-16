@@ -608,6 +608,21 @@ module ExprNodes {
     ExprCfgNode getCommand() { result = this.getCallee() }
   }
 
+  private class DotSourcingOperatorChildMapping extends CallExprChildMapping instanceof DotSourcingOperator
+  {
+    override predicate relevantChild(Ast child) { super.relevantChild(child) }
+  }
+
+  class DotSourcingOperatorCfgNode extends CallExprCfgNode {
+    override string getAPrimaryQlClass() { result = "DotSourcingOperatorCfgNode" }
+
+    override DotSourcingOperatorChildMapping e;
+
+    override DotSourcingOperator getExpr() { result = e }
+
+    ExprCfgNode getCommand() { result = this.getCallee() }
+  }
+
   private class ToStringCallChildmapping extends CallExprChildMapping instanceof ToStringCall {
     override predicate relevantChild(Ast child) { super.relevantChild(child) }
   }
