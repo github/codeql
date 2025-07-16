@@ -1605,6 +1605,13 @@ class CompareGEInstruction extends RelationalInstruction {
 }
 
 /**
+ * An instruction that represents a three-way comparison operator.
+ */
+class SpaceshipInstruction extends BinaryInstruction {
+  SpaceshipInstruction() { this.getOpcode() instanceof Opcode::Spaceship }
+}
+
+/**
  * An instruction that branches to one of multiple successor instructions based on the value of an
  * integer operand.
  *
