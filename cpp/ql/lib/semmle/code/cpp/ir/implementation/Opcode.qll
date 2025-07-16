@@ -42,6 +42,7 @@ private newtype TOpcode =
   TCompareGT() or
   TCompareLE() or
   TCompareGE() or
+  TSpaceship() or
   TPointerAdd() or
   TPointerSub() or
   TPointerDiff() or
@@ -763,6 +764,15 @@ module Opcode {
    */
   class CompareGE extends RelationalOpcode, TCompareGE {
     final override string toString() { result = "CompareGE" }
+  }
+
+  /**
+   * The `Opcode` for a `SpaceshipInstruction`.
+   *
+   * See the `SpaceshipInstruction` documentation for more details.
+   */
+  class Spaceship extends BinaryOpcode, TSpaceship {
+    final override string toString() { result = "Spaceship" }
   }
 
   /**
