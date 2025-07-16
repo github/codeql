@@ -1808,6 +1808,11 @@ private Opcode comparisonOpcode(ComparisonOperation expr) {
   expr instanceof GEExpr and result instanceof Opcode::CompareGE
 }
 
+private Opcode spaceShipOpcode(SpaceshipExpr expr) {
+  exists(expr) and
+  result instanceof Opcode::Spaceship
+}
+
 /**
  * IR translation of a simple binary operation.
  */
@@ -1867,7 +1872,8 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
   override Opcode getOpcode() {
     result = binaryArithmeticOpcode(expr) or
     result = binaryBitwiseOpcode(expr) or
-    result = comparisonOpcode(expr)
+    result = comparisonOpcode(expr) or
+    result = spaceShipOpcode(expr)
   }
 
   override Type getExprType() {
