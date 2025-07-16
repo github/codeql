@@ -16,6 +16,9 @@ private import CryptoAlgorithms as CA
 private import codeql.dataflow.DataFlow as DF
 private import codeql.util.Location
 
+/**
+ * Construct the shared concepts modules.
+ */
 module ConceptsMake<LocationSig Location, DF::InputSig<Location> DataFlowLang> {
   final private class DataFlowNode = DataFlowLang::Node;
 
