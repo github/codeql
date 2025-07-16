@@ -34,6 +34,8 @@ module RegexInjectionConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(AdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
