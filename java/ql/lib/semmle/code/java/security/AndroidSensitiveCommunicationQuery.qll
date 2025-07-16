@@ -149,6 +149,8 @@ module SensitiveCommunicationConfig implements DataFlow::ConfigSig {
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     isSink(node) and exists(c)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
