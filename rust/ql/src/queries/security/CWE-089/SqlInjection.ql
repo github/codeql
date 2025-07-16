@@ -26,6 +26,8 @@ module SqlInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node node) { node instanceof Sink }
 
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof Barrier }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module SqlInjectionFlow = TaintTracking::Global<SqlInjectionConfig>;
