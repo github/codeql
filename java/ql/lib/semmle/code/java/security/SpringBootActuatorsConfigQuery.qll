@@ -48,9 +48,6 @@ class ManagementSecurityConfig extends ApplicationPropertiesConfigPair {
 
   /** Holds if `management.security.enabled` is set to `false`. */
   predicate hasSecurityDisabled() { this.getValue() = "false" }
-
-  /** Holds if `management.security.enabled` is set to `true`. */
-  predicate hasSecurityEnabled() { this.getValue() = "true" }
 }
 
 /** The configuration property `management.endpoints.web.exposure.include`. */
@@ -63,11 +60,37 @@ class ManagementEndPointInclude extends ApplicationPropertiesConfigPair {
   string getValue() { result = this.getValueElement().getValue().trim() }
 }
 
+private newtype TOption =
+  TNone() or
+  TSome(ApplicationPropertiesConfigPair ap)
+
+/**
+ * An option type that is either a singleton `None` or a `Some` wrapping
+ * the `ApplicationPropertiesConfigPair` type.
+ */
+class ApplicationPropertiesOption extends TOption {
+  /** Gets a textual representation of this element. */
+  string toString() {
+    this = TNone() and result = "(none)"
+    or
+    result = this.asSome().toString()
+  }
+
+  /** Gets the location of this element. */
+  Location getLocation() { result = this.asSome().getLocation() }
+
+  /** Gets the wrapped element, if any. */
+  ApplicationPropertiesConfigPair asSome() { this = TSome(result) }
+
+  /** Holds if this option is the singleton `None`. */
+  predicate isNone() { this = TNone() }
+}
+
 /**
  * Holds if `ApplicationProperties` ap of a repository managed by `SpringBootPom` pom
  * has a vulnerable configuration of Spring Boot Actuator management endpoints.
  */
-predicate hasConfidentialEndPointExposed(SpringBootPom pom) {
+predicate hasConfidentialEndPointExposed(SpringBootPom pom, ApplicationPropertiesOption apOption) {
   pom.isSpringBootActuatorUsed() and
   not pom.isSpringBootSecurityUsed() and
   exists(ApplicationPropertiesFile apFile |
@@ -79,14 +102,18 @@ predicate hasConfidentialEndPointExposed(SpringBootPom pom) {
       springBootVersion = pom.getParentElement().getVersionString()
     |
       springBootVersion.regexpMatch("1\\.[0-4].*") and // version 1.0, 1.1, ..., 1.4
-      not exists(ManagementSecurityConfig me | me.hasSecurityEnabled() and me.getFile() = apFile)
+      not exists(ManagementSecurityConfig me | me.getFile() = apFile) and
+      apOption.isNone()
       or
-      springBootVersion.matches("1.5%") and // version 1.5
-      exists(ManagementSecurityConfig me | me.hasSecurityDisabled() and me.getFile() = apFile)
+      springBootVersion.regexpMatch("1\\.[0-5].*") and // version 1.0, 1.1, ..., 1.5
+      exists(ManagementSecurityConfig me |
+        me.hasSecurityDisabled() and me.getFile() = apFile and me = apOption.asSome()
+      )
       or
       springBootVersion.matches("2.%") and //version 2.x
       exists(ManagementEndPointInclude mi |
         mi.getFile() = apFile and
+        mi = apOption.asSome() and
         (
           mi.getValue() = "*" // all endpoints are enabled
           or

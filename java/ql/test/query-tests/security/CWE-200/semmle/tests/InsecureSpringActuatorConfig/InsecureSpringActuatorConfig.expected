@@ -1,4 +1,4 @@
-| Version1.4-/bad/default/pom.xml:29:9:32:22 | dependency | Insecure configuration of Spring Boot Actuator exposes sensitive endpoints. |
-| Version1.4-/bad/false/pom.xml:29:9:32:22 | dependency | Insecure configuration of Spring Boot Actuator exposes sensitive endpoints. |
-| Version1.5/bad/pom.xml:29:9:32:22 | dependency | Insecure configuration of Spring Boot Actuator exposes sensitive endpoints. |
-| Version2+/bad/pom.xml:29:9:32:22 | dependency | Insecure configuration of Spring Boot Actuator exposes sensitive endpoints. |
+| Version1.4-/bad/default/pom.xml:29:9:32:22 | dependency | Insecure $@ of Spring Boot Actuator exposes sensitive endpoints (1.2.6.RELEASE). | file://:0:0:0:0 | (none) | configuration |
+| Version1.4-/bad/false/pom.xml:29:9:32:22 | dependency | Insecure $@ of Spring Boot Actuator exposes sensitive endpoints (1.2.6.RELEASE). | Version1.4-/bad/false/application.properties:2:1:2:33 | management.security.enabled=false | configuration |
+| Version1.5/bad/pom.xml:29:9:32:22 | dependency | Insecure $@ of Spring Boot Actuator exposes sensitive endpoints (1.5.6.RELEASE). | Version1.5/bad/application.properties:2:1:2:33 | management.security.enabled=false | configuration |
+| Version2+/bad/pom.xml:29:9:32:22 | dependency | Insecure $@ of Spring Boot Actuator exposes sensitive endpoints (2.2.6.RELEASE). | Version2+/bad/application.properties:2:1:2:43 | management.endpoints.web.exposure.include=* | configuration |

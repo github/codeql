@@ -15,9 +15,11 @@ import java
 import semmle.code.xml.MavenPom
 import semmle.code.java.security.SpringBootActuatorsConfigQuery
 
-from SpringBootPom pom, Dependency d
+from SpringBootPom pom, Dependency d, ApplicationPropertiesOption apOption
 where
-  hasConfidentialEndPointExposed(pom) and
+  hasConfidentialEndPointExposed(pom, apOption) and
   d = pom.getADependency() and
   d.getArtifact().getValue() = "spring-boot-starter-actuator"
-select d, "Insecure configuration of Spring Boot Actuator exposes sensitive endpoints."
+select d,
+  "Insecure $@ of Spring Boot Actuator exposes sensitive endpoints (" +
+    pom.getParentElement().getVersionString() + ").", apOption, "configuration"
