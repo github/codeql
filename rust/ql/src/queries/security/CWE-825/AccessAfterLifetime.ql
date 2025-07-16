@@ -28,6 +28,15 @@ module AccessAfterLifetimeConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node node) { node instanceof AccessAfterLifetime::Sink }
 
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof AccessAfterLifetime::Barrier }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    exists(Variable target, DataFlow::Node sink | result = target.getLocation() |
+      isSink(sink) and
+      AccessAfterLifetime::dereferenceAfterLifetime(source, sink, target)
+    )
+  }
 }
 
 module AccessAfterLifetimeFlow = TaintTracking::Global<AccessAfterLifetimeConfig>;
