@@ -1,22 +1,28 @@
 /**
+ * DEPRECATED: Now modeled using data extensions instead.
+ *
  * Provides classes and predicates for working with the JYaml framework.
  */
 overlay[local?]
-module;
+deprecated module;
 
 import java
 
 /**
+ * DEPRECATED: Now modeled using data extensions instead.
+ *
  * The class `org.ho.yaml.Yaml` or `org.ho.yaml.YamlConfig`.
  */
-class JYamlLoader extends RefType {
+deprecated class JYamlLoader extends RefType {
   JYamlLoader() { this.hasQualifiedName("org.ho.yaml", ["Yaml", "YamlConfig"]) }
 }
 
 /**
+ * DEPRECATED: Now modeled using data extensions instead.
+ *
  * A JYaml unsafe load method, declared on either `Yaml` or `YamlConfig`.
  */
-class JYamlLoaderUnsafeLoadMethod extends Method {
+deprecated class JYamlLoaderUnsafeLoadMethod extends Method {
   JYamlLoaderUnsafeLoadMethod() {
     this.getDeclaringType() instanceof JYamlLoader and
     this.getName() in ["load", "loadType", "loadStream", "loadStreamOfType"]
