@@ -24436,6 +24436,107 @@ ir.cpp:
 # 2742|                 Type = [IntType] int
 # 2742|                 ValueCategory = prvalue
 # 2743|     getStmt(14): [ReturnStmt] return ...
+# 2747| [CopyAssignmentOperator] std::strong_ordering& std::strong_ordering::operator=(std::strong_ordering const&)
+# 2747|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const strong_ordering &
+# 2747| [MoveAssignmentOperator] std::strong_ordering& std::strong_ordering::operator=(std::strong_ordering&&)
+# 2747|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] strong_ordering &&
+# 2747| [CopyConstructor] void std::strong_ordering::strong_ordering(std::strong_ordering const&)
+# 2747|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const strong_ordering &
+# 2747| [MoveConstructor] void std::strong_ordering::strong_ordering(std::strong_ordering&&)
+# 2747|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] strong_ordering &&
+# 2747|   <initializations>: 
+# 2747|   getEntryPoint(): [BlockStmt] { ... }
+# 2747|     getStmt(0): [ReturnStmt] return ...
+# 2748| [Constructor] void std::strong_ordering::strong_ordering(std::_Order)
+# 2748|   <params>: 
+# 2748|     getParameter(0): [Parameter] v
+# 2748|         Type = [ScopedEnum] _Order
+# 2748|   <initializations>: 
+# 2748|   getEntryPoint(): [BlockStmt] { ... }
+# 2748|     getStmt(0): [ReturnStmt] return ...
+# 2763| [CopyAssignmentOperator] ThreeWay& ThreeWay::operator=(ThreeWay const&)
+# 2763|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const ThreeWay &
+# 2763| [MoveAssignmentOperator] ThreeWay& ThreeWay::operator=(ThreeWay&&)
+# 2763|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] ThreeWay &&
+# 2763| [Constructor] void ThreeWay::ThreeWay()
+# 2763|   <params>: 
+# 2766| [MemberFunction] std::strong_ordering ThreeWay::operator<=>(ThreeWay&)
+# 2766|   <params>: 
+# 2766|     getParameter(0): [Parameter] y
+# 2766|         Type = [LValueReferenceType] ThreeWay &
+# 2766|   getEntryPoint(): [BlockStmt] { ... }
+# 2766|     getStmt(0): [ReturnStmt] return ...
+# 2766|       getExpr(): [SpaceshipExpr] ... <=> ...
+# 2766|           Type = [Class] strong_ordering
+# 2766|           ValueCategory = prvalue
+# 2766|         getChild(0): [PointerFieldAccess] x
+# 2766|             Type = [IntType] int
+# 2766|             ValueCategory = prvalue(load)
+# 2766|           getQualifier(): [ThisExpr] this
+# 2766|               Type = [PointerType] ThreeWay *
+# 2766|               ValueCategory = prvalue(load)
+# 2766|         getChild(1): [ReferenceFieldAccess] x
+# 2766|             Type = [IntType] int
+# 2766|             ValueCategory = prvalue(load)
+# 2766|           getQualifier(): [VariableAccess] y
+# 2766|               Type = [LValueReferenceType] ThreeWay &
+# 2766|               ValueCategory = prvalue(load)
+# 2766|           getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2766|               Type = [Class] ThreeWay
+# 2766|               ValueCategory = lvalue
+# 2769| [TopLevelFunction] void test_three_way(int, int, ThreeWay, ThreeWay)
+# 2769|   <params>: 
+# 2769|     getParameter(0): [Parameter] a
+# 2769|         Type = [IntType] int
+# 2769|     getParameter(1): [Parameter] b
+# 2769|         Type = [IntType] int
+# 2769|     getParameter(2): [Parameter] c
+# 2769|         Type = [Class] ThreeWay
+# 2769|     getParameter(3): [Parameter] d
+# 2769|         Type = [Class] ThreeWay
+# 2769|   getEntryPoint(): [BlockStmt] { ... }
+# 2770|     getStmt(0): [DeclStmt] declaration
+# 2770|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2770|           Type = [Class] strong_ordering
+# 2770|         getVariable().getInitializer(): [Initializer] initializer for x
+# 2770|           getExpr(): [SpaceshipExpr] ... <=> ...
+# 2770|               Type = [Class] strong_ordering
+# 2770|               ValueCategory = prvalue
+# 2770|             getChild(0): [VariableAccess] a
+# 2770|                 Type = [IntType] int
+# 2770|                 ValueCategory = prvalue(load)
+# 2770|             getChild(1): [VariableAccess] b
+# 2770|                 Type = [IntType] int
+# 2770|                 ValueCategory = prvalue(load)
+# 2771|     getStmt(1): [DeclStmt] declaration
+# 2771|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2771|           Type = [Class] strong_ordering
+# 2771|         getVariable().getInitializer(): [Initializer] initializer for y
+# 2771|           getExpr(): [FunctionCall] call to operator<=>
+# 2771|               Type = [Class] strong_ordering
+# 2771|               ValueCategory = prvalue
+# 2771|             getQualifier(): [VariableAccess] c
+# 2771|                 Type = [Class] ThreeWay
+# 2771|                 ValueCategory = lvalue
+# 2771|             getArgument(0): [VariableAccess] d
+# 2771|                 Type = [Class] ThreeWay
+# 2771|                 ValueCategory = lvalue
+# 2771|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2771|                 Type = [LValueReferenceType] ThreeWay &
+# 2771|                 ValueCategory = prvalue
+# 2772|     getStmt(2): [ReturnStmt] return ...
 ir23.cpp:
 #    1| [TopLevelFunction] bool consteval_1()
 #    1|   <params>: 

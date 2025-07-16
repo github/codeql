@@ -1,4 +1,6 @@
 missingOperand
+| ir.cpp:2766:58:2766:72 | Store: ... <=> ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir.cpp:2766:24:2766:34 | std::strong_ordering ThreeWay::operator<=>(ThreeWay&) | std::strong_ordering ThreeWay::operator<=>(ThreeWay&) |
+| ir.cpp:2770:12:2770:18 | Store: ... <=> ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir.cpp:2769:6:2769:19 | void test_three_way(int, int, ThreeWay, ThreeWay) | void test_three_way(int, int, ThreeWay, ThreeWay) |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
@@ -6,6 +8,8 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ir.cpp:2766:72:2766:72 | Load: x | Instruction 'Load: x' has no successors in function '$@'. | ir.cpp:2766:24:2766:34 | std::strong_ordering ThreeWay::operator<=>(ThreeWay&) | std::strong_ordering ThreeWay::operator<=>(ThreeWay&) |
+| ir.cpp:2770:18:2770:18 | Load: b | Instruction 'Load: b' has no successors in function '$@'. | ir.cpp:2769:6:2769:19 | void test_three_way(int, int, ThreeWay, ThreeWay) | void test_three_way(int, int, ThreeWay, ThreeWay) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -21,6 +25,10 @@ lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
 | ir.cpp:1535:8:1535:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1535:8:1535:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
+| ir.cpp:2766:24:2766:34 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:2766:24:2766:34 | std::strong_ordering ThreeWay::operator<=>(ThreeWay&) | std::strong_ordering ThreeWay::operator<=>(ThreeWay&) |
+| ir.cpp:2766:46:2766:46 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:2766:24:2766:34 | std::strong_ordering ThreeWay::operator<=>(ThreeWay&) | std::strong_ordering ThreeWay::operator<=>(ThreeWay&) |
+| ir.cpp:2766:51:2766:73 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:2766:24:2766:34 | std::strong_ordering ThreeWay::operator<=>(ThreeWay&) | std::strong_ordering ThreeWay::operator<=>(ThreeWay&) |
+| ir.cpp:2770:8:2770:8 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:2769:6:2769:19 | void test_three_way(int, int, ThreeWay, ThreeWay) | void test_three_way(int, int, ThreeWay, ThreeWay) |
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated
