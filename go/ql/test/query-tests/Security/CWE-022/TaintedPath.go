@@ -4,12 +4,13 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
+	"os"
 	"path"
 	"path/filepath"
 	"regexp"
 	"strings"
-	"os"
 )
+
 func handler(w http.ResponseWriter, r *http.Request) {
 	tainted_path := r.URL.Query()["path"][0]
 
@@ -58,9 +59,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		w.Write(data)
 	}
 
-	// GOOD: Sanitized by filepath.Clean with a prepended '/' or os.PathSeparator forcing interpretation
+	// GOOD: Sanitized by filepath.Clean with a prepended '/' forcing interpretation
 	// as an absolute path, so that Clean will throw away any leading `..` components.
 	data, _ = ioutil.ReadFile(filepath.Clean("/" + tainted_path))
+	w.Write(data)
+
+	// GOOD: Sanitized by filepath.Clean with a prepended os.PathSeparator forcing interpretation
+	// as an absolute path, so that Clean will throw away any leading `..` components.
 	data, _ = ioutil.ReadFile(filepath.Clean(string(os.PathSeparator) + tainted_path))
 	w.Write(data)
 

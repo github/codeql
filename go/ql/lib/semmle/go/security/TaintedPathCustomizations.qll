@@ -87,7 +87,14 @@ module TaintedPath {
       exists(DataFlow::CallNode cleanCall, StringOps::Concatenation concatNode |
         cleanCall = any(Function f | f.hasQualifiedName("path/filepath", "Clean")).getACall() and
         concatNode = cleanCall.getArgument(0) and
-        concatNode.getOperand(0).asExpr().(StringLit).getValue() = "/" and
+        (
+          concatNode.getOperand(0).asExpr().(StringLit).getValue() = "/"
+          or
+          exists(DeclaredConstant dc |
+            dc.hasQualifiedName("os", "PathSeparator") and
+            dc.getAReference() = concatNode.getOperand(0).asExpr().getAChildExpr*()
+          )
+        ) and
         this = cleanCall.getResult()
       )
     }
