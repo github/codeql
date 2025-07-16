@@ -76,14 +76,14 @@ class CmdCall extends CallExpr, TCmd {
 class CallOperator extends CmdCall {
   CallOperator() { getRawAst(this) instanceof Raw::CallOperator }
 
-  Expr getCommand() { result = this.getArgument(0) }
+  Expr getCommand() { result = this.getCallee() }
 }
 
 /** A call to the dot-sourcing `.`. */
 class DotSourcingOperator extends CmdCall {
   DotSourcingOperator() { getRawAst(this) instanceof Raw::DotSourcingOperator }
 
-  Expr getPath() { result = this.getArgument(0) }
+  Expr getCommand() { result = this.getCallee() }
 }
 
 class JoinPath extends CmdCall {
