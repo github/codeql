@@ -33,6 +33,10 @@ module EnvValueAndKeyInjectionConfig implements DataFlow::ConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // can't override location accurately because of secondary use in select.
+  }
 }
 
 module EnvValueAndKeyInjectionFlow = TaintTracking::Global<EnvValueAndKeyInjectionConfig>;
