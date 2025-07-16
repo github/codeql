@@ -108,7 +108,7 @@ private module Input1 implements InputSig1<Location> {
           maxArity = max(int i | i = any(TupleType tt).getArity()) and
           tp0 = ttp and
           kind = 2 and
-          id = ttp.getArity() * maxArity + ttp.getIndex()
+          id = ttp.getTupleType().getArity() * maxArity + ttp.getIndex()
         )
       |
         tp0 order by kind, id
@@ -335,7 +335,7 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     arity = n2.(TupleExpr).getNumberOfFields() and
     n1 = n2.(TupleExpr).getField(i)
     or
-    arity = n2.(TuplePat).getNumberOfFields() and
+    arity = n2.(TuplePat).getTupleArity() and
     n1 = n2.(TuplePat).getField(i)
   )
   or
@@ -553,9 +553,9 @@ private Type inferStructExprType(AstNode n, TypePath path) {
 }
 
 pragma[nomagic]
-private Type inferTupleExprRootType(TupleExpr te) {
-  // `typeEquality` handles the non-root case
-  result = TTuple(te.getNumberOfFields())
+private Type inferTupleRootType(AstNode n) {
+  // `typeEquality` handles the non-root cases
+  result = TTuple([n.(TupleExpr).getNumberOfFields(), n.(TuplePat).getTupleArity()])
 }
 
 pragma[nomagic]
@@ -1091,16 +1091,27 @@ private Type inferTupleIndexExprType(FieldExpr fe, TypePath path) {
 
 /** Infers the type of `t` in `t.n` when `t` is a tuple. */
 private Type inferTupleContainerExprType(Expr e, TypePath path) {
-  // NOTE: For a field expression `t.n` where `n` is a number `t` might both be
-  // a tuple struct or a tuple. It is only correct to let type information flow
-  // from `t.n` to tuple type parameters of `t` in the latter case. Hence we
-  // include the condition that the root type of `t` must be a tuple type.
+  // NOTE: For a field expression `t.n` where `n` is a number `t` might be a
+  // tuple as in:
+  // ```rust
+  // let t = (Default::default(), 2);
+  // let s: String = t.0;
+  // ```
+  // But it could also be a tuple struct as in:
+  // ```rust
+  // struct T(String, u32);
+  // let t = T(Default::default(), 2);
+  // let s: String = t.0;
+  // ```
+  // We need type information to flow from `t.n` to tuple type parameters of `t`
+  // in the former case but not the latter case. Hence we include the condition
+  // that the root type of `t` must be a tuple type.
   exists(int i, TypePath path0, FieldExpr fe, int arity |
     e = fe.getContainer() and
     fe.getIdentifier().getText() = i.toString() and
     arity = inferType(fe.getContainer()).(TupleType).getArity() and
     result = inferType(fe, path0) and
-    path = TypePath::cons(TTupleTypeParameter(arity, i), path0) // FIXME:
+    path = TypePath::cons(TTupleTypeParameter(arity, i), path0)
   )
 }
 
@@ -1992,7 +2003,7 @@ private module Cached {
     or
     result = inferStructExprType(n, path)
     or
-    result = inferTupleExprRootType(n) and
+    result = inferTupleRootType(n) and
     path.isEmpty()
     or
     result = inferPathExprType(n, path)

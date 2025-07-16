@@ -704,7 +704,7 @@ pub fn complex_nested_patterns() {
         }
         // Catch-all with identifier pattern
         other => {
-            let other_complex = other; // $ MISSING: type=other_complex:?
+            let other_complex = other; // $ type=other_complex:0(2).Point type=other_complex:1(2).MyOption
             println!("Other complex data: {:?}", other_complex);
         }
     }
@@ -766,7 +766,7 @@ pub fn patterns_in_function_parameters() {
 
     // Call the functions to use them
     let point = Point { x: 5, y: 10 };
-    let extracted = extract_point(point); // $ target=extract_point MISSING: type=extracted:?
+    let extracted = extract_point(point); // $ target=extract_point type=extracted:0(2).i32 type=extracted:1(2).i32
 
     let color = Color(200, 100, 50);
     let red = extract_color(color); // $ target=extract_color type=red:u8

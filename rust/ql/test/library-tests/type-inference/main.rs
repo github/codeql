@@ -2357,6 +2357,13 @@ mod tuples {
         let pair = (a, b); // $ type=pair:0(2).i64 type=pair:1(2).bool
         let i: i64 = pair.0;
         let j: bool = pair.1;
+
+        let pair = [1, 1].into(); // $ type=pair:0(2).i32 MISSING: target=into
+        match pair {
+            (0,0) => print!("unexpected"),
+            _ => print!("expected"),
+        }
+        let x = pair.0; // $ type=x:i32
     }
 }
 
