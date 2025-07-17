@@ -3,7 +3,7 @@ function WriteToEnvVar {
 }
 
 function ReadFromEndVar {
-    Sink $Env:x # $ MISSING: hasValueFlow=1 hasValueFlow=3
+    Sink $Env:x # $ hasValueFlow=1 hasValueFlow=3
 }
 
 function WriteAndThenOverWriteEnvVar {
