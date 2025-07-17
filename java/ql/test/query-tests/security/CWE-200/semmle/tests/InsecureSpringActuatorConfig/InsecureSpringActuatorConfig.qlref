@@ -1,2 +1,0 @@
-query: Security/CWE/CWE-200/InsecureSpringActuatorConfig/InsecureSpringActuatorConfig.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
