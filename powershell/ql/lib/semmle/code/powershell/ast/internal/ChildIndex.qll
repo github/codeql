@@ -34,7 +34,8 @@ newtype ChildIndex =
   ProcessBlockPipelineVarReadAccess() or
   ProcessBlockPipelineByPropertyNameVarReadAccess(string name) {
     name = any(Raw::PipelineByPropertyNameParameter p).getLowerCaseName()
-  }
+  } or
+  EnvVar(string var) { Raw::isEnvVariableAccess(_, var) }
 
 int synthPipelineParameterChildIndex(Raw::ScriptBlock sb) {
   // If there is a parameter block, but no pipeline parameter

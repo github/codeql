@@ -1,11 +1,15 @@
 private import AstImport
 
-class EnvVariable extends Expr, TEnvVariable {
-  final override string toString() { result = this.getName() }
+class EnvVariable extends Variable instanceof EnvVariableImpl {
+  string getLowerCaseName() { result = super.getLowerCaseNameImpl() }
 
-  string getName() { any(Synthesis s).envVariableName(this, result) }
-}
+  bindingset[name]
+  pragma[inline_late]
+  final predicate matchesName(string name) { this.getLowerCaseName() = name.toLowerCase() }
 
-class SystemDrive extends EnvVariable {
-  SystemDrive() { this.getName() = "systemdrive" }
+  bindingset[result]
+  pragma[inline_late]
+  final string getAName() { result.toLowerCase() = this.getLowerCaseName() }
+
+  override Ast getChild(ChildIndex childIndex) { none() }
 }
