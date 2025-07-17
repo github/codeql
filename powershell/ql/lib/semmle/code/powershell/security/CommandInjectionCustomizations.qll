@@ -31,7 +31,12 @@ module CommandInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of user input, considered as a flow source for command injection. */
-  class FlowSourceAsSource extends Source instanceof SourceNode {
+  class FlowSourceAsSource extends Source {
+    FlowSourceAsSource() {
+      this instanceof SourceNode and
+      not this instanceof EnvironmentVariableSource
+    }
+
     override string getSourceType() { result = "user-provided value" }
   }
 
