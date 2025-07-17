@@ -797,6 +797,14 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
+       * Holds if there is multiple ways in which a type with `conditionRoot` at
+       * the root can satisfy a constraint with `constraintRoot` at the root.
+       */
+      predicate multipleConstraintImplementations(Type conditionRoot, Type constraintRoot) {
+        countConstraintImplementations(conditionRoot, constraintRoot) > 1
+      }
+
+      /**
        * Holds if `baseMention` is a (transitive) base type mention of `sub`,
        * and `t` is mentioned (implicitly) at `path` inside `baseMention`. For
        * example, in
@@ -902,27 +910,26 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     {
       private import Input
 
+      /** Holds if the type tree has the type `type` and should satisfy `constraint`. */
+      pragma[nomagic]
+      private predicate hasTypeConstraint(HasTypeTree term, Type type, Type constraint) {
+        type = term.getTypeAt(TypePath::nil()) and
+        relevantConstraint(term, constraint)
+      }
+
       private module IsInstantiationOfInput implements IsInstantiationOfInputSig<HasTypeTree> {
         predicate potentialInstantiationOf(HasTypeTree tt, TypeAbstraction abs, TypeMention cond) {
           exists(Type constraint, Type type |
-            type = tt.getTypeAt(TypePath::nil()) and
-            relevantConstraint(tt, constraint) and
+            hasTypeConstraint(tt, type, constraint) and
             rootTypesSatisfaction(type, constraint, abs, cond, _) and
             // We only need to check instantiations where there are multiple candidates.
-            countConstraintImplementations(type, constraint) > 1
+            multipleConstraintImplementations(type, constraint)
           )
         }
 
         predicate relevantTypeMention(TypeMention constraint) {
           rootTypesSatisfaction(_, _, _, constraint, _)
         }
-      }
-
-      /** Holds if the type tree has the type `type` and should satisfy `constraint`. */
-      pragma[nomagic]
-      private predicate hasTypeConstraint(HasTypeTree term, Type type, Type constraint) {
-        type = term.getTypeAt(TypePath::nil()) and
-        relevantConstraint(term, constraint)
       }
 
       /**
@@ -944,7 +951,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           // When there are multiple ways the type could implement the
           // constraint we need to find the right implementation, which is the
           // one where the type instantiates the precondition.
-          if countConstraintImplementations(type, constraint) > 1
+          if multipleConstraintImplementations(type, constraint)
           then
             IsInstantiationOf<HasTypeTree, IsInstantiationOfInput>::isInstantiationOf(tt, abs, sub)
           else any()
