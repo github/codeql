@@ -7,6 +7,8 @@
  *
  * The classification into strong and weak are based on Wikipedia, OWASP and Google (2021).
  */
+overlay[local?]
+module;
 
 /**
  * Holds if `name` corresponds to a strong hashing algorithm.

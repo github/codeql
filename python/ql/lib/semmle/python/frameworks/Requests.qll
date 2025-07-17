@@ -29,7 +29,7 @@ module Requests {
    *
    * See https://requests.readthedocs.io/en/latest/api/#requests.request
    */
-  private class OutgoingRequestCall extends Http::Client::Request::Range, API::CallNode {
+  private class OutgoingRequestCall extends Http::Client::Request::Range instanceof API::CallNode {
     string methodName;
 
     OutgoingRequestCall() {
@@ -50,20 +50,20 @@ module Requests {
     }
 
     override DataFlow::Node getAUrlPart() {
-      result = this.getArgByName("url")
+      result = super.getArgByName("url")
       or
       not methodName = "request" and
-      result = this.getArg(0)
+      result = super.getArg(0)
       or
       methodName = "request" and
-      result = this.getArg(1)
+      result = super.getArg(1)
     }
 
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      disablingNode = this.getKeywordParameter("verify").asSink() and
-      argumentOrigin = this.getKeywordParameter("verify").getAValueReachingSink() and
+      disablingNode = super.getKeywordParameter("verify").asSink() and
+      argumentOrigin = super.getKeywordParameter("verify").getAValueReachingSink() and
       // requests treats `None` as the default and all other "falsey" values as `False`.
       argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
       not argumentOrigin.asExpr() instanceof None
