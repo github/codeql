@@ -216,3 +216,15 @@ function false-positive-in-call-operator($d)
 
     . "$o" # BAD
 }
+
+function flow-through-env-var() {
+    $x = $env:foo
+
+    . "$x" # GOOD # we don't consider environment vars flow sources
+
+    $input = Read-Host "enter input"
+    $env:bar = $input
+
+    $y = $env:bar
+    . "$y" # BAD # but we have flow through them
+}

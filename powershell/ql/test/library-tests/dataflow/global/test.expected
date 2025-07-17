@@ -1,0 +1,15 @@
+models
+edges
+| test.ps1:2:14:2:23 | Call to source | test.ps1:5:25:7:1 | <initial env var> env:x | provenance |  |
+| test.ps1:5:25:7:1 | <initial env var> env:x | test.ps1:6:5:6:15 | env:x | provenance |  |
+| test.ps1:16:18:16:27 | Call to source | test.ps1:5:25:7:1 | <initial env var> env:x | provenance |  |
+nodes
+| test.ps1:2:14:2:23 | Call to source | semmle.label | Call to source |
+| test.ps1:5:25:7:1 | <initial env var> env:x | semmle.label | <initial env var> env:x |
+| test.ps1:6:5:6:15 | env:x | semmle.label | env:x |
+| test.ps1:16:18:16:27 | Call to source | semmle.label | Call to source |
+subpaths
+testFailures
+#select
+| test.ps1:6:5:6:15 | env:x | test.ps1:2:14:2:23 | Call to source | test.ps1:6:5:6:15 | env:x | $@ | test.ps1:2:14:2:23 | Call to source | Call to source |
+| test.ps1:6:5:6:15 | env:x | test.ps1:16:18:16:27 | Call to source | test.ps1:6:5:6:15 | env:x | $@ | test.ps1:16:18:16:27 | Call to source | Call to source |

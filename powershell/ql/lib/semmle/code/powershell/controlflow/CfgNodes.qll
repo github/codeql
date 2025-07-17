@@ -1093,20 +1093,6 @@ module ExprNodes {
     CallExprCfgNode getCall() { result.getPipelineArgument() = this }
   }
 
-  private class EnvVariableChildMapping extends ExprChildMapping, EnvVariable {
-    override predicate relevantChild(Ast child) { none() }
-  }
-
-  class EnvVariableCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "EnvVariableCfgNode" }
-
-    override EnvVariableChildMapping e;
-
-    override EnvVariable getExpr() { result = e }
-
-    string getName() { result = e.getName() }
-  }
-
   private class OperationChildMapping extends ExprChildMapping, Operation {
     override predicate relevantChild(Ast child) { child = this.getAnOperand() }
   }
