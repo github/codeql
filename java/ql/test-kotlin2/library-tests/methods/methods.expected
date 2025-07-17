@@ -26,14 +26,14 @@ methods
 | delegates.kt:8:35:11:5 | new KMutableProperty1<MyClass,String>(...) { ... } | delegates.kt:8:35:11:5 | set | set(MyClass,java.lang.String) | override, public |  |
 | delegates.kt:8:66:11:5 | new Function3<KProperty<?>,String,String,Unit>(...) { ... } | delegates.kt:8:66:11:5 | invoke | invoke(kotlin.reflect.KProperty,java.lang.String,java.lang.String) | final, override, public |  |
 | enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:0:0:0:0 | <clinit> | <clinit>() | static | Compiler generated |
-| enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:1:1:4:1 | getEntries | getEntries() | final, public, static | Compiler generated |
-| enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:1:1:4:1 | valueOf | valueOf(java.lang.String) | final, public, static | Compiler generated |
-| enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:1:1:4:1 | values | values() | final, public, static | Compiler generated |
+| enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:0:0:0:0 | getEntries | getEntries() | final, public, static | Compiler generated |
+| enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:0:0:0:0 | valueOf | valueOf(java.lang.String) | final, public, static | Compiler generated |
+| enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:0:0:0:0 | values | values() | final, public, static | Compiler generated |
 | enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:1:22:1:31 | getV | getV() | final, public | Compiler generated |
 | enumClass.kt:6:1:16:1 | EnumWithFunctions | enumClass.kt:0:0:0:0 | <clinit> | <clinit>() | static | Compiler generated |
-| enumClass.kt:6:1:16:1 | EnumWithFunctions | enumClass.kt:6:1:16:1 | getEntries | getEntries() | final, public, static | Compiler generated |
-| enumClass.kt:6:1:16:1 | EnumWithFunctions | enumClass.kt:6:1:16:1 | valueOf | valueOf(java.lang.String) | final, public, static | Compiler generated |
-| enumClass.kt:6:1:16:1 | EnumWithFunctions | enumClass.kt:6:1:16:1 | values | values() | final, public, static | Compiler generated |
+| enumClass.kt:6:1:16:1 | EnumWithFunctions | enumClass.kt:0:0:0:0 | getEntries | getEntries() | final, public, static | Compiler generated |
+| enumClass.kt:6:1:16:1 | EnumWithFunctions | enumClass.kt:0:0:0:0 | valueOf | valueOf(java.lang.String) | final, public, static | Compiler generated |
+| enumClass.kt:6:1:16:1 | EnumWithFunctions | enumClass.kt:0:0:0:0 | values | values() | final, public, static | Compiler generated |
 | enumClass.kt:6:1:16:1 | EnumWithFunctions | enumClass.kt:13:3:13:29 | f | f(int) | abstract, public |  |
 | enumClass.kt:6:1:16:1 | EnumWithFunctions | enumClass.kt:14:3:14:29 | g | g(int) | abstract, public |  |
 | enumClass.kt:8:3:11:4 | VAL | enumClass.kt:9:5:9:30 | f | f(int) | override, public |  |
