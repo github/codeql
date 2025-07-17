@@ -7,41 +7,33 @@ private import semmle.code.configfiles.ConfigFiles
 private import semmle.code.xml.MavenPom
 
 /** The parent node of the `org.springframework.boot` group. */
-class SpringBootParent extends Parent {
+private class SpringBootParent extends Parent {
   SpringBootParent() { this.getGroup().getValue() = "org.springframework.boot" }
 }
 
-/** Class of Spring Boot dependencies. */
+// TODO: private once done with version string debugging in alert msg.
+/** A `Pom` with a Spring Boot parent node. */
 class SpringBootPom extends Pom {
   SpringBootPom() { this.getParentElement() instanceof SpringBootParent }
 
-  /** Holds if the Spring Boot Actuator module `spring-boot-starter-actuator` is used in the project. */
-  predicate isSpringBootActuatorUsed() {
-    this.getADependency().getArtifact().getValue() = "spring-boot-starter-actuator"
-  }
-
-  /**
-   * Holds if the Spring Boot Security module is used in the project, which brings in other security
-   * related libraries.
-   */
+  /** Holds if the Spring Boot Security module is used in the project. */
   predicate isSpringBootSecurityUsed() {
     this.getADependency().getArtifact().getValue() = "spring-boot-starter-security"
   }
 }
 
-/** The properties file `application.properties`. */
-class ApplicationPropertiesFile extends File {
-  ApplicationPropertiesFile() { this.getBaseName() = "application.properties" }
+/** A dependency with artifactId `spring-boot-starter-actuator`. */
+class SpringBootStarterActuatorDependency extends Dependency {
+  SpringBootStarterActuatorDependency() {
+    this.getArtifact().getValue() = "spring-boot-starter-actuator"
+  }
 }
 
-/** A name-value pair stored in an `application.properties` file. */
-class ApplicationPropertiesConfigPair extends ConfigPair {
-  ApplicationPropertiesConfigPair() { this.getFile() instanceof ApplicationPropertiesFile }
-}
-
-/** The configuration property `management.security.enabled`. */
-class ManagementSecurityConfig extends ApplicationPropertiesConfigPair {
-  ManagementSecurityConfig() { this.getNameElement().getName() = "management.security.enabled" }
+/** The Spring Boot configuration property `management.security.enabled`. */
+private class ManagementSecurityEnabledProperty extends JavaProperty {
+  ManagementSecurityEnabledProperty() {
+    this.getNameElement().getName() = "management.security.enabled"
+  }
 
   /** Gets the whitespace-trimmed value of this property. */
   string getValue() { result = this.getValueElement().getValue().trim() }
@@ -50,9 +42,9 @@ class ManagementSecurityConfig extends ApplicationPropertiesConfigPair {
   predicate hasSecurityDisabled() { this.getValue() = "false" }
 }
 
-/** The configuration property `management.endpoints.web.exposure.include`. */
-class ManagementEndPointInclude extends ApplicationPropertiesConfigPair {
-  ManagementEndPointInclude() {
+/** The Spring Boot configuration property `management.endpoints.web.exposure.include`. */
+private class ManagementEndpointsIncludeProperty extends JavaProperty {
+  ManagementEndpointsIncludeProperty() {
     this.getNameElement().getName() = "management.endpoints.web.exposure.include"
   }
 
@@ -62,13 +54,13 @@ class ManagementEndPointInclude extends ApplicationPropertiesConfigPair {
 
 private newtype TOption =
   TNone() or
-  TSome(ApplicationPropertiesConfigPair ap)
+  TSome(JavaProperty jp)
 
 /**
  * An option type that is either a singleton `None` or a `Some` wrapping
- * the `ApplicationPropertiesConfigPair` type.
+ * the `JavaProperty` type.
  */
-class ApplicationPropertiesOption extends TOption {
+class JavaPropertyOption extends TOption {
   /** Gets a textual representation of this element. */
   string toString() {
     this = TNone() and result = "(none)"
@@ -80,21 +72,23 @@ class ApplicationPropertiesOption extends TOption {
   Location getLocation() { result = this.asSome().getLocation() }
 
   /** Gets the wrapped element, if any. */
-  ApplicationPropertiesConfigPair asSome() { this = TSome(result) }
+  JavaProperty asSome() { this = TSome(result) }
 
   /** Holds if this option is the singleton `None`. */
   predicate isNone() { this = TNone() }
 }
 
 /**
- * Holds if `ApplicationProperties` ap of a repository managed by `SpringBootPom` pom
- * has a vulnerable configuration of Spring Boot Actuator management endpoints.
+ * Holds if `JavaPropertyOption` jpOption of a repository using `SpringBootStarterActuatorDependency`
+ * d exposes sensitive Spring Boot Actuator endpoints.
  */
-predicate hasConfidentialEndPointExposed(SpringBootPom pom, ApplicationPropertiesOption apOption) {
-  pom.isSpringBootActuatorUsed() and
-  not pom.isSpringBootSecurityUsed() and
-  exists(ApplicationPropertiesFile apFile |
-    apFile
+predicate exposesSensitiveEndpoint(
+  SpringBootStarterActuatorDependency d, JavaPropertyOption jpOption
+) {
+  exists(PropertiesFile propFile, SpringBootPom pom |
+    d = pom.getADependency() and
+    not pom.isSpringBootSecurityUsed() and
+    propFile
         .getParentContainer()
         .getAbsolutePath()
         .matches(pom.getFile().getParentContainer().getAbsolutePath() + "%") and // in the same sub-directory
@@ -102,26 +96,26 @@ predicate hasConfidentialEndPointExposed(SpringBootPom pom, ApplicationPropertie
       springBootVersion = pom.getParentElement().getVersionString()
     |
       springBootVersion.regexpMatch("1\\.[0-4].*") and // version 1.0, 1.1, ..., 1.4
-      not exists(ManagementSecurityConfig me | me.getFile() = apFile) and
-      apOption.isNone()
+      not exists(ManagementSecurityEnabledProperty ep | ep.getFile() = propFile) and
+      jpOption.isNone()
       or
       springBootVersion.regexpMatch("1\\.[0-5].*") and // version 1.0, 1.1, ..., 1.5
-      exists(ManagementSecurityConfig me |
-        me.hasSecurityDisabled() and me.getFile() = apFile and me = apOption.asSome()
+      exists(ManagementSecurityEnabledProperty ep |
+        ep.hasSecurityDisabled() and ep.getFile() = propFile and ep = jpOption.asSome()
       )
       or
       springBootVersion.matches(["2.%", "3.%"]) and //version 2.x and 3.x
-      exists(ManagementEndPointInclude mi |
-        mi.getFile() = apFile and
-        mi = apOption.asSome() and
+      exists(ManagementEndpointsIncludeProperty ip |
+        ip.getFile() = propFile and
+        ip = jpOption.asSome() and
         (
-          mi.getValue() = "*" // all endpoints are enabled
+          ip.getValue() = "*" // all endpoints are exposed
           or
-          mi.getValue()
+          ip.getValue()
               .matches([
                   "%dump%", "%trace%", "%logfile%", "%shutdown%", "%startup%", "%mappings%",
                   "%env%", "%beans%", "%sessions%"
-                ]) // confidential endpoints to check although all endpoints apart from '/health' are considered sensitive by Spring
+                ]) // sensitive endpoints to check although all endpoints apart from '/health' are considered sensitive by Spring
         )
       )
     )
