@@ -5,8 +5,8 @@
  */
 
 import go
+private import semmle.go.frameworks.CryptoLibraries
 private import semmle.go.security.SensitiveActions
-private import CryptoLibraries
 
 /**
  * Provides default sources, sinks and sanitizers for reasoning about
