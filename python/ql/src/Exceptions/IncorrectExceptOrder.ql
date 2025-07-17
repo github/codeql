@@ -14,22 +14,27 @@
  */
 
 import python
+import semmle.python.dataflow.new.internal.DataFlowDispatch
 
-predicate incorrect_except_order(ExceptStmt ex1, ClassValue cls1, ExceptStmt ex2, ClassValue cls2) {
+predicate incorrectExceptOrder(ExceptStmt ex1, Class cls1, ExceptStmt ex2, Class cls2) {
   exists(int i, int j, Try t |
     ex1 = t.getHandler(i) and
     ex2 = t.getHandler(j) and
     i < j and
-    cls1 = except_class(ex1) and
-    cls2 = except_class(ex2) and
-    cls1 = cls2.getASuperType()
+    cls1 = exceptClass(ex1) and
+    cls2 = exceptClass(ex2) and
+    cls1 = getADirectSuperclass*(cls2)
   )
 }
 
-ClassValue except_class(ExceptStmt ex) { ex.getType().pointsTo(result) }
+Class exceptClass(ExceptStmt ex) { ex.getType() = classTracker(result).asExpr() }
 
-from ExceptStmt ex1, ClassValue cls1, ExceptStmt ex2, ClassValue cls2
-where incorrect_except_order(ex1, cls1, ex2, cls2)
-select ex2,
-  "Except block for $@ is unreachable; the more general $@ for $@ will always be executed in preference.",
-  cls2, cls2.getName(), ex1, "except block", cls1, cls1.getName()
+from ExceptStmt ex1, Class cls1, ExceptStmt ex2, Class cls2, string msg
+where
+  incorrectExceptOrder(ex1, cls1, ex2, cls2) and
+  if cls1 = cls2
+  then msg = "This except block handling $@ is unreachable; as $@ also handles $@."
+  else
+    msg =
+      "This except block handling $@ is unreachable; as $@ for the more general $@ always subsumes it."
+select ex2, msg, cls2, cls2.getName(), ex1, "this except block", cls1, cls1.getName()
