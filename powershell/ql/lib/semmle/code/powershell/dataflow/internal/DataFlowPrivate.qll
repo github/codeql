@@ -65,7 +65,7 @@ module SsaFlow {
   Impl::Node asNode(Node n) {
     n = TSsaNode(result)
     or
-    result.(Impl::ExprNode).getExpr() = n.asExpr()
+    result.(Impl::ExprNode).getExpr().asExprCfgNode() = n.asExpr()
     or
     exists(CfgNodes::ProcessBlockCfgNode pb, BasicBlock bb, int i |
       n.(ProcessNode).getProcessBlock() = pb and
@@ -86,7 +86,8 @@ module SsaFlow {
       result.(Impl::SsaDefinitionNode).getDefinition().definesAt(p.getIteratorVariable(), bb, i)
     )
     or
-    result.(Impl::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
+    result.(Impl::ExprPostUpdateNode).getExpr().asExprCfgNode() =
+      n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
     exists(SsaImpl::ParameterExt p |
       n = toParameterNode(p) and
@@ -94,6 +95,11 @@ module SsaFlow {
     )
     or
     result.(Impl::WriteDefSourceNode).getDefinition().(Ssa::WriteDefinition).assigns(n.asExpr())
+    or
+    exists(Scope scope, EnvVariable v |
+      result.(Impl::ExprNode).getExpr().isFinalEnvVarRead(scope, v) and
+      n = TFinalEnvVarRead(scope, v)
+    )
   }
 
   predicate localFlowStep(
@@ -241,7 +247,15 @@ private module Cached {
       // We want to prune irrelevant models before materialising data flow nodes, so types contributed
       // directly from CodeQL must expose their pruning info without depending on data flow nodes.
       (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
-    }
+    } or
+    TFinalEnvVarRead(Scope scope, EnvVariable envVar) {
+      exists(ExitBasicBlock exit |
+        envVar.getAnAccess().getEnclosingScope() = scope and
+        exit.getScope() = scope and
+        SsaImpl::envVarRead(exit, _, envVar)
+      )
+    } or
+    TEnvVarNode(EnvVariable envVar)
 
   cached
   Location getLocation(NodeImpl n) { result = n.getLocationImpl() }
@@ -900,6 +914,15 @@ private module OutNodes {
 import OutNodes
 
 predicate jumpStep(Node pred, Node succ) {
+  // final env read -> env variable node
+  pred.(FinalEnvVarRead).getVariable() = succ.(EnvVarNode).getVariable()
+  or
+  // env variable node -> initial env def
+  exists(SsaImpl::Definition def |
+    succ.(SsaDefinitionNodeImpl).getDefinition() = def and
+    def.definesAt(pred.(EnvVarNode).getVariable(), any(EntryBasicBlock entry), -1)
+  )
+  or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
     succ.(FlowSummaryNode).getSummaryNode())
 }
@@ -1304,6 +1327,39 @@ class ScriptBlockNode extends TScriptBlockNode, NodeImpl {
   override Location getLocationImpl() { result = scriptBlock.getLocation() }
 
   override string toStringImpl() { result = scriptBlock.toString() }
+
+  override predicate nodeIsHidden() { any() }
+}
+
+class EnvVarNode extends TEnvVarNode, NodeImpl {
+  private EnvVariable v;
+
+  EnvVarNode() { this = TEnvVarNode(v) }
+
+  EnvVariable getVariable() { result = v }
+
+  override CfgScope getCfgScope() { result = v.getEnclosingScope() }
+
+  override Location getLocationImpl() { result = v.getLocation() }
+
+  override string toStringImpl() { result = v.toString() }
+
+  override predicate nodeIsHidden() { any() }
+}
+
+class FinalEnvVarRead extends TFinalEnvVarRead, NodeImpl {
+  Scope scope;
+  private EnvVariable v;
+
+  FinalEnvVarRead() { this = TFinalEnvVarRead(scope, v) }
+
+  EnvVariable getVariable() { result = v }
+
+  override CfgScope getCfgScope() { result = scope }
+
+  override Location getLocationImpl() { result = scope.getLocation() }
+
+  override string toStringImpl() { result = v.toString() + " after " + scope }
 
   override predicate nodeIsHidden() { any() }
 }
