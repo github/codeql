@@ -130,6 +130,21 @@ module Ssa {
     final override Location getLocation() { result = this.getBasicBlock().getLocation() }
   }
 
+  class InitialEnvVarDefinition extends Definition, SsaImpl::WriteDefinition {
+    private EnvVariable v;
+
+    InitialEnvVarDefinition() {
+      exists(BasicBlock bb, int i |
+        this.definesAt(v, bb, i) and
+        SsaImpl::envVarWrite(bb, i, v)
+      )
+    }
+
+    final override string toString() { result = "<initial env var> " + v }
+
+    final override Location getLocation() { result = this.getBasicBlock().getLocation() }
+  }
+
   /**  phi node. */
   class PhiNode extends Definition, SsaImpl::PhiNode {
     /** Gets an input of this phi node. */

@@ -106,6 +106,10 @@ module Private {
     }
   }
 
+  class EnvVariableImpl extends VariableSynth {
+    override EnvVar i;
+  }
+
   abstract class VarAccessImpl extends Expr, TVarAccess {
     abstract VariableImpl getVariableImpl();
   }

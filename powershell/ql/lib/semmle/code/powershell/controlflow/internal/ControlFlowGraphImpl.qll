@@ -736,8 +736,6 @@ module Trees {
 
   class VarTree extends LeafTree instanceof Variable { }
 
-  class EnvVariableTree extends LeafTree instanceof EnvVariable { }
-
   class AutomaticVariableTree extends LeafTree instanceof AutomaticVariable { }
 
   class BinaryExprTree extends StandardPostOrderTree instanceof BinaryExpr {

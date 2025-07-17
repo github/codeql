@@ -65,7 +65,7 @@ module SsaFlow {
   Impl::Node asNode(Node n) {
     n = TSsaNode(result)
     or
-    result.(Impl::ExprNode).getExpr() = n.asExpr()
+    result.(Impl::ExprNode).getExpr().asExprCfgNode() = n.asExpr()
     or
     exists(CfgNodes::ProcessBlockCfgNode pb, BasicBlock bb, int i |
       n.(ProcessNode).getProcessBlock() = pb and
@@ -86,7 +86,8 @@ module SsaFlow {
       result.(Impl::SsaDefinitionNode).getDefinition().definesAt(p.getIteratorVariable(), bb, i)
     )
     or
-    result.(Impl::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
+    result.(Impl::ExprPostUpdateNode).getExpr().asExprCfgNode() =
+      n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
     exists(SsaImpl::ParameterExt p |
       n = toParameterNode(p) and
@@ -94,6 +95,11 @@ module SsaFlow {
     )
     or
     result.(Impl::WriteDefSourceNode).getDefinition().(Ssa::WriteDefinition).assigns(n.asExpr())
+    or
+    exists(Scope scope, EnvVariable v |
+      result.(Impl::ExprNode).getExpr().isFinalEnvVarRead(scope, v) and
+      n = TFinalEnvVarRead(scope, v)
+    )
   }
 
   predicate localFlowStep(
@@ -241,7 +247,15 @@ private module Cached {
       // We want to prune irrelevant models before materialising data flow nodes, so types contributed
       // directly from CodeQL must expose their pruning info without depending on data flow nodes.
       (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
-    }
+    } or
+    TFinalEnvVarRead(Scope scope, EnvVariable envVar) {
+      exists(ExitBasicBlock exit |
+        envVar.getAnAccess().getEnclosingScope() = scope and
+        exit.getScope() = scope and
+        SsaImpl::envVarRead(exit, _, envVar)
+      )
+    } or
+    TEnvVarNode(EnvVariable envVar)
 
   cached
   Location getLocation(NodeImpl n) { result = n.getLocationImpl() }
@@ -900,6 +914,15 @@ private module OutNodes {
 import OutNodes
 
 predicate jumpStep(Node pred, Node succ) {
+  // final env read -> env variable node
+  pred.(FinalEnvVarRead).getVariable() = succ.(EnvVarNode).getVariable()
+  or
+  // env variable node -> initial env def
+  exists(SsaImpl::Definition def |
+    succ.(SsaDefinitionNodeImpl).getDefinition() = def and
+    def.definesAt(pred.(EnvVarNode).getVariable(), any(EntryBasicBlock entry), -1)
+  )
+  or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
     succ.(FlowSummaryNode).getSummaryNode())
 }
@@ -1308,6 +1331,39 @@ class ScriptBlockNode extends TScriptBlockNode, NodeImpl {
   override predicate nodeIsHidden() { any() }
 }
 
+class EnvVarNode extends TEnvVarNode, NodeImpl {
+  private EnvVariable v;
+
+  EnvVarNode() { this = TEnvVarNode(v) }
+
+  EnvVariable getVariable() { result = v }
+
+  override CfgScope getCfgScope() { result = v.getEnclosingScope() }
+
+  override Location getLocationImpl() { result = v.getLocation() }
+
+  override string toStringImpl() { result = v.toString() }
+
+  override predicate nodeIsHidden() { any() }
+}
+
+class FinalEnvVarRead extends TFinalEnvVarRead, NodeImpl {
+  Scope scope;
+  private EnvVariable v;
+
+  FinalEnvVarRead() { this = TFinalEnvVarRead(scope, v) }
+
+  EnvVariable getVariable() { result = v }
+
+  override CfgScope getCfgScope() { result = scope }
+
+  override Location getLocationImpl() { result = scope.getLocation() }
+
+  override string toStringImpl() { result = v.toString() + " after " + scope }
+
+  override predicate nodeIsHidden() { any() }
+}
+
 /** A node that performs a type cast. */
 class CastNode extends Node {
   CastNode() { none() }
@@ -1414,31 +1470,4 @@ ContentApprox getContentApprox(Content c) {
   or
   c instanceof Content::UnknownKeyOrPositionContent and
   result = TUnknownContentApprox()
-}
-
-// TFieldContent(string name) {
-//   name = any(PropertyMember member).getName()
-//   or
-//   name = any(MemberExpr me).getMemberName()
-// } or
-// // A known map key
-// TKnownKeyContent(ConstantValue cv) { exists(cv.asString()) } or
-// // A known array index
-// TKnownPositionalContent(ConstantValue cv) { cv.asInt() = [0 .. 10] } or
-// // An unknown key
-// TUnknownKeyContent() or
-// // An unknown positional element
-// TUnknownPositionalContent() or
-// // A unknown position or key - and we dont even know what kind it is
-// TUnknownKeyOrPositionContent()
-/**
- * A unit class for adding additional jump steps.
- *
- * Extend this class to add additional jump steps.
- */
-class AdditionalJumpStep extends Unit {
-  /**
-   * Holds if data can flow from `pred` to `succ` in a way that discards call contexts.
-   */
-  abstract predicate step(Node pred, Node succ);
 }

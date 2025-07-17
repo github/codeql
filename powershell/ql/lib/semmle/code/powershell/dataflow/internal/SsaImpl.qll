@@ -29,6 +29,8 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
     (
       uninitializedWrite(bb, i, v)
       or
+      envVarWrite(bb, i, v)
+      or
       variableWriteActual(bb, i, v, _)
       or
       exists(ProcessBlockCfgNode processBlock | bb.getNode(i) = processBlock |
@@ -43,7 +45,11 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
   }
 
   predicate variableRead(BasicBlock bb, int i, Variable v, boolean certain) {
-    variableReadActual(bb, i, v) and
+    (
+      variableReadActual(bb, i, v)
+      or
+      envVarRead(bb, i, v)
+    ) and
     certain = true
   }
 }
@@ -66,6 +72,14 @@ predicate uninitializedWrite(Cfg::EntryBasicBlock bb, int i, Variable v) {
   bb.getANode().getAstNode() = v
 }
 
+predicate envVarWrite(Cfg::EntryBasicBlock bb, int i, EnvVariable v) {
+  exists(VarReadAccess va |
+    va.getVariable() = v and
+    va.getEnclosingFunction().getBody() = bb.getScope() and
+    i = -1
+  )
+}
+
 predicate parameterWrite(Cfg::EntryBasicBlock bb, int i, Parameter p) {
   bb.getNode(i).getAstNode() = p
 }
@@ -75,6 +89,14 @@ private predicate variableReadActual(Cfg::BasicBlock bb, int i, Variable v) {
   exists(VarReadAccess read |
     read.getVariable() = v and
     read = bb.getNode(i).getAstNode()
+  )
+}
+
+predicate envVarRead(Cfg::ExitBasicBlock bb, int i, EnvVariable v) {
+  exists(VarWriteAccess va |
+    va.getVariable() = v and
+    va.getEnclosingFunction().getBody() = bb.getScope() and
+    bb.getNode(i) instanceof ExitNode
   )
 }
 
@@ -165,7 +187,7 @@ private module Cached {
       private predicate guardChecksAdjTypes(
         DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e, boolean branch
       ) {
-        guardChecks(g, e, branch)
+        guardChecks(g, e.asExprCfgNode(), branch)
       }
 
       private Node getABarrierNodeImpl() {
@@ -261,11 +283,48 @@ class ParameterExt extends TParameterExt {
 }
 
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
-  class Expr extends Cfg::CfgNodes::ExprCfgNode {
-    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
+  private newtype TExpr =
+    TExprCfgNode(Cfg::CfgNodes::ExprCfgNode e) or
+    TFinalEnvVarRead(Scope scope, EnvVariable v) {
+      exists(Cfg::ExitBasicBlock exit |
+        exit.getScope() = scope and
+        envVarRead(exit, _, v)
+      )
+    }
+
+  class Expr extends TExpr {
+    Cfg::CfgNodes::ExprCfgNode asExprCfgNode() { this = TExprCfgNode(result) }
+
+    predicate isFinalEnvVarRead(Scope scope, EnvVariable v) { this = TFinalEnvVarRead(scope, v) }
+
+    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) {
+      this.asExprCfgNode() = bb.getNode(i)
+      or
+      exists(EnvVariable v |
+        this.isFinalEnvVarRead(bb.getScope(), v) and
+        bb.getNode(i) instanceof ExitNode
+      )
+    }
+
+    string toString() {
+      result = this.asExprCfgNode().toString()
+      or
+      exists(EnvVariable v |
+        this.isFinalEnvVarRead(_, v) and
+        result = v.toString()
+      )
+    }
   }
 
-  Expr getARead(Definition def) { result = Cached::getARead(def) }
+  Expr getARead(Definition def) {
+    result.asExprCfgNode() = Cached::getARead(def)
+    or
+    exists(Variable v, Cfg::BasicBlock bb, int i |
+      Impl::ssaDefReachesRead(v, def, bb, i) and
+      envVarRead(bb, i, v) and
+      result.isFinalEnvVarRead(bb.getScope(), v)
+    )
+  }
 
   predicate ssaDefHasSource(WriteDefinition def) {
     any(ParameterExt p).isInitializedBy(def) or def.(Ssa::WriteDefinition).assigns(_)
@@ -280,6 +339,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     predicate controlsBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
       this.hasBranchEdge(bb1, bb2, branch)
     }
+
     /**
      * Holds if the evaluation of this guard to `branch` corresponds to the edge
      * from `bb1` to `bb2`.
@@ -291,8 +351,6 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
         s.getValue() = branch
       )
     }
-
-    
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
