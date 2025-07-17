@@ -90,7 +90,11 @@ fun getIrClassVirtualFile(irClass: IrClass): VirtualFile? {
             }
         }
         is VirtualFileBasedSourceElement -> {
-            return cSource.virtualFile
+            if (cSource.virtualFile.name.endsWith(".class")) {
+                // At least lately, despite VirtualFileBasedSourceElement being constructed on a BinaryJavaClass,
+                // this can be a .java source file.
+                return cSource.virtualFile
+            }
         }
         is KotlinJvmBinarySourceElement -> {
             val binaryClass = cSource.binaryClass

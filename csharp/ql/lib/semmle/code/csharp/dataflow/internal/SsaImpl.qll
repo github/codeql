@@ -1023,15 +1023,11 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   Expr getARead(Definition def) { exists(getAReadAtNode(def, result)) }
 
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
+  predicate ssaDefHasSource(WriteDefinition def) {
     // exclude flow directly from RHS to SSA definition, as we instead want to
-    // go from RHS to matching assingnable definition, and from there to SSA definition
-    none()
+    // go from RHS to matching assignable definition, and from there to SSA definition
+    def instanceof Ssa::ImplicitParameterDefinition
   }
-
-  class Parameter = Ssa::ImplicitParameterDefinition;
-
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { def = p }
 
   /**
    * Allows for flow into uncertain defintions that are not call definitions,
@@ -1048,21 +1044,29 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   class Guard extends Guards::Guard {
     /**
-     * Holds if the control flow branching from `bb1` is dependent on this guard,
-     * and that the edge from `bb1` to `bb2` corresponds to the evaluation of this
-     * guard to `branch`.
+     * Holds if the evaluation of this guard to `branch` corresponds to the edge
+     * from `bb1` to `bb2`.
      */
-    predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
+    predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
       exists(ControlFlow::SuccessorTypes::ConditionalSuccessor s |
         this.getAControlFlowNode() = bb1.getLastNode() and
         bb2 = bb1.getASuccessorByType(s) and
         s.getValue() = branch
       )
     }
+
+    /**
+     * Holds if this guard evaluating to `branch` controls the control-flow
+     * branch edge from `bb1` to `bb2`. That is, following the edge from
+     * `bb1` to `bb2` implies that this guard evaluated to `branch`.
+     */
+    predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
+      this.hasBranchEdge(bb1, bb2, branch)
+    }
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-  predicate guardControlsBlock(Guard guard, ControlFlow::BasicBlock bb, boolean branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, ControlFlow::BasicBlock bb, boolean branch) {
     exists(ConditionBlock conditionBlock, ControlFlow::SuccessorTypes::ConditionalSuccessor s |
       guard.getAControlFlowNode() = conditionBlock.getLastNode() and
       s.getValue() = branch and

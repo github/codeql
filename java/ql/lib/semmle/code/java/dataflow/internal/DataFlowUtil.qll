@@ -1,6 +1,8 @@
 /**
  * Basic definitions for use in the data flow library.
  */
+overlay[local?]
+module;
 
 private import java
 private import DataFlowPrivate
@@ -40,14 +42,14 @@ private module ThisFlow {
 
   private int lastRank(BasicBlock b) { result = max(int rankix | thisRank(_, b, rankix)) }
 
-  private predicate blockPrecedesThisAccess(BasicBlock b) { thisAccess(_, b.getABBSuccessor*(), _) }
+  private predicate blockPrecedesThisAccess(BasicBlock b) { thisAccess(_, b.getASuccessor*(), _) }
 
   private predicate thisAccessBlockReaches(BasicBlock b1, BasicBlock b2) {
-    thisAccess(_, b1, _) and b2 = b1.getABBSuccessor()
+    thisAccess(_, b1, _) and b2 = b1.getASuccessor()
     or
     exists(BasicBlock mid |
       thisAccessBlockReaches(b1, mid) and
-      b2 = mid.getABBSuccessor() and
+      b2 = mid.getASuccessor() and
       not thisAccess(_, mid, _) and
       blockPrecedesThisAccess(b2)
     )
@@ -77,6 +79,7 @@ private module ThisFlow {
  * Holds if data can flow from `node1` to `node2` in zero or more
  * local (intra-procedural) steps.
  */
+overlay[caller?]
 pragma[inline]
 predicate localFlow(Node node1, Node node2) { node1 = node2 or localFlowStepPlus(node1, node2) }
 
@@ -86,6 +89,7 @@ private predicate localFlowStepPlus(Node node1, Node node2) = fastTC(localFlowSt
  * Holds if data can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
+overlay[caller?]
 pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 

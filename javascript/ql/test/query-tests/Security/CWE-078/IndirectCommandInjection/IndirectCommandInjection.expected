@@ -2,6 +2,9 @@
 | actions.js:4:6:4:29 | process ... _DATA'] | actions.js:4:6:4:16 | process.env | actions.js:4:6:4:29 | process ... _DATA'] | This command depends on an unsanitized $@. | actions.js:4:6:4:16 | process.env | environment variable |
 | actions.js:8:10:8:23 | e['TEST_DATA'] | actions.js:12:6:12:16 | process.env | actions.js:8:10:8:23 | e['TEST_DATA'] | This command depends on an unsanitized $@. | actions.js:12:6:12:16 | process.env | environment variable |
 | actions.js:14:6:14:21 | getInput('data') | actions.js:14:6:14:21 | getInput('data') | actions.js:14:6:14:21 | getInput('data') | This command depends on an unsanitized $@. | actions.js:14:6:14:21 | getInput('data') | GitHub Actions user input |
+| actions.js:18:10:18:40 | 'rm -rf ... 'SOME'] | actions.js:18:22:18:32 | shelljs.env | actions.js:18:10:18:40 | 'rm -rf ... 'SOME'] | This command depends on an unsanitized $@. | actions.js:18:22:18:32 | shelljs.env | environment variable |
+| actions.js:19:10:19:37 | 'rm -rf ... nv.SOME | actions.js:19:22:19:32 | shelljs.env | actions.js:19:10:19:37 | 'rm -rf ... nv.SOME | This command depends on an unsanitized $@. | actions.js:19:22:19:32 | shelljs.env | environment variable |
+| actions.js:20:10:20:32 | 'rm -rf ... ljs.env | actions.js:20:22:20:32 | shelljs.env | actions.js:20:10:20:32 | 'rm -rf ... ljs.env | This command depends on an unsanitized $@. | actions.js:20:22:20:32 | shelljs.env | environment variable |
 | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line argument |
 | command-line-parameter-command-injection.js:8:10:8:36 | "cmd.sh ... argv[2] | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line-parameter-command-injection.js:8:10:8:36 | "cmd.sh ... argv[2] | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line argument |
 | command-line-parameter-command-injection.js:11:14:11:20 | args[0] | command-line-parameter-command-injection.js:10:13:10:24 | process.argv | command-line-parameter-command-injection.js:11:14:11:20 | args[0] | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:10:13:10:24 | process.argv | command-line argument |
@@ -44,6 +47,9 @@ edges
 | actions.js:7:15:7:15 | e | actions.js:8:10:8:10 | e | provenance |  |
 | actions.js:8:10:8:10 | e | actions.js:8:10:8:23 | e['TEST_DATA'] | provenance |  |
 | actions.js:12:6:12:16 | process.env | actions.js:7:15:7:15 | e | provenance |  |
+| actions.js:18:22:18:32 | shelljs.env | actions.js:18:10:18:40 | 'rm -rf ... 'SOME'] | provenance |  |
+| actions.js:19:22:19:32 | shelljs.env | actions.js:19:10:19:37 | 'rm -rf ... nv.SOME | provenance |  |
+| actions.js:20:22:20:32 | shelljs.env | actions.js:20:10:20:32 | 'rm -rf ... ljs.env | provenance |  |
 | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line-parameter-command-injection.js:8:10:8:36 | "cmd.sh ... argv[2] | provenance |  |
 | command-line-parameter-command-injection.js:10:6:10:33 | args | command-line-parameter-command-injection.js:11:14:11:17 | args | provenance |  |
 | command-line-parameter-command-injection.js:10:6:10:33 | args | command-line-parameter-command-injection.js:12:26:12:29 | args | provenance |  |
@@ -181,6 +187,12 @@ nodes
 | actions.js:8:10:8:23 | e['TEST_DATA'] | semmle.label | e['TEST_DATA'] |
 | actions.js:12:6:12:16 | process.env | semmle.label | process.env |
 | actions.js:14:6:14:21 | getInput('data') | semmle.label | getInput('data') |
+| actions.js:18:10:18:40 | 'rm -rf ... 'SOME'] | semmle.label | 'rm -rf ... 'SOME'] |
+| actions.js:18:22:18:32 | shelljs.env | semmle.label | shelljs.env |
+| actions.js:19:10:19:37 | 'rm -rf ... nv.SOME | semmle.label | 'rm -rf ... nv.SOME |
+| actions.js:19:22:19:32 | shelljs.env | semmle.label | shelljs.env |
+| actions.js:20:10:20:32 | 'rm -rf ... ljs.env | semmle.label | 'rm -rf ... ljs.env |
+| actions.js:20:22:20:32 | shelljs.env | semmle.label | shelljs.env |
 | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | semmle.label | process.argv |
 | command-line-parameter-command-injection.js:8:10:8:36 | "cmd.sh ... argv[2] | semmle.label | "cmd.sh ... argv[2] |
 | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | semmle.label | process.argv |

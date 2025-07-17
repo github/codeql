@@ -1,1 +1,1 @@
-query: queries/style/OmittableExists.ql
+query: ProblemQuery.ql

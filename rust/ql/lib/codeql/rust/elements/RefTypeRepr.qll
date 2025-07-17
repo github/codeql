@@ -8,9 +8,13 @@ import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeRepr
 
 /**
- * A RefTypeRepr. For example:
+ * A reference type.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let r: &i32;
+ * let m: &mut i32;
+ * //     ^^^^^^^^
  * ```
  */
 final class RefTypeRepr = Impl::RefTypeRepr;

@@ -5,7 +5,9 @@
  * @problem.severity warning
  * @precision high
  * @id java/suspicious-date-format
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

@@ -172,6 +172,7 @@ edges
 | test.swift:6:19:6:26 | call to source() | test.swift:7:15:7:15 | t1 | provenance |  |
 | test.swift:6:19:6:26 | call to source() | test.swift:9:15:9:15 | t1 | provenance |  |
 | test.swift:6:19:6:26 | call to source() | test.swift:10:15:10:15 | t2 | provenance |  |
+| test.swift:6:19:6:26 | call to source() | test.swift:15:15:15:15 | t2 | provenance |  |
 | test.swift:25:20:25:27 | call to source() | test.swift:29:18:29:21 | x | provenance |  |
 | test.swift:26:26:26:33 | call to source() | test.swift:29:26:29:29 | y | provenance |  |
 | test.swift:29:18:29:21 | x | test.swift:30:15:30:15 | x | provenance |  |
@@ -964,6 +965,7 @@ nodes
 | test.swift:7:15:7:15 | t1 | semmle.label | t1 |
 | test.swift:9:15:9:15 | t1 | semmle.label | t1 |
 | test.swift:10:15:10:15 | t2 | semmle.label | t2 |
+| test.swift:15:15:15:15 | t2 | semmle.label | t2 |
 | test.swift:25:20:25:27 | call to source() | semmle.label | call to source() |
 | test.swift:26:26:26:33 | call to source() | semmle.label | call to source() |
 | test.swift:29:18:29:21 | x | semmle.label | x |
@@ -1706,6 +1708,7 @@ subpaths
 | test.swift:7:15:7:15 | t1 | test.swift:6:19:6:26 | call to source() | test.swift:7:15:7:15 | t1 | result |
 | test.swift:9:15:9:15 | t1 | test.swift:6:19:6:26 | call to source() | test.swift:9:15:9:15 | t1 | result |
 | test.swift:10:15:10:15 | t2 | test.swift:6:19:6:26 | call to source() | test.swift:10:15:10:15 | t2 | result |
+| test.swift:15:15:15:15 | t2 | test.swift:6:19:6:26 | call to source() | test.swift:15:15:15:15 | t2 | result |
 | test.swift:30:15:30:15 | x | test.swift:25:20:25:27 | call to source() | test.swift:30:15:30:15 | x | result |
 | test.swift:31:15:31:15 | y | test.swift:26:26:26:33 | call to source() | test.swift:31:15:31:15 | y | result |
 | test.swift:39:15:39:29 | call to callee_source() | test.swift:35:12:35:19 | call to source() | test.swift:39:15:39:29 | call to callee_source() | result |

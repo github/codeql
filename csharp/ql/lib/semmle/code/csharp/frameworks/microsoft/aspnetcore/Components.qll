@@ -112,6 +112,48 @@ class MicrosoftAspNetCoreComponentsComponent extends Class {
   }
 }
 
+/**
+ * The `Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder::AddComponentParameter` method.
+ */
+private class MicrosoftAspNetCoreComponentsAddComponentParameterMethod extends Method {
+  MicrosoftAspNetCoreComponentsAddComponentParameterMethod() {
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Components.Rendering", "RenderTreeBuilder",
+      "AddComponentParameter")
+  }
+}
+
+/**
+ * The `Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder::OpenComponent<TComponent>` method.
+ */
+private class MicrosoftAspNetCoreComponentsOpenComponentTComponentMethod extends Method {
+  MicrosoftAspNetCoreComponentsOpenComponentTComponentMethod() {
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Components.Rendering", "RenderTreeBuilder",
+      "OpenComponent`1") and
+    this.getNumberOfParameters() = 1
+  }
+}
+
+/**
+ * The `Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder::OpenComponent` method.
+ */
+private class MicrosoftAspNetCoreComponentsOpenComponentMethod extends Method {
+  MicrosoftAspNetCoreComponentsOpenComponentMethod() {
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Components.Rendering", "RenderTreeBuilder",
+      "OpenComponent") and
+    this.getNumberOfParameters() = 2
+  }
+}
+
+/**
+ * The `Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder::CloseComponent` method.
+ */
+private class MicrosoftAspNetCoreComponentsCloseComponentMethod extends Method {
+  MicrosoftAspNetCoreComponentsCloseComponentMethod() {
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Components.Rendering", "RenderTreeBuilder",
+      "CloseComponent")
+  }
+}
+
 private module Sources {
   private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
@@ -131,5 +173,93 @@ private module Sources {
     }
 
     override string getSourceType() { result = "ASP.NET Core component route parameter" }
+  }
+}
+
+/**
+ * Holds for matching `RenderTreeBuilder.OpenComponent` and `RenderTreeBuilder.CloseComponent` calls with index `openCallIndex` and `closeCallIndex` respectively
+ * within the `enclosing` enclosing callabale. The `componentType` is the type of the component that is being opened and closed.
+ */
+private predicate matchingOpenCloseComponentCalls(
+  MethodCall openCall, int openCallIndex, MethodCall closeCall, int closeCallIndex,
+  Callable enclosing, Type componentType
+) {
+  (
+    openCall.getTarget().getUnboundDeclaration() instanceof
+      MicrosoftAspNetCoreComponentsOpenComponentTComponentMethod and
+    openCall.getTarget().(ConstructedGeneric).getTypeArgument(0) = componentType
+    or
+    openCall.getTarget() instanceof MicrosoftAspNetCoreComponentsOpenComponentMethod and
+    openCall.getArgument(1).(TypeofExpr).getTypeAccess().getTarget() = componentType
+  ) and
+  openCall.getEnclosingCallable() = enclosing and
+  closeCall.getTarget() instanceof MicrosoftAspNetCoreComponentsCloseComponentMethod and
+  closeCall.getEnclosingCallable() = enclosing and
+  exists(BlockStmt block |
+    block = closeCall.getParent().getParent() and
+    block = openCall.getParent().getParent() and
+    block.getChildStmt(openCallIndex) = openCall.getParent() and
+    closeCallIndex =
+      min(int closeCallIndex0 |
+        block.getChildStmt(closeCallIndex0) = closeCall.getParent() and
+        closeCallIndex0 > openCallIndex
+      )
+  )
+}
+
+private module JumpNodes {
+  /**
+   * A call to `Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder::AddComponentParameter` which
+   * sets the value of a parameter.
+   */
+  private class ParameterPassingCall extends Call {
+    ParameterPassingCall() {
+      this.getTarget() instanceof MicrosoftAspNetCoreComponentsAddComponentParameterMethod
+    }
+
+    /**
+     * Gets the property whose value is being set.
+     */
+    Property getParameterProperty() {
+      result.getAnAttribute() instanceof MicrosoftAspNetCoreComponentsParameterAttribute and
+      (
+        exists(NameOfExpr ne | ne = this.getArgument(1) | result.getAnAccess() = ne.getAccess())
+        or
+        exists(
+          string propertyName, MethodCall openComponent, BlockStmt block, int openIdx, int closeIdx,
+          int thisIdx
+        |
+          propertyName = this.getArgument(1).(StringLiteral).getValue() and
+          result.hasName(propertyName) and
+          matchingOpenCloseComponentCalls(openComponent, openIdx, _, closeIdx,
+            this.getEnclosingCallable(), result.getDeclaringType()) and
+          block = this.getParent().getParent() and
+          block = openComponent.getParent().getParent() and
+          block.getChildStmt(thisIdx) = this.getParent() and
+          thisIdx in [openIdx + 1 .. closeIdx - 1]
+        )
+      )
+    }
+
+    /**
+     * Gets the value being set.
+     */
+    Expr getParameterValue() { result = this.getArgument(2) }
+  }
+
+  private class ComponentParameterJump extends DataFlow::NonLocalJumpNode {
+    Property prop;
+
+    ComponentParameterJump() {
+      exists(ParameterPassingCall call |
+        prop = call.getParameterProperty() and
+        this.asExpr() = call.getParameterValue()
+      )
+    }
+
+    override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
+      preservesValue = true and
+      result.asExpr() = prop.getAnAccess()
+    }
   }
 }

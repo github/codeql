@@ -87,7 +87,7 @@ class CallableScopeTree extends StandardTree, PreOrderTree, PostOrderTree, Scope
     i = 0 and
     result = this.getParamList().getSelfParam()
     or
-    result = this.getParamList().getParam(i - 1)
+    result = this.getParam(i - 1)
     or
     i = this.getParamList().getNumberOfParams() + 1 and
     result = this.getBody()
@@ -107,7 +107,7 @@ class FormatTemplateVariableAccessTree extends LeafTree, FormatTemplateVariableA
 class ItemTree extends LeafTree, Item {
   ItemTree() {
     not this instanceof MacroCall and
-    this = [any(StmtList s).getAStatement(), any(MacroStmts s).getAStatement()]
+    this = [any(StmtList s).getAStatement(), any(MacroBlockExpr s).getAStatement()]
   }
 }
 
@@ -143,15 +143,17 @@ class LetStmtTree extends PreOrderTree, LetStmt {
 }
 
 class MacroCallTree extends StandardPostOrderTree, MacroCall {
-  override AstNode getChildNode(int i) { i = 0 and result = this.getExpanded() }
+  MacroCallTree() { not this.getParentNode() instanceof MacroPat }
+
+  override AstNode getChildNode(int i) { i = 0 and result = this.getMacroCallExpansion() }
 }
 
-class MacroStmtsTree extends StandardPreOrderTree, MacroStmts {
+class MacroBlockExprTree extends StandardPostOrderTree, MacroBlockExpr {
   override AstNode getChildNode(int i) {
     result = this.getStatement(i)
     or
     i = this.getNumberOfStatements() and
-    result = this.getExpr()
+    result = this.getTailExpr()
   }
 }
 
@@ -329,7 +331,7 @@ module ExprTrees {
   }
 
   class FieldExprTree extends StandardPostOrderTree instanceof FieldExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+    override AstNode getChildNode(int i) { i = 0 and result = super.getContainer() }
   }
 
   class IfExprTree extends PostOrderTree instanceof IfExpr {
@@ -541,7 +543,7 @@ module ExprTrees {
 
   class MethodCallExprTree extends StandardPostOrderTree, MethodCallExpr {
     override AstNode getChildNode(int i) {
-      if i = 0 then result = this.getReceiver() else result = this.getArgList().getArg(i - 1)
+      if i = 0 then result = this.getReceiver() else result = this.getArg(i - 1)
     }
   }
 
@@ -575,9 +577,9 @@ module ExprTrees {
     }
   }
 
-  class RecordExprTree extends StandardPostOrderTree instanceof RecordExpr {
+  class StructExprTree extends StandardPostOrderTree instanceof StructExpr {
     override AstNode getChildNode(int i) {
-      result = super.getRecordExprFieldList().getField(i).getExpr()
+      result = super.getStructExprFieldList().getField(i).getExpr()
     }
   }
 
@@ -685,7 +687,7 @@ module PatternTrees {
   }
 
   class MacroPatTree extends PreOrderPatTree, MacroPat {
-    override Pat getPat(int i) { i = 0 and result = this.getMacroCall().getExpanded() }
+    override Pat getPat(int i) { i = 0 and result = this.getMacroCall().getMacroCallExpansion() }
   }
 
   class OrPatTree extends PostOrderPatTree instanceof OrPat {
@@ -726,12 +728,12 @@ module PatternTrees {
     }
   }
 
-  class RecordPatTree extends PreOrderPatTree, RecordPat {
+  class StructPatTree extends PreOrderPatTree, StructPat {
     override Pat getPat(int i) {
-      result = this.getRecordPatFieldList().getField(i).getPat()
+      result = this.getStructPatFieldList().getField(i).getPat()
       or
-      i = this.getRecordPatFieldList().getNumberOfFields() and
-      result = this.getRecordPatFieldList().getRestPat()
+      i = this.getStructPatFieldList().getNumberOfFields() and
+      result = this.getStructPatFieldList().getRestPat()
     }
   }
 

@@ -2,11 +2,20 @@
   "sysroot_src": "filled by the rust_project fixture",
   "crates": [
     {
+      "display_name": "exe",
+      "version": "0.1.0",
       "root_module": "exe/src/main.rs",
       "edition": "2021",
-      "deps": [{"crate": 1, "name": "lib"}]
+      "deps": [
+        {
+          "crate": 1,
+          "name": "lib"
+        }
+      ]
     },
     {
+      "display_name": "lib",
+      "version": "0.1.0",
       "root_module": "lib/src/lib.rs",
       "edition": "2021",
       "deps": []

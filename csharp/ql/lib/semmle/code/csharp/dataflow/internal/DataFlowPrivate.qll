@@ -506,7 +506,7 @@ module SsaFlow {
     result.(Impl::ExprPostUpdateNode).getExpr() =
       n.(PostUpdateNode).getPreUpdateNode().(ExprNode).getControlFlowNode()
     or
-    result.(Impl::ParameterNode).getParameter() = n.(ExplicitParameterNode).getSsaDefinition()
+    result.(Impl::WriteDefSourceNode).getDefinition() = n.(ExplicitParameterNode).getSsaDefinition()
   }
 
   predicate localFlowStep(Ssa::SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
@@ -691,19 +691,22 @@ module LocalFlow {
     )
   }
 
-  /** Gets a node for which to construct a post-update node for argument `arg`. */
-  ControlFlow::Nodes::ExprNode getAPostUpdateNodeForArg(ControlFlow::Nodes::ExprNode arg) {
-    arg.getExpr() instanceof Argument and
-    result = getALastEvalNode*(arg) and
-    exists(Expr e, Type t | result.getExpr() = e and t = e.stripCasts().getType() |
-      t instanceof RefType and
-      not t instanceof NullType
-      or
-      t = any(TypeParameter tp | not tp.isValueType())
-      or
-      t.isRefLikeType()
-    ) and
-    not exists(getALastEvalNode(result))
+  /**
+   * Holds if a reverse local flow step should be added from the post-update node
+   * for `e` to the post-update node for the result.
+   *
+   * This is needed to allow for side-effects on compound expressions to propagate
+   * to sub components. For example, in
+   *
+   * ```csharp
+   * m(b ? x : y)
+   * ```
+   *
+   * we add a reverse flow step from `[post] b ? x : y` to `[post] x` and to
+   * `[post] y`, in order for the side-effect of `m` to reach both `x` and `y`.
+   */
+  ControlFlow::Nodes::ExprNode getPostUpdateReverseStep(ControlFlow::Nodes::ExprNode e) {
+    result = getALastEvalNode(e)
   }
 
   /**
@@ -763,6 +766,13 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
     VariableCapture::valueStep(nodeFrom, nodeTo)
     or
     nodeTo = nodeFrom.(LocalFunctionCreationNode).getAnAccess(true)
+    or
+    nodeTo.(PostUpdateNode).getPreUpdateNode().(ExprNode).getControlFlowNode() =
+      LocalFlow::getPostUpdateReverseStep(nodeFrom
+            .(PostUpdateNode)
+            .getPreUpdateNode()
+            .(ExprNode)
+            .getControlFlowNode())
   ) and
   model = ""
   or
@@ -1061,6 +1071,20 @@ private class FieldOrPropertyUsedInSource extends FieldOrProperty {
   }
 }
 
+/**
+ * Hold if `e` has a type that allows for it to have a post-update node.
+ */
+predicate exprMayHavePostUpdateNode(Expr e) {
+  exists(Type t | t = e.stripCasts().getType() |
+    t instanceof RefType and
+    not t instanceof NullType
+    or
+    t = any(TypeParameter tp | not tp.isValueType())
+    or
+    t.isRefLikeType()
+  )
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
@@ -1106,7 +1130,15 @@ private module Cached {
       cfn.getAstNode().(ObjectCreation).hasInitializer()
     } or
     TExprPostUpdateNode(ControlFlow::Nodes::ExprNode cfn) {
-      cfn = LocalFlow::getAPostUpdateNodeForArg(_)
+      (
+        cfn.getExpr() instanceof Argument
+        or
+        cfn =
+          LocalFlow::getPostUpdateReverseStep(any(ControlFlow::Nodes::ExprNode e |
+              exists(any(SourcePostUpdateNode p).getPreUpdateNode().asExprAtNode(e))
+            ))
+      ) and
+      exprMayHavePostUpdateNode(cfn.getExpr())
       or
       exists(Expr e | e = cfn.getExpr() |
         fieldOrPropertyStore(_, _, _, e, true)
@@ -2722,17 +2754,23 @@ abstract class PostUpdateNode extends Node {
 }
 
 module PostUpdateNodes {
-  class ObjectCreationNode extends PostUpdateNode, ExprNode, TExprNode {
+  abstract class SourcePostUpdateNode extends PostUpdateNode {
+    abstract Node getPreUpdateSourceNode();
+
+    final override Node getPreUpdateNode() { result = this.getPreUpdateSourceNode() }
+  }
+
+  class ObjectCreationNode extends SourcePostUpdateNode, ExprNode, TExprNode {
     private ObjectCreation oc;
 
     ObjectCreationNode() { this = TExprNode(oc.getAControlFlowNode()) }
 
-    override Node getPreUpdateNode() {
+    override Node getPreUpdateSourceNode() {
       exists(ControlFlow::Nodes::ElementNode cfn | this = TExprNode(cfn) |
-        result.(ObjectInitializerNode).getControlFlowNode() = cfn
+        result = TObjectInitializerNode(cfn)
         or
         not oc.hasInitializer() and
-        result.(MallocNode).getControlFlowNode() = cfn
+        result = TMallocNode(cfn)
       )
     }
   }
@@ -2744,7 +2782,7 @@ module PostUpdateNodes {
    * Such a node acts as both a post-update node for the `MallocNode`, as well as
    * a pre-update node for the `ObjectCreationNode`.
    */
-  class ObjectInitializerNode extends PostUpdateNode, NodeImpl, ArgumentNodeImpl,
+  class ObjectInitializerNode extends SourcePostUpdateNode, NodeImpl, ArgumentNodeImpl,
     TObjectInitializerNode
   {
     private ObjectCreation oc;
@@ -2758,7 +2796,7 @@ module PostUpdateNodes {
     /** Gets the initializer to which this initializer node belongs. */
     ObjectOrCollectionInitializer getInitializer() { result = oc.getInitializer() }
 
-    override MallocNode getPreUpdateNode() { result.getControlFlowNode() = cfn }
+    override MallocNode getPreUpdateSourceNode() { result = TMallocNode(cfn) }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       pos.isQualifier() and
@@ -2781,23 +2819,12 @@ module PostUpdateNodes {
     override string toStringImpl() { result = "[pre-initializer] " + cfn }
   }
 
-  class ExprPostUpdateNode extends PostUpdateNode, NodeImpl, TExprPostUpdateNode {
+  class ExprPostUpdateNode extends SourcePostUpdateNode, NodeImpl, TExprPostUpdateNode {
     private ControlFlow::Nodes::ElementNode cfn;
 
     ExprPostUpdateNode() { this = TExprPostUpdateNode(cfn) }
 
-    override ExprNode getPreUpdateNode() {
-      // For compound arguments, such as `m(b ? x : y)`, we want the leaf nodes
-      // `[post] x` and `[post] y` to have two pre-update nodes: (1) the compound argument,
-      // `if b then x else y`; and the (2) the underlying expressions; `x` and `y`,
-      // respectively.
-      //
-      // This ensures that we get flow out of the call into both leafs (1), while still
-      // maintaining the invariant that the underlying expression is a pre-update node (2).
-      cfn = LocalFlow::getAPostUpdateNodeForArg(result.getControlFlowNode())
-      or
-      cfn = result.getControlFlowNode()
-    }
+    override ExprNode getPreUpdateSourceNode() { result = TExprNode(cfn) }
 
     override DataFlowCallable getEnclosingCallableImpl() {
       result.getAControlFlowNode() = cfn
@@ -2825,41 +2852,41 @@ module PostUpdateNodes {
     override Node getPreUpdateNode() { result.(FlowSummaryNode).getSummaryNode() = preUpdateNode }
   }
 
-  private class InstanceParameterAccessPostUpdateNode extends PostUpdateNode,
+  private class InstanceParameterAccessPostUpdateNode extends SourcePostUpdateNode,
     InstanceParameterAccessNode
   {
     InstanceParameterAccessPostUpdateNode() { isPostUpdate = true }
 
-    override InstanceParameterAccessPreNode getPreUpdateNode() {
+    override InstanceParameterAccessPreNode getPreUpdateSourceNode() {
       result = TInstanceParameterAccessNode(cfn, false)
     }
 
     override string toStringImpl() { result = "[post] this" }
   }
 
-  private class PrimaryConstructorThisAccessPostUpdateNode extends PostUpdateNode,
+  private class PrimaryConstructorThisAccessPostUpdateNode extends SourcePostUpdateNode,
     PrimaryConstructorThisAccessNode
   {
     PrimaryConstructorThisAccessPostUpdateNode() { isPostUpdate = true }
 
-    override PrimaryConstructorThisAccessPreNode getPreUpdateNode() {
+    override PrimaryConstructorThisAccessPreNode getPreUpdateSourceNode() {
       result = TPrimaryConstructorThisAccessNode(p, false, callable)
     }
 
     override string toStringImpl() { result = "[post] this" }
   }
 
-  class LocalFunctionCreationPostUpdateNode extends LocalFunctionCreationNode, PostUpdateNode {
+  class LocalFunctionCreationPostUpdateNode extends LocalFunctionCreationNode, SourcePostUpdateNode {
     LocalFunctionCreationPostUpdateNode() { isPostUpdate = true }
 
-    override LocalFunctionCreationPreNode getPreUpdateNode() {
+    override LocalFunctionCreationPreNode getPreUpdateSourceNode() {
       result = TLocalFunctionCreationNode(cfn, false)
     }
 
     override string toStringImpl() { result = "[post] " + cfn }
   }
 
-  private class CapturePostUpdateNode extends PostUpdateNode, CaptureNode {
+  private class CapturePostUpdateNode extends SourcePostUpdateNode, CaptureNode {
     private CaptureNode pre;
 
     CapturePostUpdateNode() {
@@ -2867,7 +2894,7 @@ module PostUpdateNodes {
         pre.getSynthesizedCaptureNode())
     }
 
-    override CaptureNode getPreUpdateNode() { result = pre }
+    override CaptureNode getPreUpdateSourceNode() { result = pre }
 
     override string toStringImpl() { result = "[post] " + cn }
   }

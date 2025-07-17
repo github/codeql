@@ -133,7 +133,9 @@ module NestJS {
       hasSanitizingPipe(this, false)
       or
       hasSanitizingPipe(this, true) and
-      isSanitizingType(this.getParameter().getType().unfold())
+      // Note: we could consider types with class-validator decorators to be sanitized here, but instead we consider the root
+      // object to be tainted, but omit taint steps for the individual properties names that have sanitizing decorators. See ClassValidator.qll.
+      this.getParameter().getTypeBinding().isSanitizingPrimitiveType()
     }
   }
 
@@ -210,19 +212,6 @@ module NestJS {
   }
 
   /**
-   * Holds if a parameter of type `t` is considered sanitized, provided it has been checked by `ValidationPipe`
-   * (which relies on metadata emitted by the TypeScript compiler).
-   */
-  private predicate isSanitizingType(Type t) {
-    t instanceof NumberType
-    or
-    t instanceof BooleanType
-    //
-    // Note: we could consider types with class-validator decorators to be sanitized here, but instead we consider the root
-    // object to be tainted, but omit taint steps for the individual properties names that have sanitizing decorators. See ClassValidator.qll.
-  }
-
-  /**
    * A user-defined pipe class, for example:
    * ```js
    * class MyPipe implements PipeTransform {
@@ -237,7 +226,7 @@ module NestJS {
     CustomPipeClass() {
       exists(ClassDefinition cls |
         this = cls.flow() and
-        cls.getASuperInterface().hasQualifiedName("@nestjs/common", "PipeTransform")
+        cls.getASuperInterface().hasUnderlyingType("@nestjs/common", "PipeTransform")
       )
     }
 
@@ -327,14 +316,6 @@ module NestJS {
     }
   }
 
-  private predicate isStringType(Type type) {
-    type instanceof StringType
-    or
-    type instanceof AnyType
-    or
-    isStringType(type.(PromiseType).getElementType().unfold())
-  }
-
   /**
    * A return value from a route handler, seen as an argument to `res.send()`.
    *
@@ -353,10 +334,11 @@ module NestJS {
     ReturnValueAsResponseSend() {
       handler.isReturnValueReflected() and
       this = handler.getAReturn() and
-      // Only returned strings are sinks
-      not exists(Type type |
-        type = this.asExpr().getType() and
-        not isStringType(type.unfold())
+      // Only returned strings are sinks. If we can find a type for the return value, it must be string-like.
+      (
+        this.asExpr().getTypeBinding().hasUnderlyingStringOrAnyType()
+        or
+        not exists(this.asExpr().getTypeBinding())
       )
     }
 
@@ -465,6 +447,61 @@ module NestJS {
   }
 
   /**
+   * A NestJS Middleware Class
+   */
+  private class NestMiddlewareClass extends DataFlow::ClassNode {
+    NestMiddlewareClass() {
+      exists(ClassDefinition cls |
+        this = cls.flow() and
+        cls.getASuperInterface().hasUnderlyingType("@nestjs/common", "NestMiddleware")
+      )
+    }
+
+    DataFlow::FunctionNode getUseFunction() { result = this.getInstanceMethod("use") }
+  }
+
+  /**
+   * A NestJS Middleware Class route handler (the `use` method)
+   */
+  private class MiddlewareRouteHandler extends Http::RouteHandler, DataFlow::FunctionNode {
+    MiddlewareRouteHandler() { this = any(NestMiddlewareClass m).getUseFunction() }
+
+    override Http::HeaderDefinition getAResponseHeader(string name) { none() }
+
+    /**
+     * Gets the request object used by this route
+     */
+    DataFlow::ParameterNode getRequest() { result = this.getParameter(0) }
+
+    /**
+     * Gets the response object used by this route
+     */
+    DataFlow::ParameterNode getResponse() { result = this.getParameter(1) }
+  }
+
+  /**
+   * A source of `express` request objects for NestJS middlewares
+   */
+  private class MiddlewareRequestSource extends Express::RequestSource {
+    MiddlewareRouteHandler middlewareRouteHandler;
+
+    MiddlewareRequestSource() { this = middlewareRouteHandler.getRequest() }
+
+    override Http::RouteHandler getRouteHandler() { result = middlewareRouteHandler }
+  }
+
+  /**
+   * A source of `express` response objects for NestJS middlewares
+   */
+  private class MiddlewareResponseSource extends Express::ResponseSource {
+    MiddlewareRouteHandler middlewareRouteHandler;
+
+    MiddlewareResponseSource() { this = middlewareRouteHandler.getResponse() }
+
+    override Http::RouteHandler getRouteHandler() { result = middlewareRouteHandler }
+  }
+
+  /**
    * A value passed in the `providers` array in:
    * ```js
    * @Module({ providers: [ ... ] })
@@ -472,44 +509,62 @@ module NestJS {
    * ```
    */
   private DataFlow::Node providerTuple() {
-    result =
-      DataFlow::moduleImport("@nestjs/common")
-          .getAPropertyRead("Module")
-          .getACall()
-          .getOptionArgument(0, "providers")
-          .getALocalSource()
-          .(DataFlow::ArrayCreationNode)
-          .getAnElement()
-  }
-
-  private predicate providerPair(DataFlow::Node interface, DataFlow::Node concreteClass) {
-    exists(DataFlow::SourceNode tuple |
-      tuple = providerTuple().getALocalSource() and
-      interface = tuple.getAPropertyWrite("provide").getRhs() and
-      concreteClass = tuple.getAPropertyWrite("useClass").getRhs()
+    exists(DataFlow::CallNode moduleCall |
+      moduleCall = DataFlow::moduleImport("@nestjs/common").getAPropertyRead("Module").getACall() and
+      result = providerTupleAux(moduleCall.getArgument(0).getALocalSource())
     )
   }
 
-  /** Gets the class being referenced at `node` without relying on the call graph. */
-  private DataFlow::ClassNode getClassFromNode(DataFlow::Node node) {
-    result.getAstNode() = node.analyze().getAValue().(AbstractClass).getClass()
+  private DataFlow::Node providerTupleAux(DataFlow::ObjectLiteralNode o) {
+    (
+      result =
+        o.getAPropertyWrite("providers")
+            .getRhs()
+            .getALocalSource()
+            .(DataFlow::ArrayCreationNode)
+            .getAnElement()
+      or
+      result =
+        providerTupleAux(o.getAPropertyWrite("imports")
+              .getRhs()
+              .getALocalSource()
+              .(DataFlow::ArrayCreationNode)
+              .getAnElement()
+              .(DataFlow::CallNode)
+              .getCalleeNode()
+              .getAFunctionValue()
+              .getFunction()
+              .getAReturnedExpr()
+              .flow())
+    )
   }
 
-  private predicate providerClassPair(
-    DataFlow::ClassNode interface, DataFlow::ClassNode concreteClass
-  ) {
-    exists(DataFlow::Node interfaceNode, DataFlow::Node concreteClassNode |
-      providerPair(interfaceNode, concreteClassNode) and
-      interface = getClassFromNode(interfaceNode) and
-      concreteClass = getClassFromNode(concreteClassNode)
+  private DataFlow::ClassNode getConcreteClassFromProviderTuple(DataFlow::SourceNode tuple) {
+    result = tuple.getAPropertyWrite("useClass").getRhs().asExpr().getNameBinding().getClassNode()
+    or
+    exists(DataFlow::FunctionNode f |
+      f = tuple.getAPropertyWrite("useFactory").getRhs().getAFunctionValue() and
+      result = f.getFunction().getAReturnedExpr().getTypeBinding().getAnUnderlyingClass()
+    )
+    or
+    result =
+      tuple.getAPropertyWrite("useValue").getRhs().asExpr().getTypeBinding().getAnUnderlyingClass()
+  }
+
+  private predicate providerPair(DataFlow::ClassNode interface, DataFlow::ClassNode concreteClass) {
+    exists(DataFlow::SourceNode tuple |
+      tuple = providerTuple().getALocalSource() and
+      interface =
+        tuple.getAPropertyWrite("provide").getRhs().asExpr().getNameBinding().getClassNode() and
+      concreteClass = getConcreteClassFromProviderTuple(tuple)
     )
   }
 
   private class DependencyInjectionStep extends PreCallGraphStep {
     override predicate classInstanceSource(DataFlow::ClassNode cls, DataFlow::Node node) {
       exists(DataFlow::ClassNode interfaceClass |
-        node.asExpr().(Parameter).getType().(ClassType).getClass() = interfaceClass.getAstNode() and
-        providerClassPair(interfaceClass, cls)
+        node.asExpr().getTypeBinding().getTypeDefinition() = interfaceClass.getAstNode() and
+        providerPair(interfaceClass, cls)
       )
     }
   }

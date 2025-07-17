@@ -6,8 +6,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/non-static-nested-class
- * @tags efficiency
+ * @tags quality
  *       maintainability
+ *       readability
  */
 
 import java

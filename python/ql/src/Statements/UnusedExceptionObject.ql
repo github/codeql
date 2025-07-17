@@ -2,8 +2,9 @@
  * @name Unused exception object
  * @description An exception object is created, but is not used.
  * @kind problem
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       error-handling
  * @problem.severity error
  * @sub-severity low
  * @precision very-high

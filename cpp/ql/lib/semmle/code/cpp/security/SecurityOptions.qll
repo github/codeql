@@ -22,28 +22,4 @@ class CustomSecurityOptions extends SecurityOptions {
     // for example: (function = "MySpecialSqlFunction" and arg = 0)
     none() // rules to match custom functions replace this line
   }
-
-  deprecated override predicate userInputArgument(FunctionCall functionCall, int arg) {
-    SecurityOptions.super.userInputArgument(functionCall, arg)
-    or
-    exists(string fname |
-      functionCall.getTarget().hasGlobalName(fname) and
-      exists(functionCall.getArgument(arg)) and
-      // --- custom functions that return user input via one of their arguments:
-      // 'arg' is the 0-based index of the argument that is used to return user input
-      // for example: (fname = "readXmlInto" and arg = 1)
-      none() // rules to match custom functions replace this line
-    )
-  }
-
-  deprecated override predicate userInputReturned(FunctionCall functionCall) {
-    SecurityOptions.super.userInputReturned(functionCall)
-    or
-    exists(string fname |
-      functionCall.getTarget().hasGlobalName(fname) and
-      // --- custom functions that return user input via their return value:
-      // for example: fname = "xmlReadAttribute"
-      none() // rules to match custom functions replace this line
-    )
-  }
 }

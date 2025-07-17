@@ -2,3 +2,4 @@
 /.idea
 /src/codegen/grammar.rs
 /src/codegen/grammar/
+/rust.ungram

@@ -8,7 +8,7 @@
  * @id go/suspicious-character-in-regex
  * @tags correctness
  *       security
- *       external/cwe/cwe-20
+ *       external/cwe/cwe-020
  */
 
 import go
@@ -40,6 +40,8 @@ module SuspiciousCharacterInRegexpConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

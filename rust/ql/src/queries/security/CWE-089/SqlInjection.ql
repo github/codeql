@@ -14,20 +14,23 @@ import rust
 import codeql.rust.dataflow.DataFlow
 import codeql.rust.dataflow.TaintTracking
 import codeql.rust.security.SqlInjectionExtensions
-import SqlInjectionFlow::PathGraph
 
 /**
  * A taint configuration for tainted data that reaches a SQL sink.
  */
 module SqlInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node instanceof SqlInjection::Source }
+  import SqlInjection
 
-  predicate isSink(DataFlow::Node node) { node instanceof SqlInjection::Sink }
+  predicate isSource(DataFlow::Node node) { node instanceof Source }
 
-  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof SqlInjection::Barrier }
+  predicate isSink(DataFlow::Node node) { node instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof Barrier }
 }
 
 module SqlInjectionFlow = TaintTracking::Global<SqlInjectionConfig>;
+
+import SqlInjectionFlow::PathGraph
 
 from SqlInjectionFlow::PathNode sourceNode, SqlInjectionFlow::PathNode sinkNode
 where SqlInjectionFlow::flowPath(sourceNode, sinkNode)

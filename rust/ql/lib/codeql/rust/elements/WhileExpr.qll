@@ -9,9 +9,13 @@ import codeql.rust.elements.Expr
 import codeql.rust.elements.LoopingExpr
 
 /**
- * A WhileExpr. For example:
+ * A while loop expression.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * while x < 10 {
+ *     x += 1;
+ * }
  * ```
  */
 final class WhileExpr = Impl::WhileExpr;

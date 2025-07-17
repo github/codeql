@@ -8,14 +8,15 @@ import codeql.rust.elements.AssocItem
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Attr
 import codeql.rust.elements.ExternItem
-import codeql.rust.elements.Item
 import codeql.rust.elements.Path
 import codeql.rust.elements.TokenTree
 
 /**
- * A MacroCall. For example:
+ * A macro invocation.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * println!("Hello, world!");
  * ```
  */
 final class MacroCall = Impl::MacroCall;

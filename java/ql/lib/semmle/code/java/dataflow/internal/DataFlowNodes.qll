@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import java
 private import semmle.code.java.dataflow.InstanceAccess
 private import semmle.code.java.dataflow.ExternalFlow
@@ -26,6 +29,14 @@ private predicate deadcode(Expr e) {
 module SsaFlow {
   module Impl = SsaImpl::DataFlowIntegration;
 
+  private predicate ssaDefAssigns(SsaExplicitUpdate def, Expr value) {
+    exists(VariableUpdate upd | upd = def.getDefiningExpr() |
+      value = upd.(VariableAssign).getSource() or
+      value = upd.(AssignOp) or
+      value = upd.(RecordBindingVariableExpr)
+    )
+  }
+
   Impl::Node asNode(Node n) {
     n = TSsaNode(result)
     or
@@ -33,7 +44,12 @@ module SsaFlow {
     or
     result.(Impl::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
-    TExplicitParameterNode(result.(Impl::ParameterNode).getParameter()) = n
+    exists(Parameter p |
+      n = TExplicitParameterNode(p) and
+      result.(Impl::WriteDefSourceNode).getDefinition().(SsaImplicitInit).isParameterDefinition(p)
+    )
+    or
+    ssaDefAssigns(result.(Impl::WriteDefSourceNode).getDefinition(), n.asExpr())
   }
 
   predicate localFlowStep(SsaSourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
@@ -47,8 +63,6 @@ module SsaFlow {
 
 cached
 private module Cached {
-  private import semmle.code.java.controlflow.internal.GuardsLogic as GuardsLogic
-
   cached
   newtype TNode =
     TExprNode(Expr e) {

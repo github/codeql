@@ -15,6 +15,13 @@ import codeql.rust.elements.UseBoundGenericArg
  */
 module Generated {
   /**
+   * A use<..> bound to control which generic parameters are captured by an impl Trait return type.
+   *
+   * For example:
+   * ```rust
+   * pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> {}
+   * //                                                        ^^^^^^^^
+   * ```
    * INTERNAL: Do not reference the `Generated::UseBoundGenericArgs` class directly.
    * Use the subclass `UseBoundGenericArgs`, where the following predicates are available.
    */

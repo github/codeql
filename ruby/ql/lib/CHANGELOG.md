@@ -1,3 +1,53 @@
+## 4.1.10
+
+No user-facing changes.
+
+## 4.1.9
+
+No user-facing changes.
+
+## 4.1.8
+
+No user-facing changes.
+
+## 4.1.7
+
+### Minor Analysis Improvements
+
+* Captured variables are currently considered live when the capturing function exits normally. Now they are also considered live when the capturing function exits via an exception.
+
+### Bug Fixes
+
+### Bug Fixes
+
+* The Ruby printAst.qll library now orders AST nodes slightly differently: child nodes that do not literally appear in the source code, but whose parent nodes do, are assigned a deterministic order based on a combination of source location and logical order within the parent. This fixes the non-deterministic ordering that sometimes occurred depending on evaluation order. The effect may also be visible in downstream uses of the printAst library, such as the AST view in the VSCode extension.
+
+## 4.1.6
+
+No user-facing changes.
+
+## 4.1.5
+
+No user-facing changes.
+
+## 4.1.4
+
+### Minor Analysis Improvements
+
+* Calls to `super` without explict arguments now have their implicit arguments generated. For example, in `def foo(x, y) { super } end` the call to `super` becomes `super(x, y)`.
+
+## 4.1.3
+
+No user-facing changes.
+
+## 4.1.2
+
+No user-facing changes.
+
+## 4.1.1
+
+No user-facing changes.
+
 ## 4.1.0
 
 ### Deprecated APIs
@@ -22,7 +72,7 @@
 * Deleted the deprecated `ModelClass` and `ModelInstance` classes from `ActiveResource.qll`, use `ModelClassNode` and `ModelClassNode.getAnInstanceReference()` instead.
 * Deleted the deprecated `Collection` class from `ActiveResource.qll`, use `CollectionSource` instead.
 * Deleted the deprecated `ServiceInstantiation` and `ClientInstantiation` classes from `Twirp.qll`.
-* Deleted a lot of deprecated dataflow modules from "*Query.qll" files.
+* Deleted a lot of deprecated dataflow modules from `*Query.qll` files.
 * Deleted the old deprecated TypeTracking library.
 
 ## 3.0.2

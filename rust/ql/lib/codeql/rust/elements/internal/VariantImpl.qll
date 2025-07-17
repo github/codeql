@@ -14,9 +14,12 @@ private import codeql.rust.elements.internal.generated.Variant
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A Variant. For example:
+   * A variant in an enum declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * enum E { A, B(i32), C { x: i32 } }
+   * //       ^  ^^^^^^  ^^^^^^^^^^^^
    * ```
    */
   class Variant extends Generated::Variant {
@@ -24,8 +27,8 @@ module Impl {
 
     /** Gets the record field named `name`, if any. */
     pragma[nomagic]
-    RecordField getRecordField(string name) {
-      result = this.getFieldList().(RecordFieldList).getAField() and
+    StructField getStructField(string name) {
+      result = this.getFieldList().(StructFieldList).getAField() and
       result.getName().getText() = name
     }
 
@@ -38,12 +41,12 @@ module Impl {
     predicate isTuple() { this.getFieldList() instanceof TupleFieldList }
 
     /**
-     * Holds if this variant uses record fields.
+     * Holds if this variant uses struct fields.
      *
-     * Empty variants are considered to use record fields.
+     * Empty variants are considered to use struct fields.
      */
     pragma[nomagic]
-    predicate isRecord() { not this.isTuple() }
+    predicate isStruct() { not this.isTuple() }
 
     /** Gets the enum that this variant belongs to. */
     Enum getEnum() { this = result.getVariantList().getAVariant() }

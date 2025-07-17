@@ -46,31 +46,31 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the expression of this field expression, if it exists.
+     * Gets the container of this field expression, if it exists.
      */
-    Expr getExpr() {
+    Expr getContainer() {
       result =
-        Synth::convertExprFromRaw(Synth::convertFieldExprToRaw(this).(Raw::FieldExpr).getExpr())
+        Synth::convertExprFromRaw(Synth::convertFieldExprToRaw(this).(Raw::FieldExpr).getContainer())
     }
 
     /**
-     * Holds if `getExpr()` exists.
+     * Holds if `getContainer()` exists.
      */
-    final predicate hasExpr() { exists(this.getExpr()) }
+    final predicate hasContainer() { exists(this.getContainer()) }
 
     /**
-     * Gets the name reference of this field expression, if it exists.
+     * Gets the identifier of this field expression, if it exists.
      */
-    NameRef getNameRef() {
+    NameRef getIdentifier() {
       result =
         Synth::convertNameRefFromRaw(Synth::convertFieldExprToRaw(this)
               .(Raw::FieldExpr)
-              .getNameRef())
+              .getIdentifier())
     }
 
     /**
-     * Holds if `getNameRef()` exists.
+     * Holds if `getIdentifier()` exists.
      */
-    final predicate hasNameRef() { exists(this.getNameRef()) }
+    final predicate hasIdentifier() { exists(this.getIdentifier()) }
   }
 }

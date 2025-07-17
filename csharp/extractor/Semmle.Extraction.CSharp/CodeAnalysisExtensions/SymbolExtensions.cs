@@ -29,6 +29,15 @@ namespace Semmle.Extraction.CSharp
             symbol is null ? (AnnotatedTypeSymbol?)null : new AnnotatedTypeSymbol(symbol, NullableAnnotation.None);
     }
 
+    internal static class AnnotatedTypeSymbolExtensions
+    {
+        /// <summary>
+        /// Returns true if the type is a string type.
+        /// </summary>
+        public static bool IsStringType(this AnnotatedTypeSymbol? type) =>
+            type.HasValue && type.Value.Symbol?.SpecialType == SpecialType.System_String;
+    }
+
     internal static class SymbolExtensions
     {
         /// <summary>

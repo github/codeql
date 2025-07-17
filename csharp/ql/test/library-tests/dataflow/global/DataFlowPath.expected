@@ -421,46 +421,40 @@ edges
 | GlobalDataFlow.cs:469:21:469:21 | s : String | GlobalDataFlow.cs:469:32:469:32 | access to parameter s | provenance |  |
 | GlobalDataFlow.cs:470:15:470:17 | access to parameter arg : String | GlobalDataFlow.cs:469:21:469:21 | s : String | provenance |  |
 | GlobalDataFlow.cs:473:28:473:41 | "taint source" : String | GlobalDataFlow.cs:466:53:466:55 | arg : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:490:25:490:26 | [post] access to local variable x1 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:490:30:490:31 | [post] access to local variable x2 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:497:31:497:32 | [post] access to local variable y1 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:497:36:497:37 | [post] access to local variable y2 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:497:42:497:43 | [post] access to local variable y3 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:508:33:508:33 | [post] access to local variable x : SubSimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:515:20:515:20 | [post] access to parameter x : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:515:25:515:25 | [post] access to local variable y : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:527:20:527:20 | [post] access to local variable x : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:528:20:528:20 | [post] access to local variable y : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:529:18:529:18 | [post] access to local variable z : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:538:20:538:21 | [post] access to parameter sc : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:546:24:546:24 | [post] access to local variable x : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:490:20:490:31 | [post] ... ? ... : ... : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:497:20:497:43 | [post] ... ? ... : ... : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:508:20:508:33 | [post] (...) ... : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:515:20:515:25 | [post] ... ?? ... : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:525:20:530:9 | [post] ... switch { ... } : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:538:20:538:22 | [post] ...! : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:546:20:546:24 | [post] ... = ... : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:483:20:483:33 | "taint source" : String | GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:490:25:490:26 | [post] access to local variable x1 : SimpleClass [field field] : String | GlobalDataFlow.cs:491:15:491:16 | access to local variable x1 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:490:30:490:31 | [post] access to local variable x2 : SimpleClass [field field] : String | GlobalDataFlow.cs:492:15:492:16 | access to local variable x2 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:490:20:490:31 | [post] ... ? ... : ... : SimpleClass [field field] : String | GlobalDataFlow.cs:491:15:491:16 | access to local variable x1 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:490:20:490:31 | [post] ... ? ... : ... : SimpleClass [field field] : String | GlobalDataFlow.cs:492:15:492:16 | access to local variable x2 : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:491:15:491:16 | access to local variable x1 : SimpleClass [field field] : String | GlobalDataFlow.cs:491:15:491:22 | access to field field | provenance |  |
 | GlobalDataFlow.cs:492:15:492:16 | access to local variable x2 : SimpleClass [field field] : String | GlobalDataFlow.cs:492:15:492:22 | access to field field | provenance |  |
-| GlobalDataFlow.cs:497:31:497:32 | [post] access to local variable y1 : SimpleClass [field field] : String | GlobalDataFlow.cs:498:15:498:16 | access to local variable y1 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:497:36:497:37 | [post] access to local variable y2 : SimpleClass [field field] : String | GlobalDataFlow.cs:499:15:499:16 | access to local variable y2 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:497:42:497:43 | [post] access to local variable y3 : SimpleClass [field field] : String | GlobalDataFlow.cs:500:15:500:16 | access to local variable y3 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:497:20:497:43 | [post] ... ? ... : ... : SimpleClass [field field] : String | GlobalDataFlow.cs:498:15:498:16 | access to local variable y1 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:497:20:497:43 | [post] ... ? ... : ... : SimpleClass [field field] : String | GlobalDataFlow.cs:499:15:499:16 | access to local variable y2 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:497:20:497:43 | [post] ... ? ... : ... : SimpleClass [field field] : String | GlobalDataFlow.cs:500:15:500:16 | access to local variable y3 : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:498:15:498:16 | access to local variable y1 : SimpleClass [field field] : String | GlobalDataFlow.cs:498:15:498:22 | access to field field | provenance |  |
 | GlobalDataFlow.cs:499:15:499:16 | access to local variable y2 : SimpleClass [field field] : String | GlobalDataFlow.cs:499:15:499:22 | access to field field | provenance |  |
 | GlobalDataFlow.cs:500:15:500:16 | access to local variable y3 : SimpleClass [field field] : String | GlobalDataFlow.cs:500:15:500:22 | access to field field | provenance |  |
-| GlobalDataFlow.cs:508:33:508:33 | [post] access to local variable x : SubSimpleClass [field field] : String | GlobalDataFlow.cs:509:15:509:15 | access to local variable x : SubSimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:509:15:509:15 | access to local variable x : SubSimpleClass [field field] : String | GlobalDataFlow.cs:509:15:509:21 | access to field field | provenance |  |
-| GlobalDataFlow.cs:515:20:515:20 | [post] access to parameter x : SimpleClass [field field] : String | GlobalDataFlow.cs:516:15:516:15 | access to parameter x : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:515:25:515:25 | [post] access to local variable y : SimpleClass [field field] : String | GlobalDataFlow.cs:517:15:517:15 | access to local variable y : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:508:20:508:33 | [post] (...) ... : SimpleClass [field field] : String | GlobalDataFlow.cs:509:15:509:15 | access to local variable x : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:509:15:509:15 | access to local variable x : SimpleClass [field field] : String | GlobalDataFlow.cs:509:15:509:21 | access to field field | provenance |  |
+| GlobalDataFlow.cs:515:20:515:25 | [post] ... ?? ... : SimpleClass [field field] : String | GlobalDataFlow.cs:516:15:516:15 | access to parameter x : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:515:20:515:25 | [post] ... ?? ... : SimpleClass [field field] : String | GlobalDataFlow.cs:517:15:517:15 | access to local variable y : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:516:15:516:15 | access to parameter x : SimpleClass [field field] : String | GlobalDataFlow.cs:516:15:516:21 | access to field field | provenance |  |
 | GlobalDataFlow.cs:517:15:517:15 | access to local variable y : SimpleClass [field field] : String | GlobalDataFlow.cs:517:15:517:21 | access to field field | provenance |  |
-| GlobalDataFlow.cs:527:20:527:20 | [post] access to local variable x : SimpleClass [field field] : String | GlobalDataFlow.cs:531:15:531:15 | access to local variable x : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:528:20:528:20 | [post] access to local variable y : SimpleClass [field field] : String | GlobalDataFlow.cs:532:15:532:15 | access to local variable y : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:529:18:529:18 | [post] access to local variable z : SimpleClass [field field] : String | GlobalDataFlow.cs:533:15:533:15 | access to local variable z : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:525:20:530:9 | [post] ... switch { ... } : SimpleClass [field field] : String | GlobalDataFlow.cs:531:15:531:15 | access to local variable x : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:525:20:530:9 | [post] ... switch { ... } : SimpleClass [field field] : String | GlobalDataFlow.cs:532:15:532:15 | access to local variable y : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:525:20:530:9 | [post] ... switch { ... } : SimpleClass [field field] : String | GlobalDataFlow.cs:533:15:533:15 | access to local variable z : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:531:15:531:15 | access to local variable x : SimpleClass [field field] : String | GlobalDataFlow.cs:531:15:531:21 | access to field field | provenance |  |
 | GlobalDataFlow.cs:532:15:532:15 | access to local variable y : SimpleClass [field field] : String | GlobalDataFlow.cs:532:15:532:21 | access to field field | provenance |  |
 | GlobalDataFlow.cs:533:15:533:15 | access to local variable z : SimpleClass [field field] : String | GlobalDataFlow.cs:533:15:533:21 | access to field field | provenance |  |
-| GlobalDataFlow.cs:538:20:538:21 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:539:15:539:16 | access to parameter sc : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:538:20:538:22 | [post] ...! : SimpleClass [field field] : String | GlobalDataFlow.cs:539:15:539:16 | access to parameter sc : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:539:15:539:16 | access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:539:15:539:22 | access to field field | provenance |  |
-| GlobalDataFlow.cs:546:24:546:24 | [post] access to local variable x : SimpleClass [field field] : String | GlobalDataFlow.cs:547:15:547:15 | access to local variable x : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:546:20:546:24 | [post] ... = ... : SimpleClass [field field] : String | GlobalDataFlow.cs:547:15:547:15 | access to local variable x : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:547:15:547:15 | access to local variable x : SimpleClass [field field] : String | GlobalDataFlow.cs:547:15:547:21 | access to field field | provenance |  |
 | GlobalDataFlow.cs:553:71:553:71 | e : null [element] : String | GlobalDataFlow.cs:556:27:556:27 | access to parameter e : null [element] : String | provenance |  |
 | GlobalDataFlow.cs:556:27:556:27 | access to parameter e : null [element] : String | GlobalDataFlow.cs:558:46:558:46 | access to local variable x : String | provenance |  |
@@ -880,43 +874,37 @@ nodes
 | GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | semmle.label | sc [Return] : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | semmle.label | [post] access to parameter sc : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:483:20:483:33 | "taint source" : String | semmle.label | "taint source" : String |
-| GlobalDataFlow.cs:490:25:490:26 | [post] access to local variable x1 : SimpleClass [field field] : String | semmle.label | [post] access to local variable x1 : SimpleClass [field field] : String |
-| GlobalDataFlow.cs:490:30:490:31 | [post] access to local variable x2 : SimpleClass [field field] : String | semmle.label | [post] access to local variable x2 : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:490:20:490:31 | [post] ... ? ... : ... : SimpleClass [field field] : String | semmle.label | [post] ... ? ... : ... : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:491:15:491:16 | access to local variable x1 : SimpleClass [field field] : String | semmle.label | access to local variable x1 : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:491:15:491:22 | access to field field | semmle.label | access to field field |
 | GlobalDataFlow.cs:492:15:492:16 | access to local variable x2 : SimpleClass [field field] : String | semmle.label | access to local variable x2 : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:492:15:492:22 | access to field field | semmle.label | access to field field |
-| GlobalDataFlow.cs:497:31:497:32 | [post] access to local variable y1 : SimpleClass [field field] : String | semmle.label | [post] access to local variable y1 : SimpleClass [field field] : String |
-| GlobalDataFlow.cs:497:36:497:37 | [post] access to local variable y2 : SimpleClass [field field] : String | semmle.label | [post] access to local variable y2 : SimpleClass [field field] : String |
-| GlobalDataFlow.cs:497:42:497:43 | [post] access to local variable y3 : SimpleClass [field field] : String | semmle.label | [post] access to local variable y3 : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:497:20:497:43 | [post] ... ? ... : ... : SimpleClass [field field] : String | semmle.label | [post] ... ? ... : ... : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:498:15:498:16 | access to local variable y1 : SimpleClass [field field] : String | semmle.label | access to local variable y1 : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:498:15:498:22 | access to field field | semmle.label | access to field field |
 | GlobalDataFlow.cs:499:15:499:16 | access to local variable y2 : SimpleClass [field field] : String | semmle.label | access to local variable y2 : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:499:15:499:22 | access to field field | semmle.label | access to field field |
 | GlobalDataFlow.cs:500:15:500:16 | access to local variable y3 : SimpleClass [field field] : String | semmle.label | access to local variable y3 : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:500:15:500:22 | access to field field | semmle.label | access to field field |
-| GlobalDataFlow.cs:508:33:508:33 | [post] access to local variable x : SubSimpleClass [field field] : String | semmle.label | [post] access to local variable x : SubSimpleClass [field field] : String |
-| GlobalDataFlow.cs:509:15:509:15 | access to local variable x : SubSimpleClass [field field] : String | semmle.label | access to local variable x : SubSimpleClass [field field] : String |
+| GlobalDataFlow.cs:508:20:508:33 | [post] (...) ... : SimpleClass [field field] : String | semmle.label | [post] (...) ... : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:509:15:509:15 | access to local variable x : SimpleClass [field field] : String | semmle.label | access to local variable x : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:509:15:509:21 | access to field field | semmle.label | access to field field |
-| GlobalDataFlow.cs:515:20:515:20 | [post] access to parameter x : SimpleClass [field field] : String | semmle.label | [post] access to parameter x : SimpleClass [field field] : String |
-| GlobalDataFlow.cs:515:25:515:25 | [post] access to local variable y : SimpleClass [field field] : String | semmle.label | [post] access to local variable y : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:515:20:515:25 | [post] ... ?? ... : SimpleClass [field field] : String | semmle.label | [post] ... ?? ... : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:516:15:516:15 | access to parameter x : SimpleClass [field field] : String | semmle.label | access to parameter x : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:516:15:516:21 | access to field field | semmle.label | access to field field |
 | GlobalDataFlow.cs:517:15:517:15 | access to local variable y : SimpleClass [field field] : String | semmle.label | access to local variable y : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:517:15:517:21 | access to field field | semmle.label | access to field field |
-| GlobalDataFlow.cs:527:20:527:20 | [post] access to local variable x : SimpleClass [field field] : String | semmle.label | [post] access to local variable x : SimpleClass [field field] : String |
-| GlobalDataFlow.cs:528:20:528:20 | [post] access to local variable y : SimpleClass [field field] : String | semmle.label | [post] access to local variable y : SimpleClass [field field] : String |
-| GlobalDataFlow.cs:529:18:529:18 | [post] access to local variable z : SimpleClass [field field] : String | semmle.label | [post] access to local variable z : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:525:20:530:9 | [post] ... switch { ... } : SimpleClass [field field] : String | semmle.label | [post] ... switch { ... } : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:531:15:531:15 | access to local variable x : SimpleClass [field field] : String | semmle.label | access to local variable x : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:531:15:531:21 | access to field field | semmle.label | access to field field |
 | GlobalDataFlow.cs:532:15:532:15 | access to local variable y : SimpleClass [field field] : String | semmle.label | access to local variable y : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:532:15:532:21 | access to field field | semmle.label | access to field field |
 | GlobalDataFlow.cs:533:15:533:15 | access to local variable z : SimpleClass [field field] : String | semmle.label | access to local variable z : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:533:15:533:21 | access to field field | semmle.label | access to field field |
-| GlobalDataFlow.cs:538:20:538:21 | [post] access to parameter sc : SimpleClass [field field] : String | semmle.label | [post] access to parameter sc : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:538:20:538:22 | [post] ...! : SimpleClass [field field] : String | semmle.label | [post] ...! : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:539:15:539:16 | access to parameter sc : SimpleClass [field field] : String | semmle.label | access to parameter sc : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:539:15:539:22 | access to field field | semmle.label | access to field field |
-| GlobalDataFlow.cs:546:24:546:24 | [post] access to local variable x : SimpleClass [field field] : String | semmle.label | [post] access to local variable x : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:546:20:546:24 | [post] ... = ... : SimpleClass [field field] : String | semmle.label | [post] ... = ... : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:547:15:547:15 | access to local variable x : SimpleClass [field field] : String | semmle.label | access to local variable x : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:547:15:547:21 | access to field field | semmle.label | access to field field |
 | GlobalDataFlow.cs:553:71:553:71 | e : null [element] : String | semmle.label | e : null [element] : String |

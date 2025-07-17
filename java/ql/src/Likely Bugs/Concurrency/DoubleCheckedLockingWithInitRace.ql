@@ -8,8 +8,8 @@
  * @problem.severity warning
  * @precision high
  * @id java/unsafe-double-checked-locking-init-order
- * @tags reliability
- *       correctness
+ * @tags quality
+ *       reliability
  *       concurrency
  *       external/cwe/cwe-609
  */

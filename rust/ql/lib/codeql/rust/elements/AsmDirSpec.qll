@@ -6,4 +6,14 @@
 private import internal.AsmDirSpecImpl
 import codeql.rust.elements.AstNode
 
+/**
+ * An inline assembly direction specifier.
+ *
+ * For example:
+ * ```rust
+ * use core::arch::asm;
+ * asm!("mov {input:x}, {input:x}", output = out(reg) x, input = in(reg) y);
+ * //                                        ^^^                 ^^
+ * ```
+ */
 final class AsmDirSpec = Impl::AsmDirSpec;

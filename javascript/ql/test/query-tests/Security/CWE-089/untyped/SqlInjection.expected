@@ -10,6 +10,19 @@
 | graphql.js:74:46:74:64 | "{ foo" + id + " }" | graphql.js:73:14:73:25 | req.query.id | graphql.js:74:46:74:64 | "{ foo" + id + " }" | This query string depends on a $@. | graphql.js:73:14:73:25 | req.query.id | user-provided value |
 | graphql.js:82:14:88:8 | `{\\n     ...      }` | graphql.js:73:14:73:25 | req.query.id | graphql.js:82:14:88:8 | `{\\n     ...      }` | This query string depends on a $@. | graphql.js:73:14:73:25 | req.query.id | user-provided value |
 | graphql.js:118:38:118:48 | `foo ${id}` | graphql.js:117:16:117:28 | req.params.id | graphql.js:118:38:118:48 | `foo ${id}` | This query string depends on a $@. | graphql.js:117:16:117:28 | req.params.id | user-provided value |
+| hana.js:11:19:11:23 | query | hana.js:9:30:9:37 | req.body | hana.js:11:19:11:23 | query | This query string depends on a $@. | hana.js:9:30:9:37 | req.body | user-provided value |
+| hana.js:17:35:17:100 | `SELECT ... usInput | hana.js:16:32:16:39 | req.body | hana.js:17:35:17:100 | `SELECT ... usInput | This query string depends on a $@. | hana.js:16:32:16:39 | req.body | user-provided value |
+| hana.js:24:33:24:96 | `INSERT ... usInput | hana.js:23:32:23:39 | req.body | hana.js:24:33:24:96 | `INSERT ... usInput | This query string depends on a $@. | hana.js:23:32:23:39 | req.body | user-provided value |
+| hana.js:31:31:31:97 | "SELECT ... usInput | hana.js:30:30:30:37 | req.body | hana.js:31:31:31:97 | "SELECT ... usInput | This query string depends on a $@. | hana.js:30:30:30:37 | req.body | user-provided value |
+| hana.js:48:15:48:52 | 'SELECT ... usInput | hana.js:47:24:47:31 | req.body | hana.js:48:15:48:52 | 'SELECT ... usInput | This query string depends on a $@. | hana.js:47:24:47:31 | req.body | user-provided value |
+| hana.js:50:40:50:89 | 'CALL P ... usInput | hana.js:47:24:47:31 | req.body | hana.js:50:40:50:89 | 'CALL P ... usInput | This query string depends on a $@. | hana.js:47:24:47:31 | req.body | user-provided value |
+| hana.js:54:38:54:66 | 'PROC_D ... usInput | hana.js:47:24:47:31 | req.body | hana.js:54:38:54:66 | 'PROC_D ... usInput | This query string depends on a $@. | hana.js:47:24:47:31 | req.body | user-provided value |
+| hana.js:71:44:71:99 | "INSERT ... usInput | hana.js:68:24:68:31 | req.body | hana.js:71:44:71:99 | "INSERT ... usInput | This query string depends on a $@. | hana.js:68:24:68:31 | req.body | user-provided value |
+| hana.js:73:17:73:54 | 'select ... usInput | hana.js:68:24:68:31 | req.body | hana.js:73:17:73:54 | 'select ... usInput | This query string depends on a $@. | hana.js:68:24:68:31 | req.body | user-provided value |
+| hana.js:74:17:74:54 | 'select ... usInput | hana.js:68:24:68:31 | req.body | hana.js:74:17:74:54 | 'select ... usInput | This query string depends on a $@. | hana.js:68:24:68:31 | req.body | user-provided value |
+| hana.js:76:20:76:73 | 'select ... usInput | hana.js:68:24:68:31 | req.body | hana.js:76:20:76:73 | 'select ... usInput | This query string depends on a $@. | hana.js:68:24:68:31 | req.body | user-provided value |
+| hana.js:80:20:80:69 | 'call P ... usInput | hana.js:68:24:68:31 | req.body | hana.js:80:20:80:69 | 'call P ... usInput | This query string depends on a $@. | hana.js:68:24:68:31 | req.body | user-provided value |
+| hana.js:84:20:84:78 | 'select ... usInput | hana.js:68:24:68:31 | req.body | hana.js:84:20:84:78 | 'select ... usInput | This query string depends on a $@. | hana.js:68:24:68:31 | req.body | user-provided value |
 | html-sanitizer.js:16:9:16:59 | `SELECT ...  param1 | html-sanitizer.js:13:39:13:44 | param1 | html-sanitizer.js:16:9:16:59 | `SELECT ...  param1 | This query string depends on a $@. | html-sanitizer.js:13:39:13:44 | param1 | user-provided value |
 | json-schema-validator.js:33:22:33:26 | query | json-schema-validator.js:25:34:25:47 | req.query.data | json-schema-validator.js:33:22:33:26 | query | This query object depends on a $@. | json-schema-validator.js:25:34:25:47 | req.query.data | user-provided value |
 | json-schema-validator.js:35:18:35:22 | query | json-schema-validator.js:25:34:25:47 | req.query.data | json-schema-validator.js:35:18:35:22 | query | This query object depends on a $@. | json-schema-validator.js:25:34:25:47 | req.query.data | user-provided value |
@@ -152,6 +165,41 @@ edges
 | graphql.js:117:11:117:28 | id | graphql.js:118:45:118:46 | id | provenance |  |
 | graphql.js:117:16:117:28 | req.params.id | graphql.js:117:11:117:28 | id | provenance |  |
 | graphql.js:118:45:118:46 | id | graphql.js:118:38:118:48 | `foo ${id}` | provenance |  |
+| hana.js:9:13:9:42 | maliciousInput | hana.js:10:64:10:77 | maliciousInput | provenance |  |
+| hana.js:9:30:9:37 | req.body | hana.js:9:13:9:42 | maliciousInput | provenance |  |
+| hana.js:10:15:10:80 | query | hana.js:11:19:11:23 | query | provenance |  |
+| hana.js:10:64:10:77 | maliciousInput | hana.js:10:15:10:80 | query | provenance |  |
+| hana.js:16:15:16:44 | maliciousInput | hana.js:17:87:17:100 | maliciousInput | provenance |  |
+| hana.js:16:32:16:39 | req.body | hana.js:16:15:16:44 | maliciousInput | provenance |  |
+| hana.js:17:87:17:100 | maliciousInput | hana.js:17:35:17:100 | `SELECT ... usInput | provenance |  |
+| hana.js:23:15:23:44 | maliciousInput | hana.js:24:83:24:96 | maliciousInput | provenance |  |
+| hana.js:23:32:23:39 | req.body | hana.js:23:15:23:44 | maliciousInput | provenance |  |
+| hana.js:24:83:24:96 | maliciousInput | hana.js:24:33:24:96 | `INSERT ... usInput | provenance |  |
+| hana.js:30:13:30:42 | maliciousInput | hana.js:31:84:31:97 | maliciousInput | provenance |  |
+| hana.js:30:30:30:37 | req.body | hana.js:30:13:30:42 | maliciousInput | provenance |  |
+| hana.js:31:84:31:97 | maliciousInput | hana.js:31:31:31:97 | "SELECT ... usInput | provenance |  |
+| hana.js:47:7:47:36 | maliciousInput | hana.js:48:39:48:52 | maliciousInput | provenance |  |
+| hana.js:47:7:47:36 | maliciousInput | hana.js:50:76:50:89 | maliciousInput | provenance |  |
+| hana.js:47:7:47:36 | maliciousInput | hana.js:54:53:54:66 | maliciousInput | provenance |  |
+| hana.js:47:24:47:31 | req.body | hana.js:47:7:47:36 | maliciousInput | provenance |  |
+| hana.js:48:39:48:52 | maliciousInput | hana.js:48:15:48:52 | 'SELECT ... usInput | provenance |  |
+| hana.js:48:39:48:52 | maliciousInput | hana.js:50:76:50:89 | maliciousInput | provenance |  |
+| hana.js:50:76:50:89 | maliciousInput | hana.js:50:40:50:89 | 'CALL P ... usInput | provenance |  |
+| hana.js:50:76:50:89 | maliciousInput | hana.js:54:53:54:66 | maliciousInput | provenance |  |
+| hana.js:54:53:54:66 | maliciousInput | hana.js:54:38:54:66 | 'PROC_D ... usInput | provenance |  |
+| hana.js:68:7:68:36 | maliciousInput | hana.js:71:86:71:99 | maliciousInput | provenance |  |
+| hana.js:68:7:68:36 | maliciousInput | hana.js:73:41:73:54 | maliciousInput | provenance |  |
+| hana.js:68:7:68:36 | maliciousInput | hana.js:74:41:74:54 | maliciousInput | provenance |  |
+| hana.js:68:7:68:36 | maliciousInput | hana.js:76:60:76:73 | maliciousInput | provenance |  |
+| hana.js:68:7:68:36 | maliciousInput | hana.js:80:56:80:69 | maliciousInput | provenance |  |
+| hana.js:68:7:68:36 | maliciousInput | hana.js:84:65:84:78 | maliciousInput | provenance |  |
+| hana.js:68:24:68:31 | req.body | hana.js:68:7:68:36 | maliciousInput | provenance |  |
+| hana.js:71:86:71:99 | maliciousInput | hana.js:71:44:71:99 | "INSERT ... usInput | provenance |  |
+| hana.js:73:41:73:54 | maliciousInput | hana.js:73:17:73:54 | 'select ... usInput | provenance |  |
+| hana.js:74:41:74:54 | maliciousInput | hana.js:74:17:74:54 | 'select ... usInput | provenance |  |
+| hana.js:76:60:76:73 | maliciousInput | hana.js:76:20:76:73 | 'select ... usInput | provenance |  |
+| hana.js:80:56:80:69 | maliciousInput | hana.js:80:20:80:69 | 'call P ... usInput | provenance |  |
+| hana.js:84:65:84:78 | maliciousInput | hana.js:84:20:84:78 | 'select ... usInput | provenance |  |
 | html-sanitizer.js:13:39:13:44 | param1 | html-sanitizer.js:14:18:14:23 | param1 | provenance |  |
 | html-sanitizer.js:14:5:14:24 | param1 | html-sanitizer.js:16:54:16:59 | param1 | provenance |  |
 | html-sanitizer.js:14:14:14:24 | xss(param1) | html-sanitizer.js:14:5:14:24 | param1 | provenance |  |
@@ -504,6 +552,45 @@ nodes
 | graphql.js:117:16:117:28 | req.params.id | semmle.label | req.params.id |
 | graphql.js:118:38:118:48 | `foo ${id}` | semmle.label | `foo ${id}` |
 | graphql.js:118:45:118:46 | id | semmle.label | id |
+| hana.js:9:13:9:42 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:9:30:9:37 | req.body | semmle.label | req.body |
+| hana.js:10:15:10:80 | query | semmle.label | query |
+| hana.js:10:64:10:77 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:11:19:11:23 | query | semmle.label | query |
+| hana.js:16:15:16:44 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:16:32:16:39 | req.body | semmle.label | req.body |
+| hana.js:17:35:17:100 | `SELECT ... usInput | semmle.label | `SELECT ... usInput |
+| hana.js:17:87:17:100 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:23:15:23:44 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:23:32:23:39 | req.body | semmle.label | req.body |
+| hana.js:24:33:24:96 | `INSERT ... usInput | semmle.label | `INSERT ... usInput |
+| hana.js:24:83:24:96 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:30:13:30:42 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:30:30:30:37 | req.body | semmle.label | req.body |
+| hana.js:31:31:31:97 | "SELECT ... usInput | semmle.label | "SELECT ... usInput |
+| hana.js:31:84:31:97 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:47:7:47:36 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:47:24:47:31 | req.body | semmle.label | req.body |
+| hana.js:48:15:48:52 | 'SELECT ... usInput | semmle.label | 'SELECT ... usInput |
+| hana.js:48:39:48:52 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:50:40:50:89 | 'CALL P ... usInput | semmle.label | 'CALL P ... usInput |
+| hana.js:50:76:50:89 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:54:38:54:66 | 'PROC_D ... usInput | semmle.label | 'PROC_D ... usInput |
+| hana.js:54:53:54:66 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:68:7:68:36 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:68:24:68:31 | req.body | semmle.label | req.body |
+| hana.js:71:44:71:99 | "INSERT ... usInput | semmle.label | "INSERT ... usInput |
+| hana.js:71:86:71:99 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:73:17:73:54 | 'select ... usInput | semmle.label | 'select ... usInput |
+| hana.js:73:41:73:54 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:74:17:74:54 | 'select ... usInput | semmle.label | 'select ... usInput |
+| hana.js:74:41:74:54 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:76:20:76:73 | 'select ... usInput | semmle.label | 'select ... usInput |
+| hana.js:76:60:76:73 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:80:20:80:69 | 'call P ... usInput | semmle.label | 'call P ... usInput |
+| hana.js:80:56:80:69 | maliciousInput | semmle.label | maliciousInput |
+| hana.js:84:20:84:78 | 'select ... usInput | semmle.label | 'select ... usInput |
+| hana.js:84:65:84:78 | maliciousInput | semmle.label | maliciousInput |
 | html-sanitizer.js:13:39:13:44 | param1 | semmle.label | param1 |
 | html-sanitizer.js:14:5:14:24 | param1 | semmle.label | param1 |
 | html-sanitizer.js:14:14:14:24 | xss(param1) | semmle.label | xss(param1) |

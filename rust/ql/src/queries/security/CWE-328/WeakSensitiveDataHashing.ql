@@ -13,9 +13,9 @@
  */
 
 import rust
-import codeql.rust.security.WeakSensitiveDataHashingExtensions
 import codeql.rust.dataflow.DataFlow
 import codeql.rust.dataflow.TaintTracking
+import codeql.rust.security.WeakSensitiveDataHashingExtensions
 
 /**
  * Provides a taint-tracking configuration for detecting use of a broken or weak

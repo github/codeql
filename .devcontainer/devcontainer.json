@@ -1,5 +1,4 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
   "extensions": [
     "rust-lang.rust-analyzer",
     "bungcip.better-toml",
@@ -8,6 +7,10 @@
     "ms-vscode.test-adapter-converter",
     "slevesque.vscode-zipexplorer"
   ],
+  "build": {
+    // Path is relative to the devcontainer.json file.
+    "dockerfile": "Dockerfile.codespaces"
+  },
   "settings": {
     "files.watcherExclude": {
       "**/target/**": true

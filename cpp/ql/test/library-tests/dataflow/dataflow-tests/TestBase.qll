@@ -124,7 +124,11 @@ module IRTest {
 
   /** Common data flow configuration to be used by tests. */
   module IRTestAllocationConfig implements DataFlow::ConfigSig {
+    private import semmle.code.cpp.security.FlowSources
+
     predicate isSource(DataFlow::Node source) {
+      source instanceof FlowSource
+      or
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
       or
       source.asIndirectExpr(1).(FunctionCall).getTarget().getName() = "indirect_source"

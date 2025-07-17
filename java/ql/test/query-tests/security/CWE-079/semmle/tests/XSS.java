@@ -16,7 +16,7 @@ public class XSS extends HttpServlet {
 			throws ServletException, IOException {
 		// BAD: a request parameter is written directly to the Servlet response stream
 		response.getWriter()
-				.print("The page \"" + request.getParameter("page") + "\" was not found."); // $ xss
+				.print("The page \"" + request.getParameter("page") + "\" was not found."); // $ Alert
 
 		// GOOD: servlet API encodes the error message HTML for the HTML context
 		response.sendError(HttpServletResponse.SC_NOT_FOUND,
@@ -31,10 +31,10 @@ public class XSS extends HttpServlet {
 				"The page \"" + capitalizeName(request.getParameter("page")) + "\" was not found.");
 
 		// BAD: outputting the path of the resource
-		response.getWriter().print("The path section of the URL was " + request.getPathInfo()); // $ xss
+		response.getWriter().print("The path section of the URL was " + request.getPathInfo()); // $ Alert
 
 		// BAD: typical XSS, this time written to an OutputStream instead of a Writer
-		response.getOutputStream().write(request.getPathInfo().getBytes()); // $ xss
+		response.getOutputStream().write(request.getPathInfo().getBytes()); // $ Alert
 
 		// GOOD: sanitizer
 		response.getOutputStream().write(hudson.Util.escape(request.getPathInfo()).getBytes()); // safe
@@ -80,34 +80,34 @@ public class XSS extends HttpServlet {
 				if(setContentMethod == 0) {
 					// BAD: set content-type to something that is not safe
 					response.setContentType("text/html");
-					response.getWriter().print(request.getPathInfo()); // $ xss
+					response.getWriter().print(request.getPathInfo()); // $ Alert
 				}
 				else if(setContentMethod == 1) {
 					// BAD: set content-type to something that is not safe
 					response.setHeader("Content-Type", "text/html");
-					response.getWriter().print(request.getPathInfo()); // $ xss
+					response.getWriter().print(request.getPathInfo()); // $ Alert
 				}
 				else {
 					// BAD: set content-type to something that is not safe
 					response.addHeader("Content-Type", "text/html");
-					response.getWriter().print(request.getPathInfo()); // $ xss
+					response.getWriter().print(request.getPathInfo()); // $ Alert
 				}
 			}
 			else {
 				if(setContentMethod == 0) {
 					// BAD: set content-type to something that is not safe
 					response.setContentType("text/html");
-					response.getOutputStream().write(request.getPathInfo().getBytes()); // $ xss
+					response.getOutputStream().write(request.getPathInfo().getBytes()); // $ Alert
 				}
 				else if(setContentMethod == 1) {
 					// BAD: set content-type to something that is not safe
 					response.setHeader("Content-Type", "text/html");
-					response.getOutputStream().write(request.getPathInfo().getBytes()); // $ xss
+					response.getOutputStream().write(request.getPathInfo().getBytes()); // $ Alert
 				}
 				else {
 					// BAD: set content-type to something that is not safe
 					response.addHeader("Content-Type", "text/html");
-					response.getOutputStream().write(request.getPathInfo().getBytes()); // $ xss
+					response.getOutputStream().write(request.getPathInfo().getBytes()); // $ Alert
 				}
 			}
 		}

@@ -8,3 +8,5 @@ common --registry=https://bcr.bazel.build
 # its implementation packages without providing any code itself.
 # We either can depend on internal implementation details, or turn of strict deps.
 common --@rules_dotnet//dotnet/settings:strict_deps=false
+
+build --@rules_python//python/config_settings:python_version=3.12

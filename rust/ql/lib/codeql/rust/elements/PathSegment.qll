@@ -15,5 +15,11 @@ import codeql.rust.elements.TypeRepr
 
 /**
  * A path segment, which is one part of a whole path.
+ * For example:
+ * - `HashMap`
+ * - `HashMap<K, V>`
+ * - `Fn(i32) -> i32`
+ * - `widgets(..)`
+ * - `<T as Iterator>`
  */
 final class PathSegment = Impl::PathSegment;

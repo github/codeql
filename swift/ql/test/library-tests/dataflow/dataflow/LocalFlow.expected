@@ -250,11 +250,13 @@
 | test.swift:7:15:7:15 | [post] t1 | test.swift:8:10:8:10 | t1 |
 | test.swift:7:15:7:15 | t1 | test.swift:8:10:8:10 | t1 |
 | test.swift:8:5:8:10 | SSA def(t2) | test.swift:10:15:10:15 | t2 |
+| test.swift:8:5:8:10 | SSA def(t2) | test.swift:15:5:15:5 | SSA phi(t2) |
 | test.swift:8:10:8:10 | t1 | test.swift:8:5:8:10 | SSA def(t2) |
 | test.swift:8:10:8:10 | t1 | test.swift:9:15:9:15 | t1 |
 | test.swift:9:15:9:15 | [post] t1 | test.swift:11:8:11:8 | t1 |
 | test.swift:9:15:9:15 | t1 | test.swift:11:8:11:8 | t1 |
 | test.swift:12:9:12:14 | SSA def(t2) | test.swift:13:19:13:19 | t2 |
+| test.swift:12:9:12:14 | SSA def(t2) | test.swift:15:5:15:5 | SSA phi(t2) |
 | test.swift:12:14:12:14 | 0 | test.swift:12:9:12:14 | SSA def(t2) |
 | test.swift:15:5:15:5 | SSA phi(t2) | test.swift:15:15:15:15 | t2 |
 | test.swift:17:5:17:10 | SSA def(t1) | test.swift:21:15:21:15 | t1 |
@@ -1378,17 +1380,17 @@
 | test.swift:888:9:888:9 | stream | test.swift:888:9:888:9 | SSA def(stream) |
 | test.swift:888:18:896:6 | call to AsyncStream<Element>.init(_:bufferingPolicy:_:) | test.swift:888:9:888:9 | stream |
 | test.swift:889:9:889:9 | continuation | test.swift:890:27:895:13 | continuation |
-| test.swift:890:27:895:13 | closure self parameter | test.swift:891:17:891:17 | phi(this) |
+| test.swift:890:27:895:13 | closure self parameter | test.swift:891:17:891:17 | SSA phi read(this) |
 | test.swift:891:17:891:17 | $generator | test.swift:891:17:891:17 | &... |
 | test.swift:891:17:891:17 | &... | test.swift:891:17:891:17 | $generator |
+| test.swift:891:17:891:17 | SSA phi read(this) | test.swift:892:21:892:21 | this |
+| test.swift:891:17:891:17 | SSA phi read(this) | test.swift:894:17:894:17 | this |
 | test.swift:891:17:891:17 | [post] $generator | test.swift:891:17:891:17 | &... |
-| test.swift:891:17:891:17 | phi(this) | test.swift:892:21:892:21 | this |
-| test.swift:891:17:891:17 | phi(this) | test.swift:894:17:894:17 | this |
 | test.swift:891:26:891:26 | $generator | test.swift:891:26:891:26 | SSA def($generator) |
 | test.swift:891:26:891:26 | SSA def($generator) | test.swift:891:17:891:17 | $generator |
 | test.swift:891:26:891:30 | call to makeIterator() | test.swift:891:26:891:26 | $generator |
-| test.swift:892:21:892:21 | this | test.swift:891:17:891:17 | phi(this) |
-| test.swift:892:21:892:21 | this | test.swift:891:17:891:17 | phi(this) |
+| test.swift:892:21:892:21 | this | test.swift:891:17:891:17 | SSA phi read(this) |
+| test.swift:892:21:892:21 | this | test.swift:891:17:891:17 | SSA phi read(this) |
 | test.swift:898:5:898:5 | $i$generator | test.swift:898:5:898:5 | &... |
 | test.swift:898:5:898:5 | &... | test.swift:898:5:898:5 | $i$generator |
 | test.swift:898:5:898:5 | [post] $i$generator | test.swift:898:5:898:5 | &... |

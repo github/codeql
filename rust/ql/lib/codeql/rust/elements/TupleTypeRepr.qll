@@ -7,9 +7,12 @@ private import internal.TupleTypeReprImpl
 import codeql.rust.elements.TypeRepr
 
 /**
- * A TupleTypeRepr. For example:
+ * A tuple type.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let t: (i32, String);
+ * //     ^^^^^^^^^^^^^
  * ```
  */
 final class TupleTypeRepr = Impl::TupleTypeRepr;

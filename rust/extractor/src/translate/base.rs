@@ -1,77 +1,166 @@
-use super::mappings::{AddressableAst, AddressableHir, PathAst};
+use super::mappings::{AddressableAst, AddressableHir, Emission, PathAst};
 use crate::generated::{self};
 use crate::rust_analyzer::FileSemanticInformation;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use itertools::Either;
-use ra_ap_base_db::CrateOrigin;
-use ra_ap_base_db::ra_salsa::InternKey;
+use ra_ap_base_db::{CrateOrigin, EditionedFileId};
 use ra_ap_hir::db::ExpandDatabase;
 use ra_ap_hir::{
     Adt, Crate, ItemContainer, Module, ModuleDef, PathResolution, Semantics, Type, Variant,
 };
 use ra_ap_hir_def::ModuleId;
 use ra_ap_hir_def::type_ref::Mutability;
-use ra_ap_hir_expand::ExpandTo;
+use ra_ap_hir_expand::{ExpandResult, ExpandTo, InFile};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
-use ra_ap_span::{EditionedFileId, TextSize};
-use ra_ap_syntax::ast::HasName;
+use ra_ap_span::TextSize;
+use ra_ap_syntax::ast::{HasAttrs, HasName};
 use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
     ast,
 };
 
-#[macro_export]
-macro_rules! emit_detached {
-    (MacroCall, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_macro_call_expanded(&$node, $label);
-    };
-    (Function, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
-    };
-    (Trait, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
-    };
-    (Struct, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
-    };
-    (Enum, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
-    };
-    (Union, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
-    };
-    (Module, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
-    };
-    (Variant, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin_of_enum_variant(&$node, $label);
-    };
-    // TODO canonical origin of other items
-    (PathExpr, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
-    };
-    (RecordExpr, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
-    };
-    (PathPat, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
-    };
-    (RecordPat, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
-    };
-    (TupleStructPat, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
-    };
-    (MethodCallExpr, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_method_canonical_destination(&$node, $label);
-    };
-    (PathSegment, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_types_from_path_segment(&$node, $label.into());
-    };
-    ($($_:tt)*) => {};
+impl Emission<ast::Item> for Translator<'_> {
+    fn pre_emit(&mut self, node: &ast::Item) -> Option<Label<generated::Item>> {
+        self.item_pre_emit(node).map(Into::into)
+    }
+
+    fn post_emit(&mut self, node: &ast::Item, label: Label<generated::Item>) {
+        self.item_post_emit(node, label);
+    }
+}
+
+impl Emission<ast::AssocItem> for Translator<'_> {
+    fn pre_emit(&mut self, node: &ast::AssocItem) -> Option<Label<generated::AssocItem>> {
+        self.item_pre_emit(&node.clone().into()).map(Into::into)
+    }
+
+    fn post_emit(&mut self, node: &ast::AssocItem, label: Label<generated::AssocItem>) {
+        self.item_post_emit(&node.clone().into(), label.into());
+    }
+}
+
+impl Emission<ast::ExternItem> for Translator<'_> {
+    fn pre_emit(&mut self, node: &ast::ExternItem) -> Option<Label<generated::ExternItem>> {
+        self.item_pre_emit(&node.clone().into()).map(Into::into)
+    }
+
+    fn post_emit(&mut self, node: &ast::ExternItem, label: Label<generated::ExternItem>) {
+        self.item_post_emit(&node.clone().into(), label.into());
+    }
+}
+
+impl Emission<ast::Meta> for Translator<'_> {
+    fn pre_emit(&mut self, _node: &ast::Meta) -> Option<Label<generated::Meta>> {
+        self.macro_context_depth += 1;
+        None
+    }
+
+    fn post_emit(&mut self, _node: &ast::Meta, _label: Label<generated::Meta>) {
+        self.macro_context_depth -= 1;
+    }
+}
+
+impl Emission<ast::Fn> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::Fn, label: Label<generated::Function>) {
+        self.emit_function_has_implementation(node, label);
+        self.extract_canonical_origin(node, label.into());
+    }
+}
+
+impl Emission<ast::Struct> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::Struct, label: Label<generated::Struct>) {
+        self.emit_derive_expansion(node, label);
+        self.extract_canonical_origin(node, label.into());
+    }
+}
+
+impl Emission<ast::Enum> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::Enum, label: Label<generated::Enum>) {
+        self.emit_derive_expansion(node, label);
+        self.extract_canonical_origin(node, label.into());
+    }
+}
+
+impl Emission<ast::Union> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::Union, label: Label<generated::Union>) {
+        self.emit_derive_expansion(node, label);
+        self.extract_canonical_origin(node, label.into());
+    }
+}
+
+impl Emission<ast::Trait> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::Trait, label: Label<generated::Trait>) {
+        self.extract_canonical_origin(node, label.into());
+    }
+}
+
+impl Emission<ast::Module> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::Module, label: Label<generated::Module>) {
+        self.extract_canonical_origin(node, label.into());
+    }
+}
+
+impl Emission<ast::Variant> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::Variant, label: Label<generated::Variant>) {
+        self.extract_canonical_origin_of_enum_variant(node, label);
+    }
+}
+
+impl Emission<ast::PathExpr> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::PathExpr, label: Label<generated::PathExpr>) {
+        self.extract_path_canonical_destination(node, label.into());
+    }
+}
+
+impl Emission<ast::RecordExpr> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::RecordExpr, label: Label<generated::StructExpr>) {
+        self.extract_path_canonical_destination(node, label.into());
+    }
+}
+
+impl Emission<ast::PathPat> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::PathPat, label: Label<generated::PathPat>) {
+        self.extract_path_canonical_destination(node, label.into());
+    }
+}
+
+impl Emission<ast::RecordPat> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::RecordPat, label: Label<generated::StructPat>) {
+        self.extract_path_canonical_destination(node, label.into());
+    }
+}
+
+impl Emission<ast::TupleStructPat> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::TupleStructPat, label: Label<generated::TupleStructPat>) {
+        self.extract_path_canonical_destination(node, label.into());
+    }
+}
+
+impl Emission<ast::MethodCallExpr> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::MethodCallExpr, label: Label<generated::MethodCallExpr>) {
+        self.extract_method_canonical_destination(node, label);
+    }
+}
+
+impl Emission<ast::PathSegment> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::PathSegment, label: Label<generated::PathSegment>) {
+        self.extract_types_from_path_segment(node, label);
+    }
+}
+
+impl Emission<ast::Const> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::Const, label: Label<generated::Const>) {
+        self.emit_const_has_implementation(node, label);
+    }
+}
+
+impl Emission<ast::MacroCall> for Translator<'_> {
+    fn post_emit(&mut self, node: &ast::MacroCall, label: Label<generated::MacroCall>) {
+        self.extract_macro_call_expanded(node, label);
+    }
 }
 
 // see https://github.com/tokio-rs/tracing/issues/2730
@@ -91,6 +180,11 @@ pub enum ResolvePaths {
     Yes,
     No,
 }
+#[derive(Copy, Clone, PartialEq, Eq)]
+pub enum SourceKind {
+    Source,
+    Library,
+}
 
 pub struct Translator<'a> {
     pub trap: TrapFile,
@@ -99,11 +193,16 @@ pub struct Translator<'a> {
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
-    resolve_paths: ResolvePaths,
+    resolve_paths: bool,
+    source_kind: SourceKind,
+    pub(crate) macro_context_depth: usize,
+    diagnostic_count: usize,
 }
 
 const UNKNOWN_LOCATION: (LineCol, LineCol) =
     (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
+
+const DIAGNOSTIC_LIMIT_PER_FILE: usize = 100;
 
 impl<'a> Translator<'a> {
     pub fn new(
@@ -113,6 +212,7 @@ impl<'a> Translator<'a> {
         line_index: LineIndex,
         semantic_info: Option<&FileSemanticInformation<'a>>,
         resolve_paths: ResolvePaths,
+        source_kind: SourceKind,
     ) -> Translator<'a> {
         Translator {
             trap,
@@ -121,7 +221,10 @@ impl<'a> Translator<'a> {
             line_index,
             file_id: semantic_info.map(|i| i.file_id),
             semantics: semantic_info.map(|i| i.semantics),
-            resolve_paths,
+            resolve_paths: resolve_paths == ResolvePaths::Yes,
+            source_kind,
+            macro_context_depth: 0,
+            diagnostic_count: 0,
         }
     }
     fn location(&self, range: TextRange) -> Option<(LineCol, LineCol)> {
@@ -157,21 +260,23 @@ impl<'a> Translator<'a> {
             Some(node.syntax().text_range())
         }
     }
-    pub fn emit_location<T: TrapClass>(&mut self, label: Label<T>, node: &impl ast::AstNode) {
-        if let Some((start, end)) = self
-            .text_range_for_node(node)
+
+    fn location_for_node(&mut self, node: &impl ast::AstNode) -> Option<(LineCol, LineCol)> {
+        self.text_range_for_node(node)
             .and_then(|r| self.location(r))
-        {
-            self.trap.emit_location(self.label, label, start, end)
-        } else {
-            self.emit_diagnostic(
+    }
+
+    pub fn emit_location<T: TrapClass>(&mut self, label: Label<T>, node: &impl ast::AstNode) {
+        match self.location_for_node(node) {
+            None => self.emit_diagnostic(
                 DiagnosticSeverity::Debug,
                 "locations".to_owned(),
                 "missing location for AstNode".to_owned(),
                 "missing location for AstNode".to_owned(),
                 UNKNOWN_LOCATION,
-            );
-        }
+            ),
+            Some((start, end)) => self.trap.emit_location(self.label, label, start, end),
+        };
     }
     pub fn emit_location_token(
         &mut self,
@@ -198,6 +303,44 @@ impl<'a> Translator<'a> {
         full_message: String,
         location: (LineCol, LineCol),
     ) {
+        let severity = if self.source_kind == SourceKind::Library {
+            match severity {
+                DiagnosticSeverity::Error => DiagnosticSeverity::Info,
+                _ => DiagnosticSeverity::Debug,
+            }
+        } else {
+            severity
+        };
+        if severity > DiagnosticSeverity::Debug {
+            self.diagnostic_count += 1;
+            if self.diagnostic_count > DIAGNOSTIC_LIMIT_PER_FILE {
+                return;
+            }
+        }
+        self.emit_diagnostic_unchecked(severity, tag, message, full_message, location);
+    }
+    pub fn emit_truncated_diagnostics_message(&mut self) {
+        if self.diagnostic_count > DIAGNOSTIC_LIMIT_PER_FILE {
+            let count = self.diagnostic_count - DIAGNOSTIC_LIMIT_PER_FILE;
+            self.emit_diagnostic_unchecked(
+                DiagnosticSeverity::Warning,
+                "diagnostics".to_owned(),
+                "Too many diagnostic messages".to_owned(),
+                format!(
+                    "Too many diagnostic messages, {count} diagnostic messages were suppressed"
+                ),
+                UNKNOWN_LOCATION,
+            );
+        }
+    }
+    fn emit_diagnostic_unchecked(
+        &mut self,
+        severity: DiagnosticSeverity,
+        tag: String,
+        message: String,
+        full_message: String,
+        location: (LineCol, LineCol),
+    ) {
         let (start, end) = location;
         dispatch_to_tracing!(
             severity,
@@ -214,6 +357,25 @@ impl<'a> Translator<'a> {
                 .emit_diagnostic(severity, tag, message, full_message, location);
         }
     }
+
+    pub fn emit_diagnostic_for_node(
+        &mut self,
+        node: &impl ast::AstNode,
+        severity: DiagnosticSeverity,
+        tag: String,
+        message: String,
+        full_message: String,
+    ) {
+        let location = self.location_for_node(node);
+        self.emit_diagnostic(
+            severity,
+            tag,
+            message,
+            full_message,
+            location.unwrap_or(UNKNOWN_LOCATION),
+        );
+    }
+
     pub fn emit_parse_error(&mut self, owner: &impl ast::AstNode, err: &SyntaxError) {
         let owner_range: TextRange = owner.syntax().text_range();
         let err_range = err.range();
@@ -253,33 +415,35 @@ impl<'a> Translator<'a> {
             }
         }
     }
-    fn emit_macro_expansion_parse_errors(&mut self, mcall: &ast::MacroCall, expanded: &SyntaxNode) {
+    fn emit_macro_expansion_parse_errors(
+        &mut self,
+        node: &impl ast::AstNode,
+        expanded: &SyntaxNode,
+    ) {
         let semantics = self.semantics.as_ref().unwrap();
         if let Some(value) = semantics
             .hir_file_for(expanded)
             .macro_file()
-            .and_then(|macro_file| {
-                semantics
-                    .db
-                    .parse_macro_expansion_error(macro_file.macro_call_id)
-            })
+            .and_then(|macro_call_id| semantics.db.parse_macro_expansion_error(macro_call_id))
         {
             if let Some(err) = &value.err {
                 let error = err.render_to_string(semantics.db);
-
-                if err.span().anchor.file_id == semantics.hir_file_for(mcall.syntax()) {
+                let hir_file_id = semantics.hir_file_for(node.syntax());
+                if Some(err.span().anchor.file_id.file_id())
+                    == hir_file_id.file_id().map(|f| f.file_id(semantics.db))
+                {
                     let location = err.span().range
                         + semantics
                             .db
-                            .ast_id_map(err.span().anchor.file_id.into())
+                            .ast_id_map(hir_file_id)
                             .get_erased(err.span().anchor.ast_id)
                             .text_range()
                             .start();
-                    self.emit_parse_error(mcall, &SyntaxError::new(error.message, location));
+                    self.emit_parse_error(node, &SyntaxError::new(error.message, location));
                 };
             }
             for err in value.value.iter() {
-                self.emit_parse_error(mcall, err);
+                self.emit_parse_error(node, err);
             }
         }
     }
@@ -291,20 +455,20 @@ impl<'a> Translator<'a> {
     ) -> Option<Label<generated::AstNode>> {
         match expand_to {
             ra_ap_hir_expand::ExpandTo::Statements => ast::MacroStmts::cast(expanded)
-                .and_then(|x| self.emit_macro_stmts(x))
+                .and_then(|x| self.emit_macro_stmts(&x))
                 .map(Into::into),
             ra_ap_hir_expand::ExpandTo::Items => ast::MacroItems::cast(expanded)
-                .and_then(|x| self.emit_macro_items(x))
+                .and_then(|x| self.emit_macro_items(&x))
                 .map(Into::into),
 
             ra_ap_hir_expand::ExpandTo::Pattern => ast::Pat::cast(expanded)
-                .and_then(|x| self.emit_pat(x))
+                .and_then(|x| self.emit_pat(&x))
                 .map(Into::into),
             ra_ap_hir_expand::ExpandTo::Type => ast::Type::cast(expanded)
-                .and_then(|x| self.emit_type(x))
+                .and_then(|x| self.emit_type(&x))
                 .map(Into::into),
             ra_ap_hir_expand::ExpandTo::Expr => ast::Expr::cast(expanded)
-                .and_then(|x| self.emit_expr(x))
+                .and_then(|x| self.emit_expr(&x))
                 .map(Into::into),
         }
     }
@@ -313,16 +477,25 @@ impl<'a> Translator<'a> {
         mcall: &ast::MacroCall,
         label: Label<generated::MacroCall>,
     ) {
+        if self.macro_context_depth > 0 {
+            // we are in an attribute macro, don't emit anything: we would be failing to expand any
+            // way as from version 0.0.274 rust-analyser only expands in the context of an expansion
+            return;
+        }
         if let Some(expanded) = self
             .semantics
             .as_ref()
             .and_then(|s| s.expand_macro_call(mcall))
         {
-            self.emit_macro_expansion_parse_errors(mcall, &expanded);
+            self.emit_macro_expansion_parse_errors(mcall, &expanded.value);
             let expand_to = ra_ap_hir_expand::ExpandTo::from_call_site(mcall);
             let kind = expanded.kind();
-            if let Some(value) = self.emit_expanded_as(expand_to, expanded) {
-                generated::MacroCall::emit_expanded(label, value, &mut self.trap.writer);
+            if let Some(value) = self.emit_expanded_as(expand_to, expanded.value) {
+                generated::MacroCall::emit_macro_call_expansion(
+                    label,
+                    value,
+                    &mut self.trap.writer,
+                );
             } else {
                 let range = self.text_range_for_node(mcall);
                 self.emit_parse_error(mcall, &SyntaxError::new(
@@ -349,6 +522,17 @@ impl<'a> Translator<'a> {
             );
         }
     }
+
+    pub(crate) fn emit_else_branch(
+        &mut self,
+        node: &ast::ElseBranch,
+    ) -> Option<Label<generated::Expr>> {
+        match node {
+            ast::ElseBranch::IfExpr(inner) => self.emit_if_expr(inner).map(Into::into),
+            ast::ElseBranch::Block(inner) => self.emit_block_expr(inner).map(Into::into),
+        }
+    }
+
     fn canonical_path_from_type(&self, ty: Type) -> Option<String> {
         let sema = self.semantics.as_ref().unwrap();
         // rust-analyzer doesn't provide a type enum directly
@@ -399,9 +583,9 @@ impl<'a> Translator<'a> {
     }
 
     fn canonical_path_from_hir_module(&self, item: Module) -> Option<String> {
-        if let Some(block_id) = ModuleId::from(item).containing_block() {
-            // this means this is a block module, i.e. a virtual module for a block scope
-            return Some(format!("{{{}}}", block_id.as_intern_id()));
+        if ModuleId::from(item).containing_block().is_some() {
+            // this means this is a block module, i.e. a virtual module for an anonymous block scope
+            return None;
         }
         if item.is_crate_root() {
             return Some("crate".into());
@@ -509,7 +693,7 @@ impl<'a> Translator<'a> {
         item: &T,
         label: Label<generated::Addressable>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -532,7 +716,7 @@ impl<'a> Translator<'a> {
         item: &ast::Variant,
         label: Label<generated::Variant>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -555,7 +739,7 @@ impl<'a> Translator<'a> {
         item: &impl PathAst,
         label: Label<generated::Resolvable>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -578,7 +762,7 @@ impl<'a> Translator<'a> {
         item: &ast::MethodCallExpr,
         label: Label<generated::MethodCallExpr>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -609,6 +793,10 @@ impl<'a> Translator<'a> {
         })
     }
 
+    pub(crate) fn should_skip_bodies(&self) -> bool {
+        self.source_kind == SourceKind::Library
+    }
+
     pub(crate) fn extract_types_from_path_segment(
         &mut self,
         item: &ast::PathSegment,
@@ -616,28 +804,181 @@ impl<'a> Translator<'a> {
     ) {
         // work around a bug in rust-analyzer AST generation machinery
         // this code was inspired by rust-analyzer's own workaround for this:
-        // https://github.com/rust-lang/rust-analyzer/blob/1f86729f29ea50e8491a1516422df4fd3d1277b0/crates/syntax/src/ast/node_ext.rs#L268-L277
-        if item.l_angle_token().is_some() {
+        // https://github.com/rust-lang/rust-analyzer/blob/a642aa8023be11d6bc027fc6a68c71c2f3fc7f72/crates/syntax/src/ast/node_ext.rs#L290-L297
+        if let Some(anchor) = item.type_anchor() {
             // <T> or <T as Trait>
             // T is any TypeRef, Trait has to be a PathType
-            let mut type_refs = item
+            let mut type_refs = anchor
                 .syntax()
                 .children()
                 .filter(|node| ast::Type::can_cast(node.kind()));
             if let Some(t) = type_refs
                 .next()
                 .and_then(ast::Type::cast)
-                .and_then(|t| self.emit_type(t))
+                .and_then(|t| self.emit_type(&t))
             {
                 generated::PathSegment::emit_type_repr(label, t, &mut self.trap.writer)
             }
             if let Some(t) = type_refs
                 .next()
                 .and_then(ast::PathType::cast)
-                .and_then(|t| self.emit_path_type(t))
+                .and_then(|t| self.emit_path_type(&t))
             {
                 generated::PathSegment::emit_trait_type_repr(label, t, &mut self.trap.writer)
             }
+            // moreover as we're skipping emission of TypeAnchor, we need to attach its comments to
+            // this path segment
+            self.emit_tokens(
+                &anchor,
+                label.into(),
+                anchor.syntax().children_with_tokens(),
+            );
         }
+    }
+
+    fn is_attribute_macro_target(&self, node: &ast::Item) -> bool {
+        // rust-analyzer considers as an `attr_macro_call` also a plain macro call, but we want to
+        // process that differently (in `extract_macro_call_expanded`)
+        !matches!(node, ast::Item::MacroCall(_))
+            && self.semantics.is_some_and(|semantics| {
+                let file = semantics.hir_file_for(node.syntax());
+                let node = InFile::new(file, node);
+                semantics.is_attr_macro_call(node)
+            })
+    }
+
+    fn process_item_macro_expansion(
+        &mut self,
+        node: &impl ast::AstNode,
+        ExpandResult { value, err }: ExpandResult<SyntaxNode>,
+    ) -> Option<Label<generated::MacroItems>> {
+        let semantics = self.semantics.unwrap(); // if we are here, we have semantics
+        self.emit_macro_expansion_parse_errors(node, &value);
+        if let Some(err) = err {
+            let rendered = err.render_to_string(semantics.db);
+            self.emit_diagnostic_for_node(
+                node,
+                DiagnosticSeverity::Warning,
+                "item_expansion".to_owned(),
+                format!("item expansion failed ({})", rendered.kind),
+                rendered.message,
+            );
+        }
+        if let Some(items) = ast::MacroItems::cast(value) {
+            self.emit_macro_items(&items)
+        } else {
+            let message =
+                "attribute or derive macro expansion cannot be cast to MacroItems".to_owned();
+            self.emit_diagnostic_for_node(
+                node,
+                DiagnosticSeverity::Warning,
+                "item_expansion".to_owned(),
+                message.clone(),
+                message,
+            );
+            None
+        }
+    }
+
+    fn emit_attribute_macro_expansion(
+        &mut self,
+        node: &ast::Item,
+    ) -> Option<Label<generated::MacroItems>> {
+        if self.macro_context_depth > 0 {
+            // only expand the outermost attribute macro
+            return None;
+        }
+        let expansion = self.semantics?.expand_attr_macro(node)?;
+        self.process_item_macro_expansion(node, expansion.map(|x| x.value))
+    }
+
+    pub(crate) fn item_pre_emit(
+        &mut self,
+        node: &ast::Item,
+    ) -> Option<Label<generated::MacroCall>> {
+        if !self.is_attribute_macro_target(node) {
+            return None;
+        }
+        if self.source_kind == SourceKind::Library {
+            // if the item expands via an attribute macro, we want to only emit the expansion
+            if let Some(expanded) = self.emit_attribute_macro_expansion(node) {
+                // we wrap it in a dummy MacroCall to get a single Item label that can replace
+                // the original Item
+                let label = self.trap.emit(generated::MacroCall {
+                    id: TrapId::Star,
+                    attrs: vec![],
+                    path: None,
+                    token_tree: None,
+                });
+                generated::Item::emit_attribute_macro_expansion(
+                    label.into(),
+                    expanded,
+                    &mut self.trap.writer,
+                );
+                self.emit_location(label, node);
+                return Some(label);
+            }
+        }
+        self.macro_context_depth += 1;
+        None
+    }
+
+    pub(crate) fn item_post_emit(&mut self, node: &ast::Item, label: Label<generated::Item>) {
+        if !self.is_attribute_macro_target(node) {
+            return;
+        }
+        // see `item_pre_emit`:
+        // if self.is_attribute_macro_target(node), then we either exited early with `Some(label)`
+        // and are not here, or we did self.macro_context_depth += 1
+        assert!(
+            self.macro_context_depth > 0,
+            "macro_context_depth should be > 0 for an attribute macro target"
+        );
+        self.macro_context_depth -= 1;
+        if let Some(expanded) = self.emit_attribute_macro_expansion(node) {
+            generated::Item::emit_attribute_macro_expansion(label, expanded, &mut self.trap.writer);
+        }
+    }
+
+    pub(crate) fn emit_function_has_implementation(
+        &mut self,
+        node: &ast::Fn,
+        label: Label<generated::Function>,
+    ) {
+        if node.body().is_some() {
+            generated::Function::emit_has_implementation(label, &mut self.trap.writer);
+        }
+    }
+
+    pub(crate) fn emit_const_has_implementation(
+        &mut self,
+        node: &ast::Const,
+        label: Label<generated::Const>,
+    ) {
+        if node.body().is_some() {
+            generated::Const::emit_has_implementation(label, &mut self.trap.writer);
+        }
+    }
+
+    pub(crate) fn emit_derive_expansion(
+        &mut self,
+        node: &(impl Into<ast::Adt> + Clone),
+        label: impl Into<Label<generated::Adt>> + Copy,
+    ) {
+        let Some(semantics) = self.semantics else {
+            return;
+        };
+        let node: ast::Adt = node.clone().into();
+        let expansions = node
+            .attrs()
+            .filter_map(|attr| semantics.expand_derive_macro(&attr))
+            .flatten()
+            .filter_map(|expanded| self.process_item_macro_expansion(&node, expanded))
+            .collect::<Vec<_>>();
+        generated::Adt::emit_derive_macro_expansions(
+            label.into(),
+            expansions,
+            &mut self.trap.writer,
+        );
     }
 }

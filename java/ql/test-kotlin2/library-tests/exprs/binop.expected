@@ -123,9 +123,6 @@
 | exprs.kt:261:11:261:17 | ... * ... | exprs.kt:261:11:261:12 | lx | exprs.kt:261:16:261:17 | ly |
 | exprs.kt:262:11:262:17 | ... * ... | exprs.kt:262:11:262:12 | dx | exprs.kt:262:16:262:17 | dy |
 | exprs.kt:263:11:263:17 | ... * ... | exprs.kt:263:11:263:12 | fx | exprs.kt:263:16:263:17 | fy |
-| exprs.kt:272:3:272:14 | ... * ... | exprs.kt:272:3:272:9 | updated | exprs.kt:272:14:272:14 | 1 |
-| exprs.kt:273:3:273:14 | ... / ... | exprs.kt:273:3:273:9 | updated | exprs.kt:273:14:273:14 | 1 |
-| exprs.kt:274:3:274:14 | ... % ... | exprs.kt:274:3:274:9 | updated | exprs.kt:274:14:274:14 | 1 |
 | funcExprs.kt:32:35:32:42 | ... + ... | funcExprs.kt:32:35:32:38 | this | funcExprs.kt:32:42:32:42 | a |
 | localFunctionCalls.kt:5:25:5:29 | ... + ... | localFunctionCalls.kt:5:25:5:25 | i | localFunctionCalls.kt:5:29:5:29 | x |
 | samConversion.kt:2:33:2:38 | ... % ... | samConversion.kt:2:33:2:34 | it | samConversion.kt:2:38:2:38 | 2 |

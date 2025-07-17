@@ -1,6 +1,8 @@
 /**
  * Provides a class that represents named elements in Java programs.
  */
+overlay[local?]
+module;
 
 import CompilationUnit
 import semmle.code.Location

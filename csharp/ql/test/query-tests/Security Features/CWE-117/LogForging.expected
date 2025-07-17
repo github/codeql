@@ -2,7 +2,7 @@
 | LogForging.cs:21:21:21:43 | ... + ... | LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:21:21:21:43 | ... + ... | This log entry depends on a $@. | LogForging.cs:18:27:18:49 | access to property QueryString | user-provided value |
 | LogForging.cs:31:50:31:72 | ... + ... | LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:31:50:31:72 | ... + ... | This log entry depends on a $@. | LogForging.cs:18:27:18:49 | access to property QueryString | user-provided value |
 | LogForging.cs:35:26:35:33 | access to local variable username | LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:35:26:35:33 | access to local variable username | This log entry depends on a $@. | LogForging.cs:18:27:18:49 | access to property QueryString | user-provided value |
-| LogForgingAsp.cs:12:21:12:43 | ... + ... | LogForgingAsp.cs:8:32:8:39 | username : String | LogForgingAsp.cs:12:21:12:43 | ... + ... | This log entry depends on a $@. | LogForgingAsp.cs:8:32:8:39 | username | user-provided value |
+| LogForgingAsp.cs:17:21:17:43 | ... + ... | LogForgingAsp.cs:13:32:13:39 | username : String | LogForgingAsp.cs:17:21:17:43 | ... + ... | This log entry depends on a $@. | LogForgingAsp.cs:13:32:13:39 | username | user-provided value |
 edges
 | LogForging.cs:18:16:18:23 | access to local variable username : String | LogForging.cs:21:21:21:43 | ... + ... | provenance |  |
 | LogForging.cs:18:16:18:23 | access to local variable username : String | LogForging.cs:31:50:31:72 | ... + ... | provenance |  |
@@ -10,7 +10,7 @@ edges
 | LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:18:16:18:23 | access to local variable username : String | provenance |  |
 | LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:18:27:18:61 | access to indexer : String | provenance | MaD:1 |
 | LogForging.cs:18:27:18:61 | access to indexer : String | LogForging.cs:18:16:18:23 | access to local variable username : String | provenance |  |
-| LogForgingAsp.cs:8:32:8:39 | username : String | LogForgingAsp.cs:12:21:12:43 | ... + ... | provenance |  |
+| LogForgingAsp.cs:13:32:13:39 | username : String | LogForgingAsp.cs:17:21:17:43 | ... + ... | provenance |  |
 models
 | 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
 nodes
@@ -20,6 +20,6 @@ nodes
 | LogForging.cs:21:21:21:43 | ... + ... | semmle.label | ... + ... |
 | LogForging.cs:31:50:31:72 | ... + ... | semmle.label | ... + ... |
 | LogForging.cs:35:26:35:33 | access to local variable username | semmle.label | access to local variable username |
-| LogForgingAsp.cs:8:32:8:39 | username : String | semmle.label | username : String |
-| LogForgingAsp.cs:12:21:12:43 | ... + ... | semmle.label | ... + ... |
+| LogForgingAsp.cs:13:32:13:39 | username : String | semmle.label | username : String |
+| LogForgingAsp.cs:17:21:17:43 | ... + ... | semmle.label | ... + ... |
 subpaths

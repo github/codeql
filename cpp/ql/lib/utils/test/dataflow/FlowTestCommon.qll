@@ -26,7 +26,7 @@ module IRFlowTest<IRDataFlow::GlobalFlowSig Flow> implements TestSig {
       n =
         strictcount(int line, int column |
           Flow::flow(any(IRDataFlow::Node otherSource |
-              otherSource.hasLocationInfo(_, line, column, _, _)
+              otherSource.getLocation().hasLocationInfo(_, line, column, _, _)
             ), sink)
         ) and
       (
@@ -55,7 +55,7 @@ module AstFlowTest<AstDataFlow::GlobalFlowSig Flow> implements TestSig {
       n =
         strictcount(int line, int column |
           Flow::flow(any(AstDataFlow::Node otherSource |
-              otherSource.hasLocationInfo(_, line, column, _, _)
+              otherSource.getLocation().hasLocationInfo(_, line, column, _, _)
             ), sink)
         ) and
       (

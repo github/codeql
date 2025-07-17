@@ -48,6 +48,8 @@ private module WeakParamsConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node node) { node = any(PersistentWriteAccess a).getValue() }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 }
 
 private module WeakParamsFlow = TaintTracking::Global<WeakParamsConfig>;

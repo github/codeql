@@ -1,83 +1,50 @@
 testFailures
 newStyleBarrierGuards
-| barrier-guards.rb:3:16:4:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:4:5:4:7 | foo |
-| barrier-guards.rb:9:25:10:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:10:5:10:7 | foo |
-| barrier-guards.rb:17:1:18:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:18:5:18:7 | foo |
-| barrier-guards.rb:23:1:24:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:24:5:24:7 | foo |
-| barrier-guards.rb:27:20:28:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:28:5:28:7 | foo |
-| barrier-guards.rb:37:21:38:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:38:5:38:7 | foo |
 | barrier-guards.rb:45:9:45:11 | foo |
-| barrier-guards.rb:70:22:71:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:71:5:71:7 | foo |
-| barrier-guards.rb:82:26:83:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:83:5:83:7 | foo |
-| barrier-guards.rb:90:1:91:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:91:5:91:7 | foo |
-| barrier-guards.rb:125:11:126:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:126:5:126:7 | foo |
-| barrier-guards.rb:132:11:133:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:133:5:133:7 | foo |
-| barrier-guards.rb:134:11:135:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:135:5:135:7 | foo |
-| barrier-guards.rb:139:18:140:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:140:5:140:7 | foo |
-| barrier-guards.rb:141:19:142:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:142:5:142:7 | foo |
-| barrier-guards.rb:148:21:149:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:149:5:149:7 | foo |
-| barrier-guards.rb:153:18:154:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:154:5:154:7 | foo |
-| barrier-guards.rb:158:10:159:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:159:5:159:7 | foo |
-| barrier-guards.rb:163:11:164:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:164:5:164:7 | foo |
 | barrier-guards.rb:191:4:191:15 | [input] SSA phi read(foo) |
 | barrier-guards.rb:191:20:191:31 | [input] SSA phi read(foo) |
-| barrier-guards.rb:191:32:192:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:192:5:192:7 | foo |
 | barrier-guards.rb:195:4:195:15 | [input] SSA phi read(foo) |
 | barrier-guards.rb:195:4:195:31 | [input] SSA phi read(foo) |
 | barrier-guards.rb:195:20:195:31 | [input] SSA phi read(foo) |
 | barrier-guards.rb:195:36:195:47 | [input] SSA phi read(foo) |
-| barrier-guards.rb:195:48:196:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:196:5:196:7 | foo |
 | barrier-guards.rb:199:4:199:15 | [input] SSA phi read(foo) |
 | barrier-guards.rb:199:4:199:31 | [input] SSA phi read(foo) |
 | barrier-guards.rb:199:20:199:31 | [input] SSA phi read(foo) |
 | barrier-guards.rb:203:36:203:47 | [input] SSA phi read(foo) |
-| barrier-guards.rb:207:22:208:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:208:5:208:7 | foo |
-| barrier-guards.rb:211:22:212:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:212:5:212:7 | foo |
-| barrier-guards.rb:215:28:216:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:216:5:216:7 | foo |
 | barrier-guards.rb:219:21:219:23 | foo |
 | barrier-guards.rb:219:21:219:32 | [input] SSA phi read(foo) |
-| barrier-guards.rb:219:95:220:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:220:5:220:7 | foo |
-| barrier-guards.rb:232:18:233:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:233:5:233:7 | foo |
-| barrier-guards.rb:237:19:237:38 | [input] SSA phi read(foo) |
 | barrier-guards.rb:237:24:237:26 | foo |
-| barrier-guards.rb:243:9:244:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:244:5:244:7 | foo |
-| barrier-guards.rb:259:17:260:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:260:5:260:7 | foo |
-| barrier-guards.rb:264:17:265:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:265:5:265:7 | foo |
-| barrier-guards.rb:272:17:272:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:272:17:272:19 | foo |
-| barrier-guards.rb:275:20:276:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:276:5:276:7 | foo |
-| barrier-guards.rb:281:21:282:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:282:5:282:7 | foo |
-| barrier-guards.rb:291:7:292:19 | [input] SSA phi read(foo) |
 | barrier-guards.rb:292:5:292:7 | foo |
 | barrier_flow.rb:19:14:19:14 | x |
 | barrier_flow.rb:32:10:32:10 | x |

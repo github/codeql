@@ -126,6 +126,11 @@ namespace Semmle.Util
         bool IsRunningOnAppleSilicon();
 
         /// <summary>
+        /// Checks if Mono is installed.
+        /// </summary>
+        bool IsMonoInstalled();
+
+        /// <summary>
         /// Combine path segments, Path.Combine().
         /// </summary>
         /// <param name="parts">The parts of the path.</param>
@@ -254,6 +259,25 @@ namespace Semmle.Util
             {
                 thisBuildActions.RunProcess("sysctl", "machdep.cpu.brand_string", workingDirectory: null, env: null, out var stdOut);
                 return stdOut?.Any(s => s?.ToLowerInvariant().Contains("apple") == true) ?? false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        bool IBuildActions.IsMonoInstalled()
+        {
+            var thisBuildActions = (IBuildActions)this;
+
+            if (thisBuildActions.IsWindows())
+            {
+                return false;
+            }
+
+            try
+            {
+                return 0 == thisBuildActions.RunProcess("mono", "--version", workingDirectory: null, env: null);
             }
             catch (Exception)
             {

@@ -1,9 +1,5 @@
 # when updating this list, `bazel mod tidy` should be run from `codeql` to update `MODULE.bazel`
 VERSIONS = [
-    "1.5.0",
-    "1.5.10",
-    "1.5.20",
-    "1.5.30",
     "1.6.0",
     "1.6.20",
     "1.7.0",
@@ -15,6 +11,7 @@ VERSIONS = [
     "2.0.20-Beta2",
     "2.1.0-Beta1",
     "2.1.20-Beta1",
+    "2.2.0-Beta1",
 ]
 
 def _version_to_tuple(v):

@@ -7,9 +7,12 @@ private import internal.GenericArgImpl
 import codeql.rust.elements.AstNode
 
 /**
- * A GenericArg. For example:
+ * A generic argument in a generic argument list.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * Foo:: <u32, 3, 'a>
+ * //    ^^^^^^^^^^^
  * ```
  */
 final class GenericArg = Impl::GenericArg;

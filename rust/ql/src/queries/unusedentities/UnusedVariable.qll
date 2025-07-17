@@ -25,7 +25,7 @@ class IncompleteCallable extends Callable {
   IncompleteCallable() {
     exists(MacroExpr me |
       me.getEnclosingCallable() = this and
-      not me.getMacroCall().hasExpanded()
+      not me.getMacroCall().hasMacroCallExpansion()
     )
   }
 }

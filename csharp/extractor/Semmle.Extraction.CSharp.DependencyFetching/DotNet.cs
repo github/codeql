@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
 using Newtonsoft.Json.Linq;
 
 using Semmle.Util;
@@ -77,6 +76,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 args += " /p:EnableWindowsTargeting=true";
             }
 
+            if (restoreSettings.ExtraArgs is not null)
+            {
+                args += $" {restoreSettings.ExtraArgs}";
+            }
+
             return args;
         }
 
@@ -123,13 +127,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public IList<string> GetNugetFeeds(string nugetConfig)
         {
-            logger.LogInfo($"Getting Nuget feeds from '{nugetConfig}'...");
+            logger.LogInfo($"Getting NuGet feeds from '{nugetConfig}'...");
             return GetResultList($"{nugetListSourceCommand} --configfile \"{nugetConfig}\"");
         }
 
         public IList<string> GetNugetFeedsFromFolder(string folderPath)
         {
-            logger.LogInfo($"Getting Nuget feeds in folder '{folderPath}'...");
+            logger.LogInfo($"Getting NuGet feeds in folder '{folderPath}'...");
             return GetResultList(nugetListSourceCommand, folderPath);
         }
 

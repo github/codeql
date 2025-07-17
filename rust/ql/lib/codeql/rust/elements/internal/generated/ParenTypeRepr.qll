@@ -15,9 +15,12 @@ import codeql.rust.elements.internal.TypeReprImpl::Impl as TypeReprImpl
  */
 module Generated {
   /**
-   * A ParenTypeRepr. For example:
+   * A parenthesized type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let x: (i32);
+   * //     ^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::ParenTypeRepr` class directly.
    * Use the subclass `ParenTypeRepr`, where the following predicates are available.

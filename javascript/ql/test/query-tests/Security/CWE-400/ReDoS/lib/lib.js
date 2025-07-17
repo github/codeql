@@ -1,11 +1,11 @@
 var regexp = /a*b/;
 
 module.exports = function (name) { // $ Source[js/polynomial-redos]
-	regexp.test(name); // $ Alert[js/polynomial-redos] Sink[js/polynomial-redos]
+	regexp.test(name); // $ Alert[js/polynomial-redos]
 };
 
 function bar(reg, name) { // $ Source[js/polynomial-redos]
-	/f*g/.test(name); // $ Alert[js/polynomial-redos] Sink[js/polynomial-redos]
+	/f*g/.test(name); // $ Alert[js/polynomial-redos]
 }
 
 if (typeof define !== 'undefined' && define.amd) { // AMD
@@ -33,16 +33,16 @@ module.exports.useArguments = function () {
 }
 
 function usedWithArguments(name) {
-	/f*g/.test(name); // $ Alert[js/polynomial-redos] Sink[js/polynomial-redos]
+	/f*g/.test(name); // $ Alert[js/polynomial-redos]
 }
 
 module.exports.snapdragon = require("./snapdragon")
 
 module.exports.foo = function (name) { // $ Source[js/polynomial-redos]
-    var data1 = name.match(/f*g/); // $ Alert[js/polynomial-redos] Sink[js/polynomial-redos]
+    var data1 = name.match(/f*g/); // $ Alert[js/polynomial-redos]
 
     name = name.substr(1);
-    var data2 = name.match(/f*g/); // $ Alert[js/polynomial-redos] Sink[js/polynomial-redos]
+    var data2 = name.match(/f*g/); // $ Alert[js/polynomial-redos]
 }
 
 var indirectAssign = {};
@@ -50,6 +50,6 @@ module.exports.indirectAssign = indirectAssign;
 
 Object.assign(indirectAssign, {
   myThing: function (name) { // $ Source[js/polynomial-redos]
-    /f*g/.test(name); // $ Alert[js/polynomial-redos] Sink[js/polynomial-redos]
+    /f*g/.test(name); // $ Alert[js/polynomial-redos]
   },
 });

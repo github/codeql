@@ -86,8 +86,8 @@ anon_class_member_modifiers
 | delegatedProperties.kt:19:34:19:51 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:19:34:19:51 | set | override, public |
 | delegatedProperties.kt:23:29:23:31 | new KProperty0<String>(...) { ... } | delegatedProperties.kt:23:29:23:31 | get | override, public |
 | delegatedProperties.kt:23:29:23:31 | new KProperty0<String>(...) { ... } | delegatedProperties.kt:23:29:23:31 | invoke | override, public |
-| delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:26:13:26:28 | getCurValue | final, public |
-| delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:26:13:26:28 | setCurValue | final, public |
+| delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:26:13:26:24 | getCurValue | final, public |
+| delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:26:13:26:24 | setCurValue | final, public |
 | delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:27:13:27:88 | getValue | override, public |
 | delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:28:13:30:13 | setValue | override, public |
 | delegatedProperties.kt:33:30:33:47 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:33:30:33:47 | get | override, public |
@@ -187,7 +187,7 @@ anon_class_member_modifiers
 | delegatedProperties.kt:87:34:87:46 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:87:34:87:46 | invoke | override, public |
 | delegatedProperties.kt:87:34:87:46 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:87:34:87:46 | set | override, public |
 | delegatedProperties.kt:87:34:87:46 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:87:34:87:46 | set | override, public |
-| exprs.kt:195:16:197:9 | new Interface1(...) { ... } | exprs.kt:196:13:196:49 | getA3 | final, public |
+| exprs.kt:195:16:197:9 | new Interface1(...) { ... } | exprs.kt:196:13:196:26 | getA3 | final, public |
 | funcExprs.kt:22:26:22:33 | new Function0<Integer>(...) { ... } | funcExprs.kt:22:26:22:33 | invoke | final, override, public |
 | funcExprs.kt:23:26:23:33 | new Function0<Object>(...) { ... } | funcExprs.kt:23:26:23:33 | invoke | final, override, public |
 | funcExprs.kt:24:26:24:33 | new Function0<Object>(...) { ... } | funcExprs.kt:24:26:24:33 | invoke | final, override, public |

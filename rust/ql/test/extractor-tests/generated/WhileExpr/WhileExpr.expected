@@ -1,0 +1,8 @@
+instances
+| gen_while_expr.rs:7:5:9:5 | while ... { ... } |
+getLabel
+getLoopBody
+| gen_while_expr.rs:7:5:9:5 | while ... { ... } | gen_while_expr.rs:7:18:9:5 | { ... } |
+getAttr
+getCondition
+| gen_while_expr.rs:7:5:9:5 | while ... { ... } | gen_while_expr.rs:7:11:7:16 | ... < ... |

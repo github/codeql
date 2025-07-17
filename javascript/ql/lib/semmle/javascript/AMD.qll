@@ -61,8 +61,14 @@ class AmdModuleDefinition extends CallExpr instanceof AmdModuleDefinition::Range
     result = this.getArgument(1)
   }
 
+  /** DEPRECATED. Use `getDependencyExpr` instead. */
+  deprecated PathExpr getDependency(int i) { result = this.getDependencyExpr(i) }
+
+  /** DEPRECATED. Use `getADependencyExpr` instead. */
+  deprecated PathExpr getADependency() { result = this.getADependencyExpr() }
+
   /** Gets the `i`th dependency of this module definition. */
-  PathExpr getDependency(int i) {
+  Expr getDependencyExpr(int i) {
     exists(Expr expr |
       expr = this.getDependencies().getElement(i) and
       not isPseudoDependency(expr.getStringValue()) and
@@ -71,8 +77,8 @@ class AmdModuleDefinition extends CallExpr instanceof AmdModuleDefinition::Range
   }
 
   /** Gets a dependency of this module definition. */
-  PathExpr getADependency() {
-    result = this.getDependency(_) or
+  Expr getADependencyExpr() {
+    result = this.getDependencyExpr(_) or
     result = this.getARequireCall().getAnArgument()
   }
 
@@ -233,7 +239,7 @@ private class AmdDependencyPath extends PathExprCandidate {
 }
 
 /** A constant path element appearing in an AMD dependency expression. */
-private class ConstantAmdDependencyPathElement extends PathExpr, ConstantString {
+deprecated private class ConstantAmdDependencyPathElement extends PathExpr, ConstantString {
   ConstantAmdDependencyPathElement() { this = any(AmdDependencyPath amd).getAPart() }
 
   override string getValue() { result = this.getStringValue() }
@@ -261,11 +267,13 @@ private predicate amdModuleTopLevel(AmdModuleDefinition def, TopLevel tl) {
  * An AMD dependency, viewed as an import.
  */
 private class AmdDependencyImport extends Import {
-  AmdDependencyImport() { this = any(AmdModuleDefinition def).getADependency() }
+  AmdDependencyImport() { this = any(AmdModuleDefinition def).getADependencyExpr() }
 
-  override Module getEnclosingModule() { this = result.(AmdModule).getDefine().getADependency() }
+  override Module getEnclosingModule() {
+    this = result.(AmdModule).getDefine().getADependencyExpr()
+  }
 
-  override PathExpr getImportedPath() { result = this }
+  override Expr getImportedPathExpr() { result = this }
 
   /**
    * Gets a file that looks like it might be the target of this import.
@@ -274,7 +282,7 @@ private class AmdDependencyImport extends Import {
    * adding well-known JavaScript file extensions like `.js`.
    */
   private File guessTarget() {
-    exists(PathString imported, string abspath, string dirname, string basename |
+    exists(FilePath imported, string abspath, string dirname, string basename |
       this.targetCandidate(result, abspath, imported, dirname, basename)
     |
       abspath.regexpMatch(".*/\\Q" + imported + "\\E")
@@ -296,9 +304,9 @@ private class AmdDependencyImport extends Import {
    * `dirname` and `basename` to the dirname and basename (respectively) of `imported`.
    */
   private predicate targetCandidate(
-    File f, string abspath, PathString imported, string dirname, string basename
+    File f, string abspath, FilePath imported, string dirname, string basename
   ) {
-    imported = this.getImportedPath().getValue() and
+    imported = this.getImportedPathString() and
     f.getStem() = imported.getStem() and
     f.getAbsolutePath() = abspath and
     dirname = imported.getDirName() and

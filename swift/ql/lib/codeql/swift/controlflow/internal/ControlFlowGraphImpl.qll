@@ -1866,6 +1866,28 @@ module Exprs {
     }
   }
 
+  private class ExtractFunctionIsolationTree extends AstStandardPostOrderTree {
+    override ExtractFunctionIsolationExpr ast;
+
+    final override ControlFlowElement getChildNode(int i) {
+      i = 0 and
+      result.asAstNode() = ast.getFunctionExpr().getFullyConverted()
+    }
+  }
+
+  private class CurrentContextIsolationTree extends AstStandardPostOrderTree {
+    override CurrentContextIsolationExpr ast;
+
+    final override ControlFlowElement getChildNode(int i) {
+      i = 0 and
+      result.asAstNode() = ast.getActor().getFullyConverted()
+    }
+  }
+
+  private class TypeValueTree extends AstLeafTree {
+    override TypeValueExpr ast;
+  }
+
   module Conversions {
     class ConversionOrIdentity =
       Synth::TIdentityExpr or Synth::TExplicitCastExpr or Synth::TImplicitConversionExpr or

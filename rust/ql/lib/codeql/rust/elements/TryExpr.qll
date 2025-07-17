@@ -8,9 +8,12 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
 /**
- * A TryExpr. For example:
+ * A try expression using the `?` operator.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let x = foo()?;
+ * //           ^
  * ```
  */
 final class TryExpr = Impl::TryExpr;

@@ -17,6 +17,8 @@ module BasicAuthFlowConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(HttpUrlsAdditionalTaintStep c).step(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

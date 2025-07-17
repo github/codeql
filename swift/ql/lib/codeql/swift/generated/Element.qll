@@ -24,7 +24,11 @@ module Generated {
      * Gets the string representation of this element.
      */
     cached
-    final string toString() { result = this.toStringImpl() }
+    final string toString() {
+      result = this.toStringImpl() and
+      // recursion guard to prevent `toString` from being defined recursively
+      (exists(any(Element e).toStringImpl()) implies any())
+    }
 
     /**
      * INTERNAL: Do not use.

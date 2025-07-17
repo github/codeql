@@ -6,8 +6,8 @@
 #include <swift/AST/Module.h>
 #include <swift/AST/ParameterList.h>
 #include <swift/AST/ASTContext.h>
+#include <swift/AST/GenericEnvironment.h>
 #include <swift/AST/GenericParamList.h>
-#include <sstream>
 
 using namespace codeql;
 
@@ -285,6 +285,9 @@ SwiftMangledName SwiftMangler::visitGenericTypeParamType(const swift::GenericTyp
   if (type->isParameterPack()) {
     ret << "each_";
   }
+  if (type->isValue()) {
+    ret << "val_";
+  }
   if (auto decl = type->getDecl()) {
     ret << fetch(decl);
   } else {
@@ -296,6 +299,12 @@ SwiftMangledName SwiftMangler::visitGenericTypeParamType(const swift::GenericTyp
 
 SwiftMangledName SwiftMangler::visitAnyMetatypeType(const swift::AnyMetatypeType* type) {
   return initMangled(type) << fetch(type->getInstanceType());
+}
+
+SwiftMangledName SwiftMangler::visitExistentialMetatypeType(
+    const swift::ExistentialMetatypeType* type) {
+  return visitAnyMetatypeType(type)
+         << fetch(const_cast<swift::ExistentialMetatypeType*>(type)->getExistentialInstanceType());
 }
 
 SwiftMangledName SwiftMangler::visitDependentMemberType(const swift::DependentMemberType* type) {
@@ -353,8 +362,9 @@ SwiftMangledName SwiftMangler::visitOpaqueTypeArchetypeType(
 }
 
 SwiftMangledName SwiftMangler::visitOpenedArchetypeType(const swift::OpenedArchetypeType* type) {
+  auto* env = type->getGenericEnvironment();
   llvm::SmallVector<char> uuid;
-  type->getOpenedExistentialID().toString(uuid);
+  env->getOpenedExistentialUUID().toString(uuid);
   return visitArchetypeType(type) << std::string_view(uuid.data(), uuid.size());
 }
 
@@ -364,14 +374,13 @@ SwiftMangledName SwiftMangler::visitProtocolCompositionType(
   for (auto composed : type->getMembers()) {
     ret << fetch(composed);
   }
+  for (auto inverse : type->getInverses()) {
+    ret << (uint8_t)inverse << "_";
+  }
   if (type->hasExplicitAnyObject()) {
     ret << "&AnyObject";
   }
   return ret;
-}
-
-SwiftMangledName SwiftMangler::visitParenType(const swift::ParenType* type) {
-  return initMangled(type) << fetch(type->getUnderlyingType());
 }
 
 SwiftMangledName SwiftMangler::visitLValueType(const swift::LValueType* type) {

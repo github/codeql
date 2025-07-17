@@ -489,6 +489,23 @@ class Node extends TIRDataFlowNode {
   }
 
   /**
+   * Holds if this node represents the `indirectionIndex`'th indirection of
+   * the value of an output parameter `p` just before reaching the end of a function.
+   */
+  predicate isFinalValueOfParameter(Parameter p, int indirectionIndex) {
+    exists(FinalParameterNode n | n = this |
+      p = n.getParameter() and
+      indirectionIndex = n.getIndirectionIndex()
+    )
+  }
+
+  /**
+   * Holds if this node represents the value of an output parameter `p`
+   * just before reaching the end of a function.
+   */
+  predicate isFinalValueOfParameter(Parameter p) { this.isFinalValueOfParameter(p, _) }
+
+  /**
    * Gets the variable corresponding to this node, if any. This can be used for
    * modeling flow in and out of global variables.
    */
@@ -536,19 +553,6 @@ class Node extends TIRDataFlowNode {
   /** INTERNAL: Do not use. */
   Location getLocationImpl() {
     none() // overridden by subclasses
-  }
-
-  /**
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  deprecated predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /** Gets a textual representation of this element. */
@@ -860,7 +864,7 @@ class BodyLessParameterNodeImpl extends Node, TBodyLessParameterNodeImpl {
     result = unique( | | p.getLocation())
     or
     count(p.getLocation()) != 1 and
-    result instanceof UnknownDefaultLocation
+    result instanceof UnknownLocation
   }
 
   final override string toStringImpl() {
@@ -1128,7 +1132,7 @@ private module RawIndirectNodes {
     final override Location getLocationImpl() {
       if exists(this.getOperand().getLocation())
       then result = this.getOperand().getLocation()
-      else result instanceof UnknownDefaultLocation
+      else result instanceof UnknownLocation
     }
 
     override string toStringImpl() {
@@ -1174,7 +1178,7 @@ private module RawIndirectNodes {
     final override Location getLocationImpl() {
       if exists(this.getInstruction().getLocation())
       then result = this.getInstruction().getLocation()
-      else result instanceof UnknownDefaultLocation
+      else result instanceof UnknownLocation
     }
 
     override string toStringImpl() {
@@ -1238,7 +1242,7 @@ import RawIndirectNodes
 /**
  * INTERNAL: do not use.
  *
- * A node representing the value of an update parameter
+ * A node representing the value of an output parameter
  * just before reaching the end of a function.
  */
 class FinalParameterNode extends Node, TFinalParameterNode {
@@ -1270,7 +1274,7 @@ class FinalParameterNode extends Node, TFinalParameterNode {
     result = unique( | | p.getLocation())
     or
     not exists(unique( | | p.getLocation())) and
-    result instanceof UnknownDefaultLocation
+    result instanceof UnknownLocation
   }
 
   override string toStringImpl() { result = stars(this) + p.toString() }
@@ -1445,7 +1449,7 @@ private class ExplicitParameterInstructionNode extends AbstractExplicitParameter
   ExplicitParameterInstructionNode() { exists(instr.getParameter()) }
 
   override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
-    f.getParameter(pos.(DirectPosition).getIndex()) = instr.getParameter()
+    f.getParameter(pos.(DirectPosition).getArgumentIndex()) = instr.getParameter()
   }
 
   override string toStringImpl() { result = instr.getParameter().toString() }
@@ -1460,7 +1464,7 @@ class ThisParameterInstructionNode extends AbstractExplicitParameterNode,
   ThisParameterInstructionNode() { instr.getIRVariable() instanceof IRThisVariable }
 
   override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
-    pos.(DirectPosition).getIndex() = -1 and
+    pos.(DirectPosition).getArgumentIndex() = -1 and
     instr.getEnclosingFunction() = f
   }
 
@@ -1494,7 +1498,7 @@ private class DirectBodyLessParameterNode extends AbstractExplicitParameterNode,
 
   override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
     this.getFunction() = f and
-    f.getParameter(pos.(DirectPosition).getIndex()) = p
+    f.getParameter(pos.(DirectPosition).getArgumentIndex()) = p
   }
 
   override Parameter getParameter() { result = p }
@@ -1642,7 +1646,7 @@ class VariableNode extends Node, TGlobalLikeVariableNode {
     result = unique( | | v.getLocation())
     or
     not exists(unique( | | v.getLocation())) and
-    result instanceof UnknownDefaultLocation
+    result instanceof UnknownLocation
   }
 
   override string toStringImpl() { result = stars(this) + v.toString() }

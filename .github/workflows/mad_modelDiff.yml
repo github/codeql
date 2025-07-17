@@ -68,7 +68,7 @@ jobs:
             DATABASE=$2
             cd codeql-$QL_VARIANT
             SHORTNAME=`basename $DATABASE`
-            python java/ql/src/utils/modelgenerator/GenerateFlowModel.py --with-summaries --with-sinks $DATABASE $SHORTNAME/$QL_VARIANT
+            python misc/scripts/models-as-data/generate_mad.py --language java --with-summaries --with-sinks $DATABASE $SHORTNAME/$QL_VARIANT
             mkdir -p $MODELS/$SHORTNAME
             mv java/ql/lib/ext/generated/$SHORTNAME/$QL_VARIANT $MODELS/$SHORTNAME
             cd ..

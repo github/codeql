@@ -6,10 +6,10 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.internal.AdtImpl::Impl as AdtImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.FieldList
 import codeql.rust.elements.GenericParamList
-import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
@@ -22,12 +22,15 @@ module Generated {
   /**
    * A Struct. For example:
    * ```rust
-   * todo!()
+   * struct Point {
+   *     x: i32,
+   *     y: i32,
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::Struct` class directly.
    * Use the subclass `Struct`, where the following predicates are available.
    */
-  class Struct extends Synth::TStruct, ItemImpl::Item {
+  class Struct extends Synth::TStruct, AdtImpl::Adt {
     override string getAPrimaryQlClass() { result = "Struct" }
 
     /**

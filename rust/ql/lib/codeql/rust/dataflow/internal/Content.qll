@@ -58,10 +58,10 @@ class TupleFieldContent extends FieldContent, TTupleFieldContent {
 }
 
 /** A record field belonging to either a variant or a struct. */
-class RecordFieldContent extends FieldContent, TRecordFieldContent {
-  private RecordField field;
+class StructFieldContent extends FieldContent, TStructFieldContent {
+  private StructField field;
 
-  RecordFieldContent() { this = TRecordFieldContent(field) }
+  StructFieldContent() { this = TStructFieldContent(field) }
 
   /** Holds if this field belongs to an enum variant. */
   predicate isVariantField(Variant v, string name) { field.isVariantField(v, name) }
@@ -69,21 +69,21 @@ class RecordFieldContent extends FieldContent, TRecordFieldContent {
   /** Holds if this field belongs to a struct. */
   predicate isStructField(Struct s, string name) { field.isStructField(s, name) }
 
-  override FieldExprCfgNode getAnAccess() { field = result.getFieldExpr().getRecordField() }
+  override FieldExprCfgNode getAnAccess() { field = result.getFieldExpr().getStructField() }
 
   final override string toString() {
     exists(Variant v, string name, string vname |
       this.isVariantField(v, name) and
       vname = v.getName().getText() and
       // only print field when the arity is > 1
-      if strictcount(v.getRecordField(_)) > 1 then result = vname + "." + name else result = vname
+      if strictcount(v.getStructField(_)) > 1 then result = vname + "." + name else result = vname
     )
     or
     exists(Struct s, string name, string sname |
       this.isStructField(s, name) and
       sname = s.getName().getText() and
       // only print field when the arity is > 1
-      if strictcount(s.getRecordField(_)) > 1 then result = sname + "." + name else result = sname
+      if strictcount(s.getStructField(_)) > 1 then result = sname + "." + name else result = sname
     )
   }
 
@@ -150,7 +150,7 @@ final class TuplePositionContent extends FieldContent, TTuplePositionContent {
 
   override FieldExprCfgNode getAnAccess() {
     // TODO: limit to tuple types
-    result.getNameRef().getText().toInt() = pos
+    result.getIdentifier().getText().toInt() = pos
   }
 
   override string toString() { result = "tuple." + pos.toString() }
@@ -214,20 +214,53 @@ final class SingletonContentSet extends ContentSet, TSingletonContentSet {
   override Content getAReadContent() { result = c }
 }
 
+/**
+ * A step in a flow summary defined using `OptionalStep[name]`. An `OptionalStep` is "opt-in", which means
+ * that by default the step is not present in the flow summary and needs to be explicitly enabled by defining
+ * an additional flow step.
+ */
+final class OptionalStep extends ContentSet, TOptionalStep {
+  override string toString() {
+    exists(string name |
+      this = TOptionalStep(name) and
+      result = "OptionalStep[" + name + "]"
+    )
+  }
+
+  override Content getAStoreContent() { none() }
+
+  override Content getAReadContent() { none() }
+}
+
+/**
+ * A step in a flow summary defined using `OptionalBarrier[name]`. An `OptionalBarrier` is "opt-out", by default
+ * data can flow freely through the step. Flow through the step can be explicity blocked by defining its node as a barrier.
+ */
+final class OptionalBarrier extends ContentSet, TOptionalBarrier {
+  override string toString() {
+    exists(string name |
+      this = TOptionalBarrier(name) and
+      result = "OptionalBarrier[" + name + "]"
+    )
+  }
+
+  override Content getAStoreContent() { none() }
+
+  override Content getAReadContent() { none() }
+}
+
 private import codeql.rust.internal.CachedStages
 
 cached
 newtype TContent =
   TTupleFieldContent(TupleField field) { Stages::DataFlowStage::ref() } or
-  TRecordFieldContent(RecordField field) or
-  // TODO: Remove once library types are extracted
-  TVariantInLibTupleFieldContent(VariantInLib::VariantInLib v, int pos) { pos = v.getAPosition() } or
+  TStructFieldContent(StructField field) or
   TElementContent() or
   TFutureContent() or
   TTuplePositionContent(int pos) {
     pos in [0 .. max([
               any(TuplePat pat).getNumberOfFields(),
-              any(FieldExpr access).getNameRef().getText().toInt()
+              any(FieldExpr access).getIdentifier().getText().toInt()
             ]
         )]
   } or

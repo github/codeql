@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
@@ -21,15 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 {
                     case SyntaxKind.Interpolation:
                         var interpolation = (InterpolationSyntax)c;
-                        var exp = interpolation.Expression;
-                        if (Context.GetTypeInfo(exp).Type is ITypeSymbol type && !type.ImplementsIFormattable())
-                        {
-                            ImplicitToString.Create(Context, exp, this, child++);
-                        }
-                        else
-                        {
-                            Create(Context, exp, this, child++);
-                        }
+                        new InterpolatedStringInsert(Context, interpolation, this, child++);
                         break;
                     case SyntaxKind.InterpolatedStringText:
                         // Create a string literal

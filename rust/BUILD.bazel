@@ -36,6 +36,7 @@ pkg_filegroup(
     srcs = [
         ":tools-arch",
         "//rust/tools",
+        "//rust/tools/builtins",
     ],
     prefix = "tools",
 )
@@ -55,6 +56,7 @@ codeql_pack(
     srcs = [
         ":root-files",
         ":tools",
+        "//rust/downgrades",
     ],
     experimental = True,
 )

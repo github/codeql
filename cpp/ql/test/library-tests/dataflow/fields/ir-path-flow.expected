@@ -863,12 +863,12 @@ edges
 | struct_init.c:24:10:24:12 | absink output argument [a] | struct_init.c:28:5:28:7 | *& ... [a] | provenance |  |
 | struct_init.c:26:16:26:20 | *definition of outer [nestedAB, a] | struct_init.c:31:8:31:12 | *outer [nestedAB, a] | provenance |  |
 | struct_init.c:26:16:26:20 | *definition of outer [nestedAB, a] | struct_init.c:36:11:36:15 | *outer [nestedAB, a] | provenance |  |
-| struct_init.c:26:16:26:20 | *definition of outer [post update] [*pointerAB, a] | struct_init.c:33:8:33:12 | *outer [*pointerAB, a] | provenance |  |
 | struct_init.c:26:16:26:20 | *definition of outer [post update] [nestedAB, a] | struct_init.c:26:16:26:20 | *definition of outer [nestedAB, a] | provenance |  |
+| struct_init.c:26:16:26:20 | {...} [*pointerAB, a] | struct_init.c:33:8:33:12 | *outer [*pointerAB, a] | provenance |  |
 | struct_init.c:26:23:29:3 | *{...} [post update] [a] | struct_init.c:26:16:26:20 | *definition of outer [post update] [nestedAB, a] | provenance |  |
 | struct_init.c:27:7:27:16 | call to user_input | struct_init.c:26:23:29:3 | *{...} [post update] [a] | provenance |  |
 | struct_init.c:27:7:27:16 | call to user_input | struct_init.c:27:7:27:16 | call to user_input | provenance |  |
-| struct_init.c:28:5:28:7 | *& ... [a] | struct_init.c:26:16:26:20 | *definition of outer [post update] [*pointerAB, a] | provenance |  |
+| struct_init.c:28:5:28:7 | *& ... [a] | struct_init.c:26:16:26:20 | {...} [*pointerAB, a] | provenance |  |
 | struct_init.c:31:8:31:12 | *outer [nestedAB, a] | struct_init.c:31:14:31:21 | *nestedAB [a] | provenance |  |
 | struct_init.c:31:14:31:21 | *nestedAB [a] | struct_init.c:31:23:31:23 | a | provenance |  |
 | struct_init.c:33:8:33:12 | *outer [*pointerAB, a] | struct_init.c:33:14:33:22 | *pointerAB [a] | provenance |  |
@@ -879,8 +879,8 @@ edges
 | struct_init.c:40:13:40:14 | *definition of ab [post update] [a] | struct_init.c:40:13:40:14 | *definition of ab [a] | provenance |  |
 | struct_init.c:40:20:40:29 | call to user_input | struct_init.c:40:13:40:14 | *definition of ab [post update] [a] | provenance |  |
 | struct_init.c:40:20:40:29 | call to user_input | struct_init.c:40:20:40:29 | call to user_input | provenance |  |
-| struct_init.c:41:16:41:20 | *definition of outer [post update] [*pointerAB, a] | struct_init.c:46:10:46:14 | *outer [*pointerAB, a] | provenance |  |
-| struct_init.c:43:5:43:7 | *& ... [a] | struct_init.c:41:16:41:20 | *definition of outer [post update] [*pointerAB, a] | provenance |  |
+| struct_init.c:41:16:41:20 | {...} [*pointerAB, a] | struct_init.c:46:10:46:14 | *outer [*pointerAB, a] | provenance |  |
+| struct_init.c:43:5:43:7 | *& ... [a] | struct_init.c:41:16:41:20 | {...} [*pointerAB, a] | provenance |  |
 | struct_init.c:46:10:46:14 | *outer [*pointerAB, a] | struct_init.c:46:16:46:24 | *pointerAB [a] | provenance |  |
 | struct_init.c:46:16:46:24 | *pointerAB [a] | struct_init.c:14:24:14:25 | *ab [a] | provenance |  |
 nodes
@@ -1773,8 +1773,8 @@ nodes
 | struct_init.c:24:10:24:12 | *& ... [a] | semmle.label | *& ... [a] |
 | struct_init.c:24:10:24:12 | absink output argument [a] | semmle.label | absink output argument [a] |
 | struct_init.c:26:16:26:20 | *definition of outer [nestedAB, a] | semmle.label | *definition of outer [nestedAB, a] |
-| struct_init.c:26:16:26:20 | *definition of outer [post update] [*pointerAB, a] | semmle.label | *definition of outer [post update] [*pointerAB, a] |
 | struct_init.c:26:16:26:20 | *definition of outer [post update] [nestedAB, a] | semmle.label | *definition of outer [post update] [nestedAB, a] |
+| struct_init.c:26:16:26:20 | {...} [*pointerAB, a] | semmle.label | {...} [*pointerAB, a] |
 | struct_init.c:26:23:29:3 | *{...} [post update] [a] | semmle.label | *{...} [post update] [a] |
 | struct_init.c:27:7:27:16 | call to user_input | semmle.label | call to user_input |
 | struct_init.c:27:7:27:16 | call to user_input | semmle.label | call to user_input |
@@ -1791,7 +1791,7 @@ nodes
 | struct_init.c:40:13:40:14 | *definition of ab [post update] [a] | semmle.label | *definition of ab [post update] [a] |
 | struct_init.c:40:20:40:29 | call to user_input | semmle.label | call to user_input |
 | struct_init.c:40:20:40:29 | call to user_input | semmle.label | call to user_input |
-| struct_init.c:41:16:41:20 | *definition of outer [post update] [*pointerAB, a] | semmle.label | *definition of outer [post update] [*pointerAB, a] |
+| struct_init.c:41:16:41:20 | {...} [*pointerAB, a] | semmle.label | {...} [*pointerAB, a] |
 | struct_init.c:43:5:43:7 | *& ... [a] | semmle.label | *& ... [a] |
 | struct_init.c:46:10:46:14 | *outer [*pointerAB, a] | semmle.label | *outer [*pointerAB, a] |
 | struct_init.c:46:16:46:24 | *pointerAB [a] | semmle.label | *pointerAB [a] |

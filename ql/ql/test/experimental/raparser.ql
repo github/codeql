@@ -1,5 +1,6 @@
 import experimental.RA
 
+overlay[local]
 class TestPredicate extends string {
   TestPredicate() { this = "p1" }
 

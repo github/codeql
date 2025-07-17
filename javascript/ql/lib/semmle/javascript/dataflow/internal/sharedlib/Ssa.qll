@@ -56,14 +56,7 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
     predicate hasCfgNode(js::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
-    // This library only handles use-use flow after a post-update, there are no definitions, only uses.
-    none()
-  }
-
-  class Parameter = js::Parameter;
-
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) {
+  predicate ssaDefHasSource(WriteDefinition def) {
     // This library only handles use-use flow after a post-update, there are no definitions, only uses.
     none()
   }
@@ -82,11 +75,10 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
     Guard() { this = any(js::ConditionGuardNode g).getTest() }
 
     /**
-     * Holds if the control flow branching from `bb1` is dependent on this guard,
-     * and that the edge from `bb1` to `bb2` corresponds to the evaluation of this
-     * guard to `branch`.
+     * Holds if the evaluation of this guard to `branch` corresponds to the edge
+     * from `bb1` to `bb2`.
      */
-    predicate controlsBranchEdge(js::BasicBlock bb1, js::BasicBlock bb2, boolean branch) {
+    predicate hasBranchEdge(js::BasicBlock bb1, js::BasicBlock bb2, boolean branch) {
       exists(js::ConditionGuardNode g |
         g.getTest() = this and
         bb1 = this.getBasicBlock() and
@@ -94,10 +86,19 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
         branch = g.getOutcome()
       )
     }
+
+    /**
+     * Holds if this guard evaluating to `branch` controls the control-flow
+     * branch edge from `bb1` to `bb2`. That is, following the edge from
+     * `bb1` to `bb2` implies that this guard evaluated to `branch`.
+     */
+    predicate controlsBranchEdge(js::BasicBlock bb1, js::BasicBlock bb2, boolean branch) {
+      this.hasBranchEdge(bb1, bb2, branch)
+    }
   }
 
   pragma[inline]
-  predicate guardControlsBlock(Guard guard, js::BasicBlock bb, boolean branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, js::BasicBlock bb, boolean branch) {
     exists(js::ConditionGuardNode g |
       g.getTest() = guard and
       g.dominates(bb) and

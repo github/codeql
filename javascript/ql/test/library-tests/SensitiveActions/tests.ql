@@ -20,4 +20,4 @@ query predicate processTermination(NodeJSLib::ProcessTermination term) { any() }
 
 query predicate sensitiveAction(SensitiveAction ac) { any() }
 
-query predicate sensitiveExpr(SensitiveNode e) { any() }
+query predicate sensitiveExpr(SensitiveNode e, string kind) { kind = e.getClassification() }

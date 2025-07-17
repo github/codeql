@@ -718,10 +718,6 @@ module IR {
     predicate extractsElement(Instruction base, int idx) { base = this.getBase() and idx = i }
 
     override Type getResultType() {
-      exists(CallExpr c | this.getBase() = evalExprInstruction(c) |
-        result = c.getTarget().getResultType(i)
-      )
-      or
       exists(Expr e | this.getBase() = evalExprInstruction(e) |
         result = e.getType().(TupleType).getComponentType(pragma[only_bind_into](i))
       )

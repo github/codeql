@@ -36,8 +36,6 @@ module Impl {
   class CallExpr extends Generated::CallExpr {
     override string toStringImpl() { result = this.getFunction().toAbbreviatedString() + "(...)" }
 
-    override Callable getStaticTarget() { result = getResolvedFunction(this) }
-
     /** Gets the struct that this call resolves to, if any. */
     Struct getStruct() { result = getResolvedFunction(this) }
 
@@ -47,7 +45,7 @@ module Impl {
     pragma[nomagic]
     private PathResolution::ItemNode getResolvedFunctionAndPos(int pos) {
       result = getResolvedFunction(this) and
-      exists(this.getArgList().getArg(pos))
+      exists(this.getArg(pos))
     }
 
     /**

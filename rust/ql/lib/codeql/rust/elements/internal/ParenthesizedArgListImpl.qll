@@ -12,5 +12,19 @@ private import codeql.rust.elements.internal.generated.ParenthesizedArgList
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A parenthesized argument list as used in function traits.
+   *
+   * For example:
+   * ```rust
+   * fn call_with_42<F>(f: F) -> i32
+   * where
+   *     F: Fn(i32, String) -> i32,
+   * //        ^^^^^^^^^^^
+   * {
+   *     f(42, "Don't panic".to_string())
+   * }
+   * ```
+   */
   class ParenthesizedArgList extends Generated::ParenthesizedArgList { }
 }

@@ -1,3 +1,47 @@
+## 2.0.3
+
+No user-facing changes.
+
+## 2.0.2
+
+No user-facing changes.
+
+## 2.0.1
+
+No user-facing changes.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Adjusted the Guards interface in the SSA data flow integration to distinguish `hasBranchEdge` from `controlsBranchEdge`. Any breakage can be fixed by implementing one with the other as a reasonable fallback solution.
+
+## 1.1.2
+
+No user-facing changes.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### Deprecated APIs
+
+* All references to the `DefinitionExt` and `PhiReadNode` classes in the SSA library have been deprecated. The concept of phi-read nodes is now strictly an internal implementation detail. Their sole use-case is to improve the structure of the use-use flow relation for data flow, and this use-case remains supported by the `DataFlowIntegration` module.
+
+## 1.0.20
+
+No user-facing changes.
+
+## 1.0.19
+
+No user-facing changes.
+
+## 1.0.18
+
+No user-facing changes.
+
 ## 1.0.17
 
 No user-facing changes.

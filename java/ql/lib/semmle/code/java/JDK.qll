@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with standard classes and methods from the JDK.
  */
+overlay[local?]
+module;
 
 import Member
 import semmle.code.java.security.ExternalProcess
@@ -42,6 +44,36 @@ class StringLengthMethod extends Method {
 class StringContainsMethod extends Method {
   StringContainsMethod() {
     this.hasName("contains") and this.getDeclaringType() instanceof TypeString
+  }
+}
+
+/** A call to the `java.lang.String.matches` method. */
+class StringMatchesCall extends MethodCall {
+  StringMatchesCall() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof TypeString and
+      m.hasName("matches")
+    )
+  }
+}
+
+/** A call to the `java.lang.String.replaceAll` method. */
+class StringReplaceAllCall extends MethodCall {
+  StringReplaceAllCall() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof TypeString and
+      m.hasName("replaceAll")
+    )
+  }
+}
+
+/** A call to the `java.lang.String.replace` method. */
+class StringReplaceCall extends MethodCall {
+  StringReplaceCall() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof TypeString and
+      m.hasName("replace")
+    )
   }
 }
 
@@ -177,6 +209,11 @@ class TypeObjectOutput extends Interface {
 /** The type `java.io.ObjectOutputStream`. */
 class TypeObjectOutputStream extends RefType {
   TypeObjectOutputStream() { this.hasQualifiedName("java.io", "ObjectOutputStream") }
+}
+
+/** The type `java.io.ObjectInput`. */
+class TypeObjectInput extends RefType {
+  TypeObjectInput() { this.hasQualifiedName("java.io", "ObjectInput") }
 }
 
 /** The type `java.io.ObjectInputStream`. */

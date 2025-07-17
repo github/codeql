@@ -1,3 +1,68 @@
+## 5.0.3
+
+No user-facing changes.
+
+## 5.0.2
+
+No user-facing changes.
+
+## 5.0.1
+
+### Minor Analysis Improvements
+
+* Updated to allow analysis of Swift 6.1.2.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `parseContent` predicate from the `ExternalFlow.qll`.
+* Deleted the deprecated `hasLocationInfo` predicate from the `DataFlowPublic.qll`.
+* Deleted the deprecated `SummaryComponent` class from the `FlowSummary.qll`.
+* Deleted the deprecated `SummaryComponentStack` class from the `FlowSummary.qll`.
+* Deleted the deprecated `SummaryComponent` module from the `FlowSummary.qll`.
+* Deleted the deprecated `SummaryComponentStack` module from the `FlowSummary.qll`.
+* Deleted the deprecated `RequiredSummaryComponentStack` class from the `FlowSummary.qll`.
+
+### Minor Analysis Improvements
+
+* Updated to allow analysis of Swift 6.1.1.
+* `TypeValueExpr` experimental AST leaf is now implemented in the control flow library
+
+## 4.3.0
+
+### New Features
+
+* Added AST nodes `UnsafeCastExpr`, `TypeValueExpr`, `IntegerType`, and `BuiltinFixedArrayType` that correspond to new nodes added by Swift 6.1.
+
+## 4.2.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.1.
+
+### Minor Analysis Improvements
+
+* Added AST nodes `ActorIsolationErasureExpr`, `CurrentContextIsolationExpr`,
+  `ExtractFunctionIsolationExpr` and `UnreachableExpr` that correspond to new nodes
+  added by Swift 6.0.
+
+## 4.1.4
+
+No user-facing changes.
+
+## 4.1.3
+
+No user-facing changes.
+
+## 4.1.2
+
+No user-facing changes.
+
+## 4.1.1
+
+No user-facing changes.
+
 ## 4.1.0
 
 ### Deprecated APIs

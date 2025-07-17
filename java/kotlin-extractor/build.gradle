@@ -55,7 +55,7 @@ sourceSets {
 }
 
 jar {
-    archiveName = "${OUTPUT_JAR_NAME}"
+    archiveBaseName = "${OUTPUT_JAR_NAME}"
 }
 
 task getHomeDir {

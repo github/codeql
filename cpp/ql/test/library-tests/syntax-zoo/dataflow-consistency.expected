@@ -1,4 +1,10 @@
 uniqueEnclosingCallable
+| builtin.c:14:3:14:16 | ... * ... | Node should have one enclosing callable but has 0. |
+| builtin.c:14:3:14:16 | sizeof(int) | Node should have one enclosing callable but has 0. |
+| builtin.c:14:10:14:10 | 4 | Node should have one enclosing callable but has 0. |
+| builtin.c:15:3:15:16 | ... * ... | Node should have one enclosing callable but has 0. |
+| builtin.c:15:3:15:16 | sizeof(int) | Node should have one enclosing callable but has 0. |
+| builtin.c:15:10:15:10 | 4 | Node should have one enclosing callable but has 0. |
 | enum.c:2:6:2:6 | 1 | Node should have one enclosing callable but has 0. |
 | enum.c:2:6:2:10 | ... + ... | Node should have one enclosing callable but has 0. |
 | enum.c:2:10:2:10 | 1 | Node should have one enclosing callable but has 0. |
@@ -8,7 +14,10 @@ uniqueEnclosingCallable
 | misc.c:210:24:210:24 | 0 | Node should have one enclosing callable but has 0. |
 | misc.c:210:24:210:28 | ... + ... | Node should have one enclosing callable but has 0. |
 | misc.c:210:28:210:28 | 1 | Node should have one enclosing callable but has 0. |
+| stmt_in_type.cpp:3:12:3:40 | (statement expression) | Node should have one enclosing callable but has 0. |
+| stmt_in_type.cpp:3:29:3:34 | call to twisty | Node should have one enclosing callable but has 0. |
 uniqueCallEnclosingCallable
+| stmt_in_type.cpp:3:29:3:34 | call to twisty | Call should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 | file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |

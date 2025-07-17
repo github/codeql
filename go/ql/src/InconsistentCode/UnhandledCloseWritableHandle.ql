@@ -7,10 +7,10 @@
  * @problem.severity warning
  * @precision high
  * @id go/unhandled-writable-file-close
- * @tags maintainability
- *  correctness
- *  call
- *  defer
+ * @tags quality
+ *       reliability
+ *       error-handling
+ *       external/cwe/cwe-252
  */
 
 import go

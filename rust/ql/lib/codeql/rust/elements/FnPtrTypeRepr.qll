@@ -10,9 +10,12 @@ import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.TypeRepr
 
 /**
- * A FnPtrTypeRepr. For example:
+ * A function pointer type.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let f: fn(i32) -> i32;
+ * //     ^^^^^^^^^^^^^^
  * ```
  */
 final class FnPtrTypeRepr = Impl::FnPtrTypeRepr;

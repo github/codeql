@@ -30,30 +30,26 @@ private int powerOfTwo() {
  * Gets a node that has value 2^n for some n.
  */
 private DataFlow::Node isPowerOfTwo() {
-  exists(DataFlow::Node prev |
-    prev.getIntValue() = powerOfTwo()
-    or
-    // Getting around the 32 bit ints in QL. These are some hex values of the form 0x10000000
-    prev.asExpr().(NumberLiteral).getValue() =
-      ["281474976710656", "17592186044416", "1099511627776", "68719476736", "4294967296"]
-  |
-    result = prev.getASuccessor*()
-  )
+  result.getIntValue() = powerOfTwo()
+  or
+  // Getting around the 32 bit ints in QL. These are some hex values of the form 0x10000000
+  result.asExpr().(NumberLiteral).getValue() =
+    ["281474976710656", "17592186044416", "1099511627776", "68719476736", "4294967296"]
+  or
+  result = isPowerOfTwo().getASuccessor()
 }
 
 /**
  * Gets a node that has value (2^n)-1 for some n.
  */
 private DataFlow::Node isPowerOfTwoMinusOne() {
-  exists(DataFlow::Node prev |
-    prev.getIntValue() = powerOfTwo() - 1
-    or
-    // Getting around the 32 bit ints in QL. These are some hex values of the form 0xfffffff
-    prev.asExpr().(NumberLiteral).getValue() =
-      ["281474976710655", "17592186044415", "1099511627775", "68719476735", "4294967295"]
-  |
-    result = prev.getASuccessor*()
-  )
+  result.getIntValue() = powerOfTwo() - 1
+  or
+  // Getting around the 32 bit ints in QL. These are some hex values of the form 0xfffffff
+  result.asExpr().(NumberLiteral).getValue() =
+    ["281474976710655", "17592186044415", "1099511627775", "68719476735", "4294967295"]
+  or
+  result = isPowerOfTwoMinusOne().getASuccessor()
 }
 
 /**

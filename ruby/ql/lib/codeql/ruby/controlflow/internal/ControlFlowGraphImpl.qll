@@ -2,6 +2,8 @@
  * Provides an implementation for constructing control-flow graphs (CFGs) from
  * abstract syntax trees (ASTs), using the shared library from `codeql.controlflow.Cfg`.
  */
+overlay[local]
+module;
 
 private import codeql.controlflow.Cfg as CfgShared
 private import codeql.ruby.AST
@@ -1430,7 +1432,10 @@ module Trees {
   }
 
   private class StringlikeLiteralTree extends StandardPostOrderTree instanceof StringlikeLiteral {
-    StringlikeLiteralTree() { not this instanceof HereDoc }
+    StringlikeLiteralTree() {
+      not this instanceof HereDoc and
+      not this instanceof AstInternal::TSimpleSymbolLiteralSynth
+    }
 
     final override ControlFlowTree getChildNode(int i) { result = super.getComponent(i) }
   }

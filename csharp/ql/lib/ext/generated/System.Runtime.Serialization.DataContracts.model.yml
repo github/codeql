@@ -4,7 +4,9 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "IsDictionaryLike", "(System.String,System.String,System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "IsDictionaryLike", "(System.String,System.String,System.String)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "IsDictionaryLike", "(System.String,System.String,System.String)", "", "Argument[this]", "Argument[1]", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "IsDictionaryLike", "(System.String,System.String,System.String)", "", "Argument[this]", "Argument[2]", "taint", "df-generated"]
       - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "get_BaseContract", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "get_DataMembers", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization.DataContracts", "DataContractSet", False, "DataContractSet", "(System.Runtime.Serialization.DataContracts.DataContractSet)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

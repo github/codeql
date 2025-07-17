@@ -92,7 +92,9 @@ private newtype TOpcode =
   TUninitializedGroup() or
   TInlineAsm() or
   TUnreached() or
-  TNewObj()
+  TNewObj() or
+  TTypeidExpr() or
+  TTypeidType()
 
 /**
  * An opcode that specifies the operation performed by an `Instruction`.
@@ -1280,5 +1282,30 @@ module Opcode {
    */
   class NewObj extends Opcode, TNewObj {
     final override string toString() { result = "NewObj" }
+  }
+
+  /**
+   * The `Opcode` for a `TypeidInstruction`.
+   *
+   * See the `TypeidInstruction` documentation for more details.
+   */
+  abstract class Typeid extends Opcode { }
+
+  /**
+   * The `Opcode` for a `TypeidExprInstruction`.
+   *
+   * See the `TypeidExprInstruction` documentation for more details.
+   */
+  class TypeidExpr extends Typeid, UnaryOpcode, TTypeidExpr {
+    final override string toString() { result = "TypeidExpr" }
+  }
+
+  /**
+   * The `Opcode` for a `TypeidTypeInstruction`.
+   *
+   * See the `TypeidTypeInstruction` documentation for more details.
+   */
+  class TypeidType extends Typeid, TTypeidType {
+    final override string toString() { result = "TypeidType" }
   }
 }

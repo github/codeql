@@ -112,13 +112,13 @@ func testMemberRef(param : C, inoutParam : inout C, opt : C?) {
   let n2 = c.self.myInt
   let n3 = c.getMyInt()
   let n4 = c.self.getMyInt()
-
   let n5 = param.myInt
   let n6 = param.self.myInt
-  let n7 = param.getMyInt()
+
   let n8 = param.self.getMyInt()
 
   let n9 = inoutParam.myInt
+  let n7 = param.getMyInt()
   let n10 = inoutParam.self.myInt
   let n11 = inoutParam.getMyInt()
   let n12 = inoutParam.self.getMyInt()
@@ -585,3 +585,14 @@ func singleStmtExpr(_ x: Int) {
   let b = if (x < 42) { 1 } else { 2 }
 }
 // ---
+
+//codeql-extractor-options: -enable-experimental-feature ValueGenerics -disable-availability-checking
+struct ValueGenericsStruct<let N: Int> {
+    var x = N;
+}
+
+func valueGenericsFn<let N: Int>(_ value: ValueGenericsStruct<N>) {
+    var x = N;
+    print(x);
+    _ = value;
+}

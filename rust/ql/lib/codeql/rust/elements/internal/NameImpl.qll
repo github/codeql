@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.Name
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A Name. For example:
+   * An identifier name.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let foo = 1;
+   * //  ^^^
    * ```
    */
   class Name extends Generated::Name {

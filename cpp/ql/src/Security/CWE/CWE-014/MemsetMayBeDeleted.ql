@@ -8,7 +8,7 @@
  * @security-severity 7.8
  * @precision high
  * @tags security
- *       external/cwe/cwe-14
+ *       external/cwe/cwe-014
  */
 
 import cpp

@@ -8,6 +8,8 @@ private import codeql.rust.dataflow.DataFlow
 private import codeql.threatmodels.ThreatModels
 private import codeql.rust.Frameworks
 private import codeql.rust.dataflow.FlowSource
+private import codeql.rust.controlflow.ControlFlowGraph as Cfg
+private import codeql.rust.controlflow.CfgNodes as CfgNodes
 
 /**
  * A data flow source for a specific threat-model.
@@ -71,7 +73,7 @@ module CommandLineArgsSource {
  * An externally modeled source for command line arguments.
  */
 class ModeledCommandLineArgsSource extends CommandLineArgsSource::Range {
-  ModeledCommandLineArgsSource() { sourceNode(this, "command-line-source") }
+  ModeledCommandLineArgsSource() { sourceNode(this, "commandargs") }
 }
 
 /**
@@ -97,7 +99,59 @@ module EnvironmentSource {
  * An externally modeled source for data from the program's environment.
  */
 class ModeledEnvironmentSource extends EnvironmentSource::Range {
-  ModeledEnvironmentSource() { sourceNode(this, "environment-source") }
+  ModeledEnvironmentSource() { sourceNode(this, "environment") }
+}
+
+/**
+ * A data flow source corresponding to a file access.
+ */
+final class FileSource = FileSource::Range;
+
+/**
+ * An externally modeled source for data from a file access.
+ */
+class ModeledFileSource extends FileSource::Range {
+  ModeledFileSource() { sourceNode(this, "file") }
+}
+
+/**
+ * Provides a class for modeling new sources for file accesses.
+ */
+module FileSource {
+  /**
+   * A data flow source corresponding to a file access.
+   */
+  abstract class Range extends ThreatModelSource::Range {
+    override string getThreatModel() { result = "file" }
+
+    override string getSourceType() { result = "FileSource" }
+  }
+}
+
+/**
+ * A data flow source corresponding to standard input.
+ */
+final class StdInSource = StdInSource::Range;
+
+/**
+ * An externally modeled source for data from standard input.
+ */
+class ModeledStdInSourceSource extends StdInSource::Range {
+  ModeledStdInSourceSource() { sourceNode(this, "stdin") }
+}
+
+/**
+ * Provides a class for modeling new sources for standard input.
+ */
+module StdInSource {
+  /**
+   * A data flow source corresponding to standard input.
+   */
+  abstract class Range extends ThreatModelSource::Range {
+    override string getThreatModel() { result = "stdin" }
+
+    override string getSourceType() { result = "StdInSource" }
+  }
 }
 
 /**
@@ -263,4 +317,39 @@ module Cryptography {
   class BlockMode = SC::BlockMode;
 
   class CryptographicAlgorithm = SC::CryptographicAlgorithm;
+}
+
+/** Provides classes for modeling path-related APIs. */
+module Path {
+  final class PathNormalization = PathNormalization::Range;
+
+  /** Provides a class for modeling new path normalization APIs. */
+  module PathNormalization {
+    /**
+     * A data-flow node that performs path normalization. This is often needed in order
+     * to safely access paths.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets an argument to this path normalization that is interpreted as a path. */
+      abstract DataFlow::Node getPathArg();
+    }
+  }
+
+  /** A data-flow node that checks that a path is safe to access in some way, for example by having a controlled prefix. */
+  class SafeAccessCheck extends DataFlow::ExprNode {
+    SafeAccessCheck() { this = DataFlow::BarrierGuard<safeAccessCheck/3>::getABarrierNode() }
+  }
+
+  private predicate safeAccessCheck(CfgNodes::AstCfgNode g, Cfg::CfgNode node, boolean branch) {
+    g.(SafeAccessCheck::Range).checks(node, branch)
+  }
+
+  /** Provides a class for modeling new path safety checks. */
+  module SafeAccessCheck {
+    /** A data-flow node that checks that a path is safe to access in some way, for example by having a controlled prefix. */
+    abstract class Range extends CfgNodes::AstCfgNode {
+      /** Holds if this guard validates `node` upon evaluating to `branch`. */
+      abstract predicate checks(Cfg::CfgNode node, boolean branch);
+    }
+  }
 }

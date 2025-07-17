@@ -213,10 +213,12 @@ module NextJS {
   /**
    * Gets a folder that contains API endpoints for a Next.js application.
    * These API endpoints act as Express-like route-handlers.
+   * It matches both the Pages Router (`pages/api/`) Next.js 12 or earlier and
+   * the App Router (`app/api/`) Next.js 13+ structures.
    */
   Folder apiFolder() {
-    result = getANextPackage().getFile().getParentContainer().getFolder("pages").getFolder("api")
-    or
+    result =
+      getANextPackage().getFile().getParentContainer().getFolder(["pages", "app"]).getFolder("api") or
     result = apiFolder().getAFolder()
   }
 
@@ -270,5 +272,65 @@ module NextJS {
 
       override string getCredentialsKind() { result = "jwt key" }
     }
+  }
+
+  /**
+   * A route handler for Next.js 13+ App Router API endpoints, which are defined by exporting
+   * HTTP method functions (like `GET`, `POST`, `PUT`, `DELETE`) from route.js files inside
+   * the `app/api/` directory.
+   */
+  class NextAppRouteHandler extends DataFlow::FunctionNode, Http::Servers::StandardRouteHandler {
+    NextAppRouteHandler() {
+      exists(Module mod |
+        mod.getFile().getParentContainer() = apiFolder() or
+        mod.getFile().getStem() = "middleware"
+      |
+        this =
+          mod.getAnExportedValue([any(Http::RequestMethodName m), "middleware"]).getAFunctionValue()
+      )
+    }
+
+    /**
+     * Gets the request parameter, which is either a `NextRequest` object (from `next/server`) or a standard web `Request` object.
+     */
+    DataFlow::SourceNode getRequest() { result = this.getParameter(0) }
+  }
+
+  /**
+   * A source of user-controlled data from a `NextRequest` object (from `next/server`) or a standard web `Request` object
+   * in a Next.js App Router route handler.
+   */
+  class NextAppRequestSource extends Http::RequestInputAccess {
+    NextAppRouteHandler handler;
+    string kind;
+
+    NextAppRequestSource() {
+      (
+        this =
+          handler.getRequest().getAMethodCall(["json", "formData", "blob", "arrayBuffer", "text"])
+        or
+        this = handler.getRequest().getAPropertyRead("body")
+      ) and
+      kind = "body"
+      or
+      this = handler.getRequest().getAPropertyRead(["url", "nextUrl"]) and
+      kind = "url"
+      or
+      this =
+        handler
+            .getRequest()
+            .getAPropertyRead("nextUrl")
+            .getAPropertyRead("searchParams")
+            .getAMemberCall("get") and
+      kind = "parameter"
+      or
+      this = handler.getRequest().getAPropertyRead("headers") and kind = "headers"
+    }
+
+    override string getKind() { result = kind }
+
+    override Http::RouteHandler getRouteHandler() { result = handler }
+
+    override string getSourceType() { result = "Next.js App Router request" }
   }
 }

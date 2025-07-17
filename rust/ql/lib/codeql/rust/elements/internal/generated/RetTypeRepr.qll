@@ -15,9 +15,12 @@ import codeql.rust.elements.TypeRepr
  */
 module Generated {
   /**
-   * A RetTypeRepr. For example:
+   * A return type in a function signature.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo() -> i32 {}
+   * //       ^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::RetTypeRepr` class directly.
    * Use the subclass `RetTypeRepr`, where the following predicates are available.

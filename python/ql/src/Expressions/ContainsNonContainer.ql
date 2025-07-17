@@ -2,7 +2,8 @@
  * @name Membership test with a non-container
  * @description A membership test, such as 'item in sequence', with a non-container on the right hand side will raise a 'TypeError'.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity error
  * @sub-severity high

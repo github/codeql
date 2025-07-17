@@ -1,0 +1,12 @@
+{
+    "welcomeFile": "index.html",
+    "authenticationMethod": "none",
+    "routes": [
+        {
+            "source": "/bad/(.*)",
+            "destination": "srv_api",
+            "csrfProtection": false,
+            "authenticationType": "none"
+        }
+    ]
+}

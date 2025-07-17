@@ -1,8 +1,7 @@
 private import codeql.util.Unit
-private import rust
 private import rust as R
 private import codeql.rust.dataflow.DataFlow
-private import codeql.rust.dataflow.internal.DataFlowImpl
+private import codeql.rust.dataflow.internal.DataFlowImpl as DataFlowImpl
 private import codeql.rust.dataflow.internal.Node as Node
 private import codeql.rust.dataflow.internal.Content
 private import codeql.rust.dataflow.FlowSource as FlowSource
@@ -11,63 +10,50 @@ private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
 private import codeql.rust.dataflow.internal.FlowSummaryImpl as FlowSummary
 
-module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataFlow> {
-  // NOTE: We are not using type information for now.
-  class Type = Unit;
-
-  class Parameter = R::ParamBase;
-
-  class Callable = R::Callable;
-
-  class NodeExtended extends DataFlow::Node {
-    Callable getAsExprEnclosingCallable() { result = this.asExpr().getScope() }
-
-    Type getType() { any() }
-
-    Callable getEnclosingCallable() {
-      result = this.(Node::Node).getEnclosingCallable().asCfgScope()
-    }
-  }
-
-  private predicate relevant(Function api) {
-    // Only include functions that have a resolved path.
-    api.hasCrateOrigin() and
-    api.hasExtendedCanonicalPath() and
+private newtype TCallable =
+  TFunction(R::Function api, string path) {
+    path = api.getCanonicalPath() and
     (
       // This excludes closures (these are not exported API endpoints) and
-      // functions without a `pub` visiblity. A function can be `pub` without
+      // functions without a `pub` visibility. A function can be `pub` without
       // ultimately being exported by a crate, so this is an overapproximation.
       api.hasVisibility()
       or
       // If a method implements a public trait it is exposed through the trait.
       // We overapproximate this by including all trait method implementations.
-      exists(Impl impl | impl.hasTrait() and impl.getAssocItemList().getAssocItem(_) = api)
+      exists(R::Impl impl | impl.hasTrait() and impl.getAssocItemList().getAssocItem(_) = api)
     )
   }
 
-  predicate isUninterestingForDataFlowModels(Callable api) { none() }
+class QualifiedCallable extends TCallable {
+  R::Function api;
+  string path;
 
-  predicate isUninterestingForHeuristicDataFlowModels(Callable api) { none() }
+  QualifiedCallable() { this = TFunction(api, path) }
 
-  class SourceOrSinkTargetApi extends Callable {
-    SourceOrSinkTargetApi() { relevant(this) }
+  string toString() { result = path }
+
+  R::Function getFunction() { result = api }
+
+  string getCanonicalPath() { result = path }
+}
+
+module ModelGeneratorCommonInput implements
+  ModelGeneratorCommonInputSig<R::Location, DataFlowImpl::RustDataFlow>
+{
+  // NOTE: We are not using type information for now.
+  class Type = Unit;
+
+  class Parameter = R::ParamBase;
+
+  class Callable = QualifiedCallable;
+
+  class NodeExtended extends DataFlow::Node {
+    Type getType() { any() }
   }
 
-  class SinkTargetApi extends SourceOrSinkTargetApi { }
-
-  class SourceTargetApi extends SourceOrSinkTargetApi { }
-
-  class SummaryTargetApi extends Callable {
-    private Callable lift;
-
-    SummaryTargetApi() {
-      lift = this and
-      relevant(this)
-    }
-
-    Callable lift() { result = lift }
-
-    predicate isRelevant() { relevant(this) }
+  QualifiedCallable getEnclosingCallable(NodeExtended node) {
+    result.getFunction() = node.(Node::Node).getEnclosingCallable().asCfgScope()
   }
 
   predicate isRelevantType(Type t) { any() }
@@ -79,65 +65,65 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
 
   string qualifierString() { result = "Argument[self]" }
 
-  string parameterAccess(R::ParamBase p) {
-    result = "Argument[" + any(ParameterPosition pos | p = pos.getParameterIn(_)).toString() + "]"
+  string parameterExactAccess(R::ParamBase p) {
+    result =
+      "Argument[" + any(DataFlowImpl::ParameterPosition pos | p = pos.getParameterIn(_)).toString() +
+        "]"
   }
 
-  string parameterContentAccess(R::ParamBase p) { result = parameterAccess(p) }
+  string parameterApproximateAccess(R::ParamBase p) { result = parameterExactAccess(p) }
 
   class InstanceParameterNode extends DataFlow::ParameterNode {
-    InstanceParameterNode() { this.asParameter() instanceof SelfParam }
+    InstanceParameterNode() { this.asParameter() instanceof R::SelfParam }
   }
 
   bindingset[c]
-  string paramReturnNodeAsOutput(Callable c, ParameterPosition pos) {
-    result = paramReturnNodeAsContentOutput(c, pos)
+  string paramReturnNodeAsApproximateOutput(QualifiedCallable c, DataFlowImpl::ParameterPosition pos) {
+    result = paramReturnNodeAsExactOutput(c, pos)
   }
 
   bindingset[c]
-  string paramReturnNodeAsContentOutput(Callable c, ParameterPosition pos) {
-    result = parameterContentAccess(c.getParamList().getParam(pos.getPosition()))
+  string paramReturnNodeAsExactOutput(QualifiedCallable c, DataFlowImpl::ParameterPosition pos) {
+    result = parameterExactAccess(c.getFunction().getParam(pos.getPosition()))
     or
     pos.isSelf() and result = qualifierString()
   }
 
-  Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
-    result = ret.(Node::Node).getEnclosingCallable().asCfgScope()
+  QualifiedCallable returnNodeEnclosingCallable(DataFlow::Node ret) {
+    result.getFunction() = ret.(Node::Node).getEnclosingCallable().asCfgScope()
   }
 
-  predicate isOwnInstanceAccessNode(RustDataFlow::ReturnNode node) {
+  predicate isOwnInstanceAccessNode(DataFlowImpl::RustDataFlow::ReturnNode node) {
     // This is probably not relevant to implement for Rust, as we only use
     // `captureMixedFlow` which doesn't explicitly distinguish between
     // functions that return `self` and those that don't.
     none()
   }
 
-  predicate sinkModelSanitizer(DataFlow::Node node) { none() }
-
-  /**
-   * Holds if `source` is an API entrypoint, i.e., a source of input where data
-   * can flow in to a library. This is used for creating sink models, as we
-   * only want to mark functions as sinks if input to the function can reach
-   * (from an input source) a known sink.
-   */
-  predicate apiSource(DataFlow::Node source) { source instanceof DataFlow::ParameterNode }
-
-  bindingset[sourceEnclosing, api]
-  predicate irrelevantSourceSinkApi(Callable sourceEnclosing, SourceTargetApi api) { none() }
-
-  string getInputArgument(DataFlow::Node source) {
-    result = "Argument[" + source.(Node::SourceParameterNode).getPosition().toString() + "]"
-  }
-
-  bindingset[kind]
-  predicate isRelevantSinkKind(string kind) { any() }
-
-  bindingset[kind]
-  predicate isRelevantSourceKind(string kind) { any() }
-
   predicate containerContent(DataFlow::ContentSet c) {
     c.(SingletonContentSet).getContent() instanceof ElementContent
   }
+
+  string partialModelRow(Callable api, int i) { i = 0 and result = api.getCanonicalPath() }
+
+  string partialNeutralModelRow(Callable api, int i) { result = partialModelRow(api, i) }
+}
+
+private import ModelGeneratorCommonInput
+private import MakeModelGeneratorFactory<R::Location, DataFlowImpl::RustDataFlow, RustTaintTracking, ModelGeneratorCommonInput>
+
+private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
+  class SummaryTargetApi extends QualifiedCallable {
+    QualifiedCallable lift() { result = this }
+
+    predicate isRelevant() { any() }
+  }
+
+  QualifiedCallable getAsExprEnclosingCallable(NodeExtended node) {
+    result.getFunction() = node.asExpr().getScope()
+  }
+
+  Parameter asParameter(NodeExtended node) { result = node.asParameter() }
 
   predicate isAdditionalContentFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) { none() }
 
@@ -157,7 +143,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
   private string encodeContent(ContentSet cs, string arg) {
     result = FlowSummary::Input::encodeContent(cs, arg)
     or
-    exists(Content c | cs = TSingletonContentSet(c) |
+    exists(Content c | cs = DataFlowImpl::TSingletonContentSet(c) |
       exists(int pos |
         pos = c.(FunctionCallArgumentContent).getPosition() and
         result = "Parameter" and
@@ -174,18 +160,32 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
       if arg = "" then result = name else result = name + "[" + arg + "]"
     )
   }
+}
 
-  string partialModelRow(Callable api, int i) {
-    i = 0 and result = api.(Function).getCrateOrigin() // crate
-    or
-    i = 1 and result = api.(Function).getExtendedCanonicalPath() // name
-  }
-
-  string partialNeutralModelRow(Callable api, int i) { result = partialModelRow(api, i) }
+private module SourceModelGeneratorInput implements SourceModelGeneratorInputSig {
+  class SourceTargetApi extends QualifiedCallable { }
 
   predicate sourceNode(DataFlow::Node node, string kind) { FlowSource::sourceNode(node, kind) }
+}
+
+private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
+  class SinkTargetApi extends QualifiedCallable { }
+
+  /**
+   * Holds if `source` is an API entrypoint, i.e., a source of input where data
+   * can flow in to a library. This is used for creating sink models, as we
+   * only want to mark functions as sinks if input to the function can reach
+   * (from an input source) a known sink.
+   */
+  predicate apiSource(DataFlow::Node source) { source instanceof DataFlow::ParameterNode }
+
+  string getInputArgument(DataFlow::Node source) {
+    result = "Argument[" + source.(Node::SourceParameterNode).getPosition().toString() + "]"
+  }
 
   predicate sinkNode(DataFlow::Node node, string kind) { FlowSink::sinkNode(node, kind) }
 }
 
-import MakeModelGenerator<Location, RustDataFlow, RustTaintTracking, ModelGeneratorInput>
+import MakeSummaryModelGenerator<SummaryModelGeneratorInput> as SummaryModels
+import MakeSourceModelGenerator<SourceModelGeneratorInput> as SourceModels
+import MakeSinkModelGenerator<SinkModelGeneratorInput> as SinkModels

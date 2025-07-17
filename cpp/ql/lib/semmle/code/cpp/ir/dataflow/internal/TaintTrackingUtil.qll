@@ -229,11 +229,11 @@ private module SpeculativeTaintFlow {
       not exists(DataFlowDispatch::viableCallable(call)) and
       src.(DataFlowPrivate::ArgumentNode).argumentOf(call, argpos)
     |
-      not argpos.(DirectPosition).getIndex() = -1 and
+      not argpos.(DirectPosition).getArgumentIndex() = -1 and
       sink.(PostUpdateNode)
           .getPreUpdateNode()
           .(DataFlowPrivate::ArgumentNode)
-          .argumentOf(call, any(DirectPosition qualpos | qualpos.getIndex() = -1))
+          .argumentOf(call, any(DirectPosition qualpos | qualpos.getArgumentIndex() = -1))
       or
       sink.(DataFlowPrivate::OutNode).getCall() = call
     )

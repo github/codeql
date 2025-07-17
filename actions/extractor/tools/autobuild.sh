@@ -17,16 +17,28 @@ include:**/action.yaml
 END
 )
 
-if [ -n "${LGTM_INDEX_INCLUDE:-}" ] || [ -n "${LGTM_INDEX_EXCLUDE:-}" ] || [ -n "${LGTM_INDEX_FILTERS:-}" ] ; then
-    echo "Path filters set. Passing them through to the JavaScript extractor."
+if [ -n "${LGTM_INDEX_FILTERS:-}" ]; then
+    echo "LGTM_INDEX_FILTERS set. Using the default filters together with the user-provided filters, and passing through to the JavaScript extractor."
+    # Begin with the default path inclusions only,
+    # followed by the user-provided filters.
+    # If the user provided `paths`, those patterns override the default inclusions
+    # (because `LGTM_INDEX_FILTERS` will begin with `exclude:**/*`).
+    # If the user provided `paths-ignore`, those patterns are excluded.
+    PATH_FILTERS="$(cat << END
+${DEFAULT_PATH_FILTERS}
+${LGTM_INDEX_FILTERS}
+END
+)"
+    LGTM_INDEX_FILTERS="${PATH_FILTERS}"
+    export LGTM_INDEX_FILTERS
 else
-    echo "No path filters set. Using the default filters."
+    echo "LGTM_INDEX_FILTERS not set. Using the default filters, and passing through to the JavaScript extractor."
     LGTM_INDEX_FILTERS="${DEFAULT_PATH_FILTERS}"
     export LGTM_INDEX_FILTERS
 fi
 
 # Find the JavaScript extractor directory via `codeql resolve extractor`.
-CODEQL_EXTRACTOR_JAVASCRIPT_ROOT="$($CODEQL_DIST/codeql resolve extractor --language javascript)"
+CODEQL_EXTRACTOR_JAVASCRIPT_ROOT="$("${CODEQL_DIST}/codeql" resolve extractor --language javascript)"
 export CODEQL_EXTRACTOR_JAVASCRIPT_ROOT
 
 echo "Found JavaScript extractor at '${CODEQL_EXTRACTOR_JAVASCRIPT_ROOT}'."
@@ -42,4 +54,4 @@ env CODEQL_EXTRACTOR_JAVASCRIPT_DIAGNOSTIC_DIR="${CODEQL_EXTRACTOR_ACTIONS_DIAGN
     CODEQL_EXTRACTOR_JAVASCRIPT_SOURCE_ARCHIVE_DIR="${CODEQL_EXTRACTOR_ACTIONS_SOURCE_ARCHIVE_DIR}" \
     CODEQL_EXTRACTOR_JAVASCRIPT_TRAP_DIR="${CODEQL_EXTRACTOR_ACTIONS_TRAP_DIR}" \
     CODEQL_EXTRACTOR_JAVASCRIPT_WIP_DATABASE="${CODEQL_EXTRACTOR_ACTIONS_WIP_DATABASE}" \
-    ${JAVASCRIPT_AUTO_BUILD}
+    "${JAVASCRIPT_AUTO_BUILD}"

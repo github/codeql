@@ -48,7 +48,7 @@ module Impl {
 
     override Expr getQualifier() { result = expr.getQualifier() }
 
-    override string toStringImpl() { result = "call to " + expr }
+    override string toStringImpl() { result = "call to " + expr.toStringImpl() }
   }
 
   private class FullDotSyntaxBaseIgnoredApplyExpr extends ApplyExpr {

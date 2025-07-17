@@ -114,15 +114,6 @@ class Test
     public void Dispose() { }
 }
 
-class Bad
-{
-    long GetLength(string file)
-    {
-        var stream = new FileStream(file, FileMode.Open); // $ Alert
-        return stream.Length;
-    }
-}
-
 static class Extensions
 {
     public static FileStream Fluent(this FileStream fs) => fs;

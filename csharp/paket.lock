@@ -3,12 +3,12 @@ STRATEGY: MAX
 RESTRICTION: == net9.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    Basic.CompilerLog.Util (0.9.4)
+    Basic.CompilerLog.Util (0.9.8)
       MessagePack (>= 2.5.187)
-      Microsoft.CodeAnalysis (>= 4.11)
-      Microsoft.CodeAnalysis.CSharp (>= 4.11)
-      Microsoft.CodeAnalysis.VisualBasic (>= 4.11)
-      Microsoft.Extensions.ObjectPool (>= 9.0)
+      Microsoft.CodeAnalysis (>= 4.12)
+      Microsoft.CodeAnalysis.CSharp (>= 4.12)
+      Microsoft.CodeAnalysis.VisualBasic (>= 4.12)
+      Microsoft.Extensions.ObjectPool (>= 9.0.2)
       MSBuild.StructuredLogger (>= 2.2.243)
       System.Buffers (>= 4.6)
     Humanizer.Core (2.14.1)
@@ -96,7 +96,7 @@ NUGET
       System.Reflection.Metadata (>= 8.0)
       System.Threading.Channels (>= 7.0)
     Microsoft.CodeCoverage (17.12)
-    Microsoft.Extensions.ObjectPool (9.0)
+    Microsoft.Extensions.ObjectPool (9.0.3)
     Microsoft.NET.StringTools (17.12.6)
     Microsoft.NET.Test.Sdk (17.12)
       Microsoft.CodeCoverage (>= 17.12)

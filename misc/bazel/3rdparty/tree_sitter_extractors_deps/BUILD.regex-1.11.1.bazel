@@ -101,7 +101,7 @@ rust_library(
     version = "1.11.1",
     deps = [
         "@vendor_ts__aho-corasick-1.1.3//:aho_corasick",
-        "@vendor_ts__memchr-2.7.4//:memchr",
+        "@vendor_ts__memchr-2.7.5//:memchr",
         "@vendor_ts__regex-automata-0.4.9//:regex_automata",
         "@vendor_ts__regex-syntax-0.8.5//:regex_syntax",
     ],

@@ -2,7 +2,7 @@
 
 >&2 echo "Running mvn wrapper script"
 
-if [ "$1" == "dependency:copy" ]; then
+if [ "$2" == "dependency:copy" ]; then
   >&2 echo "Arguments ($@) look like a dependency:copy command; failing"
   exit 1
 fi

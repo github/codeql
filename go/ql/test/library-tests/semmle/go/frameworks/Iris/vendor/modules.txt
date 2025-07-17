@@ -1,6 +1,6 @@
 # github.com/kataras/iris/v12 v12.2.5
 ## explicit
-github.com/kataras/iris/v12
+github.com/kataras/iris/v12/context
 # github.com/Shopify/goreferrer v0.0.0-20220729165902-8cddb4f5de06
 ## explicit
 github.com/Shopify/goreferrer

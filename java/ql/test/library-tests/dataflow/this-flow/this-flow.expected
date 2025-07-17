@@ -10,13 +10,11 @@
 | A.java:20:16:20:16 | this <.field> |
 | A.java:21:12:21:20 | getThis(...) |
 | A.java:21:12:21:20 | this <.method> |
-| A.java:25:7:25:17 | SSA def(a) |
 | A.java:25:11:25:17 | new A(...) |
 | A.java:25:11:25:17 | new A(...) [pre constructor] |
 | A.java:26:12:26:12 | a |
 | A.java:26:12:26:22 | getThis(...) |
 | A.java:26:12:26:36 | getThisWrap(...) |
-| A.java:27:7:27:17 | SSA def(c) |
 | A.java:27:11:27:17 | new C(...) |
 | A.java:27:11:27:17 | new C(...) [pre constructor] |
 | A.java:28:5:28:5 | c |

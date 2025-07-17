@@ -334,14 +334,6 @@ void DeclTranslator::fillAbstractStorageDecl(const swift::AbstractStorageDecl& d
   fillValueDecl(decl, entry);
 }
 
-codeql::IfConfigDecl DeclTranslator::translateIfConfigDecl(const swift::IfConfigDecl& decl) {
-  auto entry = createEntry(decl);
-  if (auto activeClause = decl.getActiveClause()) {
-    entry.active_elements = dispatcher.fetchRepeatedLabels(activeClause->Elements);
-  }
-  return entry;
-}
-
 codeql::OpaqueTypeDecl DeclTranslator::translateOpaqueTypeDecl(const swift::OpaqueTypeDecl& decl) {
   auto entry = createEntry(decl);
   fillTypeDecl(decl, entry);

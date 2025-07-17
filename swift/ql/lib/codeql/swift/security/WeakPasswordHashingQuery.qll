@@ -37,6 +37,8 @@ module WeakPasswordHashingConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(WeakPasswordHashingAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module WeakPasswordHashingFlow = TaintTracking::Global<WeakPasswordHashingConfig>;

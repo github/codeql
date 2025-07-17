@@ -75,7 +75,7 @@ fn i() {
 
     {
         struct Foo {
-            x: i32,
+            x: i32, // $ item=i32
         } // I30
 
         let _ = Foo { x: 0 }; // $ item=I30
@@ -121,9 +121,13 @@ mod m6 {
 
 mod m7 {
     pub enum MyEnum {
-        A(i32),       // I42
-        B { x: i32 }, // I43
-        C,            // I44
+        A(
+            i32, // $ item=i32
+        ), // I42
+        B {
+            x: i32, // $ item=i32
+        }, // I43
+        C, // I44
     } // I41
 
     #[rustfmt::skip]
@@ -281,7 +285,7 @@ mod m13 {
     pub struct f {} // I72
 
     mod m14 {
-        use crate::m13::f; // $ item=I71 item=I72
+        use zelf::m13::f; // $ item=I71 item=I72
 
         #[rustfmt::skip]
         fn g(x: f) { // $ item=I72
@@ -473,6 +477,169 @@ mod m17 {
     } // I99
 }
 
+mod m18 {
+    fn f() {
+        println!("m18::f");
+    } // I101
+
+    pub mod m19 {
+        fn f() {
+            println!("m18::m19::f");
+        } // I102
+
+        pub mod m20 {
+            pub fn g() {
+                println!("m18::m19::m20::g");
+                super::f(); // $ item=I102
+                super::super::f(); // $ item=I101
+            } // I103
+        }
+    }
+}
+
+mod m21 {
+    mod m22 {
+        pub enum MyEnum {
+            A, // I104
+        } // I105
+
+        pub struct MyStruct; // I106
+    } // I107
+
+    mod m33 {
+        #[rustfmt::skip]
+        use super::m22::MyEnum::{ // $ item=I105
+            self // $ item=I105
+        };
+
+        #[rustfmt::skip]
+        use super::m22::MyStruct::{ // $ item=I106
+            self // $ item=I106
+        };
+
+        fn f() {
+            let _ = MyEnum::A; // $ item=I104
+            let _ = MyStruct {}; // $ item=I106
+        }
+    }
+}
+
+mod m23 {
+    #[rustfmt::skip]
+    trait Trait1<
+      T // I1
+    > {
+        fn f(&self); // I3
+    } // I2
+
+    struct S; // I4
+
+    #[rustfmt::skip]
+    impl Trait1<
+      Self // $ item=I4
+    > // $ item=I2
+      for S { // $ item=I4
+        fn f(&self) {
+            println!("m23::<S as Trait1<S>>::f");
+        } // I5
+    }
+
+    #[rustfmt::skip]
+    pub fn f() {
+        let x = S; // $ item=I4
+        x.f(); // $ item=I5
+    } // I108
+}
+
+mod m24 {
+    trait TraitA {
+        fn trait_a_method(&self); // I110
+    } // I111
+
+    trait TraitB {
+        fn trait_b_method(&self); // I112
+    } // I113
+
+    #[rustfmt::skip]
+    struct GenericStruct<T> { // I114
+        data: T, // $ item=I114
+    } // I115
+
+    #[rustfmt::skip]
+    impl<T> // I1151
+        GenericStruct<T> // $ item=I115 item=I1151
+    where
+        T: TraitA // $ item=I111 item=I1151
+    {
+        fn call_trait_a(&self) {
+            self.data.trait_a_method(); // $ item=I110
+        } // I116
+    }
+
+    #[rustfmt::skip]
+    impl<T> // I1161
+        GenericStruct<T> // $ item=I115 item=I1161
+    where
+        T: TraitB, // $ item=I113 item=I1161
+        T: TraitA, // $ item=I111 item=I1161
+    {
+        fn call_both(&self) {
+            self.data.trait_a_method(); // $ item=I110
+            self.data.trait_b_method(); // $ item=I112
+        } // I117
+    }
+
+    struct Implementor; // I118
+
+    #[rustfmt::skip]
+    impl TraitA for Implementor { // $ item=I111 item=I118
+        fn trait_a_method(&self) {
+            println!("TraitA method called");
+        } // I119
+    }
+
+    #[rustfmt::skip]
+    impl TraitB for Implementor { // $ item=I113 item=I118
+        fn trait_b_method(&self) {
+            println!("TraitB method called");
+        } // I120
+    }
+
+    #[rustfmt::skip]
+    pub fn f() {
+        let impl_obj = Implementor; // $ item=I118
+        let generic = GenericStruct { data: impl_obj }; // $ item=I115
+        
+        generic.call_trait_a(); // $ item=I116
+        generic.call_both(); // $ item=I117
+        
+        // Access through where clause type parameter constraint
+        GenericStruct::<Implementor>::call_trait_a(&generic); // $ item=I116 item=I118
+            
+        // Type that satisfies multiple trait bounds in where clause
+        GenericStruct::<Implementor>::call_both(&generic); // $ item=I117 item=I118
+    } // I121
+}
+
+extern crate self as zelf;
+
+#[proc_macro::add_suffix("changed")] // $ item=add_suffix
+fn z() {} // I122
+
+struct AStruct {} //I123
+impl AStruct // $ item=I123
+{
+    #[proc_macro::add_suffix("on_type")] // $ item=add_suffix
+    pub fn z() {} // I124
+
+    #[proc_macro::add_suffix("on_instance")] // $ item=add_suffix
+    pub fn z(&self) {} // I125
+}
+
+use std::{self as ztd}; // $ item=std
+
+fn use_ztd(x: ztd::string::String) {} // $ item=String
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
@@ -495,4 +662,16 @@ fn main() {
     m15::f(); // $ item=I75
     m16::f(); // $ item=I83
     m17::f(); // $ item=I99
+    nested6::f(); // $ item=I116
+    nested8::f(); // $ item=I119
+    my3::f(); // $ item=I200
+    nested_f(); // $ item=I201
+    m18::m19::m20::g(); // $ item=I103
+    m23::f(); // $ item=I108
+    m24::f(); // $ item=I121
+    zelf::h(); // $ item=I25
+    z_changed(); // $ MISSING: item=I122
+    AStruct::z_on_type(); // $ MISSING: item=I124
+    AStruct {} // $ item=I123
+        .z_on_instance(); // MISSING: item=I125
 }

@@ -1,1 +1,7 @@
-| gen_cast_expr.rs:5:5:5:16 | value as u64 | getNumberOfAttrs: | 0 | hasExpr: | yes | hasTypeRepr: | yes |
+instances
+| gen_cast_expr.rs:5:5:5:16 | value as u64 |
+getAttr
+getExpr
+| gen_cast_expr.rs:5:5:5:16 | value as u64 | gen_cast_expr.rs:5:5:5:9 | value |
+getTypeRepr
+| gen_cast_expr.rs:5:5:5:16 | value as u64 | gen_cast_expr.rs:5:14:5:16 | u64 |

@@ -176,6 +176,30 @@ private class DecltypeDumpType extends DumpType, Decltype {
   }
 }
 
+private class TypeofDumpType extends DumpType, TypeofType {
+  override string getTypeSpecifier() { result = this.getBaseType().(DumpType).getTypeSpecifier() }
+
+  override string getDeclaratorPrefix() {
+    result = this.getBaseType().(DumpType).getDeclaratorPrefix()
+  }
+
+  override string getDeclaratorSuffix() {
+    result = this.getBaseType().(DumpType).getDeclaratorSuffix()
+  }
+}
+
+private class IntrinsicTransformedDumpType extends DumpType, IntrinsicTransformedType {
+  override string getTypeSpecifier() { result = this.getBaseType().(DumpType).getTypeSpecifier() }
+
+  override string getDeclaratorPrefix() {
+    result = this.getBaseType().(DumpType).getDeclaratorPrefix()
+  }
+
+  override string getDeclaratorSuffix() {
+    result = this.getBaseType().(DumpType).getDeclaratorSuffix()
+  }
+}
+
 private class PointerIshDumpType extends DerivedDumpType {
   PointerIshDumpType() {
     this instanceof PointerType or

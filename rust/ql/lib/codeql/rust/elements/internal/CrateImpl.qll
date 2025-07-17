@@ -12,7 +12,16 @@ private import codeql.rust.elements.internal.generated.Crate
  */
 module Impl {
   private import rust
+  private import codeql.rust.elements.internal.NamedCrate
+  private import codeql.rust.internal.PathResolution
 
+  // the following QLdoc is generated: if you need to edit it, do it in the schema file
+  /**
+   * A Crate. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Crate extends Generated::Crate {
     override string toStringImpl() {
       result = strictconcat(int i | | this.toStringPart(i) order by i)
@@ -30,6 +39,39 @@ module Impl {
       i = 4 and result = ")"
     }
 
-    override Location getLocation() { result = this.getModule().getLocation() }
+    /**
+     * Gets the dependency named `name`, if any.
+     *
+     * `name` may be different from the name of the crate, when the dependency has been
+     * renamed in the `Cargo.toml` file, for example in
+     *
+     * ```yml
+     * [dependencies]
+     * my_serde = {package = "serde", version = "1.0.217"}
+     * ```
+     *
+     * the name of the dependency is `my_serde`, but the name of the crate is `serde`.
+     */
+    pragma[nomagic]
+    Crate getDependency(string name) {
+      exists(NamedCrate c |
+        c = this.getANamedDependency() and
+        result = c.getCrate() and
+        name = c.getName()
+      )
+    }
+
+    /**
+     * Gets any dependency of this crate.
+     */
+    Crate getADependency() { result = this.getDependency(_) }
+
+    /** Gets the source file that defines this crate, if any. */
+    SourceFile getSourceFile() { result.getFile() = this.getLocation().getFile() }
+
+    /**
+     * Gets a source file that belongs to this crate, if any.
+     */
+    SourceFile getASourceFile() { result = this.(CrateItemNode).getASourceFile() }
   }
 }

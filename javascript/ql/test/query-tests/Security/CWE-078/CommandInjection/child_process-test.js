@@ -36,7 +36,7 @@ var server = http.createServer(function(req, res) {
       sh = 'cmd.exe', flag = '/c';
     else
       sh = '/bin/sh', flag = '-c';
-    cp.spawn(sh, [ flag, cmd ]); // $ Alert Sink
+    cp.spawn(sh, [ flag, cmd ]); // $ Alert
 
     let args = [];
     args[0] = "-c";
@@ -53,8 +53,8 @@ var server = http.createServer(function(req, res) {
     args[1] = cmd; // $ Sink
     cp.execFile(`/bin` + "/bash", args); // $ Alert
 
-    cp.spawn('cmd.exe', ['/C', 'foo'].concat(["bar", cmd])); // $ Alert Sink
-    cp.spawn('cmd.exe', ['/C', 'foo'].concat(cmd)); // $ Alert Sink
+    cp.spawn('cmd.exe', ['/C', 'foo'].concat(["bar", cmd])); // $ Alert
+    cp.spawn('cmd.exe', ['/C', 'foo'].concat(cmd)); // $ Alert
 
     let myArgs = [];
     myArgs.push(`-` + "c");

@@ -16,6 +16,14 @@ class LoopingExpr(LabelableExpr):
     loop_body: optional["BlockExpr"] | child
 
 
+@annotate(Adt, replace_bases={AstNode: Item})
+class _:
+    """
+    An ADT (Abstract Data Type) definition, such as `Struct`, `Enum`, or `Union`.
+    """
+    derive_macro_expansions: list[MacroItems] | child | rust.detach
+
+
 @annotate(Module)
 @rust.doc_test_signature(None)
 class _:
@@ -87,6 +95,8 @@ class _:
     foo::bar;
     ```
     """
+    segment: _ | ql.db_table_name("path_segments_") | doc(
+        "last segment of this path")
 
 
 @annotate(GenericArgList)
@@ -224,6 +234,7 @@ class CallExprBase(Expr):
     """
     arg_list: optional["ArgList"] | child
     attrs: list["Attr"] | child
+    args: list["Expr"] | synth
 
 
 @annotate(CallExpr, replace_bases={Expr: CallExprBase}, cfg=True)
@@ -406,20 +417,20 @@ class _:
     """
 
 
-@annotate(RecordExprField)
+@annotate(StructExprField)
 class _:
     """
-    A field in a record expression. For example `a: 1` in:
+    A field in a struct expression. For example `a: 1` in:
     ```rust
     Foo { a: 1, b: 2 };
     ```
     """
 
 
-@annotate(RecordExpr, add_bases=(PathAstNode,), cfg=True)
+@annotate(StructExpr, add_bases=(PathAstNode,), cfg=True)
 class _:
     """
-    A record expression. For example:
+    A struct expression. For example:
     ```rust
     let first = Foo { a: 1, b: 2 };
     let second = Foo { a: 2, ..first };
@@ -642,7 +653,8 @@ class _:
     An inline assembly expression. For example:
     ```rust
     unsafe {
-        builtin # asm(_);
+        #[inline(always)]
+        builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
     }
     ```
     """
@@ -710,20 +722,20 @@ class _:
     """
 
 
-@annotate(RecordPatField)
+@annotate(StructPatField)
 class _:
     """
-    A field in a record pattern. For example `a: 1` in:
+    A field in a struct pattern. For example `a: 1` in:
     ```rust
     let Foo { a: 1, b: 2 } = foo;
     ```
     """
 
 
-@annotate(RecordPat, add_bases=(PathAstNode,), cfg=True)
+@annotate(StructPat, add_bases=(PathAstNode,), cfg=True)
 class _:
     """
-    A record pattern. For example:
+    A struct pattern. For example:
     ```rust
     match x {
         Foo { a: 1, b: 2 } => "ok",
@@ -866,9 +878,12 @@ class _:
 @annotate(Abi)
 class _:
     """
-    A Abi. For example:
+    An ABI specification for an extern function or block.
+
+    For example:
     ```rust
-    todo!()
+    extern "C" fn foo() {}
+    //     ^^^
     ```
     """
 
@@ -876,9 +891,12 @@ class _:
 @annotate(ArgList)
 class _:
     """
-    A ArgList. For example:
+    A list of arguments in a function or method call.
+
+    For example:
     ```rust
-    todo!()
+    foo(1, 2, 3);
+    // ^^^^^^^^^
     ```
     """
 
@@ -886,19 +904,25 @@ class _:
 @annotate(ArrayTypeRepr)
 class _:
     """
-    A ArrayTypeRepr. For example:
+    An array type representation.
+
+    For example:
     ```rust
-    todo!()
+    let arr: [i32; 4];
+    //       ^^^^^^^^
     ```
     """
 
 
-@annotate(AssocItem)
+@annotate(AssocItem, replace_bases={AstNode: Item})
 class _:
     """
-    A AssocItem. For example:
+    An associated item in a `Trait` or `Impl`.
+
+    For example:
     ```rust
-    todo!()
+    trait T {fn foo(&self);}
+    //       ^^^^^^^^^^^^^
     ```
     """
 
@@ -907,16 +931,24 @@ class _:
 @qltest.test_with(Trait)
 class _:
     """
-    A list of  `AssocItem` elements, as appearing for example in a `Trait`.
+    A list of `AssocItem` elements, as appearing in a `Trait` or `Impl`.
     """
 
 
 @annotate(AssocTypeArg)
 class _:
     """
-    A AssocTypeArg. For example:
+    An associated type argument in a path.
+
+    For example:
     ```rust
-    todo!()
+    fn process_cloneable<T>(iter: T)
+    where
+        T: Iterator<Item: Clone>
+    //              ^^^^^^^^^^^
+    {
+        // ...
+    }
     ```
     """
 
@@ -924,9 +956,13 @@ class _:
 @annotate(Attr)
 class _:
     """
-    A Attr. For example:
+    An attribute applied to an item.
+
+    For example:
     ```rust
-    todo!()
+    #[derive(Debug)]
+    //^^^^^^^^^^^^^
+    struct S;
     ```
     """
 
@@ -934,29 +970,46 @@ class _:
 @annotate(ClosureBinder)
 class _:
     """
-    A ClosureBinder. For example:
+    A closure binder, specifying lifetime or type parameters for a closure.
+
+    For example:
     ```rust
-    todo!()
+    let print_any = for<T: std::fmt::Debug> |x: T| {
+    //              ^^^^^^^^^^^^^^^^^^^^^^^
+        println!("{:?}", x);
+    };
+
+    print_any(42);
+    print_any("hello");
     ```
     """
 
 
-@annotate(Const)
+@annotate(Const, replace_bases={Item: None})
 class _:
     """
-    A Const. For example:
+    A constant item declaration.
+
+    For example:
     ```rust
-    todo!()
+    const X: i32 = 42;
     ```
     """
+    has_implementation: predicate | doc("this constant has an implementation") | desc("""
+      This is the same as `hasBody` for source code, but for library code (for which we always skip
+      the body), this will hold when the body was present in the original code.
+    """) | rust.detach
 
 
 @annotate(ConstArg)
 class _:
     """
-    A ConstArg. For example:
+    A constant argument in a generic argument list.
+
+    For example:
     ```rust
-    todo!()
+    Foo::<3>
+    //    ^
     ```
     """
 
@@ -964,9 +1017,12 @@ class _:
 @annotate(ConstParam)
 class _:
     """
-    A ConstParam. For example:
+    A constant parameter in a generic parameter list.
+
+    For example:
     ```rust
-    todo!()
+    struct Foo <const N: usize>;
+    //          ^^^^^^^^^^^^^^
     ```
     """
 
@@ -974,19 +1030,24 @@ class _:
 @annotate(DynTraitTypeRepr)
 class _:
     """
-    A DynTraitTypeRepr. For example:
+    A dynamic trait object type.
+
+    For example:
     ```rust
-    todo!()
+    let x: &dyn Debug;
+    //      ^^^^^^^^^
     ```
     """
 
 
-@annotate(Enum)
+@annotate(Enum, replace_bases={Item: None})  # still an Item via Adt
 class _:
     """
-    A Enum. For example:
+    An enum declaration.
+
+    For example:
     ```rust
-    todo!()
+    enum E {A, B(i32), C {x: i32}}
     ```
     """
 
@@ -994,9 +1055,13 @@ class _:
 @annotate(ExternBlock)
 class _:
     """
-    A ExternBlock. For example:
+    An extern block containing foreign function declarations.
+
+    For example:
     ```rust
-    todo!()
+    extern "C" {
+        fn foo();
+    }
     ```
     """
 
@@ -1004,19 +1069,26 @@ class _:
 @annotate(ExternCrate)
 class _:
     """
-    A ExternCrate. For example:
+    An extern crate declaration.
+
+    For example:
     ```rust
-    todo!()
+    extern crate serde;
     ```
     """
 
 
-@annotate(ExternItem)
+@annotate(ExternItem, replace_bases={AstNode: Item})
 class _:
     """
-    A ExternItem. For example:
+    An item inside an extern block.
+
+    For example:
     ```rust
-    todo!()
+    extern "C" {
+        fn foo();
+        static BAR: i32;
+    }
     ```
     """
 
@@ -1024,9 +1096,14 @@ class _:
 @annotate(ExternItemList)
 class _:
     """
-    A ExternItemList. For example:
+    A list of items inside an extern block.
+
+    For example:
     ```rust
-    todo!()
+    extern "C" {
+        fn foo();
+        static BAR: i32;
+    }
     ```
     """
 
@@ -1034,9 +1111,14 @@ class _:
 @annotate(FieldList)
 class _:
     """
-    A FieldList. For example:
+    A list of fields in a struct or enum variant.
+
+    For example:
     ```rust
-    todo!()
+    struct S {x: i32, y: i32}
+    //       ^^^^^^^^^^^^^^^^
+    enum E {A(i32, i32)}
+    //     ^^^^^^^^^^^^^
     ```
     """
 
@@ -1044,9 +1126,12 @@ class _:
 @annotate(FnPtrTypeRepr)
 class _:
     """
-    A FnPtrTypeRepr. For example:
+    A function pointer type.
+
+    For example:
     ```rust
-    todo!()
+    let f: fn(i32) -> i32;
+    //     ^^^^^^^^^^^^^^
     ```
     """
 
@@ -1054,9 +1139,13 @@ class _:
 @annotate(ForExpr, replace_bases={Expr: LoopingExpr}, cfg=True)
 class _:
     """
-    A ForExpr. For example:
+    A for loop expression.
+
+    For example:
     ```rust
-    todo!()
+    for x in 0..10 {
+        println!("{}", x);
+    }
     ```
     """
     label: drop
@@ -1066,9 +1155,17 @@ class _:
 @annotate(ForTypeRepr)
 class _:
     """
-    A ForTypeRepr. For example:
+    A higher-ranked trait bound.
+
+    For example:
     ```rust
-    todo!()
+    fn foo<T>(value: T)
+    where
+        T: for<'a> Fn(&'a str) -> &'a str
+    //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    {
+        // ...
+    }
     ```
     """
 
@@ -1102,9 +1199,12 @@ class _:
 @annotate(GenericArg)
 class _:
     """
-    A GenericArg. For example:
+    A generic argument in a generic argument list.
+
+    For example:
     ```rust
-    todo!()
+    Foo:: <u32, 3, 'a>
+    //    ^^^^^^^^^^^
     ```
     """
 
@@ -1112,9 +1212,12 @@ class _:
 @annotate(GenericParam)
 class _:
     """
-    A GenericParam. For example:
+    A generic parameter in a generic parameter list.
+
+    For example:
     ```rust
-    todo!()
+    fn foo<T, U>(t: T, u: U) {}
+    //     ^  ^
     ```
     """
 
@@ -1122,9 +1225,12 @@ class _:
 @annotate(GenericParamList)
 class _:
     """
-    A GenericParamList. For example:
+    A list of generic parameters. For example:
     ```rust
-    todo!()
+    fn f<A, B>(a: A, b: B) {}
+    //  ^^^^^^
+    type Foo<T1, T2> = (T1, T2);
+    //      ^^^^^^^^
     ```
     """
 
@@ -1132,9 +1238,13 @@ class _:
 @annotate(Impl)
 class _:
     """
-    A Impl. For example:
+    An `impl`` block.
+
+    For example:
     ```rust
-    todo!()
+    impl MyTrait for MyType {
+        fn foo(&self) {}
+    }
     ```
     """
 
@@ -1142,9 +1252,12 @@ class _:
 @annotate(ImplTraitTypeRepr)
 class _:
     """
-    A ImplTraitTypeRepr. For example:
+    An `impl Trait` type.
+
+    For example:
     ```rust
-    todo!()
+    fn foo() -> impl Iterator<Item = i32> { 0..10 }
+    //          ^^^^^^^^^^^^^^^^^^^^^^^^^^
     ```
     """
 
@@ -1152,29 +1265,42 @@ class _:
 @annotate(InferTypeRepr)
 class _:
     """
-    A InferTypeRepr. For example:
+    An inferred type (`_`).
+
+    For example:
     ```rust
-    todo!()
+    let x: _ = 42;
+    //     ^
     ```
     """
 
 
-@annotate(Item)
+@annotate(Item, add_bases=(Addressable,))
 class _:
     """
-    A Item. For example:
+    An item such as a function, struct, enum, etc.
+
+    For example:
     ```rust
-    todo!()
+    fn foo() {}
+    struct S;
+    enum E {}
     ```
     """
+    attribute_macro_expansion: optional[MacroItems] | child | rust.detach
 
 
 @annotate(ItemList)
 class _:
     """
-    A ItemList. For example:
+    A list of items in a module or block.
+
+    For example:
     ```rust
-    todo!()
+    mod m {
+        fn foo() {}
+        struct S;
+    }
     ```
     """
 
@@ -1182,9 +1308,14 @@ class _:
 @annotate(LetElse)
 class _:
     """
-    A LetElse. For example:
+    An else block in a let-else statement.
+
+    For example:
     ```rust
-    todo!()
+    let Some(x) = opt else {
+        return;
+    };
+    //                ^^^^^^
     ```
     """
 
@@ -1192,9 +1323,12 @@ class _:
 @annotate(Lifetime)
 class _:
     """
-    A Lifetime. For example:
+    A lifetime annotation.
+
+    For example:
     ```rust
-    todo!()
+    fn foo<'a>(x: &'a str) {}
+    //     ^^      ^^
     ```
     """
 
@@ -1202,9 +1336,12 @@ class _:
 @annotate(LifetimeArg)
 class _:
     """
-    A LifetimeArg. For example:
+    A lifetime argument in a generic argument list.
+
+    For example:
     ```rust
-    todo!()
+    let text: Text<'a>;
+    //             ^^
     ```
     """
 
@@ -1212,63 +1349,46 @@ class _:
 @annotate(LifetimeParam)
 class _:
     """
-    A LifetimeParam. For example:
+    A lifetime parameter in a generic parameter list.
+
+    For example:
     ```rust
-    todo!()
+    fn foo<'a>(x: &'a str) {}
+    //     ^^
     ```
     """
 
 
-@annotate(MacroCall, cfg=True)
+@annotate(MacroCall, cfg=True, replace_bases={Item: None})
 class _:
     """
-    A MacroCall. For example:
+    A macro invocation.
+
+    For example:
     ```rust
-    todo!()
+    println!("Hello, world!");
     ```
     """
-    expanded: optional[AstNode] | child | rust.detach
-
-
-@annotate(MacroDef)
-class _:
-    """
-    A MacroDef. For example:
-    ```rust
-    todo!()
-    ```
-    """
-
-
-@annotate(MacroExpr, cfg=True)
-class _:
-    """
-    A MacroExpr. For example:
-    ```rust
-    todo!()
-    ```
-    """
+    macro_call_expansion: optional[AstNode] | child | rust.detach
 
 
 @annotate(MacroItems)
 @rust.doc_test_signature(None)
 class _:
     """
-    A sequence of items generated by a `MacroCall`. For example:
+    A sequence of items generated by a macro. For example:
     ```rust
     mod foo{
         include!("common_definitions.rs");
+
+        #[an_attribute_macro]
+        fn foo() {
+            println!("Hello, world!");
+        }
+
+        #[derive(Debug)]
+        struct Bar;
     }
-    ```
-    """
-
-
-@annotate(MacroPat, cfg=True)
-class _:
-    """
-    A MacroPat. For example:
-    ```rust
-    todo!()
     ```
     """
 
@@ -1276,14 +1396,18 @@ class _:
 @annotate(MacroRules)
 class _:
     """
-    A MacroRules. For example:
+    A macro definition using the `macro_rules!` syntax.
     ```rust
-    todo!()
+    macro_rules! my_macro {
+        () => {
+            println!("This is a macro!");
+        };
+    }
     ```
     """
 
 
-@annotate(MacroStmts)
+@annotate(MacroBlockExpr, replace_bases={AstNode: Expr}, cfg=True)
 @rust.doc_test_signature(None)
 class _:
     """
@@ -1299,9 +1423,15 @@ class _:
 @annotate(MacroTypeRepr)
 class _:
     """
-    A MacroTypeRepr. For example:
+    A type produced by a macro.
+
+    For example:
     ```rust
-    todo!()
+    macro_rules! macro_type {
+        () => { i32 };
+    }
+    type T = macro_type!();
+    //       ^^^^^^^^^^^^^
     ```
     """
 
@@ -1309,9 +1439,16 @@ class _:
 @annotate(MatchArmList)
 class _:
     """
-    A MatchArmList. For example:
+    A list of arms in a match expression.
+
+    For example:
     ```rust
-    todo!()
+    match x {
+        1 => "one",
+        2 => "two",
+        _ => "other",
+    }
+    //  ^^^^^^^^^^^
     ```
     """
 
@@ -1319,9 +1456,15 @@ class _:
 @annotate(MatchGuard)
 class _:
     """
-    A MatchGuard. For example:
+    A guard condition in a match arm.
+
+    For example:
     ```rust
-    todo!()
+    match x {
+        y if y > 0 => "positive",
+    //    ^^^^^^^
+        _ => "non-positive",
+    }
     ```
     """
 
@@ -1329,9 +1472,17 @@ class _:
 @annotate(Meta)
 class _:
     """
-    A Meta. For example:
+    A meta item in an attribute.
+
+    For example:
     ```rust
-    todo!()
+    #[unsafe(lint::name = "reason_for_bypass")]
+    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    #[deprecated(since = "1.2.0", note = "Use bar instead", unsafe=true)]
+    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    fn foo() {
+        // ...
+    }
     ```
     """
 
@@ -1339,9 +1490,12 @@ class _:
 @annotate(Name, cfg=True)
 class _:
     """
-    A Name. For example:
+    An identifier name.
+
+    For example:
     ```rust
-    todo!()
+    let foo = 1;
+    //  ^^^
     ```
     """
 
@@ -1349,9 +1503,12 @@ class _:
 @annotate(NameRef)
 class _:
     """
-    A NameRef. For example:
+    A reference to a name.
+
+    For example:
     ```rust
-    todo!()
+      foo();
+    //^^^
     ```
     """
 
@@ -1359,9 +1516,12 @@ class _:
 @annotate(NeverTypeRepr)
 class _:
     """
-    A NeverTypeRepr. For example:
+    The never type `!`.
+
+    For example:
     ```rust
-    todo!()
+    fn foo() -> ! { panic!() }
+    //          ^
     ```
     """
 
@@ -1393,22 +1553,14 @@ class _:
     type_repr: drop
 
 
-@annotate(ParamList)
-class _:
-    """
-    A ParamList. For example:
-    ```rust
-    todo!()
-    ```
-    """
-
-
 @annotate(ParenExpr)
 class _:
     """
-    A ParenExpr. For example:
+    A parenthesized expression.
+
+    For example:
     ```rust
-    todo!()
+    (x + y)
     ```
     """
 
@@ -1416,9 +1568,12 @@ class _:
 @annotate(ParenPat)
 class _:
     """
-    A ParenPat. For example:
+    A parenthesized pattern.
+
+    For example:
     ```rust
-    todo!()
+    let (x) = 1;
+    //  ^^^
     ```
     """
 
@@ -1426,9 +1581,12 @@ class _:
 @annotate(ParenTypeRepr)
 class _:
     """
-    A ParenTypeRepr. For example:
+    A parenthesized type.
+
+    For example:
     ```rust
-    todo!()
+    let x: (i32);
+    //     ^^^^^
     ```
     """
 
@@ -1438,15 +1596,22 @@ class _:
 class _:
     """
     A path segment, which is one part of a whole path.
+    For example:
+    - `HashMap`
+    - `HashMap<K, V>`
+    - `Fn(i32) -> i32`
+    - `widgets(..)`
+    - `<T as Iterator>`
     """
     type_repr: optional["TypeRepr"] | child | rust.detach
     trait_type_repr: optional["PathTypeRepr"] | child | rust.detach
+
 
 @annotate(PathTypeRepr)
 @qltest.test_with(Path)
 class _:
     """
-    A type referring to a path. For example:
+    A path referring to a type. For example:
     ```rust
     type X = std::collections::HashMap<i32, i32>;
     type Y = X::Item;
@@ -1457,49 +1622,65 @@ class _:
 @annotate(PtrTypeRepr)
 class _:
     """
-    A PtrTypeRepr. For example:
+    A pointer type.
+
+    For example:
     ```rust
-    todo!()
+    let p: *const i32;
+    let q: *mut i32;
+    //     ^^^^^^^^^
     ```
     """
 
 
-@annotate(RecordExprFieldList)
+@annotate(StructExprFieldList)
 class _:
     """
-    A RecordExprFieldList. For example:
+    A list of fields in a struct expression.
+
+    For example:
     ```rust
-    todo!()
+    Foo { a: 1, b: 2 }
+    //    ^^^^^^^^^^^
     ```
     """
 
 
-@annotate(RecordField)
+@annotate(StructField)
 class _:
     """
-    A RecordField. For example:
+    A field in a struct declaration.
+
+    For example:
     ```rust
-    todo!()
+    struct S { x: i32 }
+    //         ^^^^^^^
     ```
     """
 
 
-@annotate(RecordFieldList)
+@annotate(StructFieldList)
 class _:
     """
-    A RecordFieldList. For example:
+    A list of fields in a struct declaration.
+
+    For example:
     ```rust
-    todo!()
+    struct S { x: i32, y: i32 }
+    //         ^^^^^^^^^^^^^^^
     ```
     """
 
 
-@annotate(RecordPatFieldList)
+@annotate(StructPatFieldList)
 class _:
     """
-    A RecordPatFieldList. For example:
+    A list of fields in a struct pattern.
+
+    For example:
     ```rust
-    todo!()
+    let Foo { a, b } = foo;
+    //        ^^^^^
     ```
     """
 
@@ -1507,9 +1688,13 @@ class _:
 @annotate(RefTypeRepr)
 class _:
     """
-    A RefTypeRepr. For example:
+    A reference type.
+
+    For example:
     ```rust
-    todo!()
+    let r: &i32;
+    let m: &mut i32;
+    //     ^^^^^^^^
     ```
     """
 
@@ -1517,9 +1702,12 @@ class _:
 @annotate(Rename)
 class _:
     """
-    A Rename. For example:
+    A rename in a use declaration.
+
+    For example:
     ```rust
-    todo!()
+    use foo as bar;
+    //      ^^^^^^
     ```
     """
 
@@ -1527,9 +1715,12 @@ class _:
 @annotate(RestPat, cfg=True)
 class _:
     """
-    A RestPat. For example:
+    A rest pattern (`..`) in a tuple, slice, or struct pattern.
+
+    For example:
     ```rust
-    todo!()
+    let (a, .., z) = (1, 2, 3);
+    //      ^^
     ```
     """
 
@@ -1537,9 +1728,12 @@ class _:
 @annotate(RetTypeRepr)
 class _:
     """
-    A RetTypeRepr. For example:
+    A return type in a function signature.
+
+    For example:
     ```rust
-    todo!()
+    fn foo() -> i32 {}
+    //       ^^^^^^
     ```
     """
 
@@ -1547,9 +1741,22 @@ class _:
 @annotate(ReturnTypeSyntax)
 class _:
     """
-    A ReturnTypeSyntax. For example:
+    A return type notation `(..)` to reference or bound the type returned by a trait method
+
+    For example:
     ```rust
-    todo!()
+    struct ReverseWidgets<F: Factory<widgets(..): DoubleEndedIterator>> {
+        factory: F,
+    }
+
+    impl<F> Factory for ReverseWidgets<F>
+    where
+      F: Factory<widgets(..): DoubleEndedIterator>,
+    {
+      fn widgets(&self) -> impl Iterator<Item = Widget> {
+        self.factory.widgets().rev()
+      }
+    }
     ```
     """
 
@@ -1577,9 +1784,12 @@ class _:
 @annotate(SliceTypeRepr)
 class _:
     """
-    A SliceTypeRepr. For example:
+    A slice type.
+
+    For example:
     ```rust
-    todo!()
+    let s: &[i32];
+    //      ^^^^^
     ```
     """
 
@@ -1587,19 +1797,24 @@ class _:
 @annotate(SourceFile)
 class _:
     """
-    A SourceFile. For example:
+    A source file.
+
+    For example:
     ```rust
-    todo!()
+    // main.rs
+    fn main() {}
     ```
     """
 
 
-@annotate(Static)
+@annotate(Static, replace_bases={Item: None})
 class _:
     """
-    A Static. For example:
+    A static item declaration.
+
+    For example:
     ```rust
-    todo!()
+    static X: i32 = 42;
     ```
     """
 
@@ -1607,29 +1822,46 @@ class _:
 @annotate(StmtList)
 class _:
     """
-    A StmtList. For example:
+    A list of statements in a block.
+
+    For example:
     ```rust
-    todo!()
+    {
+        let x = 1;
+        let y = 2;
+    }
+    //  ^^^^^^^^^
     ```
     """
 
 
-@annotate(Struct)
+@annotate(Struct, replace_bases={Item: None})  # still an Item via Adt
 class _:
     """
     A Struct. For example:
     ```rust
-    todo!()
+    struct Point {
+        x: i32,
+        y: i32,
+    }
     ```
     """
+    field_list: _ | ql.db_table_name("struct_field_lists_")
 
 
 @annotate(TokenTree)
 class _:
     """
-    A TokenTree. For example:
+    A token tree in a macro definition or invocation.
+
+    For example:
     ```rust
-    todo!()
+    println!("{} {}!", "Hello", "world");
+    //      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ```
+    ```rust
+    macro_rules! foo { ($x:expr) => { $x + 1 }; }
+    //               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     ```
     """
 
@@ -1654,9 +1886,11 @@ class _:
 @annotate(TraitAlias)
 class _:
     """
-    A TraitAlias. For example:
+    A trait alias.
+
+    For example:
     ```rust
-    todo!()
+    trait Foo = Bar + Baz;
     ```
     """
 
@@ -1664,9 +1898,12 @@ class _:
 @annotate(TryExpr, cfg=True)
 class _:
     """
-    A TryExpr. For example:
+    A try expression using the `?` operator.
+
+    For example:
     ```rust
-    todo!()
+    let x = foo()?;
+    //           ^
     ```
     """
 
@@ -1674,9 +1911,12 @@ class _:
 @annotate(TupleField)
 class _:
     """
-    A TupleField. For example:
+    A field in a tuple struct or tuple enum variant.
+
+    For example:
     ```rust
-    todo!()
+    struct S(i32, String);
+    //       ^^^  ^^^^^^
     ```
     """
 
@@ -1684,9 +1924,12 @@ class _:
 @annotate(TupleFieldList)
 class _:
     """
-    A TupleFieldList. For example:
+    A list of fields in a tuple struct or tuple enum variant.
+
+    For example:
     ```rust
-    todo!()
+    struct S(i32, String);
+    //      ^^^^^^^^^^^^^
     ```
     """
 
@@ -1694,19 +1937,27 @@ class _:
 @annotate(TupleTypeRepr)
 class _:
     """
-    A TupleTypeRepr. For example:
+    A tuple type.
+
+    For example:
     ```rust
-    todo!()
+    let t: (i32, String);
+    //     ^^^^^^^^^^^^^
     ```
     """
 
 
-@annotate(TypeAlias)
+@annotate(TypeAlias, replace_bases={Item: None})
 class _:
     """
-    A TypeAlias. For example:
+    A type alias. For example:
     ```rust
-    todo!()
+    type Point = (u8, u8);
+
+    trait Trait {
+        type Output;
+    //  ^^^^^^^^^^^
+    }
     ```
     """
 
@@ -1714,9 +1965,12 @@ class _:
 @annotate(TypeArg)
 class _:
     """
-    A TypeArg. For example:
+    A type argument in a generic argument list.
+
+    For example:
     ```rust
-    todo!()
+    Foo::<u32>
+    //    ^^^
     ```
     """
 
@@ -1724,9 +1978,12 @@ class _:
 @annotate(TypeBound)
 class _:
     """
-    A TypeBound. For example:
+    A type bound in a trait or generic parameter.
+
+    For example:
     ```rust
-    todo!()
+    fn foo<T: Debug>(t: T) {}
+    //        ^^^^^
     ```
     """
 
@@ -1734,9 +1991,12 @@ class _:
 @annotate(TypeBoundList)
 class _:
     """
-    A TypeBoundList. For example:
+    A list of type bounds.
+
+    For example:
     ```rust
-    todo!()
+    fn foo<T: Debug + Clone>(t: T) {}
+    //        ^^^^^^^^^^^^^
     ```
     """
 
@@ -1744,19 +2004,24 @@ class _:
 @annotate(TypeParam)
 class _:
     """
-    A TypeParam. For example:
+    A type parameter in a generic parameter list.
+
+    For example:
     ```rust
-    todo!()
+    fn foo<T>(t: T) {}
+    //     ^
     ```
     """
 
 
-@annotate(Union)
+@annotate(Union, replace_bases={Item: None})  # still an Item via Adt
 class _:
     """
-    A Union. For example:
+    A union declaration.
+
+    For example:
     ```rust
-    todo!()
+    union U { f1: u32, f2: f32 }
     ```
     """
 
@@ -1764,9 +2029,9 @@ class _:
 @annotate(Use)
 class _:
     """
-    A Use. For example:
+    A `use` statement. For example:
     ```rust
-    todo!()
+    use std::collections::HashMap;
     ```
     """
 
@@ -1774,7 +2039,7 @@ class _:
 @annotate(UseTree)
 class _:
     """
-    A UseTree. For example:
+    A `use` tree, that is, the part after the `use` keyword in a `use` statement. For example:
     ```rust
     use std::collections::HashMap;
     use std::collections::*;
@@ -1787,9 +2052,12 @@ class _:
 @annotate(UseTreeList)
 class _:
     """
-    A UseTreeList. For example:
+    A list of use trees in a use declaration.
+
+    For example:
     ```rust
-    todo!()
+    use std::{fs, io};
+    //       ^^^^^^^^
     ```
     """
 
@@ -1797,9 +2065,12 @@ class _:
 @annotate(Variant, replace_bases={AstNode: Addressable})
 class _:
     """
-    A Variant. For example:
+    A variant in an enum declaration.
+
+    For example:
     ```rust
-    todo!()
+    enum E { A, B(i32), C { x: i32 } }
+    //       ^  ^^^^^^  ^^^^^^^^^^^^
     ```
     """
 
@@ -1807,9 +2078,12 @@ class _:
 @annotate(VariantList)
 class _:
     """
-    A VariantList. For example:
+    A list of variants in an enum declaration.
+
+    For example:
     ```rust
-    todo!()
+    enum E { A, B, C }
+    //     ^^^^^^^^^^^
     ```
     """
 
@@ -1817,9 +2091,12 @@ class _:
 @annotate(Visibility)
 class _:
     """
-    A Visibility. For example:
+    A visibility modifier.
+
+    For example:
     ```rust
-    todo!()
+      pub struct S;
+    //^^^
     ```
     """
 
@@ -1827,9 +2104,12 @@ class _:
 @annotate(WhereClause)
 class _:
     """
-    A WhereClause. For example:
+    A where clause in a generic declaration.
+
+    For example:
     ```rust
-    todo!()
+    fn foo<T>(t: T) where T: Debug {}
+    //              ^^^^^^^^^^^^^^
     ```
     """
 
@@ -1837,9 +2117,12 @@ class _:
 @annotate(WherePred)
 class _:
     """
-    A WherePred. For example:
+    A predicate in a where clause.
+
+    For example:
     ```rust
-    todo!()
+    fn foo<T, U>(t: T, u: U) where T: Debug, U: Clone {}
+    //                             ^^^^^^^^  ^^^^^^^^
     ```
     """
 
@@ -1847,19 +2130,27 @@ class _:
 @annotate(WhileExpr, replace_bases={Expr: LoopingExpr}, cfg=True)
 class _:
     """
-    A WhileExpr. For example:
+    A while loop expression.
+
+    For example:
     ```rust
-    todo!()
+    while x < 10 {
+        x += 1;
+    }
     ```
     """
     label: drop
     loop_body: drop
 
 
-@annotate(Function, add_bases=[Callable])
+@annotate(Function, add_bases=[Callable], replace_bases={Item: None})
 class _:
     param_list: drop
     attrs: drop
+    has_implementation: predicate | doc("this function has an implementation") | desc("""
+      This is the same as `hasBody` for source code, but for library code (for which we always skip
+      the body), this will hold when the body was present in the original code.
+    """) | rust.detach
 
 
 @annotate(ClosureExpr, add_bases=[Callable])
@@ -1932,6 +2223,249 @@ class FormatArgument(Locatable):
     variable: optional[FormatTemplateVariableAccess] | child
 
 
-@annotate(Item, add_bases=(Addressable,))
+@annotate(MacroDef)
 class _:
-    pass
+    """
+    A Rust 2.0 style declarative macro definition.
+
+    For example:
+    ```rust
+    pub macro vec_of_two($element:expr) {
+        vec![$element, $element]
+    }
+    ```
+    """
+
+
+@annotate(MacroExpr, cfg=True)
+class _:
+    """
+    A macro expression, representing the invocation of a macro that produces an expression.
+
+    For example:
+    ```rust
+    let y = vec![1, 2, 3];
+    ```
+    """
+
+
+@annotate(MacroPat, cfg=True)
+class _:
+    """
+    A macro pattern, representing the invocation of a macro that produces a pattern.
+
+    For example:
+    ```rust
+    macro_rules! my_macro {
+        () => {
+            Ok(_)
+        };
+    }
+    match x {
+        my_macro!() => "matched",
+    //  ^^^^^^^^^^^
+        _ => "not matched",
+    }
+    ```
+    """
+
+
+@annotate(ParamList)
+class _:
+    """
+    A list of parameters in a function, method, or closure declaration.
+
+    For example:
+    ```rust
+    fn foo(x: i32, y: i32) {}
+    //      ^^^^^^^^^^^^^
+    ```
+    """
+
+
+@annotate(AsmDirSpec)
+class _:
+    """
+    An inline assembly direction specifier.
+
+    For example:
+    ```rust
+    use core::arch::asm;
+    asm!("mov {input:x}, {input:x}", output = out(reg) x, input = in(reg) y);
+    //                                        ^^^                 ^^
+    ```
+    """
+
+
+@annotate(AsmOperandExpr)
+class _:
+    """
+    An operand expression in an inline assembly block.
+
+    For example:
+    ```rust
+    use core::arch::asm;
+    asm!("mov {0}, {1}", out(reg) x, in(reg) y);
+    //                            ^          ^
+    ```
+    """
+
+
+@annotate(AsmOption)
+class _:
+    """
+    An option in an inline assembly block.
+
+    For example:
+    ```rust
+    use core::arch::asm;
+    asm!("", options(nostack, nomem));
+    //              ^^^^^^^^^^^^^^^^
+    ```
+    """
+
+
+@annotate(AsmRegSpec)
+class _:
+    """
+    A register specification in an inline assembly block.
+
+    For example:
+    ```rust
+    use core::arch::asm;
+    asm!("mov {0}, {1}", out("eax") x, in(EBX) y);
+    //                        ^^^         ^^^
+    ```
+    """
+
+
+@annotate(AsmClobberAbi)
+class _:
+    """
+    A clobbered ABI in an inline assembly block.
+
+    For example:
+    ```rust
+    use core::arch::asm;
+    asm!("", clobber_abi("C"));
+    //       ^^^^^^^^^^^^^^^^
+    ```
+    """
+
+
+@annotate(AsmConst)
+class _:
+    """
+    A constant operand in an inline assembly block.
+
+    For example:
+    ```rust
+    use core::arch::asm;
+    asm!("mov eax, {const}", const 42);
+    //                       ^^^^^^^
+    ```
+    """
+
+
+@annotate(AsmLabel)
+class _:
+    """
+    A label in an inline assembly block.
+
+    For example:
+    ```rust
+    use core::arch::asm;
+    asm!(
+        "jmp {}",
+        label { println!("Jumped from asm!"); }
+    //  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    );
+    ```
+    """
+
+
+@annotate(AsmOperandNamed)
+class _:
+    """
+    A named operand in an inline assembly block.
+
+    For example:
+    ```rust
+    use core::arch::asm;
+    asm!("mov {0:x}, {input:x}", out(reg) x, input = in(reg) y);
+    //                           ^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^
+    ```
+    """
+
+
+@annotate(AsmOptionsList)
+class _:
+    """
+    A list of options in an inline assembly block.
+
+    For example:
+    ```rust
+    use core::arch::asm;
+    asm!("", options(nostack, nomem));
+    //              ^^^^^^^^^^^^^^^^
+    ```
+    """
+
+
+@annotate(AsmRegOperand)
+class _:
+    """
+    A register operand in an inline assembly block.
+
+    For example:
+    ```rust
+    use core::arch::asm;
+    asm!("mov {0}, {1}", out(reg) x, in(reg) y);
+    //                            ^         ^
+    ```
+    """
+
+
+@annotate(AsmSym)
+class _:
+    """
+    A symbol operand in an inline assembly block.
+
+    For example:
+    ```rust
+    use core::arch::asm;
+    asm!("call {sym}", sym = sym my_function);
+    //                 ^^^^^^^^^^^^^^^^^^^^^^
+    ```
+    """
+
+
+@annotate(UseBoundGenericArgs)
+class _:
+    """
+    A use<..> bound to control which generic parameters are captured by an impl Trait return type.
+
+    For example:
+    ```rust
+    pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> {}
+    //                                                        ^^^^^^^^
+    ```
+    """
+
+
+@annotate(ParenthesizedArgList)
+class _:
+    """
+    A parenthesized argument list as used in function traits.
+
+    For example:
+    ```rust
+    fn call_with_42<F>(f: F) -> i32
+    where
+        F: Fn(i32, String) -> i32,
+    //        ^^^^^^^^^^^
+    {
+        f(42, "Don't panic".to_string())
+    }
+    ```
+    """

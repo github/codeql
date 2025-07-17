@@ -1,4 +1,6 @@
 /** Provides classes for working with files and folders. */
+overlay[local?]
+module;
 
 private import codeql_ql.ast.internal.TreeSitter
 private import codeql.Locations
@@ -29,6 +31,8 @@ private module Impl = Make<Input>;
 class Container = Impl::Container;
 
 class Folder = Impl::Folder;
+
+module Folder = Impl::Folder;
 
 /** A file. */
 class File extends Container, Impl::File {

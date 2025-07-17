@@ -25,6 +25,8 @@
  * String.format("%sfoo:%s", notSuffix, suffix4);
  * ```
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.TaintTracking

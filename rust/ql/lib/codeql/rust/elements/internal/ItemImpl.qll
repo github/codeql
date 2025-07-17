@@ -13,9 +13,13 @@ private import codeql.rust.elements.internal.generated.Item
  */
 module Impl {
   /**
-   * A Item. For example:
+   * An item such as a function, struct, enum, etc.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo() {}
+   * struct S;
+   * enum E {}
    * ```
    */
   class Item extends Generated::Item { }

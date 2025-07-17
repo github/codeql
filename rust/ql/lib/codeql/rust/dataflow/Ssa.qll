@@ -263,7 +263,7 @@ module Ssa {
         not exists(this.getSplitString()) and
         prefix = ""
       |
-        result = prefix + "phi"
+        result = prefix + SsaImpl::PhiDefinition.super.toString()
       )
     }
 

@@ -63,15 +63,3 @@ runs:
       with:
         name: qhelp-markdown
         path: go/qhelp-out/**/*.md
-
-    - name: Cache compilation cache
-      id: query-cache
-      uses: ./.github/actions/cache-query-compilation
-      with:
-        key: go-qltest
-
-    - name: Test
-      shell: bash
-      run: |
-        cd go
-        make test cache="${{ steps.query-cache.outputs.cache-dir }}"

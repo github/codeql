@@ -3,6 +3,7 @@
  */
 
 import javascript
+private import semmle.javascript.internal.paths.PathMapping
 
 module Babel {
   /**
@@ -138,7 +139,7 @@ module Babel {
   /**
    * An import path expression that may be transformed by `babel-plugin-root-import`.
    */
-  private class BabelRootTransformedPathExpr extends PathExpr, Expr {
+  deprecated private class BabelRootTransformedPathExpr extends PathExpr, Expr {
     RootImportConfig plugin;
     string prefix;
     string mappedPrefix;
@@ -166,7 +167,7 @@ module Babel {
   /**
    * An import path transformed by `babel-plugin-root-import`.
    */
-  private class BabelRootTransformedPath extends PathString {
+  deprecated private class BabelRootTransformedPath extends PathString {
     BabelRootTransformedPathExpr pathExpr;
 
     BabelRootTransformedPath() { this = pathExpr.getValue() }
@@ -200,6 +201,14 @@ module Babel {
         pred = call.getArgument(0) and
         succ = [call, call.getParameter(2).getParameter(0).asSource()]
       )
+    }
+  }
+
+  private class BabelPathMapping extends PathMapping, RootImportConfig {
+    override File getAnAffectedFile() { result = this.getConfig().getAContainerInScope() }
+
+    override predicate hasPrefixPathMapping(string pattern, Container newContext, string newPath) {
+      newPath = this.getRoot(pattern) and newContext = this.getFolder()
     }
   }
 }

@@ -3,7 +3,7 @@
  * @description Logging sensitive information in plaintext can
  *              expose it to an attacker.
  * @kind path-problem
- * @problem.severity error
+ * @problem.severity warning
  * @security-severity 7.5
  * @precision high
  * @id rust/cleartext-logging
@@ -14,9 +14,9 @@
  */
 
 import rust
-import codeql.rust.security.CleartextLoggingExtensions
 import codeql.rust.dataflow.DataFlow
 import codeql.rust.dataflow.TaintTracking
+import codeql.rust.security.CleartextLoggingExtensions
 
 /**
  * A taint-tracking configuration for cleartext logging vulnerabilities.

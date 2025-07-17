@@ -19,9 +19,12 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A Variant. For example:
+   * A variant in an enum declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * enum E { A, B(i32), C { x: i32 } }
+   * //       ^  ^^^^^^  ^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::Variant` class directly.
    * Use the subclass `Variant`, where the following predicates are available.
@@ -48,16 +51,17 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the expression of this variant, if it exists.
+     * Gets the discriminant of this variant, if it exists.
      */
-    Expr getExpr() {
-      result = Synth::convertExprFromRaw(Synth::convertVariantToRaw(this).(Raw::Variant).getExpr())
+    Expr getDiscriminant() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertVariantToRaw(this).(Raw::Variant).getDiscriminant())
     }
 
     /**
-     * Holds if `getExpr()` exists.
+     * Holds if `getDiscriminant()` exists.
      */
-    final predicate hasExpr() { exists(this.getExpr()) }
+    final predicate hasDiscriminant() { exists(this.getDiscriminant()) }
 
     /**
      * Gets the field list of this variant, if it exists.

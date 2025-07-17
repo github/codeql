@@ -10,8 +10,4 @@ members = [
     "rust/ast-generator",
     "rust/autobuild",
 ]
-
-[patch.crates-io]
-# patch for build script bug preventing bazel build
-# see https://github.com/rust-lang/rustc_apfloat/pull/17
-rustc_apfloat = { git = "https://github.com/redsun82/rustc_apfloat.git", rev = "096d585100636bc2e9f09d7eefec38c5b334d47b" }
+exclude = ["mad-generation-build"]

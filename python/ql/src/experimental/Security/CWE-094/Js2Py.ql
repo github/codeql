@@ -8,7 +8,7 @@
  * @id py/js2py-rce
  * @tags security
  *       experimental
- *       external/cwe/cwe-94
+ *       external/cwe/cwe-094
  */
 
 import python

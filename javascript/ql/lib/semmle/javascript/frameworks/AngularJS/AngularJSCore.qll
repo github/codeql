@@ -32,7 +32,7 @@ pragma[nomagic]
 private predicate isAngularTopLevel(TopLevel tl) {
   exists(Import imprt |
     imprt.getTopLevel() = tl and
-    imprt.getImportedPath().getValue() = "angular"
+    imprt.getImportedPathString() = "angular"
   )
   or
   exists(GlobalVarAccess global |
@@ -550,20 +550,25 @@ class DirectiveTargetName extends string {
  *
  * See https://docs.angularjs.org/api/ng/service/$location for details.
  */
-private class LocationFlowSource extends RemoteFlowSource instanceof DataFlow::MethodCallNode {
+private class LocationFlowSource extends ClientSideRemoteFlowSource instanceof DataFlow::MethodCallNode
+{
+  private ClientSideRemoteFlowKind kind;
+
   LocationFlowSource() {
     exists(ServiceReference service, string m, int n |
       service.getName() = "$location" and
       this = service.getAMethodCall(m) and
       n = super.getNumArgument()
     |
-      m = "search" and n < 2
+      m = "search" and n < 2 and kind.isQuery()
       or
-      m = "hash" and n = 0
+      m = "hash" and n = 0 and kind.isFragment()
     )
   }
 
   override string getSourceType() { result = "$location" }
+
+  override ClientSideRemoteFlowKind getKind() { result = kind }
 }
 
 /**

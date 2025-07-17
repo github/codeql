@@ -13,9 +13,11 @@ private import codeql.rust.elements.internal.generated.Const
  */
 module Impl {
   /**
-   * A Const. For example:
+   * A constant item declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * const X: i32 = 42;
    * ```
    */
   class Const extends Generated::Const { }

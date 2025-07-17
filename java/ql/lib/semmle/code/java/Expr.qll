@@ -1,10 +1,13 @@
 /**
  * Provides classes for working with Java expressions.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.frameworks.android.Compose
 private import semmle.code.java.Constants
+private import semmle.code.java.Overlay
 
 /** A common super-class that represents all kinds of expressions. */
 class Expr extends ExprParent, @expr {
@@ -180,7 +183,7 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the string value of this expression, where possible.
    */
-  pragma[nomagic]
+  cached
   string getStringValue() {
     result = this.(StringLiteral).getValue()
     or
@@ -205,7 +208,7 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the boolean value of this expression, where possible.
    */
-  pragma[nomagic]
+  cached
   boolean getBooleanValue() {
     // Literal value.
     result = this.(BooleanLiteral).getBooleanValue()
@@ -2699,3 +2702,6 @@ class RecordPatternExpr extends Expr, @recordpatternexpr {
     )
   }
 }
+
+overlay[local]
+private class DiscardableExpr extends DiscardableLocatable, @expr { }

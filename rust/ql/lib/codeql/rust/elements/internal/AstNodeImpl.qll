@@ -15,6 +15,7 @@ module Impl {
   private import rust
   private import codeql.rust.elements.internal.generated.ParentChild
   private import codeql.rust.controlflow.ControlFlowGraph
+  private import codeql.rust.elements.internal.MacroCallImpl::Impl as MacroCallImpl
 
   /**
    * Gets the immediate parent of a non-`AstNode` element `e`.
@@ -33,6 +34,7 @@ module Impl {
      * Gets the nearest enclosing parent of this node, which is also an `AstNode`,
      * if any.
      */
+    cached
     AstNode getParentNode() { result = getParentOfAstStep*(getImmediateParent(this)) }
 
     /** Gets the immediately enclosing callable of this node, if any. */
@@ -57,11 +59,32 @@ module Impl {
       )
     }
 
+    /** Gets the block that encloses this node, if any. */
+    cached
+    BlockExpr getEnclosingBlock() {
+      exists(AstNode p | p = this.getParentNode() |
+        result = p
+        or
+        not p instanceof BlockExpr and
+        result = p.getEnclosingBlock()
+      )
+    }
+
     /** Holds if this node is inside a macro expansion. */
-    predicate isInMacroExpansion() {
-      this = any(MacroCall mc).getExpanded()
-      or
-      this.getParentNode().isInMacroExpansion()
+    predicate isInMacroExpansion() { MacroCallImpl::isInMacroExpansion(_, this) }
+
+    /**
+     * Holds if this node exists only as the result of a macro expansion.
+     *
+     * This is the same as `isInMacroExpansion()`, but excludes AST nodes corresponding
+     * to macro arguments.
+     */
+    pragma[nomagic]
+    predicate isFromMacroExpansion() {
+      exists(AstNode root |
+        MacroCallImpl::isInMacroExpansion(root, this) and
+        not this = root.(MacroCall).getATokenTreeNode()
+      )
     }
 
     /**

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import java as J
 private import codeql.util.test.InlineExpectationsTest
 

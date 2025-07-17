@@ -1,6 +1,23 @@
 extensions:
   - addsTo:
       pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["github.com/uptrace/bun", "DB", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "DB", True, "QueryRow", "", "", "ReturnValue", "database", "manual"]
+      - ["github.com/uptrace/bun", "IDB", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "IDB", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
+      # - ["github.com/uptrace/bun", "RawQuery", True, "Exec", "", "", "Argument[0]", "database", "manual"] # Implemented in QL because variadic arguments as sources aren't supported in this format yet
+      # - ["github.com/uptrace/bun", "RawQuery", True, "Scan", "", "", "Argument[0]", "database", "manual"] # Implemented in QL because variadic arguments as sources aren't supported in this format yet
+      # - ["github.com/uptrace/bun", "SelectQuery", True, "Exec", "", "", "Argument[0]", "database", "manual"] # Implemented in QL because variadic arguments as sources aren't supported in this format yet
+      - ["github.com/uptrace/bun", "SelectQuery", True, "Model", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "SelectQuery", True, "Rows", "", "", "ReturnValue[0]", "database", "manual"]
+      # - ["github.com/uptrace/bun", "SelectQuery", True, "Scan", "", "", "Argument[1]", "database", "manual"] # Implemented in QL because variadic arguments as sources aren't supported in this format yet
+      # - ["github.com/uptrace/bun", "SelectQuery", True, "ScanAndCount", "", "", "Argument[1]", "database", "manual"] # Implemented in QL because variadic arguments as sources aren't supported in this format yet
+      - ["github.com/uptrace/bun", "Tx", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "Tx", True, "QueryRow", "", "", "ReturnValue", "database", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: sinkModel
     data:
       - ["github.com/uptrace/bun", "", False, "NewRawQuery", "", "", "Argument[1]", "sql-injection", "manual"]
@@ -66,3 +83,9 @@ extensions:
       - ["github.com/uptrace/bun", "UpdateQuery", True, "TableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["github.com/uptrace/bun", "UpdateQuery", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["github.com/uptrace/bun", "UpdateQuery", True, "WhereOr", "", "", "Argument[0]", "sql-injection", "manual"]
+  # - addsTo:
+  #     pack: codeql/go-all
+  #     extensible: summaryModel
+  #   data:
+      # - ["github.com/uptrace/bun", "DB", True, "ScanRow", "", "", "Argument[1]", "Argument[2].ArrayElement", "taint", "manual"] # Implemented in QL because variadic arguments as outputs aren't supported in this format yet
+      # - ["github.com/uptrace/bun", "DB", True, "ScanRows", "", "", "Argument[1]", "Argument[2].ArrayElement", "taint", "manual"] # Implemented in QL because variadic arguments as outputs aren't supported in this format yet

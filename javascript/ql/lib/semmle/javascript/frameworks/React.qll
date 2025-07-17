@@ -733,7 +733,7 @@ private class ReactRouterSource extends ClientSideRemoteFlowSource {
  * Holds if `mod` transitively depends on `react-router-dom`.
  */
 private predicate dependsOnReactRouter(Module mod) {
-  mod.getAnImport().getImportedPath().getValue() = "react-router-dom"
+  mod.getAnImport().getImportedPathString() = "react-router-dom"
   or
   dependsOnReactRouter(mod.getAnImportedModule())
 }
@@ -874,4 +874,23 @@ private class ReactPropAsViewComponentInput extends ViewComponentInput {
   ReactPropAsViewComponentInput() { this = any(ReactComponent c).getADirectPropsAccess() }
 
   override string getSourceType() { result = "React props" }
+}
+
+private predicate isServerFunction(DataFlow::FunctionNode func) {
+  exists(Directive::UseServerDirective useServer |
+    useServer.getContainer() = func.getFunction()
+    or
+    useServer.getContainer().(Module).getAnExportedValue(_).getAFunctionValue() = func
+  )
+}
+
+private class ServerFunctionRemoteFlowSource extends RemoteFlowSource {
+  ServerFunctionRemoteFlowSource() {
+    exists(DataFlow::FunctionNode func |
+      isServerFunction(func) and
+      this = func.getAParameter()
+    )
+  }
+
+  override string getSourceType() { result = "React server function parameter" }
 }

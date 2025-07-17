@@ -110,4 +110,5 @@ csharp73.cs:
 #   51|             0: [TypeMention] Console
 #   51|           0: [InterpolatedStringExpr] $"..."
 #   51|             0: [StringLiteralUtf16] "x is "
-#   51|             1: [LocalVariableAccess] access to local variable x
+#   51|             1: [InterpolatedStringInsertExpr] {...}
+#   51|               0: [LocalVariableAccess] access to local variable x

@@ -1,3 +1,87 @@
+## 1.6.1
+
+### Minor Analysis Improvements
+
+* Java analysis of guards has been switched to use the new and improved shared guards library. This improves precision of a number of queries, in particular `java/dereferenced-value-may-be-null`, which now has fewer false positives, and `java/useless-null-check` and `java/constant-comparison`, which gain additional true positives.
+
+## 1.6.0
+
+### Query Metadata Changes
+
+* The tag `quality` has been added to multiple Java quality queries for consistency. They have all been given a tag for one of the two top-level categories `reliability` or `maintainability`, and a tag for a sub-category. See [Query file metadata and alert message style guide](https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md#quality-query-sub-category-tags) for more information about these categories.
+* The tag `external/cwe/cwe-571` has been added to `java/equals-on-unrelated-types`.
+* The tag `readability` has been added to `java/missing-override-annotation`, `java/deprecated-call`, `java/inconsistent-javadoc-throws`, `java/unknown-javadoc-parameter`, `java/jdk-internal-api-access`, `java/underscore-identifier`, `java/misleading-indentation`, `java/inefficient-empty-string-test`, `java/non-static-nested-class`, `inefficient-string-constructor`, and `java/constants-only-interface`.
+* The tag `useless-code` has been added to `java/useless-type-test`, and `java/useless-tostring-call`.
+* The tag `complexity` has been added to `java/chained-type-tests`, and `java/abstract-to-concrete-cast`.
+* The tag `error-handling` has been added to `java/ignored-error-status-of-call`, and `java/uncaught-number-format-exception`.
+* The tag `correctness` has been added to `java/evaluation-to-constant`, `java/whitespace-contradicts-precedence`, `java/empty-container`, `java/string-buffer-char-init`, `java/call-to-object-tostring`, `java/print-array` and `java/internal-representation-exposure`.
+* The tag `performance` has been added to `java/input-resource-leak`, `java/database-resource-leak`, `java/output-resource-leak`, `java/inefficient-key-set-iterator`, `java/inefficient-output-stream`, and `java/inefficient-boxed-constructor`.
+* The tag `correctness` has been removed from `java/call-to-thread-run`, `java/unsafe-double-checked-locking`, `java/unsafe-double-checked-locking-init-order`, `java/non-sync-override`, `java/sync-on-boxed-types`, `java/unsynchronized-getter`, `java/input-resource-leak`, `java/output-resource-leak`, `java/database-resource-leak`, and `java/ignored-error-status-of-call`.
+* The tags `maintainability` has been removed from `java/string-buffer-char-init`, `java/inefficient-key-set-iterator`, `java/inefficient-boxed-constructor`, and `java/internal-representation-exposure`.
+* The tags `reliability` has been removed from `java/subtle-inherited-call`, `java/print-array`, and `java/call-to-object-tostring`.
+* The tags `maintainability` and `useless-code` have been removed from `java/evaluation-to-constant`.
+* The tags `maintainability` and `readability` have been removed from `java/whitespace-contradicts-precedence`.
+* The tags `maintainability` and `useless-code` have been removed from `java/empty-container`.
+* Adjusts the `@precision` from high to medium for `java/concatenated-command-line` because it is producing false positive alerts when the concatenated strings are hard-coded.
+* Adjusts the `@security-severity` from 9.3 to 7.3 for `java/tainted-format-string` to align `CWE-134` severity for memory safe languages to better reflect their impact.
+
+## 1.5.2
+
+No user-facing changes.
+
+## 1.5.1
+
+### Minor Analysis Improvements
+
+* The query `java/hardcoded-credential-api-call` has been removed from all query suites.
+
+## 1.5.0
+
+### Query Metadata Changes
+
+* The tag `external/cwe/cwe-20` has been removed from `java/count-untrusted-data-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `java/untrusted-data-to-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-93` has been removed from `java/netty-http-request-or-response-splitting` and the tag `external/cwe/cwe-093` has been added.
+
+## 1.4.2
+
+### Minor Analysis Improvements
+
+* Changes to the MaD model generation infrastructure:
+  * Changed the query `java/utils/modelgenerator/summary-models` to use the implementation from `java/utils/modelgenerator/mixed-summary-models`.
+  * Removed the now-redundant `java/utils/modelgenerator/mixed-summary-models` query.
+  * A similar replacement was made for `java/utils/modelgenerator/neutral-models`. That is, if `GenerateFlowModel.py` is provided with `--with-summaries`, combined/mixed models are now generated instead of heuristic models (and similar for `--with-neutrals`).
+
+## 1.4.1
+
+No user-facing changes.
+
+## 1.4.0
+
+### New Queries
+
+* Added a new quality query, `java/empty-method`, to detect empty methods.
+* The query `java/spring-boot-exposed-actuators` has been promoted from experimental to the main query pack. Its results will now appear by default, and the query itself will be removed from the [CodeQL Community Packs](https://github.com/GitHubSecurityLab/CodeQL-Community-Packs). This query was originally submitted as an experimental query [by @ggolawski](https://github.com/github/codeql/pull/2901).
+
+### Major Analysis Improvements
+
+* Updated the `java/unreleased-lock` query so that it no longer report alerts in cases where a boolean variable is used to track lock state.
+
+### Minor Analysis Improvements
+
+* Fixed a false positive in "Time-of-check time-of-use race condition" (`java/toctou-race-condition`) where a field of a non-static class was not considered always-locked if it was accessed in a constructor.
+* Overrides of `BroadcastReceiver::onReceive` with no statements in their body are no longer considered unverified by the `java/improper-intent-verification` query. This will reduce false positives from `onReceive` methods which do not perform any actions.
+
+## 1.3.1
+
+No user-facing changes.
+
+## 1.3.0
+
+### Major Analysis Improvements
+
+* Fixed false positive alerts in the java query "Cross-site scripting" (`java/xss`) when `javax.servlet.http.HttpServletResponse` is used with a content type which is not exploitable.
+
 ## 1.2.0
 
 ### New Queries

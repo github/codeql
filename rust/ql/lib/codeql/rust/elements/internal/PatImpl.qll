@@ -23,7 +23,7 @@ module Impl {
     Pat getParentPat() {
       result = getImmediateParent(this)
       or
-      result.(RecordPat).getRecordPatFieldList().getAField().getPat() = this
+      result.(StructPat).getStructPatFieldList().getAField().getPat() = this
     }
   }
 }

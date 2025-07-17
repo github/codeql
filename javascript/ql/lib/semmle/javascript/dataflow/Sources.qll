@@ -254,6 +254,12 @@ private module Cached {
   cached
   predicate invocation(DataFlow::SourceNode func, DataFlow::InvokeNode invoke) {
     hasLocalSource(invoke.getCalleeNode(), func)
+    or
+    exists(ClassDefinition cls, SuperCall call |
+      hasLocalSource(cls.getSuperClass().flow(), func) and
+      call.getBinder() = cls.getConstructor().getBody() and
+      invoke = call.flow()
+    )
   }
 
   /**
@@ -327,7 +333,14 @@ module SourceNode {
         astNode instanceof TaggedTemplateExpr or
         astNode instanceof Templating::PipeRefExpr or
         astNode instanceof Templating::TemplateVarRefExpr or
-        astNode instanceof StringLiteral
+        astNode instanceof StringLiteral or
+        astNode instanceof TypeAssertion or
+        astNode instanceof SatisfiesExpr
+      )
+      or
+      exists(VariableDeclarator decl |
+        exists(decl.getTypeAnnotation()) and
+        this = DataFlow::valueNode(decl.getBindingPattern())
       )
       or
       DataFlow::parameterNode(this, _)

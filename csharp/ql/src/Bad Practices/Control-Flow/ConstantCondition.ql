@@ -7,7 +7,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id cs/constant-condition
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
  *       external/cwe/cwe-835
  */

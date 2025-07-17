@@ -7,7 +7,7 @@ function getShell() {
 }
 
 function execSh(command, options) {
-    return cp.spawn(getShell(), ["-c", command], options) // $ Alert Sink
+    return cp.spawn(getShell(), ["-c", command], options) // $ Alert
 };
 
 http.createServer(function (req, res) {

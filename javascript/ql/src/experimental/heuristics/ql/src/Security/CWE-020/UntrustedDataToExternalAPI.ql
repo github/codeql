@@ -7,7 +7,7 @@
  * @problem.severity error
  * @security-severity 7.8
  * @tags experimental
- *       security external/cwe/cwe-20
+ *       security external/cwe/cwe-020
  */
 
 import javascript

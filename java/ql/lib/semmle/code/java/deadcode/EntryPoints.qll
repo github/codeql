@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.deadcode.DeadCode
 import semmle.code.java.deadcode.frameworks.CamelEntryPoints
@@ -7,6 +10,7 @@ import semmle.code.java.deadcode.StrutsEntryPoints
 import semmle.code.java.deadcode.TestEntryPoints
 import semmle.code.java.deadcode.WebEntryPoints
 import semmle.code.java.frameworks.javaee.JavaServerFaces
+import semmle.code.java.frameworks.javaee.Persistence
 import semmle.code.java.frameworks.JAXB
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.JMX
@@ -395,7 +399,7 @@ class PersistencePropertyMethod extends CallableEntryPoint {
       this = e.getACallable() and
       (
         e.getAccessType() = "property" or
-        this.hasAnnotation("javax.persistence", "Access")
+        this.hasAnnotation(getAPersistencePackageName(), "Access")
       ) and
       (
         this.getName().matches("get%") or

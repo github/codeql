@@ -22,9 +22,17 @@ import codeql.rust.elements.TypeRepr
  */
 module Generated {
   /**
-   * A AssocTypeArg. For example:
+   * An associated type argument in a path.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn process_cloneable<T>(iter: T)
+   * where
+   *     T: Iterator<Item: Clone>
+   * //              ^^^^^^^^^^^
+   * {
+   *     // ...
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::AssocTypeArg` class directly.
    * Use the subclass `AssocTypeArg`, where the following predicates are available.
@@ -63,19 +71,19 @@ module Generated {
     final predicate hasGenericArgList() { exists(this.getGenericArgList()) }
 
     /**
-     * Gets the name reference of this assoc type argument, if it exists.
+     * Gets the identifier of this assoc type argument, if it exists.
      */
-    NameRef getNameRef() {
+    NameRef getIdentifier() {
       result =
         Synth::convertNameRefFromRaw(Synth::convertAssocTypeArgToRaw(this)
               .(Raw::AssocTypeArg)
-              .getNameRef())
+              .getIdentifier())
     }
 
     /**
-     * Holds if `getNameRef()` exists.
+     * Holds if `getIdentifier()` exists.
      */
-    final predicate hasNameRef() { exists(this.getNameRef()) }
+    final predicate hasIdentifier() { exists(this.getIdentifier()) }
 
     /**
      * Gets the parameter list of this assoc type argument, if it exists.

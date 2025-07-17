@@ -99,3 +99,19 @@ class StringSplitHashOrQuestionMark extends SummarizedCallable {
     )
   }
 }
+
+class StringFromCharCode extends SummarizedCallable {
+  StringFromCharCode() { this = "String#fromCharCode" }
+
+  override DataFlow::CallNode getACall() {
+    result = DataFlow::globalVarRef("String").getAPropertyRead("fromCharCode").getACall()
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    preservesValue = false and
+    (
+      input = "Argument[0..]" and
+      output = "ReturnValue"
+    )
+  }
+}

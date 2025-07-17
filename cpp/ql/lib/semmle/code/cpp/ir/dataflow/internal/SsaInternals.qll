@@ -153,6 +153,10 @@ private predicate isGlobalDefImpl(
   GlobalLikeVariable v, IRFunction f, int indirection, int indirectionIndex
 ) {
   exists(VariableAddressInstruction vai |
+    // The right-hand side of an initialization of a global variable
+    // creates its own `IRFunction`. We don't want flow into that `IRFunction`
+    // since the variable is only initialized once.
+    not vai.getEnclosingFunction() = v and
     vai.getEnclosingIRFunction() = f and
     vai.getAstVariable() = v and
     isUse(_, _, vai, indirection, indirectionIndex) and
@@ -191,7 +195,7 @@ abstract class DefImpl extends TDefImpl {
    * Holds if this definition (or use) has index `index` in block `block`,
    * and is a definition (or use) of the variable `sv`
    */
-  final predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
+  final predicate hasIndexInBlock(SourceVariable sv, IRBlock block, int index) {
     this.hasIndexInBlock(block, index) and
     sv = this.getSourceVariable()
   }
@@ -516,7 +520,7 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
     result = unique( | | p.getLocation())
     or
     not exists(unique( | | p.getLocation())) and
-    result instanceof UnknownDefaultLocation
+    result instanceof UnknownLocation
   }
 
   override BaseIRVariable getBaseSourceVariable() { result.getIRVariable().getAst() = p }
@@ -891,12 +895,12 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
   predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     DataFlowImplCommon::forceCachingInSameStage() and
     (
-      exists(DefImpl def | def.hasIndexInBlock(bb, i, v) |
+      exists(DefImpl def | def.hasIndexInBlock(v, bb, i) |
         if def.isCertain() then certain = true else certain = false
       )
       or
       exists(GlobalDefImpl global |
-        global.hasIndexInBlock(bb, i, v) and
+        global.hasIndexInBlock(v, bb, i) and
         certain = true
       )
     )
@@ -934,10 +938,11 @@ module SsaCached {
 }
 
 /** Gets the `DefImpl` corresponding to `def`. */
+pragma[nomagic]
 private DefImpl getDefImpl(SsaImpl::Definition def) {
   exists(SourceVariable sv, IRBlock bb, int i |
     def.definesAt(sv, bb, i) and
-    result.hasIndexInBlock(bb, i, sv)
+    result.hasIndexInBlock(sv, bb, i)
   )
 }
 
@@ -956,8 +961,6 @@ class GlobalDef extends Definition {
 private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
 
 private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationInputSig {
-  private import codeql.util.Void
-
   class Expr extends Instruction {
     Expr() {
       exists(IRBlock bb, int i |
@@ -977,13 +980,7 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
     )
   }
 
-  predicate ssaDefAssigns(SsaImpl::WriteDefinition def, Expr value) { none() }
-
-  class Parameter extends Void {
-    Location getLocation() { none() }
-  }
-
-  predicate ssaDefInitializesParam(SsaImpl::WriteDefinition def, Parameter p) { none() }
+  predicate ssaDefHasSource(SsaImpl::WriteDefinition def) { none() }
 
   predicate allowFlowIntoUncertainDef(SsaImpl::UncertainWriteDefinition def) { any() }
 
@@ -998,18 +995,24 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
   class Guard instanceof IRGuards::IRGuardCondition {
     string toString() { result = super.toString() }
 
-    predicate controlsBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+    predicate hasBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
       exists(EdgeKind kind |
         super.getBlock() = bb1 and
         kind = getConditionalEdge(branch) and
         bb1.getSuccessor(kind) = bb2
       )
     }
+
+    predicate controlsBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+      this.hasBranchEdge(bb1, bb2, branch)
+    }
   }
 
-  predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
     guard.(IRGuards::IRGuardCondition).controls(bb, branch)
   }
+
+  predicate keepAllPhiInputBackEdges() { any() }
 }
 
 private module DataFlowIntegrationImpl = SsaImpl::DataFlowIntegration<DataFlowIntegrationInput>;
@@ -1075,7 +1078,7 @@ module BarrierGuard<guardChecksNodeSig/3 guardChecksNode> {
 
 bindingset[result, v]
 pragma[inline_late]
-DataFlowIntegrationImpl::Node fromDfNode(Node n, SourceVariable v) {
+private DataFlowIntegrationImpl::Node fromDfNode(Node n, SourceVariable v) {
   result = n.(SsaSynthNode).getSynthNode()
   or
   exists(UseImpl use, IRBlock bb, int i |

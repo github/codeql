@@ -6,6 +6,7 @@ import ql
 import codeql_ql.StructuredLogs
 import KindPredicatesLog
 
+overlay[local]
 module SumCounts implements Fold<int> {
   int base(PipeLineRun run) { result = sum(int i | | run.getCount(i)) }
 

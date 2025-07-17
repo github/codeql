@@ -1,3 +1,56 @@
+## 4.0.11
+
+### Bug Fixes
+
+- The Python parser is now able to correctly parse expressions such as `match[1]` and `match()` where `match` is not used as a keyword.
+
+## 4.0.10
+
+No user-facing changes.
+
+## 4.0.9
+
+No user-facing changes.
+
+## 4.0.8
+
+### Minor Analysis Improvements
+
+- The Python extractor now extracts files in hidden directories by default. If you would like to skip files in hidden directories, add `paths-ignore: ["**/.*/**"]` to your [Code Scanning config](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#specifying-directories-to-scan). If you would like to skip all hidden files, you can use `paths-ignore: ["**/.*"]`. When using the CodeQL CLI for extraction, specify the configuration (creating the configuration file if necessary) using the `--codescanning-config` option.
+
+## 4.0.7
+
+### Minor Analysis Improvements
+
+* Added modeling for the `hdbcli` PyPI package as a database library implementing PEP 249.
+* Added header write model for `send_header` in `http.server`.
+
+## 4.0.6
+
+No user-facing changes.
+
+## 4.0.5
+
+No user-facing changes.
+
+## 4.0.4
+
+### Minor Analysis Improvements
+
+- Added the methods `getMinArguments` and `getMaxArguments` to the `Function` class. These return the minimum and maximum positional arguments that the given function accepts.
+
+### Bug Fixes
+
+- `MatchLiteralPattern`s such as `case None: ...` are now never pruned from the extracted source code. This fixes some situations where code was wrongly identified as unreachable.
+
+## 4.0.3
+
+No user-facing changes.
+
+## 4.0.2
+
+No user-facing changes.
+
 ## 4.0.1
 
 ### Bug Fixes

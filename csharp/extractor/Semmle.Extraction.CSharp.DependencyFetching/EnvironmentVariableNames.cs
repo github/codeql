@@ -55,7 +55,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         internal const string NugetFeedResponsivenessRequestCountForFallback = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK_FALLBACK_LIMIT";
 
         /// <summary>
-        /// Specifies the NuGet feeds to use for fallback Nuget dependency fetching. The value is a space-separated list of feed URLs.
+        /// Specifies the NuGet feeds to use for fallback NuGet dependency fetching. The value is a space-separated list of feed URLs.
         /// The default value is `https://api.nuget.org/v3/index.json`.
         /// </summary>
         public const string FallbackNugetFeeds = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_FALLBACK";
@@ -89,5 +89,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Contains the certificate used by the Dependabot proxy.
         /// </summary>
         public const string ProxyCertificate = "CODEQL_PROXY_CA_CERTIFICATE";
+
+        /// <summary>
+        /// Contains the URLs of private nuget registries as a JSON array.
+        /// </summary>
+        public const string ProxyURLs = "CODEQL_PROXY_URLS";
     }
 }

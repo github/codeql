@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 private import codeql.ssa.Ssa as SsaImplCommon
 private import semmle.code.java.dataflow.SSA
@@ -144,13 +147,13 @@ private predicate certainVariableUpdate(TrackedVar v, ControlFlowNode n, BasicBl
 pragma[nomagic]
 private predicate hasEntryDef(TrackedVar v, BasicBlock b) {
   exists(LocalScopeVariable l, Callable c |
-    v = TLocalVar(c, l) and c.getBody().getControlFlowNode() = b
+    v = TLocalVar(c, l) and c.getBody().getBasicBlock() = b
   |
     l instanceof Parameter or
     l.getCallable() != c
   )
   or
-  v instanceof SsaSourceField and v.getEnclosingCallable().getBody().getControlFlowNode() = b
+  v instanceof SsaSourceField and v.getEnclosingCallable().getBody().getBasicBlock() = b
 }
 
 /** Holds if `n` might update the locally tracked variable `v`. */
@@ -165,15 +168,14 @@ private predicate uncertainVariableUpdate(TrackedVar v, ControlFlowNode n, Basic
 
 private module SsaInput implements SsaImplCommon::InputSig<Location> {
   private import java as J
-  private import semmle.code.java.controlflow.Dominance as Dom
 
   class BasicBlock = J::BasicBlock;
 
   class ControlFlowNode = J::ControlFlowNode;
 
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { Dom::bbIDominates(result, bb) }
+  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
 
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getABBSuccessor() }
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
   class SourceVariable = SsaSourceVariable;
 
@@ -647,43 +649,27 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   Expr getARead(Definition def) { result = getAUse(def) }
 
-  class Parameter = J::Parameter;
-
-  predicate ssaDefAssigns(Impl::WriteDefinition def, Expr value) {
-    exists(VariableUpdate upd | upd = def.(SsaExplicitUpdate).getDefiningExpr() |
-      value = upd.(VariableAssign).getSource() or
-      value = upd.(AssignOp) or
-      value = upd.(RecordBindingVariableExpr)
-    )
-  }
-
-  predicate ssaDefInitializesParam(Impl::WriteDefinition def, Parameter p) {
-    def.(SsaImplicitInit).getSourceVariable() =
-      any(SsaSourceVariable v |
-        v.getVariable() = p and
-        v.getEnclosingCallable() = p.getCallable()
-      )
+  predicate ssaDefHasSource(WriteDefinition def) {
+    def instanceof SsaExplicitUpdate or def.(SsaImplicitInit).isParameterDefinition(_)
   }
 
   predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
     def instanceof SsaUncertainImplicitUpdate
   }
 
-  class Guard extends Guards::Guard {
-    /**
-     * Holds if the control flow branching from `bb1` is dependent on this guard,
-     * and that the edge from `bb1` to `bb2` corresponds to the evaluation of this
-     * guard to `branch`.
-     */
-    predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
-      super.hasBranchEdge(bb1, bb2, branch)
-    }
+  class Guard = Guards::Guard;
+
+  /** Holds if the guard `guard` directly controls block `bb` upon evaluating to `branch`. */
+  predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
+    guard.directlyControls(bb, branch)
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
   predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
     guard.controls(bb, branch)
   }
+
+  predicate includeWriteDefsInFlowStep() { none() }
 }
 
 private module DataFlowIntegrationImpl = Impl::DataFlowIntegration<DataFlowIntegrationInput>;

@@ -1,0 +1,10 @@
+| Definition cannot reach a read | 0 |
+| End of a basic block can be reached by multiple definitions | 0 |
+| Phi has less than 2 immediately prior references | 0 |
+| Phi node has less than two inputs | 0 |
+| Phi read has less than 2 immediately prior references | 0 |
+| Read can be reached from multiple definitions | 0 |
+| Read cannot be reached from a definition | 0 |
+| Read does not have a prior reference | 0 |
+| Read has multiple prior references | 0 |
+| Read is not dominated by a definition | 0 |

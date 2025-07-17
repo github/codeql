@@ -16,7 +16,10 @@ module Impl {
   /**
    * A Struct. For example:
    * ```rust
-   * todo!()
+   * struct Point {
+   *     x: i32,
+   *     y: i32,
+   * }
    * ```
    */
   class Struct extends Generated::Struct {
@@ -24,8 +27,8 @@ module Impl {
 
     /** Gets the record field named `name`, if any. */
     pragma[nomagic]
-    RecordField getRecordField(string name) {
-      result = this.getFieldList().(RecordFieldList).getAField() and
+    StructField getStructField(string name) {
+      result = this.getFieldList().(StructFieldList).getAField() and
       result.getName().getText() = name
     }
 
@@ -43,6 +46,6 @@ module Impl {
      * Empty structs are considered to use record fields.
      */
     pragma[nomagic]
-    predicate isRecord() { not this.isTuple() }
+    predicate isStruct() { not this.isTuple() }
   }
 }

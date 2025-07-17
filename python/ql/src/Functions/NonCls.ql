@@ -5,6 +5,7 @@
  * @tags maintainability
  *       readability
  *       convention
+ *       quality
  * @problem.severity recommendation
  * @sub-severity high
  * @precision high

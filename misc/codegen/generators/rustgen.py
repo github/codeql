@@ -27,14 +27,20 @@ def _get_type(t: str) -> str:
             return t
 
 
+def _get_table_name(cls: schema.Class, p: schema.Property) -> str:
+    if p.is_single:
+        return inflection.tableize(cls.name)
+    overridden_table_name = p.pragmas.get("ql_db_table_name")
+    if overridden_table_name:
+        return overridden_table_name
+    table_name = f"{cls.name}_{p.name}"
+    if p.is_predicate:
+        return inflection.underscore(table_name)
+    else:
+        return inflection.tableize(table_name)
+
+
 def _get_field(cls: schema.Class, p: schema.Property) -> rust.Field:
-    table_name = inflection.tableize(cls.name)
-    if not p.is_single:
-        table_name = f"{cls.name}_{p.name}"
-        if p.is_predicate:
-            table_name = inflection.underscore(table_name)
-        else:
-            table_name = inflection.tableize(table_name)
     args = dict(
         field_name=rust.avoid_keywords(p.name),
         base_type=_get_type(p.type),
@@ -42,14 +48,15 @@ def _get_field(cls: schema.Class, p: schema.Property) -> rust.Field:
         is_repeated=p.is_repeated,
         is_predicate=p.is_predicate,
         is_unordered=p.is_unordered,
-        table_name=table_name,
+        table_name=_get_table_name(cls, p),
     )
     args.update(rust.get_field_override(p.name))
     return rust.Field(**args)
 
 
 def _get_properties(
-    cls: schema.Class, lookup: dict[str, schema.ClassBase],
+    cls: schema.Class,
+    lookup: dict[str, schema.ClassBase],
 ) -> typing.Iterable[tuple[schema.Class, schema.Property]]:
     for b in cls.bases:
         yield from _get_properties(lookup[b], lookup)
@@ -86,8 +93,9 @@ class Processor:
                 # only generate detached fields in the actual class defining them, not the derived ones
                 if c is cls:
                     # TODO lift this restriction if required (requires change in dbschemegen as well)
-                    assert c.derived or not p.is_single, \
-                        f"property {p.name} in concrete class marked as detached but not optional"
+                    assert (
+                        c.derived or not p.is_single
+                    ), f"property {p.name} in concrete class marked as detached but not optional"
                     detached_fields.append(_get_field(c, p))
             elif not cls.derived:
                 # for non-detached ones, only generate fields in the concrete classes
@@ -96,7 +104,9 @@ class Processor:
             name=name,
             fields=fields,
             detached_fields=detached_fields,
-            ancestors=sorted(set(a.name for a in _get_ancestors(cls, self._classmap))),
+            # remove duplicates but preserve ordering
+            # (`dict` preserves insertion order while `set` doesn't)
+            ancestors=[*{a.name: None for a in _get_ancestors(cls, self._classmap)}],
             entry_table=inflection.tableize(cls.name) if not cls.derived else None,
         )
 
@@ -115,10 +125,12 @@ def generate(opts, renderer):
     processor = Processor(schemaloader.load_file(opts.schema))
     out = opts.rust_output
     groups = set()
-    with renderer.manage(generated=out.rglob("*.rs"),
-                         stubs=(),
-                         registry=out / ".generated.list",
-                         force=opts.force) as renderer:
+    with renderer.manage(
+        generated=out.rglob("*.rs"),
+        stubs=(),
+        registry=out / ".generated.list",
+        force=opts.force,
+    ) as renderer:
         for group, classes in processor.get_classes().items():
             group = group or "top"
             groups.add(group)

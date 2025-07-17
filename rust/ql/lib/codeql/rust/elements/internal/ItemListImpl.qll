@@ -13,9 +13,14 @@ private import codeql.rust.elements.internal.generated.ItemList
  */
 module Impl {
   /**
-   * A ItemList. For example:
+   * A list of items in a module or block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * mod m {
+   *     fn foo() {}
+   *     struct S;
+   * }
    * ```
    */
   class ItemList extends Generated::ItemList { }

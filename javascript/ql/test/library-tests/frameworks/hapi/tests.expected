@@ -9,6 +9,11 @@ test_RouteSetup
 | src/hapiglue.js:17:1:18:2 | server2 ... dler\\n}) |
 | src/hapiglue.js:31:1:31:20 | server2.route(route) |
 | src/hapiglue.js:38:1:38:38 | server2 ... ler()}) |
+| src/hapihapi.js:7:1:9:2 | server2 ... ler1\\n}) |
+| src/hapihapi.js:12:1:15:7 | server2 ...     }}) |
+| src/hapihapi.js:17:1:18:2 | server2 ... dler\\n}) |
+| src/hapihapi.js:29:1:29:20 | server2.route(route) |
+| src/hapihapi.js:36:1:36:38 | server2 ... ler()}) |
 test_RequestExpr
 | src/hapi.js:13:32:13:38 | request | src/hapi.js:13:14:15:5 | functio ... n\\n    } |
 | src/hapi.js:13:32:13:38 | request | src/hapi.js:13:14:15:5 | functio ... n\\n    } |
@@ -38,12 +43,27 @@ test_RequestExpr
 | src/hapiglue.js:27:3:27:9 | request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
 | src/hapiglue.js:28:3:28:9 | request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
 | src/hapiglue.js:36:22:36:24 | req | src/hapiglue.js:36:12:36:33 | functio ... hapi){} |
+| src/hapihapi.js:13:32:13:38 | request | src/hapihapi.js:13:14:15:5 | functio ... n\\n    } |
+| src/hapihapi.js:13:32:13:38 | request | src/hapihapi.js:13:14:15:5 | functio ... n\\n    } |
+| src/hapihapi.js:14:9:14:15 | request | src/hapihapi.js:13:14:15:5 | functio ... n\\n    } |
+| src/hapihapi.js:17:48:17:54 | request | src/hapihapi.js:17:30:18:1 | functio ... ndler\\n} |
+| src/hapihapi.js:20:19:20:25 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:20:19:20:25 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:21:3:21:9 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:22:3:22:9 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:23:3:23:9 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:24:3:24:9 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:25:3:25:9 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:26:3:26:9 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:34:22:34:24 | req | src/hapihapi.js:34:12:34:30 | function (req, h){} |
 test_HeaderAccess
 | src/hapi.js:25:3:25:21 | request.headers.baz | baz |
 | src/hapiglue.js:27:3:27:21 | request.headers.baz | baz |
+| src/hapihapi.js:25:3:25:21 | request.headers.baz | baz |
 test_ResponseExpr
 | src/hapi.js:14:9:14:24 | request.response | src/hapi.js:13:14:15:5 | functio ... n\\n    } |
 | src/hapiglue.js:14:9:14:24 | request.response | src/hapiglue.js:13:14:15:5 | functio ... n\\n    } |
+| src/hapihapi.js:14:9:14:24 | request.response | src/hapihapi.js:13:14:15:5 | functio ... n\\n    } |
 test_RouteHandler
 | src/hapi.js:6:1:6:21 | functio ... er1(){} | src/hapi.js:4:15:4:31 | new Hapi.Server() |
 | src/hapi.js:13:14:15:5 | functio ... n\\n    } | src/hapi.js:4:15:4:31 | new Hapi.Server() |
@@ -55,9 +75,15 @@ test_RouteHandler
 | src/hapiglue.js:17:30:18:1 | functio ... ndler\\n} | src/hapiglue.js:4:15:4:69 | new Hap ... ptions) |
 | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:4:15:4:69 | new Hap ... ptions) |
 | src/hapiglue.js:36:12:36:33 | functio ... hapi){} | src/hapiglue.js:4:15:4:69 | new Hap ... ptions) |
+| src/hapihapi.js:6:1:6:21 | functio ... er1(){} | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
+| src/hapihapi.js:13:14:15:5 | functio ... n\\n    } | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
+| src/hapihapi.js:17:30:18:1 | functio ... ndler\\n} | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
+| src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
+| src/hapihapi.js:34:12:34:30 | function (req, h){} | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
 test_HeaderDefinition
 | src/hapi.js:14:9:14:46 | request ... 1', '') | src/hapi.js:13:14:15:5 | functio ... n\\n    } |
 | src/hapiglue.js:14:9:14:46 | request ... 1', '') | src/hapiglue.js:13:14:15:5 | functio ... n\\n    } |
+| src/hapihapi.js:14:9:14:46 | request ... 1', '') | src/hapihapi.js:13:14:15:5 | functio ... n\\n    } |
 test_ServerDefinition
 | src/hapi.js:1:15:1:44 | new (re ... erver() |
 | src/hapi.js:4:15:4:31 | new Hapi.Server() |
@@ -65,6 +91,8 @@ test_ServerDefinition
 | src/hapiglue.js:4:15:4:69 | new Hap ... ptions) |
 | src/hapiglue.js:43:19:43:24 | server |
 | src/hapiglue.js:44:45:44:51 | server_ |
+| src/hapihapi.js:1:15:1:50 | new (re ... erver() |
+| src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
 test_RequestInputAccess
 | src/hapi.js:21:3:21:20 | request.rawPayload | body | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:22:3:22:21 | request.payload.foo | body | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
@@ -80,6 +108,12 @@ test_RequestInputAccess
 | src/hapiglue.js:26:3:26:20 | request.url.origin | url | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
 | src/hapiglue.js:27:3:27:21 | request.headers.baz | header | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
 | src/hapiglue.js:28:3:28:21 | request.state.token | cookie | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
+| src/hapihapi.js:21:3:21:20 | request.rawPayload | body | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:22:3:22:21 | request.payload.foo | body | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:23:3:23:19 | request.query.bar | parameter | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:24:3:24:18 | request.url.path | url | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:25:3:25:21 | request.headers.baz | header | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:26:3:26:21 | request.state.token | cookie | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
 test_RouteSetup_getServer
 | src/hapi.js:7:1:9:2 | server2 ... ler1\\n}) | src/hapi.js:4:15:4:31 | new Hapi.Server() |
 | src/hapi.js:12:1:15:7 | server2 ...     }}) | src/hapi.js:4:15:4:31 | new Hapi.Server() |
@@ -91,9 +125,15 @@ test_RouteSetup_getServer
 | src/hapiglue.js:17:1:18:2 | server2 ... dler\\n}) | src/hapiglue.js:4:15:4:69 | new Hap ... ptions) |
 | src/hapiglue.js:31:1:31:20 | server2.route(route) | src/hapiglue.js:4:15:4:69 | new Hap ... ptions) |
 | src/hapiglue.js:38:1:38:38 | server2 ... ler()}) | src/hapiglue.js:4:15:4:69 | new Hap ... ptions) |
+| src/hapihapi.js:7:1:9:2 | server2 ... ler1\\n}) | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
+| src/hapihapi.js:12:1:15:7 | server2 ...     }}) | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
+| src/hapihapi.js:17:1:18:2 | server2 ... dler\\n}) | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
+| src/hapihapi.js:29:1:29:20 | server2.route(route) | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
+| src/hapihapi.js:36:1:36:38 | server2 ... ler()}) | src/hapihapi.js:4:15:4:31 | new Hapi.Server() |
 test_HeaderDefinition_defines
 | src/hapi.js:14:9:14:46 | request ... 1', '') | header1 |  |
 | src/hapiglue.js:14:9:14:46 | request ... 1', '') | header1 |  |
+| src/hapihapi.js:14:9:14:46 | request ... 1', '') | header1 |  |
 test_RouteSetup_getARouteHandler
 | src/hapi.js:7:1:9:2 | server2 ... ler1\\n}) | src/hapi.js:6:1:6:21 | functio ... er1(){} |
 | src/hapi.js:12:1:15:7 | server2 ...     }}) | src/hapi.js:13:14:15:5 | functio ... n\\n    } |
@@ -109,6 +149,13 @@ test_RouteSetup_getARouteHandler
 | src/hapiglue.js:38:1:38:38 | server2 ... ler()}) | src/hapiglue.js:35:1:37:1 | return of function getHandler |
 | src/hapiglue.js:38:1:38:38 | server2 ... ler()}) | src/hapiglue.js:36:12:36:33 | functio ... hapi){} |
 | src/hapiglue.js:38:1:38:38 | server2 ... ler()}) | src/hapiglue.js:38:25:38:36 | getHandler() |
+| src/hapihapi.js:7:1:9:2 | server2 ... ler1\\n}) | src/hapihapi.js:6:1:6:21 | functio ... er1(){} |
+| src/hapihapi.js:12:1:15:7 | server2 ...     }}) | src/hapihapi.js:13:14:15:5 | functio ... n\\n    } |
+| src/hapihapi.js:17:1:18:2 | server2 ... dler\\n}) | src/hapihapi.js:17:30:18:1 | functio ... ndler\\n} |
+| src/hapihapi.js:29:1:29:20 | server2.route(route) | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:36:1:36:38 | server2 ... ler()}) | src/hapihapi.js:33:1:35:1 | return of function getHandler |
+| src/hapihapi.js:36:1:36:38 | server2 ... ler()}) | src/hapihapi.js:34:12:34:30 | function (req, h){} |
+| src/hapihapi.js:36:1:36:38 | server2 ... ler()}) | src/hapihapi.js:36:25:36:36 | getHandler() |
 test_RouteHandler_getARequestExpr
 | src/hapi.js:13:14:15:5 | functio ... n\\n    } | src/hapi.js:13:32:13:38 | request |
 | src/hapi.js:13:14:15:5 | functio ... n\\n    } | src/hapi.js:13:32:13:38 | request |
@@ -138,9 +185,24 @@ test_RouteHandler_getARequestExpr
 | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:27:3:27:9 | request |
 | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:28:3:28:9 | request |
 | src/hapiglue.js:36:12:36:33 | functio ... hapi){} | src/hapiglue.js:36:22:36:24 | req |
+| src/hapihapi.js:13:14:15:5 | functio ... n\\n    } | src/hapihapi.js:13:32:13:38 | request |
+| src/hapihapi.js:13:14:15:5 | functio ... n\\n    } | src/hapihapi.js:13:32:13:38 | request |
+| src/hapihapi.js:13:14:15:5 | functio ... n\\n    } | src/hapihapi.js:14:9:14:15 | request |
+| src/hapihapi.js:17:30:18:1 | functio ... ndler\\n} | src/hapihapi.js:17:48:17:54 | request |
+| src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:20:19:20:25 | request |
+| src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:20:19:20:25 | request |
+| src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:21:3:21:9 | request |
+| src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:22:3:22:9 | request |
+| src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:23:3:23:9 | request |
+| src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:24:3:24:9 | request |
+| src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:25:3:25:9 | request |
+| src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:26:3:26:9 | request |
+| src/hapihapi.js:34:12:34:30 | function (req, h){} | src/hapihapi.js:34:22:34:24 | req |
 test_HeaderDefinition_getAHeaderName
 | src/hapi.js:14:9:14:46 | request ... 1', '') | header1 |
 | src/hapiglue.js:14:9:14:46 | request ... 1', '') | header1 |
+| src/hapihapi.js:14:9:14:46 | request ... 1', '') | header1 |
 test_RouteHandler_getAResponseHeader
 | src/hapi.js:13:14:15:5 | functio ... n\\n    } | header1 | src/hapi.js:14:9:14:46 | request ... 1', '') |
 | src/hapiglue.js:13:14:15:5 | functio ... n\\n    } | header1 | src/hapiglue.js:14:9:14:46 | request ... 1', '') |
+| src/hapihapi.js:13:14:15:5 | functio ... n\\n    } | header1 | src/hapihapi.js:14:9:14:46 | request ... 1', '') |

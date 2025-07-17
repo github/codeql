@@ -148,6 +148,16 @@ pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 /**
+ * A module importing the modules that provide non local jump node declarations,
+ * ensuring that they are visible to the taint tracking / data flow library.
+ */
+private module JumpNodes {
+  private import semmle.code.csharp.frameworks.microsoft.aspnetcore.Components
+  private import semmle.code.csharp.frameworks.Razor
+  private import semmle.code.csharp.frameworks.NHibernate
+}
+
+/**
  * A data flow node that jumps between callables. This can be extended in
  * framework code to add additional data flow steps.
  */

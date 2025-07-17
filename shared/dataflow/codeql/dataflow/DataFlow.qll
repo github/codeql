@@ -3,6 +3,8 @@
  * adds a global analysis, mainly exposed through the `Global` and `GlobalWithState`
  * modules.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Location
 
@@ -342,6 +344,9 @@ signature module InputSig<LocationSig Location> {
     any()
   }
 
+  /** Gets the default value for the `fieldFlowBranchLimit` */
+  default int defaultFieldFlowBranchLimit() { result = 2 }
+
   /** Holds if `fieldFlowBranchLimit` should be ignored for flow going into/out of `c`. */
   default predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { none() }
 }
@@ -399,7 +404,7 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * This can be overridden to a smaller value to improve performance (a
      * value of 0 disables field flow), or a larger value to get more results.
      */
-    default int fieldFlowBranchLimit() { result = 2 }
+    default int fieldFlowBranchLimit() { result = Lang::defaultFieldFlowBranchLimit() }
 
     /** Gets the access path limit. */
     default int accessPathLimit() { result = Lang::accessPathLimit() }
@@ -548,7 +553,7 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * This can be overridden to a smaller value to improve performance (a
      * value of 0 disables field flow), or a larger value to get more results.
      */
-    default int fieldFlowBranchLimit() { result = 2 }
+    default int fieldFlowBranchLimit() { result = Lang::defaultFieldFlowBranchLimit() }
 
     /** Gets the access path limit. */
     default int accessPathLimit() { result = Lang::accessPathLimit() }

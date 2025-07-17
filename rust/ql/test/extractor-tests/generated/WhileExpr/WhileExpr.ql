@@ -2,13 +2,20 @@
 import codeql.rust.elements
 import TestUtils
 
-from WhileExpr x, string hasLabel, string hasLoopBody, int getNumberOfAttrs, string hasCondition
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  (if x.hasLabel() then hasLabel = "yes" else hasLabel = "no") and
-  (if x.hasLoopBody() then hasLoopBody = "yes" else hasLoopBody = "no") and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  if x.hasCondition() then hasCondition = "yes" else hasCondition = "no"
-select x, "hasLabel:", hasLabel, "hasLoopBody:", hasLoopBody, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasCondition:", hasCondition
+query predicate instances(WhileExpr x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getLabel(WhileExpr x, Label getLabel) {
+  toBeTested(x) and not x.isUnknown() and getLabel = x.getLabel()
+}
+
+query predicate getLoopBody(WhileExpr x, BlockExpr getLoopBody) {
+  toBeTested(x) and not x.isUnknown() and getLoopBody = x.getLoopBody()
+}
+
+query predicate getAttr(WhileExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getCondition(WhileExpr x, Expr getCondition) {
+  toBeTested(x) and not x.isUnknown() and getCondition = x.getCondition()
+}

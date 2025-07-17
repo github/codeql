@@ -4,6 +4,7 @@
  */
 
 private import rust
+private import codeql.rust.elements.Call
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl as CfgImpl
 private import internal.CfgNodes
@@ -163,6 +164,30 @@ final class CallExprBaseCfgNode extends Nodes::CallExprBaseCfgNode {
 final class MethodCallExprCfgNode extends CallExprBaseCfgNode, Nodes::MethodCallExprCfgNode { }
 
 /**
+ * A CFG node that calls a function.
+ *
+ * This class abstract over the different ways in which a function can be called in Rust.
+ */
+final class CallCfgNode extends ExprCfgNode {
+  private Call node;
+
+  CallCfgNode() { node = this.getAstNode() }
+
+  /** Gets the underlying `Call`. */
+  Call getCall() { result = node }
+
+  /** Gets the receiver of this call if it is a method call. */
+  ExprCfgNode getReceiver() {
+    any(ChildMapping mapping).hasCfgChild(node, node.getReceiver(), this, result)
+  }
+
+  /** Gets the `i`th argument of this call, if any. */
+  ExprCfgNode getPositionalArgument(int i) {
+    any(ChildMapping mapping).hasCfgChild(node, node.getPositionalArgument(i), this, result)
+  }
+}
+
+/**
  * A function call expression. For example:
  * ```rust
  * foo(42);
@@ -217,7 +242,7 @@ final class MacroCallCfgNode extends Nodes::MacroCallCfgNode {
 
   /** Gets the CFG node for the expansion of this macro call, if it exists. */
   CfgNode getExpandedNode() {
-    any(ChildMapping mapping).hasCfgChild(node, node.getExpanded(), this, result)
+    any(ChildMapping mapping).hasCfgChild(node, node.getMacroCallExpansion(), this, result)
   }
 }
 
@@ -230,15 +255,15 @@ final class MacroCallCfgNode extends Nodes::MacroCallCfgNode {
  * Foo { .. } = second;
  * ```
  */
-final class RecordExprCfgNode extends Nodes::RecordExprCfgNode {
-  private RecordExprChildMapping node;
+final class StructExprCfgNode extends Nodes::StructExprCfgNode {
+  private StructExprChildMapping node;
 
-  RecordExprCfgNode() { node = this.getRecordExpr() }
+  StructExprCfgNode() { node = this.getStructExpr() }
 
   /** Gets the record expression for the field `field`. */
   pragma[nomagic]
   ExprCfgNode getFieldExpr(string field) {
-    exists(RecordExprField ref |
+    exists(StructExprField ref |
       ref = node.getFieldExpr(field) and
       any(ChildMapping mapping).hasCfgChild(node, ref.getExpr(), this, result)
     )
@@ -254,16 +279,16 @@ final class RecordExprCfgNode extends Nodes::RecordExprCfgNode {
  * }
  * ```
  */
-final class RecordPatCfgNode extends Nodes::RecordPatCfgNode {
-  private RecordPatChildMapping node;
+final class StructPatCfgNode extends Nodes::StructPatCfgNode {
+  private StructPatChildMapping node;
 
-  RecordPatCfgNode() { node = this.getRecordPat() }
+  StructPatCfgNode() { node = this.getStructPat() }
 
   /** Gets the record pattern for the field `field`. */
   pragma[nomagic]
   PatCfgNode getFieldPat(string field) {
-    exists(RecordPatField rpf |
-      rpf = node.getRecordPatFieldList().getAField() and
+    exists(StructPatField rpf |
+      rpf = node.getStructPatFieldList().getAField() and
       any(ChildMapping mapping).hasCfgChild(node, rpf.getPat(), this, result) and
       field = rpf.getFieldName()
     )

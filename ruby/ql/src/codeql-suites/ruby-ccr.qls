@@ -1,4 +1,0 @@
-- queries: .
-- include:
-    id:
-      - rb/database-query-in-loop

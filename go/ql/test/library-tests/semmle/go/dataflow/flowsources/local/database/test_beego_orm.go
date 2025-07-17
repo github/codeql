@@ -1,5 +1,8 @@
 package test
 
+//go:generate depstubber -vendor github.com/astaxie/beego/orm Ormer NewOrm
+//go:generate depstubber -vendor github.com/beego/beego/v2/client/orm DB,DQL,Ormer NewOrm
+
 import (
 	oldOrm "github.com/astaxie/beego/orm"
 	"github.com/beego/beego/v2/client/orm"

@@ -264,9 +264,6 @@
 | declarations.swift:155:1:155:28 | { ... } |  |
 | declarations.swift:155:5:155:5 | d |  |
 | declarations.swift:157:1:180:1 | ifConfig() |  |
-| declarations.swift:158:3:166:3 | #if ... |  |
-| declarations.swift:168:3:171:3 | #if ... |  |
-| declarations.swift:173:3:179:3 | #if ... |  |
 | declarations.swift:182:1:182:10 | B |  |
 | declarations.swift:182:7:182:7 | B.deinit() |  |
 | declarations.swift:182:7:182:7 | B.init() |  |

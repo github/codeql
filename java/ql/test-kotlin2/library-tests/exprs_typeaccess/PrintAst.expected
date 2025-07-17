@@ -71,8 +71,7 @@ A.kt:
 #   19|             0: [VarAccess] Enu.A
 #   19|               -1: [TypeAccess] Enu
 #   20|         2: [ReturnStmt] return ...
-#   20|           0: [VarAccess] B.x
-#   20|             -1: [TypeAccess] B
+#   20|           0: [IntegerLiteral] 5
 #   23|     11: [Class] Enu
 #   23|       2: [Constructor] Enu
 #   23|         5: [BlockStmt] { ... }

@@ -31,15 +31,15 @@ class StreamCipherInit extends Cryptography::CryptographicOperation::Range {
         rawAlgorithmName =
           p.getPath()
               .getQualifier()
-              .getPart()
+              .getSegment()
               .getGenericArgList()
               .getGenericArg(0)
               .(TypeArg)
               .getTypeRepr()
               .(PathTypeRepr)
               .getPath()
-              .getPart()
-              .getNameRef()
+              .getSegment()
+              .getIdentifier()
               .getText()
       ) and
       algorithmName = simplifyAlgorithmName(rawAlgorithmName)

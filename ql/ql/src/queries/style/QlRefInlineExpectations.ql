@@ -10,6 +10,10 @@
 import ql
 import codeql_ql.ast.Yaml
 
-from QlRefDocument f
-where not f.usesInlineExpectations()
+from QlRefDocument f, TopLevel t, QueryDoc doc
+where
+  not f.usesInlineExpectations() and
+  t.getFile() = f.getQueryFile() and
+  doc = t.getQLDoc() and
+  doc.getQueryKind() in ["problem", "path-problem"]
 select f, "Query test does not use inline test expectations."

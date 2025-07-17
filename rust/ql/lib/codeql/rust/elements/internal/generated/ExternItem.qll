@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
+import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ExternItem` and should not
@@ -14,12 +14,17 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
-   * A ExternItem. For example:
+   * An item inside an extern block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * extern "C" {
+   *     fn foo();
+   *     static BAR: i32;
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::ExternItem` class directly.
    * Use the subclass `ExternItem`, where the following predicates are available.
    */
-  class ExternItem extends Synth::TExternItem, AstNodeImpl::AstNode { }
+  class ExternItem extends Synth::TExternItem, ItemImpl::Item { }
 }

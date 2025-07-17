@@ -5,20 +5,21 @@
  * @precision low
  * @id rust/utils/modelgenerator/summary-models-path
  * @severity warning
- * @tags modelgenerator
+ * @tags debugmodelgenerator
  */
 
 private import codeql.rust.dataflow.DataFlow
 import utils.modelgenerator.internal.CaptureModels
-import PropagateFlow::PathGraph
+import SummaryModels
+import Heuristic::PropagateTaintFlow::PathGraph
 
 from
-  PropagateFlow::PathNode source, PropagateFlow::PathNode sink, DataFlowSummaryTargetApi api,
-  DataFlow::Node p, DataFlow::Node returnNodeExt
+  Heuristic::PropagateTaintFlow::PathNode source, Heuristic::PropagateTaintFlow::PathNode sink,
+  DataFlowSummaryTargetApi api, DataFlow::Node p, DataFlow::Node returnNodeExt
 where
-  PropagateFlow::flowPath(source, sink) and
+  Heuristic::PropagateTaintFlow::flowPath(source, sink) and
   p = source.getNode() and
   returnNodeExt = sink.getNode() and
-  exists(captureThroughFlow0(api, p, returnNodeExt))
+  Heuristic::captureThroughFlow0(api, p, returnNodeExt)
 select sink.getNode(), source, sink, "There is flow from $@ to the $@.", source.getNode(),
   "parameter", sink.getNode(), "return value"

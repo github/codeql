@@ -10,9 +10,13 @@ import codeql.rust.elements.ExternItemList
 import codeql.rust.elements.Item
 
 /**
- * A ExternBlock. For example:
+ * An extern block containing foreign function declarations.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * extern "C" {
+ *     fn foo();
+ * }
  * ```
  */
 final class ExternBlock = Impl::ExternBlock;

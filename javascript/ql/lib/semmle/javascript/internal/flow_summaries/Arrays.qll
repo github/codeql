@@ -96,7 +96,8 @@ class ArrayConstructorSummary extends SummarizedCallable {
   ArrayConstructorSummary() { this = "Array constructor" }
 
   override DataFlow::InvokeNode getACallSimple() {
-    result = arrayConstructorRef().getAnInvocation()
+    result = arrayConstructorRef().getAnInvocation() and
+    result.getNumArgument() > 1
   }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {

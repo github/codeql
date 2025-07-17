@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 /**
  * Holds if `wrong` is a common misspelling of `right`.
  *

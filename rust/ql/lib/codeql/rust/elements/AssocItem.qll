@@ -4,12 +4,15 @@
  */
 
 private import internal.AssocItemImpl
-import codeql.rust.elements.AstNode
+import codeql.rust.elements.Item
 
 /**
- * A AssocItem. For example:
+ * An associated item in a `Trait` or `Impl`.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * trait T {fn foo(&self);}
+ * //       ^^^^^^^^^^^^^
  * ```
  */
 final class AssocItem = Impl::AssocItem;

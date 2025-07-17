@@ -15,9 +15,12 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
-   * A RestPat. For example:
+   * A rest pattern (`..`) in a tuple, slice, or struct pattern.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let (a, .., z) = (1, 2, 3);
+   * //      ^^
    * ```
    * INTERNAL: Do not reference the `Generated::RestPat` class directly.
    * Use the subclass `RestPat`, where the following predicates are available.

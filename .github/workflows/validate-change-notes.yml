@@ -31,4 +31,4 @@ jobs:
       - name: Fail if there are any errors with existing change notes
 
         run: |
-          codeql pack release --groups cpp,csharp,java,javascript,python,ruby,-examples,-test,-experimental
+          codeql pack release --groups actions,cpp,csharp,go,java,javascript,python,ruby,shared,swift -examples,-test,-experimental

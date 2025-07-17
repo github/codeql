@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.deadcode.DeadEnumConstant
 import semmle.code.java.deadcode.DeadCodeCustomizations

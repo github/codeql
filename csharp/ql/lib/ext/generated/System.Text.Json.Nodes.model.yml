@@ -12,7 +12,6 @@ extensions:
       - ["System.Text.Json.Nodes", "JsonNode", False, "AsObject", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", False, "AsValue", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", False, "DeepClone", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Text.Json.Nodes", "JsonNode", False, "Parse", "(System.Text.Json.Utf8JsonReader,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", False, "ReplaceWith<T>", "(T)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", False, "get_Options", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -23,7 +22,7 @@ extensions:
       - ["System.Text.Json.Nodes", "JsonObject", False, "SetAt", "(System.Int32,System.String,System.Text.Json.Nodes.JsonNode)", "", "Argument[this]", "Argument[2]", "taint", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonObject", False, "SetAt", "(System.Int32,System.Text.Json.Nodes.JsonNode)", "", "Argument[this]", "Argument[1]", "taint", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonValue", False, "Create<T>", "(T,System.Text.Json.Serialization.Metadata.JsonTypeInfo<T>,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Text.Json.Nodes", "JsonValue", True, "TryGetValue<T>", "(T)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Text.Json.Nodes", "JsonValue", True, "TryGetValue<T>", "(T)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -50,6 +49,7 @@ extensions:
       - ["System.Text.Json.Nodes", "JsonNode", "Parse", "(System.IO.Stream,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>,System.Text.Json.JsonDocumentOptions)", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", "Parse", "(System.ReadOnlySpan<System.Byte>,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>,System.Text.Json.JsonDocumentOptions)", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", "Parse", "(System.String,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>,System.Text.Json.JsonDocumentOptions)", "summary", "df-generated"]
+      - ["System.Text.Json.Nodes", "JsonNode", "Parse", "(System.Text.Json.Utf8JsonReader,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>)", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", "ParseAsync", "(System.IO.Stream,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>,System.Text.Json.JsonDocumentOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", "ToJsonString", "(System.Text.Json.JsonSerializerOptions)", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonNode", "WriteTo", "(System.Text.Json.Utf8JsonWriter,System.Text.Json.JsonSerializerOptions)", "summary", "df-generated"]

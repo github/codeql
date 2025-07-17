@@ -2,6 +2,8 @@
  * Provides consistency queries for checking invariants in the language-specific
  * data-flow classes and predicates.
  */
+overlay[local?]
+module;
 
 private import codeql.dataflow.DataFlow as DF
 private import codeql.dataflow.TaintTracking as TT

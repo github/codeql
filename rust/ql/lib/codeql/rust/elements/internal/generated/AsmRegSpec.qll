@@ -15,6 +15,14 @@ import codeql.rust.elements.NameRef
  */
 module Generated {
   /**
+   * A register specification in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("mov {0}, {1}", out("eax") x, in(EBX) y);
+   * //                        ^^^         ^^^
+   * ```
    * INTERNAL: Do not reference the `Generated::AsmRegSpec` class directly.
    * Use the subclass `AsmRegSpec`, where the following predicates are available.
    */
@@ -22,18 +30,18 @@ module Generated {
     override string getAPrimaryQlClass() { result = "AsmRegSpec" }
 
     /**
-     * Gets the name reference of this asm reg spec, if it exists.
+     * Gets the identifier of this asm reg spec, if it exists.
      */
-    NameRef getNameRef() {
+    NameRef getIdentifier() {
       result =
         Synth::convertNameRefFromRaw(Synth::convertAsmRegSpecToRaw(this)
               .(Raw::AsmRegSpec)
-              .getNameRef())
+              .getIdentifier())
     }
 
     /**
-     * Holds if `getNameRef()` exists.
+     * Holds if `getIdentifier()` exists.
      */
-    final predicate hasNameRef() { exists(this.getNameRef()) }
+    final predicate hasIdentifier() { exists(this.getIdentifier()) }
   }
 }

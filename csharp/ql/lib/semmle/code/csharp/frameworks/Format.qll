@@ -8,67 +8,120 @@ private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Text
 
 /** A method that formats a string, for example `string.Format()`. */
-class FormatMethod extends Method {
-  FormatMethod() {
-    exists(Class declType | declType = this.getDeclaringType() |
-      this.getParameter(0).getType() instanceof SystemIFormatProviderInterface and
-      this.getParameter(1).getType() instanceof StringType and
-      (
-        this = any(SystemStringClass c).getFormatMethod()
-        or
-        this = any(SystemTextStringBuilderClass c).getAppendFormatMethod()
-      )
-      or
-      this.getParameter(0).getType() instanceof StringType and
-      (
-        this = any(SystemStringClass c).getFormatMethod()
-        or
-        this = any(SystemTextStringBuilderClass c).getAppendFormatMethod()
-        or
-        (this.hasName("Write") or this.hasName("WriteLine")) and
-        (
-          declType.hasFullyQualifiedName("System", "Console")
-          or
-          declType.hasFullyQualifiedName("System.IO", "TextWriter")
-          or
-          declType.hasFullyQualifiedName("System.Diagnostics", "Debug") and
-          this.getParameter(1).getType() instanceof ArrayType
-        )
-        or
-        declType.hasFullyQualifiedName("System.Diagnostics", "Trace") and
-        (
-          this.hasName("TraceError") or
-          this.hasName("TraceInformation") or
-          this.hasName("TraceWarning")
-        )
-        or
-        this.hasName("TraceInformation") and
-        declType.hasFullyQualifiedName("System.Diagnostics", "TraceSource")
-        or
-        this.hasName("Print") and
-        declType.hasFullyQualifiedName("System.Diagnostics", "Debug")
-      )
-      or
-      this.hasName("Assert") and
-      declType.hasFullyQualifiedName("System.Diagnostics", "Debug") and
-      this.getNumberOfParameters() = 4
-    )
-  }
-
+abstract private class FormatMethodImpl extends Method {
   /**
    * Gets the argument containing the format string. For example, the argument of
    * `string.Format(IFormatProvider, String, Object)` is `1`.
    */
-  int getFormatArgument() {
+  abstract int getFormatArgument();
+
+  /**
+   * Gets the argument number of the first supplied insert.
+   */
+  int getFirstArgument() { result = this.getFormatArgument() + 1 }
+}
+
+final class FormatMethod = FormatMethodImpl;
+
+/** A class of types used for formatting. */
+private class FormatType extends Type {
+  FormatType() {
+    this instanceof StringType or
+    this instanceof SystemTextCompositeFormatClass
+  }
+}
+
+private class StringAndStringBuilderFormatMethods extends FormatMethodImpl {
+  StringAndStringBuilderFormatMethods() {
+    (
+      this.getParameter(0).getType() instanceof SystemIFormatProviderInterface and
+      this.getParameter(1).getType() instanceof FormatType
+      or
+      this.getParameter(0).getType() instanceof StringType
+    ) and
+    (
+      this = any(SystemStringClass c).getFormatMethod()
+      or
+      this = any(SystemTextStringBuilderClass c).getAppendFormatMethod()
+    )
+  }
+
+  override int getFormatArgument() {
     if this.getParameter(0).getType() instanceof SystemIFormatProviderInterface
     then result = 1
-    else
-      if
-        this.hasName("Assert") and
-        this.getDeclaringType().hasFullyQualifiedName("System.Diagnostics", "Debug")
-      then result = 2
-      else result = 0
+    else result = 0
   }
+}
+
+private class SystemMemoryExtensionsFormatMethods extends FormatMethodImpl {
+  SystemMemoryExtensionsFormatMethods() {
+    this = any(SystemMemoryExtensionsClass c).getTryWriteMethod() and
+    this.getParameter(1).getType() instanceof SystemIFormatProviderInterface and
+    this.getParameter(2).getType() instanceof SystemTextCompositeFormatClass
+  }
+
+  override int getFormatArgument() { result = 2 }
+
+  override int getFirstArgument() { result = this.getFormatArgument() + 2 }
+}
+
+private class SystemConsoleAndSystemIoTextWriterFormatMethods extends FormatMethodImpl {
+  SystemConsoleAndSystemIoTextWriterFormatMethods() {
+    this.getParameter(0).getType() instanceof StringType and
+    this.getNumberOfParameters() > 1 and
+    exists(Class declType | declType = this.getDeclaringType() |
+      this.hasName(["Write", "WriteLine"]) and
+      (
+        declType.hasFullyQualifiedName("System", "Console")
+        or
+        declType.hasFullyQualifiedName("System.IO", "TextWriter")
+      )
+    )
+  }
+
+  override int getFormatArgument() { result = 0 }
+}
+
+private class SystemDiagnosticsDebugAssert extends FormatMethodImpl {
+  SystemDiagnosticsDebugAssert() {
+    this.hasName("Assert") and
+    this.getDeclaringType().hasFullyQualifiedName("System.Diagnostics", "Debug") and
+    this.getNumberOfParameters() = 4
+  }
+
+  override int getFormatArgument() { result = 2 }
+}
+
+private class SystemDiagnosticsFormatMethods extends FormatMethodImpl {
+  SystemDiagnosticsFormatMethods() {
+    this.getParameter(0).getType() instanceof StringType and
+    this.getNumberOfParameters() > 1 and
+    exists(Class declType |
+      declType = this.getDeclaringType() and
+      declType.getNamespace().getFullName() = "System.Diagnostics"
+    |
+      declType.hasName("Trace") and
+      (
+        this.hasName("TraceError")
+        or
+        this.hasName("TraceInformation")
+        or
+        this.hasName("TraceWarning")
+      )
+      or
+      declType.hasName("TraceSource") and this.hasName("TraceInformation")
+      or
+      declType.hasName("Debug") and
+      (
+        this.hasName("Print")
+        or
+        this.hasName(["Write", "WriteLine"]) and
+        this.getParameter(1).getType() instanceof ArrayType
+      )
+    )
+  }
+
+  override int getFormatArgument() { result = 0 }
 }
 
 pragma[nomagic]
@@ -181,28 +234,53 @@ class InvalidFormatString extends StringLiteral {
 }
 
 /**
+ * A method call to a method that parses a format string, for example a call
+ * to `string.Format()`.
+ */
+abstract private class FormatStringParseCallImpl extends MethodCall {
+  /**
+   * Gets the expression used as the format string.
+   */
+  abstract Expr getFormatExpr();
+}
+
+final class FormatStringParseCall = FormatStringParseCallImpl;
+
+/**
  * A method call to a method that formats a string, for example a call
  * to `string.Format()`.
  */
-class FormatCall extends MethodCall {
+class FormatCall extends FormatStringParseCallImpl {
   FormatCall() { this.getTarget() instanceof FormatMethod }
 
   /** Gets the expression used as the format string. */
-  Expr getFormatExpr() { result = this.getArgument(this.getFormatArgument()) }
+  override Expr getFormatExpr() { result = this.getArgument(this.getFormatArgument()) }
 
   /** Gets the argument number containing the format string. */
   int getFormatArgument() { result = this.getTarget().(FormatMethod).getFormatArgument() }
 
   /** Gets the argument number of the first supplied insert. */
-  int getFirstArgument() { result = this.getFormatArgument() + 1 }
+  int getFirstArgument() { result = this.getTarget().(FormatMethod).getFirstArgument() }
 
   /** Holds if this call has one or more insertions. */
   predicate hasInsertions() { exists(this.getArgument(this.getFirstArgument())) }
 
-  /** Holds if the arguments are supplied in an array, not individually. */
-  predicate hasArrayExpr() {
+  /**
+   * DEPRECATED: use `hasCollectionExpr` instead.
+   *
+   * Holds if the arguments are supplied in an array, not individually.
+   */
+  deprecated predicate hasArrayExpr() {
     this.getNumberOfArguments() = this.getFirstArgument() + 1 and
     this.getArgument(this.getFirstArgument()).getType() instanceof ArrayType
+  }
+
+  /**
+   * Holds if the arguments are supplied in a collection, not individually.
+   */
+  predicate hasCollectionExpr() {
+    this.getNumberOfArguments() = this.getFirstArgument() + 1 and
+    this.getArgument(this.getFirstArgument()).getType() instanceof ParamsCollectionType
   }
 
   /**
@@ -211,7 +289,7 @@ class FormatCall extends MethodCall {
    * in which case we generally can't assess the size of the array.
    */
   int getSuppliedArguments() {
-    not this.hasArrayExpr() and
+    not this.hasCollectionExpr() and
     result = this.getNumberOfArguments() - this.getFirstArgument()
   }
 
@@ -223,4 +301,15 @@ class FormatCall extends MethodCall {
     index = this.getASuppliedArgument() and
     result = this.getArgument(this.getFirstArgument() + index)
   }
+}
+
+/**
+ * A method call to `System.Text.CompositeFormat.Parse`.
+ */
+class ParseFormatStringCall extends FormatStringParseCallImpl {
+  ParseFormatStringCall() {
+    this.getTarget() = any(SystemTextCompositeFormatClass x).getParseMethod()
+  }
+
+  override Expr getFormatExpr() { result = this.getArgument(0) }
 }

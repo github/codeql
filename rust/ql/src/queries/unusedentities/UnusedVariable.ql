@@ -6,6 +6,7 @@
  * @precision high
  * @id rust/unused-variable
  * @tags maintainability
+ *       quality
  */
 
 import rust
