@@ -12,7 +12,7 @@
  */
 
 import go
-import WeakCryptoAlgorithmCustomizations
+import semmle.go.security.WeakCryptoAlgorithmCustomizations
 import WeakCryptoAlgorithm::Flow::PathGraph
 
 from WeakCryptoAlgorithm::Flow::PathNode source, WeakCryptoAlgorithm::Flow::PathNode sink
