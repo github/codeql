@@ -50,13 +50,6 @@ private class SafeObjectInputStreamType extends RefType {
   }
 }
 
-private class XmlDecoderReadObjectMethod extends Method {
-  XmlDecoderReadObjectMethod() {
-    this.getDeclaringType().hasQualifiedName("java.beans", "XMLDecoder") and
-    this.hasName("readObject")
-  }
-}
-
 private module SafeXStreamConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
     any(XStreamEnableWhiteListing ma).getQualifier().(VarAccess).getVariable().getAnAccess() =
