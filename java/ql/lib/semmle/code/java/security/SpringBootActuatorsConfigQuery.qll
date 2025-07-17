@@ -110,7 +110,7 @@ predicate hasConfidentialEndPointExposed(SpringBootPom pom, ApplicationPropertie
         me.hasSecurityDisabled() and me.getFile() = apFile and me = apOption.asSome()
       )
       or
-      springBootVersion.matches("2.%") and //version 2.x
+      springBootVersion.matches(["2.%", "3.%"]) and //version 2.x and 3.x
       exists(ManagementEndPointInclude mi |
         mi.getFile() = apFile and
         mi = apOption.asSome() and
@@ -121,7 +121,7 @@ predicate hasConfidentialEndPointExposed(SpringBootPom pom, ApplicationPropertie
               .matches([
                   "%dump%", "%trace%", "%logfile%", "%shutdown%", "%startup%", "%mappings%",
                   "%env%", "%beans%", "%sessions%"
-                ]) // confidential endpoints to check although all endpoints apart from '/health' and '/info' are considered sensitive by Spring
+                ]) // confidential endpoints to check although all endpoints apart from '/health' are considered sensitive by Spring
         )
       )
     )
