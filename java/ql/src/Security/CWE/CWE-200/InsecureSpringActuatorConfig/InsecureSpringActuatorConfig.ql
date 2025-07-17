@@ -1,14 +1,14 @@
 /**
- * @name Insecure Spring Boot Actuator Configuration
- * @description Exposed Spring Boot Actuator through configuration files without declarative or procedural
- *              security enforcement leads to information leak or even remote code execution.
+ * @name Exposed Spring Boot actuators in configuration file
+ * @description Exposing Spring Boot actuators through configuration files may lead to information leak from
+ *              the internal application, or even to remote code execution.
  * @kind problem
  * @problem.severity error
+ * @security-severity 6.5
  * @precision high
- * @id java/insecure-spring-actuator-config
+ * @id java/spring-boot-exposed-actuators-config
  * @tags security
- *       experimental
- *       external/cwe/cwe-016
+ *       external/cwe/cwe-200
  */
 
 import java
@@ -21,5 +21,5 @@ where
   // TODO: remove pom; for debugging versions
   d = pom.getADependency()
 select d,
-  "Insecure $@ of Spring Boot Actuator exposes sensitive endpoints (" +
+  "Insecure Spring Boot actuator $@ exposes sensitive endpoints (" +
     pom.getParentElement().getVersionString() + ").", jpOption, "configuration"
