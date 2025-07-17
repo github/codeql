@@ -309,3 +309,64 @@ class SelfTypeParameterMention extends TypeMention instanceof Name {
     result = TSelfTypeParameter(trait)
   }
 }
+
+class DynTraitTypeReprMention extends TypeMention instanceof DynTraitTypeRepr {
+  private DynTraitType dynType;
+
+  DynTraitTypeReprMention() {
+    // This excludes `DynTraitTypeRepr` elements where `getTrait` is not
+    // defined, i.e., where path resolution can't find a trait.
+    dynType.getTrait() = super.getTrait()
+  }
+
+  override Type resolveTypeAt(TypePath path) {
+    path.isEmpty() and
+    result = dynType
+    or
+    exists(DynTraitTypeParameter tp, TypePath path0, TypePath suffix |
+      tp = dynType.getTypeParameter(_) and
+      path = TypePath::cons(tp, suffix) and
+      result = super.getTypeBoundList().getBound(0).getTypeRepr().(TypeMention).resolveTypeAt(path0) and
+      path0.isCons(TTypeParamTypeParameter(tp.getTypeParam()), suffix)
+    )
+  }
+}
+
+// We want a type of the form `dyn Trait` to implement `Trait`. If `Trait` has
+// type parameters then `dyn Trait` has equivalent type parameters and the
+// implementation should be abstracted over them.
+//
+// Intuitively we want something to the effect of:
+// ```
+// impl<A, B, ..> Trait<A, B, ..> for (dyn Trait)<A, B, ..>
+// ```
+// To achieve this:
+// - `DynTypeAbstraction` is an abstraction over type parameters of the trait.
+// - `DynTypeBoundListMention` (this class) is a type mention which has `dyn
+//   Trait` at the root and which for every type parameter of `dyn Trait` has the
+//   corresponding type parameter of the trait.
+// - `TraitMention` (which is used for other things as well) is a type mention
+//    for the trait applied to its own type parameters.
+//
+// We arbitrarily use the `TypeBoundList` inside `DynTraitTypeRepr` to encode
+// this type mention, since it doesn't syntactically appear in the AST. This
+// works because there is a one-to-one correspondence between a trait object and
+// its list of type bounds.
+class DynTypeBoundListMention extends TypeMention instanceof TypeBoundList {
+  private Trait trait;
+
+  DynTypeBoundListMention() {
+    exists(DynTraitTypeRepr dyn | this = dyn.getTypeBoundList() and trait = dyn.getTrait())
+  }
+
+  override Type resolveTypeAt(TypePath path) {
+    path.isEmpty() and
+    result.(DynTraitType).getTrait() = trait
+    or
+    exists(TypeParam param |
+      param = trait.getGenericParamList().getATypeParam() and
+      path = TypePath::singleton(TDynTraitTypeParameter(param)) and
+      result = TTypeParamTypeParameter(param)
+    )
+  }
+}

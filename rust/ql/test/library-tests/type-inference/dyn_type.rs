@@ -45,17 +45,17 @@ fn get_box_trait<A: Clone + Debug + 'static>(a: A) -> Box<dyn GenericGet<A>> {
 }
 
 fn test_basic_dyn_trait(obj: &dyn MyTrait1) {
-    let _result = (*obj).m(); // $ target=deref MISSING: target=MyTrait1::m type=_result:String
+    let _result = (*obj).m(); // $ target=deref target=MyTrait1::m type=_result:String
 }
 
 fn test_generic_dyn_trait(obj: &dyn GenericGet<String>) {
-    let _result1 = (*obj).get(); // $ target=deref MISSING: target=GenericGet::get type=_result1:String
-    let _result2 = get_a(obj); // $ target=get_a MISSING: type=_result2:String
+    let _result1 = (*obj).get(); // $ target=deref target=GenericGet::get type=_result1:String
+    let _result2 = get_a(obj); // $ target=get_a type=_result2:String
 }
 
 fn test_poly_dyn_trait() {
     let obj = get_box_trait(true); // $ target=get_box_trait
-    let _result = (*obj).get(); // $ target=deref MISSING: target=GenericGet::get type=_result:bool
+    let _result = (*obj).get(); // $ target=deref target=GenericGet::get type=_result:bool
 }
 
 pub fn test() {
