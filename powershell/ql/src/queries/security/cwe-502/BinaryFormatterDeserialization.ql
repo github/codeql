@@ -12,12 +12,7 @@
  */
 
 import powershell
-import semmle.code.powershell.dataflow.DataFlow
-import semmle.code.powershell.dataflow.TaintTracking
+import semmle.code.powershell.security.UnsafeDeserializationCustomizations::UnsafeDeserialization
 
-from DataFlow::ObjectCreationNode source, DataFlow::CallNode cn 
-where
-source.getExprNode().getExpr().(CallExpr).getAnArgument().getValue().asString() = "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter" and
-cn.getQualifier().getALocalSource() = source and 
-cn.getLowerCaseName() = "deserialize" 
-select cn, "Call to BinaryFormatter.Deserialize"
+from BinaryFormatterDeserializeSink sink
+select sink, "Call to BinaryFormatter.Deserialize"
