@@ -380,6 +380,7 @@ class CrateItemNode extends ItemNode instanceof Crate {
       file = super.getSourceFile()
     )
     or
+    c = this and
     this.getName() = "core" and
     child instanceof Builtins::BuiltinType
   }

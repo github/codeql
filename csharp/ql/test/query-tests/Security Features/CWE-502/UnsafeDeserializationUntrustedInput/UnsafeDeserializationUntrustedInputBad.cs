@@ -7,6 +7,6 @@ class Bad
     {
         JavaScriptSerializer sr = new JavaScriptSerializer(new SimpleTypeResolver());
         // BAD
-        return sr.DeserializeObject(textBox.Text);
+        return sr.DeserializeObject(textBox.Text); // $ Alert[cs/unsafe-deserialization-untrusted-input]
     }
 }

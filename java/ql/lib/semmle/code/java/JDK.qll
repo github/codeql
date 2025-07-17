@@ -211,6 +211,11 @@ class TypeObjectOutputStream extends RefType {
   TypeObjectOutputStream() { this.hasQualifiedName("java.io", "ObjectOutputStream") }
 }
 
+/** The type `java.io.ObjectInput`. */
+class TypeObjectInput extends RefType {
+  TypeObjectInput() { this.hasQualifiedName("java.io", "ObjectInput") }
+}
+
 /** The type `java.io.ObjectInputStream`. */
 class TypeObjectInputStream extends RefType {
   TypeObjectInputStream() { this.hasQualifiedName("java.io", "ObjectInputStream") }

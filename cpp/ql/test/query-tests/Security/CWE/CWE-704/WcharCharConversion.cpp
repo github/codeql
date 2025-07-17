@@ -18,13 +18,13 @@ void Test()
 	wchar_t *lpWchar = NULL;
 	LPCSTR lpcstr = "b";
 
-	lpWchar = (LPWSTR)"a"; // BUG
-	lpWchar = (LPWSTR)lpcstr; // BUG
+	lpWchar = (LPWSTR)"a"; // $ Alert
+	lpWchar = (LPWSTR)lpcstr; // $ Alert
 
-	lpWchar = (wchar_t*)lpChar;	// BUG
+	lpWchar = (wchar_t*)lpChar;	// $ Alert
 
-	fconstWChar((LPCWSTR)lpChar);	// BUG
-	fWChar((LPWSTR)lpChar);			// BUG
+	fconstWChar((LPCWSTR)lpChar);	// $ Alert
+	fWChar((LPWSTR)lpChar);			// $ Alert
 
 	lpChar = (LPSTR)"a"; // Valid
 	lpWchar = (LPWSTR)L"a"; // Valid
@@ -79,33 +79,64 @@ void CheckedConversionFalsePositiveTest3(unsigned short flags, LPTSTR buffer)
 	if(flags & UNICODE)
 		lpWchar = (LPWSTR)buffer; // GOOD
 	else
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // $ Alert
 
 	if((flags & UNICODE) == 0x8)
 		lpWchar = (LPWSTR)buffer; // GOOD
 	else
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // $ Alert
 
 	if((flags & UNICODE) != 0x8)
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // $ Alert
 	else
 		lpWchar = (LPWSTR)buffer; // GOOD
 
 	// Bad operator precedence
 	if(flags & UNICODE == 0x8)
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // $ Alert
 	else
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // $ Alert
 
 	if((flags & UNICODE) != 0)
 		lpWchar = (LPWSTR)buffer; // GOOD
 	else
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // $ Alert
 
 	if((flags & UNICODE) == 0)
-		lpWchar = (LPWSTR)buffer; // BUG
+		lpWchar = (LPWSTR)buffer; // $ Alert
 	else
 		lpWchar = (LPWSTR)buffer; // GOOD
 
-	lpWchar = (LPWSTR)buffer; // BUG
+	lpWchar = (LPWSTR)buffer; // $ Alert
+}
+
+typedef unsigned long long size_t;
+
+size_t wcslen(const wchar_t *str);
+size_t strlen(const char* str);
+
+template<typename C>
+size_t str_len(const C *str) {
+	if (sizeof(C) != 1) {
+		return wcslen((const wchar_t *)str); // GOOD -- unreachable code
+	}
+
+	return strlen((const char *)str);
+}
+
+template<typename C>
+size_t wrong_str_len(const C *str) {
+	if (sizeof(C) == 1) {
+		return wcslen((const wchar_t *)str); // $ Alert
+	}
+
+	return strlen((const char *)str);
+}
+
+void test_str_len(const wchar_t *wstr, const char *str) {
+	size_t len =
+	  str_len(wstr) + 
+	  str_len(str) +
+	  wrong_str_len(wstr) +
+	  wrong_str_len(str);
 }

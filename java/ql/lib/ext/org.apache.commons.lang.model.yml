@@ -5,3 +5,8 @@ extensions:
     data:
       - ["org.apache.commons.lang", "StringEscapeUtils", true, "escapeHtml", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang", "StringEscapeUtils", true, "escapeHtml", "(Writer,String)", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.commons.lang", "SerializationUtils", False, "deserialize", "", "", "Argument[0]", "unsafe-deserialization", "manual"]

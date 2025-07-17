@@ -24,10 +24,9 @@ module AstTest {
 
 module IRTest {
   private import semmle.code.cpp.ir.dataflow.DataFlow
-  private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 
   private string stars(int k) {
-    k = [0 .. max(FinalParameterNode n | | n.getIndirectionIndex())] and
+    k = [0 .. max(DataFlow::Node n, int i | n.isFinalValueOfParameter(_, i) | i)] and
     (if k = 0 then result = "" else result = "*" + stars(k - 1))
   }
 
@@ -35,14 +34,14 @@ module IRTest {
     string getARelevantTag() { result = "ir-def" }
 
     predicate hasActualResult(Location location, string element, string tag, string value) {
-      exists(Function f, Parameter p, FinalParameterNode n |
+      exists(Function f, Parameter p, DataFlow::Node n, int i |
         p.isNamed() and
-        n.getParameter() = p and
+        n.isFinalValueOfParameter(p, i) and
         n.getFunction() = f and
         location = f.getLocation() and
         element = p.toString() and
         tag = "ir-def" and
-        value = stars(n.getIndirectionIndex()) + p.getName()
+        value = stars(i) + p.getName()
       )
     }
   }
