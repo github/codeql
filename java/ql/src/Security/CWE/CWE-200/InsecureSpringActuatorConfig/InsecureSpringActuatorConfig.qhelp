@@ -1,43 +1,35 @@
 <!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
 <qhelp>
   <overview>
-    <p>Spring Boot is a popular framework that facilitates the development of stand-alone applications
-and micro services. Spring Boot Actuator helps to expose production-ready support features against
-Spring Boot applications.</p>
-
-    <p>Endpoints of Spring Boot Actuator allow to monitor and interact with a Spring Boot application.
-Exposing unprotected actuator endpoints through configuration files can lead to information disclosure
-or even remote code execution vulnerability.</p>
-
-    <p>Rather than programmatically permitting endpoint requests or enforcing access control, frequently
-developers simply leave management endpoints publicly accessible in the application configuration file
-<code>application.properties</code> without enforcing access control through Spring Security.</p>
+    <p>Spring Boot includes features called actuators that let you monitor and interact with your web
+    application. Exposing unprotected actuator endpoints through configuration files can lead to
+    information disclosure or even to remote code execution.</p>
   </overview>
 
   <recommendation>
-    <p>Declare the Spring Boot Starter Security module in XML configuration or programmatically enforce
-security checks on management endpoints using Spring Security. Otherwise accessing management endpoints
-on a different HTTP port other than the port that the web application is listening on also helps to
-improve the security.</p>
+    <p>Since actuator endpoints may contain sensitive information, carefully consider when to expose them,
+    and secure them as you would any sensitive URL. If you need to expose actuator endpoints, use Spring
+    Security, which secures actuators by default, or define a custom security configuration.
+    </p>
   </recommendation>
 
   <example>
-    <p>The following examples show both 'BAD' and 'GOOD' configurations. In the 'BAD' configuration,
-no security module is declared and sensitive management endpoints are exposed. In the 'GOOD' configuration,
-security is enforced and only endpoints requiring exposure are exposed.</p>
+    <p>The following examples show <code>application.properties</code> configurations that expose sensitive
+    actuator endpoints.</p>
+    <sample src="application_bad.properties" />
+
+    <p>The below configurations ensure that sensitive actuator endpoints are not exposed.</p>
+    <sample src="application_good.properties" />
+
+    <p>To use Spring Security, which secures actuators by default, add the <code>spring-boot-starter-security</code>
+    dependency in your Maven <code>pom.xml</code> file.</p>
     <sample src="pom_good.xml" />
-    <sample src="pom_bad.xml" />
-    <sample src="application.properties" />
   </example>
 
   <references>
     <li>
-      Spring Boot documentation:
-      <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html">Spring Boot Actuator: Production-ready Features</a>
-    </li>
-    <li>
-      VERACODE Blog:
-      <a href="https://www.veracode.com/blog/research/exploiting-spring-boot-actuators">Exploiting Spring Boot Actuators</a>
+      Spring Boot Reference Documentation:
+      <a href="https://docs.spring.io/spring-boot/reference/actuator/endpoints.html">Endpoints</a>.
     </li>
     <li>
       HackerOne Report:
