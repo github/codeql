@@ -1,3 +1,5 @@
+deprecated module;
+
 import python
 
 /** Holds if `notimpl` refers to `NotImplemented` or `NotImplemented()` in the `raise` statement */
