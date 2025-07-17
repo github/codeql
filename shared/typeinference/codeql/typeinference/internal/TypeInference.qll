@@ -1229,11 +1229,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         predicate relevantAccessConstraint(
           Access a, Declaration target, AccessPosition apos, TypePath path, Type constraint
         ) {
-          exists(DeclarationPosition dpos |
-            accessDeclarationPositionMatch(apos, dpos) and
-            target = a.getTarget() and
-            typeParameterConstraintHasTypeParameter(target, dpos, path, _, constraint, _, _)
-          )
+          target = a.getTarget() and
+          typeParameterConstraintHasTypeParameter(target, apos, path, constraint, _, _)
         }
 
         private newtype TRelevantAccess =
@@ -1276,12 +1273,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
 
         predicate satisfiesConstraintType(
-          Access a, AccessPosition apos, TypePath prefix, Type constraint, TypePath path, Type t
+          Access a, Declaration target, AccessPosition apos, TypePath prefix, Type constraint,
+          TypePath path, Type t
         ) {
-          exists(RelevantAccess at | at = MkRelevantAccess(a, _, apos, prefix) |
-            SatisfiesConstraint<RelevantAccess, SatisfiesConstraintInput>::satisfiesConstraintType(at,
-              constraint, path, t)
-          )
+          SatisfiesConstraint<RelevantAccess, SatisfiesConstraintInput>::satisfiesConstraintType(MkRelevantAccess(a,
+              target, apos, prefix), constraint, path, t)
         }
       }
 
@@ -1370,37 +1366,38 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
-       * Holds if `tp1` and `tp2` are distinct type parameters of `target`, the
-       * declared type at `dpos` mentions `tp1` at `path1`, `tp1` has a base
-       * type mention of type `constraint` that mentions `tp2` at the path
-       * `path2`.
+       * Holds if the declared type of `target` contains a type parameter at
+       * `apos` and `pathToConstrained` that must satisfy `constraint` and `tp`
+       * occurs at `pathToTp` in `constraint`.
        *
-       * For this example
+       * For example, in
        * ```csharp
        * interface IFoo<A> { }
        * T1 M<T1, T2>(T2 item) where T2 : IFoo<T1> { }
        * ```
-       * with the method declaration being the target and the for the first
-       * parameter position, we have the following
-       * - `path1 = ""`,
-       * - `tp1 = T2`,
+       * with the method declaration being the target and with `apos`
+       * corresponding to `item`, we have the following
+       * - `pathToConstrained = ""`,
+       * - `tp = T1`,
        * - `constraint = IFoo`,
-       * - `path2 = "A"`, and
-       * - `tp2 = T1`.
+       * - `pathToTp = "A"`.
        */
       pragma[nomagic]
       private predicate typeParameterConstraintHasTypeParameter(
-        Declaration target, DeclarationPosition dpos, TypePath path1, TypeParameter tp1,
-        Type constraint, TypePath path2, TypeParameter tp2
+        Declaration target, AccessPosition apos, TypePath pathToConstrained, Type constraint,
+        TypePath pathToTp, TypeParameter tp
       ) {
-        tp1 = target.getTypeParameter(_) and
-        tp2 = target.getTypeParameter(_) and
-        tp1 != tp2 and
-        tp1 = target.getDeclaredType(dpos, path1) and
-        exists(TypeMention tm |
-          tm = getATypeParameterConstraint(tp1) and
-          tm.resolveTypeAt(path2) = tp2 and
-          constraint = resolveTypeMentionRoot(tm)
+        exists(DeclarationPosition dpos, TypeParameter constrainedTp |
+          accessDeclarationPositionMatch(apos, dpos) and
+          constrainedTp = target.getTypeParameter(_) and
+          tp = target.getTypeParameter(_) and
+          constrainedTp != tp and
+          constrainedTp = target.getDeclaredType(dpos, pathToConstrained) and
+          exists(TypeMention tm |
+            tm = getATypeParameterConstraint(constrainedTp) and
+            tm.resolveTypeAt(pathToTp) = tp and
+            constraint = resolveTypeMentionRoot(tm)
+          )
         )
       }
 
@@ -1409,15 +1406,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Access a, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
         not exists(getTypeArgument(a, target, tp, _)) and
-        target = a.getTarget() and
-        exists(
-          Type constraint, AccessPosition apos, DeclarationPosition dpos, TypePath pathToTp,
-          TypePath pathToTp2
-        |
-          accessDeclarationPositionMatch(apos, dpos) and
-          typeParameterConstraintHasTypeParameter(target, dpos, pathToTp2, _, constraint, pathToTp,
-            tp) and
-          AccessConstraint::satisfiesConstraintType(a, apos, pathToTp2, constraint,
+        exists(Type constraint, AccessPosition apos, TypePath pathToTp, TypePath pathToTp2 |
+          typeParameterConstraintHasTypeParameter(target, apos, pathToTp2, constraint, pathToTp, tp) and
+          AccessConstraint::satisfiesConstraintType(a, target, apos, pathToTp2, constraint,
             pathToTp.appendInverse(path), t)
         )
       }
