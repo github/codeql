@@ -7,6 +7,7 @@ import rust
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
+private import codeql.rust.Concepts
 private import codeql.rust.security.SensitiveData
 
 /**
@@ -44,7 +45,9 @@ module HardcodedCryptographicValue {
   /**
    * A data flow sink for hard-coded cryptographic value vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node {
+  abstract class Sink extends QuerySink::Range {
+    override string getSinkType() { result = "HardcodedCryptographicValue" }
+
     /**
      * Gets the kind of credential this sink is interpreted as.
      */
