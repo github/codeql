@@ -35,6 +35,10 @@ module SecureCookieConfig implements DataFlow::ConfigSig {
     sink.asExpr() =
       any(MethodCall add | add.getMethod() instanceof ResponseAddCookieMethod).getArgument(0)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively in InsecureCookie.ql
+  }
 }
 
 /** Data flow to reason about the failure to use secure cookies. */
