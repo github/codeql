@@ -1621,7 +1621,8 @@ private module ControlFlowGraphImpl {
         result.(AssertThrowNode).getAstNode() = assertstmt
       )
       or
-      last(assertstmt.getMessage(), n, NormalCompletion()) and
+      last(assertstmt.getMessage(), n, completion) and
+      completion = NormalCompletion() and
       result.(AssertThrowNode).getAstNode() = assertstmt
     )
     or
