@@ -3,18 +3,19 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>A format string, that is the string on the left hand side of an expression like <code>fmt % arguments</code>, must consist of legal conversion specifiers.
+<p>A printf-style format string (i.e. a string that is used as the left hand side of the <code>%</code> operator, such as <code>fmt % arguments</code>)
+must consist of valid conversion specifiers, such as <code>%s</code>, <code>%d</code>, etc.
 Otherwise, a <code>ValueError</code> will be raised.
 
 </p>
 
 </overview>
 <recommendation>
-<p>Choose a legal conversion specifier.</p>
+<p>Ensure a valid conversion specifier is used.</p>
 
 </recommendation>
 <example>
-<p>In <code>format_as_tuple_incorrect</code>, "t" is not a legal conversion specifier.
+<p>In the following example, <code>format_as_tuple_incorrect</code>, <code>%t</code> is not a valid conversion specifier.
 
 </p>
 <sample src="UnsupportedFormatCharacter.py" />
@@ -22,7 +23,7 @@ Otherwise, a <code>ValueError</code> will be raised.
 </example>
 <references>
 
-  <li>Python Library Reference: <a href="http://docs.python.org/library/stdtypes.html#string-formatting">String Formatting.</a> </li>
+  <li>Python Library Reference: <a href="https://docs.python.org/3/library/stdtypes.html#printf-style-string-formatting">printf-style String Formatting.</a> </li>
 
 </references>
 </qhelp>
