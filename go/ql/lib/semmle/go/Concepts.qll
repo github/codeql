@@ -8,6 +8,10 @@ import go
 import semmle.go.dataflow.FunctionInputsAndOutputs
 import semmle.go.concepts.HTTP
 import semmle.go.concepts.GeneratedFile
+private import codeql.concepts.ConceptsShared
+private import semmle.go.dataflow.internal.DataFlowImplSpecific
+
+private module ConceptsShared = ConceptsMake<Location, GoDataFlow>;
 
 /**
  * A data-flow node that executes an operating system command,
@@ -504,4 +508,32 @@ module UnmarshalingFunction {
     /** Gets an identifier for the format this function decodes from, such as "JSON". */
     abstract string getFormat();
   }
+}
+
+/**
+ * Provides models for cryptographic things.
+ */
+module Cryptography {
+  private import ConceptsShared::Cryptography as SC
+
+  /**
+   * A data-flow node that is an application of a cryptographic algorithm. For example,
+   * encryption, decryption, signature-validation.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `CryptographicOperation::Range` instead.
+   */
+  class CryptographicOperation extends SC::CryptographicOperation { }
+
+  class EncryptionAlgorithm = SC::EncryptionAlgorithm;
+
+  class HashingAlgorithm = SC::HashingAlgorithm;
+
+  class PasswordHashingAlgorithm = SC::PasswordHashingAlgorithm;
+
+  module CryptographicOperation = SC::CryptographicOperation;
+
+  class BlockMode = SC::BlockMode;
+
+  class CryptographicAlgorithm = SC::CryptographicAlgorithm;
 }
