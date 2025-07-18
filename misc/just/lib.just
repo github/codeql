@@ -29,7 +29,7 @@ _build_dist LANGUAGE: _require_semmle_code (_maybe_build_dist LANGUAGE)
 
 [no-exit-message]
 _maybe_build_dist LANGUAGE:
-    {{ cmd_sep }}{{ if SEMMLE_CODE == "" { '# using codeql from PATH, if any' } else { 'cd "$SEMMLE_CODE"; ./build target/intree/codeql-' + LANGUAGE } }}{{ cmd_sep }}
+    {{ cmd_sep }}{{ if SEMMLE_CODE == "" { '# using codeql from PATH, if any' } else { 'cd "$SEMMLE_CODE"; tools/bazel run //language-packs:intree-' + LANGUAGE } }}{{ cmd_sep }}
 
 
 default_db_checks := """\
