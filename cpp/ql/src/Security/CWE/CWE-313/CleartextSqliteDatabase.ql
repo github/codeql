@@ -123,6 +123,20 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
       content.(DataFlow::FieldContent).getField() = getRecField(t.stripType())
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    exists(SensitiveExpr sensitive | result = sensitive.getLocation() |
+      isSourceImpl(source, sensitive)
+    )
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(SqliteFunctionCall sqliteCall | result = sqliteCall.getLocation() |
+      isSinkImpl(sink, sqliteCall, _)
+    )
+  }
 }
 
 module FromSensitiveFlow = TaintTracking::Global<FromSensitiveConfig>;
