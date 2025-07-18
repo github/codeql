@@ -13,19 +13,21 @@ func crypto() {
 	public := []byte("hello")
 
 	password := []byte("123456")
-	buf := password // testing dataflow by passing into different variable
+
+	// testing dataflow by passing into different variable
+	buf := password // $ Source
 
 	// BAD, des is a weak crypto algorithm and password is sensitive data
-	des.NewTripleDESCipher(buf)
+	des.NewTripleDESCipher(buf) // $ Alert
 
 	// BAD, md5 is a weak crypto algorithm and password is sensitive data
-	md5.Sum(buf)
+	md5.Sum(buf) // $ Alert
 
 	// BAD, rc4 is a weak crypto algorithm and password is sensitive data
-	rc4.NewCipher(buf)
+	rc4.NewCipher(buf) // $ Alert
 
 	// BAD, sha1 is a weak crypto algorithm and password is sensitive data
-	sha1.Sum(buf)
+	sha1.Sum(buf) // $ Alert
 
 	// GOOD, password is sensitive data but aes is a strong crypto algorithm
 	aes.NewCipher(buf)
