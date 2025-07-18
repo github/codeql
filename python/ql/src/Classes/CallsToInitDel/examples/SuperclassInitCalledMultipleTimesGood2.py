@@ -14,7 +14,7 @@ class C(A):
         self.c = 2 
 
 class D(B,C):
-    def __init__(self): # GOOD: Each method calls super, so each init method runs once. self.stat =e will be set to "B".
+    def __init__(self): # GOOD: Each method calls super, so each init method runs once. self.state will be set to "B".
         super().__init__()
         self.d = 1
         
