@@ -112,13 +112,16 @@ predicate exposesSensitiveEndpoint(
         ep.getFile() = propFile and
         ep = jpOption.asSome() and
         (
-          ep.getValue() = "*" // all endpoints are exposed
+          // all endpoints are exposed
+          ep.getValue() = "*"
           or
-          ep.getValue()
-              .matches([
-                  "%dump%", "%trace%", "%logfile%", "%shutdown%", "%startup%", "%mappings%",
-                  "%env%", "%beans%", "%sessions%"
-                ]) // sensitive endpoints to check although all endpoints apart from '/health' are considered sensitive by Spring
+          // version 2.x: exposes health and info only by default
+          springBootVersion.matches("2.%") and
+          not ep.getValue() = ["health", "info"]
+          or
+          // version 3.x: exposes health only by default
+          springBootVersion.matches("3.%") and
+          not ep.getValue() = "health"
         )
       )
     )
