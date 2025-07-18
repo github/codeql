@@ -128,6 +128,14 @@ module UnhandledFileCloseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isWritableFileHandle(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isCloseSink(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    exists(DataFlow::CallNode openCall | result = openCall.getLocation() |
+      isWritableFileHandle(source, openCall)
+    )
+  }
 }
 
 /**
