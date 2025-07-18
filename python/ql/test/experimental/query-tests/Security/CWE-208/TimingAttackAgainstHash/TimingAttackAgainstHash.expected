@@ -10,5 +10,3 @@ nodes
 | TimingAttackAgainstHash.py:37:19:37:48 | ControlFlowNode for sign() | semmle.label | ControlFlowNode for sign() |
 subpaths
 #select
-| TimingAttackAgainstHash.py:27:24:27:32 | ControlFlowNode for signature | TimingAttackAgainstHash.py:26:17:26:41 | ControlFlowNode for Attribute() | TimingAttackAgainstHash.py:27:24:27:32 | ControlFlowNode for signature | Possible Timing attack against $@ validation. | TimingAttackAgainstHash.py:26:17:26:41 | ControlFlowNode for Attribute() | signature message |
-| TimingAttackAgainstHash.py:37:19:37:48 | ControlFlowNode for sign() | TimingAttackAgainstHash.py:30:12:30:47 | ControlFlowNode for Attribute() | TimingAttackAgainstHash.py:37:19:37:48 | ControlFlowNode for sign() | Possible Timing attack against $@ validation. | TimingAttackAgainstHash.py:30:12:30:47 | ControlFlowNode for Attribute() | MAC message |
