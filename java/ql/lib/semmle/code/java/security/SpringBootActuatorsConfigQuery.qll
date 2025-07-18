@@ -42,10 +42,13 @@ private class ManagementSecurityEnabledProperty extends JavaProperty {
   predicate hasSecurityDisabled() { this.getValue() = "false" }
 }
 
-/** The Spring Boot configuration property `management.endpoints.web.exposure.include`. */
-private class ManagementEndpointsIncludeProperty extends JavaProperty {
-  ManagementEndpointsIncludeProperty() {
-    this.getNameElement().getName() = "management.endpoints.web.exposure.include"
+/**
+ * The Spring Boot configuration property `management.endpoints.web.exposure.include`
+ * or `management.endpoints.web.expose`.
+ */
+private class ManagementEndpointsExposeProperty extends JavaProperty {
+  ManagementEndpointsExposeProperty() {
+    this.getNameElement().getName() = "management.endpoints.web." + ["exposure.include", "expose"]
   }
 
   /** Gets the whitespace-trimmed value of this property. */
@@ -105,13 +108,13 @@ predicate exposesSensitiveEndpoint(
       )
       or
       springBootVersion.matches(["2.%", "3.%"]) and //version 2.x and 3.x
-      exists(ManagementEndpointsIncludeProperty ip |
-        ip.getFile() = propFile and
-        ip = jpOption.asSome() and
+      exists(ManagementEndpointsExposeProperty ep |
+        ep.getFile() = propFile and
+        ep = jpOption.asSome() and
         (
-          ip.getValue() = "*" // all endpoints are exposed
+          ep.getValue() = "*" // all endpoints are exposed
           or
-          ip.getValue()
+          ep.getValue()
               .matches([
                   "%dump%", "%trace%", "%logfile%", "%shutdown%", "%startup%", "%mappings%",
                   "%env%", "%beans%", "%sessions%"
