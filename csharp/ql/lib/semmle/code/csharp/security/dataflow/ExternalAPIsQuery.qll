@@ -78,6 +78,8 @@ private module RemoteSourceToExternalApiConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** A module for tracking flow from `ActiveThreatModelSource`s to `ExternalApiDataNode`s. */

@@ -79,6 +79,8 @@ module TaintedPathConfig implements DataFlow::StateConfigSig {
     stateFrom instanceof NotNormalized and
     stateTo instanceof NormalizedUnchecked
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module TaintedPathFlow = TaintTracking::GlobalWithState<TaintedPathConfig>;

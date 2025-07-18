@@ -32,6 +32,8 @@ module AccessInvalidPointerConfig implements DataFlow::ConfigSig {
     // make sinks barriers so that we only report the closest instance
     isSink(node)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module AccessInvalidPointerFlow = TaintTracking::Global<AccessInvalidPointerConfig>;

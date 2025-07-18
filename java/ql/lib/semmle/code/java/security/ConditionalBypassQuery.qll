@@ -47,6 +47,15 @@ module ConditionalBypassFlowConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     endsWithStep(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(MethodCall m, Expr e | result = [m, e].getLocation() |
+      conditionControlsMethod(m, e) and
+      sink.asExpr() = e
+    )
+  }
 }
 
 /**

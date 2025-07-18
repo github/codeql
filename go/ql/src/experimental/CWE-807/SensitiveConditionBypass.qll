@@ -59,6 +59,14 @@ private module Config implements DataFlow::ConfigSig {
       not c.isPotentialFalsePositive()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(ComparisonExpr comp | result = comp.getLocation() | sink.asExpr() = comp.getAnOperand())
+  }
 }
 
 /**
