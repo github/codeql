@@ -7,4 +7,4 @@ test *ARGS=".": (_if_not_on_ci_just "generate" source_dir()) (_integration_test 
 
 # TODO in separate PR
 # [no-cd]
-# format *ARGS=".": (_ql_format ARGS) (_black ARGS)
+# format *ARGS=".": (_format_ql ARGS) (_format_py ARGS)

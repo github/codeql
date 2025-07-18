@@ -1,4 +1,5 @@
 import '../lib.just'
+import "../../ql/swift/ql/justfile"
 
 install: (_bazel "run" "@codeql//swift:install")
 
@@ -7,13 +8,7 @@ build: (_build_dist "swift")
 
 generate: (_bazel "run" "@codeql//swift/codegen")
 
-@_check_clang_format:
-    if ! which clang-format > /dev/null; then \
-        "{{ JUST_EXECUTABLE }}" _run_in_semmle_code "tools/bazel" "run" "//c/clang-format:install"; \
-    fi
-
-format ARGS=".": _check_clang_format (_run "clang-format" "-i" ("$(find " + ARGS + " -type f -name '*.h' -or -name '*.cpp')"))
-import "../../ql/swift/ql/justfile"
+format ARGS=".": (_format_cpp ARGS)
 
 [group('test')]
 language-tests *EXTRA_ARGS: (_language_tests EXTRA_ARGS source_dir() 'ql/test')

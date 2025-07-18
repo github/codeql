@@ -6,4 +6,4 @@ test *ARGS=".": (_just "generate") (_integration_test ARGS)
 
 # TODO in separate PR
 # [no-cd]
-# format *ARGS=".": (_ql_format ARGS) (_black ARGS)
+# format *ARGS=".": (_format_ql ARGS) (_format_py ARGS)
