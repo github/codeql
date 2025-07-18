@@ -1,1 +1,4 @@
-experimental/CWE-327/WeakCryptoAlgorithm.ql
+query: Security/CWE-327/WeakCryptoAlgorithm.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql
