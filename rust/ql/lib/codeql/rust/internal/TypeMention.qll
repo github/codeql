@@ -61,13 +61,14 @@ class PathTypeMention extends TypeMention, Path {
 
   TypeItemNode getResolved() { result = resolved }
 
+  /**
+   * Gets a type alias with the name `name` of the trait that this path resolves
+   * to, if any.
+   */
   pragma[nomagic]
   private TypeAlias getResolvedTraitAlias(string name) {
-    exists(TraitItemNode trait |
-      trait = resolved and
-      result = trait.getAnAssocItem() and
-      name = result.getName().getText()
-    )
+    result = resolved.(TraitItemNode).getAnAssocItem() and
+    name = result.getName().getText()
   }
 
   pragma[nomagic]
@@ -140,6 +141,48 @@ class PathTypeMention extends TypeMention, Path {
     )
   }
 
+  /** Gets the type mention in this path for the type parameter `tp`, if any. */
+  pragma[nomagic]
+  private TypeMention getTypeMentionForTypeParameter(TypeParameter tp) {
+    not exists(resolved.(TypeAlias).getTypeRepr()) and
+    (
+      exists(int i |
+        result = this.getPositionalTypeArgument(pragma[only_bind_into](i)) and
+        tp = this.resolveType().getTypeParameter(pragma[only_bind_into](i))
+      )
+      or
+      exists(TypeAlias alias |
+        result = this.getAnAssocTypeArgument(alias) and
+        tp = TAssociatedTypeTypeParameter(alias)
+      )
+      or
+      // If `path` is the trait of an `impl` block then any associated types
+      // defined in the `impl` block are type arguments to the trait.
+      //
+      // For instance, for a trait implementation like this
+      // ```rust
+      // impl MyTrait for MyType {
+      //      ^^^^^^^ path
+      //   type AssociatedType = i64
+      //                         ^^^ result
+      //   // ...
+      // }
+      // ```
+      // the rhs. of the type alias is a type argument to the trait.
+      exists(ImplItemNode impl, AssociatedTypeTypeParameter param, TypeAlias alias, string name |
+        this = impl.getTraitPath() and
+        param.getTrait() = resolved and
+        name = param.getTypeAlias().getName().getText() and
+        alias = impl.getASuccessor(pragma[only_bind_into](name)) and
+        result = alias.getTypeRepr() and
+        tp =
+          TAssociatedTypeTypeParameter(resolved
+                .(TraitItemNode)
+                .getAssocItem(pragma[only_bind_into](name)))
+      )
+    )
+  }
+
   override Type resolveTypeAt(TypePath typePath) {
     result = this.aliasResolveTypeAt(typePath)
     or
@@ -162,45 +205,9 @@ class PathTypeMention extends TypeMention, Path {
       result = TAssociatedTypeTypeParameter(resolved)
     )
     or
-    not exists(resolved.(TypeAlias).getTypeRepr()) and
-    exists(TypeParameter tp, TypeMention arg, TypePath suffix |
-      result = arg.resolveTypeAt(suffix) and
+    exists(TypeParameter tp, TypePath suffix |
+      result = this.getTypeMentionForTypeParameter(tp).resolveTypeAt(suffix) and
       typePath = TypePath::cons(tp, suffix)
-    |
-      exists(int i |
-        arg = this.getPositionalTypeArgument(pragma[only_bind_into](i)) and
-        tp = this.resolveType().getTypeParameter(pragma[only_bind_into](i))
-      )
-      or
-      exists(TypeAlias alias |
-        arg = this.getAnAssocTypeArgument(alias) and
-        tp = TAssociatedTypeTypeParameter(alias)
-      )
-      or
-      // If `path` is the trait of an `impl` block then any associated types
-      // defined in the `impl` block are type arguments to the trait.
-      //
-      // For instance, for a trait implementation like this
-      // ```rust
-      // impl MyTrait for MyType {
-      //      ^^^^^^^ path
-      //   type AssociatedType = i64
-      //                         ^^^ result
-      //   // ...
-      // }
-      // ```
-      // the rhs. of the type alias is a type argument to the trait.
-      exists(ImplItemNode impl, AssociatedTypeTypeParameter param, TypeAlias alias, string name |
-        this = impl.getTraitPath() and
-        param.getTrait() = resolved and
-        name = param.getTypeAlias().getName().getText() and
-        alias = impl.getASuccessor(pragma[only_bind_into](name)) and
-        arg = alias.getTypeRepr() and
-        tp =
-          TAssociatedTypeTypeParameter(resolved
-                .(TraitItemNode)
-                .getAssocItem(pragma[only_bind_into](name)))
-      )
     )
   }
 }
