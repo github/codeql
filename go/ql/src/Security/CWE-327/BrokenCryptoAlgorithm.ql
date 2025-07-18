@@ -12,10 +12,10 @@
  */
 
 import go
-import semmle.go.security.WeakCryptoAlgorithmCustomizations
-import WeakCryptoAlgorithm::Flow::PathGraph
+import semmle.go.security.BrokenCryptoAlgorithmQuery
+import BrokenCryptoAlgorithmFlow::PathGraph
 
-from WeakCryptoAlgorithm::Flow::PathNode source, WeakCryptoAlgorithm::Flow::PathNode sink
-where WeakCryptoAlgorithm::Flow::flowPath(source, sink)
+from BrokenCryptoAlgorithmFlow::PathNode source, BrokenCryptoAlgorithmFlow::PathNode sink
+where BrokenCryptoAlgorithmFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "$@ is used in a weak cryptographic algorithm.",
   source.getNode(), "Sensitive data"
