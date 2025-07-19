@@ -50,13 +50,24 @@ class SliceTypeReprMention extends TypeMention instanceof SliceTypeRepr {
   }
 }
 
+/** Holds if `path` is used as a type mention during type inference. */
+predicate relevantPathTypeMention(Path path) {
+  path =
+    [
+      any(PathTypeRepr r).getPath(),
+      any(StructExpr s).getPath().getQualifier*(),
+      any(CallExpr ce).getFunction().(PathExpr).getPath().getQualifier*(),
+      any(StructPat p).getPath(),
+      any(TupleStructPat p).getPath()
+    ]
+}
+
 class PathTypeMention extends TypeMention, Path {
   TypeItemNode resolved;
 
   PathTypeMention() {
-    resolved = resolvePath(this)
-    or
-    resolved = resolvePath(this).(Variant).getEnum()
+    relevantPathTypeMention(this) and
+    resolved = [resolvePath(this), resolvePath(this).(Variant).getEnum().(TypeItemNode)]
   }
 
   TypeItemNode getResolved() { result = resolved }
