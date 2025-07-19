@@ -46,6 +46,7 @@ ql/java/ql/src/Security/CWE/CWE-200/AndroidSensitiveTextField.ql
 ql/java/ql/src/Security/CWE/CWE-200/AndroidWebViewSettingsAllowsContentAccess.ql
 ql/java/ql/src/Security/CWE/CWE-200/AndroidWebViewSettingsFileAccess.ql
 ql/java/ql/src/Security/CWE/CWE-200/SpringBootActuators.ql
+ql/java/ql/src/Security/CWE/CWE-200/SpringBootActuatorsConfig/SpringBootActuatorsConfig.ql
 ql/java/ql/src/Security/CWE/CWE-200/TempDirLocalInformationDisclosure.ql
 ql/java/ql/src/Security/CWE/CWE-209/SensitiveDataExposureThroughErrorMessage.ql
 ql/java/ql/src/Security/CWE/CWE-209/StackTraceExposure.ql
