@@ -161,7 +161,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
     // If a type argument is not given in the path, then we use the default for
     // the type parameter if one exists for the type.
     not exists(this.getPositionalTypeArgument0(i)) and
-    result = this.resolveType().getTypeParameterDefault(i) and
+    result = this.resolveRootType().getTypeParameterDefault(i) and
     // Defaults only apply to type mentions in type annotations
     this = any(PathTypeRepr ptp).getPath().getQualifier*()
   }
@@ -171,7 +171,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
   private TypeMention getTypeMentionForTypeParameter(TypeParameter tp) {
     exists(int i |
       result = this.getPositionalTypeArgument(pragma[only_bind_into](i)) and
-      tp = this.resolveType().getTypeParameter(pragma[only_bind_into](i))
+      tp = this.resolveRootType().getTypeParameter(pragma[only_bind_into](i))
     )
     or
     exists(TypeAlias alias |
@@ -205,25 +205,27 @@ class NonAliasPathTypeMention extends PathTypeMention {
     )
   }
 
+  Type resolveRootType() {
+    result = TStruct(resolved)
+    or
+    result = TEnum(resolved)
+    or
+    exists(TraitItemNode trait | trait = resolved |
+      // If this is a `Self` path, then it resolves to the implicit `Self`
+      // type parameter, otherwise it is a trait bound.
+      if this = trait.getASelfPath()
+      then result = TSelfTypeParameter(trait)
+      else result = TTrait(trait)
+    )
+    or
+    result = TTypeParamTypeParameter(resolved)
+    or
+    result = TAssociatedTypeTypeParameter(resolved)
+  }
+
   override Type resolveTypeAt(TypePath typePath) {
     typePath.isEmpty() and
-    (
-      result = TStruct(resolved)
-      or
-      result = TEnum(resolved)
-      or
-      exists(TraitItemNode trait | trait = resolved |
-        // If this is a `Self` path, then it resolves to the implicit `Self`
-        // type parameter, otherwise it is a trait bound.
-        if this = trait.getASelfPath()
-        then result = TSelfTypeParameter(trait)
-        else result = TTrait(trait)
-      )
-      or
-      result = TTypeParamTypeParameter(resolved)
-      or
-      result = TAssociatedTypeTypeParameter(resolved)
-    )
+    result = this.resolveRootType()
     or
     exists(TypeParameter tp, TypePath suffix |
       result = this.getTypeMentionForTypeParameter(tp).resolveTypeAt(suffix) and
