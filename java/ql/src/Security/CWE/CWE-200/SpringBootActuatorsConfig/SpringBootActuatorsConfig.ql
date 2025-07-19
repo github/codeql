@@ -15,11 +15,6 @@ import java
 import semmle.code.xml.MavenPom
 import semmle.code.java.security.SpringBootActuatorsConfigQuery
 
-from SpringBootStarterActuatorDependency d, JavaPropertyOption jpOption, SpringBootPom pom
-where
-  exposesSensitiveEndpoint(d, jpOption) and
-  // TODO: remove pom; for debugging versions
-  d = pom.getADependency()
-select d,
-  "Insecure Spring Boot actuator $@ exposes sensitive endpoints (" +
-    pom.getParentElement().getVersionString() + ").", jpOption, "configuration"
+from SpringBootStarterActuatorDependency d, JavaPropertyOption jpOption
+where exposesSensitiveEndpoint(d, jpOption)
+select d, "Insecure Spring Boot actuator $@ exposes sensitive endpoints.", jpOption, "configuration"

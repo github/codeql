@@ -11,9 +11,8 @@ private class SpringBootParent extends Parent {
   SpringBootParent() { this.getGroup().getValue() = "org.springframework.boot" }
 }
 
-// TODO: private once done with version string debugging in alert msg.
 /** A `Pom` with a Spring Boot parent node. */
-class SpringBootPom extends Pom {
+private class SpringBootPom extends Pom {
   SpringBootPom() { this.getParentElement() instanceof SpringBootParent }
 
   /** Holds if the Spring Boot Security module is used in the project. */
