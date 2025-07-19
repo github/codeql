@@ -16,5 +16,5 @@ nodes
 | ImproperLdapAuth.rb:31:24:31:27 | pass | semmle.label | pass |
 subpaths
 #select
-| ImproperLdapAuth.rb:15:23:15:26 | pass | ImproperLdapAuth.rb:5:12:5:17 | call to params | ImproperLdapAuth.rb:15:23:15:26 | pass | This LDAP authencation depends on a $@. | ImproperLdapAuth.rb:5:12:5:17 | call to params | user-provided value |
-| ImproperLdapAuth.rb:31:24:31:27 | pass | ImproperLdapAuth.rb:24:12:24:17 | call to params | ImproperLdapAuth.rb:31:24:31:27 | pass | This LDAP authencation depends on a $@. | ImproperLdapAuth.rb:24:12:24:17 | call to params | user-provided value |
+| ImproperLdapAuth.rb:15:23:15:26 | pass | ImproperLdapAuth.rb:5:12:5:17 | call to params | ImproperLdapAuth.rb:15:23:15:26 | pass | This LDAP authentication depends on a $@. | ImproperLdapAuth.rb:5:12:5:17 | call to params | user-provided value |
+| ImproperLdapAuth.rb:31:24:31:27 | pass | ImproperLdapAuth.rb:24:12:24:17 | call to params | ImproperLdapAuth.rb:31:24:31:27 | pass | This LDAP authentication depends on a $@. | ImproperLdapAuth.rb:24:12:24:17 | call to params | user-provided value |

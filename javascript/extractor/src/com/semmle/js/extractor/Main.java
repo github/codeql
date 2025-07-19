@@ -18,9 +18,7 @@ import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.extractor.FileExtractor.FileType;
 import com.semmle.js.extractor.trapcache.ITrapCache;
 import com.semmle.js.parser.ParsedProject;
-import com.semmle.ts.extractor.TypeExtractor;
 import com.semmle.ts.extractor.TypeScriptParser;
-import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.data.UnitParser;
 import com.semmle.util.exception.ResourceError;
@@ -79,7 +77,6 @@ public class Main {
   private PathMatcher includeMatcher, excludeMatcher;
   private FileExtractor fileExtractor;
   private ExtractorState extractorState;
-  private Set<File> projectFiles = new LinkedHashSet<>();
   private Set<File> files = new LinkedHashSet<>();
   private final Set<File> extractedFiles = new LinkedHashSet<>();
 
@@ -121,10 +118,6 @@ public class Main {
     }
 
     // Sort files for determinism
-    projectFiles = projectFiles.stream()
-          .sorted(AutoBuild.FILE_ORDERING)
-          .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
-
     files = files.stream()
         .sorted(AutoBuild.FILE_ORDERING)
         .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
@@ -142,53 +135,22 @@ public class Main {
       tsParser.verifyInstallation(!ap.has(P_QUIET));
     }
 
-    for (File projectFile : projectFiles) {
-
-      long start = verboseLogStartTimer(ap, "Opening project " + projectFile);
-      ParsedProject project = tsParser.openProject(projectFile, DependencyInstallationResult.empty, extractorConfig.getVirtualSourceRoot());
-      verboseLogEndTimer(ap, start);
-      // Extract all files belonging to this project which are also matched
-      // by our include/exclude filters.
-      List<File> filesToExtract = new ArrayList<>();
-      for (File sourceFile : project.getOwnFiles()) {
-        File normalizedFile = normalizeFile(sourceFile);
-        if ((files.contains(normalizedFile) || extractorState.getSnippets().containsKey(normalizedFile.toPath()))
-            && !extractedFiles.contains(sourceFile.getAbsoluteFile())
-            && FileType.TYPESCRIPT.getExtensions().contains(FileUtil.extension(sourceFile))) {
-          filesToExtract.add(sourceFile);
-        }
-      }
-      tsParser.prepareFiles(filesToExtract);
-      for (int i = 0; i < filesToExtract.size(); ++i) {
-        ensureFileIsExtracted(filesToExtract.get(i), ap);
-      }
-      // Close the project to free memory. This does not need to be in a `finally` as
-      // the project is not a system resource.
-      tsParser.closeProject(projectFile);
-    }
-
-    if (!projectFiles.isEmpty()) {
-      // Extract all the types discovered when extracting the ASTs.
-      TypeTable typeTable = tsParser.getTypeTable();
-      extractTypeTable(projectFiles.iterator().next(), typeTable);
-    }
-
-    List<File> remainingTypescriptFiles = new ArrayList<>();
+    List<File> typeScriptFiles = new ArrayList<>();
     for (File f : files) {
       if (!extractedFiles.contains(f.getAbsoluteFile())
           && FileType.forFileExtension(f) == FileType.TYPESCRIPT) {
-        remainingTypescriptFiles.add(f);
+        typeScriptFiles.add(f);
       }
     }
     for (Map.Entry<Path, FileSnippet> entry : extractorState.getSnippets().entrySet()) {
       if (!extractedFiles.contains(entry.getKey().toFile())
           && FileType.forFileExtension(entry.getKey().toFile()) == FileType.TYPESCRIPT) {
-        remainingTypescriptFiles.add(entry.getKey().toFile());
+        typeScriptFiles.add(entry.getKey().toFile());
       }
     }
-    if (!remainingTypescriptFiles.isEmpty()) {
-      tsParser.prepareFiles(remainingTypescriptFiles);
-      for (File f : remainingTypescriptFiles) {
+    if (!typeScriptFiles.isEmpty()) {
+      tsParser.prepareFiles(typeScriptFiles);
+      for (File f : typeScriptFiles) {
         ensureFileIsExtracted(f, ap);
       }
     }
@@ -223,21 +185,6 @@ public class Main {
       }
     }
     return false;
-  }
-
-  private void extractTypeTable(File fileHandle, TypeTable table) {
-    TrapWriter trapWriter =
-        extractorOutputConfig
-            .getTrapWriterFactory()
-            .mkTrapWriter(
-                new File(
-                    fileHandle.getParentFile(),
-                    fileHandle.getName() + ".codeql-typescript-typetable"));
-    try {
-      new TypeExtractor(trapWriter, table).extract();
-    } finally {
-      FileUtil.close(trapWriter);
-    }
   }
 
   private void ensureFileIsExtracted(File f, ArgsParser ap) {
@@ -304,11 +251,8 @@ public class Main {
     includes.add("**/.babelrc*.json");
 
 
-    // extract TypeScript if `--typescript` or `--typescript-full` was specified
-    if (getTypeScriptMode(ap) != TypeScriptMode.NONE) {
-      addIncludesFor(includes, FileType.TYPESCRIPT);
-      includes.add("**/*tsconfig*.json");
-    }
+    addIncludesFor(includes, FileType.TYPESCRIPT);
+    includes.add("**/*tsconfig*.json");
 
     // add explicit include patterns
     for (String pattern : ap.getZeroOrMore(P_INCLUDE))
@@ -442,12 +386,6 @@ public class Main {
     return ap.has(P_EXPERIMENTAL) || ap.has(P_JSCRIPT) || ap.has(P_MOZ_EXTENSIONS);
   }
 
-  private static TypeScriptMode getTypeScriptMode(ArgsParser ap) {
-    if (ap.has(P_TYPESCRIPT_FULL)) return TypeScriptMode.FULL;
-    if (ap.has(P_TYPESCRIPT)) return TypeScriptMode.BASIC;
-    return TypeScriptMode.NONE;
-  }
-
   private Path inferSourceRoot(ArgsParser ap) {
     List<File> files = getFilesArg(ap);
     Path sourceRoot = files.iterator().next().toPath().toAbsolutePath().getParent();
@@ -478,7 +416,6 @@ public class Main {
             .withFileType(getFileType(ap))
             .withSourceType(ap.getEnum(P_SOURCE_TYPE, SourceType.class, SourceType.AUTO))
             .withExtractLines(ap.has(P_EXTRACT_PROGRAM_TEXT))
-            .withTypeScriptMode(getTypeScriptMode(ap))
             .withTypeScriptRam(
                 ap.has(P_TYPESCRIPT_RAM)
                     ? UnitParser.parseOpt(ap.getString(P_TYPESCRIPT_RAM), UnitParser.MEGABYTES)
@@ -541,12 +478,6 @@ public class Main {
       if (fileExtractor.supports(root)
           && (explicit || includeMatcher.matches(path) && !excludeMatcher.matches(path))) {
         files.add(normalizeFile(root));
-      }
-
-      if (extractorConfig.getTypeScriptMode() == TypeScriptMode.FULL
-          && AutoBuild.treatAsTSConfig(root.getName())
-          && !excludeMatcher.matches(path)) {
-        projectFiles.add(root);
       }
     }
   }

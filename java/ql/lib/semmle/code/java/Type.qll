@@ -422,6 +422,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
    * This does not include itself, unless this type is part of a cycle
    * in the type hierarchy.
    */
+  overlay[caller?]
   RefType getAStrictAncestor() { result = this.getASupertype().getAnAncestor() }
 
   /**
@@ -1260,12 +1261,19 @@ private Type erase(Type t) {
  *
  * For the definition of the notion of *erasure* see JLS v8, section 4.6 (Type Erasure).
  */
+bindingset[t1, t2]
 overlay[caller?]
-pragma[inline]
+pragma[inline_late]
 predicate haveIntersection(RefType t1, RefType t2) {
   exists(RefType e1, RefType e2 | e1 = erase(t1) and e2 = erase(t2) |
-    erasedHaveIntersection(e1, e2)
+    erasedHaveIntersectionFilter(e1, e2)
   )
+}
+
+bindingset[t1, t2]
+pragma[inline_late]
+private predicate erasedHaveIntersectionFilter(RefType t1, RefType t2) {
+  erasedHaveIntersection(t1, t2)
 }
 
 /**

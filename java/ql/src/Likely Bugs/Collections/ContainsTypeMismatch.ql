@@ -103,8 +103,8 @@ class MismatchedContainerAccess extends MethodCall {
     |
       this.getCallee()
           .getDeclaringType()
-          .getASourceSupertype*()
           .getSourceDeclaration()
+          .getASourceSupertype*()
           .hasQualifiedName(package, type) and
       this.getCallee().getParameter(i).getType() instanceof TypeObject
     )
@@ -119,7 +119,7 @@ class MismatchedContainerAccess extends MethodCall {
       containerAccess(package, type, p, this.getCallee().getSignature(), i)
     |
       t = this.getCallee().getDeclaringType() and
-      t.getASourceSupertype*().getSourceDeclaration() = g and
+      t.getSourceDeclaration().getASourceSupertype*() = g and
       g.hasQualifiedName(package, type) and
       indirectlyInstantiates(t, g, p, result)
     )

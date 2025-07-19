@@ -7,6 +7,16 @@
 
 import rust
 
+pragma[nomagic]
+private predicate resolvesAsItem(Resolvable r, Item i) {
+  r.getResolvedPath() = i.getExtendedCanonicalPath() and
+  (
+    r.getResolvedCrateOrigin() = i.getCrateOrigin()
+    or
+    not r.hasResolvedCrateOrigin() and not i.hasCrateOrigin()
+  )
+}
+
 private signature module ResolvableSig {
   class Source {
     string toString();
@@ -94,7 +104,7 @@ private module PathResolution implements ResolvableSig {
 private module RustAnalyzerPathResolution implements CompareSig<PathResolution> {
   predicate isResolvable(PathResolution::Source s) { s.hasResolvedPath() }
 
-  Item resolve(PathResolution::Source s) { s.resolvesAsItem(result) }
+  Item resolve(PathResolution::Source s) { resolvesAsItem(s, result) }
 }
 
 private module QlPathResolution implements CompareSig<PathResolution> {
@@ -133,7 +143,7 @@ private module RustAnalyzerCallGraph implements CompareSig<CallGraph> {
     CallExprBaseImpl::getCallResolvable(c).hasResolvedPath()
   }
 
-  Item resolve(CallExprBase c) { CallExprBaseImpl::getCallResolvable(c).resolvesAsItem(result) }
+  Item resolve(CallExprBase c) { resolvesAsItem(CallExprBaseImpl::getCallResolvable(c), result) }
 }
 
 private module QlCallGraph implements CompareSig<CallGraph> {

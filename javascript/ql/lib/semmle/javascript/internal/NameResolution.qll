@@ -17,6 +17,7 @@ module NameResolution {
    * A node in a graph which we use to perform name and type resolution.
    */
   class Node extends NodeBase {
+    /** Gets a string representation of this node. */
     string toString() {
       result = this.(AstNode).toString()
       or
@@ -25,6 +26,7 @@ module NameResolution {
       result = this.(JSDocTypeExpr).toString()
     }
 
+    /** Gets the location of this node. */
     Location getLocation() {
       result = this.(AstNode).getLocation()
       or
@@ -44,6 +46,9 @@ module NameResolution {
       this instanceof Module
       or
       this instanceof NamespaceDefinition // `module {}` or `enum {}` statement
+      or
+      // A module wrapped in a promise. We model this as a module exporting the actual module in a property called `$$promise-content`.
+      this instanceof DynamicImportExpr
     }
   }
 
@@ -230,6 +235,19 @@ module NameResolution {
       name = expr.getName() and
       node2 = expr
     )
+    or
+    exists(AwaitExpr await |
+      node1 = await.getOperand() and
+      name = "$$promise-content" and
+      node2 = await
+    )
+    or
+    exists(MethodCallExpr call |
+      call.getMethodName() = "then" and
+      node1 = call.getReceiver() and
+      name = "$$promise-content" and
+      node2 = call.getArgument(0).(Function).getParameter(0)
+    )
   }
 
   private signature module TypeResolutionInputSig {
@@ -332,6 +350,12 @@ module NameResolution {
       )
       or
       storeToVariable(result, name, mod.(Closure::ClosureModule).getExportsVariable())
+      or
+      exists(DynamicImportExpr imprt |
+        mod = imprt and
+        name = "$$promise-content" and
+        result = imprt.getImportedPathExpr()
+      )
     }
 
     /**
@@ -407,6 +431,10 @@ module NameResolution {
    * Gets a node to which the given module flows.
    */
   predicate trackModule = ValueFlow::TrackNode<ModuleLike>::track/1;
+
+  predicate trackClassValue = ValueFlow::TrackNode<ClassDefinition>::track/1;
+
+  predicate trackFunctionValue = ValueFlow::TrackNode<Function>::track/1;
 
   /**
    * Holds if `moduleName` appears to start with a package name, as opposed to a relative file import.
@@ -508,5 +536,26 @@ module NameResolution {
       readStep(mid, step, node) and
       qualifiedName = append(prefix, step)
     )
+  }
+
+  pragma[nomagic]
+  predicate classHasGlobalName(DataFlow::ClassNode cls, string name) {
+    cls.flowsTo(AccessPath::getAnAssignmentTo(name)) and
+    not cls.getTopLevel().isExterns() // don't propagate externs classes
+  }
+
+  /**
+   * Holds if `node` refers to the given class.
+   */
+  pragma[nomagic]
+  predicate nodeRefersToClass(Node node, DataFlow::ClassNode cls) {
+    exists(string name |
+      classHasGlobalName(cls, name) and
+      nodeRefersToModule(node, "global", name)
+    )
+    or
+    trackClassValue(cls.getAstNode()) = node
+    or
+    trackFunctionValue(cls.getAstNode()) = node
   }
 }

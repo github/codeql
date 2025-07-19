@@ -270,7 +270,7 @@ fn test_operator_overloading() {
     let a = MyInt { value: source(27) };
     // The line below is what the prefix `*` desugars to.
     let c = *Deref::deref(&a);
-    sink(c); // $ MISSING: hasValueFlow=27
+    sink(c); // $ hasValueFlow=27
 
     let a = MyInt { value: source(28) };
     let c = *a;

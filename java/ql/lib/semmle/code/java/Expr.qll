@@ -7,6 +7,7 @@ module;
 import java
 private import semmle.code.java.frameworks.android.Compose
 private import semmle.code.java.Constants
+private import semmle.code.java.Overlay
 
 /** A common super-class that represents all kinds of expressions. */
 class Expr extends ExprParent, @expr {
@@ -2701,3 +2702,6 @@ class RecordPatternExpr extends Expr, @recordpatternexpr {
     )
   }
 }
+
+overlay[local]
+private class DiscardableExpr extends DiscardableLocatable, @expr { }

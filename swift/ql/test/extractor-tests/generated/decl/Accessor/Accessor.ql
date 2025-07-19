@@ -36,6 +36,14 @@ query predicate instances(
   else isUnsafeMutableAddress = "no"
 }
 
+query predicate getGenericTypeParam(Accessor x, int index, GenericTypeParamDecl getGenericTypeParam) {
+  toBeTested(x) and not x.isUnknown() and getGenericTypeParam = x.getGenericTypeParam(index)
+}
+
+query predicate getMember(Accessor x, int index, Decl getMember) {
+  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
+}
+
 query predicate getName(Accessor x, string getName) {
   toBeTested(x) and not x.isUnknown() and getName = x.getName()
 }
@@ -54,12 +62,4 @@ query predicate getBody(Accessor x, BraceStmt getBody) {
 
 query predicate getCapture(Accessor x, int index, CapturedDecl getCapture) {
   toBeTested(x) and not x.isUnknown() and getCapture = x.getCapture(index)
-}
-
-query predicate getGenericTypeParam(Accessor x, int index, GenericTypeParamDecl getGenericTypeParam) {
-  toBeTested(x) and not x.isUnknown() and getGenericTypeParam = x.getGenericTypeParam(index)
-}
-
-query predicate getMember(Accessor x, int index, Decl getMember) {
-  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
 }

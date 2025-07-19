@@ -1,6 +1,6 @@
 multipleCallTargets
 | main.rs:118:9:118:11 | f(...) |
-| proc_macro.rs:10:10:10:12 | ...::to_tokens(...) |
+| proc_macro.rs:9:5:11:5 | ...::new(...) |
 multiplePathResolutions
 | main.rs:626:3:626:12 | proc_macro |
 | main.rs:632:7:632:16 | proc_macro |

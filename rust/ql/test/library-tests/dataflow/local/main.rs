@@ -529,7 +529,7 @@ fn conversions() {
 
     sink(a as i64); // $ hasTaintFlow=50
     sink(a.into()); // $ MISSING: hasValueFlow=50
-    sink(i64::from(a)); // $ hasTaintFlow=50
+    sink(i64::from(a)); // $ MISSING: hasTaintFlow=50 -- we cannot resolve the `impl<T> From<T> for T` implementation
 
     let b: i32 = source(51) as i32;
 

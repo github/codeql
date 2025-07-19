@@ -2,8 +2,8 @@ canonicalPath
 | anonymous.rs:3:1:32:1 | fn canonicals | test::anonymous::canonicals |
 | anonymous.rs:34:1:36:1 | fn other | test::anonymous::other |
 | {EXTERNAL LOCATION} | fn trim | <core::str>::trim |
-| lib.rs:1:1:1:14 | mod anonymous | test::anonymous |
-| lib.rs:2:1:2:12 | mod regular | test::regular |
+| lib.rs:1:1:1:18 | mod anonymous | test::anonymous |
+| lib.rs:2:1:2:16 | mod regular | test::regular |
 | regular.rs:1:1:2:18 | struct Struct | test::regular::Struct |
 | regular.rs:2:12:2:17 | fn eq | <test::regular::Struct as core::cmp::PartialEq>::eq |
 | regular.rs:2:12:2:17 | impl ...::Eq for Struct::<...> { ... } | <test::regular::Struct as core::cmp::Eq> |
@@ -25,6 +25,12 @@ canonicalPath
 | regular.rs:40:1:46:1 | fn enum_qualified_usage | test::regular::enum_qualified_usage |
 | regular.rs:48:1:55:1 | fn enum_unqualified_usage | test::regular::enum_unqualified_usage |
 | regular.rs:57:1:63:1 | fn enum_match | test::regular::enum_match |
+| regular.rs:66:5:66:40 | fn is_alphanum | test::regular::is_alphanum |
+| regular.rs:69:1:71:1 | fn is_number_or_letter | test::regular::is_number_or_letter |
+| regular.rs:73:1:75:1 | trait Abs | test::regular::Abs |
+| regular.rs:74:5:74:25 | fn abs | <_ as test::regular::Abs>::abs |
+| regular.rs:77:1:85:1 | impl Abs for i32 { ... } | <core::i32 as test::regular::Abs> |
+| regular.rs:78:5:84:5 | fn abs | <core::i32 as test::regular::Abs>::abs |
 canonicalPaths
 | anonymous.rs:1:1:1:26 | use ...::Trait | None | None |
 | anonymous.rs:3:1:32:1 | fn canonicals | repo::test | crate::anonymous::canonicals |
@@ -42,8 +48,8 @@ canonicalPaths
 | anonymous.rs:26:5:31:5 | fn usage | None | None |
 | anonymous.rs:34:1:36:1 | fn other | repo::test | crate::anonymous::other |
 | anonymous.rs:35:5:35:23 | struct OtherStruct | None | None |
-| lib.rs:1:1:1:14 | mod anonymous | repo::test | crate::anonymous |
-| lib.rs:2:1:2:12 | mod regular | repo::test | crate::regular |
+| lib.rs:1:1:1:18 | mod anonymous | repo::test | crate::anonymous |
+| lib.rs:2:1:2:16 | mod regular | repo::test | crate::regular |
 | regular.rs:1:1:2:18 | struct Struct | repo::test | crate::regular::Struct |
 | regular.rs:2:12:2:17 | fn eq | repo::test | <crate::regular::Struct as crate::cmp::PartialEq>::eq |
 | regular.rs:2:12:2:17 | impl ...::Eq for Struct::<...> { ... } | None | None |
@@ -65,6 +71,13 @@ canonicalPaths
 | regular.rs:48:1:55:1 | fn enum_unqualified_usage | repo::test | crate::regular::enum_unqualified_usage |
 | regular.rs:51:5:51:18 | use MyEnum::* | None | None |
 | regular.rs:57:1:63:1 | fn enum_match | repo::test | crate::regular::enum_match |
+| regular.rs:65:1:67:1 | ExternBlock | None | None |
+| regular.rs:66:5:66:40 | fn is_alphanum | repo::test | ::is_alphanum |
+| regular.rs:69:1:71:1 | fn is_number_or_letter | repo::test | crate::regular::is_number_or_letter |
+| regular.rs:73:1:75:1 | trait Abs | repo::test | crate::regular::Abs |
+| regular.rs:74:5:74:25 | fn abs | repo::test | crate::regular::Abs::abs |
+| regular.rs:77:1:85:1 | impl Abs for i32 { ... } | None | None |
+| regular.rs:78:5:84:5 | fn abs | repo::test | <i32 as crate::regular::Abs>::abs |
 resolvedPaths
 | anonymous.rs:27:17:27:30 | OtherStruct {...} | None | None |
 | anonymous.rs:28:9:28:9 | s | None | None |
@@ -96,3 +109,8 @@ resolvedPaths
 | regular.rs:59:9:59:24 | ...::Variant1 | repo::test | crate::regular::MyEnum::Variant1 |
 | regular.rs:60:9:60:27 | ...::Variant2(...) | repo::test | crate::regular::MyEnum::Variant2 |
 | regular.rs:61:9:61:31 | ...::Variant3 {...} | repo::test | crate::regular::MyEnum::Variant3 |
+| regular.rs:70:14:70:24 | is_alphanum | repo::test | ::is_alphanum |
+| regular.rs:70:26:70:28 | chr | None | None |
+| regular.rs:79:12:79:15 | self | None | None |
+| regular.rs:80:14:80:17 | self | None | None |
+| regular.rs:82:13:82:16 | self | None | None |

@@ -1,0 +1,4 @@
+semmle-extractor-options: /nostdlib /noconfig
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/Microsoft.Data.SqlClient/6.0.2/Microsoft.Data.SqlClient.csproj
+semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Windows.cs
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/_frameworks/Microsoft.AspNetCore.App/Microsoft.AspNetCore.App.csproj

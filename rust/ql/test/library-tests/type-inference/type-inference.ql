@@ -6,11 +6,13 @@ import TypeInference
 query predicate inferType(AstNode n, TypePath path, Type t) {
   t = TypeInference::inferType(n, path) and
   n.fromSource() and
-  not n.isFromMacroExpansion()
+  not n.isFromMacroExpansion() and
+  not n instanceof IdentPat and // avoid overlap in the output with the underlying `Name` node
+  not n instanceof LiteralPat // avoid overlap in the output with the underlying `Literal` node
 }
 
 module ResolveTest implements TestSig {
-  string getARelevantTag() { result = ["method", "fieldof"] }
+  string getARelevantTag() { result = ["target", "fieldof"] }
 
   private predicate functionHasValue(Function f, string value) {
     f.getAPrecedingComment().getCommentText() = value and
@@ -28,9 +30,11 @@ module ResolveTest implements TestSig {
       source.fromSource() and
       not source.isFromMacroExpansion()
     |
-      target = resolveMethodCallTarget(source) and
+      target = source.(Call).getStaticTarget() and
       functionHasValue(target, value) and
-      tag = "method"
+      // `isFromMacroExpansion` does not always work
+      not target.(Function).getName().getText() = ["panic_fmt", "_print", "format", "must_use"] and
+      tag = "target"
       or
       target = resolveStructFieldExpr(source) and
       any(Struct s | s.getStructField(_) = target).getName().getText() = value and

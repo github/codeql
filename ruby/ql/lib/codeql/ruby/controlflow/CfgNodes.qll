@@ -1,10 +1,11 @@
 /** Provides classes representing nodes in a control flow graph. */
+overlay[local]
+module;
 
 private import codeql.ruby.AST
 private import codeql.ruby.controlflow.BasicBlocks
 private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.ast.internal.Constant
-private import codeql.ruby.ast.internal.Literal
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl as CfgImpl
 
@@ -36,11 +37,13 @@ class ExitNode extends CfgNode, CfgImpl::ExitNode {
  */
 class AstCfgNode extends CfgNode, CfgImpl::AstCfgNode {
   /** Gets the name of the primary QL class for this node. */
+  overlay[global]
   override string getAPrimaryQlClass() { result = "AstCfgNode" }
 }
 
 /** A control-flow node that wraps an AST expression. */
 class ExprCfgNode extends AstCfgNode {
+  overlay[global]
   override string getAPrimaryQlClass() { result = "ExprCfgNode" }
 
   Expr e;
@@ -51,6 +54,7 @@ class ExprCfgNode extends AstCfgNode {
   Expr getExpr() { result = e }
 
   /** Gets the constant value of this expression, if any. */
+  overlay[global]
   ConstantValue getConstantValue() { result = getConstantValue(this) }
 }
 
@@ -76,6 +80,7 @@ class StringComponentCfgNode extends AstCfgNode {
   StringComponentCfgNode() { this.getAstNode() instanceof StringComponent }
 
   /** Gets the constant value of this string component. */
+  overlay[global]
   ConstantValue getConstantValue() {
     result = this.getAstNode().(StringComponent).getConstantValue()
   }
@@ -297,6 +302,7 @@ module ExprNodes {
 
   /** A control-flow node that wraps a `Call` AST expression. */
   class CallCfgNode extends ExprCfgNode {
+    overlay[global]
     override string getAPrimaryQlClass() { result = "CallCfgNode" }
 
     override CallExprChildMapping e;
@@ -310,6 +316,7 @@ module ExprNodes {
     final ExprCfgNode getAnArgument() { result = this.getArgument(_) }
 
     /** Gets the keyword argument whose key is `keyword` of this call. */
+    overlay[global]
     final ExprCfgNode getKeywordArgument(string keyword) {
       exists(PairCfgNode n |
         e.hasCfgChild(e.getAnArgument(), this, n) and
@@ -338,6 +345,7 @@ module ExprNodes {
 
   /** A control-flow node that wraps a `MethodCall` AST expression. */
   class MethodCallCfgNode extends CallCfgNode {
+    overlay[global]
     override string getAPrimaryQlClass() { result = "MethodCallCfgNode" }
 
     MethodCallCfgNode() { super.getExpr() instanceof MethodCall }
@@ -842,6 +850,7 @@ module ExprNodes {
       this.getAstNode() instanceof StringInterpolationComponent
     }
 
+    overlay[global]
     final override ConstantValue getConstantValue() {
       result = StmtSequenceCfgNode.super.getConstantValue()
     }
@@ -855,6 +864,7 @@ module ExprNodes {
       this.getAstNode() instanceof RegExpInterpolationComponent
     }
 
+    overlay[global]
     final override ConstantValue getConstantValue() {
       result = StmtSequenceCfgNode.super.getConstantValue()
     }
@@ -946,6 +956,7 @@ module ExprNodes {
    * into calls to `Array.[]`, so this includes both desugared calls as well as
    * explicit calls.
    */
+  overlay[global]
   class ArrayLiteralCfgNode extends MethodCallCfgNode {
     override string getAPrimaryQlClass() { result = "ArrayLiteralCfgNode" }
 
@@ -963,6 +974,7 @@ module ExprNodes {
    * into calls to `Hash.[]`, so this includes both desugared calls as well as
    * explicit calls.
    */
+  overlay[global]
   class HashLiteralCfgNode extends MethodCallCfgNode {
     override string getAPrimaryQlClass() { result = "HashLiteralCfgNode" }
 

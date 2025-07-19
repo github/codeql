@@ -36,11 +36,11 @@ namespace pqxx {
     };
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) { // $ Source
     pqxx::connection c;
     pqxx::work w(c);
     
-    pqxx::row r = w.exec1(argv[1]); // BAD
+    pqxx::row r = w.exec1(argv[1]); // $ Alert
     
     pqxx::result r2 = w.exec(w.quote(argv[1])); // GOOD
 

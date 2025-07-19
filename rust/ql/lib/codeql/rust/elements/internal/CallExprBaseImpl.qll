@@ -13,6 +13,7 @@ private import codeql.rust.elements.Resolvable
  */
 module Impl {
   private import rust
+  private import codeql.rust.internal.TypeInference as TypeInference
 
   pragma[nomagic]
   Resolvable getCallResolvable(CallExprBase call) {
@@ -27,7 +28,7 @@ module Impl {
    */
   class CallExprBase extends Generated::CallExprBase {
     /** Gets the static target of this call, if any. */
-    Callable getStaticTarget() { none() } // overridden by subclasses, but cannot be made abstract
+    final Function getStaticTarget() { result = TypeInference::resolveCallTarget(this) }
 
     override Expr getArg(int index) { result = this.getArgList().getArg(index) }
   }

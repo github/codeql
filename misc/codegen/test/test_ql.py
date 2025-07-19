@@ -133,22 +133,10 @@ def test_non_root_class():
     assert not cls.root
 
 
-@pytest.mark.parametrize(
-    "prev_child,is_child", [(None, False), ("", True), ("x", True)]
-)
-def test_is_child(prev_child, is_child):
-    p = ql.Property("Foo", "int", prev_child=prev_child)
-    assert p.is_child is is_child
-
-
-def test_empty_class_no_children():
-    cls = ql.Class("Class", properties=[])
-    assert cls.has_children is False
-
-
 def test_class_no_children():
     cls = ql.Class(
-        "Class", properties=[ql.Property("Foo", "int"), ql.Property("Bar", "string")]
+        "Class",
+        all_children=[],
     )
     assert cls.has_children is False
 
@@ -156,11 +144,7 @@ def test_class_no_children():
 def test_class_with_children():
     cls = ql.Class(
         "Class",
-        properties=[
-            ql.Property("Foo", "int"),
-            ql.Property("Child", "x", prev_child=""),
-            ql.Property("Bar", "string"),
-        ],
+        all_children=[ql.Child(ql.Property("Foo", "int"))],
     )
     assert cls.has_children is True
 
