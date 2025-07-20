@@ -43,6 +43,12 @@ private module Config implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(VariableAccess va | result = va.getLocation() | isSink(sink, va))
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;

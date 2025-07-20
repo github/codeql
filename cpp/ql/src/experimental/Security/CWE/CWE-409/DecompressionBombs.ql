@@ -28,6 +28,14 @@ module DecompressionTaintConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(DecompressionFlowStep s).isAdditionalFlowStep(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(FunctionCall fc | result = [sink.getLocation(), fc.getLocation()] | isSink(fc, sink))
+  }
 }
 
 module DecompressionTaint = TaintTracking::Global<DecompressionTaintConfig>;

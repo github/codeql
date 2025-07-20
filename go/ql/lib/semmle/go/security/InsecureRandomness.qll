@@ -39,6 +39,10 @@ module InsecureRandomness {
         n2.getType() instanceof IntegerType
       )
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      none() // Can't have accurate sink location override because of secondary use of `flowPath` in select.
+    }
   }
 
   /**

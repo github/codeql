@@ -72,6 +72,12 @@ module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSource(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(Expr condition | result = condition.getLocation() | isSink(sink, condition))
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;
