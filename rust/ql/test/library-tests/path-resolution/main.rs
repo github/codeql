@@ -661,29 +661,29 @@ mod associated_types {
             Error, // IError
         > Reduce // $ item=IReduce
         for MyImpl<
-            Input, // $ item=IInput SPURIOUS: item=IInputAssociated
-            Error, // $ item=IError SPURIOUS: item=IErrorAssociated
+            Input, // $ item=IInput
+            Error, // $ item=IError
         > // $ item=MyImpl
     {
         type Input = Result<
-            Input,       // $ item=IInput SPURIOUS: item=IInputAssociated
-            Self::Error, // $ item=IErrorAssociated SPURIOUS: item=IError
+            Input,       // $ item=IInput
+            Self::Error, // $ item=IErrorAssociated
         > // $ item=Result
         ; // IInputAssociated
         type Error = Option<
-          Error // $ item=IError SPURIOUS: item=IErrorAssociated
+          Error // $ item=IError
         > // $ item=Option
         ; // IErrorAssociated
         type Output =
-            Input // $ item=IInput SPURIOUS: item=IInputAssociated
+            Input // $ item=IInput
         ; // IOutputAssociated
 
         fn feed(
             &mut self,
-            item: Self::Input // $ item=IInputAssociated SPURIOUS: item=IInput
+            item: Self::Input // $ item=IInputAssociated
         ) -> Result<
             Self::Output, // $ item=IOutputAssociated
-            Self::Error // $ item=IErrorAssociated SPURIOUS: item=IError
+            Self::Error // $ item=IErrorAssociated
         > { // $ item=Result
             item
         }

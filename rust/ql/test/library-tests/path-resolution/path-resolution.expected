@@ -297,28 +297,20 @@ resolvePath
 | main.rs:662:11:662:16 | Reduce | main.rs:643:5:651:5 | trait Reduce |
 | main.rs:663:13:666:9 | MyImpl::<...> | main.rs:653:5:656:5 | struct MyImpl |
 | main.rs:664:13:664:17 | Input | main.rs:660:13:660:17 | Input |
-| main.rs:664:13:664:17 | Input | main.rs:668:9:672:9 | type Input |
 | main.rs:665:13:665:17 | Error | main.rs:661:13:661:17 | Error |
-| main.rs:665:13:665:17 | Error | main.rs:672:11:676:9 | type Error |
 | main.rs:668:22:671:9 | Result::<...> | {EXTERNAL LOCATION} | enum Result |
 | main.rs:669:13:669:17 | Input | main.rs:660:13:660:17 | Input |
-| main.rs:669:13:669:17 | Input | main.rs:668:9:672:9 | type Input |
 | main.rs:670:13:670:16 | Self | main.rs:658:5:690:5 | impl Reduce for MyImpl::<...> { ... } |
-| main.rs:670:13:670:23 | ...::Error | main.rs:661:13:661:17 | Error |
 | main.rs:670:13:670:23 | ...::Error | main.rs:672:11:676:9 | type Error |
 | main.rs:673:22:675:9 | Option::<...> | {EXTERNAL LOCATION} | enum Option |
 | main.rs:674:11:674:15 | Error | main.rs:661:13:661:17 | Error |
-| main.rs:674:11:674:15 | Error | main.rs:672:11:676:9 | type Error |
 | main.rs:678:13:678:17 | Input | main.rs:660:13:660:17 | Input |
-| main.rs:678:13:678:17 | Input | main.rs:668:9:672:9 | type Input |
 | main.rs:683:19:683:22 | Self | main.rs:658:5:690:5 | impl Reduce for MyImpl::<...> { ... } |
-| main.rs:683:19:683:29 | ...::Input | main.rs:660:13:660:17 | Input |
 | main.rs:683:19:683:29 | ...::Input | main.rs:668:9:672:9 | type Input |
 | main.rs:684:14:687:9 | Result::<...> | {EXTERNAL LOCATION} | enum Result |
 | main.rs:685:13:685:16 | Self | main.rs:658:5:690:5 | impl Reduce for MyImpl::<...> { ... } |
 | main.rs:685:13:685:24 | ...::Output | main.rs:676:11:679:9 | type Output |
 | main.rs:686:13:686:16 | Self | main.rs:658:5:690:5 | impl Reduce for MyImpl::<...> { ... } |
-| main.rs:686:13:686:23 | ...::Error | main.rs:661:13:661:17 | Error |
 | main.rs:686:13:686:23 | ...::Error | main.rs:672:11:676:9 | type Error |
 | main.rs:693:5:693:7 | std | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
 | main.rs:693:11:693:14 | self | {EXTERNAL LOCATION} | Crate(std@0.0.0) |

@@ -3526,8 +3526,12 @@ inferType
 | main.rs:2164:22:2164:22 | 2 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2164:25:2164:25 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2164:40:2164:40 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2165:13:2165:13 | i |  | {EXTERNAL LOCATION} | Item |
+| main.rs:2165:13:2165:13 | i |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2165:18:2165:26 | [...] |  | file://:0:0:0:0 | [] |
 | main.rs:2165:18:2165:26 | [...] | [T;...] | {EXTERNAL LOCATION} | i32 |
+| main.rs:2165:18:2165:38 | ... .into_iter() |  | {EXTERNAL LOCATION} | IntoIter |
+| main.rs:2165:18:2165:38 | ... .into_iter() | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2165:19:2165:19 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2165:22:2165:22 | 2 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2165:25:2165:25 | 3 |  | {EXTERNAL LOCATION} | i32 |
@@ -3739,11 +3743,8 @@ inferType
 | main.rs:2226:39:2226:39 | 2 |  | {EXTERNAL LOCATION} | u16 |
 | main.rs:2226:42:2226:42 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2226:42:2226:42 | 3 |  | {EXTERNAL LOCATION} | u16 |
-| main.rs:2227:13:2227:13 | u |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2227:13:2227:13 | u |  | {EXTERNAL LOCATION} | u16 |
 | main.rs:2227:13:2227:13 | u |  | file://:0:0:0:0 | & |
-| main.rs:2227:13:2227:13 | u | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2227:13:2227:13 | u | T | {EXTERNAL LOCATION} | u16 |
 | main.rs:2227:18:2227:23 | vals4a |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2227:18:2227:23 | vals4a | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2227:18:2227:23 | vals4a | T | {EXTERNAL LOCATION} | u16 |
@@ -3773,13 +3774,9 @@ inferType
 | main.rs:2232:38:2232:38 | 2 |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:2232:41:2232:41 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2232:41:2232:41 | 3 |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:2233:13:2233:13 | u |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2233:13:2233:13 | u |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2233:13:2233:13 | u |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:2233:13:2233:13 | u |  | file://:0:0:0:0 | & |
-| main.rs:2233:13:2233:13 | u | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2233:13:2233:13 | u | T | {EXTERNAL LOCATION} | i32 |
-| main.rs:2233:13:2233:13 | u | T | {EXTERNAL LOCATION} | u32 |
 | main.rs:2233:18:2233:22 | vals5 |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2233:18:2233:22 | vals5 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2233:18:2233:22 | vals5 | T | {EXTERNAL LOCATION} | i32 |
@@ -3801,12 +3798,8 @@ inferType
 | main.rs:2235:39:2235:39 | 2 |  | {EXTERNAL LOCATION} | u64 |
 | main.rs:2235:42:2235:42 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2235:42:2235:42 | 3 |  | {EXTERNAL LOCATION} | u64 |
-| main.rs:2236:13:2236:13 | u |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2236:13:2236:13 | u |  | file://:0:0:0:0 | & |
 | main.rs:2236:13:2236:13 | u | &T | {EXTERNAL LOCATION} | u64 |
-| main.rs:2236:13:2236:13 | u | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2236:13:2236:13 | u | T | file://:0:0:0:0 | & |
-| main.rs:2236:13:2236:13 | u | T.&T | {EXTERNAL LOCATION} | u64 |
 | main.rs:2236:18:2236:22 | vals6 |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2236:18:2236:22 | vals6 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2236:18:2236:22 | vals6 | T | file://:0:0:0:0 | & |
@@ -3821,11 +3814,8 @@ inferType
 | main.rs:2239:9:2239:13 | vals7 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2239:9:2239:13 | vals7 | T | {EXTERNAL LOCATION} | u8 |
 | main.rs:2239:20:2239:22 | 1u8 |  | {EXTERNAL LOCATION} | u8 |
-| main.rs:2240:13:2240:13 | u |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2240:13:2240:13 | u |  | {EXTERNAL LOCATION} | u8 |
 | main.rs:2240:13:2240:13 | u |  | file://:0:0:0:0 | & |
-| main.rs:2240:13:2240:13 | u | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2240:13:2240:13 | u | T | {EXTERNAL LOCATION} | u8 |
 | main.rs:2240:18:2240:22 | vals7 |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2240:18:2240:22 | vals7 | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2240:18:2240:22 | vals7 | T | {EXTERNAL LOCATION} | u8 |

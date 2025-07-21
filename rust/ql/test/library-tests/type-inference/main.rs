@@ -2162,7 +2162,7 @@ mod loops {
 
         for i in [1, 2, 3] {} // $ type=i:i32
         for i in [1, 2, 3].map(|x| x + 1) {} // $ target=map MISSING: type=i:i32
-        for i in [1, 2, 3].into_iter() {} // $ target=into_iter MISSING: type=i:i32
+        for i in [1, 2, 3].into_iter() {} // $ target=into_iter type=i:i32
 
         let vals1 = [1u8, 2, 3]; // $ type=vals1:[T;...].u8
         for u in vals1 {} // $ type=u:u8
