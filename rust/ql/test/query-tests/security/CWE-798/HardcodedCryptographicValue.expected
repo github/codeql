@@ -120,20 +120,3 @@ nodes
 | test_cipher.rs:74:23:74:44 | ...::new_from_slice | semmle.label | ...::new_from_slice |
 | test_cipher.rs:74:46:74:51 | const2 [&ref, element] | semmle.label | const2 [&ref, element] |
 subpaths
-testFailures
-| test_cipher.rs:45:53:45:99 | //... | Missing result: Alert[rust/hard-coded-cryptographic-value] |
-| test_cipher.rs:47:88:47:96 | //... | Missing result: Sink |
-| test_cipher.rs:66:29:66:75 | //... | Missing result: Alert[rust/hard-coded-cryptographic-value] |
-| test_cipher.rs:67:51:67:59 | //... | Missing result: Sink |
-| test_cipher.rs:80:29:80:75 | //... | Missing result: Alert[rust/hard-coded-cryptographic-value] |
-| test_cipher.rs:81:90:81:98 | //... | Missing result: Sink |
-| test_cipher.rs:84:30:84:76 | //... | Missing result: Alert[rust/hard-coded-cryptographic-value] |
-| test_cipher.rs:85:91:85:99 | //... | Missing result: Sink |
-| test_cipher.rs:124:33:124:79 | //... | Missing result: Alert[rust/hard-coded-cryptographic-value] |
-| test_cipher.rs:125:26:125:72 | //... | Missing result: Alert[rust/hard-coded-cryptographic-value] |
-| test_cipher.rs:126:49:126:57 | //... | Missing result: Sink |
-| test_cipher.rs:127:78:127:86 | //... | Missing result: Sink |
-| test_cipher.rs:129:44:129:90 | //... | Missing result: Alert[rust/hard-coded-cryptographic-value] |
-| test_cipher.rs:131:38:131:84 | //... | Missing result: Alert[rust/hard-coded-cryptographic-value] |
-| test_cipher.rs:132:42:132:50 | //... | Missing result: Sink |
-| test_cipher.rs:133:78:133:86 | //... | Missing result: Sink |
