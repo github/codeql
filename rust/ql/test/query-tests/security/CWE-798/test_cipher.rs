@@ -140,4 +140,8 @@ fn test_aes_gcm(
     _ = getrandom2::getrandom(&mut nonce4).unwrap();
     let cipher4 = Aes256Gcm::new(&key4.into());
     let _ = cipher4.encrypt(&nonce4.into(), b"plaintext".as_ref()).unwrap();
+
+    let mut key5 = [0u8;32]; // $ SPURIOUS: Alert[rust/hard-coded-cryptographic-value]
+    _ = getrandom::fill(&mut key5).unwrap();
+    let _ = Aes256::new_from_slice(&key5).unwrap(); // $ Sink
 }

@@ -103,7 +103,8 @@ module HardcodedCryptographicValue {
         ce.getFunction().(PathExpr).getResolvedCrateOrigin() =
           "repo:https://github.com/rust-random/getrandom:getrandom" and
         ce.getFunction().(PathExpr).getResolvedPath() = ["crate::fill", "crate::getrandom"] and
-        this.asExpr().getExpr().getParentNode*() = ce.getArgList().getArg(0)
+        this.asExpr().getExpr().getParentNode*() = ce.getArgList().getArg(0) and
+        none()
       )
     }
   }
