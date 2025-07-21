@@ -588,6 +588,14 @@ imports(
   unique int id: @import,
   int holder: @classorinterfaceorpackage ref,
   string name: string ref,
+  /* kind:
+      1 = TYPE
+      2 = TYPEWILDCARD
+      3 = PACKAGEWILDCARD
+      4 = TYPEWILDCARDSTATIC
+      5 = TYPEMEMBERSTATIC
+      6 = MODULEIMPORT
+    */
   int kind: int ref
 );
 
