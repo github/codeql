@@ -1,7 +1,3 @@
-## 0.4.13
-
-No user-facing changes.
-
 ## 0.4.12
 
 ### Minor Analysis Improvements
