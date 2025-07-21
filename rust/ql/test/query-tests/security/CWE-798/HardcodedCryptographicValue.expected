@@ -12,7 +12,6 @@
 | test_cipher.rs:50:37:50:52 | ...::zeroed | test_cipher.rs:50:37:50:52 | ...::zeroed | test_cipher.rs:51:31:51:48 | ...::new | This hard-coded value is used as $@. | test_cipher.rs:51:31:51:48 | ...::new | a key |
 | test_cipher.rs:50:37:50:52 | ...::zeroed | test_cipher.rs:50:37:50:52 | ...::zeroed | test_cipher.rs:51:31:51:48 | ...::new | This hard-coded value is used as $@. | test_cipher.rs:51:31:51:48 | ...::new | a key |
 | test_cipher.rs:73:20:73:22 | 0u8 | test_cipher.rs:73:20:73:22 | 0u8 | test_cipher.rs:74:23:74:44 | ...::new_from_slice | This hard-coded value is used as $@. | test_cipher.rs:74:23:74:44 | ...::new_from_slice | a key |
-| test_cipher.rs:144:21:144:23 | 0u8 | test_cipher.rs:144:21:144:23 | 0u8 | test_cipher.rs:146:13:146:34 | ...::new_from_slice | This hard-coded value is used as $@. | test_cipher.rs:146:13:146:34 | ...::new_from_slice | a key |
 edges
 | test_cipher.rs:18:9:18:14 | const1 [&ref, element] | test_cipher.rs:19:73:19:78 | const1 [&ref, element] | provenance |  |
 | test_cipher.rs:18:28:18:36 | &... [&ref, element] | test_cipher.rs:18:9:18:14 | const1 [&ref, element] | provenance |  |
@@ -59,11 +58,6 @@ edges
 | test_cipher.rs:73:19:73:26 | [0u8; 32] [element] | test_cipher.rs:73:18:73:26 | &... [&ref, element] | provenance |  |
 | test_cipher.rs:73:20:73:22 | 0u8 | test_cipher.rs:73:19:73:26 | [0u8; 32] [element] | provenance |  |
 | test_cipher.rs:74:46:74:51 | const2 [&ref, element] | test_cipher.rs:74:23:74:44 | ...::new_from_slice | provenance | MaD:1 Sink:MaD:1 Sink:MaD:1 |
-| test_cipher.rs:144:9:144:16 | mut key5 [element] | test_cipher.rs:146:37:146:40 | key5 [element] | provenance |  |
-| test_cipher.rs:144:20:144:27 | [0u8; 32] [element] | test_cipher.rs:144:9:144:16 | mut key5 [element] | provenance |  |
-| test_cipher.rs:144:21:144:23 | 0u8 | test_cipher.rs:144:20:144:27 | [0u8; 32] [element] | provenance |  |
-| test_cipher.rs:146:36:146:40 | &key5 [&ref, element] | test_cipher.rs:146:13:146:34 | ...::new_from_slice | provenance | MaD:1 Sink:MaD:1 Sink:MaD:1 |
-| test_cipher.rs:146:37:146:40 | key5 [element] | test_cipher.rs:146:36:146:40 | &key5 [&ref, element] | provenance |  |
 models
 | 1 | Sink: <_ as crypto_common::KeyInit>::new_from_slice; Argument[0]; credentials-key |
 | 2 | Sink: <cipher::stream_wrapper::StreamCipherCoreWrapper as crypto_common::KeyInit>::new; Argument[0]; credentials-key |
@@ -125,10 +119,4 @@ nodes
 | test_cipher.rs:73:20:73:22 | 0u8 | semmle.label | 0u8 |
 | test_cipher.rs:74:23:74:44 | ...::new_from_slice | semmle.label | ...::new_from_slice |
 | test_cipher.rs:74:46:74:51 | const2 [&ref, element] | semmle.label | const2 [&ref, element] |
-| test_cipher.rs:144:9:144:16 | mut key5 [element] | semmle.label | mut key5 [element] |
-| test_cipher.rs:144:20:144:27 | [0u8; 32] [element] | semmle.label | [0u8; 32] [element] |
-| test_cipher.rs:144:21:144:23 | 0u8 | semmle.label | 0u8 |
-| test_cipher.rs:146:13:146:34 | ...::new_from_slice | semmle.label | ...::new_from_slice |
-| test_cipher.rs:146:36:146:40 | &key5 [&ref, element] | semmle.label | &key5 [&ref, element] |
-| test_cipher.rs:146:37:146:40 | key5 [element] | semmle.label | key5 [element] |
 subpaths

@@ -99,12 +99,10 @@ module HardcodedCryptographicValue {
    */
   private class GetRandomBarrier extends Barrier {
     GetRandomBarrier() {
-      exists(CallExpr ce |
-        ce.getFunction().(PathExpr).getResolvedCrateOrigin() =
-          "repo:https://github.com/rust-random/getrandom:getrandom" and
-        ce.getFunction().(PathExpr).getResolvedPath() = ["crate::fill", "crate::getrandom"] and
-        this.asExpr().getExpr().getParentNode*() = ce.getArgList().getArg(0) and
-        none()
+      exists(CallExprBase ce |
+        ce.getStaticTarget().(Addressable).getCanonicalPath() =
+          ["getrandom::fill", "getrandom::getrandom"] and
+        this.asExpr().getExpr().getParentNode*() = ce.getArgList().getArg(0)
       )
     }
   }
