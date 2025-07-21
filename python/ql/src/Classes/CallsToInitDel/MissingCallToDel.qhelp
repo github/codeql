@@ -16,7 +16,7 @@ If the  <code>__del__</code> method of a superclass is not called during object 
 resources may be leaked.
 </p>
 
-<p>A call to the <code>__init__</code> method of a superclass during object initialization may be unintentionally skipped:
+<p>A call to the <code>__del__</code> method of a superclass during object initialization may be unintentionally skipped:
 </p>
 <ul>
         <li>If a subclass calls the <code>__del__</code> method of the wrong class.</li>
