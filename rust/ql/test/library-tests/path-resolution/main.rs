@@ -636,6 +636,60 @@ impl AStruct // $ item=I123
     pub fn z(&self) {} // I125
 }
 
+mod associated_types {
+    use std::marker::PhantomData; // $ item=PhantomData
+    use std::result::Result; // $ item=Result
+
+    trait Reduce {
+        type Input; // ReduceInput
+        type Error; // ReduceError
+        type Output; // ReduceOutput
+        fn feed(
+            &mut self,
+            item: Self::Input, // $ item=ReduceInput
+        ) -> Result<Self::Output, Self::Error>; // $ item=Result item=ReduceOutput item=ReduceError
+    } // IReduce
+
+    struct MyImpl<Input, Error> {
+        _input: PhantomData<Input>, // $ item=PhantomData item=Input
+        _error: PhantomData<Error>, // $ item=PhantomData item=Error
+    } // MyImpl
+
+    #[rustfmt::skip]
+    impl<
+            Input, // IInput
+            Error, // IError
+        > Reduce // $ item=IReduce
+        for MyImpl<
+            Input, // $ item=IInput SPURIOUS: item=IInputAssociated
+            Error, // $ item=IError SPURIOUS: item=IErrorAssociated
+        > // $ item=MyImpl
+    {
+        type Input = Result<
+            Input,       // $ item=IInput SPURIOUS: item=IInputAssociated
+            Self::Error, // $ item=IErrorAssociated SPURIOUS: item=IError
+        > // $ item=Result
+        ; // IInputAssociated
+        type Error = Option<
+          Error // $ item=IError SPURIOUS: item=IErrorAssociated
+        > // $ item=Option
+        ; // IErrorAssociated
+        type Output =
+            Input // $ item=IInput SPURIOUS: item=IInputAssociated
+        ; // IOutputAssociated
+
+        fn feed(
+            &mut self,
+            item: Self::Input // $ item=IInputAssociated SPURIOUS: item=IInput
+        ) -> Result<
+            Self::Output, // $ item=IOutputAssociated
+            Self::Error // $ item=IErrorAssociated SPURIOUS: item=IError
+        > { // $ item=Result
+            item
+        }
+    }
+}
+
 use std::{self as ztd}; // $ item=std
 
 fn use_ztd(x: ztd::string::String) {} // $ item=String
