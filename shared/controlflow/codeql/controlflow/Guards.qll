@@ -901,7 +901,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         or
         exists(Guard g0, GuardValue v0 |
           guardControls(g0, v0, tgtGuard, tgtVal) and
-          CustomGuard::additionalImpliesStep(g0, v0, guard, v)
+          WrapperGuard::additionalImpliesStep(g0, v0, guard, v)
         )
         or
         exists(Guard g0, GuardValue v0 |
@@ -947,7 +947,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     predicate nullGuard(Guard guard, GuardValue v, Expr e, boolean isNull) {
       impliesStep2(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
-      CustomGuard::additionalImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
+      WrapperGuard::additionalImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
       additionalImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull)))
     }
 
@@ -992,10 +992,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /**
      * Provides an implementation of guard implication logic for custom
-     * wrappers. This can be used to instantiate the `additionalImpliesStep`
-     * predicate.
+     * wrappers.
      */
-    private module CustomGuard {
+    private module WrapperGuard {
       final private class FinalExpr = Expr;
 
       private class ReturnExpr extends FinalExpr {
