@@ -273,6 +273,6 @@ void test8(unsigned size, unsigned src_pos)
     src_pos = size;
   }
   if (src_pos < size - 1) {
-    memset(xs, 0, src_pos + 1); // GOOD [FALSE POSITIVE]
+    memset(xs, 0, src_pos + 1); // GOOD
   }
 }

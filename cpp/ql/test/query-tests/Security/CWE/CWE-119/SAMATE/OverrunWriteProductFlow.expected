@@ -49,8 +49,6 @@ edges
 | test.cpp:262:15:262:30 | call to malloc | test.cpp:266:12:266:12 | p | provenance |  |
 | test.cpp:264:9:264:30 | ... = ... | test.cpp:266:12:266:12 | p | provenance |  |
 | test.cpp:264:13:264:30 | call to malloc | test.cpp:264:9:264:30 | ... = ... | provenance |  |
-| test.cpp:271:14:271:27 | new[] | test.cpp:271:14:271:27 | new[] | provenance |  |
-| test.cpp:271:14:271:27 | new[] | test.cpp:276:12:276:13 | xs | provenance |  |
 nodes
 | test.cpp:16:11:16:21 | **mk_string_t [string] | semmle.label | **mk_string_t [string] |
 | test.cpp:18:5:18:7 | *str [post update] [string] | semmle.label | *str [post update] [string] |
@@ -107,9 +105,6 @@ nodes
 | test.cpp:264:9:264:30 | ... = ... | semmle.label | ... = ... |
 | test.cpp:264:13:264:30 | call to malloc | semmle.label | call to malloc |
 | test.cpp:266:12:266:12 | p | semmle.label | p |
-| test.cpp:271:14:271:27 | new[] | semmle.label | new[] |
-| test.cpp:271:14:271:27 | new[] | semmle.label | new[] |
-| test.cpp:276:12:276:13 | xs | semmle.label | xs |
 subpaths
 | test.cpp:242:22:242:27 | buffer | test.cpp:235:40:235:45 | buffer | test.cpp:235:27:235:31 | *p_str [Return] [string] | test.cpp:242:16:242:19 | set_string output argument [string] |
 | test.cpp:242:22:242:27 | buffer | test.cpp:235:40:235:45 | buffer | test.cpp:235:27:235:31 | *p_str [string] | test.cpp:242:16:242:19 | set_string output argument [string] |
@@ -129,4 +124,3 @@ subpaths
 | test.cpp:243:5:243:10 | call to memset | test.cpp:241:20:241:38 | call to malloc | test.cpp:243:12:243:21 | string | This write may overflow $@ by 1 element. | test.cpp:243:16:243:21 | string | string |
 | test.cpp:250:5:250:10 | call to memset | test.cpp:249:14:249:33 | call to my_alloc | test.cpp:250:12:250:12 | p | This write may overflow $@ by 1 element. | test.cpp:250:12:250:12 | p | p |
 | test.cpp:266:5:266:10 | call to memset | test.cpp:262:15:262:30 | call to malloc | test.cpp:266:12:266:12 | p | This write may overflow $@ by 1 element. | test.cpp:266:12:266:12 | p | p |
-| test.cpp:276:5:276:10 | call to memset | test.cpp:271:14:271:27 | new[] | test.cpp:276:12:276:13 | xs | This write may overflow $@ by 1 element. | test.cpp:276:12:276:13 | xs | xs |

@@ -20,6 +20,7 @@ import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
+import semmle.code.cpp.security.ProductFlowUtils.ProductFlowUtils
 import semmle.code.cpp.rangeanalysis.new.RangeAnalysisUtil
 import StringSizeFlow::PathGraph1
 import codeql.util.Unit
@@ -109,17 +110,24 @@ module ValidState {
 
 import ValidState
 
-/**
- * Holds if `node2` is a dataflow node that represents an addition of two operands `op1`
- * and `op2` such that:
- * 1. `node1` is the dataflow node that represents `op1`, and
- * 2. the value of `op2` can be upper bounded by `delta.`
- */
-predicate isAdditionalFlowStep2(DataFlow::Node node1, DataFlow::Node node2, int delta) {
-  exists(AddInstruction add, Operand op |
-    add.hasOperands(node1.asOperand(), op) and
-    semBounded(getSemanticExpr(op.getDef()), any(SemZeroBound zero), delta, true, _) and
-    node2.asInstruction() = add
+module SizeBarrierInput implements SizeBarrierInputSig {
+  int fieldFlowBranchLimit() { result = 2 }
+
+  predicate isSource(DataFlow::Node source) {
+    exists(int state |
+      hasSize(_, source, state) and
+      validState(source, _, state)
+    )
+  }
+}
+
+predicate isSinkPairImpl(
+  CallInstruction c, DataFlow::Node bufSink, DataFlow::Node sizeSink, int delta, Expr eBuf
+) {
+  exists(Instruction sizeBound, Instruction sizeInstr |
+    isSinkPairImpl0(c, bufSink, sizeSink, delta, eBuf, sizeBound, sizeInstr) and
+    not sizeBound = SizeBarrier<SizeBarrierInput>::getABarrierInstruction(delta) and
+    not sizeInstr = SizeBarrier<SizeBarrierInput>::getABarrierInstruction(delta)
   )
 }
 
@@ -154,6 +162,10 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
   }
 
   predicate isBarrierOut2(DataFlow::Node node) { DataFlow::flowsToBackEdge(node) }
+
+  predicate isBarrier2(DataFlow::Node node, FlowState2 state) {
+    node = SizeBarrier<SizeBarrierInput>::getABarrierNode(state)
+  }
 }
 
 module StringSizeFlow = ProductFlow::GlobalWithState<StringSizeConfig>;
