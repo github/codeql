@@ -279,7 +279,7 @@ fn test_private_info(
 	sink(&info.medical_notes); // $ sensitive=private
 	sink(info.medical_notes[0].as_str()); // $ sensitive=private
 	for n in info.medical_notes.iter() {
-		sink(n.as_str()); // $ sensitive=private
+		sink(n.as_str()); // $ MISSING: sensitive=private
 	}
 	sink(info.confidentialMessage.as_str()); // $ MISSING: sensitive=private
 	sink(info.confidentialMessage.to_lowercase()); // $ MISSING: sensitive=private

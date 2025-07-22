@@ -66,7 +66,6 @@ ql/java/ql/src/Frameworks/Spring/XML Configuration Errors/MissingSetters.ql
 ql/java/ql/src/Language Abuse/CastThisToTypeParameter.ql
 ql/java/ql/src/Language Abuse/DubiousDowncastOfThis.ql
 ql/java/ql/src/Language Abuse/DubiousTypeTestOfThis.ql
-ql/java/ql/src/Language Abuse/EmptyMethod.ql
 ql/java/ql/src/Language Abuse/EmptyStatement.ql
 ql/java/ql/src/Language Abuse/EnumIdentifier.ql
 ql/java/ql/src/Language Abuse/ImplementsAnnotation.ql

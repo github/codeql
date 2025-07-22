@@ -605,7 +605,22 @@ module ExprNodes {
 
     override CallOperator getExpr() { result = e }
 
-    ExprCfgNode getCommand() { result = this.getArgument(0) }
+    ExprCfgNode getCommand() { result = this.getCallee() }
+  }
+
+  private class DotSourcingOperatorChildMapping extends CallExprChildMapping instanceof DotSourcingOperator
+  {
+    override predicate relevantChild(Ast child) { super.relevantChild(child) }
+  }
+
+  class DotSourcingOperatorCfgNode extends CallExprCfgNode {
+    override string getAPrimaryQlClass() { result = "DotSourcingOperatorCfgNode" }
+
+    override DotSourcingOperatorChildMapping e;
+
+    override DotSourcingOperator getExpr() { result = e }
+
+    ExprCfgNode getCommand() { result = this.getCallee() }
   }
 
   private class ToStringCallChildmapping extends CallExprChildMapping instanceof ToStringCall {
@@ -1076,20 +1091,6 @@ module ExprNodes {
     override PipelineArgument e;
 
     CallExprCfgNode getCall() { result.getPipelineArgument() = this }
-  }
-
-  private class EnvVariableChildMapping extends ExprChildMapping, EnvVariable {
-    override predicate relevantChild(Ast child) { none() }
-  }
-
-  class EnvVariableCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "EnvVariableCfgNode" }
-
-    override EnvVariableChildMapping e;
-
-    override EnvVariable getExpr() { result = e }
-
-    string getName() { result = e.getName() }
   }
 
   private class OperationChildMapping extends ExprChildMapping, Operation {

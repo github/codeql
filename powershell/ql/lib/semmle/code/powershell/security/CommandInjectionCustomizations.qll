@@ -31,7 +31,12 @@ module CommandInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of user input, considered as a flow source for command injection. */
-  class FlowSourceAsSource extends Source instanceof SourceNode {
+  class FlowSourceAsSource extends Source {
+    FlowSourceAsSource() {
+      this instanceof SourceNode and
+      not this instanceof EnvironmentVariableSource
+    }
+
     override string getSourceType() { result = "user-provided value" }
   }
 
@@ -46,8 +51,10 @@ module CommandInjection {
         call.getAnArgument() = this
       )
       or
-      // Or the call command itself in case it's a use of operator &.
+      // Or the call command itself in case it's a use of "operator &" or "operator .".
       any(DataFlow::CallOperatorNode call).getCommand() = this
+      or
+      any(DataFlow::DotSourcingOperatorNode call).getCommand() = this
     }
 
     override string getSinkType() { result = "call to Invoke-Expression" }

@@ -1,3 +1,11 @@
+## 0.4.12
+
+### Minor Analysis Improvements
+
+* Fixed performance issues in the parsing of Bash scripts in workflow files,
+  which led to out-of-disk errors when analysing certain workflow files with
+  complex interpolations of shell commands or quoted strings.
+
 ## 0.4.11
 
 No user-facing changes.

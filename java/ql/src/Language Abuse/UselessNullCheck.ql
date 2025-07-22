@@ -6,7 +6,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/useless-null-check
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-561
  */

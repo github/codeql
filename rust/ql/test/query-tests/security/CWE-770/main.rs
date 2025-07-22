@@ -60,9 +60,9 @@ unsafe fn test_std_alloc_new_repeat_extend(v: usize) {
     let (k2, _offs2) = l3.extend(k1).unwrap();
     let _ = std::alloc::alloc(k2); // $ Alert[rust/uncontrolled-allocation-size]=arg1
     let (k3, _offs3) = k1.extend(l3).unwrap();
-    let _ = std::alloc::alloc(k3); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::alloc(k3); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1 (https://github.com/github/codeql/pull/19658)
     let _ = std::alloc::alloc(l3.extend_packed(k1).unwrap()); // $ Alert[rust/uncontrolled-allocation-size]=arg1
-    let _ = std::alloc::alloc(k1.extend_packed(l3).unwrap()); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = std::alloc::alloc(k1.extend_packed(l3).unwrap()); // $ MISSING: Alert[rust/uncontrolled-allocation-size]=arg1 (https://github.com/github/codeql/pull/19658)
 
     let l4 = std::alloc::Layout::array::<u8>(v).unwrap();
     let _ = std::alloc::alloc(l4); // $ Alert[rust/uncontrolled-allocation-size]=arg1
@@ -199,7 +199,7 @@ unsafe fn test_system_alloc(v: usize) {
 
     let l3 = std::alloc::Layout::array::<u8>(10).unwrap();
     let m3 = std::alloc::System.alloc(l3);
-    let _ = std::alloc::System.realloc(m3, l3, v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = std::alloc::System.realloc(m3, l3, v); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let l4 = std::alloc::Layout::array::<u8>(10).unwrap();
     let m4 = std::ptr::NonNull::<u8>::new(std::alloc::alloc(l4)).unwrap();
@@ -210,7 +210,7 @@ unsafe fn test_system_alloc(v: usize) {
             let _ = std::alloc::System.grow_zeroed(m4, l4, l2).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
         }
     } else {
-        let _ = std::alloc::System.shrink(m4, l4, l2).unwrap();
+        let _ = std::alloc::System.shrink(m4, l4, l2).unwrap(); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1 - FP
     }
 }
 
@@ -227,8 +227,8 @@ unsafe fn test_libc_alloc(v: usize) {
 unsafe fn test_vectors(v: usize) {
     let _ = Vec::<u64>::try_with_capacity(v).unwrap(); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
     let _ = Vec::<u64>::with_capacity(v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = Vec::<u64>::try_with_capacity_in(v, std::alloc::Global).unwrap(); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
-    let _ = Vec::<u64>::with_capacity_in(v, std::alloc::Global); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
+    let _ = Vec::<u64>::try_with_capacity_in(v, std::alloc::Global).unwrap(); // $ Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = Vec::<u64>::with_capacity_in(v, std::alloc::Global); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 
     let mut v1 = Vec::<u64>::with_capacity(100);
     v1.reserve(v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]

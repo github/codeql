@@ -48,6 +48,8 @@ module CastToPointerArithFlowConfig implements DataFlow::StateConfigSig {
   predicate isBarrierIn(DataFlow::Node node) { isSource(node, _) }
 
   predicate isBarrierOut(DataFlow::Node node) { isSink(node, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

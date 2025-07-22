@@ -17,11 +17,13 @@ query predicate multiplePathResolutions(Path p, ItemNode i) {
       not use.isGlob() and
       not use.hasUseTreeList()
     ).getPath() and
+  // avoid overlap with `multipleCallTargets` below
+  not p = any(CallExpr ce).getFunction().(PathExpr).getPath() and
   strictcount(resolvePath(p)) > 1
 }
 
 /** Holds if `call` has multiple static call targets including `target`. */
-query predicate multipleMethodCallTargets(MethodCallExpr call, Callable target) {
+query predicate multipleCallTargets(CallExprBase call, Callable target) {
   target = call.getStaticTarget() and
   strictcount(call.getStaticTarget()) > 1
 }
@@ -51,8 +53,8 @@ int getPathResolutionInconsistencyCounts(string type) {
   type = "Multiple path resolutions" and
   result = count(Path p | multiplePathResolutions(p, _) | p)
   or
-  type = "Multiple static method call targets" and
-  result = count(CallExprBase call | multipleMethodCallTargets(call, _) | call)
+  type = "Multiple static call targets" and
+  result = count(CallExprBase call | multipleCallTargets(call, _) | call)
   or
   type = "Multiple record fields" and
   result = count(FieldExpr fe | multipleStructFields(fe, _) | fe)

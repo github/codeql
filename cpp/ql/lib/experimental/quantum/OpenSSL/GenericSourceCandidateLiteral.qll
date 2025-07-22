@@ -14,9 +14,9 @@ private class IntLiteral extends Literal {
 /**
  * Holds if a StringLiteral could conceivably be used in some way for cryptography.
  * Note: this predicate should only consider restrictions with respect to strings only.
- * General restrictions are in the OpenSSLGenericSourceCandidateLiteral class.
+ * General restrictions are in the OpenSslGenericSourceCandidateLiteral class.
  */
-private predicate isOpenSSLStringLiteralGenericSourceCandidate(StringLiteral s) {
+private predicate isOpenSslStringLiteralGenericSourceCandidate(StringLiteral s) {
   // 'EC' is a constant that may be used where typical algorithms are specified,
   // but EC specifically means set up a default curve container, that will later be
   //specified explicitly (or if not a default) curve is used.
@@ -49,9 +49,9 @@ private predicate isOpenSSLStringLiteralGenericSourceCandidate(StringLiteral s) 
 /**
  * Holds if a StringLiteral could conceivably be used in some way for cryptography.
  * Note: this predicate should only consider restrictions with respect to integers only.
- * General restrictions are in the OpenSSLGenericSourceCandidateLiteral class.
+ * General restrictions are in the OpenSslGenericSourceCandidateLiteral class.
  */
-private predicate isOpenSSLIntLiteralGenericSourceCandidate(IntLiteral l) {
+private predicate isOpenSslIntLiteralGenericSourceCandidate(IntLiteral l) {
   // Ignore integer values of 0, commonly referring to NULL only (no known algorithm 0)
   l.getValue().toInt() != 0 and
   // ASSUMPTION, no negative numbers are allowed
@@ -102,11 +102,11 @@ private predicate isOpenSSLIntLiteralGenericSourceCandidate(IntLiteral l) {
  * "AES" may be a legitimate algorithm literal, but the literal will not be used for an operation directly
  * since it is in a equality comparison, hence this case would also be filtered.
  */
-class OpenSSLGenericSourceCandidateLiteral extends Literal {
-  OpenSSLGenericSourceCandidateLiteral() {
+class OpenSslGenericSourceCandidateLiteral extends Literal {
+  OpenSslGenericSourceCandidateLiteral() {
     (
-      isOpenSSLIntLiteralGenericSourceCandidate(this) or
-      isOpenSSLStringLiteralGenericSourceCandidate(this)
+      isOpenSslIntLiteralGenericSourceCandidate(this) or
+      isOpenSslStringLiteralGenericSourceCandidate(this)
     ) and
     // ********* General filters beyond what is filtered for strings and ints *********
     // An algorithm literal in a switch case will not be directly applied to an operation.

@@ -6,7 +6,9 @@
  * @problem.severity error
  * @precision high
  * @id cs/stringbuilder-initialized-with-character
- * @tags maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import semmle.code.csharp.frameworks.system.Text

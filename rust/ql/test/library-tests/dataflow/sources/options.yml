@@ -13,3 +13,6 @@ qltest_dependencies:
     - actix-web = { version = "4.10.2" }
     - axum = { version = "0.8.4" }
     - serde_json = { version = "1.0.140" }
+    - rustls = { version = "0.23.27" }
+    - futures-rustls = { version = "0.26.0" }
+    - async-std = { version = "1.13.1" }

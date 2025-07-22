@@ -2,8 +2,9 @@
  * @name Explicit returns mixed with implicit (fall through) returns
  * @description Mixing implicit and explicit returns indicates a likely error as implicit returns always return 'None'.
  * @kind problem
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity recommendation
  * @sub-severity high
  * @precision high

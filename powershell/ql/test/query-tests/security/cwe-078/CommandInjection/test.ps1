@@ -208,3 +208,23 @@ Invoke-InvokeExpressionInjectionSafe1 -UserInput $input
 Invoke-InvokeExpressionInjectionSafe2 -UserInput $input 
 Invoke-InvokeExpressionInjectionSafe3 -UserInput $input 
 Invoke-InvokeExpressionInjectionSafe4 -UserInput $input 
+
+function false-positive-in-call-operator($d)
+{
+    $o = Read-Host "enter input"
+    & unzip -o "$o" -d $d # GOOD
+
+    . "$o" # BAD
+}
+
+function flow-through-env-var() {
+    $x = $env:foo
+
+    . "$x" # GOOD # we don't consider environment vars flow sources
+
+    $input = Read-Host "enter input"
+    $env:bar = $input
+
+    $y = $env:bar
+    . "$y" # BAD # but we have flow through them
+}

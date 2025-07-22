@@ -214,7 +214,7 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
         exists(ThrowExpr throw | throw.getEnclosingFunction() = func)
         or
         exists(FunctionCall call | call.getEnclosingFunction() = func |
-          getTranslatedExpr(call).(TranslatedCallExpr).mayThrowException()
+          getTranslatedExpr(call).(TranslatedCallExpr).mayThrowException(_)
         )
       )
       or

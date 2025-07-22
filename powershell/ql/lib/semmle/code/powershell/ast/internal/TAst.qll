@@ -160,7 +160,6 @@ private module Cached {
     TUsingExpr(Raw::UsingExpr u) or
     TBoolLiteral(Raw::Ast parent, ChildIndex i) { mkSynthChild(BoolLiteralKind(_), parent, i) } or
     TNullLiteral(Raw::Ast parent, ChildIndex i) { mkSynthChild(NullLiteralKind(), parent, i) } or
-    TEnvVariable(Raw::Ast parent, ChildIndex i) { mkSynthChild(EnvVariableKind(_), parent, i) } or
     TAutomaticVariable(Raw::Ast parent, ChildIndex i) {
       mkSynthChild(AutomaticVariableKind(_), parent, i)
     }
@@ -180,7 +179,7 @@ private module Cached {
 
   class TAstSynth =
     TExprStmtSynth or TFunctionSynth or TBoolLiteral or TNullLiteral or TVarAccessSynth or
-        TEnvVariable or TTypeSynth or TAutomaticVariable or TVariableSynth;
+        TTypeSynth or TAutomaticVariable or TVariableSynth;
 
   class TExpr =
     TArrayExpr or TArrayLiteral or TOperation or TConstExpr or TConvertExpr or TErrorExpr or
@@ -188,7 +187,7 @@ private module Cached {
         TPipelineChain or TStringConstExpr or TConditionalExpr or TVarAccess or
         TExpandableStringExpr or TScriptBlockExpr or TExpandableSubExpr or TTypeNameExpr or
         TUsingExpr or TAttributedExpr or TIf or TBoolLiteral or TNullLiteral or TThisExpr or
-        TEnvVariable or TAutomaticVariable or TParenExpr;
+        TAutomaticVariable or TParenExpr;
 
   class TStmt =
     TAssignStmt or TBreakStmt or TContinueStmt or TDataStmt or TDoUntilStmt or TDoWhileStmt or
@@ -308,7 +307,6 @@ private module Cached {
     result = TBoolLiteral(parent, i) or
     result = TNullLiteral(parent, i) or
     result = TVarAccessSynth(parent, i) or
-    result = TEnvVariable(parent, i) or
     result = TTypeSynth(parent, i) or
     result = TAutomaticVariable(parent, i) or
     result = TVariableSynth(parent, i)

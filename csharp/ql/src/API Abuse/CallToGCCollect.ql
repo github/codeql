@@ -5,9 +5,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id cs/call-to-gc
- * @tags efficiency
- *       maintainability
- *       quality
+ * @tags quality
+ *       reliability
+ *       performance
  */
 
 import csharp

@@ -3,8 +3,9 @@
  * @description Modifying the default value of a parameter can lead to unexpected
  *              results.
  * @kind path-problem
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity error
  * @sub-severity low
  * @precision high
