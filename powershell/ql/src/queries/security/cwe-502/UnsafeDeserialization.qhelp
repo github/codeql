@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>Deserializing an object from untrusted input may result in security problems, such
+as denial of service or remote code execution.</p>
+
+</overview>
+<recommendation>
+
+<p>Avoid using an unsafe deserialization framework.</p>
+
+</recommendation>
+<example>
+
+<p>In this example, a string is deserialized using a
+<code>BinaryFormatter</code>. <code>BinaryFormatter</code> is an easily exploited deserializer.</p>
+
+<sample src="examples/BinaryFormatterDeserialization.ps1" />
+
+</example>
+<references>
+
+<li>
+Mu&ntilde;oz, Alvaro and Mirosh, Oleksandr:
+<a href="https://www.blackhat.com/docs/us-17/thursday/us-17-Munoz-Friday-The-13th-Json-Attacks.pdf">JSON Attacks</a>.
+</li>
+
+<li>
+Microsoft:
+<a href="https://learn.microsoft.com/en-us/dotnet/standard/serialization/binaryformatter-security-guide">Deserialization risks in use of BinaryFormatter and related types</a>.
+</li>
+
+</references>
+</qhelp>
