@@ -10,7 +10,7 @@ as denial of service or remote code execution.</p>
 </overview>
 <recommendation>
 
-<p>Avoid using BinaryFormatter.</p>
+<p>Avoid using <code>BinaryFormatter</code>.</p>
 
 </recommendation>
 <example>
