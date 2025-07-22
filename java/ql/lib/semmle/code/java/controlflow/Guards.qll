@@ -392,6 +392,17 @@ private module LogicInputCommon {
       NullGuards::nullCheckMethod(call.getMethod(), val.asBooleanValue(), isNull)
     )
   }
+
+  predicate additionalImpliesStep(
+    GuardsImpl::PreGuard g1, GuardValue v1, GuardsImpl::PreGuard g2, GuardValue v2
+  ) {
+    exists(MethodCall check, int argIndex |
+      g1 = check and
+      v1.getDualValue().isThrowsException() and
+      conditionCheckArgument(check, argIndex, v2.asBooleanValue()) and
+      g2 = check.getArgument(argIndex)
+    )
+  }
 }
 
 private module LogicInput_v1 implements GuardsImpl::LogicInputSig {
@@ -422,16 +433,7 @@ private module LogicInput_v1 implements GuardsImpl::LogicInputSig {
 
   predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
 
-  predicate additionalImpliesStep(
-    GuardsImpl::PreGuard g1, GuardValue v1, GuardsImpl::PreGuard g2, GuardValue v2
-  ) {
-    exists(MethodCall check, int argIndex |
-      g1 = check and
-      v1.getDualValue().isThrowsException() and
-      conditionCheckArgument(check, argIndex, v2.asBooleanValue()) and
-      g2 = check.getArgument(argIndex)
-    )
-  }
+  predicate additionalImpliesStep = LogicInputCommon::additionalImpliesStep/4;
 }
 
 private module LogicInput_v2 implements GuardsImpl::LogicInputSig {
@@ -462,11 +464,7 @@ private module LogicInput_v2 implements GuardsImpl::LogicInputSig {
 
   predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
 
-  predicate additionalImpliesStep(
-    GuardsImpl::PreGuard g1, GuardValue v1, GuardsImpl::PreGuard g2, GuardValue v2
-  ) {
-    LogicInput_v1::additionalImpliesStep(g1, v1, g2, v2)
-  }
+  predicate additionalImpliesStep = LogicInputCommon::additionalImpliesStep/4;
 }
 
 private module LogicInput_v3 implements GuardsImpl::LogicInputSig {
@@ -479,7 +477,7 @@ private module LogicInput_v3 implements GuardsImpl::LogicInputSig {
 
   predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
 
-  predicate additionalImpliesStep = LogicInput_v2::additionalImpliesStep/4;
+  predicate additionalImpliesStep = LogicInputCommon::additionalImpliesStep/4;
 }
 
 class GuardValue = GuardsImpl::GuardValue;
