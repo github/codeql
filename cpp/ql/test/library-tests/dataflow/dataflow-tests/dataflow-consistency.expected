@@ -43,6 +43,10 @@ argHasPostUpdate
 | test.cpp:813:19:813:35 | * ... | ArgumentNode is missing PostUpdateNode. |
 | test.cpp:848:23:848:25 | rpx | ArgumentNode is missing PostUpdateNode. |
 | test.cpp:1093:19:1093:21 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:1206:19:1206:37 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:1207:10:1207:28 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:1224:19:1224:37 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:1225:10:1225:28 | * ... | ArgumentNode is missing PostUpdateNode. |
 postWithInFlow
 | BarrierGuard.cpp:49:6:49:6 | x [post update] | PostUpdateNode should not be the target of local flow. |
 | BarrierGuard.cpp:60:7:60:7 | x [post update] | PostUpdateNode should not be the target of local flow. |
@@ -193,6 +197,10 @@ postWithInFlow
 | test.cpp:1139:4:1139:7 | data [inner post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:1153:5:1153:6 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:1153:6:1153:6 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:1165:5:1165:6 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:1165:6:1165:6 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:1195:5:1195:6 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:1195:6:1195:6 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition
