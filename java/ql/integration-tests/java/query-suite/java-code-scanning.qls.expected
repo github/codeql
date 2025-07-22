@@ -27,6 +27,7 @@ ql/java/ql/src/Security/CWE/CWE-113/ResponseSplitting.ql
 ql/java/ql/src/Security/CWE/CWE-1204/StaticInitializationVector.ql
 ql/java/ql/src/Security/CWE/CWE-134/ExternallyControlledFormatString.ql
 ql/java/ql/src/Security/CWE/CWE-200/SpringBootActuators.ql
+ql/java/ql/src/Security/CWE/CWE-200/SpringBootActuatorsConfig/SpringBootActuatorsConfig.ql
 ql/java/ql/src/Security/CWE/CWE-209/SensitiveDataExposureThroughErrorMessage.ql
 ql/java/ql/src/Security/CWE/CWE-209/StackTraceExposure.ql
 ql/java/ql/src/Security/CWE/CWE-266/IntentUriPermissionManipulation.ql
