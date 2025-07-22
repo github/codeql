@@ -88,81 +88,14 @@ module ValidState {
 
     predicate isSink(DataFlow::Node sink) { isSinkPairImpl(_, _, sink, _, _) }
 
-    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-      isAdditionalFlowStep2(node1, node2, _)
-    }
-
-    predicate includeHiddenNodes() { any() }
+    predicate isBarrierOut(DataFlow::Node node) { DataFlow::flowsToBackEdge(node) }
   }
 
   private import DataFlow::Global<ValidStateConfig>
 
-  private predicate inLoop(PathNode n) { n.getASuccessor+() = n }
-
-  /**
-   * Holds if `value` is a possible offset for `n`.
-   *
-   * To ensure termination, we limit `value` to be in the
-   * range `[-2, 2]` if the node is part of a loop. Without
-   * this restriction we wouldn't terminate on an example like:
-   * ```cpp
-   * while(unknown()) { size++; }
-   * ```
-   */
-  private predicate validStateImpl(PathNode n, int value) {
-    // If the dataflow node depends recursively on itself we restrict the range.
-    (inLoop(n) implies value = [-2 .. 2]) and
-    (
-      // For the dataflow source we have an allocation such as `malloc(size + k)`,
-      // and the value of the flow-state is then `k`.
-      hasSize(_, n.getNode(), value)
-      or
-      // For a dataflow sink any `value` that is strictly smaller than the delta
-      // needs to be a valid flow-state. That is, for a snippet like:
-      // ```
-      // p = b ? new char[size] : new char[size + 1];
-      // memset(p, 0, size + 2);
-      // ```
-      // the valid flow-states at the `memset` must include the set `{0, 1}` since the
-      // flow-state at `new char[size]` is `0`, and the flow-state at `new char[size + 1]`
-      // is `1`.
-      //
-      // So we find a valid flow-state at the sink's predecessor, and use the definition
-      // of our sink predicate to compute the valid flow-states at the sink.
-      exists(int delta, PathNode n0 |
-        n0.getASuccessor() = n and
-        validStateImpl(n0, value) and
-        isSinkPairImpl(_, _, n.getNode(), delta, _) and
-        delta > value
-      )
-      or
-      // For a non-source and non-sink node there is two cases to consider.
-      // 1. A node where we have to update the flow-state, or
-      // 2. A node that doesn't update the flow-state.
-      //
-      // For case 1, we compute the new flow-state by adding the constant operand of the
-      // `AddInstruction` to the flow-state of any predecessor node.
-      // For case 2 we simply propagate the valid flow-states from the predecessor node to
-      // the next one.
-      exists(PathNode n0, DataFlow::Node node0, DataFlow::Node node, int value0 |
-        n0.getASuccessor() = n and
-        validStateImpl(n0, value0) and
-        node = n.getNode() and
-        node0 = n0.getNode()
-      |
-        exists(int delta |
-          isAdditionalFlowStep2(node0, node, delta) and
-          value0 = value + delta
-        )
-        or
-        not isAdditionalFlowStep2(node0, node, _) and
-        value = value0
-      )
-    )
-  }
-
-  predicate validState(DataFlow::Node n, int value) {
-    validStateImpl(any(PathNode pn | pn.getNode() = n), value)
+  predicate validState(DataFlow::Node source, DataFlow::Node sink, int value) {
+    hasSize(_, source, value) and
+    flow(source, sink)
   }
 }
 
@@ -213,16 +146,6 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
   }
 
   predicate isBarrierOut2(DataFlow::Node node) { DataFlow::flowsToBackEdge(node) }
-
-  predicate isAdditionalFlowStep2(
-    DataFlow::Node node1, FlowState2 state1, DataFlow::Node node2, FlowState2 state2
-  ) {
-    validState(node2, state2) and
-    exists(int delta |
-      isAdditionalFlowStep2(node1, node2, delta) and
-      state1 = state2 + delta
-    )
-  }
 }
 
 module StringSizeFlow = ProductFlow::GlobalWithState<StringSizeConfig>;
