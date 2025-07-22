@@ -207,6 +207,46 @@ signature module InputSig<LocationSig Location> {
     /** Gets the false branch of this expression. */
     Expr getElse();
   }
+
+  class Parameter {
+    /** Gets a textual representation of this parameter. */
+    string toString();
+
+    /** Gets the location of this parameter. */
+    Location getLocation();
+  }
+
+  class ParameterPosition {
+    /** Gets a textual representation of this element. */
+    bindingset[this]
+    string toString();
+  }
+
+  class ArgumentPosition {
+    /** Gets a textual representation of this element. */
+    bindingset[this]
+    string toString();
+  }
+
+  /**
+   * Holds if the parameter position `ppos` matches the argument position
+   * `apos`.
+   */
+  predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
+
+  /** A non-overridable method with a boolean return value. */
+  class BooleanMethod {
+    Parameter getParameter(ParameterPosition ppos);
+
+    /** Gets an expression being returned by this method. */
+    Expr getAReturnExpr();
+  }
+
+  class BooleanMethodCall extends Expr {
+    BooleanMethod getMethod();
+
+    Expr getArgument(ArgumentPosition apos);
+  }
 }
 
 /** Provides guards-related predicates and classes. */
@@ -503,6 +543,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb);
     }
 
+    predicate parameterDefinition(Parameter p, SsaDefinition def);
+
     /**
      * Holds if `guard` evaluating to `val` ensures that:
      * `e <= k` when `upper = true`
@@ -525,8 +567,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Holds if the assumption that `g1` has been evaluated to `v1` implies that
      * `g2` has been evaluated to `v2`, that is, the evaluation of `g2` to `v2`
      * dominates the evaluation of `g1` to `v1`.
-     *
-     * This predicate can be instantiated with `CustomGuard<..>::additionalImpliesStep`.
      */
     default predicate additionalImpliesStep(PreGuard g1, GuardValue v1, PreGuard g2, GuardValue v2) {
       none()
@@ -861,6 +901,11 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         or
         exists(Guard g0, GuardValue v0 |
           guardControls(g0, v0, tgtGuard, tgtVal) and
+          CustomGuard::additionalImpliesStep(g0, v0, guard, v)
+        )
+        or
+        exists(Guard g0, GuardValue v0 |
+          guardControls(g0, v0, tgtGuard, tgtVal) and
           additionalImpliesStep(g0, v0, guard, v)
         )
       }
@@ -902,6 +947,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     predicate nullGuard(Guard guard, GuardValue v, Expr e, boolean isNull) {
       impliesStep2(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
+      CustomGuard::additionalImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
       additionalImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull)))
     }
 
@@ -944,47 +990,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     }
 
-    signature module CustomGuardInputSig {
-      class ParameterPosition {
-        /** Gets a textual representation of this element. */
-        bindingset[this]
-        string toString();
-      }
-
-      class ArgumentPosition {
-        /** Gets a textual representation of this element. */
-        bindingset[this]
-        string toString();
-      }
-
-      /**
-       * Holds if the parameter position `ppos` matches the argument position
-       * `apos`.
-       */
-      predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
-
-      /** A non-overridable method with a boolean return value. */
-      class BooleanMethod {
-        SsaDefinition getParameter(ParameterPosition ppos);
-
-        Expr getAReturnExpr();
-      }
-
-      class BooleanMethodCall extends Expr {
-        BooleanMethod getMethod();
-
-        Expr getArgument(ArgumentPosition apos);
-      }
-    }
-
     /**
      * Provides an implementation of guard implication logic for custom
      * wrappers. This can be used to instantiate the `additionalImpliesStep`
      * predicate.
      */
-    module CustomGuard<CustomGuardInputSig CustomGuardInput> {
-      private import CustomGuardInput
-
+    private module CustomGuard {
       final private class FinalExpr = Expr;
 
       private class ReturnExpr extends FinalExpr {
@@ -1010,7 +1021,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       ) {
         exists(BooleanMethod m, SsaDefinition param |
           m.getAReturnExpr() = ret and
-          m.getParameter(ppos) = param
+          parameterDefinition(m.getParameter(ppos), param)
         |
           exists(Guard g0, GuardValue v0 |
             g0.directlyValueControls(ret.getBasicBlock(), v0) and
