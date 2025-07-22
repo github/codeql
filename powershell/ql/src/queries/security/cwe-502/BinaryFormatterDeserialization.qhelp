@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 
-<p>Using BinaryFormatter to deserialize an object from untrusted input may result in security problems, such
+<p>Using <code>BinaryFormatter</code> to deserialize an object from untrusted input may result in security problems, such
 as denial of service or remote code execution.</p>
 
 </overview>
