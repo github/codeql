@@ -1,3 +1,13 @@
+## 4.0.11
+
+### Minor Analysis Improvements
+
+* Type annotations such as `foo : Bar` are now treated by the call graph as an indication that `foo` may be an instance of `Bar`.
+
+### Bug Fixes
+
+- The Python parser is now able to correctly parse expressions such as `match[1]` and `match()` where `match` is not used as a keyword.
+
 ## 4.0.10
 
 No user-facing changes.
