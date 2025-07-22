@@ -6,7 +6,7 @@
 
 ### New Features
 
-* Added a `isFinalValueOfParameter` predicate to DataFlow::Node which holds when a dataflow node represents the final value of an output parameter of a function.
+* Added a `isFinalValueOfParameter` predicate to `DataFlow::Node` which holds when a dataflow node represents the final value of an output parameter of a function.
 
 ### Minor Analysis Improvements
 
