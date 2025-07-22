@@ -334,11 +334,18 @@ irFlow
 | test.cpp:1138:17:1138:22 | call to source | test.cpp:1140:8:1140:18 | * ... |
 | test.cpp:1165:10:1165:15 | call to source | test.cpp:1170:19:1170:32 | *global_int_ptr |
 | test.cpp:1165:10:1165:15 | call to source | test.cpp:1175:10:1175:24 | * ... |
+| test.cpp:1165:10:1165:15 | call to source | test.cpp:1184:19:1184:32 | *global_int_ptr |
+| test.cpp:1165:10:1165:15 | call to source | test.cpp:1189:10:1189:24 | * ... |
 | test.cpp:1165:10:1165:15 | call to source | test.cpp:1234:19:1234:34 | *global_int_array |
 | test.cpp:1165:10:1165:15 | call to source | test.cpp:1239:10:1239:26 | * ... |
+| test.cpp:1165:10:1165:15 | call to source | test.cpp:1248:19:1248:34 | *global_int_array |
+| test.cpp:1165:10:1165:15 | call to source | test.cpp:1253:10:1253:26 | * ... |
 | test.cpp:1195:10:1195:24 | *call to indirect_source | test.cpp:1200:19:1200:36 | **global_int_ptr_ptr |
 | test.cpp:1195:10:1195:24 | *call to indirect_source | test.cpp:1206:19:1206:37 | ** ... |
 | test.cpp:1195:10:1195:24 | *call to indirect_source | test.cpp:1209:10:1209:29 | * ... |
+| test.cpp:1195:10:1195:24 | *call to indirect_source | test.cpp:1218:19:1218:36 | **global_int_ptr_ptr |
+| test.cpp:1195:10:1195:24 | *call to indirect_source | test.cpp:1224:19:1224:37 | ** ... |
+| test.cpp:1195:10:1195:24 | *call to indirect_source | test.cpp:1227:10:1227:29 | * ... |
 | true_upon_entry.cpp:9:11:9:16 | call to source | true_upon_entry.cpp:13:8:13:8 | x |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |
