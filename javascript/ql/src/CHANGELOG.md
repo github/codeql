@@ -1,3 +1,29 @@
+## 2.0.0
+
+### Breaking Changes
+
+* The `Type` and `Symbol` classes have been deprecated and will be empty in newly extracted databases, since the TypeScript extractor no longer populates them.
+  This is a breaking change for custom queries that explicitly relied on these classes.
+  Such queries will still compile, but with deprecation warnings, and may have different query results due to type information no longer being available.
+  We expect most custom queries will not be affected, however. If a custom query has no deprecation warnings, it should not be affected by this change.
+  Uses of `getType()` should be rewritten to use the new `getTypeBinding()` or `getNameBinding()` APIs instead.
+  If the new API is not sufficient, please consider opening an issue in `github/codeql` describing your use-case.
+
+### Major Analysis Improvements
+
+* The TypeScript extractor no longer relies on the TypeScript compiler for extracting type information.
+  Instead, the information we need from types is now derived by an algorithm written in QL.
+  This results in more robust extraction with faster extraction times, in some cases significantly faster.
+* Taint is now tracked through the React `use` function.
+* Parameters of React server functions, marked with the `"use server"` directive, are now seen as taint sources.
+
+### Minor Analysis Improvements
+
+* Removed three queries from the JS qlpack, which have been superseded by newer queries that are part of the Actions qlpack:
+  * `js/actions/pull-request-target` has been superseded by `actions/untrusted-checkout/{medium,high,critical}`
+  * `js/actions/actions-artifact-leak` has been superseded by `actions/secrets-in-artifacts`
+  * `js/actions/command-injection` has been superseded by `actions/command-injection/{medium,critical}`
+
 ## 1.7.0
 
 ### Query Metadata Changes
