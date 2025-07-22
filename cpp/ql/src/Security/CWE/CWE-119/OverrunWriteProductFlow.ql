@@ -43,20 +43,28 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
   )
 }
 
-predicate isSinkPairImpl(
-  CallInstruction c, DataFlow::Node bufSink, DataFlow::Node sizeSink, int delta, Expr eBuf
+/**
+ * Holds if `c` a call to an `ArrayFunction` with buffer argument `bufSink`,
+ * and a size argument `sizeInstr` which satisfies `sizeInstr <= sizeBound + delta`.
+ *
+ * Furthermore, the `sizeSink` node is the dataflow node corresponding to
+ * `sizeBound`, and the expression `eBuf` is the expression corresponding
+ * to `bufInstr`.
+ */
+predicate isSinkPairImpl0(
+  CallInstruction c, DataFlow::Node bufSink, DataFlow::Node sizeSink, int delta, Expr eBuf,
+  Instruction sizeBound, Instruction sizeInstr
 ) {
-  exists(
-    int bufIndex, int sizeIndex, Instruction sizeInstr, Instruction bufInstr, ArrayFunction func
-  |
+  exists(int bufIndex, int sizeIndex, Instruction bufInstr, ArrayFunction func |
     bufInstr = bufSink.asInstruction() and
     c.getArgument(bufIndex) = bufInstr and
-    sizeInstr = sizeSink.asInstruction() and
+    sizeBound = sizeSink.asInstruction() and
+    c.getArgument(sizeIndex) = sizeInstr and
     c.getStaticCallTarget() = func and
     pragma[only_bind_into](func)
         .hasArrayWithVariableSize(pragma[only_bind_into](bufIndex),
           pragma[only_bind_into](sizeIndex)) and
-    bounded(c.getArgument(sizeIndex), sizeInstr, delta) and
+    bounded(sizeInstr, sizeBound, delta) and
     eBuf = bufInstr.getUnconvertedResultExpression()
   )
 }
@@ -86,7 +94,7 @@ module ValidState {
   private module ValidStateConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { hasSize(_, source, _) }
 
-    predicate isSink(DataFlow::Node sink) { isSinkPairImpl(_, _, sink, _, _) }
+    predicate isSink(DataFlow::Node sink) { isSinkPairImpl0(_, _, sink, _, _, _, _) }
 
     predicate isBarrierOut(DataFlow::Node node) { DataFlow::flowsToBackEdge(node) }
   }
@@ -131,14 +139,14 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
     // to the size of the allocation. This state is then checked in `isSinkPair`.
     exists(state1) and
     hasSize(bufSource.asExpr(), sizeSource, state2) and
-    validState(sizeSource, state2)
+    validState(sizeSource, _, state2)
   }
 
   predicate isSinkPair(
     DataFlow::Node bufSink, FlowState1 state1, DataFlow::Node sizeSink, FlowState2 state2
   ) {
     exists(state1) and
-    validState(sizeSink, state2) and
+    validState(_, sizeSink, state2) and
     exists(int delta |
       isSinkPairImpl(_, bufSink, sizeSink, delta, _) and
       delta > state2
