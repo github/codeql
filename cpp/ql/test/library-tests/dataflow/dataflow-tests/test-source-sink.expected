@@ -134,6 +134,11 @@ astFlow
 | test.cpp:1086:12:1086:12 | a | test.cpp:1088:8:1088:9 | & ... |
 | test.cpp:1137:7:1137:10 | data | test.cpp:1140:8:1140:18 | * ... |
 | test.cpp:1138:17:1138:22 | call to source | test.cpp:1140:8:1140:18 | * ... |
+| test.cpp:1165:10:1165:15 | call to source | test.cpp:1170:19:1170:32 | global_int_ptr |
+| test.cpp:1165:10:1165:15 | call to source | test.cpp:1234:19:1234:34 | global_int_array |
+| test.cpp:1165:10:1165:15 | call to source | test.cpp:1239:10:1239:26 | * ... |
+| test.cpp:1195:10:1195:24 | call to indirect_source | test.cpp:1200:19:1200:36 | global_int_ptr_ptr |
+| test.cpp:1195:10:1195:24 | call to indirect_source | test.cpp:1201:10:1201:27 | global_int_ptr_ptr |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |
 | true_upon_entry.cpp:33:11:33:16 | call to source | true_upon_entry.cpp:39:8:39:8 | x |
@@ -327,6 +332,13 @@ irFlow
 | test.cpp:1117:27:1117:34 | call to source | test.cpp:1117:27:1117:34 | call to source |
 | test.cpp:1132:11:1132:16 | call to source | test.cpp:1121:8:1121:8 | x |
 | test.cpp:1138:17:1138:22 | call to source | test.cpp:1140:8:1140:18 | * ... |
+| test.cpp:1165:10:1165:15 | call to source | test.cpp:1170:19:1170:32 | *global_int_ptr |
+| test.cpp:1165:10:1165:15 | call to source | test.cpp:1175:10:1175:24 | * ... |
+| test.cpp:1165:10:1165:15 | call to source | test.cpp:1234:19:1234:34 | *global_int_array |
+| test.cpp:1165:10:1165:15 | call to source | test.cpp:1239:10:1239:26 | * ... |
+| test.cpp:1195:10:1195:24 | *call to indirect_source | test.cpp:1200:19:1200:36 | **global_int_ptr_ptr |
+| test.cpp:1195:10:1195:24 | *call to indirect_source | test.cpp:1206:19:1206:37 | ** ... |
+| test.cpp:1195:10:1195:24 | *call to indirect_source | test.cpp:1209:10:1209:29 | * ... |
 | true_upon_entry.cpp:9:11:9:16 | call to source | true_upon_entry.cpp:13:8:13:8 | x |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |

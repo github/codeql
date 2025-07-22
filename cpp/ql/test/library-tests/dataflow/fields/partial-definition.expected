@@ -225,6 +225,20 @@ WARNING: module 'DataFlow' has been deprecated and may be removed in future (par
 | aliasing.cpp:205:15:205:24 | & ... |
 | aliasing.cpp:205:16:205:18 | ps2 |
 | aliasing.cpp:205:21:205:21 | s |
+| aliasing.cpp:215:5:215:12 | global_s |
+| aliasing.cpp:215:14:215:15 | m1 |
+| aliasing.cpp:223:5:223:13 | global_s2 |
+| aliasing.cpp:223:15:223:15 | s |
+| aliasing.cpp:223:17:223:18 | m1 |
+| aliasing.cpp:234:5:234:16 | global_s_ptr |
+| aliasing.cpp:234:19:234:20 | m1 |
+| aliasing.cpp:242:5:242:17 | global_s2_ptr |
+| aliasing.cpp:242:20:242:20 | s |
+| aliasing.cpp:242:22:242:23 | m1 |
+| aliasing.cpp:252:5:252:31 | * ... |
+| aliasing.cpp:252:6:252:26 | global_s_with_pointer |
+| aliasing.cpp:262:5:262:29 | * ... |
+| aliasing.cpp:262:6:262:24 | global_s_with_array |
 | arrays.cpp:6:3:6:8 | access to array |
 | arrays.cpp:15:3:15:10 | * ... |
 | arrays.cpp:36:3:36:3 | o |
