@@ -7,7 +7,7 @@
 
 ### Bug Fixes
 
-* `web.config` and `web.release.config` files are now recognised regardless of case. This means queries `cs/web/debug-binary` and `cs/web/missing-x-frame-options` may produce more results than before.
+* `web.config` and `web.release.config` files are now recognized regardless of case. This means queries `cs/web/debug-binary` and `cs/web/missing-x-frame-options` may produce more results than before.
 
 ## 1.3.0
 
