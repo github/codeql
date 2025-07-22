@@ -1,0 +1,14 @@
+edges
+| test.ps1:1:20:1:47 | Call to read-host | test.ps1:3:69:3:84 | untrustedBase64 | provenance | Src:MaD:0  |
+| test.ps1:3:11:3:86 | Call to new | test.ps1:4:31:4:37 | stream | provenance |  |
+| test.ps1:3:41:3:85 | Call to frombase64string | test.ps1:3:11:3:86 | Call to new | provenance | Config |
+| test.ps1:3:69:3:84 | untrustedBase64 | test.ps1:3:41:3:85 | Call to frombase64string | provenance | Config |
+nodes
+| test.ps1:1:20:1:47 | Call to read-host | semmle.label | Call to read-host |
+| test.ps1:3:11:3:86 | Call to new | semmle.label | Call to new |
+| test.ps1:3:41:3:85 | Call to frombase64string | semmle.label | Call to frombase64string |
+| test.ps1:3:69:3:84 | untrustedBase64 | semmle.label | untrustedBase64 |
+| test.ps1:4:31:4:37 | stream | semmle.label | stream |
+subpaths
+#select
+| test.ps1:4:31:4:37 | stream | test.ps1:1:20:1:47 | Call to read-host | test.ps1:4:31:4:37 | stream | This unsafe deserializer deserializes  on a $@. | test.ps1:1:20:1:47 | Call to read-host | read from stdin |
