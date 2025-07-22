@@ -49,9 +49,7 @@ module XML {
     override JS::Expr getSourceArgument() { result = this.getArgument(0) }
 
     override predicate resolvesEntities(EntityKind kind) {
-      // internal entities are always resolved
-      kind = InternalEntity()
-      or
+      not kind = InternalEntity() and
       // other entities are only resolved if the configuration option `noent` is set to `true`
       exists(JS::Expr noent |
         this.hasOptionArgument(1, "noent", noent) and
@@ -126,8 +124,9 @@ module XML {
     override JS::Expr getSourceArgument() { result = this.getArgument(0) }
 
     override predicate resolvesEntities(EntityKind kind) {
-      // entities are resolved by default
-      any()
+      // SAX parsers in libxmljs also inherit libxml2's protection against XML bombs
+      kind = ExternalEntity(_) or
+      kind = ParameterEntity(true)
     }
 
     override DataFlow::Node getAResult() {
@@ -149,8 +148,9 @@ module XML {
     override JS::Expr getSourceArgument() { result = this.getArgument(0) }
 
     override predicate resolvesEntities(EntityKind kind) {
-      // entities are resolved by default
-      any()
+      // SAX push parsers in libxmljs also inherit libxml2's protection against XML bombs
+      kind = ExternalEntity(_) or
+      kind = ParameterEntity(true)
     }
 
     override DataFlow::Node getAResult() {
