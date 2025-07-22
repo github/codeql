@@ -2,7 +2,7 @@
 
 ### Minor Analysis Improvements
 
-* `filepath.IsLocal` is now recognised as a sanitizer against path-traversal and related vulnerabilities.
+* `filepath.IsLocal` is now recognized as a sanitizer against path-traversal and related vulnerabilities.
 
 ## 1.4.0
 
