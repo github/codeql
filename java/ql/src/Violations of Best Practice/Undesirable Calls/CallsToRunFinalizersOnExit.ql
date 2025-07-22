@@ -7,8 +7,11 @@
  * @problem.severity error
  * @precision medium
  * @id java/run-finalizers-on-exit
- * @tags reliability
- *       maintainability
+ * @previous-id java/do-not-use-finalizers
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       performance
  */
 
 import java
