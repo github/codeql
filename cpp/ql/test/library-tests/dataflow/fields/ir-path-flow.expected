@@ -346,6 +346,46 @@ edges
 | aliasing.cpp:200:21:200:21 | *s [post update] [m1] | aliasing.cpp:200:16:200:18 | *ps2 [post update] [s, m1] | provenance |  |
 | aliasing.cpp:201:8:201:10 | *ps2 [s, m1] | aliasing.cpp:201:13:201:13 | *s [m1] | provenance |  |
 | aliasing.cpp:201:13:201:13 | *s [m1] | aliasing.cpp:201:15:201:16 | m1 | provenance |  |
+| aliasing.cpp:211:5:211:12 | *global_s [m1] | aliasing.cpp:211:5:211:12 | *global_s [m1] | provenance |  |
+| aliasing.cpp:211:5:211:12 | *global_s [m1] | aliasing.cpp:219:10:219:17 | *global_s [m1] | provenance |  |
+| aliasing.cpp:212:6:212:14 | *global_s2 [s, m1] | aliasing.cpp:212:6:212:14 | *global_s2 [s, m1] | provenance |  |
+| aliasing.cpp:212:6:212:14 | *global_s2 [s, m1] | aliasing.cpp:227:10:227:18 | *global_s2 [s, m1] | provenance |  |
+| aliasing.cpp:215:5:215:12 | *global_s [post update] [m1] | aliasing.cpp:211:5:211:12 | *global_s [m1] | provenance |  |
+| aliasing.cpp:215:5:215:30 | ... = ... | aliasing.cpp:215:5:215:12 | *global_s [post update] [m1] | provenance |  |
+| aliasing.cpp:215:19:215:28 | call to user_input | aliasing.cpp:215:5:215:30 | ... = ... | provenance |  |
+| aliasing.cpp:219:10:219:17 | *global_s [m1] | aliasing.cpp:219:19:219:20 | m1 | provenance |  |
+| aliasing.cpp:223:5:223:13 | *global_s2 [post update] [s, m1] | aliasing.cpp:212:6:212:14 | *global_s2 [s, m1] | provenance |  |
+| aliasing.cpp:223:5:223:33 | ... = ... | aliasing.cpp:223:15:223:15 | *s [post update] [m1] | provenance |  |
+| aliasing.cpp:223:15:223:15 | *s [post update] [m1] | aliasing.cpp:223:5:223:13 | *global_s2 [post update] [s, m1] | provenance |  |
+| aliasing.cpp:223:22:223:31 | call to user_input | aliasing.cpp:223:5:223:33 | ... = ... | provenance |  |
+| aliasing.cpp:227:10:227:18 | *global_s2 [s, m1] | aliasing.cpp:227:20:227:20 | *s [m1] | provenance |  |
+| aliasing.cpp:227:20:227:20 | *s [m1] | aliasing.cpp:227:22:227:23 | m1 | provenance |  |
+| aliasing.cpp:230:6:230:17 | **global_s_ptr [m1] | aliasing.cpp:230:6:230:17 | **global_s_ptr [m1] | provenance |  |
+| aliasing.cpp:230:6:230:17 | **global_s_ptr [m1] | aliasing.cpp:238:10:238:21 | *global_s_ptr [m1] | provenance |  |
+| aliasing.cpp:231:7:231:19 | **global_s2_ptr [s, m1] | aliasing.cpp:231:7:231:19 | **global_s2_ptr [s, m1] | provenance |  |
+| aliasing.cpp:231:7:231:19 | **global_s2_ptr [s, m1] | aliasing.cpp:246:10:246:22 | *global_s2_ptr [s, m1] | provenance |  |
+| aliasing.cpp:234:5:234:16 | *global_s_ptr [post update] [m1] | aliasing.cpp:230:6:230:17 | **global_s_ptr [m1] | provenance |  |
+| aliasing.cpp:234:5:234:35 | ... = ... | aliasing.cpp:234:5:234:16 | *global_s_ptr [post update] [m1] | provenance |  |
+| aliasing.cpp:234:24:234:33 | call to user_input | aliasing.cpp:234:5:234:35 | ... = ... | provenance |  |
+| aliasing.cpp:238:10:238:21 | *global_s_ptr [m1] | aliasing.cpp:238:24:238:25 | m1 | provenance |  |
+| aliasing.cpp:242:5:242:17 | *global_s2_ptr [post update] [s, m1] | aliasing.cpp:231:7:231:19 | **global_s2_ptr [s, m1] | provenance |  |
+| aliasing.cpp:242:5:242:38 | ... = ... | aliasing.cpp:242:20:242:20 | *s [post update] [m1] | provenance |  |
+| aliasing.cpp:242:20:242:20 | *s [post update] [m1] | aliasing.cpp:242:5:242:17 | *global_s2_ptr [post update] [s, m1] | provenance |  |
+| aliasing.cpp:242:27:242:36 | call to user_input | aliasing.cpp:242:5:242:38 | ... = ... | provenance |  |
+| aliasing.cpp:246:10:246:22 | *global_s2_ptr [s, m1] | aliasing.cpp:246:25:246:25 | *s [m1] | provenance |  |
+| aliasing.cpp:246:25:246:25 | *s [m1] | aliasing.cpp:246:27:246:28 | m1 | provenance |  |
+| aliasing.cpp:249:18:249:38 | *global_s_with_pointer [*data] | aliasing.cpp:249:18:249:38 | *global_s_with_pointer [*data] | provenance |  |
+| aliasing.cpp:249:18:249:38 | *global_s_with_pointer [*data] | aliasing.cpp:256:11:256:31 | *global_s_with_pointer [*data] | provenance |  |
+| aliasing.cpp:252:5:252:46 | ... = ... | aliasing.cpp:252:6:252:26 | *global_s_with_pointer [post update] [*data] | provenance |  |
+| aliasing.cpp:252:6:252:26 | *global_s_with_pointer [post update] [*data] | aliasing.cpp:249:18:249:38 | *global_s_with_pointer [*data] | provenance |  |
+| aliasing.cpp:252:35:252:44 | call to user_input | aliasing.cpp:252:5:252:46 | ... = ... | provenance |  |
+| aliasing.cpp:256:11:256:31 | *global_s_with_pointer [*data] | aliasing.cpp:256:10:256:36 | * ... | provenance |  |
+| aliasing.cpp:259:16:259:34 | *global_s_with_array [data] | aliasing.cpp:259:16:259:34 | *global_s_with_array [data] | provenance |  |
+| aliasing.cpp:259:16:259:34 | *global_s_with_array [data] | aliasing.cpp:266:11:266:29 | *global_s_with_array [data] | provenance |  |
+| aliasing.cpp:262:5:262:44 | ... = ... | aliasing.cpp:262:6:262:24 | *global_s_with_array [post update] [data] | provenance |  |
+| aliasing.cpp:262:6:262:24 | *global_s_with_array [post update] [data] | aliasing.cpp:259:16:259:34 | *global_s_with_array [data] | provenance |  |
+| aliasing.cpp:262:33:262:42 | call to user_input | aliasing.cpp:262:5:262:44 | ... = ... | provenance |  |
+| aliasing.cpp:266:11:266:29 | *global_s_with_array [data] | aliasing.cpp:266:10:266:34 | * ... | provenance |  |
 | arrays.cpp:6:3:6:23 | ... = ... | arrays.cpp:7:8:7:13 | access to array | provenance |  |
 | arrays.cpp:6:3:6:23 | ... = ... | arrays.cpp:8:8:8:13 | access to array | provenance |  |
 | arrays.cpp:6:3:6:23 | ... = ... | arrays.cpp:9:8:9:11 | * ... | provenance |  |
@@ -1244,6 +1284,46 @@ nodes
 | aliasing.cpp:201:8:201:10 | *ps2 [s, m1] | semmle.label | *ps2 [s, m1] |
 | aliasing.cpp:201:13:201:13 | *s [m1] | semmle.label | *s [m1] |
 | aliasing.cpp:201:15:201:16 | m1 | semmle.label | m1 |
+| aliasing.cpp:211:5:211:12 | *global_s [m1] | semmle.label | *global_s [m1] |
+| aliasing.cpp:212:6:212:14 | *global_s2 [s, m1] | semmle.label | *global_s2 [s, m1] |
+| aliasing.cpp:215:5:215:12 | *global_s [post update] [m1] | semmle.label | *global_s [post update] [m1] |
+| aliasing.cpp:215:5:215:30 | ... = ... | semmle.label | ... = ... |
+| aliasing.cpp:215:19:215:28 | call to user_input | semmle.label | call to user_input |
+| aliasing.cpp:219:10:219:17 | *global_s [m1] | semmle.label | *global_s [m1] |
+| aliasing.cpp:219:19:219:20 | m1 | semmle.label | m1 |
+| aliasing.cpp:223:5:223:13 | *global_s2 [post update] [s, m1] | semmle.label | *global_s2 [post update] [s, m1] |
+| aliasing.cpp:223:5:223:33 | ... = ... | semmle.label | ... = ... |
+| aliasing.cpp:223:15:223:15 | *s [post update] [m1] | semmle.label | *s [post update] [m1] |
+| aliasing.cpp:223:22:223:31 | call to user_input | semmle.label | call to user_input |
+| aliasing.cpp:227:10:227:18 | *global_s2 [s, m1] | semmle.label | *global_s2 [s, m1] |
+| aliasing.cpp:227:20:227:20 | *s [m1] | semmle.label | *s [m1] |
+| aliasing.cpp:227:22:227:23 | m1 | semmle.label | m1 |
+| aliasing.cpp:230:6:230:17 | **global_s_ptr [m1] | semmle.label | **global_s_ptr [m1] |
+| aliasing.cpp:231:7:231:19 | **global_s2_ptr [s, m1] | semmle.label | **global_s2_ptr [s, m1] |
+| aliasing.cpp:234:5:234:16 | *global_s_ptr [post update] [m1] | semmle.label | *global_s_ptr [post update] [m1] |
+| aliasing.cpp:234:5:234:35 | ... = ... | semmle.label | ... = ... |
+| aliasing.cpp:234:24:234:33 | call to user_input | semmle.label | call to user_input |
+| aliasing.cpp:238:10:238:21 | *global_s_ptr [m1] | semmle.label | *global_s_ptr [m1] |
+| aliasing.cpp:238:24:238:25 | m1 | semmle.label | m1 |
+| aliasing.cpp:242:5:242:17 | *global_s2_ptr [post update] [s, m1] | semmle.label | *global_s2_ptr [post update] [s, m1] |
+| aliasing.cpp:242:5:242:38 | ... = ... | semmle.label | ... = ... |
+| aliasing.cpp:242:20:242:20 | *s [post update] [m1] | semmle.label | *s [post update] [m1] |
+| aliasing.cpp:242:27:242:36 | call to user_input | semmle.label | call to user_input |
+| aliasing.cpp:246:10:246:22 | *global_s2_ptr [s, m1] | semmle.label | *global_s2_ptr [s, m1] |
+| aliasing.cpp:246:25:246:25 | *s [m1] | semmle.label | *s [m1] |
+| aliasing.cpp:246:27:246:28 | m1 | semmle.label | m1 |
+| aliasing.cpp:249:18:249:38 | *global_s_with_pointer [*data] | semmle.label | *global_s_with_pointer [*data] |
+| aliasing.cpp:252:5:252:46 | ... = ... | semmle.label | ... = ... |
+| aliasing.cpp:252:6:252:26 | *global_s_with_pointer [post update] [*data] | semmle.label | *global_s_with_pointer [post update] [*data] |
+| aliasing.cpp:252:35:252:44 | call to user_input | semmle.label | call to user_input |
+| aliasing.cpp:256:10:256:36 | * ... | semmle.label | * ... |
+| aliasing.cpp:256:11:256:31 | *global_s_with_pointer [*data] | semmle.label | *global_s_with_pointer [*data] |
+| aliasing.cpp:259:16:259:34 | *global_s_with_array [data] | semmle.label | *global_s_with_array [data] |
+| aliasing.cpp:262:5:262:44 | ... = ... | semmle.label | ... = ... |
+| aliasing.cpp:262:6:262:24 | *global_s_with_array [post update] [data] | semmle.label | *global_s_with_array [post update] [data] |
+| aliasing.cpp:262:33:262:42 | call to user_input | semmle.label | call to user_input |
+| aliasing.cpp:266:10:266:34 | * ... | semmle.label | * ... |
+| aliasing.cpp:266:11:266:29 | *global_s_with_array [data] | semmle.label | *global_s_with_array [data] |
 | arrays.cpp:6:3:6:23 | ... = ... | semmle.label | ... = ... |
 | arrays.cpp:6:12:6:21 | call to user_input | semmle.label | call to user_input |
 | arrays.cpp:7:8:7:13 | access to array | semmle.label | access to array |
@@ -1902,6 +1982,12 @@ subpaths
 | aliasing.cpp:176:13:176:14 | m1 | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:176:13:176:14 | m1 | m1 flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
 | aliasing.cpp:189:15:189:16 | m1 | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:189:15:189:16 | m1 | m1 flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
 | aliasing.cpp:201:15:201:16 | m1 | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:201:15:201:16 | m1 | m1 flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
+| aliasing.cpp:219:19:219:20 | m1 | aliasing.cpp:215:19:215:28 | call to user_input | aliasing.cpp:219:19:219:20 | m1 | m1 flows from $@ | aliasing.cpp:215:19:215:28 | call to user_input | call to user_input |
+| aliasing.cpp:227:22:227:23 | m1 | aliasing.cpp:223:22:223:31 | call to user_input | aliasing.cpp:227:22:227:23 | m1 | m1 flows from $@ | aliasing.cpp:223:22:223:31 | call to user_input | call to user_input |
+| aliasing.cpp:238:24:238:25 | m1 | aliasing.cpp:234:24:234:33 | call to user_input | aliasing.cpp:238:24:238:25 | m1 | m1 flows from $@ | aliasing.cpp:234:24:234:33 | call to user_input | call to user_input |
+| aliasing.cpp:246:27:246:28 | m1 | aliasing.cpp:242:27:242:36 | call to user_input | aliasing.cpp:246:27:246:28 | m1 | m1 flows from $@ | aliasing.cpp:242:27:242:36 | call to user_input | call to user_input |
+| aliasing.cpp:256:10:256:36 | * ... | aliasing.cpp:252:35:252:44 | call to user_input | aliasing.cpp:256:10:256:36 | * ... | * ... flows from $@ | aliasing.cpp:252:35:252:44 | call to user_input | call to user_input |
+| aliasing.cpp:266:10:266:34 | * ... | aliasing.cpp:262:33:262:42 | call to user_input | aliasing.cpp:266:10:266:34 | * ... | * ... flows from $@ | aliasing.cpp:262:33:262:42 | call to user_input | call to user_input |
 | arrays.cpp:7:8:7:13 | access to array | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:7:8:7:13 | access to array | access to array flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |
 | arrays.cpp:8:8:8:13 | access to array | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:8:8:8:13 | access to array | access to array flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |
 | arrays.cpp:9:8:9:11 | * ... | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:9:8:9:11 | * ... | * ... flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |
