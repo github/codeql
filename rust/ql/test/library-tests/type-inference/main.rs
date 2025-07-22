@@ -1042,6 +1042,23 @@ mod type_aliases {
 
     type S7<T7> = Result<S6<T7>, S1>;
 
+    struct GenS<GenT>(GenT);
+
+    trait TraitWithAssocType {
+        type Output;
+        fn get_input(self) -> Self::Output;
+    }
+
+    impl<Output> TraitWithAssocType for GenS<Output> {
+        // This is not a recursive type, the `Output` on the right-hand side
+        // refers to the type parameter of the impl block just above.
+        type Output = Result<Output, Output>;
+
+        fn get_input(self) -> Self::Output {
+            Ok(self.0) // $ fieldof=GenS type=Ok(...):Result type=Ok(...):T.Output type=Ok(...):E.Output
+        }
+    }
+
     pub fn f() {
         // Type can be inferred from the constructor
         let p1: MyPair = PairOption::PairBoth(S1, S2);
@@ -1062,6 +1079,8 @@ mod type_aliases {
         g(PairOption::PairSnd(PairOption::PairSnd(S3))); // $ target=g
 
         let x: S7<S2>; // $ type=x:Result $ type=x:E.S1 $ type=x:T.S4 $ type=x:T.T41.S2 $ type=x:T.T42.S5 $ type=x:T.T42.T5.S2
+
+        let y = GenS(true).get_input(); // $ type=y:Result type=y:T.bool type=y:E.bool target=get_input
     }
 }
 
@@ -2006,7 +2025,11 @@ mod method_determined_by_argument_type {
 
         // MyAdd<bool>::my_add
         fn my_add(self, value: bool) -> Self {
-            if value { 1 } else { 0 }
+            if value {
+                1
+            } else {
+                0
+            }
         }
     }
 
@@ -2057,7 +2080,11 @@ mod method_determined_by_argument_type {
     impl MyFrom<bool> for i64 {
         // MyFrom<bool>::my_from
         fn my_from(value: bool) -> Self {
-            if value { 1 } else { 0 }
+            if value {
+                1
+            } else {
+                0
+            }
         }
     }
 
@@ -2162,7 +2189,7 @@ mod loops {
 
         for i in [1, 2, 3] {} // $ type=i:i32
         for i in [1, 2, 3].map(|x| x + 1) {} // $ target=map MISSING: type=i:i32
-        for i in [1, 2, 3].into_iter() {} // $ target=into_iter MISSING: type=i:i32
+        for i in [1, 2, 3].into_iter() {} // $ target=into_iter type=i:i32
 
         let vals1 = [1u8, 2, 3]; // $ type=vals1:[T;...].u8
         for u in vals1 {} // $ type=u:u8
@@ -2423,7 +2450,7 @@ mod closures {
         Some(1).map(|x| {
             let x = x; // $ MISSING: type=x:i32
             println!("{x}");
-        });  // $ target=map
+        }); // $ target=map
 
         let table = Table::new(); // $ target=new type=table:Table
         let result = table.count_with(|row| // $ type=result:i64

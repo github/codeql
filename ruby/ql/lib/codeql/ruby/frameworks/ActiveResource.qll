@@ -183,8 +183,7 @@ module ActiveResource {
     CollectionSource getCollection() { result = collection }
   }
 
-  private class ModelClassMethodCallAsHttpRequest extends Http::Client::Request::Range,
-    ModelClassMethodCall
+  private class ModelClassMethodCallAsHttpRequest extends Http::Client::Request::Range instanceof ModelClassMethodCall
   {
     ModelClassMethodCallAsHttpRequest() {
       this.getMethodName() = ["all", "build", "create", "create!", "find", "first", "last"]
@@ -195,20 +194,19 @@ module ActiveResource {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      this.getModelClass().disablesCertificateValidation(disablingNode) and
+      super.getModelClass().disablesCertificateValidation(disablingNode) and
       // TODO: highlight real argument origin
       argumentOrigin = disablingNode
     }
 
     override DataFlow::Node getAUrlPart() {
-      result = this.getModelClass().getASiteAssignment().getAUrlPart()
+      result = super.getModelClass().getASiteAssignment().getAUrlPart()
     }
 
     override DataFlow::Node getResponseBody() { result = this }
   }
 
-  private class ModelInstanceMethodCallAsHttpRequest extends Http::Client::Request::Range,
-    ModelInstanceMethodCall
+  private class ModelInstanceMethodCallAsHttpRequest extends Http::Client::Request::Range instanceof ModelInstanceMethodCall
   {
     ModelInstanceMethodCallAsHttpRequest() {
       this.getMethodName() =
@@ -223,13 +221,13 @@ module ActiveResource {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      this.getModelClass().disablesCertificateValidation(disablingNode) and
+      super.getModelClass().disablesCertificateValidation(disablingNode) and
       // TODO: highlight real argument origin
       argumentOrigin = disablingNode
     }
 
     override DataFlow::Node getAUrlPart() {
-      result = this.getModelClass().getASiteAssignment().getAUrlPart()
+      result = super.getModelClass().getASiteAssignment().getAUrlPart()
     }
 
     override DataFlow::Node getResponseBody() { result = this }

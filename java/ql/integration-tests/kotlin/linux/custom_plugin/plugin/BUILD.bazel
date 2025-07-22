@@ -17,7 +17,10 @@ kt_jvm_library(
     srcs = ["Plugin.kt"],
     kotlinc_opts = ":kotlinc-options",
     module_name = "test",
-    resource_strip_prefix = "%s/resources" % package_name(),
+    resource_strip_prefix = "../%s/%s/resources" % (
+        repo_name(),
+        package_name(),
+    ),
     resources = glob(["resources/**"]),
     deps = [
         "@kotlin-compiler-%s" % _version,
