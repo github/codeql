@@ -1,3 +1,9 @@
+## 5.0.0
+
+### Breaking Changes
+
+* Most classes and predicates in the AST, SSA, and control-flow-graph libraries are now annotated with `overlay[local]`, in preparation for incremental analysis. This could result in compiler errors for custom queries if they extend these classes. To mitigate such errors, look for ways to restructure custom QL code so it doesn't depend on changing the behavior of standard-library classes.
+
 ## 4.1.9
 
 No user-facing changes.
