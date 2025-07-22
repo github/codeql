@@ -3,6 +3,8 @@ import runs_on
 import commands
 
 
+# This test is temporarily disabled until it is updated to work with Kotlin 2.2
+
 @runs_on.linux
 def test(codeql, java_full, cwd, semmle_code_dir, test_dir):
     build_dir = cwd / "build"
