@@ -901,7 +901,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         or
         exists(Guard g0, GuardValue v0 |
           guardControls(g0, v0, tgtGuard, tgtVal) and
-          WrapperGuard::additionalImpliesStep(g0, v0, guard, v)
+          WrapperGuard::wrapperImpliesStep(g0, v0, guard, v)
         )
         or
         exists(Guard g0, GuardValue v0 |
@@ -947,7 +947,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     predicate nullGuard(Guard guard, GuardValue v, Expr e, boolean isNull) {
       impliesStep2(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
-      WrapperGuard::additionalImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
+      WrapperGuard::wrapperImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
       additionalImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull)))
     }
 
@@ -1074,7 +1074,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * This predicate covers the implication steps that arise from calls to
        * custom guard wrappers.
        */
-      predicate additionalImpliesStep(PreGuard g1, GuardValue v1, PreGuard g2, GuardValue v2) {
+      predicate wrapperImpliesStep(PreGuard g1, GuardValue v1, PreGuard g2, GuardValue v2) {
         exists(NonOverridableMethodCall call, ParameterPosition ppos, ArgumentPosition apos |
           g1 = call and
           call.getMethod() = customGuard(ppos, v1, v2) and
