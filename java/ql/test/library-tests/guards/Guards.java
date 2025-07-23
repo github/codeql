@@ -202,4 +202,14 @@ public class Guards {
         break;
     }
   }
+
+  static void ensureNotNull(Object o) throws Exception {
+    if (o == null) throw new Exception();
+  }
+
+  void testExceptionWrapper(String s) throws Exception {
+    chk(); // nothing guards here
+    ensureNotNull(s);
+    chk(); // $ guarded='ensureNotNull(...):no exception' guarded='s:not null'
+  }
 }

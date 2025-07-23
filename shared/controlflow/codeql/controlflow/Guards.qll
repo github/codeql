@@ -79,6 +79,9 @@ signature module InputSig<LocationSig Location> {
     Location getLocation();
   }
 
+  /** A control flow node indicating normal termination of a callable. */
+  class NormalExitNode extends ControlFlowNode;
+
   /**
    * A basic block, that is, a maximal straight-line sequence of control flow nodes
    * without branches or joins.
@@ -519,6 +522,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       g1 != g2
     )
   }
+
+  private predicate normalExitBlock(BasicBlock bb) { bb.getNode(_) instanceof NormalExitNode }
 
   signature module LogicInputSig {
     class SsaDefinition {
@@ -1047,6 +1052,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         )
       }
 
+      private predicate guardDirectlyControlsExit(Guard guard, GuardValue val) {
+        exists(BasicBlock bb |
+          guard.directlyValueControls(bb, val) and
+          normalExitBlock(bb)
+        )
+      }
+
       /**
        * Gets a non-overridable method that performs a check on the `ppos`th
        * parameter. A return value equal to `retval` allows us to conclude
@@ -1063,6 +1075,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           )
         |
           validReturnInCustomGuard(ret, ppos, retval, val)
+        )
+        or
+        exists(SsaDefinition param, Guard g0, GuardValue v0 |
+          parameterDefinition(result.getParameter(ppos), param) and
+          guardDirectlyControlsExit(g0, v0) and
+          retval = TException(false) and
+          BranchImplies::ssaControls(param, val, g0, v0)
         )
       }
 
