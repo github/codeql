@@ -699,6 +699,9 @@ class Class extends ClassOrInterface {
   /** Holds if this class is an anonymous class. */
   predicate isAnonymous() { isAnonymClass(this.getSourceDeclaration(), _) }
 
+  /** Holds if this class is an implicit class (compact source file). */
+  predicate isImplicit() { isImplicitClass(this.getSourceDeclaration()) }
+
   /**
    * Gets an annotation that applies to this class.
    *
