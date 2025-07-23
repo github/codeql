@@ -31,7 +31,7 @@ newtype TType =
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
   TArrayTypeParameter() or
   TDynTraitTypeParameter(TypeParam tp) {
-    tp = any(DynTraitTypeRepr dt).getTrait().getGenericParamList().getAGenericParam()
+    tp = any(DynTraitTypeRepr dt).getTrait().getGenericParamList().getATypeParam()
   } or
   TRefTypeParameter() or
   TSelfTypeParameter(Trait t) or
