@@ -82,6 +82,16 @@ module OverflowDestinationConfig implements DataFlow::ConfigSig {
       nodeIsBarrierEqualityCandidate(node, access, checkedVar)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(FunctionCall fc | result = fc.getLocation() |
+      sourceSized(fc, sink.asIndirectConvertedExpr())
+    )
+  }
 }
 
 module OverflowDestination = TaintTracking::Global<OverflowDestinationConfig>;
