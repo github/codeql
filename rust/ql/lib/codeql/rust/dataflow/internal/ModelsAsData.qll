@@ -49,8 +49,6 @@ private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
 
-
-
 /**
  * Holds if in a call to the function with canonical path `path`, the value referred
  * to by `output` is a flow source of the given `kind`.
@@ -63,8 +61,6 @@ private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprB
 extensible predicate sourceModel(
   string path, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
 );
-
-
 
 /**
  * Holds if in a call to the function with canonical path `path`, the value referred
@@ -79,8 +75,6 @@ extensible predicate sourceModel(
 extensible predicate sinkModel(
   string path, string input, string kind, string provenance, QlBuiltins::ExtensionId madId
 );
-
-
 
 /**
  * Holds if in a call to the function with canonical path `path`, the value referred
@@ -116,8 +110,6 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
   )
 }
 
-
-
 private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   private string path;
 
@@ -146,8 +138,6 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   }
 }
 
-
-
 private class FlowSourceFromModel extends FlowSource::Range {
   private string path;
 
@@ -163,8 +153,6 @@ private class FlowSourceFromModel extends FlowSource::Range {
     )
   }
 }
-
-
 
 private class FlowSinkFromModel extends FlowSink::Range {
   private string path;
