@@ -146,6 +146,8 @@ private module GuardsInput implements SharedGuards::InputSig<Location> {
 
   class ControlFlowNode = J::ControlFlowNode;
 
+  class NormalExitNode = ControlFlow::NormalExitNode;
+
   class BasicBlock = J::BasicBlock;
 
   predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) { J::dominatingEdge(bb1, bb2) }

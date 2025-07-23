@@ -112,3 +112,5 @@
 | Guards.java:201:9:201:13 | chk(...) | 'testEnumWrapper(...):FAILURE' |
 | Guards.java:201:9:201:13 | chk(...) | 'testEnumWrapper(...):match FAILURE' |
 | Guards.java:201:9:201:13 | chk(...) | g(1):false |
+| Guards.java:213:5:213:9 | chk(...) | 'ensureNotNull(...):no exception' |
+| Guards.java:213:5:213:9 | chk(...) | 's:not null' |
