@@ -1,3 +1,21 @@
+## 7.4.0
+
+### Deprecated APIs
+
+* The module `semmle.code.java.frameworks.Castor` has been deprecated and will be removed in a future release.
+* The module `semmle.code.java.frameworks.JYaml` has been deprecated and will be removed in a future release.
+* The classes `UnsafeHessianInputReadObjectMethod` and `BurlapInputReadObjectMethod` in the module `semmle.code.java.frameworks.HessianBurlap` have been deprecated and will be removed in a future release.
+* The class `YamlBeansReaderReadMethod` in the module `semmle.code.java.frameworks.YamlBeans` has been deprecated and will be removed in a future release.
+* The class `MethodApacheSerializationUtilsDeserialize` in the module `semmle.code.java.frameworks.apache.Lang` has been deprecated and will be removed in a future release.
+
+### New Features
+
+* You can now add sinks for the query "Deserialization of user-controlled data" (`java/unsafe-deserialization`) using [data extensions](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-java-and-kotlin/#extensible-predicates-used-to-create-custom-models-in-java-and-kotlin) by extending `sinkModel` and using the kind "unsafe-deserialization". The existing sinks which do not require extra logic to determine if they are unsafe are now defined in this way.
+
+### Minor Analysis Improvements
+
+* The qualifiers of a calls to `readObject` on any classes that implement `java.io.ObjectInput` are now recognised as sinks for `java/unsafe-deserialization`. Previously this was only the case for classes which extend `java.io.ObjectInputStream`.
+
 ## 7.3.2
 
 ### Minor Analysis Improvements
