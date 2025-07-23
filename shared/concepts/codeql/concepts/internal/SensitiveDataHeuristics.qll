@@ -6,6 +6,8 @@
  *
  * 'Sensitive' data in general is anything that should not be sent around in unencrypted form.
  */
+overlay[local?]
+module;
 
 /**
  * A classification of different kinds of sensitive data:
