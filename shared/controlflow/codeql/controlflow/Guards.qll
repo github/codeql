@@ -234,16 +234,16 @@ signature module InputSig<LocationSig Location> {
    */
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
 
-  /** A non-overridable method with a boolean return value. */
-  class BooleanMethod {
+  /** A non-overridable method. */
+  class NonOverridableMethod {
     Parameter getParameter(ParameterPosition ppos);
 
     /** Gets an expression being returned by this method. */
     Expr getAReturnExpr();
   }
 
-  class BooleanMethodCall extends Expr {
-    BooleanMethod getMethod();
+  class NonOverridableMethodCall extends Expr {
+    NonOverridableMethod getMethod();
 
     Expr getArgument(ArgumentPosition apos);
   }
@@ -998,17 +998,32 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       final private class FinalExpr = Expr;
 
       private class ReturnExpr extends FinalExpr {
-        ReturnExpr() { any(BooleanMethod m).getAReturnExpr() = this }
+        ReturnExpr() { any(NonOverridableMethod m).getAReturnExpr() = this }
+
+        NonOverridableMethod getMethod() { result.getAReturnExpr() = this }
 
         pragma[nomagic]
         BasicBlock getBasicBlock() { result = super.getBasicBlock() }
       }
 
-      private predicate booleanReturnGuard(Guard guard, GuardValue val) {
-        guard instanceof ReturnExpr and exists(val.asBooleanValue())
+      private predicate relevantCallValue(NonOverridableMethodCall call, GuardValue val) {
+        BranchImplies::guardControls(call, val, _, _) or
+        ReturnImplies::guardControls(call, val, _, _)
       }
 
-      private module ReturnImplies = ImpliesTC<booleanReturnGuard/2>;
+      private predicate relevantReturnValue(NonOverridableMethod m, GuardValue val) {
+        exists(NonOverridableMethodCall call |
+          relevantCallValue(call, val) and
+          call.getMethod() = m and
+          not val instanceof TException
+        )
+      }
+
+      private predicate returnGuard(Guard guard, GuardValue val) {
+        relevantReturnValue(guard.(ReturnExpr).getMethod(), val)
+      }
+
+      private module ReturnImplies = ImpliesTC<returnGuard/2>;
 
       /**
        * Holds if `ret` is a return expression in a non-overridable method that
@@ -1016,32 +1031,36 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * parameter has the value `val`.
        */
       private predicate validReturnInCustomGuard(
-        ReturnExpr ret, ParameterPosition ppos, boolean retval, GuardValue val
+        ReturnExpr ret, ParameterPosition ppos, GuardValue retval, GuardValue val
       ) {
-        exists(BooleanMethod m, SsaDefinition param |
+        exists(NonOverridableMethod m, SsaDefinition param |
           m.getAReturnExpr() = ret and
           parameterDefinition(m.getParameter(ppos), param)
         |
           exists(Guard g0, GuardValue v0 |
             g0.directlyValueControls(ret.getBasicBlock(), v0) and
             BranchImplies::ssaControls(param, val, g0, v0) and
-            retval = [true, false]
+            relevantReturnValue(m, retval)
           )
           or
-          ReturnImplies::ssaControls(param, val, ret,
-            any(GuardValue r | r.asBooleanValue() = retval))
+          ReturnImplies::ssaControls(param, val, ret, retval)
         )
       }
 
       /**
-       * Gets a non-overridable method with a boolean return value that performs a check
-       * on the `ppos`th parameter. A return value equal to `retval` allows us to conclude
+       * Gets a non-overridable method that performs a check on the `ppos`th
+       * parameter. A return value equal to `retval` allows us to conclude
        * that the argument has the value `val`.
        */
-      private BooleanMethod customGuard(ParameterPosition ppos, boolean retval, GuardValue val) {
+      private NonOverridableMethod customGuard(
+        ParameterPosition ppos, GuardValue retval, GuardValue val
+      ) {
         forex(ReturnExpr ret |
           result.getAReturnExpr() = ret and
-          not ret.(ConstantExpr).asBooleanValue() = retval.booleanNot()
+          not exists(GuardValue notRetval |
+            exprHasValue(ret, notRetval) and
+            disjointValues(notRetval, retval)
+          )
         |
           validReturnInCustomGuard(ret, ppos, retval, val)
         )
@@ -1056,11 +1075,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * custom guard wrappers.
        */
       predicate additionalImpliesStep(PreGuard g1, GuardValue v1, PreGuard g2, GuardValue v2) {
-        exists(BooleanMethodCall call, ParameterPosition ppos, ArgumentPosition apos |
+        exists(NonOverridableMethodCall call, ParameterPosition ppos, ArgumentPosition apos |
           g1 = call and
-          call.getMethod() = customGuard(ppos, v1.asBooleanValue(), v2) and
+          call.getMethod() = customGuard(ppos, v1, v2) and
           call.getArgument(apos) = g2 and
-          parameterMatch(pragma[only_bind_out](ppos), pragma[only_bind_out](apos))
+          parameterMatch(pragma[only_bind_out](ppos), pragma[only_bind_out](apos)) and
+          not exprHasValue(g2, v2) // disregard trivial guard
         )
       }
     }

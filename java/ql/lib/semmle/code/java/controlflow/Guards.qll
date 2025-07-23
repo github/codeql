@@ -344,11 +344,8 @@ private module GuardsInput implements SharedGuards::InputSig<Location> {
 
   final private class FinalMethod = Method;
 
-  class BooleanMethod extends FinalMethod {
-    BooleanMethod() {
-      super.getReturnType().(PrimitiveType).hasName("boolean") and
-      not super.isOverridable()
-    }
+  class NonOverridableMethod extends FinalMethod {
+    NonOverridableMethod() { not super.isOverridable() }
 
     Parameter getParameter(ParameterPosition ppos) {
       super.getParameter(ppos) = result and
@@ -363,14 +360,14 @@ private module GuardsInput implements SharedGuards::InputSig<Location> {
     }
   }
 
-  private predicate booleanMethodCall(MethodCall call, BooleanMethod m) {
+  private predicate nonOverridableMethodCall(MethodCall call, NonOverridableMethod m) {
     call.getMethod().getSourceDeclaration() = m
   }
 
-  class BooleanMethodCall extends GuardsInput::Expr instanceof MethodCall {
-    BooleanMethodCall() { booleanMethodCall(this, _) }
+  class NonOverridableMethodCall extends GuardsInput::Expr instanceof MethodCall {
+    NonOverridableMethodCall() { nonOverridableMethodCall(this, _) }
 
-    BooleanMethod getMethod() { booleanMethodCall(this, result) }
+    NonOverridableMethod getMethod() { nonOverridableMethodCall(this, result) }
 
     GuardsInput::Expr getArgument(ArgumentPosition apos) { result = super.getArgument(apos) }
   }
