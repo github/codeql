@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The commands<code>Set-SmbClientConfiguration</code> and <code>Set-SmbServerConfiguration</code> are used to set configurations for SMB traffic.
+Insecure configurations such as outdated versions, or turning off encryption, can make connections susceptible to attackers.
+</p>
+</overview>
+
+<recommendation>
+<p>The minimum version of SMB is 3.0, but it is recommended to use the latest version. For example, use: 
+<code>Set-SmbServerConfiguration -Smb2DialectMin SMB300</code> or <code>Set-SmbClientConfiguration -Smb2DialectMin SMB300</code>
+</p>
+<p>
+SMB encryption should be enabled. For example, use: 
+<code> Set-SmbServerConfiguration -encryptdata $true -rejectunencryptedaccess $true </code> or <code> Set-SmbClientConfiguration -RequireEncryption $true </code>
+</p>
+
+<p>
+SMB NTLM blocking should be enabled. For example: <code>Set-SMbClientConfiguration -BlockNTLM $true </code>
+</p>
+</recommendation>
+
+<references>
+<li>MSDN: <a href="https://learn.microsoft.com/en-us/powershell/module/smbshare/set-smbserverconfiguration">Set-SmbServerConfiguration</a>.</li>
+<li>MSDN: <a href="https://learn.microsoft.com/en-us/powershell/module/smbshare/set-smbclientconfiguration">Set-SmbClientConfiguration</a>.</li>
+
+</references>
+</qhelp>
