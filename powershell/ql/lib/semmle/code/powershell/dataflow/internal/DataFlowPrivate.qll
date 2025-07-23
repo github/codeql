@@ -428,7 +428,11 @@ predicate nodeIsHidden(Node n) { n.(NodeImpl).nodeIsHidden() }
  * Holds if `n` should never be skipped over in the `PathGraph` and in path
  * explanations.
  */
-predicate neverSkipInPathGraph(Node n) { isReturned(n.(AstNode).getCfgNode()) }
+predicate neverSkipInPathGraph(Node n) {
+  isReturned(n.(AstNode).getCfgNode())
+  or
+  n = any(SsaDefinitionNodeImpl def | not def.nodeIsHidden())
+}
 
 /** An SSA node. */
 class SsaNode extends NodeImpl, TSsaNode {
@@ -438,9 +442,6 @@ class SsaNode extends NodeImpl, TSsaNode {
 
   /** Gets the underlying variable. */
   Variable getVariable() { result = node.getSourceVariable() }
-
-  /** Holds if this node should be hidden from path explanations. */
-  predicate isHidden() { any() }
 
   override CfgScope getCfgScope() { result = node.getBasicBlock().getScope() }
 
@@ -454,7 +455,7 @@ class SsaDefinitionNodeImpl extends SsaNode {
 
   Ssa::Definition getDefinition() { result = node.getDefinition() }
 
-  override predicate isHidden() {
+  override predicate nodeIsHidden() {
     exists(SsaImpl::Definition def | def = this.getDefinition() |
       not def instanceof Ssa::WriteDefinition
       or
