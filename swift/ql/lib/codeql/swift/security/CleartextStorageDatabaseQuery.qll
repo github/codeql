@@ -48,6 +48,17 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
     node.asExpr().getType().getUnderlyingType() instanceof DictionaryType and
     c.getAReadContent().(DataFlow::Content::TupleContent).getIndex() = 1
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(DataFlow::Node cleanSink | result = cleanSink.getLocation() |
+      cleanSink = sink.(DataFlow::PostUpdateNode).getPreUpdateNode()
+      or
+      not sink instanceof DataFlow::PostUpdateNode and
+      cleanSink = sink
+    )
+  }
 }
 
 /**
