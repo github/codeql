@@ -12,16 +12,18 @@
  */
 
 import python
+import semmle.python.ApiGraphs
+import semmle.python.dataflow.new.internal.DataFlowDispatch
 
-private predicate attribute_method(string name) {
+private predicate attributeMethod(string name) {
   name = "__getattribute__" or name = "__getattr__" or name = "__setattr__"
 }
 
-private predicate indexing_method(string name) {
+private predicate indexingMethod(string name) {
   name = "__getitem__" or name = "__setitem__" or name = "__delitem__"
 }
 
-private predicate arithmetic_method(string name) {
+private predicate arithmeticMethod(string name) {
   name in [
       "__add__", "__sub__", "__or__", "__xor__", "__rshift__", "__pow__", "__mul__", "__neg__",
       "__radd__", "__rsub__", "__rdiv__", "__rfloordiv__", "__div__", "__rdiv__", "__rlshift__",
@@ -32,7 +34,7 @@ private predicate arithmetic_method(string name) {
     ]
 }
 
-private predicate ordering_method(string name) {
+private predicate orderingMethod(string name) {
   name = "__lt__"
   or
   name = "__le__"
@@ -40,13 +42,9 @@ private predicate ordering_method(string name) {
   name = "__gt__"
   or
   name = "__ge__"
-  or
-  name = "__cmp__" and major_version() = 2
 }
 
-private predicate cast_method(string name) {
-  name = "__nonzero__" and major_version() = 2
-  or
+private predicate castMethod(string name) {
   name = "__int__"
   or
   name = "__float__"
@@ -58,63 +56,115 @@ private predicate cast_method(string name) {
   name = "__complex__"
 }
 
-predicate correct_raise(string name, ClassObject ex) {
-  ex.getAnImproperSuperType() = theTypeErrorType() and
+predicate correctRaise(string name, Expr exec) {
+  execIsOfType(exec, "TypeError") and
   (
-    name = "__copy__" or
-    name = "__deepcopy__" or
-    name = "__call__" or
-    indexing_method(name) or
-    attribute_method(name)
+    indexingMethod(name) or
+    attributeMethod(name)
   )
   or
-  preferred_raise(name, ex)
-  or
-  preferred_raise(name, ex.getASuperType())
+  exists(string execName |
+    preferredRaise(name, execName, _) and
+    execIsOfType(exec, execName)
+  )
 }
 
-predicate preferred_raise(string name, ClassObject ex) {
-  attribute_method(name) and ex = theAttributeErrorType()
+predicate preferredRaise(string name, string execName, string message) {
+  // TODO: execName should be an IPA type
+  attributeMethod(name) and
+  execName = "AttributeError" and
+  message = "should raise an AttributeError instead."
   or
-  indexing_method(name) and ex = Object::builtin("LookupError")
+  indexingMethod(name) and
+  execName = "LookupError" and
+  message = "should raise a LookupError (KeyError or IndexError) instead."
   or
-  ordering_method(name) and ex = theTypeErrorType()
+  orderingMethod(name) and
+  execName = "TypeError" and
+  message = "should raise a TypeError, or return NotImplemented instead."
   or
-  arithmetic_method(name) and ex = Object::builtin("ArithmeticError")
+  arithmeticMethod(name) and
+  execName = "ArithmeticError" and
+  message = "should raise an ArithmeticError, or return NotImplemented instead."
   or
-  name = "__bool__" and ex = theTypeErrorType()
+  name = "__bool__" and
+  execName = "TypeError" and
+  message = "should raise a TypeError instead."
 }
 
-predicate no_need_to_raise(string name, string message) {
-  name = "__hash__" and message = "use __hash__ = None instead"
-  or
-  cast_method(name) and message = "there is no need to implement the method at all."
-}
-
-predicate is_abstract(FunctionObject func) {
-  func.getFunction().getADecorator().(Name).getId().matches("%abstract%")
-}
-
-predicate always_raises(FunctionObject f, ClassObject ex) {
-  ex = f.getARaisedType() and
-  strictcount(f.getARaisedType()) = 1 and
-  not exists(f.getFunction().getANormalExit()) and
-  /* raising StopIteration is equivalent to a return in a generator */
-  not ex = theStopIterationType()
-}
-
-from FunctionObject f, ClassObject cls, string message
-where
-  f.getFunction().isSpecialMethod() and
-  not is_abstract(f) and
-  always_raises(f, cls) and
-  (
-    no_need_to_raise(f.getName(), message) and not cls.getName() = "NotImplementedError"
+predicate execIsOfType(Expr exec, string execName) {
+  exists(string subclass |
+    execName = "TypeError" and
+    subclass = "TypeError"
     or
-    not correct_raise(f.getName(), cls) and
-    not cls.getName() = "NotImplementedError" and
-    exists(ClassObject preferred | preferred_raise(f.getName(), preferred) |
-      message = "raise " + preferred.getName() + " instead"
+    execName = "LookupError" and
+    subclass = ["LookupError", "KeyError", "IndexError"]
+    or
+    execName = "ArithmeticError" and
+    subclass = ["ArithmeticError", "FloatingPointError", "OverflowError", "ZeroDivisionError"]
+    or
+    execName = "AttributeError" and
+    subclass = "AttributeError"
+  |
+    exec = API::builtin(subclass).getACall().asExpr()
+    or
+    exec = API::builtin(subclass).getASubclass().getACall().asExpr()
+  )
+}
+
+predicate noNeedToAlwaysRaise(Function meth, string message, boolean allowNotImplemented) {
+  meth.getName() = "__hash__" and
+  message = "use __hash__ = None instead." and
+  allowNotImplemented = false
+  or
+  castMethod(meth.getName()) and
+  message = "this method does not need to be implemented." and
+  allowNotImplemented = true and
+  not exists(Function overridden |
+    overridden.getName() = meth.getName() and
+    overridden.getScope() = getADirectSuperclass+(meth.getScope()) and
+    alwaysRaises(overridden, _)
+  )
+}
+
+predicate isAbstract(Function func) { func.getADecorator().(Name).getId().matches("%abstract%") }
+
+predicate alwaysRaises(Function f, Expr exec) {
+  directlyRaises(f, exec) and
+  strictcount(Expr e | directlyRaises(f, e)) = 1 and
+  not exists(f.getANormalExit())
+}
+
+predicate directlyRaises(Function f, Expr exec) {
+  exists(Raise r |
+    r.getScope() = f and
+    exec = r.getException() and
+    not exec = API::builtin("StopIteration").asSource().asExpr()
+  )
+}
+
+predicate isNotImplementedError(Expr exec) {
+  exec = API::builtin("NotImplementedError").getACall().asExpr()
+}
+
+from Function f, Expr exec, string message
+where
+  f.isSpecialMethod() and
+  not isAbstract(f) and
+  directlyRaises(f, exec) and
+  (
+    exists(boolean allowNotImplemented, string subMessage |
+      alwaysRaises(f, exec) and
+      noNeedToAlwaysRaise(f, subMessage, allowNotImplemented) and
+      (allowNotImplemented = false or not isNotImplementedError(exec)) and
+      message = "This method always raises $@ - " + subMessage
+    )
+    or
+    alwaysRaises(f, exec) and // for now consider only alwaysRaises cases as original query
+    not isNotImplementedError(exec) and
+    not correctRaise(f.getName(), exec) and
+    exists(string subMessage | preferredRaise(f.getName(), _, subMessage) |
+      message = "This method always raises $@ - " + subMessage
     )
   )
-select f, "Function always raises $@; " + message, cls, cls.toString()
+select f, message, exec, exec.toString() // TODO: remove tostring
