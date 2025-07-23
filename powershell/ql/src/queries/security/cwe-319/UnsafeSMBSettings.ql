@@ -20,7 +20,7 @@ abstract class SMBConfiguration extends CmdCall {
   Expr getMisconfiguredSmb2DialectMin() {
     exists(Expr dialectMin |
       dialectMin = this.getNamedArgument("smb2dialectmin") and
-      dialectMin.getValue().toString().toLowerCase() in ["none", "smb202", "smb210"] and
+      dialectMin.getValue().stringMatches(["none", "smb202", "smb210"]) and
       result = dialectMin
     )
   }
