@@ -535,22 +535,22 @@ void test_copy_and_move_memory() {
   {
     char dest_buffer[1024];
     RtlCopyVolatileMemory(dest_buffer, &x, sizeof(x));
-    sink(dest_buffer[0]); // $ MISSING: ir
+    sink(dest_buffer[0]); // $ ir
   }
   {
     char dest_buffer[1024];
     RtlCopyDeviceMemory(dest_buffer, &x, sizeof(x));
-    sink(dest_buffer[0]); // $ MISSING: ir
+    sink(dest_buffer[0]); // $ ir
   }
   {
     char dest_buffer[1024];
     RtlCopyMemory(dest_buffer, &x, sizeof(x));
-    sink(dest_buffer[0]); // $ MISSING: ir
+    sink(dest_buffer[0]); // $ ir
   }
   {
     char dest_buffer[1024];
     RtlCopyMemoryNonTemporal(dest_buffer, &x, sizeof(x));
-    sink(dest_buffer[0]); // $ MISSING: ir
+    sink(dest_buffer[0]); // $ ir
   }
   {
     UNICODE_STRING dest_string;
@@ -559,18 +559,18 @@ void test_copy_and_move_memory() {
     buffer[0] = source();
     
     RtlInitUnicodeString(&src_string, buffer);
-    sink(src_string.Buffer[0]); // $ MISSING: ir
+    sink(src_string.Buffer[0]); // $ ir
     RtlCopyUnicodeString(&dest_string, &src_string);
-    sink(dest_string.Buffer[0]); // $ MISSING: ir
+    sink(dest_string.Buffer[0]); // $ ir
   }
   {
     char dest_buffer[1024];
     RtlMoveMemory(dest_buffer, &x, sizeof(x));
-    sink(dest_buffer[0]); // $ MISSING: ir
+    sink(dest_buffer[0]); // $ ir
   }
   {
     volatile char dest_buffer[1024];
     RtlMoveVolatileMemory(dest_buffer, &x, sizeof(x));
-    sink(dest_buffer[0]); // $ MISSING: ir
+    sink(dest_buffer[0]); // $ ir
   }
 }
