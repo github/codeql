@@ -33,15 +33,19 @@ edges
 | test.ps1:32:6:32:13 | ...[...] [unknown] | test.ps1:32:6:32:16 | ...[...] | provenance |  |
 | test.ps1:33:6:33:10 | arr7 [unknown, unknown] | test.ps1:33:6:33:21 | ...[...] [unknown] | provenance |  |
 | test.ps1:33:6:33:21 | ...[...] [unknown] | test.ps1:33:6:33:32 | ...[...] | provenance |  |
-| test.ps1:35:6:35:16 | Call to source | test.ps1:37:15:37:16 | x | provenance |  |
-| test.ps1:37:9:37:16 | ...,... [element 2] | test.ps1:40:6:40:10 | arr8 [element 2] | provenance |  |
-| test.ps1:37:9:37:16 | ...,... [element 2] | test.ps1:41:6:41:10 | arr8 [element 2] | provenance |  |
+| test.ps1:35:1:35:2 | x | test.ps1:37:15:37:16 | x | provenance |  |
+| test.ps1:35:6:35:16 | Call to source | test.ps1:35:1:35:2 | x | provenance |  |
+| test.ps1:37:1:37:5 | arr8 [element 2] | test.ps1:40:6:40:10 | arr8 [element 2] | provenance |  |
+| test.ps1:37:1:37:5 | arr8 [element 2] | test.ps1:41:6:41:10 | arr8 [element 2] | provenance |  |
+| test.ps1:37:9:37:16 | ...,... [element 2] | test.ps1:37:1:37:5 | arr8 [element 2] | provenance |  |
 | test.ps1:37:15:37:16 | x | test.ps1:37:9:37:16 | ...,... [element 2] | provenance |  |
 | test.ps1:40:6:40:10 | arr8 [element 2] | test.ps1:40:6:40:13 | ...[...] | provenance |  |
 | test.ps1:41:6:41:10 | arr8 [element 2] | test.ps1:41:6:41:20 | ...[...] | provenance |  |
-| test.ps1:43:6:43:16 | Call to source | test.ps1:45:17:45:18 | y | provenance |  |
-| test.ps1:45:9:45:19 | @(...) [element 2] | test.ps1:48:6:48:10 | arr9 [element 2] | provenance |  |
-| test.ps1:45:9:45:19 | @(...) [element 2] | test.ps1:49:6:49:10 | arr9 [element 2] | provenance |  |
+| test.ps1:43:1:43:2 | y | test.ps1:45:17:45:18 | y | provenance |  |
+| test.ps1:43:6:43:16 | Call to source | test.ps1:43:1:43:2 | y | provenance |  |
+| test.ps1:45:1:45:5 | arr9 [element 2] | test.ps1:48:6:48:10 | arr9 [element 2] | provenance |  |
+| test.ps1:45:1:45:5 | arr9 [element 2] | test.ps1:49:6:49:10 | arr9 [element 2] | provenance |  |
+| test.ps1:45:9:45:19 | @(...) [element 2] | test.ps1:45:1:45:5 | arr9 [element 2] | provenance |  |
 | test.ps1:45:17:45:18 | y | test.ps1:45:9:45:19 | @(...) [element 2] | provenance |  |
 | test.ps1:48:6:48:10 | arr9 [element 2] | test.ps1:48:6:48:13 | ...[...] | provenance |  |
 | test.ps1:49:6:49:10 | arr9 [element 2] | test.ps1:49:6:49:20 | ...[...] | provenance |  |
@@ -50,20 +54,29 @@ edges
 | test.ps1:61:1:61:8 | [post] myClass [field] | test.ps1:63:1:63:8 | myClass [field] | provenance |  |
 | test.ps1:61:18:61:28 | Call to source | test.ps1:61:1:61:8 | [post] myClass [field] | provenance |  |
 | test.ps1:63:1:63:8 | myClass [field] | test.ps1:54:5:56:5 | this [field] | provenance |  |
-| test.ps1:66:10:66:20 | Call to source | test.ps1:69:5:69:6 | x | provenance |  |
-| test.ps1:67:10:67:20 | Call to source | test.ps1:70:5:70:6 | y | provenance |  |
-| test.ps1:68:10:68:20 | Call to source | test.ps1:70:9:70:10 | z | provenance |  |
+| test.ps1:66:5:66:6 | x | test.ps1:69:5:69:6 | x | provenance |  |
+| test.ps1:66:5:66:6 | x | test.ps1:69:5:69:6 | x | provenance |  |
+| test.ps1:66:10:66:20 | Call to source | test.ps1:66:5:66:6 | x | provenance |  |
+| test.ps1:66:10:66:20 | Call to source | test.ps1:66:5:66:6 | x | provenance |  |
+| test.ps1:67:5:67:6 | y | test.ps1:70:5:70:6 | y | provenance |  |
+| test.ps1:67:5:67:6 | y | test.ps1:70:5:70:6 | y | provenance |  |
+| test.ps1:67:10:67:20 | Call to source | test.ps1:67:5:67:6 | y | provenance |  |
+| test.ps1:67:10:67:20 | Call to source | test.ps1:67:5:67:6 | y | provenance |  |
+| test.ps1:68:5:68:6 | z | test.ps1:70:9:70:10 | z | provenance |  |
+| test.ps1:68:10:68:20 | Call to source | test.ps1:68:5:68:6 | z | provenance |  |
 | test.ps1:69:5:69:6 | x | test.ps1:73:6:73:12 | Call to produce [unknown index] | provenance |  |
 | test.ps1:70:5:70:6 | y | test.ps1:73:6:73:12 | Call to produce [unknown index] | provenance |  |
 | test.ps1:70:9:70:10 | z | test.ps1:73:6:73:12 | Call to produce [unknown index] | provenance |  |
-| test.ps1:73:6:73:12 | Call to produce [unknown index] | test.ps1:74:6:74:7 | x [unknown index] | provenance |  |
-| test.ps1:73:6:73:12 | Call to produce [unknown index] | test.ps1:75:6:75:7 | x [unknown index] | provenance |  |
-| test.ps1:73:6:73:12 | Call to produce [unknown index] | test.ps1:76:6:76:7 | x [unknown index] | provenance |  |
+| test.ps1:73:1:73:2 | x [unknown index] | test.ps1:74:6:74:7 | x [unknown index] | provenance |  |
+| test.ps1:73:1:73:2 | x [unknown index] | test.ps1:75:6:75:7 | x [unknown index] | provenance |  |
+| test.ps1:73:1:73:2 | x [unknown index] | test.ps1:76:6:76:7 | x [unknown index] | provenance |  |
+| test.ps1:73:6:73:12 | Call to produce [unknown index] | test.ps1:73:1:73:2 | x [unknown index] | provenance |  |
 | test.ps1:74:6:74:7 | x [unknown index] | test.ps1:74:6:74:10 | ...[...] | provenance |  |
 | test.ps1:75:6:75:7 | x [unknown index] | test.ps1:75:6:75:10 | ...[...] | provenance |  |
 | test.ps1:76:6:76:7 | x [unknown index] | test.ps1:76:6:76:10 | ...[...] | provenance |  |
-| test.ps1:78:9:81:1 | ${...} [element a] | test.ps1:83:6:83:10 | hash [element a] | provenance |  |
-| test.ps1:78:9:81:1 | ${...} [element a] | test.ps1:87:6:87:10 | hash [element a] | provenance |  |
+| test.ps1:78:1:78:5 | hash [element a] | test.ps1:83:6:83:10 | hash [element a] | provenance |  |
+| test.ps1:78:1:78:5 | hash [element a] | test.ps1:87:6:87:10 | hash [element a] | provenance |  |
+| test.ps1:78:9:81:1 | ${...} [element a] | test.ps1:78:1:78:5 | hash [element a] | provenance |  |
 | test.ps1:79:7:79:17 | Call to source | test.ps1:78:9:81:1 | ${...} [element a] | provenance |  |
 | test.ps1:83:6:83:10 | hash [element a] | test.ps1:83:6:83:15 | ...[...] | provenance |  |
 | test.ps1:87:6:87:10 | hash [element a] | test.ps1:87:6:87:15 | ...[...] | provenance |  |
@@ -112,14 +125,18 @@ nodes
 | test.ps1:33:6:33:10 | arr7 [unknown, unknown] | semmle.label | arr7 [unknown, unknown] |
 | test.ps1:33:6:33:21 | ...[...] [unknown] | semmle.label | ...[...] [unknown] |
 | test.ps1:33:6:33:32 | ...[...] | semmle.label | ...[...] |
+| test.ps1:35:1:35:2 | x | semmle.label | x |
 | test.ps1:35:6:35:16 | Call to source | semmle.label | Call to source |
+| test.ps1:37:1:37:5 | arr8 [element 2] | semmle.label | arr8 [element 2] |
 | test.ps1:37:9:37:16 | ...,... [element 2] | semmle.label | ...,... [element 2] |
 | test.ps1:37:15:37:16 | x | semmle.label | x |
 | test.ps1:40:6:40:10 | arr8 [element 2] | semmle.label | arr8 [element 2] |
 | test.ps1:40:6:40:13 | ...[...] | semmle.label | ...[...] |
 | test.ps1:41:6:41:10 | arr8 [element 2] | semmle.label | arr8 [element 2] |
 | test.ps1:41:6:41:20 | ...[...] | semmle.label | ...[...] |
+| test.ps1:43:1:43:2 | y | semmle.label | y |
 | test.ps1:43:6:43:16 | Call to source | semmle.label | Call to source |
+| test.ps1:45:1:45:5 | arr9 [element 2] | semmle.label | arr9 [element 2] |
 | test.ps1:45:9:45:19 | @(...) [element 2] | semmle.label | @(...) [element 2] |
 | test.ps1:45:17:45:18 | y | semmle.label | y |
 | test.ps1:48:6:48:10 | arr9 [element 2] | semmle.label | arr9 [element 2] |
@@ -132,12 +149,18 @@ nodes
 | test.ps1:61:1:61:8 | [post] myClass [field] | semmle.label | [post] myClass [field] |
 | test.ps1:61:18:61:28 | Call to source | semmle.label | Call to source |
 | test.ps1:63:1:63:8 | myClass [field] | semmle.label | myClass [field] |
+| test.ps1:66:5:66:6 | x | semmle.label | x |
+| test.ps1:66:5:66:6 | x | semmle.label | x |
 | test.ps1:66:10:66:20 | Call to source | semmle.label | Call to source |
+| test.ps1:67:5:67:6 | y | semmle.label | y |
+| test.ps1:67:5:67:6 | y | semmle.label | y |
 | test.ps1:67:10:67:20 | Call to source | semmle.label | Call to source |
+| test.ps1:68:5:68:6 | z | semmle.label | z |
 | test.ps1:68:10:68:20 | Call to source | semmle.label | Call to source |
 | test.ps1:69:5:69:6 | x | semmle.label | x |
 | test.ps1:70:5:70:6 | y | semmle.label | y |
 | test.ps1:70:9:70:10 | z | semmle.label | z |
+| test.ps1:73:1:73:2 | x [unknown index] | semmle.label | x [unknown index] |
 | test.ps1:73:6:73:12 | Call to produce [unknown index] | semmle.label | Call to produce [unknown index] |
 | test.ps1:74:6:74:7 | x [unknown index] | semmle.label | x [unknown index] |
 | test.ps1:74:6:74:10 | ...[...] | semmle.label | ...[...] |
@@ -145,6 +168,7 @@ nodes
 | test.ps1:75:6:75:10 | ...[...] | semmle.label | ...[...] |
 | test.ps1:76:6:76:7 | x [unknown index] | semmle.label | x [unknown index] |
 | test.ps1:76:6:76:10 | ...[...] | semmle.label | ...[...] |
+| test.ps1:78:1:78:5 | hash [element a] | semmle.label | hash [element a] |
 | test.ps1:78:9:81:1 | ${...} [element a] | semmle.label | ${...} [element a] |
 | test.ps1:79:7:79:17 | Call to source | semmle.label | Call to source |
 | test.ps1:83:6:83:10 | hash [element a] | semmle.label | hash [element a] |
