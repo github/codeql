@@ -112,7 +112,7 @@ module SizeBarrier<SizeBarrierInputSig Input> {
 
   /**
    * Gets an instruction `instr` that is guarded by a check such as `instr <= small + delta` where
-   * `small <= _ + k` and `small` is the "small side" of of a relational comparison that checks
+   * `small <= _ + k` and `small` is the "small side" of a relational comparison that checks
    * whether `small <= size` where `size` is the size of an allocation.
    */
   private Instruction getABarrierInstruction0(int delta, int k) {
