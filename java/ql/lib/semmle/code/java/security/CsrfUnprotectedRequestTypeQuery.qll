@@ -237,12 +237,35 @@ private predicate sink(CallPathNode sinkMethodCall) {
   )
 }
 
+private predicate fwdFlow(CallPathNode n) {
+  source(n)
+  or
+  exists(CallPathNode mid | fwdFlow(mid) and CallGraph::edges(mid, n))
+}
+
+private predicate revFlow(CallPathNode n) {
+  fwdFlow(n) and
+  (
+    sink(n)
+    or
+    exists(CallPathNode mid | revFlow(mid) and CallGraph::edges(n, mid))
+  )
+}
+
+/**
+ * Holds if `pred` has a successor node `succ` and this edge is in an
+ * `unprotectedStateChange` path.
+ */
+predicate relevantEdge(CallPathNode pred, CallPathNode succ) {
+  CallGraph::edges(pred, succ) and revFlow(pred) and revFlow(succ)
+}
+
 /**
  * Holds if `sourceMethod` is an unprotected request handler that reaches a
  * `sinkMethodCall` that updates a database.
  */
 private predicate unprotectedDatabaseUpdate(CallPathNode sourceMethod, CallPathNode sinkMethodCall) =
-  doublyBoundedFastTC(CallGraph::edges/2, source/1, sink/1)(sourceMethod, sinkMethodCall)
+  doublyBoundedFastTC(relevantEdge/2, source/1, sink/1)(sourceMethod, sinkMethodCall)
 
 /**
  * Holds if `sourceMethod` is an unprotected request handler that appears to

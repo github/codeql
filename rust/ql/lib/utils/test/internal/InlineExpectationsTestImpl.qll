@@ -4,6 +4,8 @@ private import codeql.util.test.InlineExpectationsTest
 
 module Impl implements InlineExpectationsTestSig {
   class ExpectationComment extends R::Comment {
+    ExpectationComment() { this.fromSource() }
+
     /** Gets the contents of the given comment, _without_ the preceding comment marker (`//`). */
     string getContents() { result = this.getCommentText() }
   }

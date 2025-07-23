@@ -8,6 +8,6 @@ class BadXmlObjectSerializer
     {
         XmlObjectSerializer ds = new DataContractSerializer(type);
         // BAD
-        return ds.ReadObject(s);
+        return ds.ReadObject(s); // $ Alert[cs/unsafe-deserialization]
     }
 }

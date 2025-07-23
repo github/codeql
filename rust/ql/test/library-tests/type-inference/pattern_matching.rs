@@ -23,7 +23,7 @@ pub fn f() -> Option<()> {
         }
         None => (),
     };
-    let mesg = value.unwrap(); // $ method=unwrap
+    let mesg = value.unwrap(); // $ target=unwrap
     let mesg = mesg; // $ type=mesg:i32
     println!("{mesg}");
     let mesg = value?; // $ type=mesg:i32
@@ -108,21 +108,21 @@ pub fn f() -> Option<()> {
         _ => (),
     }
 
-    let opt1 = Some(Default::default()); // $ type=opt1:T.i32 method=default
+    let opt1 = Some(Default::default()); // $ type=opt1:T.i32 target=default
     #[rustfmt::skip]
     let _ = if let Some::<i32>(x) = opt1
     {
         x; // $ type=x:i32
     };
 
-    let opt2 = Some(Default::default()); // $ type=opt2:T.i32 method=default
+    let opt2 = Some(Default::default()); // $ type=opt2:T.i32 target=default
     #[rustfmt::skip]
     let _ = if let Option::Some::<i32>(x) = opt2
     {
         x; // $ type=x:i32
     };
 
-    let opt3 = Some(Default::default()); // $ type=opt3:T.i32 method=default
+    let opt3 = Some(Default::default()); // $ type=opt3:T.i32 target=default
     #[rustfmt::skip]
     let _ = if let Option::<i32>::Some(x) = opt3
     {
@@ -240,7 +240,7 @@ pub fn identifier_patterns() {
     match mutable_value {
         mut x => {
             let mut_bound = x; // $ type=mut_bound:i32
-            x += 1;  // $ method=add_assign
+            x += 1; // $ target=add_assign
             println!("Mutable identifier: {}", mut_bound);
         }
     }
@@ -270,7 +270,7 @@ pub fn identifier_patterns() {
     match &mut ref_mut_val {
         ref mut x => {
             let ref_mut_bound = x; // $ type=ref_mut_bound:&T.&T.i32
-            **ref_mut_bound += 1; // $ method=deref method=add_assign
+            **ref_mut_bound += 1; // $ target=deref target=add_assign
             println!("Ref mut pattern");
         }
     }
@@ -446,13 +446,13 @@ pub fn tuple_patterns() {
     // TuplePat - Tuple patterns
     match tuple {
         (1, 2, 3.0) => {
-            let exact_tuple = tuple; // $ MISSING: type=exact_tuple:?
+            let exact_tuple = tuple; // $ type=exact_tuple:(T_3)
             println!("Exact tuple: {:?}", exact_tuple);
         }
         (a, b, c) => {
-            let first_elem = a; // $ MISSING: type=first_elem:i32
-            let second_elem = b; // $ MISSING: type=second_elem:i64
-            let third_elem = c; // $ MISSING: type=third_elem:f32
+            let first_elem = a; // $ type=first_elem:i32
+            let second_elem = b; // $ type=second_elem:i64
+            let third_elem = c; // $ type=third_elem:f32
             println!("Tuple: ({}, {}, {})", first_elem, second_elem, third_elem);
         }
     }
@@ -469,7 +469,7 @@ pub fn tuple_patterns() {
     let unit = ();
     match unit {
         () => {
-            let unit_value = unit; // $ MISSING: type=unit_value:?
+            let unit_value = unit; // $ type=unit_value:()
             println!("Unit value: {:?}", unit_value);
         }
     }
@@ -478,7 +478,7 @@ pub fn tuple_patterns() {
     let single = (42i32,);
     match single {
         (x,) => {
-            let single_elem = x; // $ MISSING: type=single_elem:i32
+            let single_elem = x; // $ type=single_elem:i32
             println!("Single element tuple: {}", single_elem);
         }
     }
@@ -499,8 +499,8 @@ pub fn parenthesized_patterns() {
     let tuple = (1i32, 2i32);
     match tuple {
         (x, (y)) => {
-            let paren_x = x; // $ MISSING: type=paren_x:i32
-            let paren_y = y; // $ MISSING: type=paren_y:i32
+            let paren_x = x; // $ type=paren_x:i32
+            let paren_y = y; // $ type=paren_y:i32
             println!("Parenthesized in tuple: {}, {}", paren_x, paren_y);
         }
     }
@@ -698,13 +698,13 @@ pub fn complex_nested_patterns() {
             );
         }
         // Or pattern with tuple and wildcard
-        (Point { x, .. }, MyOption::None) | (Point { x: x@0, .. }, _) => {
+        (Point { x, .. }, MyOption::None) | (Point { x: x @ 0, .. }, _) => {
             let alt_complex_x = x; // $ type=alt_complex_x:i32
             println!("Alternative complex: x={:?}", alt_complex_x);
         }
         // Catch-all with identifier pattern
         other => {
-            let other_complex = other; // $ MISSING: type=other_complex:?
+            let other_complex = other; // $ type=other_complex:0(2).Point type=other_complex:1(2).MyOption
             println!("Other complex data: {:?}", other_complex);
         }
     }
@@ -719,9 +719,9 @@ pub fn patterns_in_let_statements() {
 
     let tuple = (1i32, 2i64, 3.0f32);
     let (a, b, c) = tuple; // TuplePat in let
-    let let_a = a; // $ MISSING: type=let_a:i32
-    let let_b = b; // $ MISSING: type=let_b:i64
-    let let_c = c; // $ MISSING: type=let_c:f32
+    let let_a = a; // $ type=let_a:i32
+    let let_b = b; // $ type=let_b:i64
+    let let_c = c; // $ type=let_c:f32
 
     let array = [1i32, 2, 3, 4, 5];
     let [first, .., last] = array; // SlicePat in let
@@ -759,22 +759,23 @@ pub fn patterns_in_function_parameters() {
     }
 
     fn extract_tuple((first, _, third): (i32, f64, bool)) -> (i32, bool) {
-        let param_first = first; // $ MISSING: type=param_first:i32
-        let param_third = third; // $ MISSING: type=param_third:bool
+        let param_first = first; // $ type=param_first:i32
+        let param_third = third; // $ type=param_third:bool
         (param_first, param_third)
     }
 
     // Call the functions to use them
     let point = Point { x: 5, y: 10 };
-    let extracted = extract_point(point); // $ method=extract_point MISSING: type=extracted:?
+    let extracted = extract_point(point); // $ target=extract_point type=extracted:0(2).i32 type=extracted:1(2).i32
 
     let color = Color(200, 100, 50);
-    let red = extract_color(color); // $ method=extract_color type=red:u8
+    let red = extract_color(color); // $ target=extract_color type=red:u8
 
     let tuple = (42i32, 3.14f64, true);
-    let tuple_extracted = extract_tuple(tuple); // $ method=extract_tuple MISSING: type=tuple_extracted:?
+    let tuple_extracted = extract_tuple(tuple); // $ target=extract_tuple type=tuple_extracted:0(2).i32 type=tuple_extracted:1(2).bool
 }
 
+#[rustfmt::skip]
 pub fn patterns_in_control_flow() {
     // Patterns in for loops
     let points = vec![Point { x: 1, y: 2 }, Point { x: 3, y: 4 }];
@@ -793,7 +794,7 @@ pub fn patterns_in_control_flow() {
 
     // Patterns in while let
     let mut stack: Vec<i32> = vec![1i32, 2, 3];
-    while let Some(x) = stack.pop() { // $ method=pop
+    while let Some(x) = stack.pop() { // $ target=pop
         let while_let_x = x; // $ type=while_let_x:i32
         println!("Popped: {}", while_let_x);
     }
@@ -801,7 +802,7 @@ pub fn patterns_in_control_flow() {
     // Patterns in match guards
     let value = 42i32;
     match value {
-        x if x > 0 => { // $ method=gt
+        x if x > 0 => { // $ target=gt
             let guard_x = x; // $ type=guard_x:i32
             println!("Positive: {}", guard_x);
         }
@@ -810,24 +811,23 @@ pub fn patterns_in_control_flow() {
 }
 
 pub fn test_all_patterns() {
-    f(); // $ method=f
-    literal_patterns(); // $ method=literal_patterns
-    identifier_patterns(); // $ method=identifier_patterns
-    wildcard_patterns(); // $ method=wildcard_patterns
-    range_patterns(); // $ method=range_patterns
-    reference_patterns(); // $ method=reference_patterns
-    record_patterns(); // $ method=record_patterns
-    tuple_struct_patterns(); // $ method=tuple_struct_patterns
-    tuple_patterns(); // $ method=tuple_patterns
-    parenthesized_patterns(); // $ method=parenthesized_patterns
-    slice_patterns(); // $ method=slice_patterns
-    path_patterns(); // $ method=path_patterns
-    or_patterns(); // $ method=or_patterns
-    rest_patterns(); // $ method=rest_patterns
-    macro_patterns(); // $ method=macro_patterns
-    complex_nested_patterns(); // $ method=complex_nested_patterns
-    patterns_in_let_statements(); // $ method=patterns_in_let_statements
-    patterns_in_function_parameters(); // $ method=patterns_in_function_parameters
-    patterns_in_control_flow(); // $ method=patterns_in_control_flow
+    f(); // $ target=f
+    literal_patterns(); // $ target=literal_patterns
+    identifier_patterns(); // $ target=identifier_patterns
+    wildcard_patterns(); // $ target=wildcard_patterns
+    range_patterns(); // $ target=range_patterns
+    reference_patterns(); // $ target=reference_patterns
+    record_patterns(); // $ target=record_patterns
+    tuple_struct_patterns(); // $ target=tuple_struct_patterns
+    tuple_patterns(); // $ target=tuple_patterns
+    parenthesized_patterns(); // $ target=parenthesized_patterns
+    slice_patterns(); // $ target=slice_patterns
+    path_patterns(); // $ target=path_patterns
+    or_patterns(); // $ target=or_patterns
+    rest_patterns(); // $ target=rest_patterns
+    macro_patterns(); // $ target=macro_patterns
+    complex_nested_patterns(); // $ target=complex_nested_patterns
+    patterns_in_let_statements(); // $ target=patterns_in_let_statements
+    patterns_in_function_parameters(); // $ target=patterns_in_function_parameters
+    patterns_in_control_flow(); // $ target=patterns_in_control_flow
 }
-

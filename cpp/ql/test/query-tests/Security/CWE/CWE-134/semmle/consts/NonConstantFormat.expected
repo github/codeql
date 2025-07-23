@@ -1,9 +1,6 @@
 edges
-| consts.cpp:24:7:24:9 | **gv1 | consts.cpp:25:2:25:4 | *a | provenance |  |
 | consts.cpp:24:7:24:9 | **gv1 | consts.cpp:30:9:30:14 | *access to array | provenance |  |
 | consts.cpp:24:7:24:9 | **gv1 | consts.cpp:123:2:123:12 | *... = ... | provenance |  |
-| consts.cpp:25:2:25:4 | *a | consts.cpp:26:2:26:4 | *{...} | provenance |  |
-| consts.cpp:26:2:26:4 | *{...} | consts.cpp:24:7:24:9 | **gv1 | provenance |  |
 | consts.cpp:29:7:29:25 | **nonConstFuncToArray | consts.cpp:126:9:126:30 | *call to nonConstFuncToArray | provenance |  |
 | consts.cpp:30:9:30:14 | *access to array | consts.cpp:29:7:29:25 | **nonConstFuncToArray | provenance |  |
 | consts.cpp:85:7:85:8 | gets output argument | consts.cpp:86:9:86:10 | *v1 | provenance |  |
@@ -38,8 +35,6 @@ edges
 | consts.cpp:144:16:144:18 | readStringRef output argument | consts.cpp:145:9:145:11 | *v12 | provenance |  |
 nodes
 | consts.cpp:24:7:24:9 | **gv1 | semmle.label | **gv1 |
-| consts.cpp:25:2:25:4 | *a | semmle.label | *a |
-| consts.cpp:26:2:26:4 | *{...} | semmle.label | *{...} |
 | consts.cpp:29:7:29:25 | **nonConstFuncToArray | semmle.label | **nonConstFuncToArray |
 | consts.cpp:30:9:30:14 | *access to array | semmle.label | *access to array |
 | consts.cpp:85:7:85:8 | gets output argument | semmle.label | gets output argument |

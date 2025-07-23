@@ -27,7 +27,7 @@ import shutil
 import io
 import os
 
-DEFAULT_VERSION = "2.1.20"
+DEFAULT_VERSION = "2.2.0"
 
 
 def options():
