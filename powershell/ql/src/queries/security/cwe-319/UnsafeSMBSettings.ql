@@ -10,78 +10,78 @@
  *       security
  *       external/cwe/cwe-315
  */
- import powershell
+
+import powershell
 
 abstract class SMBConfiguration extends CmdCall {
-  abstract Expr getAMisconfiguredSetting(); 
+  abstract Expr getAMisconfiguredSetting();
 
   /** Gets the minimum version of the SMB protocol to be used */
   Expr getMisconfiguredSmb2DialectMin() {
-    exists(Expr dialectMin | 
-      dialectMin = this.getNamedArgument("smb2dialectmin") and 
-      dialectMin.getValue().toString().toLowerCase() in ["none", "smb202", "smb210"] and 
+    exists(Expr dialectMin |
+      dialectMin = this.getNamedArgument("smb2dialectmin") and
+      dialectMin.getValue().toString().toLowerCase() in ["none", "smb202", "smb210"] and
       result = dialectMin
     )
   }
-} 
+}
 
 /** A call to `Set-SmbServerConfiguration`. */
 class SetSMBClientConfiguration extends SMBConfiguration {
   SetSMBClientConfiguration() { this.getAName() = "Set-SmbClientConfiguration" }
-  
+
   /** holds if the argument `requireencryption` is supplied with a `$false` value. */
   Expr getMisconfiguredRequireEncryption() {
-    exists(Expr requireEncryption | 
-      requireEncryption = this.getNamedArgument("requireencryption") and 
-      requireEncryption.getValue().asBoolean() = false and 
+    exists(Expr requireEncryption |
+      requireEncryption = this.getNamedArgument("requireencryption") and
+      requireEncryption.getValue().asBoolean() = false and
       result = requireEncryption
     )
   }
 
   /** Holds if the argument `blockntlm` is supplied with a `$false` value. */
-  Expr getMisconfiguredBlocksNTLM() { 
-    exists(Expr blocksNTLM | 
-      blocksNTLM = this.getNamedArgument("blockntlm") and 
+  Expr getMisconfiguredBlocksNTLM() {
+    exists(Expr blocksNTLM |
+      blocksNTLM = this.getNamedArgument("blockntlm") and
       blocksNTLM.getValue().asBoolean() = false and
       result = blocksNTLM
     )
   }
 
-  override Expr getAMisconfiguredSetting(){
-    result = this.getMisconfiguredRequireEncryption() or 
-    result = this.getMisconfiguredBlocksNTLM() or 
+  override Expr getAMisconfiguredSetting() {
+    result = this.getMisconfiguredRequireEncryption() or
+    result = this.getMisconfiguredBlocksNTLM() or
     result = this.getMisconfiguredSmb2DialectMin()
   }
 }
 
 /** A call to `Set-SmbServerConfiguration`. */
 class SetSMBServerConfiguration extends SMBConfiguration {
-  SetSMBServerConfiguration() { 
-    this.getAName() = "Set-SmbServerConfiguration" 
-  } 
+  SetSMBServerConfiguration() { this.getAName() = "Set-SmbServerConfiguration" }
+
   /** holds if the argument `encryptdata` is supplied with a `$false` value. */
   Expr getMisconfiguredEncryptData() {
     exists(Expr encryptData |
-      encryptData = this.getNamedArgument("encryptdata") and 
+      encryptData = this.getNamedArgument("encryptdata") and
       encryptData.getValue().asBoolean() = false and
       result = encryptData
-    )    
-  }
-  /** holds if the argument `encryptdata` is supplied with a `$false` value. */
-  Expr getMisconfiguredRejectUnencryptedAccess(){
-    exists(Expr rejectUnencryptedAccess | 
-      rejectUnencryptedAccess = this.getNamedArgument("rejectunencryptedaccess") and 
-      rejectUnencryptedAccess.getValue().asBoolean() = false and 
-      result = rejectUnencryptedAccess  
     )
   }
-  
-  override Expr getAMisconfiguredSetting(){
-    result = this.getMisconfiguredEncryptData() or 
-    result = this.getMisconfiguredRejectUnencryptedAccess() or 
-    result = this.getMisconfiguredSmb2DialectMin()
+
+  /** holds if the argument `encryptdata` is supplied with a `$false` value. */
+  Expr getMisconfiguredRejectUnencryptedAccess() {
+    exists(Expr rejectUnencryptedAccess |
+      rejectUnencryptedAccess = this.getNamedArgument("rejectunencryptedaccess") and
+      rejectUnencryptedAccess.getValue().asBoolean() = false and
+      result = rejectUnencryptedAccess
+    )
   }
 
+  override Expr getAMisconfiguredSetting() {
+    result = this.getMisconfiguredEncryptData() or
+    result = this.getMisconfiguredRejectUnencryptedAccess() or
+    result = this.getMisconfiguredSmb2DialectMin()
+  }
 }
 
 from SMBConfiguration config
