@@ -1,5 +1,5 @@
 /**
- * This file provies the `SizeBarrier` module which provides barriers for
+ * This file provides the `SizeBarrier` module which provides barriers for
  * both the `cpp/invalid-pointer-deref` query and the `cpp/overrun-write`
  * query.
  */
