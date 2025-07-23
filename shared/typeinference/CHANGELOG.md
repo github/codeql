@@ -1,7 +1,3 @@
-## 0.0.8
-
-No user-facing changes.
-
 ## 0.0.7
 
 No user-facing changes.
