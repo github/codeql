@@ -38,8 +38,13 @@ module SqlInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of user input, considered as a flow source for command injection. */
-  class FlowSourceAsSource extends Source instanceof SourceNode {
-    override string getSourceType() { result = SourceNode.super.getSourceType() }
+  class FlowSourceAsSource extends Source {
+    FlowSourceAsSource() {
+      this instanceof SourceNode and
+      not this instanceof EnvironmentVariableSource
+    }
+
+    override string getSourceType() { result = this.(SourceNode).getSourceType() }
   }
 
   class InvokeSqlCmdSink extends Sink {
