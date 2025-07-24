@@ -345,7 +345,7 @@ private module ParameterSynth {
         // has a static type.
         this.parameter(parent, i, p, _) and
         n = TVariableSynth(parent, i) and
-        type = p.getStaticType()
+        type = p.getStaticType().toLowerCase()
       )
     }
   }

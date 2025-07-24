@@ -17,7 +17,7 @@ class TypeNameExpr extends Expr, TTypeNameExpr {
   string getName() { this.parseName(_, result) }
 
   /** If any */
-  string getPossiblyQualifiedName() { result = getRawAst(this).(Raw::TypeNameExpr).getName() }
+  string getPossiblyQualifiedName() { result = getRawAst(this).(Raw::TypeNameExpr).getName().toLowerCase() }
 
   // TODO: What to do when System is omitted?
   string getNamespace() { this.parseName(result, _) }

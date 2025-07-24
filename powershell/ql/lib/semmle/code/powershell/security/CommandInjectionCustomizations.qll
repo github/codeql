@@ -212,7 +212,7 @@ module CommandInjection {
     TypedParameterSanitizer() {
       exists(Function f, Parameter p |
         p = f.getAParameter() and
-        p.getStaticType() != "Object" and
+        p.getStaticType() != "object" and
         this.asParameter() = p
       )
     }
