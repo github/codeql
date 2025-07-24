@@ -6,6 +6,7 @@ extractor: python
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/concepts: ${workspace}
   codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
   codeql/regex: ${workspace}

@@ -9,17 +9,30 @@ private import codeql.rust.elements.internal.generated.Synth
 
 cached
 newtype TType =
-  TUnit() or
-  TStruct(Struct s) { Stages::TypeInferenceStage::ref() } or
+  TTuple(int arity) {
+    arity =
+      [
+        any(TupleTypeRepr t).getNumberOfFields(),
+        any(TupleExpr e).getNumberOfFields(),
+        any(TuplePat p).getNumberOfFields()
+      ] and
+    Stages::TypeInferenceStage::ref()
+  } or
+  TStruct(Struct s) or
   TEnum(Enum e) or
   TTrait(Trait t) or
   TArrayType() or // todo: add size?
   TRefType() or // todo: add mut?
   TImplTraitType(ImplTraitTypeRepr impl) or
+  TDynTraitType(Trait t) { t = any(DynTraitTypeRepr dt).getTrait() } or
   TSliceType() or
+  TTupleTypeParameter(int arity, int i) { exists(TTuple(arity)) and i in [0 .. arity - 1] } or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
   TArrayTypeParameter() or
+  TDynTraitTypeParameter(TypeParam tp) {
+    tp = any(DynTraitTypeRepr dt).getTrait().getGenericParamList().getATypeParam()
+  } or
   TRefTypeParameter() or
   TSelfTypeParameter(Trait t) or
   TSliceTypeParameter()
@@ -55,19 +68,31 @@ abstract class Type extends TType {
   abstract Location getLocation();
 }
 
-/** The unit type `()`. */
-class UnitType extends Type, TUnit {
-  UnitType() { this = TUnit() }
+/** A tuple type `(T, ...)`. */
+class TupleType extends Type, TTuple {
+  private int arity;
+
+  TupleType() { this = TTuple(arity) }
 
   override StructField getStructField(string name) { none() }
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeParameter getTypeParameter(int i) { none() }
+  override TypeParameter getTypeParameter(int i) { result = TTupleTypeParameter(arity, i) }
 
-  override string toString() { result = "()" }
+  /** Gets the arity of this tuple type. */
+  int getArity() { result = arity }
+
+  override string toString() { result = "(T_" + arity + ")" }
 
   override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/** The unit type `()`. */
+class UnitType extends TupleType, TTuple {
+  UnitType() { this = TTuple(0) }
+
+  override string toString() { result = "()" }
 }
 
 abstract private class StructOrEnumType extends Type {
@@ -226,6 +251,26 @@ class ImplTraitType extends Type, TImplTraitType {
   override Location getLocation() { result = impl.getLocation() }
 }
 
+class DynTraitType extends Type, TDynTraitType {
+  Trait trait;
+
+  DynTraitType() { this = TDynTraitType(trait) }
+
+  override StructField getStructField(string name) { none() }
+
+  override TupleField getTupleField(int i) { none() }
+
+  override DynTraitTypeParameter getTypeParameter(int i) {
+    result = TDynTraitTypeParameter(trait.getGenericParamList().getTypeParam(i))
+  }
+
+  Trait getTrait() { result = trait }
+
+  override string toString() { result = "dyn " + trait.getName().toString() }
+
+  override Location getLocation() { result = trait.getLocation() }
+}
+
 /**
  * An [impl Trait in return position][1] type, for example:
  *
@@ -329,11 +374,47 @@ class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypePara
   override Location getLocation() { result = typeAlias.getLocation() }
 }
 
+/**
+ * A tuple type parameter. For instance the `T` in `(T, U)`.
+ *
+ * Since tuples are structural their type parameters can be represented as their
+ * positional index. The type inference library requires that type parameters
+ * belong to a single type, so we also include the arity of the tuple type.
+ */
+class TupleTypeParameter extends TypeParameter, TTupleTypeParameter {
+  private int arity;
+  private int index;
+
+  TupleTypeParameter() { this = TTupleTypeParameter(arity, index) }
+
+  override string toString() { result = index.toString() + "(" + arity + ")" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+
+  /** Gets the index of this tuple type parameter. */
+  int getIndex() { result = index }
+
+  /** Gets the tuple type that corresponds to this tuple type parameter. */
+  TupleType getTupleType() { result = TTuple(arity) }
+}
+
 /** An implicit array type parameter. */
 class ArrayTypeParameter extends TypeParameter, TArrayTypeParameter {
   override string toString() { result = "[T;...]" }
 
   override Location getLocation() { result instanceof EmptyLocation }
+}
+
+class DynTraitTypeParameter extends TypeParameter, TDynTraitTypeParameter {
+  private TypeParam typeParam;
+
+  DynTraitTypeParameter() { this = TDynTraitTypeParameter(typeParam) }
+
+  TypeParam getTypeParam() { result = typeParam }
+
+  override string toString() { result = "dyn(" + typeParam.toString() + ")" }
+
+  override Location getLocation() { result = typeParam.getLocation() }
 }
 
 /** An implicit reference type parameter. */
@@ -417,6 +498,13 @@ abstract class TypeAbstraction extends AstNode {
 final class ImplTypeAbstraction extends TypeAbstraction, Impl {
   override TypeParamTypeParameter getATypeParameter() {
     result.getTypeParam() = this.getGenericParamList().getATypeParam()
+  }
+}
+
+final class DynTypeAbstraction extends TypeAbstraction, DynTraitTypeRepr {
+  override TypeParameter getATypeParameter() {
+    result.(TypeParamTypeParameter).getTypeParam() =
+      this.getTrait().getGenericParamList().getATypeParam()
   }
 }
 

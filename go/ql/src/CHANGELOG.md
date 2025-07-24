@@ -1,6 +1,8 @@
 ## 1.4.1
 
-No user-facing changes.
+### Minor Analysis Improvements
+
+* `filepath.IsLocal` is now recognized as a sanitizer against path-traversal and related vulnerabilities.
 
 ## 1.4.0
 

@@ -1042,6 +1042,23 @@ mod type_aliases {
 
     type S7<T7> = Result<S6<T7>, S1>;
 
+    struct GenS<GenT>(GenT);
+
+    trait TraitWithAssocType {
+        type Output;
+        fn get_input(self) -> Self::Output;
+    }
+
+    impl<Output> TraitWithAssocType for GenS<Output> {
+        // This is not a recursive type, the `Output` on the right-hand side
+        // refers to the type parameter of the impl block just above.
+        type Output = Result<Output, Output>;
+
+        fn get_input(self) -> Self::Output {
+            Ok(self.0) // $ fieldof=GenS type=Ok(...):Result type=Ok(...):T.Output type=Ok(...):E.Output
+        }
+    }
+
     pub fn f() {
         // Type can be inferred from the constructor
         let p1: MyPair = PairOption::PairBoth(S1, S2);
@@ -1062,6 +1079,8 @@ mod type_aliases {
         g(PairOption::PairSnd(PairOption::PairSnd(S3))); // $ target=g
 
         let x: S7<S2>; // $ type=x:Result $ type=x:E.S1 $ type=x:T.S4 $ type=x:T.T41.S2 $ type=x:T.T42.S5 $ type=x:T.T42.T5.S2
+
+        let y = GenS(true).get_input(); // $ type=y:Result type=y:T.bool type=y:E.bool target=get_input
     }
 }
 
@@ -2006,7 +2025,11 @@ mod method_determined_by_argument_type {
 
         // MyAdd<bool>::my_add
         fn my_add(self, value: bool) -> Self {
-            if value { 1 } else { 0 }
+            if value {
+                1
+            } else {
+                0
+            }
         }
     }
 
@@ -2057,7 +2080,11 @@ mod method_determined_by_argument_type {
     impl MyFrom<bool> for i64 {
         // MyFrom<bool>::my_from
         fn my_from(value: bool) -> Self {
-            if value { 1 } else { 0 }
+            if value {
+                1
+            } else {
+                0
+            }
         }
     }
 
@@ -2162,7 +2189,7 @@ mod loops {
 
         for i in [1, 2, 3] {} // $ type=i:i32
         for i in [1, 2, 3].map(|x| x + 1) {} // $ target=map MISSING: type=i:i32
-        for i in [1, 2, 3].into_iter() {} // $ target=into_iter MISSING: type=i:i32
+        for i in [1, 2, 3].into_iter() {} // $ target=into_iter type=i:i32
 
         let vals1 = [1u8, 2, 3]; // $ type=vals1:[T;...].u8
         for u in vals1 {} // $ type=u:u8
@@ -2265,8 +2292,6 @@ mod loops {
     }
 }
 
-mod dereference;
-
 mod explicit_type_args {
     struct S1<T>(T);
 
@@ -2334,20 +2359,36 @@ mod tuples {
     }
 
     pub fn f() {
-        let a = S1::get_pair(); // $ target=get_pair MISSING: type=a:?
-        let mut b = S1::get_pair(); // $ target=get_pair MISSING: type=b:?
-        let (c, d) = S1::get_pair(); // $ target=get_pair MISSING: type=c:? type=d:?
-        let (mut e, f) = S1::get_pair(); // $ target=get_pair MISSING: type=e: type=f:
-        let (mut g, mut h) = S1::get_pair(); // $ target=get_pair MISSING: type=g:? type=h:?
+        let a = S1::get_pair(); // $ target=get_pair type=a:(T_2)
+        let mut b = S1::get_pair(); // $ target=get_pair type=b:(T_2)
+        let (c, d) = S1::get_pair(); // $ target=get_pair type=c:S1 type=d:S1
+        let (mut e, f) = S1::get_pair(); // $ target=get_pair type=e:S1 type=f:S1
+        let (mut g, mut h) = S1::get_pair(); // $ target=get_pair type=g:S1 type=h:S1
 
-        a.0.foo(); // $ MISSING: target=foo
-        b.1.foo(); // $ MISSING: target=foo
-        c.foo(); // $ MISSING: target=foo
-        d.foo(); // $ MISSING: target=foo
-        e.foo(); // $ MISSING: target=foo
-        f.foo(); // $ MISSING: target=foo
-        g.foo(); // $ MISSING: target=foo
-        h.foo(); // $ MISSING: target=foo
+        a.0.foo(); // $ target=foo
+        b.1.foo(); // $ target=foo
+        c.foo(); // $ target=foo
+        d.foo(); // $ target=foo
+        e.foo(); // $ target=foo
+        f.foo(); // $ target=foo
+        g.foo(); // $ target=foo
+        h.foo(); // $ target=foo
+
+        // Here type information must flow from `pair.0` and `pair.1` into
+        // `pair` and from `(a, b)` into `a` and `b` in order for the types of
+        // `a` and `b` to be inferred.
+        let a = Default::default(); // $ target=default type=a:i64
+        let b = Default::default(); // $ target=default type=b:bool
+        let pair = (a, b); // $ type=pair:0(2).i64 type=pair:1(2).bool
+        let i: i64 = pair.0;
+        let j: bool = pair.1;
+
+        let pair = [1, 1].into(); // $ type=pair:(T_2) type=pair:0(2).i32 type=pair:1(2).i32 MISSING: target=into
+        match pair {
+            (0,0) => print!("unexpected"),
+            _ => print!("expected"),
+        }
+        let x = pair.0; // $ type=x:i32
     }
 }
 
@@ -2407,7 +2448,7 @@ mod closures {
         Some(1).map(|x| {
             let x = x; // $ MISSING: type=x:i32
             println!("{x}");
-        });  // $ target=map
+        }); // $ target=map
 
         let table = Table::new(); // $ target=new type=table:Table
         let result = table.count_with(|row| // $ type=result:i64
@@ -2417,6 +2458,9 @@ mod closures {
             }); // $ target=count_with
     }
 }
+
+mod dereference;
+mod dyn_type;
 
 fn main() {
     field_access::f(); // $ target=f
@@ -2448,5 +2492,6 @@ fn main() {
     dereference::test(); // $ target=test
     pattern_matching::test_all_patterns(); // $ target=test_all_patterns
     pattern_matching_experimental::box_patterns(); // $ target=box_patterns
-    closures::f() // $ target=f
+    closures::f(); // $ target=f
+    dyn_type::test(); // $ target=test
 }
