@@ -16,7 +16,7 @@ Code that is not intended to be called should raise <code>NotImplementedError</c
 </overview>
 <recommendation>
 <p>If a <code>NotImplementedError</code> is intended to be raised, replace the use of <code>NotImplemented</code>
-with that. If <code>NotImplemented</code> is intended to be returned rather than raised, replace the <code>raise</code> with <code>return NotImplemented</code>
+with that. If <code>NotImplemented</code> is intended to be returned rather than raised, replace the <code>raise</code> with <code>return NotImplemented</code>.
 </p>
 </recommendation>
 <example>
