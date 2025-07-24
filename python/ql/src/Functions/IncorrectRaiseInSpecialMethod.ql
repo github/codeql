@@ -7,7 +7,7 @@
  *       error-handling
  * @problem.severity recommendation
  * @sub-severity high
- * @precision very-high
+ * @precision high
  * @id py/unexpected-raise-in-special-method
  */
 
@@ -16,7 +16,7 @@ import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 
 private predicate attributeMethod(string name) {
-  name = ["__getattribute__", "__getattr__"] // __setattr__ excluded as it makes sense to raise different kinds of errors based on the `value` parameter
+  name = ["__getattribute__", "__getattr__", "__delattr__"] // __setattr__ excluded as it makes sense to raise different kinds of errors based on the `value` parameter
 }
 
 private predicate indexingMethod(string name) {
@@ -50,7 +50,7 @@ private predicate castMethod(string name) {
     [
       "__int__",
       "__float__",
-      "__long__",
+      "__index__",
       "__trunc__",
       "__complex__"
     ]
@@ -61,6 +61,7 @@ predicate correctRaise(string name, Expr exec) {
   (
     indexingMethod(name) or
     attributeMethod(name) or
+    // Allow add methods to raise a TypeError, as they can be used for sequence concatenation as well as arithmetic
     name = ["__add__", "__iadd__", "__radd__"]
   )
   or
@@ -125,7 +126,7 @@ predicate noNeedToAlwaysRaise(Function meth, string message, boolean allowNotImp
   not exists(Function overridden |
     overridden.getName() = meth.getName() and
     overridden.getScope() = getADirectSuperclass+(meth.getScope()) and
-    alwaysRaises(overridden, _)
+    not alwaysRaises(overridden, _)
   )
 }
 
