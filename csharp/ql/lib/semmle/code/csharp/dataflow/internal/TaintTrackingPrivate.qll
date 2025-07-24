@@ -7,6 +7,7 @@ private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.ControlFlowReachability
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.commons.ComparisonTest
+private import semmle.code.csharp.commons.Collections as Collections
 // import `TaintedMember` definitions from other files to avoid potential reevaluation
 private import semmle.code.csharp.frameworks.JsonNET
 private import semmle.code.csharp.frameworks.WCF
@@ -29,7 +30,11 @@ predicate defaultTaintSanitizer(DataFlow::Node node) {
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
+  node instanceof ArgumentNode and
+  Collections::isCollectionType(node.getType()) and
+  c.isElement()
+}
 
 private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityConfiguration {
   LocalTaintExprStepConfiguration() { this = "LocalTaintExprStepConfiguration" }
