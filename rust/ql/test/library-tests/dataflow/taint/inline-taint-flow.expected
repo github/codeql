@@ -1,9 +1,12 @@
 models
+| 1 | Summary: <core::i64 as core::ops::arith::Neg>::neg; Argument[self]; ReturnValue; taint |
 edges
 | main.rs:12:9:12:9 | a | main.rs:13:10:13:14 | ... + ... | provenance |  |
 | main.rs:12:13:12:22 | source(...) | main.rs:12:9:12:9 | a | provenance |  |
 | main.rs:17:9:17:9 | a | main.rs:18:10:18:11 | - ... | provenance |  |
+| main.rs:17:9:17:9 | a | main.rs:18:11:18:11 | a | provenance |  |
 | main.rs:17:13:17:22 | source(...) | main.rs:17:9:17:9 | a | provenance |  |
+| main.rs:18:11:18:11 | a | main.rs:18:10:18:11 | - ... | provenance | MaD:1 |
 | main.rs:22:9:22:9 | a | main.rs:23:9:23:9 | b | provenance |  |
 | main.rs:22:13:22:22 | source(...) | main.rs:22:9:22:9 | a | provenance |  |
 | main.rs:23:9:23:9 | b | main.rs:24:10:24:17 | b as i64 | provenance |  |
@@ -23,6 +26,7 @@ nodes
 | main.rs:17:9:17:9 | a | semmle.label | a |
 | main.rs:17:13:17:22 | source(...) | semmle.label | source(...) |
 | main.rs:18:10:18:11 | - ... | semmle.label | - ... |
+| main.rs:18:11:18:11 | a | semmle.label | a |
 | main.rs:22:9:22:9 | a | semmle.label | a |
 | main.rs:22:13:22:22 | source(...) | semmle.label | source(...) |
 | main.rs:23:9:23:9 | b | semmle.label | b |

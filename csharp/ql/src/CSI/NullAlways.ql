@@ -5,11 +5,11 @@
  * @problem.severity error
  * @precision very-high
  * @id cs/dereferenced-value-is-always-null
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       exceptions
  *       external/cwe/cwe-476
- *       quality
  */
 
 import csharp

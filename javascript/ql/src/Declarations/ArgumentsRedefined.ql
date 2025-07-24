@@ -6,8 +6,9 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/arguments-redefinition
- * @tags efficiency
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       performance
  * @precision very-high
  */
 

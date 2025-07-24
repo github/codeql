@@ -4,7 +4,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/string-instead-of-regex
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  * @precision high
  */
 

@@ -154,8 +154,11 @@ fn main() {
 	println!("test_loop:");
 	test_loop();
 
-	println!("test_enum:");
-	test_enum();
+	println!("test_enums:");
+	test_enums();
+
+	println!("test_recursive_enums:");
+	test_recursive_enums();
 
 	println!("test_ptr_to_struct:");
 	test_ptr_to_struct(mode);
@@ -165,4 +168,36 @@ fn main() {
 
 	println!("test_rc:");
 	test_rc();
+
+	println!("test_closures:");
+	test_closures();
+
+	println!("test_async:");
+	test_async();
+
+	println!("test_lifetime_annotations:");
+	test_lifetime_annotations();
+
+	println!("test_implicit_derefs:");
+	test_implicit_derefs();
+
+	println!("test_members:");
+	test_members();
+
+	println!("test_enum_members:");
+	test_enum_members();
+
+	println!("test_macros:");
+	test_macros();
+
+	println!("test_unsafe_function:");
+	unsafe {
+		test_unsafe_function();
+	}
+
+	println!("test_lifetimes_example_bad:");
+	test_lifetimes_example_bad();
+
+	println!("test_lifetimes_example_good:");
+	test_lifetimes_example_good();
 }

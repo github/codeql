@@ -1,13 +1,7 @@
-multipleCanonicalPaths
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as core::cmp::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as typenum::marker_traits::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as core::cmp::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as typenum::marker_traits::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as core::cmp::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as typenum::marker_traits::Ord>::to_ordering |
-| file://:0:0:0:0 | impl Ord for Equal { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as core::cmp::Ord> |
-| file://:0:0:0:0 | impl Ord for Equal { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as typenum::marker_traits::Ord> |
-| file://:0:0:0:0 | impl Ord for Greater { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as core::cmp::Ord> |
-| file://:0:0:0:0 | impl Ord for Greater { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as typenum::marker_traits::Ord> |
-| file://:0:0:0:0 | impl Ord for Less { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as core::cmp::Ord> |
-| file://:0:0:0:0 | impl Ord for Less { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as typenum::marker_traits::Ord> |
+multipleCallTargets
+| main.rs:22:18:22:31 | query.as_str() |
+| main.rs:23:24:23:37 | query.as_str() |
+| main.rs:25:18:25:31 | query.as_str() |
+| main.rs:28:16:28:29 | query.as_str() |
+| main.rs:29:20:29:33 | query.as_str() |
+| main.rs:30:20:30:33 | query.as_str() |

@@ -6,6 +6,6 @@ class Bad
     {
         JavaScriptSerializer sr = new JavaScriptSerializer(new SimpleTypeResolver());
         // BAD
-        return sr.DeserializeObject(s);
+        return sr.DeserializeObject(s); // $ Alert[cs/unsafe-deserialization]
     }
 }

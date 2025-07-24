@@ -4,8 +4,10 @@
  * @kind problem
  * @problem.severity warning
  * @id js/conditional-comment
- * @tags portability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       portability
  *       language-features
  *       external/cwe/cwe-758
  * @precision very-high

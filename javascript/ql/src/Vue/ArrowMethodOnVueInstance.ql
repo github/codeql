@@ -4,7 +4,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/vue/arrow-method-on-vue-instance
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       frameworks/vue
  * @precision high
  */

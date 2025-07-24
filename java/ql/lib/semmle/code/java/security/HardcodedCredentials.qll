@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates relating to hardcoded credentials.
  */
+overlay[local?]
+module;
 
 import java
 import SensitiveApi

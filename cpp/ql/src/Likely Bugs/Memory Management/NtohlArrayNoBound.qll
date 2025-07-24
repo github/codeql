@@ -141,6 +141,8 @@ private module NetworkToBufferSizeConfig implements DataFlow::ConfigSig {
       gc.controls(node.asExpr().getBasicBlock(), _)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module NetworkToBufferSizeFlow = DataFlow::Global<NetworkToBufferSizeConfig>;

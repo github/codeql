@@ -1,3 +1,25 @@
+## 2.6.7
+
+### Minor Analysis Improvements
+
+* Enhanced modeling for the `execa` library, adding support for command execution methods `execaCommand`, `execaCommandSync`, `$`, and `$.sync`, as well as file system operations through `inputFile`, `pipeStdout`, `pipeAll`, and `pipeStderr`.
+
+### Bug Fixes
+
+* The JavaScript extractor no longer ignores source files specified in the `tsconfig.json` compiler options `outDir` if doing so would result in excluding all source code.
+
+## 2.6.6
+
+### Minor Analysis Improvements
+
+* Calls to `sinon.match()` are no longer incorrectly identified as regular expression operations.
+* Improved data flow tracking through middleware to handle default value and similar patterns.
+* Added `req._parsedUrl` as a remote input source.
+* Improved taint tracking through calls to `serialize-javascript`.
+* Removed `encodeURI` and `escape` functions from the sanitizer list for request forgery.
+* The JavaScript extractor now skips generated JavaScript files if the original TypeScript files are already present. It also skips any files in the output directory specified in the `compilerOptions` part of the `tsconfig.json` file.
+* Added support for Axios instances in the `axios` module.
+
 ## 2.6.5
 
 ### Minor Analysis Improvements

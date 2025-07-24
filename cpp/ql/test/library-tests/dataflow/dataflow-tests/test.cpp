@@ -1154,3 +1154,5 @@ namespace conflation_regression {
     read_deref_deref(p);
   }
 }
+
+int recursion = (sink(recursion), source()); // clean

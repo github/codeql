@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 private import codeql.ssa.Ssa as SsaImplCommon
 private import semmle.code.java.dataflow.SSA

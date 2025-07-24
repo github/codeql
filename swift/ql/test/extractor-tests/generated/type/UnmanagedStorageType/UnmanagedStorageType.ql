@@ -2,12 +2,16 @@
 import codeql.swift.elements
 import TestUtils
 
-from UnmanagedStorageType x, string getName, Type getCanonicalType, Type getReferentType
-where
+query predicate instances(
+  UnmanagedStorageType x, string getName__label, string getName, string getCanonicalType__label,
+  Type getCanonicalType, string getReferentType__label, Type getReferentType
+) {
   toBeTested(x) and
   not x.isUnknown() and
+  getName__label = "getName:" and
   getName = x.getName() and
+  getCanonicalType__label = "getCanonicalType:" and
   getCanonicalType = x.getCanonicalType() and
+  getReferentType__label = "getReferentType:" and
   getReferentType = x.getReferentType()
-select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getReferentType:",
-  getReferentType
+}

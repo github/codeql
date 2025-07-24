@@ -1,7 +1,2 @@
-multiplePathResolutions
-| my_struct.rs:25:19:25:30 | ...::from | file://:0:0:0:0 | fn from |
-| my_struct.rs:25:19:25:30 | ...::from | file://:0:0:0:0 | fn from |
-| my_struct.rs:25:19:25:30 | ...::from | file://:0:0:0:0 | fn from |
-| my_struct.rs:25:19:25:30 | ...::from | file://:0:0:0:0 | fn from |
-| my_struct.rs:25:19:25:30 | ...::from | file://:0:0:0:0 | fn from |
-| my_struct.rs:25:19:25:30 | ...::from | file://:0:0:0:0 | fn from |
+multipleCallTargets
+| my_struct.rs:25:19:25:37 | ...::from(...) |

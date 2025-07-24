@@ -1,4 +1,6 @@
 /** Provides classes for working with files and folders. */
+overlay[local?]
+module;
 
 private import codeql_ql.ast.internal.TreeSitter
 private import codeql.Locations
@@ -60,4 +62,9 @@ class File extends Container, Impl::File {
 
   /** Holds if this file was extracted from ordinary source code. */
   predicate fromSource() { any() }
+}
+
+/** A test file. */
+class TestFile extends File {
+  TestFile() { this.getRelativePath().matches("%/" + ["experimental", "examples", "test"] + "/%") }
 }

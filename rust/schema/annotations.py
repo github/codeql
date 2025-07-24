@@ -16,6 +16,14 @@ class LoopingExpr(LabelableExpr):
     loop_body: optional["BlockExpr"] | child
 
 
+@annotate(Adt, replace_bases={AstNode: Item})
+class _:
+    """
+    An ADT (Abstract Data Type) definition, such as `Struct`, `Enum`, or `Union`.
+    """
+    derive_macro_expansions: list[MacroItems] | child | rust.detach
+
+
 @annotate(Module)
 @rust.doc_test_signature(None)
 class _:
@@ -906,7 +914,7 @@ class _:
     """
 
 
-@annotate(AssocItem)
+@annotate(AssocItem, replace_bases={AstNode: Item})
 class _:
     """
     An associated item in a `Trait` or `Impl`.
@@ -977,7 +985,7 @@ class _:
     """
 
 
-@annotate(Const)
+@annotate(Const, replace_bases={Item: None})
 class _:
     """
     A constant item declaration.
@@ -1032,7 +1040,7 @@ class _:
     """
 
 
-@annotate(Enum)
+@annotate(Enum, replace_bases={Item: None})  # still an Item via Adt
 class _:
     """
     An enum declaration.
@@ -1070,7 +1078,7 @@ class _:
     """
 
 
-@annotate(ExternItem)
+@annotate(ExternItem, replace_bases={AstNode: Item})
 class _:
     """
     An item inside an extern block.
@@ -1351,7 +1359,7 @@ class _:
     """
 
 
-@annotate(MacroCall, cfg=True)
+@annotate(MacroCall, cfg=True, replace_bases={Item: None})
 class _:
     """
     A macro invocation.
@@ -1799,7 +1807,7 @@ class _:
     """
 
 
-@annotate(Static)
+@annotate(Static, replace_bases={Item: None})
 class _:
     """
     A static item declaration.
@@ -1827,7 +1835,7 @@ class _:
     """
 
 
-@annotate(Struct)
+@annotate(Struct, replace_bases={Item: None})  # still an Item via Adt
 class _:
     """
     A Struct. For example:
@@ -1939,7 +1947,7 @@ class _:
     """
 
 
-@annotate(TypeAlias)
+@annotate(TypeAlias, replace_bases={Item: None})
 class _:
     """
     A type alias. For example:
@@ -2006,7 +2014,7 @@ class _:
     """
 
 
-@annotate(Union)
+@annotate(Union, replace_bases={Item: None})  # still an Item via Adt
 class _:
     """
     A union declaration.
@@ -2054,7 +2062,7 @@ class _:
     """
 
 
-@annotate(Variant, add_bases=(Addressable,))
+@annotate(Variant, replace_bases={AstNode: Addressable})
 class _:
     """
     A variant in an enum declaration.
@@ -2135,7 +2143,7 @@ class _:
     loop_body: drop
 
 
-@annotate(Function, add_bases=[Callable])
+@annotate(Function, add_bases=[Callable], replace_bases={Item: None})
 class _:
     param_list: drop
     attrs: drop

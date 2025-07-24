@@ -1,4 +1,6 @@
 /** Provides classes and predicates related to insufficient key sizes in Java. */
+overlay[local?]
+module;
 
 private import semmle.code.java.security.Encryption
 private import semmle.code.java.dataflow.DataFlow

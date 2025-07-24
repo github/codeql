@@ -2,12 +2,16 @@
 import codeql.rust.elements
 import TestUtils
 
-from AsmRegOperand x, string hasAsmDirSpec, string hasAsmOperandExpr, string hasAsmRegSpec
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  (if x.hasAsmDirSpec() then hasAsmDirSpec = "yes" else hasAsmDirSpec = "no") and
-  (if x.hasAsmOperandExpr() then hasAsmOperandExpr = "yes" else hasAsmOperandExpr = "no") and
-  if x.hasAsmRegSpec() then hasAsmRegSpec = "yes" else hasAsmRegSpec = "no"
-select x, "hasAsmDirSpec:", hasAsmDirSpec, "hasAsmOperandExpr:", hasAsmOperandExpr,
-  "hasAsmRegSpec:", hasAsmRegSpec
+query predicate instances(AsmRegOperand x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getAsmDirSpec(AsmRegOperand x, AsmDirSpec getAsmDirSpec) {
+  toBeTested(x) and not x.isUnknown() and getAsmDirSpec = x.getAsmDirSpec()
+}
+
+query predicate getAsmOperandExpr(AsmRegOperand x, AsmOperandExpr getAsmOperandExpr) {
+  toBeTested(x) and not x.isUnknown() and getAsmOperandExpr = x.getAsmOperandExpr()
+}
+
+query predicate getAsmRegSpec(AsmRegOperand x, AsmRegSpec getAsmRegSpec) {
+  toBeTested(x) and not x.isUnknown() and getAsmRegSpec = x.getAsmRegSpec()
+}

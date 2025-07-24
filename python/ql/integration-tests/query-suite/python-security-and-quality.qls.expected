@@ -4,7 +4,7 @@ ql/python/ql/src/Classes/EqualsOrHash.ql
 ql/python/ql/src/Classes/EqualsOrNotEquals.ql
 ql/python/ql/src/Classes/IncompleteOrdering.ql
 ql/python/ql/src/Classes/InconsistentMRO.ql
-ql/python/ql/src/Classes/InitCallsSubclassMethod.ql
+ql/python/ql/src/Classes/InitCallsSubclass/InitCallsSubclassMethod.ql
 ql/python/ql/src/Classes/MissingCallToDel.ql
 ql/python/ql/src/Classes/MissingCallToInit.ql
 ql/python/ql/src/Classes/MutatingDescriptor.ql

@@ -72,7 +72,7 @@ string normalizePath(string path) {
       then result = path
       else
         // foo -> GITHUB_WORKSPACE/foo
-        if path.regexpMatch("^[^/~].*")
+        if path.regexpMatch("^[^$/~].*")
         then result = "GITHUB_WORKSPACE/" + path.regexpReplaceAll("/$", "")
         else
           // ~/foo -> ~/foo

@@ -182,8 +182,8 @@ final class CallCfgNode extends ExprCfgNode {
   }
 
   /** Gets the `i`th argument of this call, if any. */
-  ExprCfgNode getArgument(int i) {
-    any(ChildMapping mapping).hasCfgChild(node, node.getArgument(i), this, result)
+  ExprCfgNode getPositionalArgument(int i) {
+    any(ChildMapping mapping).hasCfgChild(node, node.getPositionalArgument(i), this, result)
   }
 }
 

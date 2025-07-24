@@ -1,3 +1,20 @@
-| file://:0:0:0:0 | Foo | getModule: | file://:0:0:0:0 | Foo | getNumberOfMembers: | 0 | getInterfaceType: | module<Foo> | getName: | Foo | getNumberOfInheritedTypes: | 0 | isBuiltinModule: | no | isSystemModule: | no | getNumberOfImportedModules: | 5 | getNumberOfExportedModules: | 1 |
-| file://:0:0:0:0 | __ObjC | getModule: | file://:0:0:0:0 | __ObjC | getNumberOfMembers: | 0 | getInterfaceType: | module<__ObjC> | getName: | __ObjC | getNumberOfInheritedTypes: | 0 | isBuiltinModule: | no | isSystemModule: | no | getNumberOfImportedModules: | 1 | getNumberOfExportedModules: | 0 |
-| file://:0:0:0:0 | default_module_name | getModule: | file://:0:0:0:0 | default_module_name | getNumberOfMembers: | 0 | getInterfaceType: | module<default_module_name> | getName: | default_module_name | getNumberOfInheritedTypes: | 0 | isBuiltinModule: | no | isSystemModule: | no | getNumberOfImportedModules: | 5 | getNumberOfExportedModules: | 0 |
+instances
+| file://:0:0:0:0 | Foo | getModule: | file://:0:0:0:0 | Foo | getInterfaceType: | module<Foo> | getName: | Foo | isBuiltinModule: | no | isSystemModule: | no |
+| file://:0:0:0:0 | __ObjC | getModule: | file://:0:0:0:0 | __ObjC | getInterfaceType: | module<__ObjC> | getName: | __ObjC | isBuiltinModule: | no | isSystemModule: | no |
+| file://:0:0:0:0 | default_module_name | getModule: | file://:0:0:0:0 | default_module_name | getInterfaceType: | module<default_module_name> | getName: | default_module_name | isBuiltinModule: | no | isSystemModule: | no |
+getMember
+getInheritedType
+getAnImportedModule
+| file://:0:0:0:0 | Foo | file://:0:0:0:0 | Swift |
+| file://:0:0:0:0 | Foo | file://:0:0:0:0 | SwiftOnoneSupport |
+| file://:0:0:0:0 | Foo | file://:0:0:0:0 | _Concurrency |
+| file://:0:0:0:0 | Foo | file://:0:0:0:0 | _StringProcessing |
+| file://:0:0:0:0 | Foo | file://:0:0:0:0 | _SwiftConcurrencyShims |
+| file://:0:0:0:0 | __ObjC | file://:0:0:0:0 | Swift |
+| file://:0:0:0:0 | default_module_name | file://:0:0:0:0 | Swift |
+| file://:0:0:0:0 | default_module_name | file://:0:0:0:0 | SwiftOnoneSupport |
+| file://:0:0:0:0 | default_module_name | file://:0:0:0:0 | _Concurrency |
+| file://:0:0:0:0 | default_module_name | file://:0:0:0:0 | _StringProcessing |
+| file://:0:0:0:0 | default_module_name | file://:0:0:0:0 | _SwiftConcurrencyShims |
+getAnExportedModule
+| file://:0:0:0:0 | Foo | file://:0:0:0:0 | Swift |

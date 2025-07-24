@@ -47,15 +47,22 @@ module Shared {
   }
 
   /**
-   * A call to `encodeURI` or `encodeURIComponent`, viewed as a sanitizer for
+   * A call to `encodeURI`, `encodeURIComponent` or `escape`, viewed as a sanitizer for
    * XSS vulnerabilities.
    */
   class UriEncodingSanitizer extends Sanitizer, DataFlow::CallNode {
+    string name;
+
     UriEncodingSanitizer() {
-      exists(string name | this = DataFlow::globalVarRef(name).getACall() |
-        name in ["encodeURI", "encodeURIComponent", "escape"]
-      )
+      this = DataFlow::globalVarRef(name).getACall() and
+      name in ["encodeURI", "encodeURIComponent", "escape"]
     }
+
+    /**
+     * Holds if this URI encoding function properly encodes path separators,
+     * making it safe for request forgery prevention.
+     */
+    predicate encodesPathSeparators() { name = "encodeURIComponent" }
   }
 
   /**

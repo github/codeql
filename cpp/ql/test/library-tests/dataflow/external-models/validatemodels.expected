@@ -16,10 +16,13 @@
 | Dubious signature "(..(*)(..))" in summary model. |
 | Dubious signature "(..(*)(..),..(*)(..),..(*)(..),..(*)(..))" in summary model. |
 | Dubious signature "(..(*)(..),..(*)(..),..(*)(..),void *)" in summary model. |
+| Dubious signature "(..(*)(..),const void *,unsigned int)" in summary model. |
 | Dubious signature "(..(*)(..),d2i_of_void *,BIO *,void **)" in summary model. |
 | Dubious signature "(..(*)(..),d2i_of_void *,FILE *,void **)" in summary model. |
+| Dubious signature "(..(*)(..),int,char **,..(*)(..),..(*)(..),void *)" in summary model. |
 | Dubious signature "(..(*)(..),void *)" in summary model. |
 | Dubious signature "(..(*)(..),void *,OSSL_STATM *,const OSSL_CC_METHOD *,OSSL_CC_DATA *)" in summary model. |
+| Dubious signature "(..(*)(..),void *,void *,exit_function_list **)" in summary model. |
 | Dubious signature "(ACCESS_DESCRIPTION *)" in summary model. |
 | Dubious signature "(ACCESS_DESCRIPTION **,const unsigned char **,long)" in summary model. |
 | Dubious signature "(ADMISSIONS *)" in summary model. |
@@ -401,6 +404,7 @@
 | Dubious signature "(CERT *,const uint16_t *,size_t,int)" in summary model. |
 | Dubious signature "(CERTIFICATEPOLICIES *)" in summary model. |
 | Dubious signature "(CERTIFICATEPOLICIES **,const unsigned char **,long)" in summary model. |
+| Dubious signature "(CHARMAP_DIR *)" in summary model. |
 | Dubious signature "(CMAC_CTX *)" in summary model. |
 | Dubious signature "(CMAC_CTX *,const CMAC_CTX *)" in summary model. |
 | Dubious signature "(CMAC_CTX *,const void *,size_t)" in summary model. |
@@ -635,6 +639,10 @@
 | Dubious signature "(DH_METHOD *,const char *)" in summary model. |
 | Dubious signature "(DH_METHOD *,int)" in summary model. |
 | Dubious signature "(DH_METHOD *,void *)" in summary model. |
+| Dubious signature "(DIR *)" in summary model. |
+| Dubious signature "(DIR *,dirent64 ***,..(*)(..),..(*)(..))" in summary model. |
+| Dubious signature "(DIR *,dirent64 *,dirent64 **)" in summary model. |
+| Dubious signature "(DIR *,long)" in summary model. |
 | Dubious signature "(DIST_POINT *)" in summary model. |
 | Dubious signature "(DIST_POINT **,const unsigned char **,long)" in summary model. |
 | Dubious signature "(DIST_POINT_NAME *)" in summary model. |
@@ -730,6 +738,7 @@
 | Dubious signature "(ENGINE_TABLE **,ENGINE *)" in summary model. |
 | Dubious signature "(ENGINE_TABLE **,ENGINE_CLEANUP_CB *,ENGINE *,const int *,int,int)" in summary model. |
 | Dubious signature "(ENGINE_TABLE **,int,const char *,int)" in summary model. |
+| Dubious signature "(ENTRY,ACTION,ENTRY **,hsearch_data *)" in summary model. |
 | Dubious signature "(ESS_CERT_ID *)" in summary model. |
 | Dubious signature "(ESS_CERT_ID **,const unsigned char **,long)" in summary model. |
 | Dubious signature "(ESS_CERT_ID_V2 *)" in summary model. |
@@ -898,6 +907,10 @@
 | Dubious signature "(EVP_SKEY *,OSSL_LIB_CTX *,OSSL_PROVIDER *,const char *)" in summary model. |
 | Dubious signature "(EXTENDED_KEY_USAGE *)" in summary model. |
 | Dubious signature "(EXTENDED_KEY_USAGE **,const unsigned char **,long)" in summary model. |
+| Dubious signature "(Elf64_Sym *,Elf_Sym *,unsigned int,uintptr_t *,uintptr_t *,unsigned int *,const char *)" in summary model. |
+| Dubious signature "(Elf64_Sym *,unsigned int,uintptr_t *,uintptr_t *,La_x86_64_regs *,unsigned int *,const char *,long *)" in summary model. |
+| Dubious signature "(Elf64_Sym *,unsigned int,uintptr_t *,uintptr_t *,const La_x86_64_regs *,La_x86_64_retval *,const char *)" in summary model. |
+| Dubious signature "(Elf64_auxv_t *)" in summary model. |
 | Dubious signature "(FFC_PARAMS *,BIGNUM *)" in summary model. |
 | Dubious signature "(FFC_PARAMS *,BIGNUM *,BIGNUM *,BIGNUM *)" in summary model. |
 | Dubious signature "(FFC_PARAMS *,const DH_NAMED_GROUP *)" in summary model. |
@@ -909,6 +922,7 @@
 | Dubious signature "(FFC_PARAMS *,int)" in summary model. |
 | Dubious signature "(FFC_PARAMS *,unsigned int)" in summary model. |
 | Dubious signature "(FFC_PARAMS *,unsigned int,int)" in summary model. |
+| Dubious signature "(FILE *)" in summary model. |
 | Dubious signature "(FILE *,CMS_ContentInfo **,pem_password_cb *,void *)" in summary model. |
 | Dubious signature "(FILE *,DH **,pem_password_cb *,void *)" in summary model. |
 | Dubious signature "(FILE *,DSA **)" in summary model. |
@@ -920,6 +934,8 @@
 | Dubious signature "(FILE *,EVP_PKEY **,OSSL_LIB_CTX *,const char *)" in summary model. |
 | Dubious signature "(FILE *,EVP_PKEY **,pem_password_cb *,void *)" in summary model. |
 | Dubious signature "(FILE *,EVP_PKEY **,pem_password_cb *,void *,OSSL_LIB_CTX *,const char *)" in summary model. |
+| Dubious signature "(FILE *,FILE *__restrict__,const char *,const char *__restrict__,__gnuc_va_list,va_list)" in summary model. |
+| Dubious signature "(FILE *,FILE *__restrict__,int,const wchar_t *,const wchar_t *__restrict__,__gnuc_va_list,va_list)" in summary model. |
 | Dubious signature "(FILE *,NETSCAPE_CERT_SEQUENCE **,pem_password_cb *,void *)" in summary model. |
 | Dubious signature "(FILE *,PKCS7 **)" in summary model. |
 | Dubious signature "(FILE *,PKCS7 **,pem_password_cb *,void *)" in summary model. |
@@ -945,7 +961,16 @@
 | Dubious signature "(FILE *,X509_REQ **,pem_password_cb *,void *)" in summary model. |
 | Dubious signature "(FILE *,X509_SIG **)" in summary model. |
 | Dubious signature "(FILE *,X509_SIG **,pem_password_cb *,void *)" in summary model. |
+| Dubious signature "(FILE *,_IO_marker *,int)" in summary model. |
+| Dubious signature "(FILE *,__FILE *,int)" in summary model. |
+| Dubious signature "(FILE *,__FILE *__restrict__,const wchar_t *,const wchar_t *__restrict__,__gnuc_va_list,va_list)" in summary model. |
+| Dubious signature "(FILE *,__fpos_t *)" in summary model. |
 | Dubious signature "(FILE *,char **,char **,unsigned char **,long *)" in summary model. |
+| Dubious signature "(FILE *,char *,char *,int)" in summary model. |
+| Dubious signature "(FILE *,char *,size_t,int,int)" in summary model. |
+| Dubious signature "(FILE *,char *,size_t,int,int,int *)" in summary model. |
+| Dubious signature "(FILE *,char *,size_t,off64_t *)" in summary model. |
+| Dubious signature "(FILE *,char *,ssize_t)" in summary model. |
 | Dubious signature "(FILE *,const ASN1_STRING *,unsigned long)" in summary model. |
 | Dubious signature "(FILE *,const CMS_ContentInfo *)" in summary model. |
 | Dubious signature "(FILE *,const DH *)" in summary model. |
@@ -976,21 +1001,58 @@
 | Dubious signature "(FILE *,const X509_PUBKEY *)" in summary model. |
 | Dubious signature "(FILE *,const X509_REQ *)" in summary model. |
 | Dubious signature "(FILE *,const X509_SIG *)" in summary model. |
+| Dubious signature "(FILE *,const __fpos_t *)" in summary model. |
+| Dubious signature "(FILE *,const char *,__gnuc_va_list,va_list,unsigned int)" in summary model. |
+| Dubious signature "(FILE *,const char *,const char *)" in summary model. |
 | Dubious signature "(FILE *,const char *,const char *,const char *,...)" in summary model. |
 | Dubious signature "(FILE *,const char *,const char *,const char *,const char *const *)" in summary model. |
 | Dubious signature "(FILE *,const char *,const char *,const char *,const char *const *,size_t)" in summary model. |
 | Dubious signature "(FILE *,const char *,const char *,const char *,va_list)" in summary model. |
+| Dubious signature "(FILE *,const char *,const char *,int)" in summary model. |
+| Dubious signature "(FILE *,const char *,int,int,int,int)" in summary model. |
+| Dubious signature "(FILE *,const char *,kw_hash_fct_t)" in summary model. |
+| Dubious signature "(FILE *,const char *,size_t)" in summary model. |
 | Dubious signature "(FILE *,const char *,va_list)" in summary model. |
+| Dubious signature "(FILE *,const char *,va_list,int *)" in summary model. |
+| Dubious signature "(FILE *,const char *,va_list,unsigned int)" in summary model. |
+| Dubious signature "(FILE *,const mntent *)" in summary model. |
+| Dubious signature "(FILE *,const printf_info *,const void *const *)" in summary model. |
+| Dubious signature "(FILE *,const void *,size_t)" in summary model. |
+| Dubious signature "(FILE *,const void *,ssize_t)" in summary model. |
+| Dubious signature "(FILE *,const wchar_t *,va_list)" in summary model. |
+| Dubious signature "(FILE *,const wchar_t *,va_list,unsigned int)" in summary model. |
+| Dubious signature "(FILE *,group *,char *,size_t,group **)" in summary model. |
 | Dubious signature "(FILE *,int *)" in summary model. |
+| Dubious signature "(FILE *,int)" in summary model. |
 | Dubious signature "(FILE *,int,char *)" in summary model. |
+| Dubious signature "(FILE *,int,const char *,va_list)" in summary model. |
+| Dubious signature "(FILE *,int,int,_IO_wide_data *,const _IO_jump_t *)" in summary model. |
 | Dubious signature "(FILE *,lemon *,char *,int *)" in summary model. |
 | Dubious signature "(FILE *,lemon *,int *,int)" in summary model. |
+| Dubious signature "(FILE *,mntent *,char *,int)" in summary model. |
+| Dubious signature "(FILE *,off64_t,int)" in summary model. |
+| Dubious signature "(FILE *,off64_t,int,int)" in summary model. |
+| Dubious signature "(FILE *,passwd *,char *,size_t,passwd **)" in summary model. |
 | Dubious signature "(FILE *,rule *)" in summary model. |
 | Dubious signature "(FILE *,rule *,int)" in summary model. |
 | Dubious signature "(FILE *,rule *,lemon *,int *)" in summary model. |
+| Dubious signature "(FILE *,sgrp *,char *,size_t,sgrp **)" in summary model. |
+| Dubious signature "(FILE *,size_t,size_t,ssize_t)" in summary model. |
+| Dubious signature "(FILE *,spwd *,char *,size_t,spwd **)" in summary model. |
 | Dubious signature "(FILE *,stack_st_X509_INFO *,pem_password_cb *,void *)" in summary model. |
 | Dubious signature "(FILE *,stack_st_X509_INFO *,pem_password_cb *,void *,OSSL_LIB_CTX *,const char *)" in summary model. |
 | Dubious signature "(FILE *,symbol *,lemon *,int *)" in summary model. |
+| Dubious signature "(FILE *,void *,char *,size_t,nss_files_parse_line)" in summary model. |
+| Dubious signature "(FILE *,void *,size_t)" in summary model. |
+| Dubious signature "(FILE *,wchar_t *)" in summary model. |
+| Dubious signature "(FILE *,wchar_t *,size_t,wchar_t *)" in summary model. |
+| Dubious signature "(FILE *,wchar_t *,size_t,wint_t,int)" in summary model. |
+| Dubious signature "(FILE *,wchar_t *,size_t,wint_t,int,wint_t *)" in summary model. |
+| Dubious signature "(FILE *,wchar_t *,wchar_t *,int)" in summary model. |
+| Dubious signature "(FILE *,wint_t)" in summary model. |
+| Dubious signature "(FTS *)" in summary model. |
+| Dubious signature "(FTS *,FTSENT *,int)" in summary model. |
+| Dubious signature "(FTS *,int)" in summary model. |
 | Dubious signature "(FUNCTION *,DISPLAY_COLUMNS *)" in summary model. |
 | Dubious signature "(GCM128_CONTEXT *,const unsigned char *,size_t)" in summary model. |
 | Dubious signature "(GCM128_CONTEXT *,const unsigned char *,unsigned char *,size_t)" in summary model. |
@@ -1204,6 +1266,7 @@
 | Dubious signature "(LPCTSTR,DWORD *,void *,ULONG *)" in summary model. |
 | Dubious signature "(LPCWSTR,IAtlStringMgr *)" in summary model. |
 | Dubious signature "(LPTSTR,LPCTSTR,DWORD *)" in summary model. |
+| Dubious signature "(Lmid_t,const char *)" in summary model. |
 | Dubious signature "(MD4_CTX *,const unsigned char *)" in summary model. |
 | Dubious signature "(MD4_CTX *,const void *,size_t)" in summary model. |
 | Dubious signature "(MD5_CTX *,const void *,size_t)" in summary model. |
@@ -2365,6 +2428,9 @@
 | Dubious signature "(SharedEncoderDictionary *)" in summary model. |
 | Dubious signature "(SingleRequest *,Curl_easy *)" in summary model. |
 | Dubious signature "(StrAccum *,sqlite3_str *,const char *,...)" in summary model. |
+| Dubious signature "(Strent *)" in summary model. |
+| Dubious signature "(Strtab *,const char *,size_t)" in summary model. |
+| Dubious signature "(Strtab *,size_t *)" in summary model. |
 | Dubious signature "(TLS_FEATURE *)" in summary model. |
 | Dubious signature "(TLS_RL_RECORD *,const unsigned char *)" in summary model. |
 | Dubious signature "(TS_ACCURACY *)" in summary model. |
@@ -2679,14 +2745,122 @@
 | Dubious signature "(X509_VERIFY_PARAM *,unsigned long)" in summary model. |
 | Dubious signature "(XCHAR *,const XCHAR *,int)" in summary model. |
 | Dubious signature "(XCHAR *,size_t,const XCHAR *,int)" in summary model. |
+| Dubious signature "(XDR *,FILE *,xdr_op)" in summary model. |
+| Dubious signature "(XDR *,bool_t *)" in summary model. |
+| Dubious signature "(XDR *,caddr_t *,u_int *,u_int,u_int,xdrproc_t)" in summary model. |
+| Dubious signature "(XDR *,caddr_t *,u_int,xdrproc_t)" in summary model. |
+| Dubious signature "(XDR *,char *)" in summary model. |
+| Dubious signature "(XDR *,char **)" in summary model. |
+| Dubious signature "(XDR *,char **,u_int *,u_int)" in summary model. |
+| Dubious signature "(XDR *,char **,u_int)" in summary model. |
+| Dubious signature "(XDR *,char **,u_int,xdrproc_t)" in summary model. |
+| Dubious signature "(XDR *,const caddr_t,u_int,xdr_op)" in summary model. |
+| Dubious signature "(XDR *,domainname *)" in summary model. |
+| Dubious signature "(XDR *,enum_t *)" in summary model. |
+| Dubious signature "(XDR *,enum_t *,char *,const xdr_discrim *,xdrproc_t)" in summary model. |
+| Dubious signature "(XDR *,float *)" in summary model. |
+| Dubious signature "(XDR *,int8_t *)" in summary model. |
+| Dubious signature "(XDR *,int16_t *)" in summary model. |
+| Dubious signature "(XDR *,int64_t *)" in summary model. |
+| Dubious signature "(XDR *,int *)" in summary model. |
+| Dubious signature "(XDR *,keystatus *)" in summary model. |
+| Dubious signature "(XDR *,long *)" in summary model. |
+| Dubious signature "(XDR *,mapname *)" in summary model. |
+| Dubious signature "(XDR *,netnamestr *)" in summary model. |
+| Dubious signature "(XDR *,nis_error *)" in summary model. |
+| Dubious signature "(XDR *,nis_name *)" in summary model. |
+| Dubious signature "(XDR *,obj_p *)" in summary model. |
+| Dubious signature "(XDR *,peername *)" in summary model. |
+| Dubious signature "(XDR *,pmaplist **)" in summary model. |
+| Dubious signature "(XDR *,quad_t *)" in summary model. |
+| Dubious signature "(XDR *,short *)" in summary model. |
+| Dubious signature "(XDR *,u_char *)" in summary model. |
+| Dubious signature "(XDR *,u_int *)" in summary model. |
+| Dubious signature "(XDR *,u_int,u_int,caddr_t,..(*)(..),..(*)(..))" in summary model. |
+| Dubious signature "(XDR *,u_long *)" in summary model. |
+| Dubious signature "(XDR *,u_quad_t *)" in summary model. |
+| Dubious signature "(XDR *,u_short *)" in summary model. |
+| Dubious signature "(XDR *,uint8_t *)" in summary model. |
+| Dubious signature "(XDR *,uint16_t *)" in summary model. |
+| Dubious signature "(XDR *,uint64_t *)" in summary model. |
+| Dubious signature "(XDR *,ypbind_resptype *)" in summary model. |
+| Dubious signature "(XDR *,yppush_status *)" in summary model. |
+| Dubious signature "(XDR *,ypstat *)" in summary model. |
+| Dubious signature "(XDR *,ypxfrstat *)" in summary model. |
+| Dubious signature "(_Float128 *,_Float128)" in summary model. |
+| Dubious signature "(_Float128 *,const _Float128 *)" in summary model. |
+| Dubious signature "(_Float128,_Float128 *)" in summary model. |
+| Dubious signature "(_Float128,_Float128 *,_Float128 *)" in summary model. |
+| Dubious signature "(_Float128,_Float128,_Float128 *,_Float128 *,int)" in summary model. |
+| Dubious signature "(_Float128,_Float128,int *)" in summary model. |
+| Dubious signature "(_Float128,_Float128,int,_Float128 *)" in summary model. |
+| Dubious signature "(_Float128,int *)" in summary model. |
+| Dubious signature "(_Float128,int,unsigned int)" in summary model. |
+| Dubious signature "(_Float128,long double)" in summary model. |
+| Dubious signature "(_Float128,long long)" in summary model. |
+| Dubious signature "(_IO_codecvt *,__mbstate_t *,const char *,const char *,const char **,wchar_t *,wchar_t *,wchar_t **)" in summary model. |
+| Dubious signature "(_IO_codecvt *,__mbstate_t *,const char *,const char *,size_t)" in summary model. |
+| Dubious signature "(_IO_codecvt *,__mbstate_t *,const wchar_t *,const wchar_t *,const wchar_t **,char *,char *,char **)" in summary model. |
+| Dubious signature "(_IO_cookie_file *,int,void *,cookie_io_functions_t)" in summary model. |
+| Dubious signature "(_IO_marker *)" in summary model. |
+| Dubious signature "(_IO_marker *,FILE *)" in summary model. |
+| Dubious signature "(_IO_marker *,_IO_marker *)" in summary model. |
+| Dubious signature "(_IO_strfile *,_IO_strfile_ *,char *,size_t,char *)" in summary model. |
+| Dubious signature "(_IO_strfile *,char *,int,char *)" in summary model. |
+| Dubious signature "(_IO_strfile *,const char *,int)" in summary model. |
+| Dubious signature "(__gconv_step *,__gconv_step_data *,const unsigned char **,const unsigned char *,unsigned char **,size_t *,int,int)" in summary model. |
+| Dubious signature "(__gconv_step *,__gconv_step_data *,const unsigned char *,const unsigned char **,const unsigned char *,unsigned char **,size_t *)" in summary model. |
+| Dubious signature "(__gconv_step *,size_t)" in summary model. |
+| Dubious signature "(__gconv_step *,unsigned char)" in summary model. |
+| Dubious signature "(__gconv_t,const unsigned char **,const unsigned char *,unsigned char **,unsigned char *,size_t *)" in summary model. |
+| Dubious signature "(__gid_t,gid_t,group *,char *,size_t,group **)" in summary model. |
+| Dubious signature "(__gid_t,gid_t,group *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(__netgrent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(__printf_buffer *,char)" in summary model. |
+| Dubious signature "(__printf_buffer *,char,size_t)" in summary model. |
+| Dubious signature "(__printf_buffer *,const char *)" in summary model. |
+| Dubious signature "(__printf_buffer *,const char *,size_t)" in summary model. |
+| Dubious signature "(__printf_buffer *,const char *,va_list,unsigned int)" in summary model. |
+| Dubious signature "(__printf_buffer *,locale_t,const printf_info *,const void *const *)" in summary model. |
+| Dubious signature "(__printf_buffer_as_file *)" in summary model. |
+| Dubious signature "(__printf_buffer_as_file *,__printf_buffer *)" in summary model. |
+| Dubious signature "(__printf_buffer_snprintf *,char *,size_t)" in summary model. |
+| Dubious signature "(__printf_buffer_to_file *,FILE *)" in summary model. |
+| Dubious signature "(__res_state *)" in summary model. |
+| Dubious signature "(__res_state *,file_change_detection *)" in summary model. |
+| Dubious signature "(__res_state *,resolv_conf *)" in summary model. |
+| Dubious signature "(__sigset_t *,int)" in summary model. |
+| Dubious signature "(__uid_t,uid_t,passwd *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(__uid_t,uid_t,passwd *,char *,size_t,passwd **)" in summary model. |
+| Dubious signature "(__wprintf_buffer *,const wchar_t *)" in summary model. |
+| Dubious signature "(__wprintf_buffer *,const wchar_t *,size_t)" in summary model. |
+| Dubious signature "(__wprintf_buffer *,const wchar_t *,va_list,unsigned int)" in summary model. |
+| Dubious signature "(__wprintf_buffer *,wchar_t)" in summary model. |
+| Dubious signature "(__wprintf_buffer *,wchar_t,size_t)" in summary model. |
+| Dubious signature "(__wprintf_buffer_as_file *)" in summary model. |
+| Dubious signature "(__wprintf_buffer_as_file *,__wprintf_buffer *)" in summary model. |
+| Dubious signature "(__wprintf_buffer_to_file *,FILE *)" in summary model. |
+| Dubious signature "(_pthread_cleanup_buffer *,..(*)(..),void *)" in summary model. |
 | Dubious signature "(action **,e_action,symbol *,char *)" in summary model. |
 | Dubious signature "(action *,FILE *,int)" in summary model. |
 | Dubious signature "(acttab *)" in summary model. |
 | Dubious signature "(acttab *,int)" in summary model. |
 | Dubious signature "(acttab *,int,int)" in summary model. |
+| Dubious signature "(addrinfo *)" in summary model. |
+| Dubious signature "(addrinfo *,int)" in summary model. |
+| Dubious signature "(aiocb *)" in summary model. |
+| Dubious signature "(aiocb_union *,int)" in summary model. |
+| Dubious signature "(aliasent *,aliasent *__restrict__,char *,char *__restrict__,size_t,aliasent **,aliasent **__restrict__)" in summary model. |
+| Dubious signature "(aliasent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(alloc_buffer *,size_t,size_t,size_t)" in summary model. |
+| Dubious signature "(alloc_buffer,const char *)" in summary model. |
+| Dubious signature "(alloc_buffer,const void *,size_t)" in summary model. |
 | Dubious signature "(alpn_proto_buf *,const alpn_spec *)" in summary model. |
 | Dubious signature "(altsvcinfo **)" in summary model. |
 | Dubious signature "(altsvcinfo *,const long)" in summary model. |
+| Dubious signature "(argp_fmtstream *,argp_fmtstream_t,size_t)" in summary model. |
+| Dubious signature "(argp_fmtstream_t,const char *)" in summary model. |
+| Dubious signature "(argp_fmtstream_t,const char *,size_t)" in summary model. |
 | Dubious signature "(brotli_alloc_func,brotli_free_func,void *)" in summary model. |
 | Dubious signature "(bufc_pool *,size_t,size_t)" in summary model. |
 | Dubious signature "(bufq *,Curl_bufq_reader *,void *,CURLcode *)" in summary model. |
@@ -2711,38 +2885,114 @@
 | Dubious signature "(chachapoly_ctx *,const u_char *,u_int)" in summary model. |
 | Dubious signature "(chachapoly_ctx *,u_int,u_char *,const u_char *,u_int,u_int,int)" in summary model. |
 | Dubious signature "(chachapoly_ctx *,unsigned int *,unsigned int,const unsigned char *,unsigned int)" in summary model. |
+| Dubious signature "(char8_t *,char8_t *__restrict__,const char *,const char *__restrict__,size_t,mbstate_t *,mbstate_t *__restrict__)" in summary model. |
+| Dubious signature "(char16_t *,char16_t *__restrict__,const char *,const char *__restrict__,size_t,mbstate_t *,mbstate_t *__restrict__)" in summary model. |
 | Dubious signature "(char *)" in summary model. |
 | Dubious signature "(char **)" in summary model. |
+| Dubious signature "(char ***)" in summary model. |
 | Dubious signature "(char **,Curl_str *,const size_t)" in summary model. |
 | Dubious signature "(char **,Curl_str *,const size_t,char)" in summary model. |
 | Dubious signature "(char **,URLGlob *)" in summary model. |
+| Dubious signature "(char **,__netgrent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(char **,char **,char **,__netgrent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(char **,char **,ib_request *,dir_binding *)" in summary model. |
+| Dubious signature "(char **,char **__restrict__,char *const *,char *const *__restrict__,char **,char **__restrict__)" in summary model. |
+| Dubious signature "(char **,char **__restrict__,int,const char *,const char *__restrict__,const char *,const char *__restrict__,const char *,const char *__restrict__,int *,int *__restrict__)" in summary model. |
+| Dubious signature "(char **,char **__restrict__,int,const char *,const char *__restrict__,const char *,const char *__restrict__,const char *,const char *__restrict__,int *,int *__restrict__,sa_family_t)" in summary model. |
+| Dubious signature "(char **,char **__restrict__,size_t *,size_t *__restrict__,FILE *,FILE *__restrict__)" in summary model. |
+| Dubious signature "(char **,char **__restrict__,size_t *,size_t *__restrict__,char *,char *__restrict__)" in summary model. |
+| Dubious signature "(char **,char **__restrict__,size_t *,size_t *__restrict__,char *,char *__restrict__,const char *,const char *__restrict__)" in summary model. |
+| Dubious signature "(char **,char **__restrict__,size_t *,size_t *__restrict__,const char *,const char *__restrict__)" in summary model. |
+| Dubious signature "(char **,char **__restrict__,size_t *,size_t *__restrict__,const char *,const char *__restrict__,const char *,const char *__restrict__,unsigned int *,unsigned int *__restrict__)" in summary model. |
+| Dubious signature "(char **,char **__restrict__,size_t *,size_t *__restrict__,const char *,const char *__restrict__,int)" in summary model. |
+| Dubious signature "(char **,char **__restrict__,size_t *,size_t *__restrict__,const char *,const char *__restrict__,size_t)" in summary model. |
+| Dubious signature "(char **,char **__restrict__,u_short,unsigned short,const char *,const char *__restrict__,const char *,const char *__restrict__,const char *,const char *__restrict__,int *,int *__restrict__)" in summary model. |
+| Dubious signature "(char **,char **__restrict__,u_short,unsigned short,const char *,const char *__restrict__,const char *,const char *__restrict__,const char *,const char *__restrict__,int *,int *__restrict__,sa_family_t)" in summary model. |
 | Dubious signature "(char **,char *,URLGlob *)" in summary model. |
 | Dubious signature "(char **,char)" in summary model. |
+| Dubious signature "(char **,char,char)" in summary model. |
+| Dubious signature "(char **,char,char,char)" in summary model. |
 | Dubious signature "(char **,const char *)" in summary model. |
+| Dubious signature "(char **,const char *,...)" in summary model. |
+| Dubious signature "(char **,const char *,va_list)" in summary model. |
+| Dubious signature "(char **,const char *,va_list,unsigned int)" in summary model. |
+| Dubious signature "(char **,int)" in summary model. |
+| Dubious signature "(char **,int,const char *,...)" in summary model. |
+| Dubious signature "(char **,int,const char *,__gnuc_va_list,va_list)" in summary model. |
 | Dubious signature "(char **,s_options *,FILE *)" in summary model. |
+| Dubious signature "(char **,size_t *)" in summary model. |
+| Dubious signature "(char **,size_t *,FILE *)" in summary model. |
+| Dubious signature "(char **,size_t *,const char *)" in summary model. |
+| Dubious signature "(char **,size_t *,const char *,const char *)" in summary model. |
+| Dubious signature "(char **,size_t *,const char *,size_t,int)" in summary model. |
 | Dubious signature "(char **,size_t *,size_t)" in summary model. |
 | Dubious signature "(char *,EVP_CIPHER_INFO *)" in summary model. |
 | Dubious signature "(char *,FILE *,FILE *,int *)" in summary model. |
+| Dubious signature "(char *,__STRING2_COPY_ARR2,__STRING2_COPY_ARR3,__STRING2_COPY_ARR4,__STRING2_COPY_ARR5,__STRING2_COPY_ARR6,__STRING2_COPY_ARR7,__STRING2_COPY_ARR8,size_t)" in summary model. |
+| Dubious signature "(char *,char16_t,mbstate_t *)" in summary model. |
+| Dubious signature "(char *,char *)" in summary model. |
+| Dubious signature "(char *,char *__restrict__,char8_t,mbstate_t *,mbstate_t *__restrict__)" in summary model. |
+| Dubious signature "(char *,char *__restrict__,const char *,const char *__restrict__,char **,char **__restrict__)" in summary model. |
+| Dubious signature "(char *,char *__restrict__,const wchar_t **,const wchar_t **__restrict__,size_t,__mbstate_t *__restrict__,mbstate_t *)" in summary model. |
+| Dubious signature "(char *,char *__restrict__,const wchar_t **,const wchar_t **__restrict__,size_t,mbstate_t *,mbstate_t *__restrict__,size_t)" in summary model. |
+| Dubious signature "(char *,char *__restrict__,const wchar_t **,const wchar_t **__restrict__,size_t,size_t,__mbstate_t *__restrict__,mbstate_t *)" in summary model. |
+| Dubious signature "(char *,char *__restrict__,const wchar_t **,const wchar_t **__restrict__,size_t,size_t,mbstate_t *,mbstate_t *__restrict__,size_t)" in summary model. |
+| Dubious signature "(char *,char *__restrict__,const wchar_t *,const wchar_t *__restrict__,size_t)" in summary model. |
+| Dubious signature "(char *,char *__restrict__,int,FILE *,FILE *__restrict__)" in summary model. |
+| Dubious signature "(char *,char *__restrict__,size_t,const char *,const char *__restrict__,const tm *,const tm *__restrict__,locale_t)" in summary model. |
+| Dubious signature "(char *,char,char **)" in summary model. |
+| Dubious signature "(char *,const char *)" in summary model. |
+| Dubious signature "(char *,const char **,const char **,const char **,const char **,const char **)" in summary model. |
 | Dubious signature "(char *,const char *,char **)" in summary model. |
 | Dubious signature "(char *,const char *,const char *,X509_VERIFY_PARAM *)" in summary model. |
 | Dubious signature "(char *,const char *,int,const char *)" in summary model. |
+| Dubious signature "(char *,const char *,int,link_map *,int,Lmid_t)" in summary model. |
 | Dubious signature "(char *,const char *,size_t)" in summary model. |
+| Dubious signature "(char *,const char *,size_t,locale_t)" in summary model. |
 | Dubious signature "(char *,const char *,va_list)" in summary model. |
+| Dubious signature "(char *,const wchar_t *,size_t,size_t)" in summary model. |
+| Dubious signature "(char *,des_block *)" in summary model. |
 | Dubious signature "(char *,int)" in summary model. |
+| Dubious signature "(char *,int,FILE *)" in summary model. |
 | Dubious signature "(char *,int,const ASN1_OBJECT *)" in summary model. |
 | Dubious signature "(char *,int,const ASN1_OBJECT *,int)" in summary model. |
 | Dubious signature "(char *,int,int,void *)" in summary model. |
+| Dubious signature "(char *,int,size_t,const char *,va_list)" in summary model. |
+| Dubious signature "(char *,netobj *,des_block *)" in summary model. |
+| Dubious signature "(char *,random_data *)" in summary model. |
 | Dubious signature "(char *,size_t *)" in summary model. |
 | Dubious signature "(char *,size_t)" in summary model. |
 | Dubious signature "(char *,size_t,const char *,...)" in summary model. |
+| Dubious signature "(char *,size_t,const char *,_Float128)" in summary model. |
+| Dubious signature "(char *,size_t,const char *,const char *,bool)" in summary model. |
+| Dubious signature "(char *,size_t,const char *,double)" in summary model. |
+| Dubious signature "(char *,size_t,const char *,float)" in summary model. |
+| Dubious signature "(char *,size_t,const char *,long double)" in summary model. |
 | Dubious signature "(char *,size_t,const char *,va_list)" in summary model. |
+| Dubious signature "(char *,size_t,const char *,va_list,unsigned int)" in summary model. |
+| Dubious signature "(char *,size_t,int)" in summary model. |
+| Dubious signature "(char *,size_t,int,FILE *)" in summary model. |
+| Dubious signature "(char *,size_t,int,size_t,const char *,...)" in summary model. |
+| Dubious signature "(char *,size_t,int,size_t,const char *,va_list)" in summary model. |
+| Dubious signature "(char *,size_t,locale_t,const char *,...)" in summary model. |
+| Dubious signature "(char *,size_t,locale_t,const char *,va_list,unsigned int)" in summary model. |
 | Dubious signature "(char *,size_t,size_t *,const OSSL_PARAM[],int,ossl_passphrase_data_st *)" in summary model. |
 | Dubious signature "(char *,size_t,size_t *,const OSSL_PARAM[],void *)" in summary model. |
 | Dubious signature "(char *,size_t,size_t *,const unsigned char *,size_t,const char)" in summary model. |
+| Dubious signature "(char *,size_t,size_t)" in summary model. |
 | Dubious signature "(char *,size_t,size_t,void *)" in summary model. |
 | Dubious signature "(char *,uint8_t)" in summary model. |
 | Dubious signature "(char *,unsigned int)" in summary model. |
+| Dubious signature "(char *,void *,parser_data *,size_t,int *)" in summary model. |
+| Dubious signature "(char *__restrict__,const char *__restrict__,size_t)" in summary model. |
+| Dubious signature "(char *__restrict__,const char *__restrict__,size_t,size_t)" in summary model. |
+| Dubious signature "(char *const *,int,..(*)(..))" in summary model. |
+| Dubious signature "(char *const[],char **,char **__restrict__,size_t *,size_t *__restrict__)" in summary model. |
 | Dubious signature "(char,const CStringT &)" in summary model. |
+| Dubious signature "(char[256],const char *,const char *)" in summary model. |
+| Dubious signature "(char[256],const uid_t,const char *)" in summary model. |
+| Dubious signature "(cmsghdr *,const uint8_t *,int,int)" in summary model. |
+| Dubious signature "(cmsghdr *,int,int,int)" in summary model. |
 | Dubious signature "(codetype,unsigned short *,unsigned int,code **,unsigned int *,unsigned short *)" in summary model. |
 | Dubious signature "(config *)" in summary model. |
 | Dubious signature "(config *,config *)" in summary model. |
@@ -3551,12 +3801,19 @@
 | Dubious signature "(const YCHAR *)" in summary model. |
 | Dubious signature "(const YCHAR *,int)" in summary model. |
 | Dubious signature "(const YCHAR *,int,IAtlStringMgr *)" in summary model. |
+| Dubious signature "(const _Float128 *)" in summary model. |
+| Dubious signature "(const aiocb *)" in summary model. |
+| Dubious signature "(const aiocb *const[],int,const timespec *)" in summary model. |
+| Dubious signature "(const argp_state *,const char *,va_list,unsigned int)" in summary model. |
+| Dubious signature "(const argp_state *,int,int,const char *,va_list,unsigned int)" in summary model. |
 | Dubious signature "(const bufq *)" in summary model. |
 | Dubious signature "(const bufref *)" in summary model. |
 | Dubious signature "(const char *)" in summary model. |
 | Dubious signature "(const char **)" in summary model. |
+| Dubious signature "(const char **,__locale_data *)" in summary model. |
 | Dubious signature "(const char **,char **,const char *)" in summary model. |
 | Dubious signature "(const char **,const char *)" in summary model. |
+| Dubious signature "(const char **,const char **,bool *,..(*)(..),void *)" in summary model. |
 | Dubious signature "(const char **,int *)" in summary model. |
 | Dubious signature "(const char **,int *,const char **,const char **,int *)" in summary model. |
 | Dubious signature "(const char **,int *,const char **,int *)" in summary model. |
@@ -3573,36 +3830,54 @@
 | Dubious signature "(const char *,OSSL_LIB_CTX *,const char *)" in summary model. |
 | Dubious signature "(const char *,OSSL_LIB_CTX *,const char *,const UI_METHOD *,void *,const OSSL_PARAM[],OSSL_STORE_post_process_info_fn,void *)" in summary model. |
 | Dubious signature "(const char *,X509 **,stack_st_X509 **,int,const char *,const char *,X509_VERIFY_PARAM *)" in summary model. |
+| Dubious signature "(const char *,__gid_t,gid_t,__gid_t *,gid_t *,int *)" in summary model. |
+| Dubious signature "(const char *,__gid_t,gid_t,long *,long *,__gid_t **,gid_t **,long,int *)" in summary model. |
+| Dubious signature "(const char *,__gnuc_va_list)" in summary model. |
+| Dubious signature "(const char *,__gnuc_va_list,unsigned int)" in summary model. |
+| Dubious signature "(const char *,__netgrent *)" in summary model. |
+| Dubious signature "(const char *,addrinfo *,int,const char *)" in summary model. |
+| Dubious signature "(const char *,aliasent *,char *,size_t,int *)" in summary model. |
 | Dubious signature "(const char *,bufref *)" in summary model. |
 | Dubious signature "(const char *,char *)" in summary model. |
+| Dubious signature "(const char *,char **)" in summary model. |
 | Dubious signature "(const char *,char **,char **,BIO_hostserv_priorities)" in summary model. |
 | Dubious signature "(const char *,char **,char **,char **)" in summary model. |
 | Dubious signature "(const char *,char **,char **,char **,char **,int *,char **,char **,char **)" in summary model. |
+| Dubious signature "(const char *,char **,char)" in summary model. |
 | Dubious signature "(const char *,char **,int)" in summary model. |
 | Dubious signature "(const char *,char **,int,curl_off_t *)" in summary model. |
 | Dubious signature "(const char *,char **,int,unsigned long *)" in summary model. |
 | Dubious signature "(const char *,char **,size_t)" in summary model. |
 | Dubious signature "(const char *,char *,char *,bool *,GlobalConfig *,OperationConfig *)" in summary model. |
 | Dubious signature "(const char *,char *,char *,const char **)" in summary model. |
+| Dubious signature "(const char *,char *,const char *,binding *)" in summary model. |
+| Dubious signature "(const char *,char *,const int)" in summary model. |
 | Dubious signature "(const char *,char *,size_t *)" in summary model. |
 | Dubious signature "(const char *,char *,size_t)" in summary model. |
 | Dubious signature "(const char *,char *,size_t,bool)" in summary model. |
+| Dubious signature "(const char *,char *,size_t,char **,int *,int *)" in summary model. |
 | Dubious signature "(const char *,const ASN1_INTEGER *,stack_st_CONF_VALUE **)" in summary model. |
 | Dubious signature "(const char *,const ML_COMMON_PKCS8_FMT *,const char *,const char *)" in summary model. |
 | Dubious signature "(const char *,const OPT_PAIR *,int *)" in summary model. |
 | Dubious signature "(const char *,const OSSL_PARAM *,int)" in summary model. |
 | Dubious signature "(const char *,const UI_METHOD *,void *,OSSL_STORE_post_process_info_fn,void *)" in summary model. |
 | Dubious signature "(const char *,const char *)" in summary model. |
+| Dubious signature "(const char *,const char **,const char **)" in summary model. |
 | Dubious signature "(const char *,const char *,BIGNUM **,BIGNUM **,const BIGNUM *,const BIGNUM *)" in summary model. |
 | Dubious signature "(const char *,const char *,BIGNUM **,BIGNUM **,const BIGNUM *,const BIGNUM *,OSSL_LIB_CTX *,const char *)" in summary model. |
 | Dubious signature "(const char *,const char *,BIO_lookup_type,int,int,BIO_ADDRINFO **)" in summary model. |
 | Dubious signature "(const char *,const char *,EVP_PKEY *,X509 *,stack_st_X509 *,int,int,int,int,int)" in summary model. |
 | Dubious signature "(const char *,const char *,EVP_PKEY *,X509 *,stack_st_X509 *,int,int,int,int,int,OSSL_LIB_CTX *,const char *)" in summary model. |
 | Dubious signature "(const char *,const char *,EVP_PKEY *,X509 *,stack_st_X509 *,int,int,int,int,int,OSSL_LIB_CTX *,const char *,PKCS12_create_cb *,void *)" in summary model. |
+| Dubious signature "(const char *,const char *,FILE *)" in summary model. |
+| Dubious signature "(const char *,const char *,__gconv_step **,size_t *,int)" in summary model. |
+| Dubious signature "(const char *,const char *,__gnuc_va_list,va_list)" in summary model. |
 | Dubious signature "(const char *,const char *,char *)" in summary model. |
+| Dubious signature "(const char *,const char *,char **)" in summary model. |
 | Dubious signature "(const char *,const char *,char **,char **)" in summary model. |
 | Dubious signature "(const char *,const char *,char **,char **,const char *,const char *)" in summary model. |
 | Dubious signature "(const char *,const char *,char **,char **,const char *,const char *,OSSL_LIB_CTX *,const char *)" in summary model. |
+| Dubious signature "(const char *,const char *,char **,int *,char **,int *)" in summary model. |
 | Dubious signature "(const char *,const char *,char **,int)" in summary model. |
 | Dubious signature "(const char *,const char *,char *,char *)" in summary model. |
 | Dubious signature "(const char *,const char *,const BIGNUM *,ASN1_INTEGER **)" in summary model. |
@@ -3610,49 +3885,131 @@
 | Dubious signature "(const char *,const char *,const char *,SSL_CTX *,const stack_st_CONF_VALUE *,long,const char *,const ASN1_ITEM *)" in summary model. |
 | Dubious signature "(const char *,const char *,const char *,bool,iconv_ilseq_handler)" in summary model. |
 | Dubious signature "(const char *,const char *,const char *,bufref *)" in summary model. |
+| Dubious signature "(const char *,const char *,const char *,const char *)" in summary model. |
 | Dubious signature "(const char *,const char *,const char *,const char *,const char *,SSL_CTX *,const stack_st_CONF_VALUE *,const char *,ASN1_VALUE *,const ASN1_ITEM *,const char *,long,const ASN1_ITEM *)" in summary model. |
 | Dubious signature "(const char *,const char *,const char *,const char *,int,BIO *,BIO *,OSSL_HTTP_bio_cb_t,void *,int,int)" in summary model. |
+| Dubious signature "(const char *,const char *,const char *,const int,char **,int *)" in summary model. |
+| Dubious signature "(const char *,const char *,const char *,const int,char **,int *,char **,int *)" in summary model. |
 | Dubious signature "(const char *,const char *,const char *,iconv_ilseq_handler)" in summary model. |
+| Dubious signature "(const char *,const char *,const char *,int *,unsigned int *,char **,int,stat *)" in summary model. |
 | Dubious signature "(const char *,const char *,const char *,int)" in summary model. |
+| Dubious signature "(const char *,const char *,const char *,int,unsigned long,int)" in summary model. |
+| Dubious signature "(const char *,const char *,const char *,unsigned long)" in summary model. |
+| Dubious signature "(const char *,const char *,const char *,unsigned long,int)" in summary model. |
+| Dubious signature "(const char *,const char *,db_lookup_function,nss_action **,nss_action_list *,nss_action **,nss_action_list *,nss_action **,nss_action_list *,int *,int,void *,char *,size_t,void **,int *)" in summary model. |
+| Dubious signature "(const char *,const char *,int *)" in summary model. |
+| Dubious signature "(const char *,const char *,int *,unsigned int *,char **,void *,size_t)" in summary model. |
 | Dubious signature "(const char *,const char *,int)" in summary model. |
 | Dubious signature "(const char *,const char *,int,int,int,int,BIO_ADDRINFO **)" in summary model. |
+| Dubious signature "(const char *,const char *,int,int,unsigned char *,int)" in summary model. |
+| Dubious signature "(const char *,const char *,locale_t)" in summary model. |
+| Dubious signature "(const char *,const char *,servent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(const char *,const char *,servent *,char *,size_t,servent **)" in summary model. |
+| Dubious signature "(const char *,const char *,size_t *)" in summary model. |
+| Dubious signature "(const char *,const char *,size_t *,size_t *)" in summary model. |
 | Dubious signature "(const char *,const char *,size_t)" in summary model. |
+| Dubious signature "(const char *,const char *,size_t,locale_t)" in summary model. |
 | Dubious signature "(const char *,const char *,stack_st_CONF_VALUE **)" in summary model. |
+| Dubious signature "(const char *,const char *,tm *,void *,locale_t)" in summary model. |
 | Dubious signature "(const char *,const char *,unsigned int)" in summary model. |
+| Dubious signature "(const char *,const char *,unsigned long)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,__gnuc_va_list,va_list)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,aliasent *,aliasent *__restrict__,char *,char *__restrict__,size_t,aliasent **,aliasent **__restrict__)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,char **,char **__restrict__)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,char **,char **__restrict__,int)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,char **,char **__restrict__,int,int)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,char **,char **__restrict__,int,int,bool,locale_t)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,char **,char **__restrict__,int,locale_t)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,char **,char **__restrict__,locale_t)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,const char *,const char *__restrict__,FILE *,FILE *__restrict__)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,const char *,const char *__restrict__,__gnuc_va_list,va_list)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,const char *,const char *__restrict__,servent *,servent *__restrict__,char *,char *__restrict__,size_t,servent **,servent **__restrict__)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,const char *,const char *__restrict__,tm *)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,const char *,const char *__restrict__,tm *,locale_t)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,hostent *,hostent *__restrict__,char *,char *__restrict__,size_t,hostent **,hostent **__restrict__,int *,int *__restrict__)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,int,char **,char **__restrict__,size_t *,size_t *__restrict__)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,int,hostent *,hostent *__restrict__,char *,char *__restrict__,size_t,hostent **,hostent **__restrict__,int *,int *__restrict__)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,int,hostent *,hostent *__restrict__,char *,char *__restrict__,size_t,hostent **,hostent **__restrict__,int *,int *__restrict__,int32_t *,char **)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,netent *,netent *__restrict__,char *,char *__restrict__,size_t,netent **,netent **__restrict__,int *,int *__restrict__)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,protoent *,protoent *__restrict__,char *,char *__restrict__,size_t,protoent **,protoent **__restrict__)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,size_t,char **,char **__restrict__)" in summary model. |
+| Dubious signature "(const char *,const char *__restrict__,size_t,mbstate_t *,mbstate_t *__restrict__)" in summary model. |
+| Dubious signature "(const char *,const expression **,unsigned long *)" in summary model. |
 | Dubious signature "(const char *,const size_t,char **,char **,char **)" in summary model. |
 | Dubious signature "(const char *,const size_t,unsigned int *,unsigned int *)" in summary model. |
 | Dubious signature "(const char *,const time_t *)" in summary model. |
 | Dubious signature "(const char *,const unsigned char *,size_t,stack_st_CONF_VALUE **)" in summary model. |
 | Dubious signature "(const char *,const unsigned char *,stack_st_CONF_VALUE **)" in summary model. |
+| Dubious signature "(const char *,database_dyn[5])" in summary model. |
+| Dubious signature "(const char *,db_lookup_function,nss_action **,nss_action_list *,nss_action **,nss_action_list *,nss_action **,nss_action_list *,int)" in summary model. |
+| Dubious signature "(const char *,db_lookup_function,nss_action **,nss_action_list *,nss_action **,nss_action_list *,nss_action **,nss_action_list *,int,int *,int)" in summary model. |
 | Dubious signature "(const char *,digestdata *)" in summary model. |
 | Dubious signature "(const char *,double *)" in summary model. |
+| Dubious signature "(const char *,ether_addr *)" in summary model. |
+| Dubious signature "(const char *,ether_addr *,char *)" in summary model. |
+| Dubious signature "(const char *,etherent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(const char *,gaih_addrtuple **,char *,size_t,int *,int *,int32_t *)" in summary model. |
+| Dubious signature "(const char *,gid_t,long *,gid_t **,long)" in summary model. |
+| Dubious signature "(const char *,group *,char *,size_t,group **)" in summary model. |
+| Dubious signature "(const char *,group *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(const char *,hostent *,char **,size_t *,size_t,hostent **,nss_status *,int,int *)" in summary model. |
+| Dubious signature "(const char *,hostent *,char *,size_t,hostent **,int *)" in summary model. |
+| Dubious signature "(const char *,hostent *,char *,size_t,int *,int *)" in summary model. |
 | Dubious signature "(const char *,int32_t *)" in summary model. |
 | Dubious signature "(const char *,int64_t *)" in summary model. |
 | Dubious signature "(const char *,int *)" in summary model. |
 | Dubious signature "(const char *,int *,char **,char **,char **,int *,char **,char **,char **)" in summary model. |
 | Dubious signature "(const char *,int)" in summary model. |
+| Dubious signature "(const char *,int,..(*)(..),glob_t *)" in summary model. |
 | Dubious signature "(const char *,int,PKCS8_PRIV_KEY_INFO *,X509_ALGOR *)" in summary model. |
 | Dubious signature "(const char *,int,PKCS8_PRIV_KEY_INFO *,X509_ALGOR *,OSSL_LIB_CTX *,const char *)" in summary model. |
+| Dubious signature "(const char *,int,const void *,Lmid_t,int,char *[],char *[])" in summary model. |
+| Dubious signature "(const char *,int,hostent *,char *,size_t,hostent **,int *)" in summary model. |
+| Dubious signature "(const char *,int,hostent *,char *,size_t,int *,int *)" in summary model. |
+| Dubious signature "(const char *,int,hostent *,char *,size_t,int *,int *,int32_t *,char **)" in summary model. |
+| Dubious signature "(const char *,int,int)" in summary model. |
 | Dubious signature "(const char *,int,int,..(*)(..),void *)" in summary model. |
 | Dubious signature "(const char *,int,int,const char *,const char *,int,EVP_PKEY **,EVP_PKEY **,EVP_PKEY **,X509 **,stack_st_X509 **,X509_CRL **,stack_st_X509_CRL **)" in summary model. |
 | Dubious signature "(const char *,int,int,int)" in summary model. |
+| Dubious signature "(const char *,int,int,unsigned char *,int)" in summary model. |
 | Dubious signature "(const char *,int,long)" in summary model. |
+| Dubious signature "(const char *,int,sem_t *)" in summary model. |
 | Dubious signature "(const char *,int,stack_st_CONF_VALUE **)" in summary model. |
 | Dubious signature "(const char *,int,stack_st_OPENSSL_STRING *,const char *)" in summary model. |
 | Dubious signature "(const char *,int,stack_st_X509 **,const char *,const char *)" in summary model. |
 | Dubious signature "(const char *,int,unsigned char **,int *)" in summary model. |
+| Dubious signature "(const char *,int,void *,void *)" in summary model. |
+| Dubious signature "(const char *,kw_hash_fct_t)" in summary model. |
+| Dubious signature "(const char *,link_map *,const Elf64_Sym **,r_scope_elem *[],const r_found_version *,int,int,link_map *)" in summary model. |
+| Dubious signature "(const char *,link_map *,unsigned int)" in summary model. |
 | Dubious signature "(const char *,long *)" in summary model. |
 | Dubious signature "(const char *,long *,char *)" in summary model. |
 | Dubious signature "(const char *,long *,int)" in summary model. |
+| Dubious signature "(const char *,netent *,char *,size_t,int *,int *)" in summary model. |
+| Dubious signature "(const char *,netobj *,u_int,sockaddr *,des_block *)" in summary model. |
+| Dubious signature "(const char *,passwd *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(const char *,passwd *,char *,size_t,passwd **)" in summary model. |
+| Dubious signature "(const char *,protoent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(const char *,rpcent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(const char *,rpcent *,char *,size_t,rpcent **)" in summary model. |
+| Dubious signature "(const char *,sgrp *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(const char *,sgrp *,char *,size_t,sgrp **)" in summary model. |
 | Dubious signature "(const char *,size_t *)" in summary model. |
+| Dubious signature "(const char *,size_t *,int)" in summary model. |
 | Dubious signature "(const char *,size_t)" in summary model. |
 | Dubious signature "(const char *,size_t,char **,size_t *,urlreject)" in summary model. |
+| Dubious signature "(const char *,size_t,const char *)" in summary model. |
 | Dubious signature "(const char *,size_t,const char *,const char *,bool,iconv_ilseq_handler,size_t *,char **,size_t *)" in summary model. |
 | Dubious signature "(const char *,size_t,const char *,const char *,iconv_ilseq_handler,size_t *,char **,size_t *)" in summary model. |
 | Dubious signature "(const char *,size_t,const char *,int)" in summary model. |
 | Dubious signature "(const char *,size_t,const iconveh_t *,iconv_ilseq_handler,size_t *,char **,size_t *)" in summary model. |
 | Dubious signature "(const char *,size_t,dynbuf *,bool)" in summary model. |
+| Dubious signature "(const char *,size_t,int,const char **)" in summary model. |
 | Dubious signature "(const char *,size_t,uint32_t *,size_t *)" in summary model. |
+| Dubious signature "(const char *,size_t,void *)" in summary model. |
+| Dubious signature "(const char *,sockaddr_in *)" in summary model. |
+| Dubious signature "(const char *,spwd *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(const char *,spwd *,char *,size_t,spwd **)" in summary model. |
 | Dubious signature "(const char *,sqlite3 **,int,const char *)" in summary model. |
 | Dubious signature "(const char *,sqlite3_filename)" in summary model. |
 | Dubious signature "(const char *,sqlite3_filename,const char *)" in summary model. |
@@ -3660,9 +4017,17 @@
 | Dubious signature "(const char *,sqlite3_filename,const char *,sqlite3_int64)" in summary model. |
 | Dubious signature "(const char *,sqlite3_filename,int)" in summary model. |
 | Dubious signature "(const char *,stack_st_X509_CRL **,const char *,const char *)" in summary model. |
+| Dubious signature "(const char *,statvfs64 *)" in summary model. |
 | Dubious signature "(const char *,time_t *)" in summary model. |
+| Dubious signature "(const char *,tm *)" in summary model. |
+| Dubious signature "(const char *,u_char *,unsigned char *)" in summary model. |
+| Dubious signature "(const char *,u_char *,unsigned char *,int)" in summary model. |
+| Dubious signature "(const char *,u_char *,unsigned char *,size_t)" in summary model. |
+| Dubious signature "(const char *,u_int,sockaddr *,des_block *)" in summary model. |
+| Dubious signature "(const char *,u_long *,unsigned long *)" in summary model. |
 | Dubious signature "(const char *,uint16_t *,size_t)" in summary model. |
 | Dubious signature "(const char *,uint32_t *)" in summary model. |
+| Dubious signature "(const char *,uint32_t)" in summary model. |
 | Dubious signature "(const char *,uint64_t *)" in summary model. |
 | Dubious signature "(const char *,unsigned char *)" in summary model. |
 | Dubious signature "(const char *,unsigned char *,size_t)" in summary model. |
@@ -3671,32 +4036,98 @@
 | Dubious signature "(const char *,va_list)" in summary model. |
 | Dubious signature "(const char *,void *)" in summary model. |
 | Dubious signature "(const char *,void **,size_t)" in summary model. |
+| Dubious signature "(const char *,void *,int)" in summary model. |
 | Dubious signature "(const char *,void *,size_t)" in summary model. |
+| Dubious signature "(const char *,wordexp_t *,int)" in summary model. |
+| Dubious signature "(const char *__restrict__,size_t,mbstate_t *__restrict__)" in summary model. |
 | Dubious signature "(const char *const *,const char *const *)" in summary model. |
+| Dubious signature "(const charmap_t *,const char *,size_t)" in summary model. |
+| Dubious signature "(const cmsghdr *,uint8_t **)" in summary model. |
+| Dubious signature "(const cmsghdr *,uint8_t **,int)" in summary model. |
 | Dubious signature "(const curl_easyoption *)" in summary model. |
 | Dubious signature "(const curve448_point_t)" in summary model. |
 | Dubious signature "(const custom_ext_methods *,ENDPOINT,unsigned int,size_t *)" in summary model. |
 | Dubious signature "(const deque &)" in summary model. |
 | Dubious signature "(const deque &,const Allocator &)" in summary model. |
+| Dubious signature "(const directory_obj *,directory_obj *)" in summary model. |
+| Dubious signature "(const dirent64 **,const dirent64 **)" in summary model. |
+| Dubious signature "(const double *)" in summary model. |
 | Dubious signature "(const dynbuf *)" in summary model. |
+| Dubious signature "(const ether_addr *)" in summary model. |
+| Dubious signature "(const ether_addr *,char *)" in summary model. |
+| Dubious signature "(const ether_addr *,etherent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(const float *)" in summary model. |
 | Dubious signature "(const forward_list &)" in summary model. |
 | Dubious signature "(const forward_list &,const Allocator &)" in summary model. |
+| Dubious signature "(const gaicb *const[],int,const timespec *)" in summary model. |
 | Dubious signature "(const gf)" in summary model. |
 | Dubious signature "(const gf,const gf)" in summary model. |
+| Dubious signature "(const glibc_hwcaps_subdirectory *)" in summary model. |
+| Dubious signature "(const group *,const group *__restrict__,FILE *,FILE *__restrict__)" in summary model. |
+| Dubious signature "(const group,const size_t,group *,char *,char **)" in summary model. |
+| Dubious signature "(const hash_table *,const void *,size_t,void **)" in summary model. |
+| Dubious signature "(const hash_table *,void **,const void **,size_t *,void **)" in summary model. |
+| Dubious signature "(const int)" in summary model. |
+| Dubious signature "(const int,int,const char *,servent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(const int,int,protoent *,char *,size_t,int *)" in summary model. |
 | Dubious signature "(const int[],BIGNUM *)" in summary model. |
 | Dubious signature "(const int_dhx942_dh *,unsigned char **)" in summary model. |
 | Dubious signature "(const list &)" in summary model. |
 | Dubious signature "(const list &,const Allocator &)" in summary model. |
+| Dubious signature "(const long double *)" in summary model. |
+| Dubious signature "(const md5_ctx *,void *)" in summary model. |
+| Dubious signature "(const mntent *,const char *)" in summary model. |
 | Dubious signature "(const nghttp2_extpri *)" in summary model. |
 | Dubious signature "(const nghttp2_map *)" in summary model. |
 | Dubious signature "(const nghttp2_map *,..(*)(..),void *)" in summary model. |
 | Dubious signature "(const nghttp2_map *,nghttp2_map_key_type)" in summary model. |
 | Dubious signature "(const nghttp2_nv *,const nghttp2_nv *)" in summary model. |
 | Dubious signature "(const nghttp2_settings_entry *,size_t,nghttp2_mem *)" in summary model. |
+| Dubious signature "(const nis_error)" in summary model. |
+| Dubious signature "(const nis_error,const char *)" in summary model. |
+| Dubious signature "(const nis_error,const char *,char *,size_t)" in summary model. |
+| Dubious signature "(const nis_object *,nis_object *)" in summary model. |
+| Dubious signature "(const nis_result *)" in summary model. |
+| Dubious signature "(const nis_result *,nis_result *)" in summary model. |
+| Dubious signature "(const ns_msg *,const ns_rr *,const char *,const char *,char *,size_t)" in summary model. |
+| Dubious signature "(const old_termios_t *)" in summary model. |
+| Dubious signature "(const passwd *,const passwd *__restrict__,FILE *,FILE *__restrict__)" in summary model. |
+| Dubious signature "(const posix_spawnattr_t *,const posix_spawnattr_t *__restrict__,int *,int *__restrict__)" in summary model. |
+| Dubious signature "(const posix_spawnattr_t *,const posix_spawnattr_t *__restrict__,pid_t *,pid_t *__restrict__)" in summary model. |
+| Dubious signature "(const posix_spawnattr_t *,const posix_spawnattr_t *__restrict__,sched_param *,sched_param *__restrict__)" in summary model. |
+| Dubious signature "(const posix_spawnattr_t *,const posix_spawnattr_t *__restrict__,short *,short *__restrict__)" in summary model. |
+| Dubious signature "(const posix_spawnattr_t *,const posix_spawnattr_t *__restrict__,sigset_t *,sigset_t *__restrict__)" in summary model. |
+| Dubious signature "(const pthread_attr_t *)" in summary model. |
+| Dubious signature "(const pthread_attr_t *,__sigset_t *,sigset_t *)" in summary model. |
+| Dubious signature "(const pthread_attr_t *,const pthread_attr_t *__restrict__,size_t *,size_t *__restrict__)" in summary model. |
+| Dubious signature "(const pthread_attr_t *,const pthread_attr_t *__restrict__,void **,void **__restrict__)" in summary model. |
+| Dubious signature "(const pthread_attr_t *,const pthread_attr_t *__restrict__,void **,void **__restrict__,size_t *,size_t *__restrict__)" in summary model. |
+| Dubious signature "(const pthread_attr_t *,cpu_set_t *)" in summary model. |
+| Dubious signature "(const pthread_attr_t *,int *)" in summary model. |
+| Dubious signature "(const pthread_attr_t *,sched_param *)" in summary model. |
+| Dubious signature "(const pthread_attr_t *,size_t *)" in summary model. |
+| Dubious signature "(const pthread_attr_t *,size_t,cpu_set_t *)" in summary model. |
+| Dubious signature "(const pthread_barrierattr_t *,int *)" in summary model. |
+| Dubious signature "(const pthread_condattr_t *,clockid_t *)" in summary model. |
+| Dubious signature "(const pthread_mutex_t *,int *)" in summary model. |
+| Dubious signature "(const pthread_mutexattr_t *,int *)" in summary model. |
+| Dubious signature "(const pthread_rwlockattr_t *,int *)" in summary model. |
+| Dubious signature "(const regex_t *,const regex_t *__restrict__,const char *,const char *__restrict__,size_t,regmatch_t[],int)" in summary model. |
+| Dubious signature "(const regex_t *__restrict__,const char *__restrict__,size_t,regmatch_t[],int)" in summary model. |
+| Dubious signature "(const repertoire_t *,const char *,size_t)" in summary model. |
+| Dubious signature "(const repertoire_t *,uint32_t)" in summary model. |
+| Dubious signature "(const res_state,res_state,const char *,char *,size_t)" in summary model. |
+| Dubious signature "(const res_sym *,const char *,int *)" in summary model. |
+| Dubious signature "(const res_sym *,int,int *)" in summary model. |
+| Dubious signature "(const resolv_conf *)" in summary model. |
+| Dubious signature "(const resolv_response_context *)" in summary model. |
+| Dubious signature "(const sgrp *,FILE *)" in summary model. |
 | Dubious signature "(const size_t,const size_t,const ZopfliNode *,int *,size_t *,const BrotliEncoderParams *,Command *,size_t *)" in summary model. |
 | Dubious signature "(const sockaddr *,char *,size_t)" in summary model. |
+| Dubious signature "(const sockaddr *,const sockaddr *__restrict__,socklen_t,char *,char *__restrict__,socklen_t,char *,char *__restrict__,socklen_t,int)" in summary model. |
 | Dubious signature "(const sockaddr_in6 *,char *,size_t)" in summary model. |
 | Dubious signature "(const sockaddr_in *,char *,size_t)" in summary model. |
+| Dubious signature "(const spwd *,FILE *)" in summary model. |
 | Dubious signature "(const sqlite3_value *)" in summary model. |
 | Dubious signature "(const stack_st_SCT *,unsigned char **)" in summary model. |
 | Dubious signature "(const stack_st_X509 *)" in summary model. |
@@ -3711,8 +4142,37 @@
 | Dubious signature "(const stack_st_X509_EXTENSION *,int,int)" in summary model. |
 | Dubious signature "(const stack_st_X509_NAME *)" in summary model. |
 | Dubious signature "(const stat *)" in summary model. |
+| Dubious signature "(const td_thragent_t *,lwpid_t,td_thrhandle_t *)" in summary model. |
+| Dubious signature "(const td_thragent_t *,ps_prochandle **)" in summary model. |
+| Dubious signature "(const td_thragent_t *,pthread_t,td_thrhandle_t *)" in summary model. |
+| Dubious signature "(const td_thragent_t *,td_event_e,td_notify_t *)" in summary model. |
+| Dubious signature "(const td_thragent_t *,td_event_msg_t *)" in summary model. |
+| Dubious signature "(const td_thrhandle_t *,const thread_key_t,void **)" in summary model. |
+| Dubious signature "(const td_thrhandle_t *,psaddr_t,size_t,psaddr_t *)" in summary model. |
+| Dubious signature "(const td_thrhandle_t *,td_event_msg_t *)" in summary model. |
+| Dubious signature "(const td_thrhandle_t *,td_thrinfo_t *)" in summary model. |
+| Dubious signature "(const td_thrhandle_t *,unsigned long,psaddr_t *)" in summary model. |
+| Dubious signature "(const termios *)" in summary model. |
+| Dubious signature "(const time_t *)" in summary model. |
+| Dubious signature "(const time_t *,const time_t *__restrict__,char *,char *__restrict__)" in summary model. |
+| Dubious signature "(const time_t *,const time_t *__restrict__,tm *,tm *__restrict__)" in summary model. |
 | Dubious signature "(const time_t *,tm *)" in summary model. |
+| Dubious signature "(const timeval *,const timezone *)" in summary model. |
+| Dubious signature "(const timeval *,timeval *)" in summary model. |
+| Dubious signature "(const tm *,__locale_data *)" in summary model. |
+| Dubious signature "(const tm *,char *)" in summary model. |
 | Dubious signature "(const u128[16],uint8_t *,const uint8_t *,size_t)" in summary model. |
+| Dubious signature "(const u_char *,const unsigned char *)" in summary model. |
+| Dubious signature "(const u_char *,const unsigned char *,char *)" in summary model. |
+| Dubious signature "(const u_char *,const unsigned char *,const u_char **,const unsigned char **,const u_char **,const unsigned char **)" in summary model. |
+| Dubious signature "(const u_char *,const unsigned char *,const u_char *,const unsigned char *,FILE *)" in summary model. |
+| Dubious signature "(const u_char *,const unsigned char *,const u_char *,const unsigned char *,int,FILE *)" in summary model. |
+| Dubious signature "(const u_char *,const unsigned char *,const u_char *,const unsigned char *,int,char *,int)" in summary model. |
+| Dubious signature "(const u_char *,const unsigned char *,const u_char *,const unsigned char *,ns_sect,int)" in summary model. |
+| Dubious signature "(const u_char *,const unsigned char *,int,ns_msg *)" in summary model. |
+| Dubious signature "(const u_char *,const unsigned char *,size_t,char *,size_t)" in summary model. |
+| Dubious signature "(const u_char *,const unsigned char *,size_t,const char *,ns_class,ns_type,u_long,unsigned long,const u_char *,const unsigned char *,size_t,const char *,const char *,char *,size_t)" in summary model. |
+| Dubious signature "(const u_char *,const unsigned char *,u_char *,unsigned char *,size_t)" in summary model. |
 | Dubious signature "(const uint8_t *,SM4_KEY *)" in summary model. |
 | Dubious signature "(const uint8_t *,const uint8_t *,uint8_t **,int)" in summary model. |
 | Dubious signature "(const uint8_t *,int,int,PROV_CTX *,const char *)" in summary model. |
@@ -3728,9 +4188,11 @@
 | Dubious signature "(const uint32_t *,size_t,char *,size_t *)" in summary model. |
 | Dubious signature "(const uint32_t *,size_t,uint32_t *,size_t *,int)" in summary model. |
 | Dubious signature "(const unsigned char *)" in summary model. |
+| Dubious signature "(const unsigned char **,const unsigned char *)" in summary model. |
 | Dubious signature "(const unsigned char **,long *,int *,int *,long)" in summary model. |
 | Dubious signature "(const unsigned char **,long)" in summary model. |
 | Dubious signature "(const unsigned char **,long,OSSL_LIB_CTX *,const char *)" in summary model. |
+| Dubious signature "(const unsigned char **,printf_info *)" in summary model. |
 | Dubious signature "(const unsigned char **,unsigned char *,const unsigned char *,unsigned int)" in summary model. |
 | Dubious signature "(const unsigned char **,unsigned int,int *)" in summary model. |
 | Dubious signature "(const unsigned char **,unsigned int,int)" in summary model. |
@@ -3738,22 +4200,29 @@
 | Dubious signature "(const unsigned char **,unsigned int,unsigned int *,unsigned int *,int *,int *)" in summary model. |
 | Dubious signature "(const unsigned char *,DES_cblock *,long,DES_key_schedule *,const_DES_cblock *)" in summary model. |
 | Dubious signature "(const unsigned char *,DES_cblock[],long,int,DES_cblock *)" in summary model. |
+| Dubious signature "(const unsigned char *,FILE *)" in summary model. |
 | Dubious signature "(const unsigned char *,IAtlStringMgr *)" in summary model. |
+| Dubious signature "(const unsigned char *,char *,size_t)" in summary model. |
 | Dubious signature "(const unsigned char *,const int,ARIA_KEY *)" in summary model. |
+| Dubious signature "(const unsigned char *,const unsigned char *)" in summary model. |
+| Dubious signature "(const unsigned char *,const unsigned char *,const unsigned char *,unsigned char *,size_t)" in summary model. |
 | Dubious signature "(const unsigned char *,hm_header_st *)" in summary model. |
 | Dubious signature "(const unsigned char *,int)" in summary model. |
 | Dubious signature "(const unsigned char *,int,BIGNUM *)" in summary model. |
 | Dubious signature "(const unsigned char *,int,DSA *,unsigned int,const char *,OSSL_LIB_CTX *,const char *)" in summary model. |
 | Dubious signature "(const unsigned char *,int,EVP_CIPHER *,EVP_CIPHER *,OSSL_LIB_CTX *,const char *)" in summary model. |
+| Dubious signature "(const unsigned char *,int,FILE *)" in summary model. |
 | Dubious signature "(const unsigned char *,int,const BIGNUM *,const BIGNUM *,EC_KEY *)" in summary model. |
 | Dubious signature "(const unsigned char *,int,const ECDSA_SIG *,EC_KEY *)" in summary model. |
 | Dubious signature "(const unsigned char *,int,const unsigned char *,int,EC_KEY *)" in summary model. |
+| Dubious signature "(const unsigned char *,int,unsigned char *,int)" in summary model. |
 | Dubious signature "(const unsigned char *,int,unsigned char *,unsigned int *,EC_KEY *)" in summary model. |
 | Dubious signature "(const unsigned char *,int,unsigned char *,unsigned int *,EC_KEY *,unsigned int,const char *,OSSL_LIB_CTX *,const char *)" in summary model. |
 | Dubious signature "(const unsigned char *,int,unsigned long *)" in summary model. |
 | Dubious signature "(const unsigned char *,long)" in summary model. |
 | Dubious signature "(const unsigned char *,long,char)" in summary model. |
 | Dubious signature "(const unsigned char *,size_t,QUIC_PN,QUIC_PN *)" in summary model. |
+| Dubious signature "(const unsigned char *,size_t,printf_spec *,size_t *,bool *)" in summary model. |
 | Dubious signature "(const unsigned char *,size_t,size_t *)" in summary model. |
 | Dubious signature "(const unsigned char *,size_t,size_t)" in summary model. |
 | Dubious signature "(const unsigned char *,size_t,size_t,QUIC_CONN_ID *)" in summary model. |
@@ -3766,6 +4235,7 @@
 | Dubious signature "(const unsigned char *,unsigned char *,const BF_KEY *,int)" in summary model. |
 | Dubious signature "(const unsigned char *,unsigned char *,const CAST_KEY *,int)" in summary model. |
 | Dubious signature "(const unsigned char *,unsigned char *,const SEED_KEY_SCHEDULE *,int)" in summary model. |
+| Dubious signature "(const unsigned char *,unsigned char *,int,const unsigned char **,const unsigned char **)" in summary model. |
 | Dubious signature "(const unsigned char *,unsigned char *,int,long,DES_key_schedule *,DES_cblock *)" in summary model. |
 | Dubious signature "(const unsigned char *,unsigned char *,int,long,DES_key_schedule *,DES_cblock *,int)" in summary model. |
 | Dubious signature "(const unsigned char *,unsigned char *,int,long,DES_key_schedule *,DES_key_schedule *,DES_key_schedule *,DES_cblock *,int)" in summary model. |
@@ -3805,6 +4275,13 @@
 | Dubious signature "(const unsigned char *,unsigned char *,size_t,const void *,unsigned char[16],unsigned char[16],unsigned int *,ctr128_f)" in summary model. |
 | Dubious signature "(const unsigned char[16],SEED_KEY_SCHEDULE *)" in summary model. |
 | Dubious signature "(const unsigned char[16],unsigned char[16],const SEED_KEY_SCHEDULE *)" in summary model. |
+| Dubious signature "(const unsigned int *)" in summary model. |
+| Dubious signature "(const unsigned int **,printf_info *)" in summary model. |
+| Dubious signature "(const unsigned int *,size_t,printf_spec *,size_t *,bool *)" in summary model. |
+| Dubious signature "(const utmp *)" in summary model. |
+| Dubious signature "(const utmp *,utmp *,utmp **)" in summary model. |
+| Dubious signature "(const utmpx *)" in summary model. |
+| Dubious signature "(const utmpx *,utmp *)" in summary model. |
 | Dubious signature "(const uv__io_t *,unsigned int)" in summary model. |
 | Dubious signature "(const uv__statx *,uv_stat_t *)" in summary model. |
 | Dubious signature "(const uv_buf_t[],unsigned int)" in summary model. |
@@ -3824,20 +4301,69 @@
 | Dubious signature "(const uv_udp_t *,sockaddr *,int *)" in summary model. |
 | Dubious signature "(const vector &)" in summary model. |
 | Dubious signature "(const vector &,const Allocator &)" in summary model. |
+| Dubious signature "(const void *)" in summary model. |
+| Dubious signature "(const void *,..(*)(..),void *)" in summary model. |
+| Dubious signature "(const void *,VISIT,void *)" in summary model. |
+| Dubious signature "(const void *,__socklen_t,socklen_t,int,hostent *,char *,size_t,int *,int *)" in summary model. |
+| Dubious signature "(const void *,__socklen_t,socklen_t,int,hostent *,char *,size_t,int *,int *,int32_t *)" in summary model. |
 | Dubious signature "(const void *,const void *)" in summary model. |
 | Dubious signature "(const void *,const void *,int)" in summary model. |
 | Dubious signature "(const void *,const void *,int,int,..(*)(..))" in summary model. |
 | Dubious signature "(const void *,const void *,int,int,..(*)(..),int)" in summary model. |
+| Dubious signature "(const void *,const void *,size_t *,size_t,__compar_fn_t)" in summary model. |
 | Dubious signature "(const void *,const void *,size_t)" in summary model. |
+| Dubious signature "(const void *,const void *,size_t,size_t,__compar_fn_t)" in summary model. |
+| Dubious signature "(const void *,const void *__restrict__,size_t,size_t,FILE *,FILE *__restrict__)" in summary model. |
+| Dubious signature "(const void *,const void *__restrict__,socklen_t,int,hostent *,hostent *__restrict__,char *,char *__restrict__,size_t,hostent **,hostent **__restrict__,int *,int *__restrict__)" in summary model. |
+| Dubious signature "(const void *,const void *__restrict__,socklen_t,int,hostent *,hostent *__restrict__,char *,char *__restrict__,size_t,hostent **,hostent **__restrict__,int *,int *__restrict__,int32_t *)" in summary model. |
+| Dubious signature "(const void *,int)" in summary model. |
 | Dubious signature "(const void *,size_t)" in summary model. |
 | Dubious signature "(const void *,size_t,const char *,int)" in summary model. |
+| Dubious signature "(const void *,size_t,const void *,size_t)" in summary model. |
+| Dubious signature "(const void *,size_t,md5_ctx *)" in summary model. |
+| Dubious signature "(const void *,size_t,size_t)" in summary model. |
+| Dubious signature "(const void *,size_t,size_t,FILE *)" in summary model. |
+| Dubious signature "(const void *,size_t,size_t,bool)" in summary model. |
 | Dubious signature "(const void *,size_t,unsigned char *)" in summary model. |
 | Dubious signature "(const void *,size_t,unsigned char **,size_t *)" in summary model. |
+| Dubious signature "(const void *,socklen_t,int)" in summary model. |
+| Dubious signature "(const void *,socklen_t,int,hostent *,char *,size_t,hostent **,int *)" in summary model. |
+| Dubious signature "(const void *,socklen_t,int,hostent *,char *,size_t,int *,int *)" in summary model. |
 | Dubious signature "(const void *,sqlite3 **)" in summary model. |
+| Dubious signature "(const void *,unsigned char **,size_t *)" in summary model. |
+| Dubious signature "(const void *,void *)" in summary model. |
+| Dubious signature "(const void *,void **,__compar_fn_t)" in summary model. |
+| Dubious signature "(const void *,void *,size_t *,size_t,__compar_fn_t)" in summary model. |
+| Dubious signature "(const void *,void *const *,__compar_fn_t)" in summary model. |
+| Dubious signature "(const wchar_t *,__gnuc_va_list)" in summary model. |
+| Dubious signature "(const wchar_t *,const wchar_t *)" in summary model. |
+| Dubious signature "(const wchar_t *,const wchar_t *,locale_t)" in summary model. |
+| Dubious signature "(const wchar_t *,const wchar_t *,size_t,locale_t)" in summary model. |
+| Dubious signature "(const wchar_t *,const wchar_t *,va_list)" in summary model. |
+| Dubious signature "(const wchar_t *,const wchar_t *,wchar_t,const char *)" in summary model. |
+| Dubious signature "(const wchar_t *,const wchar_t *__restrict__,__gnuc_va_list,va_list)" in summary model. |
+| Dubious signature "(const wchar_t *,const wchar_t *__restrict__,const wchar_t *,const wchar_t *__restrict__,__gnuc_va_list,va_list)" in summary model. |
+| Dubious signature "(const wchar_t *,const wchar_t *__restrict__,wchar_t **,wchar_t **__restrict__)" in summary model. |
+| Dubious signature "(const wchar_t *,const wchar_t *__restrict__,wchar_t **,wchar_t **__restrict__,int)" in summary model. |
+| Dubious signature "(const wchar_t *,const wchar_t *__restrict__,wchar_t **,wchar_t **__restrict__,int,int)" in summary model. |
+| Dubious signature "(const wchar_t *,const wchar_t *__restrict__,wchar_t **,wchar_t **__restrict__,int,locale_t)" in summary model. |
+| Dubious signature "(const wchar_t *,const wchar_t *__restrict__,wchar_t **,wchar_t **__restrict__,locale_t)" in summary model. |
+| Dubious signature "(const wchar_t *,const wchar_t,wchar_t)" in summary model. |
+| Dubious signature "(const wchar_t *,size_t)" in summary model. |
+| Dubious signature "(const wchar_t *,va_list)" in summary model. |
+| Dubious signature "(const wchar_t *,wchar_t **,int)" in summary model. |
+| Dubious signature "(const wchar_t *,wchar_t **,int,int,bool,locale_t)" in summary model. |
+| Dubious signature "(const wchar_t *,wchar_t **,int,locale_t)" in summary model. |
+| Dubious signature "(const wchar_t *,wchar_t **,wchar_t)" in summary model. |
 | Dubious signature "(const_DES_cblock *)" in summary model. |
 | Dubious signature "(const_iterator,T &&)" in summary model. |
 | Dubious signature "(const_iterator,const T &)" in summary model. |
 | Dubious signature "(const_iterator,size_type,const T &)" in summary model. |
+| Dubious signature "(const_nis_name,char *,size_t)" in summary model. |
+| Dubious signature "(const_nis_name,const unsigned int,unsigned int)" in summary model. |
+| Dubious signature "(const_nis_name,directory_obj **,dir_binding *,unsigned int)" in summary model. |
+| Dubious signature "(const_nis_name,int,directory_obj **,dir_binding *,unsigned int)" in summary model. |
+| Dubious signature "(const_nis_name,unsigned int)" in summary model. |
 | Dubious signature "(cpool *,Curl_cpool_disconnect_cb *,Curl_multi *,Curl_share *,size_t)" in summary model. |
 | Dubious signature "(cpool *,fd_set *,fd_set *,int *)" in summary model. |
 | Dubious signature "(curl_blob **,const curl_blob *)" in summary model. |
@@ -3874,10 +4400,38 @@
 | Dubious signature "(custom_ext_methods *,const custom_ext_methods *)" in summary model. |
 | Dubious signature "(d2i_of_void *,const char *,BIO *,void **,pem_password_cb *,void *)" in summary model. |
 | Dubious signature "(d2i_of_void *,const char *,FILE *,void **,pem_password_cb *,void *)" in summary model. |
+| Dubious signature "(database_dyn *)" in summary model. |
+| Dubious signature "(database_dyn *,hashentry *,datahead *)" in summary model. |
+| Dubious signature "(database_dyn *,int,request_header *,void *,uid_t)" in summary model. |
+| Dubious signature "(database_dyn *,size_t,int)" in summary model. |
+| Dubious signature "(database_dyn *,time_t,int)" in summary model. |
 | Dubious signature "(deflate_state *,charf *,ulg,int)" in summary model. |
 | Dubious signature "(deflate_state *,unsigned int,unsigned int)" in summary model. |
 | Dubious signature "(deque &&)" in summary model. |
 | Dubious signature "(deque &&,const Allocator &)" in summary model. |
+| Dubious signature "(dir_binding *,const nis_server *,unsigned int,unsigned int,unsigned int,unsigned int)" in summary model. |
+| Dubious signature "(dir_binding *,netobj *,nis_cb *)" in summary model. |
+| Dubious signature "(dl_exception *,..(*)(..),void *)" in summary model. |
+| Dubious signature "(dl_exception *,const char *,const char *)" in summary model. |
+| Dubious signature "(dl_find_object_internal *,size_t)" in summary model. |
+| Dubious signature "(double *,const double *)" in summary model. |
+| Dubious signature "(double *,double *,int,int,int,const int32_t *)" in summary model. |
+| Dubious signature "(double *,double)" in summary model. |
+| Dubious signature "(double,double *)" in summary model. |
+| Dubious signature "(double,double *,double *)" in summary model. |
+| Dubious signature "(double,double,int *)" in summary model. |
+| Dubious signature "(double,double,int,double *)" in summary model. |
+| Dubious signature "(double,int *)" in summary model. |
+| Dubious signature "(double,int,char *)" in summary model. |
+| Dubious signature "(double,int,int *,int *__restrict__,int *,int *__restrict__)" in summary model. |
+| Dubious signature "(double,int,int *,int *__restrict__,int *,int *__restrict__,char *,char *__restrict__,size_t)" in summary model. |
+| Dubious signature "(double,int,unsigned int)" in summary model. |
+| Dubious signature "(double,long double)" in summary model. |
+| Dubious signature "(double,long long)" in summary model. |
+| Dubious signature "(drand48_data *,drand48_data *__restrict__,double *,double *__restrict__)" in summary model. |
+| Dubious signature "(drand48_data *,drand48_data *__restrict__,long *,long *__restrict__)" in summary model. |
+| Dubious signature "(dynarray_header *,size_t,void *,size_t)" in summary model. |
+| Dubious signature "(dynarray_header *,void *,size_t,dynarray_finalize_result *)" in summary model. |
 | Dubious signature "(dynbuf *)" in summary model. |
 | Dubious signature "(dynbuf *,Curl_easy *)" in summary model. |
 | Dubious signature "(dynbuf *,FILE *)" in summary model. |
@@ -3895,14 +4449,40 @@
 | Dubious signature "(dynhds *,size_t *)" in summary model. |
 | Dubious signature "(dynhds *,size_t)" in summary model. |
 | Dubious signature "(dynhds *,size_t,size_t)" in summary model. |
+| Dubious signature "(etherent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(exit_function_list **)" in summary model. |
+| Dubious signature "(fexcept_t *,int)" in summary model. |
+| Dubious signature "(file_change_detection *,const stat64 *)" in summary model. |
 | Dubious signature "(fileinfo *)" in summary model. |
+| Dubious signature "(float *,const float *)" in summary model. |
+| Dubious signature "(float *,float)" in summary model. |
+| Dubious signature "(float,float *)" in summary model. |
+| Dubious signature "(float,float *,float *)" in summary model. |
+| Dubious signature "(float,float,int *)" in summary model. |
+| Dubious signature "(float,int *)" in summary model. |
+| Dubious signature "(float,int,unsigned int)" in summary model. |
+| Dubious signature "(float,long double)" in summary model. |
+| Dubious signature "(float,long long)" in summary model. |
 | Dubious signature "(format_string,Args &&)" in summary model. |
 | Dubious signature "(forward_list &&)" in summary model. |
 | Dubious signature "(forward_list &&,const Allocator &)" in summary model. |
 | Dubious signature "(ftp_parselist_data *)" in summary model. |
 | Dubious signature "(ftp_parselist_data **)" in summary model. |
+| Dubious signature "(fuse_in_header *,uint32_t)" in summary model. |
+| Dubious signature "(fuse_in_header *,uint32_t,size_t,char **)" in summary model. |
+| Dubious signature "(gaicb *)" in summary model. |
+| Dubious signature "(gconv_fcts *,const char *)" in summary model. |
+| Dubious signature "(gconv_spec *,__gconv_t *,int)" in summary model. |
+| Dubious signature "(gconv_spec *,const char *,const char *)" in summary model. |
+| Dubious signature "(getent_r_function,void **,char **,size_t,size_t *,int *)" in summary model. |
 | Dubious signature "(gf,const gf,const gf)" in summary model. |
 | Dubious signature "(gf,const uint8_t[56],int,uint8_t)" in summary model. |
+| Dubious signature "(gid_t,group *,char *,size_t,group **)" in summary model. |
+| Dubious signature "(group *,char *,char *,size_t,group *,char *)" in summary model. |
+| Dubious signature "(group *,char *,size_t,group **)" in summary model. |
+| Dubious signature "(group *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(grouping_iterator *,int,locale_t,unsigned int)" in summary model. |
+| Dubious signature "(grouping_iterator *,unsigned int)" in summary model. |
 | Dubious signature "(gzFile,char *,int)" in summary model. |
 | Dubious signature "(gzFile,const char *)" in summary model. |
 | Dubious signature "(gzFile,const char *,va_list)" in summary model. |
@@ -3913,6 +4493,10 @@
 | Dubious signature "(gz_statep,int,const char *)" in summary model. |
 | Dubious signature "(h1_req_parser *,const char *,size_t,const char *,int,CURLcode *)" in summary model. |
 | Dubious signature "(h1_req_parser *,size_t)" in summary model. |
+| Dubious signature "(hash_table *,const void *,size_t,void *)" in summary model. |
+| Dubious signature "(hash_table *,unsigned long)" in summary model. |
+| Dubious signature "(hostent *,char *,size_t,int *,int *)" in summary model. |
+| Dubious signature "(hostent *,hostent *__restrict__,char *,char *__restrict__,size_t,hostent **,hostent **__restrict__,int *,int *__restrict__)" in summary model. |
 | Dubious signature "(hsts **)" in summary model. |
 | Dubious signature "(http_resp **,int,const char *)" in summary model. |
 | Dubious signature "(httpreq **,const char *,size_t,CURLU *,const char *)" in summary model. |
@@ -3923,9 +4507,12 @@
 | Dubious signature "(i2d_of_void *,const char *,BIO *,const void *,const EVP_CIPHER *,const unsigned char *,int,pem_password_cb *,void *)" in summary model. |
 | Dubious signature "(i2d_of_void *,const char *,FILE *,const void *,const EVP_CIPHER *,const unsigned char *,int,pem_password_cb *,void *)" in summary model. |
 | Dubious signature "(i2d_of_void *,d2i_of_void *,const void *)" in summary model. |
+| Dubious signature "(iconv_t,char **,char **__restrict__,size_t *,size_t *__restrict__,char **,char **__restrict__,size_t *,size_t *__restrict__)" in summary model. |
+| Dubious signature "(in_addr_t,uint32_t,char *,size_t)" in summary model. |
 | Dubious signature "(int32_t *,int32_t *,int32_t *,int32_t *)" in summary model. |
 | Dubious signature "(int64_t *,const ASN1_ENUMERATED *)" in summary model. |
 | Dubious signature "(int64_t *,const ASN1_INTEGER *)" in summary model. |
+| Dubious signature "(int *)" in summary model. |
 | Dubious signature "(int *,ASN1_TIME **,const ASN1_TIME *)" in summary model. |
 | Dubious signature "(int *,X509 *,stack_st_X509 *,unsigned long)" in summary model. |
 | Dubious signature "(int *,const char *,const char *,const char *,const char *,int,int,int,int,int,BIO_ADDR **)" in summary model. |
@@ -3936,6 +4523,10 @@
 | Dubious signature "(int *,int *,int *,const char **,const char **,const EVP_PKEY_ASN1_METHOD *)" in summary model. |
 | Dubious signature "(int *,int *,size_t)" in summary model. |
 | Dubious signature "(int *,int)" in summary model. |
+| Dubious signature "(int *,sa_family_t)" in summary model. |
+| Dubious signature "(int *,short *)" in summary model. |
+| Dubious signature "(int *,short *,clockid_t,const timespec *,int)" in summary model. |
+| Dubious signature "(int *,short *,int)" in summary model. |
 | Dubious signature "(int *,sqlite3_stmt *)" in summary model. |
 | Dubious signature "(int *,unsigned char **,const ASN1_VALUE **,const ASN1_ITEM *)" in summary model. |
 | Dubious signature "(int,BIO_ADDR *,int)" in summary model. |
@@ -3947,6 +4538,7 @@
 | Dubious signature "(int,EVP_PKEY **,BIO *)" in summary model. |
 | Dubious signature "(int,EVP_PKEY **,const unsigned char **,long)" in summary model. |
 | Dubious signature "(int,EVP_PKEY **,const unsigned char **,long,OSSL_LIB_CTX *,const char *)" in summary model. |
+| Dubious signature "(int,FILE *)" in summary model. |
 | Dubious signature "(int,OCSP_BASICRESP *)" in summary model. |
 | Dubious signature "(int,OSSL_CRMF_MSG *,EVP_PKEY *,const EVP_MD *,OSSL_LIB_CTX *,const char *)" in summary model. |
 | Dubious signature "(int,OSSL_HPKE_SUITE,int,OSSL_LIB_CTX *,const char *)" in summary model. |
@@ -3956,26 +4548,56 @@
 | Dubious signature "(int,SSL_CTX *,const unsigned char *,long)" in summary model. |
 | Dubious signature "(int,SSL_EXCERT **)" in summary model. |
 | Dubious signature "(int,X509_STORE_CTX *)" in summary model. |
+| Dubious signature "(int,__locale_data *)" in summary model. |
+| Dubious signature "(int,__off64_t *,off64_t *,int,__off64_t *,off64_t *,size_t,unsigned int)" in summary model. |
+| Dubious signature "(int,aiocb *)" in summary model. |
+| Dubious signature "(int,aiocb *const[],int,sigevent *)" in summary model. |
+| Dubious signature "(int,bool,int,const stat64 *)" in summary model. |
 | Dubious signature "(int,char **)" in summary model. |
 | Dubious signature "(int,char **,char *[])" in summary model. |
 | Dubious signature "(int,char **,const OPTIONS *)" in summary model. |
+| Dubious signature "(int,char **,const char *,const option *,int *,_getopt_data *)" in summary model. |
+| Dubious signature "(int,char **,const char *,const option *,int *,int,_getopt_data *,int)" in summary model. |
+| Dubious signature "(int,char **,const char *,const option *,int *,int,int)" in summary model. |
 | Dubious signature "(int,char **,gengetopt_args_info *)" in summary model. |
 | Dubious signature "(int,char **,gengetopt_args_info *,cmdline_parser_params *)" in summary model. |
 | Dubious signature "(int,char **,gengetopt_args_info *,int,int,int)" in summary model. |
 | Dubious signature "(int,char *,const char *,...)" in summary model. |
 | Dubious signature "(int,char *,const char *,va_list)" in summary model. |
 | Dubious signature "(int,char *,size_t)" in summary model. |
+| Dubious signature "(int,char *,size_t,size_t)" in summary model. |
+| Dubious signature "(int,char *const *,const char *)" in summary model. |
+| Dubious signature "(int,char *const *,const char *,const option *,int *)" in summary model. |
 | Dubious signature "(int,const EVP_CIPHER *,const char *,int,unsigned char *,int,int,PKCS8_PRIV_KEY_INFO *)" in summary model. |
 | Dubious signature "(int,const EVP_CIPHER *,const char *,int,unsigned char *,int,int,PKCS8_PRIV_KEY_INFO *,OSSL_LIB_CTX *,const char *)" in summary model. |
 | Dubious signature "(int,const OSSL_ALGORITHM *,OSSL_PROVIDER *)" in summary model. |
 | Dubious signature "(int,const OSSL_STORE_INFO *)" in summary model. |
 | Dubious signature "(int,const char *)" in summary model. |
+| Dubious signature "(int,const char **)" in summary model. |
 | Dubious signature "(int,const char **,int *)" in summary model. |
+| Dubious signature "(int,const char *,__gnuc_va_list)" in summary model. |
+| Dubious signature "(int,const char *,__gnuc_va_list,va_list,unsigned int)" in summary model. |
+| Dubious signature "(int,const char *,__mode_t,mode_t,__dev_t *,dev_t *)" in summary model. |
+| Dubious signature "(int,const char *,const char *,const charmap_t *)" in summary model. |
+| Dubious signature "(int,const char *,const char *,const charmap_t *,localedef_t *)" in summary model. |
+| Dubious signature "(int,const char *,const char *,int,localedef_t *)" in summary model. |
+| Dubious signature "(int,const char *,const char *__restrict__,servent *,servent *__restrict__,char *,char *__restrict__,size_t,servent **,servent **__restrict__)" in summary model. |
+| Dubious signature "(int,const char *,const timespec[2],int)" in summary model. |
+| Dubious signature "(int,const char *,int,int,const unsigned char *,int,const unsigned char *,unsigned char *,int)" in summary model. |
 | Dubious signature "(int,const char *,int,unsigned char *,int,int,PKCS8_PRIV_KEY_INFO *)" in summary model. |
 | Dubious signature "(int,const char *,int,unsigned char *,int,int,PKCS8_PRIV_KEY_INFO *,OSSL_LIB_CTX *,const char *)" in summary model. |
 | Dubious signature "(int,const char *,int,unsigned char *,int,int,stack_st_PKCS12_SAFEBAG *)" in summary model. |
 | Dubious signature "(int,const char *,int,unsigned char *,int,int,stack_st_PKCS12_SAFEBAG *,OSSL_LIB_CTX *,const char *)" in summary model. |
+| Dubious signature "(int,const char *,locale_t)" in summary model. |
+| Dubious signature "(int,const char *,servent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(int,const char *,servent *,char *,size_t,servent **)" in summary model. |
+| Dubious signature "(int,const char *,va_list)" in summary model. |
+| Dubious signature "(int,const char *,va_list,unsigned int)" in summary model. |
+| Dubious signature "(int,const char *,void *,size_t)" in summary model. |
 | Dubious signature "(int,const regex_t *,char *,size_t)" in summary model. |
+| Dubious signature "(int,const sigset_t *,sigset_t *)" in summary model. |
+| Dubious signature "(int,const timespec[2])" in summary model. |
+| Dubious signature "(int,const u_char *,const unsigned char *,char *)" in summary model. |
 | Dubious signature "(int,const uint8_t *__restrict__,size_t,size_t,size_t,size_t *__restrict__,uint8_t *__restrict__)" in summary model. |
 | Dubious signature "(int,const unsigned char *,int,const unsigned char *,int,DSA *)" in summary model. |
 | Dubious signature "(int,const unsigned char *,int,const unsigned char *,int,EC_KEY *)" in summary model. |
@@ -3984,25 +4606,53 @@
 | Dubious signature "(int,const unsigned char *,int,unsigned char *,unsigned int *,const BIGNUM *,const BIGNUM *,EC_KEY *)" in summary model. |
 | Dubious signature "(int,const unsigned char *,unsigned int,unsigned char *,size_t *,const unsigned char *,size_t,RSA *)" in summary model. |
 | Dubious signature "(int,const void *,char *,size_t)" in summary model. |
+| Dubious signature "(int,const void *,char *,socklen_t,size_t)" in summary model. |
 | Dubious signature "(int,const void *,const char *,int)" in summary model. |
+| Dubious signature "(int,const void *,const void *__restrict__,char *,char *__restrict__,socklen_t)" in summary model. |
+| Dubious signature "(int,const void *,int,char *,size_t)" in summary model. |
+| Dubious signature "(int,const void *,size_t)" in summary model. |
+| Dubious signature "(int,const void *,size_t,datahead *,bool,database_dyn *,uid_t,bool)" in summary model. |
+| Dubious signature "(int,const wchar_t *,const wchar_t *__restrict__,__gnuc_va_list,va_list)" in summary model. |
+| Dubious signature "(int,dl_exception *,const char *)" in summary model. |
+| Dubious signature "(int,exit_function_list **,bool,bool)" in summary model. |
+| Dubious signature "(int,fd_set *,fd_set *,fd_set *,const timespec *,const __jmpbuf_arch_t *,const __sigset_t *,const sigset_t *)" in summary model. |
+| Dubious signature "(int,fd_to_filename *)" in summary model. |
+| Dubious signature "(int,gaicb *[],int,sigevent *)" in summary model. |
+| Dubious signature "(int,in_addr,in_addr,uint32_t *,uint32_t *,in_addr *)" in summary model. |
 | Dubious signature "(int,int *,int *,int)" in summary model. |
 | Dubious signature "(int,int,BrotliEncoderMode,size_t,const uint8_t[],size_t *,uint8_t[])" in summary model. |
 | Dubious signature "(int,int,TLS_GROUP_INFO *,size_t,long,stack_st_OPENSSL_CSTRING *)" in summary model. |
 | Dubious signature "(int,int,const char *)" in summary model. |
+| Dubious signature "(int,int,const char *,__gnuc_va_list,va_list)" in summary model. |
+| Dubious signature "(int,int,const char *,__mode_t,mode_t,__dev_t *,dev_t *)" in summary model. |
 | Dubious signature "(int,int,const char *,const char *)" in summary model. |
+| Dubious signature "(int,int,const char *,unsigned int,const char *,va_list,unsigned int)" in summary model. |
 | Dubious signature "(int,int,const char *,va_list)" in summary model. |
+| Dubious signature "(int,int,const char *,va_list,unsigned int)" in summary model. |
 | Dubious signature "(int,int,const unsigned char *,int)" in summary model. |
 | Dubious signature "(int,int,const unsigned char *,int,OSSL_LIB_CTX *)" in summary model. |
 | Dubious signature "(int,int,int *)" in summary model. |
 | Dubious signature "(int,int,int,const void *,size_t,SSL *,void *)" in summary model. |
 | Dubious signature "(int,int,void *)" in summary model. |
+| Dubious signature "(int,loff_t *,off64_t *,int,loff_t *,off64_t *,size_t,unsigned int)" in summary model. |
+| Dubious signature "(int,long double)" in summary model. |
 | Dubious signature "(int,long,void *,CRYPTO_EX_new *,CRYPTO_EX_dup *,CRYPTO_EX_free *)" in summary model. |
+| Dubious signature "(int,protoent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(int,protoent *,protoent *__restrict__,char *,char *__restrict__,size_t,protoent **,protoent **__restrict__)" in summary model. |
+| Dubious signature "(int,rpcent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(int,rpcent *,char *,size_t,rpcent **)" in summary model. |
+| Dubious signature "(int,sockaddr *,socklen_t *)" in summary model. |
+| Dubious signature "(int,sockaddr *,socklen_t *,int)" in summary model. |
 | Dubious signature "(int,sqlite3_int64 *,sqlite3_int64 *,int)" in summary model. |
 | Dubious signature "(int,stat *)" in summary model. |
+| Dubious signature "(int,statvfs64 *)" in summary model. |
+| Dubious signature "(int,u_int,u_int,char *)" in summary model. |
+| Dubious signature "(int,uint32_t,const sockaddr *,socklen_t,uint32_t *,uint32_t *,sockaddr_storage *)" in summary model. |
 | Dubious signature "(int,unsigned char *,int,const char *,const char *)" in summary model. |
 | Dubious signature "(int,unsigned char *,int,int *,unsigned long *,..(*)(..),void *)" in summary model. |
 | Dubious signature "(int,unsigned long,..(*)(..),void *)" in summary model. |
 | Dubious signature "(int,void *)" in summary model. |
+| Dubious signature "(int,void *,size_t)" in summary model. |
 | Dubious signature "(int_dhx942_dh **,const unsigned char **,long)" in summary model. |
 | Dubious signature "(lemon *)" in summary model. |
 | Dubious signature "(lemon *,action *)" in summary model. |
@@ -4012,14 +4662,74 @@
 | Dubious signature "(lhash_st_CONF_VALUE *,FILE *,long *)" in summary model. |
 | Dubious signature "(lhash_st_CONF_VALUE *,X509V3_CTX *,int,const char *)" in summary model. |
 | Dubious signature "(lhash_st_CONF_VALUE *,const char *,long *)" in summary model. |
+| Dubious signature "(linereader *)" in summary model. |
+| Dubious signature "(linereader *,const charmap_t *,const char *,localedef_t *,token_t,int,const char *,int)" in summary model. |
+| Dubious signature "(linereader *,const charmap_t *,localedef_t *,const repertoire_t *,int)" in summary model. |
+| Dubious signature "(linereader *,localedef_t *,const charmap_t *,const char *,int)" in summary model. |
+| Dubious signature "(link_map *)" in summary model. |
+| Dubious signature "(link_map **,unsigned int,bool,bool)" in summary model. |
+| Dubious signature "(link_map *,Dl_serinfo *,bool)" in summary model. |
+| Dubious signature "(link_map *,Elf64_Word)" in summary model. |
+| Dubious signature "(link_map *,Elf64_Word,Elf64_Addr,void *,long *)" in summary model. |
+| Dubious signature "(link_map *,Lmid_t)" in summary model. |
+| Dubious signature "(link_map *,Lmid_t,uintptr_t *)" in summary model. |
+| Dubious signature "(link_map *,const Elf64_Sym *,void **,lookup_t)" in summary model. |
+| Dubious signature "(link_map *,const char *,char *)" in summary model. |
+| Dubious signature "(link_map *,const char *,int,int,int,Lmid_t)" in summary model. |
+| Dubious signature "(link_map *,const char *,uint32_t,const char *,uint32_t)" in summary model. |
+| Dubious signature "(link_map *,int,char **,char **)" in summary model. |
+| Dubious signature "(link_map *,int,const Elf64_Phdr *)" in summary model. |
+| Dubious signature "(link_map *,link_map **,unsigned int,int,int)" in summary model. |
+| Dubious signature "(link_map *,link_map_public *,bool)" in summary model. |
+| Dubious signature "(link_map *,r_scope_elem *[],int,int)" in summary model. |
+| Dubious signature "(link_map *,reloc_result *,Elf64_Addr *,void *,long *)" in summary model. |
+| Dubious signature "(link_map *,reloc_result *,const void *,const Elf64_Sym *,Elf64_Addr *,lookup_t,bool)" in summary model. |
+| Dubious signature "(link_map *,size_t)" in summary model. |
 | Dubious signature "(list &&)" in summary model. |
 | Dubious signature "(list &&,const Allocator &)" in summary model. |
 | Dubious signature "(list_head *)" in summary model. |
 | Dubious signature "(list_head *,list_node *)" in summary model. |
 | Dubious signature "(list_node *)" in summary model. |
+| Dubious signature "(list_t *,list_t *)" in summary model. |
+| Dubious signature "(loaded_l10nfile **,const char *,size_t,int,const char *,const char *,const char *,const char *,const char *,const char *,int)" in summary model. |
+| Dubious signature "(loaded_l10nfile *,binding *,const char *,int,size_t *)" in summary model. |
+| Dubious signature "(locale_file *,const uint32_t *,size_t)" in summary model. |
+| Dubious signature "(locale_file *,size_t)" in summary model. |
+| Dubious signature "(locale_t,const char *,const char *)" in summary model. |
+| Dubious signature "(locarhandle *,const char *,locale_data_t,bool)" in summary model. |
 | Dubious signature "(long *,const char *)" in summary model. |
 | Dubious signature "(long *,const char *,long)" in summary model. |
+| Dubious signature "(long double *,const long double *)" in summary model. |
+| Dubious signature "(long double *,long double)" in summary model. |
+| Dubious signature "(long double)" in summary model. |
+| Dubious signature "(long double,int *)" in summary model. |
+| Dubious signature "(long double,int)" in summary model. |
+| Dubious signature "(long double,int,char *)" in summary model. |
+| Dubious signature "(long double,int,int *,int *__restrict__,int *,int *__restrict__)" in summary model. |
+| Dubious signature "(long double,int,int *,int *__restrict__,int *,int *__restrict__,char *,char *__restrict__,size_t)" in summary model. |
+| Dubious signature "(long double,int,unsigned int)" in summary model. |
+| Dubious signature "(long double,long double *)" in summary model. |
+| Dubious signature "(long double,long double *,long double *)" in summary model. |
+| Dubious signature "(long double,long double)" in summary model. |
+| Dubious signature "(long double,long double,int *)" in summary model. |
+| Dubious signature "(long double,long double,int)" in summary model. |
+| Dubious signature "(long double,long double,int,long double *)" in summary model. |
+| Dubious signature "(long double,long double,long double)" in summary model. |
+| Dubious signature "(long double,long double,long double,int)" in summary model. |
+| Dubious signature "(long double,long long)" in summary model. |
+| Dubious signature "(long double,long)" in summary model. |
 | Dubious signature "(long long *)" in summary model. |
+| Dubious signature "(long long)" in summary model. |
+| Dubious signature "(long long,long long)" in summary model. |
+| Dubious signature "(long,drand48_data *)" in summary model. |
+| Dubious signature "(md5_ctx *,void *)" in summary model. |
+| Dubious signature "(mp_ptr,mp_size_t,int *,int *,_Float128)" in summary model. |
+| Dubious signature "(mp_ptr,mp_size_t,int *,int *,double)" in summary model. |
+| Dubious signature "(mp_ptr,mp_size_t,int *,int *,long double)" in summary model. |
+| Dubious signature "(msghdr *,cmsghdr *)" in summary model. |
+| Dubious signature "(netent *,char *,size_t,int *,int *)" in summary model. |
+| Dubious signature "(netent *,netent *__restrict__,char *,char *__restrict__,size_t,netent **,netent **__restrict__,int *,int *__restrict__)" in summary model. |
+| Dubious signature "(netlink_handle *,int)" in summary model. |
 | Dubious signature "(nghttp2_buf *,size_t,nghttp2_mem *)" in summary model. |
 | Dubious signature "(nghttp2_buf *,uint8_t *,size_t)" in summary model. |
 | Dubious signature "(nghttp2_bufs *,const nghttp2_vec *,size_t,nghttp2_mem *)" in summary model. |
@@ -4171,44 +4881,150 @@
 | Dubious signature "(nghttp2_stream *,size_t)" in summary model. |
 | Dubious signature "(nghttp2_stream *,uint8_t)" in summary model. |
 | Dubious signature "(nghttp2_window_update *,uint8_t,int32_t,int32_t)" in summary model. |
+| Dubious signature "(nis_server **)" in summary model. |
+| Dubious signature "(nl_catd,int,int,const char *)" in summary model. |
+| Dubious signature "(ns_msg *,ns_sect,int,ns_rr *)" in summary model. |
+| Dubious signature "(ns_rr_cursor *,const unsigned char *,size_t)" in summary model. |
+| Dubious signature "(ns_rr_cursor *,ns_rr_wire *)" in summary model. |
+| Dubious signature "(nss_action **,nss_action_list *,const char *,const char *,void **)" in summary model. |
+| Dubious signature "(nss_action **,nss_action_list *,const char *,const char *,void **,int,int)" in summary model. |
+| Dubious signature "(nss_action *,size_t)" in summary model. |
+| Dubious signature "(nss_database,nss_action_list *)" in summary model. |
+| Dubious signature "(nss_database_data *)" in summary model. |
+| Dubious signature "(nss_files_per_file_data **,nss_files_file,const char *,int *,int *)" in summary model. |
+| Dubious signature "(nss_module *,const char *)" in summary model. |
+| Dubious signature "(obstack *)" in summary model. |
+| Dubious signature "(obstack *,const char *,va_list)" in summary model. |
+| Dubious signature "(obstack *,const char *,va_list,unsigned int)" in summary model. |
+| Dubious signature "(obstack *,int)" in summary model. |
+| Dubious signature "(obstack *,int,const char *,__gnuc_va_list,va_list)" in summary model. |
+| Dubious signature "(obstack *,int,int,..(*)(..),..(*)(..))" in summary model. |
+| Dubious signature "(obstack *,int,int,..(*)(..),..(*)(..),void *)" in summary model. |
+| Dubious signature "(obstack *,void *)" in summary model. |
+| Dubious signature "(old_termios_t *,speed_t)" in summary model. |
+| Dubious signature "(passwd *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(passwd *,char *,size_t,passwd **)" in summary model. |
 | Dubious signature "(pgrs_dir *,curl_off_t,curltime)" in summary model. |
+| Dubious signature "(pid_t,clockid_t *)" in summary model. |
 | Dubious signature "(piterator *)" in summary model. |
 | Dubious signature "(plink *)" in summary model. |
 | Dubious signature "(plink **,config *)" in summary model. |
 | Dubious signature "(plink **,plink *)" in summary model. |
+| Dubious signature "(pollfd *,nfds_t,const timespec *,const __sigset_t *,const sigset_t *)" in summary model. |
+| Dubious signature "(pollfd *,nfds_t,const timespec *,const __sigset_t *,unsigned long)" in summary model. |
 | Dubious signature "(pollfd[],unsigned int,timediff_t)" in summary model. |
+| Dubious signature "(posix_spawnattr_t *,int)" in summary model. |
+| Dubious signature "(posix_spawnattr_t *,pid_t)" in summary model. |
+| Dubious signature "(posix_spawnattr_t *,posix_spawnattr_t *__restrict__,const sched_param *,const sched_param *__restrict__)" in summary model. |
+| Dubious signature "(posix_spawnattr_t *,posix_spawnattr_t *__restrict__,const sigset_t *,const sigset_t *__restrict__)" in summary model. |
+| Dubious signature "(posix_spawnattr_t *,short)" in summary model. |
 | Dubious signature "(pqueue *)" in summary model. |
 | Dubious signature "(pqueue *,pitem *)" in summary model. |
 | Dubious signature "(pqueue *,unsigned char *)" in summary model. |
+| Dubious signature "(prof *,int,timeval *,unsigned int)" in summary model. |
+| Dubious signature "(protoent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(protoent *,protoent *__restrict__,char *,char *__restrict__,size_t,protoent **,protoent **__restrict__)" in summary model. |
+| Dubious signature "(ps_prochandle *,td_thragent_t **)" in summary model. |
+| Dubious signature "(pthread_attr_t *,const __jmpbuf_arch_t *,const __sigset_t *,const sigset_t *)" in summary model. |
+| Dubious signature "(pthread_attr_t *,const pthread_attr_t *)" in summary model. |
+| Dubious signature "(pthread_attr_t *,const sched_param *)" in summary model. |
+| Dubious signature "(pthread_attr_t *,const sigset_t *)" in summary model. |
+| Dubious signature "(pthread_attr_t *,cpu_set_t *)" in summary model. |
+| Dubious signature "(pthread_attr_t *,int)" in summary model. |
+| Dubious signature "(pthread_attr_t *,size_t)" in summary model. |
+| Dubious signature "(pthread_attr_t *,size_t,const cpu_set_t *)" in summary model. |
+| Dubious signature "(pthread_attr_t *,void *)" in summary model. |
+| Dubious signature "(pthread_attr_t *,void *,size_t)" in summary model. |
+| Dubious signature "(pthread_barrier_t *,const pthread_barrierattr_t *,unsigned int)" in summary model. |
+| Dubious signature "(pthread_barrierattr_t *,int)" in summary model. |
+| Dubious signature "(pthread_mutex_t *,const pthread_mutexattr_t *)" in summary model. |
+| Dubious signature "(pthread_mutex_t *,int,int *)" in summary model. |
+| Dubious signature "(pthread_mutexattr_t *,int)" in summary model. |
+| Dubious signature "(pthread_rwlock_t *,const pthread_rwlockattr_t *)" in summary model. |
+| Dubious signature "(pthread_rwlockattr_t *,int)" in summary model. |
 | Dubious signature "(pthread_t *)" in summary model. |
 | Dubious signature "(pthread_t **)" in summary model. |
+| Dubious signature "(pthread_t,int,const sched_param *)" in summary model. |
+| Dubious signature "(random_data *,int32_t *)" in summary model. |
+| Dubious signature "(re_pattern_buffer *,const char *,Idx,regoff_t,Idx,regoff_t,re_registers *)" in summary model. |
+| Dubious signature "(re_pattern_buffer *,const char *,Idx,regoff_t,Idx,regoff_t,regoff_t,re_registers *)" in summary model. |
+| Dubious signature "(re_pattern_buffer *,const char *,Idx,regoff_t,const char *,Idx,regoff_t,Idx,regoff_t,re_registers *,Idx,regoff_t)" in summary model. |
+| Dubious signature "(re_pattern_buffer *,const char *,Idx,regoff_t,const char *,Idx,regoff_t,Idx,regoff_t,regoff_t,re_registers *,Idx,regoff_t)" in summary model. |
+| Dubious signature "(re_pattern_buffer *,re_registers *,__re_size_t,regoff_t *,regoff_t *)" in summary model. |
 | Dubious signature "(regex_t *,const char *,int)" in summary model. |
 | Dubious signature "(regex_t *,const char *,size_t,regmatch_t[],int)" in summary model. |
+| Dubious signature "(request_type,const char *,mapped_database **)" in summary model. |
+| Dubious signature "(request_type,const char *,size_t,const mapped_database *,size_t)" in summary model. |
+| Dubious signature "(request_type,const char *,volatile locked_map_ptr *,int *)" in summary model. |
+| Dubious signature "(request_type,const void *,size_t,database_dyn *,uid_t)" in summary model. |
+| Dubious signature "(requestlist *,requestlist *,int)" in summary model. |
+| Dubious signature "(res_state,const char *,const char *,int,int,unsigned char *,int)" in summary model. |
+| Dubious signature "(res_state,const char *,int,int,unsigned char *,int)" in summary model. |
+| Dubious signature "(res_state,const unsigned char *,int,unsigned char *,int)" in summary model. |
+| Dubious signature "(res_state,int,const char *,int,int,const unsigned char *,int,const unsigned char *,unsigned char *,int)" in summary model. |
+| Dubious signature "(res_state,unsigned int)" in summary model. |
+| Dubious signature "(resolv_context *,const char *,char *,size_t)" in summary model. |
+| Dubious signature "(resolv_context *,const char *,hostent *,char **,size_t *,size_t,hostent **,nss_status *,int,int *)" in summary model. |
+| Dubious signature "(resolv_context *,const char *,int,int,unsigned char *,int,unsigned char **,unsigned char **,int *,int *,int *)" in summary model. |
+| Dubious signature "(resolv_context *,const unsigned char *,int,const unsigned char *,int,unsigned char *,int,unsigned char **,unsigned char **,int *,int *,int *)" in summary model. |
+| Dubious signature "(resolv_context *,const unsigned char *,int,unsigned char *,int,int *)" in summary model. |
+| Dubious signature "(resolv_context *,int,const char *,int,int,const unsigned char *,unsigned char *,int)" in summary model. |
+| Dubious signature "(resolv_context *,int,unsigned char *,int,int)" in summary model. |
+| Dubious signature "(rpcent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(rpcent *,char *,size_t,rpcent **)" in summary model. |
 | Dubious signature "(rule *,int)" in summary model. |
 | Dubious signature "(scan_ctx *,const char *,const char *,const char *)" in summary model. |
+| Dubious signature "(scratch_buffer *,size_t,size_t)" in summary model. |
+| Dubious signature "(sem_t *,int,unsigned int)" in summary model. |
+| Dubious signature "(servent *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(servent *,servent *__restrict__,char *,char *__restrict__,size_t,servent **,servent **__restrict__)" in summary model. |
 | Dubious signature "(sfparse_parser *,const uint8_t *,size_t)" in summary model. |
 | Dubious signature "(sfparse_parser *,sfparse_value *)" in summary model. |
 | Dubious signature "(sfparse_parser *,sfparse_vec *,sfparse_value *)" in summary model. |
 | Dubious signature "(sfparse_vec *,const sfparse_vec *)" in summary model. |
+| Dubious signature "(sgrp *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(sgrp *,char *,size_t,sgrp **)" in summary model. |
+| Dubious signature "(sigset_t *,const sigset_t *,const sigset_t *)" in summary model. |
+| Dubious signature "(sigset_t *,int)" in summary model. |
 | Dubious signature "(size_t *,const char *)" in summary model. |
 | Dubious signature "(size_t *,size_t,unsigned char *,unsigned char **,int *,size_t,size_t,OSSL_LIB_CTX *)" in summary model. |
 | Dubious signature "(size_t *,size_t,unsigned char *,unsigned char **,int *,size_t,size_t,int,OSSL_LIB_CTX *)" in summary model. |
 | Dubious signature "(size_t,OSSL_QTX_IOVEC *,size_t)" in summary model. |
 | Dubious signature "(size_t,SSL_CTX *)" in summary model. |
+| Dubious signature "(size_t,char *[])" in summary model. |
+| Dubious signature "(size_t,char *[],bool)" in summary model. |
 | Dubious signature "(size_t,const QUIC_PKT_HDR *)" in summary model. |
 | Dubious signature "(size_t,const char **,size_t *)" in summary model. |
 | Dubious signature "(size_t,const char[],size_t *,uint32_t[])" in summary model. |
 | Dubious signature "(size_t,const uint8_t[],size_t *,uint8_t[])" in summary model. |
 | Dubious signature "(size_t,const uint32_t[],size_t *,char[])" in summary model. |
+| Dubious signature "(size_t,hsearch_data *)" in summary model. |
+| Dubious signature "(size_t,shadow_stack_size_t *)" in summary model. |
+| Dubious signature "(size_t,size_t *,int *)" in summary model. |
 | Dubious signature "(size_t,size_t,Curl_ssl_scache **)" in summary model. |
 | Dubious signature "(size_t,size_t,const uint8_t *,size_t,ContextLut,const BrotliEncoderParams *,Hasher *,int *,size_t *,Command *,size_t *,size_t *)" in summary model. |
 | Dubious signature "(size_t,size_t,size_t,const uint8_t *,size_t *,float *)" in summary model. |
 | Dubious signature "(size_t,size_t,void **,const char *,int)" in summary model. |
+| Dubious signature "(size_t,traced_file *)" in summary model. |
 | Dubious signature "(size_t,uint32_t *,uint8_t *)" in summary model. |
+| Dubious signature "(size_t,void **)" in summary model. |
 | Dubious signature "(size_type,const T &)" in summary model. |
 | Dubious signature "(size_type,const T &,const Allocator &)" in summary model. |
 | Dubious signature "(slist_wc **,const char *)" in summary model. |
 | Dubious signature "(slist_wc *,const char *)" in summary model. |
+| Dubious signature "(sockaddr_in *)" in summary model. |
+| Dubious signature "(sockaddr_in *,const u_long,u_long,const u_long,u_long,const u_long,u_long,xdrproc_t,caddr_t,xdrproc_t,caddr_t,timeval,u_long *)" in summary model. |
+| Dubious signature "(sockaddr_in *,const u_long,u_long,const u_long,u_long,u_int)" in summary model. |
+| Dubious signature "(sockaddr_in *,u_long,u_long,int *,u_int,u_int)" in summary model. |
+| Dubious signature "(sockaddr_in *,u_long,u_long,timeval,int *)" in summary model. |
+| Dubious signature "(sockaddr_in *,u_long,u_long,timeval,int *,u_int,u_int)" in summary model. |
+| Dubious signature "(sockaddr_in *,u_long,u_long,timeval,int *,u_int,u_int,int)" in summary model. |
+| Dubious signature "(sockaddr_in *,u_long,u_long,u_int)" in summary model. |
+| Dubious signature "(sockaddr_in *,u_long,u_long,u_int,time_t,time_t)" in summary model. |
+| Dubious signature "(sockaddr_un *,const char *)" in summary model. |
+| Dubious signature "(sockaddr_un *,u_long,u_long,int *,u_int,u_int)" in summary model. |
+| Dubious signature "(spwd *,char *,size_t,int *)" in summary model. |
+| Dubious signature "(spwd *,char *,size_t,spwd **)" in summary model. |
 | Dubious signature "(sqlite3 *)" in summary model. |
 | Dubious signature "(sqlite3 *,..(*)(..),void *)" in summary model. |
 | Dubious signature "(sqlite3 *,..(*)(..),void *,..(*)(..))" in summary model. |
@@ -4346,27 +5162,60 @@
 | Dubious signature "(stack_st_X509_OBJECT *,X509_OBJECT *)" in summary model. |
 | Dubious signature "(stack_st_X509_POLICY_NODE *,const ASN1_OBJECT *)" in summary model. |
 | Dubious signature "(state *,config *)" in summary model. |
+| Dubious signature "(statvfs64 *,const statfs64 *)" in summary model. |
 | Dubious signature "(store_netrc *)" in summary model. |
 | Dubious signature "(store_netrc *,const char *,char **,char **,char *)" in summary model. |
 | Dubious signature "(string_buf *,libssh2_uint64_t *)" in summary model. |
 | Dubious signature "(string_buf *,uint32_t *)" in summary model. |
 | Dubious signature "(string_buf *,unsigned char *)" in summary model. |
 | Dubious signature "(string_buf *,unsigned char **,size_t *)" in summary model. |
+| Dubious signature "(stringtable *,const char *)" in summary model. |
+| Dubious signature "(stringtable *,stringtable_finalized *)" in summary model. |
+| Dubious signature "(support_descriptors *,const char *,FILE *)" in summary model. |
+| Dubious signature "(support_fuse *)" in summary model. |
+| Dubious signature "(support_fuse *,bool)" in summary model. |
+| Dubious signature "(support_fuse *,uint64_t)" in summary model. |
+| Dubious signature "(support_fuse *,uint64_t,fuse_entry_out **,fuse_open_out **)" in summary model. |
+| Dubious signature "(support_fuse_dirstream *,uint64_t,uint64_t,uint32_t,const char *)" in summary model. |
 | Dubious signature "(symbol *,lemon *)" in summary model. |
+| Dubious signature "(td_thragent_t *,db_desc_t,int,psaddr_t,psaddr_t *)" in summary model. |
+| Dubious signature "(td_thragent_t *,db_desc_t,int,psaddr_t,psaddr_t,psaddr_t *)" in summary model. |
+| Dubious signature "(td_thragent_t *,db_desc_t,int,psaddr_t,psaddr_t,psaddr_t)" in summary model. |
+| Dubious signature "(td_thragent_t *,db_desc_t,int,psaddr_t,void *,psaddr_t *)" in summary model. |
+| Dubious signature "(td_thragent_t *,db_desc_t,int,psaddr_t,void *,psaddr_t)" in summary model. |
+| Dubious signature "(td_thragent_t *,psaddr_t *)" in summary model. |
+| Dubious signature "(td_thragent_t *,uint32_t *,int)" in summary model. |
+| Dubious signature "(termios *,baud_t)" in summary model. |
+| Dubious signature "(termios *,speed_t)" in summary model. |
+| Dubious signature "(time_t,int,long *,int *,tm *)" in summary model. |
+| Dubious signature "(time_t,int,tm *)" in summary model. |
+| Dubious signature "(time_t,long,tm *)" in summary model. |
+| Dubious signature "(timespec *,int)" in summary model. |
 | Dubious signature "(timeval *)" in summary model. |
 | Dubious signature "(timeval *,timediff_t)" in summary model. |
+| Dubious signature "(tls_index *)" in summary model. |
+| Dubious signature "(tm *)" in summary model. |
+| Dubious signature "(tm *,..(*)(..),mktime_offset_t *)" in summary model. |
 | Dubious signature "(tm *,const ASN1_TIME *)" in summary model. |
 | Dubious signature "(tm *,const ASN1_UTCTIME *)" in summary model. |
 | Dubious signature "(tm *,int,long)" in summary model. |
+| Dubious signature "(tunable_id_t,void *)" in summary model. |
+| Dubious signature "(tunable_id_t,void *,tunable_callback_t)" in summary model. |
 | Dubious signature "(u64[2],const u128[16],const u8 *,size_t)" in summary model. |
 | Dubious signature "(uLong,const Bytef *,uInt)" in summary model. |
 | Dubious signature "(uLong,const Bytef *,z_size_t)" in summary model. |
 | Dubious signature "(uLong,unsigned long,const Bytef *,const unsigned char *,uInt)" in summary model. |
 | Dubious signature "(uLong,unsigned long,const Bytef *,const unsigned char *,z_size_t)" in summary model. |
 | Dubious signature "(u_char[16],unsigned char[16],const u_char *,const unsigned char *,size_t,const u_char[32],const unsigned char[32])" in summary model. |
+| Dubious signature "(u_int,unsigned int,u_char *,unsigned char *)" in summary model. |
+| Dubious signature "(u_long,unsigned long)" in summary model. |
+| Dubious signature "(u_long,unsigned long,char *,size_t)" in summary model. |
+| Dubious signature "(u_long,unsigned long,u_char *,unsigned char *)" in summary model. |
+| Dubious signature "(ucontext_t *,..(*)(..),int,...)" in summary model. |
 | Dubious signature "(ucs4_t *,const uint8_t *,size_t)" in summary model. |
 | Dubious signature "(ucs4_t,ucs4_t *)" in summary model. |
 | Dubious signature "(ucs4_with_ccc *,size_t,ucs4_with_ccc *)" in summary model. |
+| Dubious signature "(uid_t,passwd *,char *,size_t,passwd **)" in summary model. |
 | Dubious signature "(uint8_t *,const nghttp2_frame_hd *)" in summary model. |
 | Dubious signature "(uint8_t *,const nghttp2_priority_spec *)" in summary model. |
 | Dubious signature "(uint8_t *,const nghttp2_settings_entry *,size_t)" in summary model. |
@@ -4390,11 +5239,15 @@
 | Dubious signature "(uint8_t[57],const curve448_point_t)" in summary model. |
 | Dubious signature "(uint16_t **,size_t *,uint16_t **,size_t *,size_t **,size_t *,int *,size_t)" in summary model. |
 | Dubious signature "(uint16_t **,size_t *,uint16_t **,size_t *,size_t **,size_t *,void *)" in summary model. |
+| Dubious signature "(uint16_t,unsigned char *)" in summary model. |
 | Dubious signature "(uint32_t *,SSL_CONNECTION *,int)" in summary model. |
 | Dubious signature "(uint32_t *,const IDNAMap *)" in summary model. |
 | Dubious signature "(uint32_t *,size_t *,int *,uint32_t,size_t,uint8_t *,uint8_t *,size_t)" in summary model. |
+| Dubious signature "(uint32_t,int,netent *,char *,size_t,int *,int *)" in summary model. |
+| Dubious signature "(uint32_t,int,netent *,netent *__restrict__,char *,char *__restrict__,size_t,netent **,netent **__restrict__,int *,int *__restrict__)" in summary model. |
 | Dubious signature "(uint32_t,uint32_t *,uint32_t *)" in summary model. |
 | Dubious signature "(uint32_t,uint32_t,uint32_t *,int32_t *)" in summary model. |
+| Dubious signature "(uint32_t,unsigned char *)" in summary model. |
 | Dubious signature "(uint64_t *,const ASN1_INTEGER *)" in summary model. |
 | Dubious signature "(uint64_t *,int *,const unsigned char **,long)" in summary model. |
 | Dubious signature "(uint64_t *,uint64_t *,CRYPTO_RWLOCK *)" in summary model. |
@@ -4431,6 +5284,7 @@
 | Dubious signature "(unsigned char *,WHIRLPOOL_CTX *)" in summary model. |
 | Dubious signature "(unsigned char *,const BIGNUM *,DH *)" in summary model. |
 | Dubious signature "(unsigned char *,const char *)" in summary model. |
+| Dubious signature "(unsigned char *,const char *,int)" in summary model. |
 | Dubious signature "(unsigned char *,const unsigned char *,const unsigned char *,size_t)" in summary model. |
 | Dubious signature "(unsigned char *,const unsigned char *,int)" in summary model. |
 | Dubious signature "(unsigned char *,const unsigned char *,size_t)" in summary model. |
@@ -4461,11 +5315,20 @@
 | Dubious signature "(unsigned char)" in summary model. |
 | Dubious signature "(unsigned char,const char *,ct_log_entry_type_t,uint64_t,const char *,const char *)" in summary model. |
 | Dubious signature "(unsigned char[56],const curve448_scalar_t)" in summary model. |
+| Dubious signature "(unsigned int *)" in summary model. |
 | Dubious signature "(unsigned int *,const BF_KEY *)" in summary model. |
 | Dubious signature "(unsigned int *,const CAST_KEY *)" in summary model. |
 | Dubious signature "(unsigned int)" in summary model. |
+| Dubious signature "(unsigned int,__locale_data *)" in summary model. |
 | Dubious signature "(unsigned int,char *,size_t *)" in summary model. |
+| Dubious signature "(unsigned int,char *,size_t)" in summary model. |
+| Dubious signature "(unsigned int,char *,size_t,random_data *)" in summary model. |
+| Dubious signature "(unsigned int,char[16])" in summary model. |
+| Dubious signature "(unsigned int,const char *,int)" in summary model. |
+| Dubious signature "(unsigned int,const wchar_t *,int)" in summary model. |
 | Dubious signature "(unsigned int,int,int)" in summary model. |
+| Dubious signature "(unsigned int,random_data *)" in summary model. |
+| Dubious signature "(unsigned int,unsigned int)" in summary model. |
 | Dubious signature "(unsigned int[5],const unsigned char[64])" in summary model. |
 | Dubious signature "(unsigned long *,IDEA_KEY_SCHEDULE *)" in summary model. |
 | Dubious signature "(unsigned long *,RC2_KEY *)" in summary model. |
@@ -4480,12 +5343,20 @@
 | Dubious signature "(unsigned long *,unsigned long *,unsigned long *,int)" in summary model. |
 | Dubious signature "(unsigned long *,unsigned long *,unsigned long *,int,int,int,unsigned long *)" in summary model. |
 | Dubious signature "(unsigned long *,unsigned long *,unsigned long *,int,unsigned long *)" in summary model. |
+| Dubious signature "(unsigned long long,char *,unsigned int,int)" in summary model. |
 | Dubious signature "(unsigned long)" in summary model. |
 | Dubious signature "(unsigned long,BIGNUM *,BIGNUM *,int)" in summary model. |
 | Dubious signature "(unsigned long,char *)" in summary model. |
+| Dubious signature "(unsigned long,char *,unsigned int,int)" in summary model. |
 | Dubious signature "(unsigned long[8],const unsigned long[8],const unsigned long[8],const unsigned long[8],unsigned long,const unsigned long[8])" in summary model. |
 | Dubious signature "(unsigned long[16],const unsigned long[16],const unsigned long[16],const unsigned long[16],const unsigned long[16],unsigned long)" in summary model. |
 | Dubious signature "(unsigned short,int)" in summary model. |
+| Dubious signature "(unsigned short[3])" in summary model. |
+| Dubious signature "(unsigned short[3],drand48_data *)" in summary model. |
+| Dubious signature "(unsigned short[3],drand48_data *,double *)" in summary model. |
+| Dubious signature "(unsigned short[3],drand48_data *,long *)" in summary model. |
+| Dubious signature "(unsigned short[7],drand48_data *)" in summary model. |
+| Dubious signature "(utmp *,utmp **)" in summary model. |
 | Dubious signature "(uv__io_t *,uv__io_cb,int)" in summary model. |
 | Dubious signature "(uv_async_t *)" in summary model. |
 | Dubious signature "(uv_check_t *,uv_check_cb)" in summary model. |
@@ -4600,45 +5471,110 @@
 | Dubious signature "(vector &&)" in summary model. |
 | Dubious signature "(vector &&,const Allocator &)" in summary model. |
 | Dubious signature "(void *)" in summary model. |
+| Dubious signature "(void **,..(*)(..))" in summary model. |
+| Dubious signature "(void **,size_t,size_t)" in summary model. |
 | Dubious signature "(void *,CRYPTO_THREAD_RETVAL *)" in summary model. |
 | Dubious signature "(void *,OSSL_PARAM[])" in summary model. |
 | Dubious signature "(void *,PROV_GCM_CTX *,size_t,const PROV_GCM_HW *)" in summary model. |
 | Dubious signature "(void *,block128_f)" in summary model. |
+| Dubious signature "(void *,bool)" in summary model. |
+| Dubious signature "(void *,char,__STRING2_COPY_ARR2,__STRING2_COPY_ARR3,__STRING2_COPY_ARR4,__STRING2_COPY_ARR5,__STRING2_COPY_ARR6,__STRING2_COPY_ARR7,__STRING2_COPY_ARR8,size_t)" in summary model. |
+| Dubious signature "(void *,cmsghdr **,int)" in summary model. |
 | Dubious signature "(void *,const ASN1_ITEM *,ASN1_OCTET_STRING **,ASN1_STRING **)" in summary model. |
 | Dubious signature "(void *,const ASN1_ITEM *,int,int)" in summary model. |
 | Dubious signature "(void *,const OSSL_PARAM[])" in summary model. |
+| Dubious signature "(void *,const char *,const char *,void *)" in summary model. |
 | Dubious signature "(void *,const char *,int)" in summary model. |
+| Dubious signature "(void *,const char *,void *)" in summary model. |
+| Dubious signature "(void *,const in6_addr *)" in summary model. |
 | Dubious signature "(void *,const unsigned char *,size_t,const unsigned char *,size_t,const OSSL_PARAM[])" in summary model. |
 | Dubious signature "(void *,const unsigned char *,unsigned char *,const unsigned char *,size_t,block128_f)" in summary model. |
+| Dubious signature "(void *,const void *,int,size_t)" in summary model. |
 | Dubious signature "(void *,curl_off_t,curl_off_t,curl_off_t,curl_off_t)" in summary model. |
 | Dubious signature "(void *,curl_off_t,int)" in summary model. |
 | Dubious signature "(void *,int)" in summary model. |
 | Dubious signature "(void *,int,const OSSL_PARAM[])" in summary model. |
 | Dubious signature "(void *,int,size_t,size_t,size_t,uint64_t,const PROV_CIPHER_HW *)" in summary model. |
+| Dubious signature "(void *,int,void *,socklen_t)" in summary model. |
 | Dubious signature "(void *,size_t)" in summary model. |
 | Dubious signature "(void *,size_t,const EC_POINT *,const EC_KEY *,..(*)(..))" in summary model. |
 | Dubious signature "(void *,size_t,const char *,int)" in summary model. |
 | Dubious signature "(void *,size_t,size_t)" in summary model. |
+| Dubious signature "(void *,size_t,size_t,FILE *)" in summary model. |
+| Dubious signature "(void *,size_t,size_t,__compar_fn_t)" in summary model. |
 | Dubious signature "(void *,size_t,size_t,const char *,int)" in summary model. |
 | Dubious signature "(void *,size_t,size_t,size_t,unsigned int,uint64_t,const PROV_CIPHER_HW *,void *)" in summary model. |
+| Dubious signature "(void *,socklen_t)" in summary model. |
+| Dubious signature "(void *,socklen_t,int)" in summary model. |
+| Dubious signature "(void *,socklen_t,int,int)" in summary model. |
+| Dubious signature "(void *,socklen_t,int,uint8_t *,socklen_t *,void **)" in summary model. |
+| Dubious signature "(void *,socklen_t,int,uint8_t,socklen_t *,void **)" in summary model. |
+| Dubious signature "(void *,socklen_t,int,uint8_t,socklen_t,uint8_t,void **)" in summary model. |
 | Dubious signature "(void *,sqlite3 *,int,const char *)" in summary model. |
 | Dubious signature "(void *,sqlite3_uint64)" in summary model. |
 | Dubious signature "(void *,unsigned char **,int,size_t,size_t,int,const unsigned char *,size_t)" in summary model. |
 | Dubious signature "(void *,unsigned char *,size_t *,size_t)" in summary model. |
 | Dubious signature "(void *,unsigned char *,size_t *,size_t,const unsigned char *,size_t)" in summary model. |
 | Dubious signature "(void *,unsigned char *,size_t)" in summary model. |
+| Dubious signature "(void *,void *)" in summary model. |
 | Dubious signature "(void *,void *,block128_f,block128_f,ocb128_f)" in summary model. |
 | Dubious signature "(void *,void *,const OSSL_DISPATCH *,..(*)(..),..(*)(..),..(*)(..),..(*)(..),..(*)(..),..(*)(..))" in summary model. |
 | Dubious signature "(void *,void *,const unsigned char *,size_t,const OSSL_PARAM[])" in summary model. |
+| Dubious signature "(void *,void *__restrict__,size_t,size_t,FILE *,FILE *__restrict__)" in summary model. |
+| Dubious signature "(void *,void *const,size_t,size_t,__compar_d_fn_t,void *)" in summary model. |
+| Dubious signature "(void *__restrict__,size_t,size_t,size_t,FILE *__restrict__)" in summary model. |
+| Dubious signature "(void *const *,int)" in summary model. |
 | Dubious signature "(wchar_t *)" in summary model. |
+| Dubious signature "(wchar_t *,const char **,size_t,mbstate_t *,locale_t)" in summary model. |
+| Dubious signature "(wchar_t *,const char *,size_t,size_t)" in summary model. |
+| Dubious signature "(wchar_t *,const wchar_t *,size_t)" in summary model. |
+| Dubious signature "(wchar_t *,const wchar_t *,size_t,locale_t)" in summary model. |
+| Dubious signature "(wchar_t *,const wchar_t *,size_t,size_t)" in summary model. |
+| Dubious signature "(wchar_t *,size_t,const wchar_t *,va_list)" in summary model. |
+| Dubious signature "(wchar_t *,size_t,const wchar_t *,va_list,unsigned int)" in summary model. |
+| Dubious signature "(wchar_t *,wchar_t *__restrict__,const char **,const char **__restrict__,size_t,__mbstate_t *__restrict__,mbstate_t *)" in summary model. |
+| Dubious signature "(wchar_t *,wchar_t *__restrict__,const char **,const char **__restrict__,size_t,mbstate_t *,mbstate_t *__restrict__,size_t)" in summary model. |
+| Dubious signature "(wchar_t *,wchar_t *__restrict__,const char **,const char **__restrict__,size_t,size_t,__mbstate_t *__restrict__,mbstate_t *)" in summary model. |
+| Dubious signature "(wchar_t *,wchar_t *__restrict__,const char **,const char **__restrict__,size_t,size_t,mbstate_t *,mbstate_t *__restrict__,size_t)" in summary model. |
+| Dubious signature "(wchar_t *,wchar_t *__restrict__,const char *,const char *__restrict__,size_t)" in summary model. |
+| Dubious signature "(wchar_t *,wchar_t *__restrict__,const char *,const char *__restrict__,size_t,__mbstate_t *__restrict__,mbstate_t *)" in summary model. |
+| Dubious signature "(wchar_t *,wchar_t *__restrict__,const wchar_t *,const wchar_t *__restrict__)" in summary model. |
+| Dubious signature "(wchar_t *,wchar_t *__restrict__,const wchar_t *,const wchar_t *__restrict__,size_t)" in summary model. |
+| Dubious signature "(wchar_t *,wchar_t *__restrict__,const wchar_t *,const wchar_t *__restrict__,size_t,size_t)" in summary model. |
+| Dubious signature "(wchar_t *,wchar_t *__restrict__,int,FILE *,__FILE *__restrict__)" in summary model. |
+| Dubious signature "(wchar_t *,wchar_t *__restrict__,size_t,const wchar_t *,const wchar_t *__restrict__,const tm *,const tm *__restrict__)" in summary model. |
+| Dubious signature "(wchar_t *,wchar_t *__restrict__,size_t,const wchar_t *,const wchar_t *__restrict__,const tm *,const tm *__restrict__,locale_t)" in summary model. |
+| Dubious signature "(wchar_t *,wchar_t *__restrict__,size_t,int,FILE *,__FILE *__restrict__)" in summary model. |
+| Dubious signature "(wchar_t *,wchar_t *__restrict__,size_t,int,size_t,const wchar_t *,const wchar_t *__restrict__,__gnuc_va_list,va_list)" in summary model. |
+| Dubious signature "(wchar_t *__restrict__,const wchar_t *__restrict__,size_t)" in summary model. |
 | Dubious signature "(wchar_t, const CStringT &)" in summary model. |
+| Dubious signature "(wchar_t,FILE *,__FILE *)" in summary model. |
 | Dubious signature "(wchar_t,const CStringT &)" in summary model. |
+| Dubious signature "(wint_t,FILE *,__FILE *)" in summary model. |
 | Dubious signature "(z_streamp,Bytef *,uInt *)" in summary model. |
 | Dubious signature "(z_streamp,const Bytef *,uInt)" in summary model. |
 | Dubious signature "(z_streamp,int *)" in summary model. |
 | Dubious signature "(z_streamp,unsigned int *,int *)" in summary model. |
 | Dubious signature "(z_streamp,unsigned int)" in summary model. |
+| Unrecognized input specification "Argument[***0]" in summary model. |
+| Unrecognized input specification "Argument[***1]" in summary model. |
+| Unrecognized input specification "Argument[***3]" in summary model. |
+| Unrecognized input specification "Argument[***4]" in summary model. |
+| Unrecognized input specification "Argument[****0]" in summary model. |
+| Unrecognized input specification "Argument[****1]" in summary model. |
+| Unrecognized input specification "Argument[****3]" in summary model. |
+| Unrecognized input specification "Argument[****4]" in summary model. |
+| Unrecognized input specification "Argument[*****0]" in summary model. |
+| Unrecognized input specification "Argument[*****1]" in summary model. |
 | Unrecognized input specification "Field[****hEvent]" in summary model. |
 | Unrecognized input specification "Field[***hEvent]" in summary model. |
+| Unrecognized output specification "Argument[***0]" in summary model. |
+| Unrecognized output specification "Argument[***1]" in summary model. |
+| Unrecognized output specification "Argument[****0]" in summary model. |
+| Unrecognized output specification "Argument[****1]" in summary model. |
+| Unrecognized output specification "Argument[*****0]" in summary model. |
+| Unrecognized output specification "Argument[*****1]" in summary model. |
 | Unrecognized output specification "Field[****hEvent]" in summary model. |
 | Unrecognized output specification "Field[***hEvent]" in summary model. |
+| Unrecognized output specification "Parameter[***0]" in summary model. |
+| Unrecognized output specification "Parameter[****0]" in summary model. |

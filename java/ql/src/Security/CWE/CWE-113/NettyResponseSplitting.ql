@@ -16,6 +16,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 
+overlay[local?]
 abstract private class InsecureNettyObjectCreation extends ClassInstanceExpr {
   int vulnerableArgumentIndex;
 
@@ -27,6 +28,7 @@ abstract private class InsecureNettyObjectCreation extends ClassInstanceExpr {
   abstract string splittingType();
 }
 
+overlay[local?]
 abstract private class RequestOrResponseSplittingInsecureNettyObjectCreation extends InsecureNettyObjectCreation
 {
   override string splittingType() { result = "Request splitting or response splitting" }
@@ -35,6 +37,7 @@ abstract private class RequestOrResponseSplittingInsecureNettyObjectCreation ext
 /**
  * Request splitting can allowing an attacker to inject/smuggle an additional HTTP request into the socket connection.
  */
+overlay[local?]
 abstract private class RequestSplittingInsecureNettyObjectCreation extends InsecureNettyObjectCreation
 {
   override string splittingType() { result = "Request splitting" }
@@ -43,11 +46,13 @@ abstract private class RequestSplittingInsecureNettyObjectCreation extends Insec
 /**
  * Response splitting can lead to HTTP vulnerabilities like XSS and cache poisoning.
  */
+overlay[local?]
 abstract private class ResponseSplittingInsecureNettyObjectCreation extends InsecureNettyObjectCreation
 {
   override string splittingType() { result = "Response splitting" }
 }
 
+overlay[local?]
 private class InsecureDefaultHttpHeadersClassInstantiation extends RequestOrResponseSplittingInsecureNettyObjectCreation
 {
   InsecureDefaultHttpHeadersClassInstantiation() {
@@ -58,6 +63,7 @@ private class InsecureDefaultHttpHeadersClassInstantiation extends RequestOrResp
   }
 }
 
+overlay[local?]
 private class InsecureDefaultHttpResponseClassInstantiation extends ResponseSplittingInsecureNettyObjectCreation
 {
   InsecureDefaultHttpResponseClassInstantiation() {
@@ -66,6 +72,7 @@ private class InsecureDefaultHttpResponseClassInstantiation extends ResponseSpli
   }
 }
 
+overlay[local?]
 private class InsecureDefaultHttpRequestClassInstantiation extends RequestSplittingInsecureNettyObjectCreation
 {
   InsecureDefaultHttpRequestClassInstantiation() {
@@ -74,6 +81,7 @@ private class InsecureDefaultHttpRequestClassInstantiation extends RequestSplitt
   }
 }
 
+overlay[local?]
 private class InsecureDefaultFullHttpResponseClassInstantiation extends ResponseSplittingInsecureNettyObjectCreation
 {
   InsecureDefaultFullHttpResponseClassInstantiation() {
@@ -83,6 +91,7 @@ private class InsecureDefaultFullHttpResponseClassInstantiation extends Response
   }
 }
 
+overlay[local?]
 private class InsecureDefaultFullHttpRequestClassInstantiation extends RequestSplittingInsecureNettyObjectCreation
 {
   InsecureDefaultFullHttpRequestClassInstantiation() {

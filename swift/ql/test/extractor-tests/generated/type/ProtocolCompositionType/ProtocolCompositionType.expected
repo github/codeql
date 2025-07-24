@@ -1,3 +1,12 @@
-| P1 & P2 & P3 | getName: | P1 & P2 & P3 | getCanonicalType: | P1 & P2 & P3 | getNumberOfMembers: | 3 |
-| P1 & P23 | getName: | P1 & P23 | getCanonicalType: | P1 & P2 & P3 | getNumberOfMembers: | 2 |
-| P2 & P4 | getName: | P2 & P4 | getCanonicalType: | P2 & P4 | getNumberOfMembers: | 2 |
+instances
+| P1 & P2 & P3 | getName: | P1 & P2 & P3 | getCanonicalType: | P1 & P2 & P3 |
+| P1 & P23 | getName: | P1 & P23 | getCanonicalType: | P1 & P2 & P3 |
+| P2 & P4 | getName: | P2 & P4 | getCanonicalType: | P2 & P4 |
+getMember
+| P1 & P2 & P3 | 0 | P1 |
+| P1 & P2 & P3 | 1 | P2 |
+| P1 & P2 & P3 | 2 | P3 |
+| P1 & P23 | 0 | P1 |
+| P1 & P23 | 1 | P23 |
+| P2 & P4 | 0 | P2 |
+| P2 & P4 | 1 | P4 |

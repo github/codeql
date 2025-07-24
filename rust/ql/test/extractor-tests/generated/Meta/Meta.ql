@@ -2,13 +2,21 @@
 import codeql.rust.elements
 import TestUtils
 
-from Meta x, string hasExpr, string isUnsafe, string hasPath, string hasTokenTree
-where
+query predicate instances(Meta x, string isUnsafe__label, string isUnsafe) {
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
-  (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
-  (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
-  if x.hasTokenTree() then hasTokenTree = "yes" else hasTokenTree = "no"
-select x, "hasExpr:", hasExpr, "isUnsafe:", isUnsafe, "hasPath:", hasPath, "hasTokenTree:",
-  hasTokenTree
+  isUnsafe__label = "isUnsafe:" and
+  if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
+}
+
+query predicate getExpr(Meta x, Expr getExpr) {
+  toBeTested(x) and not x.isUnknown() and getExpr = x.getExpr()
+}
+
+query predicate getPath(Meta x, Path getPath) {
+  toBeTested(x) and not x.isUnknown() and getPath = x.getPath()
+}
+
+query predicate getTokenTree(Meta x, TokenTree getTokenTree) {
+  toBeTested(x) and not x.isUnknown() and getTokenTree = x.getTokenTree()
+}

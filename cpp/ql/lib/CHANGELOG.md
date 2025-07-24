@@ -1,3 +1,37 @@
+## 5.3.0
+
+### Deprecated APIs
+
+* The `UnknownDefaultLocation`, `UnknownExprLocation`, and `UnknownStmtLocation` classes have been deprecated. Use `UnknownLocation` instead.
+
+### New Features
+
+* Added a `isFinalValueOfParameter` predicate to `DataFlow::Node` which holds when a dataflow node represents the final value of an output parameter of a function.
+
+### Minor Analysis Improvements
+
+* The `FunctionWithWrappers` library (`semmle.code.cpp.security.FunctionWithWrappers`) no longer considers calls through function pointers as wrapper functions.
+* The analysis of C/C++ code targeting 64-bit Arm platforms has been improved. This includes support for the Arm-specific builtin functions, support for the `arm_neon.h` header and Neon vector types, and support for the `fp8` scalar type. The `arm_sve.h` header and scalable vectors are only partially supported at this point.
+* Added support for `__fp16 _Complex` and `__bf16 _Complex` types
+* Added `sql-injection` sink models for the Oracle Call Interface (OCI) database library functions `OCIStmtPrepare` and `OCIStmtPrepare2`.
+
+## 5.2.0
+
+### Deprecated APIs
+
+* The `ThrowingFunction` class (`semmle.code.cpp.models.interfaces.Throwing`) has been deprecated. Please use the `AlwaysSehThrowingFunction` class instead.
+
+### New Features
+
+* Added a predicate `getAnAttribute` to `Namespace` to retrieve a namespace attribute.
+* The Microsoft-specific `__leave` statement is now supported.
+* A new class `LeaveStmt` extending `JumpStmt` was added to represent `__leave` statements.
+* Added a predicate `hasParameterList` to `LambdaExpression` to capture whether a lambda has an explicitly specified parameter list.
+
+### Bug Fixes
+
+* `resolveTypedefs` now properly resolves typedefs for `ArrayType`s.
+
 ## 5.1.0
 
 ### New Features

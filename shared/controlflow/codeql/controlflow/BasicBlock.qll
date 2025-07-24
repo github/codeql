@@ -5,6 +5,8 @@
  * INTERNAL use only. This is an experimental API subject to change without
  * notice.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Location
 

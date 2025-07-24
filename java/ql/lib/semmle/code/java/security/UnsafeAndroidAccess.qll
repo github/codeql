@@ -1,6 +1,8 @@
 /**
  * Provides classes to reason about Unsafe Resource Fetching vulnerabilities in Android.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

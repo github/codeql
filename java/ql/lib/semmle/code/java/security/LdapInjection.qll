@@ -1,4 +1,6 @@
 /** Provides classes to reason about LDAP injection attacks. */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.dataflow.TaintTracking

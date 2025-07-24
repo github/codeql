@@ -1,4 +1,6 @@
 /** Provides classes to reason about XPath vulnerabilities. */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.dataflow.DataFlow

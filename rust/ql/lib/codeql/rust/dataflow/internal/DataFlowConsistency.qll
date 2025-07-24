@@ -44,24 +44,3 @@ private module Input implements InputSig<Location, RustDataFlow> {
 
 import MakeConsistency<Location, RustDataFlow, RustTaintTracking, Input>
 private import codeql.rust.dataflow.internal.ModelsAsData
-
-query predicate missingMadSummaryCanonicalPath(string crate, string path, Addressable a) {
-  summaryModel(crate, path, _, _, _, _, _) and
-  a.getCrateOrigin() = crate and
-  a.getExtendedCanonicalPath() = path and
-  not exists(a.getCanonicalPath())
-}
-
-query predicate missingMadSourceCanonicalPath(string crate, string path, Addressable a) {
-  sourceModel(crate, path, _, _, _, _) and
-  a.getCrateOrigin() = crate and
-  a.getExtendedCanonicalPath() = path and
-  not exists(a.getCanonicalPath())
-}
-
-query predicate missingMadSinkCanonicalPath(string crate, string path, Addressable a) {
-  sinkModel(crate, path, _, _, _, _) and
-  a.getCrateOrigin() = crate and
-  a.getExtendedCanonicalPath() = path and
-  not exists(a.getCanonicalPath())
-}

@@ -1,13 +1,7 @@
-multipleCanonicalPaths
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as core::cmp::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as typenum::marker_traits::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as core::cmp::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as typenum::marker_traits::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as core::cmp::Ord>::to_ordering |
-| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as typenum::marker_traits::Ord>::to_ordering |
-| file://:0:0:0:0 | impl Ord for Equal { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as core::cmp::Ord> |
-| file://:0:0:0:0 | impl Ord for Equal { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as typenum::marker_traits::Ord> |
-| file://:0:0:0:0 | impl Ord for Greater { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as core::cmp::Ord> |
-| file://:0:0:0:0 | impl Ord for Greater { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as typenum::marker_traits::Ord> |
-| file://:0:0:0:0 | impl Ord for Less { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as core::cmp::Ord> |
-| file://:0:0:0:0 | impl Ord for Less { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as typenum::marker_traits::Ord> |
+multipleCallTargets
+| test_cipher.rs:20:27:20:48 | ...::new(...) |
+| test_cipher.rs:26:27:26:48 | ...::new(...) |
+| test_cipher.rs:29:27:29:48 | ...::new(...) |
+| test_cipher.rs:36:30:36:59 | ...::new(...) |
+| test_cipher.rs:39:30:39:63 | ...::new(...) |
+| test_cipher.rs:110:23:110:50 | ...::new(...) |

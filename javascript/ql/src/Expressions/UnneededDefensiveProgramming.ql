@@ -4,7 +4,9 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/unneeded-defensive-code
- * @tags correctness
+ * @tags quality
+ *       maintainability
+ *       useless-code
  *       external/cwe/cwe-570
  *       external/cwe/cwe-571
  * @precision very-high

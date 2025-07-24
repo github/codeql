@@ -11,8 +11,8 @@ public class JakartaWsSSRF extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Client client = ClientBuilder.newClient();
-        String url = request.getParameter("url");
-        client.target(url); // $ SSRF
+        String url = request.getParameter("url"); // $ Source
+        client.target(url); // $ Alert
     }
 
 }

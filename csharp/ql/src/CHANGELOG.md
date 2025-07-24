@@ -1,3 +1,25 @@
+## 1.3.1
+
+### Minor Analysis Improvements
+
+* Explicitly added summary models for all overloads of `System.Xml.XmlDictionaryReader.CreateBinaryReader`. Added models for some of the methods and properties in `System.Runtime.Serialization.SerializationInfo` and `System.Runtime.Serialization.SerializationInfoEnumerator`. Updated models for `System.Text.Encoding.GetBytes`, `System.Text.Encoding.GetChars` and the constructor for `System.IO.MemoryStream`. This generally improves the library modelling and thus reduces the number of false negatives.
+* Added explicit SQL injection Models as Data models for `Microsoft.Data.SqlClient.SqlCommand` and `Microsoft.Data.SqlClient.SqlDataAdapter`. This reduces false negatives for the query `cs/sql-injection`.
+
+### Bug Fixes
+
+* `web.config` and `web.release.config` files are now recognized regardless of case. This means queries `cs/web/debug-binary` and `cs/web/missing-x-frame-options` may produce more results than before.
+
+## 1.3.0
+
+### Query Metadata Changes
+
+* Query metadata tags have been systematically updated for many C# queries. Primary categorization as either `reliability` or `maintainability`, and relevant sub-category tags such as `readability`, `useless-code`, `complexity`, `performance`, `correctness`, `error-handling`, and `concurrency`. Aligns with the established [Query file metadata and alert message style guide](https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md#quality-query-sub-category-tags).
+* Adjusts the `@security-severity` from 9.3 to 7.3 for `cs/uncontrolled-format-string` to align `CWE-134` severity for memory safe languages to better reflect their impact.
+
+### Minor Analysis Improvements
+
+* The queries `cs/dereferenced-value-is-always-null` and `cs/dereferenced-value-may-be-null` have been improved to reduce false positives. The queries no longer assume that expressions are dereferenced when passed as the receiver (`this` parameter) to extension methods where that parameter is a nullable type.
+
 ## 1.2.2
 
 No user-facing changes.

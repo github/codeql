@@ -1,2 +1,12 @@
-| gen_asm_reg_operand.rs:8:26:8:35 | AsmRegOperand | hasAsmDirSpec: | yes | hasAsmOperandExpr: | yes | hasAsmRegSpec: | yes |
-| gen_asm_reg_operand.rs:8:38:8:46 | AsmRegOperand | hasAsmDirSpec: | yes | hasAsmOperandExpr: | yes | hasAsmRegSpec: | yes |
+instances
+| gen_asm_reg_operand.rs:8:26:8:35 | AsmRegOperand |
+| gen_asm_reg_operand.rs:8:38:8:46 | AsmRegOperand |
+getAsmDirSpec
+| gen_asm_reg_operand.rs:8:26:8:35 | AsmRegOperand | gen_asm_reg_operand.rs:8:26:8:28 | AsmDirSpec |
+| gen_asm_reg_operand.rs:8:38:8:46 | AsmRegOperand | gen_asm_reg_operand.rs:8:38:8:39 | AsmDirSpec |
+getAsmOperandExpr
+| gen_asm_reg_operand.rs:8:26:8:35 | AsmRegOperand | gen_asm_reg_operand.rs:8:35:8:35 | AsmOperandExpr |
+| gen_asm_reg_operand.rs:8:38:8:46 | AsmRegOperand | gen_asm_reg_operand.rs:8:46:8:46 | AsmOperandExpr |
+getAsmRegSpec
+| gen_asm_reg_operand.rs:8:26:8:35 | AsmRegOperand | gen_asm_reg_operand.rs:8:30:8:32 | AsmRegSpec |
+| gen_asm_reg_operand.rs:8:38:8:46 | AsmRegOperand | gen_asm_reg_operand.rs:8:41:8:43 | AsmRegSpec |

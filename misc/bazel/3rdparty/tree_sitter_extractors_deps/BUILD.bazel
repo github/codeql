@@ -32,14 +32,14 @@ filegroup(
 
 # Workspace Member Dependencies
 alias(
-    name = "anyhow-1.0.97",
-    actual = "@vendor_ts__anyhow-1.0.97//:anyhow",
+    name = "anyhow-1.0.98",
+    actual = "@vendor_ts__anyhow-1.0.98//:anyhow",
     tags = ["manual"],
 )
 
 alias(
     name = "anyhow",
-    actual = "@vendor_ts__anyhow-1.0.97//:anyhow",
+    actual = "@vendor_ts__anyhow-1.0.98//:anyhow",
     tags = ["manual"],
 )
 
@@ -56,38 +56,38 @@ alias(
 )
 
 alias(
-    name = "chalk-ir-0.100.0",
-    actual = "@vendor_ts__chalk-ir-0.100.0//:chalk_ir",
+    name = "chalk-ir-0.103.0",
+    actual = "@vendor_ts__chalk-ir-0.103.0//:chalk_ir",
     tags = ["manual"],
 )
 
 alias(
     name = "chalk-ir",
-    actual = "@vendor_ts__chalk-ir-0.100.0//:chalk_ir",
+    actual = "@vendor_ts__chalk-ir-0.103.0//:chalk_ir",
     tags = ["manual"],
 )
 
 alias(
-    name = "chrono-0.4.40",
-    actual = "@vendor_ts__chrono-0.4.40//:chrono",
+    name = "chrono-0.4.41",
+    actual = "@vendor_ts__chrono-0.4.41//:chrono",
     tags = ["manual"],
 )
 
 alias(
     name = "chrono",
-    actual = "@vendor_ts__chrono-0.4.40//:chrono",
+    actual = "@vendor_ts__chrono-0.4.41//:chrono",
     tags = ["manual"],
 )
 
 alias(
-    name = "clap-4.5.35",
-    actual = "@vendor_ts__clap-4.5.35//:clap",
+    name = "clap-4.5.40",
+    actual = "@vendor_ts__clap-4.5.40//:clap",
     tags = ["manual"],
 )
 
 alias(
     name = "clap",
-    actual = "@vendor_ts__clap-4.5.35//:clap",
+    actual = "@vendor_ts__clap-4.5.40//:clap",
     tags = ["manual"],
 )
 
@@ -224,26 +224,26 @@ alias(
 )
 
 alias(
-    name = "num_cpus-1.16.0",
-    actual = "@vendor_ts__num_cpus-1.16.0//:num_cpus",
+    name = "num_cpus-1.17.0",
+    actual = "@vendor_ts__num_cpus-1.17.0//:num_cpus",
     tags = ["manual"],
 )
 
 alias(
     name = "num_cpus",
-    actual = "@vendor_ts__num_cpus-1.16.0//:num_cpus",
+    actual = "@vendor_ts__num_cpus-1.17.0//:num_cpus",
     tags = ["manual"],
 )
 
 alias(
-    name = "proc-macro2-1.0.94",
-    actual = "@vendor_ts__proc-macro2-1.0.94//:proc_macro2",
+    name = "proc-macro2-1.0.95",
+    actual = "@vendor_ts__proc-macro2-1.0.95//:proc_macro2",
     tags = ["manual"],
 )
 
 alias(
     name = "proc-macro2",
-    actual = "@vendor_ts__proc-macro2-1.0.94//:proc_macro2",
+    actual = "@vendor_ts__proc-macro2-1.0.95//:proc_macro2",
     tags = ["manual"],
 )
 
@@ -260,212 +260,212 @@ alias(
 )
 
 alias(
-    name = "ra_ap_base_db-0.0.273",
-    actual = "@vendor_ts__ra_ap_base_db-0.0.273//:ra_ap_base_db",
+    name = "ra_ap_base_db-0.0.288",
+    actual = "@vendor_ts__ra_ap_base_db-0.0.288//:ra_ap_base_db",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_base_db",
-    actual = "@vendor_ts__ra_ap_base_db-0.0.273//:ra_ap_base_db",
+    actual = "@vendor_ts__ra_ap_base_db-0.0.288//:ra_ap_base_db",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_cfg-0.0.273",
-    actual = "@vendor_ts__ra_ap_cfg-0.0.273//:ra_ap_cfg",
+    name = "ra_ap_cfg-0.0.288",
+    actual = "@vendor_ts__ra_ap_cfg-0.0.288//:ra_ap_cfg",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_cfg",
-    actual = "@vendor_ts__ra_ap_cfg-0.0.273//:ra_ap_cfg",
+    actual = "@vendor_ts__ra_ap_cfg-0.0.288//:ra_ap_cfg",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_hir-0.0.273",
-    actual = "@vendor_ts__ra_ap_hir-0.0.273//:ra_ap_hir",
+    name = "ra_ap_hir-0.0.288",
+    actual = "@vendor_ts__ra_ap_hir-0.0.288//:ra_ap_hir",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_hir",
-    actual = "@vendor_ts__ra_ap_hir-0.0.273//:ra_ap_hir",
+    actual = "@vendor_ts__ra_ap_hir-0.0.288//:ra_ap_hir",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_hir_def-0.0.273",
-    actual = "@vendor_ts__ra_ap_hir_def-0.0.273//:ra_ap_hir_def",
+    name = "ra_ap_hir_def-0.0.288",
+    actual = "@vendor_ts__ra_ap_hir_def-0.0.288//:ra_ap_hir_def",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_hir_def",
-    actual = "@vendor_ts__ra_ap_hir_def-0.0.273//:ra_ap_hir_def",
+    actual = "@vendor_ts__ra_ap_hir_def-0.0.288//:ra_ap_hir_def",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_hir_expand-0.0.273",
-    actual = "@vendor_ts__ra_ap_hir_expand-0.0.273//:ra_ap_hir_expand",
+    name = "ra_ap_hir_expand-0.0.288",
+    actual = "@vendor_ts__ra_ap_hir_expand-0.0.288//:ra_ap_hir_expand",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_hir_expand",
-    actual = "@vendor_ts__ra_ap_hir_expand-0.0.273//:ra_ap_hir_expand",
+    actual = "@vendor_ts__ra_ap_hir_expand-0.0.288//:ra_ap_hir_expand",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_hir_ty-0.0.273",
-    actual = "@vendor_ts__ra_ap_hir_ty-0.0.273//:ra_ap_hir_ty",
+    name = "ra_ap_hir_ty-0.0.288",
+    actual = "@vendor_ts__ra_ap_hir_ty-0.0.288//:ra_ap_hir_ty",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_hir_ty",
-    actual = "@vendor_ts__ra_ap_hir_ty-0.0.273//:ra_ap_hir_ty",
+    actual = "@vendor_ts__ra_ap_hir_ty-0.0.288//:ra_ap_hir_ty",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_ide_db-0.0.273",
-    actual = "@vendor_ts__ra_ap_ide_db-0.0.273//:ra_ap_ide_db",
+    name = "ra_ap_ide_db-0.0.288",
+    actual = "@vendor_ts__ra_ap_ide_db-0.0.288//:ra_ap_ide_db",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_ide_db",
-    actual = "@vendor_ts__ra_ap_ide_db-0.0.273//:ra_ap_ide_db",
+    actual = "@vendor_ts__ra_ap_ide_db-0.0.288//:ra_ap_ide_db",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_intern-0.0.273",
-    actual = "@vendor_ts__ra_ap_intern-0.0.273//:ra_ap_intern",
+    name = "ra_ap_intern-0.0.288",
+    actual = "@vendor_ts__ra_ap_intern-0.0.288//:ra_ap_intern",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_intern",
-    actual = "@vendor_ts__ra_ap_intern-0.0.273//:ra_ap_intern",
+    actual = "@vendor_ts__ra_ap_intern-0.0.288//:ra_ap_intern",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_load-cargo-0.0.273",
-    actual = "@vendor_ts__ra_ap_load-cargo-0.0.273//:ra_ap_load_cargo",
+    name = "ra_ap_load-cargo-0.0.288",
+    actual = "@vendor_ts__ra_ap_load-cargo-0.0.288//:ra_ap_load_cargo",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_load-cargo",
-    actual = "@vendor_ts__ra_ap_load-cargo-0.0.273//:ra_ap_load_cargo",
+    actual = "@vendor_ts__ra_ap_load-cargo-0.0.288//:ra_ap_load_cargo",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_parser-0.0.273",
-    actual = "@vendor_ts__ra_ap_parser-0.0.273//:ra_ap_parser",
+    name = "ra_ap_parser-0.0.288",
+    actual = "@vendor_ts__ra_ap_parser-0.0.288//:ra_ap_parser",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_parser",
-    actual = "@vendor_ts__ra_ap_parser-0.0.273//:ra_ap_parser",
+    actual = "@vendor_ts__ra_ap_parser-0.0.288//:ra_ap_parser",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_paths-0.0.273",
-    actual = "@vendor_ts__ra_ap_paths-0.0.273//:ra_ap_paths",
+    name = "ra_ap_paths-0.0.288",
+    actual = "@vendor_ts__ra_ap_paths-0.0.288//:ra_ap_paths",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_paths",
-    actual = "@vendor_ts__ra_ap_paths-0.0.273//:ra_ap_paths",
+    actual = "@vendor_ts__ra_ap_paths-0.0.288//:ra_ap_paths",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_project_model-0.0.273",
-    actual = "@vendor_ts__ra_ap_project_model-0.0.273//:ra_ap_project_model",
+    name = "ra_ap_project_model-0.0.288",
+    actual = "@vendor_ts__ra_ap_project_model-0.0.288//:ra_ap_project_model",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_project_model",
-    actual = "@vendor_ts__ra_ap_project_model-0.0.273//:ra_ap_project_model",
+    actual = "@vendor_ts__ra_ap_project_model-0.0.288//:ra_ap_project_model",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_span-0.0.273",
-    actual = "@vendor_ts__ra_ap_span-0.0.273//:ra_ap_span",
+    name = "ra_ap_span-0.0.288",
+    actual = "@vendor_ts__ra_ap_span-0.0.288//:ra_ap_span",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_span",
-    actual = "@vendor_ts__ra_ap_span-0.0.273//:ra_ap_span",
+    actual = "@vendor_ts__ra_ap_span-0.0.288//:ra_ap_span",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_stdx-0.0.273",
-    actual = "@vendor_ts__ra_ap_stdx-0.0.273//:ra_ap_stdx",
+    name = "ra_ap_stdx-0.0.288",
+    actual = "@vendor_ts__ra_ap_stdx-0.0.288//:ra_ap_stdx",
     tags = ["manual"],
 )
 
 alias(
-    name = "stdx-0.0.273",
-    actual = "@vendor_ts__ra_ap_stdx-0.0.273//:ra_ap_stdx",
+    name = "stdx-0.0.288",
+    actual = "@vendor_ts__ra_ap_stdx-0.0.288//:ra_ap_stdx",
     tags = ["manual"],
 )
 
 alias(
     name = "stdx",
-    actual = "@vendor_ts__ra_ap_stdx-0.0.273//:ra_ap_stdx",
+    actual = "@vendor_ts__ra_ap_stdx-0.0.288//:ra_ap_stdx",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_syntax-0.0.273",
-    actual = "@vendor_ts__ra_ap_syntax-0.0.273//:ra_ap_syntax",
+    name = "ra_ap_syntax-0.0.288",
+    actual = "@vendor_ts__ra_ap_syntax-0.0.288//:ra_ap_syntax",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_syntax",
-    actual = "@vendor_ts__ra_ap_syntax-0.0.273//:ra_ap_syntax",
+    actual = "@vendor_ts__ra_ap_syntax-0.0.288//:ra_ap_syntax",
     tags = ["manual"],
 )
 
 alias(
-    name = "ra_ap_vfs-0.0.273",
-    actual = "@vendor_ts__ra_ap_vfs-0.0.273//:ra_ap_vfs",
+    name = "ra_ap_vfs-0.0.288",
+    actual = "@vendor_ts__ra_ap_vfs-0.0.288//:ra_ap_vfs",
     tags = ["manual"],
 )
 
 alias(
     name = "ra_ap_vfs",
-    actual = "@vendor_ts__ra_ap_vfs-0.0.273//:ra_ap_vfs",
+    actual = "@vendor_ts__ra_ap_vfs-0.0.288//:ra_ap_vfs",
     tags = ["manual"],
 )
 
 alias(
-    name = "rand-0.9.0",
-    actual = "@vendor_ts__rand-0.9.0//:rand",
+    name = "rand-0.9.1",
+    actual = "@vendor_ts__rand-0.9.1//:rand",
     tags = ["manual"],
 )
 
 alias(
     name = "rand",
-    actual = "@vendor_ts__rand-0.9.0//:rand",
+    actual = "@vendor_ts__rand-0.9.1//:rand",
     tags = ["manual"],
 )
 
@@ -518,38 +518,38 @@ alias(
 )
 
 alias(
-    name = "serde_with-3.12.0",
-    actual = "@vendor_ts__serde_with-3.12.0//:serde_with",
+    name = "serde_with-3.13.0",
+    actual = "@vendor_ts__serde_with-3.13.0//:serde_with",
     tags = ["manual"],
 )
 
 alias(
     name = "serde_with",
-    actual = "@vendor_ts__serde_with-3.12.0//:serde_with",
+    actual = "@vendor_ts__serde_with-3.13.0//:serde_with",
     tags = ["manual"],
 )
 
 alias(
-    name = "syn-2.0.100",
-    actual = "@vendor_ts__syn-2.0.100//:syn",
+    name = "syn-2.0.103",
+    actual = "@vendor_ts__syn-2.0.103//:syn",
     tags = ["manual"],
 )
 
 alias(
     name = "syn",
-    actual = "@vendor_ts__syn-2.0.100//:syn",
+    actual = "@vendor_ts__syn-2.0.103//:syn",
     tags = ["manual"],
 )
 
 alias(
-    name = "toml-0.8.20",
-    actual = "@vendor_ts__toml-0.8.20//:toml",
+    name = "toml-0.8.23",
+    actual = "@vendor_ts__toml-0.8.23//:toml",
     tags = ["manual"],
 )
 
 alias(
     name = "toml",
-    actual = "@vendor_ts__toml-0.8.20//:toml",
+    actual = "@vendor_ts__toml-0.8.23//:toml",
     tags = ["manual"],
 )
 

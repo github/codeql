@@ -19,6 +19,8 @@ module HttpStringToUrlOpenMethodFlowConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

@@ -8,7 +8,7 @@ import (
 )
 
 func OutOfMemoryBad(w http.ResponseWriter, r *http.Request) {
-	source := r.URL.Query()
+	source := r.URL.Query() // $ Source
 
 	sourceStr := source.Get("n")
 	sink, err := strconv.Atoi(sourceStr)
@@ -17,7 +17,7 @@ func OutOfMemoryBad(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result := make([]string, sink) // $hasTaintFlow="sink"
+	result := make([]string, sink) // $ Alert
 	for i := 0; i < sink; i++ {
 		result[i] = fmt.Sprintf("Item %d", i+1)
 	}

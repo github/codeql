@@ -2,7 +2,8 @@
  * @name Modification of dictionary returned by locals()
  * @description Modifications of the dictionary returned by locals() are not propagated to the local variables of a function.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity warning
  * @sub-severity low

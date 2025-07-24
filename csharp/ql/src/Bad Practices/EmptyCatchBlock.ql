@@ -5,8 +5,9 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id cs/empty-catch-block
- * @tags reliability
- *       readability
+ * @tags quality
+ *       reliability
+ *       error-handling
  *       exceptions
  *       external/cwe/cwe-390
  *       external/cwe/cwe-391

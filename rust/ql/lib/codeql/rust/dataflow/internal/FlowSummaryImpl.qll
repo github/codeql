@@ -13,7 +13,7 @@ module Input implements InputSig<Location, RustDataFlow> {
   private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
   private import codeql.rust.frameworks.stdlib.Stdlib
 
-  class SummarizedCallableBase = string;
+  class SummarizedCallableBase = Function;
 
   abstract private class SourceSinkBase extends AstNode {
     /** Gets the associated call. */
@@ -30,6 +30,11 @@ module Input implements InputSig<Location, RustDataFlow> {
         not r.hasResolvedCrateOrigin() and
         crate = ""
       )
+    }
+
+    /** Holds if the associated call resolves to `path`. */
+    final predicate callResolvesTo(string path) {
+      path = this.getCall().getStaticTarget().(Addressable).getCanonicalPath()
     }
   }
 
@@ -138,7 +143,7 @@ private import Make<Location, RustDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
-    result.asCallCfgNode().getCall() = sc.(LibraryCallable).getACall()
+    result.asCallCfgNode().getCall().getStaticTarget() = sc
   }
 
   RustDataFlow::Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) {

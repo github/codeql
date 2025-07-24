@@ -1,7 +1,0 @@
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-extensions:
-  - addsTo:
-      pack: codeql/rust-all
-      extensible: summaryModel
-    data:
-      - ["repo::cookies", "<crate::session::User as crate::request::from_request::FromRequest>::from_request", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]

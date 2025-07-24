@@ -46,6 +46,8 @@ module HardcodedKeyConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(HardcodedEncryptionKeyAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module HardcodedKeyFlow = TaintTracking::Global<HardcodedKeyConfig>;
