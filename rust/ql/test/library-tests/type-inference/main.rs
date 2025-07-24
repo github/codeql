@@ -1931,6 +1931,10 @@ mod impl_trait {
         Some(S3(x))
     }
 
+    fn get_a_my_trait4<T: Clone>(x: T) -> (impl MyTrait<T>, impl MyTrait<T>) {
+        (S3(x.clone()), S3(x)) // $ target=clone
+    }
+
     fn uses_my_trait2<A>(t: impl MyTrait<A>) -> A {
         t.get_a() // $ target=MyTrait::get_a
     }
@@ -1947,6 +1951,7 @@ mod impl_trait {
         let e = get_a_my_trait2(S1).get_a(); // $ target=get_a_my_trait2 target=MyTrait::get_a type=e:S1
         // For this function the `impl` type does not appear in the root of the return type
         let f = get_a_my_trait3(S1).unwrap().get_a(); // $ target=get_a_my_trait3 target=unwrap target=MyTrait::get_a type=f:S1
+        let g = get_a_my_trait4(S1).0.get_a(); // $ target=get_a_my_trait4 target=MyTrait::get_a type=g:S1
     }
 }
 
