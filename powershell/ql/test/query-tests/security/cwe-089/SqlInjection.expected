@@ -4,12 +4,44 @@ edges
 | test.ps1:1:1:1:10 | userinput | test.ps1:17:24:17:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | provenance |  |
 | test.ps1:1:1:1:10 | userinput | test.ps1:28:24:28:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | provenance |  |
 | test.ps1:1:1:1:10 | userinput | test.ps1:78:13:78:22 | userinput | provenance |  |
+| test.ps1:1:1:1:10 | userinput | test.ps1:109:22:109:31 | userinput | provenance |  |
+| test.ps1:1:1:1:10 | userinput | test.ps1:109:33:109:42 | userinput | provenance |  |
+| test.ps1:1:1:1:10 | userinput | test.ps1:109:44:109:53 | userinput | provenance |  |
+| test.ps1:1:1:1:10 | userinput | test.ps1:109:55:109:64 | userinput | provenance |  |
+| test.ps1:1:1:1:10 | userinput | test.ps1:109:66:109:75 | userinput | provenance |  |
+| test.ps1:1:1:1:10 | userinput | test.ps1:109:77:109:86 | userinput | provenance |  |
+| test.ps1:1:1:1:10 | userinput | test.ps1:109:88:109:97 | userinput | provenance |  |
+| test.ps1:1:1:1:10 | userinput | test.ps1:109:99:109:108 | userinput | provenance |  |
 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:1:1:1:10 | userinput | provenance | Src:MaD:0  |
 | test.ps1:4:1:4:6 | query | test.ps1:5:72:5:77 | query | provenance |  |
 | test.ps1:8:1:8:6 | query | test.ps1:9:72:9:77 | query | provenance |  |
 | test.ps1:72:1:72:11 | QueryConn2 [element Query] | test.ps1:81:15:81:25 | QueryConn2 | provenance |  |
 | test.ps1:72:15:79:1 | ${...} [element Query] | test.ps1:72:1:72:11 | QueryConn2 [element Query] | provenance |  |
 | test.ps1:78:13:78:22 | userinput | test.ps1:72:15:79:1 | ${...} [element Query] | provenance |  |
+| test.ps1:83:31:83:37 | i | test.ps1:84:5:84:11 | query1 | provenance |  |
+| test.ps1:83:40:83:47 | l | test.ps1:87:5:87:11 | query2 | provenance |  |
+| test.ps1:83:50:83:58 | f | test.ps1:90:5:90:11 | query3 | provenance |  |
+| test.ps1:83:61:83:70 | d | test.ps1:93:5:93:11 | query4 | provenance |  |
+| test.ps1:83:73:83:85 | dec | test.ps1:96:5:96:11 | query5 | provenance |  |
+| test.ps1:83:88:83:95 | c | test.ps1:99:5:99:11 | query6 | provenance |  |
+| test.ps1:83:98:83:105 | b | test.ps1:102:5:102:11 | query7 | provenance |  |
+| test.ps1:83:108:83:120 | dt | test.ps1:105:5:105:11 | query8 | provenance |  |
+| test.ps1:84:5:84:11 | query1 | test.ps1:85:76:85:82 | query1 | provenance |  |
+| test.ps1:87:5:87:11 | query2 | test.ps1:88:76:88:82 | query2 | provenance |  |
+| test.ps1:90:5:90:11 | query3 | test.ps1:91:76:91:82 | query3 | provenance |  |
+| test.ps1:93:5:93:11 | query4 | test.ps1:94:76:94:82 | query4 | provenance |  |
+| test.ps1:96:5:96:11 | query5 | test.ps1:97:76:97:82 | query5 | provenance |  |
+| test.ps1:99:5:99:11 | query6 | test.ps1:100:76:100:82 | query6 | provenance |  |
+| test.ps1:102:5:102:11 | query7 | test.ps1:103:76:103:82 | query7 | provenance |  |
+| test.ps1:105:5:105:11 | query8 | test.ps1:106:76:106:82 | query8 | provenance |  |
+| test.ps1:109:22:109:31 | userinput | test.ps1:83:31:83:37 | i | provenance |  |
+| test.ps1:109:33:109:42 | userinput | test.ps1:83:40:83:47 | l | provenance |  |
+| test.ps1:109:44:109:53 | userinput | test.ps1:83:50:83:58 | f | provenance |  |
+| test.ps1:109:55:109:64 | userinput | test.ps1:83:61:83:70 | d | provenance |  |
+| test.ps1:109:66:109:75 | userinput | test.ps1:83:73:83:85 | dec | provenance |  |
+| test.ps1:109:77:109:86 | userinput | test.ps1:83:88:83:95 | c | provenance |  |
+| test.ps1:109:88:109:97 | userinput | test.ps1:83:98:83:105 | b | provenance |  |
+| test.ps1:109:99:109:108 | userinput | test.ps1:83:108:83:120 | dt | provenance |  |
 nodes
 | test.ps1:1:1:1:10 | userinput | semmle.label | userinput |
 | test.ps1:1:14:1:45 | Call to read-host | semmle.label | Call to read-host |
@@ -23,6 +55,38 @@ nodes
 | test.ps1:72:15:79:1 | ${...} [element Query] | semmle.label | ${...} [element Query] |
 | test.ps1:78:13:78:22 | userinput | semmle.label | userinput |
 | test.ps1:81:15:81:25 | QueryConn2 | semmle.label | QueryConn2 |
+| test.ps1:83:31:83:37 | i | semmle.label | i |
+| test.ps1:83:40:83:47 | l | semmle.label | l |
+| test.ps1:83:50:83:58 | f | semmle.label | f |
+| test.ps1:83:61:83:70 | d | semmle.label | d |
+| test.ps1:83:73:83:85 | dec | semmle.label | dec |
+| test.ps1:83:88:83:95 | c | semmle.label | c |
+| test.ps1:83:98:83:105 | b | semmle.label | b |
+| test.ps1:83:108:83:120 | dt | semmle.label | dt |
+| test.ps1:84:5:84:11 | query1 | semmle.label | query1 |
+| test.ps1:85:76:85:82 | query1 | semmle.label | query1 |
+| test.ps1:87:5:87:11 | query2 | semmle.label | query2 |
+| test.ps1:88:76:88:82 | query2 | semmle.label | query2 |
+| test.ps1:90:5:90:11 | query3 | semmle.label | query3 |
+| test.ps1:91:76:91:82 | query3 | semmle.label | query3 |
+| test.ps1:93:5:93:11 | query4 | semmle.label | query4 |
+| test.ps1:94:76:94:82 | query4 | semmle.label | query4 |
+| test.ps1:96:5:96:11 | query5 | semmle.label | query5 |
+| test.ps1:97:76:97:82 | query5 | semmle.label | query5 |
+| test.ps1:99:5:99:11 | query6 | semmle.label | query6 |
+| test.ps1:100:76:100:82 | query6 | semmle.label | query6 |
+| test.ps1:102:5:102:11 | query7 | semmle.label | query7 |
+| test.ps1:103:76:103:82 | query7 | semmle.label | query7 |
+| test.ps1:105:5:105:11 | query8 | semmle.label | query8 |
+| test.ps1:106:76:106:82 | query8 | semmle.label | query8 |
+| test.ps1:109:22:109:31 | userinput | semmle.label | userinput |
+| test.ps1:109:33:109:42 | userinput | semmle.label | userinput |
+| test.ps1:109:44:109:53 | userinput | semmle.label | userinput |
+| test.ps1:109:55:109:64 | userinput | semmle.label | userinput |
+| test.ps1:109:66:109:75 | userinput | semmle.label | userinput |
+| test.ps1:109:77:109:86 | userinput | semmle.label | userinput |
+| test.ps1:109:88:109:97 | userinput | semmle.label | userinput |
+| test.ps1:109:99:109:108 | userinput | semmle.label | userinput |
 subpaths
 #select
 | test.ps1:5:72:5:77 | query | test.ps1:1:14:1:45 | Call to read-host | test.ps1:5:72:5:77 | query | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
@@ -30,3 +94,11 @@ subpaths
 | test.ps1:17:24:17:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | test.ps1:1:14:1:45 | Call to read-host | test.ps1:17:24:17:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
 | test.ps1:28:24:28:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | test.ps1:1:14:1:45 | Call to read-host | test.ps1:28:24:28:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
 | test.ps1:81:15:81:25 | QueryConn2 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:81:15:81:25 | QueryConn2 | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
+| test.ps1:85:76:85:82 | query1 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:85:76:85:82 | query1 | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
+| test.ps1:88:76:88:82 | query2 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:88:76:88:82 | query2 | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
+| test.ps1:91:76:91:82 | query3 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:91:76:91:82 | query3 | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
+| test.ps1:94:76:94:82 | query4 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:94:76:94:82 | query4 | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
+| test.ps1:97:76:97:82 | query5 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:97:76:97:82 | query5 | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
+| test.ps1:100:76:100:82 | query6 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:100:76:100:82 | query6 | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
+| test.ps1:103:76:103:82 | query7 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:103:76:103:82 | query7 | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
+| test.ps1:106:76:106:82 | query8 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:106:76:106:82 | query8 | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
