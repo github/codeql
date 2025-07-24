@@ -71,7 +71,6 @@ predicate correctRaise(string name, Expr exec) {
 }
 
 predicate preferredRaise(string name, string execName, string message) {
-  // TODO: execName should be an IPA type
   attributeMethod(name) and
   execName = "AttributeError" and
   message = "should raise an AttributeError instead."
@@ -94,6 +93,7 @@ predicate preferredRaise(string name, string execName, string message) {
 }
 
 predicate execIsOfType(Expr exec, string execName) {
+  // Might make sense to have execName be an IPA type here. Or part of a more general API modelling builtin/stdlib subclass relations.
   exists(string subclass |
     execName = "TypeError" and
     subclass = "TypeError"
@@ -149,6 +149,8 @@ predicate isNotImplementedError(Expr exec) {
   exec = API::builtin("NotImplementedError").getACall().asExpr()
 }
 
+string getExecName(Expr exec) { result = exec.(Call).getFunc().(Name).getId() }
+
 from Function f, Expr exec, string message
 where
   f.isSpecialMethod() and
@@ -170,4 +172,4 @@ where
       else message = "This method raises $@ - " + subMessage
     )
   )
-select f, message, exec, exec.toString() // TODO: remove tostring
+select f, message, exec, getExecName(exec)
