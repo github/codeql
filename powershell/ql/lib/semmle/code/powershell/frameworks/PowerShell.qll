@@ -6,7 +6,7 @@ module PowerShell {
   private class PowerShellGlobalEntry extends ModelInput::TypeModel {
     override DataFlow::Node getASource(string type) {
       type = "System.Management.Automation.PowerShell!" and
-      result.asExpr().getExpr().(TypeNameExpr).getName().toLowerCase() = "powershell"
+      result.asExpr().getExpr().(TypeNameExpr).getLowerCaseName() = "powershell"
     }
   }
 }
