@@ -563,7 +563,7 @@ module API {
         )
         or
         exists(DataFlow::AutomaticVariableNode automatic |
-          automatic.getName() = name and
+          automatic.getLowerCaseName() = name and
           succ = getForwardStartNode(automatic)
         )
         or
@@ -571,7 +571,7 @@ module API {
       )
       or
       exists(DataFlow::QualifiedTypeNameNode typeName |
-        typeName.getName() = name and
+        typeName.getLowerCaseName() = name and
         pred = MkNamespaceOfTypeNameNode(typeName) and
         succ = getForwardStartNode(typeName)
       )

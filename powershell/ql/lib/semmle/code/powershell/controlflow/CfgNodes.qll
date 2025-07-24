@@ -587,7 +587,15 @@ module ExprNodes {
 
     override ObjectCreation getExpr() { result = e }
 
-    string getConstructedTypeName() { result = this.getExpr().getConstructedTypeName() }
+    string getLowerCaseConstructedTypeName() {
+      result = this.getExpr().getLowerCaseConstructedTypeName()
+    }
+
+    bindingset[result]
+    pragma[inline_late]
+    string getAConstructedTypeName() {
+      result.toLowerCase() = this.getLowerCaseConstructedTypeName()
+    }
 
     ExprCfgNode getConstructedTypeExpr() {
       e.hasCfgChild(this.getExpr().getConstructedTypeExpr(), this, result)
@@ -717,7 +725,11 @@ module ExprNodes {
 
     override TypeNameExpr getExpr() { result = e }
 
-    string getName() { result = e.getName() }
+    bindingset[result]
+    pragma[inline_late]
+    string getAName() { result = e.getAName() }
+
+    string getLowerCaseName() { result = e.getLowerCaseName() }
 
     string getNamespace() { result = e.getNamespace() }
 
@@ -1118,7 +1130,11 @@ module ExprNodes {
 
     override AutomaticVariable getExpr() { result = e }
 
-    string getName() { result = e.getName() }
+    bindingset[result]
+    pragma[inline_late]
+    string getAName() { result = e.getAName() }
+
+    string getLowerCaseName() { result = e.getLowerCaseName() }
   }
 }
 
