@@ -2292,8 +2292,6 @@ mod loops {
     }
 }
 
-mod dereference;
-
 mod explicit_type_args {
     struct S1<T>(T);
 
@@ -2461,6 +2459,9 @@ mod closures {
     }
 }
 
+mod dereference;
+mod dyn_type;
+
 fn main() {
     field_access::f(); // $ target=f
     method_impl::f(); // $ target=f
@@ -2491,5 +2492,6 @@ fn main() {
     dereference::test(); // $ target=test
     pattern_matching::test_all_patterns(); // $ target=test_all_patterns
     pattern_matching_experimental::box_patterns(); // $ target=box_patterns
-    closures::f() // $ target=f
+    closures::f(); // $ target=f
+    dyn_type::test(); // $ target=test
 }

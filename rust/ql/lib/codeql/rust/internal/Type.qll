@@ -24,11 +24,15 @@ newtype TType =
   TArrayType() or // todo: add size?
   TRefType() or // todo: add mut?
   TImplTraitType(ImplTraitTypeRepr impl) or
+  TDynTraitType(Trait t) { t = any(DynTraitTypeRepr dt).getTrait() } or
   TSliceType() or
   TTupleTypeParameter(int arity, int i) { exists(TTuple(arity)) and i in [0 .. arity - 1] } or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
   TArrayTypeParameter() or
+  TDynTraitTypeParameter(TypeParam tp) {
+    tp = any(DynTraitTypeRepr dt).getTrait().getGenericParamList().getATypeParam()
+  } or
   TRefTypeParameter() or
   TSelfTypeParameter(Trait t) or
   TSliceTypeParameter()
@@ -247,6 +251,26 @@ class ImplTraitType extends Type, TImplTraitType {
   override Location getLocation() { result = impl.getLocation() }
 }
 
+class DynTraitType extends Type, TDynTraitType {
+  Trait trait;
+
+  DynTraitType() { this = TDynTraitType(trait) }
+
+  override StructField getStructField(string name) { none() }
+
+  override TupleField getTupleField(int i) { none() }
+
+  override DynTraitTypeParameter getTypeParameter(int i) {
+    result = TDynTraitTypeParameter(trait.getGenericParamList().getTypeParam(i))
+  }
+
+  Trait getTrait() { result = trait }
+
+  override string toString() { result = "dyn " + trait.getName().toString() }
+
+  override Location getLocation() { result = trait.getLocation() }
+}
+
 /**
  * An [impl Trait in return position][1] type, for example:
  *
@@ -381,6 +405,18 @@ class ArrayTypeParameter extends TypeParameter, TArrayTypeParameter {
   override Location getLocation() { result instanceof EmptyLocation }
 }
 
+class DynTraitTypeParameter extends TypeParameter, TDynTraitTypeParameter {
+  private TypeParam typeParam;
+
+  DynTraitTypeParameter() { this = TDynTraitTypeParameter(typeParam) }
+
+  TypeParam getTypeParam() { result = typeParam }
+
+  override string toString() { result = "dyn(" + typeParam.toString() + ")" }
+
+  override Location getLocation() { result = typeParam.getLocation() }
+}
+
 /** An implicit reference type parameter. */
 class RefTypeParameter extends TypeParameter, TRefTypeParameter {
   override string toString() { result = "&T" }
@@ -462,6 +498,13 @@ abstract class TypeAbstraction extends AstNode {
 final class ImplTypeAbstraction extends TypeAbstraction, Impl {
   override TypeParamTypeParameter getATypeParameter() {
     result.getTypeParam() = this.getGenericParamList().getATypeParam()
+  }
+}
+
+final class DynTypeAbstraction extends TypeAbstraction, DynTraitTypeRepr {
+  override TypeParameter getATypeParameter() {
+    result.(TypeParamTypeParameter).getTypeParam() =
+      this.getTrait().getGenericParamList().getATypeParam()
   }
 }
 

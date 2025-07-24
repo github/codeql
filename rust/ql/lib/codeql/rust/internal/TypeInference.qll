@@ -97,6 +97,9 @@ private module Input1 implements InputSig1<Location> {
         id = 2
         or
         kind = 1 and
+        id = idOfTypeParameterAstNode(tp0.(DynTraitTypeParameter).getTypeParam())
+        or
+        kind = 2 and
         exists(AstNode node | id = idOfTypeParameterAstNode(node) |
           node = tp0.(TypeParamTypeParameter).getTypeParam() or
           node = tp0.(AssociatedTypeTypeParameter).getTypeAlias() or
@@ -107,7 +110,7 @@ private module Input1 implements InputSig1<Location> {
         exists(TupleTypeParameter ttp, int maxArity |
           maxArity = max(int i | i = any(TupleType tt).getArity()) and
           tp0 = ttp and
-          kind = 2 and
+          kind = 3 and
           id = ttp.getTupleType().getArity() * maxArity + ttp.getIndex()
         )
       |
@@ -188,6 +191,14 @@ private module Input2 implements InputSig2 {
       abs = impl and
       condition = impl and
       constraint = impl.getTypeBoundList().getABound().getTypeRepr()
+    )
+    or
+    // a `dyn Trait` type implements `Trait`. See the comment on
+    // `DynTypeBoundListMention` for further details.
+    exists(DynTraitTypeRepr object |
+      abs = object and
+      condition = object.getTypeBoundList() and
+      constraint = object.getTrait()
     )
   }
 }
@@ -1715,8 +1726,14 @@ private Function getMethodFromImpl(MethodCall mc) {
 
 bindingset[trait, name]
 pragma[inline_late]
-private Function getTraitMethod(ImplTraitReturnType trait, string name) {
+private Function getImplTraitMethod(ImplTraitReturnType trait, string name) {
   result = getMethodSuccessor(trait.getImplTraitTypeRepr(), name)
+}
+
+bindingset[traitObject, name]
+pragma[inline_late]
+private Function getDynTraitMethod(DynTraitType traitObject, string name) {
+  result = getMethodSuccessor(traitObject.getTrait(), name)
 }
 
 pragma[nomagic]
@@ -1729,7 +1746,10 @@ private Function resolveMethodCallTarget(MethodCall mc) {
   result = getTypeParameterMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
   or
   // The type of the receiver is an `impl Trait` type.
-  result = getTraitMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
+  result = getImplTraitMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
+  or
+  // The type of the receiver is a trait object `dyn Trait` type.
+  result = getDynTraitMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
 }
 
 pragma[nomagic]
@@ -2071,6 +2091,13 @@ private module Debug {
   Function debugResolveCallTarget(Call c) {
     c = getRelevantLocatable() and
     result = resolveCallTarget(c)
+  }
+
+  predicate debugConditionSatisfiesConstraint(
+    TypeAbstraction abs, TypeMention condition, TypeMention constraint
+  ) {
+    abs = getRelevantLocatable() and
+    Input2::conditionSatisfiesConstraint(abs, condition, constraint)
   }
 
   predicate debugInferImplicitSelfType(SelfParam self, TypePath path, Type t) {
