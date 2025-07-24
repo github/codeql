@@ -1,3 +1,0 @@
-nonInjectiveTypeParameterId
-| main.rs:1934:24:1934:31 | impl(T) | main.rs:1934:24:1934:31 | impl(T) |
-| main.rs:1934:24:1934:31 | impl(T) | main.rs:1934:24:1934:31 | impl(T) |

@@ -3372,30 +3372,30 @@ inferType
 | main.rs:1934:78:1936:5 | { ... } | 0(2) | main.rs:1879:5:1879:22 | S3 |
 | main.rs:1934:78:1936:5 | { ... } | 0(2) | main.rs:1934:44:1934:58 | ImplTraitTypeRepr |
 | main.rs:1934:78:1936:5 | { ... } | 0(2).T3 | main.rs:1934:24:1934:31 | T |
-| main.rs:1934:78:1936:5 | { ... } | 0(2).impl(T).impl(T) | main.rs:1934:24:1934:31 | T |
+| main.rs:1934:78:1936:5 | { ... } | 0(2).impl(T) | main.rs:1934:24:1934:31 | T |
 | main.rs:1934:78:1936:5 | { ... } | 1(2) | main.rs:1879:5:1879:22 | S3 |
 | main.rs:1934:78:1936:5 | { ... } | 1(2) | main.rs:1934:61:1934:75 | ImplTraitTypeRepr |
 | main.rs:1934:78:1936:5 | { ... } | 1(2).T3 | main.rs:1934:24:1934:31 | T |
-| main.rs:1934:78:1936:5 | { ... } | 1(2).impl(T).impl(T) | main.rs:1934:24:1934:31 | T |
+| main.rs:1934:78:1936:5 | { ... } | 1(2).impl(T) | main.rs:1934:24:1934:31 | T |
 | main.rs:1935:9:1935:30 | TupleExpr |  | file://:0:0:0:0 | (T_2) |
 | main.rs:1935:9:1935:30 | TupleExpr | 0(2) | main.rs:1879:5:1879:22 | S3 |
 | main.rs:1935:9:1935:30 | TupleExpr | 0(2) | main.rs:1934:44:1934:58 | ImplTraitTypeRepr |
 | main.rs:1935:9:1935:30 | TupleExpr | 0(2).T3 | main.rs:1934:24:1934:31 | T |
-| main.rs:1935:9:1935:30 | TupleExpr | 0(2).impl(T).impl(T) | main.rs:1934:24:1934:31 | T |
+| main.rs:1935:9:1935:30 | TupleExpr | 0(2).impl(T) | main.rs:1934:24:1934:31 | T |
 | main.rs:1935:9:1935:30 | TupleExpr | 1(2) | main.rs:1879:5:1879:22 | S3 |
 | main.rs:1935:9:1935:30 | TupleExpr | 1(2) | main.rs:1934:61:1934:75 | ImplTraitTypeRepr |
 | main.rs:1935:9:1935:30 | TupleExpr | 1(2).T3 | main.rs:1934:24:1934:31 | T |
-| main.rs:1935:9:1935:30 | TupleExpr | 1(2).impl(T).impl(T) | main.rs:1934:24:1934:31 | T |
+| main.rs:1935:9:1935:30 | TupleExpr | 1(2).impl(T) | main.rs:1934:24:1934:31 | T |
 | main.rs:1935:10:1935:22 | S3(...) |  | main.rs:1879:5:1879:22 | S3 |
 | main.rs:1935:10:1935:22 | S3(...) |  | main.rs:1934:44:1934:58 | ImplTraitTypeRepr |
 | main.rs:1935:10:1935:22 | S3(...) | T3 | main.rs:1934:24:1934:31 | T |
-| main.rs:1935:10:1935:22 | S3(...) | impl(T).impl(T) | main.rs:1934:24:1934:31 | T |
+| main.rs:1935:10:1935:22 | S3(...) | impl(T) | main.rs:1934:24:1934:31 | T |
 | main.rs:1935:13:1935:13 | x |  | main.rs:1934:24:1934:31 | T |
 | main.rs:1935:13:1935:21 | x.clone() |  | main.rs:1934:24:1934:31 | T |
 | main.rs:1935:25:1935:29 | S3(...) |  | main.rs:1879:5:1879:22 | S3 |
 | main.rs:1935:25:1935:29 | S3(...) |  | main.rs:1934:61:1934:75 | ImplTraitTypeRepr |
 | main.rs:1935:25:1935:29 | S3(...) | T3 | main.rs:1934:24:1934:31 | T |
-| main.rs:1935:25:1935:29 | S3(...) | impl(T).impl(T) | main.rs:1934:24:1934:31 | T |
+| main.rs:1935:25:1935:29 | S3(...) | impl(T) | main.rs:1934:24:1934:31 | T |
 | main.rs:1935:28:1935:28 | x |  | main.rs:1934:24:1934:31 | T |
 | main.rs:1938:26:1938:26 | t |  | main.rs:1938:29:1938:43 | ImplTraitTypeRepr |
 | main.rs:1938:51:1940:5 | { ... } |  | main.rs:1938:23:1938:23 | A |
@@ -3434,11 +3434,11 @@ inferType
 | main.rs:1954:13:1954:13 | g |  | main.rs:1876:5:1877:14 | S1 |
 | main.rs:1954:17:1954:35 | get_a_my_trait4(...) |  | file://:0:0:0:0 | (T_2) |
 | main.rs:1954:17:1954:35 | get_a_my_trait4(...) | 0(2) | main.rs:1934:44:1934:58 | ImplTraitTypeRepr |
-| main.rs:1954:17:1954:35 | get_a_my_trait4(...) | 0(2).impl(T).impl(T) | main.rs:1876:5:1877:14 | S1 |
+| main.rs:1954:17:1954:35 | get_a_my_trait4(...) | 0(2).impl(T) | main.rs:1876:5:1877:14 | S1 |
 | main.rs:1954:17:1954:35 | get_a_my_trait4(...) | 1(2) | main.rs:1934:61:1934:75 | ImplTraitTypeRepr |
-| main.rs:1954:17:1954:35 | get_a_my_trait4(...) | 1(2).impl(T).impl(T) | main.rs:1876:5:1877:14 | S1 |
+| main.rs:1954:17:1954:35 | get_a_my_trait4(...) | 1(2).impl(T) | main.rs:1876:5:1877:14 | S1 |
 | main.rs:1954:17:1954:37 | ... .0 |  | main.rs:1934:44:1934:58 | ImplTraitTypeRepr |
-| main.rs:1954:17:1954:37 | ... .0 | impl(T).impl(T) | main.rs:1876:5:1877:14 | S1 |
+| main.rs:1954:17:1954:37 | ... .0 | impl(T) | main.rs:1876:5:1877:14 | S1 |
 | main.rs:1954:17:1954:45 | ... .get_a() |  | main.rs:1876:5:1877:14 | S1 |
 | main.rs:1954:33:1954:34 | S1 |  | main.rs:1876:5:1877:14 | S1 |
 | main.rs:1965:16:1965:20 | SelfParam |  | file://:0:0:0:0 | & |
