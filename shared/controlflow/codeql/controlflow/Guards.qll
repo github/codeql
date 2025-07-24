@@ -52,6 +52,7 @@ module;
 
 private import codeql.util.Boolean
 private import codeql.util.Location
+private import codeql.util.Unit
 
 signature module InputSig<LocationSig Location> {
   class SuccessorType {
@@ -1002,7 +1003,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     private module WrapperGuard {
       final private class FinalExpr = Expr;
 
-      private class ReturnExpr extends FinalExpr {
+      class ReturnExpr extends FinalExpr {
         ReturnExpr() { any(NonOverridableMethod m).getAReturnExpr() = this }
 
         NonOverridableMethod getMethod() { result.getAReturnExpr() = this }
@@ -1016,7 +1017,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         ReturnImplies::guardControls(call, val, _, _)
       }
 
-      private predicate relevantReturnValue(NonOverridableMethod m, GuardValue val) {
+      predicate relevantReturnValue(NonOverridableMethod m, GuardValue val) {
         exists(NonOverridableMethodCall call |
           relevantCallValue(call, val) and
           call.getMethod() = m and
@@ -1028,7 +1029,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         relevantReturnValue(guard.(ReturnExpr).getMethod(), val)
       }
 
-      private module ReturnImplies = ImpliesTC<returnGuard/2>;
+      module ReturnImplies = ImpliesTC<returnGuard/2>;
 
       /**
        * Holds if `ret` is a return expression in a non-overridable method that
@@ -1100,6 +1101,103 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           call.getArgument(apos) = g2 and
           parameterMatch(pragma[only_bind_out](ppos), pragma[only_bind_out](apos)) and
           not exprHasValue(g2, v2) // disregard trivial guard
+        )
+      }
+    }
+
+    signature predicate guardChecksSig(Guard g, Expr e, boolean branch);
+
+    bindingset[this]
+    signature class StateSig;
+
+    private module WithState<StateSig State> {
+      signature predicate guardChecksSig(Guard g, Expr e, boolean branch, State state);
+    }
+
+    /**
+     * Extends a `BarrierGuard` input predicate with wrapped invocations.
+     */
+    module ValidationWrapper<guardChecksSig/3 guardChecks0> {
+      private predicate guardChecksWithState(Guard g, Expr e, boolean branch, Unit state) {
+        guardChecks0(g, e, branch) and exists(state)
+      }
+
+      private module StatefulWrapper = ValidationWrapperWithState<Unit, guardChecksWithState/4>;
+
+      /**
+       * Holds if the guard `g` validates the expression `e` upon evaluating to `val`.
+       */
+      predicate guardChecks(Guard g, Expr e, GuardValue val) {
+        StatefulWrapper::guardChecks(g, e, val, _)
+      }
+    }
+
+    /**
+     * Extends a `BarrierGuard` input predicate with wrapped invocations.
+     */
+    module ValidationWrapperWithState<
+      StateSig State, WithState<State>::guardChecksSig/4 guardChecks0>
+    {
+      private import WrapperGuard
+
+      /**
+       * Holds if `ret` is a return expression in a non-overridable method that
+       * on a return value of `retval` allows the conclusion that the `ppos`th
+       * parameter has been validated by the given guard.
+       */
+      private predicate validReturnInValidationWrapper(
+        ReturnExpr ret, ParameterPosition ppos, GuardValue retval, State state
+      ) {
+        exists(NonOverridableMethod m, SsaDefinition param, Guard guard, GuardValue val |
+          m.getAReturnExpr() = ret and
+          parameterDefinition(m.getParameter(ppos), param) and
+          guardChecks(guard, param.getARead(), val, state)
+        |
+          guard.valueControls(ret.getBasicBlock(), val) and
+          relevantReturnValue(m, retval)
+          or
+          ReturnImplies::guardControls(guard, val, ret, retval)
+        )
+      }
+
+      /**
+       * Gets a non-overridable method that performs a check on the `ppos`th
+       * parameter. A return value equal to `retval` allows us to conclude
+       * that the argument has been validated by the given guard.
+       */
+      private NonOverridableMethod validationWrapper(
+        ParameterPosition ppos, GuardValue retval, State state
+      ) {
+        forex(ReturnExpr ret |
+          result.getAReturnExpr() = ret and
+          not exists(GuardValue notRetval |
+            exprHasValue(ret, notRetval) and
+            disjointValues(notRetval, retval)
+          )
+        |
+          validReturnInValidationWrapper(ret, ppos, retval, state)
+        )
+        or
+        exists(SsaDefinition param, BasicBlock bb, Guard guard, GuardValue val |
+          parameterDefinition(result.getParameter(ppos), param) and
+          guardChecks(guard, param.getARead(), val, state) and
+          guard.valueControls(bb, val) and
+          normalExitBlock(bb) and
+          retval = TException(false)
+        )
+      }
+
+      /**
+       * Holds if the guard `g` validates the expression `e` upon evaluating to `val`.
+       */
+      predicate guardChecks(Guard g, Expr e, GuardValue val, State state) {
+        guardChecks0(g, e, val.asBooleanValue(), state)
+        or
+        exists(NonOverridableMethodCall call, ParameterPosition ppos, ArgumentPosition apos |
+          g = call and
+          call.getMethod() = validationWrapper(ppos, val, state) and
+          call.getArgument(apos) = e and
+          parameterMatch(pragma[only_bind_out](ppos), pragma[only_bind_out](apos))
         )
       }
     }
