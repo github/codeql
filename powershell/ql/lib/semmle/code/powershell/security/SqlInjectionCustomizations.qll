@@ -8,6 +8,7 @@ private import semmle.code.powershell.dataflow.DataFlow
 import semmle.code.powershell.ApiGraphs
 private import semmle.code.powershell.dataflow.flowsources.FlowSources
 private import semmle.code.powershell.Cfg
+private import semmle.code.powershell.security.Sanitizers
 
 module SqlInjection {
   /**
@@ -99,4 +100,6 @@ module SqlInjection {
 
     override string getSinkType() { result = "call to sqlcmd" }
   }
+
+  class TypeSanitizer extends Sanitizer instanceof SimpleTypeSanitizer { }
 }
