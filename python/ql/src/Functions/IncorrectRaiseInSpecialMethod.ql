@@ -16,15 +16,16 @@ import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 
 private predicate attributeMethod(string name) {
-  name = "__getattribute__" or name = "__getattr__" or name = "__setattr__"
+  name = ["__getattribute__", "__getattr__"] // __setattr__ excluded as it makes sense to raise different kinds of errors based on the `value` parameter
 }
 
 private predicate indexingMethod(string name) {
-  name = "__getitem__" or name = "__setitem__" or name = "__delitem__"
+  name = ["__getitem__", "__delitem__"] // __setitem__ excluded as it makes sense to raise different kinds of errors based on the `value` parameter
 }
 
 private predicate arithmeticMethod(string name) {
-  name in [
+  name =
+    [
       "__add__", "__sub__", "__or__", "__xor__", "__rshift__", "__pow__", "__mul__", "__neg__",
       "__radd__", "__rsub__", "__rdiv__", "__rfloordiv__", "__div__", "__rdiv__", "__rlshift__",
       "__rand__", "__ror__", "__rxor__", "__rrshift__", "__rpow__", "__rmul__", "__truediv__",
@@ -35,32 +36,32 @@ private predicate arithmeticMethod(string name) {
 }
 
 private predicate orderingMethod(string name) {
-  name = "__lt__"
-  or
-  name = "__le__"
-  or
-  name = "__gt__"
-  or
-  name = "__ge__"
+  name =
+    [
+      "__lt__",
+      "__le__",
+      "__gt__",
+      "__ge__",
+    ]
 }
 
 private predicate castMethod(string name) {
-  name = "__int__"
-  or
-  name = "__float__"
-  or
-  name = "__long__"
-  or
-  name = "__trunc__"
-  or
-  name = "__complex__"
+  name =
+    [
+      "__int__",
+      "__float__",
+      "__long__",
+      "__trunc__",
+      "__complex__"
+    ]
 }
 
 predicate correctRaise(string name, Expr exec) {
   execIsOfType(exec, "TypeError") and
   (
     indexingMethod(name) or
-    attributeMethod(name)
+    attributeMethod(name) or
+    name = ["__add__", "__iadd__", "__radd__"]
   )
   or
   exists(string execName |
@@ -81,11 +82,11 @@ predicate preferredRaise(string name, string execName, string message) {
   or
   orderingMethod(name) and
   execName = "TypeError" and
-  message = "should raise a TypeError, or return NotImplemented instead."
+  message = "should raise a TypeError or return NotImplemented instead."
   or
   arithmeticMethod(name) and
   execName = "ArithmeticError" and
-  message = "should raise an ArithmeticError, or return NotImplemented instead."
+  message = "should raise an ArithmeticError or return NotImplemented instead."
   or
   name = "__bool__" and
   execName = "TypeError" and
@@ -120,6 +121,7 @@ predicate noNeedToAlwaysRaise(Function meth, string message, boolean allowNotImp
   castMethod(meth.getName()) and
   message = "this method does not need to be implemented." and
   allowNotImplemented = true and
+  // Allow an always raising cast method if it's overriding other behavior
   not exists(Function overridden |
     overridden.getName() = meth.getName() and
     overridden.getScope() = getADirectSuperclass+(meth.getScope()) and
@@ -139,7 +141,7 @@ predicate directlyRaises(Function f, Expr exec) {
   exists(Raise r |
     r.getScope() = f and
     exec = r.getException() and
-    not exec = API::builtin("StopIteration").asSource().asExpr()
+    exec instanceof Call
   )
 }
 
@@ -156,15 +158,16 @@ where
     exists(boolean allowNotImplemented, string subMessage |
       alwaysRaises(f, exec) and
       noNeedToAlwaysRaise(f, subMessage, allowNotImplemented) and
-      (allowNotImplemented = false or not isNotImplementedError(exec)) and
+      (allowNotImplemented = true implies not isNotImplementedError(exec)) and // don't alert if it's a NotImplementedError and that's ok
       message = "This method always raises $@ - " + subMessage
     )
     or
-    alwaysRaises(f, exec) and // for now consider only alwaysRaises cases as original query
     not isNotImplementedError(exec) and
     not correctRaise(f.getName(), exec) and
     exists(string subMessage | preferredRaise(f.getName(), _, subMessage) |
-      message = "This method always raises $@ - " + subMessage
+      if alwaysRaises(f, exec)
+      then message = "This method always raises $@ - " + subMessage
+      else message = "This method raises $@ - " + subMessage
     )
   )
 select f, message, exec, exec.toString() // TODO: remove tostring
