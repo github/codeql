@@ -1,11 +1,15 @@
 private import AstImport
 
 class AutomaticVariable extends Expr, TAutomaticVariable {
-  final override string toString() { result = this.getName() }
+  final override string toString() { result = this.getLowerCaseName() }
 
-  string getName() { any(Synthesis s).automaticVariableName(this, result) }
+  string getLowerCaseName() { any(Synthesis s).automaticVariableName(this, result) }
+
+  bindingset[result]
+  pragma[inline_late]
+  string getAName() { result.toLowerCase() = this.getLowerCaseName() }
 }
 
 class MyInvocation extends AutomaticVariable {
-  MyInvocation() { this.getName() = "myinvocation" }
+  MyInvocation() { this.getLowerCaseName() = "myinvocation" }
 }

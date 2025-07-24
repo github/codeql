@@ -530,7 +530,7 @@ private module TypeSynth {
     override predicate typeName(Type t, string name) {
       exists(Raw::TypeStmt typeStmt |
         t = TTypeSynth(typeStmt, _) and
-        typeStmt.getName() = name
+        typeStmt.getName().toLowerCase() = name
       )
     }
 

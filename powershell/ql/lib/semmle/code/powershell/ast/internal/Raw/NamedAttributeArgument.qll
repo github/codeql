@@ -15,9 +15,11 @@ class NamedAttributeArgument extends @named_attribute_argument, Ast {
 }
 
 class ValueFromPipelineAttribute extends NamedAttributeArgument {
-  ValueFromPipelineAttribute() { this.getName() = "ValueFromPipeline" }
+  ValueFromPipelineAttribute() { this.getName().toLowerCase() = "valuefrompipeline" }
 }
 
 class ValueFromPipelineByPropertyName extends NamedAttributeArgument {
-  ValueFromPipelineByPropertyName() { this.getName() = "ValueFromPipelineByPropertyName" }
+  ValueFromPipelineByPropertyName() {
+    this.getName().toLowerCase() = "valuefrompipelinebypropertyname"
+  }
 }
