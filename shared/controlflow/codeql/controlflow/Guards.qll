@@ -1031,6 +1031,11 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
       module ReturnImplies = ImpliesTC<returnGuard/2>;
 
+      pragma[nomagic]
+      private predicate directlyControlsReturn(Guard guard, GuardValue val, ReturnExpr ret) {
+        guard.directlyValueControls(ret.getBasicBlock(), val)
+      }
+
       /**
        * Holds if `ret` is a return expression in a non-overridable method that
        * on a return value of `retval` allows the conclusion that the `ppos`th
@@ -1044,7 +1049,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           parameterDefinition(m.getParameter(ppos), param)
         |
           exists(Guard g0, GuardValue v0 |
-            g0.directlyValueControls(ret.getBasicBlock(), v0) and
+            directlyControlsReturn(g0, v0, ret) and
             BranchImplies::ssaControls(param, val, g0, v0) and
             relevantReturnValue(m, retval)
           )
