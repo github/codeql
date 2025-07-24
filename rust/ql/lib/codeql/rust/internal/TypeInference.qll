@@ -100,6 +100,9 @@ private module Input1 implements InputSig1<Location> {
         id = idOfTypeParameterAstNode(tp0.(DynTraitTypeParameter).getTypeParam())
         or
         kind = 2 and
+        id = idOfTypeParameterAstNode(tp0.(ImplTraitTypeParameter).getTypeParam())
+        or
+        kind = 3 and
         exists(AstNode node | id = idOfTypeParameterAstNode(node) |
           node = tp0.(TypeParamTypeParameter).getTypeParam() or
           node = tp0.(AssociatedTypeTypeParameter).getTypeAlias() or
@@ -110,7 +113,7 @@ private module Input1 implements InputSig1<Location> {
         exists(TupleTypeParameter ttp, int maxArity |
           maxArity = max(int i | i = any(TupleType tt).getArity()) and
           tp0 = ttp and
-          kind = 3 and
+          kind = 4 and
           id = ttp.getTupleType().getArity() * maxArity + ttp.getIndex()
         )
       |

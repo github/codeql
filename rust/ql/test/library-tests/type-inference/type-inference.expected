@@ -3345,22 +3345,27 @@ inferType
 | main.rs:1926:59:1928:5 | { ... } |  | main.rs:1879:5:1879:22 | S3 |
 | main.rs:1926:59:1928:5 | { ... } |  | main.rs:1926:43:1926:57 | ImplTraitTypeRepr |
 | main.rs:1926:59:1928:5 | { ... } | T3 | main.rs:1926:24:1926:31 | T |
+| main.rs:1926:59:1928:5 | { ... } | impl(T) | main.rs:1926:24:1926:31 | T |
 | main.rs:1927:9:1927:13 | S3(...) |  | main.rs:1879:5:1879:22 | S3 |
 | main.rs:1927:9:1927:13 | S3(...) |  | main.rs:1926:43:1926:57 | ImplTraitTypeRepr |
 | main.rs:1927:9:1927:13 | S3(...) | T3 | main.rs:1926:24:1926:31 | T |
+| main.rs:1927:9:1927:13 | S3(...) | impl(T) | main.rs:1926:24:1926:31 | T |
 | main.rs:1927:12:1927:12 | x |  | main.rs:1926:24:1926:31 | T |
 | main.rs:1930:34:1930:34 | x |  | main.rs:1930:24:1930:31 | T |
 | main.rs:1930:67:1932:5 | { ... } |  | {EXTERNAL LOCATION} | Option |
 | main.rs:1930:67:1932:5 | { ... } | T | main.rs:1879:5:1879:22 | S3 |
 | main.rs:1930:67:1932:5 | { ... } | T | main.rs:1930:50:1930:64 | ImplTraitTypeRepr |
 | main.rs:1930:67:1932:5 | { ... } | T.T3 | main.rs:1930:24:1930:31 | T |
+| main.rs:1930:67:1932:5 | { ... } | T.impl(T) | main.rs:1930:24:1930:31 | T |
 | main.rs:1931:9:1931:19 | Some(...) |  | {EXTERNAL LOCATION} | Option |
 | main.rs:1931:9:1931:19 | Some(...) | T | main.rs:1879:5:1879:22 | S3 |
 | main.rs:1931:9:1931:19 | Some(...) | T | main.rs:1930:50:1930:64 | ImplTraitTypeRepr |
 | main.rs:1931:9:1931:19 | Some(...) | T.T3 | main.rs:1930:24:1930:31 | T |
+| main.rs:1931:9:1931:19 | Some(...) | T.impl(T) | main.rs:1930:24:1930:31 | T |
 | main.rs:1931:14:1931:18 | S3(...) |  | main.rs:1879:5:1879:22 | S3 |
 | main.rs:1931:14:1931:18 | S3(...) |  | main.rs:1930:50:1930:64 | ImplTraitTypeRepr |
 | main.rs:1931:14:1931:18 | S3(...) | T3 | main.rs:1930:24:1930:31 | T |
+| main.rs:1931:14:1931:18 | S3(...) | impl(T) | main.rs:1930:24:1930:31 | T |
 | main.rs:1931:17:1931:17 | x |  | main.rs:1930:24:1930:31 | T |
 | main.rs:1934:26:1934:26 | t |  | main.rs:1934:29:1934:43 | ImplTraitTypeRepr |
 | main.rs:1934:51:1936:5 | { ... } |  | main.rs:1934:23:1934:23 | A |
@@ -3383,13 +3388,18 @@ inferType
 | main.rs:1946:13:1946:13 | d |  | main.rs:1878:5:1878:14 | S2 |
 | main.rs:1946:17:1946:34 | uses_my_trait2(...) |  | main.rs:1878:5:1878:14 | S2 |
 | main.rs:1946:32:1946:33 | S1 |  | main.rs:1876:5:1877:14 | S1 |
-| main.rs:1947:13:1947:13 | e |  | main.rs:1926:24:1926:31 | T |
+| main.rs:1947:13:1947:13 | e |  | main.rs:1876:5:1877:14 | S1 |
 | main.rs:1947:17:1947:35 | get_a_my_trait2(...) |  | main.rs:1926:43:1926:57 | ImplTraitTypeRepr |
-| main.rs:1947:17:1947:43 | ... .get_a() |  | main.rs:1926:24:1926:31 | T |
+| main.rs:1947:17:1947:35 | get_a_my_trait2(...) | impl(T) | main.rs:1876:5:1877:14 | S1 |
+| main.rs:1947:17:1947:43 | ... .get_a() |  | main.rs:1876:5:1877:14 | S1 |
 | main.rs:1947:33:1947:34 | S1 |  | main.rs:1876:5:1877:14 | S1 |
+| main.rs:1949:13:1949:13 | f |  | main.rs:1876:5:1877:14 | S1 |
 | main.rs:1949:17:1949:35 | get_a_my_trait3(...) |  | {EXTERNAL LOCATION} | Option |
 | main.rs:1949:17:1949:35 | get_a_my_trait3(...) | T | main.rs:1930:50:1930:64 | ImplTraitTypeRepr |
+| main.rs:1949:17:1949:35 | get_a_my_trait3(...) | T.impl(T) | main.rs:1876:5:1877:14 | S1 |
 | main.rs:1949:17:1949:44 | ... .unwrap() |  | main.rs:1930:50:1930:64 | ImplTraitTypeRepr |
+| main.rs:1949:17:1949:44 | ... .unwrap() | impl(T) | main.rs:1876:5:1877:14 | S1 |
+| main.rs:1949:17:1949:52 | ... .get_a() |  | main.rs:1876:5:1877:14 | S1 |
 | main.rs:1949:33:1949:34 | S1 |  | main.rs:1876:5:1877:14 | S1 |
 | main.rs:1960:16:1960:20 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1960:16:1960:20 | SelfParam | &T | main.rs:1956:5:1957:13 | S |

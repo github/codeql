@@ -1944,9 +1944,9 @@ mod impl_trait {
         let a = get_a_my_trait(); // $ target=get_a_my_trait
         let c = uses_my_trait2(a); // $ type=c:S2 target=uses_my_trait2
         let d = uses_my_trait2(S1); // $ type=d:S2 target=uses_my_trait2
-        let e = get_a_my_trait2(S1).get_a(); // $ target=get_a_my_trait2 target=MyTrait::get_a MISSING: type=e:S1
+        let e = get_a_my_trait2(S1).get_a(); // $ target=get_a_my_trait2 target=MyTrait::get_a type=e:S1
         // For this function the `impl` type does not appear in the root of the return type
-        let f = get_a_my_trait3(S1).unwrap().get_a(); // $ target=get_a_my_trait3 target=unwrap MISSING: target=MyTrait::get_a type=f:S1
+        let f = get_a_my_trait3(S1).unwrap().get_a(); // $ target=get_a_my_trait3 target=unwrap target=MyTrait::get_a type=f:S1
     }
 }
 
