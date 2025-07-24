@@ -7,7 +7,7 @@ class MyClass {
 
 $myClass = [MyClass]::new("hello")
 
-Sink $myClass # $ type=MyClass
+Sink $myClass # $ type=myclass
 
 
 $withNamedArg = New-Object -TypeName PSObject

@@ -15,5 +15,5 @@ invokeMemoryExpression
 expandableString
 | ExpandableString.ps1:1:1:1:39 | Date: $([DateTime]::Now)\nName: $name | 1 | ExpandableString.ps1:1:21:1:38 | $(...) |
 memberExpr
-| ExpandableString.ps1:1:23:1:37 | now | ExpandableString.ps1:1:23:1:32 | DateTime |
-| MemberExpression.ps1:2:1:2:14 | ... | MemberExpression.ps1:2:1:2:10 | DateTime |
+| ExpandableString.ps1:1:23:1:37 | now | ExpandableString.ps1:1:23:1:32 | datetime |
+| MemberExpression.ps1:2:1:2:14 | ... | MemberExpression.ps1:2:1:2:10 | datetime |
