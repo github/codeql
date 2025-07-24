@@ -271,17 +271,17 @@ inferType
 | dyn_type.rs:75:21:75:23 | obj | T.dyn(A) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:78:24:78:24 | a |  | file://:0:0:0:0 | & |
 | dyn_type.rs:78:24:78:24 | a | &T | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
+| dyn_type.rs:78:24:78:24 | a | &T.dyn(AP) | dyn_type.rs:78:21:78:21 | B |
 | dyn_type.rs:78:24:78:24 | a | &T.dyn(GP) | dyn_type.rs:78:18:78:18 | A |
 | dyn_type.rs:78:65:80:1 | { ... } |  | file://:0:0:0:0 | (T_2) |
 | dyn_type.rs:78:65:80:1 | { ... } | 0(2) | dyn_type.rs:78:18:78:18 | A |
-| dyn_type.rs:78:65:80:1 | { ... } | 1(2) | dyn_type.rs:16:5:16:12 | AP |
 | dyn_type.rs:78:65:80:1 | { ... } | 1(2) | dyn_type.rs:78:21:78:21 | B |
 | dyn_type.rs:79:5:79:5 | a |  | file://:0:0:0:0 | & |
 | dyn_type.rs:79:5:79:5 | a | &T | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
+| dyn_type.rs:79:5:79:5 | a | &T.dyn(AP) | dyn_type.rs:78:21:78:21 | B |
 | dyn_type.rs:79:5:79:5 | a | &T.dyn(GP) | dyn_type.rs:78:18:78:18 | A |
 | dyn_type.rs:79:5:79:11 | a.get() |  | file://:0:0:0:0 | (T_2) |
 | dyn_type.rs:79:5:79:11 | a.get() | 0(2) | dyn_type.rs:78:18:78:18 | A |
-| dyn_type.rs:79:5:79:11 | a.get() | 1(2) | dyn_type.rs:16:5:16:12 | AP |
 | dyn_type.rs:79:5:79:11 | a.get() | 1(2) | dyn_type.rs:78:21:78:21 | B |
 | dyn_type.rs:82:55:82:55 | a |  | file://:0:0:0:0 | & |
 | dyn_type.rs:82:55:82:55 | a | &T | dyn_type.rs:82:20:82:52 | T |
@@ -295,40 +295,49 @@ inferType
 | dyn_type.rs:83:5:83:11 | a.get() | 1(2) | dyn_type.rs:82:17:82:17 | B |
 | dyn_type.rs:86:20:86:22 | obj |  | file://:0:0:0:0 | & |
 | dyn_type.rs:86:20:86:22 | obj | &T | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
+| dyn_type.rs:86:20:86:22 | obj | &T.dyn(AP) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:86:20:86:22 | obj | &T.dyn(GP) | {EXTERNAL LOCATION} | i64 |
 | dyn_type.rs:87:9:90:5 | TuplePat |  | file://:0:0:0:0 | (T_2) |
 | dyn_type.rs:87:9:90:5 | TuplePat | 0(2) | {EXTERNAL LOCATION} | i64 |
-| dyn_type.rs:87:9:90:5 | TuplePat | 1(2) | dyn_type.rs:16:5:16:12 | AP |
+| dyn_type.rs:87:9:90:5 | TuplePat | 1(2) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:88:9:88:11 | _gp |  | {EXTERNAL LOCATION} | i64 |
-| dyn_type.rs:89:9:89:11 | _ap |  | dyn_type.rs:16:5:16:12 | AP |
+| dyn_type.rs:89:9:89:11 | _ap |  | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:90:9:90:14 | (...) |  | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
+| dyn_type.rs:90:9:90:14 | (...) | dyn(AP) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:90:9:90:14 | (...) | dyn(GP) | {EXTERNAL LOCATION} | i64 |
 | dyn_type.rs:90:9:90:20 | ... .get() |  | file://:0:0:0:0 | (T_2) |
 | dyn_type.rs:90:9:90:20 | ... .get() | 0(2) | {EXTERNAL LOCATION} | i64 |
-| dyn_type.rs:90:9:90:20 | ... .get() | 1(2) | dyn_type.rs:16:5:16:12 | AP |
+| dyn_type.rs:90:9:90:20 | ... .get() | 1(2) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:90:10:90:13 | * ... |  | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
+| dyn_type.rs:90:10:90:13 | * ... | dyn(AP) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:90:10:90:13 | * ... | dyn(GP) | {EXTERNAL LOCATION} | i64 |
 | dyn_type.rs:90:11:90:13 | obj |  | file://:0:0:0:0 | & |
 | dyn_type.rs:90:11:90:13 | obj | &T | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
+| dyn_type.rs:90:11:90:13 | obj | &T.dyn(AP) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:90:11:90:13 | obj | &T.dyn(GP) | {EXTERNAL LOCATION} | i64 |
 | dyn_type.rs:91:9:94:5 | TuplePat |  | file://:0:0:0:0 | (T_2) |
 | dyn_type.rs:91:9:94:5 | TuplePat | 0(2) | {EXTERNAL LOCATION} | i64 |
+| dyn_type.rs:91:9:94:5 | TuplePat | 1(2) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:92:9:92:11 | _gp |  | {EXTERNAL LOCATION} | i64 |
+| dyn_type.rs:93:9:93:11 | _ap |  | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:94:9:94:26 | assoc_dyn_get(...) |  | file://:0:0:0:0 | (T_2) |
 | dyn_type.rs:94:9:94:26 | assoc_dyn_get(...) | 0(2) | {EXTERNAL LOCATION} | i64 |
+| dyn_type.rs:94:9:94:26 | assoc_dyn_get(...) | 1(2) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:94:23:94:25 | obj |  | file://:0:0:0:0 | & |
 | dyn_type.rs:94:23:94:25 | obj | &T | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
+| dyn_type.rs:94:23:94:25 | obj | &T.dyn(AP) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:94:23:94:25 | obj | &T.dyn(GP) | {EXTERNAL LOCATION} | i64 |
 | dyn_type.rs:95:9:98:5 | TuplePat |  | file://:0:0:0:0 | (T_2) |
 | dyn_type.rs:95:9:98:5 | TuplePat | 0(2) | {EXTERNAL LOCATION} | i64 |
-| dyn_type.rs:95:9:98:5 | TuplePat | 1(2) | dyn_type.rs:16:5:16:12 | AP |
+| dyn_type.rs:95:9:98:5 | TuplePat | 1(2) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:96:9:96:11 | _gp |  | {EXTERNAL LOCATION} | i64 |
-| dyn_type.rs:97:9:97:11 | _ap |  | dyn_type.rs:16:5:16:12 | AP |
+| dyn_type.rs:97:9:97:11 | _ap |  | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:98:9:98:22 | assoc_get(...) |  | file://:0:0:0:0 | (T_2) |
 | dyn_type.rs:98:9:98:22 | assoc_get(...) | 0(2) | {EXTERNAL LOCATION} | i64 |
-| dyn_type.rs:98:9:98:22 | assoc_get(...) | 1(2) | dyn_type.rs:16:5:16:12 | AP |
+| dyn_type.rs:98:9:98:22 | assoc_get(...) | 1(2) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:98:19:98:21 | obj |  | file://:0:0:0:0 | & |
 | dyn_type.rs:98:19:98:21 | obj | &T | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
+| dyn_type.rs:98:19:98:21 | obj | &T.dyn(AP) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:98:19:98:21 | obj | &T.dyn(GP) | {EXTERNAL LOCATION} | i64 |
 | dyn_type.rs:102:26:102:48 | &... |  | file://:0:0:0:0 | & |
 | dyn_type.rs:102:26:102:48 | &... | &T | dyn_type.rs:5:1:8:1 | dyn MyTrait1 |
@@ -349,10 +358,12 @@ inferType
 | dyn_type.rs:107:21:107:45 | &... | &T | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
 | dyn_type.rs:107:21:107:45 | &... | &T | dyn_type.rs:33:1:36:1 | GenStruct |
 | dyn_type.rs:107:21:107:45 | &... | &T.A | {EXTERNAL LOCATION} | i32 |
+| dyn_type.rs:107:21:107:45 | &... | &T.dyn(AP) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:107:21:107:45 | &... | &T.dyn(GP) | {EXTERNAL LOCATION} | i64 |
 | dyn_type.rs:107:22:107:45 | GenStruct {...} |  | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
 | dyn_type.rs:107:22:107:45 | GenStruct {...} |  | dyn_type.rs:33:1:36:1 | GenStruct |
 | dyn_type.rs:107:22:107:45 | GenStruct {...} | A | {EXTERNAL LOCATION} | i32 |
+| dyn_type.rs:107:22:107:45 | GenStruct {...} | dyn(AP) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:107:22:107:45 | GenStruct {...} | dyn(GP) | {EXTERNAL LOCATION} | i64 |
 | dyn_type.rs:107:41:107:43 | 100 |  | {EXTERNAL LOCATION} | i32 |
 | loop/main.rs:7:12:7:15 | SelfParam |  | loop/main.rs:6:1:8:1 | Self [trait T1] |

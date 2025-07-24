@@ -7,6 +7,15 @@ private import codeql.rust.internal.CachedStages
 private import codeql.rust.elements.internal.generated.Raw
 private import codeql.rust.elements.internal.generated.Synth
 
+/** Holds if a dyn trait type should have a type parameter associated with `n`. */
+predicate dynTraitTypeParameter(Trait trait, AstNode n) {
+  trait = any(DynTraitTypeRepr dt).getTrait() and
+  (
+    n = trait.getGenericParamList().getATypeParam() or
+    n = trait.(TraitItemNode).getAnAssocItem().(TypeAlias)
+  )
+}
+
 cached
 newtype TType =
   TTuple(int arity) {
@@ -30,9 +39,7 @@ newtype TType =
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
   TArrayTypeParameter() or
-  TDynTraitTypeParameter(TypeParam tp) {
-    tp = any(DynTraitTypeRepr dt).getTrait().getGenericParamList().getATypeParam()
-  } or
+  TDynTraitTypeParameter(AstNode n) { dynTraitTypeParameter(_, n) } or
   TRefTypeParameter() or
   TSelfTypeParameter(Trait t) or
   TSliceTypeParameter()
@@ -406,15 +413,35 @@ class ArrayTypeParameter extends TypeParameter, TArrayTypeParameter {
 }
 
 class DynTraitTypeParameter extends TypeParameter, TDynTraitTypeParameter {
-  private TypeParam typeParam;
+  private AstNode n;
 
-  DynTraitTypeParameter() { this = TDynTraitTypeParameter(typeParam) }
+  DynTraitTypeParameter() { this = TDynTraitTypeParameter(n) }
 
-  TypeParam getTypeParam() { result = typeParam }
+  Trait getTrait() { dynTraitTypeParameter(result, n) }
 
-  override string toString() { result = "dyn(" + typeParam.toString() + ")" }
+  /** Gets the dyn trait type that this type parameter belongs to. */
+  DynTraitType getDynTraitType() { result.getTrait() = this.getTrait() }
 
-  override Location getLocation() { result = typeParam.getLocation() }
+  /** Gets the `TypeParam` of this dyn trait type parameter, if any. */
+  TypeParam getTypeParam() { result = n }
+
+  /** Gets the `TypeAlias` of this dyn trait type parameter, if any. */
+  TypeAlias getTypeAlias() { result = n }
+
+  /** Gets the trait type parameter that this dyn trait type parameter corresponds to. */
+  TypeParameter getTraitTypeParameter() {
+    result.(TypeParamTypeParameter).getTypeParam() = n
+    or
+    result.(AssociatedTypeTypeParameter).getTypeAlias() = n
+  }
+
+  private string toStringInner() {
+    result = [this.getTypeParam().toString(), this.getTypeAlias().getName().toString()]
+  }
+
+  override string toString() { result = "dyn(" + this.toStringInner() + ")" }
+
+  override Location getLocation() { result = n.getLocation() }
 }
 
 /** An implicit reference type parameter. */
@@ -503,8 +530,7 @@ final class ImplTypeAbstraction extends TypeAbstraction, Impl {
 
 final class DynTypeAbstraction extends TypeAbstraction, DynTraitTypeRepr {
   override TypeParameter getATypeParameter() {
-    result.(TypeParamTypeParameter).getTypeParam() =
-      this.getTrait().getGenericParamList().getATypeParam()
+    result = any(DynTraitTypeParameter tp | tp.getTrait() = this.getTrait()).getTraitTypeParameter()
   }
 }
 

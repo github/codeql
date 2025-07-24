@@ -86,15 +86,15 @@ fn assoc_get<A, B, T: AssocTrait<A, AP = B> + ?Sized>(a: &T) -> (A, B) {
 fn test_assoc_type(obj: &dyn AssocTrait<i64, AP = bool>) {
     let (
         _gp, // $ type=_gp:i64
-        _ap, // $ MISSING: type=_ap:bool
+        _ap, // $ type=_ap:bool
     ) = (*obj).get(); // $ target=deref target=AssocTrait::get
     let (
         _gp, // $ type=_gp:i64
-        _ap, // $ MISSING: type=_ap:bool
+        _ap, // $ type=_ap:bool
     ) = assoc_dyn_get(obj); // $ target=assoc_dyn_get
     let (
         _gp, // $ type=_gp:i64
-        _ap, // $ MISSING: type=_ap:bool
+        _ap, // $ type=_ap:bool
     ) = assoc_get(obj); // $ target=assoc_get
 }
 
