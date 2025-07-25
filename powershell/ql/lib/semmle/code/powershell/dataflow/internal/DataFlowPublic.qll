@@ -495,7 +495,11 @@ class ObjectCreationNode extends ExprNode {
    */
   Node getConstructedTypeNode() { result.asExpr() = objectCreation.getConstructedTypeExpr() }
 
-  string getConstructedTypeName() { result = this.getObjectCreationNode().getConstructedTypeName() }
+  bindingset[result]
+  pragma[inline_late]
+  string getAConstructedTypeName() {
+    result = this.getObjectCreationNode().getAConstructedTypeName()
+  }
 }
 
 /** A call, viewed as a node in a data flow graph. */
@@ -567,7 +571,11 @@ class TypeNameNode extends ExprNode {
 
   override CfgNodes::ExprNodes::TypeNameExprCfgNode getExprNode() { result = n }
 
-  string getName() { result = n.getName() }
+  bindingset[result]
+  pragma[inline_late]
+  string getAName() { result = n.getAName() }
+
+  string getLowerCaseName() { result = n.getLowerCaseName() }
 
   predicate isQualified() { n.isQualified() }
 
@@ -593,5 +601,9 @@ class AutomaticVariableNode extends ExprNode {
 
   final override CfgNodes::ExprNodes::AutomaticVariableCfgNode getExprNode() { result = n }
 
-  string getName() { result = n.getName() }
+  bindingset[result]
+  pragma[inline_late]
+  string getAName() { result = n.getAName() }
+
+  string getLowerCaseName() { result = n.getLowerCaseName() }
 }

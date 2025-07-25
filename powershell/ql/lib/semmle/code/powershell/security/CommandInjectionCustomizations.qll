@@ -103,7 +103,7 @@ module CommandInjection {
         addscript.matchesName("AddScript") and
         create.matchesName("Create") and
         addscript.getQualifier().(InvokeMemberExpr) = create and
-        create.getQualifier().(TypeNameExpr).getName() = "PowerShell"
+        create.getQualifier().(TypeNameExpr).getAName() = "PowerShell"
       )
     }
 
@@ -164,7 +164,7 @@ module CommandInjection {
       exists(InvokeMemberExpr ie |
         this.asExpr().getExpr() = ie.getAnArgument() and
         ie.matchesName("Create") and
-        ie.getQualifier().(TypeNameExpr).getName() = "ScriptBlock"
+        ie.getQualifier().(TypeNameExpr).getAName() = "ScriptBlock"
       )
     }
 
@@ -212,7 +212,7 @@ module CommandInjection {
     TypedParameterSanitizer() {
       exists(Function f, Parameter p |
         p = f.getAParameter() and
-        p.getStaticType() != "Object" and
+        p.getStaticType() != "object" and
         this.asParameter() = p
       )
     }

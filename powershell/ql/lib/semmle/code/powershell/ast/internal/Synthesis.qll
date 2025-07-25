@@ -345,7 +345,7 @@ private module ParameterSynth {
         // has a static type.
         this.parameter(parent, i, p, _) and
         n = TVariableSynth(parent, i) and
-        type = p.getStaticType()
+        type = p.getStaticType().toLowerCase()
       )
     }
   }
@@ -530,7 +530,7 @@ private module TypeSynth {
     override predicate typeName(Type t, string name) {
       exists(Raw::TypeStmt typeStmt |
         t = TTypeSynth(typeStmt, _) and
-        typeStmt.getName() = name
+        typeStmt.getName().toLowerCase() = name
       )
     }
 

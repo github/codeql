@@ -2,7 +2,11 @@ import powershell
 
 abstract private class AbstractObjectCreation extends CallExpr {
   /** The name of the type of the object being constructed. */
-  abstract string getConstructedTypeName();
+  bindingset[result]
+  pragma[inline_late]
+  string getAConstructedTypeName() { result.toLowerCase() = this.getLowerCaseConstructedTypeName() }
+
+  abstract string getLowerCaseConstructedTypeName();
 
   abstract Expr getConstructedTypeExpr();
 }
@@ -14,8 +18,14 @@ abstract private class AbstractObjectCreation extends CallExpr {
  * ```
  */
 class NewObjectCreation extends AbstractObjectCreation, ConstructorCall {
-  final override string getConstructedTypeName() {
-    result = ConstructorCall.super.getConstructedTypeName()
+  final override string getLowerCaseConstructedTypeName() {
+    result = ConstructorCall.super.getLowerCaseConstructedTypeName()
+  }
+
+  bindingset[result]
+  pragma[inline_late]
+  final override string getAConstructedTypeName() {
+    result = ConstructorCall.super.getAConstructedTypeName()
   }
 
   final override Expr getConstructedTypeExpr() { result = typename }
@@ -30,8 +40,8 @@ class NewObjectCreation extends AbstractObjectCreation, ConstructorCall {
 class DotNetObjectCreation extends AbstractObjectCreation, CmdCall {
   DotNetObjectCreation() { this.getLowerCaseName() = "new-object" }
 
-  final override string getConstructedTypeName() {
-    result = this.getConstructedTypeExpr().(StringConstExpr).getValueString()
+  final override string getLowerCaseConstructedTypeName() {
+    result = this.getConstructedTypeExpr().(StringConstExpr).getValueString().toLowerCase()
   }
 
   final override Expr getConstructedTypeExpr() {
