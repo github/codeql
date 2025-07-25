@@ -15,14 +15,17 @@ import python
 import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 
+/** Holds if `name` is the name of a special method for attribute access such as `a.b`, that should raise an `AttributeError`. */
 private predicate attributeMethod(string name) {
   name = ["__getattribute__", "__getattr__", "__delattr__"] // __setattr__ excluded as it makes sense to raise different kinds of errors based on the `value` parameter
 }
 
+/** Holds if `name` is the name of a special method for indexing operations such as `a[b]`, that should raise a `LookupError`. */
 private predicate indexingMethod(string name) {
   name = ["__getitem__", "__delitem__"] // __setitem__ excluded as it makes sense to raise different kinds of errors based on the `value` parameter
 }
 
+/** Holds if `name` is the name of a special method for arithmetic operations. */
 private predicate arithmeticMethod(string name) {
   name =
     [
@@ -35,6 +38,7 @@ private predicate arithmeticMethod(string name) {
     ]
 }
 
+/** Holds if `name is the name of a special method for ordering operations such as `a < b`. */
 private predicate orderingMethod(string name) {
   name =
     [
@@ -45,6 +49,7 @@ private predicate orderingMethod(string name) {
     ]
 }
 
+/** Holds if `name` is the name of a special method for casting an object to a numeric type, such as `int(x)` */
 private predicate castMethod(string name) {
   name =
     [
@@ -53,9 +58,10 @@ private predicate castMethod(string name) {
       "__index__",
       "__trunc__",
       "__complex__"
-    ]
+    ] // __bool__ excluded as it makes sense to allow it to always raise
 }
 
+/** Holds if we allow a special method named `name` to raise `exec` as an exception. */
 predicate correctRaise(string name, Expr exec) {
   execIsOfType(exec, "TypeError") and
   (
@@ -71,6 +77,7 @@ predicate correctRaise(string name, Expr exec) {
   )
 }
 
+/** Holds if it is preferred for `name` to raise exceptions of type `execName`. `message` is the alert message. */
 predicate preferredRaise(string name, string execName, string message) {
   attributeMethod(name) and
   execName = "AttributeError" and
@@ -93,6 +100,7 @@ predicate preferredRaise(string name, string execName, string message) {
   message = "should raise a TypeError instead."
 }
 
+/** Holds if `exec` is an exception object of the type named `execName`. */
 predicate execIsOfType(Expr exec, string execName) {
   // Might make sense to have execName be an IPA type here. Or part of a more general API modeling builtin/stdlib subclass relations.
   exists(string subclass |
@@ -114,6 +122,10 @@ predicate execIsOfType(Expr exec, string execName) {
   )
 }
 
+/**
+ * Holds if `meth` need not be implemented if it always raises. `message` is the alert message, and `allowNotImplemented` is true
+ * if we still allow the method to always raise `NotImplementedError`.
+ */
 predicate noNeedToAlwaysRaise(Function meth, string message, boolean allowNotImplemented) {
   meth.getName() = "__hash__" and
   message = "use __hash__ = None instead." and
@@ -130,14 +142,17 @@ predicate noNeedToAlwaysRaise(Function meth, string message, boolean allowNotImp
   )
 }
 
+/** Holds if `func` has a decorator likely marking it as an abstract method. */
 predicate isAbstract(Function func) { func.getADecorator().(Name).getId().matches("%abstract%") }
 
+/** Holds if `f` always raises the exception `exec`. */
 predicate alwaysRaises(Function f, Expr exec) {
   directlyRaises(f, exec) and
   strictcount(Expr e | directlyRaises(f, e)) = 1 and
   not exists(f.getANormalExit())
 }
 
+/** Holds if `f` directly raises `expr` using a `raise` statement. */
 predicate directlyRaises(Function f, Expr exec) {
   exists(Raise r |
     r.getScope() = f and
@@ -146,10 +161,12 @@ predicate directlyRaises(Function f, Expr exec) {
   )
 }
 
+/** Holds if `exec` is a `NotImplementedError`. */
 predicate isNotImplementedError(Expr exec) {
   exec = API::builtin("NotImplementedError").getACall().asExpr()
 }
 
+/** Gets the name of the builtin exception type `exec` constructs, if it can be determined. */
 string getExecName(Expr exec) { result = exec.(Call).getFunc().(Name).getId() }
 
 from Function f, Expr exec, string message
