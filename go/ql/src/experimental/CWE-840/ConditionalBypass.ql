@@ -22,6 +22,10 @@ module Config implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(ComparisonExpr c | c.getAnOperand() = sink.asExpr())
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // can't override the locations accurately because of secondary use of config.
+  }
 }
 
 /** Tracks taint flow for reasoning about conditional bypass. */
