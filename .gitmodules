@@ -1,0 +1,3 @@
+[submodule "iac"]
+	path = iac
+	url = https://github.com/advanced-security/codeql-extractor-iac
