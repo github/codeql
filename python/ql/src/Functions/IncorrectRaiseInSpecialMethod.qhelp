@@ -49,7 +49,7 @@ In the following example, the <code>__getitem__</code> method of <code>C</code> 
 </p>
 <sample src="examples/IncorrectRaiseInSpecialMethod2.py" />
 <p>
-In the following example, the class <code>__hash__</code> method of <code>D</code> raises <code>TypeError</code>. 
+In the following example, the class <code>__hash__</code> method of <code>D</code> raises <code>NotImplementedError</code>. 
 This causes <code>D</code> to be incorrectly identified as hashable by <code>isinstance(obj, collections.abc.Hashable)</code>; so the correct 
 way to make a class unhashable is to set <code>__hash__ = None</code>.
 </p>
