@@ -30,11 +30,11 @@ private predicate arithmeticMethod(string name) {
   name =
     [
       "__add__", "__sub__", "__or__", "__xor__", "__rshift__", "__pow__", "__mul__", "__neg__",
-      "__radd__", "__rsub__", "__rdiv__", "__rfloordiv__", "__div__", "__rdiv__", "__rlshift__",
-      "__rand__", "__ror__", "__rxor__", "__rrshift__", "__rpow__", "__rmul__", "__truediv__",
-      "__rtruediv__", "__pos__", "__iadd__", "__isub__", "__idiv__", "__ifloordiv__", "__idiv__",
-      "__ilshift__", "__iand__", "__ior__", "__ixor__", "__irshift__", "__abs__", "__ipow__",
-      "__imul__", "__itruediv__", "__floordiv__", "__div__", "__divmod__", "__lshift__", "__and__"
+      "__radd__", "__rsub__", "__rdiv__", "__rfloordiv__", "__rlshift__", "__rand__", "__ror__",
+      "__rxor__", "__rrshift__", "__rpow__", "__rmul__", "__truediv__", "__rtruediv__", "__pos__",
+      "__iadd__", "__isub__", "__idiv__", "__ifloordiv__", "__idiv__", "__ilshift__", "__iand__",
+      "__ior__", "__ixor__", "__irshift__", "__abs__", "__ipow__", "__imul__", "__itruediv__",
+      "__floordiv__", "__div__", "__divmod__", "__lshift__", "__and__"
     ]
 }
 
@@ -152,7 +152,7 @@ predicate alwaysRaises(Function f, Expr exec) {
   not exists(f.getANormalExit())
 }
 
-/** Holds if `f` directly raises `expr` using a `raise` statement. */
+/** Holds if `f` directly raises `exec` using a `raise` statement. */
 predicate directlyRaises(Function f, Expr exec) {
   exists(Raise r |
     r.getScope() = f and
