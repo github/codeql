@@ -7,8 +7,20 @@ private import codeql.rust.internal.CachedStages
 private import codeql.rust.elements.internal.generated.Raw
 private import codeql.rust.elements.internal.generated.Synth
 
-/** Holds if a dyn trait type should have a type parameter associated with `n`. */
-predicate dynTraitTypeParameter(Trait trait, AstNode n) {
+/**
+ * Holds if a dyn trait type should have a type parameter associated with `n`. A
+ * dyn trait type inherits the type parameters of the trait it implements. That
+ * includes the type parameters corresponding to associated types.
+ *
+ * For instance in
+ * ```rust
+ * trait SomeTrait<A> {
+ *   type AssociatedType;
+ * }
+ * ```
+ * this predicate holds for the nodes `A` and `type AssociatedType`.
+ */
+private predicate dynTraitTypeParameter(Trait trait, AstNode n) {
   trait = any(DynTraitTypeRepr dt).getTrait() and
   (
     n = trait.getGenericParamList().getATypeParam() or
