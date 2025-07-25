@@ -100,7 +100,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        language: ['csharp', 'cpp', 'java', 'javascript', 'python', 'ruby', 'go', 'rust', 'swift', 'powershell']
+        language: ['csharp', 'cpp', 'java', 'javascript', 'python', 'ruby', 'go', 'rust', 'swift', 'powershell', 'iac']
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
