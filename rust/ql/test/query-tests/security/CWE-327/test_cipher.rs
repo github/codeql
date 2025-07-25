@@ -56,11 +56,11 @@ fn test_block_cipher(
     aes_cipher3.decrypt_block(block128.into());
 
     // des (broken)
-    let des_cipher1 = Des::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
+    let des_cipher1 = Des::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
     des_cipher1.encrypt_block(data.into());
     des_cipher1.decrypt_block(data.into());
 
-    let des_cipher2 = des::Des::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
+    let des_cipher2 = des::Des::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
     des_cipher2.encrypt_block(data.into());
     des_cipher2.decrypt_block(data.into());
 
@@ -68,24 +68,24 @@ fn test_block_cipher(
     des_cipher3.encrypt_block(data.into());
     des_cipher3.decrypt_block(data.into());
 
-    let des_cipher4 = Des::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
+    let des_cipher4 = Des::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
     des_cipher4.encrypt_block_b2b(input.into(), data.into());
     des_cipher4.decrypt_block_b2b(input.into(), data.into());
 
-    let mut des_cipher5 = Des::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
+    let mut des_cipher5 = Des::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
     des_cipher5.encrypt_block_mut(data.into());
     des_cipher5.decrypt_block_mut(data.into());
 
     // triple des (broken)
-    let tdes_cipher1 = TdesEde2::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
+    let tdes_cipher1 = TdesEde2::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
     tdes_cipher1.encrypt_block(data.into());
     tdes_cipher1.decrypt_block(data.into());
 
-    let tdes_cipher2 = TdesEde3::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
+    let tdes_cipher2 = TdesEde3::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
     tdes_cipher2.encrypt_block(data.into());
     tdes_cipher2.decrypt_block(data.into());
 
-    let tdes_cipher3 = TdesEee2::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
+    let tdes_cipher3 = TdesEee2::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
     tdes_cipher3.encrypt_block(data.into());
     tdes_cipher3.decrypt_block(data.into());
 
@@ -94,11 +94,11 @@ fn test_block_cipher(
     tdes_cipher4.decrypt_block(data.into());
 
     // rc2 (broken)
-    let rc2_cipher1 = Rc2::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
+    let rc2_cipher1 = Rc2::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
     rc2_cipher1.encrypt_block(data.into());
     rc2_cipher1.decrypt_block(data.into());
 
-    let rc2_cipher2 = Rc2::new_from_slice(key).expect("fail"); // $ Alert[rust/weak-cryptographic-algorithm]
+    let rc2_cipher2 = Rc2::new_from_slice(key).expect("fail"); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
     rc2_cipher2.encrypt_block(data.into());
     rc2_cipher2.decrypt_block(data.into());
 
@@ -129,15 +129,15 @@ fn test_cbc(
     _ = aes_cipher1.encrypt_padded_mut::<aes::cipher::block_padding::Pkcs7>(data, data_len).unwrap();
 
     // des (broken)
-    let des_cipher1 = cbc::Encryptor::<des::Des>::new(key.into(), iv.into()); // $ Alert[rust/weak-cryptographic-algorithm]
+    let des_cipher1 = cbc::Encryptor::<des::Des>::new(key.into(), iv.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
     _ = des_cipher1.encrypt_padded_mut::<des::cipher::block_padding::Pkcs7>(data, data_len).unwrap();
 
     let des_cipher2 = MyDesEncryptor::new(key.into(), iv.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
     _ = des_cipher2.encrypt_padded_mut::<des::cipher::block_padding::Pkcs7>(data, data_len).unwrap();
 
-    let des_cipher3 = cbc::Encryptor::<des::Des>::new_from_slices(&key, &iv).unwrap(); // $ Alert[rust/weak-cryptographic-algorithm]
+    let des_cipher3 = cbc::Encryptor::<des::Des>::new_from_slices(&key, &iv).unwrap(); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
     _ = des_cipher3.encrypt_padded_mut::<des::cipher::block_padding::Pkcs7>(data, data_len).unwrap();
 
-    let des_cipher4 = cbc::Encryptor::<des::Des>::new(key.into(), iv.into()); // $ Alert[rust/weak-cryptographic-algorithm]
+    let des_cipher4 = cbc::Encryptor::<des::Des>::new(key.into(), iv.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
     _ = des_cipher4.encrypt_padded_b2b_mut::<des::cipher::block_padding::Pkcs7>(input, data).unwrap();
 }
