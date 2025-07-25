@@ -258,6 +258,12 @@ class ImplTraitTypeReprMention extends TypeMention instanceof ImplTraitTypeRepr 
   override Type resolveTypeAt(TypePath typePath) {
     typePath.isEmpty() and
     result.(ImplTraitType).getImplTraitTypeRepr() = this
+    or
+    exists(ImplTraitTypeParameter tp |
+      this = tp.getImplTraitTypeRepr() and
+      typePath = TypePath::singleton(tp) and
+      result = TTypeParamTypeParameter(tp.getTypeParam())
+    )
   }
 }
 
