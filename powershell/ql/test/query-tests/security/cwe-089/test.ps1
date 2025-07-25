@@ -79,3 +79,31 @@ $QueryConn2 = @{
 }
 
 Invoke-Sqlcmd @QueryConn2 # BAD
+
+function TakesTypedParameters([int]$i, [long]$l, [float]$f, [double]$d, [decimal]$dec, [char]$c, [bool]$b, [datetime]$dt) {
+    $query1 = "SELECT * FROM MyTable WHERE MyColumn = '$i'"
+    Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -Query $query1 # GOOD
+
+    $query2 = "SELECT * FROM MyTable WHERE MyColumn = '$l'"
+    Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -Query $query2 # GOOD
+
+    $query3 = "SELECT * FROM MyTable WHERE MyColumn = '$f'"
+    Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -Query $query3 # GOOD
+
+    $query4 = "SELECT * FROM MyTable WHERE MyColumn = '$d'"
+    Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -Query $query4 # GOOD
+
+    $query5 = "SELECT * FROM MyTable WHERE MyColumn = '$dec'"
+    Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -Query $query5 # GOOD
+
+    $query6 = "SELECT * FROM MyTable WHERE MyColumn = '$c'"
+    Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -Query $query6 # GOOD
+
+    $query7 = "SELECT * FROM MyTable WHERE MyColumn = '$b'"
+    Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -Query $query7 # GOOD
+
+    $query8 = "SELECT * FROM MyTable WHERE MyColumn = '$dt'"
+    Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -Query $query8 # GOOD
+}
+
+TakesTypedParameters $userinput $userinput $userinput $userinput $userinput $userinput $userinput $userinput

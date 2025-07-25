@@ -159,10 +159,10 @@ private predicate localFlowStep(Node nodeFrom, Node nodeTo, StepSummary summary)
 
 private module TrackInstanceInput implements CallGraphConstruction::InputSig {
   private predicate start0(Node start, string typename, boolean exact) {
-    start.(ObjectCreationNode).getObjectCreationNode().getConstructedTypeName() = typename and
+    start.(ObjectCreationNode).getObjectCreationNode().getLowerCaseConstructedTypeName() = typename and
     exact = true
     or
-    start.asExpr().(CfgNodes::ExprNodes::TypeNameExprCfgNode).getName() = typename and
+    start.asExpr().(CfgNodes::ExprNodes::TypeNameExprCfgNode).getLowerCaseName() = typename and
     exact = true
     or
     start.asParameter().getStaticType() = typename and
