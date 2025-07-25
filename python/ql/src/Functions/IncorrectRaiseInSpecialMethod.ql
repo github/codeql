@@ -29,12 +29,13 @@ private predicate indexingMethod(string name) {
 private predicate arithmeticMethod(string name) {
   name =
     [
-      "__add__", "__sub__", "__or__", "__xor__", "__rshift__", "__pow__", "__mul__", "__neg__",
-      "__radd__", "__rsub__", "__rdiv__", "__rfloordiv__", "__rlshift__", "__rand__", "__ror__",
-      "__rxor__", "__rrshift__", "__rpow__", "__rmul__", "__truediv__", "__rtruediv__", "__pos__",
-      "__iadd__", "__isub__", "__idiv__", "__ifloordiv__", "__idiv__", "__ilshift__", "__iand__",
-      "__ior__", "__ixor__", "__irshift__", "__abs__", "__ipow__", "__imul__", "__itruediv__",
-      "__floordiv__", "__div__", "__divmod__", "__lshift__", "__and__"
+      "__add__", "__sub__", "__and__", "__or__", "__xor__", "__lshift__", "__rshift__", "__pow__",
+      "__mul__", "__div__", "__divmod__", "__truediv__", "__floordiv__", "__matmul__", "__radd__",
+      "__rsub__", "__rand__", "__ror__", "__rxor__", "__rlshift__", "__rrshift__", "__rpow__",
+      "__rmul__", "__rdiv__", "__rdivmod__", "__rtruediv__", "__rfloordiv__", "__rmatmul__",
+      "__iadd__", "__isub__", "__iand__", "__ior__", "__ixor__", "__ilshift__", "__irshift__",
+      "__ipow__", "__imul__", "__idiv__", "__idivmod__", "__itruediv__", "__ifloordiv__",
+      "__imatmul__", "__pos__", "__neg__", "__abs__", "__invert__",
     ]
 }
 
