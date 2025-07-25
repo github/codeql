@@ -20,18 +20,18 @@ Therefore, if a method is unable to perform the expected operation then its resp
 </p>
 
 <ul>
-    <li>Attribute access, <code>a.b</code> (<code>__getattr__</code>): Raise <code>AttributeError</code></li>
+    <li>Attribute access, <code>a.b</code> (<code>__getattr__</code>): Raise <code>AttributeError</code>.</li>
     <li>Arithmetic operations, <code>a + b</code> (<code>__add__</code>): Do not raise an exception, return <code>NotImplemented</code> instead.</li>
     <li>Indexing, <code>a[b]</code> (<code>__getitem__</code>): Raise <code>KeyError</code> or <code>IndexError</code>.</li>
     <li>Hashing, <code>hash(a)</code> (<code>__hash__</code>): Should not raise an exception. Use <code>__hash__ = None</code> to indicate that an object is unhashable rather than raising an exception.</li>
     <li>Equality methods, <code>a == b</code> (<code>__eq__</code>): Never raise an exception, always return <code>True</code> or <code>False</code>.</li>
     <li>Ordering comparison methods, <code>a &lt; b</code> (<code>__lt__</code>): Raise a <code>TypeError</code> if the objects cannot be ordered.</li>
-    <li>Most others: Ideally, do not implement the method at all, otherwise raise <code>TypeError</code> to indicate that the operation is unsupported.</li>
+    <li>Most others: If the operation is never supported, the method often does not need to be implemented at all; otherwise a <code>TypeError</code> should be raised.</li>
 </ul>
 
 </overview>
 <recommendation>
-<p>If the method is intended to be abstract, then declare it so using the <code>@abstractmethod</code> decorator.
+<p>If the method is intended to be abstract, and thus always raise an exception, then declare it so using the <code>@abstractmethod</code> decorator.
 Otherwise, either remove the method or ensure that the method raises an exception of the correct type.
 </p>
 

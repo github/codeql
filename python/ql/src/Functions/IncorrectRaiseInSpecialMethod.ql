@@ -94,7 +94,7 @@ predicate preferredRaise(string name, string execName, string message) {
 }
 
 predicate execIsOfType(Expr exec, string execName) {
-  // Might make sense to have execName be an IPA type here. Or part of a more general API modelling builtin/stdlib subclass relations.
+  // Might make sense to have execName be an IPA type here. Or part of a more general API modeling builtin/stdlib subclass relations.
   exists(string subclass |
     execName = "TypeError" and
     subclass = "TypeError"
