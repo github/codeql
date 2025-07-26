@@ -97,7 +97,11 @@ private module Input1 implements InputSig1<Location> {
         id = 2
         or
         kind = 1 and
-        id = idOfTypeParameterAstNode(tp0.(DynTraitTypeParameter).getTypeParam())
+        id =
+          idOfTypeParameterAstNode([
+              tp0.(DynTraitTypeParameter).getTypeParam().(AstNode),
+              tp0.(DynTraitTypeParameter).getTypeAlias()
+            ])
         or
         kind = 2 and
         exists(AstNode node | id = idOfTypeParameterAstNode(node) |
