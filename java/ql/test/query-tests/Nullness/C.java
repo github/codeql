@@ -204,7 +204,7 @@ public class C {
         obj = new Object();
       } else if (a[i] == 2) {
         verifyNotNull(obj);
-        obj.hashCode(); // NPE - false positive
+        obj.hashCode(); // OK
       }
     }
   }
