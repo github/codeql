@@ -43,6 +43,9 @@ class EvpKeyGenInitialize extends OperationStep {
   override OperationStepType getStepType() { result = InitializerStep() }
 }
 
+/**
+ * A base class for final key generation operation steps.
+ */
 abstract class KeyGenFinalOperationStep extends OperationStep {
   override OperationStepType getStepType() { result = FinalStep() }
 }
@@ -165,7 +168,7 @@ class EvpNewMacKey extends KeyGenFinalOperationStep {
 /**
  * An `KeyGenerationOperationInstance` for the for all key gen final operation steps.
  */
-class KeyGenOperationInstance extends Crypto::KeyGenerationOperationInstance instanceof KeyGenFinalOperationStep
+class OpenSslKeyGenOperationInstance extends Crypto::KeyGenerationOperationInstance instanceof KeyGenFinalOperationStep
 {
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     super.getPrimaryAlgorithmValueConsumer() = result
