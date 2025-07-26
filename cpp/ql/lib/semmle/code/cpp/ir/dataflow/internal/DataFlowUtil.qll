@@ -42,10 +42,7 @@ private newtype TIRDataFlowNode =
       [getMinIndirectionsForType(var.getUnspecifiedType()) .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
   } or
   TPostUpdateNodeImpl(Operand operand, int indirectionIndex) {
-    operand = any(FieldAddress fa).getObjectAddressOperand() and
-    indirectionIndex = [0 .. Ssa::countIndirectionsForCppType(Ssa::getLanguageType(operand))]
-    or
-    Ssa::isModifiableByCall(operand, indirectionIndex)
+    isPostUpdateNodeImpl(operand, indirectionIndex)
   } or
   TSsaSynthNode(Ssa::SynthNode n) or
   TSsaIteratorNode(IteratorFlow::IteratorFlowNode n) or
