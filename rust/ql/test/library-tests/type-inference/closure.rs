@@ -6,38 +6,38 @@ mod simple_closures {
         let my_closure = |a, b| a && b;
 
         let x: i64 = 1i64; // $ type=x:i64
-        let add_one = |n| n + 1i64; // $ MISSING: target=add
-        let _y = add_one(x); // $ MISSING: type=y:i64
+        let add_one = |n| n + 1i64; // $ target=add
+        let _y = add_one(x); // $ type=_y:i64
 
         // The type of `x` is inferred from the closure's argument type.
-        let x = Default::default(); // $ MISSING: type=x:i64 target=default
+        let x = Default::default(); // $ type=x:i64 target=default
         let add_zero = |n: i64| n;
-        let _y = add_zero(x); // $ MISSING: type=_y:i64
+        let _y = add_zero(x); // $ type=_y:i64
 
         let _get_bool = || -> bool {
             // The return type annotation on the closure lets us infer the type of `b`.
-            let b = Default::default(); // $ MISSING: type=b:bool target=default
+            let b = Default::default(); // $ type=b:bool target=default
             b
         };
 
         // The parameter type of `id` is inferred from the argument.
-        let id = |b| b; // $ MISSING: type=x:bool
-        let _b = id(true); // $ MISSING: type=_b:bool
+        let id = |b| b; // $ type=b:bool
+        let _b = id(true); // $ type=_b:bool
 
         // The return type of `id2` is inferred from the type of the call expression.
         let id2 = |b| b;
-        let arg = Default::default(); // $ MISSING: target=default type=arg:bool
-        let _b2: bool = id2(arg); // $ MISSING: type=_b:bool
+        let arg = Default::default(); // $ target=default type=arg:bool
+        let _b2: bool = id2(arg); // $ type=_b2:bool
     }
 }
 
 mod fn_once_trait {
     fn return_type<F: FnOnce(bool) -> i64>(f: F) {
-        let _return = f(true); // $ MISSING: type=_return:i64
+        let _return = f(true); // $ type=_return:i64
     }
 
     fn argument_type<F: FnOnce(bool) -> i64>(f: F) {
-        let arg = Default::default(); // $ MISSING: type=arg:bool target=default
+        let arg = Default::default(); // $ target=default type=arg:bool
         f(arg);
     }
 
@@ -57,7 +57,7 @@ mod fn_once_trait {
                 0
             }
         };
-        let _r = apply(f, true); // $ target=apply MISSING: type=_r:i64
+        let _r = apply(f, true); // $ target=apply type=_r:i64
 
         let f = |x| x + 1; // $ MISSING: type=x:i64 target=add
         let _r2 = apply_two(f); // $ target=apply_two type=_r2:i64
@@ -70,7 +70,7 @@ mod dyn_fn_once {
     }
 
     fn apply_boxed_dyn<A, B>(f: Box<dyn FnOnce(A) -> B>, arg: A) {
-        let _r1 = apply_boxed(f, arg); // $ target=apply_boxed MISSING: type=_r1:B
-        let _r2 = apply_boxed(Box::new(|_: i64| true), 3); // $ target=apply_boxed target=new MISSING: type=_r2:bool
+        let _r1 = apply_boxed(f, arg); // $ target=apply_boxed type=_r1:B
+        let _r2 = apply_boxed(Box::new(|_: i64| true), 3); // $ target=apply_boxed target=new type=_r2:bool
     }
 }
