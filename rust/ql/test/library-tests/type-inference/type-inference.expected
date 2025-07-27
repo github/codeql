@@ -1,4 +1,69 @@
 inferType
+| closure.rs:6:27:6:27 | a |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:6:30:6:30 | b |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:6:33:6:33 | a |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:6:33:6:38 | ... && ... |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:6:38:6:38 | b |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:8:13:8:13 | x |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:8:22:8:25 | 1i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:9:31:9:34 | 1i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:10:26:10:26 | x |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:14:25:14:25 | n |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:14:33:14:33 | n |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:25:21:25:24 | true |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:30:13:30:15 | _b2 |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:30:25:30:32 | id2(...) |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:35:44:35:44 | f |  | closure.rs:35:20:35:41 | F |
+| closure.rs:36:23:36:23 | f |  | closure.rs:35:20:35:41 | F |
+| closure.rs:36:25:36:28 | true |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:39:46:39:46 | f |  | closure.rs:39:22:39:43 | F |
+| closure.rs:41:9:41:9 | f |  | closure.rs:39:22:39:43 | F |
+| closure.rs:44:39:44:39 | f |  | closure.rs:44:20:44:36 | F |
+| closure.rs:44:45:44:45 | a |  | closure.rs:44:14:44:14 | A |
+| closure.rs:44:56:46:5 | { ... } |  | closure.rs:44:17:44:17 | B |
+| closure.rs:45:9:45:9 | f |  | closure.rs:44:20:44:36 | F |
+| closure.rs:45:9:45:12 | f(...) |  | closure.rs:44:17:44:17 | B |
+| closure.rs:45:11:45:11 | a |  | closure.rs:44:14:44:14 | A |
+| closure.rs:48:18:48:18 | f |  | closure.rs:48:21:48:43 | ImplTraitTypeRepr |
+| closure.rs:48:53:50:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:49:9:49:9 | f |  | closure.rs:48:21:48:43 | ImplTraitTypeRepr |
+| closure.rs:49:9:49:12 | f(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:49:11:49:11 | 2 |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:53:18:53:18 | x |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:53:34:59:9 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:54:13:58:13 | if x {...} else {...} |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:54:16:54:16 | x |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:54:18:56:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:55:17:55:17 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:56:20:58:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:57:17:57:17 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:60:27:60:30 | true |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:62:25:62:25 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:63:13:63:15 | _r2 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:63:19:63:30 | apply_two(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:68:54:68:54 | f |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:68:54:68:54 | f | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:68:54:68:54 | f | T | closure.rs:68:26:68:51 | F |
+| closure.rs:68:65:68:67 | arg |  | closure.rs:68:20:68:20 | A |
+| closure.rs:68:78:70:5 | { ... } |  | closure.rs:68:23:68:23 | B |
+| closure.rs:69:9:69:9 | f |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:69:9:69:9 | f | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:69:9:69:9 | f | T | closure.rs:68:26:68:51 | F |
+| closure.rs:69:9:69:14 | f(...) |  | closure.rs:68:23:68:23 | B |
+| closure.rs:69:11:69:13 | arg |  | closure.rs:68:20:68:20 | A |
+| closure.rs:72:30:72:30 | f |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:72:30:72:30 | f | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:72:30:72:30 | f | T | {EXTERNAL LOCATION} | dyn FnOnce |
+| closure.rs:72:58:72:60 | arg |  | closure.rs:72:24:72:24 | A |
+| closure.rs:73:31:73:31 | f |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:73:31:73:31 | f | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:73:31:73:31 | f | T | {EXTERNAL LOCATION} | dyn FnOnce |
+| closure.rs:73:34:73:36 | arg |  | closure.rs:72:24:72:24 | A |
+| closure.rs:74:31:74:53 | ...::new(...) |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:74:31:74:53 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:74:41:74:41 | _ |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:74:49:74:52 | true |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:74:56:74:56 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:12:14:12:18 | SelfParam |  | file://:0:0:0:0 | & |
 | dereference.rs:12:14:12:18 | SelfParam | &T | dereference.rs:4:1:6:1 | MyIntPointer |
 | dereference.rs:12:29:14:5 | { ... } |  | file://:0:0:0:0 | & |
@@ -4528,43 +4593,11 @@ inferType
 | main.rs:2456:26:2456:43 | "Nested boxed: {}\\n" | &T | {EXTERNAL LOCATION} | str |
 | main.rs:2456:26:2456:59 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:2456:26:2456:59 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| main.rs:2468:16:2468:20 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:2468:16:2468:20 | SelfParam | &T | main.rs:2463:5:2465:5 | Row |
-| main.rs:2468:30:2470:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:2469:13:2469:16 | self |  | file://:0:0:0:0 | & |
-| main.rs:2469:13:2469:16 | self | &T | main.rs:2463:5:2465:5 | Row |
-| main.rs:2469:13:2469:21 | self.data |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:2478:26:2480:9 | { ... } |  | main.rs:2473:5:2475:5 | Table |
-| main.rs:2479:13:2479:38 | Table {...} |  | main.rs:2473:5:2475:5 | Table |
-| main.rs:2479:27:2479:36 | ...::new(...) |  | {EXTERNAL LOCATION} | Vec |
-| main.rs:2479:27:2479:36 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2479:27:2479:36 | ...::new(...) | T | main.rs:2463:5:2465:5 | Row |
-| main.rs:2482:23:2482:27 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:2482:23:2482:27 | SelfParam | &T | main.rs:2473:5:2475:5 | Table |
-| main.rs:2482:30:2482:37 | property |  | main.rs:2482:40:2482:59 | ImplTraitTypeRepr |
-| main.rs:2482:69:2484:9 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2482:69:2484:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:2483:13:2483:13 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2483:13:2483:13 | 0 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:2488:9:2488:15 | Some(...) |  | {EXTERNAL LOCATION} | Option |
-| main.rs:2488:9:2488:15 | Some(...) | T | {EXTERNAL LOCATION} | i32 |
-| main.rs:2488:9:2491:10 | ... .map(...) |  | {EXTERNAL LOCATION} | Option |
-| main.rs:2488:14:2488:14 | 1 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2490:22:2490:26 | "{x}\\n" |  | file://:0:0:0:0 | & |
-| main.rs:2490:22:2490:26 | "{x}\\n" | &T | {EXTERNAL LOCATION} | str |
-| main.rs:2490:22:2490:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
-| main.rs:2490:22:2490:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| main.rs:2493:13:2493:17 | table |  | main.rs:2473:5:2475:5 | Table |
-| main.rs:2493:21:2493:32 | ...::new(...) |  | main.rs:2473:5:2475:5 | Table |
-| main.rs:2494:13:2494:18 | result |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:2494:22:2494:26 | table |  | main.rs:2473:5:2475:5 | Table |
-| main.rs:2494:22:2498:14 | table.count_with(...) |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:2497:21:2497:21 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2507:5:2507:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2508:5:2508:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2508:20:2508:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2508:41:2508:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2524:5:2524:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:2468:5:2468:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2469:5:2469:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2469:20:2469:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2469:41:2469:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2485:5:2485:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
 | pattern_matching.rs:13:26:133:1 | { ... } |  | {EXTERNAL LOCATION} | Option |
 | pattern_matching.rs:13:26:133:1 | { ... } | T | file://:0:0:0:0 | () |
 | pattern_matching.rs:14:9:14:13 | value |  | {EXTERNAL LOCATION} | Option |

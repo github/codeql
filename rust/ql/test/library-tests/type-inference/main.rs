@@ -2459,46 +2459,7 @@ pub mod pattern_matching_experimental {
     }
 }
 
-mod closures {
-    struct Row {
-        data: i64,
-    }
-
-    impl Row {
-        fn get(&self) -> i64 {
-            self.data // $ fieldof=Row
-        }
-    }
-
-    struct Table {
-        rows: Vec<Row>,
-    }
-
-    impl Table {
-        fn new() -> Self {
-            Table { rows: Vec::new() } // $ target=new
-        }
-
-        fn count_with(&self, property: impl Fn(Row) -> bool) -> i64 {
-            0 // (not implemented)
-        }
-    }
-
-    pub fn f() {
-        Some(1).map(|x| {
-            let x = x; // $ MISSING: type=x:i32
-            println!("{x}");
-        }); // $ target=map
-
-        let table = Table::new(); // $ target=new type=table:Table
-        let result = table.count_with(|row| // $ type=result:i64
-            {
-                let v = row.get(); // $ MISSING: target=get type=v:i64
-                v > 0 // $ MISSING: target=gt
-            }); // $ target=count_with
-    }
-}
-
+mod closure;
 mod dereference;
 mod dyn_type;
 
@@ -2532,6 +2493,5 @@ fn main() {
     dereference::test(); // $ target=test
     pattern_matching::test_all_patterns(); // $ target=test_all_patterns
     pattern_matching_experimental::box_patterns(); // $ target=box_patterns
-    closures::f(); // $ target=f
     dyn_type::test(); // $ target=test
 }
