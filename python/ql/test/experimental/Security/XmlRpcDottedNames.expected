@@ -1,0 +1,1 @@
+| XmlRpcDottedNames.py:19:5:19:28 | Attribute | Enabling the allow_dotted_names option allows intruders to access your module\u2019s global variables and may allow intruders to execute arbitrary code on your machine. |
