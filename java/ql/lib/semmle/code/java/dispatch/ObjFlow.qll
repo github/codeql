@@ -214,24 +214,35 @@ private predicate relevantNode(ObjNode n) {
   exists(ObjNode mid | relevantNode(mid) and objStep(mid, n) and relevantNodeBack(n))
 }
 
-pragma[noinline]
-private predicate objStepPruned(ObjNode n1, ObjNode n2) {
-  objStep(n1, n2) and relevantNode(n1) and relevantNode(n2)
+private newtype TObjFlowNode =
+  TObjNode(ObjNode n) { relevantNode(n) } or
+  TObjType(RefType t) { source(t, _) }
+
+private predicate objStepPruned(TObjFlowNode node1, TObjFlowNode node2) {
+  exists(ObjNode n1, ObjNode n2 |
+    node1 = TObjNode(n1) and
+    node2 = TObjNode(n2) and
+    objStep(n1, n2)
+  )
+  or
+  exists(RefType t, ObjNode n |
+    node1 = TObjType(t) and
+    node2 = TObjNode(n) and
+    source(t, n)
+  )
 }
 
-private predicate stepPlus(Node n1, Node n2) = fastTC(objStepPruned/2)(n1, n2)
+private predicate flowSrc(TObjFlowNode src) { src instanceof TObjType }
+
+private predicate flowSink(TObjFlowNode sink) { exists(ObjNode n | sink = TObjNode(n) and sink(n)) }
+
+private predicate stepPlus(TObjFlowNode n1, TObjFlowNode n2) =
+  doublyBoundedFastTC(objStepPruned/2, flowSrc/1, flowSink/1)(n1, n2)
 
 /**
  * Holds if the qualifier `n` of an `Object.toString()` call might have type `t`.
  */
-pragma[noopt]
-private predicate objType(ObjNode n, RefType t) {
-  exists(ObjNode n2 |
-    sink(n) and
-    (stepPlus(n2, n) or n2 = n) and
-    source(t, n2)
-  )
-}
+private predicate objType(ObjNode n, RefType t) { stepPlus(TObjType(t), TObjNode(n)) }
 
 private VirtualMethodCall objectToString(ObjNode n) {
   result.getQualifier() = n.asExpr() and sink(n)
