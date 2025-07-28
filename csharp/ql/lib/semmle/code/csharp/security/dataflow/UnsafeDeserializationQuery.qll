@@ -59,6 +59,10 @@ private module TaintToObjectMethodTrackingConfig implements DataFlow::ConfigSig 
   predicate isSink(DataFlow::Node sink) { sink instanceof InstanceMethodSink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // used in one of the disjuncts in UnsafeDeserializationUntrustedInput.ql
+  }
 }
 
 /**
@@ -77,6 +81,10 @@ private module JsonConvertTrackingConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // used in one of the disjuncts in UnsafeDeserializationUntrustedInput.ql
+  }
 }
 
 /**
@@ -133,6 +141,10 @@ private module TypeNameTrackingConfig implements DataFlow::ConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Only used as secondary config in UnsafeDeserializationUntrustedInput.ql
+  }
 }
 
 /**
@@ -149,6 +161,10 @@ private module TaintToConstructorOrStaticMethodTrackingConfig implements DataFlo
   predicate isSink(DataFlow::Node sink) { sink instanceof ConstructorOrStaticMethodSink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // used in one of the disjuncts in UnsafeDeserializationUntrustedInput.ql
+  }
 }
 
 /**
@@ -186,6 +202,10 @@ private module TaintToObjectTypeTrackingConfig implements DataFlow::ConfigSig {
       oc.getObjectType() instanceof StrongTypeDeserializer
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used as secondary config in UnsafeDeserializationUntrustedInput.ql
+  }
 }
 
 /**
@@ -209,6 +229,10 @@ private module WeakTypeCreationToUsageTrackingConfig implements DataFlow::Config
       mc.getTarget() instanceof UnsafeDeserializer and
       sink.asExpr() = mc.getQualifier()
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used as secondary config in UnsafeDeserializationUntrustedInput.ql
   }
 }
 
