@@ -1,4 +1,7 @@
 #select
+| dynamodb.js:15:23:15:29 | command | dynamodb.js:9:26:9:33 | req.body | dynamodb.js:15:23:15:29 | command | This query string depends on a $@. | dynamodb.js:9:26:9:33 | req.body | user-provided value |
+| dynamodb.js:21:23:21:35 | updateCommand | dynamodb.js:9:26:9:33 | req.body | dynamodb.js:21:23:21:35 | updateCommand | This query string depends on a $@. | dynamodb.js:9:26:9:33 | req.body | user-provided value |
+| dynamodb.js:47:24:47:30 | command | dynamodb.js:9:26:9:33 | req.body | dynamodb.js:47:24:47:30 | command | This query string depends on a $@. | dynamodb.js:9:26:9:33 | req.body | user-provided value |
 | graphql.js:9:34:19:5 | `\\n      ... }\\n    ` | graphql.js:8:16:8:28 | req.params.id | graphql.js:9:34:19:5 | `\\n      ... }\\n    ` | This query string depends on a $@. | graphql.js:8:16:8:28 | req.params.id | user-provided value |
 | graphql.js:26:30:26:40 | `foo ${id}` | graphql.js:25:16:25:28 | req.params.id | graphql.js:26:30:26:40 | `foo ${id}` | This query string depends on a $@. | graphql.js:25:16:25:28 | req.params.id | user-provided value |
 | graphql.js:29:32:29:42 | `foo ${id}` | graphql.js:25:16:25:28 | req.params.id | graphql.js:29:32:29:42 | `foo ${id}` | This query string depends on a $@. | graphql.js:25:16:25:28 | req.params.id | user-provided value |
@@ -137,6 +140,22 @@
 | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | This query string depends on a $@. | tst4.js:8:46:8:60 | $routeParams.id | user-provided value |
 | tst.js:10:10:10:64 | 'SELECT ... d + '"' | tst.js:10:46:10:58 | req.params.id | tst.js:10:10:10:64 | 'SELECT ... d + '"' | This query string depends on a $@. | tst.js:10:46:10:58 | req.params.id | user-provided value |
 edges
+| dynamodb.js:9:9:9:22 | maliciousInput | dynamodb.js:11:64:11:77 | maliciousInput | provenance |  |
+| dynamodb.js:9:9:9:22 | maliciousInput | dynamodb.js:17:80:17:93 | maliciousInput | provenance |  |
+| dynamodb.js:9:26:9:33 | req.body | dynamodb.js:9:9:9:22 | maliciousInput | provenance |  |
+| dynamodb.js:11:11:11:19 | statement | dynamodb.js:13:20:13:28 | statement | provenance |  |
+| dynamodb.js:11:64:11:77 | maliciousInput | dynamodb.js:11:11:11:19 | statement | provenance |  |
+| dynamodb.js:12:11:12:17 | command | dynamodb.js:15:23:15:29 | command | provenance |  |
+| dynamodb.js:12:11:12:17 | command | dynamodb.js:47:24:47:30 | command | provenance |  |
+| dynamodb.js:12:21:14:6 | new Exe ... \\n    }) | dynamodb.js:12:11:12:17 | command | provenance |  |
+| dynamodb.js:12:49:14:5 | {\\n      ... t\\n    } [Statement] | dynamodb.js:12:21:14:6 | new Exe ... \\n    }) | provenance |  |
+| dynamodb.js:13:20:13:28 | statement | dynamodb.js:12:49:14:5 | {\\n      ... t\\n    } [Statement] | provenance |  |
+| dynamodb.js:17:11:17:25 | updateStatement | dynamodb.js:19:20:19:34 | updateStatement | provenance |  |
+| dynamodb.js:17:80:17:93 | maliciousInput | dynamodb.js:17:11:17:25 | updateStatement | provenance |  |
+| dynamodb.js:18:11:18:23 | updateCommand | dynamodb.js:21:23:21:35 | updateCommand | provenance |  |
+| dynamodb.js:18:27:20:6 | new Exe ... \\n    }) | dynamodb.js:18:11:18:23 | updateCommand | provenance |  |
+| dynamodb.js:18:55:20:5 | {\\n      ... t\\n    } [Statement] | dynamodb.js:18:27:20:6 | new Exe ... \\n    }) | provenance |  |
+| dynamodb.js:19:20:19:34 | updateStatement | dynamodb.js:18:55:20:5 | {\\n      ... t\\n    } [Statement] | provenance |  |
 | graphql.js:8:11:8:12 | id | graphql.js:11:46:11:47 | id | provenance |  |
 | graphql.js:8:16:8:28 | req.params.id | graphql.js:8:11:8:12 | id | provenance |  |
 | graphql.js:11:46:11:47 | id | graphql.js:9:34:19:5 | `\\n      ... }\\n    ` | provenance |  |
@@ -518,6 +537,23 @@ edges
 | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | provenance |  |
 | tst.js:10:46:10:58 | req.params.id | tst.js:10:10:10:64 | 'SELECT ... d + '"' | provenance |  |
 nodes
+| dynamodb.js:9:9:9:22 | maliciousInput | semmle.label | maliciousInput |
+| dynamodb.js:9:26:9:33 | req.body | semmle.label | req.body |
+| dynamodb.js:11:11:11:19 | statement | semmle.label | statement |
+| dynamodb.js:11:64:11:77 | maliciousInput | semmle.label | maliciousInput |
+| dynamodb.js:12:11:12:17 | command | semmle.label | command |
+| dynamodb.js:12:21:14:6 | new Exe ... \\n    }) | semmle.label | new Exe ... \\n    }) |
+| dynamodb.js:12:49:14:5 | {\\n      ... t\\n    } [Statement] | semmle.label | {\\n      ... t\\n    } [Statement] |
+| dynamodb.js:13:20:13:28 | statement | semmle.label | statement |
+| dynamodb.js:15:23:15:29 | command | semmle.label | command |
+| dynamodb.js:17:11:17:25 | updateStatement | semmle.label | updateStatement |
+| dynamodb.js:17:80:17:93 | maliciousInput | semmle.label | maliciousInput |
+| dynamodb.js:18:11:18:23 | updateCommand | semmle.label | updateCommand |
+| dynamodb.js:18:27:20:6 | new Exe ... \\n    }) | semmle.label | new Exe ... \\n    }) |
+| dynamodb.js:18:55:20:5 | {\\n      ... t\\n    } [Statement] | semmle.label | {\\n      ... t\\n    } [Statement] |
+| dynamodb.js:19:20:19:34 | updateStatement | semmle.label | updateStatement |
+| dynamodb.js:21:23:21:35 | updateCommand | semmle.label | updateCommand |
+| dynamodb.js:47:24:47:30 | command | semmle.label | command |
 | graphql.js:8:11:8:12 | id | semmle.label | id |
 | graphql.js:8:16:8:28 | req.params.id | semmle.label | req.params.id |
 | graphql.js:9:34:19:5 | `\\n      ... }\\n    ` | semmle.label | `\\n      ... }\\n    ` |

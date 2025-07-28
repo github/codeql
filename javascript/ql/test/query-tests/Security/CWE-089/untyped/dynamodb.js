@@ -6,19 +6,19 @@ const region = 'us-east-1';
 
 app.post('/partiql/v3/execute', async (req, res) => {
     const client = new DynamoDBClient({});
-    let maliciousInput = req.body.data; // $ MISSING: Source
+    let maliciousInput = req.body.data; // $ Source
 
     const statement = `SELECT * FROM Users WHERE username = '${maliciousInput}'`;
     const command = new ExecuteStatementCommand({
         Statement: statement
     });
-    await client.send(command); // $ MISSING: Alert
+    await client.send(command); // $ Alert
 
     const updateStatement = "UPDATE Users SET status = 'active' WHERE id = " + maliciousInput;
     const updateCommand = new ExecuteStatementCommand({
         Statement: updateStatement
     });
-    await client.send(updateCommand); // $ MISSING: Alert
+    await client.send(updateCommand); // $ Alert
 
 
     const batchInput = {
@@ -44,7 +44,7 @@ app.post('/partiql/v3/execute', async (req, res) => {
     await client.send(batchCommand2); // $ MISSING: Alert
 
     const client2 = new DynamoDB({});
-    await client2.send(command); // $ MISSING: Alert
+    await client2.send(command); // $ Alert
     await client2.send(batchCommand); // $ MISSING: Alert
 });
 
