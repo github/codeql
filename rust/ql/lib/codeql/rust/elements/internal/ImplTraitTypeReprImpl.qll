@@ -23,10 +23,14 @@ module Impl {
    * ```
    */
   class ImplTraitTypeRepr extends Generated::ImplTraitTypeRepr {
-    /**
-     * Gets the function for which this impl trait type occurs in the return
-     * type, if any.
-     */
-    Function getFunctionReturnPos() { this.getParentNode*() = result.getRetType().getTypeRepr() }
+    /** Gets the function for which this impl trait type occurs, if any. */
+    Function getFunction() {
+      this.getParentNode*() = [result.getRetType().getTypeRepr(), result.getAParam().getTypeRepr()]
+    }
+
+    /** Holds if this impl trait type occurs in the return type of a function. */
+    predicate isInReturnPos() {
+      this.getParentNode*() = this.getFunction().getRetType().getTypeRepr()
+    }
   }
 }

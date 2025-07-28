@@ -60,7 +60,8 @@ newtype TType =
   TSliceTypeParameter()
 
 predicate implTraitTypeParam(ImplTraitTypeRepr implTrait, int i, TypeParam tp) {
-  tp = implTrait.getFunctionReturnPos().getGenericParamList().getTypeParam(i) and
+  implTrait.isInReturnPos() and
+  tp = implTrait.getFunction().getGenericParamList().getTypeParam(i) and
   // Only include type parameters of the function that occur inside the impl
   // trait type.
   exists(Path path | path.getParentNode*() = implTrait and resolvePath(path) = tp)
@@ -317,7 +318,7 @@ class DynTraitType extends Type, TDynTraitType {
 class ImplTraitReturnType extends ImplTraitType {
   private Function function;
 
-  ImplTraitReturnType() { function = impl.getFunctionReturnPos() }
+  ImplTraitReturnType() { impl.isInReturnPos() and function = impl.getFunction() }
 
   override Function getFunction() { result = function }
 }
