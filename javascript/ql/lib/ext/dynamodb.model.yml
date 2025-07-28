@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["DynamoDBClientV3", "ReturnValue.Member[send].Argument[0]", "sql-injection"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: summaryModel
+    data:
+      - ["@aws-sdk/client-dynamodb", "Member[ExecuteStatementCommand]", "Argument[0].Member[Statement]", "ReturnValue", "taint"]
+      - ["@aws-sdk/client-dynamodb", "Member[BatchExecuteStatementCommand]", "Argument[0].Member[Statements].ArrayElement.Member[Statement]", "ReturnValue", "taint"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["DynamoDBClientV3", "@aws-sdk/client-dynamodb", "Member[DynamoDBClient,DynamoDB]"]
