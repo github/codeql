@@ -290,7 +290,6 @@
 /lib/codeql/rust/elements/internal/IfExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ImplConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ImplTraitTypeReprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/ImplTraitTypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/IndexExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/InferTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ItemImpl.qll linguist-generated

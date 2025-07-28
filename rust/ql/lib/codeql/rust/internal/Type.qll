@@ -52,9 +52,20 @@ newtype TType =
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
   TArrayTypeParameter() or
   TDynTraitTypeParameter(AstNode n) { dynTraitTypeParameter(_, n) } or
+  TImplTraitTypeParameter(ImplTraitTypeRepr implTrait, TypeParam tp) {
+    implTraitTypeParam(implTrait, _, tp)
+  } or
   TRefTypeParameter() or
   TSelfTypeParameter(Trait t) or
   TSliceTypeParameter()
+
+predicate implTraitTypeParam(ImplTraitTypeRepr implTrait, int i, TypeParam tp) {
+  implTrait.isInReturnPos() and
+  tp = implTrait.getFunction().getGenericParamList().getTypeParam(i) and
+  // Only include type parameters of the function that occur inside the impl
+  // trait type.
+  exists(Path path | path.getParentNode*() = implTrait and resolvePath(path) = tp)
+}
 
 /**
  * A type without type arguments.
@@ -263,7 +274,12 @@ class ImplTraitType extends Type, TImplTraitType {
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeParameter getTypeParameter(int i) { none() }
+  override TypeParameter getTypeParameter(int i) {
+    exists(TypeParam tp |
+      implTraitTypeParam(impl, i, tp) and
+      result = TImplTraitTypeParameter(impl, tp)
+    )
+  }
 
   override string toString() { result = impl.toString() }
 
@@ -302,7 +318,7 @@ class DynTraitType extends Type, TDynTraitType {
 class ImplTraitReturnType extends ImplTraitType {
   private Function function;
 
-  ImplTraitReturnType() { impl = function.getRetType().getTypeRepr() }
+  ImplTraitReturnType() { impl.isInReturnPos() and function = impl.getFunction() }
 
   override Function getFunction() { result = function }
 }
@@ -456,6 +472,21 @@ class DynTraitTypeParameter extends TypeParameter, TDynTraitTypeParameter {
   override Location getLocation() { result = n.getLocation() }
 }
 
+class ImplTraitTypeParameter extends TypeParameter, TImplTraitTypeParameter {
+  private TypeParam typeParam;
+  private ImplTraitTypeRepr implTrait;
+
+  ImplTraitTypeParameter() { this = TImplTraitTypeParameter(implTrait, typeParam) }
+
+  TypeParam getTypeParam() { result = typeParam }
+
+  ImplTraitTypeRepr getImplTraitTypeRepr() { result = implTrait }
+
+  override string toString() { result = "impl(" + typeParam.toString() + ")" }
+
+  override Location getLocation() { result = typeParam.getLocation() }
+}
+
 /** An implicit reference type parameter. */
 class RefTypeParameter extends TypeParameter, TRefTypeParameter {
   override string toString() { result = "&T" }
@@ -569,5 +600,7 @@ final class SelfTypeBoundTypeAbstraction extends TypeAbstraction, Name {
 }
 
 final class ImplTraitTypeReprAbstraction extends TypeAbstraction, ImplTraitTypeRepr {
-  override TypeParameter getATypeParameter() { none() }
+  override TypeParameter getATypeParameter() {
+    implTraitTypeParam(this, _, result.(TypeParamTypeParameter).getTypeParam())
+  }
 }
