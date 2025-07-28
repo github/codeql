@@ -53,21 +53,21 @@ app.post('/partiql/v2/execute', async (req, res) => {
     const dynamodb = new AWS.DynamoDB({
         region: 'us-east-1'
     });
-    let maliciousInput = req.body.data; // $ MISSING: Source
+    let maliciousInput = req.body.data; // $ Source
     const params = {
-        Statement: `SELECT * FROM Users WHERE username = '${maliciousInput}'`
+        Statement: `SELECT * FROM Users WHERE username = '${maliciousInput}'`  // $ Alert
     };
 
-    dynamodb.executeStatement(params, function(err, data) {});  // $ MISSING: Alert
+    dynamodb.executeStatement(params, function(err, data) {});
     const params2 = {
         Statements: [{
-                Statement: `SELECT * FROM Users WHERE username = '${maliciousInput}'`
+                Statement: `SELECT * FROM Users WHERE username = '${maliciousInput}'`  // $ Alert
             },
             {
-                Statement: `SELECT * FROM Users WHERE username = '${maliciousInput}'`
+                Statement: `SELECT * FROM Users WHERE username = '${maliciousInput}'` // $ Alert
             }
         ]
     };
 
-    dynamodb.batchExecuteStatement(params2, function(err, data) {});  // $ MISSING: Alert
+    dynamodb.batchExecuteStatement(params2, function(err, data) {});
 });
