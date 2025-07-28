@@ -101,7 +101,11 @@ private module Input1 implements InputSig1<Location> {
         or
         kind = 1 and
         id1 = 0 and
-        id2 = idOfTypeParameterAstNode(tp0.(DynTraitTypeParameter).getTypeParam())
+        id2 =
+          idOfTypeParameterAstNode([
+              tp0.(DynTraitTypeParameter).getTypeParam().(AstNode),
+              tp0.(DynTraitTypeParameter).getTypeAlias()
+            ])
         or
         kind = 2 and
         id1 = idOfTypeParameterAstNode(tp0.(ImplTraitTypeParameter).getImplTraitTypeRepr()) and

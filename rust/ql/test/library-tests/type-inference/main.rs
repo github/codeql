@@ -653,7 +653,7 @@ mod function_trait_bounds {
     }
 }
 
-mod trait_associated_type {
+mod associated_type_in_trait {
     #[derive(Debug)]
     struct Wrapper<A> {
         field: A,
@@ -800,6 +800,46 @@ mod trait_associated_type {
         let assoc_zero = AT.get_zero(); // $ target=get_zero type=assoc_zero:AT
         let assoc_one = AT.get_one(); // $ target=get_one type=assoc_one:S
         let assoc_two = AT.get_two(); // $ target=get_two type=assoc_two:S2
+    }
+}
+
+mod associated_type_in_supertrait {
+    trait Supertrait {
+        type Content;
+        fn insert(content: Self::Content);
+    }
+
+    trait Subtrait: Supertrait {
+        // Subtrait::get_content
+        fn get_content(&self) -> Self::Content;
+    }
+
+    struct MyType<T>(T);
+
+    impl<T> Supertrait for MyType<T> {
+        type Content = T;
+        fn insert(_content: Self::Content) {
+            println!("Inserting content: ");
+        }
+    }
+
+    impl<T: Clone> Subtrait for MyType<T> {
+        // MyType::get_content
+        fn get_content(&self) -> Self::Content {
+            (*self).0.clone() // $ fieldof=MyType target=clone target=deref
+        }
+    }
+
+    fn get_content<T: Subtrait>(item: &T) -> T::Content {
+        item.get_content() // $ target=Subtrait::get_content
+    }
+
+    fn test() {
+        let item1 = MyType(42i64);
+        let _content1 = item1.get_content(); // $ target=MyType::get_content MISSING: type=_content1:i64
+
+        let item2 = MyType(true);
+        let _content2 = get_content(&item2); // $ target=get_content MISSING: type=_content2:bool
     }
 }
 
@@ -2494,7 +2534,7 @@ fn main() {
     method_non_parametric_impl::f(); // $ target=f
     method_non_parametric_trait_impl::f(); // $ target=f
     function_trait_bounds::f(); // $ target=f
-    trait_associated_type::f(); // $ target=f
+    associated_type_in_trait::f(); // $ target=f
     generic_enum::f(); // $ target=f
     method_supertraits::f(); // $ target=f
     function_trait_bounds_2::f(); // $ target=f

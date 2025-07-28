@@ -330,10 +330,10 @@ class DynTraitTypeReprMention extends TypeMention instanceof DynTraitTypeRepr {
     result = dynType
     or
     exists(DynTraitTypeParameter tp, TypePath path0, TypePath suffix |
-      tp = dynType.getTypeParameter(_) and
+      dynType = tp.getDynTraitType() and
       path = TypePath::cons(tp, suffix) and
       result = super.getTypeBoundList().getBound(0).getTypeRepr().(TypeMention).resolveTypeAt(path0) and
-      path0.isCons(TTypeParamTypeParameter(tp.getTypeParam()), suffix)
+      path0.isCons(tp.getTraitTypeParameter(), suffix)
     )
   }
 }
@@ -369,10 +369,10 @@ class DynTypeBoundListMention extends TypeMention instanceof TypeBoundList {
     path.isEmpty() and
     result.(DynTraitType).getTrait() = trait
     or
-    exists(TypeParam param |
-      param = trait.getGenericParamList().getATypeParam() and
-      path = TypePath::singleton(TDynTraitTypeParameter(param)) and
-      result = TTypeParamTypeParameter(param)
+    exists(DynTraitTypeParameter tp |
+      trait = tp.getTrait() and
+      path = TypePath::singleton(tp) and
+      result = tp.getTraitTypeParameter()
     )
   }
 }
