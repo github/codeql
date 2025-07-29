@@ -207,3 +207,57 @@ void test14(int a, int b) {
 
   }
 }
+
+void test15(int n, int m) {
+  int b = n < m;
+  if(b) {
+    
+  } else {
+    
+  }
+}
+
+void test16(int n, int m) {
+  int b = n < m;
+  if(b != 2) {
+    
+  } else {
+    
+  }
+}
+
+void test17(int n, int m) {
+  int b = n == m;
+  if(b) {
+    
+  } else {
+    
+  }
+}
+
+void test18(int n, int m) {
+  int b = n == m;
+  if(b != 2) {
+    
+  } else {
+    
+  }
+}
+
+void test19(int n, int m) {
+  int b = n != m;
+  if(b) {
+    
+  } else {
+    
+  }
+}
+
+void test20(int n, int m) {
+  int b = n != m;
+  if(b != 2) {
+    
+  } else {
+    
+  }
+}

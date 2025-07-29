@@ -356,6 +356,48 @@
 | test.c:206:8:206:8 | c | ! ... == 1 when c is false |
 | test.c:206:8:206:8 | c | c != 0 when c is true |
 | test.c:206:8:206:8 | c | c == 0 when c is false |
+| test.c:213:6:213:6 | b | b != 0 when b is true |
+| test.c:213:6:213:6 | b | b != 1 when b is false |
+| test.c:213:6:213:6 | b | b == 0 when b is false |
+| test.c:213:6:213:6 | b | b == 1 when b is true |
+| test.c:222:6:222:11 | ... != ... | 2 != b+0 when ... != ... is true |
+| test.c:222:6:222:11 | ... != ... | 2 == b+0 when ... != ... is false |
+| test.c:222:6:222:11 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.c:222:6:222:11 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.c:222:6:222:11 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.c:222:6:222:11 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.c:222:6:222:11 | ... != ... | b != 2 when ... != ... is true |
+| test.c:222:6:222:11 | ... != ... | b != 2+0 when ... != ... is true |
+| test.c:222:6:222:11 | ... != ... | b == 2 when ... != ... is false |
+| test.c:222:6:222:11 | ... != ... | b == 2+0 when ... != ... is false |
+| test.c:231:6:231:6 | b | b != 0 when b is true |
+| test.c:231:6:231:6 | b | b != 1 when b is false |
+| test.c:231:6:231:6 | b | b == 0 when b is false |
+| test.c:231:6:231:6 | b | b == 1 when b is true |
+| test.c:240:6:240:11 | ... != ... | 2 != b+0 when ... != ... is true |
+| test.c:240:6:240:11 | ... != ... | 2 == b+0 when ... != ... is false |
+| test.c:240:6:240:11 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.c:240:6:240:11 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.c:240:6:240:11 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.c:240:6:240:11 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.c:240:6:240:11 | ... != ... | b != 2 when ... != ... is true |
+| test.c:240:6:240:11 | ... != ... | b != 2+0 when ... != ... is true |
+| test.c:240:6:240:11 | ... != ... | b == 2 when ... != ... is false |
+| test.c:240:6:240:11 | ... != ... | b == 2+0 when ... != ... is false |
+| test.c:249:6:249:6 | b | b != 0 when b is true |
+| test.c:249:6:249:6 | b | b != 1 when b is false |
+| test.c:249:6:249:6 | b | b == 0 when b is false |
+| test.c:249:6:249:6 | b | b == 1 when b is true |
+| test.c:258:6:258:11 | ... != ... | 2 != b+0 when ... != ... is true |
+| test.c:258:6:258:11 | ... != ... | 2 == b+0 when ... != ... is false |
+| test.c:258:6:258:11 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.c:258:6:258:11 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.c:258:6:258:11 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.c:258:6:258:11 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.c:258:6:258:11 | ... != ... | b != 2 when ... != ... is true |
+| test.c:258:6:258:11 | ... != ... | b != 2+0 when ... != ... is true |
+| test.c:258:6:258:11 | ... != ... | b == 2 when ... != ... is false |
+| test.c:258:6:258:11 | ... != ... | b == 2+0 when ... != ... is false |
 | test.cpp:18:8:18:10 | call to get | call to get != 0 when call to get is true |
 | test.cpp:18:8:18:10 | call to get | call to get != 1 when call to get is false |
 | test.cpp:18:8:18:10 | call to get | call to get == 0 when call to get is false |
@@ -803,3 +845,41 @@
 | test.cpp:241:35:241:43 | ... == ... | i != 0+0 when ... == ... is false |
 | test.cpp:241:35:241:43 | ... == ... | i == 0 when ... == ... is true |
 | test.cpp:241:35:241:43 | ... == ... | i == 0+0 when ... == ... is true |
+| test.cpp:248:6:248:11 | ... != ... | 2 != b+0 when ... != ... is true |
+| test.cpp:248:6:248:11 | ... != ... | 2 == b+0 when ... != ... is false |
+| test.cpp:248:6:248:11 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.cpp:248:6:248:11 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.cpp:248:6:248:11 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.cpp:248:6:248:11 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.cpp:248:6:248:11 | ... != ... | b != 2 when ... != ... is true |
+| test.cpp:248:6:248:11 | ... != ... | b != 2+0 when ... != ... is true |
+| test.cpp:248:6:248:11 | ... != ... | b == 2 when ... != ... is false |
+| test.cpp:248:6:248:11 | ... != ... | b == 2+0 when ... != ... is false |
+| test.cpp:257:6:257:6 | b | b != 0 when b is true |
+| test.cpp:257:6:257:6 | b | b != 1 when b is false |
+| test.cpp:257:6:257:6 | b | b == 0 when b is false |
+| test.cpp:257:6:257:6 | b | b == 1 when b is true |
+| test.cpp:266:6:266:11 | ... != ... | 2 != b+0 when ... != ... is true |
+| test.cpp:266:6:266:11 | ... != ... | 2 == b+0 when ... != ... is false |
+| test.cpp:266:6:266:11 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.cpp:266:6:266:11 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.cpp:266:6:266:11 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.cpp:266:6:266:11 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.cpp:266:6:266:11 | ... != ... | b != 2 when ... != ... is true |
+| test.cpp:266:6:266:11 | ... != ... | b != 2+0 when ... != ... is true |
+| test.cpp:266:6:266:11 | ... != ... | b == 2 when ... != ... is false |
+| test.cpp:266:6:266:11 | ... != ... | b == 2+0 when ... != ... is false |
+| test.cpp:275:6:275:6 | b | b != 0 when b is true |
+| test.cpp:275:6:275:6 | b | b != 1 when b is false |
+| test.cpp:275:6:275:6 | b | b == 0 when b is false |
+| test.cpp:275:6:275:6 | b | b == 1 when b is true |
+| test.cpp:284:6:284:11 | ... != ... | 2 != b+0 when ... != ... is true |
+| test.cpp:284:6:284:11 | ... != ... | 2 == b+0 when ... != ... is false |
+| test.cpp:284:6:284:11 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.cpp:284:6:284:11 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.cpp:284:6:284:11 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.cpp:284:6:284:11 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.cpp:284:6:284:11 | ... != ... | b != 2 when ... != ... is true |
+| test.cpp:284:6:284:11 | ... != ... | b != 2+0 when ... != ... is true |
+| test.cpp:284:6:284:11 | ... != ... | b == 2 when ... != ... is false |
+| test.cpp:284:6:284:11 | ... != ... | b == 2+0 when ... != ... is false |
