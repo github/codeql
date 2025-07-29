@@ -1,4 +1,7 @@
 #select
+| clients3.js:18:23:18:60 | new Sel ... params) | clients3.js:10:26:10:33 | req.body | clients3.js:18:23:18:60 | new Sel ... params) | This query string depends on a $@. | clients3.js:10:26:10:33 | req.body | user-provided value |
+| clients3.js:29:21:29:68 | "SELECT ... usInput | clients3.js:23:26:23:33 | req.body | clients3.js:29:21:29:68 | "SELECT ... usInput | This query string depends on a $@. | clients3.js:23:26:23:33 | req.body | user-provided value |
+| clients3.js:38:21:38:68 | "SELECT ... usInput | clients3.js:23:26:23:33 | req.body | clients3.js:38:21:38:68 | "SELECT ... usInput | This query string depends on a $@. | clients3.js:23:26:23:33 | req.body | user-provided value |
 | dynamodb.js:15:23:15:29 | command | dynamodb.js:9:26:9:33 | req.body | dynamodb.js:15:23:15:29 | command | This query string depends on a $@. | dynamodb.js:9:26:9:33 | req.body | user-provided value |
 | dynamodb.js:21:23:21:35 | updateCommand | dynamodb.js:9:26:9:33 | req.body | dynamodb.js:21:23:21:35 | updateCommand | This query string depends on a $@. | dynamodb.js:9:26:9:33 | req.body | user-provided value |
 | dynamodb.js:47:24:47:30 | command | dynamodb.js:9:26:9:33 | req.body | dynamodb.js:47:24:47:30 | command | This query string depends on a $@. | dynamodb.js:9:26:9:33 | req.body | user-provided value |
@@ -143,6 +146,7 @@
 | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | This query string depends on a $@. | tst4.js:8:46:8:60 | $routeParams.id | user-provided value |
 | tst.js:10:10:10:64 | 'SELECT ... d + '"' | tst.js:10:46:10:58 | req.params.id | tst.js:10:10:10:64 | 'SELECT ... d + '"' | This query string depends on a $@. | tst.js:10:46:10:58 | req.params.id | user-provided value |
 edges
+<<<<<<< HEAD
 | dynamodb.js:9:9:9:22 | maliciousInput | dynamodb.js:11:64:11:77 | maliciousInput | provenance |  |
 | dynamodb.js:9:9:9:22 | maliciousInput | dynamodb.js:17:80:17:93 | maliciousInput | provenance |  |
 | dynamodb.js:9:26:9:33 | req.body | dynamodb.js:9:9:9:22 | maliciousInput | provenance |  |
@@ -151,6 +155,28 @@ edges
 | dynamodb.js:12:11:12:17 | command | dynamodb.js:15:23:15:29 | command | provenance |  |
 | dynamodb.js:12:11:12:17 | command | dynamodb.js:47:24:47:30 | command | provenance |  |
 | dynamodb.js:12:21:14:6 | new Exe ... \\n    }) | dynamodb.js:12:11:12:17 | command | provenance |  |
+=======
+| clients3.js:10:9:10:40 | maliciousInput | clients3.js:16:55:16:68 | maliciousInput | provenance |  |
+| clients3.js:10:26:10:33 | req.body | clients3.js:10:9:10:40 | maliciousInput | provenance |  |
+| clients3.js:12:11:17:5 | params [Expression] | clients3.js:18:54:18:59 | params [Expression] | provenance |  |
+| clients3.js:12:20:17:5 | {\\n      ... ,\\n    } [Expression] | clients3.js:12:11:17:5 | params [Expression] | provenance |  |
+| clients3.js:16:21:16:68 | "SELECT ... usInput | clients3.js:12:20:17:5 | {\\n      ... ,\\n    } [Expression] | provenance |  |
+| clients3.js:16:55:16:68 | maliciousInput | clients3.js:16:21:16:68 | "SELECT ... usInput | provenance |  |
+| clients3.js:18:54:18:59 | params [Expression] | clients3.js:18:23:18:60 | new Sel ... params) | provenance |  |
+| clients3.js:23:9:23:40 | maliciousInput | clients3.js:29:55:29:68 | maliciousInput | provenance |  |
+| clients3.js:23:9:23:40 | maliciousInput | clients3.js:38:55:38:68 | maliciousInput | provenance |  |
+| clients3.js:23:26:23:33 | req.body | clients3.js:23:9:23:40 | maliciousInput | provenance |  |
+| clients3.js:29:55:29:68 | maliciousInput | clients3.js:29:21:29:68 | "SELECT ... usInput | provenance |  |
+| clients3.js:38:55:38:68 | maliciousInput | clients3.js:38:21:38:68 | "SELECT ... usInput | provenance |  |
+| dynamodb.js:9:9:9:38 | maliciousInput | dynamodb.js:11:64:11:77 | maliciousInput | provenance |  |
+| dynamodb.js:9:9:9:38 | maliciousInput | dynamodb.js:17:80:17:93 | maliciousInput | provenance |  |
+| dynamodb.js:9:26:9:33 | req.body | dynamodb.js:9:9:9:38 | maliciousInput | provenance |  |
+| dynamodb.js:11:11:11:80 | statement | dynamodb.js:13:20:13:28 | statement | provenance |  |
+| dynamodb.js:11:64:11:77 | maliciousInput | dynamodb.js:11:11:11:80 | statement | provenance |  |
+| dynamodb.js:12:11:14:6 | command | dynamodb.js:15:23:15:29 | command | provenance |  |
+| dynamodb.js:12:11:14:6 | command | dynamodb.js:47:24:47:30 | command | provenance |  |
+| dynamodb.js:12:21:14:6 | new Exe ... \\n    }) | dynamodb.js:12:11:14:6 | command | provenance |  |
+>>>>>>> 1af289cd7d4 (Added modeling of client-s3 v2 and v3)
 | dynamodb.js:12:49:14:5 | {\\n      ... t\\n    } [Statement] | dynamodb.js:12:21:14:6 | new Exe ... \\n    }) | provenance |  |
 | dynamodb.js:13:20:13:28 | statement | dynamodb.js:12:49:14:5 | {\\n      ... t\\n    } [Statement] | provenance |  |
 | dynamodb.js:17:11:17:25 | updateStatement | dynamodb.js:19:20:19:34 | updateStatement | provenance |  |
@@ -547,7 +573,25 @@ edges
 | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | provenance |  |
 | tst.js:10:46:10:58 | req.params.id | tst.js:10:10:10:64 | 'SELECT ... d + '"' | provenance |  |
 nodes
+<<<<<<< HEAD
 | dynamodb.js:9:9:9:22 | maliciousInput | semmle.label | maliciousInput |
+=======
+| clients3.js:10:9:10:40 | maliciousInput | semmle.label | maliciousInput |
+| clients3.js:10:26:10:33 | req.body | semmle.label | req.body |
+| clients3.js:12:11:17:5 | params [Expression] | semmle.label | params [Expression] |
+| clients3.js:12:20:17:5 | {\\n      ... ,\\n    } [Expression] | semmle.label | {\\n      ... ,\\n    } [Expression] |
+| clients3.js:16:21:16:68 | "SELECT ... usInput | semmle.label | "SELECT ... usInput |
+| clients3.js:16:55:16:68 | maliciousInput | semmle.label | maliciousInput |
+| clients3.js:18:23:18:60 | new Sel ... params) | semmle.label | new Sel ... params) |
+| clients3.js:18:54:18:59 | params [Expression] | semmle.label | params [Expression] |
+| clients3.js:23:9:23:40 | maliciousInput | semmle.label | maliciousInput |
+| clients3.js:23:26:23:33 | req.body | semmle.label | req.body |
+| clients3.js:29:21:29:68 | "SELECT ... usInput | semmle.label | "SELECT ... usInput |
+| clients3.js:29:55:29:68 | maliciousInput | semmle.label | maliciousInput |
+| clients3.js:38:21:38:68 | "SELECT ... usInput | semmle.label | "SELECT ... usInput |
+| clients3.js:38:55:38:68 | maliciousInput | semmle.label | maliciousInput |
+| dynamodb.js:9:9:9:38 | maliciousInput | semmle.label | maliciousInput |
+>>>>>>> 1af289cd7d4 (Added modeling of client-s3 v2 and v3)
 | dynamodb.js:9:26:9:33 | req.body | semmle.label | req.body |
 | dynamodb.js:11:11:11:19 | statement | semmle.label | statement |
 | dynamodb.js:11:64:11:77 | maliciousInput | semmle.label | maliciousInput |
