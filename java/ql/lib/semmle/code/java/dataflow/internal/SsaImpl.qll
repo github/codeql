@@ -567,13 +567,15 @@ private module Cached {
       }
 
       private predicate guardChecksWithWrappers(
-        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e, Guards::GuardValue val
+        DataFlowIntegrationInput::Guard g, Definition def, Guards::GuardValue val, Unit state
       ) {
-        Guards::Guards_v3::ValidationWrapper<guardChecksAdjTypes/3>::guardChecks(g, e, val)
+        Guards::Guards_v3::ValidationWrapper<guardChecksAdjTypes/3>::guardChecksDef(g, def, val) and
+        exists(state)
       }
 
       private Node getABarrierNodeImpl() {
-        result = DataFlowIntegrationImpl::BarrierGuard<guardChecksWithWrappers/3>::getABarrierNode()
+        result =
+          DataFlowIntegrationImpl::BarrierGuardDefWithState<Unit, guardChecksWithWrappers/4>::getABarrierNode(_)
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/0;
