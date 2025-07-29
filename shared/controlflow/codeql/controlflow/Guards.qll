@@ -935,18 +935,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       }
     }
 
-    private predicate booleanGuard(Guard guard, GuardValue val) {
-      exists(guard) and exists(val.asBooleanValue())
-    }
-
-    private module BooleanImplies = ImpliesTC<booleanGuard/2>;
-
-    /** INTERNAL: Don't use. */
-    predicate boolImplies(Guard g1, GuardValue v1, Guard g2, GuardValue v2) {
-      BooleanImplies::guardControls(g2, v2, g1, v1) and
-      g2 != g1
-    }
-
     /**
      * Holds if `guard` evaluating to `v` implies that `e` is guaranteed to be
      * null if `isNull` is true, and non-null if `isNull` is false.
