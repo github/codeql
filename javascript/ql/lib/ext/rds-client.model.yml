@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["RDSDataClientV3", "ReturnValue.Member[send].Argument[0]", "sql-injection"]
+      - ["RDSDataClientV2", "ReturnValue.Member[executeStatement,batchExecuteStatement].Argument[0].Member[sql]", "sql-injection"]
+      - ["RDSDataClientV2", "ReturnValue.Member[batchExecuteStatement].Argument[0].Member[parameterSets].ArrayElement.Member[sql]", "sql-injection"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: summaryModel
+    data:
+      - ["@aws-sdk/client-rds-data", "Member[ExecuteStatementCommand,BatchExecuteStatementCommand]", "Argument[0].Member[sql]", "ReturnValue", "taint"]
+      - ["@aws-sdk/client-rds-data", "Member[BatchExecuteStatementCommand]", "Argument[0].Member[parameterSets].ArrayElement.Member[sql]", "ReturnValue", "taint"]
+      - ["@aws-sdk/client-rds-data", "Member[ExecuteSqlCommand]", "Argument[0].Member[sqlStatements]", "ReturnValue", "taint"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["RDSDataClientV3", "@aws-sdk/client-rds-data", "Member[RDSDataClient]"]
+      - ["RDSDataClientV2", "aws-sdk", "Member[RDSDataService]"]
