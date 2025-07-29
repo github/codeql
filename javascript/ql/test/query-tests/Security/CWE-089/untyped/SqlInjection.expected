@@ -137,6 +137,10 @@
 | pg-promise.js:60:20:60:24 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:60:20:60:24 | query | This query string depends on a $@. | pg-promise.js:7:16:7:34 | req.params.category | user-provided value |
 | pg-promise.js:63:23:63:27 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:63:23:63:27 | query | This query string depends on a $@. | pg-promise.js:7:16:7:34 | req.params.category | user-provided value |
 | pg-promise.js:64:16:64:20 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:64:16:64:20 | query | This query string depends on a $@. | pg-promise.js:7:16:7:34 | req.params.category | user-provided value |
+| rds-client.js:19:23:19:58 | new Exe ... arams1) | rds-client.js:8:23:8:30 | req.body | rds-client.js:19:23:19:58 | new Exe ... arams1) | This query string depends on a $@. | rds-client.js:8:23:8:30 | req.body | user-provided value |
+| rds-client.js:36:23:36:51 | new Exe ... params) | rds-client.js:8:23:8:30 | req.body | rds-client.js:36:23:36:51 | new Exe ... params) | This query string depends on a $@. | rds-client.js:8:23:8:30 | req.body | user-provided value |
+| rds-client.js:53:14:53:22 | userQuery | rds-client.js:44:23:44:30 | req.body | rds-client.js:53:14:53:22 | userQuery | This query string depends on a $@. | rds-client.js:44:23:44:30 | req.body | user-provided value |
+| rds-client.js:61:50:61:52 | sql | rds-client.js:45:25:45:32 | req.body | rds-client.js:61:50:61:52 | sql | This query string depends on a $@. | rds-client.js:45:25:45:32 | req.body | user-provided value |
 | redis.js:10:16:10:27 | req.body.key | redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key | This query object depends on a $@. | redis.js:10:16:10:23 | req.body | user-provided value |
 | redis.js:18:16:18:18 | key | redis.js:12:15:12:22 | req.body | redis.js:18:16:18:18 | key | This query object depends on a $@. | redis.js:12:15:12:22 | req.body | user-provided value |
 | redis.js:19:43:19:45 | key | redis.js:12:15:12:22 | req.body | redis.js:19:43:19:45 | key | This query object depends on a $@. | redis.js:12:15:12:22 | req.body | user-provided value |
@@ -563,6 +567,23 @@ edges
 | pg-promise.js:22:11:22:15 | query | pg-promise.js:60:20:60:24 | query | provenance |  |
 | pg-promise.js:22:11:22:15 | query | pg-promise.js:63:23:63:27 | query | provenance |  |
 | pg-promise.js:22:11:22:15 | query | pg-promise.js:64:16:64:20 | query | provenance |  |
+| rds-client.js:8:11:8:36 | userQuery | rds-client.js:17:14:17:22 | userQuery | provenance |  |
+| rds-client.js:8:11:8:36 | userQuery | rds-client.js:33:24:33:32 | userQuery | provenance |  |
+| rds-client.js:8:23:8:30 | req.body | rds-client.js:8:11:8:36 | userQuery | provenance |  |
+| rds-client.js:13:11:18:5 | params1 [sql] | rds-client.js:19:51:19:57 | params1 [sql] | provenance |  |
+| rds-client.js:13:21:18:5 | {\\n      ... y\\n    } [sql] | rds-client.js:13:11:18:5 | params1 [sql] | provenance |  |
+| rds-client.js:17:14:17:22 | userQuery | rds-client.js:13:21:18:5 | {\\n      ... y\\n    } [sql] | provenance |  |
+| rds-client.js:19:51:19:57 | params1 [sql] | rds-client.js:19:23:19:58 | new Exe ... arams1) | provenance |  |
+| rds-client.js:29:11:34:5 | params [sqlStatements] | rds-client.js:36:45:36:50 | params [sqlStatements] | provenance |  |
+| rds-client.js:29:20:34:5 | {\\n      ... y\\n    } [sqlStatements] | rds-client.js:29:11:34:5 | params [sqlStatements] | provenance |  |
+| rds-client.js:33:24:33:32 | userQuery | rds-client.js:29:20:34:5 | {\\n      ... y\\n    } [sqlStatements] | provenance |  |
+| rds-client.js:36:45:36:50 | params [sqlStatements] | rds-client.js:36:23:36:51 | new Exe ... params) | provenance |  |
+| rds-client.js:44:11:44:36 | userQuery | rds-client.js:53:14:53:22 | userQuery | provenance |  |
+| rds-client.js:44:23:44:30 | req.body | rds-client.js:44:11:44:36 | userQuery | provenance |  |
+| rds-client.js:45:11:45:40 | userQueries | rds-client.js:61:24:61:34 | userQueries | provenance |  |
+| rds-client.js:45:25:45:32 | req.body | rds-client.js:45:11:45:40 | userQueries | provenance |  |
+| rds-client.js:61:24:61:34 | userQueries | rds-client.js:61:40:61:42 | sql | provenance |  |
+| rds-client.js:61:40:61:42 | sql | rds-client.js:61:50:61:52 | sql | provenance |  |
 | redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key | provenance | Config |
 | redis.js:12:9:12:11 | key | redis.js:13:16:13:18 | key | provenance |  |
 | redis.js:12:9:12:11 | key | redis.js:18:16:18:18 | key | provenance |  |
@@ -940,6 +961,26 @@ nodes
 | pg-promise.js:60:20:60:24 | query | semmle.label | query |
 | pg-promise.js:63:23:63:27 | query | semmle.label | query |
 | pg-promise.js:64:16:64:20 | query | semmle.label | query |
+| rds-client.js:8:11:8:36 | userQuery | semmle.label | userQuery |
+| rds-client.js:8:23:8:30 | req.body | semmle.label | req.body |
+| rds-client.js:13:11:18:5 | params1 [sql] | semmle.label | params1 [sql] |
+| rds-client.js:13:21:18:5 | {\\n      ... y\\n    } [sql] | semmle.label | {\\n      ... y\\n    } [sql] |
+| rds-client.js:17:14:17:22 | userQuery | semmle.label | userQuery |
+| rds-client.js:19:23:19:58 | new Exe ... arams1) | semmle.label | new Exe ... arams1) |
+| rds-client.js:19:51:19:57 | params1 [sql] | semmle.label | params1 [sql] |
+| rds-client.js:29:11:34:5 | params [sqlStatements] | semmle.label | params [sqlStatements] |
+| rds-client.js:29:20:34:5 | {\\n      ... y\\n    } [sqlStatements] | semmle.label | {\\n      ... y\\n    } [sqlStatements] |
+| rds-client.js:33:24:33:32 | userQuery | semmle.label | userQuery |
+| rds-client.js:36:23:36:51 | new Exe ... params) | semmle.label | new Exe ... params) |
+| rds-client.js:36:45:36:50 | params [sqlStatements] | semmle.label | params [sqlStatements] |
+| rds-client.js:44:11:44:36 | userQuery | semmle.label | userQuery |
+| rds-client.js:44:23:44:30 | req.body | semmle.label | req.body |
+| rds-client.js:45:11:45:40 | userQueries | semmle.label | userQueries |
+| rds-client.js:45:25:45:32 | req.body | semmle.label | req.body |
+| rds-client.js:53:14:53:22 | userQuery | semmle.label | userQuery |
+| rds-client.js:61:24:61:34 | userQueries | semmle.label | userQueries |
+| rds-client.js:61:40:61:42 | sql | semmle.label | sql |
+| rds-client.js:61:50:61:52 | sql | semmle.label | sql |
 | redis.js:10:16:10:23 | req.body | semmle.label | req.body |
 | redis.js:10:16:10:27 | req.body.key | semmle.label | req.body.key |
 | redis.js:12:9:12:11 | key | semmle.label | key |

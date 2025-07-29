@@ -5,7 +5,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.post('/v3/rds/all', async (req, res) => {
-    const userQuery = req.body.query; // $ MISSING: Source
+    const userQuery = req.body.query; // $ Source
     const userQueries = req.body.queries; // $ MISSING: Source
 
     const client = new RDSDataClient({ region: "us-east-1" });
@@ -16,7 +16,7 @@ app.post('/v3/rds/all', async (req, res) => {
         database: "userDatabase",
         sql: userQuery
     };
-    await client.send(new ExecuteStatementCommand(params1)); // $ MISSING: Alert
+    await client.send(new ExecuteStatementCommand(params1)); // $ Alert
 
     const params2 = {
         resourceArn: "arn:aws:rds:us-east-1:123456789012:cluster:my-aurora-cluster",
@@ -33,7 +33,7 @@ app.post('/v3/rds/all', async (req, res) => {
         sqlStatements: userQuery
     };
 
-    await client.send(new ExecuteSqlCommand(params)); // $ MISSING: Alert
+    await client.send(new ExecuteSqlCommand(params)); // $ Alert
 
     res.end();
 });
@@ -41,8 +41,8 @@ app.post('/v3/rds/all', async (req, res) => {
 const AWS = require('aws-sdk');
 
 app.post('/v2/rds/all', async (req, res) => {
-    const userQuery = req.body.query; // $ MISSING: Source
-    const userQueries = req.body.queries; // $ MISSING: Source
+    const userQuery = req.body.query; // $ Source
+    const userQueries = req.body.queries; // $ Source
 
     const rdsData = new AWS.RDSDataService({ region: "us-east-1" });
 
@@ -50,7 +50,7 @@ app.post('/v2/rds/all', async (req, res) => {
         resourceArn: "arn:aws:rds:us-east-1:123456789012:cluster:my-aurora-cluster",
         secretArn: "arn:aws:secretsmanager:us-east-1:123456789012:secret:my-secret",
         database: "userDatabase",
-        sql: userQuery // $ MISSING: Alert
+        sql: userQuery // $ Alert
     };
     await rdsData.executeStatement(params1).promise();
 
@@ -58,7 +58,7 @@ app.post('/v2/rds/all', async (req, res) => {
         resourceArn: "arn:aws:rds:us-east-1:123456789012:cluster:my-aurora-cluster",
         secretArn: "arn:aws:secretsmanager:us-east-1:123456789012:secret:my-secret",
         database: "userDatabase",
-        parameterSets: userQueries.map(sql => ({ sql })) // $ MISSING: Alert
+        parameterSets: userQueries.map(sql => ({ sql })) // $ Alert
     };
     await rdsData.batchExecuteStatement(params2).promise();
 
