@@ -1,0 +1,91 @@
+FlexibleConstructors.java:
+#    0| [CompilationUnit] FlexibleConstructors
+#    1|   1: [Class] A
+#    2|     1: [Constructor] A
+#-----|       4: (Parameters)
+#    2|         0: [Parameter] msg
+#    2|           0: [TypeAccess] String
+#    2|       5: [BlockStmt] { ... }
+#    3|         1: [ExprStmt] <Expr>;
+#    3|           0: [MethodCall] println(...)
+#    3|             -1: [VarAccess] System.out
+#    3|               -1: [TypeAccess] System
+#    3|             0: [AddExpr] ... + ...
+#    3|               0: [StringLiteral] "A: "
+#    3|               1: [VarAccess] msg
+#    7|   2: [Class] B
+#-----|     -1: (Base Types)
+#    7|       -1: [TypeAccess] A
+#    8|     1: [Constructor] B
+#-----|       4: (Parameters)
+#    8|         0: [Parameter] input
+#    8|           0: [TypeAccess] String
+#    8|       5: [BlockStmt] { ... }
+#    9|         0: [LocalVariableDeclStmt] var ...;
+#    9|           1: [LocalVariableDeclExpr] msg
+#    9|             0: [MethodCall] toUpperCase(...)
+#    9|               -1: [MethodCall] trim(...)
+#    9|                 -1: [VarAccess] input
+#   10|         1: [SuperConstructorInvocationStmt] super(...)
+#   10|           0: [VarAccess] msg
+#   14|   3: [Class] C
+#   15|     1: [FieldDeclaration] int x;
+#   15|       -1: [TypeAccess] int
+#   17|     2: [Constructor] C
+#-----|       4: (Parameters)
+#   17|         0: [Parameter] x
+#   17|           0: [TypeAccess] int
+#   17|       5: [BlockStmt] { ... }
+#   18|         0: [IfStmt] if (...)
+#   18|           0: [LTExpr] ... < ...
+#   18|             0: [VarAccess] x
+#   18|             1: [IntegerLiteral] 0
+#   18|           1: [ThrowStmt] throw ...
+#   18|             0: [ClassInstanceExpr] new IllegalArgumentException(...)
+#   18|               -3: [TypeAccess] IllegalArgumentException
+#   19|         1: [SuperConstructorInvocationStmt] super(...)
+#   20|         2: [ExprStmt] <Expr>;
+#   20|           0: [AssignExpr] ...=...
+#   20|             0: [VarAccess] this.x
+#   20|               -1: [ThisAccess] this
+#   20|             1: [VarAccess] x
+#   24|   4: [Class] R
+#   24|     2: [FieldDeclaration] String name;
+#   24|     3: [FieldDeclaration] int score;
+#   25|     4: [Constructor] R
+#-----|       4: (Parameters)
+#   25|         0: [Parameter] name
+#   25|           0: [TypeAccess] String
+#   25|       5: [BlockStmt] { ... }
+#   26|         0: [LocalVariableDeclStmt] var ...;
+#   26|           1: [LocalVariableDeclExpr] score
+#   26|             0: [MethodCall] length(...)
+#   26|               -1: [VarAccess] name
+#   27|         1: [ThisConstructorInvocationStmt] this(...)
+#   27|           0: [VarAccess] name
+#   27|           1: [VarAccess] score
+#   31|   5: [Class] Outer
+#   32|     3: [FieldDeclaration] String prefix;
+#   32|       -1: [TypeAccess] String
+#   32|       0: [StringLiteral] "outer"
+#   34|     4: [Class] Inner
+#   35|       1: [FieldDeclaration] String full;
+#   35|         -1: [TypeAccess] String
+#   37|       2: [Constructor] Inner
+#-----|         4: (Parameters)
+#   37|           0: [Parameter] suffix
+#   37|             0: [TypeAccess] String
+#   37|         5: [BlockStmt] { ... }
+#   38|           0: [LocalVariableDeclStmt] var ...;
+#   38|             1: [LocalVariableDeclExpr] combined
+#   38|               0: [AddExpr] ... + ...
+#   38|                 0: [AddExpr] ... + ...
+#   38|                   0: [VarAccess] prefix
+#   38|                   1: [StringLiteral] "_"
+#   38|                 1: [VarAccess] suffix
+#   39|           1: [SuperConstructorInvocationStmt] super(...)
+#   40|           2: [ExprStmt] <Expr>;
+#   40|             0: [AssignExpr] ...=...
+#   40|               0: [VarAccess] this.full
+#   40|                 -1: [ThisAccess] this
+#   40|               1: [VarAccess] combined
