@@ -1913,8 +1913,10 @@ mod async_ {
 }
 
 mod impl_trait {
+    #[derive(Copy, Clone)]
     struct S1;
     struct S2;
+    struct S3<T3>(T3);
 
     trait Trait1 {
         fn f1(&self) {} // Trait1f1
@@ -1946,12 +1948,31 @@ mod impl_trait {
         }
     }
 
+    impl<T: Clone> MyTrait<T> for S3<T> {
+        fn get_a(&self) -> T {
+            let S3(t) = self;
+            t.clone()
+        }
+    }
+
     fn get_a_my_trait() -> impl MyTrait<S2> {
         S1
     }
 
     fn uses_my_trait1<A, B: MyTrait<A>>(t: B) -> A {
         t.get_a() // $ target=MyTrait::get_a
+    }
+
+    fn get_a_my_trait2<T: Clone>(x: T) -> impl MyTrait<T> {
+        S3(x)
+    }
+
+    fn get_a_my_trait3<T: Clone>(x: T) -> Option<impl MyTrait<T>> {
+        Some(S3(x))
+    }
+
+    fn get_a_my_trait4<T: Clone>(x: T) -> (impl MyTrait<T>, impl MyTrait<T>) {
+        (S3(x.clone()), S3(x)) // $ target=clone
     }
 
     fn uses_my_trait2<A>(t: impl MyTrait<A>) -> A {
@@ -1967,6 +1988,10 @@ mod impl_trait {
         let a = get_a_my_trait(); // $ target=get_a_my_trait
         let c = uses_my_trait2(a); // $ type=c:S2 target=uses_my_trait2
         let d = uses_my_trait2(S1); // $ type=d:S2 target=uses_my_trait2
+        let e = get_a_my_trait2(S1).get_a(); // $ target=get_a_my_trait2 target=MyTrait::get_a type=e:S1
+        // For this function the `impl` type does not appear in the root of the return type
+        let f = get_a_my_trait3(S1).unwrap().get_a(); // $ target=get_a_my_trait3 target=unwrap target=MyTrait::get_a type=f:S1
+        let g = get_a_my_trait4(S1).0.get_a(); // $ target=get_a_my_trait4 target=MyTrait::get_a type=g:S1
     }
 }
 
@@ -2425,7 +2450,7 @@ mod tuples {
 
         let pair = [1, 1].into(); // $ type=pair:(T_2) type=pair:0(2).i32 type=pair:1(2).i32 MISSING: target=into
         match pair {
-            (0,0) => print!("unexpected"),
+            (0, 0) => print!("unexpected"),
             _ => print!("expected"),
         }
         let x = pair.0; // $ type=x:i32

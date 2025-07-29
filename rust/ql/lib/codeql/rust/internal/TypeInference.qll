@@ -83,42 +83,48 @@ private module Input1 implements InputSig1<Location> {
 
   int getTypeParameterId(TypeParameter tp) {
     tp =
-      rank[result](TypeParameter tp0, int kind, int id |
+      rank[result](TypeParameter tp0, int kind, int id1, int id2 |
         tp0 instanceof ArrayTypeParameter and
         kind = 0 and
-        id = 0
+        id1 = 0 and
+        id2 = 0
         or
         tp0 instanceof RefTypeParameter and
         kind = 0 and
-        id = 1
+        id1 = 0 and
+        id2 = 1
         or
         tp0 instanceof SliceTypeParameter and
         kind = 0 and
-        id = 2
+        id1 = 0 and
+        id2 = 2
         or
         kind = 1 and
-        id =
+        id1 = 0 and
+        id2 =
           idOfTypeParameterAstNode([
               tp0.(DynTraitTypeParameter).getTypeParam().(AstNode),
               tp0.(DynTraitTypeParameter).getTypeAlias()
             ])
         or
         kind = 2 and
-        exists(AstNode node | id = idOfTypeParameterAstNode(node) |
+        id1 = idOfTypeParameterAstNode(tp0.(ImplTraitTypeParameter).getImplTraitTypeRepr()) and
+        id2 = idOfTypeParameterAstNode(tp0.(ImplTraitTypeParameter).getTypeParam())
+        or
+        kind = 3 and
+        id1 = 0 and
+        exists(AstNode node | id2 = idOfTypeParameterAstNode(node) |
           node = tp0.(TypeParamTypeParameter).getTypeParam() or
           node = tp0.(AssociatedTypeTypeParameter).getTypeAlias() or
           node = tp0.(SelfTypeParameter).getTrait() or
           node = tp0.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr()
         )
         or
-        exists(TupleTypeParameter ttp, int maxArity |
-          maxArity = max(int i | i = any(TupleType tt).getArity()) and
-          tp0 = ttp and
-          kind = 3 and
-          id = ttp.getTupleType().getArity() * maxArity + ttp.getIndex()
-        )
+        kind = 4 and
+        id1 = tp0.(TupleTypeParameter).getTupleType().getArity() and
+        id2 = tp0.(TupleTypeParameter).getIndex()
       |
-        tp0 order by kind, id
+        tp0 order by kind, id1, id2
       )
   }
 }
