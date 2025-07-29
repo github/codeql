@@ -1,0 +1,2 @@
+
+//semmle-extractor-options: --javac-args --release 25 --enable-preview
