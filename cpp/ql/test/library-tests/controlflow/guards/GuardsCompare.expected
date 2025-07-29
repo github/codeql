@@ -855,10 +855,18 @@
 | test.cpp:248:6:248:11 | ... != ... | b != 2+0 when ... != ... is true |
 | test.cpp:248:6:248:11 | ... != ... | b == 2 when ... != ... is false |
 | test.cpp:248:6:248:11 | ... != ... | b == 2+0 when ... != ... is false |
+| test.cpp:248:6:248:11 | ... != ... | m < n+1 when ... != ... is true |
+| test.cpp:248:6:248:11 | ... != ... | m >= n+1 when ... != ... is false |
+| test.cpp:248:6:248:11 | ... != ... | n < m+0 when ... != ... is false |
+| test.cpp:248:6:248:11 | ... != ... | n >= m+0 when ... != ... is true |
 | test.cpp:257:6:257:6 | b | b != 0 when b is true |
 | test.cpp:257:6:257:6 | b | b != 1 when b is false |
 | test.cpp:257:6:257:6 | b | b == 0 when b is false |
 | test.cpp:257:6:257:6 | b | b == 1 when b is true |
+| test.cpp:257:6:257:6 | b | m != n+0 when b is false |
+| test.cpp:257:6:257:6 | b | m == n+0 when b is true |
+| test.cpp:257:6:257:6 | b | n != m+0 when b is false |
+| test.cpp:257:6:257:6 | b | n == m+0 when b is true |
 | test.cpp:266:6:266:11 | ... != ... | 2 != b+0 when ... != ... is true |
 | test.cpp:266:6:266:11 | ... != ... | 2 == b+0 when ... != ... is false |
 | test.cpp:266:6:266:11 | ... != ... | ... != ... != 0 when ... != ... is true |
@@ -869,10 +877,18 @@
 | test.cpp:266:6:266:11 | ... != ... | b != 2+0 when ... != ... is true |
 | test.cpp:266:6:266:11 | ... != ... | b == 2 when ... != ... is false |
 | test.cpp:266:6:266:11 | ... != ... | b == 2+0 when ... != ... is false |
+| test.cpp:266:6:266:11 | ... != ... | m != n+0 when ... != ... is true |
+| test.cpp:266:6:266:11 | ... != ... | m == n+0 when ... != ... is false |
+| test.cpp:266:6:266:11 | ... != ... | n != m+0 when ... != ... is true |
+| test.cpp:266:6:266:11 | ... != ... | n == m+0 when ... != ... is false |
 | test.cpp:275:6:275:6 | b | b != 0 when b is true |
 | test.cpp:275:6:275:6 | b | b != 1 when b is false |
 | test.cpp:275:6:275:6 | b | b == 0 when b is false |
 | test.cpp:275:6:275:6 | b | b == 1 when b is true |
+| test.cpp:275:6:275:6 | b | m != n+0 when b is true |
+| test.cpp:275:6:275:6 | b | m == n+0 when b is false |
+| test.cpp:275:6:275:6 | b | n != m+0 when b is true |
+| test.cpp:275:6:275:6 | b | n == m+0 when b is false |
 | test.cpp:284:6:284:11 | ... != ... | 2 != b+0 when ... != ... is true |
 | test.cpp:284:6:284:11 | ... != ... | 2 == b+0 when ... != ... is false |
 | test.cpp:284:6:284:11 | ... != ... | ... != ... != 0 when ... != ... is true |
@@ -883,3 +899,7 @@
 | test.cpp:284:6:284:11 | ... != ... | b != 2+0 when ... != ... is true |
 | test.cpp:284:6:284:11 | ... != ... | b == 2 when ... != ... is false |
 | test.cpp:284:6:284:11 | ... != ... | b == 2+0 when ... != ... is false |
+| test.cpp:284:6:284:11 | ... != ... | m != n+0 when ... != ... is false |
+| test.cpp:284:6:284:11 | ... != ... | m == n+0 when ... != ... is true |
+| test.cpp:284:6:284:11 | ... != ... | n != m+0 when ... != ... is false |
+| test.cpp:284:6:284:11 | ... != ... | n == m+0 when ... != ... is true |
