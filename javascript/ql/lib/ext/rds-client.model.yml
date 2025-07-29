@@ -21,3 +21,11 @@ extensions:
     data:
       - ["RDSDataClientV3", "@aws-sdk/client-rds-data", "Member[RDSDataClient]"]
       - ["RDSDataClientV2", "aws-sdk", "Member[RDSDataService]"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      - ["RDSDataClientV3", "ReturnValue.Member[send].ReturnValue.Awaited", "database-access-result"]
+      - ["RDSDataClientV2", "ReturnValue.Member[executeStatement,batchExecuteStatement].ReturnValue.Member[promise].ReturnValue.Awaited", "database-access-result"]
+      - ["RDSDataClientV2", "ReturnValue.Member[executeStatement,batchExecuteStatement].Argument[1].Parameter[1]", "database-access-result"]

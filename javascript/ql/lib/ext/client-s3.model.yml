@@ -18,3 +18,11 @@ extensions:
     data:
       - ["S3ClientV3", "@aws-sdk/client-s3", "Member[S3Client]"]
       - ["S3ClientV2", "aws-sdk", "Member[S3]"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      - ["S3ClientV3", "ReturnValue.Member[send].ReturnValue.Awaited", "database-access-result"]
+      - ["S3ClientV2", "ReturnValue.Member[getObject].ReturnValue.Member[promise].ReturnValue.Awaited", "database-access-result"]
+      - ["S3ClientV2", "ReturnValue.Member[getObject].Argument[1].Parameter[1]", "database-access-result"]

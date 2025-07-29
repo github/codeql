@@ -20,3 +20,11 @@ extensions:
     data:
       - ["DynamoDBClientV3", "@aws-sdk/client-dynamodb", "Member[DynamoDBClient,DynamoDB]"]
       - ["DynamoDBClientV2", "aws-sdk", "Member[DynamoDB]"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      - ["DynamoDBClientV3", "ReturnValue.Member[send].ReturnValue.Awaited", "database-access-result"]
+      - ["DynamoDBClientV2", "ReturnValue.Member[executeStatement,batchExecuteStatement].ReturnValue.Member[promise].ReturnValue.Awaited", "database-access-result"]
+      - ["DynamoDBClientV2", "ReturnValue.Member[executeStatement,batchExecuteStatement].Argument[1].Parameter[1]", "database-access-result"]

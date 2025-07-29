@@ -19,3 +19,11 @@ extensions:
     data:
       - ["AthenaClientV3", "@aws-sdk/client-athena", "Member[AthenaClient]"]
       - ["AthenaClientV2", "aws-sdk", "Member[Athena]"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      - ["AthenaClientV3", "ReturnValue.Member[send].ReturnValue.Awaited", "database-access-result"]
+      - ["AthenaClientV2", "ReturnValue.Member[getQueryResults].ReturnValue.Member[promise].ReturnValue.Awaited", "database-access-result"]
+      - ["AthenaClientV2", "ReturnValue.Member[getQueryResults].Argument[1].Parameter[1]", "database-access-result"]
