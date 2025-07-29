@@ -1,1 +1,2 @@
-Classes/SubclassShadowing.ql
+query: Classes/SubclassShadowing.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
