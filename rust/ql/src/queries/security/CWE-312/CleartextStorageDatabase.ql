@@ -49,7 +49,6 @@ import CleartextStorageDatabaseFlow::PathGraph
 from
   CleartextStorageDatabaseFlow::PathNode sourceNode, CleartextStorageDatabaseFlow::PathNode sinkNode
 where CleartextStorageDatabaseFlow::flowPath(sourceNode, sinkNode)
-select sinkNode, sourceNode, sinkNode,
-  "This operation stores '" + sinkNode.toString() +
-    "' in a database. It may contain unencrypted sensitive data from $@.", sourceNode,
+select sinkNode.getNode(), sourceNode, sinkNode,
+  "This database operation may read or write unencrypted sensitive data from $@.", sourceNode,
   sourceNode.getNode().toString()
