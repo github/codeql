@@ -32,12 +32,49 @@ class Outer {
     private final String prefix = "outer";
 
     class Inner {
-        private final String full;
+        private String full;
 
         Inner(String suffix) {
             var combined = prefix + "_" + suffix;
             super();
             this.full = combined;
         }
+    }
+}
+
+class D {
+    private final String value;
+    private final int length;
+
+    D(String input) {
+        var processed = input.toLowerCase();
+        value = processed;
+        this.length = processed.length();
+        super();
+    }
+}
+
+class E extends A {
+    private boolean isValid;
+    private String processed;
+
+    E(String data) {
+        var temp = data != null ? data.trim() : "";
+        this.processed = temp;
+        isValid = !temp.isEmpty();
+        super(temp);
+    }
+}
+
+class F {
+    private int x;
+    private final int y;
+    private int sum;
+
+    F(int a, int b) {
+        x = a;
+        this.y = b;
+        this.sum = a + b;
+        super();
     }
 }
