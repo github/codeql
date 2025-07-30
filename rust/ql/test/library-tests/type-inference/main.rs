@@ -545,6 +545,14 @@ mod type_parameter_bounds {
         println!("{:?}", s); // $ type=s:S1
     }
 
+    fn trait_per_where_bound_with_type<T>(x: T)
+    where
+        T: FirstTrait<S1>,
+    {
+        let s = x.method(); // $ target=FirstTrait::method
+        println!("{:?}", s); // $ MISSING: type=s:S1
+    }
+
     trait Pair<P1 = bool, P2 = i64> {
         fn fst(self) -> P1;
 
@@ -806,7 +814,8 @@ mod associated_type_in_trait {
 mod associated_type_in_supertrait {
     trait Supertrait {
         type Content;
-        fn insert(content: Self::Content);
+        // Supertrait::insert
+        fn insert(&self, content: Self::Content);
     }
 
     trait Subtrait: Supertrait {
@@ -814,11 +823,23 @@ mod associated_type_in_supertrait {
         fn get_content(&self) -> Self::Content;
     }
 
+    // A subtrait declared using a `where` clause.
+    trait Subtrait2
+    where
+        Self: Supertrait,
+    {
+        // Subtrait2::insert_two
+        fn insert_two(&self, c1: Self::Content, c2: Self::Content) {
+            self.insert(c1); // $ MISSING: target=Supertrait::insert
+            self.insert(c2); // $ MISSING: target=Supertrait::insert
+        }
+    }
+
     struct MyType<T>(T);
 
     impl<T> Supertrait for MyType<T> {
         type Content = T;
-        fn insert(_content: Self::Content) {
+        fn insert(&self, _content: Self::Content) {
             println!("Inserting content: ");
         }
     }
@@ -832,6 +853,11 @@ mod associated_type_in_supertrait {
 
     fn get_content<T: Subtrait>(item: &T) -> T::Content {
         item.get_content() // $ target=Subtrait::get_content
+    }
+
+    fn insert_three<T: Subtrait2>(item: &T, c1: T::Content, c2: T::Content, c3: T::Content) {
+        item.insert(c1); // $ MISSING: target=Supertrait::insert
+        item.insert_two(c2, c3); // $ target=Subtrait2::insert_two
     }
 
     fn test() {
