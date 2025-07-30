@@ -1,5 +1,5 @@
 /**
- * @name overly CORS configuration
+ * @name Permissive CORS configuration
  * @description Misconfiguration of CORS HTTP headers allows CSRF attacks.
  * @kind path-problem
  * @problem.severity error
@@ -11,11 +11,12 @@
  */
 
 import javascript
-import CorsPermissiveConfigurationQuery
-import CorsPermissiveConfigurationFlow::PathGraph
+import semmle.javascript.security.CorsPermissiveConfigurationQuery as CorsQuery
+import CorsQuery::CorsPermissiveConfigurationFlow::PathGraph
 
 from
-  CorsPermissiveConfigurationFlow::PathNode source, CorsPermissiveConfigurationFlow::PathNode sink
-where CorsPermissiveConfigurationFlow::flowPath(source, sink)
+  CorsQuery::CorsPermissiveConfigurationFlow::PathNode source,
+  CorsQuery::CorsPermissiveConfigurationFlow::PathNode sink
+where CorsQuery::CorsPermissiveConfigurationFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "CORS Origin misconfiguration due to a $@.", source.getNode(),
   "too permissive or user controlled value"

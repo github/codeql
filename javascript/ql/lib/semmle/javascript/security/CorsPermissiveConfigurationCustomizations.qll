@@ -5,8 +5,8 @@
  */
 
 import javascript
-import Cors::Cors
-import Apollo::Apollo
+private import semmle.javascript.frameworks.Apollo
+private import semmle.javascript.frameworks.Cors
 
 /** Module containing sources, sinks, and sanitizers for overly permissive CORS configurations. */
 module CorsPermissiveConfiguration {
@@ -105,7 +105,7 @@ module CorsPermissiveConfiguration {
    */
   class CorsApolloServer extends Sink, DataFlow::ValueNode {
     CorsApolloServer() {
-      exists(ApolloServer agql |
+      exists(Apollo::ApolloServer agql |
         this =
           agql.getOptionArgument(0, "cors").getALocalSource().getAPropertyWrite("origin").getRhs()
       )
@@ -125,7 +125,7 @@ module CorsPermissiveConfiguration {
    * An express route setup configured with the `cors` package.
    */
   class CorsConfiguration extends DataFlow::MethodCallNode {
-    Cors corsConfig;
+    Cors::Cors corsConfig;
 
     CorsConfiguration() {
       exists(Express::RouteSetup setup | this = setup |
@@ -136,6 +136,6 @@ module CorsPermissiveConfiguration {
     }
 
     /** Gets the expression that configures `cors` on this route setup. */
-    Cors getCorsConfiguration() { result = corsConfig }
+    Cors::Cors getCorsConfiguration() { result = corsConfig }
   }
 }
