@@ -26,6 +26,7 @@ module CorsPermissiveConfiguration {
       this = TWildcard() and result = "wildcard"
     }
 
+    /** DEPRECATED: Converts this flow state to a flow label. */
     deprecated DataFlow::FlowLabel toFlowLabel() {
       this = TTaint() and result.isTaint()
       or
@@ -37,6 +38,7 @@ module CorsPermissiveConfiguration {
 
   /** Predicates for working with flow states. */
   module FlowState {
+    /** DEPRECATED: Gets a flow state from a flow label. */
     deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
 
     /** A tainted value. */
@@ -81,6 +83,7 @@ module CorsPermissiveConfiguration {
     TrueAndNull() { this = "TrueAndNull" }
   }
 
+  /** DEPRECATED: Gets a flow label representing `true` and `null` values. */
   deprecated TrueAndNull truenullLabel() { any() }
 
   /** A flow label representing `*` value. */
@@ -88,6 +91,7 @@ module CorsPermissiveConfiguration {
     Wildcard() { this = "Wildcard" }
   }
 
+  /** DEPRECATED: Gets a flow label representing `*` value. */
   deprecated Wildcard wildcardLabel() { any() }
 
   /** An overly permissive value for `origin` (Apollo) */
