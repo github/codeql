@@ -12,22 +12,23 @@
  * @id py/attribute-shadows-method
  */
 
-/*
- * Determine if a class defines a method that is shadowed by an attribute
- *   defined in a super-class
- */
-
 import python
 import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 
 predicate isSettableProperty(Function prop) {
   isProperty(prop) and
-  exists(Function setter, DataFlow::AttrRead setterRead, FunctionExpr propExpr |
-    setterRead.asExpr() = setter.getADecorator() and
-    setterRead.getAttributeName() = "setter" and
-    propExpr.getInnerScope() = prop and
-    DataFlow::exprNode(propExpr).(DataFlow::LocalSourceNode).flowsTo(setterRead.getObject())
+  exists(Function setter |
+    setter.getScope() = prop.getScope() and
+    setter.getName() = prop.getName() and
+    isSetter(setter)
+  )
+}
+
+predicate isSetter(Function f) {
+  exists(DataFlow::AttrRead attr |
+    f.getADecorator() = attr.asExpr() and
+    attr.getAttributeName() = "setter"
   )
 }
 
@@ -52,7 +53,8 @@ predicate shadowedBySuperclass(
     superShadowed.getName() = shadowed.getName()
   ) and
   // Allow properties if they have setters, as the write in the superclass will call the setter.
-  not isSettableProperty(shadowed)
+  not isSettableProperty(shadowed) and
+  not isSetter(shadowed)
 }
 
 from Class cls, Class superclass, DataFlow::AttrWrite write, Function shadowed, string extra
@@ -61,8 +63,8 @@ where
   (
     if isProperty(shadowed)
     then
-      not isSettableProperty(shadowed) and
-      extra = " (read-only property may cause an error if written to.)"
+      // it's not a setter, so it's a read-only property
+      extra = " (read-only property may cause an error if written to in the superclass.)"
     else extra = ""
   )
 select shadowed, "This method is shadowed by $@ in superclass $@." + extra, write,
