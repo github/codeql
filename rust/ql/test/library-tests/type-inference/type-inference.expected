@@ -1340,11 +1340,14 @@ inferType
 | main.rs:545:18:545:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:545:26:545:26 | s |  | main.rs:508:5:509:14 | S1 |
 | main.rs:548:43:548:43 | x |  | main.rs:548:40:548:40 | T |
+| main.rs:552:13:552:13 | s |  | main.rs:508:5:509:14 | S1 |
 | main.rs:552:17:552:17 | x |  | main.rs:548:40:548:40 | T |
+| main.rs:552:17:552:26 | x.method() |  | main.rs:508:5:509:14 | S1 |
 | main.rs:553:18:553:23 | "{:?}\\n" |  | file://:0:0:0:0 | & |
 | main.rs:553:18:553:23 | "{:?}\\n" | &T | {EXTERNAL LOCATION} | str |
 | main.rs:553:18:553:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:553:18:553:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:553:26:553:26 | s |  | main.rs:508:5:509:14 | S1 |
 | main.rs:557:16:557:19 | SelfParam |  | main.rs:556:5:560:5 | Self [trait Pair] |
 | main.rs:559:16:559:19 | SelfParam |  | main.rs:556:5:560:5 | Self [trait Pair] |
 | main.rs:562:58:562:58 | x |  | main.rs:562:41:562:55 | T |
@@ -1683,10 +1686,14 @@ inferType
 | main.rs:823:24:823:28 | SelfParam | &T | main.rs:821:5:824:5 | Self [trait Subtrait] |
 | main.rs:832:23:832:27 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:832:23:832:27 | SelfParam | &T | main.rs:826:5:836:5 | Self [trait Subtrait2] |
+| main.rs:832:30:832:31 | c1 |  | main.rs:816:9:816:21 | Content |
+| main.rs:832:49:832:50 | c2 |  | main.rs:816:9:816:21 | Content |
 | main.rs:833:13:833:16 | self |  | file://:0:0:0:0 | & |
 | main.rs:833:13:833:16 | self | &T | main.rs:826:5:836:5 | Self [trait Subtrait2] |
+| main.rs:833:25:833:26 | c1 |  | main.rs:816:9:816:21 | Content |
 | main.rs:834:13:834:16 | self |  | file://:0:0:0:0 | & |
 | main.rs:834:13:834:16 | self | &T | main.rs:826:5:836:5 | Self [trait Subtrait2] |
+| main.rs:834:25:834:26 | c2 |  | main.rs:816:9:816:21 | Content |
 | main.rs:842:19:842:23 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:842:19:842:23 | SelfParam | &T | main.rs:838:5:838:24 | MyType |
 | main.rs:842:19:842:23 | SelfParam | &T.T | main.rs:840:10:840:10 | T |
@@ -1716,10 +1723,16 @@ inferType
 | main.rs:855:9:855:26 | item.get_content() |  | main.rs:816:9:816:21 | Content |
 | main.rs:858:35:858:38 | item |  | file://:0:0:0:0 | & |
 | main.rs:858:35:858:38 | item | &T | main.rs:858:21:858:32 | T |
+| main.rs:858:45:858:46 | c1 |  | main.rs:816:9:816:21 | Content |
+| main.rs:858:61:858:62 | c2 |  | main.rs:816:9:816:21 | Content |
+| main.rs:858:77:858:78 | c3 |  | main.rs:816:9:816:21 | Content |
 | main.rs:859:9:859:12 | item |  | file://:0:0:0:0 | & |
 | main.rs:859:9:859:12 | item | &T | main.rs:858:21:858:32 | T |
+| main.rs:859:21:859:22 | c1 |  | main.rs:816:9:816:21 | Content |
 | main.rs:860:9:860:12 | item |  | file://:0:0:0:0 | & |
 | main.rs:860:9:860:12 | item | &T | main.rs:858:21:858:32 | T |
+| main.rs:860:25:860:26 | c2 |  | main.rs:816:9:816:21 | Content |
+| main.rs:860:29:860:30 | c3 |  | main.rs:816:9:816:21 | Content |
 | main.rs:864:13:864:17 | item1 |  | main.rs:838:5:838:24 | MyType |
 | main.rs:864:13:864:17 | item1 | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:864:21:864:33 | MyType(...) |  | main.rs:838:5:838:24 | MyType |

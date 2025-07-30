@@ -162,6 +162,7 @@ resolvePath
 | main.rs:321:13:321:18 | Trait1 | main.rs:299:5:303:5 | trait Trait1 |
 | main.rs:323:25:323:26 | TT | main.rs:317:9:317:10 | TT |
 | main.rs:324:13:324:16 | Self | main.rs:315:5:328:5 | trait Trait3 |
+| main.rs:324:13:324:19 | ...::g | main.rs:302:9:302:20 | fn g |
 | main.rs:325:13:325:14 | TT | main.rs:317:9:317:10 | TT |
 | main.rs:325:13:325:17 | ...::g | main.rs:302:9:302:20 | fn g |
 | main.rs:333:10:333:15 | Trait1 | main.rs:299:5:303:5 | trait Trait1 |
