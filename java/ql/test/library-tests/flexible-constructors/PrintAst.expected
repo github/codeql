@@ -89,3 +89,93 @@ FlexibleConstructors.java:
 #   40|               0: [VarAccess] this.full
 #   40|                 -1: [ThisAccess] this
 #   40|               1: [VarAccess] combined
+#   45|   6: [Class] D
+#   46|     1: [FieldDeclaration] String value;
+#   46|       -1: [TypeAccess] String
+#   47|     2: [FieldDeclaration] int length;
+#   47|       -1: [TypeAccess] int
+#   49|     3: [Constructor] D
+#-----|       4: (Parameters)
+#   49|         0: [Parameter] input
+#   49|           0: [TypeAccess] String
+#   49|       5: [BlockStmt] { ... }
+#   50|         0: [LocalVariableDeclStmt] var ...;
+#   50|           1: [LocalVariableDeclExpr] processed
+#   50|             0: [MethodCall] toLowerCase(...)
+#   50|               -1: [VarAccess] input
+#   51|         1: [ExprStmt] <Expr>;
+#   51|           0: [AssignExpr] ...=...
+#   51|             0: [VarAccess] value
+#   51|             1: [VarAccess] processed
+#   52|         2: [ExprStmt] <Expr>;
+#   52|           0: [AssignExpr] ...=...
+#   52|             0: [VarAccess] this.length
+#   52|               -1: [ThisAccess] this
+#   52|             1: [MethodCall] length(...)
+#   52|               -1: [VarAccess] processed
+#   53|         3: [SuperConstructorInvocationStmt] super(...)
+#   57|   7: [Class] E
+#-----|     -1: (Base Types)
+#   57|       -1: [TypeAccess] A
+#   58|     1: [FieldDeclaration] boolean isValid;
+#   58|       -1: [TypeAccess] boolean
+#   59|     2: [FieldDeclaration] String processed;
+#   59|       -1: [TypeAccess] String
+#   61|     3: [Constructor] E
+#-----|       4: (Parameters)
+#   61|         0: [Parameter] data
+#   61|           0: [TypeAccess] String
+#   61|       5: [BlockStmt] { ... }
+#   62|         0: [LocalVariableDeclStmt] var ...;
+#   62|           1: [LocalVariableDeclExpr] temp
+#   62|             0: [ConditionalExpr] ...?...:...
+#   62|               0: [NEExpr] ... != ...
+#   62|                 0: [VarAccess] data
+#   62|                 1: [NullLiteral] null
+#   62|               1: [MethodCall] trim(...)
+#   62|                 -1: [VarAccess] data
+#   62|               2: [StringLiteral] ""
+#   63|         1: [ExprStmt] <Expr>;
+#   63|           0: [AssignExpr] ...=...
+#   63|             0: [VarAccess] this.processed
+#   63|               -1: [ThisAccess] this
+#   63|             1: [VarAccess] temp
+#   64|         2: [ExprStmt] <Expr>;
+#   64|           0: [AssignExpr] ...=...
+#   64|             0: [VarAccess] isValid
+#   64|             1: [LogNotExpr] !...
+#   64|               0: [MethodCall] isEmpty(...)
+#   64|                 -1: [VarAccess] temp
+#   65|         3: [SuperConstructorInvocationStmt] super(...)
+#   65|           0: [VarAccess] temp
+#   69|   8: [Class] F
+#   70|     1: [FieldDeclaration] int x;
+#   70|       -1: [TypeAccess] int
+#   71|     2: [FieldDeclaration] int y;
+#   71|       -1: [TypeAccess] int
+#   72|     3: [FieldDeclaration] int sum;
+#   72|       -1: [TypeAccess] int
+#   74|     4: [Constructor] F
+#-----|       4: (Parameters)
+#   74|         0: [Parameter] a
+#   74|           0: [TypeAccess] int
+#   74|         1: [Parameter] b
+#   74|           0: [TypeAccess] int
+#   74|       5: [BlockStmt] { ... }
+#   75|         0: [ExprStmt] <Expr>;
+#   75|           0: [AssignExpr] ...=...
+#   75|             0: [VarAccess] x
+#   75|             1: [VarAccess] a
+#   76|         1: [ExprStmt] <Expr>;
+#   76|           0: [AssignExpr] ...=...
+#   76|             0: [VarAccess] this.y
+#   76|               -1: [ThisAccess] this
+#   76|             1: [VarAccess] b
+#   77|         2: [ExprStmt] <Expr>;
+#   77|           0: [AssignExpr] ...=...
+#   77|             0: [VarAccess] this.sum
+#   77|               -1: [ThisAccess] this
+#   77|             1: [AddExpr] ... + ...
+#   77|               0: [VarAccess] a
+#   77|               1: [VarAccess] b
+#   78|         3: [SuperConstructorInvocationStmt] super(...)
