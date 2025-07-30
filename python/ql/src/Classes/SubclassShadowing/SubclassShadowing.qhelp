@@ -26,12 +26,14 @@ In the following example, the <code>_foo</code> attribute of class <code>A</code
 Calls to <code>B()._foo()</code> will result in a <code>TypeError</code>, as <code>3</code> will be called instead. 
 </p>
 
-<sample src="examples/SubclassShadowingGood.py" />
+<sample src="examples/SubclassShadowingBad.py" />
 
 <p>
-In the following example...
+In the following example, the behavior of the <code>default</code> attribute being shadowed to allow for customization during initialization is
+intended in within the superclass <code>A</code>. Overriding <code>default</code> in the subclass <code>B</code> is then OK.
 </p>
 
+<sample src="examples/SubclassShadowingGood.py" />
 
 </example>
 </qhelp>
