@@ -312,6 +312,21 @@ mod m15 {
         }
     } // I82
 
+    #[rustfmt::skip]
+    trait Trait3<
+        TT // ITT
+    >
+    where
+        Self: Trait1, // $ item=ITrait3 item=I79
+        TT: Trait1, // $ item=ITT item=I79
+    {
+        fn f(&self, tt: TT) { // $ item=ITT
+            Self::g(self); // $ MISSING: item=I80
+            TT::g(&tt); // $ item=I80
+            self.g(); // $ MISSING: item=I80
+        }
+    } // ITrait3
+
     struct S; // I81
 
     #[rustfmt::skip]
