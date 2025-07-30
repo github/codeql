@@ -1,4 +1,8 @@
-#include <string.h>
+// --- stubs ---
+
+char *strcpy(char *dest, const char *src);
+
+// --- tests ---
 
 class GlobalStorage {
 public:
