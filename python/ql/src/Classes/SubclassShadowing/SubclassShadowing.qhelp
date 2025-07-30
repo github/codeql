@@ -26,7 +26,7 @@ In the following example, the <code>_foo</code> attribute of class <code>A</code
 Calls to <code>B()._foo()</code> will result in a <code>TypeError</code>, as <code>3</code> will be called instead. 
 </p>
 
-<sample src="examples/SubclassShadowing.py" />
+<sample src="examples/SubclassShadowingGood.py" />
 
 <p>
 In the following example...
