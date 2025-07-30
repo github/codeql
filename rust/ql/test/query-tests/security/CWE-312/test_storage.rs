@@ -1,4 +1,8 @@
 
+use aes_gcm::aead::{Aead, AeadCore, OsRng};
+use aes_gcm::aes::cipher::Unsigned;
+use aes_gcm::{Aes256Gcm, KeyInit};
+use base64::prelude::*;
 use sqlx::Connection;
 use sqlx::Executor;
 
@@ -18,6 +22,39 @@ fn get_phone_number() -> String {
 
 fn get_email() -> String {
   return String::from("a@b.com");
+}
+
+fn get_ccn() -> String {
+  return String::from("1234567890");
+}
+
+fn encrypt(text: String, encryption_key: &aes_gcm::Key<Aes256Gcm>) -> String {
+    // encrypt text -> ciphertext
+    let cipher = Aes256Gcm::new(&encryption_key);
+    let nonce = Aes256Gcm::generate_nonce(&mut OsRng);
+    let ciphertext = cipher.encrypt(&nonce, text.as_ref()).unwrap();
+
+    // append (nonce, ciphertext)
+    let mut combined = nonce.to_vec();
+    combined.extend(ciphertext);
+
+    // encode to base64 string
+    BASE64_STANDARD.encode(combined)
+}
+
+fn decrypt(data: String, encryption_key: &aes_gcm::Key<Aes256Gcm>) -> String {
+    let cipher = Aes256Gcm::new(&encryption_key);
+
+    // decode base64 string
+    let decoded = BASE64_STANDARD.decode(data).unwrap();
+
+    // split into (nonce, ciphertext)
+    let nonce_size = <Aes256Gcm as AeadCore>::NonceSize::to_usize();
+    let (nonce, ciphertext) = decoded.split_at(nonce_size);
+
+    // decrypt ciphertext -> plaintext
+    let plaintext = cipher.decrypt(nonce.into(), ciphertext).unwrap();
+    String::from_utf8(plaintext).unwrap()
 }
 
 async fn test_storage_sql_command(url: &str) -> Result<(), sqlx::Error> {
@@ -101,6 +138,36 @@ async fn test_storage_sql_command(url: &str) -> Result<(), sqlx::Error> {
     let _ = sqlx::query(insert_query2.as_str()).execute(&pool3).await?; // $ Alert[rust/cleartext-storage-database]
     let _ = sqlx::query(prepared_query.as_str()).bind(get_harmless()).bind(id).execute(&pool3).await?;
     let _ = sqlx::query(prepared_query.as_str()).bind(get_social_security_number()).bind(id).execute(&pool3).await?; // $ MISSING: Alert[rust/cleartext-storage-database]
+
+    // "bad" example
+    {
+        let pool = &pool1;
+        let credit_card_number = get_ccn();
+
+        let query = "INSERT INTO PAYMENTDETAILS(ID, CARDNUM) VALUES(?, ?)";
+        let result = sqlx::query(query)
+            .bind(id)
+            .bind(credit_card_number) // $ MISSING: Alert[rust/cleartext-storage-database]
+            .execute(pool)
+            .await?;
+    }
+
+    // "good" example
+    {
+        let pool = &pool1;
+        let credit_card_number = get_ccn();
+
+        let encryption_key = Aes256Gcm::generate_key(OsRng);
+
+        // ...
+
+        let query = "INSERT INTO PAYMENTDETAILS(ID, CARDNUM) VALUES(?, ?)";
+        let result = sqlx::query(query)
+            .bind(id)
+            .bind(encrypt(credit_card_number, &encryption_key))
+            .execute(pool)
+            .await?;
+    }
 
     Ok(())
 }
