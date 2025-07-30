@@ -550,7 +550,7 @@ mod type_parameter_bounds {
         T: FirstTrait<S1>,
     {
         let s = x.method(); // $ target=FirstTrait::method
-        println!("{:?}", s); // $ MISSING: type=s:S1
+        println!("{:?}", s); // $ type=s:S1
     }
 
     trait Pair<P1 = bool, P2 = i64> {
@@ -830,8 +830,8 @@ mod associated_type_in_supertrait {
     {
         // Subtrait2::insert_two
         fn insert_two(&self, c1: Self::Content, c2: Self::Content) {
-            self.insert(c1); // $ MISSING: target=Supertrait::insert
-            self.insert(c2); // $ MISSING: target=Supertrait::insert
+            self.insert(c1); // $ target=Supertrait::insert
+            self.insert(c2); // $ target=Supertrait::insert
         }
     }
 
@@ -856,7 +856,7 @@ mod associated_type_in_supertrait {
     }
 
     fn insert_three<T: Subtrait2>(item: &T, c1: T::Content, c2: T::Content, c3: T::Content) {
-        item.insert(c1); // $ MISSING: target=Supertrait::insert
+        item.insert(c1); // $ target=Supertrait::insert
         item.insert_two(c2, c3); // $ target=Subtrait2::insert_two
     }
 

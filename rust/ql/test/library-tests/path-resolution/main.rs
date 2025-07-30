@@ -321,9 +321,9 @@ mod m15 {
         TT: Trait1, // $ item=ITT item=I79
     {
         fn f(&self, tt: TT) { // $ item=ITT
-            Self::g(self); // $ MISSING: item=I80
+            Self::g(self); // $ item=I80
             TT::g(&tt); // $ item=I80
-            self.g(); // $ MISSING: item=I80
+            self.g(); // $ item=I80
         }
     } // ITrait3
 
