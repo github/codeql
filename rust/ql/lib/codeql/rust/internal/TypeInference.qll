@@ -83,38 +83,48 @@ private module Input1 implements InputSig1<Location> {
 
   int getTypeParameterId(TypeParameter tp) {
     tp =
-      rank[result](TypeParameter tp0, int kind, int id |
+      rank[result](TypeParameter tp0, int kind, int id1, int id2 |
         tp0 instanceof ArrayTypeParameter and
         kind = 0 and
-        id = 0
+        id1 = 0 and
+        id2 = 0
         or
         tp0 instanceof RefTypeParameter and
         kind = 0 and
-        id = 1
+        id1 = 0 and
+        id2 = 1
         or
         tp0 instanceof SliceTypeParameter and
         kind = 0 and
-        id = 2
+        id1 = 0 and
+        id2 = 2
         or
         kind = 1 and
-        id = idOfTypeParameterAstNode(tp0.(DynTraitTypeParameter).getTypeParam())
+        id1 = 0 and
+        id2 =
+          idOfTypeParameterAstNode([
+              tp0.(DynTraitTypeParameter).getTypeParam().(AstNode),
+              tp0.(DynTraitTypeParameter).getTypeAlias()
+            ])
         or
         kind = 2 and
-        exists(AstNode node | id = idOfTypeParameterAstNode(node) |
+        id1 = idOfTypeParameterAstNode(tp0.(ImplTraitTypeParameter).getImplTraitTypeRepr()) and
+        id2 = idOfTypeParameterAstNode(tp0.(ImplTraitTypeParameter).getTypeParam())
+        or
+        kind = 3 and
+        id1 = 0 and
+        exists(AstNode node | id2 = idOfTypeParameterAstNode(node) |
           node = tp0.(TypeParamTypeParameter).getTypeParam() or
           node = tp0.(AssociatedTypeTypeParameter).getTypeAlias() or
           node = tp0.(SelfTypeParameter).getTrait() or
           node = tp0.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr()
         )
         or
-        exists(TupleTypeParameter ttp, int maxArity |
-          maxArity = max(int i | i = any(TupleType tt).getArity()) and
-          tp0 = ttp and
-          kind = 3 and
-          id = ttp.getTupleType().getArity() * maxArity + ttp.getIndex()
-        )
+        kind = 4 and
+        id1 = tp0.(TupleTypeParameter).getTupleType().getArity() and
+        id2 = tp0.(TupleTypeParameter).getIndex()
       |
-        tp0 order by kind, id
+        tp0 order by kind, id1, id2
       )
   }
 }
@@ -379,6 +389,17 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     prefix2.isEmpty() and
     s = getRangeType(n1)
   )
+  or
+  exists(ClosureExpr ce, int index |
+    n1 = ce and
+    n2 = ce.getParam(index).getPat() and
+    prefix1 = closureParameterPath(ce.getNumberOfParams(), index) and
+    prefix2.isEmpty()
+  )
+  or
+  n1.(ClosureExpr).getBody() = n2 and
+  prefix1 = closureReturnPath() and
+  prefix2.isEmpty()
 }
 
 pragma[nomagic]
@@ -1431,6 +1452,120 @@ private Type inferForLoopExprType(AstNode n, TypePath path) {
   )
 }
 
+/**
+ * An invoked expression, the target of a call that is either a local variable
+ * or a non-path expression. This means that the expression denotes a
+ * first-class function.
+ */
+final private class InvokedClosureExpr extends Expr {
+  private CallExpr call;
+
+  InvokedClosureExpr() {
+    call.getFunction() = this and
+    (not this instanceof PathExpr or this = any(Variable v).getAnAccess())
+  }
+
+  Type getTypeAt(TypePath path) { result = inferType(this, path) }
+
+  CallExpr getCall() { result = call }
+}
+
+private module InvokedClosureSatisfiesConstraintInput implements
+  SatisfiesConstraintInputSig<InvokedClosureExpr>
+{
+  predicate relevantConstraint(InvokedClosureExpr term, Type constraint) {
+    exists(term) and
+    constraint.(TraitType).getTrait() instanceof FnOnceTrait
+  }
+}
+
+/** Gets the type of `ce` when viewed as an implementation of `FnOnce`. */
+private Type invokedClosureFnTypeAt(InvokedClosureExpr ce, TypePath path) {
+  SatisfiesConstraint<InvokedClosureExpr, InvokedClosureSatisfiesConstraintInput>::satisfiesConstraintType(ce,
+    _, path, result)
+}
+
+/** Gets the path to a closure's return type. */
+private TypePath closureReturnPath() {
+  result = TypePath::singleton(TDynTraitTypeParameter(any(FnOnceTrait t).getOutputType()))
+}
+
+/** Gets the path to a closure with arity `arity`s `index`th parameter type. */
+private TypePath closureParameterPath(int arity, int index) {
+  result =
+    TypePath::cons(TDynTraitTypeParameter(any(FnOnceTrait t).getTypeParam()),
+      TypePath::singleton(TTupleTypeParameter(arity, index)))
+}
+
+/** Gets the path to the return type of the `FnOnce` trait. */
+private TypePath fnReturnPath() {
+  result = TypePath::singleton(TAssociatedTypeTypeParameter(any(FnOnceTrait t).getOutputType()))
+}
+
+/**
+ * Gets the path to the parameter type of the `FnOnce` trait with arity `arity`
+ * and index `index`.
+ */
+private TypePath fnParameterPath(int arity, int index) {
+  result =
+    TypePath::cons(TTypeParamTypeParameter(any(FnOnceTrait t).getTypeParam()),
+      TypePath::singleton(TTupleTypeParameter(arity, index)))
+}
+
+pragma[nomagic]
+private Type inferDynamicCallExprType(Expr n, TypePath path) {
+  exists(InvokedClosureExpr ce |
+    // Propagate the function's return type to the call expression
+    exists(TypePath path0 | result = invokedClosureFnTypeAt(ce, path0) |
+      n = ce.getCall() and
+      path = path0.stripPrefix(fnReturnPath())
+      or
+      // Propagate the function's parameter type to the arguments
+      exists(int index |
+        n = ce.getCall().getArgList().getArg(index) and
+        path = path0.stripPrefix(fnParameterPath(ce.getCall().getNumberOfArgs(), index))
+      )
+    )
+    or
+    // _If_ the invoked expression has the type of a closure, then we propagate
+    // the surrounding types into the closure.
+    exists(int arity, TypePath path0 |
+      ce.getTypeAt(TypePath::nil()).(DynTraitType).getTrait() instanceof FnOnceTrait
+    |
+      // Propagate the type of arguments to the parameter types of closure
+      exists(int index |
+        n = ce and
+        arity = ce.getCall().getNumberOfArgs() and
+        result = inferType(ce.getCall().getArg(index), path0) and
+        path = closureParameterPath(arity, index).append(path0)
+      )
+      or
+      // Propagate the type of the call expression to the return type of the closure
+      n = ce and
+      arity = ce.getCall().getNumberOfArgs() and
+      result = inferType(ce.getCall(), path0) and
+      path = closureReturnPath().append(path0)
+    )
+  )
+}
+
+pragma[nomagic]
+private Type inferClosureExprType(AstNode n, TypePath path) {
+  exists(ClosureExpr ce |
+    n = ce and
+    path.isEmpty() and
+    result = TDynTraitType(any(FnOnceTrait t))
+    or
+    n = ce and
+    path = TypePath::singleton(TDynTraitTypeParameter(any(FnOnceTrait t).getTypeParam())) and
+    result = TTuple(ce.getNumberOfParams())
+    or
+    // Propagate return type annotation to body
+    n = ce.getBody() and
+    result = ce.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
+  )
+}
+
 pragma[nomagic]
 private Type inferCastExprType(CastExpr ce, TypePath path) {
   result = ce.getTypeRepr().(TypeMention).resolveTypeAt(path)
@@ -2057,6 +2192,10 @@ private module Cached {
     result = inferIndexExprType(n, path)
     or
     result = inferForLoopExprType(n, path)
+    or
+    result = inferDynamicCallExprType(n, path)
+    or
+    result = inferClosureExprType(n, path)
     or
     result = inferCastExprType(n, path)
     or

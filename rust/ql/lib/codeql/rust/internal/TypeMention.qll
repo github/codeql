@@ -1,6 +1,7 @@
 /** Provides classes for representing type mentions, used in type inference. */
 
 private import rust
+private import codeql.rust.frameworks.stdlib.Stdlib
 private import Type
 private import PathResolution
 private import TypeInference
@@ -22,6 +23,18 @@ class TupleTypeReprMention extends TypeMention instanceof TupleTypeRepr {
     exists(TypePath suffix, int i |
       result = super.getField(i).(TypeMention).resolveTypeAt(suffix) and
       path = TypePath::cons(TTupleTypeParameter(super.getNumberOfFields(), i), suffix)
+    )
+  }
+}
+
+class ParenthesizedArgListMention extends TypeMention instanceof ParenthesizedArgList {
+  override Type resolveTypeAt(TypePath path) {
+    path.isEmpty() and
+    result = TTuple(super.getNumberOfTypeArgs())
+    or
+    exists(TypePath suffix, int index |
+      result = super.getTypeArg(index).getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
+      path = TypePath::cons(TTupleTypeParameter(super.getNumberOfTypeArgs(), index), suffix)
     )
   }
 }
@@ -215,6 +228,17 @@ class NonAliasPathTypeMention extends PathTypeMention {
               .(TraitItemNode)
               .getAssocItem(pragma[only_bind_into](name)))
     )
+    or
+    // Handle the special syntactic sugar for function traits. For now we only
+    // support `FnOnce` as we can't support the "inherited" associated types of
+    // `Fn` and `FnMut` yet.
+    exists(FnOnceTrait t | t = resolved |
+      tp = TTypeParamTypeParameter(t.getTypeParam()) and
+      result = this.getSegment().getParenthesizedArgList()
+      or
+      tp = TAssociatedTypeTypeParameter(t.getOutputType()) and
+      result = this.getSegment().getRetType().getTypeRepr()
+    )
   }
 
   Type resolveRootType() {
@@ -258,6 +282,12 @@ class ImplTraitTypeReprMention extends TypeMention instanceof ImplTraitTypeRepr 
   override Type resolveTypeAt(TypePath typePath) {
     typePath.isEmpty() and
     result.(ImplTraitType).getImplTraitTypeRepr() = this
+    or
+    exists(ImplTraitTypeParameter tp |
+      this = tp.getImplTraitTypeRepr() and
+      typePath = TypePath::singleton(tp) and
+      result = TTypeParamTypeParameter(tp.getTypeParam())
+    )
   }
 }
 
@@ -324,10 +354,10 @@ class DynTraitTypeReprMention extends TypeMention instanceof DynTraitTypeRepr {
     result = dynType
     or
     exists(DynTraitTypeParameter tp, TypePath path0, TypePath suffix |
-      tp = dynType.getTypeParameter(_) and
+      dynType = tp.getDynTraitType() and
       path = TypePath::cons(tp, suffix) and
       result = super.getTypeBoundList().getBound(0).getTypeRepr().(TypeMention).resolveTypeAt(path0) and
-      path0.isCons(TTypeParamTypeParameter(tp.getTypeParam()), suffix)
+      path0.isCons(tp.getTraitTypeParameter(), suffix)
     )
   }
 }
@@ -363,10 +393,10 @@ class DynTypeBoundListMention extends TypeMention instanceof TypeBoundList {
     path.isEmpty() and
     result.(DynTraitType).getTrait() = trait
     or
-    exists(TypeParam param |
-      param = trait.getGenericParamList().getATypeParam() and
-      path = TypePath::singleton(TDynTraitTypeParameter(param)) and
-      result = TTypeParamTypeParameter(param)
+    exists(DynTraitTypeParameter tp |
+      trait = tp.getTrait() and
+      path = TypePath::singleton(tp) and
+      result = tp.getTraitTypeParameter()
     )
   }
 }

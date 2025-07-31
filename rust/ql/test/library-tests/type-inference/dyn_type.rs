@@ -12,6 +12,12 @@ trait GenericGet<A> {
     fn get(&self) -> A;
 }
 
+trait AssocTrait<GP> {
+    type AP;
+    // AssocTrait::get
+    fn get(&self) -> (GP, Self::AP);
+}
+
 #[derive(Clone, Debug)]
 struct MyStruct {
     value: i32,
@@ -33,6 +39,17 @@ impl<A: Clone + Debug> GenericGet<A> for GenStruct<A> {
     // GenStruct<A>::get
     fn get(&self) -> A {
         self.value.clone() // $ fieldof=GenStruct target=clone
+    }
+}
+
+impl<GGP> AssocTrait<GGP> for GenStruct<GGP>
+where
+    GGP: Clone + Debug,
+{
+    type AP = bool;
+    // GenStruct<GGP>::get
+    fn get(&self) -> (GGP, bool) {
+        (self.value.clone(), true) // $ fieldof=GenStruct target=clone
     }
 }
 
@@ -58,10 +75,34 @@ fn test_poly_dyn_trait() {
     let _result = (*obj).get(); // $ target=deref target=GenericGet::get type=_result:bool
 }
 
+fn assoc_dyn_get<A, B>(a: &dyn AssocTrait<A, AP = B>) -> (A, B) {
+    a.get() // $ target=AssocTrait::get
+}
+
+fn assoc_get<A, B, T: AssocTrait<A, AP = B> + ?Sized>(a: &T) -> (A, B) {
+    a.get() // $ target=AssocTrait::get
+}
+
+fn test_assoc_type(obj: &dyn AssocTrait<i64, AP = bool>) {
+    let (
+        _gp, // $ type=_gp:i64
+        _ap, // $ type=_ap:bool
+    ) = (*obj).get(); // $ target=deref target=AssocTrait::get
+    let (
+        _gp, // $ type=_gp:i64
+        _ap, // $ type=_ap:bool
+    ) = assoc_dyn_get(obj); // $ target=assoc_dyn_get
+    let (
+        _gp, // $ type=_gp:i64
+        _ap, // $ type=_ap:bool
+    ) = assoc_get(obj); // $ target=assoc_get
+}
+
 pub fn test() {
     test_basic_dyn_trait(&MyStruct { value: 42 }); // $ target=test_basic_dyn_trait
     test_generic_dyn_trait(&GenStruct {
         value: "".to_string(),
     }); // $ target=test_generic_dyn_trait
     test_poly_dyn_trait(); // $ target=test_poly_dyn_trait
+    test_assoc_type(&GenStruct { value: 100 }); // $ target=test_assoc_type
 }

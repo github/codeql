@@ -1982,19 +1982,23 @@ module IteratorFlow {
 
     predicate allowFlowIntoUncertainDef(IteratorSsa::UncertainWriteDefinition def) { any() }
 
+    class GuardValue = Void;
+
     class Guard extends Void {
-      predicate hasBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+      predicate hasValueBranchEdge(
+        SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue val
+      ) {
         none()
       }
 
-      predicate controlsBranchEdge(
-        SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch
+      predicate valueControlsBranchEdge(
+        SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue val
       ) {
         none()
       }
     }
 
-    predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
+    predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, GuardValue val) {
       none()
     }
 

@@ -7,6 +7,27 @@ private import codeql.rust.internal.CachedStages
 private import codeql.rust.elements.internal.generated.Raw
 private import codeql.rust.elements.internal.generated.Synth
 
+/**
+ * Holds if a dyn trait type should have a type parameter associated with `n`. A
+ * dyn trait type inherits the type parameters of the trait it implements. That
+ * includes the type parameters corresponding to associated types.
+ *
+ * For instance in
+ * ```rust
+ * trait SomeTrait<A> {
+ *   type AssociatedType;
+ * }
+ * ```
+ * this predicate holds for the nodes `A` and `type AssociatedType`.
+ */
+private predicate dynTraitTypeParameter(Trait trait, AstNode n) {
+  trait = any(DynTraitTypeRepr dt).getTrait() and
+  (
+    n = trait.getGenericParamList().getATypeParam() or
+    n = trait.(TraitItemNode).getAnAssocItem().(TypeAlias)
+  )
+}
+
 cached
 newtype TType =
   TTuple(int arity) {
@@ -30,12 +51,21 @@ newtype TType =
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
   TArrayTypeParameter() or
-  TDynTraitTypeParameter(TypeParam tp) {
-    tp = any(DynTraitTypeRepr dt).getTrait().getGenericParamList().getATypeParam()
+  TDynTraitTypeParameter(AstNode n) { dynTraitTypeParameter(_, n) } or
+  TImplTraitTypeParameter(ImplTraitTypeRepr implTrait, TypeParam tp) {
+    implTraitTypeParam(implTrait, _, tp)
   } or
   TRefTypeParameter() or
   TSelfTypeParameter(Trait t) or
   TSliceTypeParameter()
+
+predicate implTraitTypeParam(ImplTraitTypeRepr implTrait, int i, TypeParam tp) {
+  implTrait.isInReturnPos() and
+  tp = implTrait.getFunction().getGenericParamList().getTypeParam(i) and
+  // Only include type parameters of the function that occur inside the impl
+  // trait type.
+  exists(Path path | path.getParentNode*() = implTrait and resolvePath(path) = tp)
+}
 
 /**
  * A type without type arguments.
@@ -244,7 +274,12 @@ class ImplTraitType extends Type, TImplTraitType {
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeParameter getTypeParameter(int i) { none() }
+  override TypeParameter getTypeParameter(int i) {
+    exists(TypeParam tp |
+      implTraitTypeParam(impl, i, tp) and
+      result = TImplTraitTypeParameter(impl, tp)
+    )
+  }
 
   override string toString() { result = impl.toString() }
 
@@ -283,7 +318,7 @@ class DynTraitType extends Type, TDynTraitType {
 class ImplTraitReturnType extends ImplTraitType {
   private Function function;
 
-  ImplTraitReturnType() { impl = function.getRetType().getTypeRepr() }
+  ImplTraitReturnType() { impl.isInReturnPos() and function = impl.getFunction() }
 
   override Function getFunction() { result = function }
 }
@@ -406,13 +441,48 @@ class ArrayTypeParameter extends TypeParameter, TArrayTypeParameter {
 }
 
 class DynTraitTypeParameter extends TypeParameter, TDynTraitTypeParameter {
-  private TypeParam typeParam;
+  private AstNode n;
 
-  DynTraitTypeParameter() { this = TDynTraitTypeParameter(typeParam) }
+  DynTraitTypeParameter() { this = TDynTraitTypeParameter(n) }
+
+  Trait getTrait() { dynTraitTypeParameter(result, n) }
+
+  /** Gets the dyn trait type that this type parameter belongs to. */
+  DynTraitType getDynTraitType() { result.getTrait() = this.getTrait() }
+
+  /** Gets the `TypeParam` of this dyn trait type parameter, if any. */
+  TypeParam getTypeParam() { result = n }
+
+  /** Gets the `TypeAlias` of this dyn trait type parameter, if any. */
+  TypeAlias getTypeAlias() { result = n }
+
+  /** Gets the trait type parameter that this dyn trait type parameter corresponds to. */
+  TypeParameter getTraitTypeParameter() {
+    result.(TypeParamTypeParameter).getTypeParam() = n
+    or
+    result.(AssociatedTypeTypeParameter).getTypeAlias() = n
+  }
+
+  private string toStringInner() {
+    result = [this.getTypeParam().toString(), this.getTypeAlias().getName().toString()]
+  }
+
+  override string toString() { result = "dyn(" + this.toStringInner() + ")" }
+
+  override Location getLocation() { result = n.getLocation() }
+}
+
+class ImplTraitTypeParameter extends TypeParameter, TImplTraitTypeParameter {
+  private TypeParam typeParam;
+  private ImplTraitTypeRepr implTrait;
+
+  ImplTraitTypeParameter() { this = TImplTraitTypeParameter(implTrait, typeParam) }
 
   TypeParam getTypeParam() { result = typeParam }
 
-  override string toString() { result = "dyn(" + typeParam.toString() + ")" }
+  ImplTraitTypeRepr getImplTraitTypeRepr() { result = implTrait }
+
+  override string toString() { result = "impl(" + typeParam.toString() + ")" }
 
   override Location getLocation() { result = typeParam.getLocation() }
 }
@@ -503,8 +573,7 @@ final class ImplTypeAbstraction extends TypeAbstraction, Impl {
 
 final class DynTypeAbstraction extends TypeAbstraction, DynTraitTypeRepr {
   override TypeParameter getATypeParameter() {
-    result.(TypeParamTypeParameter).getTypeParam() =
-      this.getTrait().getGenericParamList().getATypeParam()
+    result = any(DynTraitTypeParameter tp | tp.getTrait() = this.getTrait()).getTraitTypeParameter()
   }
 }
 
@@ -531,5 +600,7 @@ final class SelfTypeBoundTypeAbstraction extends TypeAbstraction, Name {
 }
 
 final class ImplTraitTypeReprAbstraction extends TypeAbstraction, ImplTraitTypeRepr {
-  override TypeParameter getATypeParameter() { none() }
+  override TypeParameter getATypeParameter() {
+    implTraitTypeParam(this, _, result.(TypeParamTypeParameter).getTypeParam())
+  }
 }

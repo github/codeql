@@ -653,7 +653,7 @@ mod function_trait_bounds {
     }
 }
 
-mod trait_associated_type {
+mod associated_type_in_trait {
     #[derive(Debug)]
     struct Wrapper<A> {
         field: A,
@@ -800,6 +800,46 @@ mod trait_associated_type {
         let assoc_zero = AT.get_zero(); // $ target=get_zero type=assoc_zero:AT
         let assoc_one = AT.get_one(); // $ target=get_one type=assoc_one:S
         let assoc_two = AT.get_two(); // $ target=get_two type=assoc_two:S2
+    }
+}
+
+mod associated_type_in_supertrait {
+    trait Supertrait {
+        type Content;
+        fn insert(content: Self::Content);
+    }
+
+    trait Subtrait: Supertrait {
+        // Subtrait::get_content
+        fn get_content(&self) -> Self::Content;
+    }
+
+    struct MyType<T>(T);
+
+    impl<T> Supertrait for MyType<T> {
+        type Content = T;
+        fn insert(_content: Self::Content) {
+            println!("Inserting content: ");
+        }
+    }
+
+    impl<T: Clone> Subtrait for MyType<T> {
+        // MyType::get_content
+        fn get_content(&self) -> Self::Content {
+            (*self).0.clone() // $ fieldof=MyType target=clone target=deref
+        }
+    }
+
+    fn get_content<T: Subtrait>(item: &T) -> T::Content {
+        item.get_content() // $ target=Subtrait::get_content
+    }
+
+    fn test() {
+        let item1 = MyType(42i64);
+        let _content1 = item1.get_content(); // $ target=MyType::get_content MISSING: type=_content1:i64
+
+        let item2 = MyType(true);
+        let _content2 = get_content(&item2); // $ target=get_content MISSING: type=_content2:bool
     }
 }
 
@@ -1873,8 +1913,10 @@ mod async_ {
 }
 
 mod impl_trait {
+    #[derive(Copy, Clone)]
     struct S1;
     struct S2;
+    struct S3<T3>(T3);
 
     trait Trait1 {
         fn f1(&self) {} // Trait1f1
@@ -1906,12 +1948,31 @@ mod impl_trait {
         }
     }
 
+    impl<T: Clone> MyTrait<T> for S3<T> {
+        fn get_a(&self) -> T {
+            let S3(t) = self;
+            t.clone()
+        }
+    }
+
     fn get_a_my_trait() -> impl MyTrait<S2> {
         S1
     }
 
     fn uses_my_trait1<A, B: MyTrait<A>>(t: B) -> A {
         t.get_a() // $ target=MyTrait::get_a
+    }
+
+    fn get_a_my_trait2<T: Clone>(x: T) -> impl MyTrait<T> {
+        S3(x)
+    }
+
+    fn get_a_my_trait3<T: Clone>(x: T) -> Option<impl MyTrait<T>> {
+        Some(S3(x))
+    }
+
+    fn get_a_my_trait4<T: Clone>(x: T) -> (impl MyTrait<T>, impl MyTrait<T>) {
+        (S3(x.clone()), S3(x)) // $ target=clone
     }
 
     fn uses_my_trait2<A>(t: impl MyTrait<A>) -> A {
@@ -1927,6 +1988,10 @@ mod impl_trait {
         let a = get_a_my_trait(); // $ target=get_a_my_trait
         let c = uses_my_trait2(a); // $ type=c:S2 target=uses_my_trait2
         let d = uses_my_trait2(S1); // $ type=d:S2 target=uses_my_trait2
+        let e = get_a_my_trait2(S1).get_a(); // $ target=get_a_my_trait2 target=MyTrait::get_a type=e:S1
+        // For this function the `impl` type does not appear in the root of the return type
+        let f = get_a_my_trait3(S1).unwrap().get_a(); // $ target=get_a_my_trait3 target=unwrap target=MyTrait::get_a type=f:S1
+        let g = get_a_my_trait4(S1).0.get_a(); // $ target=get_a_my_trait4 target=MyTrait::get_a type=g:S1
     }
 }
 
@@ -2385,7 +2450,7 @@ mod tuples {
 
         let pair = [1, 1].into(); // $ type=pair:(T_2) type=pair:0(2).i32 type=pair:1(2).i32 MISSING: target=into
         match pair {
-            (0,0) => print!("unexpected"),
+            (0, 0) => print!("unexpected"),
             _ => print!("expected"),
         }
         let x = pair.0; // $ type=x:i32
@@ -2419,46 +2484,7 @@ pub mod pattern_matching_experimental {
     }
 }
 
-mod closures {
-    struct Row {
-        data: i64,
-    }
-
-    impl Row {
-        fn get(&self) -> i64 {
-            self.data // $ fieldof=Row
-        }
-    }
-
-    struct Table {
-        rows: Vec<Row>,
-    }
-
-    impl Table {
-        fn new() -> Self {
-            Table { rows: Vec::new() } // $ target=new
-        }
-
-        fn count_with(&self, property: impl Fn(Row) -> bool) -> i64 {
-            0 // (not implemented)
-        }
-    }
-
-    pub fn f() {
-        Some(1).map(|x| {
-            let x = x; // $ MISSING: type=x:i32
-            println!("{x}");
-        }); // $ target=map
-
-        let table = Table::new(); // $ target=new type=table:Table
-        let result = table.count_with(|row| // $ type=result:i64
-            {
-                let v = row.get(); // $ MISSING: target=get type=v:i64
-                v > 0 // $ MISSING: target=gt
-            }); // $ target=count_with
-    }
-}
-
+mod closure;
 mod dereference;
 mod dyn_type;
 
@@ -2469,7 +2495,7 @@ fn main() {
     method_non_parametric_impl::f(); // $ target=f
     method_non_parametric_trait_impl::f(); // $ target=f
     function_trait_bounds::f(); // $ target=f
-    trait_associated_type::f(); // $ target=f
+    associated_type_in_trait::f(); // $ target=f
     generic_enum::f(); // $ target=f
     method_supertraits::f(); // $ target=f
     function_trait_bounds_2::f(); // $ target=f
@@ -2492,6 +2518,5 @@ fn main() {
     dereference::test(); // $ target=test
     pattern_matching::test_all_patterns(); // $ target=test_all_patterns
     pattern_matching_experimental::box_patterns(); // $ target=box_patterns
-    closures::f(); // $ target=f
     dyn_type::test(); // $ target=test
 }
