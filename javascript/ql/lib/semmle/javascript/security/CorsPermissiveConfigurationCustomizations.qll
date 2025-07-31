@@ -24,22 +24,10 @@ module CorsPermissiveConfiguration {
       or
       this = TWildcard() and result = "wildcard"
     }
-
-    /** DEPRECATED: Converts this flow state to a flow label. */
-    deprecated DataFlow::FlowLabel toFlowLabel() {
-      this = TTaint() and result.isTaint()
-      or
-      this = TTrueOrNull() and result instanceof TrueAndNull
-      or
-      this = TWildcard() and result instanceof Wildcard
-    }
   }
 
   /** Predicates for working with flow states. */
   module FlowState {
-    /** DEPRECATED: Gets a flow state from a flow label. */
-    deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
-
     /** A tainted value. */
     FlowState taint() { result = TTaint() }
 
@@ -66,32 +54,11 @@ module CorsPermissiveConfiguration {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
-   */
-  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
-
-  /**
    * An active threat-model source, considered as a flow source.
    */
   private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
     ActiveThreatModelSourceAsSource() { not this instanceof ClientSideRemoteFlowSource }
   }
-
-  /** A flow label representing `true` and `null` values. */
-  abstract deprecated class TrueAndNull extends DataFlow::FlowLabel {
-    TrueAndNull() { this = "TrueAndNull" }
-  }
-
-  /** DEPRECATED: Gets a flow label representing `true` and `null` values. */
-  deprecated TrueAndNull truenullLabel() { any() }
-
-  /** A flow label representing `*` value. */
-  abstract deprecated class Wildcard extends DataFlow::FlowLabel {
-    Wildcard() { this = "Wildcard" }
-  }
-
-  /** DEPRECATED: Gets a flow label representing `*` value. */
-  deprecated Wildcard wildcardLabel() { any() }
 
   /** An overly permissive value for `origin` (Apollo) */
   class TrueNullValue extends Source {
