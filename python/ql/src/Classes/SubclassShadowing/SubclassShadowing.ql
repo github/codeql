@@ -64,7 +64,7 @@ where
     if isProperty(shadowed)
     then
       // it's not a setter, so it's a read-only property
-      extra = " (read-only property may cause an error if written to in the superclass.)"
+      extra = " (read-only property may cause an error if written to in the superclass)"
     else extra = ""
   )
 select shadowed, "This method is shadowed by $@ in superclass $@." + extra, write,
