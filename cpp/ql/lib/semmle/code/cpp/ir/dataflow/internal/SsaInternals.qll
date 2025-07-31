@@ -1214,7 +1214,7 @@ class ExplicitDefinition extends Definition, SsaImpl::WriteDefinition {
  * 2. A `DirectExplicitDefinition` at (2) which writes `&x` to the SSA variable
  * corresponding to `p`.
  * 3. A `IndirectExplicitDefinition` at (2) which writes `*&x` (i.e., `x`) to
- * the SSA vairable corresponding to `*p`.
+ * the SSA variable corresponding to `*p`.
  */
 class IndirectExplicitDefinition extends ExplicitDefinition {
   IndirectExplicitDefinition() { this.getIndirectionIndex() > 0 }
