@@ -5,7 +5,6 @@
  */
 
 import javascript
-private import semmle.javascript.frameworks.Apollo
 private import semmle.javascript.frameworks.Cors
 
 /** Module containing sources, sinks, and sanitizers for overly permissive CORS configurations. */
@@ -109,7 +108,8 @@ module CorsPermissiveConfiguration {
    */
   class CorsApolloServer extends Sink, DataFlow::ValueNode {
     CorsApolloServer() {
-      exists(Apollo::ApolloServer agql |
+      exists(API::NewNode agql |
+        agql = ModelOutput::getATypeNode("ApolloServer").getAnInstantiation() and
         this =
           agql.getOptionArgument(0, "cors").getALocalSource().getAPropertyWrite("origin").getRhs()
       )
