@@ -1140,6 +1140,15 @@ class Definition extends SsaImpl::Definition {
     not result instanceof PhiNode
   }
 
+  /** Gets a `Node` that represents a use of this definition. */
+  Node getAUse() {
+    exists(SourceVariable sv, IRBlock bb, int i, UseImpl use |
+      ssaDefReachesRead(sv, this, bb, i) and
+      use.hasIndexInBlock(bb, i, sv) and
+      result = use.getNode()
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    */
@@ -1170,6 +1179,56 @@ class Definition extends SsaImpl::Definition {
 
   /** Gets the unspecified type of the variable being defined by this definition. */
   Type getUnspecifiedType() { result = this.getUnderlyingType().getUnspecifiedType() }
+}
+
+/**
+ * An SSA definition that corresponds to an explicit definition.
+ */
+class ExplicitDefinition extends Definition, SsaImpl::WriteDefinition {
+  DefImpl def;
+
+  ExplicitDefinition() {
+    exists(IRBlock bb, int i, SourceVariable sv |
+      this.definesAt(sv, bb, i) and
+      def.hasIndexInBlock(sv, bb, i)
+    )
+  }
+
+  /**
+   * Gets the `Node` computing the value that is written by this SSA definition.
+   */
+  Node getAssignedValue() { result.asInstruction() = def.getValue().asInstruction() }
+}
+
+/**
+ * An explicit SSA definition that writes an indirect value to a pointer.
+ *
+ * For example in:
+ * ```cpp
+ * int x = 42;  // (1)
+ * int* p = &x; // (2)
+ * ```
+ * There are three `ExplicitDefinition`:
+ * 1. A `DirectExplicitDefinition` at (1) which writes `42` to the SSA variable
+ * corresponding to `x`.
+ * 2. A `DirectExplicitDefinition` at (2) which writes `&x` to the SSA variable
+ * corresponding to `p`.
+ * 3. A `IndirectExplicitDefinition` at (2) which writes `*&x` (i.e., `x`) to
+ * the SSA vairable corresponding to `*p`.
+ */
+class IndirectExplicitDefinition extends ExplicitDefinition {
+  IndirectExplicitDefinition() { this.getIndirectionIndex() > 0 }
+}
+
+/**
+ * An SSA definition that corresponds to an explicit definition.
+ *
+ * Unlike `ExplicitDefinition` this class does not include indirect
+ * explicit definition. See `IndirectExplicitDefinition` if you want to include
+ * those.
+ */
+class DirectExplicitDefinition extends ExplicitDefinition {
+  DirectExplicitDefinition() { this.getIndirectionIndex() = 0 }
 }
 
 import SsaCached

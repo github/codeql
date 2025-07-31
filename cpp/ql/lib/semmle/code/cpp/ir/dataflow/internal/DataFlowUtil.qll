@@ -2576,3 +2576,13 @@ Function getARuntimeTarget(Call call) {
     result = DataFlowImplCommon::viableCallableLambda(dfCall, _).asSourceCallable()
   )
 }
+
+class Definition = Ssa::Definition;
+
+class ExplicitDefinition = Ssa::ExplicitDefinition;
+
+class DirectExplicitDefinition = Ssa::DirectExplicitDefinition;
+
+class IndirectExplicitDefinition = Ssa::IndirectExplicitDefinition;
+
+class PhiNode = Ssa::PhiNode;
