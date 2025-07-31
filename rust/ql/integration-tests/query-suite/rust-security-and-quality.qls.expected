@@ -21,6 +21,7 @@ ql/rust/ql/src/queries/security/CWE-825/AccessAfterLifetime.ql
 ql/rust/ql/src/queries/security/CWE-825/AccessInvalidPointer.ql
 ql/rust/ql/src/queries/summary/LinesOfCode.ql
 ql/rust/ql/src/queries/summary/LinesOfUserCode.ql
+ql/rust/ql/src/queries/summary/NodesWithTypeAtLengthLimit.ql
 ql/rust/ql/src/queries/summary/NumberOfFilesExtractedWithErrors.ql
 ql/rust/ql/src/queries/summary/NumberOfSuccessfullyExtractedFiles.ql
 ql/rust/ql/src/queries/summary/QuerySinkCounts.ql
