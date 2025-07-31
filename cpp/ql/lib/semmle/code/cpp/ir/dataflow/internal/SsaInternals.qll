@@ -1125,9 +1125,11 @@ class PhiNode extends Definition instanceof SsaImpl::PhiNode {
 
 /** An static single assignment (SSA) definition. */
 class Definition extends SsaImpl::Definition {
-  // TODO: Include prior definitions of uncertain writes or rename predicate
-  // i.e. the disjunct `SsaImpl::uncertainWriteDefinitionInput(this, result)`
-  private Definition getAPhiInputOrPriorDefinition() { result = this.(PhiNode).getAnInput() }
+  private Definition getAPhiInputOrPriorDefinition() {
+    result = this.(PhiNode).getAnInput()
+    or
+    SsaImpl::uncertainWriteDefinitionInput(this, result)
+  }
 
   /**
    * Gets a definition that ultimately defines this SSA definition and is
