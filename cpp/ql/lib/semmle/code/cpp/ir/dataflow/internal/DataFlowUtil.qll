@@ -2580,12 +2580,15 @@ Function getARuntimeTarget(Call call) {
   )
 }
 
-class Definition = Ssa::Definition;
+/** A module that provides static single assignment (SSA) information. */
+module Ssa {
+  class Definition = SsaImpl::Definition;
 
-class ExplicitDefinition = Ssa::ExplicitDefinition;
+  class ExplicitDefinition = SsaImpl::ExplicitDefinition;
 
-class DirectExplicitDefinition = Ssa::DirectExplicitDefinition;
+  class DirectExplicitDefinition = SsaImpl::DirectExplicitDefinition;
 
-class IndirectExplicitDefinition = Ssa::IndirectExplicitDefinition;
+  class IndirectExplicitDefinition = SsaImpl::IndirectExplicitDefinition;
 
-class PhiNode = Ssa::PhiNode;
+  class PhiNode = SsaImpl::PhiNode;
+}
