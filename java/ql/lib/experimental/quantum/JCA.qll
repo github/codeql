@@ -206,12 +206,6 @@ module JCAModel {
   }
 
   bindingset[name]
-  predicate mac_name_to_mac_type_known(Crypto::TMacType type, string name) {
-    type = Crypto::HMAC() and
-    name.toUpperCase().matches("HMAC%")
-  }
-
-  bindingset[name]
   predicate key_agreement_name_to_type_known(Crypto::TKeyAgreementType type, string name) {
     type = Crypto::DH() and
     name.toUpperCase() = "DH"
@@ -1480,7 +1474,7 @@ module JCAModel {
 
   module MacInitCallToMacOperationFlow = DataFlow::Global<MacInitCallToMacOperationFlowConfig>;
 
-  class KnownMacAlgorithm extends Crypto::MacAlgorithmInstance instanceof StringLiteral {
+  class KnownMacAlgorithm extends Crypto::KeyOperationAlgorithmInstance instanceof StringLiteral {
     MacGetInstanceAlgorithmValueConsumer consumer;
 
     KnownMacAlgorithm() {
@@ -1490,13 +1484,30 @@ module JCAModel {
 
     MacGetInstanceAlgorithmValueConsumer getConsumer() { result = consumer }
 
-    override string getRawMacAlgorithmName() { result = super.getValue() }
+    override string getRawAlgorithmName() { result = super.getValue() }
 
-    override Crypto::MacType getMacType() {
-      if mac_name_to_mac_type_known(_, super.getValue())
-      then mac_name_to_mac_type_known(result, super.getValue())
-      else result = Crypto::OtherMacType()
+    override Crypto::KeyOpAlg::AlgorithmType getAlgorithmType() {
+      if super.getValue().toUpperCase().matches("HMAC%")
+      then result = KeyOpAlg::TMac(KeyOpAlg::HMAC())
+      else
+        if super.getValue().toUpperCase().matches("CMAC%")
+        then result = KeyOpAlg::TMac(KeyOpAlg::CMAC())
+        else result = KeyOpAlg::TMac(KeyOpAlg::OtherMacAlgorithmType())
     }
+
+    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
+      // TODO: trace to any key size initializer?
+      none()
+    }
+
+    override int getKeySizeFixed() {
+      // TODO: are there known fixed key sizes to consider?
+      none()
+    }
+
+    override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
+
+    override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
   }
 
   class MacGetInstanceCall extends MethodCall {
@@ -1566,7 +1577,7 @@ module JCAModel {
       )
     }
 
-    override Crypto::ConsumerInputDataFlowNode getMessageConsumer() {
+    override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
       result.asExpr() = super.getArgument(0) and
       super.getMethod().getParameterType(0).hasName("byte[]")
     }
