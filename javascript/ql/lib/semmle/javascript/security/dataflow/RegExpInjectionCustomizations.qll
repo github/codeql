@@ -5,6 +5,7 @@
  */
 
 import javascript
+private import codeql.threatmodels.ThreatModels
 
 module RegExpInjection {
   /**
@@ -32,19 +33,32 @@ module RegExpInjection {
 
   /**
    * An active threat-model source, considered as a flow source.
+   * Excludes environment variables by default - they require the "environment" threat model.
    */
   private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
-    ActiveThreatModelSourceAsSource() { not this.isClientSideSource() }
+    ActiveThreatModelSourceAsSource() {
+      not this.isClientSideSource() and
+      not this.(ThreatModelSource).getThreatModel() = "environment"
+    }
   }
 
-  private import IndirectCommandInjectionCustomizations
+  /**
+   * Environment variables as a source when the "environment" threat model is active.
+   */
+  private class EnvironmentVariableAsSource extends Source instanceof ThreatModelSource {
+    EnvironmentVariableAsSource() {
+      this.getThreatModel() = "environment" and
+      currentThreatModel("environment")
+    }
+
+    override string describe() { result = "environment variable" }
+  }
 
   /**
-   * A read of `process.env`, `process.argv`, and similar, considered as a flow source for regular
-   * expression injection.
+   * Command line arguments as a source for regular expression injection.
    */
-  class ArgvAsSource extends Source instanceof IndirectCommandInjection::Source {
-    override string describe() { result = IndirectCommandInjection::Source.super.describe() }
+  private class CommandLineArgumentAsSource extends Source instanceof CommandLineArguments {
+    override string describe() { result = "command-line argument" }
   }
 
   /**
