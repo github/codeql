@@ -6,12 +6,12 @@ const app = express();
 app.use(express.json());
 
 app.post('/Command', (req, res) => {
-  const args = req.body.args || []; // $ MISSING: Source
+  const args = req.body.args || []; // $ Source
   const program = new Command();
   program.option('--cmd <value>', 'Command to execute');
   program.parse(args, { from: 'user' });
   const options = program.opts();
-  exec(options.cmd); // $ MISSING: Alert
+  exec(options.cmd); // $ Alert
 });
 
 app.post('/arg', (req, res) => {
