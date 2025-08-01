@@ -5,13 +5,22 @@ import arg from 'arg';
 const app = express();
 app.use(express.json());
 
-app.post('/Command', (req, res) => {
+app.post('/Command', async (req, res) => {
   const args = req.body.args || []; // $ Source
   const program = new Command();
   program.option('--cmd <value>', 'Command to execute');
   program.parse(args, { from: 'user' });
   const options = program.opts();
   exec(options.cmd); // $ Alert
+  exec(program.cmd); // $ MISSING: Alert
+
+  const program1 = new Command();
+  program1
+    .command('run <script>')
+    .action((script) => {
+      exec(script); // $ MISSING: Alert
+    });
+  await program1.parseAsync(args);
 });
 
 app.post('/arg', (req, res) => {
