@@ -22,6 +22,8 @@
 | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName | This command line depends on a $@. | child_process-test.js:83:19:83:36 | req.query.fileName | user-provided value |
 | child_process-test.js:94:11:94:35 | "ping " ... ms.host | child_process-test.js:94:21:94:30 | ctx.params | child_process-test.js:94:11:94:35 | "ping " ... ms.host | This command line depends on a $@. | child_process-test.js:94:21:94:30 | ctx.params | user-provided value |
 | command-line-libs.js:14:8:14:18 | options.cmd | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:14:8:14:18 | options.cmd | This command line depends on a $@. | command-line-libs.js:9:16:9:23 | req.body | user-provided value |
+| command-line-libs.js:15:8:15:18 | program.cmd | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:15:8:15:18 | program.cmd | This command line depends on a $@. | command-line-libs.js:9:16:9:23 | req.body | user-provided value |
+| command-line-libs.js:21:12:21:17 | script | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:21:12:21:17 | script | This command line depends on a $@. | command-line-libs.js:9:16:9:23 | req.body | user-provided value |
 | command-line-libs.js:49:8:49:17 | parsed.cmd | command-line-libs.js:42:16:42:23 | req.body | command-line-libs.js:49:8:49:17 | parsed.cmd | This command line depends on a $@. | command-line-libs.js:42:16:42:23 | req.body | user-provided value |
 | exec-sh2.js:10:12:10:57 | cp.spaw ... ptions) | exec-sh2.js:14:25:14:31 | req.url | exec-sh2.js:10:40:10:46 | command | This command line depends on a $@. | exec-sh2.js:14:25:14:31 | req.url | user-provided value |
 | exec-sh.js:15:12:15:61 | cp.spaw ... ptions) | exec-sh.js:19:25:19:31 | req.url | exec-sh.js:15:44:15:50 | command | This command line depends on a $@. | exec-sh.js:19:25:19:31 | req.url | user-provided value |
@@ -119,11 +121,16 @@ edges
 | child_process-test.js:73:25:73:31 | req.url | child_process-test.js:73:15:73:38 | url.par ... , true) | provenance |  |
 | child_process-test.js:94:21:94:30 | ctx.params | child_process-test.js:94:11:94:35 | "ping " ... ms.host | provenance |  |
 | command-line-libs.js:9:9:9:34 | args | command-line-libs.js:12:17:12:20 | args | provenance |  |
+| command-line-libs.js:9:9:9:34 | args | command-line-libs.js:23:29:23:32 | args | provenance |  |
 | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:9:9:9:34 | args | provenance |  |
 | command-line-libs.js:12:17:12:20 | args | command-line-libs.js:13:19:13:32 | program.opts() | provenance |  |
+| command-line-libs.js:12:17:12:20 | args | command-line-libs.js:15:8:15:18 | program.cmd | provenance |  |
+| command-line-libs.js:12:17:12:20 | args | command-line-libs.js:20:14:20:19 | script | provenance |  |
 | command-line-libs.js:13:9:13:32 | options | command-line-libs.js:14:8:14:14 | options | provenance |  |
 | command-line-libs.js:13:19:13:32 | program.opts() | command-line-libs.js:13:9:13:32 | options | provenance |  |
 | command-line-libs.js:14:8:14:14 | options | command-line-libs.js:14:8:14:18 | options.cmd | provenance |  |
+| command-line-libs.js:20:14:20:19 | script | command-line-libs.js:21:12:21:17 | script | provenance |  |
+| command-line-libs.js:23:29:23:32 | args | command-line-libs.js:20:14:20:19 | script | provenance |  |
 | command-line-libs.js:42:9:42:34 | args | command-line-libs.js:43:24:43:27 | args | provenance |  |
 | command-line-libs.js:42:16:42:23 | req.body | command-line-libs.js:42:9:42:34 | args | provenance |  |
 | command-line-libs.js:43:9:47:12 | parsed | command-line-libs.js:49:8:49:13 | parsed | provenance |  |
@@ -292,6 +299,10 @@ nodes
 | command-line-libs.js:13:19:13:32 | program.opts() | semmle.label | program.opts() |
 | command-line-libs.js:14:8:14:14 | options | semmle.label | options |
 | command-line-libs.js:14:8:14:18 | options.cmd | semmle.label | options.cmd |
+| command-line-libs.js:15:8:15:18 | program.cmd | semmle.label | program.cmd |
+| command-line-libs.js:20:14:20:19 | script | semmle.label | script |
+| command-line-libs.js:21:12:21:17 | script | semmle.label | script |
+| command-line-libs.js:23:29:23:32 | args | semmle.label | args |
 | command-line-libs.js:42:9:42:34 | args | semmle.label | args |
 | command-line-libs.js:42:16:42:23 | req.body | semmle.label | req.body |
 | command-line-libs.js:43:9:47:12 | parsed | semmle.label | parsed |

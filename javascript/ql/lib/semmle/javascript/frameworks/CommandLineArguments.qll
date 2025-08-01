@@ -96,8 +96,17 @@ private class ArgsParseStep extends TaintTracking::SharedTaintStep {
     )
     or
     exists(API::Node commanderNode | commanderNode = commander() |
-      pred = commanderNode.getMember("parse").getACall().getAnArgument() and
-      succ = commanderNode.getMember("opts").getACall()
+      pred = commanderNode.getMember(["parse", "parseAsync"]).getACall().getAnArgument() and
+      succ =
+        [
+          commanderNode.getMember("opts").getACall(), commanderNode.getAMember().asSource(),
+          commander()
+              .getMember("action")
+              .getACall()
+              .getArgument(0)
+              .(DataFlow::FunctionNode)
+              .getAParameter()
+        ]
     )
     or
     exists(DataFlow::MethodCallNode methodCall | methodCall = yargs() |

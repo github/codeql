@@ -12,13 +12,13 @@ app.post('/Command', async (req, res) => {
   program.parse(args, { from: 'user' });
   const options = program.opts();
   exec(options.cmd); // $ Alert
-  exec(program.cmd); // $ MISSING: Alert
+  exec(program.cmd); // $ Alert
 
   const program1 = new Command();
   program1
     .command('run <script>')
     .action((script) => {
-      exec(script); // $ MISSING: Alert
+      exec(script); // $ Alert
     });
   await program1.parseAsync(args);
 });
