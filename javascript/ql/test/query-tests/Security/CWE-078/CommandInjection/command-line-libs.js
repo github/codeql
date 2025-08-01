@@ -30,12 +30,12 @@ app.post('/commandLineArgs', (req, res) => {
 
 app.post('/yargs', (req, res) => {
   const yargs = require('yargs/yargs');
-  const args = req.body.args || []; // $ MISSING: Source
+  const args = req.body.args || []; // $ Source
   const parsed = yargs(args).option('cmd', {
     type: 'string',
     describe: 'Command to execute',
     demandOption: true
   }).parse();
 
-  exec(parsed.cmd); // $ MISSING: Alert
+  exec(parsed.cmd); // $ Alert
 });

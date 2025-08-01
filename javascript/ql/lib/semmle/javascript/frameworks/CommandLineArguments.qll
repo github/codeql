@@ -87,10 +87,17 @@ private class ArgsParseStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DataFlow::CallNode call |
       call = DataFlow::moduleMember("args", "parse").getACall() or
-      call = DataFlow::moduleImport(["yargs-parser", "minimist", "subarg"]).getACall()
+      call =
+        DataFlow::moduleImport(["yargs-parser", "minimist", "subarg", "yargs/yargs", "yargs"])
+            .getACall()
     |
       succ = call and
       pred = call.getArgument(0)
+    )
+    or
+    exists(DataFlow::MethodCallNode methodCall | methodCall = yargs() |
+      pred = methodCall.getReceiver() and
+      succ = methodCall
     )
   }
 }
@@ -115,7 +122,9 @@ private API::Node commander() {
  * Either directly imported as a module, or through some chained method call.
  */
 private DataFlow::SourceNode yargs() {
-  result = DataFlow::moduleImport("yargs")
+  result = DataFlow::moduleImport(["yargs", "yargs/yargs"])
+  or
+  result = DataFlow::moduleImport(["yargs", "yargs/yargs"]).getACall()
   or
   // script used to generate list of chained methods: https://gist.github.com/erik-krogh/f8afe952c0577f4b563a993e613269ba
   exists(string method |
