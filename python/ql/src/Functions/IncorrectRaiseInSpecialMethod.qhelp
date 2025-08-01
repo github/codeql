@@ -5,7 +5,7 @@
 <overview>
 <p>User-defined classes interact with the Python virtual machine via special methods (also called "magic methods").
 For example, for a class to support addition it must implement the <code>__add__</code> and <code>__radd__</code> special methods.
-When the expression <code>a + b</code> is evaluated the Python virtual machine will call <code>type(a).__add__(a, b)</code> and if that
+When the expression <code>a + b</code> is evaluated, the Python virtual machine will call <code>type(a).__add__(a, b)</code>, and if that
 is not implemented it will call <code>type(b).__radd__(b, a)</code>.</p>
 <p>
 Since the virtual machine calls these special methods for common expressions, users of the class will expect these operations to raise standard exceptions.
@@ -31,8 +31,8 @@ Therefore, if a method is unable to perform the expected operation then its resp
 
 </overview>
 <recommendation>
-<p>If the method is intended to be abstract, and thus always raise an exception, then declare it so using the <code>@abstractmethod</code> decorator.
-Otherwise, either remove the method or ensure that the method raises an exception of the correct type.
+<p>If the method always raises as exception, then if it is intended to be an abstract method, the <code>@abstractmethod</code> decorator should be used.
+Otherwise, ensure that the method raises an exception of the correct type, or remove the method if the operation dos not need to be supported.
 </p>
 
 </recommendation>
