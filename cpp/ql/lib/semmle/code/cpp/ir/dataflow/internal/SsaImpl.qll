@@ -1140,12 +1140,33 @@ class Definition extends SsaImpl::Definition {
     not result instanceof PhiNode
   }
 
-  /** Gets a `Node` that represents a use of this definition. */
-  Node getAUse() {
+  /** Gets an `Operand` that represents a use of this definition. */
+  Operand getAUse() {
     exists(SourceVariable sv, IRBlock bb, int i, UseImpl use |
       ssaDefReachesRead(sv, this, bb, i) and
       use.hasIndexInBlock(bb, i, sv) and
-      result = use.getNode()
+      result = use.getNode().asOperand()
+    )
+  }
+
+  /**
+   * Gets an `Operand` that represents an indirect use of this definition.
+   *
+   * The use is indirect because the operand represents a pointer that points
+   * to the value written by this definition. For example in:
+   * ```cpp
+   * 1. int x = 42;
+   * 2. int* p = &x;
+   * ```
+   * There is an `ExplicitDefinition` corresponding to `x = 42` on line 1 and
+   * the definition has an indirect use on line 2 because `&x` points to the
+   * value that was defined by the definition.
+   */
+  Operand getAnIndirectUse(int indirectionIndex) {
+    exists(SourceVariable sv, IRBlock bb, int i, UseImpl use |
+      ssaDefReachesRead(sv, this, bb, i) and
+      use.hasIndexInBlock(bb, i, sv) and
+      result = use.getNode().asIndirectOperand(indirectionIndex)
     )
   }
 
@@ -1195,9 +1216,18 @@ class ExplicitDefinition extends Definition, SsaImpl::WriteDefinition {
   }
 
   /**
-   * Gets the `Node` computing the value that is written by this SSA definition.
+   * Gets the `Instruction` computing the value that is written to the
+   * associated SSA variable by this SSA definition.
+   *
+   * If `this.getIndirectionIndex() = 0` (i.e., if `this` is an instance of
+   * `DirectExplicitDefinition`) then the SSA variable is present in the source
+   * code.
+   * However, if `this.getIndirectionIndex() > 0` (i.e., if `this` is an
+   * instance of `IndirectExplicitDefinition`) then the SSA variable associated
+   * with this definition represents the memory pointed to by a variable in the
+   * source code.
    */
-  Node getAssignedValue() { result.asInstruction() = def.getValue().asInstruction() }
+  Instruction getAssignedInstruction() { result = def.getValue().asInstruction() }
 }
 
 /**
