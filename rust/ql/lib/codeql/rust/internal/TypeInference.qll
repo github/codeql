@@ -127,6 +127,8 @@ private module Input1 implements InputSig1<Location> {
         tp0 order by kind, id1, id2
       )
   }
+
+  int getTypePathLimit() { result = 10 }
 }
 
 private import Input1
@@ -134,6 +136,8 @@ private import Input1
 private module M1 = Make1<Location, Input1>;
 
 private import M1
+
+predicate getTypePathLimit = Input1::getTypePathLimit/0;
 
 class TypePath = M1::TypePath;
 
@@ -2263,6 +2267,16 @@ private module Debug {
   private int countTypesAtPath(AstNode n, TypePath path, Type t) {
     t = inferType(n, path) and
     result = strictcount(Type t0 | t0 = inferType(n, path))
+  }
+
+  Type debugInferTypeForNodeAtLimit(AstNode n, TypePath path) {
+    result = inferType(n, path) and
+    exists(TypePath path0 | exists(inferType(n, path0)) and path0.length() >= getTypePathLimit())
+  }
+
+  predicate countTypesForNodeAtLimit(AstNode n, int c) {
+    n = getRelevantLocatable() and
+    c = strictcount(Type t, TypePath path | t = debugInferTypeForNodeAtLimit(n, path))
   }
 
   predicate maxTypes(AstNode n, TypePath path, Type t, int c) {
