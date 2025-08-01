@@ -33,7 +33,65 @@ rust_library(
         "default",
         "std",
         "unbounded_depth",
-    ],
+    ] + select({
+        "@rules_rust//rust/platform:aarch64-apple-darwin": [
+            "indexmap",  # aarch64-apple-darwin
+            "preserve_order",  # aarch64-apple-darwin
+        ],
+        "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
+            "indexmap",  # aarch64-pc-windows-msvc
+            "preserve_order",  # aarch64-pc-windows-msvc
+        ],
+        "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [
+            "indexmap",  # aarch64-unknown-linux-gnu
+            "preserve_order",  # aarch64-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [
+            "indexmap",  # aarch64-unknown-linux-gnu, aarch64-unknown-nixos-gnu
+            "preserve_order",  # aarch64-unknown-linux-gnu, aarch64-unknown-nixos-gnu
+        ],
+        "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [
+            "indexmap",  # arm-unknown-linux-gnueabi
+            "preserve_order",  # arm-unknown-linux-gnueabi
+        ],
+        "@rules_rust//rust/platform:i686-pc-windows-msvc": [
+            "indexmap",  # i686-pc-windows-msvc
+            "preserve_order",  # i686-pc-windows-msvc
+        ],
+        "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
+            "indexmap",  # i686-unknown-linux-gnu
+            "preserve_order",  # i686-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
+            "indexmap",  # powerpc-unknown-linux-gnu
+            "preserve_order",  # powerpc-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
+            "indexmap",  # s390x-unknown-linux-gnu
+            "preserve_order",  # s390x-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:x86_64-apple-darwin": [
+            "indexmap",  # x86_64-apple-darwin
+            "preserve_order",  # x86_64-apple-darwin
+        ],
+        "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
+            "indexmap",  # x86_64-pc-windows-msvc
+            "preserve_order",  # x86_64-pc-windows-msvc
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
+            "indexmap",  # x86_64-unknown-freebsd
+            "preserve_order",  # x86_64-unknown-freebsd
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-linux-gnu": [
+            "indexmap",  # x86_64-unknown-linux-gnu
+            "preserve_order",  # x86_64-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu": [
+            "indexmap",  # x86_64-unknown-linux-gnu, x86_64-unknown-nixos-gnu
+            "preserve_order",  # x86_64-unknown-linux-gnu, x86_64-unknown-nixos-gnu
+        ],
+        "//conditions:default": [],
+    }),
     crate_root = "src/lib.rs",
     edition = "2021",
     rustc_flags = [
@@ -89,10 +147,54 @@ rust_library(
     deps = [
         "@vendor_ts__itoa-1.0.15//:itoa",
         "@vendor_ts__memchr-2.7.5//:memchr",
-        "@vendor_ts__ryu-1.0.19//:ryu",
+        "@vendor_ts__ryu-1.0.20//:ryu",
         "@vendor_ts__serde-1.0.219//:serde",
         "@vendor_ts__serde_json-1.0.140//:build_script_build",
-    ],
+    ] + select({
+        "@rules_rust//rust/platform:aarch64-apple-darwin": [
+            "@vendor_ts__indexmap-2.10.0//:indexmap",  # aarch64-apple-darwin
+        ],
+        "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
+            "@vendor_ts__indexmap-2.10.0//:indexmap",  # aarch64-pc-windows-msvc
+        ],
+        "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [
+            "@vendor_ts__indexmap-2.10.0//:indexmap",  # aarch64-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [
+            "@vendor_ts__indexmap-2.10.0//:indexmap",  # aarch64-unknown-linux-gnu, aarch64-unknown-nixos-gnu
+        ],
+        "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [
+            "@vendor_ts__indexmap-2.10.0//:indexmap",  # arm-unknown-linux-gnueabi
+        ],
+        "@rules_rust//rust/platform:i686-pc-windows-msvc": [
+            "@vendor_ts__indexmap-2.10.0//:indexmap",  # i686-pc-windows-msvc
+        ],
+        "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
+            "@vendor_ts__indexmap-2.10.0//:indexmap",  # i686-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
+            "@vendor_ts__indexmap-2.10.0//:indexmap",  # powerpc-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
+            "@vendor_ts__indexmap-2.10.0//:indexmap",  # s390x-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:x86_64-apple-darwin": [
+            "@vendor_ts__indexmap-2.10.0//:indexmap",  # x86_64-apple-darwin
+        ],
+        "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
+            "@vendor_ts__indexmap-2.10.0//:indexmap",  # x86_64-pc-windows-msvc
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
+            "@vendor_ts__indexmap-2.10.0//:indexmap",  # x86_64-unknown-freebsd
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-linux-gnu": [
+            "@vendor_ts__indexmap-2.10.0//:indexmap",  # x86_64-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu": [
+            "@vendor_ts__indexmap-2.10.0//:indexmap",  # x86_64-unknown-linux-gnu, x86_64-unknown-nixos-gnu
+        ],
+        "//conditions:default": [],
+    }),
 )
 
 cargo_build_script(
@@ -118,7 +220,65 @@ cargo_build_script(
         "default",
         "std",
         "unbounded_depth",
-    ],
+    ] + select({
+        "@rules_rust//rust/platform:aarch64-apple-darwin": [
+            "indexmap",  # aarch64-apple-darwin
+            "preserve_order",  # aarch64-apple-darwin
+        ],
+        "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
+            "indexmap",  # aarch64-pc-windows-msvc
+            "preserve_order",  # aarch64-pc-windows-msvc
+        ],
+        "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [
+            "indexmap",  # aarch64-unknown-linux-gnu
+            "preserve_order",  # aarch64-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [
+            "indexmap",  # aarch64-unknown-linux-gnu, aarch64-unknown-nixos-gnu
+            "preserve_order",  # aarch64-unknown-linux-gnu, aarch64-unknown-nixos-gnu
+        ],
+        "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [
+            "indexmap",  # arm-unknown-linux-gnueabi
+            "preserve_order",  # arm-unknown-linux-gnueabi
+        ],
+        "@rules_rust//rust/platform:i686-pc-windows-msvc": [
+            "indexmap",  # i686-pc-windows-msvc
+            "preserve_order",  # i686-pc-windows-msvc
+        ],
+        "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
+            "indexmap",  # i686-unknown-linux-gnu
+            "preserve_order",  # i686-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
+            "indexmap",  # powerpc-unknown-linux-gnu
+            "preserve_order",  # powerpc-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
+            "indexmap",  # s390x-unknown-linux-gnu
+            "preserve_order",  # s390x-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:x86_64-apple-darwin": [
+            "indexmap",  # x86_64-apple-darwin
+            "preserve_order",  # x86_64-apple-darwin
+        ],
+        "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
+            "indexmap",  # x86_64-pc-windows-msvc
+            "preserve_order",  # x86_64-pc-windows-msvc
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
+            "indexmap",  # x86_64-unknown-freebsd
+            "preserve_order",  # x86_64-unknown-freebsd
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-linux-gnu": [
+            "indexmap",  # x86_64-unknown-linux-gnu
+            "preserve_order",  # x86_64-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu": [
+            "indexmap",  # x86_64-unknown-linux-gnu, x86_64-unknown-nixos-gnu
+            "preserve_order",  # x86_64-unknown-linux-gnu, x86_64-unknown-nixos-gnu
+        ],
+        "//conditions:default": [],
+    }),
     crate_name = "build_script_build",
     crate_root = "build.rs",
     data = glob(
