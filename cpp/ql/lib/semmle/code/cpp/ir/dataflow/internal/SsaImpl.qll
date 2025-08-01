@@ -1,4 +1,4 @@
-private import codeql.ssa.Ssa as SsaImplCommon
+private import codeql.ssa.Ssa as Ssa
 private import semmle.code.cpp.ir.IR
 private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
@@ -12,7 +12,7 @@ private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedInitialization
 private import DataFlowPrivate
-import SsaInternalsCommon
+import SsaImplCommon
 
 private module SourceVariables {
   cached
@@ -884,7 +884,7 @@ private predicate baseSourceVariableIsGlobal(
   )
 }
 
-private module SsaInput implements SsaImplCommon::InputSig<Location> {
+private module SsaInput implements Ssa::InputSig<Location> {
   import InputSigCommon
   import SourceVariables
 
@@ -958,7 +958,7 @@ class GlobalDef extends Definition {
   GlobalLikeVariable getVariable() { result = impl.getVariable() }
 }
 
-private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
+private module SsaImpl = Ssa::Make<Location, SsaInput>;
 
 private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationInputSig {
   private import codeql.util.Boolean
