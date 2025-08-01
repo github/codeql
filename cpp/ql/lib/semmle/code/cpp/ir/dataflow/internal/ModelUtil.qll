@@ -7,7 +7,7 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import DataFlowUtil
 private import DataFlowPrivate
-private import SsaInternals as Ssa
+private import SsaImpl as Ssa
 
 /**
  * Gets the instruction that goes into `input` for `call`.
