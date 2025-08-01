@@ -917,7 +917,8 @@ class TranslatedTransparentConversion extends TranslatedTransparentExpr {
       expr instanceof ParenthesisExpr or
       expr instanceof ReferenceDereferenceExpr or
       expr instanceof ReferenceToExpr or
-      expr instanceof C11GenericExpr
+      expr instanceof C11GenericExpr or
+      expr instanceof TransparentSimpleConversion
     )
   }
 
@@ -1622,22 +1623,49 @@ abstract class TranslatedSingleInstructionConversion extends TranslatedConversio
   abstract Opcode getOpcode();
 }
 
+/** A conversion which can be translated to a single `Convert` instruction. */
+class SimpleConversion extends Conversion {
+  SimpleConversion() {
+    this instanceof ArithmeticConversion or
+    this instanceof PointerConversion or
+    this instanceof PointerToMemberConversion or
+    this instanceof PointerToIntegralConversion or
+    this instanceof IntegralToPointerConversion or
+    this instanceof GlvalueConversion or
+    this instanceof ArrayToPointerConversion or
+    this instanceof PrvalueAdjustmentConversion or
+    this instanceof VoidConversion
+  }
+}
+
+/**
+ * A simple conversion which only modifies the specifiers of a type. For
+ * example, a cast from `int` to `const int`.
+ *
+ * Such conversions do generate `Convert` instructions.
+ */
+class TransparentSimpleConversion extends SimpleConversion {
+  TransparentSimpleConversion() {
+    pragma[only_bind_out](this.getUnspecifiedType()) =
+      pragma[only_bind_out](this.getExpr().getUnspecifiedType())
+  }
+}
+
+/**
+ * A simple conversion which converts more than just specifiers.
+ *
+ * Such conversions generate a `Convert` instruction when translated to IR.
+ */
+class NonTransparentSimpleConversion extends SimpleConversion {
+  NonTransparentSimpleConversion() { not this instanceof TransparentSimpleConversion }
+}
+
 /**
  * Represents the translation of a conversion expression that generates a
  * `Convert` instruction.
  */
 class TranslatedSimpleConversion extends TranslatedSingleInstructionConversion {
-  TranslatedSimpleConversion() {
-    expr instanceof ArithmeticConversion or
-    expr instanceof PointerConversion or
-    expr instanceof PointerToMemberConversion or
-    expr instanceof PointerToIntegralConversion or
-    expr instanceof IntegralToPointerConversion or
-    expr instanceof GlvalueConversion or
-    expr instanceof ArrayToPointerConversion or
-    expr instanceof PrvalueAdjustmentConversion or
-    expr instanceof VoidConversion
-  }
+  override NonTransparentSimpleConversion expr;
 
   override Opcode getOpcode() { result instanceof Opcode::Convert }
 }
