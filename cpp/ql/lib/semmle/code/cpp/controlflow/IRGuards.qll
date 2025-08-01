@@ -936,6 +936,16 @@ private module Cached {
     ValueNumber getUnary() { result.getAnInstruction() = instr.getUnary() }
   }
 
+  private class ConvertBoolToIntOrPointerInstruction extends ConvertInstruction {
+    ConvertBoolToIntOrPointerInstruction() {
+      this.getUnary().getResultIRType() instanceof IRBooleanType and
+      (
+        this.getResultIRType() instanceof IRIntegerType or
+        this.getResultIRType() instanceof IRAddressType
+      )
+    }
+  }
+
   /**
    * Holds if `left == right + k` is `areEqual` given that test is `testIsTrue`.
    *
@@ -966,6 +976,26 @@ private module Cached {
     )
     or
     compares_eq(test.(BuiltinExpectCallValueNumber).getCondition(), left, right, k, areEqual, value)
+    or
+    // If we have e.g.:
+    // ```
+    // x = (a == b)
+    // if(x != c) { ... }
+    // ```
+    // then `x != c` is true implies that `a == b` is true.
+    // ```
+    exists(Operand l, Operand r, ValueNumber vn, int c, AbstractValue v |
+      test.(CompareValueNumber).hasOperands(l, r) and
+      int_value(r.getDef()) = c and
+      vn.getAnInstruction() = getBooleanInstruction(l.getDef()) and
+      compares_eq(vn, left, right, k, areEqual, v)
+    |
+      test instanceof CompareNEValueNumber and
+      if c = 0 then value = v else value = v.getDualValue()
+      or
+      test instanceof CompareEQValueNumber and
+      if c = 0 then value = v.getDualValue() else value = v
+    )
   }
 
   private predicate isConvertedBool(Instruction instr) {
@@ -1006,19 +1036,24 @@ private module Cached {
       k = k1 + k2
     )
     or
-    exists(CompareValueNumber cmp, Operand left, Operand right, AbstractValue v |
-      test = cmp and
-      pragma[only_bind_into](cmp)
-          .hasOperands(pragma[only_bind_into](left), pragma[only_bind_into](right)) and
-      isConvertedBool(left.getDef()) and
-      int_value(right.getDef()) = 0 and
-      unary_compares_eq(valueNumberOfOperand(left), op, k, areEqual, v)
+    // If we have e.g.:
+    // ```
+    // x = (a == 10)
+    // if(x != c) { ... }
+    // ```
+    // then `x != c` is true implies that `a == 10` is true.
+    // ```
+    exists(Operand l, Operand r, ValueNumber vn, int c, AbstractValue v |
+      test.(CompareValueNumber).hasOperands(l, r) and
+      int_value(r.getDef()) = c and
+      vn.getAnInstruction() = getBooleanInstruction(l.getDef()) and
+      compares_lt(vn, op, k, areEqual, v)
     |
-      cmp instanceof CompareNEValueNumber and
-      v = value
+      test instanceof CompareNEValueNumber and
+      if c = 0 then value = v else value = v.getDualValue()
       or
-      cmp instanceof CompareEQValueNumber and
-      v.getDualValue() = value
+      test instanceof CompareEQValueNumber and
+      if c = 0 then value = v.getDualValue() else value = v
     )
     or
     unary_compares_eq(test.(BuiltinExpectCallValueNumber).getCondition(), op, k, areEqual, value)
@@ -1192,6 +1227,12 @@ private module Cached {
     unary_builtin_expect_eq(test, op, k, areEqual, value)
   }
 
+  private Instruction getBooleanInstruction(Instruction instr) {
+    result = instr.(ConvertBoolToIntOrPointerInstruction).getUnary()
+    or
+    result = getBooleanInstruction(instr.(CopyInstruction).getSourceValue())
+  }
+
   /*
    * Simplification of inequality expressions
    * Simplify conditions in the source to the canonical form l < r + k.
@@ -1215,6 +1256,26 @@ private module Cached {
     exists(AbstractValue dual | value = dual.getDualValue() |
       compares_lt(test.(LogicalNotValueNumber).getUnary(), left, right, k, isLt, dual)
     )
+    or
+    // If we have e.g.:
+    // ```
+    // x = (a < b)
+    // if(x != c) { ... }
+    // ```
+    // then `x != c` is true implies that `a < b` is true.
+    // ```
+    exists(Operand l, Operand r, ValueNumber vn, int c, AbstractValue v |
+      test.(CompareValueNumber).hasOperands(l, r) and
+      int_value(r.getDef()) = c and
+      vn.getAnInstruction() = getBooleanInstruction(l.getDef()) and
+      compares_lt(vn, left, right, k, isLt, v)
+    |
+      test instanceof CompareNEValueNumber and
+      if c = 0 then value = v else value = v.getDualValue()
+      or
+      test instanceof CompareEQValueNumber and
+      if c = 0 then value = v.getDualValue() else value = v
+    )
   }
 
   /** Holds if `op < k` evaluates to `isLt` given that `test` evaluates to `value`. */
@@ -1233,6 +1294,26 @@ private module Cached {
       compares_lt(test, op, const.getAUse(), k2, isLt, value) and
       int_value(const) = k1 and
       k = k1 + k2
+    )
+    or
+    // If we have e.g.:
+    // ```
+    // x = (a < 10)
+    // if(x != c) { ... }
+    // ```
+    // then `x != c` is true implies that `a < 10` is true.
+    // ```
+    exists(Operand l, Operand r, ValueNumber vn, int c, AbstractValue v |
+      test.(CompareValueNumber).hasOperands(l, r) and
+      int_value(r.getDef()) = c and
+      vn.getAnInstruction() = getBooleanInstruction(l.getDef()) and
+      compares_lt(vn, op, k, isLt, v)
+    |
+      test instanceof CompareNEValueNumber and
+      if c = 0 then value = v else value = v.getDualValue()
+      or
+      test instanceof CompareEQValueNumber and
+      if c = 0 then value = v.getDualValue() else value = v
     )
   }
 
