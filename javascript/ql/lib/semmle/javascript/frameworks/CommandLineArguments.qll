@@ -113,6 +113,17 @@ private class ArgsParseStep extends TaintTracking::SharedTaintStep {
       pred = methodCall.getReceiver() and
       succ = methodCall
     )
+    or
+    exists(DataFlow::CallNode call, DataFlow::Node options |
+      call = DataFlow::moduleImport(["arg", "command-line-args"]).getACall() and
+      succ = call and
+      options = call.getArgument(1) and
+      exists(DataFlow::PropWrite write |
+        write.getBase() = options and
+        write.getPropertyName() = "argv" and
+        pred = write.getRhs()
+      )
+    )
   }
 }
 

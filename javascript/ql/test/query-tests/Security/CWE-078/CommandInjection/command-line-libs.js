@@ -24,17 +24,17 @@ app.post('/Command', async (req, res) => {
 });
 
 app.post('/arg', (req, res) => {
-    const argsArray = req.body.args || []; // $ MISSING: Source
+    const argsArray = req.body.args || []; // $ Source
     const parsed = arg({ '--cmd': String }, { argv: argsArray });
-    exec(parsed['--cmd']); // $ MISSING: Alert
+    exec(parsed['--cmd']); // $ Alert
 });
 
 app.post('/commandLineArgs', (req, res) => {
   const commandLineArgs = require('command-line-args');
   const optionDefinitions = [{ name: 'cmd', type: String }];
-  const options = commandLineArgs(optionDefinitions, { argv: req.body.args || [] }); // $ MISSING: Source
+  const options = commandLineArgs(optionDefinitions, { argv: req.body.args || [] }); // $ Source
   if (!options.cmd) return res.status(400).send({ error: 'Missing --cmd' });
-  exec(options.cmd); // $ MISSING: Alert
+  exec(options.cmd); // $ Alert
 });
 
 app.post('/yargs', (req, res) => {
