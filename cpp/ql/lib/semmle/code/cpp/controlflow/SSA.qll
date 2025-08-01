@@ -19,7 +19,7 @@ class StandardSsa extends SsaHelper {
  * library:
  * ```
  * import semmle.code.cpp.dataflow.new.DataFlow
- * // use `DataFlow::Definition`
+ * // use `DataFlow::Ssa::Definition`
  * ```
  *
  * A definition of one or more SSA variables, including phi node definitions.
