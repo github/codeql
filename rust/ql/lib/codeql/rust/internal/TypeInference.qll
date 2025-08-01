@@ -147,7 +147,7 @@ private module Input2 implements InputSig2 {
   TypeMention getABaseTypeMention(Type t) { none() }
 
   TypeMention getATypeParameterConstraint(TypeParameter tp) {
-    result = tp.(TypeParamTypeParameter).getTypeParam().getTypeBoundList().getABound().getTypeRepr()
+    result = tp.(TypeParamTypeParameter).getTypeParam().getATypeBound().getTypeRepr()
     or
     result = tp.(SelfTypeParameter).getTrait()
     or
@@ -180,12 +180,12 @@ private module Input2 implements InputSig2 {
     exists(Trait trait |
       abs = trait and
       condition = trait and
-      constraint = trait.getTypeBoundList().getABound().getTypeRepr()
+      constraint = trait.getATypeBound().getTypeRepr()
     )
     or
     // trait bounds on type parameters
     exists(TypeParam param |
-      abs = param.getTypeBoundList().getABound() and
+      abs = param.getATypeBound() and
       condition = param and
       constraint = abs.(TypeBound).getTypeRepr()
     )

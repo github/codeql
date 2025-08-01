@@ -791,9 +791,7 @@ private class StructItemNode extends TypeItemNode instanceof Struct {
 
 class TraitItemNode extends ImplOrTraitItemNode, TypeItemNode instanceof Trait {
   pragma[nomagic]
-  Path getABoundPath() {
-    result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
-  }
+  Path getABoundPath() { result = super.getATypeBound().getTypeRepr().(PathTypeRepr).getPath() }
 
   pragma[nomagic]
   ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
@@ -924,7 +922,8 @@ private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
 }
 
 class TypeParamItemNode extends TypeItemNode instanceof TypeParam {
-  private WherePred getAWherePred() {
+  /** Gets a where predicate for this type parameter, if any */
+  WherePred getAWherePred() {
     exists(ItemNode declaringItem |
       this = resolveTypeParamPathTypeRepr(result.getTypeRepr()) and
       result = declaringItem.getADescendant() and
@@ -933,13 +932,11 @@ class TypeParamItemNode extends TypeItemNode instanceof TypeParam {
   }
 
   pragma[nomagic]
-  Path getABoundPath() {
-    exists(TypeBoundList tbl | result = tbl.getABound().getTypeRepr().(PathTypeRepr).getPath() |
-      tbl = super.getTypeBoundList()
-      or
-      tbl = this.getAWherePred().getTypeBoundList()
-    )
+  Path getTypeBoundPath(int index) {
+    result = super.getTypeBound(index).getTypeRepr().(PathTypeRepr).getPath()
   }
+
+  Path getABoundPath() { result = this.getTypeBoundPath(_) }
 
   pragma[nomagic]
   ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
@@ -956,12 +953,7 @@ class TypeParamItemNode extends TypeItemNode instanceof TypeParam {
    * ```
    */
   cached
-  predicate hasTraitBound() {
-    Stages::PathResolutionStage::ref() and
-    exists(this.getABoundPath())
-    or
-    exists(this.getAWherePred())
-  }
+  predicate hasTraitBound() { Stages::PathResolutionStage::ref() and exists(this.getABoundPath()) }
 
   /**
    * Holds if this type parameter has no trait bound. Examples:
