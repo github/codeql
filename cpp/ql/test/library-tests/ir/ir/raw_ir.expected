@@ -3343,7 +3343,8 @@ ir.c:
 #   88|     r88_3(int)        = Load[x1]            : &:r88_2, ~m?
 #   88|     r88_4(int)        = Constant[0]         : 
 #   88|     r88_5(bool)       = CompareEQ           : r88_3, r88_4
-#   88|     mu88_6(int)       = Store[y]            : &:r88_1, r88_5
+#   88|     r88_6(int)        = Convert             : r88_5
+#   88|     mu88_7(int)       = Store[y]            : &:r88_1, r88_6
 #   89|     r89_1(glval<int>) = VariableAddress[y]  : 
 #   89|     r89_2(int)        = Load[y]             : &:r89_1, ~m?
 #   89|     r89_3(int)        = Constant[0]         : 
@@ -3605,11 +3606,19 @@ ir.c:
 #  103|     v103_6(void) = NoOp : 
 #-----|   Goto -> Block 40
 
-#  104|   Block 40
-#  104|     v104_1(void) = NoOp         : 
-#   84|     v84_8(void)  = ReturnVoid   : 
-#   84|     v84_9(void)  = AliasedUse   : ~m?
-#   84|     v84_10(void) = ExitFunction : 
+#  105|   Block 40
+#  105|     r105_1(glval<int>) = VariableAddress[double_negation] : 
+#  105|     r105_2(glval<int>) = VariableAddress[x1]              : 
+#  105|     r105_3(int)        = Load[x1]                         : &:r105_2, ~m?
+#  105|     r105_4(int)        = Constant[0]                      : 
+#  105|     r105_5(bool)       = CompareEQ                        : r105_3, r105_4
+#  105|     r105_6(bool)       = LogicalNot                       : r105_5
+#  105|     r105_7(int)        = Convert                          : r105_6
+#  105|     mu105_8(int)       = Store[double_negation]           : &:r105_1, r105_7
+#  106|     v106_1(void)       = NoOp                             : 
+#   84|     v84_8(void)        = ReturnVoid                       : 
+#   84|     v84_9(void)        = AliasedUse                       : ~m?
+#   84|     v84_10(void)       = ExitFunction                     : 
 
 ir.cpp:
 #    1| void Constants()

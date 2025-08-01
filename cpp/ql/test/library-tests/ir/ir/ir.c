@@ -101,6 +101,8 @@ void branch_on_integral_in_c(int x1, int x2) {
   int x_1_and_2 = x1 && x2;
   if(x_1_and_2) {}
   if(!x_1_and_2) {}
+
+  int double_negation = !!x1;
 }
 
 // semmle-extractor-options: --microsoft
