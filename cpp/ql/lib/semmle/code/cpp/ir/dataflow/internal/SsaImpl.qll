@@ -1,4 +1,4 @@
-private import codeql.ssa.Ssa as SsaImplCommon
+private import codeql.ssa.Ssa as Ssa
 private import semmle.code.cpp.ir.IR
 private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
@@ -12,7 +12,7 @@ private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedInitialization
 private import DataFlowPrivate
-import SsaInternalsCommon
+import SsaImplCommon
 
 private module SourceVariables {
   cached
@@ -884,7 +884,7 @@ private predicate baseSourceVariableIsGlobal(
   )
 }
 
-private module SsaInput implements SsaImplCommon::InputSig<Location> {
+private module SsaInput implements Ssa::InputSig<Location> {
   import InputSigCommon
   import SourceVariables
 
@@ -958,7 +958,7 @@ class GlobalDef extends Definition {
   GlobalLikeVariable getVariable() { result = impl.getVariable() }
 }
 
-private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
+private module SsaImpl = Ssa::Make<Location, SsaInput>;
 
 private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationInputSig {
   private import codeql.util.Boolean
@@ -1125,9 +1125,11 @@ class PhiNode extends Definition instanceof SsaImpl::PhiNode {
 
 /** An static single assignment (SSA) definition. */
 class Definition extends SsaImpl::Definition {
-  // TODO: Include prior definitions of uncertain writes or rename predicate
-  // i.e. the disjunct `SsaImpl::uncertainWriteDefinitionInput(this, result)`
-  private Definition getAPhiInputOrPriorDefinition() { result = this.(PhiNode).getAnInput() }
+  private Definition getAPhiInputOrPriorDefinition() {
+    result = this.(PhiNode).getAnInput()
+    or
+    SsaImpl::uncertainWriteDefinitionInput(this, result)
+  }
 
   /**
    * Gets a definition that ultimately defines this SSA definition and is
@@ -1136,6 +1138,36 @@ class Definition extends SsaImpl::Definition {
   final Definition getAnUltimateDefinition() {
     result = this.getAPhiInputOrPriorDefinition*() and
     not result instanceof PhiNode
+  }
+
+  /** Gets an `Operand` that represents a use of this definition. */
+  Operand getAUse() {
+    exists(SourceVariable sv, IRBlock bb, int i, UseImpl use |
+      ssaDefReachesRead(sv, this, bb, i) and
+      use.hasIndexInBlock(bb, i, sv) and
+      result = use.getNode().asOperand()
+    )
+  }
+
+  /**
+   * Gets an `Operand` that represents an indirect use of this definition.
+   *
+   * The use is indirect because the operand represents a pointer that points
+   * to the value written by this definition. For example in:
+   * ```cpp
+   * 1. int x = 42;
+   * 2. int* p = &x;
+   * ```
+   * There is an `ExplicitDefinition` corresponding to `x = 42` on line 1 and
+   * the definition has an indirect use on line 2 because `&x` points to the
+   * value that was defined by the definition.
+   */
+  Operand getAnIndirectUse(int indirectionIndex) {
+    exists(SourceVariable sv, IRBlock bb, int i, UseImpl use |
+      ssaDefReachesRead(sv, this, bb, i) and
+      use.hasIndexInBlock(bb, i, sv) and
+      result = use.getNode().asIndirectOperand(indirectionIndex)
+    )
   }
 
   /**
@@ -1168,6 +1200,65 @@ class Definition extends SsaImpl::Definition {
 
   /** Gets the unspecified type of the variable being defined by this definition. */
   Type getUnspecifiedType() { result = this.getUnderlyingType().getUnspecifiedType() }
+}
+
+/**
+ * An SSA definition that corresponds to an explicit definition.
+ */
+class ExplicitDefinition extends Definition, SsaImpl::WriteDefinition {
+  DefImpl def;
+
+  ExplicitDefinition() {
+    exists(IRBlock bb, int i, SourceVariable sv |
+      this.definesAt(sv, bb, i) and
+      def.hasIndexInBlock(sv, bb, i)
+    )
+  }
+
+  /**
+   * Gets the `Instruction` computing the value that is written to the
+   * associated SSA variable by this SSA definition.
+   *
+   * If `this.getIndirectionIndex() = 0` (i.e., if `this` is an instance of
+   * `DirectExplicitDefinition`) then the SSA variable is present in the source
+   * code.
+   * However, if `this.getIndirectionIndex() > 0` (i.e., if `this` is an
+   * instance of `IndirectExplicitDefinition`) then the SSA variable associated
+   * with this definition represents the memory pointed to by a variable in the
+   * source code.
+   */
+  Instruction getAssignedInstruction() { result = def.getValue().asInstruction() }
+}
+
+/**
+ * An explicit SSA definition that writes an indirect value to a pointer.
+ *
+ * For example in:
+ * ```cpp
+ * int x = 42;  // (1)
+ * int* p = &x; // (2)
+ * ```
+ * There are three `ExplicitDefinition`:
+ * 1. A `DirectExplicitDefinition` at (1) which writes `42` to the SSA variable
+ * corresponding to `x`.
+ * 2. A `DirectExplicitDefinition` at (2) which writes `&x` to the SSA variable
+ * corresponding to `p`.
+ * 3. A `IndirectExplicitDefinition` at (2) which writes `*&x` (i.e., `x`) to
+ * the SSA variable corresponding to `*p`.
+ */
+class IndirectExplicitDefinition extends ExplicitDefinition {
+  IndirectExplicitDefinition() { this.getIndirectionIndex() > 0 }
+}
+
+/**
+ * An SSA definition that corresponds to an explicit definition.
+ *
+ * Unlike `ExplicitDefinition` this class does not include indirect
+ * explicit definition. See `IndirectExplicitDefinition` if you want to include
+ * those.
+ */
+class DirectExplicitDefinition extends ExplicitDefinition {
+  DirectExplicitDefinition() { this.getIndirectionIndex() = 0 }
 }
 
 import SsaCached

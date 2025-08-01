@@ -13,7 +13,7 @@ private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowPrivate
 private import ModelUtil
-private import SsaInternals as Ssa
+private import SsaImpl as SsaImpl
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
 private import Node0ToString
@@ -39,38 +39,39 @@ private newtype TIRDataFlowNode =
   TNode0(Node0Impl node) { DataFlowImplCommon::forceCachingInSameStage() } or
   TGlobalLikeVariableNode(GlobalLikeVariable var, int indirectionIndex) {
     indirectionIndex =
-      [getMinIndirectionsForType(var.getUnspecifiedType()) .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
+      [getMinIndirectionsForType(var.getUnspecifiedType()) .. SsaImpl::getMaxIndirectionsForType(var.getUnspecifiedType())]
   } or
   TPostUpdateNodeImpl(Operand operand, int indirectionIndex) {
     operand = any(FieldAddress fa).getObjectAddressOperand() and
-    indirectionIndex = [0 .. Ssa::countIndirectionsForCppType(Ssa::getLanguageType(operand))]
+    indirectionIndex =
+      [0 .. SsaImpl::countIndirectionsForCppType(SsaImpl::getLanguageType(operand))]
     or
-    Ssa::isModifiableByCall(operand, indirectionIndex)
+    SsaImpl::isModifiableByCall(operand, indirectionIndex)
   } or
-  TSsaSynthNode(Ssa::SynthNode n) or
+  TSsaSynthNode(SsaImpl::SynthNode n) or
   TSsaIteratorNode(IteratorFlow::IteratorFlowNode n) or
   TRawIndirectOperand0(Node0Impl node, int indirectionIndex) {
-    Ssa::hasRawIndirectOperand(node.asOperand(), indirectionIndex)
+    SsaImpl::hasRawIndirectOperand(node.asOperand(), indirectionIndex)
   } or
   TRawIndirectInstruction0(Node0Impl node, int indirectionIndex) {
     not exists(node.asOperand()) and
-    Ssa::hasRawIndirectInstruction(node.asInstruction(), indirectionIndex)
+    SsaImpl::hasRawIndirectInstruction(node.asInstruction(), indirectionIndex)
   } or
   TFinalParameterNode(Parameter p, int indirectionIndex) {
-    exists(Ssa::FinalParameterUse use |
+    exists(SsaImpl::FinalParameterUse use |
       use.getParameter() = p and
       use.getIndirectionIndex() = indirectionIndex
     )
   } or
-  TFinalGlobalValue(Ssa::GlobalUse globalUse) or
-  TInitialGlobalValue(Ssa::GlobalDef globalUse) or
+  TFinalGlobalValue(SsaImpl::GlobalUse globalUse) or
+  TInitialGlobalValue(SsaImpl::GlobalDef globalUse) or
   TBodyLessParameterNodeImpl(Parameter p, int indirectionIndex) {
     // Rule out parameters of catch blocks.
     not exists(p.getCatchBlock()) and
     // We subtract one because `getMaxIndirectionsForType` returns the maximum
     // indirection for a glvalue of a given type, and this doesn't apply to
     // parameters.
-    indirectionIndex = [0 .. Ssa::getMaxIndirectionsForType(p.getUnspecifiedType()) - 1] and
+    indirectionIndex = [0 .. SsaImpl::getMaxIndirectionsForType(p.getUnspecifiedType()) - 1] and
     not any(InitializeParameterInstruction init).getParameter() = p
   } or
   TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
@@ -81,7 +82,7 @@ private newtype TIRDataFlowNode =
 class FieldAddress extends Operand {
   FieldAddressInstruction fai;
 
-  FieldAddress() { fai = this.getDef() and not Ssa::ignoreOperand(this) }
+  FieldAddress() { fai = this.getDef() and not SsaImpl::ignoreOperand(this) }
 
   /** Gets the field associated with this instruction. */
   Field getField() { result = fai.getField() }
@@ -126,7 +127,7 @@ predicate conversionFlow(
     )
     or
     additional = true and
-    Ssa::isAdditionalConversionFlow(opFrom, instrTo)
+    SsaImpl::isAdditionalConversionFlow(opFrom, instrTo)
   )
   or
   isPointerArith = true and
@@ -183,7 +184,7 @@ class Node extends TIRDataFlowNode {
     or
     this.asOperand().getUse() = block.getInstruction(i)
     or
-    exists(Ssa::SynthNode ssaNode |
+    exists(SsaImpl::SynthNode ssaNode |
       this.(SsaSynthNode).getSynthNode() = ssaNode and
       ssaNode.getBasicBlock() = block and
       ssaNode.getIndex() = i
@@ -364,10 +365,10 @@ class Node extends TIRDataFlowNode {
    * pointed to by `p`.
    */
   Expr asDefinition(boolean uncertain) {
-    exists(StoreInstruction store, Ssa::Definition def |
+    exists(StoreInstruction store, SsaImpl::Definition def |
       store = this.asInstruction() and
       result = asDefinitionImpl(store) and
-      Ssa::defToNode(this, def, _) and
+      SsaImpl::defToNode(this, def, _) and
       if def.isCertain() then uncertain = false else uncertain = true
     )
   }
@@ -627,7 +628,7 @@ class OperandNode extends Node, Node0 {
  * For example, `stripPointers(int*&)` is `int*` and `stripPointers(int*)` is `int`.
  */
 Type stripPointer(Type t) {
-  result = any(Ssa::Indirection ind | ind.getType() = t).getBaseType()
+  result = any(SsaImpl::Indirection ind | ind.getType() = t).getBaseType()
   or
   result = t.(PointerToMemberType).getBaseType()
   or
@@ -694,12 +695,12 @@ class PostFieldUpdateNode extends PostUpdateNodeImpl {
  * in a data flow graph.
  */
 class SsaSynthNode extends Node, TSsaSynthNode {
-  Ssa::SynthNode node;
+  SsaImpl::SynthNode node;
 
   SsaSynthNode() { this = TSsaSynthNode(node) }
 
   /** Gets the synthesized SSA node associated with this node. */
-  Ssa::SynthNode getSynthNode() { result = node }
+  SsaImpl::SynthNode getSynthNode() { result = node }
 
   override DataFlowCallable getEnclosingCallable() {
     result.asSourceCallable() = this.getFunction()
@@ -782,12 +783,12 @@ class SideEffectOperandNode extends Node instanceof IndirectOperand {
  * from a function body.
  */
 class FinalGlobalValue extends Node, TFinalGlobalValue {
-  Ssa::GlobalUse globalUse;
+  SsaImpl::GlobalUse globalUse;
 
   FinalGlobalValue() { this = TFinalGlobalValue(globalUse) }
 
   /** Gets the underlying SSA use. */
-  Ssa::GlobalUse getGlobalUse() { result = globalUse }
+  SsaImpl::GlobalUse getGlobalUse() { result = globalUse }
 
   override DataFlowCallable getEnclosingCallable() {
     result.asSourceCallable() = this.getFunction()
@@ -814,12 +815,12 @@ class FinalGlobalValue extends Node, TFinalGlobalValue {
  * a function body.
  */
 class InitialGlobalValue extends Node, TInitialGlobalValue {
-  Ssa::GlobalDef globalDef;
+  SsaImpl::GlobalDef globalDef;
 
   InitialGlobalValue() { this = TInitialGlobalValue(globalDef) }
 
   /** Gets the underlying SSA definition. */
-  Ssa::GlobalDef getGlobalDef() { result = globalDef }
+  SsaImpl::GlobalDef getGlobalDef() { result = globalDef }
 
   override DataFlowCallable getEnclosingCallable() {
     result.asSourceCallable() = this.getFunction()
@@ -1288,11 +1289,11 @@ class UninitializedNode extends Node {
   LocalVariable v;
 
   UninitializedNode() {
-    exists(Ssa::Definition def, Ssa::SourceVariable sv |
+    exists(SsaImpl::Definition def, SsaImpl::SourceVariable sv |
       def.getIndirectionIndex() = 0 and
       def.getValue().asInstruction() instanceof UninitializedInstruction and
-      Ssa::defToNode(this, def, sv) and
-      v = sv.getBaseVariable().(Ssa::BaseIRVariable).getIRVariable().getAst()
+      SsaImpl::defToNode(this, def, sv) and
+      v = sv.getBaseVariable().(SsaImpl::BaseIRVariable).getIRVariable().getAst()
     )
   }
 
@@ -1722,7 +1723,7 @@ private module Cached {
   cached
   predicate flowsToBackEdge(Node n) {
     exists(Node succ, IRBlock bb1, IRBlock bb2 |
-      Ssa::ssaFlow(n, succ) and
+      SsaImpl::ssaFlow(n, succ) and
       bb1 = n.getBasicBlock() and
       bb2 = succ.getBasicBlock() and
       bb1 != bb2 and
@@ -1820,7 +1821,7 @@ private module Cached {
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
     (
       // Def-use/Use-use flow
-      Ssa::ssaFlow(nodeFrom, nodeTo)
+      SsaImpl::ssaFlow(nodeFrom, nodeTo)
       or
       IteratorFlow::localFlowStep(nodeFrom, nodeTo)
       or
@@ -1833,7 +1834,7 @@ private module Cached {
       |
         simpleOperandLocalFlowStep(iFrom, opTo) and
         // Omit when the instruction node also represents the operand.
-        not iFrom = Ssa::getIRRepresentationOfOperand(opTo)
+        not iFrom = SsaImpl::getIRRepresentationOfOperand(opTo)
       )
       or
       // Indirect operand -> (indirect) instruction flow
@@ -1906,7 +1907,7 @@ private module Cached {
       // We also want a write coming out of an `OutNode` to flow `nodeTo`.
       // This is different from `reverseFlowInstruction` since `nodeFrom` can never
       // be an `OutNode` when it's defined by an instruction.
-      Ssa::outNodeHasAddressAndIndex(nodeFrom, address, indirectionIndex)
+      SsaImpl::outNodeHasAddressAndIndex(nodeFrom, address, indirectionIndex)
     )
   }
 
@@ -2099,7 +2100,7 @@ private newtype TContent =
   TFieldContent(Field f, int indirectionIndex) {
     // the indirection index for field content starts at 1 (because `TFieldContent` is thought of as
     // the address of the field, `FieldAddress` in the IR).
-    indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(f.getUnspecifiedType())] and
+    indirectionIndex = [1 .. SsaImpl::getMaxIndirectionsForType(f.getUnspecifiedType())] and
     // Reads and writes of union fields are tracked using `UnionContent`.
     not f.getDeclaringType() instanceof Union
   } or
@@ -2111,7 +2112,9 @@ private newtype TContent =
       // field can be read by any read of the union's fields. Again, the indirection index
       // is 1-based (because 0 is considered the address).
       indirectionIndex =
-        [1 .. max(Ssa::getMaxIndirectionsForType(getAFieldWithSize(u, bytes).getUnspecifiedType()))]
+        [1 .. max(SsaImpl::getMaxIndirectionsForType(getAFieldWithSize(u, bytes)
+                    .getUnspecifiedType())
+          )]
     )
   } or
   TElementContent(int indirectionIndex) {
@@ -2354,7 +2357,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       controls(g, result, edge)
     )
     or
-    result = Ssa::BarrierGuard<guardChecksNode/3>::getABarrierNode()
+    result = SsaImpl::BarrierGuard<guardChecksNode/3>::getABarrierNode()
   }
 
   /**
@@ -2453,7 +2456,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     )
     or
     result =
-      Ssa::BarrierGuardWithIntParam<guardChecksIndirectNode/4>::getABarrierNode(indirectionIndex)
+      SsaImpl::BarrierGuardWithIntParam<guardChecksIndirectNode/4>::getABarrierNode(indirectionIndex)
   }
 }
 
@@ -2490,7 +2493,7 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
       controls(g, result, edge)
     )
     or
-    result = Ssa::BarrierGuard<guardChecksNode/3>::getABarrierNode()
+    result = SsaImpl::BarrierGuard<guardChecksNode/3>::getABarrierNode()
   }
 
   bindingset[value, n]
@@ -2520,7 +2523,7 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
     )
     or
     result =
-      Ssa::BarrierGuardWithIntParam<guardChecksIndirectNode/4>::getABarrierNode(indirectionIndex)
+      SsaImpl::BarrierGuardWithIntParam<guardChecksIndirectNode/4>::getABarrierNode(indirectionIndex)
   }
 }
 
@@ -2575,4 +2578,17 @@ Function getARuntimeTarget(Call call) {
     or
     result = DataFlowImplCommon::viableCallableLambda(dfCall, _).asSourceCallable()
   )
+}
+
+/** A module that provides static single assignment (SSA) information. */
+module Ssa {
+  class Definition = SsaImpl::Definition;
+
+  class ExplicitDefinition = SsaImpl::ExplicitDefinition;
+
+  class DirectExplicitDefinition = SsaImpl::DirectExplicitDefinition;
+
+  class IndirectExplicitDefinition = SsaImpl::IndirectExplicitDefinition;
+
+  class PhiNode = SsaImpl::PhiNode;
 }

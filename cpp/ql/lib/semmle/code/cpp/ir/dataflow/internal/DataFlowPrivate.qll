@@ -4,7 +4,7 @@ private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-private import SsaInternals as Ssa
+private import SsaImpl as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
 private import Node0ToString
