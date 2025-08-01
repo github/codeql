@@ -170,7 +170,11 @@ impl fmt::Display for Expression<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Expression::Var(x) => write!(f, "{}", x),
-            Expression::String(s) => write!(f, "\"{}\"", s),
+            Expression::String(s) => {
+                // Escape double quotes so that the string can be used in a QL query.
+                let s = s.replace('"', "\\\"");
+                write!(f, "\"{}\"", s)
+            }
             Expression::Integer(n) => write!(f, "{}", n),
             Expression::Pred(n, args) => {
                 write!(f, "{}(", n)?;
