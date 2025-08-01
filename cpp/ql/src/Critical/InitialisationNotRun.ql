@@ -32,9 +32,18 @@ predicate called(Function f) {
   exists(FunctionAccess fa | fa.getTarget() = f)
 }
 
+predicate staticWithoutDereference(GlobalVariable v) {
+  v.isStatic() and
+  not exists(VariableAccess va |
+    va = v.getAnAccess() and
+    dereferenced(va)
+  )
+}
+
 from GlobalVariable v
 where
   global(v) and
+  not staticWithoutDereference(v) and
   not exists(VariableAccess lval |
     v.getAnAccess() = lval and
     lval.isUsedAsLValue() and
