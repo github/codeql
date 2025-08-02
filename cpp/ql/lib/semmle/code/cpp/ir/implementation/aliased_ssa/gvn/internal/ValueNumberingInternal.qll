@@ -51,7 +51,7 @@ newtype TValueNumber =
  *
  * Generally, the value number of a converted value is different from the value
  * number of an unconverted value, but for conversions which only modify
- * specifiers leaves the resulting value bitwise identical to the old value.
+ * specifiers leave the resulting value bitwise identical to the old value.
  */
 class SpecifierPreservingConvertInstruction extends ConvertInstruction {
   SpecifierPreservingConvertInstruction() {
