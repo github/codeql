@@ -2487,6 +2487,7 @@ pub mod pattern_matching_experimental {
 mod closure;
 mod dereference;
 mod dyn_type;
+mod blanket_impl;
 
 fn main() {
     field_access::f(); // $ target=f
