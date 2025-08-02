@@ -23,11 +23,14 @@ inferType
 | blanket_impl.rs:34:18:34:24 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | blanket_impl.rs:34:18:34:24 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | blanket_impl.rs:34:20:34:20 | x |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:35:13:35:13 | y |  | blanket_impl.rs:4:5:5:14 | S1 |
 | blanket_impl.rs:35:17:35:18 | S1 |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:35:17:35:30 | S1.duplicate() |  | blanket_impl.rs:4:5:5:14 | S1 |
 | blanket_impl.rs:36:18:36:24 | "{y:?}\\n" |  | file://:0:0:0:0 | & |
 | blanket_impl.rs:36:18:36:24 | "{y:?}\\n" | &T | {EXTERNAL LOCATION} | str |
 | blanket_impl.rs:36:18:36:24 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | blanket_impl.rs:36:18:36:24 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:36:20:36:20 | y |  | blanket_impl.rs:4:5:5:14 | S1 |
 | blanket_impl.rs:46:22:46:26 | SelfParam |  | file://:0:0:0:0 | & |
 | blanket_impl.rs:46:22:46:26 | SelfParam | &T | blanket_impl.rs:45:5:47:5 | Self [trait Flag] |
 | blanket_impl.rs:50:26:50:30 | SelfParam |  | file://:0:0:0:0 | & |
@@ -78,7 +81,11 @@ inferType
 | blanket_impl.rs:110:13:110:23 | my_try_flag |  | blanket_impl.rs:76:5:78:5 | MyTryFlag |
 | blanket_impl.rs:110:27:110:50 | MyTryFlag {...} |  | blanket_impl.rs:76:5:78:5 | MyTryFlag |
 | blanket_impl.rs:110:45:110:48 | true |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:111:13:111:18 | result |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:111:13:111:18 | result | T | {EXTERNAL LOCATION} | bool |
 | blanket_impl.rs:111:22:111:32 | my_try_flag |  | blanket_impl.rs:76:5:78:5 | MyTryFlag |
+| blanket_impl.rs:111:22:111:54 | my_try_flag.try_read_flag_twice() |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:111:22:111:54 | my_try_flag.try_read_flag_twice() | T | {EXTERNAL LOCATION} | bool |
 | blanket_impl.rs:113:13:113:19 | my_flag |  | blanket_impl.rs:87:5:89:5 | MyFlag |
 | blanket_impl.rs:113:23:113:43 | MyFlag {...} |  | blanket_impl.rs:87:5:89:5 | MyFlag |
 | blanket_impl.rs:113:38:113:41 | true |  | {EXTERNAL LOCATION} | bool |
@@ -649,12 +656,15 @@ inferType
 | dyn_type.rs:103:28:105:5 | &... |  | file://:0:0:0:0 | & |
 | dyn_type.rs:103:28:105:5 | &... | &T | dyn_type.rs:10:1:13:1 | dyn GenericGet |
 | dyn_type.rs:103:28:105:5 | &... | &T | dyn_type.rs:33:1:36:1 | GenStruct |
+| dyn_type.rs:103:28:105:5 | &... | &T.A | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:103:28:105:5 | &... | &T.dyn(A) | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:103:29:105:5 | GenStruct {...} |  | dyn_type.rs:10:1:13:1 | dyn GenericGet |
 | dyn_type.rs:103:29:105:5 | GenStruct {...} |  | dyn_type.rs:33:1:36:1 | GenStruct |
+| dyn_type.rs:103:29:105:5 | GenStruct {...} | A | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:103:29:105:5 | GenStruct {...} | dyn(A) | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:104:16:104:17 | "" |  | file://:0:0:0:0 | & |
 | dyn_type.rs:104:16:104:17 | "" | &T | {EXTERNAL LOCATION} | str |
+| dyn_type.rs:104:16:104:29 | "".to_string() |  | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:107:21:107:45 | &... |  | file://:0:0:0:0 | & |
 | dyn_type.rs:107:21:107:45 | &... | &T | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
 | dyn_type.rs:107:21:107:45 | &... | &T | dyn_type.rs:33:1:36:1 | GenStruct |
@@ -1267,8 +1277,10 @@ inferType
 | main.rs:390:21:390:37 | MyThing {...} |  | main.rs:175:5:178:5 | MyThing |
 | main.rs:390:21:390:37 | MyThing {...} | A | main.rs:186:5:187:14 | S1 |
 | main.rs:390:34:390:35 | S1 |  | main.rs:186:5:187:14 | S1 |
+| main.rs:391:13:391:13 | i |  | main.rs:186:5:187:14 | S1 |
 | main.rs:391:17:391:21 | thing |  | main.rs:175:5:178:5 | MyThing |
 | main.rs:391:17:391:21 | thing | A | main.rs:186:5:187:14 | S1 |
+| main.rs:391:17:391:34 | thing.convert_to() |  | main.rs:186:5:187:14 | S1 |
 | main.rs:392:13:392:13 | j |  | main.rs:186:5:187:14 | S1 |
 | main.rs:392:17:392:33 | convert_to(...) |  | main.rs:186:5:187:14 | S1 |
 | main.rs:392:28:392:32 | thing |  | main.rs:175:5:178:5 | MyThing |
@@ -3168,14 +3180,22 @@ inferType
 | main.rs:1622:13:1625:13 | Vec2 {...} |  | main.rs:1502:5:1507:5 | Vec2 |
 | main.rs:1623:20:1623:23 | self |  | main.rs:1502:5:1507:5 | Vec2 |
 | main.rs:1623:20:1623:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1623:20:1623:33 | ... \| ... |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1623:20:1623:33 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1623:20:1623:33 | ... \| ... | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1623:29:1623:31 | rhs |  | main.rs:1502:5:1507:5 | Vec2 |
+| main.rs:1623:29:1623:33 | rhs.x |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1623:29:1623:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1623:29:1623:33 | rhs.x | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1624:20:1624:23 | self |  | main.rs:1502:5:1507:5 | Vec2 |
 | main.rs:1624:20:1624:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1624:20:1624:33 | ... \| ... |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1624:20:1624:33 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1624:20:1624:33 | ... \| ... | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1624:29:1624:31 | rhs |  | main.rs:1502:5:1507:5 | Vec2 |
+| main.rs:1624:29:1624:33 | rhs.y |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1624:29:1624:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1624:29:1624:33 | rhs.y | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1630:25:1630:33 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1630:25:1630:33 | SelfParam | &T | main.rs:1502:5:1507:5 | Vec2 |
 | main.rs:1630:36:1630:38 | rhs |  | main.rs:1502:5:1507:5 | Vec2 |
@@ -3513,10 +3533,16 @@ inferType
 | main.rs:1773:26:1773:30 | 33i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1773:26:1773:38 | ... & ... |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1773:34:1773:38 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1774:13:1774:21 | i64_bitor |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1774:13:1774:21 | i64_bitor |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1774:13:1774:21 | i64_bitor | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1774:25:1774:29 | 35i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1774:25:1774:37 | ... \| ... |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1774:25:1774:37 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1774:25:1774:37 | ... \| ... | T | {EXTERNAL LOCATION} | i64 |
+| main.rs:1774:33:1774:37 | 36i64 |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1774:33:1774:37 | 36i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1774:33:1774:37 | 36i64 | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1775:13:1775:22 | i64_bitxor |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1775:26:1775:30 | 37i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1775:26:1775:38 | ... ^ ... |  | {EXTERNAL LOCATION} | i64 |
