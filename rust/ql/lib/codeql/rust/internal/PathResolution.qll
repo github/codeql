@@ -933,15 +933,36 @@ class TypeParamItemNode extends TypeItemNode instanceof TypeParam {
   }
 
   pragma[nomagic]
-  Path getABoundPath() {
-    exists(TypeBoundList tbl | result = tbl.getABound().getTypeRepr().(PathTypeRepr).getPath() |
-      tbl = super.getTypeBoundList()
+  TypeBound getBound(int index) {
+    result = super.getTypeBoundList().getBound(index)
+    or
+    exists(int offset |
+      offset = super.getTypeBoundList().getNumberOfBounds()
       or
-      tbl = this.getAWherePred().getTypeBoundList()
+      not super.hasTypeBoundList() and
+      offset = 0
+    |
+      result = this.getAWherePred().getTypeBoundList().getBound(index - offset)
     )
   }
 
   pragma[nomagic]
+  Path getBoundPath(int index) {
+    result = this.getBound(index).getTypeRepr().(PathTypeRepr).getPath()
+  }
+
+  Path getABoundPath() { result = this.getBoundPath(_) }
+
+  pragma[nomagic]
+  ItemNode resolveBound(int index) {
+    result =
+      rank[index + 1](int i, ItemNode item |
+        item = resolvePath(this.getBoundPath(i))
+      |
+        item order by i
+      )
+  }
+
   ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
 
   /**
