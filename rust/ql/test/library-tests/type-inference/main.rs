@@ -2606,6 +2606,7 @@ pub mod path_buf {
 mod closure;
 mod dereference;
 mod dyn_type;
+mod blanket_impl;
 
 fn main() {
     field_access::f(); // $ target=f
