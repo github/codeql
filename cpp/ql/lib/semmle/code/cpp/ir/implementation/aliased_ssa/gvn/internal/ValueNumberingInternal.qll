@@ -50,11 +50,11 @@ newtype TValueNumber =
  * const integer.
  *
  * Generally, the value number of a converted value is different from the value
- * number of an unconverted value, but for conversions which only modify
- * specifiers leave the resulting value bitwise identical to the old value.
+ * number of an unconverted value, but conversions which only modify specifiers
+ * leave the resulting value bitwise identical to the old value.
  */
-class SpecifierPreservingConvertInstruction extends ConvertInstruction {
-  SpecifierPreservingConvertInstruction() {
+class TypePreservingConvertInstruction extends ConvertInstruction {
+  TypePreservingConvertInstruction() {
     pragma[only_bind_out](this.getResultType().getUnspecifiedType()) =
       pragma[only_bind_out](this.getUnary().getResultType().getUnspecifiedType())
   }
@@ -233,7 +233,7 @@ private predicate unaryValueNumber(
   not instr instanceof InheritanceConversionInstruction and
   not instr instanceof CopyInstruction and
   not instr instanceof FieldAddressInstruction and
-  not instr instanceof SpecifierPreservingConvertInstruction and
+  not instr instanceof TypePreservingConvertInstruction and
   instr.getOpcode() = opcode and
   tvalueNumber(instr.getUnary()) = operand
 }
@@ -370,9 +370,9 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
       // The value number of a copy is just the value number of its source value.
       result = tvalueNumber(instr.(CongruentCopyInstruction).getSourceValue())
       or
-      // The value number of a specifier-preserving conversion is just the value
+      // The value number of a type-preserving conversion is just the value
       // number of the unconverted value.
-      result = tvalueNumber(instr.(SpecifierPreservingConvertInstruction).getUnary())
+      result = tvalueNumber(instr.(TypePreservingConvertInstruction).getUnary())
     )
   )
 }
