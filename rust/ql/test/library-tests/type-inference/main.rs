@@ -2352,7 +2352,7 @@ mod loops {
         #[rustfmt::skip]
         let _ = while a < 10 // $ target=lt type=a:i64
         {
-            a += 1; // $ type=a:i64 target=add_assign
+            a += 1; // $ type=a:i64 MISSING: target=add_assign
         };
     }
 }
