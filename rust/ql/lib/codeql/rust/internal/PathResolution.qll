@@ -968,9 +968,18 @@ class TypeParamItemNode extends TypeItemNode instanceof TypeParam {
   }
 
   pragma[nomagic]
+  Path getBoundPath(int index) {
+    result = super.getTypeBound(index).getTypeRepr().(PathTypeRepr).getPath()
+  }
+
+  pragma[nomagic]
   Path getABoundPath() { result = super.getATypeBound().getTypeRepr().(PathTypeRepr).getPath() }
 
   pragma[nomagic]
+  ItemNode resolveBound(int index) {
+    result = rank[index + 1](int i | | resolvePath(this.getBoundPath(i)) order by i)
+  }
+
   ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
 
   /**

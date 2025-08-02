@@ -23,11 +23,14 @@ inferType
 | blanket_impl.rs:34:18:34:24 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | blanket_impl.rs:34:18:34:24 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | blanket_impl.rs:34:20:34:20 | x |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:35:13:35:13 | y |  | blanket_impl.rs:4:5:5:14 | S1 |
 | blanket_impl.rs:35:17:35:18 | S1 |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:35:17:35:30 | S1.duplicate() |  | blanket_impl.rs:4:5:5:14 | S1 |
 | blanket_impl.rs:36:18:36:24 | "{y:?}\\n" |  | file://:0:0:0:0 | & |
 | blanket_impl.rs:36:18:36:24 | "{y:?}\\n" | &T | {EXTERNAL LOCATION} | str |
 | blanket_impl.rs:36:18:36:24 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | blanket_impl.rs:36:18:36:24 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:36:20:36:20 | y |  | blanket_impl.rs:4:5:5:14 | S1 |
 | blanket_impl.rs:46:22:46:26 | SelfParam |  | file://:0:0:0:0 | & |
 | blanket_impl.rs:46:22:46:26 | SelfParam | &T | blanket_impl.rs:45:5:47:5 | Self [trait Flag] |
 | blanket_impl.rs:50:26:50:30 | SelfParam |  | file://:0:0:0:0 | & |
@@ -78,7 +81,11 @@ inferType
 | blanket_impl.rs:110:13:110:23 | my_try_flag |  | blanket_impl.rs:76:5:78:5 | MyTryFlag |
 | blanket_impl.rs:110:27:110:50 | MyTryFlag {...} |  | blanket_impl.rs:76:5:78:5 | MyTryFlag |
 | blanket_impl.rs:110:45:110:48 | true |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:111:13:111:18 | result |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:111:13:111:18 | result | T | {EXTERNAL LOCATION} | bool |
 | blanket_impl.rs:111:22:111:32 | my_try_flag |  | blanket_impl.rs:76:5:78:5 | MyTryFlag |
+| blanket_impl.rs:111:22:111:54 | my_try_flag.try_read_flag_twice() |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:111:22:111:54 | my_try_flag.try_read_flag_twice() | T | {EXTERNAL LOCATION} | bool |
 | blanket_impl.rs:113:13:113:19 | my_flag |  | blanket_impl.rs:87:5:89:5 | MyFlag |
 | blanket_impl.rs:113:23:113:43 | MyFlag {...} |  | blanket_impl.rs:87:5:89:5 | MyFlag |
 | blanket_impl.rs:113:38:113:41 | true |  | {EXTERNAL LOCATION} | bool |
@@ -721,12 +728,15 @@ inferType
 | dyn_type.rs:103:28:105:5 | &... |  | file://:0:0:0:0 | & |
 | dyn_type.rs:103:28:105:5 | &... | &T | dyn_type.rs:10:1:13:1 | dyn GenericGet |
 | dyn_type.rs:103:28:105:5 | &... | &T | dyn_type.rs:33:1:36:1 | GenStruct |
+| dyn_type.rs:103:28:105:5 | &... | &T.A | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:103:28:105:5 | &... | &T.dyn(A) | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:103:29:105:5 | GenStruct {...} |  | dyn_type.rs:10:1:13:1 | dyn GenericGet |
 | dyn_type.rs:103:29:105:5 | GenStruct {...} |  | dyn_type.rs:33:1:36:1 | GenStruct |
+| dyn_type.rs:103:29:105:5 | GenStruct {...} | A | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:103:29:105:5 | GenStruct {...} | dyn(A) | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:104:16:104:17 | "" |  | file://:0:0:0:0 | & |
 | dyn_type.rs:104:16:104:17 | "" | &T | {EXTERNAL LOCATION} | str |
+| dyn_type.rs:104:16:104:29 | "".to_string() |  | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:107:21:107:45 | &... |  | file://:0:0:0:0 | & |
 | dyn_type.rs:107:21:107:45 | &... | &T | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
 | dyn_type.rs:107:21:107:45 | &... | &T | dyn_type.rs:33:1:36:1 | GenStruct |
@@ -1339,8 +1349,10 @@ inferType
 | main.rs:390:21:390:37 | MyThing {...} |  | main.rs:175:5:178:5 | MyThing |
 | main.rs:390:21:390:37 | MyThing {...} | A | main.rs:186:5:187:14 | S1 |
 | main.rs:390:34:390:35 | S1 |  | main.rs:186:5:187:14 | S1 |
+| main.rs:391:13:391:13 | i |  | main.rs:186:5:187:14 | S1 |
 | main.rs:391:17:391:21 | thing |  | main.rs:175:5:178:5 | MyThing |
 | main.rs:391:17:391:21 | thing | A | main.rs:186:5:187:14 | S1 |
+| main.rs:391:17:391:34 | thing.convert_to() |  | main.rs:186:5:187:14 | S1 |
 | main.rs:392:13:392:13 | j |  | main.rs:186:5:187:14 | S1 |
 | main.rs:392:17:392:33 | convert_to(...) |  | main.rs:186:5:187:14 | S1 |
 | main.rs:392:28:392:32 | thing |  | main.rs:175:5:178:5 | MyThing |
@@ -3272,14 +3284,22 @@ inferType
 | main.rs:1657:13:1660:13 | Vec2 {...} |  | main.rs:1537:5:1542:5 | Vec2 |
 | main.rs:1658:20:1658:23 | self |  | main.rs:1537:5:1542:5 | Vec2 |
 | main.rs:1658:20:1658:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1658:20:1658:33 | ... \| ... |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1658:20:1658:33 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1658:20:1658:33 | ... \| ... | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1658:29:1658:31 | rhs |  | main.rs:1537:5:1542:5 | Vec2 |
+| main.rs:1658:29:1658:33 | rhs.x |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1658:29:1658:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1658:29:1658:33 | rhs.x | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1659:20:1659:23 | self |  | main.rs:1537:5:1542:5 | Vec2 |
 | main.rs:1659:20:1659:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1659:20:1659:33 | ... \| ... |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1659:20:1659:33 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1659:20:1659:33 | ... \| ... | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1659:29:1659:31 | rhs |  | main.rs:1537:5:1542:5 | Vec2 |
+| main.rs:1659:29:1659:33 | rhs.y |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1659:29:1659:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1659:29:1659:33 | rhs.y | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1665:25:1665:33 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1665:25:1665:33 | SelfParam | &T | main.rs:1537:5:1542:5 | Vec2 |
 | main.rs:1665:36:1665:38 | rhs |  | main.rs:1537:5:1542:5 | Vec2 |
@@ -3617,9 +3637,13 @@ inferType
 | main.rs:1808:26:1808:30 | 33i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1808:26:1808:38 | ... & ... |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1808:34:1808:38 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1809:13:1809:21 | i64_bitor |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1809:13:1809:21 | i64_bitor |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1809:13:1809:21 | i64_bitor | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1809:25:1809:29 | 35i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1809:25:1809:37 | ... \| ... |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1809:25:1809:37 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1809:25:1809:37 | ... \| ... | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1809:33:1809:37 | 36i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1810:13:1810:22 | i64_bitxor |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1810:26:1810:30 | 37i64 |  | {EXTERNAL LOCATION} | i64 |
@@ -5020,26 +5044,92 @@ inferType
 | main.rs:2537:22:2537:41 | "Executor::execute2\\n" | &T | {EXTERNAL LOCATION} | str |
 | main.rs:2537:22:2537:41 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:2537:22:2537:41 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:2546:13:2546:13 | c |  | {EXTERNAL LOCATION} | str |
+| main.rs:2546:13:2546:13 | c |  | file://:0:0:0:0 | & |
 | main.rs:2546:13:2546:13 | c |  | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2546:13:2546:13 | c | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2546:13:2546:13 | c | &T | file://:0:0:0:0 | & |
+| main.rs:2546:13:2546:13 | c | &T | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2546:13:2546:13 | c | &T.&T | {EXTERNAL LOCATION} | str |
+| main.rs:2546:17:2546:34 | MySqlConnection {...} |  | {EXTERNAL LOCATION} | str |
+| main.rs:2546:17:2546:34 | MySqlConnection {...} |  | file://:0:0:0:0 | & |
 | main.rs:2546:17:2546:34 | MySqlConnection {...} |  | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2546:17:2546:34 | MySqlConnection {...} | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2546:17:2546:34 | MySqlConnection {...} | &T | file://:0:0:0:0 | & |
+| main.rs:2546:17:2546:34 | MySqlConnection {...} | &T | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2546:17:2546:34 | MySqlConnection {...} | &T.&T | {EXTERNAL LOCATION} | str |
+| main.rs:2548:9:2548:9 | c |  | {EXTERNAL LOCATION} | str |
+| main.rs:2548:9:2548:9 | c |  | file://:0:0:0:0 | & |
 | main.rs:2548:9:2548:9 | c |  | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2548:9:2548:9 | c | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2548:9:2548:9 | c | &T | file://:0:0:0:0 | & |
+| main.rs:2548:9:2548:9 | c | &T | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2548:9:2548:9 | c | &T.&T | {EXTERNAL LOCATION} | str |
 | main.rs:2549:35:2549:36 | &c |  | file://:0:0:0:0 | & |
+| main.rs:2549:35:2549:36 | &c | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2549:35:2549:36 | &c | &T | file://:0:0:0:0 | & |
 | main.rs:2549:35:2549:36 | &c | &T | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2549:35:2549:36 | &c | &T.&T | {EXTERNAL LOCATION} | str |
+| main.rs:2549:35:2549:36 | &c | &T.&T | file://:0:0:0:0 | & |
+| main.rs:2549:35:2549:36 | &c | &T.&T | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2549:35:2549:36 | &c | &T.&T.&T | {EXTERNAL LOCATION} | str |
+| main.rs:2549:36:2549:36 | c |  | {EXTERNAL LOCATION} | str |
+| main.rs:2549:36:2549:36 | c |  | file://:0:0:0:0 | & |
 | main.rs:2549:36:2549:36 | c |  | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2549:36:2549:36 | c | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2549:36:2549:36 | c | &T | file://:0:0:0:0 | & |
+| main.rs:2549:36:2549:36 | c | &T | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2549:36:2549:36 | c | &T.&T | {EXTERNAL LOCATION} | str |
+| main.rs:2551:9:2551:9 | c |  | {EXTERNAL LOCATION} | str |
+| main.rs:2551:9:2551:9 | c |  | file://:0:0:0:0 | & |
 | main.rs:2551:9:2551:9 | c |  | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2551:9:2551:9 | c | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2551:9:2551:9 | c | &T | file://:0:0:0:0 | & |
+| main.rs:2551:9:2551:9 | c | &T | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2551:9:2551:9 | c | &T.&T | {EXTERNAL LOCATION} | str |
 | main.rs:2551:20:2551:40 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
 | main.rs:2551:20:2551:40 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2552:9:2552:9 | c |  | {EXTERNAL LOCATION} | str |
+| main.rs:2552:9:2552:9 | c |  | file://:0:0:0:0 | & |
 | main.rs:2552:9:2552:9 | c |  | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2552:9:2552:9 | c | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2552:9:2552:9 | c | &T | file://:0:0:0:0 | & |
+| main.rs:2552:9:2552:9 | c | &T | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2552:9:2552:9 | c | &T.&T | {EXTERNAL LOCATION} | str |
 | main.rs:2552:28:2552:48 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
 | main.rs:2552:28:2552:48 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
 | main.rs:2553:35:2553:36 | &c |  | file://:0:0:0:0 | & |
+| main.rs:2553:35:2553:36 | &c | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2553:35:2553:36 | &c | &T | file://:0:0:0:0 | & |
 | main.rs:2553:35:2553:36 | &c | &T | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2553:35:2553:36 | &c | &T.&T | {EXTERNAL LOCATION} | str |
+| main.rs:2553:35:2553:36 | &c | &T.&T | file://:0:0:0:0 | & |
+| main.rs:2553:35:2553:36 | &c | &T.&T | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2553:35:2553:36 | &c | &T.&T.&T | {EXTERNAL LOCATION} | str |
+| main.rs:2553:36:2553:36 | c |  | {EXTERNAL LOCATION} | str |
+| main.rs:2553:36:2553:36 | c |  | file://:0:0:0:0 | & |
 | main.rs:2553:36:2553:36 | c |  | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2553:36:2553:36 | c | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2553:36:2553:36 | c | &T | file://:0:0:0:0 | & |
+| main.rs:2553:36:2553:36 | c | &T | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2553:36:2553:36 | c | &T.&T | {EXTERNAL LOCATION} | str |
 | main.rs:2553:39:2553:59 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
 | main.rs:2553:39:2553:59 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
 | main.rs:2554:43:2554:44 | &c |  | file://:0:0:0:0 | & |
+| main.rs:2554:43:2554:44 | &c | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2554:43:2554:44 | &c | &T | file://:0:0:0:0 | & |
 | main.rs:2554:43:2554:44 | &c | &T | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2554:43:2554:44 | &c | &T.&T | {EXTERNAL LOCATION} | str |
+| main.rs:2554:43:2554:44 | &c | &T.&T | file://:0:0:0:0 | & |
+| main.rs:2554:43:2554:44 | &c | &T.&T | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2554:43:2554:44 | &c | &T.&T.&T | {EXTERNAL LOCATION} | str |
+| main.rs:2554:44:2554:44 | c |  | {EXTERNAL LOCATION} | str |
+| main.rs:2554:44:2554:44 | c |  | file://:0:0:0:0 | & |
 | main.rs:2554:44:2554:44 | c |  | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2554:44:2554:44 | c | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2554:44:2554:44 | c | &T | file://:0:0:0:0 | & |
+| main.rs:2554:44:2554:44 | c | &T | main.rs:2541:5:2541:29 | MySqlConnection |
+| main.rs:2554:44:2554:44 | c | &T.&T | {EXTERNAL LOCATION} | str |
 | main.rs:2554:47:2554:67 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
 | main.rs:2554:47:2554:67 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
 | main.rs:2565:36:2567:9 | { ... } |  | main.rs:2561:5:2562:5 | Path |
@@ -6650,3 +6740,6 @@ inferType
 | pattern_matching.rs:814:5:814:7 | f(...) |  | {EXTERNAL LOCATION} | Option |
 | pattern_matching.rs:814:5:814:7 | f(...) | T | file://:0:0:0:0 | () |
 testFailures
+| main.rs:2548:9:2548:20 | c.execute1() | Fixed missing result: target=execute1 |
+| main.rs:2551:9:2551:41 | c.execute2(...) | Fixed missing result: target=execute2 |
+| main.rs:2552:9:2552:49 | c.execute2(...) | Fixed missing result: target=execute2 |
