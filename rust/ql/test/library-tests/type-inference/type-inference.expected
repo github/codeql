@@ -1,4 +1,96 @@
 inferType
+| blanket_impl.rs:8:19:8:23 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:8:19:8:23 | SelfParam | &T | blanket_impl.rs:7:5:9:5 | Self [trait Clone1] |
+| blanket_impl.rs:12:22:12:26 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:12:22:12:26 | SelfParam | &T | blanket_impl.rs:11:5:15:5 | Self [trait Duplicatable] |
+| blanket_impl.rs:19:19:19:23 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:19:19:19:23 | SelfParam | &T | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:19:34:21:9 | { ... } |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:20:13:20:17 | * ... |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:20:14:20:17 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:20:14:20:17 | self | &T | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:27:22:27:26 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:27:22:27:26 | SelfParam | &T | blanket_impl.rs:25:10:25:18 | T |
+| blanket_impl.rs:27:37:29:9 | { ... } |  | blanket_impl.rs:25:10:25:18 | T |
+| blanket_impl.rs:28:13:28:16 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:28:13:28:16 | self | &T | blanket_impl.rs:25:10:25:18 | T |
+| blanket_impl.rs:28:13:28:25 | self.clone1() |  | blanket_impl.rs:25:10:25:18 | T |
+| blanket_impl.rs:33:13:33:13 | x |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:33:17:33:18 | S1 |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:33:17:33:27 | S1.clone1() |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:34:18:34:24 | "{x:?}\\n" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:34:18:34:24 | "{x:?}\\n" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:34:18:34:24 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:34:18:34:24 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:34:20:34:20 | x |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:35:17:35:18 | S1 |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:36:18:36:24 | "{y:?}\\n" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:36:18:36:24 | "{y:?}\\n" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:36:18:36:24 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:36:18:36:24 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:46:22:46:26 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:46:22:46:26 | SelfParam | &T | blanket_impl.rs:45:5:47:5 | Self [trait Flag] |
+| blanket_impl.rs:50:26:50:30 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:50:26:50:30 | SelfParam | &T | blanket_impl.rs:49:5:51:5 | Self [trait TryFlag] |
+| blanket_impl.rs:57:26:57:30 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:57:26:57:30 | SelfParam | &T | blanket_impl.rs:53:10:53:11 | Fl |
+| blanket_impl.rs:57:49:59:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:57:49:59:9 | { ... } | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:58:13:58:34 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:58:13:58:34 | Some(...) | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:58:18:58:21 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:58:18:58:21 | self | &T | blanket_impl.rs:53:10:53:11 | Fl |
+| blanket_impl.rs:58:18:58:33 | self.read_flag() |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:64:32:64:36 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:64:32:64:36 | SelfParam | &T | blanket_impl.rs:62:5:67:5 | Self [trait TryFlagExt] |
+| blanket_impl.rs:64:55:66:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:64:55:66:9 | { ... } | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:65:13:65:16 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:65:13:65:16 | self | &T | blanket_impl.rs:62:5:67:5 | Self [trait TryFlagExt] |
+| blanket_impl.rs:65:13:65:32 | self.try_read_flag() |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:65:13:65:32 | self.try_read_flag() | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:73:32:73:36 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:73:32:73:36 | SelfParam | &T | blanket_impl.rs:71:5:74:5 | Self [trait AnotherTryFlag] |
+| blanket_impl.rs:82:26:82:30 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:82:26:82:30 | SelfParam | &T | blanket_impl.rs:76:5:78:5 | MyTryFlag |
+| blanket_impl.rs:82:49:84:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:82:49:84:9 | { ... } | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:83:13:83:27 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:83:13:83:27 | Some(...) | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:83:18:83:21 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:83:18:83:21 | self | &T | blanket_impl.rs:76:5:78:5 | MyTryFlag |
+| blanket_impl.rs:83:18:83:26 | self.flag |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:93:22:93:26 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:93:22:93:26 | SelfParam | &T | blanket_impl.rs:87:5:89:5 | MyFlag |
+| blanket_impl.rs:93:37:95:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:94:13:94:16 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:94:13:94:16 | self | &T | blanket_impl.rs:87:5:89:5 | MyFlag |
+| blanket_impl.rs:94:13:94:21 | self.flag |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:104:32:104:36 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:104:32:104:36 | SelfParam | &T | blanket_impl.rs:98:5:100:5 | MyOtherFlag |
+| blanket_impl.rs:104:55:106:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:104:55:106:9 | { ... } | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:105:13:105:27 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:105:13:105:27 | Some(...) | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:105:18:105:21 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:105:18:105:21 | self | &T | blanket_impl.rs:98:5:100:5 | MyOtherFlag |
+| blanket_impl.rs:105:18:105:26 | self.flag |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:110:13:110:23 | my_try_flag |  | blanket_impl.rs:76:5:78:5 | MyTryFlag |
+| blanket_impl.rs:110:27:110:50 | MyTryFlag {...} |  | blanket_impl.rs:76:5:78:5 | MyTryFlag |
+| blanket_impl.rs:110:45:110:48 | true |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:111:22:111:32 | my_try_flag |  | blanket_impl.rs:76:5:78:5 | MyTryFlag |
+| blanket_impl.rs:113:13:113:19 | my_flag |  | blanket_impl.rs:87:5:89:5 | MyFlag |
+| blanket_impl.rs:113:23:113:43 | MyFlag {...} |  | blanket_impl.rs:87:5:89:5 | MyFlag |
+| blanket_impl.rs:113:38:113:41 | true |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:116:22:116:28 | my_flag |  | blanket_impl.rs:87:5:89:5 | MyFlag |
+| blanket_impl.rs:118:13:118:25 | my_other_flag |  | blanket_impl.rs:98:5:100:5 | MyOtherFlag |
+| blanket_impl.rs:118:29:118:54 | MyOtherFlag {...} |  | blanket_impl.rs:98:5:100:5 | MyOtherFlag |
+| blanket_impl.rs:118:49:118:52 | true |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:121:13:121:18 | result |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:121:13:121:18 | result | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:121:22:121:34 | my_other_flag |  | blanket_impl.rs:98:5:100:5 | MyOtherFlag |
+| blanket_impl.rs:121:22:121:56 | my_other_flag.try_read_flag_twice() |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:121:22:121:56 | my_other_flag.try_read_flag_twice() | T | {EXTERNAL LOCATION} | bool |
 | closure.rs:6:13:6:22 | my_closure |  | {EXTERNAL LOCATION} | dyn FnOnce |
 | closure.rs:6:13:6:22 | my_closure | dyn(Args) | file://:0:0:0:0 | (T_2) |
 | closure.rs:6:13:6:22 | my_closure | dyn(Args).0(2) | {EXTERNAL LOCATION} | bool |
@@ -5014,11 +5106,11 @@ inferType
 | main.rs:2649:13:2649:20 | pathbuf1 |  | main.rs:2624:5:2624:25 | PathBuf |
 | main.rs:2649:24:2649:37 | ...::new(...) |  | main.rs:2624:5:2624:25 | PathBuf |
 | main.rs:2650:24:2650:31 | pathbuf1 |  | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2661:5:2661:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2662:5:2662:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2662:20:2662:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2662:41:2662:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2678:5:2678:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:2662:5:2662:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2663:5:2663:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2663:20:2663:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2663:41:2663:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2679:5:2679:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
 | pattern_matching.rs:13:26:133:1 | { ... } |  | {EXTERNAL LOCATION} | Option |
 | pattern_matching.rs:13:26:133:1 | { ... } | T | file://:0:0:0:0 | () |
 | pattern_matching.rs:14:9:14:13 | value |  | {EXTERNAL LOCATION} | Option |
