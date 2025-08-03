@@ -235,6 +235,29 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
     not nodeFrom instanceof DataFlowPublic::IterableElementNode
     or
     TypeTrackerSummaryFlow::basicStoreStep(nodeFrom, nodeTo, content)
+    or
+    // class-level attribute store
+    classmethodSoreStep(nodeFrom, nodeTo, content)
+  }
+
+  /** Holds if `write` writes to the `attrName` attribute of the class parameter of a classmethod on `cls`. */
+  private predicate classmethodStoreOnCls(
+    DataFlowPublic::AttrWrite write, Class cls, string attrName
+  ) {
+    exists(DataFlowDispatch::DataFlowClassmethod writeMethod |
+      writeMethod.getClass() = cls and
+      write.getObject().getALocalSource() =
+        writeMethod.getParameter(any(DataFlowDispatch::ParameterPosition p | p.isSelf())) and
+      write.getAttributeName() = attrName
+    )
+  }
+
+  private predicate classmethodSoreStep(Node nodeFrom, Node nodeTo, Content content) {
+    exists(Class cls, DataFlowPublic::AttrWrite write |
+      classmethodStoreOnCls(write, cls, content.(DataFlowPublic::AttributeContent).getAttribute()) and
+      nodeFrom = write.getValue() and
+      nodeTo = DataFlowPublic::exprNode(cls.getParent())
+    )
   }
 
   /**
@@ -273,6 +296,74 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
    */
   predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content loadContent, Content storeContent) {
     TypeTrackerSummaryFlow::basicLoadStoreStep(nodeFrom, nodeTo, loadContent, storeContent)
+    or
+    // flow from class/self -> cls/self/instance, for the relevant attributes.
+    // Using loadStoreStep is more powerful than a potential solution utilizing levelStepNoCall targeting attribute read; with this setup, a flow summary that reads a class attribute will actually work!
+    exists(Class cls, string attrName, boolean storeOnClass |
+      loadContent.(DataFlowPublic::AttributeContent).getAttribute() = attrName and
+      storeContent.(DataFlowPublic::AttributeContent).getAttribute() = attrName and
+      (
+        // class attribute
+        storeOnClass = true and
+        nodeFrom = DataFlowPublic::exprNode(cls.getParent()) and
+        (
+          exists(DataFlowPublic::AttrWrite write | write.accesses(nodeFrom, attrName))
+          or
+          classmethodStoreOnCls(_, cls, attrName)
+        )
+        or
+        // `self.foo = <value>` in normal method
+        storeOnClass = false and
+        exists(DataFlowPublic::AttrWrite write |
+          instanceMethodStoreOnSelf(write, cls, attrName) and nodeFrom = write.getObject()
+        )
+      ) and
+      (
+        // cls in classmethod on same class
+        storeOnClass = true and
+        exists(DataFlowDispatch::DataFlowClassmethod classMethod |
+          classMethod.getClass() = cls and
+          nodeTo = classMethod.getParameter(any(DataFlowDispatch::ParameterPosition p | p.isSelf()))
+        )
+        or
+        // self in (plain) method on same class
+        //
+        // TODO: handle subclasses
+        storeOnClass in [true, false] and
+        exists(DataFlowDispatch::DataFlowMethod instanceMethod |
+          not instanceMethod instanceof DataFlowDispatch::DataFlowClassmethod and
+          not instanceMethod instanceof DataFlowDispatch::DataFlowStaticmethod
+        |
+          instanceMethod.getClass() = cls and
+          nodeTo =
+            instanceMethod.getParameter(any(DataFlowDispatch::ParameterPosition p | p.isSelf()))
+        )
+        or
+        // instantiation of class
+        //
+        // TODO: proper tracking of class (we can't just use type-tracking right now,
+        // since we're using a late-inlined relation in a recursive setting, which is
+        // not supported)
+        storeOnClass in [true, false] and
+        nodeTo.(DataFlowPublic::CallCfgNode).getFunction().getALocalSource() =
+          DataFlowPublic::exprNode(cls.getParent())
+      )
+    )
+  }
+
+  /** Holds if `write` writes to the `attrName` attribute of the "self" parameter of a normal method on `cls`. */
+  private predicate instanceMethodStoreOnSelf(
+    DataFlowPublic::AttrWrite write, Class cls, string attrName
+  ) {
+    exists(DataFlowDispatch::DataFlowMethod writeMethod |
+      not writeMethod instanceof DataFlowDispatch::DataFlowClassmethod and
+      not writeMethod instanceof DataFlowDispatch::DataFlowStaticmethod
+    |
+      writeMethod.getClass() = cls and
+      write.getObject().getALocalSource() =
+        writeMethod.getParameter(any(DataFlowDispatch::ParameterPosition p | p.isSelf())) and
+      write.getAttributeName() = attrName
+    )
   }
 
   /**
