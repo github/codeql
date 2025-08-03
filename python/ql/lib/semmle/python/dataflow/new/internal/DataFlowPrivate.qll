@@ -679,13 +679,13 @@ predicate jumpStepNotSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
  * no reason to include steps for list content right now.
  */
 predicate storeStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
-  tupleStoreStep(nodeFrom, c, nodeTo)
+  tupleStoreStep(nodeFrom, c.asSingleton(), nodeTo)
   or
-  dictStoreStep(nodeFrom, c, nodeTo)
+  dictStoreStep(nodeFrom, c.asSingleton(), nodeTo)
   or
-  moreDictStoreSteps(nodeFrom, c, nodeTo)
+  moreDictStoreSteps(nodeFrom, c.asSingleton(), nodeTo)
   or
-  iterableUnpackingStoreStep(nodeFrom, c, nodeTo)
+  iterableUnpackingStoreStep(nodeFrom, c.asSingleton(), nodeTo)
 }
 
 /**
@@ -695,26 +695,26 @@ predicate storeStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
 predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   storeStepCommon(nodeFrom, c, nodeTo)
   or
-  listStoreStep(nodeFrom, c, nodeTo)
+  listStoreStep(nodeFrom, c.asSingleton(), nodeTo)
   or
-  setStoreStep(nodeFrom, c, nodeTo)
+  setStoreStep(nodeFrom, c.asSingleton(), nodeTo)
   or
-  attributeStoreStep(nodeFrom, c, nodeTo)
+  attributeStoreStep(nodeFrom, c.asSingleton(), nodeTo)
   or
-  matchStoreStep(nodeFrom, c, nodeTo)
+  matchStoreStep(nodeFrom, c.asSingleton(), nodeTo)
   or
-  any(Orm::AdditionalOrmSteps es).storeStep(nodeFrom, c, nodeTo)
+  any(Orm::AdditionalOrmSteps es).storeStep(nodeFrom, c.asSingleton(), nodeTo)
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(nodeFrom.(FlowSummaryNode).getSummaryNode(), c,
     nodeTo.(FlowSummaryNode).getSummaryNode())
   or
-  synthStarArgsElementParameterNodeStoreStep(nodeFrom, c, nodeTo)
+  synthStarArgsElementParameterNodeStoreStep(nodeFrom, c.asSingleton(), nodeTo)
   or
-  synthDictSplatArgumentNodeStoreStep(nodeFrom, c, nodeTo)
+  synthDictSplatArgumentNodeStoreStep(nodeFrom, c.asSingleton(), nodeTo)
   or
-  yieldStoreStep(nodeFrom, c, nodeTo)
+  yieldStoreStep(nodeFrom, c.asSingleton(), nodeTo)
   or
-  VariableCapture::storeStep(nodeFrom, c, nodeTo)
+  VariableCapture::storeStep(nodeFrom, c.asSingleton(), nodeTo)
 }
 
 /**
@@ -911,9 +911,9 @@ predicate attributeStoreStep(Node nodeFrom, AttributeContent c, Node nodeTo) {
  * Subset of `readStep` that should be shared with type-tracking.
  */
 predicate readStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
-  subscriptReadStep(nodeFrom, c, nodeTo)
+  subscriptReadStep(nodeFrom, c.asSingleton(), nodeTo)
   or
-  iterableUnpackingReadStep(nodeFrom, c, nodeTo)
+  iterableUnpackingReadStep(nodeFrom, c.asSingleton(), nodeTo)
 }
 
 /**
@@ -922,18 +922,18 @@ predicate readStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
 predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   readStepCommon(nodeFrom, c, nodeTo)
   or
-  matchReadStep(nodeFrom, c, nodeTo)
+  matchReadStep(nodeFrom, c.asSingleton(), nodeTo)
   or
-  forReadStep(nodeFrom, c, nodeTo)
+  forReadStep(nodeFrom, c.asSingleton(), nodeTo)
   or
-  attributeReadStep(nodeFrom, c, nodeTo)
+  attributeReadStep(nodeFrom, c.asSingleton(), nodeTo)
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom.(FlowSummaryNode).getSummaryNode(), c,
     nodeTo.(FlowSummaryNode).getSummaryNode())
   or
-  synthDictSplatParameterNodeReadStep(nodeFrom, c, nodeTo)
+  synthDictSplatParameterNodeReadStep(nodeFrom, c.asSingleton(), nodeTo)
   or
-  VariableCapture::readStep(nodeFrom, c, nodeTo)
+  VariableCapture::readStep(nodeFrom, c.asSingleton(), nodeTo)
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
@@ -995,17 +995,17 @@ predicate attributeReadStep(Node nodeFrom, AttributeContent c, AttrRead nodeTo) 
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, ContentSet c) {
-  matchClearStep(n, c)
+  matchClearStep(n, c.asSingleton())
   or
-  attributeClearStep(n, c)
+  attributeClearStep(n, c.asSingleton())
   or
-  dictClearStep(n, c)
+  dictClearStep(n, c.asSingleton())
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
   or
-  dictSplatParameterNodeClearStep(n, c)
+  dictSplatParameterNodeClearStep(n, c.asSingleton())
   or
-  VariableCapture::clearsContent(n, c)
+  VariableCapture::clearsContent(n, c.asSingleton())
 }
 
 /**
