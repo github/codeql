@@ -42,7 +42,7 @@ public class ObjectMatch
   /**
    * Create a new ObjectMatch object with the given number of mismatches.
    * 
-   * @param mismatch the number of mismatched fields that occured on a
+   * @param mismatch the number of mismatched fields that occurred on a
    *          tryUnmarshall call.
    */
   public ObjectMatch(int mismatch)
@@ -50,9 +50,9 @@ public class ObjectMatch
   }
 
   /**
-   * Get the number of mismatched fields that occured on a tryUnmarshall call.
+   * Get the number of mismatched fields that occurred on a tryUnmarshall call.
    * 
-   * @return the number of mismatched fields that occured on a tryUnmarshall
+   * @return the number of mismatched fields that occurred on a tryUnmarshall
    *         call.
    */
   public int getMismatch()
