@@ -1,6 +1,7 @@
 private import actions
 private import codeql.actions.TaintTracking
 private import codeql.actions.dataflow.ExternalFlow
+private import codeql.actions.security.ControlChecks
 import codeql.actions.dataflow.FlowSources
 import codeql.actions.DataFlow
 
@@ -86,6 +87,19 @@ private module ArgumentInjectionConfig implements DataFlow::ConfigSig {
       run.getInScopeEnvVarExpr(var) = pred.asExpr() and
       succ.asExpr() = run.getScript() and
       run.getScript().getAnEnvReachingArgumentInjectionSink(var, _, _)
+    )
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    exists(Event event | result = event.getLocation() |
+      inPrivilegedContext(sink.asExpr(), event) and
+      not exists(ControlCheck check | check.protects(sink.asExpr(), event, "argument-injection"))
     )
   }
 }
