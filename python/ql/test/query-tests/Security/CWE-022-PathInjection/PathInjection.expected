@@ -1,4 +1,7 @@
 #select
+| fastapi_path_injection.py:7:19:7:26 | ControlFlowNode for filepath | fastapi_path_injection.py:17:21:17:24 | ControlFlowNode for path | fastapi_path_injection.py:7:19:7:26 | ControlFlowNode for filepath | This path depends on a $@. | fastapi_path_injection.py:17:21:17:24 | ControlFlowNode for path | user-provided value |
+| fastapi_path_injection.py:7:19:7:26 | ControlFlowNode for filepath | fastapi_path_injection.py:26:21:26:24 | ControlFlowNode for path | fastapi_path_injection.py:7:19:7:26 | ControlFlowNode for filepath | This path depends on a $@. | fastapi_path_injection.py:26:21:26:24 | ControlFlowNode for path | user-provided value |
+| fastapi_path_injection.py:7:19:7:26 | ControlFlowNode for filepath | fastapi_path_injection.py:31:21:31:24 | ControlFlowNode for path | fastapi_path_injection.py:7:19:7:26 | ControlFlowNode for filepath | This path depends on a $@. | fastapi_path_injection.py:31:21:31:24 | ControlFlowNode for path | user-provided value |
 | flask_path_injection.py:21:32:21:38 | ControlFlowNode for dirname | flask_path_injection.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_path_injection.py:21:32:21:38 | ControlFlowNode for dirname | This path depends on a $@. | flask_path_injection.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | path_injection.py:13:14:13:47 | ControlFlowNode for Attribute() | path_injection.py:3:26:3:32 | ControlFlowNode for ImportMember | path_injection.py:13:14:13:47 | ControlFlowNode for Attribute() | This path depends on a $@. | path_injection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
 | path_injection.py:21:14:21:18 | ControlFlowNode for npath | path_injection.py:3:26:3:32 | ControlFlowNode for ImportMember | path_injection.py:21:14:21:18 | ControlFlowNode for npath | This path depends on a $@. | path_injection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
@@ -20,6 +23,13 @@
 | test.py:33:14:33:14 | ControlFlowNode for x | test.py:3:26:3:32 | ControlFlowNode for ImportMember | test.py:33:14:33:14 | ControlFlowNode for x | This path depends on a $@. | test.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
 | test.py:49:14:49:14 | ControlFlowNode for y | test.py:3:26:3:32 | ControlFlowNode for ImportMember | test.py:49:14:49:14 | ControlFlowNode for y | This path depends on a $@. | test.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
 edges
+| fastapi_path_injection.py:6:24:6:31 | ControlFlowNode for filepath | fastapi_path_injection.py:7:19:7:26 | ControlFlowNode for filepath | provenance |  |
+| fastapi_path_injection.py:17:21:17:24 | ControlFlowNode for path | fastapi_path_injection.py:20:34:20:37 | ControlFlowNode for path | provenance |  |
+| fastapi_path_injection.py:20:34:20:37 | ControlFlowNode for path | fastapi_path_injection.py:6:24:6:31 | ControlFlowNode for filepath | provenance |  |
+| fastapi_path_injection.py:26:21:26:24 | ControlFlowNode for path | fastapi_path_injection.py:27:34:27:37 | ControlFlowNode for path | provenance |  |
+| fastapi_path_injection.py:27:34:27:37 | ControlFlowNode for path | fastapi_path_injection.py:6:24:6:31 | ControlFlowNode for filepath | provenance |  |
+| fastapi_path_injection.py:31:21:31:24 | ControlFlowNode for path | fastapi_path_injection.py:32:34:32:37 | ControlFlowNode for path | provenance |  |
+| fastapi_path_injection.py:32:34:32:37 | ControlFlowNode for path | fastapi_path_injection.py:6:24:6:31 | ControlFlowNode for filepath | provenance |  |
 | flask_path_injection.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_path_injection.py:1:26:1:32 | ControlFlowNode for request | provenance |  |
 | flask_path_injection.py:1:26:1:32 | ControlFlowNode for request | flask_path_injection.py:19:15:19:21 | ControlFlowNode for request | provenance |  |
 | flask_path_injection.py:19:5:19:11 | ControlFlowNode for dirname | flask_path_injection.py:21:32:21:38 | ControlFlowNode for dirname | provenance |  |
@@ -143,6 +153,14 @@ edges
 | test.py:48:23:48:23 | ControlFlowNode for x | test.py:12:15:12:15 | ControlFlowNode for x | provenance |  |
 | test.py:48:23:48:23 | ControlFlowNode for x | test.py:48:13:48:24 | ControlFlowNode for normalize() | provenance | Config |
 nodes
+| fastapi_path_injection.py:6:24:6:31 | ControlFlowNode for filepath | semmle.label | ControlFlowNode for filepath |
+| fastapi_path_injection.py:7:19:7:26 | ControlFlowNode for filepath | semmle.label | ControlFlowNode for filepath |
+| fastapi_path_injection.py:17:21:17:24 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| fastapi_path_injection.py:20:34:20:37 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| fastapi_path_injection.py:26:21:26:24 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| fastapi_path_injection.py:27:34:27:37 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| fastapi_path_injection.py:31:21:31:24 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| fastapi_path_injection.py:32:34:32:37 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
 | flask_path_injection.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | flask_path_injection.py:1:26:1:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | flask_path_injection.py:19:5:19:11 | ControlFlowNode for dirname | semmle.label | ControlFlowNode for dirname |
