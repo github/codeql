@@ -39,8 +39,10 @@ module CleartextStorageDatabase {
 
   /**
    * A sink for cleartext storage vulnerabilities from model data.
+   *  - SQL commands
+   *  - other database storage operations
    */
   private class ModelsAsDataSink extends Sink {
-    ModelsAsDataSink() { exists(string s | sinkNode(this, s) and s.matches("database-store")) }
+    ModelsAsDataSink() { sinkNode(this, ["sql-injection", "database-store"]) }
   }
 }

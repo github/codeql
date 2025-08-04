@@ -186,14 +186,14 @@ async fn test_storage_rusqlite_sql_command(url: &str) -> Result<(), Box<dyn std:
     // construct queries
     let id = "123";
     let insert_query_good = String::from("INSERT INTO CONTACTS(ID, HARMLESS) VALUES(") + id + ", '" + &get_harmless() + "')";
-    let insert_query_bad = String::from("INSERT INTO CONTACTS(ID, PHONE) VALUES(") + id + ", '" + &get_phone_number() + "')"; // $ MISSING: Source[rust/cleartext-storage-database]
-    let select_query_bad = String::from("SELECT * FROM CONTACTS WHERE PHONE = '") + &get_phone_number() + "'";
+    let insert_query_bad = String::from("INSERT INTO CONTACTS(ID, PHONE) VALUES(") + id + ", '" + &get_phone_number() + "')"; // $ Source[rust/cleartext-storage-database]
+    let select_query_bad = String::from("SELECT * FROM CONTACTS WHERE PHONE = '") + &get_phone_number() + "'"; // $ Source[rust/cleartext-storage-database]
 
     // execute queries - rusqlite
     connection.execute(&insert_query_good, ())?;
-    connection.execute(&insert_query_bad, ())?; // $ MISSING: Alert[rust/cleartext-storage-database]
+    connection.execute(&insert_query_bad, ())?; // $ Alert[rust/cleartext-storage-database]
 
-    let _ = connection.query_row(&select_query_bad, (), |row| { // $ MISSING: Alert[rust/cleartext-storage-database]
+    let _ = connection.query_row(&select_query_bad, (), |row| { // $ Alert[rust/cleartext-storage-database]
         let row: &rusqlite::Row<'_> = row;
         Ok(Contact {
             id: row.get(0)?,
@@ -201,7 +201,7 @@ async fn test_storage_rusqlite_sql_command(url: &str) -> Result<(), Box<dyn std:
         })
     })?;
 
-    let mut stmt = connection.prepare(&select_query_bad)?; // $ MISSING: Alert[rust/cleartext-storage-database]
+    let mut stmt = connection.prepare(&select_query_bad)?; // $ Alert[rust/cleartext-storage-database]
     let people = stmt.query_map([], |row| {
         let row: &rusqlite::Row<'_> = row;
         Ok(Contact {
