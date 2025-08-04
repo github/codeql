@@ -7,7 +7,7 @@ extensions:
       - ["<rusqlite::Connection>::execute_batch", "Argument[0]", "sql-injection", "manual"]
       - ["<rusqlite::Connection>::prepare_cached", "Argument[0]", "sql-injection", "manual"]
       - ["<rusqlite::Connection>::prepare", "Argument[0]", "sql-injection", "manual"]
-      - [<rusqlite::Connection>::prepare_with_flags", "Argument[0]", "sql-injection", "manual"]
+      - ["<rusqlite::Connection>::prepare_with_flags", "Argument[0]", "sql-injection", "manual"]
       - ["<rusqlite::Connection>::query_row", "Argument[0]", "sql-injection", "manual"]
       - ["<rusqlite::Connection>::query_row_and_then", "Argument[0]", "sql-injection", "manual"]
       - ["<rusqlite::Connection>::query_one", "Argument[0]", "sql-injection", "manual"]
