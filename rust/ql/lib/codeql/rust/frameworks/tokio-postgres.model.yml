@@ -21,3 +21,5 @@ extensions:
     data:
       - ["<tokio_postgres::row::Row>::get", "ReturnValue", "database", "manual"]
       - ["<tokio_postgres::row::Row>::try_get", "ReturnValue.Field[core::result::Result::Ok(0)]", "database", "manual"]
+      - ["<tokio_postgres::row::SimpleQueryRow>::get", "ReturnValue.Field[core::option::Option::Some(0)]", "database", "manual"]
+      - ["<tokio_postgres::row::SimpleQueryRow>::try_get", "ReturnValue.Field[core::result::Result::Ok(0)].Field[core::option::Option::Some(0)]", "database", "manual"]

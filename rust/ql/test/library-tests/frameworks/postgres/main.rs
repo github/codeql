@@ -43,9 +43,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for message in &conn.simple_query("SELECT id, name, age FROM person")? {  // $ MISSING: sql-sink
         if let postgres::SimpleQueryMessage::Row(row) = message {
-            let id: i32 = row.get(0).unwrap().parse().unwrap(); // $ MISSING: database-read
-            let name: &str = row.get(1).unwrap(); // $ MISSING: database-read
-            let age: i32 = row.get(2).unwrap().parse().unwrap(); // $ MISSING: database-read
+            let id: i32 = row.get(0).unwrap().parse().unwrap(); // $ database-read
+            let name: &str = row.get(1).unwrap(); // $ database-read
+            let age: i32 = row.get(2).unwrap().parse().unwrap(); // $ database-read
             println!("found person: {} {} {}", id, name, age);
         }
     }
