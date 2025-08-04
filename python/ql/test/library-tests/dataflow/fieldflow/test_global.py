@@ -146,6 +146,7 @@ SINK(fields_with_local_flow(SOURCE)) # $ flow="SOURCE -> fields_with_local_flow(
 class NestedObj(object):
     def __init__(self):
         self.obj = MyObj("OK")
+        self.obj.foo = "default"
 
     def getObj(self):
         return self.obj
@@ -163,6 +164,20 @@ x2 = SOURCE
 a2 = NestedObj()
 a2.getObj().foo = x2
 SINK(a2.obj.foo) # $ flow="SOURCE, l:-3 -> a2.obj.foo"
+        
+# Global variable
+app = NestedObj()
+
+def init_global():
+    app.obj.foo = SOURCE
+
+def read_global(): 
+    return app.obj.foo
+
+def test_global_nested_attributes():
+    init_global()
+    result = read_global() 
+    SINK(result) # $ MISSING: flow="SOURCE, l:-8 -> result"
 
 # ------------------------------------------------------------------------------
 # Global scope interaction
