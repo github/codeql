@@ -559,6 +559,15 @@ mod type_parameter_bounds {
         fn snd(self) -> P2;
     }
 
+    fn trait_per_multiple_where_bounds_with_type<T>(x: T, y: T)
+    where
+        T: FirstTrait<S1>,
+        T: Pair<S1, bool>,
+    {
+        let _ = x.fst(); // $ target=fst type=_:S1
+        let _ = y.method(); // $ target=FirstTrait::method _:S1
+    }
+
     fn call_trait_per_bound_with_type_1<T: Pair<S1, S2>>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
         let s1 = x.fst(); // $ target=fst type=s1:S1
