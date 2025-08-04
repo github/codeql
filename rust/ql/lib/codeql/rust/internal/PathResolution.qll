@@ -1464,6 +1464,18 @@ private predicate externCrateEdge(ExternCrateItemNode ec, string name, CrateItem
   )
 }
 
+pragma[nomagic]
+private predicate preludeItem(string name, ItemNode i) {
+  exists(Crate stdOrCore, ModuleLikeNode mod, ModuleItemNode prelude, ModuleItemNode rust |
+    stdOrCore.getName() = ["std", "core"] and
+    mod = stdOrCore.getSourceFile() and
+    prelude = mod.getASuccessorRec("prelude") and
+    rust = prelude.getASuccessorRec(["rust_2015", "rust_2018", "rust_2021", "rust_2024"]) and
+    i = rust.getASuccessorRec(name) and
+    not i instanceof Use
+  )
+}
+
 /**
  * Holds if `i` is available inside `f` because it is reexported in
  * [the `core` prelude][1] or [the `std` prelude][2].
@@ -1476,15 +1488,8 @@ private predicate externCrateEdge(ExternCrateItemNode ec, string name, CrateItem
  */
 pragma[nomagic]
 private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
-  not declares(f, _, name) and
-  exists(Crate stdOrCore, ModuleLikeNode mod, ModuleItemNode prelude, ModuleItemNode rust |
-    stdOrCore.getName() = ["std", "core"] and
-    mod = stdOrCore.getSourceFile() and
-    prelude = mod.getASuccessorRec("prelude") and
-    rust = prelude.getASuccessorRec(["rust_2015", "rust_2018", "rust_2021", "rust_2024"]) and
-    i = rust.getASuccessorRec(name) and
-    not i instanceof Use
-  )
+  preludeItem(name, i) and
+  not declares(f, _, name)
 }
 
 pragma[nomagic]
