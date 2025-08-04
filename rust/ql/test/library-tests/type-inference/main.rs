@@ -2484,6 +2484,45 @@ pub mod pattern_matching_experimental {
     }
 }
 
+pub mod exec {
+    // a *greatly* simplified model of `MySqlConnection.execute` in SQLX
+
+    trait Connection {
+    }
+
+    trait Executor {
+        fn execute1(&self);
+        fn execute2<E>(&self, query: E);
+    }
+
+    impl<T: Connection> Executor for T {
+        fn execute1(&self) {
+            println!("Executor::execute1");
+        }
+
+        fn execute2<E>(&self, _query: E) {
+            println!("Executor::execute2");
+        }
+    }
+
+    struct MySqlConnection {}
+
+    impl Connection for MySqlConnection {}
+
+    pub fn f() {
+        let c = MySqlConnection {}; // $ type=c:MySqlConnection
+
+        c.execute1(); // $ MISSING: target=execute1
+        MySqlConnection::execute1(&c); // $ MISSING: target=execute1
+
+        c.execute2("SELECT * FROM users"); // $ MISSING: target=execute2
+        c.execute2::<&str>("SELECT * FROM users"); // $ MISSING: target=execute2
+        MySqlConnection::execute2(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
+        MySqlConnection::execute2::<&str>(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
+
+    }
+}
+
 mod closure;
 mod dereference;
 mod dyn_type;
@@ -2515,6 +2554,7 @@ fn main() {
     macros::f(); // $ target=f
     method_determined_by_argument_type::f(); // $ target=f
     tuples::f(); // $ target=f
+    exec::f(); // $ target=f
     dereference::test(); // $ target=test
     pattern_matching::test_all_patterns(); // $ target=test_all_patterns
     pattern_matching_experimental::box_patterns(); // $ target=box_patterns

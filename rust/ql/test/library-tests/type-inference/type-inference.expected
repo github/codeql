@@ -4840,11 +4840,51 @@ inferType
 | main.rs:2481:26:2481:43 | "Nested boxed: {}\\n" | &T | {EXTERNAL LOCATION} | str |
 | main.rs:2481:26:2481:59 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:2481:26:2481:59 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| main.rs:2493:5:2493:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2494:5:2494:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2494:20:2494:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2494:41:2494:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2510:5:2510:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:2494:21:2494:25 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:2494:21:2494:25 | SelfParam | &T | main.rs:2493:5:2496:5 | Self [trait Executor] |
+| main.rs:2495:24:2495:28 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:2495:24:2495:28 | SelfParam | &T | main.rs:2493:5:2496:5 | Self [trait Executor] |
+| main.rs:2495:31:2495:35 | query |  | main.rs:2495:21:2495:21 | E |
+| main.rs:2499:21:2499:25 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:2499:21:2499:25 | SelfParam | &T | main.rs:2498:10:2498:22 | T |
+| main.rs:2500:22:2500:41 | "Executor::execute1\\n" |  | file://:0:0:0:0 | & |
+| main.rs:2500:22:2500:41 | "Executor::execute1\\n" | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2500:22:2500:41 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:2500:22:2500:41 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:2503:24:2503:28 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:2503:24:2503:28 | SelfParam | &T | main.rs:2498:10:2498:22 | T |
+| main.rs:2503:31:2503:36 | _query |  | main.rs:2503:21:2503:21 | E |
+| main.rs:2504:22:2504:41 | "Executor::execute2\\n" |  | file://:0:0:0:0 | & |
+| main.rs:2504:22:2504:41 | "Executor::execute2\\n" | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2504:22:2504:41 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:2504:22:2504:41 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:2513:13:2513:13 | c |  | main.rs:2508:5:2508:29 | MySqlConnection |
+| main.rs:2513:17:2513:34 | MySqlConnection {...} |  | main.rs:2508:5:2508:29 | MySqlConnection |
+| main.rs:2515:9:2515:9 | c |  | main.rs:2508:5:2508:29 | MySqlConnection |
+| main.rs:2516:35:2516:36 | &c |  | file://:0:0:0:0 | & |
+| main.rs:2516:35:2516:36 | &c | &T | main.rs:2508:5:2508:29 | MySqlConnection |
+| main.rs:2516:36:2516:36 | c |  | main.rs:2508:5:2508:29 | MySqlConnection |
+| main.rs:2518:9:2518:9 | c |  | main.rs:2508:5:2508:29 | MySqlConnection |
+| main.rs:2518:20:2518:40 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
+| main.rs:2518:20:2518:40 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2519:9:2519:9 | c |  | main.rs:2508:5:2508:29 | MySqlConnection |
+| main.rs:2519:28:2519:48 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
+| main.rs:2519:28:2519:48 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2520:35:2520:36 | &c |  | file://:0:0:0:0 | & |
+| main.rs:2520:35:2520:36 | &c | &T | main.rs:2508:5:2508:29 | MySqlConnection |
+| main.rs:2520:36:2520:36 | c |  | main.rs:2508:5:2508:29 | MySqlConnection |
+| main.rs:2520:39:2520:59 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
+| main.rs:2520:39:2520:59 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2521:43:2521:44 | &c |  | file://:0:0:0:0 | & |
+| main.rs:2521:43:2521:44 | &c | &T | main.rs:2508:5:2508:29 | MySqlConnection |
+| main.rs:2521:44:2521:44 | c |  | main.rs:2508:5:2508:29 | MySqlConnection |
+| main.rs:2521:47:2521:67 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
+| main.rs:2521:47:2521:67 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
+| main.rs:2532:5:2532:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2533:5:2533:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2533:20:2533:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2533:41:2533:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2549:5:2549:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
 | pattern_matching.rs:13:26:133:1 | { ... } |  | {EXTERNAL LOCATION} | Option |
 | pattern_matching.rs:13:26:133:1 | { ... } | T | file://:0:0:0:0 | () |
 | pattern_matching.rs:14:9:14:13 | value |  | {EXTERNAL LOCATION} | Option |
