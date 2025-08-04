@@ -556,6 +556,61 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
     nodeFrom.asCfgNode() = param.getDefault() and
     nodeTo.asCfgNode() = param.getDefiningNode()
   )
+  or
+  // Enhanced global variable field access tracking
+  globalVariableNestedFieldJumpStep(nodeFrom, nodeTo)
+}
+
+/**
+ * Holds if there is a jump step from `nodeFrom` to `nodeTo` through global variable field access.
+ * This supports tracking nested object field access through global variables like `app.obj.foo`.
+ */
+predicate globalVariableNestedFieldJumpStep(Node nodeFrom, Node nodeTo) {
+  exists(GlobalVariable globalVar, AttrWrite write, AttrRead read |
+    // Match writes and reads on the same global variable attribute path
+    globalVariableAttrPath(globalVar, write.getObject()) and
+    globalVariableAttrPath(globalVar, read.getObject()) and
+    write.getAttributeName() = read.getAttributeName() and
+    nodeFrom = write.getValue() and
+    nodeTo = read and
+    write.getEnclosingCallable() != read.getEnclosingCallable()
+  )
+}
+
+/**
+ * Maximum depth for global variable nested attribute access.
+ * Depth 0 = globalVar.foo, depth 1 = globalVar.foo.bar, depth 2 = globalVar.foo.bar.baz, etc.
+ */
+private int getMaxGlobalVariableDepth() { result = 1 }
+
+/**
+ * Holds if `node` is an attribute access path starting from global variable `globalVar`.
+ * Supports configurable nesting depth via getMaxGlobalVariableDepth().
+ */
+predicate globalVariableAttrPath(GlobalVariable globalVar, Node node) {
+  globalVariableAttrPathAtDepth(globalVar, node, _)
+}
+
+/**
+ * Holds if `node` is an attribute access path starting from global variable `globalVar` at specific `depth`.
+ */
+predicate globalVariableAttrPathAtDepth(GlobalVariable globalVar, Node node, int depth) {
+  // Base case: Direct global variable access (depth 0)
+  depth = 0 and
+  exists(NameNode name |
+    name.getId() = globalVar.getId() and
+    node.asCfgNode() = name and
+    name.getNode().(Name).getVariable() instanceof GlobalVariable and
+    not exists(ClassExpr cls | cls.getName() = globalVar.getId())
+  )
+  or
+  // Recursive case: Nested attribute access (depth > 0)
+  exists(AttrRead attr, int parentDepth |
+    globalVariableAttrPathAtDepth(globalVar, attr.getObject(), parentDepth) and
+    node = attr and
+    depth = parentDepth + 1 and
+    depth <= getMaxGlobalVariableDepth()
+  )
 }
 
 //--------
