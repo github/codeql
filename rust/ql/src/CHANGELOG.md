@@ -2,7 +2,7 @@
 
 ### New Queries
 
-* Added a new query, `rust/hardcoded-crytographic-value`, for detecting use of hardcoded keys, passwords, salts and initialization vectors.
+* Added a new query, `rust/hard-coded-cryptographic-value`, for detecting use of hardcoded keys, passwords, salts and initialization vectors.
 
 ### Minor Analysis Improvements
 

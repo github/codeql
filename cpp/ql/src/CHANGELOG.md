@@ -2,7 +2,7 @@
 
 ### Minor Analysis Improvements
 
-* The "Initialization code not run" query (`cpp/initialization-not-run`) no longer reports an alert on static global variables that has no dereference.
+* The "Initialization code not run" query (`cpp/initialization-not-run`) no longer reports an alert on static global variables that have no dereference.
 
 ## 1.4.4
 
