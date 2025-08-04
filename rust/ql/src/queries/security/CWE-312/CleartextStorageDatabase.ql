@@ -4,7 +4,7 @@
  *              database can expose it to an attacker.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity TODO
+ * @security-severity 7.5
  * @precision high
  * @id rust/cleartext-storage-database
  * @tags security
