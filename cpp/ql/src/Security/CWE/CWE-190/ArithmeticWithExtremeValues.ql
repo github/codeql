@@ -113,6 +113,12 @@ module Config implements DataFlow::ConfigSig {
       not iTo instanceof PointerArithmeticInstruction
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(VariableAccess va | result = va.getLocation() | isSink(sink, va, _))
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;
