@@ -28,11 +28,16 @@ module Impl {
     /** Gets the position of this type parameter. */
     int getPosition() { this = any(GenericParamList l).getTypeParam(result) }
 
-    private int nrOfDirectTypeBounds() {
-      result = this.getTypeBoundList().getNumberOfBounds()
-      or
-      not this.hasTypeBoundList() and
-      result = 0
+    private TypeBound getTypeBoundAt(int i, int j) {
+      exists(TypeBoundList tbl | result = tbl.getBound(j) |
+        tbl = this.getTypeBoundList() and i = 0
+        or
+        exists(WherePred wp |
+          wp = this.(TypeParamItemNode).getAWherePred() and
+          tbl = wp.getTypeBoundList() and
+          wp = any(WhereClause wc).getPredicate(i)
+        )
+      )
     }
 
     /**
@@ -42,12 +47,7 @@ module Impl {
      * any `where` clauses for this type parameter.
      */
     TypeBound getTypeBound(int index) {
-      exists(TypeBoundList tbl, int offset | result = tbl.getBound(index - offset) |
-        tbl = this.getTypeBoundList() and offset = 0
-        or
-        tbl = this.(TypeParamItemNode).getAWherePred().getTypeBoundList() and
-        offset = this.nrOfDirectTypeBounds()
-      )
+      result = rank[index + 1](int i, int j | | this.getTypeBoundAt(i, j) order by i, j)
     }
 
     /**
@@ -56,7 +56,12 @@ module Impl {
      * This includes type bounds directly on this type parameter and bounds from
      * any `where` clauses for this type parameter.
      */
-    TypeBound getATypeBound() { result = this.getTypeBound(_) }
+    TypeBound getATypeBound() {
+      // NOTE: This predicate is used in path resolution, so it can not be
+      // defined using `getTypeBound` as that would cause non-monotonic
+      // recursion due to the `rank`.
+      result = this.getTypeBoundAt(_, _)
+    }
 
     override string toAbbreviatedString() { result = this.getName().getText() }
 
