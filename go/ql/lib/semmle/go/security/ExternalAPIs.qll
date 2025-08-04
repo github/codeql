@@ -186,6 +186,8 @@ private module UntrustedDataConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
