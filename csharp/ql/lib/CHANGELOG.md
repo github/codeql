@@ -1,3 +1,7 @@
+## 5.2.1
+
+No user-facing changes.
+
 ## 5.2.0
 
 ### New Features
