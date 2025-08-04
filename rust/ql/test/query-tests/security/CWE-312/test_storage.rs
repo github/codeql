@@ -3,6 +3,7 @@ use aes_gcm::aead::{Aead, AeadCore, OsRng};
 use aes_gcm::aes::cipher::Unsigned;
 use aes_gcm::{Aes256Gcm, KeyInit};
 use base64::prelude::*;
+
 use sqlx::Connection;
 use sqlx::Executor;
 
@@ -57,7 +58,7 @@ fn decrypt(data: String, encryption_key: &aes_gcm::Key<Aes256Gcm>) -> String {
     String::from_utf8(plaintext).unwrap()
 }
 
-async fn test_storage_sql_command(url: &str) -> Result<(), sqlx::Error> {
+async fn test_storage_sqlx_sql_command(url: &str) -> Result<(), sqlx::Error> {
     // connect through a MySQL connection pool
     let pool1 = sqlx::mysql::MySqlPool::connect(url).await?;
     let mut conn1 = pool1.acquire().await?;
@@ -172,9 +173,55 @@ async fn test_storage_sql_command(url: &str) -> Result<(), sqlx::Error> {
     Ok(())
 }
 
+#[derive(Debug)]
+struct Contact {
+    id: i32,
+    phone: String,
+}
+
+async fn test_storage_rusqlite_sql_command(url: &str) -> Result<(), Box<dyn std::error::Error>> {
+    // connect with rusqlite
+    let connection = rusqlite::Connection::open_in_memory()?;
+
+    // construct queries
+    let id = "123";
+    let insert_query_good = String::from("INSERT INTO CONTACTS(ID, HARMLESS) VALUES(") + id + ", '" + &get_harmless() + "')";
+    let insert_query_bad = String::from("INSERT INTO CONTACTS(ID, PHONE) VALUES(") + id + ", '" + &get_phone_number() + "')"; // $ MISSING: Source[rust/cleartext-storage-database]
+    let select_query_bad = String::from("SELECT * FROM CONTACTS WHERE PHONE = '") + &get_phone_number() + "'";
+
+    // execute queries - rusqlite
+    connection.execute(&insert_query_good, ())?;
+    connection.execute(&insert_query_bad, ())?; // $ MISSING: Alert[rust/cleartext-storage-database]
+
+    let _ = connection.query_row(&select_query_bad, (), |row| { // $ MISSING: Alert[rust/cleartext-storage-database]
+        let row: &rusqlite::Row<'_> = row;
+        Ok(Contact {
+            id: row.get(0)?,
+            phone: row.get(1)?,
+        })
+    })?;
+
+    let mut stmt = connection.prepare(&select_query_bad)?; // $ MISSING: Alert[rust/cleartext-storage-database]
+    let people = stmt.query_map([], |row| {
+        let row: &rusqlite::Row<'_> = row;
+        Ok(Contact {
+            id: row.get_unwrap(0),
+            phone: row.get_unwrap(1),
+        })
+    })?;
+
+    Ok(())
+}
+
 fn main() {
-    println!("test_storage_sql_command...");
-    match futures::executor::block_on(test_storage_sql_command("")) {
+    println!("test_storage_sqlx_sql_command...");
+    match futures::executor::block_on(test_storage_sqlx_sql_command("")) {
+        Ok(_) => println!("  successful!"),
+        Err(e) => println!("  error: {}", e),
+    }
+
+    println!("test_storage_rusqlite_sql_command...");
+    match futures::executor::block_on(test_storage_rusqlite_sql_command("")) {
         Ok(_) => println!("  successful!"),
         Err(e) => println!("  error: {}", e),
     }
