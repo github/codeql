@@ -559,6 +559,15 @@ mod type_parameter_bounds {
         fn snd(self) -> P2;
     }
 
+    fn trait_per_multiple_where_bounds_with_type<T>(x: T, y: T)
+    where
+        T: FirstTrait<S1>,
+        T: Pair<S1, bool>,
+    {
+        let _ = x.fst(); // $ target=fst type=_:S1
+        let _ = y.method(); // $ target=FirstTrait::method _:S1
+    }
+
     fn call_trait_per_bound_with_type_1<T: Pair<S1, S2>>(x: T, y: T) {
         // The type in the type parameter bound determines the return type.
         let s1 = x.fst(); // $ target=fst type=s1:S1
@@ -2015,7 +2024,7 @@ mod impl_trait {
         let c = uses_my_trait2(a); // $ type=c:S2 target=uses_my_trait2
         let d = uses_my_trait2(S1); // $ type=d:S2 target=uses_my_trait2
         let e = get_a_my_trait2(S1).get_a(); // $ target=get_a_my_trait2 target=MyTrait::get_a type=e:S1
-        // For this function the `impl` type does not appear in the root of the return type
+                                             // For this function the `impl` type does not appear in the root of the return type
         let f = get_a_my_trait3(S1).unwrap().get_a(); // $ target=get_a_my_trait3 target=unwrap target=MyTrait::get_a type=f:S1
         let g = get_a_my_trait4(S1).0.get_a(); // $ target=get_a_my_trait4 target=MyTrait::get_a type=g:S1
     }
