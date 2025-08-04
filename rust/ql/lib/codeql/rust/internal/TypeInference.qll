@@ -1495,6 +1495,7 @@ private TypePath closureReturnPath() {
 }
 
 /** Gets the path to a closure with arity `arity`s `index`th parameter type. */
+pragma[nomagic]
 private TypePath closureParameterPath(int arity, int index) {
   result =
     TypePath::cons(TDynTraitTypeParameter(any(FnOnceTrait t).getTypeParam()),
@@ -1510,6 +1511,7 @@ private TypePath fnReturnPath() {
  * Gets the path to the parameter type of the `FnOnce` trait with arity `arity`
  * and index `index`.
  */
+pragma[nomagic]
 private TypePath fnParameterPath(int arity, int index) {
   result =
     TypePath::cons(TTypeParamTypeParameter(any(FnOnceTrait t).getTypeParam()),
