@@ -39,31 +39,3 @@ module CorsPermissiveConfigurationConfig implements DataFlow::StateConfigSig {
 
 module CorsPermissiveConfigurationFlow =
   TaintTracking::GlobalWithState<CorsPermissiveConfigurationConfig>;
-
-/**
- * DEPRECATED. Use the `CorsPermissiveConfigurationFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "CorsPermissiveConfiguration" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    CorsPermissiveConfigurationConfig::isSource(source, FlowState::fromFlowLabel(label))
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    CorsPermissiveConfigurationConfig::isSink(sink, FlowState::fromFlowLabel(label))
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    CorsPermissiveConfigurationConfig::isBarrier(node)
-  }
-}
-
-deprecated private class WildcardActivated extends DataFlow::FlowLabel, Wildcard {
-  WildcardActivated() { this = this }
-}
-
-deprecated private class TrueAndNullActivated extends DataFlow::FlowLabel, TrueAndNull {
-  TrueAndNullActivated() { this = this }
-}
