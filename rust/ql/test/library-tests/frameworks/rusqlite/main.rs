@@ -48,7 +48,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         })
     })?;
 
-    _ = connection.prepare_cached("SELECT id, name, age FROM person")?; // $ MISSING: sql-sink
+    _ = connection.prepare_cached("SELECT id, name, age FROM person")?; // $ sql-sink
     _ = connection.prepare_with_flags("SELECT id, name, age FROM person", rusqlite::PrepFlags::empty())?; // $ MISSING: ql-sink
     _ = connection.query_row_and_then("SELECT id, name, age FROM person", [], |row| { // $ sql-sink
         let row: &rusqlite::Row<'_> = row;
