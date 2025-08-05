@@ -1989,6 +1989,7 @@ mod impl_trait {
         let c = uses_my_trait2(a); // $ type=c:S2 target=uses_my_trait2
         let d = uses_my_trait2(S1); // $ type=d:S2 target=uses_my_trait2
         let e = get_a_my_trait2(S1).get_a(); // $ target=get_a_my_trait2 target=MyTrait::get_a type=e:S1
+
         // For this function the `impl` type does not appear in the root of the return type
         let f = get_a_my_trait3(S1).unwrap().get_a(); // $ target=get_a_my_trait3 target=unwrap target=MyTrait::get_a type=f:S1
         let g = get_a_my_trait4(S1).0.get_a(); // $ target=get_a_my_trait4 target=MyTrait::get_a type=g:S1
@@ -2487,8 +2488,7 @@ pub mod pattern_matching_experimental {
 pub mod exec {
     // a *greatly* simplified model of `MySqlConnection.execute` in SQLX
 
-    trait Connection {
-    }
+    trait Connection {}
 
     trait Executor {
         fn execute1(&self);
@@ -2519,7 +2519,6 @@ pub mod exec {
         c.execute2::<&str>("SELECT * FROM users"); // $ MISSING: target=execute2
         MySqlConnection::execute2(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
         MySqlConnection::execute2::<&str>(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
-
     }
 }
 
