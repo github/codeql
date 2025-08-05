@@ -16,7 +16,7 @@ private import codeql.ruby.DataFlow
  * RestClient::Request.execute(url: "http://example.com").body
  * ```
  */
-class RestClientHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
+class RestClientHttpRequest extends Http::Client::Request::Range instanceof DataFlow::CallNode {
   API::Node requestNode;
   API::Node connectionNode;
 
@@ -37,9 +37,9 @@ class RestClientHttpRequest extends Http::Client::Request::Range, DataFlow::Call
   }
 
   override DataFlow::Node getAUrlPart() {
-    result = this.getKeywordArgument("url")
+    result = super.getKeywordArgument("url")
     or
-    result = this.getArgument(0) and
+    result = super.getArgument(0) and
     // this rules out the alternative above
     not result.asExpr().getExpr() instanceof Pair
   }

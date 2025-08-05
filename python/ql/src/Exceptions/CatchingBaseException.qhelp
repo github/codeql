@@ -45,10 +45,10 @@ leaving <code>KeyboardInterrupt</code> to propagate.
 </example>
 <references>
 
-<li>Python Language Reference: <a href="http://docs.python.org/2.7/reference/compound_stmts.html#try">The try statement</a>, 
-<a href="http://docs.python.org/2.7/reference/executionmodel.html#exceptions">Exceptions</a>.</li>
+<li>Python Language Reference: <a href="http://docs.python.org/3/reference/compound_stmts.html#try">The try statement</a>, 
+<a href="http://docs.python.org/3/reference/executionmodel.html#exceptions">Exceptions</a>.</li>
 <li>M. Lutz, Learning Python, Section 35.3: Exception Design Tips and Gotchas, O'Reilly Media, 2013.</li>
-<li>Python Tutorial: <a href="https://docs.python.org/2/tutorial/errors.html">Errors and Exceptions</a>.</li>
+<li>Python Tutorial: <a href="https://docs.python.org/3/tutorial/errors.html">Errors and Exceptions</a>.</li>
 
 
 </references>

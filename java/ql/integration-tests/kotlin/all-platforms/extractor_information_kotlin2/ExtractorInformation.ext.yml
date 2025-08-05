@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: codeql/java-queries
+      pack: codeql/java-all
       extensible: extractorInformationSkipKey
     data:
       # These will have unstable values, as they are dependent on the

@@ -8,11 +8,11 @@ class BadResourceReader
 {
     public static void Deserialize(TextBox data)
     {
-        var ds = new ResourceReader(new MemoryStream(Encoding.UTF8.GetBytes(data.Text)));
+        var ds = new ResourceReader(new MemoryStream(Encoding.UTF8.GetBytes(data.Text))); // $ Alert[cs/unsafe-deserialization-untrusted-input]
         // BAD
         var dict = ds.GetEnumerator();
         while (dict.MoveNext())
-            Console.WriteLine("   {0}: '{1}' (Type {2})", 
+            Console.WriteLine("   {0}: '{1}' (Type {2})",
                             dict.Key, dict.Value, dict.Value.GetType().Name);
         ds.Close();
     }

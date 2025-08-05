@@ -1,8 +1,12 @@
+| Test.kt:3:8:80:1 | Exceptional Exit | 0 | Test.kt:3:8:80:1 | Exceptional Exit |
+| Test.kt:3:8:80:1 | Exit | 0 | Test.kt:3:8:80:1 | Exit |
 | Test.kt:3:8:80:1 | { ... } | 0 | Test.kt:3:8:80:1 | { ... } |
 | Test.kt:3:8:80:1 | { ... } | 1 | Test.kt:3:1:80:1 | super(...) |
 | Test.kt:3:8:80:1 | { ... } | 2 | Test.kt:3:8:80:1 | { ... } |
-| Test.kt:3:8:80:1 | { ... } | 3 | Test.kt:3:8:80:1 | Exit |
+| Test.kt:3:8:80:1 | { ... } | 3 | Test.kt:3:8:80:1 | Normal Exit |
+| Test.kt:4:2:79:2 | Exceptional Exit | 0 | Test.kt:4:2:79:2 | Exceptional Exit |
 | Test.kt:4:2:79:2 | Exit | 0 | Test.kt:4:2:79:2 | Exit |
+| Test.kt:4:2:79:2 | Normal Exit | 0 | Test.kt:4:2:79:2 | Normal Exit |
 | Test.kt:4:13:79:2 | { ... } | 0 | Test.kt:4:13:79:2 | { ... } |
 | Test.kt:4:13:79:2 | { ... } | 1 | Test.kt:5:7:5:7 | var ...; |
 | Test.kt:4:13:79:2 | { ... } | 2 | Test.kt:5:16:5:16 | 0 |
@@ -102,7 +106,9 @@
 | Test.kt:43:3:43:3 | <Expr>; | 8 | Test.kt:77:3:77:8 | ...=... |
 | Test.kt:43:3:43:3 | <Expr>; | 9 | Test.kt:78:3:78:8 | INSTANCE |
 | Test.kt:43:3:43:3 | <Expr>; | 10 | Test.kt:78:3:78:8 | return ... |
+| Test.kt:82:1:89:1 | Exceptional Exit | 0 | Test.kt:82:1:89:1 | Exceptional Exit |
 | Test.kt:82:1:89:1 | Exit | 0 | Test.kt:82:1:89:1 | Exit |
+| Test.kt:82:1:89:1 | Normal Exit | 0 | Test.kt:82:1:89:1 | Normal Exit |
 | Test.kt:82:21:89:1 | { ... } | 0 | Test.kt:82:21:89:1 | { ... } |
 | Test.kt:82:21:89:1 | { ... } | 1 | Test.kt:83:2:88:2 | try ... |
 | Test.kt:82:21:89:1 | { ... } | 2 | Test.kt:83:6:86:2 | { ... } |
@@ -117,7 +123,9 @@
 | Test.kt:86:4:88:2 | catch (...) | 2 | Test.kt:86:34:88:2 | { ... } |
 | Test.kt:86:4:88:2 | catch (...) | 3 | Test.kt:87:10:87:10 | 2 |
 | Test.kt:86:4:88:2 | catch (...) | 4 | Test.kt:87:3:87:10 | return ... |
+| Test.kt:91:1:98:1 | Exceptional Exit | 0 | Test.kt:91:1:98:1 | Exceptional Exit |
 | Test.kt:91:1:98:1 | Exit | 0 | Test.kt:91:1:98:1 | Exit |
+| Test.kt:91:1:98:1 | Normal Exit | 0 | Test.kt:91:1:98:1 | Normal Exit |
 | Test.kt:91:22:98:1 | { ... } | 0 | Test.kt:91:22:98:1 | { ... } |
 | Test.kt:91:22:98:1 | { ... } | 1 | Test.kt:92:2:97:2 | try ... |
 | Test.kt:91:22:98:1 | { ... } | 2 | Test.kt:92:6:95:2 | { ... } |
@@ -133,6 +141,7 @@
 | Test.kt:95:4:97:2 | catch (...) | 3 | Test.kt:96:10:96:10 | 2 |
 | Test.kt:95:4:97:2 | catch (...) | 4 | Test.kt:96:3:96:10 | return ... |
 | Test.kt:100:1:110:1 | Exit | 0 | Test.kt:100:1:110:1 | Exit |
+| Test.kt:100:1:110:1 | Normal Exit | 0 | Test.kt:100:1:110:1 | Normal Exit |
 | Test.kt:100:25:110:1 | { ... } | 0 | Test.kt:100:25:110:1 | { ... } |
 | Test.kt:100:25:110:1 | { ... } | 1 | Test.kt:101:5:103:5 | <Expr>; |
 | Test.kt:100:25:110:1 | { ... } | 2 | Test.kt:101:5:103:5 | when ... |
@@ -147,6 +156,7 @@
 | Test.kt:101:33:103:5 | { ... } | 0 | Test.kt:101:33:103:5 | { ... } |
 | Test.kt:101:33:103:5 | { ... } | 1 | Test.kt:102:15:102:25 | new Exception(...) |
 | Test.kt:101:33:103:5 | { ... } | 2 | Test.kt:102:9:102:25 | throw ... |
+| Test.kt:101:33:103:5 | { ... } | 3 | Test.kt:100:1:110:1 | Exceptional Exit |
 | Test.kt:105:5:109:5 | <Expr>; | 0 | Test.kt:105:5:109:5 | <Expr>; |
 | Test.kt:105:5:109:5 | <Expr>; | 1 | Test.kt:105:5:109:5 | when ... |
 | Test.kt:105:5:109:5 | <Expr>; | 2 | Test.kt:105:9:107:5 | ... -> ... |
@@ -165,7 +175,9 @@
 | Test.kt:107:27:109:5 | { ... } | 1 | Test.kt:108:9:108:29 | <Expr>; |
 | Test.kt:107:27:109:5 | { ... } | 2 | Test.kt:108:17:108:28 | "y not null" |
 | Test.kt:107:27:109:5 | { ... } | 3 | Test.kt:108:9:108:29 | println(...) |
+| Test.kt:112:1:116:1 | Exceptional Exit | 0 | Test.kt:112:1:116:1 | Exceptional Exit |
 | Test.kt:112:1:116:1 | Exit | 0 | Test.kt:112:1:116:1 | Exit |
+| Test.kt:112:1:116:1 | Normal Exit | 0 | Test.kt:112:1:116:1 | Normal Exit |
 | Test.kt:112:32:116:1 | { ... } | 0 | Test.kt:112:32:116:1 | { ... } |
 | Test.kt:112:32:116:1 | { ... } | 1 | Test.kt:113:5:115:5 | <Expr>; |
 | Test.kt:112:32:116:1 | { ... } | 2 | Test.kt:113:5:115:5 | when ... |
@@ -174,7 +186,9 @@
 | Test.kt:112:32:116:1 | { ... } | 5 | Test.kt:113:9:113:9 | x |
 | Test.kt:113:14:113:14 | y | 0 | Test.kt:113:14:113:14 | y |
 | Test.kt:113:17:115:5 | { ... } | 0 | Test.kt:113:17:115:5 | { ... } |
+| Test.kt:118:1:124:1 | Exceptional Exit | 0 | Test.kt:118:1:124:1 | Exceptional Exit |
 | Test.kt:118:1:124:1 | Exit | 0 | Test.kt:118:1:124:1 | Exit |
+| Test.kt:118:1:124:1 | Normal Exit | 0 | Test.kt:118:1:124:1 | Normal Exit |
 | Test.kt:118:37:124:1 | { ... } | 0 | Test.kt:118:37:124:1 | { ... } |
 | Test.kt:118:37:124:1 | { ... } | 1 | Test.kt:119:2:123:12 | <Expr>; |
 | Test.kt:118:37:124:1 | { ... } | 2 | Test.kt:119:2:123:12 | when ... |

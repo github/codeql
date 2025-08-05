@@ -1,6 +1,5 @@
 private import cpp
 private import semmle.code.cpp.ir.IR
-private import semmle.code.cpp.ir.dataflow.DataFlow
 private import DataFlowPrivate
 private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
@@ -60,7 +59,7 @@ private module VirtualDispatch {
      * `resolve` predicate to stitch that information together and resolve the
      * call.
      */
-    abstract DataFlow::Node getDispatchValue();
+    abstract Node getDispatchValue();
 
     /** Gets a candidate target for this call. */
     abstract Function resolve();
@@ -72,17 +71,13 @@ private module VirtualDispatch {
      * parameter is true when the search is allowed to continue backwards into
      * a parameter; non-recursive callers should pass `_` for `allowFromArg`.
      */
-    predicate flowsFrom(DataFlow::Node src, boolean allowFromArg) {
+    predicate flowsFrom(Node src, boolean allowFromArg) {
       src = this.getDispatchValue() and allowFromArg = true
       or
-      exists(DataFlow::Node other, boolean allowOtherFromArg |
-        this.flowsFrom(other, allowOtherFromArg)
-      |
+      exists(Node other, boolean allowOtherFromArg | this.flowsFrom(other, allowOtherFromArg) |
         // Call argument
         exists(DataFlowCall call, Position i |
-          other
-              .(DataFlow::ParameterNode)
-              .isParameterOf(pragma[only_bind_into](call).getStaticCallTarget(), i) and
+          other.(ParameterNode).isParameterOf(pragma[only_bind_into](call).getStaticCallTarget(), i) and
           src.(ArgumentNode).argumentOf(call, pragma[only_bind_into](pragma[only_bind_out](i)))
         ) and
         allowOtherFromArg = true and
@@ -96,7 +91,7 @@ private module VirtualDispatch {
         allowFromArg = false
         or
         // Local flow
-        DataFlow::localFlowStep(src, other) and
+        localFlowStep(src, other) and
         allowFromArg = allowOtherFromArg
         or
         // Flow from global variable to load.
@@ -159,11 +154,11 @@ private module VirtualDispatch {
   private class DataSensitiveExprCall extends DataSensitiveCall {
     DataSensitiveExprCall() { not exists(this.getStaticCallTarget()) }
 
-    override DataFlow::Node getDispatchValue() { result.asOperand() = this.getCallTargetOperand() }
+    override Node getDispatchValue() { result.asOperand() = this.getCallTargetOperand() }
 
     override Function resolve() {
       exists(FunctionInstruction fi |
-        this.flowsFrom(DataFlow::instructionNode(fi), _) and
+        this.flowsFrom(instructionNode(fi), _) and
         result = fi.getFunctionSymbol()
       ) and
       (
@@ -186,7 +181,7 @@ private module VirtualDispatch {
       )
     }
 
-    override DataFlow::Node getDispatchValue() { result.asInstruction() = this.getArgument(-1) }
+    override Node getDispatchValue() { result.asInstruction() = this.getArgument(-1) }
 
     override MemberFunction resolve() {
       exists(Class overridingClass |
@@ -213,7 +208,7 @@ private module VirtualDispatch {
     pragma[noinline]
     private predicate hasFlowFromCastFrom(Class derivedClass) {
       exists(ConvertToBaseInstruction toBase |
-        this.flowsFrom(DataFlow::instructionNode(toBase), _) and
+        this.flowsFrom(instructionNode(toBase), _) and
         derivedClass = toBase.getDerivedClass()
       )
     }
@@ -270,7 +265,7 @@ private predicate mayBenefitFromCallContext(
   exists(InitializeParameterInstruction init |
     not exists(call.getStaticCallTarget()) and
     init.getEnclosingFunction() = f.getUnderlyingCallable() and
-    call.flowsFrom(DataFlow::instructionNode(init), _) and
+    call.flowsFrom(instructionNode(init), _) and
     init.getParameter().getIndex() = arg
   )
 }
