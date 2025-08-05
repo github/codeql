@@ -59,7 +59,7 @@ newtype TType =
   TSelfTypeParameter(Trait t) or
   TSliceTypeParameter()
 
-predicate implTraitTypeParam(ImplTraitTypeRepr implTrait, int i, TypeParam tp) {
+private predicate implTraitTypeParam(ImplTraitTypeRepr implTrait, int i, TypeParam tp) {
   implTrait.isInReturnPos() and
   tp = implTrait.getFunction().getGenericParamList().getTypeParam(i) and
   // Only include type parameters of the function that occur inside the impl
