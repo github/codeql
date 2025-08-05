@@ -1,3 +1,9 @@
+## 7.5.0
+
+### New Features
+
+* Kotlin versions up to 2.2.2\ *x* are now supported.
+
 ## 7.4.0
 
 ### Deprecated APIs
@@ -10,7 +16,7 @@
 
 ### New Features
 
-* You can now add sinks for the query "Deserialization of user-controlled data" (`java/unsafe-deserialization`) using [data extensions](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-java-and-kotlin/#extensible-predicates-used-to-create-custom-models-in-java-and-kotlin) by extending `sinkModel` and using the kind "unsafe-deserialization". The existing sinks which do not require extra logic to determine if they are unsafe are now defined in this way.
+* You can now add sinks for the query "Deserialization of user-controlled data" (`java/unsafe-deserialization`) using [data extensions](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-java-and-kotlin/#extensible-predicates-used-to-create-custom-models-in-java-and-kotlin) by extending `sinkModel` and using the kind "unsafe-deserialization". The existing sinks that do not require extra logic to determine if they are unsafe are now defined in this way.
 
 ### Minor Analysis Improvements
 

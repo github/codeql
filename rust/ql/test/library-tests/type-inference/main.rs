@@ -2484,46 +2484,46 @@ pub mod pattern_matching_experimental {
     }
 }
 
-mod closures {
-    struct Row {
-        data: i64,
+pub mod exec {
+    // a *greatly* simplified model of `MySqlConnection.execute` in SQLX
+
+    trait Connection {
     }
 
-    impl Row {
-        fn get(&self) -> i64 {
-            self.data // $ fieldof=Row
+    trait Executor {
+        fn execute1(&self);
+        fn execute2<E>(&self, query: E);
+    }
+
+    impl<T: Connection> Executor for T {
+        fn execute1(&self) {
+            println!("Executor::execute1");
+        }
+
+        fn execute2<E>(&self, _query: E) {
+            println!("Executor::execute2");
         }
     }
 
-    struct Table {
-        rows: Vec<Row>,
-    }
+    struct MySqlConnection {}
 
-    impl Table {
-        fn new() -> Self {
-            Table { rows: Vec::new() } // $ target=new
-        }
-
-        fn count_with(&self, property: impl Fn(Row) -> bool) -> i64 {
-            0 // (not implemented)
-        }
-    }
+    impl Connection for MySqlConnection {}
 
     pub fn f() {
-        Some(1).map(|x| {
-            let x = x; // $ MISSING: type=x:i32
-            println!("{x}");
-        }); // $ target=map
+        let c = MySqlConnection {}; // $ type=c:MySqlConnection
 
-        let table = Table::new(); // $ target=new type=table:Table
-        let result = table.count_with(|row| // $ type=result:i64
-            {
-                let v = row.get(); // $ MISSING: target=get type=v:i64
-                v > 0 // $ MISSING: target=gt
-            }); // $ target=count_with
+        c.execute1(); // $ MISSING: target=execute1
+        MySqlConnection::execute1(&c); // $ MISSING: target=execute1
+
+        c.execute2("SELECT * FROM users"); // $ MISSING: target=execute2
+        c.execute2::<&str>("SELECT * FROM users"); // $ MISSING: target=execute2
+        MySqlConnection::execute2(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
+        MySqlConnection::execute2::<&str>(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
+
     }
 }
 
+mod closure;
 mod dereference;
 mod dyn_type;
 
@@ -2554,9 +2554,9 @@ fn main() {
     macros::f(); // $ target=f
     method_determined_by_argument_type::f(); // $ target=f
     tuples::f(); // $ target=f
+    exec::f(); // $ target=f
     dereference::test(); // $ target=test
     pattern_matching::test_all_patterns(); // $ target=test_all_patterns
     pattern_matching_experimental::box_patterns(); // $ target=box_patterns
-    closures::f(); // $ target=f
     dyn_type::test(); // $ target=test
 }
