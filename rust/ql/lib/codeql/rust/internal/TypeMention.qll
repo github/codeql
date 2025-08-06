@@ -75,21 +75,7 @@ class SliceTypeReprMention extends TypeMention instanceof SliceTypeRepr {
   }
 }
 
-/** Holds if `path` is used as a type mention during type inference. */
-predicate relevantPathTypeMention(Path path) {
-  path =
-    [
-      any(PathTypeRepr r).getPath(),
-      any(StructExpr s).getPath().getQualifier*(),
-      any(CallExpr ce).getFunction().(PathExpr).getPath().getQualifier*(),
-      any(StructPat p).getPath(),
-      any(TupleStructPat p).getPath()
-    ]
-}
-
-abstract class PathTypeMention extends TypeMention, Path {
-  PathTypeMention() { relevantPathTypeMention(this) }
-}
+abstract class PathTypeMention extends TypeMention, Path { }
 
 class AliasPathTypeMention extends PathTypeMention {
   TypeAlias resolved;
@@ -241,7 +227,8 @@ class NonAliasPathTypeMention extends PathTypeMention {
     )
   }
 
-  Type resolveRootType() {
+  pragma[nomagic]
+  private Type resolveRootType() {
     result = TStruct(resolved)
     or
     result = TEnum(resolved)
