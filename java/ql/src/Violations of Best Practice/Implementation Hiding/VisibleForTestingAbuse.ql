@@ -1,7 +1,7 @@
 /**
  * @id java/visible-for-testing-abuse
- * @name Accessing any method, field or class annotated with `@VisibleForTesting` from production code is discouraged
- * @description Accessing any method, field or class annotated with `@VisibleForTesting` from
+ * @name Use of VisibleForTesting in production code
+ * @description Accessing methods, fields or classes annotated with `@VisibleForTesting` from
  *              production code goes against the intention of the annotation and may indicate
  *              programmer error.
  * @kind problem
