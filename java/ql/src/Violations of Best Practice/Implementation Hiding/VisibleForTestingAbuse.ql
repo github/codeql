@@ -34,6 +34,15 @@ predicate isWithinPackage(Expr e, RefType t) {
 }
 
 /**
+ * Holds if a callable or any of its enclosing callables is annotated with @VisibleForTesting
+ */
+predicate isWithinVisibleForTestingContext(Callable c) {
+  c.getAnAnnotation().getType().hasName("VisibleForTesting")
+  or
+  isWithinVisibleForTestingContext(c.getEnclosingCallable())
+}
+
+/**
  * Holds if a nested class is within a static context
  */
 predicate withinStaticContext(NestedClass c) {
@@ -136,6 +145,8 @@ where
   ) and
   // not in a test where use is appropriate
   not e.getEnclosingCallable() instanceof LikelyTestMethod and
+  // not when the accessing method or any enclosing method is @VisibleForTesting (test-to-test communication)
+  not isWithinVisibleForTestingContext(e.getEnclosingCallable()) and
   // also omit our own ql unit test where it is acceptable
   not e.getEnclosingCallable()
       .getFile()
