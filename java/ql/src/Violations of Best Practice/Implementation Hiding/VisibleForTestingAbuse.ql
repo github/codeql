@@ -95,6 +95,8 @@ where
   not e.getEnclosingCallable() instanceof LikelyTestMethod and
   // not when the accessing method or any enclosing method is @VisibleForTesting (test-to-test communication)
   not isWithinVisibleForTestingContext(e.getEnclosingCallable()) and
+  // not when used in annotation contexts
+  not e.getParent*() instanceof Annotation and
   // also omit our own ql unit test where it is acceptable
   not e.getEnclosingCallable()
       .getFile()
