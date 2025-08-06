@@ -1,6 +1,7 @@
 #![feature(file_buffered)]
 use poem::{error::InternalServerError, handler, http::StatusCode, web::Query, Error, Result};
 use std::{fs, path::Path, path::PathBuf};
+
 //#[handler]
 fn tainted_path_handler_bad(
     Query(file_name): Query<String>, // $ Source=remote1
@@ -122,6 +123,9 @@ fn sinks(path1: &Path, path2: &Path) {
     let _ = std::fs::File::create_new(path1); // $ path-injection-sink
     let _ = std::fs::File::open(path1); // $ path-injection-sink
     let _ = std::fs::File::open_buffered(path1); // $ path-injection-sink
+    let _ = std::fs::OpenOptions::new().open(path1); // $ MISSING: path-injection-sink
+    let _ = tokio::fs::OpenOptions::new().open(path1); // $ MISSING: path-injection-sink
+    let _ = async_std::fs::OpenOptions::new().open(path1); // $ MISSING: path-injection-sink
 }
 
 fn main() {}

@@ -500,6 +500,29 @@ fn test_io_file() -> std::io::Result<()> {
         sink(byte); // $ hasTaintFlow="file.txt"
     }
 
+    // --- OpenOptions ---
+
+    {
+        let mut f1 = std::fs::OpenOptions::new().open("f1.txt").unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut buffer = [0u8; 1024];
+        let _bytes = f1.read(&mut buffer)?;
+        sink(&buffer); // $ MISSING: hasTaintFlow="f1.txt"
+    }
+
+    {
+        let mut f2 = std::fs::OpenOptions::new().create_new(true).open("f2.txt").unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut buffer = [0u8; 1024];
+        let _bytes = f2.read(&mut buffer)?;
+        sink(&buffer); // $ MISSING: hasTaintFlow="f2.txt"
+    }
+
+    {
+        let mut f3 = std::fs::OpenOptions::new().read(true).write(true).truncate(true).create(true).open("f3.txt").unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut buffer = [0u8; 1024];
+        let _bytes = f3.read(&mut buffer)?;
+        sink(&buffer); // $ MISSING: hasTaintFlow="f3.txt"
+    }
+
     // --- misc operations ---
 
     {
@@ -568,6 +591,15 @@ async fn test_tokio_file() -> std::io::Result<()> {
         sink(&buffer); // $ MISSING: hasTaintFlow="file.txt" -- we cannot resolve the `read_buf` call above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
     }
 
+    // --- OpenOptions ---
+
+    {
+        let mut f1 = tokio::fs::OpenOptions::new().open("f1.txt").await?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut buffer = [0u8; 1024];
+        let _bytes = f1.read(&mut buffer).await?;
+        sink(&buffer); // $ MISSING: hasTaintFlow="f1.txt"
+    }
+
     // --- misc operations ---
 
     {
@@ -585,6 +617,21 @@ async fn test_tokio_file() -> std::io::Result<()> {
         let mut reader = file1.take(100);
         reader.read_to_string(&mut buffer).await?;
         sink(&buffer); // $ MISSING: hasTaintFlow="file.txt" -- we cannot resolve the `take` and `read_to_string` calls above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
+    }
+
+    Ok(())
+}
+
+use async_std::io::ReadExt;
+
+async fn test_async_std_file() -> std::io::Result<()> {
+    // --- OpenOptions ---
+
+    {
+        let mut f1 = async_std::fs::OpenOptions::new().open("f1.txt").await?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut buffer = [0u8; 1024];
+        let _bytes = f1.read(&mut buffer).await?;
+        sink(&buffer); // $ MISSING: hasTaintFlow="f1.txt"
     }
 
     Ok(())
@@ -859,6 +906,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("test_tokio_file...");
     match futures::executor::block_on(test_tokio_file()) {
+        Ok(_) => println!("complete"),
+        Err(e) => println!("error: {}", e),
+    }
+
+    println!("test_async_std_file...");
+    match futures::executor::block_on(test_async_std_file()) {
         Ok(_) => println!("complete"),
         Err(e) => println!("error: {}", e),
     }
