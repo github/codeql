@@ -221,7 +221,13 @@ private module M2 = Make2<Input2>;
 
 private import M2
 
-module Consistency = M2::Consistency;
+module Consistency {
+  import M2::Consistency
+
+  query predicate nonUniqueCertainType(AstNode n, TypePath path) {
+    strictcount(CertainTypeInference::inferCertainType(n, path)) > 1
+  }
+}
 
 /** Gets the type annotation that applies to `n`, if any. */
 private TypeMention getTypeAnnotation(AstNode n) {
@@ -247,6 +253,134 @@ private TypeMention getTypeAnnotation(AstNode n) {
 pragma[nomagic]
 private Type inferAnnotatedType(AstNode n, TypePath path) {
   result = getTypeAnnotation(n).resolveTypeAt(path)
+}
+
+/** Module for inferring certain type information. */
+private module CertainTypeInference {
+  /** Holds if the type mention does not contain any inferred types `_`. */
+  predicate typeMentionIsComplete(TypeMention tm) {
+    not exists(InferTypeRepr t | t.getParentNode*() = tm)
+  }
+
+  /**
+   * Holds if `ce` is a call where we can infer the type with certainty and if
+   * `f` is the target of the call and `p` the path invoked by the call.
+   *
+   * Necessary conditions for this are:
+   * - We are certain of the call target (i.e., the call target can not depend on type information).
+   * - The declared type of the function does not contain any generics that we
+   *   need to infer.
+   * - The call does not contain any arguments, as arguments in calls are coercion sites.
+   *
+   * The current requirements are made to allow for call to `new` functions such
+   * as `Vec<Foo>::new()` but not much more.
+   */
+  predicate certainCallExprTarget(CallExpr ce, Function f, Path p) {
+    p = CallExprImpl::getFunctionPath(ce) and
+    f = resolvePath(p) and
+    // The function is not in a trait
+    not any(TraitItemNode t).getAnAssocItem() = f and
+    // The function is not in a trait implementation
+    not any(ImplItemNode impl | impl.(Impl).hasTrait()).getAnAssocItem() = f and
+    // The function does not have parameters.
+    not f.getParamList().hasSelfParam() and
+    f.getParamList().getNumberOfParams() = 0 and
+    // The function is not async.
+    not f.isAsync() and
+    // For now, exclude functions in macro expansions.
+    not ce.isInMacroExpansion() and
+    // The function has no type parameters.
+    not f.hasGenericParamList() and
+    // The function does not have `impl` types among its parameters (these are type parameters).
+    not any(ImplTraitTypeRepr itt | not itt.isInReturnPos()).getFunction() = f and
+    (
+      not exists(ImplItemNode impl | impl.getAnAssocItem() = f)
+      or
+      // If the function is in an impl then the impl block has no type
+      // parameters or all the type parameters are given explicitly.
+      exists(ImplItemNode impl | impl.getAnAssocItem() = f |
+        not impl.(Impl).hasGenericParamList() or
+        impl.(Impl).getGenericParamList().getNumberOfGenericParams() =
+          p.getQualifier().getSegment().getGenericArgList().getNumberOfGenericArgs()
+      )
+    )
+  }
+
+  private ImplItemNode getFunctionImpl(FunctionItemNode f) { result.getAnAssocItem() = f }
+
+  Type inferCertainCallExprType(CallExpr ce, TypePath path) {
+    exists(Function f, Type ty, TypePath prefix, Path p |
+      certainCallExprTarget(ce, f, p) and
+      ty = f.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(prefix)
+    |
+      if ty.(TypeParamTypeParameter).getTypeParam() = getFunctionImpl(f).getTypeParam(_)
+      then
+        exists(TypePath pathToTp, TypePath suffix |
+          // For type parameters of the `impl` block we must resolve their
+          // instantiation from the path. For instance, for `impl<A> for Foo<A>`
+          // and the path `Foo<i64>::bar` we must resolve `A` to `i64`.
+          ty = getFunctionImpl(f).(Impl).getSelfTy().(TypeMention).resolveTypeAt(pathToTp) and
+          result = p.getQualifier().(TypeMention).resolveTypeAt(pathToTp.appendInverse(suffix)) and
+          path = prefix.append(suffix)
+        )
+      else (
+        result = ty and path = prefix
+      )
+    )
+  }
+
+  predicate certainTypeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+    prefix1.isEmpty() and
+    prefix2.isEmpty() and
+    (
+      exists(Variable v | n1 = v.getAnAccess() |
+        n2 = v.getPat().getName() or n2 = v.getParameter().(SelfParam)
+      )
+      or
+      // A `let` statement with a type annotation is a coercion site and hence
+      // is not a certain type equality.
+      exists(LetStmt let | not let.hasTypeRepr() |
+        let.getPat() = n1 and
+        let.getInitializer() = n2
+      )
+    )
+    or
+    n1 =
+      any(IdentPat ip |
+        n2 = ip.getName() and
+        prefix1.isEmpty() and
+        if ip.isRef() then prefix2 = TypePath::singleton(TRefTypeParameter()) else prefix2.isEmpty()
+      )
+  }
+
+  pragma[nomagic]
+  private Type inferCertainTypeEquality(AstNode n, TypePath path) {
+    exists(TypePath prefix1, AstNode n2, TypePath prefix2, TypePath suffix |
+      result = inferCertainType(n2, prefix2.appendInverse(suffix)) and
+      path = prefix1.append(suffix)
+    |
+      certainTypeEquality(n, prefix1, n2, prefix2)
+      or
+      certainTypeEquality(n2, prefix2, n, prefix1)
+    )
+  }
+
+  /**
+   * Holds if `n` has complete and certain type information and if `n` has the
+   * resulting type at `path`.
+   */
+  pragma[nomagic]
+  Type inferCertainType(AstNode n, TypePath path) {
+    exists(TypeMention tm |
+      tm = getTypeAnnotation(n) and
+      typeMentionIsComplete(tm) and
+      result = tm.resolveTypeAt(path)
+    )
+    or
+    result = inferCertainCallExprType(n, path)
+    or
+    result = inferCertainTypeEquality(n, path)
+  }
 }
 
 private Type inferLogicalOperationType(AstNode n, TypePath path) {
@@ -288,15 +422,11 @@ private Struct getRangeType(RangeExpr re) {
  * through the type equality.
  */
 private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+  CertainTypeInference::certainTypeEquality(n1, prefix1, n2, prefix2)
+  or
   prefix1.isEmpty() and
   prefix2.isEmpty() and
   (
-    exists(Variable v | n1 = v.getAnAccess() |
-      n2 = v.getPat().getName()
-      or
-      n2 = v.getParameter().(SelfParam)
-    )
-    or
     exists(LetStmt let |
       let.getPat() = n1 and
       let.getInitializer() = n2
@@ -338,13 +468,6 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     or
     n1 = n2.(MacroPat).getMacroCall().getMacroCallExpansion()
   )
-  or
-  n1 =
-    any(IdentPat ip |
-      n2 = ip.getName() and
-      prefix1.isEmpty() and
-      if ip.isRef() then prefix2 = TypePath::singleton(TRefTypeParameter()) else prefix2.isEmpty()
-    )
   or
   (
     n1 = n2.(RefExpr).getExpr() or
@@ -408,6 +531,9 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
 
 pragma[nomagic]
 private Type inferTypeEquality(AstNode n, TypePath path) {
+  // Don't propagate type information into a node for which we already have
+  // certain type information.
+  not exists(CertainTypeInference::inferCertainType(n, _)) and
   exists(TypePath prefix1, AstNode n2, TypePath prefix2, TypePath suffix |
     result = inferType(n2, prefix2.appendInverse(suffix)) and
     path = prefix1.append(suffix)
@@ -818,6 +944,8 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   }
 
   final class Access extends Call {
+    Access() { not CertainTypeInference::certainCallExprTarget(this, _, _) }
+
     pragma[nomagic]
     Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       exists(TypeMention arg | result = arg.resolveTypeAt(path) |
@@ -2152,6 +2280,8 @@ private module Cached {
   cached
   Type inferType(AstNode n, TypePath path) {
     Stages::TypeInferenceStage::ref() and
+    result = CertainTypeInference::inferCertainType(n, path)
+    or
     result = inferAnnotatedType(n, path)
     or
     result = inferLogicalOperationType(n, path)
@@ -2306,5 +2436,11 @@ private module Debug {
   predicate maxTypePaths(AstNode n, TypePath path, Type t, int c) {
     c = countTypePaths(n, path, t) and
     c = max(countTypePaths(_, _, _))
+  }
+
+  Type debugInferCertainNonUniqueType(AstNode n, TypePath path) {
+    n = getRelevantLocatable() and
+    Consistency::nonUniqueCertainType(n, path) and
+    result = CertainTypeInference::inferCertainType(n, path)
   }
 }
