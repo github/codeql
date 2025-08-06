@@ -1,11 +1,3 @@
-| packageone/SourcePackage1.java:9:21:9:32 | Annotated.m1 | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:9:29:9:30 | m1 | element |
-| packageone/SourcePackage1.java:10:21:10:32 | Annotated.m2 | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:11:26:11:27 | m2 | element |
-| packageone/SourcePackage1.java:12:18:12:36 | fPublic(...) | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:26:23:26:29 | fPublic | element |
-| packageone/SourcePackage1.java:13:18:13:39 | fProtected(...) | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:31:26:31:35 | fProtected | element |
-| packageone/SourcePackage1.java:16:31:16:42 | Annotated.m1 | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:9:29:9:30 | m1 | element |
-| packageone/SourcePackage1.java:17:31:17:42 | Annotated.m2 | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:11:26:11:27 | m2 | element |
-| packageone/SourcePackage1.java:18:28:18:46 | fPublic(...) | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:26:23:26:29 | fPublic | element |
-| packageone/SourcePackage1.java:19:28:19:49 | fProtected(...) | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:31:26:31:35 | fProtected | element |
 | packageone/SourcePackage.java:9:21:9:32 | Annotated.m1 | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:9:29:9:30 | m1 | element |
 | packageone/SourcePackage.java:10:21:10:32 | Annotated.m2 | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:11:26:11:27 | m2 | element |
 | packageone/SourcePackage.java:16:18:16:36 | fPublic(...) | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:26:23:26:29 | fPublic | element |
