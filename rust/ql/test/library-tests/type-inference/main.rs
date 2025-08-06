@@ -2074,7 +2074,7 @@ mod indexers {
         // implicit dereference. We cannot currently handle a position that is
         // both implicitly dereferenced and implicitly borrowed, so the extra
         // type sneaks in.
-        let x = slice[0].foo(); // $ target=foo type=x:S target=index SPURIOUS: type=slice:[]
+        let x = slice[0].foo(); // $ target=foo type=x:S target=index
     }
 
     pub fn f() {
