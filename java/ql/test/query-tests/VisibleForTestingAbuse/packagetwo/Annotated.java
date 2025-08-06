@@ -47,14 +47,14 @@ public class Annotated {
     private static void resetPriorities2() {
         Runnable task = () -> {
             String priority = m; // $ SPURIOUS: Alert
-            String priority1 = m1; // $ SPURIOUS: Alert
-            String priority2 = m2; // $ SPURIOUS: Alert
+            String priority1 = m1;
+            String priority2 = m2;
             String priority3 = m3;
 
             int result = f(); // $ SPURIOUS: Alert
             int resultPrivate = fPrivate();
-            int resultPublic = fPublic(); // $ SPURIOUS: Alert
-            int resultProtected = fProtected(); // $ SPURIOUS: Alert
+            int resultPublic = fPublic();
+            int resultProtected = fProtected();
         };
         task.run();
     }
