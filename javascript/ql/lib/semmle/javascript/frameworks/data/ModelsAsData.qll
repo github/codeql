@@ -21,6 +21,8 @@ private import internal.ApiGraphModels as Shared
 private import internal.ApiGraphModelsSpecific as Specific
 private import semmle.javascript.dataflow.internal.FlowSummaryPrivate
 private import semmle.javascript.endpoints.EndpointNaming as EndpointNaming
+private import semmle.javascript.dataflow.AdditionalFlowSteps
+private import semmle.javascript.dataflow.AdditionalTaintSteps
 import Shared::ModelInput as ModelInput
 import Shared::ModelOutput as ModelOutput
 
@@ -87,9 +89,6 @@ private predicate shouldInduceStepsFromSummary(string type, string path) {
 pragma[nomagic]
 private predicate relevantInputOutputPath(API::InvokeNode base, AccessPath inputOrOutput) {
   exists(string type, string input, string output, string path |
-    // If the summary for 'callable' could not be handled as a flow summary, we need to evaluate
-    // its inputs and outputs to a set of nodes, so we can generate steps instead.
-    shouldInduceStepsFromSummary(type, path) and
     ModelOutput::resolvedSummaryBase(type, path, base) and
     ModelOutput::relevantSummaryModel(type, path, input, output, _, _) and
     inputOrOutput = [input, output]
@@ -118,22 +117,26 @@ private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPat
   result = getNodeFromInputOutputPath(baseNode, path, path.getNumToken())
 }
 
-private predicate summaryStep(API::Node pred, API::Node succ, string kind) {
+private predicate summaryStep(API::Node pred, API::Node succ, string kind, boolean shouldInduceSteps) {
   exists(string type, string path, API::InvokeNode base, AccessPath input, AccessPath output |
-    shouldInduceStepsFromSummary(type, path) and
     ModelOutput::relevantSummaryModel(type, path, input, output, kind, _) and
     ModelOutput::resolvedSummaryBase(type, path, base) and
     pred = getNodeFromInputOutputPath(base, input) and
-    succ = getNodeFromInputOutputPath(base, output)
+    succ = getNodeFromInputOutputPath(base, output) and
+    if shouldInduceStepsFromSummary(type, path)
+    then shouldInduceSteps = true
+    else shouldInduceSteps = false
   )
 }
 
 /**
  * Like `ModelOutput::summaryStep` but with API nodes mapped to data-flow nodes.
  */
-private predicate summaryStepNodes(DataFlow::Node pred, DataFlow::Node succ, string kind) {
+private predicate summaryStepNodes(
+  DataFlow::Node pred, DataFlow::Node succ, string kind, boolean shouldInduceSteps
+) {
   exists(API::Node predNode, API::Node succNode |
-    summaryStep(predNode, succNode, kind) and
+    summaryStep(predNode, succNode, kind, shouldInduceSteps) and
     pred = predNode.asSink() and
     succ = succNode.asSource()
   )
@@ -142,14 +145,26 @@ private predicate summaryStepNodes(DataFlow::Node pred, DataFlow::Node succ, str
 /** Data flow steps induced by summary models of kind `value`. */
 private class DataFlowStepFromSummary extends DataFlow::SharedFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    summaryStepNodes(pred, succ, "value")
+    summaryStepNodes(pred, succ, "value", true)
+  }
+}
+
+private class LegacyDataFlowStepFromSummary extends LegacyFlowStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    summaryStepNodes(pred, succ, "value", false)
   }
 }
 
 /** Taint steps induced by summary models of kind `taint`. */
 private class TaintStepFromSummary extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    summaryStepNodes(pred, succ, "taint")
+    summaryStepNodes(pred, succ, "taint", true)
+  }
+}
+
+private class LegacyTaintStepFromSummary extends LegacyTaintStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    summaryStepNodes(pred, succ, "taint", false)
   }
 }
 
