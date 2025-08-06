@@ -6,10 +6,6 @@
 | packageone/SourcePackage.java:26:31:26:42 | Annotated.m2 | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:11:26:11:27 | m2 | element |
 | packageone/SourcePackage.java:29:28:29:46 | fPublic(...) | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:26:23:26:29 | fPublic | element |
 | packageone/SourcePackage.java:30:28:30:49 | fProtected(...) | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:31:26:31:35 | fProtected | element |
-| packagetwo/Annotated.java:49:31:49:31 | m | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:7:19:7:19 | m | element |
-| packagetwo/Annotated.java:54:26:54:28 | f(...) | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:16:16:16:16 | f | element |
-| packagetwo/Annotated.java:64:28:64:28 | m | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:7:19:7:19 | m | element |
-| packagetwo/Annotated.java:69:26:69:28 | f(...) | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:16:16:16:16 | f | element |
 | packagetwo/Source.java:8:20:8:30 | Annotated.m | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:7:19:7:19 | m | element |
 | packagetwo/Source.java:14:17:14:29 | f(...) | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:16:16:16:16 | f | element |
 | packagetwo/Source.java:20:28:20:47 | new AnnotatedClass(...) | Access of $@ annotated with VisibleForTesting found in production code. | packageone/AnnotatedClass.java:4:14:4:27 | AnnotatedClass | element |

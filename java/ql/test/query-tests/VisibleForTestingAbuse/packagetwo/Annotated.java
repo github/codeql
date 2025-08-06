@@ -46,12 +46,12 @@ public class Annotated {
 
     private static void resetPriorities2() {
         Runnable task = () -> {
-            String priority = m; // $ SPURIOUS: Alert
+            String priority = m;
             String priority1 = m1;
             String priority2 = m2;
             String priority3 = m3;
 
-            int result = f(); // $ SPURIOUS: Alert
+            int result = f();
             int resultPrivate = fPrivate();
             int resultPublic = fPublic();
             int resultProtected = fProtected();
@@ -61,12 +61,12 @@ public class Annotated {
 
     private static class InnerClass {
         void useVisibleForMembers() {
-            String field = m; // $ SPURIOUS: Alert
+            String field = m;
             String field1 = m1;
             String field2 = m2;
             String field3 = m3;
 
-            int method = f(); // $ SPURIOUS: Alert
+            int method = f();
             int methodPrivate = fPrivate();
             int methodPublic = fPublic();
             int methodProtected = fProtected();
