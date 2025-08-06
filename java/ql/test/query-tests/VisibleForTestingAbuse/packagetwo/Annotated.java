@@ -86,7 +86,7 @@ public class Annotated {
     
     private void useInnerClass() {
         InnerTestClass inner = new InnerTestClass();
-        int size = inner.getSize(); // $ SPURIOUS: Alert
+        int size = inner.getSize();
         String value = inner.data;
     }
 }
