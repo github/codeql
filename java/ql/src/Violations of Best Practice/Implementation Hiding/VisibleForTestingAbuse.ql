@@ -15,7 +15,7 @@
 import java
 
 /**
- * A `Callable` is within some `RefType` (including through lambdas and inner classes)
+ * Holds if a `Callable` is within some `RefType` (including through lambdas and inner classes)
  */
 predicate isWithinType(Callable c, RefType t) {
   c.getDeclaringType() = t
@@ -24,28 +24,37 @@ predicate isWithinType(Callable c, RefType t) {
 }
 
 /**
- * A `Callable` is within same package as the `RefType`
+ * Holds if a `Callable` is within same package as the `RefType`
  */
 predicate isWithinPackage(Expr e, RefType t) {
   e.getCompilationUnit().getPackage() = t.getPackage()
 }
 
+/**
+ * Holds if a nested class is within a static context
+ */
 predicate withinStaticContext(NestedClass c) {
   c.isStatic() or
   c.(AnonymousClass).getClassInstanceExpr().getEnclosingCallable().isStatic() // JLS 15.9.2
 }
 
+/**
+ * Gets the enclosing instance type for a non-static inner class
+ */
 RefType enclosingInstanceType(Class inner) {
   not withinStaticContext(inner) and
   result = inner.(NestedClass).getEnclosingType()
 }
 
+/**
+ * A class that encloses one or more inner classes
+ */
 class OuterClass extends Class {
   OuterClass() { this = enclosingInstanceType+(_) }
 }
 
 /**
- * An innerclass is accessed outside of its outerclass
+ * Holds if an innerclass is accessed outside of its outerclass
  * and also outside of its fellow inner parallel classes
  */
 predicate isWithinDirectOuterClassOrSiblingInner(
