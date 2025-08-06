@@ -72,4 +72,21 @@ public class Annotated {
             int methodProtected = fProtected();
         }
     }
+
+    @VisibleForTesting
+    static class InnerTestClass {
+        @VisibleForTesting
+        int getSize() {
+            return 42;
+        }
+        
+        @VisibleForTesting
+        private String data;
+    }
+    
+    private void useInnerClass() {
+        InnerTestClass inner = new InnerTestClass();
+        int size = inner.getSize(); // $ SPURIOUS: Alert
+        String value = inner.data;
+    }
 }
