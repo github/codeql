@@ -1,0 +1,4 @@
+| packageone/SourcePackage.java:8:21:8:32 | Annotated.m1 | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:9:29:9:30 | m1 | element |
+| packagetwo/Source.java:7:17:7:29 | f(...) | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:12:16:12:16 | f | element |
+| packagetwo/Source.java:8:20:8:30 | Annotated.m | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:7:19:7:19 | m | element |
+| packagetwo/Source.java:9:28:9:47 | new AnnotatedClass(...) | Access of $@ annotated with VisibleForTesting found in production code. | packageone/AnnotatedClass.java:4:14:4:27 | AnnotatedClass | element |
