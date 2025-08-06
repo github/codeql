@@ -15,9 +15,13 @@
 import java
 
 /**
- * A `Callable` is within some `RefType`
+ * A `Callable` is within some `RefType` (including through lambdas and inner classes)
  */
-predicate isWithinType(Callable c, RefType t) { c.getDeclaringType() = t }
+predicate isWithinType(Callable c, RefType t) {
+  c.getDeclaringType() = t
+  or
+  c.getDeclaringType().getEnclosingType*() = t
+}
 
 /**
  * A `Callable` is within same package as the `RefType`
