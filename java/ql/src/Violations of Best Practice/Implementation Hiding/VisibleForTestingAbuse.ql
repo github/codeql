@@ -7,7 +7,8 @@
  * @kind problem
  * @precision high
  * @problem.severity warning
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
  */
 
