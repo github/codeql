@@ -22,8 +22,8 @@ predicate isWithinType(Callable c, RefType t) { c.getDeclaringType() = t }
 /**
  * A `Callable` is within same package as the `RefType`
  */
-predicate isWithinPackage(Callable c, RefType t) {
-  c.getDeclaringType().getPackage() = t.getPackage()
+predicate isWithinPackage(Expr e, RefType t) {
+  e.getCompilationUnit().getPackage() = t.getPackage()
 }
 
 predicate withinStaticContext(NestedClass c) {
@@ -80,7 +80,7 @@ where
         or
         // if public or protected report when its used outside its package because package protected should have been enough (package only permitted)
         (v.getField().isPublic() or v.getField().isProtected()) and
-        not isWithinPackage(v.getEnclosingCallable(), v.getField().getDeclaringType())
+        not isWithinPackage(v, v.getField().getDeclaringType())
       )
     )
     or
@@ -92,7 +92,7 @@ where
       // if public report when its used outside its package because package protected should have been enough (package only permitted)
       (
         c.getConstructedType().isPublic() and
-        not isWithinPackage(c.getEnclosingCallable(), c.getConstructedType())
+        not isWithinPackage(c, c.getConstructedType())
         or
         // if its package protected report when its used outside its outer class bc it should have been private (outer class only permitted)
         c.getConstructedType().hasNoModifier() and
@@ -114,7 +114,7 @@ where
         or
         // if public or protected report when its used outside its package because package protected should have been enough (package only permitted)
         (c.getMethod().isPublic() or c.getMethod().isProtected()) and
-        not isWithinPackage(c.getEnclosingCallable(), c.getMethod().getDeclaringType())
+        not isWithinPackage(c, c.getMethod().getDeclaringType())
       )
     )
   ) and

@@ -22,12 +22,12 @@ public class Source {
         // Lambda usage
         Runnable lambda = () -> {
             String lambdaS = Annotated.m; // $ Alert
-            String lambdaS1 = Annotated.m1; // $ SPURIOUS: Alert
-            String lambdaS2 = Annotated.m2; // $ SPURIOUS: Alert
+            String lambdaS1 = Annotated.m1;
+            String lambdaS2 = Annotated.m2;
             
             int lambdaI = Annotated.f(); // $ Alert
-            int lambdaI2 = Annotated.fPublic(); // $ SPURIOUS: Alert
-            int lambdaI3 = Annotated.fProtected(); // $ SPURIOUS: Alert
+            int lambdaI2 = Annotated.fPublic();
+            int lambdaI3 = Annotated.fProtected();
         };
         lambda.run();
     }
