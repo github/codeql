@@ -1242,5 +1242,16 @@ module Make<
         this.valueControls(bb, any(GuardValue gv | gv.asBooleanValue() = branch))
       }
     }
+
+    private predicate exprHasValueAlias = exprHasValue/2;
+
+    private predicate disjointValuesAlias = disjointValues/2;
+
+    /** Provides utility predicates for working with `GuardValue`s. */
+    module InternalUtil {
+      predicate exprHasValue = exprHasValueAlias/2;
+
+      predicate disjointValues = disjointValuesAlias/2;
+    }
   }
 }
