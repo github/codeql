@@ -4932,7 +4932,20 @@ ir.c:
 #  103|             Type = [IntType] int
 #  103|             ValueCategory = prvalue(load)
 #  103|       getThen(): [BlockStmt] { ... }
-#  104|     getStmt(16): [ReturnStmt] return ...
+#  105|     getStmt(16): [DeclStmt] declaration
+#  105|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of double_negation
+#  105|           Type = [IntType] int
+#  105|         getVariable().getInitializer(): [Initializer] initializer for double_negation
+#  105|           getExpr(): [NotExpr] ! ...
+#  105|               Type = [IntType] int
+#  105|               ValueCategory = prvalue
+#  105|             getOperand(): [NotExpr] ! ...
+#  105|                 Type = [IntType] int
+#  105|                 ValueCategory = prvalue
+#  105|               getOperand(): [VariableAccess] x1
+#  105|                   Type = [IntType] int
+#  105|                   ValueCategory = prvalue(load)
+#  106|     getStmt(17): [ReturnStmt] return ...
 ir.cpp:
 #    1| [TopLevelFunction] void Constants()
 #    1|   <params>: 
