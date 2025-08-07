@@ -32,6 +32,6 @@ public class ExampleRuntimeExit {
 
     protected static void printUsageAndExit(final String message, final int exitCode) {
         System.err.println("Usage: <example_cmd> <example_args> : " + message);
-        Runtime.getRuntime().exit(exitCode);  // $ SPURIOUS: Alert
+        Runtime.getRuntime().exit(exitCode); // COMPLIANT
     }
 }
