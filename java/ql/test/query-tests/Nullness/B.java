@@ -436,4 +436,39 @@ public class B {
       }
     }
   }
+
+  public void loopCorrTest1(int[] a) {
+    boolean ready = a.length > 7;
+    Object x = new Object();
+    for (int i = 0; i < a.length; i++) {
+      // condition correlates with itself through iterations when ready isn't updated
+      if (!ready) {
+        x = null;
+      } else {
+        x.hashCode(); // Spurious NPE - false positive
+      }
+      if ((a[i] & 1) != 0) {
+        ready = (a[i] & 2) != 0;
+        x = new Object();
+      }
+    }
+  }
+
+  public void loopCorrTest2(boolean[] a) {
+    Object x = new Object();
+    boolean cur = a[0];
+    for (int i = 1; i < a.length; i++) {
+      boolean prev = cur;
+      cur = a[i];
+      if (!prev) {
+        // correctly guarded by !cur from the _previous_ iteration
+        x.hashCode(); // Spurious NPE - false positive
+      } else {
+        x = new Object();
+      }
+      if (cur) {
+        x = null;
+      }
+    }
+  }
 }
