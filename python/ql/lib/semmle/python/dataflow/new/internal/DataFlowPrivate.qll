@@ -574,8 +574,8 @@ predicate globalVariableNestedFieldJumpStep(Node nodeFrom, Node nodeTo) {
     ) and
     write.getAttributeName() = read.getAttributeName() and
     nodeFrom = write.getValue() and
-    nodeTo = read and
-    write.getEnclosingCallable() != read.getEnclosingCallable()
+    nodeTo = read //and
+    //write.getEnclosingCallable() != read.getEnclosingCallable()
   )
 }
 
@@ -583,7 +583,7 @@ predicate globalVariableNestedFieldJumpStep(Node nodeFrom, Node nodeTo) {
  * Maximum depth for global variable nested attribute access.
  * Depth 0 = globalVar.foo, depth 1 = globalVar.foo.bar, depth 2 = globalVar.foo.bar.baz, etc.
  */
-private int getMaxGlobalVariableDepth() { result = 1 }
+private int getMaxGlobalVariableDepth() { result = 10 }
 
 /**
  * Holds if `node` is an attribute access path starting from global variable `globalVar`.
@@ -592,7 +592,7 @@ private int getMaxGlobalVariableDepth() { result = 1 }
 predicate globalVariableAttrPath(ModuleVariableNode globalVar, string accessPath, Node node) {
   exists(int depth |
     globalVariableAttrPathAtDepth(globalVar, accessPath, node, depth) and
-    depth > 0
+    depth >= 0
   )
 }
 
@@ -607,14 +607,15 @@ predicate globalVariableAttrPathAtDepth(
   node in [globalVar.getARead(), globalVar.getAWrite()] and
   accessPath = ""
   or
-  // Recursive case: Nested attribute access (depth > 0)
-  exists(AttrRef attr, Node n, string attrName, int parentDepth, string parentAccessPath |
-    attr.accesses(n, attrName) and
-    globalVariableAttrPathAtDepth(globalVar, parentAccessPath, n, parentDepth) and
-    node = attr and
+  exists(Node obj, string attrName, string parentAccessPath, int parentDepth |
+    node.(AttrRead).accesses(obj, attrName)
+    or
+    exists(AttrWrite aw | aw.accesses(obj, attrName) and aw.getValue() = node)
+  |
+    globalVariableAttrPathAtDepth(globalVar, parentAccessPath, obj, parentDepth) and
+    accessPath = parentAccessPath + "." + attrName and
     depth = parentDepth + 1 and
-    depth <= getMaxGlobalVariableDepth() and
-    accessPath = parentAccessPath + "." + attrName
+    depth <= getMaxGlobalVariableDepth()
   )
 }
 
