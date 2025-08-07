@@ -997,7 +997,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     /**
-     * Provides an implementation of guard implication logic for custom
+     * Provides an implementation of guard implication logic for guard
      * wrappers.
      */
     private module WrapperGuard {
@@ -1070,7 +1070,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * parameter. A return value equal to `retval` allows us to conclude
        * that the argument has the value `val`.
        */
-      private NonOverridableMethod customGuard(
+      private NonOverridableMethod wrapperGuard(
         ParameterPosition ppos, GuardValue retval, GuardValue val
       ) {
         forex(ReturnExpr ret |
@@ -1097,12 +1097,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * dominates the evaluation of `g1` to `v1`.
        *
        * This predicate covers the implication steps that arise from calls to
-       * custom guard wrappers.
+       * guard wrappers.
        */
       predicate wrapperImpliesStep(PreGuard g1, GuardValue v1, PreGuard g2, GuardValue v2) {
         exists(NonOverridableMethodCall call, ParameterPosition ppos, ArgumentPosition apos |
           g1 = call and
-          call.getMethod() = customGuard(ppos, v1, v2) and
+          call.getMethod() = wrapperGuard(ppos, v1, v2) and
           call.getArgument(apos) = g2 and
           parameterMatch(pragma[only_bind_out](ppos), pragma[only_bind_out](apos)) and
           not exprHasValue(g2, v2) // disregard trivial guard
