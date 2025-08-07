@@ -50,7 +50,7 @@ where
     exists(FieldAccess v |
       v = e and
       v.getField() = annotated and
-      // depending on the visiblity of the field, using the annotation to abuse the visibility may/may not be occurring
+      // depending on the visibility of the field, using the annotation to abuse the visibility may/may not be occurring
       (
         // if its package protected report when its used outside its class bc it should have been private (class only permitted)
         v.getField().isPackageProtected() and
@@ -66,7 +66,7 @@ where
     exists(MethodCall c |
       c = e and
       c.getMethod() = annotated and
-      // depending on the visiblity of the method, using the annotation to abuse the visibility may/may not be occurring
+      // depending on the visibility of the method, using the annotation to abuse the visibility may/may not be occurring
       (
         // if its package protected report when its used outside its class bc it should have been private (class only permitted)
         c.getMethod().isPackageProtected() and
