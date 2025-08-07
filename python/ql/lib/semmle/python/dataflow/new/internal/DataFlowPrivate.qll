@@ -604,7 +604,7 @@ predicate globalVariableAttrPathAtDepth(
 ) {
   // Base case: Direct global variable access (depth 0)
   depth = 0 and
-  node in [globalVar.getARead(), globalVar.getAWrite()] and
+  node in [globalVar.getARead(), globalVar.getAWrite(), globalVar] and
   accessPath = ""
   or
   exists(Node obj, string attrName, string parentAccessPath, int parentDepth |
