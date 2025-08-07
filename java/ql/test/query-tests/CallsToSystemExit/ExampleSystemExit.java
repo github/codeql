@@ -32,6 +32,6 @@ public class ExampleSystemExit {
 
     protected static void printUsageAndExit(final String message, final int exitCode) {
         System.err.println("Usage: <example_cmd> <example_args> : " + message);
-        System.exit(exitCode); // $ SPURIOUS: Alert
+        System.exit(exitCode); // COMPLIANT
     }
 }
