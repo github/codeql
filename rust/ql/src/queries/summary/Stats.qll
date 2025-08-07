@@ -20,6 +20,7 @@ private import TaintReach
 private import codeql.rust.security.regex.RegexInjectionExtensions
 private import codeql.rust.security.AccessInvalidPointerExtensions
 private import codeql.rust.security.CleartextLoggingExtensions
+private import codeql.rust.security.CleartextStorageDatabaseExtensions
 private import codeql.rust.security.CleartextTransmissionExtensions
 private import codeql.rust.security.SqlInjectionExtensions
 private import codeql.rust.security.TaintedPathExtensions
