@@ -4856,6 +4856,7 @@ inferType
 | main.rs:2490:9:2490:9 | y | &T | file://:0:0:0:0 | (T_2) |
 | main.rs:2490:9:2490:9 | y | &T.0(2) | main.rs:2447:5:2448:16 | S1 |
 | main.rs:2490:9:2490:9 | y | &T.1(2) | main.rs:2447:5:2448:16 | S1 |
+| main.rs:2490:9:2490:11 | y.0 |  | main.rs:2447:5:2448:16 | S1 |
 | main.rs:2497:13:2497:23 | boxed_value |  | {EXTERNAL LOCATION} | Box |
 | main.rs:2497:13:2497:23 | boxed_value | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2497:13:2497:23 | boxed_value | T | {EXTERNAL LOCATION} | i32 |

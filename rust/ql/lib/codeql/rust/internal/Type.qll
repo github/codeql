@@ -119,7 +119,7 @@ class TupleType extends Type, TTuple {
 }
 
 /** The unit type `()`. */
-class UnitType extends TupleType, TTuple {
+class UnitType extends TupleType {
   UnitType() { this = TTuple(0) }
 
   override string toString() { result = "()" }

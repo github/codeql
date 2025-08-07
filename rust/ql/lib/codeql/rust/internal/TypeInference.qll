@@ -1135,6 +1135,36 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
   )
 }
 
+pragma[inline]
+private Type inferRootTypeDeref(AstNode n) {
+  result = inferType(n) and
+  result != TRefType()
+  or
+  // for reference types, lookup members in the type being referenced
+  result = inferType(n, TypePath::singleton(TRefTypeParameter()))
+}
+
+pragma[nomagic]
+private Type getFieldExprLookupType(FieldExpr fe, string name) {
+  result = inferRootTypeDeref(fe.getContainer()) and name = fe.getIdentifier().getText()
+}
+
+pragma[nomagic]
+private Type getTupleFieldExprLookupType(FieldExpr fe, int pos) {
+  exists(string name |
+    result = getFieldExprLookupType(fe, name) and
+    pos = name.toInt()
+  )
+}
+
+pragma[nomagic]
+private TupleTypeParameter resolveTupleTypeFieldExpr(FieldExpr fe) {
+  exists(int arity, int i |
+    TTuple(arity) = getTupleFieldExprLookupType(fe, i) and
+    result = TTupleTypeParameter(arity, i)
+  )
+}
+
 /**
  * A matching configuration for resolving types of field expressions
  * like `x.field`.
@@ -1158,15 +1188,30 @@ private module FieldExprMatchingInput implements MatchingInputSig {
     }
   }
 
-  abstract class Declaration extends AstNode {
+  private newtype TDeclaration =
+    TStructFieldDecl(StructField sf) or
+    TTupleFieldDecl(TupleField tf) or
+    TTupleTypeParameterDecl(TupleTypeParameter ttp)
+
+  abstract class Declaration extends TDeclaration {
     TypeParameter getTypeParameter(TypeParameterPosition ppos) { none() }
+
+    abstract Type getDeclaredType(DeclarationPosition dpos, TypePath path);
+
+    abstract string toString();
+
+    abstract Location getLocation();
+  }
+
+  abstract private class StructOrTupleFieldDecl extends Declaration {
+    abstract AstNode getAstNode();
 
     abstract TypeRepr getTypeRepr();
 
-    Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
+    override Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
       dpos.isSelf() and
       // no case for variants as those can only be destructured using pattern matching
-      exists(Struct s | s.getStructField(_) = this or s.getTupleField(_) = this |
+      exists(Struct s | this.getAstNode() = [s.getStructField(_).(AstNode), s.getTupleField(_)] |
         result = TStruct(s) and
         path.isEmpty()
         or
@@ -1177,14 +1222,55 @@ private module FieldExprMatchingInput implements MatchingInputSig {
       dpos.isField() and
       result = this.getTypeRepr().(TypeMention).resolveTypeAt(path)
     }
+
+    override string toString() { result = this.getAstNode().toString() }
+
+    override Location getLocation() { result = this.getAstNode().getLocation() }
   }
 
-  private class StructFieldDecl extends Declaration instanceof StructField {
-    override TypeRepr getTypeRepr() { result = StructField.super.getTypeRepr() }
+  private class StructFieldDecl extends StructOrTupleFieldDecl, TStructFieldDecl {
+    private StructField sf;
+
+    StructFieldDecl() { this = TStructFieldDecl(sf) }
+
+    override AstNode getAstNode() { result = sf }
+
+    override TypeRepr getTypeRepr() { result = sf.getTypeRepr() }
   }
 
-  private class TupleFieldDecl extends Declaration instanceof TupleField {
-    override TypeRepr getTypeRepr() { result = TupleField.super.getTypeRepr() }
+  private class TupleFieldDecl extends StructOrTupleFieldDecl, TTupleFieldDecl {
+    private TupleField tf;
+
+    TupleFieldDecl() { this = TTupleFieldDecl(tf) }
+
+    override AstNode getAstNode() { result = tf }
+
+    override TypeRepr getTypeRepr() { result = tf.getTypeRepr() }
+  }
+
+  private class TupleTypeParameterDecl extends Declaration, TTupleTypeParameterDecl {
+    private TupleTypeParameter ttp;
+
+    TupleTypeParameterDecl() { this = TTupleTypeParameterDecl(ttp) }
+
+    override Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
+      dpos.isSelf() and
+      (
+        result = ttp.getTupleType() and
+        path.isEmpty()
+        or
+        result = ttp and
+        path = TypePath::singleton(ttp)
+      )
+      or
+      dpos.isField() and
+      result = ttp and
+      path.isEmpty()
+    }
+
+    override string toString() { result = ttp.toString() }
+
+    override Location getLocation() { result = ttp.getLocation() }
   }
 
   class AccessPosition = DeclarationPosition;
@@ -1206,7 +1292,12 @@ private module FieldExprMatchingInput implements MatchingInputSig {
 
     Declaration getTarget() {
       // mutual recursion; resolving fields requires resolving types and vice versa
-      result = [resolveStructFieldExpr(this).(AstNode), resolveTupleFieldExpr(this)]
+      result =
+        [
+          TStructFieldDecl(resolveStructFieldExpr(this)).(TDeclaration),
+          TTupleFieldDecl(resolveTupleFieldExpr(this)),
+          TTupleTypeParameterDecl(resolveTupleTypeFieldExpr(this))
+        ]
     }
   }
 
@@ -1263,42 +1354,6 @@ private Type inferFieldExprType(AstNode n, TypePath path) {
         else path = path0
       )
     else path = path0
-  )
-}
-
-pragma[nomagic]
-private Type inferTupleIndexExprType(FieldExpr fe, TypePath path) {
-  exists(int i, TypePath path0 |
-    fe.getIdentifier().getText() = i.toString() and
-    result = inferType(fe.getContainer(), path0) and
-    path0.isCons(TTupleTypeParameter(_, i), path) and
-    fe.getIdentifier().getText() = i.toString()
-  )
-}
-
-/** Infers the type of `t` in `t.n` when `t` is a tuple. */
-private Type inferTupleContainerExprType(Expr e, TypePath path) {
-  // NOTE: For a field expression `t.n` where `n` is a number `t` might be a
-  // tuple as in:
-  // ```rust
-  // let t = (Default::default(), 2);
-  // let s: String = t.0;
-  // ```
-  // But it could also be a tuple struct as in:
-  // ```rust
-  // struct T(String, u32);
-  // let t = T(Default::default(), 2);
-  // let s: String = t.0;
-  // ```
-  // We need type information to flow from `t.n` to tuple type parameters of `t`
-  // in the former case but not the latter case. Hence we include the condition
-  // that the root type of `t` must be a tuple type.
-  exists(int i, TypePath path0, FieldExpr fe, int arity |
-    e = fe.getContainer() and
-    fe.getIdentifier().getText() = i.toString() and
-    arity = inferType(fe.getContainer()).(TupleType).getArity() and
-    result = inferType(fe, path0) and
-    path = TypePath::cons(TTupleTypeParameter(arity, i), path0)
   )
 }
 
@@ -2230,34 +2285,12 @@ private module Cached {
     result = resolveFunctionCallTarget(call)
   }
 
-  pragma[inline]
-  private Type inferRootTypeDeref(AstNode n) {
-    result = inferType(n) and
-    result != TRefType()
-    or
-    // for reference types, lookup members in the type being referenced
-    result = inferType(n, TypePath::singleton(TRefTypeParameter()))
-  }
-
-  pragma[nomagic]
-  private Type getFieldExprLookupType(FieldExpr fe, string name) {
-    result = inferRootTypeDeref(fe.getContainer()) and name = fe.getIdentifier().getText()
-  }
-
   /**
    * Gets the struct field that the field expression `fe` resolves to, if any.
    */
   cached
   StructField resolveStructFieldExpr(FieldExpr fe) {
     exists(string name | result = getFieldExprLookupType(fe, name).getStructField(name))
-  }
-
-  pragma[nomagic]
-  private Type getTupleFieldExprLookupType(FieldExpr fe, int pos) {
-    exists(string name |
-      result = getFieldExprLookupType(fe, name) and
-      pos = name.toInt()
-    )
   }
 
   /**
@@ -2340,10 +2373,6 @@ private module Cached {
       result = inferCallExprBaseType(n, path)
       or
       result = inferFieldExprType(n, path)
-      or
-      result = inferTupleIndexExprType(n, path)
-      or
-      result = inferTupleContainerExprType(n, path)
       or
       result = inferRefNodeType(n) and
       path.isEmpty()
