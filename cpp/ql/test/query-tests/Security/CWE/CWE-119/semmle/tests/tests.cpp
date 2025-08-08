@@ -1067,7 +1067,7 @@ void test31() {
 	S_Size16 e;
 
 	[&e](void* data){
-		memcpy(&e, data, sizeof(e)); // GOOD [FALSE POSITIVE]
+		memcpy(&e, data, sizeof(e)); // GOOD
 	};
 }
 
