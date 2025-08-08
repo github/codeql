@@ -4,10 +4,11 @@
  *              reuse and prevent important cleanup steps from running.
  * @kind problem
  * @problem.severity warning
- * @precision low
+ * @precision medium
  * @id java/jvm-exit
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-382
  */
 
@@ -22,18 +23,12 @@ import java
  */
 class ExitOrHaltMethod extends Method {
   ExitOrHaltMethod() {
-    exists(Class system |
-      this.getDeclaringType() = system and
-      (
-        this.hasName("exit") and
-        (
-          system.hasQualifiedName("java.lang", "System") or
-          system.hasQualifiedName("java.lang", "Runtime")
-        )
-        or
-        this.hasName("halt") and
-        system.hasQualifiedName("java.lang", "Runtime")
-      )
+    exists(Class system | this.getDeclaringType() = system |
+      this.hasName("exit") and
+      system.hasQualifiedName("java.lang", ["System", "Runtime"])
+      or
+      this.hasName("halt") and
+      system.hasQualifiedName("java.lang", "Runtime")
     )
   }
 }
@@ -48,7 +43,7 @@ class ExitOrHaltMethodCall extends MethodCall {
 }
 
 /**
- * Represents an intentional `MethodCall` to a system or runtime "exit" method, such as for
+ * An intentional `MethodCall` to a system or runtime "exit" method, such as for
  * functions which exist for the purpose of exiting the program. Assumes that a an exit method
  * call within a method is intentional if the exit code is passed from a parameter of the
  * enclosing method.
