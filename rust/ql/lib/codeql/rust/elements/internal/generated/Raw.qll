@@ -1523,35 +1523,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * An inline assembly expression. For example:
-   * ```rust
-   * unsafe {
-   *     #[inline(always)]
-   *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
-   * }
-   * ```
-   */
-  class AsmExpr extends @asm_expr, Expr {
-    override string toString() { result = "AsmExpr" }
-
-    /**
-     * Gets the `index`th asm piece of this asm expression (0-based).
-     */
-    AsmPiece getAsmPiece(int index) { asm_expr_asm_pieces(this, index, result) }
-
-    /**
-     * Gets the `index`th attr of this asm expression (0-based).
-     */
-    Attr getAttr(int index) { asm_expr_attrs(this, index, result) }
-
-    /**
-     * Gets the `index`th template of this asm expression (0-based).
-     */
-    Expr getTemplate(int index) { asm_expr_templates(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A label in an inline assembly block.
    *
    * For example:
@@ -3590,6 +3561,35 @@ module Raw {
     MacroItems getDeriveMacroExpansion(int index) {
       adt_derive_macro_expansions(this, index, result)
     }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An inline assembly expression. For example:
+   * ```rust
+   * unsafe {
+   *     #[inline(always)]
+   *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
+   * }
+   * ```
+   */
+  class AsmExpr extends @asm_expr, Expr, Item {
+    override string toString() { result = "AsmExpr" }
+
+    /**
+     * Gets the `index`th asm piece of this asm expression (0-based).
+     */
+    AsmPiece getAsmPiece(int index) { asm_expr_asm_pieces(this, index, result) }
+
+    /**
+     * Gets the `index`th attr of this asm expression (0-based).
+     */
+    Attr getAttr(int index) { asm_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the `index`th template of this asm expression (0-based).
+     */
+    Expr getTemplate(int index) { asm_expr_templates(this, index, result) }
   }
 
   /**
