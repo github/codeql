@@ -5,7 +5,7 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
-private import codeql.rust.dataflow.internal.DataFlowImpl
+private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.security.SensitiveData
 private import codeql.rust.Concepts
 
@@ -40,6 +40,6 @@ module CleartextLogging {
    * A sink for logging from model data.
    */
   private class ModelsAsDataSink extends Sink {
-    ModelsAsDataSink() { exists(string s | sinkNode(this, s) and s.matches("log-injection%")) }
+    ModelsAsDataSink() { sinkNode(this, "log-injection") }
   }
 }

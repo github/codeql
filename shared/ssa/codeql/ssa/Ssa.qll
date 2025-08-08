@@ -1566,23 +1566,29 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     default predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) { none() }
 
+    /** An abstract value that a `Guard` may evaluate to. */
+    class GuardValue {
+      /** Gets a textual representation of this value. */
+      string toString();
+    }
+
     /** A (potential) guard. */
     class Guard {
       /** Gets a textual representation of this guard. */
       string toString();
 
       /**
-       * Holds if the evaluation of this guard to `branch` corresponds to the edge
+       * Holds if the evaluation of this guard to `val` corresponds to the edge
        * from `bb1` to `bb2`.
        */
-      predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
+      predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue val);
 
       /**
-       * Holds if this guard evaluating to `branch` controls the control-flow
+       * Holds if this guard evaluating to `val` controls the control-flow
        * branch edge from `bb1` to `bb2`. That is, following the edge from
-       * `bb1` to `bb2` implies that this guard evaluated to `branch`.
+       * `bb1` to `bb2` implies that this guard evaluated to `val`.
        *
-       * This predicate differs from `hasBranchEdge` in that it also covers
+       * This predicate differs from `hasValueBranchEdge` in that it also covers
        * indirect guards, such as:
        * ```
        * b = guard;
@@ -1590,15 +1596,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * if (b) { ... }
        * ```
        */
-      predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
+      predicate valueControlsBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue val);
     }
 
-    /** Holds if `guard` directly controls block `bb` upon evaluating to `branch`. */
-    predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, boolean branch);
+    /** Holds if `guard` directly controls block `bb` upon evaluating to `val`. */
+    predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, GuardValue val);
 
-    /** Holds if `guard` controls block `bb` upon evaluating to `branch`. */
-    default predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
-      guardDirectlyControlsBlock(guard, bb, branch)
+    /** Holds if `guard` controls block `bb` upon evaluating to `val`. */
+    default predicate guardControlsBlock(Guard guard, BasicBlock bb, GuardValue val) {
+      guardDirectlyControlsBlock(guard, bb, val)
     }
 
     /**
@@ -1683,7 +1689,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       (
         // The input node is relevant either if it sits directly on a branch
         // edge for a guard,
-        exists(DfInput::Guard g | g.hasBranchEdge(input, phi.getBasicBlock(), _))
+        exists(DfInput::Guard g | g.hasValueBranchEdge(input, phi.getBasicBlock(), _))
         or
         // or if the unique predecessor is not an equivalent substitute in
         // terms of being controlled by the same guards.
@@ -1702,9 +1708,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(),
             phi.getSourceVariable()) and
           prev != input and
-          exists(DfInput::Guard g, boolean branch |
-            DfInput::guardDirectlyControlsBlock(g, input, branch) and
-            not DfInput::guardDirectlyControlsBlock(g, prev, branch)
+          exists(DfInput::Guard g, DfInput::GuardValue val |
+            DfInput::guardDirectlyControlsBlock(g, input, val) and
+            not DfInput::guardDirectlyControlsBlock(g, prev, val)
           )
         )
       )
@@ -2118,13 +2124,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     /**
-     * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
+     * Holds if the guard `g` validates the expression `e` upon evaluating to `val`.
      *
      * The expression `e` is expected to be a syntactic part of the guard `g`.
      * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
      * the argument `x`.
      */
-    signature predicate guardChecksSig(DfInput::Guard g, DfInput::Expr e, boolean branch);
+    signature predicate guardChecksSig(DfInput::Guard g, DfInput::Expr e, DfInput::GuardValue val);
 
     pragma[nomagic]
     private Definition getAPhiInputDef(SsaInputNodeImpl n) {
@@ -2139,7 +2145,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     private module WithState<StateSig State> {
       /**
-       * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`, blocking
+       * Holds if the guard `g` validates the expression `e` upon evaluating to `val`, blocking
        * flow in the given `state`.
        *
        * The expression `e` is expected to be a syntactic part of the guard `g`.
@@ -2147,15 +2153,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * the argument `x`.
        */
       signature predicate guardChecksSig(
-        DfInput::Guard g, DfInput::Expr e, boolean branch, State state
+        DfInput::Guard g, DfInput::Expr e, DfInput::GuardValue val, State state
       );
 
       /**
        * Holds if the guard `g` validates the SSA definition `def` upon
-       * evaluating to `branch`, blocking flow in the given `state`.
+       * evaluating to `val`, blocking flow in the given `state`.
        */
       signature predicate guardChecksDefSig(
-        DfInput::Guard g, Definition def, boolean branch, State state
+        DfInput::Guard g, Definition def, DfInput::GuardValue val, State state
       );
     }
 
@@ -2167,9 +2173,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     module BarrierGuard<guardChecksSig/3 guardChecks> {
       private predicate guardChecksWithState(
-        DfInput::Guard g, DfInput::Expr e, boolean branch, Unit state
+        DfInput::Guard g, DfInput::Expr e, DfInput::GuardValue val, Unit state
       ) {
-        guardChecks(g, e, branch) and exists(state)
+        guardChecks(g, e, val) and exists(state)
       }
 
       private module StatefulBarrier = BarrierGuardWithState<Unit, guardChecksWithState/4>;
@@ -2188,9 +2194,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     module BarrierGuardWithState<StateSig State, WithState<State>::guardChecksSig/4 guardChecks> {
       pragma[nomagic]
       private predicate guardChecksSsaDef(
-        DfInput::Guard g, Definition def, boolean branch, State state
+        DfInput::Guard g, Definition def, DfInput::GuardValue val, State state
       ) {
-        guardChecks(g, DfInput::getARead(def), branch, state)
+        guardChecks(g, DfInput::getARead(def), val, state)
       }
 
       private module Barrier = BarrierGuardDefWithState<State, guardChecksSsaDef/4>;
@@ -2210,14 +2216,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       /** Gets a node that is safely guarded by the given guard check. */
       pragma[nomagic]
       Node getABarrierNode(State state) {
-        exists(DfInput::Guard g, boolean branch, Definition def, BasicBlock bb |
-          guardChecksSsaDef(g, def, branch, state)
+        exists(DfInput::Guard g, DfInput::GuardValue val, Definition def, BasicBlock bb |
+          guardChecksSsaDef(g, def, val, state)
         |
           // guard controls a read
           exists(DfInput::Expr e |
             e = DfInput::getARead(def) and
             e.hasCfgNode(bb, _) and
-            DfInput::guardControlsBlock(g, bb, branch) and
+            DfInput::guardControlsBlock(g, bb, val) and
             result.(ExprNode).getExpr() = e
           )
           or
@@ -2226,9 +2232,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
             def = getAPhiInputDef(result) and
             result.(SsaInputNodeImpl).isInputInto(phi, bb)
           |
-            DfInput::guardControlsBlock(g, bb, branch)
+            DfInput::guardControlsBlock(g, bb, val)
             or
-            g.controlsBranchEdge(bb, phi.getBasicBlock(), branch)
+            g.valueControlsBranchEdge(bb, phi.getBasicBlock(), val)
           )
         )
       }

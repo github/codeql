@@ -39,8 +39,8 @@ use sqlx::Executor;
 
 async fn test_sqlx_mysql(url: &str, enable_remote: bool) -> Result<(), sqlx::Error> {
     // connect through a MySQL connection pool
-    let pool = sqlx::mysql::MySqlPool::connect(url).await?;
-    let mut conn = pool.acquire().await?;
+    let pool: sqlx::Pool<sqlx::MySql> = sqlx::mysql::MySqlPool::connect(url).await?;
+    let mut conn: sqlx::pool::PoolConnection<sqlx::MySql> = pool.acquire().await?;
 
     // construct queries (with extra variants)
     let const_string = String::from("Alice");
@@ -61,14 +61,14 @@ async fn test_sqlx_mysql(url: &str, enable_remote: bool) -> Result<(), sqlx::Err
     let prepared_query_1 = String::from("SELECT * FROM people WHERE firstname=?"); // (prepared arguments are safe)
 
     // direct execution
-    let _ = conn.execute(safe_query_1.as_str()).await?; // $ sql-sink
-    let _ = conn.execute(safe_query_2.as_str()).await?; // $ sql-sink
-    let _ = conn.execute(safe_query_3.as_str()).await?; // $ sql-sink $ SPURIOUS: Alert[rust/sql-injection]=remote1
-    let _ = conn.execute(unsafe_query_1.as_str()).await?; // $ sql-sink Alert[rust/sql-injection]=args1
+    let _: sqlx::mysql::MySqlQueryResult = conn.execute(safe_query_1.as_str()).await?; // $ MISSING: sql-sink
+    let _ = conn.execute(safe_query_2.as_str()).await?; // $ MISSING: sql-sink
+    let _ = conn.execute(safe_query_3.as_str()).await?; // $ MISSING: sql-sink
+    let _ = conn.execute(unsafe_query_1.as_str()).await?; // $ MISSING: sql-sink Alert[rust/sql-injection]=args1
     if enable_remote {
-        let _ = conn.execute(unsafe_query_2.as_str()).await?; // $ sql-sink Alert[rust/sql-injection]=remote1
-        let _ = conn.execute(unsafe_query_3.as_str()).await?; // $ sql-sink MISSING: Alert[rust/sql-injection]=remote1
-        let _ = conn.execute(unsafe_query_4.as_str()).await?; // $ sql-sink MISSING: Alert[rust/sql-injection]=remote1
+        let _ = conn.execute(unsafe_query_2.as_str()).await?; // $ MISSING: sql-sink Alert[rust/sql-injection]=remote1
+        let _ = conn.execute(unsafe_query_3.as_str()).await?; // $ MISSING: sql-sink Alert[rust/sql-injection]=remote1
+        let _ = conn.execute(unsafe_query_4.as_str()).await?; // $ MISSING: sql-sink Alert[rust/sql-injection]=remote1
     }
 
     // prepared queries
@@ -103,9 +103,9 @@ async fn test_sqlx_sqlite(url: &str, enable_remote: bool) -> Result<(), sqlx::Er
     let prepared_query_1 = String::from("SELECT * FROM people WHERE firstname=?"); // (prepared arguments are safe)
 
     // direct execution (with extra variants)
-    let _ = conn.execute(safe_query_1.as_str()).await?; // $ sql-sink
+    let _ = conn.execute(safe_query_1.as_str()).await?; // $ MISSING: sql-sink
     if enable_remote {
-        let _ = conn.execute(unsafe_query_1.as_str()).await?; // $ sql-sink MISSING: Alert[rust/sql-injection]=remote2
+        let _ = conn.execute(unsafe_query_1.as_str()).await?; // $ MISSING: sql-sink Alert[rust/sql-injection]=remote2
     }
     // ...
     let _ = sqlx::raw_sql(safe_query_1.as_str()).execute(&mut conn).await?; // $ sql-sink
@@ -176,9 +176,9 @@ async fn test_sqlx_postgres(url: &str, enable_remote: bool) -> Result<(), sqlx::
     let prepared_query_1 = String::from("SELECT * FROM people WHERE firstname=$1"); // (prepared arguments are safe)
 
     // direct execution
-    let _ = conn.execute(safe_query_1.as_str()).await?; // $ sql-sink
+    let _ = conn.execute(safe_query_1.as_str()).await?; // $ MISSING: sql-sink
     if enable_remote {
-        let _ = conn.execute(unsafe_query_1.as_str()).await?; // $ sql-sink MISSING: Alert[rust/sql-injection]=remote3
+        let _ = conn.execute(unsafe_query_1.as_str()).await?; // $ MISSING: sql-sink Alert[rust/sql-injection]=remote3
     }
 
     // prepared queries

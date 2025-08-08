@@ -37,7 +37,6 @@ import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.*
 import org.jetbrains.kotlin.load.java.typeEnhancement.hasEnhancedNullability
-import org.jetbrains.kotlin.load.kotlin.getJvmModuleNameForDeserializedDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.NameUtils
 import org.jetbrains.kotlin.name.SpecialNames
