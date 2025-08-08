@@ -556,6 +556,68 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
     nodeFrom.asCfgNode() = param.getDefault() and
     nodeTo.asCfgNode() = param.getDefiningNode()
   )
+  or
+  // Enhanced global variable field access tracking
+  globalVariableNestedFieldJumpStep(nodeFrom, nodeTo)
+}
+
+/**
+ * Holds if there is a jump step from `nodeFrom` to `nodeTo` through global variable field access.
+ * This supports tracking nested object field access through global variables like `app.obj.foo`.
+ */
+predicate globalVariableNestedFieldJumpStep(Node nodeFrom, Node nodeTo) {
+  exists(ModuleVariableNode globalVar, AttrWrite write, AttrRead read |
+    // Match writes and reads on the same global variable attribute path
+    exists(string accessPath |
+      globalVariableAttrPath(globalVar, accessPath, write.getObject()) and
+      globalVariableAttrPath(globalVar, accessPath, read.getObject())
+    ) and
+    write.getAttributeName() = read.getAttributeName() and
+    nodeFrom = write.getValue() and
+    nodeTo = read 
+  )
+}
+
+/**
+ * Maximum depth for global variable nested attribute access.
+ * Depth 0 = globalVar.foo, depth 1 = globalVar.foo.bar, depth 2 = globalVar.foo.bar.baz, etc.
+ */
+private int getMaxGlobalVariableDepth() { result = 2 }
+
+/**
+ * Holds if `node` is an attribute access path starting from global variable `globalVar`.
+ * Supports configurable nesting depth via getMaxGlobalVariableDepth().
+ */
+predicate globalVariableAttrPath(ModuleVariableNode globalVar, string accessPath, Node node) {
+  exists(int depth |
+    globalVariableAttrPathAtDepth(globalVar, accessPath, node, depth) and
+    depth >= 0
+  )
+}
+
+/**
+ * Holds if `node` is an attribute access path starting from global variable `globalVar` at specific `depth`.
+ */
+predicate globalVariableAttrPathAtDepth(
+  ModuleVariableNode globalVar, string accessPath, Node node, int depth
+) {
+  // Base case: Direct global variable access (depth 0)
+  depth = 0 and
+  // We use `globalVar` instead of `globalVar.getAWrite()` due to some weirdness with how
+  // attribute writes are handled in the global scope (see `GlobalAttributeAssignmentAsAttrWrite`).
+  node in [globalVar.getARead(), globalVar] and
+  accessPath = ""
+  or
+  exists(Node obj, string attrName, string parentAccessPath, int parentDepth |
+    node.(AttrRead).reads(obj, attrName)
+    or
+    any(AttrWrite aw).writes(obj, attrName, node)
+  |
+    globalVariableAttrPathAtDepth(globalVar, parentAccessPath, obj, parentDepth) and
+    accessPath = parentAccessPath + "." + attrName and
+    depth = parentDepth + 1 and
+    depth <= getMaxGlobalVariableDepth()
+  )
 }
 
 //--------
