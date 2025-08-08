@@ -935,18 +935,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       }
     }
 
-    private predicate booleanGuard(Guard guard, GuardValue val) {
-      exists(guard) and exists(val.asBooleanValue())
-    }
-
-    private module BooleanImplies = ImpliesTC<booleanGuard/2>;
-
-    /** INTERNAL: Don't use. */
-    predicate boolImplies(Guard g1, GuardValue v1, Guard g2, GuardValue v2) {
-      BooleanImplies::guardControls(g2, v2, g1, v1) and
-      g2 != g1
-    }
-
     /**
      * Holds if `guard` evaluating to `v` implies that `e` is guaranteed to be
      * null if `isNull` is true, and non-null if `isNull` is false.
@@ -1130,10 +1118,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       private module StatefulWrapper = ValidationWrapperWithState<Unit, guardChecksWithState/4>;
 
       /**
-       * Holds if the guard `g` validates the expression `e` upon evaluating to `val`.
+       * Holds if the guard `g` validates the SSA definition `def` upon evaluating to `val`.
        */
-      predicate guardChecks(Guard g, Expr e, GuardValue val) {
-        StatefulWrapper::guardChecks(g, e, val, _)
+      predicate guardChecksDef(Guard g, SsaDefinition def, GuardValue val) {
+        StatefulWrapper::guardChecksDef(g, def, val, _)
       }
     }
 
@@ -1156,7 +1144,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         exists(NonOverridableMethod m, SsaDefinition param, Guard guard, GuardValue val |
           m.getAReturnExpr() = ret and
           parameterDefinition(m.getParameter(ppos), param) and
-          guardChecks(guard, param.getARead(), val, state)
+          guardChecksDef(guard, param, val, state)
         |
           guard.valueControls(ret.getBasicBlock(), val) and
           relevantReturnValue(m, retval)
@@ -1185,7 +1173,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         or
         exists(SsaDefinition param, BasicBlock bb, Guard guard, GuardValue val |
           parameterDefinition(result.getParameter(ppos), param) and
-          guardChecks(guard, param.getARead(), val, state) and
+          guardChecksDef(guard, param, val, state) and
           guard.valueControls(bb, val) and
           normalExitBlock(bb) and
           retval = TException(false)
@@ -1195,7 +1183,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       /**
        * Holds if the guard `g` validates the expression `e` upon evaluating to `val`.
        */
-      predicate guardChecks(Guard g, Expr e, GuardValue val, State state) {
+      private predicate guardChecks(Guard g, Expr e, GuardValue val, State state) {
         guardChecks0(g, e, val.asBooleanValue(), state)
         or
         exists(NonOverridableMethodCall call, ParameterPosition ppos, ArgumentPosition apos |
@@ -1203,6 +1191,16 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           call.getMethod() = validationWrapper(ppos, val, state) and
           call.getArgument(apos) = e and
           parameterMatch(pragma[only_bind_out](ppos), pragma[only_bind_out](apos))
+        )
+      }
+
+      /**
+       * Holds if the guard `g` validates the SSA definition `def` upon evaluating to `val`.
+       */
+      predicate guardChecksDef(Guard g, SsaDefinition def, GuardValue val, State state) {
+        exists(Expr e |
+          guardChecks(g, e, val, state) and
+          guardReadsSsaVar(e, def)
         )
       }
     }

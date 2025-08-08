@@ -347,12 +347,28 @@ private module ControlFlowGraphImpl {
     )
   }
 
+  private predicate methodMayThrow(Method m, ThrowableType t) {
+    exists(AstNode n |
+      t = n.(ThrowStmt).getThrownExceptionType() and
+      not n.(ThrowStmt).getParent() = any(Method m0).getBody()
+      or
+      uncheckedExceptionFromMethod(n, t)
+    |
+      n.getEnclosingStmt().getEnclosingCallable() = m and
+      not exists(TryStmt try |
+        exists(try.getACatchClause()) and try.getBlock() = n.getEnclosingStmt().getEnclosingStmt*()
+      )
+    )
+  }
+
   /**
-   * Bind `t` to an unchecked exception that may occur in a precondition check.
+   * Bind `t` to an unchecked exception that may occur in a precondition check or guard wrapper.
    */
   private predicate uncheckedExceptionFromMethod(MethodCall ma, ThrowableType t) {
     conditionCheckArgument(ma, _, _) and
     (t instanceof TypeError or t instanceof TypeRuntimeException)
+    or
+    methodMayThrow(ma.getMethod(), t)
   }
 
   /**

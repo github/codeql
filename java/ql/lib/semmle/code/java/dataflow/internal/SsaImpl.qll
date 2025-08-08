@@ -562,14 +562,20 @@ private module Cached {
 
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
-      private predicate guardChecksAdjTypes(
-        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e, Guards::GuardValue val
+      private predicate guardChecksAdjTypes(Guards::Guards_v3::Guard g, Expr e, boolean branch) {
+        guardChecks(g, e, branch)
+      }
+
+      private predicate guardChecksWithWrappers(
+        DataFlowIntegrationInput::Guard g, Definition def, Guards::GuardValue val, Unit state
       ) {
-        guardChecks(g, e, val.asBooleanValue())
+        Guards::Guards_v3::ValidationWrapper<guardChecksAdjTypes/3>::guardChecksDef(g, def, val) and
+        exists(state)
       }
 
       private Node getABarrierNodeImpl() {
-        result = DataFlowIntegrationImpl::BarrierGuard<guardChecksAdjTypes/3>::getABarrierNode()
+        result =
+          DataFlowIntegrationImpl::BarrierGuardDefWithState<Unit, guardChecksWithWrappers/4>::getABarrierNode(_)
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/0;
