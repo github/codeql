@@ -574,8 +574,7 @@ predicate globalVariableNestedFieldJumpStep(Node nodeFrom, Node nodeTo) {
     ) and
     write.getAttributeName() = read.getAttributeName() and
     nodeFrom = write.getValue() and
-    nodeTo = read //and
-    //write.getEnclosingCallable() != read.getEnclosingCallable()
+    nodeTo = read
   )
 }
 
@@ -583,7 +582,7 @@ predicate globalVariableNestedFieldJumpStep(Node nodeFrom, Node nodeTo) {
  * Maximum depth for global variable nested attribute access.
  * Depth 0 = globalVar.foo, depth 1 = globalVar.foo.bar, depth 2 = globalVar.foo.bar.baz, etc.
  */
-private int getMaxGlobalVariableDepth() { result = 10 }
+private int getMaxGlobalVariableDepth() { result = 2 }
 
 /**
  * Holds if `node` is an attribute access path starting from global variable `globalVar`.
@@ -604,13 +603,15 @@ predicate globalVariableAttrPathAtDepth(
 ) {
   // Base case: Direct global variable access (depth 0)
   depth = 0 and
-  node in [globalVar.getARead(), globalVar.getAWrite(), globalVar] and
+  // We use `globalVar` instead of `globalVar.getAWrite()` due to some weirdness with how
+  // attribute writes are handled in the global scope (see `GlobalAttributeAssignmentAsAttrWrite`).
+  node in [globalVar.getARead(), globalVar] and
   accessPath = ""
   or
   exists(Node obj, string attrName, string parentAccessPath, int parentDepth |
-    node.(AttrRead).accesses(obj, attrName)
+    node.(AttrRead).reads(obj, attrName)
     or
-    exists(AttrWrite aw | aw.accesses(obj, attrName) and aw.getValue() = node)
+    any(AttrWrite aw).writes(obj, attrName, node)
   |
     globalVariableAttrPathAtDepth(globalVar, parentAccessPath, obj, parentDepth) and
     accessPath = parentAccessPath + "." + attrName and
