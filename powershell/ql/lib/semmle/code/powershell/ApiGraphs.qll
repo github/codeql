@@ -205,18 +205,6 @@ module API {
     }
 
     /**
-     * Gets the given keyword parameter of this callable, or keyword argument to this call.
-     *
-     * Note: for historical reasons, this predicate may refer to an argument of a call, but this may change in the future.
-     * When referring to an argument, it is recommended to use `getKeywordArgument(n)` instead.
-     */
-    pragma[inline]
-    Node getKeywordParameter(string name) {
-      // This predicate is currently not 'inline_late' because 'name' can be an input or output
-      Impl::keywordParameterOrArgumentEdge(this.getAnEpsilonSuccessor(), name, result)
-    }
-
-    /**
      * Gets the argument passed in argument position `pos` at this call.
      */
     pragma[inline]
@@ -258,15 +246,6 @@ module API {
     Node getContents(DataFlow::ContentSet contents) {
       // We always use getAStoreContent when generating content edges, and we always use getAReadContent when querying the graph.
       result = this.getContent(contents.getAReadContent())
-    }
-
-    /**
-     * Gets a representative for the instance field of the given `name`.
-     */
-    pragma[inline]
-    Node getField(string name) {
-      // This predicate is currently not 'inline_late' because 'name' can be an input or output
-      Impl::fieldEdge(this.getAnEpsilonSuccessor(), name, result)
     }
 
     /**
@@ -405,13 +384,6 @@ module API {
   /** Gets the root node. */
   Node root() { result instanceof RootNode }
 
-  bindingset[name]
-  pragma[inline_late]
-  Node namespace(string name) {
-    // This predicate is currently not 'inline_late' because 'n' can be an input or output
-    Impl::namespace(name, result)
-  }
-
   pragma[inline]
   Node getTopLevelMember(string name) { Impl::topLevelMember(name, result) }
 
@@ -517,43 +489,6 @@ module API {
     }
 
     cached
-    predicate callEdge(Node pred, string name, Node succ) {
-      exists(DataFlow::CallNode call |
-        // from receiver to method call node
-        pred = getForwardEndNode(getALocalSourceStrict(call.getQualifier())) and
-        succ = MkMethodAccessNode(call) and
-        name = call.getLowerCaseName()
-      )
-    }
-
-    bindingset[name]
-    private string memberOrMethodReturnValue(string name) {
-      // This predicate is a bit ad-hoc, but it's okay for now.
-      // We can delete it once we no longer use the typeModel and summaryModel
-      // tables to represent implicit root members.
-      result = "Method[" + name + "]"
-      or
-      result = "Method[" + name + "].ReturnValue"
-      or
-      result = "Member[" + name + "]"
-    }
-
-    private Node getAnImplicitRootMember(string name) {
-      exists(DataFlow::CallNode call |
-        Extensions::typeModel(_, Specific::getAnImplicitImport(), memberOrMethodReturnValue(name))
-        or
-        Extensions::summaryModel(Specific::getAnImplicitImport(), memberOrMethodReturnValue(name),
-          _, _, _, _)
-        or
-        Extensions::sourceModel(Specific::getAnImplicitImport(), memberOrMethodReturnValue(name), _,
-          _)
-      |
-        result = MkMethodAccessNode(call) and
-        name = call.getLowerCaseName()
-      )
-    }
-
-    cached
     predicate memberEdge(Node pred, string name, Node succ) {
       pred = API::root() and
       (
@@ -618,11 +553,6 @@ module API {
     }
 
     cached
-    predicate fieldEdge(Node pred, string name, Node succ) {
-      Impl::contentEdge(pred, DataFlowPrivate::TFieldContent(name), succ)
-    }
-
-    cached
     predicate elementEdge(Node pred, Node succ) {
       contentEdge(pred, any(DataFlow::ContentSet set | set.isAnyElement()).getAReadContent(), succ)
     }
@@ -665,22 +595,11 @@ module API {
         ), succ)
     }
 
-    private predicate keywordParameterEdge(Node pred, string name, Node succ) {
-      parameterEdge(pred, any(DataFlowDispatch::ParameterPosition pos | pos.isKeyword(name)), succ)
-    }
-
     cached
     predicate positionalParameterOrArgumentEdge(Node pred, int n, Node succ) {
       positionalArgumentEdge(pred, n, succ)
       or
       positionalParameterEdge(pred, n, succ)
-    }
-
-    cached
-    predicate keywordParameterOrArgumentEdge(Node pred, string name, Node succ) {
-      keywordArgumentEdge(pred, name, succ)
-      or
-      keywordParameterEdge(pred, name, succ)
     }
 
     cached
