@@ -235,13 +235,9 @@ private class ClassDefinitionAsAttrWrite extends AttrWrite, CfgNode {
  * - Qualified imports: `from module import attr as name`
  */
 abstract class AttrRead extends AttrRef, Node, LocalSourceNode {
-
   /** Holds if this attribute read reads the attribute named `attrName` on the object `object`. */
-  predicate reads(Node object, string attrName) {
-    this.accesses(object, attrName)
-  }
-
- }
+  predicate reads(Node object, string attrName) { this.accesses(object, attrName) }
+}
 
 /** A simple attribute read, e.g. `object.attr` */
 private class AttributeReadAsAttrRead extends AttrRead, CfgNode {
