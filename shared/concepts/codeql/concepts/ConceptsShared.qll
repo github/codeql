@@ -46,27 +46,7 @@ module ConceptsMake<LocationSig Location, DF::InputSig<Location> DataFlowLang> {
      * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `CryptographicOperation::Range` instead.
      */
-    class CryptographicOperation extends DataFlowNode instanceof CryptographicOperation::Range {
-      /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
-      CryptographicAlgorithm getAlgorithm() { result = super.getAlgorithm() }
-
-      /** Gets the data flow node where the cryptographic algorithm used in this operation is configured. */
-      DataFlowNode getInitialization() { result = super.getInitialization() }
-
-      /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
-      DataFlowNode getAnInput() { result = super.getAnInput() }
-
-      /**
-       * Gets the block mode used to perform this cryptographic operation.
-       *
-       * This predicate is only expected to have a result if two conditions hold:
-       *  1. The operation is an encryption operation, i.e. the algorithm used is an `EncryptionAlgorithm`, and
-       *  2. The algorithm used is a block cipher (not a stream cipher).
-       *
-       * If either of these conditions do not hold, then this predicate should have no result.
-       */
-      BlockMode getBlockMode() { result = super.getBlockMode() }
-    }
+    final class CryptographicOperation = CryptographicOperation::Range;
 
     /** Provides classes for modeling new applications of a cryptographic algorithms. */
     module CryptographicOperation {
@@ -133,29 +113,7 @@ module ConceptsMake<LocationSig Location, DF::InputSig<Location> DataFlowLang> {
        * Extend this class to refine existing API models. If you want to model new APIs,
        * extend `Http::Client::Request::Range` instead.
        */
-      class Request extends DataFlowNode instanceof Request::Range {
-        /**
-         * Gets a data flow node that contributes to the URL of the request.
-         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-         */
-        DataFlowNode getAUrlPart() { result = super.getAUrlPart() }
-
-        /** Gets a string that identifies the framework used for this request. */
-        string getFramework() { result = super.getFramework() }
-
-        /**
-         * Holds if this request is made using a mode that disables SSL/TLS
-         * certificate validation, where `disablingNode` represents the point at
-         * which the validation was disabled, and `argumentOrigin` represents the origin
-         * of the argument that disabled the validation (which could be the same node as
-         * `disablingNode`).
-         */
-        predicate disablesCertificateValidation(
-          DataFlowNode disablingNode, DataFlowNode argumentOrigin
-        ) {
-          super.disablesCertificateValidation(disablingNode, argumentOrigin)
-        }
-      }
+      final class Request = Request::Range;
 
       /** Provides a class for modeling new HTTP requests. */
       module Request {
