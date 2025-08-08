@@ -58,18 +58,26 @@ private Class getRootType(FieldAccess fa) {
 }
 
 /**
+ * Gets the size of `v`. This predicate does not have a result when the
+ * unspecified type of `v` is a `ReferenceType`.
+ */
+private int getVariableSize(Variable v) {
+  exists(Type t |
+    t = v.getUnspecifiedType() and
+    not t instanceof ReferenceType and
+    result = t.getSize()
+  )
+}
+
+/**
  * Gets the size of the buffer access at `va`.
  */
 private int getSize(VariableAccess va) {
   exists(Variable v | va.getTarget() = v |
     // If `v` is not a field then the size of the buffer is just
     // the size of the type of `v`.
-    exists(Type t |
-      t = v.getUnspecifiedType() and
-      not v instanceof Field and
-      not t instanceof ReferenceType and
-      result = t.getSize()
-    )
+    not v instanceof Field and
+    result = getVariableSize(v)
     or
     exists(Class c, int trueSize |
       // Otherwise, we find the "outermost" object and compute the size
@@ -92,7 +100,7 @@ private int getSize(VariableAccess va) {
       // buffer is `12 - 4 = 8`.
       c = getRootType(va) and
       // we calculate the size based on the last field, to avoid including any padding after it
-      trueSize = max(Field f | | f.getOffsetInClass(c) + f.getUnspecifiedType().getSize()) and
+      trueSize = max(Field f | | f.getOffsetInClass(c) + getVariableSize(f)) and
       result = trueSize - v.(Field).getOffsetInClass(c)
     )
   )
