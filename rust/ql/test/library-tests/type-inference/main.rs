@@ -2068,13 +2068,7 @@ mod indexers {
     }
 
     fn analyze_slice(slice: &[S]) {
-        // NOTE: `slice` gets the spurious type `[]` because the desugaring of
-        // the index expression adds an implicit borrow. `&slice` has the type
-        // `&&[S]`, but the `index` methods takes a `&[S]`, so Rust adds an
-        // implicit dereference. We cannot currently handle a position that is
-        // both implicitly dereferenced and implicitly borrowed, so the extra
-        // type sneaks in.
-        let x = slice[0].foo(); // $ target=foo type=x:S target=index SPURIOUS: type=slice:[]
+        let x = slice[0].foo(); // $ target=foo type=x:S target=index
     }
 
     pub fn f() {

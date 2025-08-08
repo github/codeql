@@ -334,7 +334,19 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     /** Holds if this path starts with `tp`, followed by `suffix`. */
     bindingset[this]
     predicate isCons(TypeParameter tp, TypePath suffix) {
-      suffix = this.stripPrefix(TypePath::singleton(tp))
+      exists(string regexp | regexp = "([0-9]+)\\.(.*)" |
+        tp = TypeParameter::decode(this.regexpCapture(regexp, 1)) and
+        suffix = this.regexpCapture(regexp, 2)
+      )
+    }
+
+    /** Holds if this path starts with `prefix`, followed by `tp`. */
+    bindingset[this]
+    predicate isSnoc(TypePath prefix, TypeParameter tp) {
+      exists(string regexp | regexp = "(|.+\\.)([0-9]+)\\." |
+        prefix = this.regexpCapture(regexp, 1) and
+        tp = TypeParameter::decode(this.regexpCapture(regexp, 2))
+      )
     }
 
     /** Gets the head of this path, if any. */
