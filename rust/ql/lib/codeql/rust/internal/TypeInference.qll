@@ -1846,7 +1846,7 @@ pragma[nomagic]
 private predicate methodCandidate(Type type, string name, int arity, Impl impl) {
   type = impl.getSelfTy().(TypeMention).resolveType() and
   exists(Function f |
-    f = impl.(ImplItemNode).getASuccessor(name) and
+    f = impl.(ImplItemNode).getASuccessorFullExternal(name) and
     f.getParamList().hasSelfParam() and
     arity = f.getParamList().getNumberOfParams()
   )
@@ -1891,7 +1891,7 @@ private module IsInstantiationOfInput implements IsInstantiationOfInputSig<Metho
 bindingset[item, name]
 pragma[inline_late]
 private Function getMethodSuccessor(ItemNode item, string name) {
-  result = item.getASuccessor(name)
+  result = item.getASuccessorFullExternal(name)
 }
 
 bindingset[tp, name]

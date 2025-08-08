@@ -207,7 +207,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
       this = impl.getTraitPath() and
       param.getTrait() = resolved and
       name = param.getTypeAlias().getName().getText() and
-      alias = impl.getASuccessor(pragma[only_bind_into](name)) and
+      alias = impl.getASuccessorFullExternal(pragma[only_bind_into](name)) and
       result = alias.getTypeRepr() and
       tp =
         TAssociatedTypeTypeParameter(resolved

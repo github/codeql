@@ -32,6 +32,49 @@ final class Namespace extends TNamespace {
   }
 }
 
+private newtype TVisibilityScope =
+  TInternal() or
+  TExternal() or
+  TBoth()
+
+class VisibilityScope extends TVisibilityScope {
+  predicate isInternal() { this = TInternal() }
+
+  predicate isExternal() { this = TExternal() }
+
+  predicate isBoth() { this = TBoth() }
+
+  predicate isInternalOrBoth() { this.isInternal() or this.isBoth() }
+
+  predicate isExternalOrBoth() { this.isExternal() or this.isBoth() }
+
+  string toString() {
+    this.isInternal() and result = "internal"
+    or
+    this.isExternal() and result = "external"
+    or
+    this.isBoth() and result = "both"
+  }
+}
+
+// todo: move out
+pragma[nomagic]
+private ItemNode getAChildSuccessor(ItemNode item, string name, VisibilityScope scope) {
+  item = result.getImmediateParent() and
+  name = result.getName() and
+  (
+    if result instanceof TypeParam
+    then scope.isInternal()
+    else
+      if item instanceof ImplOrTraitItemNode
+      then if result instanceof AssocItem then scope.isExternal() else scope.isBoth()
+      else
+        if result instanceof Use
+        then scope.isInternal()
+        else scope.isBoth()
+  )
+}
+
 /**
  * An item that may be referred to by a path, and which is a node in
  * the _item graph_.
@@ -112,42 +155,39 @@ abstract class ItemNode extends Locatable {
     result = this.(SourceFileItemNode).getSuper()
   }
 
-  pragma[nomagic]
-  private ItemNode getAChildSuccessor(string name) {
-    this = result.getImmediateParent() and
-    name = result.getName()
-  }
-
   cached
-  ItemNode getASuccessorRec(string name) {
+  ItemNode getASuccessorRec(string name, VisibilityScope scope) {
     Stages::PathResolutionStage::ref() and
-    sourceFileEdge(this, name, result)
+    sourceFileEdge(this, name, result) and
+    scope.isBoth()
     or
-    result = this.getAChildSuccessor(name)
+    result = getAChildSuccessor(this, name, scope)
     or
-    fileImportEdge(this, name, result)
+    fileImportEdge(this, name, result, scope)
     or
-    useImportEdge(this, name, result)
+    useImportEdge(this, name, result, scope)
     or
-    crateDefEdge(this, name, result)
+    crateDefEdge(this, name, result, scope)
     or
-    crateDependencyEdge(this, name, result)
+    crateDependencyEdge(this, name, result) and
+    scope.isInternal()
     or
-    externCrateEdge(this, name, result)
+    externCrateEdge(this, name, result) and
+    scope.isInternal()
     or
     // items made available through `use` are available to nodes that contain the `use`
     exists(UseItemNode use |
-      use = this.getASuccessorRec(_) and
-      result = use.(ItemNode).getASuccessorRec(name)
+      use = this.getASuccessorRec(_, _) and
+      result = use.(ItemNode).getASuccessorRec(name, scope)
     )
     or
-    exists(ExternCrateItemNode ec | result = ec.(ItemNode).getASuccessorRec(name) |
-      ec = this.getASuccessorRec(_)
+    exists(ExternCrateItemNode ec | result = ec.(ItemNode).getASuccessorRec(name, scope) |
+      ec = this.getASuccessorRec(_, _)
       or
       // if the extern crate appears in the crate root, then the crate name is also added
       // to the 'extern prelude', see https://doc.rust-lang.org/reference/items/extern-crates.html
       exists(Crate c |
-        ec = c.getSourceFile().(ItemNode).getASuccessorRec(_) and
+        ec = c.getSourceFile().(ItemNode).getASuccessorRec(_, _) and
         this = c.getASourceFile()
       )
     )
@@ -155,7 +195,8 @@ abstract class ItemNode extends Locatable {
     // a trait has access to the associated items of its supertraits
     this =
       any(TraitItemNode trait |
-        result = trait.resolveABound().getASuccessorRec(name) and
+        result = trait.resolveABound().getASuccessorRec(name, scope) and
+        scope.isExternalOrBoth() and
         result instanceof AssocItemNode and
         not trait.hasAssocItem(name)
       )
@@ -163,28 +204,34 @@ abstract class ItemNode extends Locatable {
     // items made available by an implementation where `this` is the implementing type
     exists(ItemNode node |
       this = node.(ImplItemNode).resolveSelfTy() and
-      result = node.getASuccessorRec(name) and
-      result instanceof AssocItemNode and
-      not result instanceof TypeAlias
+      result = node.getASuccessorRec(name, scope) and
+      scope.isExternalOrBoth() and
+      result instanceof AssocItemNode //and
+      // not result instanceof TypeAlias
     )
     or
     // trait items with default implementations made available in an implementation
     exists(ImplItemNode impl, ItemNode trait |
       this = impl and
       trait = impl.resolveTraitTy() and
-      result = trait.getASuccessorRec(name) and
+      result = trait.getASuccessorRec(name, scope) and
       result.(AssocItemNode).hasImplementation() and
+      scope.isExternalOrBoth() and
       not impl.hasAssocItem(name)
     )
     or
     // type parameters have access to the associated items of its bounds
-    result = this.(TypeParamItemNode).resolveABound().getASuccessorRec(name).(AssocItemNode)
+    result = this.(TypeParamItemNode).resolveABound().getASuccessorRec(name, scope).(AssocItemNode) and
+    scope.isExternalOrBoth()
     or
-    result = this.(ImplTraitTypeReprItemNode).resolveABound().getASuccessorRec(name).(AssocItemNode)
+    result =
+      this.(ImplTraitTypeReprItemNode).resolveABound().getASuccessorRec(name, scope).(AssocItemNode) and
+    scope.isExternalOrBoth()
     or
-    result = this.(TypeAliasItemNode).resolveAlias().getASuccessorRec(name) and
-    // type parameters defined in the RHS are not available in the LHS
-    not result instanceof TypeParam
+    result = this.(TypeAliasItemNode).resolveAlias().getASuccessorRec(name, scope) and
+    scope.isExternalOrBoth()
+    // // type parameters defined in the RHS are not available in the LHS
+    // not result instanceof TypeParam
   }
 
   /**
@@ -194,82 +241,101 @@ abstract class ItemNode extends Locatable {
    * both are included
    */
   cached
-  ItemNode getASuccessorFull(string name) {
+  ItemNode getASuccessorFull(string name, VisibilityScope scope) {
     Stages::PathResolutionStage::ref() and
-    result = this.getASuccessorRec(name)
-    or
-    preludeEdge(this, name, result)
-    or
-    this instanceof SourceFile and
-    builtin(name, result)
+    result = this.getASuccessorRec(name, scope)
     or
     name = "super" and
+    scope.isBoth() and
     if this instanceof Module or this instanceof SourceFile
     then result = this.getImmediateParentModule()
     else result = this.getImmediateParentModule().getImmediateParentModule()
     or
-    name = "self" and
-    if
-      this instanceof Module or
-      this instanceof Enum or
-      this instanceof Struct or
-      this instanceof Crate
-    then result = this
-    else result = this.getImmediateParentModule()
-    or
-    name = "Self" and
-    this = result.(ImplOrTraitItemNode).getAnItemInSelfScope()
-    or
-    name = "crate" and
-    this = result.(CrateItemNode).getASourceFile()
-    or
-    // todo: implement properly
-    name = "$crate" and
-    result = any(CrateItemNode crate | this = crate.getASourceFile()).(Crate).getADependency*() and
-    result.(CrateItemNode).isPotentialDollarCrateTarget()
+    scope.isInternal() and
+    (
+      preludeEdge(this, name, result)
+      or
+      this instanceof SourceFile and
+      builtin(name, result)
+      or
+      name = "self" and
+      if
+        this instanceof Module or
+        this instanceof Enum or
+        this instanceof Struct or
+        this instanceof Crate
+      then result = this
+      else result = this.getImmediateParentModule()
+      or
+      name = "Self" and
+      this = result.(ImplOrTraitItemNode).getAnItemInSelfScope()
+      or
+      name = "crate" and
+      this = result.(CrateItemNode).getASourceFile()
+      or
+      // todo: implement properly
+      name = "$crate" and
+      result = any(CrateItemNode crate | this = crate.getASourceFile()).(Crate).getADependency*() and
+      result.(CrateItemNode).isPotentialDollarCrateTarget()
+    )
   }
 
-  /**
-   * Holds if the successor `item` with the name `name` is not available locally
-   * for unqualified paths.
-   *
-   * This has the effect that a path of the form `name` inside `this` will not
-   * resolve to `item`.
-   */
-  pragma[nomagic]
-  predicate excludedLocally(string name, ItemNode item) {
-    // Associated items in an impl or trait block are not directly available
-    // inside the block, they require a qualified path with a `Self` prefix.
-    item = this.getAChildSuccessor(name) and
-    this instanceof ImplOrTraitItemNode and
-    item instanceof AssocItemNode
+  ItemNode getASuccessorFullInternal(string name, VisibilityScope scope) {
+    result = this.getASuccessorFull(name, scope) and
+    (
+      scope.isInternal()
+      or
+      scope.isBoth()
+    )
   }
 
-  /**
-   * Holds if the successor `item` with the name `name` is not available
-   * externally for qualified paths that resolve to this item.
-   *
-   * This has the effect that a path of the form `Qualifier::name`, where
-   * `Qualifier` resolves to this item, will not resolve to `item`.
-   */
-  pragma[nomagic]
-  predicate excludedExternally(string name, ItemNode item) {
-    // Type parameters for an `impl` or trait block are not available outside of
-    // the block.
-    item = this.getAChildSuccessor(name) and
-    this instanceof ImplOrTraitItemNode and
-    item instanceof TypeParamItemNode
+  ItemNode getASuccessorFullExternal(string name) {
+    exists(VisibilityScope scope | result = this.getASuccessorFull(name, scope) |
+      scope.isExternal()
+      or
+      scope.isBoth()
+    )
   }
 
+  // /**
+  //  * Holds if the successor `item` with the name `name` is not available locally
+  //  * for unqualified paths.
+  //  *
+  //  * This has the effect that a path of the form `name` inside `this` will not
+  //  * resolve to `item`.
+  //  */
+  // pragma[nomagic]
+  // predicate excludedLocally(string name, ItemNode item) {
+  //   // Associated items in an impl or trait block are not directly available
+  //   // inside the block, they require a qualified path with a `Self` prefix.
+  //   item = this.getAChildSuccessor(name) and
+  //   this instanceof ImplOrTraitItemNode and
+  //   item instanceof AssocItemNode
+  // }
+  // /**
+  //  * Holds if the successor `item` with the name `name` is not available
+  //  * externally for qualified paths that resolve to this item.
+  //  *
+  //  * This has the effect that a path of the form `Qualifier::name`, where
+  //  * `Qualifier` resolves to this item, will not resolve to `item`.
+  //  */
+  // pragma[nomagic]
+  // predicate excludedExternally(string name, ItemNode item) {
+  //   // Type parameters for an `impl` or trait block are not available outside of
+  //   // the block.
+  //   item = this.getAChildSuccessor(name) and
+  //   this instanceof ImplOrTraitItemNode and
+  //   item instanceof TypeParamItemNode
+  // }
   pragma[nomagic]
   private predicate hasSourceFunction(string name) {
-    this.getASuccessorFull(name).(Function).fromSource()
+    this.getASuccessorFull(name, _).(Function).fromSource()
   }
 
   /** Gets a successor named `name` of this item, if any. */
   pragma[nomagic]
-  ItemNode getASuccessor(string name) {
-    result = this.getASuccessorFull(name) and
+  ItemNode getASuccessor(string name, VisibilityScope scope) {
+    result = this.getASuccessorFull(name, scope) and
     (
       // when a function exists in both source code and in library code, it is because
       // we also extracted the source code as library code, and hence we only want
@@ -345,7 +411,7 @@ abstract private class ModuleLikeNode extends ItemNode {
 private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
   pragma[nomagic]
   ModuleLikeNode getSuper() {
-    result = any(ModuleItemNode mod | fileImport(mod, this)).getASuccessorFull("super")
+    result = any(ModuleItemNode mod | fileImport(mod, this)).getASuccessorFull("super", _)
   }
 
   override string getName() { result = "(source file)" }
@@ -393,7 +459,7 @@ class CrateItemNode extends ItemNode instanceof Crate {
   predicate isPotentialDollarCrateTarget() {
     exists(string name, RelevantPath p |
       p.isDollarCrateQualifiedPath(name) and
-      exists(this.getASuccessorFull(name))
+      exists(this.getASuccessorFull(name, _))
     )
   }
 
@@ -573,7 +639,7 @@ abstract class ImplOrTraitItemNode extends ItemNode {
   Path getASelfPath() {
     Stages::PathResolutionStage::ref() and
     isUnqualifiedSelfPath(result) and
-    this = unqualifiedPathLookup(result, _)
+    this = unqualifiedPathLookup(result, _, _)
   }
 
   /** Gets an associated item belonging to this trait or `impl` block. */
@@ -1111,10 +1177,10 @@ predicate fileImport(Module m, SourceFile f) {
  * in scope under the name `name`.
  */
 pragma[nomagic]
-private predicate fileImportEdge(Module mod, string name, ItemNode item) {
+private predicate fileImportEdge(Module mod, string name, ItemNode item, VisibilityScope scope) {
   exists(SourceFileItemNode f |
     fileImport(mod, f) and
-    item = f.getASuccessorRec(name)
+    item = f.getASuccessorRec(name, scope)
   )
 }
 
@@ -1122,8 +1188,8 @@ private predicate fileImportEdge(Module mod, string name, ItemNode item) {
  * Holds if crate `c` defines the item `i` named `name`.
  */
 pragma[nomagic]
-private predicate crateDefEdge(CrateItemNode c, string name, ItemNode i) {
-  i = c.getSourceFile().getASuccessorRec(name) and
+private predicate crateDefEdge(CrateItemNode c, string name, ItemNode i, VisibilityScope scope) {
+  i = c.getSourceFile().getASuccessorRec(name, scope) and
   not i instanceof Crate
 }
 
@@ -1168,12 +1234,14 @@ private predicate useTreeDeclares(UseTree tree, string name) {
  */
 pragma[nomagic]
 private predicate declares(ItemNode item, Namespace ns, string name) {
-  exists(ItemNode child | child.getImmediateParent() = item |
-    child.getName() = name and
+  exists(ItemNode child, VisibilityScope scope | child = getAChildSuccessor(item, name, scope) |
     child.getNamespace() = ns and
-    // If `item` is excluded locally then it does not declare `name`.
-    not item.excludedLocally(name, child)
-    or
+    scope.isInternalOrBoth()
+  )
+  or
+  exists(ItemNode child | child.getImmediateParent() = item |
+    // // If `item` is excluded locally then it does not declare `name`.
+    // not item.excludedLocally(name, child)
     useTreeDeclares(child.(Use).getUseTree(), name) and
     exists(ns) // `use foo::bar` can refer to both a value and a type
   )
@@ -1245,8 +1313,8 @@ private predicate unqualifiedPathLookup(ItemNode encl, string name, Namespace ns
 }
 
 pragma[nomagic]
-private ItemNode getASuccessorFull(ItemNode pred, string name, Namespace ns) {
-  result = pred.getASuccessorFull(name) and
+private ItemNode getASuccessorFull(ItemNode pred, string name, Namespace ns, VisibilityScope scope) {
+  result = pred.getASuccessorFull(name, scope) and
   ns = result.getNamespace()
 }
 
@@ -1279,10 +1347,12 @@ private predicate keywordLookup(ItemNode encl, string name, RelevantPath p) {
 }
 
 pragma[nomagic]
-private ItemNode unqualifiedPathLookup(RelevantPath p, Namespace ns) {
+private ItemNode unqualifiedPathLookup(RelevantPath p, Namespace ns, VisibilityScope scope) {
   exists(ItemNode encl, string name |
-    result = getASuccessorFull(encl, name, ns) and not encl.excludedLocally(name, result)
+    result = getASuccessorFull(encl, name, ns, scope) and
+    scope.isInternalOrBoth()
   |
+    // not encl.excludedLocally(name, result)
     unqualifiedPathLookup(encl, name, ns, p)
     or
     keywordLookup(encl, name, p) and exists(ns)
@@ -1293,9 +1363,9 @@ pragma[nomagic]
 private predicate isUnqualifiedSelfPath(RelevantPath path) { path.isUnqualified("Self") }
 
 pragma[nomagic]
-private ItemNode resolvePath0(RelevantPath path, Namespace ns) {
+private ItemNode resolvePath0(RelevantPath path, Namespace ns, VisibilityScope scope) {
   exists(ItemNode res |
-    res = unqualifiedPathLookup(path, ns) and
+    res = unqualifiedPathLookup(path, ns, scope) and
     if
       not any(RelevantPath parent).getQualifier() = path and
       isUnqualifiedSelfPath(path) and
@@ -1306,11 +1376,12 @@ private ItemNode resolvePath0(RelevantPath path, Namespace ns) {
   or
   exists(ItemNode q, string name |
     q = resolvePathQualifier(path, name) and
-    result = getASuccessorFull(q, name, ns) and
-    not q.excludedExternally(name, result)
+    result = getASuccessorFull(q, name, ns, scope) and
+    scope.isExternalOrBoth()
+    // not q.excludedExternally(name, result)
   )
   or
-  result = resolveUseTreeListItem(_, _, path) and
+  result = resolveUseTreeListItem(_, _, path, scope) and
   ns = result.getNamespace()
 }
 
@@ -1347,7 +1418,7 @@ private predicate pathUsesNamespace(Path p, Namespace n) {
 /** Gets the item that `path` resolves to, if any. */
 cached
 ItemNode resolvePath(RelevantPath path) {
-  exists(Namespace ns | result = resolvePath0(path, ns) |
+  exists(Namespace ns | result = resolvePath0(path, ns, _) |
     pathUsesNamespace(path, ns)
     or
     not pathUsesNamespace(path, _) and
@@ -1378,17 +1449,20 @@ private predicate isUseTreeSubPathUnqualified(UseTree tree, RelevantPath path, s
 }
 
 pragma[nomagic]
-private ItemNode resolveUseTreeListItem(Use use, UseTree tree, RelevantPath path) {
+private ItemNode resolveUseTreeListItem(
+  Use use, UseTree tree, RelevantPath path, VisibilityScope scope
+) {
   exists(UseTree midTree, ItemNode mid, string name |
     mid = resolveUseTreeListItem(use, midTree) and
     tree = midTree.getUseTreeList().getAUseTree() and
     isUseTreeSubPathUnqualified(tree, path, pragma[only_bind_into](name)) and
-    result = mid.getASuccessorFull(pragma[only_bind_into](name))
+    result = mid.getASuccessorFull(pragma[only_bind_into](name), scope)
   )
   or
   exists(ItemNode q, string name |
     q = resolveUseTreeListItemQualifier(use, tree, path, name) and
-    result = q.getASuccessorFull(name)
+    result = q.getASuccessorFull(name, scope) and
+    scope.isExternalOrBoth()
   )
 }
 
@@ -1396,7 +1470,7 @@ pragma[nomagic]
 private ItemNode resolveUseTreeListItemQualifier(
   Use use, UseTree tree, RelevantPath path, string name
 ) {
-  result = resolveUseTreeListItem(use, tree, path.getQualifier()) and
+  result = resolveUseTreeListItem(use, tree, path.getQualifier(), _) and
   name = path.getText()
 }
 
@@ -1405,20 +1479,22 @@ private ItemNode resolveUseTreeListItem(Use use, UseTree tree) {
   tree = use.getUseTree() and
   result = resolvePath(tree.getPath())
   or
-  result = resolveUseTreeListItem(use, tree, tree.getPath())
+  result = resolveUseTreeListItem(use, tree, tree.getPath(), _)
 }
 
 /** Holds if `use` imports `item` as `name`. */
 pragma[nomagic]
-private predicate useImportEdge(Use use, string name, ItemNode item) {
+private predicate useImportEdge(Use use, string name, ItemNode item, VisibilityScope scope) {
+  (if use.hasVisibility() then scope.isBoth() else scope.isInternal()) and
   exists(UseTree tree, ItemNode used |
     used = resolveUseTreeListItem(use, tree) and
     not tree.hasUseTreeList() and
     if tree.isGlob()
     then
-      exists(ItemNode encl, Namespace ns |
+      exists(ItemNode encl, Namespace ns, VisibilityScope scope1 |
         encl.getADescendant() = use and
-        item = getASuccessorFull(used, name, ns) and
+        item = getASuccessorFull(used, name, ns, scope1) and
+        scope1.isExternalOrBoth() and
         // glob imports can be shadowed
         not declares(encl, ns, name) and
         not name = ["super", "self", "Self", "$crate", "crate"]
@@ -1457,10 +1533,10 @@ private predicate preludeItem(string name, ItemNode i) {
   exists(Crate stdOrCore, ModuleLikeNode mod, ModuleItemNode prelude, ModuleItemNode rust |
     stdOrCore.getName() = ["std", "core"] and
     mod = stdOrCore.getSourceFile() and
-    prelude = mod.getASuccessorRec("prelude") and
-    rust = prelude.getASuccessorRec(["rust_2015", "rust_2018", "rust_2021", "rust_2024"]) and
-    i = rust.getASuccessorRec(name) and
-    not i instanceof Use
+    prelude = mod.getASuccessorFullExternal("prelude") and
+    rust = prelude.getASuccessorFullExternal(["rust_2015", "rust_2018", "rust_2021", "rust_2024"]) and
+    i = rust.getASuccessorFullExternal(name) //and
+    // not i instanceof Use
   )
 }
 
@@ -1484,7 +1560,7 @@ pragma[nomagic]
 private predicate builtin(string name, ItemNode i) {
   exists(BuiltinSourceFile builtins |
     builtins.getFile().getBaseName() = "types.rs" and
-    i = builtins.getASuccessorRec(name)
+    i = builtins.getASuccessorFullExternal(name)
   )
 }
 
@@ -1511,19 +1587,19 @@ private module Debug {
     result = resolvePath(path)
   }
 
-  predicate debugUseImportEdge(Use use, string name, ItemNode item) {
+  predicate debugUseImportEdge(Use use, string name, ItemNode item, VisibilityScope scope) {
     use = getRelevantLocatable() and
-    useImportEdge(use, name, item)
+    useImportEdge(use, name, item, scope)
   }
 
-  ItemNode debugGetASuccessorRec(ItemNode i, string name) {
+  ItemNode debugGetASuccessorRec(ItemNode i, string name, VisibilityScope scope) {
     i = getRelevantLocatable() and
-    result = i.getASuccessor(name)
+    result = i.getASuccessor(name, scope)
   }
 
-  predicate debugFileImportEdge(Module mod, string name, ItemNode item) {
+  predicate debugFileImportEdge(Module mod, string name, ItemNode item, VisibilityScope scope) {
     mod = getRelevantLocatable() and
-    fileImportEdge(mod, name, item)
+    fileImportEdge(mod, name, item, scope)
   }
 
   predicate debugFileImport(Module m, SourceFile f) {
