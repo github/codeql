@@ -194,7 +194,7 @@ abstract class ItemNode extends Locatable {
    * both are included
    */
   cached
-  ItemNode getASuccessorFull(string name) {
+  ItemNode getASuccessor(string name) {
     Stages::PathResolutionStage::ref() and
     result = this.getASuccessorRec(name)
     or
@@ -261,27 +261,6 @@ abstract class ItemNode extends Locatable {
     item instanceof TypeParamItemNode
   }
 
-  pragma[nomagic]
-  private predicate hasSourceFunction(string name) {
-    this.getASuccessorFull(name).(Function).fromSource()
-  }
-
-  /** Gets a successor named `name` of this item, if any. */
-  pragma[nomagic]
-  ItemNode getASuccessor(string name) {
-    result = this.getASuccessorFull(name) and
-    (
-      // when a function exists in both source code and in library code, it is because
-      // we also extracted the source code as library code, and hence we only want
-      // the function from source code
-      result.fromSource()
-      or
-      not result instanceof Function
-      or
-      not this.hasSourceFunction(name)
-    )
-  }
-
   /** Holds if this item has a canonical path belonging to the crate `c`. */
   abstract predicate hasCanonicalPath(Crate c);
 
@@ -345,7 +324,7 @@ abstract private class ModuleLikeNode extends ItemNode {
 private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
   pragma[nomagic]
   ModuleLikeNode getSuper() {
-    result = any(ModuleItemNode mod | fileImport(mod, this)).getASuccessorFull("super")
+    result = any(ModuleItemNode mod | fileImport(mod, this)).getASuccessor("super")
   }
 
   override string getName() { result = "(source file)" }
@@ -393,7 +372,7 @@ class CrateItemNode extends ItemNode instanceof Crate {
   predicate isPotentialDollarCrateTarget() {
     exists(string name, RelevantPath p |
       p.isDollarCrateQualifiedPath(name) and
-      exists(this.getASuccessorFull(name))
+      exists(this.getASuccessor(name))
     )
   }
 
@@ -1245,8 +1224,8 @@ private predicate unqualifiedPathLookup(ItemNode encl, string name, Namespace ns
 }
 
 pragma[nomagic]
-private ItemNode getASuccessorFull(ItemNode pred, string name, Namespace ns) {
-  result = pred.getASuccessorFull(name) and
+private ItemNode getASuccessor(ItemNode pred, string name, Namespace ns) {
+  result = pred.getASuccessor(name) and
   ns = result.getNamespace()
 }
 
@@ -1281,7 +1260,7 @@ private predicate keywordLookup(ItemNode encl, string name, RelevantPath p) {
 pragma[nomagic]
 private ItemNode unqualifiedPathLookup(RelevantPath p, Namespace ns) {
   exists(ItemNode encl, string name |
-    result = getASuccessorFull(encl, name, ns) and not encl.excludedLocally(name, result)
+    result = getASuccessor(encl, name, ns) and not encl.excludedLocally(name, result)
   |
     unqualifiedPathLookup(encl, name, ns, p)
     or
@@ -1306,7 +1285,7 @@ private ItemNode resolvePath0(RelevantPath path, Namespace ns) {
   or
   exists(ItemNode q, string name |
     q = resolvePathQualifier(path, name) and
-    result = getASuccessorFull(q, name, ns) and
+    result = getASuccessor(q, name, ns) and
     not q.excludedExternally(name, result)
   )
   or
@@ -1383,12 +1362,12 @@ private ItemNode resolveUseTreeListItem(Use use, UseTree tree, RelevantPath path
     mid = resolveUseTreeListItem(use, midTree) and
     tree = midTree.getUseTreeList().getAUseTree() and
     isUseTreeSubPathUnqualified(tree, path, pragma[only_bind_into](name)) and
-    result = mid.getASuccessorFull(pragma[only_bind_into](name))
+    result = mid.getASuccessor(pragma[only_bind_into](name))
   )
   or
   exists(ItemNode q, string name |
     q = resolveUseTreeListItemQualifier(use, tree, path, name) and
-    result = q.getASuccessorFull(name)
+    result = q.getASuccessor(name)
   )
 }
 
@@ -1418,7 +1397,7 @@ private predicate useImportEdge(Use use, string name, ItemNode item) {
     then
       exists(ItemNode encl, Namespace ns |
         encl.getADescendant() = use and
-        item = getASuccessorFull(used, name, ns) and
+        item = getASuccessor(used, name, ns) and
         // glob imports can be shadowed
         not declares(encl, ns, name) and
         not name = ["super", "self", "Self", "$crate", "crate"]

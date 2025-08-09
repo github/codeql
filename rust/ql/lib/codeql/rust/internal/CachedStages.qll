@@ -120,7 +120,7 @@ module Stages {
       or
       exists(resolvePath(_))
       or
-      exists(any(ItemNode i).getASuccessorFull(_))
+      exists(any(ItemNode i).getASuccessor(_))
       or
       exists(any(ItemNode i).getASuccessorRec(_))
       or
