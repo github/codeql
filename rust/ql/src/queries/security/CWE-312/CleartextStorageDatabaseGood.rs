@@ -1,4 +1,3 @@
-
 fn encrypt(text: String, encryption_key: &aes_gcm::Key<Aes256Gcm>) -> String {
     // encrypt text -> ciphertext
     let cipher = Aes256Gcm::new(&encryption_key);
