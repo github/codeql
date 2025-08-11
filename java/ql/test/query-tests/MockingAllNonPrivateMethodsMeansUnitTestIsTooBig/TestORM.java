@@ -31,7 +31,7 @@ public class TestORM {
    * Test of form `when(mockedObject.methodToBeMocked()).thenReturn(someVal)`.
    */
   @Test
-  public void nonCompliant1() {
+  public void nonCompliant1() { // $ Alert
     Employee sampleEmployee = new Employee("John Doe");
     EmployeeRecord employeeRecordMock = mock(EmployeeRecord.class); // NON_COMPLIANT: All public methods of the mocked object are used
     when(employeeRecordMock.add(sampleEmployee)).thenReturn(0); // Mocked EmployeeRecord.add
@@ -44,7 +44,7 @@ public class TestORM {
    * Test of form `doReturn(someVal).when(mockedObject).methodToBeMocked()`.
    */
   @Test
-  public void nonCompliant2() {
+  public void nonCompliant2() { // $ Alert
     Employee sampleEmployee = new Employee("John Doe");
     EmployeeRecord employeeRecordMock = mock(EmployeeRecord.class); // NON_COMPLIANT: All public methods of the mocked object are used
     doReturn(0).when(employeeRecordMock).add(sampleEmployee); // Mocked EmployeeRecord.add
