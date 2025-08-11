@@ -446,13 +446,13 @@ pub fn tuple_patterns() {
     // TuplePat - Tuple patterns
     match tuple {
         (1, 2, 3.0) => {
-            let exact_tuple = tuple; // $ MISSING: type=exact_tuple:?
+            let exact_tuple = tuple; // $ type=exact_tuple:(T_3)
             println!("Exact tuple: {:?}", exact_tuple);
         }
         (a, b, c) => {
-            let first_elem = a; // $ MISSING: type=first_elem:i32
-            let second_elem = b; // $ MISSING: type=second_elem:i64
-            let third_elem = c; // $ MISSING: type=third_elem:f32
+            let first_elem = a; // $ type=first_elem:i32
+            let second_elem = b; // $ type=second_elem:i64
+            let third_elem = c; // $ type=third_elem:f32
             println!("Tuple: ({}, {}, {})", first_elem, second_elem, third_elem);
         }
     }
@@ -469,7 +469,7 @@ pub fn tuple_patterns() {
     let unit = ();
     match unit {
         () => {
-            let unit_value = unit; // $ MISSING: type=unit_value:?
+            let unit_value = unit; // $ type=unit_value:()
             println!("Unit value: {:?}", unit_value);
         }
     }
@@ -478,7 +478,7 @@ pub fn tuple_patterns() {
     let single = (42i32,);
     match single {
         (x,) => {
-            let single_elem = x; // $ MISSING: type=single_elem:i32
+            let single_elem = x; // $ type=single_elem:i32
             println!("Single element tuple: {}", single_elem);
         }
     }
@@ -499,8 +499,8 @@ pub fn parenthesized_patterns() {
     let tuple = (1i32, 2i32);
     match tuple {
         (x, (y)) => {
-            let paren_x = x; // $ MISSING: type=paren_x:i32
-            let paren_y = y; // $ MISSING: type=paren_y:i32
+            let paren_x = x; // $ type=paren_x:i32
+            let paren_y = y; // $ type=paren_y:i32
             println!("Parenthesized in tuple: {}, {}", paren_x, paren_y);
         }
     }
@@ -704,7 +704,7 @@ pub fn complex_nested_patterns() {
         }
         // Catch-all with identifier pattern
         other => {
-            let other_complex = other; // $ MISSING: type=other_complex:?
+            let other_complex = other; // $ type=other_complex:0(2).Point type=other_complex:1(2).MyOption
             println!("Other complex data: {:?}", other_complex);
         }
     }
@@ -719,9 +719,9 @@ pub fn patterns_in_let_statements() {
 
     let tuple = (1i32, 2i64, 3.0f32);
     let (a, b, c) = tuple; // TuplePat in let
-    let let_a = a; // $ MISSING: type=let_a:i32
-    let let_b = b; // $ MISSING: type=let_b:i64
-    let let_c = c; // $ MISSING: type=let_c:f32
+    let let_a = a; // $ type=let_a:i32
+    let let_b = b; // $ type=let_b:i64
+    let let_c = c; // $ type=let_c:f32
 
     let array = [1i32, 2, 3, 4, 5];
     let [first, .., last] = array; // SlicePat in let
@@ -759,20 +759,20 @@ pub fn patterns_in_function_parameters() {
     }
 
     fn extract_tuple((first, _, third): (i32, f64, bool)) -> (i32, bool) {
-        let param_first = first; // $ MISSING: type=param_first:i32
-        let param_third = third; // $ MISSING: type=param_third:bool
+        let param_first = first; // $ type=param_first:i32
+        let param_third = third; // $ type=param_third:bool
         (param_first, param_third)
     }
 
     // Call the functions to use them
     let point = Point { x: 5, y: 10 };
-    let extracted = extract_point(point); // $ target=extract_point MISSING: type=extracted:?
+    let extracted = extract_point(point); // $ target=extract_point type=extracted:0(2).i32 type=extracted:1(2).i32
 
     let color = Color(200, 100, 50);
     let red = extract_color(color); // $ target=extract_color type=red:u8
 
     let tuple = (42i32, 3.14f64, true);
-    let tuple_extracted = extract_tuple(tuple); // $ target=extract_tuple MISSING: type=tuple_extracted:?
+    let tuple_extracted = extract_tuple(tuple); // $ target=extract_tuple type=tuple_extracted:0(2).i32 type=tuple_extracted:1(2).bool
 }
 
 #[rustfmt::skip]

@@ -883,6 +883,16 @@
 | delegatedProperties.kt:87:34:87:46 | this | delegatedProperties.kt:87:34:87:46 | invoke | ThisAccess |
 | delegatedProperties.kt:87:34:87:46 | this | delegatedProperties.kt:87:34:87:46 | invoke | ThisAccess |
 | delegatedProperties.kt:87:34:87:46 | this | delegatedProperties.kt:87:34:87:46 | invoke | ThisAccess |
+| exprs.kt:0:0:0:0 | Color | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:0:0:0:0 | Color | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:0:0:0:0 | Color | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:0:0:0:0 | Color[] | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:0:0:0:0 | Direction | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:0:0:0:0 | Direction | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:0:0:0:0 | Direction | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:0:0:0:0 | Direction[] | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:0:0:0:0 | EnumEntries<Color> | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:0:0:0:0 | EnumEntries<Direction> | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:4:1:142:1 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:4:20:4:25 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:4:28:4:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
@@ -1461,12 +1471,7 @@
 | exprs.kt:170:21:170:21 | 3 | exprs.kt:165:1:172:1 | foo | IntegerLiteral |
 | exprs.kt:174:1:176:1 | 0 | exprs.kt:174:1:176:1 | Direction | IntegerLiteral |
 | exprs.kt:174:1:176:1 | Direction | exprs.kt:174:1:176:1 | Direction | TypeAccess |
-| exprs.kt:174:1:176:1 | Direction | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:174:1:176:1 | Direction | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:174:1:176:1 | Direction | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:174:1:176:1 | Direction[] | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:174:1:176:1 | Enum<Direction> | exprs.kt:174:1:176:1 | Direction | TypeAccess |
-| exprs.kt:174:1:176:1 | EnumEntries<Direction> | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:174:1:176:1 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:174:1:176:1 | new Enum<Direction>(...) | exprs.kt:174:1:176:1 | Direction | ClassInstanceExpr |
 | exprs.kt:174:1:176:1 | null | exprs.kt:174:1:176:1 | Direction | NullLiteral |
@@ -1494,11 +1499,6 @@
 | exprs.kt:175:25:175:28 | Direction | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:175:25:175:28 | Direction.EAST | exprs.kt:0:0:0:0 | <clinit> | VarAccess |
 | exprs.kt:175:25:175:28 | new Direction(...) | exprs.kt:0:0:0:0 | <clinit> | ClassInstanceExpr |
-| exprs.kt:178:1:182:1 | Color | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:178:1:182:1 | Color | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:178:1:182:1 | Color | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:178:1:182:1 | Color[] | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:178:1:182:1 | EnumEntries<Color> | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:1:182:1 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:17:178:30 | 0 | exprs.kt:178:17:178:30 | Color | IntegerLiteral |
 | exprs.kt:178:17:178:30 | Color | exprs.kt:178:17:178:30 | Color | TypeAccess |

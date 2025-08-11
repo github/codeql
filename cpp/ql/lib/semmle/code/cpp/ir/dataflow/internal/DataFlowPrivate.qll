@@ -4,7 +4,7 @@ private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-private import SsaInternals as Ssa
+private import SsaImpl as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
 private import Node0ToString
@@ -331,6 +331,13 @@ private module IndirectInstructions {
 }
 
 import IndirectInstructions
+
+predicate isPostUpdateNodeImpl(Operand operand, int indirectionIndex) {
+  operand = any(FieldAddress fa).getObjectAddressOperand() and
+  indirectionIndex = [0 .. Ssa::countIndirectionsForCppType(Ssa::getLanguageType(operand))]
+  or
+  Ssa::isModifiableByCall(operand, indirectionIndex)
+}
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
@@ -1982,19 +1989,23 @@ module IteratorFlow {
 
     predicate allowFlowIntoUncertainDef(IteratorSsa::UncertainWriteDefinition def) { any() }
 
+    class GuardValue = Void;
+
     class Guard extends Void {
-      predicate hasBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+      predicate hasValueBranchEdge(
+        SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue val
+      ) {
         none()
       }
 
-      predicate controlsBranchEdge(
-        SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch
+      predicate valueControlsBranchEdge(
+        SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue val
       ) {
         none()
       }
     }
 
-    predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
+    predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, GuardValue val) {
       none()
     }
 

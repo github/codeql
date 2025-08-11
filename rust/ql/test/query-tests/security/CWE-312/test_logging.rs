@@ -90,13 +90,13 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     error!(value2:?; "message"); // $ MISSING: Alert[rust/cleartext-logging]
 
     // pre-formatted
-    let m1 = &password; // $ Source=m1
+    let m1 = &password; // $ Source[rust/cleartext-logging]=m1
     info!("message = {}", m1); // $ Alert[rust/cleartext-logging]=m1
 
-    let m2 = "message = ".to_string() + &password; // $ Source=m2
+    let m2 = "message = ".to_string() + &password; // $ Source[rust/cleartext-logging]=m2
     info!("{}", m2); // $ Alert[rust/cleartext-logging]=m2
 
-    let m3 = format!("message = {}", password); // $ Source=m3
+    let m3 = format!("message = {}", password); // $ Source[rust/cleartext-logging]=m3
     info!("{}", m3); // $  Alert[rust/cleartext-logging]=m3
 
     let mut m4 = String::new();
@@ -126,7 +126,7 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     trace!("message = {}", &str2);
 
     // logging from a tuple
-    let t1 = (harmless, password); // $ Source=t1
+    let t1 = (harmless, password); // $ Source[rust/cleartext-logging]=t1
     trace!("message = {}", t1.0);
     trace!("message = {}", t1.1); // $ Alert[rust/cleartext-logging]=t1
     trace!("message = {:?}", t1); // $ MISSING: Alert[rust/cleartext-logging]=t1
@@ -180,11 +180,11 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     let _ = err_result.log_expect(&format!("Failed with password: {}", password2)); // $ Alert[rust/cleartext-logging]
 
     // test `log_expect` with sensitive `Result.Err`
-    let err_result2: Result<String, String> = Err(password2.clone()); // $ Source=s3
+    let err_result2: Result<String, String> = Err(password2.clone()); // $ Source[rust/cleartext-logging]=s3
     let _ = err_result2.log_expect(""); // $ Alert[rust/cleartext-logging]=s3
 
     // test `log_unwrap` with sensitive `Result.Err`
-    let err_result3: Result<String, String> = Err(password2); // $ Source=err_result3
+    let err_result3: Result<String, String> = Err(password2); // $ Source[rust/cleartext-logging]=err_result3
     let _ = err_result3.log_unwrap(); // $ Alert[rust/cleartext-logging]=err_result3
 }
 

@@ -230,6 +230,7 @@ use_repo(
     "kotlin-compiler-2.1.0-Beta1",
     "kotlin-compiler-2.1.20-Beta1",
     "kotlin-compiler-2.2.0-Beta1",
+    "kotlin-compiler-2.2.20-Beta2",
     "kotlin-compiler-embeddable-1.6.0",
     "kotlin-compiler-embeddable-1.6.20",
     "kotlin-compiler-embeddable-1.7.0",
@@ -242,6 +243,7 @@ use_repo(
     "kotlin-compiler-embeddable-2.1.0-Beta1",
     "kotlin-compiler-embeddable-2.1.20-Beta1",
     "kotlin-compiler-embeddable-2.2.0-Beta1",
+    "kotlin-compiler-embeddable-2.2.20-Beta2",
     "kotlin-stdlib-1.6.0",
     "kotlin-stdlib-1.6.20",
     "kotlin-stdlib-1.7.0",
@@ -254,6 +256,7 @@ use_repo(
     "kotlin-stdlib-2.1.0-Beta1",
     "kotlin-stdlib-2.1.20-Beta1",
     "kotlin-stdlib-2.2.0-Beta1",
+    "kotlin-stdlib-2.2.20-Beta2",
 )
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")

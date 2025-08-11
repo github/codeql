@@ -348,6 +348,16 @@ predicate expectsContent(Node n, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
 }
 
+pragma[nomagic]
+private predicate numericRepresentative(RefType t) {
+  t.(BoxedType).getPrimitiveType().getName() = "double"
+}
+
+pragma[nomagic]
+private predicate booleanRepresentative(RefType t) {
+  t.(BoxedType).getPrimitiveType().getName() = "boolean"
+}
+
 /**
  * Gets a representative (boxed) type for `t` for the purpose of pruning
  * possible flow. A single type is used for all numeric types to account for
@@ -356,10 +366,10 @@ predicate expectsContent(Node n, ContentSet c) {
 RefType getErasedRepr(Type t) {
   exists(Type e | e = t.getErasure() |
     if e instanceof NumericOrCharType
-    then result.(BoxedType).getPrimitiveType().getName() = "double"
+    then numericRepresentative(result)
     else
       if e instanceof BooleanType
-      then result.(BoxedType).getPrimitiveType().getName() = "boolean"
+      then booleanRepresentative(result)
       else result = e
   )
   or

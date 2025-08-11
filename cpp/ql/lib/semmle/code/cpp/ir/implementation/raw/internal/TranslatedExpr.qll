@@ -216,7 +216,8 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
     not hasTranslatedLoad(expr) and
     not hasTranslatedSyntheticTemporaryObject(expr) and
     // If there's a result copy, then this expression's result is the copy.
-    not exprNeedsCopyIfNotLoaded(expr)
+    not exprNeedsCopyIfNotLoaded(expr) and
+    not hasTranslatedSyntheticBoolToIntConversion(expr)
   }
 }
 
@@ -358,11 +359,12 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
 }
 
 /**
- * The IR translation of a node synthesized to adjust the value category of its operand.
+ * The IR translation of a node synthesized to adjust the value category or type of its operand.
  * One of:
  * - `TranslatedLoad` - Convert from glvalue to prvalue by loading from the location.
  * - `TranslatedSyntheticTemporaryObject` - Convert from prvalue to glvalue by storing to a
  *   temporary variable.
+ * - `TranslatedSyntheticBoolToIntConversion` - Convert a prvalue Boolean to a prvalue integer.
  */
 abstract class TranslatedValueCategoryAdjustment extends TranslatedExpr {
   final override Instruction getFirstInstruction(EdgeKind kind) {
@@ -510,6 +512,45 @@ class TranslatedSyntheticTemporaryObject extends TranslatedValueCategoryAdjustme
   final override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = InitializerVariableAddressTag() and
     result = getIRTempVariable(expr, TempObjectTempVar())
+  }
+}
+
+class TranslatedSyntheticBoolToIntConversion extends TranslatedValueCategoryAdjustment,
+  TTranslatedSyntheticBoolToIntConversion
+{
+  TranslatedSyntheticBoolToIntConversion() { this = TTranslatedSyntheticBoolToIntConversion(expr) }
+
+  override string toString() { result = "Bool-to-int conversion of " + expr.toString() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    opcode instanceof Opcode::Convert and
+    tag = BoolToIntConversionTag() and
+    resultType = getIntType()
+  }
+
+  override predicate isResultGLValue() { none() }
+
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = BoolToIntConversionTag() and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(BoolToIntConversionTag())
+  }
+
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    child = this.getOperand() and
+    result = this.getInstruction(BoolToIntConversionTag()) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getResult() { result = this.getInstruction(BoolToIntConversionTag()) }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = BoolToIntConversionTag() and
+    operandTag instanceof UnaryOperandTag and
+    result = this.getOperand().getResult()
   }
 }
 
@@ -1792,20 +1833,6 @@ private Opcode binaryArithmeticOpcode(BinaryArithmeticOperation expr) {
   expr instanceof PointerSubExpr and result instanceof Opcode::PointerSub
   or
   expr instanceof PointerDiffExpr and result instanceof Opcode::PointerDiff
-}
-
-private Opcode comparisonOpcode(ComparisonOperation expr) {
-  expr instanceof EQExpr and result instanceof Opcode::CompareEQ
-  or
-  expr instanceof NEExpr and result instanceof Opcode::CompareNE
-  or
-  expr instanceof LTExpr and result instanceof Opcode::CompareLT
-  or
-  expr instanceof GTExpr and result instanceof Opcode::CompareGT
-  or
-  expr instanceof LEExpr and result instanceof Opcode::CompareLE
-  or
-  expr instanceof GEExpr and result instanceof Opcode::CompareGE
 }
 
 private Opcode spaceShipOpcode(SpaceshipExpr expr) {

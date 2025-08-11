@@ -1,0 +1,3 @@
+nonUniqueCertainType
+| sqlx.rs:158:13:158:81 | { ... } | E |
+| sqlx.rs:160:17:160:86 | { ... } | E |

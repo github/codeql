@@ -15,14 +15,34 @@
 
 import java
 
+pragma[nomagic]
+predicate mayThrow(Stmt s, RefType rt) {
+  s.(ThrowStmt).getExpr().getType() = rt
+  or
+  exists(Call call |
+    call.getEnclosingStmt() = s and
+    call.getCallee().getAnException().getType() = rt
+  )
+}
+
+pragma[nomagic]
+predicate caughtBy(TryStmt try, Stmt s, RefType rt) {
+  mayThrow(s, rt) and
+  s.getEnclosingStmt+() = try.getBlock() and
+  caughtType(try, _).hasSubtype*(rt)
+}
+
+pragma[nomagic]
+predicate nestedTry(TryStmt outer, TryStmt inner) { inner.getEnclosingStmt+() = outer.getBlock() }
+
 /**
  * Exceptions of type `rt` thrown from within statement `s` are caught by an inner try block
  * and are therefore not propagated to the outer try block `t`.
  */
 private predicate caughtInside(TryStmt t, Stmt s, RefType rt) {
-  exists(TryStmt innerTry | innerTry.getEnclosingStmt+() = t.getBlock() |
-    s.getEnclosingStmt+() = innerTry.getBlock() and
-    caughtType(innerTry, _).hasSubtype*(rt)
+  exists(TryStmt innerTry |
+    nestedTry(t, innerTry) and
+    caughtBy(innerTry, s, rt)
   )
 }
 

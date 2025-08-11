@@ -1,4 +1,5 @@
 edges
+| tests.cpp:62:7:62:18 | **global_token | tests.cpp:62:7:62:18 | **global_token | provenance |  |
 | tests.cpp:62:7:62:18 | **global_token | tests.cpp:69:2:69:43 | *... = ... | provenance |  |
 | tests.cpp:62:7:62:18 | **global_token | tests.cpp:71:27:71:38 | *global_token | provenance |  |
 | tests.cpp:62:22:62:27 | *call to getenv | tests.cpp:62:7:62:18 | **global_token | provenance |  |
