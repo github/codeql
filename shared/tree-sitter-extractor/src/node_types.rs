@@ -326,7 +326,7 @@ fn node_type_name(kind: &str, named: bool) -> String {
     if named {
         kind.to_string()
     } else {
-        format!("{}_unnamed", kind)
+        format!("{kind}_unnamed")
     }
 }
 

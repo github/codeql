@@ -666,7 +666,7 @@ fn create_field_getters<'a>(
         }
     };
     let qldoc = match &field.name {
-        Some(name) => format!("Gets the node corresponding to the field `{}`.", name),
+        Some(name) => format!("Gets the node corresponding to the field `{name}`."),
         None => {
             if formal_parameters.is_empty() {
                 "Gets the child of this node.".to_owned()
