@@ -24262,6 +24262,281 @@ ir.cpp:
 # 2725|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 2725|           Type = [PlainCharType] char
 # 2725|           ValueCategory = prvalue(load)
+# 2728| [TopLevelFunction] void test_postfix_crement(int*, int)
+# 2728|   <params>: 
+# 2728|     getParameter(0): [Parameter] p
+# 2728|         Type = [IntPointerType] int *
+# 2728|     getParameter(1): [Parameter] q
+# 2728|         Type = [IntType] int
+# 2728|   getEntryPoint(): [BlockStmt] { ... }
+# 2729|     getStmt(0): [ExprStmt] ExprStmt
+# 2729|       getExpr(): [PostfixIncrExpr] ... ++
+# 2729|           Type = [IntPointerType] int *
+# 2729|           ValueCategory = prvalue
+# 2729|         getOperand(): [VariableAccess] p
+# 2729|             Type = [IntPointerType] int *
+# 2729|             ValueCategory = lvalue
+# 2730|     getStmt(1): [ExprStmt] ExprStmt
+# 2730|       getExpr(): [PostfixIncrExpr] ... ++
+# 2730|           Type = [IntType] int
+# 2730|           ValueCategory = prvalue
+# 2730|         getOperand(): [VariableAccess] q
+# 2730|             Type = [IntType] int
+# 2730|             ValueCategory = lvalue
+# 2731|     getStmt(2): [ExprStmt] ExprStmt
+# 2731|       getExpr(): [PostfixIncrExpr] ... ++
+# 2731|           Type = [IntPointerType] int *
+# 2731|           ValueCategory = prvalue
+# 2731|         getOperand(): [VariableAccess] p
+# 2731|             Type = [IntPointerType] int *
+# 2731|             ValueCategory = lvalue
+# 2731|       getExpr().getFullyConverted(): [ParenthesisExpr] (...)
+# 2731|           Type = [IntPointerType] int *
+# 2731|           ValueCategory = prvalue
+# 2732|     getStmt(3): [ExprStmt] ExprStmt
+# 2732|       getExpr(): [PostfixIncrExpr] ... ++
+# 2732|           Type = [IntType] int
+# 2732|           ValueCategory = prvalue
+# 2732|         getOperand(): [VariableAccess] q
+# 2732|             Type = [IntType] int
+# 2732|             ValueCategory = lvalue
+# 2732|       getExpr().getFullyConverted(): [ParenthesisExpr] (...)
+# 2732|           Type = [IntType] int
+# 2732|           ValueCategory = prvalue
+# 2733|     getStmt(4): [ExprStmt] ExprStmt
+# 2733|       getExpr(): [PostfixIncrExpr] ... ++
+# 2733|           Type = [IntPointerType] int *
+# 2733|           ValueCategory = prvalue
+# 2733|         getOperand(): [VariableAccess] p
+# 2733|             Type = [IntPointerType] int *
+# 2733|             ValueCategory = lvalue
+# 2733|       getExpr().getFullyConverted(): [CStyleCast] (void)...
+# 2733|           Conversion = [VoidConversion] conversion to void
+# 2733|           Type = [VoidType] void
+# 2733|           ValueCategory = prvalue
+# 2733|         getExpr(): [ParenthesisExpr] (...)
+# 2733|             Type = [IntPointerType] int *
+# 2733|             ValueCategory = prvalue
+# 2734|     getStmt(5): [ExprStmt] ExprStmt
+# 2734|       getExpr(): [PostfixIncrExpr] ... ++
+# 2734|           Type = [IntType] int
+# 2734|           ValueCategory = prvalue
+# 2734|         getOperand(): [VariableAccess] q
+# 2734|             Type = [IntType] int
+# 2734|             ValueCategory = lvalue
+# 2734|       getExpr().getFullyConverted(): [CStyleCast] (void)...
+# 2734|           Conversion = [VoidConversion] conversion to void
+# 2734|           Type = [VoidType] void
+# 2734|           ValueCategory = prvalue
+# 2734|         getExpr(): [ParenthesisExpr] (...)
+# 2734|             Type = [IntType] int
+# 2734|             ValueCategory = prvalue
+# 2735|     getStmt(6): [ExprStmt] ExprStmt
+# 2735|       getExpr(): [PostfixIncrExpr] ... ++
+# 2735|           Type = [IntPointerType] int *
+# 2735|           ValueCategory = prvalue
+# 2735|         getOperand(): [VariableAccess] p
+# 2735|             Type = [IntPointerType] int *
+# 2735|             ValueCategory = lvalue
+# 2735|       getExpr().getFullyConverted(): [CStyleCast] (void)...
+# 2735|           Conversion = [VoidConversion] conversion to void
+# 2735|           Type = [VoidType] void
+# 2735|           ValueCategory = prvalue
+# 2736|     getStmt(7): [ExprStmt] ExprStmt
+# 2736|       getExpr(): [PostfixIncrExpr] ... ++
+# 2736|           Type = [IntType] int
+# 2736|           ValueCategory = prvalue
+# 2736|         getOperand(): [VariableAccess] q
+# 2736|             Type = [IntType] int
+# 2736|             ValueCategory = lvalue
+# 2736|       getExpr().getFullyConverted(): [CStyleCast] (void)...
+# 2736|           Conversion = [VoidConversion] conversion to void
+# 2736|           Type = [VoidType] void
+# 2736|           ValueCategory = prvalue
+# 2737|     getStmt(8): [DeclStmt] declaration
+# 2737|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of p1
+# 2737|           Type = [IntPointerType] int *
+# 2737|         getVariable().getInitializer(): [Initializer] initializer for p1
+# 2737|           getExpr(): [PostfixIncrExpr] ... ++
+# 2737|               Type = [IntPointerType] int *
+# 2737|               ValueCategory = prvalue
+# 2737|             getOperand(): [VariableAccess] p
+# 2737|                 Type = [IntPointerType] int *
+# 2737|                 ValueCategory = lvalue
+# 2738|     getStmt(9): [DeclStmt] declaration
+# 2738|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of q1
+# 2738|           Type = [IntType] int
+# 2738|         getVariable().getInitializer(): [Initializer] initializer for q1
+# 2738|           getExpr(): [PostfixIncrExpr] ... ++
+# 2738|               Type = [IntType] int
+# 2738|               ValueCategory = prvalue
+# 2738|             getOperand(): [VariableAccess] q
+# 2738|                 Type = [IntType] int
+# 2738|                 ValueCategory = lvalue
+# 2739|     getStmt(10): [ExprStmt] ExprStmt
+# 2739|       getExpr(): [PostfixIncrExpr] ... ++
+# 2739|           Type = [IntPointerType] int *
+# 2739|           ValueCategory = prvalue
+# 2739|         getOperand(): [VariableAccess] p
+# 2739|             Type = [IntPointerType] int *
+# 2739|             ValueCategory = lvalue
+# 2739|       getExpr().getFullyConverted(): [CStyleCast] (int *)...
+# 2739|           Conversion = [PointerConversion] pointer conversion
+# 2739|           Type = [IntPointerType] int *
+# 2739|           ValueCategory = prvalue
+# 2739|         getExpr(): [ParenthesisExpr] (...)
+# 2739|             Type = [IntPointerType] int *
+# 2739|             ValueCategory = prvalue
+# 2740|     getStmt(11): [ExprStmt] ExprStmt
+# 2740|       getExpr(): [PostfixIncrExpr] ... ++
+# 2740|           Type = [IntType] int
+# 2740|           ValueCategory = prvalue
+# 2740|         getOperand(): [VariableAccess] q
+# 2740|             Type = [IntType] int
+# 2740|             ValueCategory = lvalue
+# 2740|       getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2740|           Conversion = [IntegralConversion] integral conversion
+# 2740|           Type = [IntType] int
+# 2740|           ValueCategory = prvalue
+# 2740|         getExpr(): [ParenthesisExpr] (...)
+# 2740|             Type = [IntType] int
+# 2740|             ValueCategory = prvalue
+# 2741|     getStmt(12): [DeclStmt] declaration
+# 2741|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of p2
+# 2741|           Type = [IntPointerType] int *
+# 2741|         getVariable().getInitializer(): [Initializer] initializer for p2
+# 2741|           getExpr(): [PostfixIncrExpr] ... ++
+# 2741|               Type = [IntPointerType] int *
+# 2741|               ValueCategory = prvalue
+# 2741|             getOperand(): [VariableAccess] p
+# 2741|                 Type = [IntPointerType] int *
+# 2741|                 ValueCategory = lvalue
+# 2741|           getExpr().getFullyConverted(): [CStyleCast] (int *)...
+# 2741|               Conversion = [PointerConversion] pointer conversion
+# 2741|               Type = [IntPointerType] int *
+# 2741|               ValueCategory = prvalue
+# 2741|             getExpr(): [ParenthesisExpr] (...)
+# 2741|                 Type = [IntPointerType] int *
+# 2741|                 ValueCategory = prvalue
+# 2742|     getStmt(13): [DeclStmt] declaration
+# 2742|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of q2
+# 2742|           Type = [IntType] int
+# 2742|         getVariable().getInitializer(): [Initializer] initializer for q2
+# 2742|           getExpr(): [PostfixIncrExpr] ... ++
+# 2742|               Type = [IntType] int
+# 2742|               ValueCategory = prvalue
+# 2742|             getOperand(): [VariableAccess] q
+# 2742|                 Type = [IntType] int
+# 2742|                 ValueCategory = lvalue
+# 2742|           getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2742|               Conversion = [IntegralConversion] integral conversion
+# 2742|               Type = [IntType] int
+# 2742|               ValueCategory = prvalue
+# 2742|             getExpr(): [ParenthesisExpr] (...)
+# 2742|                 Type = [IntType] int
+# 2742|                 ValueCategory = prvalue
+# 2743|     getStmt(14): [ReturnStmt] return ...
+# 2747| [CopyAssignmentOperator] std::strong_ordering& std::strong_ordering::operator=(std::strong_ordering const&)
+# 2747|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const strong_ordering &
+# 2747| [MoveAssignmentOperator] std::strong_ordering& std::strong_ordering::operator=(std::strong_ordering&&)
+# 2747|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] strong_ordering &&
+# 2747| [CopyConstructor] void std::strong_ordering::strong_ordering(std::strong_ordering const&)
+# 2747|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const strong_ordering &
+# 2747| [MoveConstructor] void std::strong_ordering::strong_ordering(std::strong_ordering&&)
+# 2747|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] strong_ordering &&
+# 2747|   <initializations>: 
+# 2747|   getEntryPoint(): [BlockStmt] { ... }
+# 2747|     getStmt(0): [ReturnStmt] return ...
+# 2748| [Constructor] void std::strong_ordering::strong_ordering(std::_Order)
+# 2748|   <params>: 
+# 2748|     getParameter(0): [Parameter] v
+# 2748|         Type = [ScopedEnum] _Order
+# 2748|   <initializations>: 
+# 2748|   getEntryPoint(): [BlockStmt] { ... }
+# 2748|     getStmt(0): [ReturnStmt] return ...
+# 2763| [CopyAssignmentOperator] ThreeWay& ThreeWay::operator=(ThreeWay const&)
+# 2763|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const ThreeWay &
+# 2763| [MoveAssignmentOperator] ThreeWay& ThreeWay::operator=(ThreeWay&&)
+# 2763|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] ThreeWay &&
+# 2763| [Constructor] void ThreeWay::ThreeWay()
+# 2763|   <params>: 
+# 2766| [MemberFunction] std::strong_ordering ThreeWay::operator<=>(ThreeWay&)
+# 2766|   <params>: 
+# 2766|     getParameter(0): [Parameter] y
+# 2766|         Type = [LValueReferenceType] ThreeWay &
+# 2766|   getEntryPoint(): [BlockStmt] { ... }
+# 2766|     getStmt(0): [ReturnStmt] return ...
+# 2766|       getExpr(): [SpaceshipExpr] ... <=> ...
+# 2766|           Type = [Class] strong_ordering
+# 2766|           ValueCategory = prvalue
+# 2766|         getChild(0): [PointerFieldAccess] x
+# 2766|             Type = [IntType] int
+# 2766|             ValueCategory = prvalue(load)
+# 2766|           getQualifier(): [ThisExpr] this
+# 2766|               Type = [PointerType] ThreeWay *
+# 2766|               ValueCategory = prvalue(load)
+# 2766|         getChild(1): [ReferenceFieldAccess] x
+# 2766|             Type = [IntType] int
+# 2766|             ValueCategory = prvalue(load)
+# 2766|           getQualifier(): [VariableAccess] y
+# 2766|               Type = [LValueReferenceType] ThreeWay &
+# 2766|               ValueCategory = prvalue(load)
+# 2766|           getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2766|               Type = [Class] ThreeWay
+# 2766|               ValueCategory = lvalue
+# 2769| [TopLevelFunction] void test_three_way(int, int, ThreeWay, ThreeWay)
+# 2769|   <params>: 
+# 2769|     getParameter(0): [Parameter] a
+# 2769|         Type = [IntType] int
+# 2769|     getParameter(1): [Parameter] b
+# 2769|         Type = [IntType] int
+# 2769|     getParameter(2): [Parameter] c
+# 2769|         Type = [Class] ThreeWay
+# 2769|     getParameter(3): [Parameter] d
+# 2769|         Type = [Class] ThreeWay
+# 2769|   getEntryPoint(): [BlockStmt] { ... }
+# 2770|     getStmt(0): [DeclStmt] declaration
+# 2770|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2770|           Type = [Class] strong_ordering
+# 2770|         getVariable().getInitializer(): [Initializer] initializer for x
+# 2770|           getExpr(): [SpaceshipExpr] ... <=> ...
+# 2770|               Type = [Class] strong_ordering
+# 2770|               ValueCategory = prvalue
+# 2770|             getChild(0): [VariableAccess] a
+# 2770|                 Type = [IntType] int
+# 2770|                 ValueCategory = prvalue(load)
+# 2770|             getChild(1): [VariableAccess] b
+# 2770|                 Type = [IntType] int
+# 2770|                 ValueCategory = prvalue(load)
+# 2771|     getStmt(1): [DeclStmt] declaration
+# 2771|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2771|           Type = [Class] strong_ordering
+# 2771|         getVariable().getInitializer(): [Initializer] initializer for y
+# 2771|           getExpr(): [FunctionCall] call to operator<=>
+# 2771|               Type = [Class] strong_ordering
+# 2771|               ValueCategory = prvalue
+# 2771|             getQualifier(): [VariableAccess] c
+# 2771|                 Type = [Class] ThreeWay
+# 2771|                 ValueCategory = lvalue
+# 2771|             getArgument(0): [VariableAccess] d
+# 2771|                 Type = [Class] ThreeWay
+# 2771|                 ValueCategory = lvalue
+# 2771|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2771|                 Type = [LValueReferenceType] ThreeWay &
+# 2771|                 ValueCategory = prvalue
+# 2772|     getStmt(2): [ReturnStmt] return ...
 ir23.cpp:
 #    1| [TopLevelFunction] bool consteval_1()
 #    1|   <params>: 
@@ -50000,3 +50275,42 @@ try_except.cpp:
 #   52|                 Type = [IntType] int
 #   52|                 ValueCategory = prvalue(load)
 #   54|     getStmt(2): [ReturnStmt] return ...
+type_info_test.cpp:
+#    3| [TopLevelFunction] void type_info_test(int)
+#    3|   <params>: 
+#    3|     getParameter(0): [Parameter] x
+#    3|         Type = [IntType] int
+#    3|   getEntryPoint(): [BlockStmt] { ... }
+#    4|     getStmt(0): [DeclStmt] declaration
+#    4|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of t1
+#    4|           Type = [LValueReferenceType] const type_info &
+#    4|         getVariable().getInitializer(): [Initializer] initializer for t1
+#    4|           getExpr(): [TypeidOperator] typeid ...
+#    4|               Type = [SpecifiedType] const type_info
+#    4|               ValueCategory = lvalue
+#    4|             getExpr(): [VariableAccess] x
+#    4|                 Type = [IntType] int
+#    4|                 ValueCategory = lvalue
+#    4|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+#    4|               Type = [LValueReferenceType] const type_info &
+#    4|               ValueCategory = prvalue
+#    5|     getStmt(1): [DeclStmt] declaration
+#    5|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of t2
+#    5|           Type = [LValueReferenceType] const type_info &
+#    5|         getVariable().getInitializer(): [Initializer] initializer for t2
+#    5|           getExpr(): [TypeidOperator] typeid ...
+#    5|               Type = [SpecifiedType] const type_info
+#    5|               ValueCategory = lvalue
+#    5|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+#    5|               Type = [LValueReferenceType] const type_info &
+#    5|               ValueCategory = prvalue
+#    6|     getStmt(2): [ReturnStmt] return ...
+typeinfo:
+#    4| [CopyAssignmentOperator] std::type_info& std::type_info::operator=(std::type_info const&)
+#    4|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const type_info &
+#    4| [MoveAssignmentOperator] std::type_info& std::type_info::operator=(std::type_info&&)
+#    4|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] type_info &&

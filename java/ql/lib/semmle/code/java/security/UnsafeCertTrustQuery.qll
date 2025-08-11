@@ -14,6 +14,10 @@ module SslEndpointIdentificationFlowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof SslConnectionCreation }
 
   predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof SslUnsafeCertTrustSanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 }
 
 /**

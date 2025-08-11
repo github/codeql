@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import internal.AST
@@ -12,6 +15,7 @@ private import internal.TreeSitter
  */
 class Expr extends Stmt, TExpr {
   /** Gets the constant value of this expression, if any. */
+  overlay[global]
   ConstantValue getConstantValue() { result = getConstantValueExpr(this) }
 }
 
@@ -425,6 +429,7 @@ class StringConcatenation extends Expr, TStringConcatenation {
    * "foo" "bar#{ n }"
    * ```
    */
+  overlay[global]
   final string getConcatenatedValueText() {
     forall(StringLiteral c | c = this.getString(_) |
       exists(c.getConstantValue().getStringlikeValue())

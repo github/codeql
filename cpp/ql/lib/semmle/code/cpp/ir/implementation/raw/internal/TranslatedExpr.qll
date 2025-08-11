@@ -1808,6 +1808,11 @@ private Opcode comparisonOpcode(ComparisonOperation expr) {
   expr instanceof GEExpr and result instanceof Opcode::CompareGE
 }
 
+private Opcode spaceShipOpcode(SpaceshipExpr expr) {
+  exists(expr) and
+  result instanceof Opcode::Spaceship
+}
+
 /**
  * IR translation of a simple binary operation.
  */
@@ -1867,7 +1872,8 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
   override Opcode getOpcode() {
     result = binaryArithmeticOpcode(expr) or
     result = binaryBitwiseOpcode(expr) or
-    result = comparisonOpcode(expr)
+    result = comparisonOpcode(expr) or
+    result = spaceShipOpcode(expr)
   }
 
   override Type getExprType() {
@@ -4146,7 +4152,8 @@ predicate exprNeedsCopyIfNotLoaded(Expr expr) {
 private predicate exprImmediatelyDiscarded(Expr expr) {
   exists(ExprStmt s |
     s = expr.getParent() and
-    not exists(StmtExpr se | s = se.getStmt().(BlockStmt).getLastStmt())
+    not exists(StmtExpr se | s = se.getStmt().(BlockStmt).getLastStmt()) and
+    not exists(expr.getConversion())
   )
   or
   exists(CommaExpr c | c.getLeftOperand() = expr)
@@ -4182,5 +4189,54 @@ class TranslatedAssumeExpr extends TranslatedSingleInstructionExpr {
 
   final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     none()
+  }
+}
+
+class TranslatedTypeidExpr extends TranslatedSingleInstructionExpr {
+  override TypeidOperator expr;
+
+  final override Opcode getOpcode() {
+    exists(this.getOperand()) and
+    result instanceof Opcode::TypeidExpr
+    or
+    not exists(this.getOperand()) and
+    result instanceof Opcode::TypeidType
+  }
+
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getOperand().getFirstInstruction(kind)
+    or
+    not exists(this.getOperand()) and
+    result = this.getInstruction(OnlyInstructionTag()) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(OnlyInstructionTag())
+  }
+
+  final override TranslatedElement getChildInternal(int id) {
+    id = 0 and result = this.getOperand()
+  }
+
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    child = this.getOperand() and
+    result = this.getInstruction(OnlyInstructionTag()) and
+    kind instanceof GotoEdge
+  }
+
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    result = this.getOperand().getResult() and
+    operandTag instanceof UnaryOperandTag
+  }
+
+  private TranslatedExpr getOperand() {
+    result = getTranslatedExpr(expr.getExpr().getFullyConverted())
   }
 }

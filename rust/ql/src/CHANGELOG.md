@@ -1,3 +1,9 @@
+## 0.1.12
+
+### New Queries
+
+* Added a new query, `rust/access-after-lifetime-ended`, for detecting pointer dereferences after the lifetime of the pointed-to object has ended.
+
 ## 0.1.11
 
 ### New Queries

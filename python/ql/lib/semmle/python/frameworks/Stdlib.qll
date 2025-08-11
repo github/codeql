@@ -2385,15 +2385,16 @@ module StdlibPrivate {
     }
 
     /** A method call on a HttpConnection that sends off a request */
-    private class RequestCall extends Http::Client::Request::Range, DataFlow::MethodCallNode {
+    private class RequestCall extends Http::Client::Request::Range instanceof DataFlow::MethodCallNode
+    {
       RequestCall() { this.calls(instance(_), ["request", "_send_request", "putrequest"]) }
 
-      DataFlow::Node getUrlArg() { result in [this.getArg(1), this.getArgByName("url")] }
+      DataFlow::Node getUrlArg() { result in [super.getArg(1), super.getArgByName("url")] }
 
       override DataFlow::Node getAUrlPart() {
         result = this.getUrlArg()
         or
-        this.getObject() = instance(result)
+        super.getObject() = instance(result)
       }
 
       override string getFramework() { result = "http.client.HTTP[S]Connection" }
@@ -2430,7 +2431,8 @@ module StdlibPrivate {
         // a request method
         exists(RequestCall call |
           nodeFrom = call.getUrlArg() and
-          nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode() = call.getObject()
+          nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode() =
+            call.(DataFlow::MethodCallNode).getObject()
         )
         or
         // `getresponse` call
@@ -2797,7 +2799,7 @@ module StdlibPrivate {
   /**
    * A hashing operation by supplying initial data when calling the `hashlib.new` function.
    */
-  class HashlibNewCall extends Cryptography::CryptographicOperation::Range, API::CallNode {
+  class HashlibNewCall extends Cryptography::CryptographicOperation::Range instanceof API::CallNode {
     string hashName;
 
     HashlibNewCall() {
@@ -2810,7 +2812,7 @@ module StdlibPrivate {
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
 
-    override DataFlow::Node getAnInput() { result = this.getParameter(1, "data").asSink() }
+    override DataFlow::Node getAnInput() { result = super.getParameter(1, "data").asSink() }
 
     override Cryptography::BlockMode getBlockMode() { none() }
   }
@@ -2818,7 +2820,8 @@ module StdlibPrivate {
   /**
    * A hashing operation by using the `update` method on the result of calling the `hashlib.new` function.
    */
-  class HashlibNewUpdateCall extends Cryptography::CryptographicOperation::Range, API::CallNode {
+  class HashlibNewUpdateCall extends Cryptography::CryptographicOperation::Range instanceof API::CallNode
+  {
     API::CallNode init;
     string hashName;
 
@@ -2831,7 +2834,7 @@ module StdlibPrivate {
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() { result = super.getArg(0) }
 
     override Cryptography::BlockMode getBlockMode() { none() }
   }
@@ -2848,8 +2851,7 @@ module StdlibPrivate {
    * (such as `hashlib.md5`). `hashlib.new` is not included, since it is handled by
    * `HashlibNewCall` and `HashlibNewUpdateCall`.
    */
-  abstract class HashlibGenericHashOperation extends Cryptography::CryptographicOperation::Range,
-    DataFlow::CallCfgNode
+  abstract class HashlibGenericHashOperation extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallCfgNode
   {
     string hashName;
     API::Node hashClass;
@@ -2876,7 +2878,7 @@ module StdlibPrivate {
 
     override DataFlow::Node getInitialization() { result = init }
 
-    override DataFlow::Node getAnInput() { result = this.getArg(0) }
+    override DataFlow::Node getAnInput() { result = this.(DataFlow::CallCfgNode).getArg(0) }
   }
 
   /**
@@ -2888,24 +2890,28 @@ module StdlibPrivate {
       // we only want to model calls to classes such as `hashlib.md5()` if initial data
       // is passed as an argument
       this = hashClass.getACall() and
-      exists([this.getArg(0), this.getArgByName("string")])
+      exists(
+        [
+          this.(DataFlow::CallCfgNode).getArg(0),
+          this.(DataFlow::CallCfgNode).getArgByName("string")
+        ]
+      )
     }
 
     override DataFlow::Node getInitialization() { result = this }
 
     override DataFlow::Node getAnInput() {
-      result = this.getArg(0)
+      result = this.(DataFlow::CallCfgNode).getArg(0)
       or
       // in Python 3.9, you are allowed to use `hashlib.md5(string=<bytes-like>)`.
-      result = this.getArgByName("string")
+      result = this.(DataFlow::CallCfgNode).getArgByName("string")
     }
   }
 
   // ---------------------------------------------------------------------------
   // hmac
   // ---------------------------------------------------------------------------
-  abstract class HmacCryptographicOperation extends Cryptography::CryptographicOperation::Range,
-    API::CallNode
+  abstract class HmacCryptographicOperation extends Cryptography::CryptographicOperation::Range instanceof API::CallNode
   {
     abstract API::Node getDigestArg();
 
@@ -2937,14 +2943,16 @@ module StdlibPrivate {
     HmacNewCall() {
       this = getHmacConstructorCall(digestArg) and
       // we only want to consider it as an cryptographic operation if the input is available
-      exists(this.getParameter(1, "msg").asSink())
+      exists(this.(API::CallNode).getParameter(1, "msg").asSink())
     }
 
     override DataFlow::Node getInitialization() { result = this }
 
     override API::Node getDigestArg() { result = digestArg }
 
-    override DataFlow::Node getAnInput() { result = this.getParameter(1, "msg").asSink() }
+    override DataFlow::Node getAnInput() {
+      result = this.(API::CallNode).getParameter(1, "msg").asSink()
+    }
   }
 
   /**
@@ -2965,7 +2973,9 @@ module StdlibPrivate {
 
     override API::Node getDigestArg() { result = digestArg }
 
-    override DataFlow::Node getAnInput() { result = this.getParameter(0, "msg").asSink() }
+    override DataFlow::Node getAnInput() {
+      result = this.(API::CallNode).getParameter(0, "msg").asSink()
+    }
   }
 
   /**
@@ -2978,9 +2988,11 @@ module StdlibPrivate {
 
     override DataFlow::Node getInitialization() { result = this }
 
-    override API::Node getDigestArg() { result = this.getParameter(2, "digest") }
+    override API::Node getDigestArg() { result = this.(API::CallNode).getParameter(2, "digest") }
 
-    override DataFlow::Node getAnInput() { result = this.getParameter(1, "msg").asSink() }
+    override DataFlow::Node getAnInput() {
+      result = this.(API::CallNode).getParameter(1, "msg").asSink()
+    }
   }
 
   // ---------------------------------------------------------------------------

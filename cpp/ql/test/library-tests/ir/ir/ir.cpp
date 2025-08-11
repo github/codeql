@@ -2725,4 +2725,50 @@ char UseBracketOperator(const WithBracketOperator x, int i) {
   return x[i];
 }
 
+void test_postfix_crement(int *p, int q) {
+  p++;
+  q++;
+  (p++);
+  (q++);
+  (void)(p++);
+  (void)(q++);
+  (void)p++;
+  (void)q++;
+  int *p1 = p++;
+  int q1 = q++;
+  (int*)(p++);
+  (int)(q++);
+  int *p2 = (int*)(p++);
+  int q2 = (int)(q++);
+}
+
+namespace std {
+  enum class _Order : signed char { __less = -1, __equiv = 0, __greater = 1 };
+  class strong_ordering {
+    explicit constexpr strong_ordering(_Order v)  {}
+        
+  public:
+    static const strong_ordering less;
+    static const strong_ordering equal;
+    static const strong_ordering equivalent;
+    static const strong_ordering greater;
+  };
+
+  inline constexpr strong_ordering strong_ordering::less(_Order::__less);
+  inline constexpr strong_ordering strong_ordering::equal(_Order::__equiv);
+  inline constexpr strong_ordering strong_ordering::equivalent(_Order::__equiv);
+  inline constexpr strong_ordering strong_ordering::greater(_Order::__greater);
+}
+
+class ThreeWay {
+  int x;
+public:
+  std::strong_ordering operator<=>(ThreeWay &y) { return this->x <=> y.x; }
+};
+
+void test_three_way(int a, int b, ThreeWay c, ThreeWay d) {
+  auto x = a <=> b;
+  auto y = c <=> d;
+}
+
 // semmle-extractor-options: -std=c++20 --clang

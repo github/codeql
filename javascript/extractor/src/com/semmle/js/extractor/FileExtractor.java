@@ -217,8 +217,6 @@ public class FileExtractor {
     TYPESCRIPT(".ts", ".tsx", ".mts", ".cts") {
       @Override
       protected boolean contains(File f, String lcExt, ExtractorConfig config) {
-        if (config.getTypeScriptMode() == TypeScriptMode.NONE) return false;
-
         // Read the beginning of the file to guess the file type.
         if (hasBadFileHeader(f, lcExt, config)) {
           return false;

@@ -24,33 +24,31 @@ use ra_ap_syntax::{
 
 impl Emission<ast::Item> for Translator<'_> {
     fn pre_emit(&mut self, node: &ast::Item) -> Option<Label<generated::Item>> {
-        self.prepare_item_expansion(node).map(Into::into)
+        self.item_pre_emit(node).map(Into::into)
     }
 
     fn post_emit(&mut self, node: &ast::Item, label: Label<generated::Item>) {
-        self.emit_item_expansion(node, label);
+        self.item_post_emit(node, label);
     }
 }
 
 impl Emission<ast::AssocItem> for Translator<'_> {
     fn pre_emit(&mut self, node: &ast::AssocItem) -> Option<Label<generated::AssocItem>> {
-        self.prepare_item_expansion(&node.clone().into())
-            .map(Into::into)
+        self.item_pre_emit(&node.clone().into()).map(Into::into)
     }
 
     fn post_emit(&mut self, node: &ast::AssocItem, label: Label<generated::AssocItem>) {
-        self.emit_item_expansion(&node.clone().into(), label.into());
+        self.item_post_emit(&node.clone().into(), label.into());
     }
 }
 
 impl Emission<ast::ExternItem> for Translator<'_> {
     fn pre_emit(&mut self, node: &ast::ExternItem) -> Option<Label<generated::ExternItem>> {
-        self.prepare_item_expansion(&node.clone().into())
-            .map(Into::into)
+        self.item_pre_emit(&node.clone().into()).map(Into::into)
     }
 
     fn post_emit(&mut self, node: &ast::ExternItem, label: Label<generated::ExternItem>) {
-        self.emit_item_expansion(&node.clone().into(), label.into());
+        self.item_post_emit(&node.clone().into(), label.into());
     }
 }
 
@@ -849,35 +847,6 @@ impl<'a> Translator<'a> {
             })
     }
 
-    pub(crate) fn prepare_item_expansion(
-        &mut self,
-        node: &ast::Item,
-    ) -> Option<Label<generated::MacroCall>> {
-        if self.source_kind == SourceKind::Library {
-            // if the item expands via an attribute macro, we want to only emit the expansion
-            if let Some(expanded) = self.emit_attribute_macro_expansion(node) {
-                // we wrap it in a dummy MacroCall to get a single Item label that can replace
-                // the original Item
-                let label = self.trap.emit(generated::MacroCall {
-                    id: TrapId::Star,
-                    attrs: vec![],
-                    path: None,
-                    token_tree: None,
-                });
-                generated::MacroCall::emit_macro_call_expansion(
-                    label,
-                    expanded.into(),
-                    &mut self.trap.writer,
-                );
-                return Some(label);
-            }
-        }
-        if self.is_attribute_macro_target(node) {
-            self.macro_context_depth += 1;
-        }
-        None
-    }
-
     fn process_item_macro_expansion(
         &mut self,
         node: &impl ast::AstNode,
@@ -915,10 +884,6 @@ impl<'a> Translator<'a> {
         &mut self,
         node: &ast::Item,
     ) -> Option<Label<generated::MacroItems>> {
-        if !self.is_attribute_macro_target(node) {
-            return None;
-        }
-        self.macro_context_depth -= 1;
         if self.macro_context_depth > 0 {
             // only expand the outermost attribute macro
             return None;
@@ -927,7 +892,49 @@ impl<'a> Translator<'a> {
         self.process_item_macro_expansion(node, expansion.map(|x| x.value))
     }
 
-    pub(crate) fn emit_item_expansion(&mut self, node: &ast::Item, label: Label<generated::Item>) {
+    pub(crate) fn item_pre_emit(
+        &mut self,
+        node: &ast::Item,
+    ) -> Option<Label<generated::MacroCall>> {
+        if !self.is_attribute_macro_target(node) {
+            return None;
+        }
+        if self.source_kind == SourceKind::Library {
+            // if the item expands via an attribute macro, we want to only emit the expansion
+            if let Some(expanded) = self.emit_attribute_macro_expansion(node) {
+                // we wrap it in a dummy MacroCall to get a single Item label that can replace
+                // the original Item
+                let label = self.trap.emit(generated::MacroCall {
+                    id: TrapId::Star,
+                    attrs: vec![],
+                    path: None,
+                    token_tree: None,
+                });
+                generated::Item::emit_attribute_macro_expansion(
+                    label.into(),
+                    expanded,
+                    &mut self.trap.writer,
+                );
+                self.emit_location(label, node);
+                return Some(label);
+            }
+        }
+        self.macro_context_depth += 1;
+        None
+    }
+
+    pub(crate) fn item_post_emit(&mut self, node: &ast::Item, label: Label<generated::Item>) {
+        if !self.is_attribute_macro_target(node) {
+            return;
+        }
+        // see `item_pre_emit`:
+        // if self.is_attribute_macro_target(node), then we either exited early with `Some(label)`
+        // and are not here, or we did self.macro_context_depth += 1
+        assert!(
+            self.macro_context_depth > 0,
+            "macro_context_depth should be > 0 for an attribute macro target"
+        );
+        self.macro_context_depth -= 1;
         if let Some(expanded) = self.emit_attribute_macro_expansion(node) {
             generated::Item::emit_attribute_macro_expansion(label, expanded, &mut self.trap.writer);
         }
