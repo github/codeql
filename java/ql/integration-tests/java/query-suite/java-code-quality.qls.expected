@@ -71,6 +71,7 @@ ql/java/ql/src/Violations of Best Practice/Exception Handling/IgnoreExceptionalR
 ql/java/ql/src/Violations of Best Practice/Exception Handling/NumberFormatException.ql
 ql/java/ql/src/Violations of Best Practice/Implementation Hiding/AbstractToConcreteCollection.ql
 ql/java/ql/src/Violations of Best Practice/Implementation Hiding/ExposeRepresentation.ql
+ql/java/ql/src/Violations of Best Practice/Implementation Hiding/VisibleForTestingAbuse.ql
 ql/java/ql/src/Violations of Best Practice/Naming Conventions/AmbiguousOuterSuper.ql
 ql/java/ql/src/Violations of Best Practice/Naming Conventions/ConfusingMethodNames.ql
 ql/java/ql/src/Violations of Best Practice/Naming Conventions/ConfusingOverloading.ql
