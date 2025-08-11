@@ -47,6 +47,22 @@ externalData(
   string value : string ref
 );
 
+/*- Overlay support -*/
+
+/**
+ * The CLI will automatically emit the tuple `databaseMetadata("isOverlay", "true")`,
+ * along with an `overlayChangedFiles` tuple for each new/modified/deleted file,
+ * when building an overlay database, and these can be used by the discard predicates.
+ */
+databaseMetadata(
+  string metadataKey : string ref,
+  string value : string ref
+);
+
+overlayChangedFiles(
+  string path : string ref
+);
+
 /*- DEPRECATED: Snapshot date -*/
 
 snapshotDate(unique date snapshotDate : date ref);
