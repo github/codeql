@@ -565,12 +565,12 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
  * Holds if there is a jump step from `nodeFrom` to `nodeTo` through global variable field access.
  * This supports tracking nested object field access through global variables like `app.obj.foo`.
  */
-predicate globalVariableNestedFieldJumpStep(Node nodeFrom, Node nodeTo) {
+private predicate globalVariableNestedFieldJumpStep(Node nodeFrom, Node nodeTo) {
   exists(ModuleVariableNode globalVar, AttrWrite write, AttrRead read |
     // Match writes and reads on the same global variable attribute path
     exists(string accessPath |
-      globalVariableAttrPath(globalVar, accessPath, write.getObject()) and
-      globalVariableAttrPath(globalVar, accessPath, read.getObject())
+      globalVariableAttrPathAtDepth(globalVar, accessPath, write.getObject(), _) and
+      globalVariableAttrPathAtDepth(globalVar, accessPath, read.getObject(), _)
     ) and
     write.getAttributeName() = read.getAttributeName() and
     nodeFrom = write.getValue() and
@@ -580,25 +580,14 @@ predicate globalVariableNestedFieldJumpStep(Node nodeFrom, Node nodeTo) {
 
 /**
  * Maximum depth for global variable nested attribute access.
- * Depth 0 = globalVar.foo, depth 1 = globalVar.foo.bar, depth 2 = globalVar.foo.bar.baz, etc.
+ * Depth 1 = globalVar.foo, depth 2 = globalVar.foo.bar, depth 3 = globalVar.foo.bar.baz, etc.
  */
 private int getMaxGlobalVariableDepth() { result = 2 }
 
 /**
- * Holds if `node` is an attribute access path starting from global variable `globalVar`.
- * Supports configurable nesting depth via getMaxGlobalVariableDepth().
- */
-predicate globalVariableAttrPath(ModuleVariableNode globalVar, string accessPath, Node node) {
-  exists(int depth |
-    globalVariableAttrPathAtDepth(globalVar, accessPath, node, depth) and
-    depth >= 0
-  )
-}
-
-/**
  * Holds if `node` is an attribute access path starting from global variable `globalVar` at specific `depth`.
  */
-predicate globalVariableAttrPathAtDepth(
+private predicate globalVariableAttrPathAtDepth(
   ModuleVariableNode globalVar, string accessPath, Node node, int depth
 ) {
   // Base case: Direct global variable access (depth 0)
