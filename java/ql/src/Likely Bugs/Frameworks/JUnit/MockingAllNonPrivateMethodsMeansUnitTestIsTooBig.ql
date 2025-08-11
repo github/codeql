@@ -64,7 +64,7 @@ class MockitoMockingMethodCall extends MethodCall {
 from JUnit4TestMethod testMethod, ClassOrInterface mockedClassOrInterface
 where
   exists(MockitoMockCall mockCall |
-    mockCall.getParent+().(Stmt) = testMethod.getBody().getAStmt() and
+    mockCall.getParent+() = testMethod.getBody().getAStmt() and
     mockedClassOrInterface = mockCall.getMockedType() and
     // Only flag classes with multiple public methods (2 or more)
     count(Method m | m = mockedClassOrInterface.getAMethod() and m.isPublic()) > 1 and
