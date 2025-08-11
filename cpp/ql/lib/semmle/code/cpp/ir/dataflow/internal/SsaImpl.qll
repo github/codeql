@@ -143,7 +143,14 @@ private predicate isGlobalUse(
     min(int cand, VariableAddressInstruction vai |
       vai.getEnclosingIRFunction() = f and
       vai.getAstVariable() = v and
-      isDef(_, _, _, vai, cand, indirectionIndex)
+      (
+        isDef(_, _, _, vai, cand, indirectionIndex)
+        or
+        exists(Operand operand |
+          isUse(_, operand, vai, cand, indirectionIndex) and
+          isPostUpdateNodeImpl(operand, indirectionIndex)
+        )
+      )
     |
       cand
     )
