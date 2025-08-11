@@ -62,6 +62,8 @@ where
   exists(MockitoMockCall mockCall |
     mockCall.getParent+().(Stmt) = testMethod.getBody().getAStmt() and
     mockedClassOrInterface = mockCall.getMockedType() and
+    // Only flag classes with multiple public methods (2 or more)
+    count(Method m | m = mockedClassOrInterface.getAMethod() and m.isPublic()) > 1 and
     forex(Method method | method = mockedClassOrInterface.getAMethod() and method.isPublic() |
       exists(MockitoMockingMethodCall mockedMethod |
         mockedMethod.getMockitoMockCall() = mockCall and

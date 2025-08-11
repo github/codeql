@@ -58,7 +58,7 @@ public class TestORM {
    * When there's only one public method, mocking it doesn't indicate a "too big" test.
    */
   @Test
-  public void compliantSingleMethod() { // $ SPURIOUS: Alert
+  public void compliantSingleMethod() {
     EmployeeStatus statusMock = mock(EmployeeStatus.class); // COMPLIANT: Single public method, no choice but to mock it if needed
     when(statusMock.getStatus()).thenReturn("inactive"); // Mocked EmployeeStatus.getStatus (the only public method, but that's OK)
   }
