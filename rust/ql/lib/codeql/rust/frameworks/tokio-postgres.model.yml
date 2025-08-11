@@ -9,6 +9,7 @@ extensions:
       - ["<tokio_postgres::client::Client>::prepare", "Argument[0]", "sql-injection", "manual"]
       - ["<tokio_postgres::client::Client>::prepare_typed", "Argument[0]", "sql-injection", "manual"]
       - ["<tokio_postgres::client::Client>::query", "Argument[0]", "sql-injection", "manual"]
+      - ["<tokio_postgres::client::Client>::query_one", "Argument[0]", "sql-injection", "manual"]
       - ["<tokio_postgres::client::Client>::query_opt", "Argument[0]", "sql-injection", "manual"]
       - ["<tokio_postgres::client::Client>::query_raw", "Argument[0]", "sql-injection", "manual"]
       - ["<tokio_postgres::client::Client>::query_typed", "Argument[0]", "sql-injection", "manual"]

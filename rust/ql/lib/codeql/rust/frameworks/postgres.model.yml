@@ -13,6 +13,7 @@ extensions:
       - ["<postgres::client::Client>::query_raw", "Argument[0]", "sql-injection", "manual"]
       - ["<postgres::client::Client>::query_typed", "Argument[0]", "sql-injection", "manual"]
       - ["<postgres::client::Client>::query_typed_raw", "Argument[0]", "sql-injection", "manual"]
+      - ["<postgres::client::Client>::simple_query", "Argument[0]", "sql-injection", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sourceModel
