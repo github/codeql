@@ -30,3 +30,13 @@ extensions:
       pack: microsoft/powershell-all
       extensible: typeVariableModel
     data: []
+
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: cmdletModel
+    data: []
+
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: aliasModel
+    data: []

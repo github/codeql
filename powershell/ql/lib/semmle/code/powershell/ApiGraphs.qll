@@ -10,6 +10,7 @@ private import semmle.code.powershell.dataflow.DataFlow
 private import semmle.code.powershell.typetracking.ApiGraphShared
 private import semmle.code.powershell.typetracking.internal.TypeTrackingImpl
 private import semmle.code.powershell.controlflow.Cfg
+private import frameworks.data.internal.ApiGraphModels
 private import frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 private import frameworks.data.internal.ApiGraphModelsSpecific as Specific
 private import semmle.code.powershell.dataflow.internal.DataFlowPrivate as DataFlowPrivate
@@ -262,8 +263,7 @@ module API {
       this = Impl::MkMethodAccessNode(result) or
       this = Impl::MkBackwardNode(result, _) or
       this = Impl::MkForwardNode(result, _) or
-      this = Impl::MkSinkNode(result) or
-      this = Impl::MkNamespaceOfTypeNameNode(result)
+      this = Impl::MkSinkNode(result)
     }
 
     /** Gets the location of this node. */
@@ -271,6 +271,10 @@ module API {
       result = this.getInducingNode().getLocation()
       or
       this instanceof RootNode and
+      result instanceof EmptyLocation
+      or
+      not this instanceof RootNode and
+      not exists(this.getInducingNode()) and
       result instanceof EmptyLocation
     }
 
@@ -331,20 +335,84 @@ module API {
     override string toString() { result = "SinkNode(" + this.getInducingNode() + ")" }
   }
 
-  private class UsingNode extends Node, Impl::MkUsingNode {
-    UsingStmt using; // TODO: This should really be the cfg node, I think
+  abstract private class AbstractTypeNameNode extends Node {
+    string prefix;
 
-    UsingNode() { this = Impl::MkUsingNode(using) }
+    bindingset[prefix]
+    AbstractTypeNameNode() { any() }
 
-    override string toString() { result = "UsingNode(" + using + ")" }
+    override string toString() { result = "TypeNameNode(" + this.getTypeName() + ")" }
+
+    string getComponent() {
+      exists(int n |
+        result = prefix.splitAt(".", n) and
+        not exists(prefix.splitAt(".", n + 1))
+      )
+    }
+
+    string getTypeName() { result = prefix }
+
+    abstract Node getSuccessor(string name);
+
+    Node memberEdge(string name) { none() }
+
+    Node methodEdge(string name) { none() }
+
+    final predicate isImplicit() { not this.isExplicit(_) }
+
+    predicate isExplicit(DataFlow::TypeNameNode typeName) { none() }
   }
 
-  private class NamespaceOfTypeNameNode extends Node, Impl::MkNamespaceOfTypeNameNode {
-    DataFlow::QualifiedTypeNameNode typeName;
+  final class TypeNameNode = AbstractTypeNameNode;
 
-    NamespaceOfTypeNameNode() { this = Impl::MkNamespaceOfTypeNameNode(typeName) }
+  private class ExplicitTypeNameNode extends AbstractTypeNameNode, Impl::MkExplicitTypeNameNode {
+    ExplicitTypeNameNode() { this = Impl::MkExplicitTypeNameNode(prefix) }
 
-    override string toString() { result = "NamespaceOfTypeNameNode(" + typeName + ")" }
+    final override Node getSuccessor(string name) {
+      exists(ExplicitTypeNameNode succ |
+        succ = Impl::MkExplicitTypeNameNode(prefix + "." + name) and
+        result = succ
+      )
+      or
+      exists(DataFlow::TypeNameNode typeName, int n, string lowerCaseName |
+        Specific::needsExplicitTypeNameNode(typeName, prefix) and
+        lowerCaseName = typeName.getLowerCaseName() and
+        name = lowerCaseName.splitAt(".", n) and
+        not lowerCaseName.matches("%.%") and
+        result = getForwardStartNode(typeName)
+      )
+    }
+
+    final override predicate isExplicit(DataFlow::TypeNameNode typeName) {
+      Specific::needsExplicitTypeNameNode(typeName, prefix)
+    }
+  }
+
+  private string getAnAlias(string cmdlet) { Specific::aliasModel(cmdlet, result) }
+
+  predicate implicitCmdlet(string mod, string cmdlet) {
+    exists(string cmdlet0 |
+      Specific::cmdletModel(mod, cmdlet0) and
+      cmdlet = [cmdlet0, getAnAlias(cmdlet0)]
+    )
+  }
+
+  private class ImplicitTypeNameNode extends AbstractTypeNameNode, Impl::MkImplicitTypeNameNode {
+    ImplicitTypeNameNode() { this = Impl::MkImplicitTypeNameNode(prefix) }
+
+    final override Node getSuccessor(string name) {
+      result = Impl::MkImplicitTypeNameNode(prefix + "." + name)
+    }
+
+    final override Node memberEdge(string name) { result = this.methodEdge(name) }
+
+    final override Node methodEdge(string name) {
+      exists(DataFlow::CallNode call |
+        result = Impl::MkMethodAccessNode(call) and
+        name = call.getLowerCaseName() and
+        implicitCmdlet(prefix, name)
+      )
+    }
   }
 
   /**
@@ -438,8 +506,8 @@ module API {
       MkRoot() or
       /** The method accessed at `call`, synthetically treated as a separate object. */
       MkMethodAccessNode(DataFlow::CallNode call) or
-      MkUsingNode(UsingStmt using) or
-      MkNamespaceOfTypeNameNode(DataFlow::QualifiedTypeNameNode typeName) or
+      MkExplicitTypeNameNode(string prefix) { Specific::needsExplicitTypeNameNode(_, prefix) } or
+      MkImplicitTypeNameNode(string prefix) { Specific::needsImplicitTypeNameNode(prefix) } or
       MkForwardNode(DataFlow::LocalSourceNode node, TypeTracker t) { isReachable(node, t) } or
       /** Intermediate node for following backward data flow. */
       MkBackwardNode(DataFlow::LocalSourceNode node, TypeTracker t) { isReachable(node, t) } or
@@ -455,26 +523,7 @@ module API {
       node = any(EntryPoint e).getASink()
     }
 
-    bindingset[e]
-    pragma[inline_late]
-    private DataFlow::Node getNodeFromExpr(Expr e) { result.asExpr().getExpr() = e }
-
     private import frameworks.data.ModelsAsData
-
-    cached
-    predicate namespace(string name, Node node) {
-      exists(DataFlow::QualifiedTypeNameNode typeName |
-        typeName.getNamespace() = name and
-        node = MkNamespaceOfTypeNameNode(typeName)
-      )
-      or
-      exists(UsingStmt using |
-        using.getName().toLowerCase() = name and
-        node = MkUsingNode(using)
-      )
-      or
-      node = ModelOutput::getATypeNode(name)
-    }
 
     cached
     predicate topLevelMember(string name, Node node) { memberEdge(root(), name, node) }
@@ -492,42 +541,51 @@ module API {
     predicate memberEdge(Node pred, string name, Node succ) {
       pred = API::root() and
       (
-        exists(StringConstExpr read |
-          succ = getForwardStartNode(getNodeFromExpr(read)) and
-          name = read.getValueString()
-        )
+        succ.(TypeNameNode).getTypeName() = name
         or
         exists(DataFlow::AutomaticVariableNode automatic |
           automatic.getLowerCaseName() = name and
           succ = getForwardStartNode(automatic)
         )
+      )
+      or
+      exists(TypeNameNode typeName | pred = typeName |
+        typeName.getSuccessor(name) = succ
         or
-        succ = getAnImplicitRootMember(name)
+        typeName.memberEdge(name) = succ
       )
       or
-      exists(DataFlow::QualifiedTypeNameNode typeName |
-        typeName.getLowerCaseName() = name and
-        pred = MkNamespaceOfTypeNameNode(typeName) and
-        succ = getForwardStartNode(typeName)
-      )
-      or
-      exists(MemberExprReadAccess read |
-        read.getLowerCaseMemberName().toLowerCase() = name and
-        pred = getForwardEndNode(getALocalSourceStrict(getNodeFromExpr(read.getQualifier()))) and
-        succ = getForwardStartNode(getNodeFromExpr(read))
+      exists(DataFlow::Node qualifier | pred = getForwardEndNode(getALocalSourceStrict(qualifier)) |
+        exists(CfgNodes::ExprNodes::MemberExprReadAccessCfgNode read |
+          read.getQualifier() = qualifier.asExpr() and
+          read.getLowerCaseMemberName() = name and
+          succ = getForwardStartNode(DataFlow::exprNode(read))
+        )
+        or
+        exists(DataFlow::CallNode call |
+          call.getLowerCaseName() = name and
+          call.getQualifier() = qualifier and
+          succ = MkMethodAccessNode(call)
+        )
       )
     }
 
     cached
     predicate methodEdge(Node pred, string name, Node succ) {
       exists(DataFlow::CallNode call |
-        succ = MkMethodAccessNode(call) and name = call.getLowerCaseName()
-      |
+        succ = MkMethodAccessNode(call) and
+        name = call.getLowerCaseName() and
         pred = getForwardEndNode(getALocalSourceStrict(call.getQualifier()))
       )
       or
+      pred.(TypeNameNode).methodEdge(name) = succ
+      or
       pred = API::root() and
-      succ = getAnImplicitRootMember(name)
+      exists(DataFlow::CallNode call |
+        not exists(call.getQualifier()) and
+        succ = MkMethodAccessNode(call) and
+        name = call.getLowerCaseName()
+      )
     }
 
     cached
