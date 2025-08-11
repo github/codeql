@@ -33,18 +33,17 @@ class NetHttpRequest extends Http::Client::Request::Range instanceof DataFlow::C
   NetHttpRequest() {
     exists(string method |
       request = requestNode.asSource() and
-      this = request
+      this = request and
+      requestNode = connectionNode.getReturn(method)
     |
       // Net::HTTP.get(...)
       method in ["get", "get_response"] and
       connectionNode = API::getTopLevelMember("Net").getMember("HTTP") and
-      requestNode = connectionNode.getReturn(method) and
       returnsResponseBody = true
       or
       // Net::HTTP.post(...).body
       method in ["post", "post_form"] and
       connectionNode = API::getTopLevelMember("Net").getMember("HTTP") and
-      requestNode = connectionNode.getReturn(method) and
       returnsResponseBody = false
       or
       // Net::HTTP.new(..).get(..).body
@@ -53,11 +52,15 @@ class NetHttpRequest extends Http::Client::Request::Range instanceof DataFlow::C
           "get", "get2", "request_get", "head", "head2", "request_head", "delete", "put", "patch",
           "post", "post2", "request_post", "request"
         ] and
-      connectionNode = [
-        API::getTopLevelMember("Net").getMember("HTTP").getInstance(),
-        API::getTopLevelMember("Net").getMember("HTTP").getMethod("start").getBlock().getParameter(0)
+      connectionNode =
+        [
+          API::getTopLevelMember("Net").getMember("HTTP").getInstance(),
+          API::getTopLevelMember("Net")
+              .getMember("HTTP")
+              .getMethod("start")
+              .getBlock()
+              .getParameter(0)
         ] and
-      requestNode = connectionNode.getReturn(method) and
       returnsResponseBody = false
     )
   }
