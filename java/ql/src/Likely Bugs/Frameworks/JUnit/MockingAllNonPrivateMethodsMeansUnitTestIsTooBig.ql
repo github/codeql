@@ -6,7 +6,8 @@
  * @kind problem
  * @precision high
  * @problem.severity recommendation
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
  */
 
