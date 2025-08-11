@@ -4,7 +4,7 @@
  * Provides an implementation of a fast initial pruning of global
  * (interprocedural) data flow reachability (Stage 1).
  */
-overlay[local?]
+overlay[local?] // when this is removed, put `overlay[local?]` on `isOverlayNode`.
 module;
 
 private import codeql.util.Unit
@@ -129,23 +129,95 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
       private module AlertFiltering = AlertFilteringImpl<Location>;
 
+      /**
+       * Holds if the given node is visible in overlay-only local evaluation.
+       *
+       * This predicate needs to be `overlay[local?]`, either directly or
+       * through annotations from an outer scope. If `Node` is global for the
+       * language under analysis, then every node is considered an overlay
+       * node, which means there will effectively be no overlay-based
+       * filtering of sources and sinks.
+       */
+      private predicate isOverlayNode(Node node) {
+        isEvaluatingInOverlay() and
+        // Any local node is an overlay node if we are evaluating in overlay mode
+        exists(node)
+      }
+
+      /**
+       * Holds if `node` comes from a file that was in the diff for which we
+       * are producing results.
+       */
+      overlay[global]
+      private predicate isDiffFileNode(Node node) {
+        exists(string filePath |
+          node.getLocation().hasLocationInfo(filePath, _, _, _, _) and
+          AlertFiltering::fileIsInDiff(filePath)
+        )
+      }
+
+      overlay[global]
       pragma[nomagic]
       private predicate isFilteredSource(Node source) {
         Config::isSource(source, _) and
-        if Config::observeDiffInformedIncrementalMode()
-        then AlertFiltering::filterByLocation(Config::getASelectedSourceLocation(source))
-        else any()
+        // Data flow is always incremental in one of two ways.
+        // 1. If the configuration is diff-informed and diff information is
+        //    available, we filter to only include nodes in the diff, which
+        //    gives the smallest set of nodes.
+        // 2. If not, in global evaluation with overlay, we filter to only
+        //    include nodes from files in the overlay or the diff; flow from
+        //    other nodes will be added back later. There can be two reasons
+        //    why we are in this case:
+        //    1. This could be the primary configuration for a query that
+        //       hasn't yet become diff-informed. In that case, the
+        //       `getASelectedSourceLocation` information is probably just the
+        //       default, and it's a fairly safe overapproximation to
+        //       effectively expand to all nodes in the file (via
+        //       `isDiffFileNode`).
+        //    2. This could be a secondary configuration, like a helper
+        //       configuration for finding sources or sinks of a primary
+        //       configuration. In that case, the results of this configuration
+        //       are typically in the same file as the final alert.
+        if
+          Config::observeDiffInformedIncrementalMode() and
+          AlertFiltering::diffInformationAvailable()
+        then AlertFiltering::locationIsInDiff(Config::getASelectedSourceLocation(source))
+        else (
+          // If we are in base-only global evaluation, do not filter out any sources.
+          not isEvaluatingInOverlay()
+          or
+          // If we are in global evaluation with an overlay present, restrict
+          // sources to those visible in the overlay or
+          isOverlayNode(source)
+          or
+          // those from files in the diff. The diff is a subset of the overlay
+          // in the common case, but this is not guaranteed. Including the diff here
+          // ensures that we re-evaluate flow that passes from a file in the
+          // diff (but in the base), through a file in the overlay with
+          // possibly important changes, back to the base.
+          isDiffFileNode(source)
+        )
       }
 
+      overlay[global]
       pragma[nomagic]
       private predicate isFilteredSink(Node sink) {
         (
           Config::isSink(sink, _) or
           Config::isSink(sink)
         ) and
-        if Config::observeDiffInformedIncrementalMode()
-        then AlertFiltering::filterByLocation(Config::getASelectedSinkLocation(sink))
-        else any()
+        // See the comments in `isFilteredSource` for the reasoning behind the following.
+        if
+          Config::observeDiffInformedIncrementalMode() and
+          AlertFiltering::diffInformationAvailable()
+        then AlertFiltering::locationIsInDiff(Config::getASelectedSinkLocation(sink))
+        else (
+          not isEvaluatingInOverlay()
+          or
+          isOverlayNode(sink)
+          or
+          isDiffFileNode(sink)
+        )
       }
 
       private predicate hasFilteredSource() { isFilteredSource(_) }
