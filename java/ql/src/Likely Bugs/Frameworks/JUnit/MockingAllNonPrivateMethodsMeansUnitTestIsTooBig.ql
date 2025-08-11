@@ -1,6 +1,6 @@
 /**
  * @id java/mocking-all-non-private-methods-means-unit-test-is-too-big
- * @name J-T-001: Mocking all non-private methods of a class may indicate the unit test is testing too much
+ * @name Mocking all non-private methods of a class may indicate the unit test is testing too much
  * @description Mocking all non-private methods provided by a class might indicate the unit test
  *              aims to test too many things.
  * @kind problem
@@ -12,12 +12,15 @@
 
 import java
 
+/**
+ * A call to Mockito's `mock` method.
+ */
 class MockitoMockCall extends MethodCall {
   MockitoMockCall() { this.getMethod().hasQualifiedName("org.mockito", "Mockito", "mock") }
 
   /**
-   * Gets the type that this call intends to mock. e.g.
-   * ``` java
+   * Gets the type that this call intends to mock. For example:
+   * ```java
    * EmployeeRecord employeeRecordMock = mock(EmployeeRecord.class);
    * ```
    * This predicate gets the class `EmployeeRecord` in the above example.
@@ -26,8 +29,8 @@ class MockitoMockCall extends MethodCall {
 }
 
 /**
- * A method call that mocks a target method in a JUnit test. e.g.
- * ``` java
+ * A method call that mocks a target method in a JUnit test. For example:
+ * ```java
  * EmployeeRecord employeeRecordMock = mock(EmployeeRecord.class);
  * when(employeeRecordMock.add(sampleEmployee)).thenReturn(0); // Mocked EmployeeRecord.add
  * doReturn(0).when(employeeRecordMock).add(sampleEmployee);   // Mocked EmployeeRecord.add
