@@ -47,18 +47,3 @@ abstract class SummarizedCallable extends LibraryCallable, Impl::Public::Summari
     )
   }
 }
-
-/**
- * A callable with a flow summary, identified by a unique string, where all
- * calls to a method with the same name are considered relevant.
- */
-abstract class SimpleSummarizedCallable extends SummarizedCallable {
-  CallExpr c;
-
-  bindingset[this]
-  SimpleSummarizedCallable() { c.getLowerCaseName() = this }
-
-  final override CallExpr getACall() { result = c }
-
-  final override CallExpr getACallSimple() { result = c }
-}
