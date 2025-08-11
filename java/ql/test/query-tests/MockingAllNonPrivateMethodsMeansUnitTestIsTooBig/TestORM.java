@@ -52,4 +52,14 @@ public class TestORM {
     doReturn(0).when(employeeRecordMock).update(sampleEmployee, "Jane Doe"); // Mocked EmployeeRecord.update
     doReturn(0).when(employeeRecordMock).delete(sampleEmployee); // Mocked EmployeeRecord.delete
   }
+
+  /**
+   * Edge case: Class with single public method - should NOT be flagged.
+   * When there's only one public method, mocking it doesn't indicate a "too big" test.
+   */
+  @Test
+  public void compliantSingleMethod() { // $ SPURIOUS: Alert
+    EmployeeStatus statusMock = mock(EmployeeStatus.class); // COMPLIANT: Single public method, no choice but to mock it if needed
+    when(statusMock.getStatus()).thenReturn("inactive"); // Mocked EmployeeStatus.getStatus (the only public method, but that's OK)
+  }
 }
