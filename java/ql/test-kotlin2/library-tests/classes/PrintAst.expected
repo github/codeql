@@ -160,7 +160,18 @@ classes.kt:
 #   42|       -1: [TypeAccess] int
 #   42|       0: [IntegerLiteral] 3
 #   49|   11: [Class] Direction
-#   49|     2: [Constructor] Direction
+#    0|     2: [Method] getEntries
+#    0|       3: [TypeAccess] EnumEntries<Direction>
+#    0|         0: [TypeAccess] Direction
+#    0|     3: [Method] valueOf
+#    0|       3: [TypeAccess] Direction
+#-----|       4: (Parameters)
+#   49|         0: [Parameter] value
+#   49|           0: [TypeAccess] String
+#    0|     4: [Method] values
+#    0|       3: [TypeAccess] Direction[]
+#    0|         0: [TypeAccess] Direction
+#   49|     5: [Constructor] Direction
 #   49|       5: [BlockStmt] { ... }
 #   49|         0: [ExprStmt] <Expr>;
 #   49|           0: [ClassInstanceExpr] new Enum<Direction>(...)
@@ -169,17 +180,6 @@ classes.kt:
 #   49|             0: [NullLiteral] null
 #   49|             1: [IntegerLiteral] 0
 #   49|         1: [BlockStmt] { ... }
-#   49|     3: [Method] getEntries
-#   49|       3: [TypeAccess] EnumEntries<Direction>
-#   49|         0: [TypeAccess] Direction
-#   49|     4: [Method] valueOf
-#   49|       3: [TypeAccess] Direction
-#-----|       4: (Parameters)
-#   49|         0: [Parameter] value
-#   49|           0: [TypeAccess] String
-#   49|     5: [Method] values
-#   49|       3: [TypeAccess] Direction[]
-#   49|         0: [TypeAccess] Direction
 #   50|     6: [FieldDeclaration] Direction NORTH;
 #   50|       -1: [TypeAccess] Direction
 #   50|       0: [ClassInstanceExpr] new Direction(...)
@@ -197,17 +197,17 @@ classes.kt:
 #   50|       0: [ClassInstanceExpr] new Direction(...)
 #   50|         -3: [TypeAccess] Direction
 #   53|   12: [Class] Color
-#   53|     2: [Method] getEntries
-#   53|       3: [TypeAccess] EnumEntries<Color>
-#   53|         0: [TypeAccess] Color
-#   53|     3: [Method] valueOf
-#   53|       3: [TypeAccess] Color
+#    0|     2: [Method] getEntries
+#    0|       3: [TypeAccess] EnumEntries<Color>
+#    0|         0: [TypeAccess] Color
+#    0|     3: [Method] valueOf
+#    0|       3: [TypeAccess] Color
 #-----|       4: (Parameters)
 #   53|         0: [Parameter] value
 #   53|           0: [TypeAccess] String
-#   53|     4: [Method] values
-#   53|       3: [TypeAccess] Color[]
-#   53|         0: [TypeAccess] Color
+#    0|     4: [Method] values
+#    0|       3: [TypeAccess] Color[]
+#    0|         0: [TypeAccess] Color
 #   53|     5: [Constructor] Color
 #-----|       4: (Parameters)
 #   53|         0: [Parameter] rgb

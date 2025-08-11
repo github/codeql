@@ -563,9 +563,9 @@ private module Cached {
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
       private predicate guardChecksAdjTypes(
-        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e, boolean branch
+        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e, Guards::GuardValue val
       ) {
-        guardChecks(g, e, branch)
+        guardChecks(g, e, val.asBooleanValue())
       }
 
       private Node getABarrierNodeImpl() {
@@ -657,16 +657,18 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     def instanceof SsaUncertainImplicitUpdate
   }
 
+  class GuardValue = Guards::GuardValue;
+
   class Guard = Guards::Guard;
 
-  /** Holds if the guard `guard` directly controls block `bb` upon evaluating to `branch`. */
-  predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
-    guard.directlyControls(bb, branch)
+  /** Holds if the guard `guard` directly controls block `bb` upon evaluating to `val`. */
+  predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, GuardValue val) {
+    guard.directlyValueControls(bb, val)
   }
 
-  /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-  predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
-    guard.controls(bb, branch)
+  /** Holds if the guard `guard` controls block `bb` upon evaluating to `val`. */
+  predicate guardControlsBlock(Guard guard, BasicBlock bb, GuardValue val) {
+    guard.valueControls(bb, val)
   }
 
   predicate includeWriteDefsInFlowStep() { none() }

@@ -1,6 +1,7 @@
 /** Provides classes for representing type mentions, used in type inference. */
 
 private import rust
+private import codeql.rust.frameworks.stdlib.Stdlib
 private import Type
 private import PathResolution
 private import TypeInference
@@ -12,6 +13,30 @@ abstract class TypeMention extends AstNode {
 
   /** Gets the type that this node resolves to, if any. */
   final Type resolveType() { result = this.resolveTypeAt(TypePath::nil()) }
+}
+
+class TupleTypeReprMention extends TypeMention instanceof TupleTypeRepr {
+  override Type resolveTypeAt(TypePath path) {
+    path.isEmpty() and
+    result = TTuple(super.getNumberOfFields())
+    or
+    exists(TypePath suffix, int i |
+      result = super.getField(i).(TypeMention).resolveTypeAt(suffix) and
+      path = TypePath::cons(TTupleTypeParameter(super.getNumberOfFields(), i), suffix)
+    )
+  }
+}
+
+class ParenthesizedArgListMention extends TypeMention instanceof ParenthesizedArgList {
+  override Type resolveTypeAt(TypePath path) {
+    path.isEmpty() and
+    result = TTuple(super.getNumberOfTypeArgs())
+    or
+    exists(TypePath suffix, int index |
+      result = super.getTypeArg(index).getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
+      path = TypePath::cons(TTupleTypeParameter(super.getNumberOfTypeArgs(), index), suffix)
+    )
+  }
 }
 
 class ArrayTypeReprMention extends TypeMention instanceof ArrayTypeRepr {
@@ -203,6 +228,17 @@ class NonAliasPathTypeMention extends PathTypeMention {
               .(TraitItemNode)
               .getAssocItem(pragma[only_bind_into](name)))
     )
+    or
+    // Handle the special syntactic sugar for function traits. For now we only
+    // support `FnOnce` as we can't support the "inherited" associated types of
+    // `Fn` and `FnMut` yet.
+    exists(FnOnceTrait t | t = resolved |
+      tp = TTypeParamTypeParameter(t.getTypeParam()) and
+      result = this.getSegment().getParenthesizedArgList()
+      or
+      tp = TAssociatedTypeTypeParameter(t.getOutputType()) and
+      result = this.getSegment().getRetType().getTypeRepr()
+    )
   }
 
   Type resolveRootType() {
@@ -246,6 +282,12 @@ class ImplTraitTypeReprMention extends TypeMention instanceof ImplTraitTypeRepr 
   override Type resolveTypeAt(TypePath typePath) {
     typePath.isEmpty() and
     result.(ImplTraitType).getImplTraitTypeRepr() = this
+    or
+    exists(ImplTraitTypeParameter tp |
+      this = tp.getImplTraitTypeRepr() and
+      typePath = TypePath::singleton(tp) and
+      result = TTypeParamTypeParameter(tp.getTypeParam())
+    )
   }
 }
 
@@ -295,5 +337,66 @@ class SelfTypeParameterMention extends TypeMention instanceof Name {
   override Type resolveTypeAt(TypePath typePath) {
     typePath.isEmpty() and
     result = TSelfTypeParameter(trait)
+  }
+}
+
+class DynTraitTypeReprMention extends TypeMention instanceof DynTraitTypeRepr {
+  private DynTraitType dynType;
+
+  DynTraitTypeReprMention() {
+    // This excludes `DynTraitTypeRepr` elements where `getTrait` is not
+    // defined, i.e., where path resolution can't find a trait.
+    dynType.getTrait() = super.getTrait()
+  }
+
+  override Type resolveTypeAt(TypePath path) {
+    path.isEmpty() and
+    result = dynType
+    or
+    exists(DynTraitTypeParameter tp, TypePath path0, TypePath suffix |
+      dynType = tp.getDynTraitType() and
+      path = TypePath::cons(tp, suffix) and
+      result = super.getTypeBoundList().getBound(0).getTypeRepr().(TypeMention).resolveTypeAt(path0) and
+      path0.isCons(tp.getTraitTypeParameter(), suffix)
+    )
+  }
+}
+
+// We want a type of the form `dyn Trait` to implement `Trait`. If `Trait` has
+// type parameters then `dyn Trait` has equivalent type parameters and the
+// implementation should be abstracted over them.
+//
+// Intuitively we want something to the effect of:
+// ```
+// impl<A, B, ..> Trait<A, B, ..> for (dyn Trait)<A, B, ..>
+// ```
+// To achieve this:
+// - `DynTypeAbstraction` is an abstraction over type parameters of the trait.
+// - `DynTypeBoundListMention` (this class) is a type mention which has `dyn
+//   Trait` at the root and which for every type parameter of `dyn Trait` has the
+//   corresponding type parameter of the trait.
+// - `TraitMention` (which is used for other things as well) is a type mention
+//    for the trait applied to its own type parameters.
+//
+// We arbitrarily use the `TypeBoundList` inside `DynTraitTypeRepr` to encode
+// this type mention, since it doesn't syntactically appear in the AST. This
+// works because there is a one-to-one correspondence between a trait object and
+// its list of type bounds.
+class DynTypeBoundListMention extends TypeMention instanceof TypeBoundList {
+  private Trait trait;
+
+  DynTypeBoundListMention() {
+    exists(DynTraitTypeRepr dyn | this = dyn.getTypeBoundList() and trait = dyn.getTrait())
+  }
+
+  override Type resolveTypeAt(TypePath path) {
+    path.isEmpty() and
+    result.(DynTraitType).getTrait() = trait
+    or
+    exists(DynTraitTypeParameter tp |
+      trait = tp.getTrait() and
+      path = TypePath::singleton(tp) and
+      result = tp.getTraitTypeParameter()
+    )
   }
 }
