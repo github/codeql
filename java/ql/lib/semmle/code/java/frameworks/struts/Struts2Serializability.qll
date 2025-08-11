@@ -2,6 +2,8 @@
  * Provides classes and predicates for working with objects bound from Http requests in the context of
  * the Struts2 web framework.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.Serializability

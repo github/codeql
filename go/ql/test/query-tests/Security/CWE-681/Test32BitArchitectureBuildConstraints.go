@@ -19,11 +19,11 @@ func testIntSource32() {
 		_ = uint32(parsed)
 	}
 	{
-		parsed, err := strconv.ParseUint("3456", 10, 0)
+		parsed, err := strconv.ParseUint("3456", 10, 0) // $ Source
 		if err != nil {
 			panic(err)
 		}
-		_ = int32(parsed) // $ hasValueFlow="parsed"
+		_ = int32(parsed) // $ Alert
 		_ = uint32(parsed)
 	}
 	{

@@ -2,10 +2,13 @@
 import codeql.swift.elements
 import TestUtils
 
-from TypeValueExpr x, string hasType, TypeRepr getTypeRepr
-where
+query predicate instances(TypeValueExpr x, string getTypeRepr__label, TypeRepr getTypeRepr) {
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.hasType() then hasType = "yes" else hasType = "no") and
+  getTypeRepr__label = "getTypeRepr:" and
   getTypeRepr = x.getTypeRepr()
-select x, "hasType:", hasType, "getTypeRepr:", getTypeRepr
+}
+
+query predicate getType(TypeValueExpr x, Type getType) {
+  toBeTested(x) and not x.isUnknown() and getType = x.getType()
+}

@@ -5,7 +5,14 @@ private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.SensitiveActions
 
 /** A sink representing persistent storage that saves data in clear text. */
-abstract class CleartextStorageSink extends DataFlow::Node { }
+abstract class CleartextStorageSink extends DataFlow::Node {
+  /**
+   * Gets a location that will be selected in the diff-informed query where
+   * this sink is found. If this has no results for any sink, that's taken to
+   * mean the query is not diff-informed.
+   */
+  Location getASelectedLocation() { none() }
+}
 
 /** A sanitizer for flows tracking sensitive data being stored in persistent storage. */
 abstract class CleartextStorageSanitizer extends DataFlow::Node { }
@@ -45,6 +52,17 @@ private module SensitiveSourceFlowConfig implements DataFlow::ConfigSig {
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(CleartextStorageAdditionalTaintStep c).step(n1, n2)
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // This configuration is used by several queries. A query can opt in to
+    // diff-informed mode by implementing `getASelectedLocation` on its sinks,
+    // indicating that it has considered which sinks are selected.
+    exists(CleartextStorageSink sink | exists(sink.getASelectedLocation()))
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(CleartextStorageSink).getASelectedLocation()
   }
 }
 

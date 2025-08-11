@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with test classes and methods.
  */
+overlay[local?]
+module;
 
 import Type
 import Member

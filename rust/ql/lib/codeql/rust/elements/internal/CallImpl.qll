@@ -65,6 +65,17 @@ module Impl {
       not exists(TypeInference::resolveMethodCallTarget(this)) and
       result = this.(CallExpr).getStaticTarget()
     }
+
+    /** Gets a runtime target of this call, if any. */
+    pragma[nomagic]
+    Function getARuntimeTarget() {
+      result.hasImplementation() and
+      (
+        result = this.getStaticTarget()
+        or
+        result.implements(this.getStaticTarget())
+      )
+    }
   }
 
   /** Holds if the call expression dispatches to a trait method. */

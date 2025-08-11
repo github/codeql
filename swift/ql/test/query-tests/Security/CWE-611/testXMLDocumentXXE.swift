@@ -35,9 +35,9 @@ class XMLDocument {
 // --- tests ---
 
 func testUrl() {
-    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!) // $ Source
     let remoteUrl = URL(string: remoteString)!
-     let _ = XMLDocument(contentsOf: remoteUrl, options: [.nodeLoadExternalEntitiesAlways]) // $ hasXXE=38
+    let _ = XMLDocument(contentsOf: remoteUrl, options: [.nodeLoadExternalEntitiesAlways]) // $ Alert
 }
 
 func testUrlSafeImplicit() {
@@ -53,9 +53,9 @@ func testUrlSafeExplicit() {
 }
 
 func testData() {
-    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!) // $ Source
     let remoteData = Data(remoteString)
-    let _ = XMLDocument(data: remoteData, options: [.nodeLoadExternalEntitiesAlways]) // $ hasXXE=56
+    let _ = XMLDocument(data: remoteData, options: [.nodeLoadExternalEntitiesAlways]) // $ Alert
 }
 
 func testDataSafeImplicit() {
@@ -71,8 +71,8 @@ func testDataSafeExplicit() {
 }
 
 func testString() {
-    let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
-    let _ = XMLDocument(xmlString: remoteString, options: [.nodeLoadExternalEntitiesAlways]) // $ hasXXE=74
+    let remoteString = String(contentsOf: URL(string: "http://example.com/")!) // $ Source
+    let _ = XMLDocument(xmlString: remoteString, options: [.nodeLoadExternalEntitiesAlways]) // $ Alert
 }
 
 func testStringSafeImplicit() {

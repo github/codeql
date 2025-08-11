@@ -32,6 +32,8 @@
  *     - `Field[t(i)]`: position `i` inside the variant/struct with canonical path `v`, for example
  *                      `Field[core::option::Option::Some(0)]`.
  *     - `Field[i]`: the `i`th element of a tuple.
+ *     - `Reference`: the referenced value.
+ *     - `Future`: the value being computed asynchronously.
  * 3. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources `"remote"` indicates a default remote flow source, and for summaries
@@ -209,6 +211,10 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   SummarizedCallableFromModel() {
     summaryModel(path, _, _, _, _, _) and
     this.getCanonicalPath() = path
+  }
+
+  override predicate hasProvenance(Provenance provenance) {
+    summaryModel(path, _, _, _, provenance, _)
   }
 
   override predicate propagatesFlow(

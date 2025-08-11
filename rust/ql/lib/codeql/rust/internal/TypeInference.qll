@@ -285,6 +285,16 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
       prefix2.isEmpty()
     )
   )
+  or
+  // an array list expression (`[1, 2, 3]`) has the type of the first (any) element
+  n1.(ArrayListExpr).getExpr(_) = n2 and
+  prefix1 = TypePath::singleton(TArrayTypeParameter()) and
+  prefix2.isEmpty()
+  or
+  // an array repeat expression (`[1; 3]`) has the type of the repeat operand
+  n1.(ArrayRepeatExpr).getRepeatOperand() = n2 and
+  prefix1 = TypePath::singleton(TArrayTypeParameter()) and
+  prefix2.isEmpty()
 }
 
 pragma[nomagic]
@@ -689,7 +699,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
 
     Declaration getTarget() {
-      result = inferMethodCallTarget(this) // mutual recursion; resolving method calls requires resolving types and vice versa
+      result = resolveMethodCallTarget(this) // mutual recursion; resolving method calls requires resolving types and vice versa
       or
       result = CallExprImpl::getResolvedFunction(this)
     }
@@ -1038,6 +1048,12 @@ private class Vec extends Struct {
 }
 
 /**
+ * Gets the root type of the array expression `ae`.
+ */
+pragma[nomagic]
+private Type inferArrayExprType(ArrayExpr ae) { exists(ae) and result = TArrayType() }
+
+/**
  * According to [the Rust reference][1]: _"array and slice-typed expressions
  * can be indexed with a `usize` index ... For other types an index expression
  * `a[b]` is equivalent to *std::ops::Index::index(&a, b)"_.
@@ -1069,6 +1085,26 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
     exists(TypePath path0 |
       exprPath.isCons(any(RefTypeParameter tp), path0) and
       path0.isCons(any(SliceTypeParameter tp), path)
+    )
+  )
+}
+
+pragma[nomagic]
+private Type inferForLoopExprType(AstNode n, TypePath path) {
+  // type of iterable -> type of pattern (loop variable)
+  exists(ForExpr fe, Type iterableType, TypePath iterablePath |
+    n = fe.getPat() and
+    iterableType = inferType(fe.getIterable(), iterablePath) and
+    result = iterableType and
+    (
+      iterablePath.isCons(any(Vec v).getElementTypeParameter(), path)
+      or
+      iterablePath.isCons(any(ArrayTypeParameter tp), path)
+      or
+      iterablePath
+          .stripPrefix(TypePath::cons(TRefTypeParameter(),
+              TypePath::singleton(any(SliceTypeParameter tp)))) = path
+      // TODO: iterables (general case for containers, ranges etc)
     )
   )
 }
@@ -1142,14 +1178,14 @@ private predicate methodCandidateTrait(Type type, Trait trait, string name, int 
   methodCandidate(type, name, arity, impl)
 }
 
-private module IsInstantiationOfInput implements IsInstantiationOfInputSig<MethodCall> {
-  pragma[nomagic]
-  private predicate isMethodCall(MethodCall mc, Type rootType, string name, int arity) {
-    rootType = mc.getTypeAt(TypePath::nil()) and
-    name = mc.getMethodName() and
-    arity = mc.getNumberOfArguments()
-  }
+pragma[nomagic]
+private predicate isMethodCall(MethodCall mc, Type rootType, string name, int arity) {
+  rootType = mc.getTypeAt(TypePath::nil()) and
+  name = mc.getMethodName() and
+  arity = mc.getNumberOfArguments()
+}
 
+private module IsInstantiationOfInput implements IsInstantiationOfInputSig<MethodCall> {
   pragma[nomagic]
   predicate potentialInstantiationOf(MethodCall mc, TypeAbstraction impl, TypeMention constraint) {
     exists(Type rootType, string name, int arity |
@@ -1298,17 +1334,46 @@ private predicate methodResolutionDependsOnArgument(
   )
 }
 
+/**
+ * Holds if the method call `mc` has no inherent target, i.e., it does not
+ * resolve to a method in an `impl` block for the type of the receiver.
+ */
+pragma[nomagic]
+private predicate methodCallHasNoInherentTarget(MethodCall mc) {
+  exists(Type rootType, string name, int arity |
+    isMethodCall(mc, rootType, name, arity) and
+    forall(Impl impl |
+      methodCandidate(rootType, name, arity, impl) and
+      not impl.hasTrait()
+    |
+      IsInstantiationOf<MethodCall, IsInstantiationOfInput>::isNotInstantiationOf(mc, impl, _)
+    )
+  )
+}
+
+pragma[nomagic]
+private predicate methodCallHasImplCandidate(MethodCall mc, Impl impl) {
+  IsInstantiationOf<MethodCall, IsInstantiationOfInput>::isInstantiationOf(mc, impl, _) and
+  if impl.hasTrait() and not exists(mc.getTrait())
+  then
+    // inherent methods take precedence over trait methods, so only allow
+    // trait methods when there are no matching inherent methods
+    methodCallHasNoInherentTarget(mc)
+  else any()
+}
+
 /** Gets a method from an `impl` block that matches the method call `mc`. */
+pragma[nomagic]
 private Function getMethodFromImpl(MethodCall mc) {
-  exists(Impl impl |
-    IsInstantiationOf<MethodCall, IsInstantiationOfInput>::isInstantiationOf(mc, impl, _) and
-    result = getMethodSuccessor(impl, mc.getMethodName())
+  exists(Impl impl, string name |
+    methodCallHasImplCandidate(mc, impl) and
+    name = mc.getMethodName() and
+    result = getMethodSuccessor(impl, name)
   |
-    not methodResolutionDependsOnArgument(impl, _, _, _, _, _) and
-    result = getMethodSuccessor(impl, mc.getMethodName())
+    not methodResolutionDependsOnArgument(impl, _, _, _, _, _)
     or
     exists(int pos, TypePath path, Type type |
-      methodResolutionDependsOnArgument(impl, mc.getMethodName(), result, pos, path, type) and
+      methodResolutionDependsOnArgument(impl, name, result, pos, path, type) and
       inferType(mc.getPositionalArgument(pos), path) = type
     )
   )
@@ -1318,22 +1383,6 @@ bindingset[trait, name]
 pragma[inline_late]
 private Function getTraitMethod(ImplTraitReturnType trait, string name) {
   result = getMethodSuccessor(trait.getImplTraitTypeRepr(), name)
-}
-
-/**
- * Gets a method that the method call `mc` resolves to based on type inference,
- * if any.
- */
-private Function inferMethodCallTarget(MethodCall mc) {
-  // The method comes from an `impl` block targeting the type of the receiver.
-  result = getMethodFromImpl(mc)
-  or
-  // The type of the receiver is a type parameter and the method comes from a
-  // trait bound on the type parameter.
-  result = getTypeParameterMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
-  or
-  // The type of the receiver is an `impl Trait` type.
-  result = getTraitMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
 }
 
 cached
@@ -1364,47 +1413,18 @@ private module Cached {
     )
   }
 
-  private predicate isInherentImplFunction(Function f) {
-    f = any(Impl impl | not impl.hasTrait()).(ImplItemNode).getAnAssocItem()
-  }
-
-  private predicate isTraitImplFunction(Function f) {
-    f = any(Impl impl | impl.hasTrait()).(ImplItemNode).getAnAssocItem()
-  }
-
-  private Function resolveMethodCallTargetFrom(MethodCall mc, boolean fromSource) {
-    result = inferMethodCallTarget(mc) and
-    (if result.fromSource() then fromSource = true else fromSource = false) and
-    (
-      // prioritize inherent implementation methods first
-      isInherentImplFunction(result)
-      or
-      not isInherentImplFunction(inferMethodCallTarget(mc)) and
-      (
-        // then trait implementation methods
-        isTraitImplFunction(result)
-        or
-        not isTraitImplFunction(inferMethodCallTarget(mc)) and
-        (
-          // then trait methods with default implementations
-          result.hasBody()
-          or
-          // and finally trait methods without default implementations
-          not inferMethodCallTarget(mc).hasBody()
-        )
-      )
-    )
-  }
-
   /** Gets a method that the method call `mc` resolves to, if any. */
   cached
   Function resolveMethodCallTarget(MethodCall mc) {
-    // Functions in source code also gets extracted as library code, due to
-    // this duplication we prioritize functions from source code.
-    result = resolveMethodCallTargetFrom(mc, true)
+    // The method comes from an `impl` block targeting the type of the receiver.
+    result = getMethodFromImpl(mc)
     or
-    not exists(resolveMethodCallTargetFrom(mc, true)) and
-    result = resolveMethodCallTargetFrom(mc, false)
+    // The type of the receiver is a type parameter and the method comes from a
+    // trait bound on the type parameter.
+    result = getTypeParameterMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
+    or
+    // The type of the receiver is an `impl Trait` type.
+    result = getTraitMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
   }
 
   pragma[inline]
@@ -1518,7 +1538,12 @@ private module Cached {
     or
     result = inferAwaitExprType(n, path)
     or
+    result = inferArrayExprType(n) and
+    path.isEmpty()
+    or
     result = inferIndexExprType(n, path)
+    or
+    result = inferForLoopExprType(n, path)
   }
 }
 

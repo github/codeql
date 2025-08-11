@@ -2,12 +2,16 @@
 import codeql.rust.elements
 import TestUtils
 
-from LifetimeParam x, int getNumberOfAttrs, string hasLifetime, string hasTypeBoundList
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasLifetime() then hasLifetime = "yes" else hasLifetime = "no") and
-  if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasLifetime:", hasLifetime, "hasTypeBoundList:",
-  hasTypeBoundList
+query predicate instances(LifetimeParam x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getAttr(LifetimeParam x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getLifetime(LifetimeParam x, Lifetime getLifetime) {
+  toBeTested(x) and not x.isUnknown() and getLifetime = x.getLifetime()
+}
+
+query predicate getTypeBoundList(LifetimeParam x, TypeBoundList getTypeBoundList) {
+  toBeTested(x) and not x.isUnknown() and getTypeBoundList = x.getTypeBoundList()
+}

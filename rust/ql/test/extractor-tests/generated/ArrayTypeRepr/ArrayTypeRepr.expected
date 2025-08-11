@@ -1,1 +1,6 @@
-| gen_array_type_repr.rs:7:14:7:21 | ArrayTypeRepr | hasConstArg: | yes | hasElementTypeRepr: | yes |
+instances
+| gen_array_type_repr.rs:7:14:7:21 | ArrayTypeRepr |
+getConstArg
+| gen_array_type_repr.rs:7:14:7:21 | ArrayTypeRepr | gen_array_type_repr.rs:7:20:7:20 | ConstArg |
+getElementTypeRepr
+| gen_array_type_repr.rs:7:14:7:21 | ArrayTypeRepr | gen_array_type_repr.rs:7:15:7:17 | i32 |

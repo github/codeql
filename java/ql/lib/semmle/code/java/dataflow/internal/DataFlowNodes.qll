@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import java
 private import semmle.code.java.dataflow.InstanceAccess
 private import semmle.code.java.dataflow.ExternalFlow
@@ -60,8 +63,6 @@ module SsaFlow {
 
 cached
 private module Cached {
-  private import semmle.code.java.controlflow.internal.GuardsLogic as GuardsLogic
-
   cached
   newtype TNode =
     TExprNode(Expr e) {

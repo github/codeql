@@ -10,7 +10,6 @@ import codeql.rust.elements.internal.AssocItemImpl::Impl as AssocItemImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.GenericParamList
-import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
@@ -31,7 +30,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Const` class directly.
    * Use the subclass `Const`, where the following predicates are available.
    */
-  class Const extends Synth::TConst, AssocItemImpl::AssocItem, ItemImpl::Item {
+  class Const extends Synth::TConst, AssocItemImpl::AssocItem {
     override string getAPrimaryQlClass() { result = "Const" }
 
     /**

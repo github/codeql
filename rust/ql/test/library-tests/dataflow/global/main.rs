@@ -94,38 +94,78 @@ struct MyFlag {
     flag: bool,
 }
 
+trait MyTrait {
+    fn data_in_trait(self, n: i64);
+    fn get_data_trait(self) -> i64;
+    fn data_through_trait(self, n: i64) -> i64;
+}
+
 impl MyFlag {
     fn data_in(self, n: i64) {
         sink(n); // $ hasValueFlow=1 hasValueFlow=8
     }
 
     fn get_data(self) -> i64 {
-        if self.flag {
-            0
-        } else {
-            source(2)
-        }
+        if self.flag { 0 } else { source(2) }
     }
 
     fn data_through(self, n: i64) -> i64 {
-        if self.flag {
-            0
-        } else {
-            n
-        }
+        if self.flag { 0 } else { n }
     }
+}
+
+impl MyTrait for MyFlag {
+    fn data_in_trait(self, n: i64) {
+        sink(n); // $ hasValueFlow=22 $ hasValueFlow=31
+    }
+
+    fn get_data_trait(self) -> i64 {
+        if self.flag { 0 } else { source(21) }
+    }
+
+    fn data_through_trait(self, n: i64) -> i64 {
+        if self.flag { 0 } else { n }
+    }
+}
+
+fn data_out_of_method_trait_dispatch<T: MyTrait>(x: T) {
+    let a = x.get_data_trait();
+    sink(a); // $ hasValueFlow=21
 }
 
 fn data_out_of_method() {
     let mn = MyFlag { flag: true };
     let a = mn.get_data();
     sink(a); // $ hasValueFlow=2
+
+    let mn = MyFlag { flag: true };
+    let a = mn.get_data_trait();
+    sink(a); // $ hasValueFlow=21
+
+    data_out_of_method_trait_dispatch(MyFlag { flag: true });
+}
+
+fn data_in_to_method_call_trait_dispatch<T: MyTrait>(x: T) {
+    let a = source(31);
+    x.data_in_trait(a);
 }
 
 fn data_in_to_method_call() {
     let mn = MyFlag { flag: true };
     let a = source(1);
-    mn.data_in(a)
+    mn.data_in(a);
+
+    let mn = MyFlag { flag: true };
+    let a = source(22);
+    mn.data_in_trait(a);
+
+    data_in_to_method_call_trait_dispatch(MyFlag { flag: true });
+}
+
+fn data_through_method_trait_dispatch<T: MyTrait>(x: T) {
+    let a = source(34);
+    let b = x.data_through_trait(a);
+    sink(b); // $ hasValueFlow=34
 }
 
 fn data_through_method() {
@@ -133,6 +173,13 @@ fn data_through_method() {
     let a = source(4);
     let b = mn.data_through(a);
     sink(b); // $ hasValueFlow=4
+
+    let mn = MyFlag { flag: true };
+    let a = source(24);
+    let b = mn.data_through_trait(a);
+    sink(b); // $ hasValueFlow=24
+
+    data_through_method_trait_dispatch(MyFlag { flag: true });
 }
 
 fn data_in_to_method_called_as_function() {
@@ -212,7 +259,7 @@ fn test_operator_overloading() {
     let b = MyInt { value: source(34) };
     // The line below is what `*=` desugars to.
     MulAssign::mul_assign(&mut a, b);
-    sink(a.value); // $ MISSING: hasValueFlow=34
+    sink(a.value); // $ hasValueFlow=34
 
     let mut a = MyInt { value: 0 };
     let b = MyInt { value: source(35) };
@@ -230,13 +277,13 @@ fn test_operator_overloading() {
     sink(c); // $ hasTaintFlow=28 MISSING: hasValueFlow=28
 }
 
-trait MyTrait {
+trait MyTrait2 {
     type Output;
     fn take_self(self, _other: Self::Output) -> Self::Output;
     fn take_second(self, other: Self::Output) -> Self::Output;
 }
 
-impl MyTrait for MyInt {
+impl MyTrait2 for MyInt {
     type Output = MyInt;
 
     fn take_self(self, _other: MyInt) -> MyInt {
@@ -251,17 +298,17 @@ impl MyTrait for MyInt {
 fn data_through_trait_method_called_as_function() {
     let a = MyInt { value: source(8) };
     let b = MyInt { value: 2 };
-    let MyInt { value: c } = MyTrait::take_self(a, b);
+    let MyInt { value: c } = MyTrait2::take_self(a, b);
     sink(c); // $ hasValueFlow=8
 
     let a = MyInt { value: 0 };
     let b = MyInt { value: source(37) };
-    let MyInt { value: c } = MyTrait::take_second(a, b);
+    let MyInt { value: c } = MyTrait2::take_second(a, b);
     sink(c); // $ hasValueFlow=37
 
     let a = MyInt { value: 0 };
     let b = MyInt { value: source(38) };
-    let MyInt { value: c } = MyTrait::take_self(a, b);
+    let MyInt { value: c } = MyTrait2::take_self(a, b);
     sink(c);
 }
 

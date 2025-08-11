@@ -2,6 +2,8 @@
  * Provides classes and predicates for working with Java Serialization in the context of
  * the `com.fasterxml.jackson` JSON processing framework.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.Serializability

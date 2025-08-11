@@ -9,19 +9,19 @@ import (
 
 func testIntSizeIsArchicturallyDependent1() {
 	{
-		parsed, err := strconv.ParseInt("3456", 10, 0)
+		parsed, err := strconv.ParseInt("3456", 10, 0) // $ Source
 		if err != nil {
 			panic(err)
 		}
-		_ = int32(parsed)  // $ hasValueFlow="parsed"
-		_ = uint32(parsed) // $ hasValueFlow="parsed"
+		_ = int32(parsed)  // $ Alert
+		_ = uint32(parsed) // $ Alert
 	}
 	{
-		parsed, err := strconv.ParseInt("3456", 10, 64)
+		parsed, err := strconv.ParseInt("3456", 10, 64) // $ Source
 		if err != nil {
 			panic(err)
 		}
-		_ = int(parsed)  // $ hasValueFlow="parsed"
-		_ = uint(parsed) // $ hasValueFlow="parsed"
+		_ = int(parsed)  // $ Alert
+		_ = uint(parsed) // $ Alert
 	}
 }

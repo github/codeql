@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for defining flow summaries.
  */
+overlay[local?]
+module;
 
 private import codeql.dataflow.DataFlow as DF
 private import codeql.util.Location

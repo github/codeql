@@ -1,6 +1,7 @@
 /**
  * Provides the `ReportStats` module for reporting database quality statistics.
  */
+overlay[local?]
 module;
 
 signature module StatsSig {

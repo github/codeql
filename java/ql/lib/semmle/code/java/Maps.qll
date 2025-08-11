@@ -2,6 +2,8 @@
  * Provides classes and predicates for reasoning about instances of
  * `java.util.Map` and their methods.
  */
+overlay[local?]
+module;
 
 import java
 import Collections

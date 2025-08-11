@@ -1,3 +1,21 @@
-| gen_module.rs:3:1:4:8 | mod foo | hasExtendedCanonicalPath: | yes | hasCrateOrigin: | yes | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasItemList: | no | hasName: | yes | hasVisibility: | no |
-| gen_module.rs:5:1:7:1 | mod bar | hasExtendedCanonicalPath: | yes | hasCrateOrigin: | yes | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasItemList: | yes | hasName: | yes | hasVisibility: | no |
-| lib.rs:1:1:1:15 | mod gen_module | hasExtendedCanonicalPath: | yes | hasCrateOrigin: | yes | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasItemList: | no | hasName: | yes | hasVisibility: | no |
+instances
+| gen_module.rs:3:1:4:8 | mod foo |
+| gen_module.rs:5:1:7:1 | mod bar |
+| lib.rs:1:1:1:15 | mod gen_module |
+getExtendedCanonicalPath
+| gen_module.rs:3:1:4:8 | mod foo | crate::gen_module::foo |
+| gen_module.rs:5:1:7:1 | mod bar | crate::gen_module::bar |
+| lib.rs:1:1:1:15 | mod gen_module | crate::gen_module |
+getCrateOrigin
+| gen_module.rs:3:1:4:8 | mod foo | repo::test |
+| gen_module.rs:5:1:7:1 | mod bar | repo::test |
+| lib.rs:1:1:1:15 | mod gen_module | repo::test |
+getAttributeMacroExpansion
+getAttr
+getItemList
+| gen_module.rs:5:1:7:1 | mod bar | gen_module.rs:5:9:7:1 | ItemList |
+getName
+| gen_module.rs:3:1:4:8 | mod foo | gen_module.rs:4:5:4:7 | foo |
+| gen_module.rs:5:1:7:1 | mod bar | gen_module.rs:5:5:5:7 | bar |
+| lib.rs:1:1:1:15 | mod gen_module | lib.rs:1:5:1:14 | gen_module |
+getVisibility

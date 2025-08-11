@@ -24,38 +24,38 @@ public class ApacheHttpSSRF extends HttpServlet {
             throws ServletException, IOException {
         try {
 
-            String sink = request.getParameter("uri");
+            String sink = request.getParameter("uri"); // $ Source
             URI uri = new URI(sink);
 
-            HttpGet httpGet = new HttpGet(uri); // $ SSRF
+            HttpGet httpGet = new HttpGet(uri); // $ Alert
             HttpGet httpGet2 = new HttpGet();
-            httpGet2.setURI(uri); // $ SSRF
+            httpGet2.setURI(uri); // $ Alert
 
-            new HttpHead(uri); // $ SSRF
-            new HttpPost(uri); // $ SSRF
-            new HttpPut(uri); // $ SSRF
-            new HttpDelete(uri); // $ SSRF
-            new HttpOptions(uri); // $ SSRF
-            new HttpTrace(uri); // $ SSRF
-            new HttpPatch(uri); // $ SSRF
+            new HttpHead(uri); // $ Alert
+            new HttpPost(uri); // $ Alert
+            new HttpPut(uri); // $ Alert
+            new HttpDelete(uri); // $ Alert
+            new HttpOptions(uri); // $ Alert
+            new HttpTrace(uri); // $ Alert
+            new HttpPatch(uri); // $ Alert
 
-            new BasicHttpRequest(new BasicRequestLine("GET", uri.toString(), null)); // $ SSRF
-            new BasicHttpRequest("GET", uri.toString()); // $ SSRF
-            new BasicHttpRequest("GET", uri.toString(), null); // $ SSRF
+            new BasicHttpRequest(new BasicRequestLine("GET", uri.toString(), null)); // $ Alert
+            new BasicHttpRequest("GET", uri.toString()); // $ Alert
+            new BasicHttpRequest("GET", uri.toString(), null); // $ Alert
 
-            new BasicHttpEntityEnclosingRequest(new BasicRequestLine("GET", uri.toString(), null)); // $ SSRF
-            new BasicHttpEntityEnclosingRequest("GET", uri.toString()); // $ SSRF
-            new BasicHttpEntityEnclosingRequest("GET", uri.toString(), null); // $ SSRF
+            new BasicHttpEntityEnclosingRequest(new BasicRequestLine("GET", uri.toString(), null)); // $ Alert
+            new BasicHttpEntityEnclosingRequest("GET", uri.toString()); // $ Alert
+            new BasicHttpEntityEnclosingRequest("GET", uri.toString(), null); // $ Alert
 
-            RequestBuilder.get(uri); // $ SSRF
-            RequestBuilder.post(uri); // $ SSRF
-            RequestBuilder.put(uri); // $ SSRF
-            RequestBuilder.delete(uri); // $ SSRF
-            RequestBuilder.options(uri); // $ SSRF
-            RequestBuilder.head(uri); // $ SSRF
-            RequestBuilder.trace(uri); // $ SSRF
-            RequestBuilder.patch(uri); // $ SSRF
-            RequestBuilder.get("").setUri(uri); // $ SSRF
+            RequestBuilder.get(uri); // $ Alert
+            RequestBuilder.post(uri); // $ Alert
+            RequestBuilder.put(uri); // $ Alert
+            RequestBuilder.delete(uri); // $ Alert
+            RequestBuilder.options(uri); // $ Alert
+            RequestBuilder.head(uri); // $ Alert
+            RequestBuilder.trace(uri); // $ Alert
+            RequestBuilder.patch(uri); // $ Alert
+            RequestBuilder.get("").setUri(uri); // $ Alert
 
         } catch (Exception e) {
             // TODO: handle exception

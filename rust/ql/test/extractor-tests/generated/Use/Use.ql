@@ -2,26 +2,30 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  Use x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasAttributeMacroExpansion,
-  int getNumberOfAttrs, string hasUseTree, string hasVisibility
-where
+query predicate instances(Use x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getExtendedCanonicalPath(Use x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(Use x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttributeMacroExpansion(Use x, MacroItems getAttributeMacroExpansion) {
   toBeTested(x) and
   not x.isUnknown() and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  (
-    if x.hasAttributeMacroExpansion()
-    then hasAttributeMacroExpansion = "yes"
-    else hasAttributeMacroExpansion = "no"
-  ) and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasUseTree() then hasUseTree = "yes" else hasUseTree = "no") and
-  if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasUseTree:", hasUseTree, "hasVisibility:", hasVisibility
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getAttr(Use x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getUseTree(Use x, UseTree getUseTree) {
+  toBeTested(x) and not x.isUnknown() and getUseTree = x.getUseTree()
+}
+
+query predicate getVisibility(Use x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}

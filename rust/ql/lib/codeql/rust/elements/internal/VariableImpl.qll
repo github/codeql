@@ -127,6 +127,9 @@ module Impl {
      */
     Name getName() { variableDecl(definingNode, result, text) }
 
+    /** Gets the block that encloses this variable, if any. */
+    BlockExpr getEnclosingBlock() { result = definingNode.getEnclosingBlock() }
+
     /** Gets the `self` parameter that declares this variable, if any. */
     SelfParam getSelfParam() { result.getName() = this.getName() }
 
