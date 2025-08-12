@@ -1052,14 +1052,6 @@ private module Cached {
     )
   }
 
-  private predicate isConvertedBool(Instruction instr) {
-    instr.getResultIRType() instanceof IRBooleanType
-    or
-    isConvertedBool(instr.(ConvertInstruction).getUnary())
-    or
-    isConvertedBool(instr.(BuiltinExpectCallInstruction).getCondition())
-  }
-
   /**
    * Holds if `op == k` is `areEqual` given that `test` is equal to `value`.
    */
@@ -1206,56 +1198,12 @@ private module Cached {
     }
   }
 
-  /**
-   * Holds if `left == right + k` is `areEqual` if `cmp` evaluates to `value`,
-   * and `cmp` is an instruction that compares the value of
-   * `__builtin_expect(left == right + k, _)` to `0`.
-   */
-  private predicate builtin_expect_eq(
-    CompareValueNumber cmp, Operand left, Operand right, int k, boolean areEqual,
-    AbstractValue value
-  ) {
-    exists(BuiltinExpectCallValueNumber call, Instruction const, AbstractValue innerValue |
-      int_value(const) = 0 and
-      cmp.hasOperands(call.getAUse(), const.getAUse()) and
-      compares_eq(call.getCondition(), left, right, k, areEqual, innerValue)
-    |
-      cmp instanceof CompareNEValueNumber and
-      value = innerValue
-      or
-      cmp instanceof CompareEQValueNumber and
-      value.getDualValue() = innerValue
-    )
-  }
-
   private predicate complex_eq(
     ValueNumber cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
   ) {
     sub_eq(cmp, left, right, k, areEqual, value)
     or
     add_eq(cmp, left, right, k, areEqual, value)
-    or
-    builtin_expect_eq(cmp, left, right, k, areEqual, value)
-  }
-
-  /**
-   * Holds if `op == k` is `areEqual` if `cmp` evaluates to `value`, and `cmp` is
-   * an instruction that compares the value of `__builtin_expect(op == k, _)` to `0`.
-   */
-  private predicate unary_builtin_expect_eq(
-    CompareValueNumber cmp, Operand op, int k, boolean areEqual, AbstractValue value
-  ) {
-    exists(BuiltinExpectCallValueNumber call, Instruction const, AbstractValue innerValue |
-      int_value(const) = 0 and
-      cmp.hasOperands(call.getAUse(), const.getAUse()) and
-      unary_compares_eq(call.getCondition(), op, k, areEqual, innerValue)
-    |
-      cmp instanceof CompareNEValueNumber and
-      value = innerValue
-      or
-      cmp instanceof CompareEQValueNumber and
-      value.getDualValue() = innerValue
-    )
   }
 
   private predicate unary_complex_eq(
@@ -1264,8 +1212,6 @@ private module Cached {
     unary_sub_eq(test, op, k, areEqual, value)
     or
     unary_add_eq(test, op, k, areEqual, value)
-    or
-    unary_builtin_expect_eq(test, op, k, areEqual, value)
   }
 
   /*
