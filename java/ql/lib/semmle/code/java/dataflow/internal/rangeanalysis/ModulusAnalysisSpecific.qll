@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 module Private {
   private import java as J
   private import semmle.code.java.dataflow.SSA as Ssa
@@ -14,7 +17,7 @@ module Private {
 
   class Expr = J::Expr;
 
-  class Guard = G::Guard_v2;
+  class Guard = G::Guards_v2::Guard;
 
   class ConstantIntegerExpr = RU::ConstantIntegerExpr;
 

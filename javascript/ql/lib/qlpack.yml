@@ -1,11 +1,12 @@
 name: codeql/javascript-all
-version: 2.6.6
+version: 2.6.8
 groups: javascript
 dbscheme: semmlecode.javascript.dbscheme
 extractor: javascript
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/concepts: ${workspace}
   codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
   codeql/regex: ${workspace}

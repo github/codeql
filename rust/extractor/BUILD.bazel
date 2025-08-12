@@ -7,7 +7,10 @@ codeql_rust_binary(
     name = "extractor",
     srcs = glob(["src/**/*.rs"]),
     aliases = aliases(),
-    compile_data = ["src/qltest_cargo.mustache"],
+    compile_data = [
+        "src/qltest_cargo.mustache",
+        "src/nightly-toolchain/rust-toolchain.toml",
+    ],
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ) + [

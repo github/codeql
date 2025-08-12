@@ -2,6 +2,8 @@
  * This library provides predicates for reasoning about the set of all paths
  * through a callable.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.dispatch.VirtualDispatch
@@ -64,6 +66,10 @@ private class JoinBlock extends BasicBlock {
   JoinBlock() { 2 <= strictcount(this.getAPredecessor()) }
 }
 
+private class ReachableBlock extends BasicBlock {
+  ReachableBlock() { hasDominanceInformation(this) }
+}
+
 /**
  * Holds if `bb` is a block that is collectively dominated by a set of one or
  * more actions that individually does not dominate the exit.
@@ -72,7 +78,7 @@ private predicate postActionBlock(BasicBlock bb, ActionConfiguration conf) {
   bb = nonDominatingActionBlock(conf)
   or
   if bb instanceof JoinBlock
-  then forall(BasicBlock pred | pred = bb.getAPredecessor() | postActionBlock(pred, conf))
+  then forall(ReachableBlock pred | pred = bb.getAPredecessor() | postActionBlock(pred, conf))
   else postActionBlock(bb.getAPredecessor(), conf)
 }
 

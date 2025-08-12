@@ -4,10 +4,10 @@ private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmCon
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 
 /**
- * Cases like EVP_MD5(),
- * there is no input, rather it directly gets an algorithm
- * and returns it.
- * Also includes operations directly using an algorithm
+ * A call that is considered to inherently 'consume' an algorithm value.
+ * E.g., cases like EVP_MD5(),
+ * where there is no input, rather it directly gets an algorithm
+ * and returns it. Also includes operations directly using an algorithm
  * like AES_encrypt().
  */
 class DirectAlgorithmValueConsumer extends OpenSslAlgorithmValueConsumer instanceof OpenSslAlgorithmCall

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with the Jabsorb JSON-RPC ORB framework.
  */
+overlay[local?]
+module;
 
 import java
 
@@ -17,8 +19,12 @@ class JabsorbUnmarshallMethod extends Method {
   }
 }
 
-/** The deserialization method `fromJSON`. */
-class JabsorbFromJsonMethod extends Method {
+/**
+ * DEPRECATED: Now modeled using data extensions instead.
+ *
+ * The deserialization method `fromJSON`.
+ */
+deprecated class JabsorbFromJsonMethod extends Method {
   JabsorbFromJsonMethod() {
     this.getDeclaringType().getAnAncestor() instanceof JabsorbSerializer and
     this.getName() = "fromJSON"

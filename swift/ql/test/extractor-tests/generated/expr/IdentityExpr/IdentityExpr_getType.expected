@@ -1,9 +1,0 @@
-| identity_expressions.swift:5:9:5:14 | .self | A |
-| identity_expressions.swift:5:9:5:21 | .self | @lvalue Int |
-| identity_expressions.swift:5:28:5:31 | (...) | Int |
-| identity_expressions.swift:9:5:9:9 | (...) | A |
-| identity_expressions.swift:12:28:12:43 | (...) | A |
-| identity_expressions.swift:12:29:12:42 | await ... | A |
-| identity_expressions.swift:15:5:15:21 | await ... | () |
-| identity_expressions.swift:15:11:15:19 | (...) | () async -> () |
-| identity_expressions.swift:18:9:18:17 | BorrowExpr | Int |

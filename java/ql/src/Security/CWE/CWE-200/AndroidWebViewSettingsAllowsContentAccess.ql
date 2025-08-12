@@ -97,6 +97,10 @@ module WebViewDisallowContentAccessConfig implements DataFlow::StateConfigSig {
     state instanceof IsSettings and
     node instanceof WebSettingsDisallowContentAccessSink
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively
+  }
 }
 
 module WebViewDisallowContentAccessFlow =

@@ -32,6 +32,8 @@ module UncontrolledAllocationConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof Barrier }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module UncontrolledAllocationFlow = TaintTracking::Global<UncontrolledAllocationConfig>;

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import codeql.dataflow.DataFlow as DF
 private import codeql.util.Location
 

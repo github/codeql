@@ -18317,6 +18317,227 @@ ir.cpp:
 # 2724|     v2724_10(void)                      = AliasedUse                  : ~m?
 # 2724|     v2724_11(void)                      = ExitFunction                : 
 
+# 2728| void test_postfix_crement(int*, int)
+# 2728|   Block 0
+# 2728|     v2728_1(void)         = EnterFunction            : 
+# 2728|     mu2728_2(unknown)     = AliasedDefinition        : 
+# 2728|     mu2728_3(unknown)     = InitializeNonLocal       : 
+# 2728|     r2728_4(glval<int *>) = VariableAddress[p]       : 
+# 2728|     mu2728_5(int *)       = InitializeParameter[p]   : &:r2728_4
+# 2728|     r2728_6(int *)        = Load[p]                  : &:r2728_4, ~m?
+# 2728|     mu2728_7(unknown)     = InitializeIndirection[p] : &:r2728_6
+# 2728|     r2728_8(glval<int>)   = VariableAddress[q]       : 
+# 2728|     mu2728_9(int)         = InitializeParameter[q]   : &:r2728_8
+# 2729|     r2729_1(glval<int *>) = VariableAddress[p]       : 
+# 2729|     r2729_2(int *)        = Load[p]                  : &:r2729_1, ~m?
+# 2729|     r2729_3(int)          = Constant[1]              : 
+# 2729|     r2729_4(int *)        = PointerAdd[4]            : r2729_2, r2729_3
+# 2729|     mu2729_5(int *)       = Store[p]                 : &:r2729_1, r2729_4
+# 2730|     r2730_1(glval<int>)   = VariableAddress[q]       : 
+# 2730|     r2730_2(int)          = Load[q]                  : &:r2730_1, ~m?
+# 2730|     r2730_3(int)          = Constant[1]              : 
+# 2730|     r2730_4(int)          = Add                      : r2730_2, r2730_3
+# 2730|     mu2730_5(int)         = Store[q]                 : &:r2730_1, r2730_4
+# 2731|     r2731_1(glval<int *>) = VariableAddress[p]       : 
+# 2731|     r2731_2(int *)        = Load[p]                  : &:r2731_1, ~m?
+# 2731|     r2731_3(int)          = Constant[1]              : 
+# 2731|     r2731_4(int *)        = PointerAdd[4]            : r2731_2, r2731_3
+# 2731|     mu2731_5(int *)       = Store[p]                 : &:r2731_1, r2731_4
+# 2731|     r2731_6(int *)        = CopyValue                : r2731_2
+# 2732|     r2732_1(glval<int>)   = VariableAddress[q]       : 
+# 2732|     r2732_2(int)          = Load[q]                  : &:r2732_1, ~m?
+# 2732|     r2732_3(int)          = Constant[1]              : 
+# 2732|     r2732_4(int)          = Add                      : r2732_2, r2732_3
+# 2732|     mu2732_5(int)         = Store[q]                 : &:r2732_1, r2732_4
+# 2732|     r2732_6(int)          = CopyValue                : r2732_2
+# 2733|     r2733_1(glval<int *>) = VariableAddress[p]       : 
+# 2733|     r2733_2(int *)        = Load[p]                  : &:r2733_1, ~m?
+# 2733|     r2733_3(int)          = Constant[1]              : 
+# 2733|     r2733_4(int *)        = PointerAdd[4]            : r2733_2, r2733_3
+# 2733|     mu2733_5(int *)       = Store[p]                 : &:r2733_1, r2733_4
+# 2733|     r2733_6(int *)        = CopyValue                : r2733_2
+# 2733|     v2733_7(void)         = Convert                  : r2733_6
+# 2734|     r2734_1(glval<int>)   = VariableAddress[q]       : 
+# 2734|     r2734_2(int)          = Load[q]                  : &:r2734_1, ~m?
+# 2734|     r2734_3(int)          = Constant[1]              : 
+# 2734|     r2734_4(int)          = Add                      : r2734_2, r2734_3
+# 2734|     mu2734_5(int)         = Store[q]                 : &:r2734_1, r2734_4
+# 2734|     r2734_6(int)          = CopyValue                : r2734_2
+# 2734|     v2734_7(void)         = Convert                  : r2734_6
+# 2735|     r2735_1(glval<int *>) = VariableAddress[p]       : 
+# 2735|     r2735_2(int *)        = Load[p]                  : &:r2735_1, ~m?
+# 2735|     r2735_3(int)          = Constant[1]              : 
+# 2735|     r2735_4(int *)        = PointerAdd[4]            : r2735_2, r2735_3
+# 2735|     mu2735_5(int *)       = Store[p]                 : &:r2735_1, r2735_4
+# 2735|     r2735_6(int *)        = CopyValue                : r2735_2
+# 2735|     v2735_7(void)         = Convert                  : r2735_6
+# 2736|     r2736_1(glval<int>)   = VariableAddress[q]       : 
+# 2736|     r2736_2(int)          = Load[q]                  : &:r2736_1, ~m?
+# 2736|     r2736_3(int)          = Constant[1]              : 
+# 2736|     r2736_4(int)          = Add                      : r2736_2, r2736_3
+# 2736|     mu2736_5(int)         = Store[q]                 : &:r2736_1, r2736_4
+# 2736|     r2736_6(int)          = CopyValue                : r2736_2
+# 2736|     v2736_7(void)         = Convert                  : r2736_6
+# 2737|     r2737_1(glval<int *>) = VariableAddress[p1]      : 
+# 2737|     r2737_2(glval<int *>) = VariableAddress[p]       : 
+# 2737|     r2737_3(int *)        = Load[p]                  : &:r2737_2, ~m?
+# 2737|     r2737_4(int)          = Constant[1]              : 
+# 2737|     r2737_5(int *)        = PointerAdd[4]            : r2737_3, r2737_4
+# 2737|     mu2737_6(int *)       = Store[p]                 : &:r2737_2, r2737_5
+# 2737|     r2737_7(int *)        = CopyValue                : r2737_3
+# 2737|     mu2737_8(int *)       = Store[p1]                : &:r2737_1, r2737_7
+# 2738|     r2738_1(glval<int>)   = VariableAddress[q1]      : 
+# 2738|     r2738_2(glval<int>)   = VariableAddress[q]       : 
+# 2738|     r2738_3(int)          = Load[q]                  : &:r2738_2, ~m?
+# 2738|     r2738_4(int)          = Constant[1]              : 
+# 2738|     r2738_5(int)          = Add                      : r2738_3, r2738_4
+# 2738|     mu2738_6(int)         = Store[q]                 : &:r2738_2, r2738_5
+# 2738|     r2738_7(int)          = CopyValue                : r2738_3
+# 2738|     mu2738_8(int)         = Store[q1]                : &:r2738_1, r2738_7
+# 2739|     r2739_1(glval<int *>) = VariableAddress[p]       : 
+# 2739|     r2739_2(int *)        = Load[p]                  : &:r2739_1, ~m?
+# 2739|     r2739_3(int)          = Constant[1]              : 
+# 2739|     r2739_4(int *)        = PointerAdd[4]            : r2739_2, r2739_3
+# 2739|     mu2739_5(int *)       = Store[p]                 : &:r2739_1, r2739_4
+# 2739|     r2739_6(int *)        = CopyValue                : r2739_2
+# 2739|     r2739_7(int *)        = Convert                  : r2739_6
+# 2740|     r2740_1(glval<int>)   = VariableAddress[q]       : 
+# 2740|     r2740_2(int)          = Load[q]                  : &:r2740_1, ~m?
+# 2740|     r2740_3(int)          = Constant[1]              : 
+# 2740|     r2740_4(int)          = Add                      : r2740_2, r2740_3
+# 2740|     mu2740_5(int)         = Store[q]                 : &:r2740_1, r2740_4
+# 2740|     r2740_6(int)          = CopyValue                : r2740_2
+# 2740|     r2740_7(int)          = Convert                  : r2740_6
+# 2741|     r2741_1(glval<int *>) = VariableAddress[p2]      : 
+# 2741|     r2741_2(glval<int *>) = VariableAddress[p]       : 
+# 2741|     r2741_3(int *)        = Load[p]                  : &:r2741_2, ~m?
+# 2741|     r2741_4(int)          = Constant[1]              : 
+# 2741|     r2741_5(int *)        = PointerAdd[4]            : r2741_3, r2741_4
+# 2741|     mu2741_6(int *)       = Store[p]                 : &:r2741_2, r2741_5
+# 2741|     r2741_7(int *)        = CopyValue                : r2741_3
+# 2741|     r2741_8(int *)        = Convert                  : r2741_7
+# 2741|     mu2741_9(int *)       = Store[p2]                : &:r2741_1, r2741_8
+# 2742|     r2742_1(glval<int>)   = VariableAddress[q2]      : 
+# 2742|     r2742_2(glval<int>)   = VariableAddress[q]       : 
+# 2742|     r2742_3(int)          = Load[q]                  : &:r2742_2, ~m?
+# 2742|     r2742_4(int)          = Constant[1]              : 
+# 2742|     r2742_5(int)          = Add                      : r2742_3, r2742_4
+# 2742|     mu2742_6(int)         = Store[q]                 : &:r2742_2, r2742_5
+# 2742|     r2742_7(int)          = CopyValue                : r2742_3
+# 2742|     r2742_8(int)          = Convert                  : r2742_7
+# 2742|     mu2742_9(int)         = Store[q2]                : &:r2742_1, r2742_8
+# 2743|     v2743_1(void)         = NoOp                     : 
+# 2728|     v2728_10(void)        = ReturnIndirection[p]     : &:r2728_6, ~m?
+# 2728|     v2728_11(void)        = ReturnVoid               : 
+# 2728|     v2728_12(void)        = AliasedUse               : ~m?
+# 2728|     v2728_13(void)        = ExitFunction             : 
+
+# 2747| void std::strong_ordering::strong_ordering(std::strong_ordering&&)
+# 2747|   Block 0
+# 2747|     v2747_1(void)                    = EnterFunction                                : 
+# 2747|     mu2747_2(unknown)                = AliasedDefinition                            : 
+# 2747|     mu2747_3(unknown)                = InitializeNonLocal                           : 
+# 2747|     r2747_4(glval<unknown>)          = VariableAddress[#this]                       : 
+# 2747|     mu2747_5(glval<strong_ordering>) = InitializeParameter[#this]                   : &:r2747_4
+# 2747|     r2747_6(glval<strong_ordering>)  = Load[#this]                                  : &:r2747_4, ~m?
+# 2747|     mu2747_7(strong_ordering)        = InitializeIndirection[#this]                 : &:r2747_6
+#-----|     r0_1(glval<strong_ordering &&>)  = VariableAddress[(unnamed parameter 0)]       : 
+#-----|     mu0_2(strong_ordering &&)        = InitializeParameter[(unnamed parameter 0)]   : &:r0_1
+#-----|     r0_3(strong_ordering &&)         = Load[(unnamed parameter 0)]                  : &:r0_1, ~m?
+#-----|     mu0_4(unknown)                   = InitializeIndirection[(unnamed parameter 0)] : &:r0_3
+# 2747|     v2747_8(void)                    = NoOp                                         : 
+# 2747|     v2747_9(void)                    = ReturnIndirection[#this]                     : &:r2747_6, ~m?
+#-----|     v0_5(void)                       = ReturnIndirection[(unnamed parameter 0)]     : &:r0_3, ~m?
+# 2747|     v2747_10(void)                   = ReturnVoid                                   : 
+# 2747|     v2747_11(void)                   = AliasedUse                                   : ~m?
+# 2747|     v2747_12(void)                   = ExitFunction                                 : 
+
+# 2748| void std::strong_ordering::strong_ordering(std::_Order)
+# 2748|   Block 0
+# 2748|     v2748_1(void)                    = EnterFunction                : 
+# 2748|     mu2748_2(unknown)                = AliasedDefinition            : 
+# 2748|     mu2748_3(unknown)                = InitializeNonLocal           : 
+# 2748|     r2748_4(glval<unknown>)          = VariableAddress[#this]       : 
+# 2748|     mu2748_5(glval<strong_ordering>) = InitializeParameter[#this]   : &:r2748_4
+# 2748|     r2748_6(glval<strong_ordering>)  = Load[#this]                  : &:r2748_4, ~m?
+# 2748|     mu2748_7(strong_ordering)        = InitializeIndirection[#this] : &:r2748_6
+# 2748|     r2748_8(glval<_Order>)           = VariableAddress[v]           : 
+# 2748|     mu2748_9(_Order)                 = InitializeParameter[v]       : &:r2748_8
+# 2748|     v2748_10(void)                   = NoOp                         : 
+# 2748|     v2748_11(void)                   = ReturnIndirection[#this]     : &:r2748_6, ~m?
+# 2748|     v2748_12(void)                   = ReturnVoid                   : 
+# 2748|     v2748_13(void)                   = AliasedUse                   : ~m?
+# 2748|     v2748_14(void)                   = ExitFunction                 : 
+
+# 2766| std::strong_ordering ThreeWay::operator<=>(ThreeWay&)
+# 2766|   Block 0
+# 2766|     v2766_1(void)                    = EnterFunction                : 
+# 2766|     mu2766_2(unknown)                = AliasedDefinition            : 
+# 2766|     mu2766_3(unknown)                = InitializeNonLocal           : 
+# 2766|     r2766_4(glval<unknown>)          = VariableAddress[#this]       : 
+# 2766|     mu2766_5(glval<ThreeWay>)        = InitializeParameter[#this]   : &:r2766_4
+# 2766|     r2766_6(glval<ThreeWay>)         = Load[#this]                  : &:r2766_4, ~m?
+# 2766|     mu2766_7(ThreeWay)               = InitializeIndirection[#this] : &:r2766_6
+# 2766|     r2766_8(glval<ThreeWay &>)       = VariableAddress[y]           : 
+# 2766|     mu2766_9(ThreeWay &)             = InitializeParameter[y]       : &:r2766_8
+# 2766|     r2766_10(ThreeWay &)             = Load[y]                      : &:r2766_8, ~m?
+# 2766|     mu2766_11(unknown)               = InitializeIndirection[y]     : &:r2766_10
+# 2766|     r2766_12(glval<strong_ordering>) = VariableAddress[#return]     : 
+# 2766|     r2766_13(glval<unknown>)         = VariableAddress[#this]       : 
+# 2766|     r2766_14(ThreeWay *)             = Load[#this]                  : &:r2766_13, ~m?
+# 2766|     r2766_15(glval<int>)             = FieldAddress[x]              : r2766_14
+# 2766|     r2766_16(int)                    = Load[?]                      : &:r2766_15, ~m?
+# 2766|     r2766_17(glval<ThreeWay &>)      = VariableAddress[y]           : 
+# 2766|     r2766_18(ThreeWay &)             = Load[y]                      : &:r2766_17, ~m?
+# 2766|     r2766_19(glval<ThreeWay>)        = CopyValue                    : r2766_18
+# 2766|     r2766_20(glval<int>)             = FieldAddress[x]              : r2766_19
+# 2766|     r2766_21(int)                    = Load[?]                      : &:r2766_20, ~m?
+# 2766|     r2766_22(strong_ordering)        = Spaceship                    : r2766_16, r2766_21
+# 2766|     mu2766_23(strong_ordering)       = Store[#return]               : &:r2766_12, r2766_22
+# 2766|     v2766_24(void)                   = ReturnIndirection[#this]     : &:r2766_6, ~m?
+# 2766|     v2766_25(void)                   = ReturnIndirection[y]         : &:r2766_10, ~m?
+# 2766|     r2766_26(glval<strong_ordering>) = VariableAddress[#return]     : 
+# 2766|     v2766_27(void)                   = ReturnValue                  : &:r2766_26, ~m?
+# 2766|     v2766_28(void)                   = AliasedUse                   : ~m?
+# 2766|     v2766_29(void)                   = ExitFunction                 : 
+
+# 2769| void test_three_way(int, int, ThreeWay, ThreeWay)
+# 2769|   Block 0
+# 2769|     v2769_1(void)                   = EnterFunction                   : 
+# 2769|     mu2769_2(unknown)               = AliasedDefinition               : 
+# 2769|     mu2769_3(unknown)               = InitializeNonLocal              : 
+# 2769|     r2769_4(glval<int>)             = VariableAddress[a]              : 
+# 2769|     mu2769_5(int)                   = InitializeParameter[a]          : &:r2769_4
+# 2769|     r2769_6(glval<int>)             = VariableAddress[b]              : 
+# 2769|     mu2769_7(int)                   = InitializeParameter[b]          : &:r2769_6
+# 2769|     r2769_8(glval<ThreeWay>)        = VariableAddress[c]              : 
+# 2769|     mu2769_9(ThreeWay)              = InitializeParameter[c]          : &:r2769_8
+# 2769|     r2769_10(glval<ThreeWay>)       = VariableAddress[d]              : 
+# 2769|     mu2769_11(ThreeWay)             = InitializeParameter[d]          : &:r2769_10
+# 2770|     r2770_1(glval<strong_ordering>) = VariableAddress[x]              : 
+# 2770|     r2770_2(glval<int>)             = VariableAddress[a]              : 
+# 2770|     r2770_3(int)                    = Load[a]                         : &:r2770_2, ~m?
+# 2770|     r2770_4(glval<int>)             = VariableAddress[b]              : 
+# 2770|     r2770_5(int)                    = Load[b]                         : &:r2770_4, ~m?
+# 2770|     r2770_6(strong_ordering)        = Spaceship                       : r2770_3, r2770_5
+# 2770|     mu2770_7(strong_ordering)       = Store[x]                        : &:r2770_1, r2770_6
+# 2771|     r2771_1(glval<strong_ordering>) = VariableAddress[y]              : 
+# 2771|     r2771_2(glval<ThreeWay>)        = VariableAddress[c]              : 
+# 2771|     r2771_3(glval<unknown>)         = FunctionAddress[operator<=>]    : 
+# 2771|     r2771_4(glval<ThreeWay>)        = VariableAddress[d]              : 
+# 2771|     r2771_5(ThreeWay &)             = CopyValue                       : r2771_4
+# 2771|     r2771_6(strong_ordering)        = Call[operator<=>]               : func:r2771_3, this:r2771_2, 0:r2771_5
+# 2771|     mu2771_7(unknown)               = ^CallSideEffect                 : ~m?
+# 2771|     v2771_8(void)                   = ^IndirectReadSideEffect[-1]     : &:r2771_2, ~m?
+# 2771|     v2771_9(void)                   = ^BufferReadSideEffect[0]        : &:r2771_5, ~m?
+# 2771|     mu2771_10(ThreeWay)             = ^IndirectMayWriteSideEffect[-1] : &:r2771_2
+# 2771|     mu2771_11(unknown)              = ^BufferMayWriteSideEffect[0]    : &:r2771_5
+# 2771|     mu2771_12(strong_ordering)      = Store[y]                        : &:r2771_1, r2771_6
+# 2772|     v2772_1(void)                   = NoOp                            : 
+# 2769|     v2769_12(void)                  = ReturnVoid                      : 
+# 2769|     v2769_13(void)                  = AliasedUse                      : ~m?
+# 2769|     v2769_14(void)                  = ExitFunction                    : 
+
 ir23.cpp:
 #    1| bool consteval_1()
 #    1|   Block 0
@@ -37987,3 +38208,25 @@ try_except.cpp:
 #   54|     v54_1(void) = NoOp       : 
 #   44|     v44_9(void) = ReturnVoid : 
 #-----|   Goto -> Block 1
+
+type_info_test.cpp:
+#    3| void type_info_test(int)
+#    3|   Block 0
+#    3|     v3_1(void)               = EnterFunction          : 
+#    3|     mu3_2(unknown)           = AliasedDefinition      : 
+#    3|     mu3_3(unknown)           = InitializeNonLocal     : 
+#    3|     r3_4(glval<int>)         = VariableAddress[x]     : 
+#    3|     mu3_5(int)               = InitializeParameter[x] : &:r3_4
+#    4|     r4_1(glval<type_info &>) = VariableAddress[t1]    : 
+#    4|     r4_2(glval<int>)         = VariableAddress[x]     : 
+#    4|     r4_3(glval<type_info>)   = TypeidExpr             : r4_2
+#    4|     r4_4(type_info &)        = CopyValue              : r4_3
+#    4|     mu4_5(type_info &)       = Store[t1]              : &:r4_1, r4_4
+#    5|     r5_1(glval<type_info &>) = VariableAddress[t2]    : 
+#    5|     r5_2(glval<type_info>)   = TypeidType             : 
+#    5|     r5_3(type_info &)        = CopyValue              : r5_2
+#    5|     mu5_4(type_info &)       = Store[t2]              : &:r5_1, r5_3
+#    6|     v6_1(void)               = NoOp                   : 
+#    3|     v3_6(void)               = ReturnVoid             : 
+#    3|     v3_7(void)               = AliasedUse             : ~m?
+#    3|     v3_8(void)               = ExitFunction           : 

@@ -267,18 +267,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * An associated item in a `Trait` or `Impl`.
-   *
-   * For example:
-   * ```rust
-   * trait T {fn foo(&self);}
-   * //       ^^^^^^^^^^^^^
-   * ```
-   */
-  class AssocItem extends @assoc_item, AstNode { }
-
-  /**
-   * INTERNAL: Do not use.
    * A list of `AssocItem` elements, as appearing in a `Trait` or `Impl`.
    */
   class AssocItemList extends @assoc_item_list, AstNode {
@@ -360,20 +348,6 @@ module Raw {
    * The base class for expressions.
    */
   class Expr extends @expr, AstNode { }
-
-  /**
-   * INTERNAL: Do not use.
-   * An item inside an extern block.
-   *
-   * For example:
-   * ```rust
-   * extern "C" {
-   *     fn foo();
-   *     static BAR: i32;
-   * }
-   * ```
-   */
-  class ExternItem extends @extern_item, AstNode { }
 
   /**
    * INTERNAL: Do not use.
@@ -3620,6 +3594,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An associated item in a `Trait` or `Impl`.
+   *
+   * For example:
+   * ```rust
+   * trait T {fn foo(&self);}
+   * //       ^^^^^^^^^^^^^
+   * ```
+   */
+  class AssocItem extends @assoc_item, Item { }
+
+  /**
+   * INTERNAL: Do not use.
    * A block expression. For example:
    * ```rust
    * {
@@ -3698,72 +3684,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A constant item declaration.
-   *
-   * For example:
-   * ```rust
-   * const X: i32 = 42;
-   * ```
-   */
-  class Const extends @const, AssocItem, Item {
-    override string toString() { result = "Const" }
-
-    /**
-     * Gets the `index`th attr of this const (0-based).
-     */
-    Attr getAttr(int index) { const_attrs(this, index, result) }
-
-    /**
-     * Gets the body of this const, if it exists.
-     */
-    Expr getBody() { const_bodies(this, result) }
-
-    /**
-     * Gets the generic parameter list of this const, if it exists.
-     */
-    GenericParamList getGenericParamList() { const_generic_param_lists(this, result) }
-
-    /**
-     * Holds if this const is const.
-     */
-    predicate isConst() { const_is_const(this) }
-
-    /**
-     * Holds if this const is default.
-     */
-    predicate isDefault() { const_is_default(this) }
-
-    /**
-     * Gets the name of this const, if it exists.
-     */
-    Name getName() { const_names(this, result) }
-
-    /**
-     * Gets the type representation of this const, if it exists.
-     */
-    TypeRepr getTypeRepr() { const_type_reprs(this, result) }
-
-    /**
-     * Gets the visibility of this const, if it exists.
-     */
-    Visibility getVisibility() { const_visibilities(this, result) }
-
-    /**
-     * Gets the where clause of this const, if it exists.
-     */
-    WhereClause getWhereClause() { const_where_clauses(this, result) }
-
-    /**
-     * Holds if this constant has an implementation.
-     *
-     * This is the same as `hasBody` for source code, but for library code (for which we always skip
-     * the body), this will hold when the body was present in the original code.
-     */
-    predicate hasImplementation() { const_has_implementation(this) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * An extern block containing foreign function declarations.
    *
    * For example:
@@ -3832,88 +3752,17 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A function declaration. For example
+   * An item inside an extern block.
+   *
+   * For example:
    * ```rust
-   * fn foo(x: u32) -> u64 {(x + 1).into()}
-   * ```
-   * A function declaration within a trait might not have a body:
-   * ```rust
-   * trait Trait {
-   *     fn bar();
+   * extern "C" {
+   *     fn foo();
+   *     static BAR: i32;
    * }
    * ```
    */
-  class Function extends @function, AssocItem, ExternItem, Item, Callable {
-    override string toString() { result = "Function" }
-
-    /**
-     * Gets the abi of this function, if it exists.
-     */
-    Abi getAbi() { function_abis(this, result) }
-
-    /**
-     * Gets the body of this function, if it exists.
-     */
-    BlockExpr getBody() { function_bodies(this, result) }
-
-    /**
-     * Gets the generic parameter list of this function, if it exists.
-     */
-    GenericParamList getGenericParamList() { function_generic_param_lists(this, result) }
-
-    /**
-     * Holds if this function is async.
-     */
-    predicate isAsync() { function_is_async(this) }
-
-    /**
-     * Holds if this function is const.
-     */
-    predicate isConst() { function_is_const(this) }
-
-    /**
-     * Holds if this function is default.
-     */
-    predicate isDefault() { function_is_default(this) }
-
-    /**
-     * Holds if this function is gen.
-     */
-    predicate isGen() { function_is_gen(this) }
-
-    /**
-     * Holds if this function is unsafe.
-     */
-    predicate isUnsafe() { function_is_unsafe(this) }
-
-    /**
-     * Gets the name of this function, if it exists.
-     */
-    Name getName() { function_names(this, result) }
-
-    /**
-     * Gets the ret type of this function, if it exists.
-     */
-    RetTypeRepr getRetType() { function_ret_types(this, result) }
-
-    /**
-     * Gets the visibility of this function, if it exists.
-     */
-    Visibility getVisibility() { function_visibilities(this, result) }
-
-    /**
-     * Gets the where clause of this function, if it exists.
-     */
-    WhereClause getWhereClause() { function_where_clauses(this, result) }
-
-    /**
-     * Holds if this function has an implementation.
-     *
-     * This is the same as `hasBody` for source code, but for library code (for which we always skip
-     * the body), this will hold when the body was present in the original code.
-     */
-    predicate hasImplementation() { function_has_implementation(this) }
-  }
+  class ExternItem extends @extern_item, Item { }
 
   /**
    * INTERNAL: Do not use.
@@ -3989,39 +3838,6 @@ module Raw {
      * Gets the loop body of this looping expression, if it exists.
      */
     BlockExpr getLoopBody() { looping_expr_loop_bodies(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A macro invocation.
-   *
-   * For example:
-   * ```rust
-   * println!("Hello, world!");
-   * ```
-   */
-  class MacroCall extends @macro_call, AssocItem, ExternItem, Item {
-    override string toString() { result = "MacroCall" }
-
-    /**
-     * Gets the `index`th attr of this macro call (0-based).
-     */
-    Attr getAttr(int index) { macro_call_attrs(this, index, result) }
-
-    /**
-     * Gets the path of this macro call, if it exists.
-     */
-    Path getPath() { macro_call_paths(this, result) }
-
-    /**
-     * Gets the token tree of this macro call, if it exists.
-     */
-    TokenTree getTokenTree() { macro_call_token_trees(this, result) }
-
-    /**
-     * Gets the macro call expansion of this macro call, if it exists.
-     */
-    AstNode getMacroCallExpansion() { macro_call_macro_call_expansions(this, result) }
   }
 
   /**
@@ -4197,59 +4013,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A static item declaration.
-   *
-   * For example:
-   * ```rust
-   * static X: i32 = 42;
-   * ```
-   */
-  class Static extends @static, ExternItem, Item {
-    override string toString() { result = "Static" }
-
-    /**
-     * Gets the `index`th attr of this static (0-based).
-     */
-    Attr getAttr(int index) { static_attrs(this, index, result) }
-
-    /**
-     * Gets the body of this static, if it exists.
-     */
-    Expr getBody() { static_bodies(this, result) }
-
-    /**
-     * Holds if this static is mut.
-     */
-    predicate isMut() { static_is_mut(this) }
-
-    /**
-     * Holds if this static is static.
-     */
-    predicate isStatic() { static_is_static(this) }
-
-    /**
-     * Holds if this static is unsafe.
-     */
-    predicate isUnsafe() { static_is_unsafe(this) }
-
-    /**
-     * Gets the name of this static, if it exists.
-     */
-    Name getName() { static_names(this, result) }
-
-    /**
-     * Gets the type representation of this static, if it exists.
-     */
-    TypeRepr getTypeRepr() { static_type_reprs(this, result) }
-
-    /**
-     * Gets the visibility of this static, if it exists.
-     */
-    Visibility getVisibility() { static_visibilities(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A struct expression. For example:
    * ```rust
    * let first = Foo { a: 1, b: 2 };
@@ -4415,62 +4178,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A type alias. For example:
-   * ```rust
-   * type Point = (u8, u8);
-   *
-   * trait Trait {
-   *     type Output;
-   * //  ^^^^^^^^^^^
-   * }
-   * ```
-   */
-  class TypeAlias extends @type_alias, AssocItem, ExternItem, Item {
-    override string toString() { result = "TypeAlias" }
-
-    /**
-     * Gets the `index`th attr of this type alias (0-based).
-     */
-    Attr getAttr(int index) { type_alias_attrs(this, index, result) }
-
-    /**
-     * Gets the generic parameter list of this type alias, if it exists.
-     */
-    GenericParamList getGenericParamList() { type_alias_generic_param_lists(this, result) }
-
-    /**
-     * Holds if this type alias is default.
-     */
-    predicate isDefault() { type_alias_is_default(this) }
-
-    /**
-     * Gets the name of this type alias, if it exists.
-     */
-    Name getName() { type_alias_names(this, result) }
-
-    /**
-     * Gets the type representation of this type alias, if it exists.
-     */
-    TypeRepr getTypeRepr() { type_alias_type_reprs(this, result) }
-
-    /**
-     * Gets the type bound list of this type alias, if it exists.
-     */
-    TypeBoundList getTypeBoundList() { type_alias_type_bound_lists(this, result) }
-
-    /**
-     * Gets the visibility of this type alias, if it exists.
-     */
-    Visibility getVisibility() { type_alias_visibilities(this, result) }
-
-    /**
-     * Gets the where clause of this type alias, if it exists.
-     */
-    WhereClause getWhereClause() { type_alias_where_clauses(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A `use` statement. For example:
    * ```rust
    * use std::collections::HashMap;
@@ -4493,6 +4200,72 @@ module Raw {
      * Gets the visibility of this use, if it exists.
      */
     Visibility getVisibility() { use_visibilities(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A constant item declaration.
+   *
+   * For example:
+   * ```rust
+   * const X: i32 = 42;
+   * ```
+   */
+  class Const extends @const, AssocItem {
+    override string toString() { result = "Const" }
+
+    /**
+     * Gets the `index`th attr of this const (0-based).
+     */
+    Attr getAttr(int index) { const_attrs(this, index, result) }
+
+    /**
+     * Gets the body of this const, if it exists.
+     */
+    Expr getBody() { const_bodies(this, result) }
+
+    /**
+     * Gets the generic parameter list of this const, if it exists.
+     */
+    GenericParamList getGenericParamList() { const_generic_param_lists(this, result) }
+
+    /**
+     * Holds if this const is const.
+     */
+    predicate isConst() { const_is_const(this) }
+
+    /**
+     * Holds if this const is default.
+     */
+    predicate isDefault() { const_is_default(this) }
+
+    /**
+     * Gets the name of this const, if it exists.
+     */
+    Name getName() { const_names(this, result) }
+
+    /**
+     * Gets the type representation of this const, if it exists.
+     */
+    TypeRepr getTypeRepr() { const_type_reprs(this, result) }
+
+    /**
+     * Gets the visibility of this const, if it exists.
+     */
+    Visibility getVisibility() { const_visibilities(this, result) }
+
+    /**
+     * Gets the where clause of this const, if it exists.
+     */
+    WhereClause getWhereClause() { const_where_clauses(this, result) }
+
+    /**
+     * Holds if this constant has an implementation.
+     *
+     * This is the same as `hasBody` for source code, but for library code (for which we always skip
+     * the body), this will hold when the body was present in the original code.
+     */
+    predicate hasImplementation() { const_has_implementation(this) }
   }
 
   /**
@@ -4570,6 +4343,91 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A function declaration. For example
+   * ```rust
+   * fn foo(x: u32) -> u64 {(x + 1).into()}
+   * ```
+   * A function declaration within a trait might not have a body:
+   * ```rust
+   * trait Trait {
+   *     fn bar();
+   * }
+   * ```
+   */
+  class Function extends @function, AssocItem, ExternItem, Callable {
+    override string toString() { result = "Function" }
+
+    /**
+     * Gets the abi of this function, if it exists.
+     */
+    Abi getAbi() { function_abis(this, result) }
+
+    /**
+     * Gets the body of this function, if it exists.
+     */
+    BlockExpr getBody() { function_bodies(this, result) }
+
+    /**
+     * Gets the generic parameter list of this function, if it exists.
+     */
+    GenericParamList getGenericParamList() { function_generic_param_lists(this, result) }
+
+    /**
+     * Holds if this function is async.
+     */
+    predicate isAsync() { function_is_async(this) }
+
+    /**
+     * Holds if this function is const.
+     */
+    predicate isConst() { function_is_const(this) }
+
+    /**
+     * Holds if this function is default.
+     */
+    predicate isDefault() { function_is_default(this) }
+
+    /**
+     * Holds if this function is gen.
+     */
+    predicate isGen() { function_is_gen(this) }
+
+    /**
+     * Holds if this function is unsafe.
+     */
+    predicate isUnsafe() { function_is_unsafe(this) }
+
+    /**
+     * Gets the name of this function, if it exists.
+     */
+    Name getName() { function_names(this, result) }
+
+    /**
+     * Gets the ret type of this function, if it exists.
+     */
+    RetTypeRepr getRetType() { function_ret_types(this, result) }
+
+    /**
+     * Gets the visibility of this function, if it exists.
+     */
+    Visibility getVisibility() { function_visibilities(this, result) }
+
+    /**
+     * Gets the where clause of this function, if it exists.
+     */
+    WhereClause getWhereClause() { function_where_clauses(this, result) }
+
+    /**
+     * Holds if this function has an implementation.
+     *
+     * This is the same as `hasBody` for source code, but for library code (for which we always skip
+     * the body), this will hold when the body was present in the original code.
+     */
+    predicate hasImplementation() { function_has_implementation(this) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A loop expression. For example:
    * ```rust
    * loop {
@@ -4600,6 +4458,92 @@ module Raw {
      * Gets the `index`th attr of this loop expression (0-based).
      */
     Attr getAttr(int index) { loop_expr_attrs(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A macro invocation.
+   *
+   * For example:
+   * ```rust
+   * println!("Hello, world!");
+   * ```
+   */
+  class MacroCall extends @macro_call, AssocItem, ExternItem {
+    override string toString() { result = "MacroCall" }
+
+    /**
+     * Gets the `index`th attr of this macro call (0-based).
+     */
+    Attr getAttr(int index) { macro_call_attrs(this, index, result) }
+
+    /**
+     * Gets the path of this macro call, if it exists.
+     */
+    Path getPath() { macro_call_paths(this, result) }
+
+    /**
+     * Gets the token tree of this macro call, if it exists.
+     */
+    TokenTree getTokenTree() { macro_call_token_trees(this, result) }
+
+    /**
+     * Gets the macro call expansion of this macro call, if it exists.
+     */
+    AstNode getMacroCallExpansion() { macro_call_macro_call_expansions(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A static item declaration.
+   *
+   * For example:
+   * ```rust
+   * static X: i32 = 42;
+   * ```
+   */
+  class Static extends @static, ExternItem {
+    override string toString() { result = "Static" }
+
+    /**
+     * Gets the `index`th attr of this static (0-based).
+     */
+    Attr getAttr(int index) { static_attrs(this, index, result) }
+
+    /**
+     * Gets the body of this static, if it exists.
+     */
+    Expr getBody() { static_bodies(this, result) }
+
+    /**
+     * Holds if this static is mut.
+     */
+    predicate isMut() { static_is_mut(this) }
+
+    /**
+     * Holds if this static is static.
+     */
+    predicate isStatic() { static_is_static(this) }
+
+    /**
+     * Holds if this static is unsafe.
+     */
+    predicate isUnsafe() { static_is_unsafe(this) }
+
+    /**
+     * Gets the name of this static, if it exists.
+     */
+    Name getName() { static_names(this, result) }
+
+    /**
+     * Gets the type representation of this static, if it exists.
+     */
+    TypeRepr getTypeRepr() { static_type_reprs(this, result) }
+
+    /**
+     * Gets the visibility of this static, if it exists.
+     */
+    Visibility getVisibility() { static_visibilities(this, result) }
   }
 
   /**
@@ -4644,6 +4588,62 @@ module Raw {
      * Gets the where clause of this struct, if it exists.
      */
     WhereClause getWhereClause() { struct_where_clauses(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A type alias. For example:
+   * ```rust
+   * type Point = (u8, u8);
+   *
+   * trait Trait {
+   *     type Output;
+   * //  ^^^^^^^^^^^
+   * }
+   * ```
+   */
+  class TypeAlias extends @type_alias, AssocItem, ExternItem {
+    override string toString() { result = "TypeAlias" }
+
+    /**
+     * Gets the `index`th attr of this type alias (0-based).
+     */
+    Attr getAttr(int index) { type_alias_attrs(this, index, result) }
+
+    /**
+     * Gets the generic parameter list of this type alias, if it exists.
+     */
+    GenericParamList getGenericParamList() { type_alias_generic_param_lists(this, result) }
+
+    /**
+     * Holds if this type alias is default.
+     */
+    predicate isDefault() { type_alias_is_default(this) }
+
+    /**
+     * Gets the name of this type alias, if it exists.
+     */
+    Name getName() { type_alias_names(this, result) }
+
+    /**
+     * Gets the type representation of this type alias, if it exists.
+     */
+    TypeRepr getTypeRepr() { type_alias_type_reprs(this, result) }
+
+    /**
+     * Gets the type bound list of this type alias, if it exists.
+     */
+    TypeBoundList getTypeBoundList() { type_alias_type_bound_lists(this, result) }
+
+    /**
+     * Gets the visibility of this type alias, if it exists.
+     */
+    Visibility getVisibility() { type_alias_visibilities(this, result) }
+
+    /**
+     * Gets the where clause of this type alias, if it exists.
+     */
+    WhereClause getWhereClause() { type_alias_where_clauses(this, result) }
   }
 
   /**

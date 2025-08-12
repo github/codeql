@@ -2,10 +2,13 @@
 import codeql.swift.elements
 import TestUtils
 
-from AvailabilityInfo x, string isUnavailable, int getNumberOfSpecs
-where
+query predicate instances(AvailabilityInfo x, string isUnavailable__label, string isUnavailable) {
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.isUnavailable() then isUnavailable = "yes" else isUnavailable = "no") and
-  getNumberOfSpecs = x.getNumberOfSpecs()
-select x, "isUnavailable:", isUnavailable, "getNumberOfSpecs:", getNumberOfSpecs
+  isUnavailable__label = "isUnavailable:" and
+  if x.isUnavailable() then isUnavailable = "yes" else isUnavailable = "no"
+}
+
+query predicate getSpec(AvailabilityInfo x, int index, AvailabilitySpec getSpec) {
+  toBeTested(x) and not x.isUnknown() and getSpec = x.getSpec(index)
+}

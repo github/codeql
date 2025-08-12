@@ -290,7 +290,7 @@ class Type extends Locatable, @type {
    */
   Type stripType() { result = this }
 
-  override Location getLocation() { result instanceof UnknownDefaultLocation }
+  override Location getLocation() { result instanceof UnknownLocation }
 }
 
 /**
@@ -858,6 +858,15 @@ private predicate floatingPointTypeMapping(
   or
   // __mfp8
   kind = 62 and base = 2 and domain = TRealDomain() and realKind = 62 and extended = false
+  or
+  // _Complex __fp16
+  kind = 64 and base = 2 and domain = TComplexDomain() and realKind = 54 and extended = false
+  or
+  // _Complex __bf16
+  kind = 65 and base = 2 and domain = TComplexDomain() and realKind = 55 and extended = false
+  or
+  // _Complex std::float16_t
+  kind = 66 and base = 2 and domain = TComplexDomain() and realKind = 56 and extended = false
 }
 
 /**

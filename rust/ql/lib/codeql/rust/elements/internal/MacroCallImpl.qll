@@ -32,7 +32,9 @@ module Impl {
    * ```
    */
   class MacroCall extends Generated::MacroCall {
-    override string toStringImpl() { result = this.getPath().toAbbreviatedString() + "!..." }
+    override string toStringImpl() {
+      if this.hasPath() then result = this.getPath().toAbbreviatedString() + "!..." else result = ""
+    }
 
     /** Gets an AST node whose location is inside the token tree belonging to this macro call. */
     pragma[nomagic]

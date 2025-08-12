@@ -37,6 +37,8 @@ module CleartextTransmissionConfig implements DataFlow::ConfigSig {
     // make sources barriers so that we only report the closest instance
     isSource(node)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module CleartextTransmissionFlow = TaintTracking::Global<CleartextTransmissionConfig>;

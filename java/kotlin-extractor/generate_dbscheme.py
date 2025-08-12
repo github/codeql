@@ -35,10 +35,10 @@ def parse_dbscheme(filename):
         unions[name] = typs
 
     # tables
-    for relname, body in re.findall('\n([\w_]+)(\([^)]*\))',
+    for relname, body in re.findall(r'\n([\w_]+)(\([^)]*\))',
                                     dbscheme,
                                     flags=re.DOTALL):
-        columns = list(re.findall('(\S+)\s*:\s*([^\s,]+)(?:\s+(ref)|)', body))
+        columns = list(re.findall(r'(\S+)\s*:\s*([^\s,]+)(?:\s+(ref)|)', body))
         tables[relname] = columns
 
 parse_dbscheme(dbscheme)

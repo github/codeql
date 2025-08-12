@@ -1,0 +1,58 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Hard-coded passwords, keys, initialization vectors, and salts should not be used for cryptographic operations.
+</p>
+<ul>
+  <li>
+    Attackers can easily recover hard-coded values if they have access to the source code or compiled executable.
+  </li>
+  <li>
+    Some hard-coded values are easily guessable.
+  </li>
+  <li>
+    Use of hard-coded values may leave cryptographic operations vulnerable to dictionary attacks, rainbow tables, and other forms of cryptanalysis.
+  </li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>
+Use randomly generated key material, initialization vectors, and salts. Use strong passwords that are not hard-coded.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows instantiating a cipher with hard-coded key material, making the encrypted data vulnerable to recovery.
+</p>
+
+<sample src="HardcodedCryptographicValueBad.rs" />
+
+<p>
+In the fixed code below, the key material is randomly generated and not hard-coded, which protects the encrypted data against recovery. A real application would also need a strategy for secure key management after the key has been generated.
+</p>
+
+<sample src="HardcodedCryptographicValueGood.rs" />
+
+</example>
+<references>
+
+<li>
+OWASP: <a href="https://www.owasp.org/index.php/Use_of_hard-coded_password">Use of hard-coded password</a>.
+</li>
+<li>
+OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Key_Management_Cheat_Sheet.html">Key Management Cheat Sheet</a>.
+</li>
+<li>
+O'Reilly: <a href="https://www.oreilly.com/library/view/secure-programming-cookbook/0596003943/ch04s09.html">Using Salts, Nonces, and Initialization Vectors</a>.
+</li>
+
+</references>
+</qhelp>

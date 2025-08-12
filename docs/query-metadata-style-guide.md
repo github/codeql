@@ -157,7 +157,7 @@ Each code quality related query should have **one** of these two "top-level" cat
 * `@tags maintainability`–for queries that detect patterns that make it harder for developers to make changes to the code.
 * `@tags reliability`–for queries that detect issues that affect whether the code will perform as expected during execution.
 
-In addition to the "top-level" categories, we will also add sub-categories to further group code quality related queries:
+In addition to the "top-level" categories, we may also add sub-categories to further group code quality related queries:
 
 * `@tags maintainability`–for queries that detect patterns that make it harder for developers to make changes to the code.
   * `@tags readability`–for queries that detect confusing patterns that make it harder for developers to read the code.
@@ -171,6 +171,7 @@ In addition to the "top-level" categories, we will also add sub-categories to fu
   * `@tags concurrency`-for queries that detect concurrency related issues such as race conditions, deadlocks, thread safety, etc
   * `@tags error-handling`-for queries that detect issues related to unsafe error handling such as uncaught exceptions, etc
 
+You may use sub-categories from both top-level categories on the same query. However, if you only use sub-categories from a single top-level category, then you must also tag the query with that top-level category.
 
 There are also more specific `@tags` that can be added. See, the following pages for examples of the low-level tags:
 

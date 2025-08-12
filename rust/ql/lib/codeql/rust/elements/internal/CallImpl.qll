@@ -40,6 +40,9 @@ module Impl {
     /** Gets the trait targeted by this call, if any. */
     abstract Trait getTrait();
 
+    /** Holds if this call targets a trait. */
+    predicate hasTrait() { exists(this.getTrait()) }
+
     /** Gets the name of the method called if this call is a method call. */
     abstract string getMethodName();
 
@@ -59,31 +62,58 @@ module Impl {
     Expr getReceiver() { result = this.getArgument(TSelfArgumentPosition()) }
 
     /** Gets the static target of this call, if any. */
-    Function getStaticTarget() {
-      result = TypeInference::resolveMethodCallTarget(this)
-      or
-      not exists(TypeInference::resolveMethodCallTarget(this)) and
-      result = this.(CallExpr).getStaticTarget()
+    Function getStaticTarget() { result = TypeInference::resolveCallTarget(this) }
+
+    /** Gets a runtime target of this call, if any. */
+    pragma[nomagic]
+    Function getARuntimeTarget() {
+      result.hasImplementation() and
+      (
+        result = this.getStaticTarget()
+        or
+        result.implements(this.getStaticTarget())
+      )
     }
   }
 
-  /** Holds if the call expression dispatches to a trait method. */
-  private predicate callIsMethodCall(CallExpr call, Path qualifier, string methodName) {
-    exists(Path path, Function f |
-      path = call.getFunction().(PathExpr).getPath() and
-      f = resolvePath(path) and
-      f.getParamList().hasSelfParam() and
-      qualifier = path.getQualifier() and
-      path.getSegment().getIdentifier().getText() = methodName
+  private predicate callHasQualifier(CallExpr call, Path path, Path qualifier) {
+    path = call.getFunction().(PathExpr).getPath() and
+    qualifier = path.getQualifier()
+  }
+
+  private predicate callHasTraitQualifier(CallExpr call, Trait qualifier) {
+    exists(RelevantPath qualifierPath |
+      callHasQualifier(call, _, qualifierPath) and
+      qualifier = resolvePath(qualifierPath) and
+      // When the qualifier is `Self` and resolves to a trait, it's inside a
+      // trait method's default implementation. This is not a dispatch whose
+      // target is inferred from the type of the receiver, but should always
+      // resolve to the function in the trait block as path resolution does.
+      not qualifierPath.isUnqualified("Self")
     )
   }
 
-  private class CallExprCall extends Call instanceof CallExpr {
-    CallExprCall() { not callIsMethodCall(this, _, _) }
+  /** Holds if the call expression dispatches to a method. */
+  private predicate callIsMethodCall(
+    CallExpr call, Path qualifier, string methodName, boolean selfIsRef
+  ) {
+    exists(Path path, Function f |
+      callHasQualifier(call, path, qualifier) and
+      f = resolvePath(path) and
+      path.getSegment().getIdentifier().getText() = methodName and
+      exists(SelfParam self |
+        self = f.getParamList().getSelfParam() and
+        if self.isRef() then selfIsRef = true else selfIsRef = false
+      )
+    )
+  }
+
+  class CallExprCall extends Call instanceof CallExpr {
+    CallExprCall() { not callIsMethodCall(this, _, _, _) }
 
     override string getMethodName() { none() }
 
-    override Trait getTrait() { none() }
+    override Trait getTrait() { callHasTraitQualifier(this, result) }
 
     override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) { none() }
 
@@ -92,22 +122,23 @@ module Impl {
     }
   }
 
-  private class CallExprMethodCall extends Call instanceof CallExpr {
+  class CallExprMethodCall extends Call instanceof CallExpr {
     Path qualifier;
     string methodName;
+    boolean selfIsRef;
 
-    CallExprMethodCall() { callIsMethodCall(this, qualifier, methodName) }
+    CallExprMethodCall() { callIsMethodCall(this, qualifier, methodName, selfIsRef) }
+
+    /**
+     * Holds if this call must have an explicit borrow for the `self` argument,
+     * because the corresponding parameter is `&self`. Explicit borrows are not
+     * needed when using method call syntax.
+     */
+    predicate hasExplicitSelfBorrow() { selfIsRef = true }
 
     override string getMethodName() { result = methodName }
 
-    override Trait getTrait() {
-      result = resolvePath(qualifier) and
-      // When the qualifier is `Self` and resolves to a trait, it's inside a
-      // trait method's default implementation. This is not a dispatch whose
-      // target is inferred from the type of the receiver, but should always
-      // resolve to the function in the trait block as path resolution does.
-      qualifier.toString() != "Self"
-    }
+    override Trait getTrait() { callHasTraitQualifier(this, result) }
 
     override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) { none() }
 

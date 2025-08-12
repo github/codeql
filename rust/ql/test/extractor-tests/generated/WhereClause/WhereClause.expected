@@ -1,1 +1,4 @@
-| gen_where_clause.rs:7:21:7:34 | WhereClause | getNumberOfPredicates: | 1 |
+instances
+| gen_where_clause.rs:7:21:7:34 | WhereClause |
+getPredicate
+| gen_where_clause.rs:7:21:7:34 | WhereClause | 0 | gen_where_clause.rs:7:27:7:34 | WherePred |

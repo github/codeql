@@ -1,3 +1,11 @@
+## 1.2.2
+
+No user-facing changes.
+
+## 1.2.1
+
+No user-facing changes.
+
 ## 1.2.0
 
 ### Query Metadata Changes

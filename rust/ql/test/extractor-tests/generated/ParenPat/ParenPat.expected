@@ -1,1 +1,4 @@
-| gen_paren_pat.rs:7:9:7:11 | (...) | hasPat: | yes |
+instances
+| gen_paren_pat.rs:7:9:7:11 | (...) |
+getPat
+| gen_paren_pat.rs:7:9:7:11 | (...) | gen_paren_pat.rs:7:10:7:10 | x |

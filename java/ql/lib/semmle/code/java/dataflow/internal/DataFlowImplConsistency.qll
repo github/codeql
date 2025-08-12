@@ -2,6 +2,8 @@
  * Provides consistency queries for checking invariants in the language-specific
  * data-flow classes and predicates.
  */
+overlay[local?]
+module;
 
 private import java
 private import DataFlowImplSpecific

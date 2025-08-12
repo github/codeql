@@ -5,6 +5,25 @@
 
 import codeql.Locations as L
 
+/** Holds if the database is an overlay. */
+overlay[local]
+private predicate isOverlay() { databaseMetadata("isOverlay", "true") }
+
+/** Holds if `loc` is in the `file` and is part of the overlay base database. */
+overlay[local]
+private predicate discardableLocation(@file file, @location_default loc) {
+  not isOverlay() and locations_default(loc, file, _, _, _, _)
+}
+
+/** Holds if `loc` should be discarded, because it is part of the overlay base and is in a file that was also extracted as part of the overlay database. */
+overlay[discard_entity]
+private predicate discardLocation(@location_default loc) {
+  exists(@file file, string path | files(file, path) |
+    discardableLocation(file, loc) and overlayChangedFiles(path)
+  )
+}
+
+overlay[local]
 module QL {
   /** The base class for all AST nodes */
   class AstNode extends @ql_ast_node {
@@ -46,6 +65,26 @@ module QL {
   class ReservedWord extends @ql_reserved_word, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ReservedWord" }
+  }
+
+  /** Gets the file containing the given `node`. */
+  private @file getNodeFile(@ql_ast_node node) {
+    exists(@location_default loc | ql_ast_node_location(node, loc) |
+      locations_default(loc, result, _, _, _, _)
+    )
+  }
+
+  /** Holds if `node` is in the `file` and is part of the overlay base database. */
+  private predicate discardableAstNode(@file file, @ql_ast_node node) {
+    not isOverlay() and file = getNodeFile(node)
+  }
+
+  /** Holds if `node` should be discarded, because it is part of the overlay base and is in a file that was also extracted as part of the overlay database. */
+  overlay[discard_entity]
+  private predicate discardAstNode(@ql_ast_node node) {
+    exists(@file file, string path | files(file, path) |
+      discardableAstNode(file, node) and overlayChangedFiles(path)
+    )
   }
 
   /** A class representing `add_expr` nodes. */
@@ -1275,6 +1314,7 @@ module QL {
   }
 }
 
+overlay[local]
 module Dbscheme {
   /** The base class for all AST nodes */
   class AstNode extends @dbscheme_ast_node {
@@ -1316,6 +1356,26 @@ module Dbscheme {
   class ReservedWord extends @dbscheme_reserved_word, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ReservedWord" }
+  }
+
+  /** Gets the file containing the given `node`. */
+  private @file getNodeFile(@dbscheme_ast_node node) {
+    exists(@location_default loc | dbscheme_ast_node_location(node, loc) |
+      locations_default(loc, result, _, _, _, _)
+    )
+  }
+
+  /** Holds if `node` is in the `file` and is part of the overlay base database. */
+  private predicate discardableAstNode(@file file, @dbscheme_ast_node node) {
+    not isOverlay() and file = getNodeFile(node)
+  }
+
+  /** Holds if `node` should be discarded, because it is part of the overlay base and is in a file that was also extracted as part of the overlay database. */
+  overlay[discard_entity]
+  private predicate discardAstNode(@dbscheme_ast_node node) {
+    exists(@file file, string path | files(file, path) |
+      discardableAstNode(file, node) and overlayChangedFiles(path)
+    )
   }
 
   /** A class representing `annotName` tokens. */
@@ -1611,6 +1671,7 @@ module Dbscheme {
   }
 }
 
+overlay[local]
 module Blame {
   /** The base class for all AST nodes */
   class AstNode extends @blame_ast_node {
@@ -1652,6 +1713,26 @@ module Blame {
   class ReservedWord extends @blame_reserved_word, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ReservedWord" }
+  }
+
+  /** Gets the file containing the given `node`. */
+  private @file getNodeFile(@blame_ast_node node) {
+    exists(@location_default loc | blame_ast_node_location(node, loc) |
+      locations_default(loc, result, _, _, _, _)
+    )
+  }
+
+  /** Holds if `node` is in the `file` and is part of the overlay base database. */
+  private predicate discardableAstNode(@file file, @blame_ast_node node) {
+    not isOverlay() and file = getNodeFile(node)
+  }
+
+  /** Holds if `node` should be discarded, because it is part of the overlay base and is in a file that was also extracted as part of the overlay database. */
+  overlay[discard_entity]
+  private predicate discardAstNode(@blame_ast_node node) {
+    exists(@file file, string path | files(file, path) |
+      discardableAstNode(file, node) and overlayChangedFiles(path)
+    )
   }
 
   /** A class representing `blame_entry` nodes. */
@@ -1724,6 +1805,7 @@ module Blame {
   }
 }
 
+overlay[local]
 module JSON {
   /** The base class for all AST nodes */
   class AstNode extends @json_ast_node {
@@ -1765,6 +1847,26 @@ module JSON {
   class ReservedWord extends @json_reserved_word, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ReservedWord" }
+  }
+
+  /** Gets the file containing the given `node`. */
+  private @file getNodeFile(@json_ast_node node) {
+    exists(@location_default loc | json_ast_node_location(node, loc) |
+      locations_default(loc, result, _, _, _, _)
+    )
+  }
+
+  /** Holds if `node` is in the `file` and is part of the overlay base database. */
+  private predicate discardableAstNode(@file file, @json_ast_node node) {
+    not isOverlay() and file = getNodeFile(node)
+  }
+
+  /** Holds if `node` should be discarded, because it is part of the overlay base and is in a file that was also extracted as part of the overlay database. */
+  overlay[discard_entity]
+  private predicate discardAstNode(@json_ast_node node) {
+    exists(@file file, string path | files(file, path) |
+      discardableAstNode(file, node) and overlayChangedFiles(path)
+    )
   }
 
   class UnderscoreValue extends @json_underscore_value, AstNode { }

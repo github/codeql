@@ -14,14 +14,14 @@
 | test.cpp:4:1:4:1 | operator= | false |
 | test.cpp:4:1:4:1 | operator= | false |
 | test.cpp:4:1:4:10 | CLASS_DECL | false |
-| test.cpp:4:1:4:10 | S | false |
+| test.cpp:4:1:4:10 | S | true |
 | test.cpp:4:1:4:10 | declaration | true |
 | test.cpp:4:1:4:10 | definition of S | true |
 | test.cpp:4:1:4:10 | definition of f | true |
 | test.cpp:4:1:4:10 | definition of i | true |
 | test.cpp:4:1:4:10 | definition of j | true |
-| test.cpp:4:1:4:10 | f | false |
-| test.cpp:4:1:4:10 | i | false |
+| test.cpp:4:1:4:10 | f | true |
+| test.cpp:4:1:4:10 | i | true |
 | test.cpp:4:1:4:10 | j | true |
 | test.cpp:4:1:4:10 | return ... | true |
 | test.cpp:4:1:4:10 | { ... } | true |
@@ -30,7 +30,7 @@
 | test.cpp:8:1:8:13 | declaration | true |
 | test.cpp:8:1:8:13 | definition of f1 | true |
 | test.cpp:8:1:8:13 | definition of k | true |
-| test.cpp:8:1:8:13 | f1 | false |
+| test.cpp:8:1:8:13 | f1 | true |
 | test.cpp:8:1:8:13 | k | true |
 | test.cpp:8:1:8:13 | return ... | true |
 | test.cpp:8:1:8:13 | { ... } | true |
@@ -68,18 +68,18 @@
 | test.cpp:38:1:38:13 | 1 | true |
 | test.cpp:38:1:38:13 | ... == ... | true |
 | test.cpp:38:1:38:13 | STATIC_ASSERT | false |
-| test.cpp:38:1:38:13 | static_assert(..., "") | false |
+| test.cpp:38:1:38:13 | static_assert(..., "") | true |
 | test.cpp:40:1:40:42 | #define ATTRIBUTE [[nodiscard("reason1")]] | false |
 | test.cpp:42:1:42:9 | ATTRIBUTE | false |
-| test.cpp:42:1:42:9 | nodiscard | false |
-| test.cpp:42:1:42:9 | reason1 | false |
+| test.cpp:42:1:42:9 | nodiscard | true |
+| test.cpp:42:1:42:9 | reason1 | true |
 | test.cpp:42:1:42:9 | reason1 | true |
 | test.cpp:43:5:43:6 | declaration of f2 | false |
 | test.cpp:43:5:43:6 | f2 | false |
 | test.cpp:45:1:45:31 | #define ATTRIBUTE_ARG "reason2" | false |
 | test.cpp:47:3:47:11 | nodiscard | false |
 | test.cpp:47:13:47:25 | ATTRIBUTE_ARG | false |
-| test.cpp:47:13:47:25 | reason2 | false |
+| test.cpp:47:13:47:25 | reason2 | true |
 | test.cpp:47:13:47:25 | reason2 | true |
 | test.cpp:48:5:48:6 | declaration of f3 | false |
 | test.cpp:48:5:48:6 | f3 | false |

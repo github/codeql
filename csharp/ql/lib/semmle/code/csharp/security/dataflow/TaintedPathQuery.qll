@@ -111,6 +111,7 @@ private module TaintedPathConfig implements DataFlow::StateConfigSig {
   predicate isBarrierOut(DataFlow::Node node, FlowState state) {
     isAdditionalFlowStep(_, state, node, _)
   }
+
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   predicate observeDiffInformedIncrementalMode() { any() }

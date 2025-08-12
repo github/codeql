@@ -1,9 +1,0 @@
-{
-    "include": ["."],
-    "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["./src/lib/*"]
-        }
-    }
-}

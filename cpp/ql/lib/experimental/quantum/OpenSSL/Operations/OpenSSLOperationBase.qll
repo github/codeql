@@ -1,316 +1,523 @@
 private import experimental.quantum.Language
-private import experimental.quantum.OpenSSL.AvcFlow
-private import experimental.quantum.OpenSSL.CtxFlow
-private import experimental.quantum.OpenSSL.KeyFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+import semmle.code.cpp.dataflow.new.DataFlow
 // Importing these intializers here to ensure the are part of any model that is
 // using OpenSslOperationBase. This further ensures that initializers are tied to opeartions
 // even if only importing the operation by itself.
 import EVPPKeyCtxInitializer
 
+/**
+ * An openSSL CTX type, which is type for which the stripped underlying type
+ * matches the pattern 'evp_%ctx_%st'.
+ * This includes types like:
+ * - EVP_CIPHER_CTX
+ * - EVP_MD_CTX
+ * - EVP_PKEY_CTX
+ */
+class CtxType extends Type {
+  CtxType() {
+    // It is possible for users to use the underlying type of the CTX variables
+    // these have a name matching 'evp_%ctx_%st
+    this.getUnspecifiedType().stripType().getName().matches("evp_%ctx_%st")
+    or
+    // In principal the above check should be sufficient, but in case of build mode none issues
+    // i.e., if a typedef cannot be resolved,
+    // or issues with properly stubbing test cases, we also explicitly check for the wrapping type defs
+    // i.e., patterns matching 'EVP_%_CTX'
+    exists(Type base | base = this or base = this.(DerivedType).getBaseType() |
+      base.getName().matches("EVP_%_CTX")
+    )
+  }
+}
+
+/**
+ * A pointer to a CtxType
+ */
+class CtxPointerExpr extends Expr {
+  CtxPointerExpr() {
+    this.getType() instanceof CtxType and
+    this.getType() instanceof PointerType
+  }
+}
+
+/**
+ * A call argument of type CtxPointerExpr.
+ */
+class CtxPointerArgument extends CtxPointerExpr {
+  CtxPointerArgument() { exists(Call c | c.getAnArgument() = this) }
+
+  Call getCall() { result.getAnArgument() = this }
+}
+
+/**
+ * The type of inputs and ouputs for an `OperationStep`.
+ */
+newtype TIOType =
+  CiphertextIO() or
+  // Used for typical CTX types, but not for OSSL_PARAM or OSSL_LIB_CTX
+  // For OSSL_PARAM and OSSL_LIB_CTX use of OsslParamIO and OsslLibContextIO
+  ContextIO() or
+  DigestIO() or
+  HashAlgorithmIO() or
+  IVorNonceIO() or
+  KeyIO() or
+  KeyOperationSubtypeIO() or
+  KeySizeIO() or
+  // Used for OSSL_LIB_CTX
+  OsslLibContextIO() or
+  // Used for OSSL_PARAM
+  OsslParamIO() or
+  MacIO() or
+  PaddingAlgorithmIO() or
+  // Plaintext also includes a message for digest, signature, verification, and mac generation
+  PlaintextIO() or
+  PrimaryAlgorithmIO() or
+  RandomSourceIO() or
+  SaltLengthIO() or
+  SeedIO() or
+  SignatureIO()
+
+private string ioTypeToString(TIOType t) {
+  t = CiphertextIO() and result = "CiphertextIO"
+  or
+  t = ContextIO() and result = "ContextIO"
+  or
+  t = DigestIO() and result = "DigestIO"
+  or
+  t = HashAlgorithmIO() and result = "HashAlgorithmIO"
+  or
+  t = IVorNonceIO() and result = "IVorNonceIO"
+  or
+  t = KeyIO() and result = "KeyIO"
+  or
+  t = KeyOperationSubtypeIO() and result = "KeyOperationSubtypeIO"
+  or
+  t = KeySizeIO() and result = "KeySizeIO"
+  or
+  t = OsslLibContextIO() and result = "OsslLibContextIO"
+  or
+  t = OsslParamIO() and result = "OsslParamIO"
+  or
+  t = MacIO() and result = "MacIO"
+  or
+  t = PaddingAlgorithmIO() and result = "PaddingAlgorithmIO"
+  or
+  t = PlaintextIO() and result = "PlaintextIO"
+  or
+  t = PrimaryAlgorithmIO() and result = "PrimaryAlgorithmIO"
+  or
+  t = RandomSourceIO() and result = "RandomSourceIO"
+  or
+  t = SaltLengthIO() and result = "SaltLengthIO"
+  or
+  t = SeedIO() and result = "SeedIO"
+  or
+  t = SignatureIO() and result = "SignatureIO"
+}
+
+class IOType extends TIOType {
+  string toString() {
+    result = ioTypeToString(this)
+    or
+    not exists(ioTypeToString(this)) and result = "UnknownIOType"
+  }
+}
+
+//TODO: add more initializers as needed
+/**
+ * The type of step in an `OperationStep`.
+ * - `ContextCreationStep`: the creation of a context from an algorithm or key.
+ *                       for example `EVP_MD_CTX_create(EVP_sha256())` or `EVP_PKEY_CTX_new(pkey, NULL)`
+ * - `InitializerStep`: the initialization of an operation through some sort of shared/accumulated context
+ *                       for example `EVP_DigestInit_ex(ctx, EVP_sha256(), NULL)`
+ * - `UpdateStep`: any operation that has and update/final paradigm, the update represents an intermediate step in an operation,
+ *                       such as `EVP_DigestUpdate(ctx, data, len)`
+ * - `FinalStep`: an ultimate operation step. This may be an explicit 'final' in an update/final paradigm, but not necessarily.
+ *                Any operation that does nto operate through an update/final paradigm is considered a final step.
+ */
+newtype OperationStepType =
+  // Context creation captures cases where a context is created from an algorithm or key
+  //
+  ContextCreationStep() or
+  InitializerStep() or
+  UpdateStep() or
+  FinalStep()
+
+/**
+ * A step in configuring an operation.
+ * Captures creation of contexts from algorithms or keys,
+ * initalization of configurations on contexts,
+ * update operations (intermediate steps in an operation)
+ * and the operation itself.
+ *
+ * NOTE: if an operation is configured through a means other than a call
+ * e.g., a pattern like ctx->alg = EVP_sha256()
+ * then this class will need to be modified to account for that paradigm.
+ * Currently, this is not a known pattern in OpenSSL.
+ */
+abstract class OperationStep extends Call {
+  /**
+   * Gets the output nodes from the given operation step.
+   * These are the nodes that flow connecting this step
+   * to any other step in the operation should follow.
+   */
+  abstract DataFlow::Node getOutput(IOType type);
+
+  /**
+   * Gets any output node from the given operation step.
+   */
+  final DataFlow::Node getAnOutput() { result = this.getOutput(_) }
+
+  /**
+   * Gets the input nodes for the given operation step.
+   */
+  abstract DataFlow::Node getInput(IOType type);
+
+  /**
+   * Gets any input node for the given operation step.
+   */
+  final DataFlow::Node getAnInput() { result = this.getInput(_) }
+
+  /**
+   * Gets the type of the step, e.g., ContextCreationStep, InitializerStep, UpdateStep, FinalStep.
+   */
+  abstract OperationStepType getStepType();
+
+  /**
+   * Holds if this operation step flows to the given `OperationStep` `sink`.
+   * If `sink` is `this`, then this holds true.
+   */
+  predicate flowsToOperationStep(OperationStep sink) {
+    sink = this or
+    OperationStepFlow::flow(this.getAnOutput(), sink.getAnInput())
+  }
+
+  /**
+   * Holds if this operation step flows from the given `OperationStep` (`source`).
+   * If `source` is `this`, then this holds true.
+   */
+  predicate flowsFromOperationStep(OperationStep source) {
+    source = this or
+    OperationStepFlow::flow(source.getAnOutput(), this.getAnInput())
+  }
+
+  /**
+   * Holds if this operation step sets a value of the given `IOType`.
+   */
+  predicate setsValue(IOType type) { exists(this.getInput(type)) }
+
+  /**
+   * Gets operation steps that flow to `this` and set the given `IOType`.
+   * This checks for the last initializers that flow to the `this`,
+   * i.e., if a value is set then re-set, the last set operation step is returned,
+   * not both.
+   * Note: Any 'update' that sets a value is not considered to be 'resetting' an input.
+   * I.e., there is a difference between changing a configuration before use and
+   * the operation allows for multiple inputs (like plaintext for cipher update calls before final).
+   */
+  OperationStep getDominatingInitializersToStep(IOType type) {
+    result.flowsToOperationStep(this) and
+    result.setsValue(type) and
+    (
+      // Do not consider a 'reset' to occur on updates
+      result.getStepType() = UpdateStep()
+      or
+      not exists(OperationStep reset |
+        result != reset and
+        reset.setsValue(type) and
+        reset.flowsToOperationStep(this) and
+        result.flowsToOperationStep(reset)
+      )
+    )
+  }
+
+  /**
+   * Gets all output of `type` that flow to `this`
+   * if `this` is a final step and the output is not from
+   * a separate final step.
+   */
+  OperationStep getOutputStepFlowingToStep(IOType type) {
+    this.getStepType() = FinalStep() and
+    result.flowsToOperationStep(this) and
+    exists(result.getOutput(type)) and
+    (result = this or result.getStepType() != FinalStep())
+  }
+
+  /**
+   * Gets an AVC for the primary algorithm for this operation.
+   * A primary algorithm is an AVC that flows to a ctx input directly or
+   * an AVC that flows to a primary algorithm input directly.
+   * See `AvcContextCreationStep` for details about resetting scenarios.
+   * Gets the first OperationStep an AVC flows to. If a context input,
+   * the AVC is considered primary.
+   * If a primary algorithm input, then get the last set primary algorithm
+   * operation step (dominating operation step, see `getDominatingInitializersToStep`).
+   */
+  Crypto::AlgorithmValueConsumer getPrimaryAlgorithmValueConsumer() {
+    exists(DataFlow::Node src, DataFlow::Node sink, IOType t, OperationStep avcSucc |
+      (t = PrimaryAlgorithmIO() or t = ContextIO()) and
+      avcSucc.flowsToOperationStep(this) and
+      src.asExpr() = result and
+      sink = avcSucc.getInput(t) and
+      AvcToOperationStepFlow::flow(src, sink) and
+      (
+        // Case 1: the avcSucc step is a dominating initialization step
+        t = PrimaryAlgorithmIO() and
+        avcSucc = this.getDominatingInitializersToStep(PrimaryAlgorithmIO())
+        or
+        // Case 2: the succ is a context input (any avcSucc is valid)
+        t = ContextIO()
+      )
+    )
+  }
+
+  /**
+   * Gets the algorithm value consumer for an input to `this` operation step
+   * of the given `type`.
+   * TODO: generalize to use this for `getPrimaryAlgorithmValueConsumer`
+   */
+  Crypto::AlgorithmValueConsumer getAlgorithmValueConsumerForInput(IOType type) {
+    exists(DataFlow::Node src, DataFlow::Node sink |
+      AvcToOperationStepFlow::flow(src, sink) and
+      src.asExpr() = result and
+      sink = this.getInput(type)
+    )
+  }
+}
+
+/**
+ * An AVC is considered to output a 'context type', however,
+ * each AVC has it's own output types in practice.
+ * Some output algorithm containers (`EVP_get_cipherbyname`)
+ * some output explicit contexts (`EVP_PKEY_CTX_new_from_name`).
+ * The output of an AVC cannot be determined to be a primary algorithm (PrimaryAlgorithmIO), that depends
+ * on the use of the AVC output.
+ * The use is assumed to be of two forms:
+ * - The AVC output flows to a known input that accepts an algorithm
+ *    e.g., `EVP_DigestInit(ctx, type)` the `type` parameter is known to be the primary algorithm.
+ *          `EVP_SignInit(ctx, type)` the `type` parameter is known to be a digest algorithm for the signature.
+ * - The AVC output flows to a context initialization step
+ *    e.g., `pkey_ctx = EVP_PKEY_CTX_new_from_name(libctx, name, propquery)` this is an AVC call, but the
+ *    API says the output is a context. It is consumed typically by something like:
+ *    `ctx = EVP_PKEY_keygen_init(pkey_ctx)`, but note I cannot consider the `pkey_ctx` parameter to always be a primary algorithm,
+ *     a key gen can be inited by a prior key as well, e.g., `ctx = EVP_PKEY_CTX_new(pkey, NULL)`.
+ *     Hence, these initialization steps take in a context that may have come from an AVC or something else,
+ *     and therefore cannot be considered a primary algorithm.
+ * Assumption: The first operation step an AVC flows to will be of the above two forms.
+ * Resetting Algorithm Concerns and Assumptions:
+ *     What if a user resets the algorithm through another AVC call?
+ *     How would we detect that and only look at the 'dominating' (last set) AVC?
+ *     From an AVC, always assess the first operation step it flows to.
+ *     If the first step is to a context input, then we assume that reset is not possible in the same path.
+ *     I.e., a user cannot reset the algorithm without starting an entirely new operation step chain.
+ *     See the use patterns for `pkey_ctx = EVP_PKEY_CTX_new_from_name(...)` mentioned above. A user cannot
+ *     reset the algorithm without calling a new `ctx = EVP_PKEY_keygen_init(pkey_ctx)`,
+ *     i.e., subsequent flow follows the `ctx` output.
+ *     If the first step is to any other input, then we use the `getDominatingInitializersToStep`
+ *     to find the last AVC that set the algorithm for the operation step.
+ *     Domination checks must occur at an operation step (e.g., at a final operation).
+ *     This operation step does not find the dominating AVC.
+ *     If a primary algorithm is explicitly set and and AVC is set through a context input,
+ *     we will use both cases as primary inputs.
+ */
+class AvcContextCreationStep extends OperationStep instanceof OpenSslAlgorithmValueConsumer {
+  override DataFlow::Node getOutput(IOType type) {
+    type = ContextIO() and result = super.getResultNode()
+  }
+
+  override DataFlow::Node getInput(IOType type) { none() }
+
+  override OperationStepType getStepType() { result = ContextCreationStep() }
+}
+
+abstract private class CtxPassThroughCall extends Call {
+  abstract DataFlow::Node getNode1();
+
+  abstract DataFlow::Node getNode2();
+}
+
+/**
+ * A call whose target contains 'free' or 'reset' and has an argument of type
+ * CtxPointerArgument.
+ */
+private class CtxClearCall extends Call {
+  CtxClearCall() {
+    this.getTarget().getName().toLowerCase().matches(["%free%", "%reset%"]) and
+    this.getAnArgument() instanceof CtxPointerArgument
+  }
+}
+
+/**
+ * A call whose target contains 'copy' and has an argument of type
+ * CtxPointerArgument.
+ */
+private class CtxCopyOutArgCall extends CtxPassThroughCall {
+  DataFlow::Node n1;
+  DataFlow::Node n2;
+
+  CtxCopyOutArgCall() {
+    this.getTarget().getName().toLowerCase().matches("%copy%") and
+    n1.asExpr() = this.getAnArgument() and
+    n1.getType() instanceof CtxType and
+    n2.asDefiningArgument() = this.getAnArgument() and
+    n2.getType() instanceof CtxType and
+    n1.asDefiningArgument() != n2.asExpr()
+  }
+
+  override DataFlow::Node getNode1() { result = n1 }
+
+  override DataFlow::Node getNode2() { result = n2 }
+}
+
+/**
+ * A call whose target contains 'dup' and has an argument of type
+ * CtxPointerArgument.
+ */
+private class CtxCopyReturnCall extends CtxPassThroughCall, CtxPointerExpr {
+  DataFlow::Node n1;
+
+  CtxCopyReturnCall() {
+    this.getTarget().getName().toLowerCase().matches("%dup%") and
+    n1.asExpr() = this.getAnArgument() and
+    n1.getType() instanceof CtxType
+  }
+
+  override DataFlow::Node getNode1() { result = n1 }
+
+  override DataFlow::Node getNode2() { result.asExpr() = this }
+}
+
+// TODO: is this still needed?
+/**
+ * A call to `EVP_PKEY_paramgen` acts as a kind of pass through.
+ * It's output pkey is eventually used in a new operation generating
+ * a fresh context pointer (e.g., `EVP_PKEY_CTX_new`).
+ * It is easier to model this as a pass through
+ * than to model the flow from the paramgen to the new key generation.
+ */
+private class CtxParamGenCall extends CtxPassThroughCall {
+  DataFlow::Node n1;
+  DataFlow::Node n2;
+
+  CtxParamGenCall() {
+    this.getTarget().getName() = "EVP_PKEY_paramgen" and
+    n1.asExpr() = this.getArgument(0) and
+    (
+      n2.asExpr() = this.getArgument(1)
+      or
+      n2.asDefiningArgument() = this.getArgument(1)
+    )
+  }
+
+  override DataFlow::Node getNode1() { result = n1 }
+
+  override DataFlow::Node getNode2() { result = n2 }
+}
+
+//TODO: I am not sure CallArgToCtxRet is needed anymore
+/**
+ * If the current node is an argument to a function
+ * that returns a pointer type, immediately flow through.
+ * NOTE: this passthrough is required if we allow
+ * intermediate steps to go into variables that are not a CTX type.
+ * See for example `CtxParamGenCall`.
+ */
+private class CallArgToCtxRet extends CtxPassThroughCall, CtxPointerExpr {
+  DataFlow::Node n1;
+  DataFlow::Node n2;
+
+  CallArgToCtxRet() {
+    this.getAnArgument() = n1.asExpr() and
+    n2.asExpr() = this
+  }
+
+  override DataFlow::Node getNode1() { result = n1 }
+
+  override DataFlow::Node getNode2() { result = n2 }
+}
+
+/**
+ * A flow configuration from any non-final `OperationStep` to any other `OperationStep`.
+ */
+module OperationStepFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(OperationStep s |
+      s.getAnOutput() = source or
+      s.getAnInput() = source
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(OperationStep s |
+      s.getAnInput() = sink or
+      s.getAnOutput() = sink
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    exists(CtxClearCall c | c.getAnArgument() = node.asExpr())
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(CtxPassThroughCall c | c.getNode1() = node1 and c.getNode2() = node2)
+    or
+    // Flow out through all outputs from an operation step if more than one output
+    // is defined.
+    exists(OperationStep s | s.getAnInput() = node1 and s.getAnOutput() = node2)
+    // TODO: consideration for additional alises defined as follows:
+    // if an output from an operation step itself flows from the output of another operation step
+    // then the source of that flow's outputs (all of them) are potential aliases
+  }
+}
+
+module OperationStepFlow = DataFlow::Global<OperationStepFlowConfig>;
+
+/**
+ * A flow from AVC to the first `OperationStep` the AVC reaches as an input.
+ */
+module AvcToOperationStepFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(AvcContextCreationStep s | s.getAnOutput() = source)
+  }
+
+  predicate isSink(DataFlow::Node sink) { exists(OperationStep s | s.getAnInput() = sink) }
+
+  predicate isBarrier(DataFlow::Node node) {
+    exists(CtxClearCall c | c.getAnArgument() = node.asExpr())
+  }
+
+  /**
+   * Only get the first operation step encountered.
+   */
+  predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(CtxPassThroughCall c | c.getNode1() = node1 and c.getNode2() = node2)
+  }
+}
+
+module AvcToOperationStepFlow = DataFlow::Global<AvcToOperationStepFlowConfig>;
+
 module EncValToInitEncArgConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr().getValue().toInt() in [0, 1] }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(EvpKeyOperationSubtypeInitializer initCall |
-      sink.asExpr() = initCall.getKeyOperationSubtypeArg()
-    )
+    exists(OperationStep s | sink = s.getInput(KeyOperationSubtypeIO()))
   }
 }
 
 module EncValToInitEncArgFlow = DataFlow::Global<EncValToInitEncArgConfig>;
 
-private predicate argToAvc(Expr arg, Crypto::AlgorithmValueConsumer avc) {
-  // NOTE: because we trace through keys to their sources we must consider that the arg is an avc
-  // Consider this example:
-  //      EVP_PKEY *pkey = EVP_PKEY_new_mac_key(EVP_PKEY_HMAC, NULL, key, key_len);
-  // The key may trace into a signing operation. Tracing through the key we will get the arg taking `EVP_PKEY_HMAC`
-  // as the algorithm value consumer (the input node of the AVC). The output node of this AVC
-  // is the call return of `EVP_PKEY_new_mac_key`. If we trace from the AVC result to
-  // the input argument this will not be possible (from the return to the call argument is a backwards flow).
-  // Therefore, we must consider the input node of the AVC as the argument.
-  // This should only occur due to tracing through keys to find configuration data.
-  avc.getInputNode().asExpr() = arg
+private Crypto::KeyOperationSubtype intToCipherOperationSubtype(int i) {
+  i = 0 and
+  result instanceof Crypto::TEncryptMode
   or
-  AvcToCallArgFlow::flow(avc.(OpenSslAlgorithmValueConsumer).getResultNode(),
-    DataFlow::exprNode(arg))
+  i = 1 and result instanceof Crypto::TDecryptMode
 }
 
-/**
- * A class for all OpenSsl operations.
- */
-abstract class OpenSslOperation extends Crypto::OperationInstance instanceof Call {
-  /**
-   * Gets the argument that specifies the algorithm for the operation.
-   * This argument might not be immediately present at the specified operation.
-   * For example, it might be set in an initialization call.
-   * Modelers of the operation are resonsible for linking the operation to any
-   * initialization calls, and providing that argument as a returned value here.
-   */
-  abstract Expr getAlgorithmArg();
-
-  /**
-   * Algorithm is specified in initialization call or is implicitly established by the key.
-   */
-  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-    argToAvc(this.getAlgorithmArg(), result)
-  }
-}
-
-/**
- * A Call to an initialization function for an operation.
- * These are not operations in the sense of Crypto::OperationInstance,
- * but they are used to initialize the context for the operation.
- * There may be multiple initialization calls for the same operation.
- * Intended for use with EvPOperation.
- */
-abstract class EvpInitializer extends Call {
-  /**
-   * Gets the context argument or return that ties together initialization, updates and/or final calls.
-   * The context is the context coming into the initializer and is the output as well.
-   * This is assumed to be the same argument.
-   */
-  abstract CtxPointerSource getContext();
-}
-
-/**
- * A call to initialize a key size.
- */
-abstract class EvpKeySizeInitializer extends EvpInitializer {
-  abstract Expr getKeySizeArg();
-}
-
-/**
- * A call to initialize a key operation subtype.
- */
-abstract class EvpKeyOperationSubtypeInitializer extends EvpInitializer {
-  abstract Expr getKeyOperationSubtypeArg();
-
-  private Crypto::KeyOperationSubtype intToCipherOperationSubtype(int i) {
-    i = 0 and
-    result instanceof Crypto::TEncryptMode
-    or
-    i = 1 and result instanceof Crypto::TDecryptMode
-  }
-
-  Crypto::KeyOperationSubtype getKeyOperationSubtype() {
-    exists(DataFlow::Node a, DataFlow::Node b |
-      EncValToInitEncArgFlow::flow(a, b) and
-      b.asExpr() = this.getKeyOperationSubtypeArg() and
-      result = this.intToCipherOperationSubtype(a.asExpr().getValue().toInt())
-    )
-    or
-    // Infer the subtype from the initialization call, and ignore the argument
-    this.(Call).getTarget().getName().toLowerCase().matches("%encrypt%") and
-    result instanceof Crypto::TEncryptMode
-    or
-    this.(Call).getTarget().getName().toLowerCase().matches("%decrypt%") and
-    result instanceof Crypto::TDecryptMode
-  }
-}
-
-/**
- * An primary algorithm initializer initializes the primary algorithm for a given operation.
- * For example, for a signing operation, the algorithm initializer may initialize algorithms
- * like RSA. Other algorithsm may be initialized on an operation, as part of a larger
- * operation/protocol. For example, hashing operations on signing operations; however,
- * these are not the primary algorithm. Any other algorithms initialized on an operation
- * require a specialized initializer, such as EvpHashAlgorithmInitializer.
- */
-abstract class EvpPrimaryAlgorithmInitializer extends EvpInitializer {
-  abstract Expr getAlgorithmArg();
-
-  Crypto::AlgorithmValueConsumer getAlgorithmValueConsumer() {
-    argToAvc(this.getAlgorithmArg(), result)
-  }
-}
-
-/**
- * A call to initialize a key.
- */
-abstract class EvpKeyInitializer extends EvpInitializer {
-  abstract Expr getKeyArg();
-}
-
-/**
- * A key initializer may initialize the algorithm and the key size through
- * the key. Extend any instance of key initializer provide initialization
- * of the algorithm and key size from the key.
- */
-class EvpInitializerThroughKey extends EvpPrimaryAlgorithmInitializer, EvpKeySizeInitializer,
-  EvpKeyInitializer
-{
-  Expr arg;
-  CtxPointerSource context;
-
-  EvpInitializerThroughKey() {
-    exists(EvpKeyInitializer keyInit |
-      arg = keyInit.getKeyArg() and this = keyInit and context = keyInit.getContext()
-    )
-  }
-
-  override CtxPointerSource getContext() { result = context }
-
-  override Expr getAlgorithmArg() {
-    result =
-      getSourceKeyCreationInstanceFromArg(this.getKeyArg()).(OpenSslOperation).getAlgorithmArg()
-  }
-
-  override Expr getKeySizeArg() {
-    result = getSourceKeyCreationInstanceFromArg(this.getKeyArg()).getKeySizeConsumer().asExpr()
-  }
-
-  override Expr getKeyArg() { result = arg }
-}
-
-/**
- * A default initializer for any key operation that accepts a key as input.
- * A key initializer allows for a mechanic to go backwards to the key creation operation
- * and find the algorithm and key size.
- * If a user were to stipualte a key consumer for an operation but fail to indicate it as an
- * initializer, automatic tracing to the creation operation would not occur.
- * USERS SHOULD NOT NEED TO USE OR EXTEND THIS CLASS DIRECTLY.
- *
- * TODO: re-evaluate this approach
- */
-class DefaultKeyInitializer extends EvpKeyInitializer instanceof Crypto::KeyOperationInstance {
-  Expr arg;
-
-  DefaultKeyInitializer() {
-    exists(Call c |
-      c.getAChild*() = arg and
-      arg = this.(Crypto::KeyOperationInstance).getKeyConsumer().asExpr() and
-      c = this
-    )
-  }
-
-  override Expr getKeyArg() { result = arg }
-
-  override CtxPointerSource getContext() { result = this.(EvpOperation).getContext() }
-}
-
-abstract class EvpIVInitializer extends EvpInitializer {
-  abstract Expr getIVArg();
-}
-
-/**
- * A call to initialize padding.
- */
-abstract class EvpPaddingInitializer extends EvpInitializer {
-  /**
-   * Gets the padding mode argument.
-   *  e.g., `EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_PADDING)` argument 1 (0-based)
-   */
-  abstract Expr getPaddingArg();
-}
-
-/**
- * A call to initialize a salt length.
- */
-abstract class EvpSaltLengthInitializer extends EvpInitializer {
-  /**
-   * Gets the salt length argument.
-   * e.g., `EVP_PKEY_CTX_set_scrypt_salt_len(ctx, 16)` argument 1 (0-based)
-   */
-  abstract Expr getSaltLengthArg();
-}
-
-/**
- * A call to initialize a hash algorithm.
- */
-abstract class EvpHashAlgorithmInitializer extends EvpInitializer {
-  abstract Expr getHashAlgorithmArg();
-
-  Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
-    argToAvc(this.getHashAlgorithmArg(), result)
-  }
-}
-
-/**
- * A Call to an "update" function.
- * These are not operations in the sense of Crypto::OperationInstance,
- * but produce intermediate results for the operation that are later finalized
- * (see EvpFinal).
- * Intended for use with EvPOperation.
- */
-abstract class EvpUpdate extends Call {
-  /**
-   * Gets the context argument that ties together initialization, updates and/or final calls.
-   */
-  abstract CtxPointerSource getContext();
-
-  /**
-   * Update calls always have some input data like plaintext or message digest.
-   */
-  abstract Expr getInputArg();
-
-  /**
-   * Update calls sometimes have some output data like a plaintext.
-   */
-  Expr getOutputArg() { none() }
-}
-
-/**
- * The base class for all operations of the EVP API.
- * This captures one-shot APIs (with and without an initilizer call) and final calls.
- * Provides some default methods for Crypto::KeyOperationInstance class.
- */
-abstract class EvpOperation extends OpenSslOperation {
-  /**
-   * Gets the context argument that ties together initialization, updates and/or final calls.
-   */
-  abstract CtxPointerSource getContext();
-
-  /**
-   * Some input data like plaintext or message digest.
-   * Either argument provided direcly in the call or all arguments that were provided in update calls.
-   */
-  abstract Expr getInputArg();
-
-  /**
-   * Some output data like ciphertext or signature.
-   */
-  abstract Expr getOutputArg();
-
-  /**
-   * Finds the initialization call, may be none.
-   */
-  EvpInitializer getInitCall() { ctxSrcToSrcFlow(result.getContext(), this.getContext()) }
-
-  Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-    result = DataFlow::exprNode(this.getOutputArg())
-  }
-
-  /**
-   * Input consumer is the input argument of the call.
-   */
-  Crypto::ConsumerInputDataFlowNode getInputConsumer() {
-    result = DataFlow::exprNode(this.getInputArg())
-  }
-}
-
-/**
- * An EVP final call,
- * which is typicall used in an update/final pattern.
- * Final operations are typically identified by "final" in the name,
- * e.g., "EVP_DigestFinal", "EVP_EncryptFinal", etc.
- * however, this is not a strict rule.
- */
-abstract class EvpFinal extends EvpOperation {
-  /**
-   * All update calls that were executed before this final call.
-   */
-  EvpUpdate getUpdateCalls() { ctxSrcToSrcFlow(result.getContext(), this.getContext()) }
-
-  /**
-   * Gets the input data provided to all update calls.
-   * If more input data was provided in the final call, override the method.
-   */
-  override Expr getInputArg() { result = this.getUpdateCalls().getInputArg() }
-
-  /**
-   * Gets the output data provided to all update calls.
-   * If more output data was provided in the final call, override the method.
-   */
-  override Expr getOutputArg() { result = this.getUpdateCalls().getOutputArg() }
+Crypto::KeyOperationSubtype resolveKeyOperationSubTypeOperationStep(OperationStep s) {
+  exists(DataFlow::Node src |
+    EncValToInitEncArgFlow::flow(src, s.getInput(KeyOperationSubtypeIO())) and
+    result = intToCipherOperationSubtype(src.asExpr().getValue().toInt())
+  )
 }

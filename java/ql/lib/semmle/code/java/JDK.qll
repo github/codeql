@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with standard classes and methods from the JDK.
  */
+overlay[local?]
+module;
 
 import Member
 import semmle.code.java.security.ExternalProcess
@@ -207,6 +209,11 @@ class TypeObjectOutput extends Interface {
 /** The type `java.io.ObjectOutputStream`. */
 class TypeObjectOutputStream extends RefType {
   TypeObjectOutputStream() { this.hasQualifiedName("java.io", "ObjectOutputStream") }
+}
+
+/** The type `java.io.ObjectInput`. */
+class TypeObjectInput extends RefType {
+  TypeObjectInput() { this.hasQualifiedName("java.io", "ObjectInput") }
 }
 
 /** The type `java.io.ObjectInputStream`. */

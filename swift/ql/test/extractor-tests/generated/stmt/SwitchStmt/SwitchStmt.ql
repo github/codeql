@@ -2,11 +2,17 @@
 import codeql.swift.elements
 import TestUtils
 
-from SwitchStmt x, string hasLabel, Expr getExpr, int getNumberOfCases
-where
+query predicate instances(SwitchStmt x, string getExpr__label, Expr getExpr) {
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.hasLabel() then hasLabel = "yes" else hasLabel = "no") and
-  getExpr = x.getExpr() and
-  getNumberOfCases = x.getNumberOfCases()
-select x, "hasLabel:", hasLabel, "getExpr:", getExpr, "getNumberOfCases:", getNumberOfCases
+  getExpr__label = "getExpr:" and
+  getExpr = x.getExpr()
+}
+
+query predicate getLabel(SwitchStmt x, string getLabel) {
+  toBeTested(x) and not x.isUnknown() and getLabel = x.getLabel()
+}
+
+query predicate getCase(SwitchStmt x, int index, CaseStmt getCase) {
+  toBeTested(x) and not x.isUnknown() and getCase = x.getCase(index)
+}

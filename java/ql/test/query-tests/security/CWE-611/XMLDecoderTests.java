@@ -13,9 +13,9 @@ public class XMLDecoderTests {
 
     @PostMapping(value = "bad")
     public void bad3(HttpServletRequest request) throws Exception {
-        ServletInputStream servletInputStream = request.getInputStream();
+        ServletInputStream servletInputStream = request.getInputStream(); // $ Source
         XMLDecoder xmlDecoder = new XMLDecoder(servletInputStream);
-        xmlDecoder.readObject(); // $ hasTaintFlow
+        xmlDecoder.readObject(); // $ Alert
     }
 
     @PostMapping(value = "good")

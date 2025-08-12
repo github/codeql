@@ -1,7 +1,16 @@
-| implicit_conversions.swift:2:3:2:3 | (UnsafePointer<CChar>) ... | StringToPointerExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:2:3:2:3 | Hello |
-| implicit_conversions.swift:4:16:4:16 | (Int?) ... | InjectIntoOptionalExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:4:16:4:16 | 42 |
-| implicit_conversions.swift:5:25:5:25 | (any Equatable) ... | ErasureExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:5:25:5:25 | 42 |
-| implicit_conversions.swift:12:3:12:5 | (@lvalue (() -> Void)?) ... | AbiSafeConversionExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:12:3:12:5 | .b |
-| implicit_conversions.swift:12:9:12:10 | ((() -> Void)?) ... | InjectIntoOptionalExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:12:9:12:10 | { ... } |
-| implicit_conversions.swift:24:3:24:5 | (Array<Any>) ... | UnsafeCastExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:24:3:24:5 | ([any Sendable]) ... |
-| implicit_conversions.swift:24:3:24:5 | ([any Sendable]) ... | LoadExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:24:3:24:5 | .a |
+instances
+| implicit_conversions.swift:2:3:2:3 | (UnsafePointer<CChar>) ... | StringToPointerExpr | getSubExpr: | implicit_conversions.swift:2:3:2:3 | Hello |
+| implicit_conversions.swift:4:16:4:16 | (Int?) ... | InjectIntoOptionalExpr | getSubExpr: | implicit_conversions.swift:4:16:4:16 | 42 |
+| implicit_conversions.swift:5:25:5:25 | (any Equatable) ... | ErasureExpr | getSubExpr: | implicit_conversions.swift:5:25:5:25 | 42 |
+| implicit_conversions.swift:12:3:12:5 | (@lvalue (() -> Void)?) ... | AbiSafeConversionExpr | getSubExpr: | implicit_conversions.swift:12:3:12:5 | .b |
+| implicit_conversions.swift:12:9:12:10 | ((() -> Void)?) ... | InjectIntoOptionalExpr | getSubExpr: | implicit_conversions.swift:12:9:12:10 | { ... } |
+| implicit_conversions.swift:24:3:24:5 | (Array<Any>) ... | UnsafeCastExpr | getSubExpr: | implicit_conversions.swift:24:3:24:5 | ([any Sendable]) ... |
+| implicit_conversions.swift:24:3:24:5 | ([any Sendable]) ... | LoadExpr | getSubExpr: | implicit_conversions.swift:24:3:24:5 | .a |
+getType
+| implicit_conversions.swift:2:3:2:3 | (UnsafePointer<CChar>) ... | UnsafePointer<CChar> |
+| implicit_conversions.swift:4:16:4:16 | (Int?) ... | Int? |
+| implicit_conversions.swift:5:25:5:25 | (any Equatable) ... | any Equatable |
+| implicit_conversions.swift:12:3:12:5 | (@lvalue (() -> Void)?) ... | @lvalue (() -> Void)? |
+| implicit_conversions.swift:12:9:12:10 | ((() -> Void)?) ... | (() -> Void)? |
+| implicit_conversions.swift:24:3:24:5 | (Array<Any>) ... | Array<Any> |
+| implicit_conversions.swift:24:3:24:5 | ([any Sendable]) ... | [any Sendable] |

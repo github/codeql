@@ -1,4 +1,6 @@
 /** Classes to represent sanitizers commonly used in dataflow and taint tracking configurations. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

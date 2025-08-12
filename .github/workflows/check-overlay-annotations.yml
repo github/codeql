@@ -1,0 +1,23 @@
+name: Check overlay annotations
+
+on:
+  push:
+    branches:
+      - main
+      - 'rc/*'
+  pull_request:
+    branches:
+      - main
+      - 'rc/*'
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check overlay annotations
+        run: python config/add-overlay-annotations.py --check java
+

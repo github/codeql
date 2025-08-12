@@ -2,6 +2,8 @@
  * Provides a module for synthesizing data-flow nodes and related step relations
  * for supporting flow through captured variables.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Boolean
 private import codeql.util.Unit
@@ -731,13 +733,15 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
       predicate hasCfgNode(BasicBlock bb, int i) { bb.getNode(i) = this }
     }
 
-    class Guard extends Void {
-      predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) { none() }
+    class GuardValue = Void;
 
-      predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) { none() }
+    class Guard extends Void {
+      predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue val) { none() }
+
+      predicate valueControlsBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue val) { none() }
     }
 
-    predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, boolean branch) { none() }
+    predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, GuardValue val) { none() }
 
     predicate includeWriteDefsInFlowStep() { none() }
 

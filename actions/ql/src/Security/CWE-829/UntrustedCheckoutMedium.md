@@ -1,10 +1,8 @@
-# Execution of Untrusted Checked-out Code
-
-## Description
+## Overview
 
 GitHub workflows can be triggered through various repository events, including incoming pull requests (PRs) or comments on Issues/PRs. A potentially dangerous misuse of the triggers such as `pull_request_target` or `issue_comment` followed by an explicit checkout of untrusted code (Pull Request HEAD) may lead to repository compromise if untrusted code gets executed in a privileged job.
 
-## Recommendations
+## Recommendation
 
 - Avoid using `pull_request_target` unless necessary.
 - Employ unprivileged `pull_request` workflows followed by `workflow_run` for privileged operations.
@@ -14,7 +12,7 @@ The best practice is to handle the potentially untrusted pull request via the **
 
 The artifacts downloaded from the first workflow should be considered untrusted and must be verified.
 
-## Examples
+## Example
 
 ### Incorrect Usage
 
@@ -134,4 +132,4 @@ jobs:
 
 ## References
 
-- [Keeping your GitHub Actions and workflows secure Part 1: Preventing pwn requests](https://securitylab.github.com/research/github-actions-preventing-pwn-requests/)
+- GitHub Security Lab Research: [Keeping your GitHub Actions and workflows secure Part 1: Preventing pwn requests](https://securitylab.github.com/research/github-actions-preventing-pwn-requests/).

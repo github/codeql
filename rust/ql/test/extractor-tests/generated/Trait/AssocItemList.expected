@@ -1,2 +1,8 @@
-| gen_trait.rs:4:20:8:1 | AssocItemList | getNumberOfAssocItems: | 3 | getNumberOfAttrs: | 0 |
-| gen_trait.rs:10:56:10:57 | AssocItemList | getNumberOfAssocItems: | 0 | getNumberOfAttrs: | 0 |
+instances
+| gen_trait.rs:4:20:8:1 | AssocItemList |
+| gen_trait.rs:10:56:10:57 | AssocItemList |
+getAssocItem
+| gen_trait.rs:4:20:8:1 | AssocItemList | 0 | gen_trait.rs:5:3:5:18 | type Frobinator |
+| gen_trait.rs:4:20:8:1 | AssocItemList | 1 | gen_trait.rs:6:3:6:20 | type Result |
+| gen_trait.rs:4:20:8:1 | AssocItemList | 2 | gen_trait.rs:7:3:7:72 | fn frobinize_with |
+getAttr

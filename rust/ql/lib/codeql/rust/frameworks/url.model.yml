@@ -2,6 +2,6 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModelDeprecated
+      extensible: summaryModel
     data:
-      - ["repo:https://github.com/servo/rust-url:url", "<crate::Url>::parse", "Argument[0].Reference", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["<url::Url>::parse", "Argument[0].Reference", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]

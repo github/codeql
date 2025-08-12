@@ -2,12 +2,17 @@
 import codeql.swift.elements
 import TestUtils
 
-from EnumCaseDecl x, ModuleDecl getModule, int getNumberOfMembers, int getNumberOfElements
-where
+query predicate instances(EnumCaseDecl x, string getModule__label, ModuleDecl getModule) {
   toBeTested(x) and
   not x.isUnknown() and
-  getModule = x.getModule() and
-  getNumberOfMembers = x.getNumberOfMembers() and
-  getNumberOfElements = x.getNumberOfElements()
-select x, "getModule:", getModule, "getNumberOfMembers:", getNumberOfMembers,
-  "getNumberOfElements:", getNumberOfElements
+  getModule__label = "getModule:" and
+  getModule = x.getModule()
+}
+
+query predicate getMember(EnumCaseDecl x, int index, Decl getMember) {
+  toBeTested(x) and not x.isUnknown() and getMember = x.getMember(index)
+}
+
+query predicate getElement(EnumCaseDecl x, int index, EnumElementDecl getElement) {
+  toBeTested(x) and not x.isUnknown() and getElement = x.getElement(index)
+}

@@ -5,6 +5,8 @@
  * `org.junit.jupiter.api.Assertions`, `com.google.common.base.Preconditions`,
  * and `java.util.Objects`.
  */
+overlay[local?]
+module;
 
 import java
 

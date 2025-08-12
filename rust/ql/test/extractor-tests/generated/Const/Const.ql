@@ -2,37 +2,58 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  Const x, string hasExtendedCanonicalPath, string hasCrateOrigin,
-  string hasAttributeMacroExpansion, int getNumberOfAttrs, string hasBody,
-  string hasGenericParamList, string isConst, string isDefault, string hasName, string hasTypeRepr,
-  string hasVisibility, string hasWhereClause, string hasImplementation
-where
+query predicate instances(
+  Const x, string isConst__label, string isConst, string isDefault__label, string isDefault,
+  string hasImplementation__label, string hasImplementation
+) {
   toBeTested(x) and
   not x.isUnknown() and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  (
-    if x.hasAttributeMacroExpansion()
-    then hasAttributeMacroExpansion = "yes"
-    else hasAttributeMacroExpansion = "no"
-  ) and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
-  (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
+  isConst__label = "isConst:" and
   (if x.isConst() then isConst = "yes" else isConst = "no") and
+  isDefault__label = "isDefault:" and
   (if x.isDefault() then isDefault = "yes" else isDefault = "no") and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
-  (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
-  (if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no") and
+  hasImplementation__label = "hasImplementation:" and
   if x.hasImplementation() then hasImplementation = "yes" else hasImplementation = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasBody:", hasBody, "hasGenericParamList:", hasGenericParamList, "isConst:", isConst,
-  "isDefault:", isDefault, "hasName:", hasName, "hasTypeRepr:", hasTypeRepr, "hasVisibility:",
-  hasVisibility, "hasWhereClause:", hasWhereClause, "hasImplementation:", hasImplementation
+}
+
+query predicate getExtendedCanonicalPath(Const x, string getExtendedCanonicalPath) {
+  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
+}
+
+query predicate getCrateOrigin(Const x, string getCrateOrigin) {
+  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
+}
+
+query predicate getAttributeMacroExpansion(Const x, MacroItems getAttributeMacroExpansion) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getAttr(Const x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getBody(Const x, Expr getBody) {
+  toBeTested(x) and not x.isUnknown() and getBody = x.getBody()
+}
+
+query predicate getGenericParamList(Const x, GenericParamList getGenericParamList) {
+  toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
+}
+
+query predicate getName(Const x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getTypeRepr(Const x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}
+
+query predicate getVisibility(Const x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}
+
+query predicate getWhereClause(Const x, WhereClause getWhereClause) {
+  toBeTested(x) and not x.isUnknown() and getWhereClause = x.getWhereClause()
+}

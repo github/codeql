@@ -6,7 +6,6 @@
  */
 
 import cpp
-private import experimental.quantum.OpenSSL.CtxFlow
 private import OpenSSLOperations
 
 /**
@@ -14,49 +13,66 @@ private import OpenSSLOperations
  * These calls initialize the context from a prior key.
  * The key may be generated previously, or merely had it's
  * parameters set (e.g., `EVP_PKEY_paramgen`).
- * NOTE: for the case of `EVP_PKEY_paramgen`, these calls
- * are encoded as context passthroughs, and any operation
- * will get all associated initializers for the paramgen
- * at the final keygen operation automatically.
  */
-class EvpNewKeyCtx extends EvpKeyInitializer {
+class EvpNewKeyCtx extends OperationStep instanceof Call {
   Expr keyArg;
 
   EvpNewKeyCtx() {
-    this.(Call).getTarget().getName() = "EVP_PKEY_CTX_new" and
-    keyArg = this.(Call).getArgument(0)
+    this.getTarget().getName() = "EVP_PKEY_CTX_new" and
+    keyArg = this.getArgument(0)
     or
-    this.(Call).getTarget().getName() = "EVP_PKEY_CTX_new_from_pkey" and
-    keyArg = this.(Call).getArgument(1)
+    this.getTarget().getName() = "EVP_PKEY_CTX_new_from_pkey" and
+    keyArg = this.getArgument(1)
   }
 
-  /**
-   * Context is returned
-   */
-  override CtxPointerSource getContext() { result = this }
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = keyArg and type = KeyIO()
+    or
+    this.getTarget().getName() = "EVP_PKEY_CTX_new_from_pkey" and
+    result.asExpr() = this.getArgument(0) and
+    type = OsslLibContextIO()
+  }
 
-  override Expr getKeyArg() { result = keyArg }
+  override DataFlow::Node getOutput(IOType type) { result.asExpr() = this and type = ContextIO() }
+
+  override OperationStepType getStepType() { result = ContextCreationStep() }
 }
 
 /**
  * A call to "EVP_PKEY_CTX_set_ec_paramgen_curve_nid".
- * Note that this is a primary algorithm as the pattenr is to specify an "EC" context,
- * then set the specific curve later. Although the curve is set later, it is the primary
- * algorithm intended for an operation.
  */
-class EvpCtxSetPrimaryAlgorithmInitializer extends EvpPrimaryAlgorithmInitializer {
-  EvpCtxSetPrimaryAlgorithmInitializer() {
-    this.(Call).getTarget().getName() = "EVP_PKEY_CTX_set_ec_paramgen_curve_nid"
+class EvpCtxSetEcParamgenCurveNidInitializer extends OperationStep {
+  EvpCtxSetEcParamgenCurveNidInitializer() {
+    this.getTarget().getName() = "EVP_PKEY_CTX_set_ec_paramgen_curve_nid"
   }
 
-  override Expr getAlgorithmArg() { result = this.(Call).getArgument(1) }
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    or
+    result.asExpr() = this.getArgument(1) and type = PrimaryAlgorithmIO()
+  }
 
-  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
+
+  override OperationStepType getStepType() { result = InitializerStep() }
 }
 
-class EvpCtxSetHashAlgorithmInitializer extends EvpHashAlgorithmInitializer {
-  EvpCtxSetHashAlgorithmInitializer() {
-    this.(Call).getTarget().getName() in [
+/**
+ * A call to the following:
+ * - `EVP_PKEY_CTX_set_signature_md`
+ * - `EVP_PKEY_CTX_set_rsa_mgf1_md_name`
+ * - `EVP_PKEY_CTX_set_rsa_mgf1_md`
+ * - `EVP_PKEY_CTX_set_rsa_oaep_md_name`
+ * - `EVP_PKEY_CTX_set_rsa_oaep_md`
+ * - `EVP_PKEY_CTX_set_dsa_paramgen_md`
+ * - `EVP_PKEY_CTX_set_dh_kdf_md`
+ * - `EVP_PKEY_CTX_set_ecdh_kdf_md`
+ */
+class EvpCtxSetHashInitializer extends OperationStep {
+  EvpCtxSetHashInitializer() {
+    this.getTarget().getName() in [
         "EVP_PKEY_CTX_set_signature_md", "EVP_PKEY_CTX_set_rsa_mgf1_md_name",
         "EVP_PKEY_CTX_set_rsa_mgf1_md", "EVP_PKEY_CTX_set_rsa_oaep_md_name",
         "EVP_PKEY_CTX_set_rsa_oaep_md", "EVP_PKEY_CTX_set_dsa_paramgen_md",
@@ -64,56 +80,95 @@ class EvpCtxSetHashAlgorithmInitializer extends EvpHashAlgorithmInitializer {
       ]
   }
 
-  override Expr getHashAlgorithmArg() { result = this.(Call).getArgument(1) }
-
-  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
-}
-
-class EvpCtxSetKeySizeInitializer extends EvpKeySizeInitializer {
-  Expr arg;
-
-  EvpCtxSetKeySizeInitializer() {
-    this.(Call).getTarget().getName() in [
-        "EVP_PKEY_CTX_set_rsa_keygen_bits", "EVP_PKEY_CTX_set_dsa_paramgen_bits",
-        "EVP_CIPHER_CTX_set_key_length"
-      ] and
-    arg = this.(Call).getArgument(1)
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
     or
-    this.(Call).getTarget().getName() = "EVP_PKEY_CTX_set_mac_key" and
-    arg = this.(Call).getArgument(2)
+    result.asExpr() = this.getArgument(1) and type = HashAlgorithmIO()
   }
 
-  override Expr getKeySizeArg() { result = arg }
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
 
-  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
+  override OperationStepType getStepType() { result = InitializerStep() }
 }
 
-class EvpCtxSetKeyInitializer extends EvpKeyInitializer {
-  EvpCtxSetKeyInitializer() { this.(Call).getTarget().getName() = "EVP_PKEY_CTX_set_mac_key" }
-
-  override Expr getKeyArg() { result = this.(Call).getArgument(1) }
-
-  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
-}
-
-class EvpCtxSetPaddingInitializer extends EvpPaddingInitializer {
-  EvpCtxSetPaddingInitializer() {
-    this.(Call).getTarget().getName() in [
-        "EVP_PKEY_CTX_set_rsa_padding", "EVP_CIPHER_CTX_set_padding"
+/**
+ * A call to `EVP_PKEY_CTX_set_rsa_keygen_bits`, `EVP_PKEY_CTX_set_dsa_paramgen_bits`,
+ * or `EVP_CIPHER_CTX_set_key_length`.
+ */
+class EvpCtxSetKeySizeInitializer extends OperationStep {
+  EvpCtxSetKeySizeInitializer() {
+    this.getTarget().getName() in [
+        "EVP_PKEY_CTX_set_rsa_keygen_bits", "EVP_PKEY_CTX_set_dsa_paramgen_bits",
+        "EVP_CIPHER_CTX_set_key_length"
       ]
   }
 
-  override Expr getPaddingArg() { result = this.(Call).getArgument(1) }
-
-  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
-}
-
-class EvpCtxSetSaltLengthInitializer extends EvpSaltLengthInitializer {
-  EvpCtxSetSaltLengthInitializer() {
-    this.(Call).getTarget().getName() = "EVP_PKEY_CTX_set_rsa_pss_saltlen"
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    or
+    result.asExpr() = this.getArgument(1) and type = KeySizeIO()
   }
 
-  override Expr getSaltLengthArg() { result = this.(Call).getArgument(1) }
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
 
-  override CtxPointerSource getContext() { result = this.(Call).getArgument(0) }
+  override OperationStepType getStepType() { result = InitializerStep() }
+}
+
+class EvpCtxSetMacKeyInitializer extends OperationStep {
+  EvpCtxSetMacKeyInitializer() { this.getTarget().getName() = "EVP_PKEY_CTX_set_mac_key" }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    or
+    result.asExpr() = this.getArgument(2) and type = KeySizeIO()
+    or
+    // the raw key that is configured into the output key
+    result.asExpr() = this.getArgument(1) and type = KeyIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
+
+  override OperationStepType getStepType() { result = InitializerStep() }
+}
+
+class EvpCtxSetPaddingInitializer extends OperationStep {
+  EvpCtxSetPaddingInitializer() {
+    this.getTarget().getName() in ["EVP_PKEY_CTX_set_rsa_padding", "EVP_CIPHER_CTX_set_padding"]
+  }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    or
+    result.asExpr() = this.getArgument(1) and type = PaddingAlgorithmIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
+
+  override OperationStepType getStepType() { result = InitializerStep() }
+}
+
+class EvpCtxSetSaltLengthInitializer extends OperationStep {
+  EvpCtxSetSaltLengthInitializer() {
+    this.getTarget().getName() = "EVP_PKEY_CTX_set_rsa_pss_saltlen"
+  }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    or
+    result.asExpr() = this.getArgument(1) and type = SaltLengthIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
+
+  override OperationStepType getStepType() { result = InitializerStep() }
 }

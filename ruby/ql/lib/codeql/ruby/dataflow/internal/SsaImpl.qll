@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ssa.Ssa as SsaImplCommon
 private import codeql.ruby.AST
 private import codeql.ruby.CFG as Cfg
@@ -393,10 +396,12 @@ private module Cached {
 
     signature predicate guardChecksSig(Cfg::CfgNodes::AstCfgNode g, Cfg::CfgNode e, boolean branch);
 
+    overlay[global]
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
       private predicate guardChecksAdjTypes(
-        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e, boolean branch
+        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e,
+        DataFlowIntegrationInput::GuardValue branch
       ) {
         guardChecks(g, e, branch)
       }
@@ -471,6 +476,7 @@ class ParameterExt extends TParameterExt {
 
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import codeql.ruby.controlflow.internal.Guards as Guards
+  private import codeql.util.Boolean
 
   class Expr extends Cfg::CfgNodes::ExprCfgNode {
     predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
@@ -482,12 +488,16 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     any(ParameterExt p).isInitializedBy(def) or def.(Ssa::WriteDefinition).assigns(_)
   }
 
+  class GuardValue = Boolean;
+
   class Guard extends Cfg::CfgNodes::AstCfgNode {
     /**
      * Holds if the evaluation of this guard to `branch` corresponds to the edge
      * from `bb1` to `bb2`.
      */
-    predicate hasBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+    predicate hasValueBranchEdge(
+      SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue branch
+    ) {
       exists(Cfg::SuccessorTypes::ConditionalSuccessor s |
         this.getBasicBlock() = bb1 and
         bb2 = bb1.getASuccessor(s) and
@@ -500,13 +510,15 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
      * branch edge from `bb1` to `bb2`. That is, following the edge from
      * `bb1` to `bb2` implies that this guard evaluated to `branch`.
      */
-    predicate controlsBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
-      this.hasBranchEdge(bb1, bb2, branch)
+    predicate valueControlsBranchEdge(
+      SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue branch
+    ) {
+      this.hasValueBranchEdge(bb1, bb2, branch)
     }
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-  predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, GuardValue branch) {
     Guards::guardControlsBlock(guard, bb, branch)
   }
 }

@@ -2,6 +2,4 @@
 import codeql.rust.elements
 import TestUtils
 
-from AsmDirSpec x
-where toBeTested(x) and not x.isUnknown()
-select x
+query predicate instances(AsmDirSpec x) { toBeTested(x) and not x.isUnknown() }

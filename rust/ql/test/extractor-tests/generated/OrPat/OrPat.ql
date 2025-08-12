@@ -2,9 +2,8 @@
 import codeql.rust.elements
 import TestUtils
 
-from OrPat x, int getNumberOfPats
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfPats = x.getNumberOfPats()
-select x, "getNumberOfPats:", getNumberOfPats
+query predicate instances(OrPat x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getPat(OrPat x, int index, Pat getPat) {
+  toBeTested(x) and not x.isUnknown() and getPat = x.getPat(index)
+}

@@ -1,1 +1,15 @@
-| gen_const.rs:4:5:7:22 | Const | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasBody: | yes | hasGenericParamList: | no | isConst: | yes | isDefault: | no | hasName: | yes | hasTypeRepr: | yes | hasVisibility: | no | hasWhereClause: | no | hasImplementation: | yes |
+instances
+| gen_const.rs:4:5:7:22 | Const | isConst: | yes | isDefault: | no | hasImplementation: | yes |
+getExtendedCanonicalPath
+getCrateOrigin
+getAttributeMacroExpansion
+getAttr
+getBody
+| gen_const.rs:4:5:7:22 | Const | gen_const.rs:7:20:7:21 | 42 |
+getGenericParamList
+getName
+| gen_const.rs:4:5:7:22 | Const | gen_const.rs:7:11:7:11 | X |
+getTypeRepr
+| gen_const.rs:4:5:7:22 | Const | gen_const.rs:7:14:7:16 | i32 |
+getVisibility
+getWhereClause
