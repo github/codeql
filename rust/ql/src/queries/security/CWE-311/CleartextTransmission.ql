@@ -37,6 +37,8 @@ module CleartextTransmissionConfig implements DataFlow::ConfigSig {
     // make sources barriers so that we only report the closest instance
     isSource(node)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module CleartextTransmissionFlow = TaintTracking::Global<CleartextTransmissionConfig>;
@@ -46,6 +48,6 @@ import CleartextTransmissionFlow::PathGraph
 from CleartextTransmissionFlow::PathNode sourceNode, CleartextTransmissionFlow::PathNode sinkNode
 where CleartextTransmissionFlow::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
-  "The operation '" + sinkNode.getNode().toString() +
-    "', transmits data which may contain unencrypted sensitive data from $@.", sourceNode,
+  "This '" + sinkNode.getNode().toString() +
+    "' operation transmits data which may contain unencrypted sensitive data from $@.", sourceNode,
   sourceNode.getNode().toString()

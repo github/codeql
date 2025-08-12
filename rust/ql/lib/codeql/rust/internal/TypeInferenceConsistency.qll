@@ -2,8 +2,10 @@
  * Provides classes for recognizing type inference inconsistencies.
  */
 
+private import rust
 private import Type
 private import TypeMention
+private import TypeInference
 private import TypeInference::Consistency as Consistency
 import TypeInference::Consistency
 
@@ -27,4 +29,7 @@ int getTypeInferenceInconsistencyCounts(string type) {
   or
   type = "Ill-formed type mention" and
   result = count(TypeMention tm | illFormedTypeMention(tm) | tm)
+  or
+  type = "Non-unique certain type information" and
+  result = count(AstNode n, TypePath path | nonUniqueCertainType(n, path) | n)
 }

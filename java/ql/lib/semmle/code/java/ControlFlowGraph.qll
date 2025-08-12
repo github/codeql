@@ -82,6 +82,7 @@ module;
  */
 
 import java
+private import codeql.util.Boolean
 private import Completion
 private import controlflow.internal.Preconditions
 private import controlflow.internal.SwitchCases
@@ -102,6 +103,7 @@ module ControlFlow {
   private newtype TNode =
     TExprNode(Expr e) { hasControlFlow(e) } or
     TStmtNode(Stmt s) or
+    TAnnotatedExitNode(Callable c, Boolean normal) { exists(c.getBody()) } or
     TExitNode(Callable c) { exists(c.getBody()) } or
     TAssertThrowNode(AssertStmt s)
 
@@ -189,6 +191,38 @@ module ControlFlow {
     override string toString() { result = s.toString() }
 
     override Location getLocation() { result = s.getLocation() }
+  }
+
+  /** A control flow node indicating the normal or exceptional termination of a callable. */
+  class AnnotatedExitNode extends Node, TAnnotatedExitNode {
+    Callable c;
+    boolean normal;
+
+    AnnotatedExitNode() { this = TAnnotatedExitNode(c, normal) }
+
+    override Callable getEnclosingCallable() { result = c }
+
+    override ExprParent getAstNode() { result = c }
+
+    /** Gets a textual representation of this element. */
+    override string toString() {
+      normal = true and result = "Normal Exit"
+      or
+      normal = false and result = "Exceptional Exit"
+    }
+
+    /** Gets the source location for this element. */
+    override Location getLocation() { result = c.getLocation() }
+  }
+
+  /** A control flow node indicating normal termination of a callable. */
+  class NormalExitNode extends AnnotatedExitNode {
+    NormalExitNode() { this = TAnnotatedExitNode(_, true) }
+  }
+
+  /** A control flow node indicating exceptional termination of a callable. */
+  class ExceptionalExitNode extends AnnotatedExitNode {
+    ExceptionalExitNode() { this = TAnnotatedExitNode(_, false) }
   }
 
   /** A control flow node indicating the termination of a callable. */
@@ -1266,10 +1300,16 @@ private module ControlFlowGraphImpl {
    */
   cached
   Node succ(Node n, Completion completion) {
-    // After executing the callable body, the final node is the exit node.
+    // After executing the callable body, the final nodes are first the
+    // annotated exit node and then the final exit node.
     exists(Callable c | last(c.getBody(), n, completion) |
-      result.(ExitNode).getEnclosingCallable() = c
+      if completion instanceof ThrowCompletion
+      then result.(ExceptionalExitNode).getEnclosingCallable() = c
+      else result.(NormalExitNode).getEnclosingCallable() = c
     )
+    or
+    completion = NormalCompletion() and
+    n.(AnnotatedExitNode).getEnclosingCallable() = result.(ExitNode).getEnclosingCallable()
     or
     // Logic expressions and conditional expressions execute in AST pre-order.
     completion = NormalCompletion() and
@@ -1581,7 +1621,8 @@ private module ControlFlowGraphImpl {
         result.(AssertThrowNode).getAstNode() = assertstmt
       )
       or
-      last(assertstmt.getMessage(), n, NormalCompletion()) and
+      last(assertstmt.getMessage(), n, completion) and
+      completion = NormalCompletion() and
       result.(AssertThrowNode).getAstNode() = assertstmt
     )
     or

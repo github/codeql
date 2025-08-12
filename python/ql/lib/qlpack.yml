@@ -1,11 +1,12 @@
 name: codeql/python-all
-version: 4.0.12-dev
+version: 4.0.13-dev
 groups: python
 dbscheme: semmlecode.python.dbscheme
 extractor: python
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/concepts: ${workspace}
   codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
   codeql/regex: ${workspace}
