@@ -95,7 +95,7 @@ impl<'a> RustAnalyzer<'a> {
 
                 ParseResult {
                     ast: source_file,
-                    text: input.text(semantics.db),
+                    text: input.text(semantics.db).clone(),
                     errors,
                     semantics_info: Ok(FileSemanticInformation { file_id, semantics }),
                 }
