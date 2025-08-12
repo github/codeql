@@ -11,7 +11,7 @@ ql/python/ql/src/Classes/MutatingDescriptor.ql
 ql/python/ql/src/Classes/OverwritingAttributeInSuperClass.ql
 ql/python/ql/src/Classes/PropertyInOldStyleClass.ql
 ql/python/ql/src/Classes/SlotsInOldStyleClass.ql
-ql/python/ql/src/Classes/SubclassShadowing.ql
+ql/python/ql/src/Classes/SubclassShadowing/SubclassShadowing.ql
 ql/python/ql/src/Classes/SuperInOldStyleClass.ql
 ql/python/ql/src/Classes/SuperclassDelCalledMultipleTimes.ql
 ql/python/ql/src/Classes/SuperclassInitCalledMultipleTimes.ql
