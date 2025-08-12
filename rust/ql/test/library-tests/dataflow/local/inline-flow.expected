@@ -11,7 +11,12 @@ models
 | 10 | Summary: <core::result::Result>::ok; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue.Field[core::option::Option::Some(0)]; value |
 edges
 | main.rs:23:9:23:9 | s | main.rs:24:10:24:10 | s | provenance |  |
+| main.rs:23:9:23:9 | s | main.rs:26:12:26:12 | x | provenance |  |
+| main.rs:23:9:23:9 | s | main.rs:30:12:30:12 | x | provenance |  |
 | main.rs:23:13:23:21 | source(...) | main.rs:23:9:23:9 | s | provenance |  |
+| main.rs:26:12:26:12 | x | main.rs:27:14:27:14 | x | provenance |  |
+| main.rs:30:12:30:12 | x | main.rs:32:18:32:18 | x | provenance |  |
+| main.rs:30:12:30:12 | x | main.rs:36:14:36:14 | x | provenance |  |
 | main.rs:41:9:41:9 | a | main.rs:43:9:43:9 | c | provenance |  |
 | main.rs:41:13:41:21 | source(...) | main.rs:41:9:41:9 | a | provenance |  |
 | main.rs:43:9:43:9 | c | main.rs:44:10:44:10 | c | provenance |  |
@@ -99,6 +104,12 @@ edges
 | main.rs:243:11:243:12 | s1 [Some] | main.rs:244:9:244:15 | Some(...) [Some] | provenance |  |
 | main.rs:244:9:244:15 | Some(...) [Some] | main.rs:244:14:244:14 | n | provenance |  |
 | main.rs:244:14:244:14 | n | main.rs:244:25:244:25 | n | provenance |  |
+| main.rs:254:9:254:10 | s1 [Some] | main.rs:255:12:255:18 | Some(...) [Some] | provenance |  |
+| main.rs:254:14:254:29 | Some(...) [Some] | main.rs:254:9:254:10 | s1 [Some] | provenance |  |
+| main.rs:254:19:254:28 | source(...) | main.rs:254:14:254:29 | Some(...) [Some] | provenance |  |
+| main.rs:255:12:255:18 | Some(...) [Some] | main.rs:255:17:255:17 | n | provenance |  |
+| main.rs:255:17:255:17 | n | main.rs:257:18:257:18 | n | provenance |  |
+| main.rs:255:17:255:17 | n | main.rs:261:14:261:14 | n | provenance |  |
 | main.rs:266:9:266:10 | s1 [Some] | main.rs:267:10:267:20 | s1.unwrap() | provenance | MaD:2 |
 | main.rs:266:14:266:29 | Some(...) [Some] | main.rs:266:9:266:10 | s1 [Some] | provenance |  |
 | main.rs:266:19:266:28 | source(...) | main.rs:266:14:266:29 | Some(...) [Some] | provenance |  |
@@ -240,6 +251,11 @@ nodes
 | main.rs:23:9:23:9 | s | semmle.label | s |
 | main.rs:23:13:23:21 | source(...) | semmle.label | source(...) |
 | main.rs:24:10:24:10 | s | semmle.label | s |
+| main.rs:26:12:26:12 | x | semmle.label | x |
+| main.rs:27:14:27:14 | x | semmle.label | x |
+| main.rs:30:12:30:12 | x | semmle.label | x |
+| main.rs:32:18:32:18 | x | semmle.label | x |
+| main.rs:36:14:36:14 | x | semmle.label | x |
 | main.rs:41:9:41:9 | a | semmle.label | a |
 | main.rs:41:13:41:21 | source(...) | semmle.label | source(...) |
 | main.rs:43:9:43:9 | c | semmle.label | c |
@@ -345,6 +361,13 @@ nodes
 | main.rs:244:9:244:15 | Some(...) [Some] | semmle.label | Some(...) [Some] |
 | main.rs:244:14:244:14 | n | semmle.label | n |
 | main.rs:244:25:244:25 | n | semmle.label | n |
+| main.rs:254:9:254:10 | s1 [Some] | semmle.label | s1 [Some] |
+| main.rs:254:14:254:29 | Some(...) [Some] | semmle.label | Some(...) [Some] |
+| main.rs:254:19:254:28 | source(...) | semmle.label | source(...) |
+| main.rs:255:12:255:18 | Some(...) [Some] | semmle.label | Some(...) [Some] |
+| main.rs:255:17:255:17 | n | semmle.label | n |
+| main.rs:257:18:257:18 | n | semmle.label | n |
+| main.rs:261:14:261:14 | n | semmle.label | n |
 | main.rs:266:9:266:10 | s1 [Some] | semmle.label | s1 [Some] |
 | main.rs:266:14:266:29 | Some(...) [Some] | semmle.label | Some(...) [Some] |
 | main.rs:266:19:266:28 | source(...) | semmle.label | source(...) |
@@ -512,6 +535,9 @@ testFailures
 #select
 | main.rs:19:10:19:18 | source(...) | main.rs:19:10:19:18 | source(...) | main.rs:19:10:19:18 | source(...) | $@ | main.rs:19:10:19:18 | source(...) | source(...) |
 | main.rs:24:10:24:10 | s | main.rs:23:13:23:21 | source(...) | main.rs:24:10:24:10 | s | $@ | main.rs:23:13:23:21 | source(...) | source(...) |
+| main.rs:27:14:27:14 | x | main.rs:23:13:23:21 | source(...) | main.rs:27:14:27:14 | x | $@ | main.rs:23:13:23:21 | source(...) | source(...) |
+| main.rs:32:18:32:18 | x | main.rs:23:13:23:21 | source(...) | main.rs:32:18:32:18 | x | $@ | main.rs:23:13:23:21 | source(...) | source(...) |
+| main.rs:36:14:36:14 | x | main.rs:23:13:23:21 | source(...) | main.rs:36:14:36:14 | x | $@ | main.rs:23:13:23:21 | source(...) | source(...) |
 | main.rs:44:10:44:10 | c | main.rs:41:13:41:21 | source(...) | main.rs:44:10:44:10 | c | $@ | main.rs:41:13:41:21 | source(...) | source(...) |
 | main.rs:53:10:53:10 | b | main.rs:48:13:48:21 | source(...) | main.rs:53:10:53:10 | b | $@ | main.rs:48:13:48:21 | source(...) | source(...) |
 | main.rs:64:10:64:10 | b | main.rs:62:15:62:23 | source(...) | main.rs:64:10:64:10 | b | $@ | main.rs:62:15:62:23 | source(...) | source(...) |
@@ -531,6 +557,8 @@ testFailures
 | main.rs:218:18:218:18 | x | main.rs:212:27:212:36 | source(...) | main.rs:218:18:218:18 | x | $@ | main.rs:212:27:212:36 | source(...) | source(...) |
 | main.rs:231:33:231:33 | n | main.rs:228:27:228:36 | source(...) | main.rs:231:33:231:33 | n | $@ | main.rs:228:27:228:36 | source(...) | source(...) |
 | main.rs:244:25:244:25 | n | main.rs:241:19:241:28 | source(...) | main.rs:244:25:244:25 | n | $@ | main.rs:241:19:241:28 | source(...) | source(...) |
+| main.rs:257:18:257:18 | n | main.rs:254:19:254:28 | source(...) | main.rs:257:18:257:18 | n | $@ | main.rs:254:19:254:28 | source(...) | source(...) |
+| main.rs:261:14:261:14 | n | main.rs:254:19:254:28 | source(...) | main.rs:261:14:261:14 | n | $@ | main.rs:254:19:254:28 | source(...) | source(...) |
 | main.rs:267:10:267:20 | s1.unwrap() | main.rs:266:19:266:28 | source(...) | main.rs:267:10:267:20 | s1.unwrap() | $@ | main.rs:266:19:266:28 | source(...) | source(...) |
 | main.rs:272:10:272:24 | s1.unwrap_or(...) | main.rs:271:19:271:28 | source(...) | main.rs:272:10:272:24 | s1.unwrap_or(...) | $@ | main.rs:271:19:271:28 | source(...) | source(...) |
 | main.rs:275:10:275:33 | s2.unwrap_or(...) | main.rs:275:23:275:32 | source(...) | main.rs:275:10:275:33 | s2.unwrap_or(...) | $@ | main.rs:275:23:275:32 | source(...) | source(...) |

@@ -76,10 +76,18 @@ definition
 | main.rs:272:79:272:81 | a13 | main.rs:272:9:272:109 | a13 |
 | main.rs:272:106:272:108 | a13 | main.rs:272:9:272:109 | a13 |
 | main.rs:279:9:279:9 | x | main.rs:279:9:279:9 | x |
+| main.rs:280:17:280:17 | x | main.rs:280:17:280:17 | x |
+| main.rs:287:13:287:13 | x | main.rs:287:13:287:13 | x |
 | main.rs:295:9:295:9 | x | main.rs:295:9:295:9 | x |
+| main.rs:296:17:296:17 | x | main.rs:296:17:296:17 | x |
+| main.rs:299:14:299:14 | x | main.rs:299:14:299:14 | x |
+| main.rs:306:13:306:13 | x | main.rs:306:13:306:13 | x |
 | main.rs:314:9:314:9 | x | main.rs:314:9:314:9 | x |
+| main.rs:315:20:315:20 | x | main.rs:315:20:315:20 | x |
+| main.rs:318:14:318:14 | x | main.rs:318:14:318:14 | x |
 | main.rs:332:9:332:9 | x | main.rs:332:9:332:9 | x |
 | main.rs:334:14:334:14 | x | main.rs:334:14:334:14 | x |
+| main.rs:335:20:335:20 | x | main.rs:335:20:335:20 | x |
 | main.rs:346:9:346:9 | x | main.rs:346:9:346:9 | x |
 | main.rs:347:16:347:16 | x | main.rs:347:16:347:16 | x |
 | main.rs:352:20:352:20 | x | main.rs:352:20:352:20 | x |
@@ -245,11 +253,25 @@ read
 | main.rs:270:9:270:10 | fv | main.rs:270:9:270:10 | fv | main.rs:271:11:271:12 | fv |
 | main.rs:272:9:272:109 | SSA phi(a13) | main.rs:272:9:272:109 | a13 | main.rs:273:26:273:28 | a13 |
 | main.rs:279:9:279:9 | x | main.rs:279:9:279:9 | x | main.rs:281:7:281:7 | x |
+| main.rs:279:9:279:9 | x | main.rs:279:9:279:9 | x | main.rs:288:13:288:13 | x |
+| main.rs:280:17:280:17 | x | main.rs:280:17:280:17 | x | main.rs:283:5:283:5 | x |
+| main.rs:280:17:280:17 | x | main.rs:280:17:280:17 | x | main.rs:285:19:285:19 | x |
+| main.rs:287:13:287:13 | x | main.rs:287:13:287:13 | x | main.rs:289:19:289:19 | x |
 | main.rs:295:9:295:9 | x | main.rs:295:9:295:9 | x | main.rs:297:7:297:7 | x |
+| main.rs:295:9:295:9 | x | main.rs:295:9:295:9 | x | main.rs:307:13:307:13 | x |
+| main.rs:296:17:296:17 | x | main.rs:296:17:296:17 | x | main.rs:300:12:300:12 | x |
+| main.rs:299:14:299:14 | x | main.rs:299:14:299:14 | x | main.rs:302:5:302:5 | x |
+| main.rs:299:14:299:14 | x | main.rs:299:14:299:14 | x | main.rs:304:19:304:19 | x |
+| main.rs:306:13:306:13 | x | main.rs:306:13:306:13 | x | main.rs:308:19:308:19 | x |
 | main.rs:314:9:314:9 | x | main.rs:314:9:314:9 | x | main.rs:316:7:316:7 | x |
+| main.rs:314:9:314:9 | x | main.rs:314:9:314:9 | x | main.rs:327:15:327:15 | x |
+| main.rs:315:20:315:20 | x | main.rs:315:20:315:20 | x | main.rs:319:12:319:12 | x |
+| main.rs:318:14:318:14 | x | main.rs:318:14:318:14 | x | main.rs:321:5:321:5 | x |
+| main.rs:318:14:318:14 | x | main.rs:318:14:318:14 | x | main.rs:323:19:323:19 | x |
 | main.rs:332:9:332:9 | x | main.rs:332:9:332:9 | x | main.rs:333:11:333:11 | x |
 | main.rs:332:9:332:9 | x | main.rs:332:9:332:9 | x | main.rs:341:15:341:15 | x |
 | main.rs:334:14:334:14 | x | main.rs:334:14:334:14 | x | main.rs:336:18:336:18 | x |
+| main.rs:335:20:335:20 | x | main.rs:335:20:335:20 | x | main.rs:337:19:337:19 | x |
 | main.rs:346:9:346:9 | x | main.rs:346:9:346:9 | x | main.rs:348:7:348:7 | x |
 | main.rs:346:9:346:9 | x | main.rs:346:9:346:9 | x | main.rs:353:7:353:7 | x |
 | main.rs:346:9:346:9 | x | main.rs:346:9:346:9 | x | main.rs:357:19:357:19 | x |
@@ -425,10 +447,18 @@ firstRead
 | main.rs:270:9:270:10 | fv | main.rs:270:9:270:10 | fv | main.rs:271:11:271:12 | fv |
 | main.rs:272:9:272:109 | SSA phi(a13) | main.rs:272:9:272:109 | a13 | main.rs:273:26:273:28 | a13 |
 | main.rs:279:9:279:9 | x | main.rs:279:9:279:9 | x | main.rs:281:7:281:7 | x |
+| main.rs:280:17:280:17 | x | main.rs:280:17:280:17 | x | main.rs:283:5:283:5 | x |
+| main.rs:287:13:287:13 | x | main.rs:287:13:287:13 | x | main.rs:289:19:289:19 | x |
 | main.rs:295:9:295:9 | x | main.rs:295:9:295:9 | x | main.rs:297:7:297:7 | x |
+| main.rs:296:17:296:17 | x | main.rs:296:17:296:17 | x | main.rs:300:12:300:12 | x |
+| main.rs:299:14:299:14 | x | main.rs:299:14:299:14 | x | main.rs:302:5:302:5 | x |
+| main.rs:306:13:306:13 | x | main.rs:306:13:306:13 | x | main.rs:308:19:308:19 | x |
 | main.rs:314:9:314:9 | x | main.rs:314:9:314:9 | x | main.rs:316:7:316:7 | x |
+| main.rs:315:20:315:20 | x | main.rs:315:20:315:20 | x | main.rs:319:12:319:12 | x |
+| main.rs:318:14:318:14 | x | main.rs:318:14:318:14 | x | main.rs:321:5:321:5 | x |
 | main.rs:332:9:332:9 | x | main.rs:332:9:332:9 | x | main.rs:333:11:333:11 | x |
 | main.rs:334:14:334:14 | x | main.rs:334:14:334:14 | x | main.rs:336:18:336:18 | x |
+| main.rs:335:20:335:20 | x | main.rs:335:20:335:20 | x | main.rs:337:19:337:19 | x |
 | main.rs:346:9:346:9 | x | main.rs:346:9:346:9 | x | main.rs:348:7:348:7 | x |
 | main.rs:347:16:347:16 | x | main.rs:347:16:347:16 | x | main.rs:350:19:350:19 | x |
 | main.rs:352:20:352:20 | x | main.rs:352:20:352:20 | x | main.rs:355:19:355:19 | x |
@@ -530,6 +560,12 @@ adjacentReads
 | main.rs:220:9:220:10 | tv | main.rs:220:9:220:10 | tv | main.rs:221:11:221:12 | tv | main.rs:225:11:225:12 | tv |
 | main.rs:220:9:220:10 | tv | main.rs:220:9:220:10 | tv | main.rs:225:11:225:12 | tv | main.rs:229:11:229:12 | tv |
 | main.rs:238:9:238:44 | [match(true)] SSA phi(a7) | main.rs:238:9:238:44 | a7 | main.rs:239:16:239:17 | a7 | main.rs:240:26:240:27 | a7 |
+| main.rs:279:9:279:9 | x | main.rs:279:9:279:9 | x | main.rs:281:7:281:7 | x | main.rs:288:13:288:13 | x |
+| main.rs:280:17:280:17 | x | main.rs:280:17:280:17 | x | main.rs:283:5:283:5 | x | main.rs:285:19:285:19 | x |
+| main.rs:295:9:295:9 | x | main.rs:295:9:295:9 | x | main.rs:297:7:297:7 | x | main.rs:307:13:307:13 | x |
+| main.rs:299:14:299:14 | x | main.rs:299:14:299:14 | x | main.rs:302:5:302:5 | x | main.rs:304:19:304:19 | x |
+| main.rs:314:9:314:9 | x | main.rs:314:9:314:9 | x | main.rs:316:7:316:7 | x | main.rs:327:15:327:15 | x |
+| main.rs:318:14:318:14 | x | main.rs:318:14:318:14 | x | main.rs:321:5:321:5 | x | main.rs:323:19:323:19 | x |
 | main.rs:332:9:332:9 | x | main.rs:332:9:332:9 | x | main.rs:333:11:333:11 | x | main.rs:341:15:341:15 | x |
 | main.rs:346:9:346:9 | x | main.rs:346:9:346:9 | x | main.rs:348:7:348:7 | x | main.rs:353:7:353:7 | x |
 | main.rs:346:9:346:9 | x | main.rs:346:9:346:9 | x | main.rs:353:7:353:7 | x | main.rs:357:19:357:19 | x |
@@ -590,15 +626,15 @@ phi
 | main.rs:726:17:728:9 | SSA phi(x) | main.rs:723:13:723:13 | x | main.rs:724:19:729:5 | <captured entry> x |
 | main.rs:726:17:728:9 | SSA phi(x) | main.rs:723:13:723:13 | x | main.rs:727:13:727:13 | x |
 phiReadNode
-| main.rs:113:11:114:12 | SSA phi read(s1) | main.rs:111:9:111:10 | s1 |
+| main.rs:114:11:114:12 | SSA phi read(s1) | main.rs:111:9:111:10 | s1 |
 | main.rs:605:13:610:5 | SSA phi read(x) | main.rs:603:9:603:9 | x |
 phiReadNodeFirstRead
-| main.rs:113:11:114:12 | SSA phi read(s1) | main.rs:111:9:111:10 | s1 | main.rs:114:11:114:12 | s1 |
+| main.rs:114:11:114:12 | SSA phi read(s1) | main.rs:111:9:111:10 | s1 | main.rs:114:11:114:12 | s1 |
 | main.rs:605:13:610:5 | SSA phi read(x) | main.rs:603:9:603:9 | x | main.rs:615:19:615:19 | x |
 | main.rs:605:13:610:5 | SSA phi read(x) | main.rs:603:9:603:9 | x | main.rs:617:19:617:19 | x |
 phiReadInput
-| main.rs:113:11:114:12 | SSA phi read(s1) | main.rs:111:9:111:10 | s1 |
-| main.rs:113:11:114:12 | SSA phi read(s1) | main.rs:114:11:114:12 | SSA read(s1) |
+| main.rs:114:11:114:12 | SSA phi read(s1) | main.rs:111:9:111:10 | s1 |
+| main.rs:114:11:114:12 | SSA phi read(s1) | main.rs:114:11:114:12 | SSA read(s1) |
 | main.rs:605:13:610:5 | SSA phi read(x) | main.rs:607:19:607:19 | SSA read(x) |
 | main.rs:605:13:610:5 | SSA phi read(x) | main.rs:609:19:609:19 | SSA read(x) |
 ultimateDef
@@ -659,9 +695,12 @@ assigns
 | main.rs:246:9:246:14 | either | main.rs:246:18:246:33 | ...::Left(...) |
 | main.rs:270:9:270:10 | fv | main.rs:270:14:270:35 | ...::Second(...) |
 | main.rs:279:9:279:9 | x | main.rs:279:12:279:19 | Some(...) |
+| main.rs:287:13:287:13 | x | main.rs:288:13:288:13 | x |
 | main.rs:295:9:295:9 | x | main.rs:295:13:295:20 | Some(...) |
+| main.rs:306:13:306:13 | x | main.rs:307:13:307:13 | x |
 | main.rs:314:9:314:9 | x | main.rs:314:13:314:20 | Some(...) |
 | main.rs:332:9:332:9 | x | main.rs:332:13:332:20 | Some(...) |
+| main.rs:335:20:335:20 | x | main.rs:336:18:336:18 | x |
 | main.rs:346:9:346:9 | x | main.rs:346:13:346:18 | Ok(...) |
 | main.rs:416:9:416:23 | example_closure | main.rs:417:9:418:9 | \|...\| x |
 | main.rs:419:9:419:10 | n1 | main.rs:420:9:420:26 | example_closure(...) |

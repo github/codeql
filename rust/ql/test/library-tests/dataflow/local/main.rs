@@ -24,16 +24,16 @@ fn variable_usage() {
     sink(s); // $ hasValueFlow=2
 
     if let x = s {
-        sink(x); // $ MISSING: hasValueFlow=2
+        sink(x); // $ hasValueFlow=2
     };
 
     if let x = s
         && {
-            sink(x); // $ MISSING: hasValueFlow=2
+            sink(x); // $ hasValueFlow=2
             true
         }
     {
-        sink(x); // $ MISSING: hasValueFlow=2
+        sink(x); // $ hasValueFlow=2
     };
 }
 
@@ -254,11 +254,11 @@ fn option_chained_let() {
     let s1 = Some(source(45));
     if let Some(n) = s1
         && {
-            sink(n); // $ MISSING: hasValueFlow=45
+            sink(n); // $ hasValueFlow=45
             true
         }
     {
-        sink(n); // $ MISSING: hasValueFlow=45
+        sink(n); // $ hasValueFlow=45
     }
 }
 

@@ -319,7 +319,7 @@ fn if_lets_matches() {
         No => {}
     }
 
-    if let j = Yes { // $ Alert[rust/unused-variable]
+    if let j = Yes { // $ Alert[rust/unused-value]
     }
 
     if let k = Yes {
@@ -373,7 +373,7 @@ fn if_lets_matches() {
         pair;
     _ = left2;
 
-    if let Some(m) = Some(10) // $ SPURIOUS: Alert[rust/unused-variable]
+    if let Some(m) = Some(10)
         && m > 0
     {}
 }

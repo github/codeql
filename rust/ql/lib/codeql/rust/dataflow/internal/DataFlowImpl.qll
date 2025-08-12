@@ -241,6 +241,12 @@ module LocalFlow {
       nodeTo.getCfgNode() = s.getPat()
     )
     or
+    // An edge from the right-hand side of a let expression to the left-hand side.
+    exists(LetExprCfgNode e |
+      nodeFrom.getCfgNode() = e.getScrutinee() and
+      nodeTo.getCfgNode() = e.getPat()
+    )
+    or
     exists(IdentPatCfgNode p |
       not p.isRef() and
       nodeFrom.getCfgNode() = p and
@@ -378,6 +384,8 @@ module RustDataFlow implements InputSig<Location> {
 
   predicate neverSkipInPathGraph(Node node) {
     node.(Node::Node).getCfgNode() = any(LetStmtCfgNode s).getPat()
+    or
+    node.(Node::Node).getCfgNode() = any(LetExprCfgNode e).getPat()
     or
     node.(Node::Node).getCfgNode() = any(AssignmentExprCfgNode a).getLhs()
     or
@@ -898,6 +906,12 @@ module VariableCapture {
           this = ls and
           v.getPat() = ls.getPat().getPat() and
           ls.getInitializer() = source
+        )
+        or
+        exists(LetExprCfgNode le |
+          this = le and
+          v.getPat() = le.getPat().getPat() and
+          le.getScrutinee() = source
         )
       }
 

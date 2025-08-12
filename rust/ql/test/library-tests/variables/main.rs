@@ -280,9 +280,9 @@ fn match_pattern10() {
     if let Some(x) // x2
     = x // $ read_access=x1
     &&
-    x > 0 // $ MISSING: read_access=x2 $ SPURIOUS: read_access=x1
+    x > 0 // $ read_access=x2
     {    
-        print_i64(x); // $ MISSING: read_access=x2 $ SPURIOUS: read_access=x1
+        print_i64(x); // $ read_access=x2
     } else {
         let x = // x3
             x; // $ read_access=x1
@@ -297,11 +297,11 @@ fn match_pattern11() {
     = x // $ read_access=x1
     &&
     let Some(x) // x3
-    = Some(x) // $ MISSING: read_access=x2 $ SPURIOUS: read_access=x1
+    = Some(x) // $ read_access=x2
     &&
-    x > 0 // $ MISSING: read_access=x3 $ SPURIOUS: read_access=x1
+    x > 0 // $ read_access=x3
     {    
-        print_i64(x); // $ MISSING: read_access=x3 $ SPURIOUS: read_access=x1
+        print_i64(x); // $ read_access=x3
     } else {
         let x = // x4
             x; // $ read_access=x1
@@ -316,11 +316,11 @@ fn match_pattern12() {
     = x // $ read_access=x1
     &&
     let Some(x) // x3
-    = Some(x) // $ MISSING: read_access=x2 $ SPURIOUS: read_access=x1
+    = Some(x) // $ read_access=x2
     &&
-    x > 0 // $ MISSING: read_access=x3 $ SPURIOUS: read_access=x1
+    x > 0 // $ read_access=x3
     {    
-        print_i64(x); // $ MISSING: read_access=x3 $ SPURIOUS: read_access=x1
+        print_i64(x); // $ read_access=x3
         break;
     }
 
@@ -334,7 +334,7 @@ fn match_pattern13() {
         Some(x) // x2
             if let x // x3
                = x // $ read_access=x2
-               && x > 0 => (), // $ MISSING: read_access=x3 $ SPURIOUS: read_access=x2
+               && x > 0 => (), // $ read_access=x3
         _ => ()
     }
 

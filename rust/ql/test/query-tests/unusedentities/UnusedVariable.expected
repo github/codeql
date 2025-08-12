@@ -8,13 +8,11 @@
 | main.rs:292:22:292:24 | val | Variable 'val' is not used. |
 | main.rs:299:24:299:26 | val | Variable 'val' is not used. |
 | main.rs:307:13:307:15 | num | Variable 'num' is not used. |
-| main.rs:322:12:322:12 | j | Variable 'j' is not used. |
 | main.rs:342:25:342:25 | y | Variable 'y' is not used. |
 | main.rs:345:28:345:28 | a | Variable 'a' is not used. |
 | main.rs:348:9:348:9 | p | Variable 'p' is not used. |
 | main.rs:366:9:366:13 | right | Variable 'right' is not used. |
 | main.rs:372:9:372:14 | right2 | Variable 'right2' is not used. |
-| main.rs:376:17:376:17 | m | Variable 'm' is not used. |
 | main.rs:383:13:383:13 | y | Variable 'y' is not used. |
 | main.rs:391:21:391:21 | y | Variable 'y' is not used. |
 | main.rs:436:26:436:28 | val | Variable 'val' is not used. |

@@ -30,9 +30,17 @@ localStep
 | main.rs:26:12:26:12 | [SSA] x | main.rs:27:14:27:14 | x |
 | main.rs:26:12:26:12 | x | main.rs:26:12:26:12 | [SSA] x |
 | main.rs:26:12:26:12 | x | main.rs:26:12:26:12 | x |
+| main.rs:26:16:26:16 | s | main.rs:26:12:26:12 | x |
 | main.rs:26:16:26:16 | s | main.rs:30:16:30:16 | s |
 | main.rs:26:18:28:5 | { ... } | main.rs:26:5:28:5 | if ... {...} |
+| main.rs:30:12:30:12 | [SSA] x | main.rs:32:18:32:18 | x |
+| main.rs:30:12:30:12 | x | main.rs:30:12:30:12 | [SSA] x |
 | main.rs:30:12:30:12 | x | main.rs:30:12:30:12 | x |
+| main.rs:30:16:30:16 | s | main.rs:30:12:30:12 | x |
+| main.rs:32:18:32:18 | [post] x | main.rs:36:14:36:14 | x |
+| main.rs:32:18:32:18 | x | main.rs:36:14:36:14 | x |
+| main.rs:33:13:33:16 | true | main.rs:31:12:34:9 | { ... } |
+| main.rs:35:5:37:5 | { ... } | main.rs:30:5:37:5 | if ... {...} |
 | main.rs:40:18:40:21 | [SSA] cond | main.rs:43:16:43:19 | cond |
 | main.rs:40:18:40:21 | cond | main.rs:40:18:40:21 | [SSA] cond |
 | main.rs:40:18:40:21 | cond | main.rs:40:18:40:21 | cond |
@@ -294,7 +302,15 @@ localStep
 | main.rs:254:9:254:10 | s1 | main.rs:254:9:254:10 | [SSA] s1 |
 | main.rs:254:9:254:10 | s1 | main.rs:254:9:254:10 | s1 |
 | main.rs:254:14:254:29 | Some(...) | main.rs:254:9:254:10 | s1 |
+| main.rs:255:5:262:5 | if ... {...} | main.rs:253:25:263:1 | { ... } |
+| main.rs:255:17:255:17 | [SSA] n | main.rs:257:18:257:18 | n |
+| main.rs:255:17:255:17 | n | main.rs:255:17:255:17 | [SSA] n |
 | main.rs:255:17:255:17 | n | main.rs:255:17:255:17 | n |
+| main.rs:255:22:255:23 | s1 | main.rs:255:12:255:18 | Some(...) |
+| main.rs:257:18:257:18 | [post] n | main.rs:261:14:261:14 | n |
+| main.rs:257:18:257:18 | n | main.rs:261:14:261:14 | n |
+| main.rs:258:13:258:16 | true | main.rs:256:12:259:9 | { ... } |
+| main.rs:260:5:262:5 | { ... } | main.rs:255:5:262:5 | if ... {...} |
 | main.rs:266:9:266:10 | [SSA] s1 | main.rs:267:10:267:11 | s1 |
 | main.rs:266:9:266:10 | s1 | main.rs:266:9:266:10 | [SSA] s1 |
 | main.rs:266:9:266:10 | s1 | main.rs:266:9:266:10 | s1 |

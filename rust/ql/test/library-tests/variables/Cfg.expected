@@ -211,17 +211,18 @@ edges
 | main.rs:88:19:95:1 | { ... } | main.rs:88:1:95:1 | exit fn let_pattern3 (normal) |  |
 | main.rs:89:5:89:42 | let ... = ... | main.rs:89:14:89:17 | Some |  |
 | main.rs:89:9:89:10 | s1 | main.rs:89:9:89:10 | s1 |  |
-| main.rs:89:9:89:10 | s1 | main.rs:91:8:92:12 | let ... = s1 | match |
+| main.rs:89:9:89:10 | s1 | main.rs:92:11:92:12 | s1 | match |
 | main.rs:89:14:89:17 | Some | main.rs:89:19:89:30 | ...::from |  |
 | main.rs:89:14:89:41 | Some(...) | main.rs:89:9:89:10 | s1 |  |
 | main.rs:89:19:89:30 | ...::from | main.rs:89:32:89:39 | "Hello!" |  |
 | main.rs:89:19:89:40 | ...::from(...) | main.rs:89:14:89:41 | Some(...) |  |
 | main.rs:89:32:89:39 | "Hello!" | main.rs:89:19:89:40 | ...::from(...) |  |
 | main.rs:91:5:94:5 | if ... {...} | main.rs:88:19:95:1 | { ... } |  |
-| main.rs:91:8:92:12 | let ... = s1 | main.rs:92:11:92:12 | s1 |  |
-| main.rs:91:12:91:23 | Some(...) | main.rs:91:5:94:5 | if ... {...} | no-match |
+| main.rs:91:8:92:12 | [boolean(false)] let ... = s1 | main.rs:91:5:94:5 | if ... {...} | false |
+| main.rs:91:8:92:12 | [boolean(true)] let ... = s1 | main.rs:93:9:93:22 | ExprStmt | true |
+| main.rs:91:12:91:23 | Some(...) | main.rs:91:8:92:12 | [boolean(false)] let ... = s1 | no-match |
 | main.rs:91:12:91:23 | Some(...) | main.rs:91:21:91:22 | s2 | match |
-| main.rs:91:17:91:22 | ref s2 | main.rs:93:9:93:22 | ExprStmt | match |
+| main.rs:91:17:91:22 | ref s2 | main.rs:91:8:92:12 | [boolean(true)] let ... = s1 | match |
 | main.rs:91:21:91:22 | s2 | main.rs:91:17:91:22 | ref s2 |  |
 | main.rs:92:11:92:12 | s1 | main.rs:91:12:91:23 | Some(...) |  |
 | main.rs:92:14:94:5 | { ... } | main.rs:91:5:94:5 | if ... {...} |  |
@@ -268,20 +269,21 @@ edges
 | main.rs:110:19:117:1 | { ... } | main.rs:110:1:117:1 | exit fn let_pattern5 (normal) |  |
 | main.rs:111:5:111:42 | let ... = ... | main.rs:111:14:111:17 | Some |  |
 | main.rs:111:9:111:10 | s1 | main.rs:111:9:111:10 | s1 |  |
-| main.rs:111:9:111:10 | s1 | main.rs:113:11:114:12 | let ... = s1 | match |
+| main.rs:111:9:111:10 | s1 | main.rs:114:11:114:12 | s1 | match |
 | main.rs:111:14:111:17 | Some | main.rs:111:19:111:30 | ...::from |  |
 | main.rs:111:14:111:41 | Some(...) | main.rs:111:9:111:10 | s1 |  |
 | main.rs:111:19:111:30 | ...::from | main.rs:111:32:111:39 | "Hello!" |  |
 | main.rs:111:19:111:40 | ...::from(...) | main.rs:111:14:111:41 | Some(...) |  |
 | main.rs:111:32:111:39 | "Hello!" | main.rs:111:19:111:40 | ...::from(...) |  |
 | main.rs:113:5:116:5 | while ... { ... } | main.rs:110:19:117:1 | { ... } |  |
-| main.rs:113:11:114:12 | let ... = s1 | main.rs:114:11:114:12 | s1 |  |
-| main.rs:113:15:113:26 | Some(...) | main.rs:113:5:116:5 | while ... { ... } | no-match |
+| main.rs:113:11:114:12 | [boolean(false)] let ... = s1 | main.rs:113:5:116:5 | while ... { ... } | false |
+| main.rs:113:11:114:12 | [boolean(true)] let ... = s1 | main.rs:115:9:115:22 | ExprStmt | true |
+| main.rs:113:15:113:26 | Some(...) | main.rs:113:11:114:12 | [boolean(false)] let ... = s1 | no-match |
 | main.rs:113:15:113:26 | Some(...) | main.rs:113:24:113:25 | s2 | match |
-| main.rs:113:20:113:25 | ref s2 | main.rs:115:9:115:22 | ExprStmt | match |
+| main.rs:113:20:113:25 | ref s2 | main.rs:113:11:114:12 | [boolean(true)] let ... = s1 | match |
 | main.rs:113:24:113:25 | s2 | main.rs:113:20:113:25 | ref s2 |  |
 | main.rs:114:11:114:12 | s1 | main.rs:113:15:113:26 | Some(...) |  |
-| main.rs:114:14:116:5 | { ... } | main.rs:113:11:114:12 | let ... = s1 |  |
+| main.rs:114:14:116:5 | { ... } | main.rs:114:11:114:12 | s1 |  |
 | main.rs:115:9:115:17 | print_str | main.rs:115:19:115:20 | s2 |  |
 | main.rs:115:9:115:21 | print_str(...) | main.rs:114:14:116:5 | { ... } |  |
 | main.rs:115:9:115:22 | ExprStmt | main.rs:115:9:115:17 | print_str |  |
@@ -593,15 +595,16 @@ edges
 | main.rs:250:48:250:50 | a11 | main.rs:250:48:250:50 | a11 |  |
 | main.rs:251:12:257:9 | { ... } | main.rs:248:5:259:5 | match either { ... } |  |
 | main.rs:252:13:252:21 | print_i64 | main.rs:252:23:252:25 | a11 |  |
-| main.rs:252:13:252:26 | print_i64(...) | main.rs:253:16:254:15 | let ... = e |  |
+| main.rs:252:13:252:26 | print_i64(...) | main.rs:254:15:254:15 | e |  |
 | main.rs:252:13:252:27 | ExprStmt | main.rs:252:13:252:21 | print_i64 |  |
 | main.rs:252:23:252:25 | a11 | main.rs:252:13:252:26 | print_i64(...) |  |
 | main.rs:253:13:256:13 | if ... {...} | main.rs:251:12:257:9 | { ... } |  |
-| main.rs:253:16:254:15 | let ... = e | main.rs:254:15:254:15 | e |  |
-| main.rs:253:20:253:36 | ...::Left(...) | main.rs:253:13:256:13 | if ... {...} | no-match |
+| main.rs:253:16:254:15 | [boolean(false)] let ... = e | main.rs:253:13:256:13 | if ... {...} | false |
+| main.rs:253:16:254:15 | [boolean(true)] let ... = e | main.rs:255:17:255:32 | ExprStmt | true |
+| main.rs:253:20:253:36 | ...::Left(...) | main.rs:253:16:254:15 | [boolean(false)] let ... = e | no-match |
 | main.rs:253:20:253:36 | ...::Left(...) | main.rs:253:33:253:35 | a12 | match |
+| main.rs:253:33:253:35 | a12 | main.rs:253:16:254:15 | [boolean(true)] let ... = e | match |
 | main.rs:253:33:253:35 | a12 | main.rs:253:33:253:35 | a12 |  |
-| main.rs:253:33:253:35 | a12 | main.rs:255:17:255:32 | ExprStmt | match |
 | main.rs:254:15:254:15 | e | main.rs:253:20:253:36 | ...::Left(...) |  |
 | main.rs:254:17:256:13 | { ... } | main.rs:253:13:256:13 | if ... {...} |  |
 | main.rs:255:17:255:25 | print_i64 | main.rs:255:28:255:30 | a12 |  |
@@ -644,39 +647,138 @@ edges
 | main.rs:273:16:273:29 | print_i64(...) | main.rs:271:5:274:5 | match fv { ... } |  |
 | main.rs:273:26:273:28 | a13 | main.rs:273:16:273:29 | print_i64(...) |  |
 | main.rs:277:1:291:1 | enter fn match_pattern10 | main.rs:279:5:279:20 | let ... = ... |  |
+| main.rs:277:1:291:1 | exit fn match_pattern10 (normal) | main.rs:277:1:291:1 | exit fn match_pattern10 |  |
+| main.rs:278:22:291:1 | { ... } | main.rs:277:1:291:1 | exit fn match_pattern10 (normal) |  |
 | main.rs:279:5:279:20 | let ... = ... | main.rs:279:12:279:15 | Some |  |
 | main.rs:279:9:279:9 | x | main.rs:279:9:279:9 | x |  |
-| main.rs:279:9:279:9 | x | main.rs:280:8:281:7 | let ... = x | match |
+| main.rs:279:9:279:9 | x | main.rs:281:7:281:7 | x | match |
 | main.rs:279:12:279:15 | Some | main.rs:279:17:279:18 | 42 |  |
 | main.rs:279:12:279:19 | Some(...) | main.rs:279:9:279:9 | x |  |
 | main.rs:279:17:279:18 | 42 | main.rs:279:12:279:19 | Some(...) |  |
-| main.rs:280:8:281:7 | let ... = x | main.rs:281:7:281:7 | x |  |
+| main.rs:280:5:290:5 | if ... {...} else {...} | main.rs:278:22:291:1 | { ... } |  |
+| main.rs:280:8:281:7 | [boolean(false)] let ... = x | main.rs:280:8:283:9 | [boolean(false)] ... && ... | false |
+| main.rs:280:8:281:7 | [boolean(true)] let ... = x | main.rs:283:5:283:5 | x | true |
+| main.rs:280:8:283:9 | [boolean(false)] ... && ... | main.rs:287:9:288:14 | let ... = x | false |
+| main.rs:280:8:283:9 | [boolean(true)] ... && ... | main.rs:285:9:285:21 | ExprStmt | true |
+| main.rs:280:12:280:18 | Some(...) | main.rs:280:8:281:7 | [boolean(false)] let ... = x | no-match |
 | main.rs:280:12:280:18 | Some(...) | main.rs:280:17:280:17 | x | match |
+| main.rs:280:17:280:17 | x | main.rs:280:8:281:7 | [boolean(true)] let ... = x | match |
 | main.rs:280:17:280:17 | x | main.rs:280:17:280:17 | x |  |
 | main.rs:281:7:281:7 | x | main.rs:280:12:280:18 | Some(...) |  |
+| main.rs:283:5:283:5 | x | main.rs:283:9:283:9 | 0 |  |
+| main.rs:283:5:283:9 | ... > ... | main.rs:280:8:283:9 | [boolean(false)] ... && ... | false |
+| main.rs:283:5:283:9 | ... > ... | main.rs:280:8:283:9 | [boolean(true)] ... && ... | true |
+| main.rs:283:9:283:9 | 0 | main.rs:283:5:283:9 | ... > ... |  |
+| main.rs:284:5:286:5 | { ... } | main.rs:280:5:290:5 | if ... {...} else {...} |  |
+| main.rs:285:9:285:17 | print_i64 | main.rs:285:19:285:19 | x |  |
+| main.rs:285:9:285:20 | print_i64(...) | main.rs:284:5:286:5 | { ... } |  |
+| main.rs:285:9:285:21 | ExprStmt | main.rs:285:9:285:17 | print_i64 |  |
+| main.rs:285:19:285:19 | x | main.rs:285:9:285:20 | print_i64(...) |  |
+| main.rs:286:12:290:5 | { ... } | main.rs:280:5:290:5 | if ... {...} else {...} |  |
+| main.rs:287:9:288:14 | let ... = x | main.rs:288:13:288:13 | x |  |
+| main.rs:287:13:287:13 | x | main.rs:287:13:287:13 | x |  |
+| main.rs:287:13:287:13 | x | main.rs:289:9:289:30 | ExprStmt | match |
+| main.rs:288:13:288:13 | x | main.rs:287:13:287:13 | x |  |
+| main.rs:289:9:289:17 | print_i64 | main.rs:289:19:289:19 | x |  |
+| main.rs:289:9:289:29 | print_i64(...) | main.rs:286:12:290:5 | { ... } |  |
+| main.rs:289:9:289:30 | ExprStmt | main.rs:289:9:289:17 | print_i64 |  |
+| main.rs:289:19:289:19 | x | main.rs:289:19:289:28 | x.unwrap() |  |
+| main.rs:289:19:289:28 | x.unwrap() | main.rs:289:9:289:29 | print_i64(...) |  |
 | main.rs:293:1:310:1 | enter fn match_pattern11 | main.rs:295:5:295:21 | let ... = ... |  |
+| main.rs:293:1:310:1 | exit fn match_pattern11 (normal) | main.rs:293:1:310:1 | exit fn match_pattern11 |  |
+| main.rs:294:22:310:1 | { ... } | main.rs:293:1:310:1 | exit fn match_pattern11 (normal) |  |
 | main.rs:295:5:295:21 | let ... = ... | main.rs:295:13:295:16 | Some |  |
 | main.rs:295:9:295:9 | x | main.rs:295:9:295:9 | x |  |
-| main.rs:295:9:295:9 | x | main.rs:296:8:297:7 | let ... = x | match |
+| main.rs:295:9:295:9 | x | main.rs:297:7:297:7 | x | match |
 | main.rs:295:13:295:16 | Some | main.rs:295:18:295:19 | 42 |  |
 | main.rs:295:13:295:20 | Some(...) | main.rs:295:9:295:9 | x |  |
 | main.rs:295:18:295:19 | 42 | main.rs:295:13:295:20 | Some(...) |  |
-| main.rs:296:8:297:7 | let ... = x | main.rs:297:7:297:7 | x |  |
+| main.rs:296:5:309:5 | if ... {...} else {...} | main.rs:294:22:310:1 | { ... } |  |
+| main.rs:296:8:297:7 | [boolean(false)] let ... = x | main.rs:296:8:300:13 | [boolean(false)] ... && ... | false |
+| main.rs:296:8:297:7 | [boolean(true)] let ... = x | main.rs:300:7:300:10 | Some | true |
+| main.rs:296:8:300:13 | [boolean(false)] ... && ... | main.rs:296:8:302:9 | [boolean(false)] ... && ... | false |
+| main.rs:296:8:300:13 | [boolean(true)] ... && ... | main.rs:302:5:302:5 | x | true |
+| main.rs:296:8:302:9 | [boolean(false)] ... && ... | main.rs:306:9:307:14 | let ... = x | false |
+| main.rs:296:8:302:9 | [boolean(true)] ... && ... | main.rs:304:9:304:21 | ExprStmt | true |
+| main.rs:296:12:296:18 | Some(...) | main.rs:296:8:297:7 | [boolean(false)] let ... = x | no-match |
 | main.rs:296:12:296:18 | Some(...) | main.rs:296:17:296:17 | x | match |
+| main.rs:296:17:296:17 | x | main.rs:296:8:297:7 | [boolean(true)] let ... = x | match |
 | main.rs:296:17:296:17 | x | main.rs:296:17:296:17 | x |  |
 | main.rs:297:7:297:7 | x | main.rs:296:12:296:18 | Some(...) |  |
+| main.rs:299:5:300:13 | [boolean(false)] let ... = ... | main.rs:296:8:300:13 | [boolean(false)] ... && ... | false |
+| main.rs:299:5:300:13 | [boolean(true)] let ... = ... | main.rs:296:8:300:13 | [boolean(true)] ... && ... | true |
+| main.rs:299:9:299:15 | Some(...) | main.rs:299:5:300:13 | [boolean(false)] let ... = ... | no-match |
+| main.rs:299:9:299:15 | Some(...) | main.rs:299:14:299:14 | x | match |
+| main.rs:299:14:299:14 | x | main.rs:299:5:300:13 | [boolean(true)] let ... = ... | match |
+| main.rs:299:14:299:14 | x | main.rs:299:14:299:14 | x |  |
+| main.rs:300:7:300:10 | Some | main.rs:300:12:300:12 | x |  |
+| main.rs:300:7:300:13 | Some(...) | main.rs:299:9:299:15 | Some(...) |  |
+| main.rs:300:12:300:12 | x | main.rs:300:7:300:13 | Some(...) |  |
+| main.rs:302:5:302:5 | x | main.rs:302:9:302:9 | 0 |  |
+| main.rs:302:5:302:9 | ... > ... | main.rs:296:8:302:9 | [boolean(false)] ... && ... | false |
+| main.rs:302:5:302:9 | ... > ... | main.rs:296:8:302:9 | [boolean(true)] ... && ... | true |
+| main.rs:302:9:302:9 | 0 | main.rs:302:5:302:9 | ... > ... |  |
+| main.rs:303:5:305:5 | { ... } | main.rs:296:5:309:5 | if ... {...} else {...} |  |
+| main.rs:304:9:304:17 | print_i64 | main.rs:304:19:304:19 | x |  |
+| main.rs:304:9:304:20 | print_i64(...) | main.rs:303:5:305:5 | { ... } |  |
+| main.rs:304:9:304:21 | ExprStmt | main.rs:304:9:304:17 | print_i64 |  |
+| main.rs:304:19:304:19 | x | main.rs:304:9:304:20 | print_i64(...) |  |
+| main.rs:305:12:309:5 | { ... } | main.rs:296:5:309:5 | if ... {...} else {...} |  |
+| main.rs:306:9:307:14 | let ... = x | main.rs:307:13:307:13 | x |  |
+| main.rs:306:13:306:13 | x | main.rs:306:13:306:13 | x |  |
+| main.rs:306:13:306:13 | x | main.rs:308:9:308:30 | ExprStmt | match |
+| main.rs:307:13:307:13 | x | main.rs:306:13:306:13 | x |  |
+| main.rs:308:9:308:17 | print_i64 | main.rs:308:19:308:19 | x |  |
+| main.rs:308:9:308:29 | print_i64(...) | main.rs:305:12:309:5 | { ... } |  |
+| main.rs:308:9:308:30 | ExprStmt | main.rs:308:9:308:17 | print_i64 |  |
+| main.rs:308:19:308:19 | x | main.rs:308:19:308:28 | x.unwrap() |  |
+| main.rs:308:19:308:28 | x.unwrap() | main.rs:308:9:308:29 | print_i64(...) |  |
 | main.rs:312:1:328:1 | enter fn match_pattern12 | main.rs:314:5:314:21 | let ... = ... |  |
+| main.rs:312:1:328:1 | exit fn match_pattern12 (normal) | main.rs:312:1:328:1 | exit fn match_pattern12 |  |
+| main.rs:313:22:328:1 | { ... } | main.rs:312:1:328:1 | exit fn match_pattern12 (normal) |  |
 | main.rs:314:5:314:21 | let ... = ... | main.rs:314:13:314:16 | Some |  |
 | main.rs:314:9:314:9 | x | main.rs:314:9:314:9 | x |  |
 | main.rs:314:9:314:9 | x | main.rs:315:5:325:5 | ExprStmt | match |
 | main.rs:314:13:314:16 | Some | main.rs:314:18:314:19 | 42 |  |
 | main.rs:314:13:314:20 | Some(...) | main.rs:314:9:314:9 | x |  |
 | main.rs:314:18:314:19 | 42 | main.rs:314:13:314:20 | Some(...) |  |
-| main.rs:315:5:325:5 | ExprStmt | main.rs:315:11:316:7 | let ... = x |  |
-| main.rs:315:11:316:7 | let ... = x | main.rs:316:7:316:7 | x |  |
+| main.rs:315:5:325:5 | ExprStmt | main.rs:316:7:316:7 | x |  |
+| main.rs:315:5:325:5 | while ... { ... } | main.rs:327:5:327:26 | ExprStmt |  |
+| main.rs:315:11:316:7 | [boolean(false)] let ... = x | main.rs:315:11:319:13 | [boolean(false)] ... && ... | false |
+| main.rs:315:11:316:7 | [boolean(true)] let ... = x | main.rs:319:7:319:10 | Some | true |
+| main.rs:315:11:319:13 | [boolean(false)] ... && ... | main.rs:315:11:321:9 | [boolean(false)] ... && ... | false |
+| main.rs:315:11:319:13 | [boolean(true)] ... && ... | main.rs:321:5:321:5 | x | true |
+| main.rs:315:11:321:9 | [boolean(false)] ... && ... | main.rs:315:5:325:5 | while ... { ... } | false |
+| main.rs:315:11:321:9 | [boolean(true)] ... && ... | main.rs:323:9:323:21 | ExprStmt | true |
+| main.rs:315:15:315:21 | Some(...) | main.rs:315:11:316:7 | [boolean(false)] let ... = x | no-match |
 | main.rs:315:15:315:21 | Some(...) | main.rs:315:20:315:20 | x | match |
+| main.rs:315:20:315:20 | x | main.rs:315:11:316:7 | [boolean(true)] let ... = x | match |
 | main.rs:315:20:315:20 | x | main.rs:315:20:315:20 | x |  |
 | main.rs:316:7:316:7 | x | main.rs:315:15:315:21 | Some(...) |  |
+| main.rs:318:5:319:13 | [boolean(false)] let ... = ... | main.rs:315:11:319:13 | [boolean(false)] ... && ... | false |
+| main.rs:318:5:319:13 | [boolean(true)] let ... = ... | main.rs:315:11:319:13 | [boolean(true)] ... && ... | true |
+| main.rs:318:9:318:15 | Some(...) | main.rs:318:5:319:13 | [boolean(false)] let ... = ... | no-match |
+| main.rs:318:9:318:15 | Some(...) | main.rs:318:14:318:14 | x | match |
+| main.rs:318:14:318:14 | x | main.rs:318:5:319:13 | [boolean(true)] let ... = ... | match |
+| main.rs:318:14:318:14 | x | main.rs:318:14:318:14 | x |  |
+| main.rs:319:7:319:10 | Some | main.rs:319:12:319:12 | x |  |
+| main.rs:319:7:319:13 | Some(...) | main.rs:318:9:318:15 | Some(...) |  |
+| main.rs:319:12:319:12 | x | main.rs:319:7:319:13 | Some(...) |  |
+| main.rs:321:5:321:5 | x | main.rs:321:9:321:9 | 0 |  |
+| main.rs:321:5:321:9 | ... > ... | main.rs:315:11:321:9 | [boolean(false)] ... && ... | false |
+| main.rs:321:5:321:9 | ... > ... | main.rs:315:11:321:9 | [boolean(true)] ... && ... | true |
+| main.rs:321:9:321:9 | 0 | main.rs:321:5:321:9 | ... > ... |  |
+| main.rs:323:9:323:17 | print_i64 | main.rs:323:19:323:19 | x |  |
+| main.rs:323:9:323:20 | print_i64(...) | main.rs:324:9:324:14 | ExprStmt |  |
+| main.rs:323:9:323:21 | ExprStmt | main.rs:323:9:323:17 | print_i64 |  |
+| main.rs:323:19:323:19 | x | main.rs:323:9:323:20 | print_i64(...) |  |
+| main.rs:324:9:324:13 | break | main.rs:315:5:325:5 | while ... { ... } | break |
+| main.rs:324:9:324:14 | ExprStmt | main.rs:324:9:324:13 | break |  |
+| main.rs:327:5:327:13 | print_i64 | main.rs:327:15:327:15 | x |  |
+| main.rs:327:5:327:25 | print_i64(...) | main.rs:313:22:328:1 | { ... } |  |
+| main.rs:327:5:327:26 | ExprStmt | main.rs:327:5:327:13 | print_i64 |  |
+| main.rs:327:15:327:15 | x | main.rs:327:15:327:24 | x.unwrap() |  |
+| main.rs:327:15:327:24 | x.unwrap() | main.rs:327:5:327:25 | print_i64(...) |  |
 | main.rs:330:1:342:1 | enter fn match_pattern13 | main.rs:332:5:332:21 | let ... = ... |  |
 | main.rs:330:1:342:1 | exit fn match_pattern13 (normal) | main.rs:330:1:342:1 | exit fn match_pattern13 |  |
 | main.rs:331:22:342:1 | { ... } | main.rs:330:1:342:1 | exit fn match_pattern13 (normal) |  |
@@ -692,10 +794,18 @@ edges
 | main.rs:334:9:334:15 | Some(...) | main.rs:334:14:334:14 | x | match |
 | main.rs:334:9:334:15 | Some(...) | main.rs:338:9:338:9 | _ | no-match |
 | main.rs:334:14:334:14 | x | main.rs:334:14:334:14 | x |  |
-| main.rs:334:14:334:14 | x | main.rs:335:16:336:18 | let ... = x | match |
-| main.rs:335:16:336:18 | let ... = x | main.rs:336:18:336:18 | x |  |
+| main.rs:334:14:334:14 | x | main.rs:336:18:336:18 | x | match |
+| main.rs:335:16:336:18 | [boolean(true)] let ... = x | main.rs:337:19:337:19 | x | true |
+| main.rs:335:16:337:23 | [boolean(false)] ... && ... | main.rs:338:9:338:9 | _ | false |
+| main.rs:335:16:337:23 | [boolean(true)] ... && ... | main.rs:337:28:337:29 | TupleExpr | true |
+| main.rs:335:20:335:20 | x | main.rs:335:16:336:18 | [boolean(true)] let ... = x | match |
 | main.rs:335:20:335:20 | x | main.rs:335:20:335:20 | x |  |
 | main.rs:336:18:336:18 | x | main.rs:335:20:335:20 | x |  |
+| main.rs:337:19:337:19 | x | main.rs:337:23:337:23 | 0 |  |
+| main.rs:337:19:337:23 | ... > ... | main.rs:335:16:337:23 | [boolean(false)] ... && ... | false |
+| main.rs:337:19:337:23 | ... > ... | main.rs:335:16:337:23 | [boolean(true)] ... && ... | true |
+| main.rs:337:23:337:23 | 0 | main.rs:337:19:337:23 | ... > ... |  |
+| main.rs:337:28:337:29 | TupleExpr | main.rs:333:5:339:5 | match x { ... } |  |
 | main.rs:338:9:338:9 | _ | main.rs:338:14:338:15 | TupleExpr | match |
 | main.rs:338:14:338:15 | TupleExpr | main.rs:333:5:339:5 | match x { ... } |  |
 | main.rs:341:5:341:13 | print_i64 | main.rs:341:15:341:15 | x |  |
@@ -708,16 +818,17 @@ edges
 | main.rs:345:22:359:1 | { ... } | main.rs:344:1:359:1 | exit fn match_pattern14 (normal) |  |
 | main.rs:346:5:346:19 | let ... = ... | main.rs:346:13:346:14 | Ok |  |
 | main.rs:346:9:346:9 | x | main.rs:346:9:346:9 | x |  |
-| main.rs:346:9:346:9 | x | main.rs:347:8:348:7 | let ... = x | match |
+| main.rs:346:9:346:9 | x | main.rs:348:7:348:7 | x | match |
 | main.rs:346:13:346:14 | Ok | main.rs:346:16:346:17 | 42 |  |
 | main.rs:346:13:346:18 | Ok(...) | main.rs:346:9:346:9 | x |  |
 | main.rs:346:16:346:17 | 42 | main.rs:346:13:346:18 | Ok(...) |  |
 | main.rs:347:5:358:5 | if ... {...} else {...} | main.rs:345:22:359:1 | { ... } |  |
-| main.rs:347:8:348:7 | let ... = x | main.rs:348:7:348:7 | x |  |
+| main.rs:347:8:348:7 | [boolean(false)] let ... = x | main.rs:353:7:353:7 | x | false |
+| main.rs:347:8:348:7 | [boolean(true)] let ... = x | main.rs:350:9:350:21 | ExprStmt | true |
+| main.rs:347:12:347:17 | Err(...) | main.rs:347:8:348:7 | [boolean(false)] let ... = x | no-match |
 | main.rs:347:12:347:17 | Err(...) | main.rs:347:16:347:16 | x | match |
-| main.rs:347:12:347:17 | Err(...) | main.rs:352:13:353:7 | let ... = x | no-match |
+| main.rs:347:16:347:16 | x | main.rs:347:8:348:7 | [boolean(true)] let ... = x | match |
 | main.rs:347:16:347:16 | x | main.rs:347:16:347:16 | x |  |
-| main.rs:347:16:347:16 | x | main.rs:350:9:350:21 | ExprStmt | match |
 | main.rs:348:7:348:7 | x | main.rs:347:12:347:17 | Err(...) |  |
 | main.rs:349:5:351:5 | { ... } | main.rs:347:5:358:5 | if ... {...} else {...} |  |
 | main.rs:350:9:350:17 | print_i64 | main.rs:350:19:350:19 | x |  |
@@ -725,11 +836,12 @@ edges
 | main.rs:350:9:350:21 | ExprStmt | main.rs:350:9:350:17 | print_i64 |  |
 | main.rs:350:19:350:19 | x | main.rs:350:9:350:20 | print_i64(...) |  |
 | main.rs:352:10:358:5 | if ... {...} else {...} | main.rs:347:5:358:5 | if ... {...} else {...} |  |
-| main.rs:352:13:353:7 | let ... = x | main.rs:353:7:353:7 | x |  |
+| main.rs:352:13:353:7 | [boolean(false)] let ... = x | main.rs:357:9:357:30 | ExprStmt | false |
+| main.rs:352:13:353:7 | [boolean(true)] let ... = x | main.rs:355:9:355:21 | ExprStmt | true |
+| main.rs:352:17:352:21 | Ok(...) | main.rs:352:13:353:7 | [boolean(false)] let ... = x | no-match |
 | main.rs:352:17:352:21 | Ok(...) | main.rs:352:20:352:20 | x | match |
-| main.rs:352:17:352:21 | Ok(...) | main.rs:357:9:357:30 | ExprStmt | no-match |
+| main.rs:352:20:352:20 | x | main.rs:352:13:353:7 | [boolean(true)] let ... = x | match |
 | main.rs:352:20:352:20 | x | main.rs:352:20:352:20 | x |  |
-| main.rs:352:20:352:20 | x | main.rs:355:9:355:21 | ExprStmt | match |
 | main.rs:353:7:353:7 | x | main.rs:352:17:352:21 | Ok(...) |  |
 | main.rs:354:5:356:5 | { ... } | main.rs:352:10:358:5 | if ... {...} else {...} |  |
 | main.rs:355:9:355:17 | print_i64 | main.rs:355:19:355:19 | x |  |
