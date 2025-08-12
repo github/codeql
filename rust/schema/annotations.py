@@ -547,10 +547,13 @@ class _:
     |x| x + 1;
     move |x: i32| -> i32 { x + 1 };
     async |x: i32, y| x + y;
-     #[coroutine]
+    #[coroutine]
     |x| yield x;
-     #[coroutine]
-     static |x| yield x;
+    #[coroutine]
+    static |x| yield x;
+    for<T: std::fmt::Debug> |x: T| {
+        println!("{:?}", x);
+    };
     ```
     """
 
