@@ -372,6 +372,7 @@ fn escape_name(name: &str) -> String {
             ':' => result.push_str("colon"),
             ';' => result.push_str("semicolon"),
             '"' => result.push_str("dquote"),
+            '\'' => result.push_str("squote"),
             '*' => result.push_str("star"),
             '+' => result.push_str("plus"),
             '-' => result.push_str("minus"),
