@@ -68,9 +68,8 @@ extensible predicate sourceModel(
  *
  * For example, `input = Argument[0]` means the first argument of the call.
  *
- * The following kinds are supported:
- *
- * - `sql-injection`: a flow sink for SQL injection.
+ * The sink kinds supported by queries can be found by searching for uses of
+ * the `sinkNode` predicate.
  */
 extensible predicate sinkModel(
   string path, string input, string kind, string provenance, QlBuiltins::ExtensionId madId
