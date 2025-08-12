@@ -1,11 +1,13 @@
 import * as path from "path";
-import * as process from "process"
+import * as process from "process";
 import * as child_process from "child_process";
 
 function languageTests(argv: string[]): number {
     const [extra_args, dir, ...relativeRoots] = argv;
     const semmle_code = process.env["SEMMLE_CODE"]!;
-    let roots = relativeRoots.map((root) => path.relative(semmle_code, path.join(dir, root)));
+    let roots = relativeRoots.map((root) =>
+        path.relative(semmle_code, path.join(dir, root)),
+    );
     const invocation = [
         process.env["JUST_EXECUTABLE"] || "just",
         "--justfile",

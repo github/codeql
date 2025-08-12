@@ -9,7 +9,7 @@ const vars = {
     cmd_begin: process.env["CMD_BEGIN"] || "",
     cmd_end: process.env["CMD_END"] || "",
     semmle_code: process.env["SEMMLE_CODE"],
-}
+};
 
 function invoke(
     invocation: string[],
@@ -81,7 +81,10 @@ function codeqlTestRun(argv: string[]): number {
     if (args.all) {
         parseArgs(args, all_args);
     }
-    if (!vars.semmle_code && (args.codeql === "build" || args.codeql === "built")) {
+    if (
+        !vars.semmle_code &&
+        (args.codeql === "build" || args.codeql === "built")
+    ) {
         console.error(
             "Using `--codeql=build` or `--codeql=built` requires working with the internal repository",
         );
