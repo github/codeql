@@ -19,3 +19,4 @@ dataExtensions:
   - semmle/python/frameworks/**/*.model.yml
   - ext/*.model.yml
 warnOnImplicitThis: true
+compileForOverlayEval: true
