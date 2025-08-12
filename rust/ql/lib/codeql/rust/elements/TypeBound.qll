@@ -5,6 +5,7 @@
 
 private import internal.TypeBoundImpl
 import codeql.rust.elements.AstNode
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.UseBoundGenericArgs

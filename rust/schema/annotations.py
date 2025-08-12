@@ -967,10 +967,10 @@ class _:
     """
 
 
-@annotate(ClosureBinder)
+@annotate(ForBinder)
 class _:
     """
-    A closure binder, specifying lifetime or type parameters for a closure.
+    A for binder, specifying lifetime or type parameters for a closure or a type.
 
     For example:
     ```rust

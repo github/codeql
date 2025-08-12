@@ -5,7 +5,7 @@
 
 private import internal.WherePredImpl
 import codeql.rust.elements.AstNode
-import codeql.rust.elements.GenericParamList
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.TypeRepr

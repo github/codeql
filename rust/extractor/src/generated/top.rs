@@ -836,56 +836,6 @@ impl From<trap::Label<Callable>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
-pub struct ClosureBinder {
-    pub id: trap::TrapId<ClosureBinder>,
-    pub generic_param_list: Option<trap::Label<GenericParamList>>,
-}
-
-impl trap::TrapEntry for ClosureBinder {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("closure_binders", vec![id.into()]);
-        if let Some(v) = self.generic_param_list {
-            out.add_tuple("closure_binder_generic_param_lists", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for ClosureBinder {
-    fn class_name() -> &'static str { "ClosureBinder" }
-}
-
-impl From<trap::Label<ClosureBinder>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<ClosureBinder>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ClosureBinder is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ClosureBinder>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<ClosureBinder>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ClosureBinder is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ClosureBinder>> for trap::Label<Element> {
-    fn from(value: trap::Label<ClosureBinder>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ClosureBinder is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
 pub struct Expr {
     _unused: ()
 }
@@ -1005,6 +955,56 @@ impl From<trap::Label<FieldList>> for trap::Label<Locatable> {
 impl From<trap::Label<FieldList>> for trap::Label<Element> {
     fn from(value: trap::Label<FieldList>) -> Self {
         // SAFETY: this is safe because in the dbscheme FieldList is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct ForBinder {
+    pub id: trap::TrapId<ForBinder>,
+    pub generic_param_list: Option<trap::Label<GenericParamList>>,
+}
+
+impl trap::TrapEntry for ForBinder {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("for_binders", vec![id.into()]);
+        if let Some(v) = self.generic_param_list {
+            out.add_tuple("for_binder_generic_param_lists", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for ForBinder {
+    fn class_name() -> &'static str { "ForBinder" }
+}
+
+impl From<trap::Label<ForBinder>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<ForBinder>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ForBinder is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ForBinder>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<ForBinder>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ForBinder is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ForBinder>> for trap::Label<Element> {
+    fn from(value: trap::Label<ForBinder>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ForBinder is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2808,6 +2808,7 @@ impl From<trap::Label<TupleField>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct TypeBound {
     pub id: trap::TrapId<TypeBound>,
+    pub for_binder: Option<trap::Label<ForBinder>>,
     pub is_async: bool,
     pub is_const: bool,
     pub lifetime: Option<trap::Label<Lifetime>>,
@@ -2822,6 +2823,9 @@ impl trap::TrapEntry for TypeBound {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("type_bounds", vec![id.into()]);
+        if let Some(v) = self.for_binder {
+            out.add_tuple("type_bound_for_binders", vec![id.into(), v.into()]);
+        }
         if self.is_async {
             out.add_tuple("type_bound_is_async", vec![id.into()]);
         }
@@ -3308,7 +3312,7 @@ impl From<trap::Label<WhereClause>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct WherePred {
     pub id: trap::TrapId<WherePred>,
-    pub generic_param_list: Option<trap::Label<GenericParamList>>,
+    pub for_binder: Option<trap::Label<ForBinder>>,
     pub lifetime: Option<trap::Label<Lifetime>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
     pub type_bound_list: Option<trap::Label<TypeBoundList>>,
@@ -3321,8 +3325,8 @@ impl trap::TrapEntry for WherePred {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("where_preds", vec![id.into()]);
-        if let Some(v) = self.generic_param_list {
-            out.add_tuple("where_pred_generic_param_lists", vec![id.into(), v.into()]);
+        if let Some(v) = self.for_binder {
+            out.add_tuple("where_pred_for_binders", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.lifetime {
             out.add_tuple("where_pred_lifetimes", vec![id.into(), v.into()]);
@@ -4450,7 +4454,7 @@ pub struct ClosureExpr {
     pub param_list: Option<trap::Label<ParamList>>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub body: Option<trap::Label<Expr>>,
-    pub closure_binder: Option<trap::Label<ClosureBinder>>,
+    pub for_binder: Option<trap::Label<ForBinder>>,
     pub is_async: bool,
     pub is_const: bool,
     pub is_gen: bool,
@@ -4475,8 +4479,8 @@ impl trap::TrapEntry for ClosureExpr {
         if let Some(v) = self.body {
             out.add_tuple("closure_expr_bodies", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.closure_binder {
-            out.add_tuple("closure_expr_closure_binders", vec![id.into(), v.into()]);
+        if let Some(v) = self.for_binder {
+            out.add_tuple("closure_expr_for_binders", vec![id.into(), v.into()]);
         }
         if self.is_async {
             out.add_tuple("closure_expr_is_async", vec![id.into()]);
@@ -5132,7 +5136,7 @@ impl From<trap::Label<FnPtrTypeRepr>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct ForTypeRepr {
     pub id: trap::TrapId<ForTypeRepr>,
-    pub generic_param_list: Option<trap::Label<GenericParamList>>,
+    pub for_binder: Option<trap::Label<ForBinder>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
@@ -5143,8 +5147,8 @@ impl trap::TrapEntry for ForTypeRepr {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("for_type_reprs", vec![id.into()]);
-        if let Some(v) = self.generic_param_list {
-            out.add_tuple("for_type_repr_generic_param_lists", vec![id.into(), v.into()]);
+        if let Some(v) = self.for_binder {
+            out.add_tuple("for_type_repr_for_binders", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.type_repr {
             out.add_tuple("for_type_repr_type_reprs", vec![id.into(), v.into()]);

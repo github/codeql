@@ -5,8 +5,8 @@
 
 private import internal.ClosureExprImpl
 import codeql.rust.elements.Callable
-import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.Expr
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.RetTypeRepr
 
 /**

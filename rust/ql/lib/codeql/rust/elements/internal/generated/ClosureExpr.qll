@@ -7,9 +7,9 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.CallableImpl::Impl as CallableImpl
-import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.RetTypeRepr
 
 /**
@@ -48,19 +48,19 @@ module Generated {
     final predicate hasBody() { exists(this.getBody()) }
 
     /**
-     * Gets the closure binder of this closure expression, if it exists.
+     * Gets the for binder of this closure expression, if it exists.
      */
-    ClosureBinder getClosureBinder() {
+    ForBinder getForBinder() {
       result =
-        Synth::convertClosureBinderFromRaw(Synth::convertClosureExprToRaw(this)
+        Synth::convertForBinderFromRaw(Synth::convertClosureExprToRaw(this)
               .(Raw::ClosureExpr)
-              .getClosureBinder())
+              .getForBinder())
     }
 
     /**
-     * Holds if `getClosureBinder()` exists.
+     * Holds if `getForBinder()` exists.
      */
-    final predicate hasClosureBinder() { exists(this.getClosureBinder()) }
+    final predicate hasForBinder() { exists(this.getForBinder()) }
 
     /**
      * Holds if this closure expression is async.

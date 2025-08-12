@@ -4,7 +4,7 @@
  */
 
 private import internal.ForTypeReprImpl
-import codeql.rust.elements.GenericParamList
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.TypeRepr
 
 /**
