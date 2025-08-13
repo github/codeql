@@ -1292,6 +1292,8 @@ private module Cached {
       compares_lt(test.(LogicalNotValueNumber).getUnary(), left, right, k, isLt, dual)
     )
     or
+    compares_lt(test.(BuiltinExpectCallValueNumber).getCondition(), left, right, k, isLt, value)
+    or
     // See argument for why this is correct in compares_eq
     exists(Operand l, BooleanValue bv |
       unary_compares_eq(test, l, 0, bv.getValue().booleanNot(), value) and
@@ -1317,6 +1319,8 @@ private module Cached {
       int_value(const) = k1 and
       k = k1 + k2
     )
+    or
+    compares_lt(test.(BuiltinExpectCallValueNumber).getCondition(), op, k, isLt, value)
     or
     // See argument for why this is correct in compares_eq
     exists(Operand l, BooleanValue bv |
