@@ -4934,11 +4934,49 @@ inferType
 | main.rs:2550:44:2550:44 | c |  | main.rs:2537:5:2537:29 | MySqlConnection |
 | main.rs:2550:47:2550:67 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
 | main.rs:2550:47:2550:67 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
-| main.rs:2560:5:2560:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2561:5:2561:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2561:20:2561:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2561:41:2561:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2577:5:2577:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:2561:36:2563:9 | { ... } |  | main.rs:2557:5:2558:5 | Path |
+| main.rs:2562:13:2562:20 | Path {...} |  | main.rs:2557:5:2558:5 | Path |
+| main.rs:2565:29:2565:33 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:2565:29:2565:33 | SelfParam | &T | main.rs:2557:5:2558:5 | Path |
+| main.rs:2565:59:2567:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2565:59:2567:9 | { ... } | E | file://:0:0:0:0 | () |
+| main.rs:2565:59:2567:9 | { ... } | T | main.rs:2570:5:2571:5 | PathBuf |
+| main.rs:2566:13:2566:30 | Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2566:13:2566:30 | Ok(...) | E | file://:0:0:0:0 | () |
+| main.rs:2566:13:2566:30 | Ok(...) | T | main.rs:2570:5:2571:5 | PathBuf |
+| main.rs:2566:16:2566:29 | ...::new(...) |  | main.rs:2570:5:2571:5 | PathBuf |
+| main.rs:2574:39:2576:9 | { ... } |  | main.rs:2570:5:2571:5 | PathBuf |
+| main.rs:2575:13:2575:23 | PathBuf {...} |  | main.rs:2570:5:2571:5 | PathBuf |
+| main.rs:2584:18:2584:22 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:2584:18:2584:22 | SelfParam | &T | main.rs:2570:5:2571:5 | PathBuf |
+| main.rs:2584:34:2588:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:2584:34:2588:9 | { ... } | &T | main.rs:2557:5:2558:5 | Path |
+| main.rs:2586:34:2586:44 | ...::new(...) |  | main.rs:2557:5:2558:5 | Path |
+| main.rs:2587:13:2587:17 | &path |  | file://:0:0:0:0 | & |
+| main.rs:2587:13:2587:17 | &path | &T | main.rs:2557:5:2558:5 | Path |
+| main.rs:2587:14:2587:17 | path |  | main.rs:2557:5:2558:5 | Path |
+| main.rs:2592:13:2592:17 | path1 |  | main.rs:2557:5:2558:5 | Path |
+| main.rs:2592:21:2592:31 | ...::new(...) |  | main.rs:2557:5:2558:5 | Path |
+| main.rs:2593:13:2593:17 | path2 |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2593:13:2593:17 | path2 | E | file://:0:0:0:0 | () |
+| main.rs:2593:13:2593:17 | path2 | T | main.rs:2570:5:2571:5 | PathBuf |
+| main.rs:2593:21:2593:25 | path1 |  | main.rs:2557:5:2558:5 | Path |
+| main.rs:2593:21:2593:40 | path1.canonicalize() |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2593:21:2593:40 | path1.canonicalize() | E | file://:0:0:0:0 | () |
+| main.rs:2593:21:2593:40 | path1.canonicalize() | T | main.rs:2570:5:2571:5 | PathBuf |
+| main.rs:2594:13:2594:17 | path3 |  | main.rs:2570:5:2571:5 | PathBuf |
+| main.rs:2594:21:2594:25 | path2 |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2594:21:2594:25 | path2 | E | file://:0:0:0:0 | () |
+| main.rs:2594:21:2594:25 | path2 | T | main.rs:2570:5:2571:5 | PathBuf |
+| main.rs:2594:21:2594:34 | path2.unwrap() |  | main.rs:2570:5:2571:5 | PathBuf |
+| main.rs:2596:13:2596:20 | pathbuf1 |  | main.rs:2570:5:2571:5 | PathBuf |
+| main.rs:2596:24:2596:37 | ...::new(...) |  | main.rs:2570:5:2571:5 | PathBuf |
+| main.rs:2597:24:2597:31 | pathbuf1 |  | main.rs:2570:5:2571:5 | PathBuf |
+| main.rs:2608:5:2608:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2609:5:2609:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2609:20:2609:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2609:41:2609:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2625:5:2625:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
 | pattern_matching.rs:13:26:133:1 | { ... } |  | {EXTERNAL LOCATION} | Option |
 | pattern_matching.rs:13:26:133:1 | { ... } | T | file://:0:0:0:0 | () |
 | pattern_matching.rs:14:9:14:13 | value |  | {EXTERNAL LOCATION} | Option |
