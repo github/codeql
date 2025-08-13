@@ -242,3 +242,82 @@ int test_types(signed char sc, unsigned long ul, float f, double d, bool b, Myst
         ctr++;
     }
 }
+
+void test_cmp_implies(int a, int b) {
+  if((a == b) == 0) {
+    
+  } else {
+
+  }
+
+  if((a == b) != 0) {
+    
+  } else {
+
+  }
+
+
+  if((a != b) == 0) {
+    
+  } else {
+
+  }
+
+  if((a != b) != 0) {
+    
+  } else {
+
+  }
+
+
+  if((a < b) == 0) {
+    
+  } else {
+
+  }
+
+  if((a < b) != 0) {
+    
+  } else {
+
+  }
+}
+
+void test_cmp_implies_unary(int a) {
+  if((a == 42) == 0) {
+    
+  } else {
+
+  }
+
+  if((a == 42) != 0) {
+    
+  } else {
+
+  }
+
+
+  if((a != 42) == 0) {
+    
+  } else {
+
+  }
+
+  if((a != 42) != 0) {
+    
+  } else {
+
+  }
+
+  if((a < 42) == 0) {
+    
+  } else {
+
+  }
+
+  if((a < 42) != 0) {
+    
+  } else {
+
+  }
+}
