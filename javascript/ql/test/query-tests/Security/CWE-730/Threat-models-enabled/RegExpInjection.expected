@@ -1,0 +1,34 @@
+#select
+| RegExpInjection.js:6:14:6:48 | `^${pro ... r.app$` | RegExpInjection.js:6:18:6:28 | process.env | RegExpInjection.js:6:14:6:48 | `^${pro ... r.app$` | This regular expression is constructed from a $@. | RegExpInjection.js:6:18:6:28 | process.env | environment variable |
+| RegExpInjection.js:8:14:8:40 | `^${pro ... }/bin$` | RegExpInjection.js:8:18:8:28 | process.env | RegExpInjection.js:8:14:8:40 | `^${pro ... }/bin$` | This regular expression is constructed from a $@. | RegExpInjection.js:8:18:8:28 | process.env | environment variable |
+| RegExpInjection.js:11:14:11:19 | envVar | RegExpInjection.js:10:16:10:26 | process.env | RegExpInjection.js:11:14:11:19 | envVar | This regular expression is constructed from a $@. | RegExpInjection.js:10:16:10:26 | process.env | environment variable |
+| RegExpInjection.js:14:14:14:47 | `^${pro ... r.app$` | RegExpInjection.js:14:18:14:29 | process.argv | RegExpInjection.js:14:14:14:47 | `^${pro ... r.app$` | This regular expression is constructed from a $@. | RegExpInjection.js:14:18:14:29 | process.argv | command-line argument |
+| RegExpInjection.js:17:14:17:17 | argv | RegExpInjection.js:16:14:16:25 | process.argv | RegExpInjection.js:17:14:17:17 | argv | This regular expression is constructed from a $@. | RegExpInjection.js:16:14:16:25 | process.argv | command-line argument |
+| RegExpInjection.js:21:14:21:22 | userInput | RegExpInjection.js:20:19:20:36 | req.param("input") | RegExpInjection.js:21:14:21:22 | userInput | This regular expression is constructed from a $@. | RegExpInjection.js:20:19:20:36 | req.param("input") | user-provided value |
+edges
+| RegExpInjection.js:6:18:6:28 | process.env | RegExpInjection.js:6:14:6:48 | `^${pro ... r.app$` | provenance |  |
+| RegExpInjection.js:8:18:8:28 | process.env | RegExpInjection.js:8:14:8:40 | `^${pro ... }/bin$` | provenance |  |
+| RegExpInjection.js:10:7:10:35 | envVar | RegExpInjection.js:11:14:11:19 | envVar | provenance |  |
+| RegExpInjection.js:10:16:10:26 | process.env | RegExpInjection.js:10:7:10:35 | envVar | provenance |  |
+| RegExpInjection.js:14:18:14:29 | process.argv | RegExpInjection.js:14:14:14:47 | `^${pro ... r.app$` | provenance |  |
+| RegExpInjection.js:16:7:16:28 | argv | RegExpInjection.js:17:14:17:17 | argv | provenance |  |
+| RegExpInjection.js:16:14:16:25 | process.argv | RegExpInjection.js:16:7:16:28 | argv | provenance |  |
+| RegExpInjection.js:20:7:20:36 | userInput | RegExpInjection.js:21:14:21:22 | userInput | provenance |  |
+| RegExpInjection.js:20:19:20:36 | req.param("input") | RegExpInjection.js:20:7:20:36 | userInput | provenance |  |
+nodes
+| RegExpInjection.js:6:14:6:48 | `^${pro ... r.app$` | semmle.label | `^${pro ... r.app$` |
+| RegExpInjection.js:6:18:6:28 | process.env | semmle.label | process.env |
+| RegExpInjection.js:8:14:8:40 | `^${pro ... }/bin$` | semmle.label | `^${pro ... }/bin$` |
+| RegExpInjection.js:8:18:8:28 | process.env | semmle.label | process.env |
+| RegExpInjection.js:10:7:10:35 | envVar | semmle.label | envVar |
+| RegExpInjection.js:10:16:10:26 | process.env | semmle.label | process.env |
+| RegExpInjection.js:11:14:11:19 | envVar | semmle.label | envVar |
+| RegExpInjection.js:14:14:14:47 | `^${pro ... r.app$` | semmle.label | `^${pro ... r.app$` |
+| RegExpInjection.js:14:18:14:29 | process.argv | semmle.label | process.argv |
+| RegExpInjection.js:16:7:16:28 | argv | semmle.label | argv |
+| RegExpInjection.js:16:14:16:25 | process.argv | semmle.label | process.argv |
+| RegExpInjection.js:17:14:17:17 | argv | semmle.label | argv |
+| RegExpInjection.js:20:7:20:36 | userInput | semmle.label | userInput |
+| RegExpInjection.js:20:19:20:36 | req.param("input") | semmle.label | req.param("input") |
+| RegExpInjection.js:21:14:21:22 | userInput | semmle.label | userInput |
+subpaths
