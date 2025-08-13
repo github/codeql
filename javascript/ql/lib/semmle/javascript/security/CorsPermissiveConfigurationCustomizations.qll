@@ -5,8 +5,7 @@
  */
 
 import javascript
-import Cors::Cors
-import Apollo::Apollo
+private import semmle.javascript.frameworks.Cors
 
 /** Module containing sources, sinks, and sanitizers for overly permissive CORS configurations. */
 module CorsPermissiveConfiguration {
@@ -25,20 +24,10 @@ module CorsPermissiveConfiguration {
       or
       this = TWildcard() and result = "wildcard"
     }
-
-    deprecated DataFlow::FlowLabel toFlowLabel() {
-      this = TTaint() and result.isTaint()
-      or
-      this = TTrueOrNull() and result instanceof TrueAndNull
-      or
-      this = TWildcard() and result instanceof Wildcard
-    }
   }
 
   /** Predicates for working with flow states. */
   module FlowState {
-    deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
-
     /** A tainted value. */
     FlowState taint() { result = TTaint() }
 
@@ -65,30 +54,11 @@ module CorsPermissiveConfiguration {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
-   */
-  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
-
-  /**
    * An active threat-model source, considered as a flow source.
    */
   private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
     ActiveThreatModelSourceAsSource() { not this instanceof ClientSideRemoteFlowSource }
   }
-
-  /** A flow label representing `true` and `null` values. */
-  abstract deprecated class TrueAndNull extends DataFlow::FlowLabel {
-    TrueAndNull() { this = "TrueAndNull" }
-  }
-
-  deprecated TrueAndNull truenullLabel() { any() }
-
-  /** A flow label representing `*` value. */
-  abstract deprecated class Wildcard extends DataFlow::FlowLabel {
-    Wildcard() { this = "Wildcard" }
-  }
-
-  deprecated Wildcard wildcardLabel() { any() }
 
   /** An overly permissive value for `origin` (Apollo) */
   class TrueNullValue extends Source {
@@ -105,7 +75,8 @@ module CorsPermissiveConfiguration {
    */
   class CorsApolloServer extends Sink, DataFlow::ValueNode {
     CorsApolloServer() {
-      exists(ApolloServer agql |
+      exists(API::NewNode agql |
+        agql = ModelOutput::getATypeNode("ApolloServer").getAnInstantiation() and
         this =
           agql.getOptionArgument(0, "cors").getALocalSource().getAPropertyWrite("origin").getRhs()
       )
@@ -125,7 +96,7 @@ module CorsPermissiveConfiguration {
    * An express route setup configured with the `cors` package.
    */
   class CorsConfiguration extends DataFlow::MethodCallNode {
-    Cors corsConfig;
+    Cors::Cors corsConfig;
 
     CorsConfiguration() {
       exists(Express::RouteSetup setup | this = setup |
@@ -136,6 +107,6 @@ module CorsPermissiveConfiguration {
     }
 
     /** Gets the expression that configures `cors` on this route setup. */
-    Cors getCorsConfiguration() { result = corsConfig }
+    Cors::Cors getCorsConfiguration() { result = corsConfig }
   }
 }
