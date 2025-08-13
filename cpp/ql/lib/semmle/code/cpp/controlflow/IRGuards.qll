@@ -966,6 +966,18 @@ private module Cached {
     )
     or
     compares_eq(test.(BuiltinExpectCallValueNumber).getCondition(), left, right, k, areEqual, value)
+    or
+    exists(Operand l, BooleanValue bv |
+      // 1. test = value -> int(l) = 0 is !bv
+      unary_compares_eq(test, l, 0, bv.getValue().booleanNot(), value) and
+      // 2. l = bv -> left + right is areEqual
+      compares_eq(valueNumberOfOperand(l), left, right, k, areEqual, bv)
+      // We want this to hold:
+      // `test = value -> left + right is areEqual`
+      // Applying 2 we need to show:
+      // `test = value -> l = bv`
+      // And `l = bv` holds by `int(l) = 0 is !bv`
+    )
   }
 
   private predicate isConvertedBool(Instruction instr) {
@@ -1006,19 +1018,10 @@ private module Cached {
       k = k1 + k2
     )
     or
-    exists(CompareValueNumber cmp, Operand left, Operand right, AbstractValue v |
-      test = cmp and
-      pragma[only_bind_into](cmp)
-          .hasOperands(pragma[only_bind_into](left), pragma[only_bind_into](right)) and
-      isConvertedBool(left.getDef()) and
-      int_value(right.getDef()) = 0 and
-      unary_compares_eq(valueNumberOfOperand(left), op, k, areEqual, v)
-    |
-      cmp instanceof CompareNEValueNumber and
-      v = value
-      or
-      cmp instanceof CompareEQValueNumber and
-      v.getDualValue() = value
+    // See argument for why this is correct in compares_eq
+    exists(Operand l, BooleanValue bv |
+      unary_compares_eq(test, l, 0, bv.getValue().booleanNot(), value) and
+      unary_compares_eq(valueNumberOfOperand(l), op, k, areEqual, bv)
     )
     or
     unary_compares_eq(test.(BuiltinExpectCallValueNumber).getCondition(), op, k, areEqual, value)
@@ -1215,6 +1218,12 @@ private module Cached {
     exists(AbstractValue dual | value = dual.getDualValue() |
       compares_lt(test.(LogicalNotValueNumber).getUnary(), left, right, k, isLt, dual)
     )
+    or
+    // See argument for why this is correct in compares_eq
+    exists(Operand l, BooleanValue bv |
+      unary_compares_eq(test, l, 0, bv.getValue().booleanNot(), value) and
+      compares_lt(valueNumberOfOperand(l), left, right, k, isLt, bv)
+    )
   }
 
   /** Holds if `op < k` evaluates to `isLt` given that `test` evaluates to `value`. */
@@ -1233,6 +1242,12 @@ private module Cached {
       compares_lt(test, op, const.getAUse(), k2, isLt, value) and
       int_value(const) = k1 and
       k = k1 + k2
+    )
+    or
+    // See argument for why this is correct in compares_eq
+    exists(Operand l, BooleanValue bv |
+      unary_compares_eq(test, l, 0, bv.getValue().booleanNot(), value) and
+      compares_lt(valueNumberOfOperand(l), op, k, isLt, bv)
     )
   }
 
