@@ -9,7 +9,7 @@ private signature class TypeWithToString {
 }
 
 /** A type with `toString` and `hasLocationInfo` */
-private signature class TypeWithToStringAndLocation {
+private signature class TypeWithLocationInfo {
   bindingset[this]
   string toString();
 
@@ -59,8 +59,9 @@ module Option<TypeWithToString T> {
 /**
  * Constructs an `Option` type that is a disjoint union of the given type and an
  * additional singleton element, and has a `hasLocationInfo` predicate.
+ * `T` must have a `hasLocationInfo` predicate.
  */
-module LocOption<TypeWithToStringAndLocation T> {
+module LocOption<TypeWithLocationInfo T> {
   private module O = Option<T>;
 
   final private class BOption = O::Option;
@@ -92,6 +93,67 @@ module LocOption<TypeWithToStringAndLocation T> {
       endColumn = 0
       or
       this.asSome().hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
+    }
+  }
+
+  /** The singleton `None` element. */
+  class None extends BNone, Option { }
+
+  /** A wrapper for the given type. */
+  class Some extends BSome, Option { }
+
+  /** Gets the given element wrapped as an `Option`. */
+  Some some(T c) { result = O::some(c) }
+}
+
+private module GetLocationType<TypeWithLocationInfo Location> {
+  signature class TypeWithGetLocation {
+    bindingset[this]
+    string toString();
+
+    Location getLocation();
+  }
+}
+
+/**
+ * Constructs an `Option` type that is a disjoint union of the given type and an
+ * additional singleton element, and has a `hasLocationInfo` predicate.
+ * `T` must have a `getLocation` predicate with a result type of `Location`.
+ */
+module LocOption2<TypeWithLocationInfo Location, GetLocationType<Location>::TypeWithGetLocation T> {
+  private module O = Option<T>;
+
+  final private class BOption = O::Option;
+
+  final private class BNone = O::None;
+
+  final private class BSome = O::Some;
+
+  /**
+   * An option type. This is either a singleton `None` or a `Some` wrapping the
+   * given type.
+   */
+  class Option extends BOption {
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startColumn` of line `startLine` to
+     * column `endColumn` of line `endLine` in file `filepath`.
+     * For more information, see
+     * [Providing locations in CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+     */
+    predicate hasLocationInfo(
+      string filePath, int startLine, int startColumn, int endLine, int endColumn
+    ) {
+      this.isNone() and
+      filePath = "" and
+      startLine = 0 and
+      startColumn = 0 and
+      endLine = 0 and
+      endColumn = 0
+      or
+      this.asSome()
+          .getLocation()
+          .hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
     }
   }
 
