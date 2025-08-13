@@ -936,6 +936,77 @@ private module Cached {
     ValueNumber getUnary() { result.getAnInstruction() = instr.getUnary() }
   }
 
+  signature predicate sinkSig(Instruction instr);
+
+  private module BooleanInstruction<sinkSig/1 isSink> {
+    /**
+     * Holds if `i1` flows to `i2` in a single step and `i2` is not an
+     * instruction that produces a value of Boolean type.
+     */
+    private predicate stepToNonBoolean(Instruction i1, Instruction i2) {
+      not i2.getResultIRType() instanceof IRBooleanType and
+      (
+        i2.(CopyInstruction).getSourceValue() = i1
+        or
+        i2.(ConvertInstruction).getUnary() = i1
+        or
+        i2.(BuiltinExpectCallInstruction).getArgument(0) = i1
+      )
+    }
+
+    private predicate rev(Instruction instr) {
+      isSink(instr)
+      or
+      exists(Instruction instr1 |
+        rev(instr1) and
+        stepToNonBoolean(instr, instr1)
+      )
+    }
+
+    private predicate hasBooleanType(Instruction instr) {
+      instr.getResultIRType() instanceof IRBooleanType
+    }
+
+    private predicate fwd(Instruction instr) {
+      rev(instr) and
+      (
+        hasBooleanType(instr)
+        or
+        exists(Instruction instr0 |
+          fwd(instr0) and
+          stepToNonBoolean(instr0, instr)
+        )
+      )
+    }
+
+    private predicate prunedStep(Instruction i1, Instruction i2) {
+      fwd(i1) and
+      fwd(i2) and
+      stepToNonBoolean(i1, i2)
+    }
+
+    private predicate stepsPlus(Instruction i1, Instruction i2) =
+      doublyBoundedFastTC(prunedStep/2, hasBooleanType/1, isSink/1)(i1, i2)
+
+    /**
+     * Gets the Boolean-typed instruction that defines `instr` before any
+     * integer conversions are applied, if any.
+     */
+    Instruction get(Instruction instr) {
+      isSink(instr) and
+      (
+        result = instr
+        or
+        stepsPlus(result, instr)
+      ) and
+      hasBooleanType(result)
+    }
+  }
+
+  private predicate isUnaryComparesEqLeft(Instruction instr) {
+    unary_compares_eq(_, instr.getAUse(), 0, _, _)
+  }
+
   /**
    * Holds if `left == right + k` is `areEqual` given that test is `testIsTrue`.
    *
@@ -971,7 +1042,8 @@ private module Cached {
       // 1. test = value -> int(l) = 0 is !bv
       unary_compares_eq(test, l, 0, bv.getValue().booleanNot(), value) and
       // 2. l = bv -> left + right is areEqual
-      compares_eq(valueNumberOfOperand(l), left, right, k, areEqual, bv)
+      compares_eq(valueNumber(BooleanInstruction<isUnaryComparesEqLeft/1>::get(l.getDef())), left,
+        right, k, areEqual, bv)
       // We want this to hold:
       // `test = value -> left + right is areEqual`
       // Applying 2 we need to show:
@@ -1021,7 +1093,8 @@ private module Cached {
     // See argument for why this is correct in compares_eq
     exists(Operand l, BooleanValue bv |
       unary_compares_eq(test, l, 0, bv.getValue().booleanNot(), value) and
-      unary_compares_eq(valueNumberOfOperand(l), op, k, areEqual, bv)
+      unary_compares_eq(valueNumber(BooleanInstruction<isUnaryComparesEqLeft/1>::get(l.getDef())),
+        op, k, areEqual, bv)
     )
     or
     unary_compares_eq(test.(BuiltinExpectCallValueNumber).getCondition(), op, k, areEqual, value)
@@ -1119,17 +1192,17 @@ private module Cached {
     )
   }
 
+  private predicate isBuiltInExpectArg(Instruction instr) {
+    instr = any(BuiltinExpectCallInstruction buildinExpect).getArgument(0)
+  }
+
   /** A call to the builtin operation `__builtin_expect`. */
   private class BuiltinExpectCallInstruction extends CallInstruction {
     BuiltinExpectCallInstruction() { this.getStaticCallTarget().hasName("__builtin_expect") }
 
     /** Gets the condition of this call. */
-    Instruction getCondition() { result = this.getConditionOperand().getDef() }
-
-    Operand getConditionOperand() {
-      // The first parameter of `__builtin_expect` has type `long`. So we skip
-      // the conversion when inferring guards.
-      result = this.getArgument(0).(ConvertInstruction).getUnaryOperand()
+    Instruction getCondition() {
+      result = BooleanInstruction<isBuiltInExpectArg/1>::get(this.getArgument(0))
     }
   }
 
@@ -1222,7 +1295,8 @@ private module Cached {
     // See argument for why this is correct in compares_eq
     exists(Operand l, BooleanValue bv |
       unary_compares_eq(test, l, 0, bv.getValue().booleanNot(), value) and
-      compares_lt(valueNumberOfOperand(l), left, right, k, isLt, bv)
+      compares_lt(valueNumber(BooleanInstruction<isUnaryComparesEqLeft/1>::get(l.getDef())), left,
+        right, k, isLt, bv)
     )
   }
 
@@ -1247,7 +1321,8 @@ private module Cached {
     // See argument for why this is correct in compares_eq
     exists(Operand l, BooleanValue bv |
       unary_compares_eq(test, l, 0, bv.getValue().booleanNot(), value) and
-      compares_lt(valueNumberOfOperand(l), op, k, isLt, bv)
+      compares_lt(valueNumber(BooleanInstruction<isUnaryComparesEqLeft/1>::get(l.getDef())), op, k,
+        isLt, bv)
     )
   }
 
