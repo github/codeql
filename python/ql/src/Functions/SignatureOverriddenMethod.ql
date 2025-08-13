@@ -15,6 +15,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.internal.DataFlowDispatch
+import codeql.util.Option
 
 predicate overrides(Function base, Function sub) {
   base.getName() = sub.getName() and
@@ -54,7 +55,7 @@ predicate weakSignatureMismatch(Function base, Function sub, string msg) {
     msg =
       "requires " +
         plural(sub.getMinPositionalArguments() - base.getMinPositionalArguments(),
-          "more positional argument") + "than some possible calls to overridden $@."
+          "more positional argument") + " than some possible calls to overridden $@."
     or
     sub.getMaxPositionalArguments() < base.getMaxPositionalArguments() and
     msg =
@@ -173,16 +174,28 @@ Call chooseASignatureMismatchWitness(Function base, Function sub) {
   )
 }
 
-from Function base, Function sub, string msg, string extraMsg, Call call
+module CallOption = LocOption2<Location, Call>;
+
+from Function base, Function sub, string msg, string extraMsg, CallOption::Option call
 where
   not sub.isSpecialMethod() and
   sub.getName() != "__init__" and
   not ignore(sub) and
   not ignore(base) and
   matchingStatic(base, sub) and
-  weakSignatureMismatch(base, sub, msg) and
-  //msg = " has a different signature to $@." and
-  call = chooseASignatureMismatchWitness(base, sub) and
-  extraMsg =
-    " $@ correctly calls the base method, but does not match the signature of the overriding method."
+  (
+    call.asSome() = chooseASignatureMismatchWitness(base, sub) and
+    extraMsg =
+      " $@ correctly calls the base method, but does not match the signature of the overriding method." and
+    (
+      strongSignatureMismatch(base, sub, msg)
+      or
+      not strongSignatureMismatch(base, sub, _) and
+      weakSignatureMismatch(base, sub, msg)
+    )
+    or
+    not exists(getASignatureMismatchWitness(base, sub)) and
+    strongSignatureMismatch(base, sub, msg) and
+    extraMsg = ""
+  )
 select sub, "This method " + msg + extraMsg, base, base.getQualifiedName(), call, "This call"
