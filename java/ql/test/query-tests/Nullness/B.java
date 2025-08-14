@@ -471,4 +471,29 @@ public class B {
       }
     }
   }
+
+  public void loopCorrTest3(String[] ss) {
+    Object x = null;
+    Object t = null;
+    for (String s : ss) {
+      if (t == null) {
+        t = s;
+      } else {
+        if (t instanceof String) {
+          x = new Object();
+          t = new Object();
+        }
+        // correctly guarded by t: null -> String -> Object
+        x.hashCode(); // Spurious NPE - false positive
+      }
+    }
+  }
+
+  public void initCorr(boolean b) {
+    Object o2 = b ? null : "";
+    if (b)
+      o2 = "";
+    else
+      o2.hashCode(); // OK
+  }
 }
