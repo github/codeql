@@ -276,14 +276,11 @@ resolvePath
 | main.rs:635:9:635:36 | GenericStruct::<...> | main.rs:578:5:581:5 | struct GenericStruct |
 | main.rs:635:9:635:47 | ...::call_both | main.rs:601:9:604:9 | fn call_both |
 | main.rs:635:25:635:35 | Implementor | main.rs:607:5:607:23 | struct Implementor |
-| main.rs:641:3:641:12 | proc_macro | {EXTERNAL LOCATION} | Crate(proc_macro@0.0.0) |
 | main.rs:641:3:641:12 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
 | main.rs:641:3:641:24 | ...::add_suffix | proc_macro.rs:4:1:12:1 | fn add_suffix |
 | main.rs:645:6:645:12 | AStruct | main.rs:644:1:644:17 | struct AStruct |
-| main.rs:647:7:647:16 | proc_macro | {EXTERNAL LOCATION} | Crate(proc_macro@0.0.0) |
 | main.rs:647:7:647:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
 | main.rs:647:7:647:28 | ...::add_suffix | proc_macro.rs:4:1:12:1 | fn add_suffix |
-| main.rs:650:7:650:16 | proc_macro | {EXTERNAL LOCATION} | Crate(proc_macro@0.0.0) |
 | main.rs:650:7:650:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
 | main.rs:650:7:650:28 | ...::add_suffix | proc_macro.rs:4:1:12:1 | fn add_suffix |
 | main.rs:655:9:655:11 | std | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
