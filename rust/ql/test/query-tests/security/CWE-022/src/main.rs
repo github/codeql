@@ -13,10 +13,10 @@ fn tainted_path_handler_bad(
 //#[handler]
 fn tainted_path_handler_good(Query(file_name): Query<String>) -> Result<String> {
     // GOOD: ensure that the filename has no path separators or parent directory references
-    if file_name.contains("..") || file_name.contains("/") || file_name.contains("\\") {
+    if file_name.contains("..") || file_name.contains("/") || file_name.contains("\\") { // $ path-injection-barrier
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
-    let file_path = PathBuf::from(file_name);
+    let file_path = PathBuf::from(file_name); // $ path-injection-barrier (following the last `.contains` check)
     fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink
 }
 
@@ -29,12 +29,12 @@ fn tainted_path_handler_folder_good(Query(file_path): Query<String>) -> Result<S
     if !file_path.starts_with(public_path) {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: path-injection-checked
 }
 
 //#[handler]
 fn tainted_path_handler_folder_almost_good1(
-    Query(file_path): Query<String>, // $ MISSING: Source=remote4
+    Query(file_path): Query<String>, // $ MISSING: Source=remote2
 ) -> Result<String> {
     let public_path = PathBuf::from("/var/www/public_html");
     let file_path = public_path.join(PathBuf::from(file_path));
@@ -42,12 +42,37 @@ fn tainted_path_handler_folder_almost_good1(
     if !file_path.starts_with(public_path) {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: Alert[rust/path-injection]=remote4 -- we cannot resolve the `join` call above, because it needs a `PathBuf -> Path` `Deref`
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: path-injection-checked Alert[rust/path-injection]=remote2 -- we cannot resolve the `join` call above, because it needs a `PathBuf -> Path` `Deref`
+}
+
+//#[handler]
+fn tainted_path_handler_folder_good_simpler(Query(file_path): Query<String>) -> Result<String> {
+    let public_path = "/var/www/public_html";
+    let file_path = Path::new(&file_path);
+    let file_path = file_path.canonicalize().unwrap();
+    // GOOD: ensure that the path stays within the public folder
+    if !file_path.starts_with(public_path) {
+        return Err(Error::from_status(StatusCode::BAD_REQUEST));
+    }
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: path-injection-checked
+}
+
+//#[handler]
+fn tainted_path_handler_folder_almost_good1_simpler(
+    Query(file_path): Query<String>, // $ MISSING: Source=remote3
+) -> Result<String> {
+    let public_path = "/var/www/public_html";
+    let file_path = Path::new(&file_path);
+    // BAD: the path could still contain `..` and escape the public folder
+    if !file_path.starts_with(public_path) {
+        return Err(Error::from_status(StatusCode::BAD_REQUEST));
+    }
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-checked path-injection-sink MISSING: Alert[rust/path-injection]=remote3
 }
 
 //#[handler]
 fn tainted_path_handler_folder_almost_good2(
-    Query(file_path): Query<String>, // $ MISSING: Source=remote5
+    Query(file_path): Query<String>, // $ MISSING: Source=remote4
 ) -> Result<String> {
     let public_path = PathBuf::from("/var/www/public_html");
     let file_path = public_path.join(PathBuf::from(file_path));
@@ -56,7 +81,21 @@ fn tainted_path_handler_folder_almost_good2(
     if file_path.starts_with(public_path) {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: Alert[rust/path-injection]=remote5 -- we cannot resolve the `join` call above, because it needs a `PathBuf -> Path` `Deref`
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: path-injection-checked Alert[rust/path-injection]=remote4 -- we cannot resolve the `join` call above, because it needs a `PathBuf -> Path` `Deref`
+}
+
+//#[handler]
+fn tainted_path_handler_folder_almost_good3(
+    Query(file_path): Query<String>, // $ MISSING: Source=remote5
+) -> Result<String> {
+    let public_path = "/var/www/public_html";
+    let file_path = Path::new(&file_path);
+    // BAD: the starts_with check is ineffective before canonicalization, the path could still contain `..`
+    if !file_path.starts_with(public_path) {
+        return Err(Error::from_status(StatusCode::BAD_REQUEST));
+    }
+    let file_path = file_path.canonicalize().unwrap(); // $ path-injection-checked
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: Alert[rust/path-injection]=remote5
 }
 
 fn sinks(path1: &Path, path2: &Path) {
