@@ -45,13 +45,21 @@ private import semmle.code.java.Collections
 private import semmle.code.java.controlflow.internal.Preconditions
 
 /** Gets an expression that may be `null`. */
-Expr nullExpr() {
-  result instanceof NullLiteral or
-  result.(ChooseExpr).getAResultExpr() = nullExpr() or
-  result.(AssignExpr).getSource() = nullExpr() or
-  result.(CastExpr).getExpr() = nullExpr() or
-  result.(ImplicitCastExpr).getExpr() = nullExpr() or
-  result instanceof SafeCastExpr
+Expr nullExpr() { result = nullExpr(_) }
+
+/** Gets an expression that may be `null`. */
+private Expr nullExpr(Expr reason) {
+  result instanceof NullLiteral and reason = result
+  or
+  result.(ChooseExpr).getAResultExpr() = nullExpr(reason)
+  or
+  result.(AssignExpr).getSource() = nullExpr(reason)
+  or
+  result.(CastExpr).getExpr() = nullExpr(reason)
+  or
+  result.(ImplicitCastExpr).getExpr() = nullExpr(reason)
+  or
+  result instanceof SafeCastExpr and reason = result
 }
 
 /** An expression of a boxed type that is implicitly unboxed. */
@@ -174,12 +182,13 @@ private predicate firstVarDereferenceInBlock(BasicBlock bb, SsaVariable v, VarAc
 }
 
 /** A variable suspected of being `null`. */
-private predicate varMaybeNull(SsaVariable v, string msg, Expr reason) {
+private predicate varMaybeNull(SsaVariable v, ControlFlowNode node, string msg, Expr reason) {
   // A variable compared to null might be null.
   exists(Expr e |
     reason = e and
     msg = "as suggested by $@ null guard" and
     guardSuggestsVarMaybeNull(e, v) and
+    node = v.getCfgNode() and
     not v instanceof SsaPhiNode and
     not clearlyNotNull(v) and
     // Comparisons in finally blocks are excluded since missing exception edges in the CFG could otherwise yield FPs.
@@ -195,6 +204,7 @@ private predicate varMaybeNull(SsaVariable v, string msg, Expr reason) {
   // A parameter might be null if there is a null argument somewhere.
   exists(Parameter p, Expr arg |
     v.(SsaImplicitInit).isParameterDefinition(p) and
+    node = v.getCfgNode() and
     p.getAnArgument() = arg and
     reason = arg and
     msg = "because of $@ null argument" and
@@ -205,7 +215,7 @@ private predicate varMaybeNull(SsaVariable v, string msg, Expr reason) {
   // If the source of a variable is null then the variable may be null.
   exists(VariableAssign def |
     v.(SsaExplicitUpdate).getDefiningExpr() = def and
-    def.getSource() = nullExpr() and
+    def.getSource() = nullExpr(node.asExpr()) and
     reason = def and
     msg = "because of $@ assignment"
   )
@@ -299,7 +309,7 @@ private predicate leavingFinally(BasicBlock bb1, BasicBlock bb2, boolean normale
 }
 
 private predicate ssaSourceVarMaybeNull(SsaSourceVariable v) {
-  varMaybeNull(v.getAnSsaVariable(), _, _)
+  varMaybeNull(v.getAnSsaVariable(), _, _, _)
 }
 
 /**
@@ -352,7 +362,7 @@ private predicate nullVarStep(
 private predicate varMaybeNullInBlock(
   SsaVariable ssa, SsaSourceVariable v, BasicBlock bb, boolean storedcompletion
 ) {
-  varMaybeNull(ssa, _, _) and
+  varMaybeNull(ssa, _, _, _) and
   bb = ssa.getBasicBlock() and
   storedcompletion = false and
   v = ssa.getSourceVariable()
@@ -378,7 +388,7 @@ private predicate varMaybeNullInBlock_origin(
   SsaVariable origin, SsaVariable ssa, BasicBlock bb, boolean storedcompletion
 ) {
   nullDerefCandidateVariable(ssa.getSourceVariable()) and
-  varMaybeNull(ssa, _, _) and
+  varMaybeNull(ssa, _, _, _) and
   bb = ssa.getBasicBlock() and
   storedcompletion = false and
   origin = ssa
@@ -546,7 +556,7 @@ private predicate varMaybeNullInBlock_corrCond(
     not varConditionallyNull(ssa, cond1, _) and
     (branch = true or branch = false)
   ) and
-  varMaybeNull(ssa, _, _) and
+  varMaybeNull(ssa, _, _, _) and
   bb = ssa.getBasicBlock() and
   storedcompletion = false and
   origin = ssa
@@ -752,7 +762,7 @@ private predicate varMaybeNullInBlock_trackVar(
       isReset(trackssa, trackvar, kind, init, _)
     )
   ) and
-  varMaybeNull(ssa, _, _) and
+  varMaybeNull(ssa, _, _, _) and
   bb = ssa.getBasicBlock() and
   storedcompletion = false and
   origin = ssa
@@ -804,7 +814,7 @@ private predicate varMaybeNullInBlock_trackVar(
 predicate nullDeref(SsaSourceVariable v, VarAccess va, string msg, Expr reason) {
   exists(SsaVariable origin, SsaVariable ssa, BasicBlock bb |
     nullDerefCandidate(origin, va) and
-    varMaybeNull(origin, msg, reason) and
+    varMaybeNull(origin, _, msg, reason) and
     ssa.getSourceVariable() = v and
     firstVarDereferenceInBlock(bb, ssa, va) and
     forall(ConditionBlock cond | correlatedConditions(v, cond, _, _) |
