@@ -4,7 +4,7 @@
  *              insertion of forged log entries by a malicious user.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 7.8
+ * @security-severity 2.6
  * @precision medium
  * @id rust/log-injection
  * @tags security
