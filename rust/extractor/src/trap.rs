@@ -16,7 +16,7 @@ pub trait AsTrapKeyPart {
 
 impl AsTrapKeyPart for UntypedLabel {
     fn as_key_part(&self) -> String {
-        format!("{{{}}}", self)
+        format!("{{{self}}}")
     }
 }
 

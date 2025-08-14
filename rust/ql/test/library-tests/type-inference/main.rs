@@ -2444,6 +2444,7 @@ mod explicit_type_args {
 }
 
 mod tuples {
+    #[derive(Debug, Clone, Copy)]
     struct S1 {}
 
     impl S1 {
@@ -2484,6 +2485,9 @@ mod tuples {
             _ => print!("expected"),
         }
         let x = pair.0; // $ type=x:i32
+
+        let y = &S1::get_pair(); // $ target=get_pair
+        y.0.foo(); // $ target=foo
     }
 }
 
