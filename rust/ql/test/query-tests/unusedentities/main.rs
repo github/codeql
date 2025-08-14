@@ -1,3 +1,4 @@
+#![feature(let_chains)]
 mod more;
 mod unreachable;
 
@@ -318,7 +319,7 @@ fn if_lets_matches() {
         No => {}
     }
 
-    if let j = Yes { // $ Alert[rust/unused-variable]
+    if let j = Yes { // $ Alert[rust/unused-value]
     }
 
     if let k = Yes {
@@ -371,6 +372,10 @@ fn if_lets_matches() {
         right2) = // $ MISSING: Alert[rust/unused-value] $ SPURIOUS: Alert[rust/unused-variable]
         pair;
     _ = left2;
+
+    if let Some(m) = Some(10)
+        && m > 0
+    {}
 }
 
 fn shadowing() -> i32 {
