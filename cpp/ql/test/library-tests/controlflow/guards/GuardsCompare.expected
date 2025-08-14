@@ -1,768 +1,1039 @@
-| 7 | 0 < x+0 when ... > ... is true |
-| 7 | 0 >= x+0 when ... > ... is false |
-| 7 | ... > ... != 0 when ... > ... is true |
-| 7 | ... > ... != 1 when ... > ... is false |
-| 7 | ... > ... == 0 when ... > ... is false |
-| 7 | ... > ... == 1 when ... > ... is true |
-| 7 | x < 0+1 when ... > ... is false |
-| 7 | x < 1 when ... > ... is false |
-| 7 | x >= 0+1 when ... > ... is true |
-| 7 | x >= 1 when ... > ... is true |
-| 17 | 0 < x+1 when ... < ... is false |
-| 17 | 0 >= x+1 when ... && ... is true |
-| 17 | 0 >= x+1 when ... < ... is true |
-| 17 | 1 < y+0 when ... && ... is true |
-| 17 | 1 < y+0 when ... > ... is true |
-| 17 | 1 >= y+0 when ... > ... is false |
-| 17 | ... < ... != 0 when ... && ... is true |
-| 17 | ... < ... != 0 when ... < ... is true |
-| 17 | ... < ... != 1 when ... < ... is false |
-| 17 | ... < ... == 0 when ... < ... is false |
-| 17 | ... < ... == 1 when ... && ... is true |
-| 17 | ... < ... == 1 when ... < ... is true |
-| 17 | ... > ... != 0 when ... && ... is true |
-| 17 | ... > ... != 0 when ... > ... is true |
-| 17 | ... > ... != 1 when ... > ... is false |
-| 17 | ... > ... == 0 when ... > ... is false |
-| 17 | ... > ... == 1 when ... && ... is true |
-| 17 | ... > ... == 1 when ... > ... is true |
-| 17 | x < 0 when ... && ... is true |
-| 17 | x < 0 when ... < ... is true |
-| 17 | x < 0+0 when ... && ... is true |
-| 17 | x < 0+0 when ... < ... is true |
-| 17 | x >= 0 when ... < ... is false |
-| 17 | x >= 0+0 when ... < ... is false |
-| 17 | y < 1+1 when ... > ... is false |
-| 17 | y < 2 when ... > ... is false |
-| 17 | y >= 1+1 when ... && ... is true |
-| 17 | y >= 1+1 when ... > ... is true |
-| 17 | y >= 2 when ... && ... is true |
-| 17 | y >= 2 when ... > ... is true |
-| 18 | call to get != 0 when call to get is true |
-| 18 | call to get != 1 when call to get is false |
-| 18 | call to get == 0 when call to get is false |
-| 18 | call to get == 1 when call to get is true |
-| 26 | 0 < x+0 when ... > ... is true |
-| 26 | 0 >= x+0 when ... > ... is false |
-| 26 | ... > ... != 0 when ... > ... is true |
-| 26 | ... > ... != 1 when ... > ... is false |
-| 26 | ... > ... == 0 when ... > ... is false |
-| 26 | ... > ... == 1 when ... > ... is true |
-| 26 | x < 0+1 when ... > ... is false |
-| 26 | x < 1 when ... > ... is false |
-| 26 | x >= 0+1 when ... > ... is true |
-| 26 | x >= 1 when ... > ... is true |
-| 31 | - ... != x+0 when ... == ... is false |
-| 31 | - ... == x+0 when ... == ... is true |
-| 31 | ... == ... != 0 when ... == ... is true |
-| 31 | ... == ... != 1 when ... == ... is false |
-| 31 | ... == ... == 0 when ... == ... is false |
-| 31 | ... == ... == 1 when ... == ... is true |
-| 31 | x != -1 when ... == ... is false |
-| 31 | x != - ...+0 when ... == ... is false |
-| 31 | x == -1 when ... == ... is true |
-| 31 | x == - ...+0 when ... == ... is true |
-| 34 | 10 < j+1 when ... < ... is false |
-| 34 | 10 >= j+1 when ... < ... is true |
-| 34 | ... < ... != 0 when ... < ... is true |
-| 34 | ... < ... != 1 when ... < ... is false |
-| 34 | ... < ... == 0 when ... < ... is false |
-| 34 | ... < ... == 1 when ... < ... is true |
-| 34 | j < 10 when ... < ... is true |
-| 34 | j < 10+0 when ... < ... is true |
-| 34 | j >= 10 when ... < ... is false |
-| 34 | j >= 10+0 when ... < ... is false |
-| 42 | 10 < j+1 when ... < ... is false |
-| 42 | 10 >= j+1 when ... < ... is true |
-| 42 | ... < ... != 0 when ... < ... is true |
-| 42 | ... < ... != 1 when ... < ... is false |
-| 42 | ... < ... == 0 when ... < ... is false |
-| 42 | ... < ... == 1 when ... < ... is true |
-| 42 | call to getABool != 0 when call to getABool is true |
-| 42 | call to getABool != 1 when call to getABool is false |
-| 42 | call to getABool == 0 when call to getABool is false |
-| 42 | call to getABool == 1 when call to getABool is true |
-| 42 | j < 10 when ... < ... is true |
-| 42 | j < 10+0 when ... < ... is true |
-| 42 | j >= 10 when ... < ... is false |
-| 42 | j >= 10+0 when ... < ... is false |
-| 44 | 0 < z+0 when ... > ... is true |
-| 44 | 0 >= z+0 when ... > ... is false |
-| 44 | ... > ... != 0 when ... > ... is true |
-| 44 | ... > ... != 1 when ... > ... is false |
-| 44 | ... > ... == 0 when ... > ... is false |
-| 44 | ... > ... == 1 when ... > ... is true |
-| 44 | z < 0+1 when ... > ... is false |
-| 44 | z < 1 when ... > ... is false |
-| 44 | z >= 0+1 when ... > ... is true |
-| 44 | z >= 1 when ... > ... is true |
-| 45 | 0 < y+0 when ... > ... is true |
-| 45 | 0 >= y+0 when ... > ... is false |
-| 45 | ... > ... != 0 when ... > ... is true |
-| 45 | ... > ... != 1 when ... > ... is false |
-| 45 | ... > ... == 0 when ... > ... is false |
-| 45 | ... > ... == 1 when ... > ... is true |
-| 45 | y < 0+1 when ... > ... is false |
-| 45 | y < 1 when ... > ... is false |
-| 45 | y >= 0+1 when ... > ... is true |
-| 45 | y >= 1 when ... > ... is true |
-| 58 | 0 != x+0 when ... == ... is false |
-| 58 | 0 != x+0 when ... \|\| ... is false |
-| 58 | 0 < y+1 when ... < ... is false |
-| 58 | 0 < y+1 when ... \|\| ... is false |
-| 58 | 0 == x+0 when ... == ... is true |
-| 58 | 0 >= y+1 when ... < ... is true |
-| 58 | ... < ... != 0 when ... < ... is true |
-| 58 | ... < ... != 1 when ... < ... is false |
-| 58 | ... < ... != 1 when ... \|\| ... is false |
-| 58 | ... < ... == 0 when ... < ... is false |
-| 58 | ... < ... == 0 when ... \|\| ... is false |
-| 58 | ... < ... == 1 when ... < ... is true |
-| 58 | ... == ... != 0 when ... == ... is true |
-| 58 | ... == ... != 1 when ... == ... is false |
-| 58 | ... == ... != 1 when ... \|\| ... is false |
-| 58 | ... == ... == 0 when ... == ... is false |
-| 58 | ... == ... == 0 when ... \|\| ... is false |
-| 58 | ... == ... == 1 when ... == ... is true |
-| 58 | x != 0 when ... == ... is false |
-| 58 | x != 0 when ... \|\| ... is false |
-| 58 | x != 0+0 when ... == ... is false |
-| 58 | x != 0+0 when ... \|\| ... is false |
-| 58 | x == 0 when ... == ... is true |
-| 58 | x == 0+0 when ... == ... is true |
-| 58 | y < 0 when ... < ... is true |
-| 58 | y < 0+0 when ... < ... is true |
-| 58 | y >= 0 when ... < ... is false |
-| 58 | y >= 0 when ... \|\| ... is false |
-| 58 | y >= 0+0 when ... < ... is false |
-| 58 | y >= 0+0 when ... \|\| ... is false |
-| 61 | i == 0 when i is Case[0] |
-| 61 | i == 1 when i is Case[1] |
-| 61 | i == 2 when i is Case[2] |
-| 74 | i < 11 when i is Case[0..10] |
-| 74 | i < 21 when i is Case[11..20] |
-| 74 | i >= 0 when i is Case[0..10] |
-| 74 | i >= 11 when i is Case[11..20] |
-| 75 | 0 != x+0 when ... == ... is false |
-| 75 | 0 == x+0 when ... == ... is true |
-| 75 | ... == ... != 0 when ... == ... is true |
-| 75 | ... == ... != 1 when ... == ... is false |
-| 75 | ... == ... == 0 when ... == ... is false |
-| 75 | ... == ... == 1 when ... == ... is true |
-| 75 | x != 0 when ... == ... is false |
-| 75 | x != 0+0 when ... == ... is false |
-| 75 | x == 0 when ... == ... is true |
-| 75 | x == 0+0 when ... == ... is true |
-| 85 | 0 != x+0 when ... == ... is false |
-| 85 | 0 != y+0 when ... != ... is true |
-| 85 | 0 != y+0 when ... && ... is true |
-| 85 | 0 == x+0 when ... && ... is true |
-| 85 | 0 == x+0 when ... == ... is true |
-| 85 | 0 == y+0 when ... != ... is false |
-| 85 | ... != ... != 0 when ... != ... is true |
-| 85 | ... != ... != 0 when ... && ... is true |
-| 85 | ... != ... != 1 when ... != ... is false |
-| 85 | ... != ... == 0 when ... != ... is false |
-| 85 | ... != ... == 1 when ... != ... is true |
-| 85 | ... != ... == 1 when ... && ... is true |
-| 85 | ... == ... != 0 when ... && ... is true |
-| 85 | ... == ... != 0 when ... == ... is true |
-| 85 | ... == ... != 1 when ... == ... is false |
-| 85 | ... == ... == 0 when ... == ... is false |
-| 85 | ... == ... == 1 when ... && ... is true |
-| 85 | ... == ... == 1 when ... == ... is true |
-| 85 | x != 0 when ... == ... is false |
-| 85 | x != 0+0 when ... == ... is false |
-| 85 | x == 0 when ... && ... is true |
-| 85 | x == 0 when ... == ... is true |
-| 85 | x == 0+0 when ... && ... is true |
-| 85 | x == 0+0 when ... == ... is true |
-| 85 | y != 0 when ... != ... is true |
-| 85 | y != 0 when ... && ... is true |
-| 85 | y != 0+0 when ... != ... is true |
-| 85 | y != 0+0 when ... && ... is true |
-| 85 | y == 0 when ... != ... is false |
-| 85 | y == 0+0 when ... != ... is false |
-| 93 | c != 0 when c is true |
-| 93 | c != 1 when c is false |
-| 93 | c == 0 when c is false |
-| 93 | c == 1 when c is true |
-| 94 | 0 != x+0 when ... != ... is true |
-| 94 | 0 == x+0 when ... != ... is false |
-| 94 | ... != ... != 0 when ... != ... is true |
-| 94 | ... != ... != 1 when ... != ... is false |
-| 94 | ... != ... == 0 when ... != ... is false |
-| 94 | ... != ... == 1 when ... != ... is true |
-| 94 | x != 0 when ... != ... is true |
-| 94 | x != 0+0 when ... != ... is true |
-| 94 | x == 0 when ... != ... is false |
-| 94 | x == 0+0 when ... != ... is false |
-| 99 | f != 0 when f is true |
-| 99 | f != 1 when f is false |
-| 99 | f == 0 when f is false |
-| 99 | f == 1 when f is true |
-| 102 | 10 < j+1 when ... < ... is false |
-| 102 | 10 >= j+1 when ... < ... is true |
-| 102 | ... < ... != 0 when ... < ... is true |
-| 102 | ... < ... != 1 when ... < ... is false |
-| 102 | ... < ... == 0 when ... < ... is false |
-| 102 | ... < ... == 1 when ... < ... is true |
-| 102 | j < 10 when ... < ... is true |
-| 102 | j < 10+0 when ... < ... is true |
-| 102 | j >= 10 when ... < ... is false |
-| 102 | j >= 10+0 when ... < ... is false |
-| 105 | 0.0 != f+0 when ... != ... is true |
-| 105 | 0.0 == f+0 when ... != ... is false |
-| 105 | ... != ... != 0 when ... != ... is true |
-| 105 | ... != ... != 1 when ... != ... is false |
-| 105 | ... != ... == 0 when ... != ... is false |
-| 105 | ... != ... == 1 when ... != ... is true |
-| 105 | f != 0.0+0 when ... != ... is true |
-| 105 | f == 0.0+0 when ... != ... is false |
-| 109 | 0 != x+0 when ... == ... is false |
-| 109 | 0 != x+0 when ... \|\| ... is false |
-| 109 | 0 < y+1 when ... < ... is false |
-| 109 | 0 < y+1 when ... \|\| ... is false |
-| 109 | 0 == x+0 when ... == ... is true |
-| 109 | 0 >= y+1 when ... < ... is true |
-| 109 | ... < ... != 0 when ... < ... is true |
-| 109 | ... < ... != 1 when ... < ... is false |
-| 109 | ... < ... != 1 when ... \|\| ... is false |
-| 109 | ... < ... == 0 when ... < ... is false |
-| 109 | ... < ... == 0 when ... \|\| ... is false |
-| 109 | ... < ... == 1 when ... < ... is true |
-| 109 | ... == ... != 0 when ... == ... is true |
-| 109 | ... == ... != 1 when ... == ... is false |
-| 109 | ... == ... != 1 when ... \|\| ... is false |
-| 109 | ... == ... == 0 when ... == ... is false |
-| 109 | ... == ... == 0 when ... \|\| ... is false |
-| 109 | ... == ... == 1 when ... == ... is true |
-| 109 | x != 0 when ... == ... is false |
-| 109 | x != 0 when ... \|\| ... is false |
-| 109 | x != 0+0 when ... == ... is false |
-| 109 | x != 0+0 when ... \|\| ... is false |
-| 109 | x == 0 when ... == ... is true |
-| 109 | x == 0+0 when ... == ... is true |
-| 109 | y < 0 when ... < ... is true |
-| 109 | y < 0+0 when ... < ... is true |
-| 109 | y >= 0 when ... < ... is false |
-| 109 | y >= 0 when ... \|\| ... is false |
-| 109 | y >= 0+0 when ... < ... is false |
-| 109 | y >= 0+0 when ... \|\| ... is false |
-| 111 | 0.0 != i+0 when ... != ... is true |
-| 111 | 0.0 == i+0 when ... != ... is false |
-| 111 | ... != ... != 0 when ... != ... is true |
-| 111 | ... != ... != 1 when ... != ... is false |
-| 111 | ... != ... == 0 when ... != ... is false |
-| 111 | ... != ... == 1 when ... != ... is true |
-| 111 | i != 0.0+0 when ... != ... is true |
-| 111 | i == 0.0+0 when ... != ... is false |
-| 122 | b != 0 when b is true |
-| 122 | b != 1 when b is false |
-| 122 | b == 0 when b is false |
-| 122 | b == 1 when b is true |
-| 125 | ! ... != 0 when ! ... is true |
-| 125 | ! ... != 0 when call to safe is false |
-| 125 | ! ... != 1 when ! ... is false |
-| 125 | ! ... != 1 when call to safe is true |
-| 125 | ! ... == 0 when ! ... is false |
-| 125 | ! ... == 0 when call to safe is true |
-| 125 | ! ... == 1 when ! ... is true |
-| 125 | ! ... == 1 when call to safe is false |
-| 125 | call to safe != 0 when ! ... is false |
-| 125 | call to safe != 0 when call to safe is true |
-| 125 | call to safe != 1 when ! ... is true |
-| 125 | call to safe != 1 when call to safe is false |
-| 125 | call to safe == 0 when ! ... is true |
-| 125 | call to safe == 0 when call to safe is false |
-| 125 | call to safe == 1 when ! ... is false |
-| 125 | call to safe == 1 when call to safe is true |
-| 126 | 1 != 0 when 1 is true |
-| 126 | 1 != 0 when ... && ... is true |
-| 126 | 1 != 1 when 1 is false |
-| 126 | 1 == 0 when 1 is false |
-| 126 | 1 == 1 when 1 is true |
-| 126 | 1 == 1 when ... && ... is true |
-| 126 | call to test3_condition != 0 when ... && ... is true |
-| 126 | call to test3_condition != 0 when call to test3_condition is true |
-| 126 | call to test3_condition != 1 when call to test3_condition is false |
-| 126 | call to test3_condition == 0 when call to test3_condition is false |
-| 126 | call to test3_condition == 1 when ... && ... is true |
-| 126 | call to test3_condition == 1 when call to test3_condition is true |
-| 131 | ... + ... != a+0 when call to __builtin_expect is false |
-| 131 | ... + ... == a+0 when call to __builtin_expect is true |
-| 131 | a != ... + ...+0 when call to __builtin_expect is false |
-| 131 | a != b+42 when call to __builtin_expect is false |
-| 131 | a == ... + ...+0 when call to __builtin_expect is true |
-| 131 | a == b+42 when call to __builtin_expect is true |
-| 131 | b != 0 when b is true |
-| 131 | b != 1 when b is false |
-| 131 | b != a+-42 when call to __builtin_expect is false |
-| 131 | b == 0 when b is false |
-| 131 | b == 1 when b is true |
-| 131 | b == a+-42 when call to __builtin_expect is true |
-| 131 | call to __builtin_expect != 0 when call to __builtin_expect is true |
-| 131 | call to __builtin_expect != 1 when call to __builtin_expect is false |
-| 131 | call to __builtin_expect == 0 when call to __builtin_expect is false |
-| 131 | call to __builtin_expect == 1 when call to __builtin_expect is true |
-| 135 | ... + ... != a+0 when call to __builtin_expect is true |
-| 135 | ... + ... == a+0 when call to __builtin_expect is false |
-| 135 | a != ... + ...+0 when call to __builtin_expect is true |
-| 135 | a != b+42 when call to __builtin_expect is true |
-| 135 | a == ... + ...+0 when call to __builtin_expect is false |
-| 135 | a == b+42 when call to __builtin_expect is false |
-| 135 | b != a+-42 when call to __builtin_expect is true |
-| 135 | b == a+-42 when call to __builtin_expect is false |
-| 135 | call to __builtin_expect != 0 when call to __builtin_expect is true |
-| 135 | call to __builtin_expect != 1 when call to __builtin_expect is false |
-| 135 | call to __builtin_expect == 0 when call to __builtin_expect is false |
-| 135 | call to __builtin_expect == 1 when call to __builtin_expect is true |
-| 137 | 0 != 0 when 0 is true |
-| 137 | 0 != 1 when 0 is false |
-| 137 | 0 == 0 when 0 is false |
-| 137 | 0 == 1 when 0 is true |
-| 141 | 42 != a+0 when call to __builtin_expect is false |
-| 141 | 42 == a+0 when call to __builtin_expect is true |
-| 141 | a != 42 when call to __builtin_expect is false |
-| 141 | a != 42+0 when call to __builtin_expect is false |
-| 141 | a == 42 when call to __builtin_expect is true |
-| 141 | a == 42+0 when call to __builtin_expect is true |
-| 141 | call to __builtin_expect != 0 when call to __builtin_expect is true |
-| 141 | call to __builtin_expect != 1 when call to __builtin_expect is false |
-| 141 | call to __builtin_expect == 0 when call to __builtin_expect is false |
-| 141 | call to __builtin_expect == 1 when call to __builtin_expect is true |
-| 145 | 42 != a+0 when call to __builtin_expect is true |
-| 145 | 42 == a+0 when call to __builtin_expect is false |
-| 145 | a != 42 when call to __builtin_expect is true |
-| 145 | a != 42+0 when call to __builtin_expect is true |
-| 145 | a == 42 when call to __builtin_expect is false |
-| 145 | a == 42+0 when call to __builtin_expect is false |
-| 145 | call to __builtin_expect != 0 when call to __builtin_expect is true |
-| 145 | call to __builtin_expect != 1 when call to __builtin_expect is false |
-| 145 | call to __builtin_expect == 0 when call to __builtin_expect is false |
-| 145 | call to __builtin_expect == 1 when call to __builtin_expect is true |
-| 146 | ! ... != 0 when ! ... is true |
-| 146 | ! ... != 0 when x is false |
-| 146 | ! ... != 1 when ! ... is false |
-| 146 | ! ... != 1 when x is true |
-| 146 | ! ... == 0 when ! ... is false |
-| 146 | ! ... == 0 when x is true |
-| 146 | ! ... == 1 when ! ... is true |
-| 146 | ! ... == 1 when x is false |
-| 146 | x != 0 when ! ... is false |
-| 146 | x != 0 when x is true |
-| 146 | x == 0 when ! ... is true |
-| 146 | x == 0 when x is false |
-| 152 | 10 < a+1 when ! ... is true |
-| 152 | 10 < a+1 when b is false |
-| 152 | 10 >= a+1 when ! ... is false |
-| 152 | 10 >= a+1 when b is true |
-| 152 | ! ... != 0 when ! ... is true |
-| 152 | ! ... != 0 when b is false |
-| 152 | ! ... != 1 when ! ... is false |
-| 152 | ! ... != 1 when b is true |
-| 152 | ! ... == 0 when ! ... is false |
-| 152 | ! ... == 0 when b is true |
-| 152 | ! ... == 1 when ! ... is true |
-| 152 | ! ... == 1 when b is false |
-| 152 | ... < ... != 0 when ! ... is false |
-| 152 | ... < ... != 0 when b is true |
-| 152 | ... < ... != 1 when ! ... is true |
-| 152 | ... < ... != 1 when b is false |
-| 152 | ... < ... == 0 when ! ... is true |
-| 152 | ... < ... == 0 when b is false |
-| 152 | ... < ... == 1 when ! ... is false |
-| 152 | ... < ... == 1 when b is true |
-| 152 | a < 10 when ! ... is false |
-| 152 | a < 10 when b is true |
-| 152 | a < 10+0 when ! ... is false |
-| 152 | a < 10+0 when b is true |
-| 152 | a >= 10 when ! ... is true |
-| 152 | a >= 10 when b is false |
-| 152 | a >= 10+0 when ! ... is true |
-| 152 | a >= 10+0 when b is false |
-| 152 | b != 0 when ! ... is false |
-| 152 | b != 0 when b is true |
-| 152 | b != 1 when ! ... is true |
-| 152 | b != 1 when b is false |
-| 152 | b == 0 when ! ... is true |
-| 152 | b == 0 when b is false |
-| 152 | b == 1 when ! ... is false |
-| 152 | b == 1 when b is true |
-| 152 | p != 0 when p is true |
-| 152 | p != 1 when p is false |
-| 152 | p == 0 when p is false |
-| 152 | p == 1 when p is true |
-| 158 | ! ... != 0 when ! ... is true |
-| 158 | ! ... != 0 when p is false |
-| 158 | ! ... != 1 when ! ... is false |
-| 158 | ! ... != 1 when p is true |
-| 158 | ! ... == 0 when ! ... is false |
-| 158 | ! ... == 0 when p is true |
-| 158 | ! ... == 1 when ! ... is true |
-| 158 | ! ... == 1 when p is false |
-| 158 | p != 0 when ! ... is false |
-| 158 | p != 0 when p is true |
-| 158 | p == 0 when ! ... is true |
-| 158 | p == 0 when p is false |
-| 160 | ! ... != 0 when ! ... is true |
-| 160 | ! ... != 0 when c is false |
-| 160 | ! ... != 1 when ! ... is false |
-| 160 | ! ... != 1 when c is true |
-| 160 | ! ... == 0 when ! ... is false |
-| 160 | ! ... == 0 when c is true |
-| 160 | ! ... == 1 when ! ... is true |
-| 160 | ! ... == 1 when c is false |
-| 160 | ... != ... != 0 when ! ... is false |
-| 160 | ... != ... != 0 when c is true |
-| 160 | ... != ... != 1 when ! ... is true |
-| 160 | ... != ... != 1 when c is false |
-| 160 | ... != ... == 0 when ! ... is true |
-| 160 | ... != ... == 0 when c is false |
-| 160 | ... != ... == 1 when ! ... is false |
-| 160 | ... != ... == 1 when c is true |
-| 160 | a != b+0 when ! ... is false |
-| 160 | a != b+0 when c is true |
-| 160 | a == b+0 when ! ... is true |
-| 160 | a == b+0 when c is false |
-| 160 | b != a+0 when ! ... is false |
-| 160 | b != a+0 when c is true |
-| 160 | b == a+0 when ! ... is true |
-| 160 | b == a+0 when c is false |
-| 160 | c != 0 when ! ... is false |
-| 160 | c != 0 when c is true |
-| 160 | c != 1 when ! ... is true |
-| 160 | c != 1 when c is false |
-| 160 | c == 0 when ! ... is true |
-| 160 | c == 0 when c is false |
-| 160 | c == 1 when ! ... is false |
-| 160 | c == 1 when c is true |
-| 164 | s != 0 when s is true |
-| 164 | s != 1 when s is false |
-| 164 | s == 0 when s is false |
-| 164 | s == 1 when s is true |
-| 168 | 10 < a+0 when ! ... is false |
-| 168 | 10 < a+0 when b is true |
-| 168 | 10 >= a+0 when ! ... is true |
-| 168 | 10 >= a+0 when b is false |
-| 168 | ! ... != 0 when ! ... is true |
-| 168 | ! ... != 0 when b is false |
-| 168 | ! ... != 1 when ! ... is false |
-| 168 | ! ... != 1 when b is true |
-| 168 | ! ... == 0 when ! ... is false |
-| 168 | ! ... == 0 when b is true |
-| 168 | ! ... == 1 when ! ... is true |
-| 168 | ! ... == 1 when b is false |
-| 168 | ... > ... != 0 when ! ... is false |
-| 168 | ... > ... != 0 when b is true |
-| 168 | ... > ... != 1 when ! ... is true |
-| 168 | ... > ... != 1 when b is false |
-| 168 | ... > ... == 0 when ! ... is true |
-| 168 | ... > ... == 0 when b is false |
-| 168 | ... > ... == 1 when ! ... is false |
-| 168 | ... > ... == 1 when b is true |
-| 168 | a < 10+1 when ! ... is true |
-| 168 | a < 10+1 when b is false |
-| 168 | a < 11 when ! ... is true |
-| 168 | a < 11 when b is false |
-| 168 | a >= 10+1 when ! ... is false |
-| 168 | a >= 10+1 when b is true |
-| 168 | a >= 11 when ! ... is false |
-| 168 | a >= 11 when b is true |
-| 168 | b != 0 when ! ... is false |
-| 168 | b != 0 when b is true |
-| 168 | b != 1 when ! ... is true |
-| 168 | b != 1 when b is false |
-| 168 | b == 0 when ! ... is true |
-| 168 | b == 0 when b is false |
-| 168 | b == 1 when ! ... is false |
-| 168 | b == 1 when b is true |
-| 170 | ! ... != 0 when ! ... is true |
-| 170 | ! ... != 0 when s is false |
-| 170 | ! ... != 1 when ! ... is false |
-| 170 | ! ... != 1 when s is true |
-| 170 | ! ... == 0 when ! ... is false |
-| 170 | ! ... == 0 when s is true |
-| 170 | ! ... == 1 when ! ... is true |
-| 170 | ! ... == 1 when s is false |
-| 170 | s != 0 when ! ... is false |
-| 170 | s != 0 when s is true |
-| 170 | s == 0 when ! ... is true |
-| 170 | s == 0 when s is false |
-| 176 | ! ... != 0 when ! ... is true |
-| 176 | ! ... != 0 when ... < ... is false |
-| 176 | ! ... != 0 when c is false |
-| 176 | ! ... != 1 when ! ... is false |
-| 176 | ! ... != 1 when ... < ... is true |
-| 176 | ! ... != 1 when c is true |
-| 176 | ! ... == 0 when ! ... is false |
-| 176 | ! ... == 0 when ... < ... is true |
-| 176 | ! ... == 0 when c is true |
-| 176 | ! ... == 1 when ! ... is true |
-| 176 | ! ... == 1 when ... < ... is false |
-| 176 | ! ... == 1 when c is false |
-| 176 | ... < ... != 0 when ! ... is false |
-| 176 | ... < ... != 0 when ... < ... is true |
-| 176 | ... < ... == 0 when ! ... is true |
-| 176 | ... < ... == 0 when ... < ... is false |
-| 176 | ... > ... != 0 when ! ... is false |
-| 176 | ... > ... != 0 when c is true |
-| 176 | ... > ... != 1 when ! ... is true |
-| 176 | ... > ... != 1 when c is false |
-| 176 | ... > ... == 0 when ! ... is true |
-| 176 | ... > ... == 0 when c is false |
-| 176 | ... > ... == 1 when ! ... is false |
-| 176 | ... > ... == 1 when c is true |
-| 176 | a < b+1 when ! ... is true |
-| 176 | a < b+1 when c is false |
-| 176 | a >= b+1 when ! ... is false |
-| 176 | a >= b+1 when c is true |
-| 176 | b < a+0 when ! ... is false |
-| 176 | b < a+0 when c is true |
-| 176 | b >= a+0 when ! ... is true |
-| 176 | b >= a+0 when c is false |
-| 176 | c != 0 when ! ... is false |
-| 176 | c != 0 when c is true |
-| 176 | c != 1 when ! ... is true |
-| 176 | c != 1 when c is false |
-| 176 | c == 0 when ! ... is true |
-| 176 | c == 0 when c is false |
-| 176 | c == 1 when ! ... is false |
-| 176 | c == 1 when c is true |
-| 182 | 1.0 < foo+1 when ... < ... is false |
-| 182 | 1.0 >= foo+1 when ... && ... is true |
-| 182 | 1.0 >= foo+1 when ... < ... is true |
-| 182 | 9.999999999999999547e-07 < foo+1 when ... && ... is true |
-| 182 | 9.999999999999999547e-07 < foo+1 when ... >= ... is true |
-| 182 | 9.999999999999999547e-07 >= foo+1 when ... >= ... is false |
-| 182 | ! ... != 0 when ! ... is true |
-| 182 | ! ... != 0 when ... && ... is false |
-| 182 | ! ... != 1 when ! ... is false |
-| 182 | ! ... != 1 when ... && ... is true |
-| 182 | ! ... == 0 when ! ... is false |
-| 182 | ! ... == 0 when ... && ... is true |
-| 182 | ! ... == 1 when ! ... is true |
-| 182 | ! ... == 1 when ... && ... is false |
-| 182 | ... && ... != 0 when ! ... is false |
-| 182 | ... && ... != 0 when ... && ... is true |
-| 182 | ... && ... != 1 when ! ... is true |
-| 182 | ... && ... != 1 when ... && ... is false |
-| 182 | ... && ... == 0 when ! ... is true |
-| 182 | ... && ... == 0 when ... && ... is false |
-| 182 | ... && ... == 1 when ! ... is false |
-| 182 | ... && ... == 1 when ... && ... is true |
-| 182 | ... < ... != 0 when ... && ... is true |
-| 182 | ... < ... != 0 when ... < ... is true |
-| 182 | ... < ... != 1 when ... < ... is false |
-| 182 | ... < ... == 0 when ... < ... is false |
-| 182 | ... < ... == 1 when ... && ... is true |
-| 182 | ... < ... == 1 when ... < ... is true |
-| 182 | ... >= ... != 0 when ... && ... is true |
-| 182 | ... >= ... != 0 when ... >= ... is true |
-| 182 | ... >= ... != 1 when ... >= ... is false |
-| 182 | ... >= ... == 0 when ... >= ... is false |
-| 182 | ... >= ... == 1 when ... && ... is true |
-| 182 | ... >= ... == 1 when ... >= ... is true |
-| 182 | b1 != 0 when ! ... is false |
-| 182 | b1 != 0 when ... && ... is true |
-| 182 | b1 != 0 when b1 is true |
-| 182 | b1 != 1 when b1 is false |
-| 182 | b1 == 0 when b1 is false |
-| 182 | b1 == 1 when ! ... is false |
-| 182 | b1 == 1 when ... && ... is true |
-| 182 | b1 == 1 when b1 is true |
-| 182 | b2 != 0 when ! ... is false |
-| 182 | b2 != 0 when ... && ... is true |
-| 182 | b2 != 0 when b2 is true |
-| 182 | b2 != 1 when b2 is false |
-| 182 | b2 == 0 when b2 is false |
-| 182 | b2 == 1 when ! ... is false |
-| 182 | b2 == 1 when ... && ... is true |
-| 182 | b2 == 1 when b2 is true |
-| 182 | foo < 1.0+0 when ... && ... is true |
-| 182 | foo < 1.0+0 when ... < ... is true |
-| 182 | foo < 9.999999999999999547e-07+0 when ... >= ... is false |
-| 182 | foo >= 1.0+0 when ... < ... is false |
-| 182 | foo >= 9.999999999999999547e-07+0 when ... && ... is true |
-| 182 | foo >= 9.999999999999999547e-07+0 when ... >= ... is true |
-| 190 | ! ... != 0 when ! ... is true |
-| 190 | ! ... != 0 when c is false |
-| 190 | ! ... != 1 when ! ... is false |
-| 190 | ! ... != 1 when c is true |
-| 190 | ! ... == 0 when ! ... is false |
-| 190 | ! ... == 0 when c is true |
-| 190 | ! ... == 1 when ! ... is true |
-| 190 | ! ... == 1 when c is false |
-| 190 | c != 0 when ! ... is false |
-| 190 | c != 0 when c is true |
-| 190 | c == 0 when ! ... is true |
-| 190 | c == 0 when c is false |
-| 193 | ! ... != 0 when ! ... is true |
-| 193 | ! ... != 0 when ... \|\| ... is false |
-| 193 | ! ... != 1 when ! ... is false |
-| 193 | ! ... != 1 when ... \|\| ... is true |
-| 193 | ! ... == 0 when ! ... is false |
-| 193 | ! ... == 0 when ... \|\| ... is true |
-| 193 | ! ... == 1 when ! ... is true |
-| 193 | ! ... == 1 when ... \|\| ... is false |
-| 193 | ... \|\| ... != 0 when ! ... is false |
-| 193 | ... \|\| ... != 0 when ... \|\| ... is true |
-| 193 | ... \|\| ... != 1 when ! ... is true |
-| 193 | ... \|\| ... != 1 when ... \|\| ... is false |
-| 193 | ... \|\| ... == 0 when ! ... is true |
-| 193 | ... \|\| ... == 0 when ... \|\| ... is false |
-| 193 | ... \|\| ... == 1 when ! ... is false |
-| 193 | ... \|\| ... == 1 when ... \|\| ... is true |
-| 193 | b1 != 0 when b1 is true |
-| 193 | b1 != 1 when ! ... is true |
-| 193 | b1 != 1 when ... \|\| ... is false |
-| 193 | b1 != 1 when b1 is false |
-| 193 | b1 == 0 when ! ... is true |
-| 193 | b1 == 0 when ... \|\| ... is false |
-| 193 | b1 == 0 when b1 is false |
-| 193 | b1 == 1 when b1 is true |
-| 193 | b2 != 0 when b2 is true |
-| 193 | b2 != 1 when ! ... is true |
-| 193 | b2 != 1 when ... \|\| ... is false |
-| 193 | b2 != 1 when b2 is false |
-| 193 | b2 == 0 when ! ... is true |
-| 193 | b2 == 0 when ... \|\| ... is false |
-| 193 | b2 == 0 when b2 is false |
-| 193 | b2 == 1 when b2 is true |
-| 198 | ! ... != 0 when ! ... is true |
-| 198 | ! ... != 0 when b is false |
-| 198 | ! ... != 1 when ! ... is false |
-| 198 | ! ... != 1 when b is true |
-| 198 | ! ... == 0 when ! ... is false |
-| 198 | ! ... == 0 when b is true |
-| 198 | ! ... == 1 when ! ... is true |
-| 198 | ! ... == 1 when b is false |
-| 198 | b != 0 when ! ... is false |
-| 198 | b != 0 when b is true |
-| 198 | b == 0 when ! ... is true |
-| 198 | b == 0 when b is false |
-| 206 | ! ... != 0 when ! ... is true |
-| 206 | ! ... != 0 when c is false |
-| 206 | ! ... != 1 when ! ... is false |
-| 206 | ! ... != 1 when c is true |
-| 206 | ! ... == 0 when ! ... is false |
-| 206 | ! ... == 0 when c is true |
-| 206 | ! ... == 1 when ! ... is true |
-| 206 | ! ... == 1 when c is false |
-| 206 | c != 0 when ! ... is false |
-| 206 | c != 0 when c is true |
-| 206 | c == 0 when ! ... is true |
-| 206 | c == 0 when c is false |
-| 211 | 0 != sc+0 when ... == ... is false |
-| 211 | 0 == sc+0 when ... == ... is true |
-| 211 | ... == ... != 0 when ... == ... is true |
-| 211 | ... == ... != 1 when ... == ... is false |
-| 211 | ... == ... == 0 when ... == ... is false |
-| 211 | ... == ... == 1 when ... == ... is true |
-| 211 | sc != 0 when ... == ... is false |
-| 211 | sc != 0+0 when ... == ... is false |
-| 211 | sc == 0 when ... == ... is true |
-| 211 | sc == 0+0 when ... == ... is true |
-| 214 | 0 != sc+0 when ... == ... is false |
-| 214 | 0 == sc+0 when ... == ... is true |
-| 214 | ... == ... != 0 when ... == ... is true |
-| 214 | ... == ... != 1 when ... == ... is false |
-| 214 | ... == ... == 0 when ... == ... is false |
-| 214 | ... == ... == 1 when ... == ... is true |
-| 214 | sc != 0 when ... == ... is false |
-| 214 | sc != 0+0 when ... == ... is false |
-| 214 | sc == 0 when ... == ... is true |
-| 214 | sc == 0+0 when ... == ... is true |
-| 217 | 0 != ul+0 when ... == ... is false |
-| 217 | 0 == ul+0 when ... == ... is true |
-| 217 | ... == ... != 0 when ... == ... is true |
-| 217 | ... == ... != 1 when ... == ... is false |
-| 217 | ... == ... == 0 when ... == ... is false |
-| 217 | ... == ... == 1 when ... == ... is true |
-| 217 | ul != 0 when ... == ... is false |
-| 217 | ul != 0+0 when ... == ... is false |
-| 217 | ul == 0 when ... == ... is true |
-| 217 | ul == 0+0 when ... == ... is true |
-| 220 | 0 != f+0 when ... == ... is false |
-| 220 | 0 == f+0 when ... == ... is true |
-| 220 | ... == ... != 0 when ... == ... is true |
-| 220 | ... == ... != 1 when ... == ... is false |
-| 220 | ... == ... == 0 when ... == ... is false |
-| 220 | ... == ... == 1 when ... == ... is true |
-| 220 | f != 0+0 when ... == ... is false |
-| 220 | f == 0+0 when ... == ... is true |
-| 223 | 0.0 != f+0 when ... == ... is false |
-| 223 | 0.0 == f+0 when ... == ... is true |
-| 223 | ... == ... != 0 when ... == ... is true |
-| 223 | ... == ... != 1 when ... == ... is false |
-| 223 | ... == ... == 0 when ... == ... is false |
-| 223 | ... == ... == 1 when ... == ... is true |
-| 223 | f != 0.0+0 when ... == ... is false |
-| 223 | f == 0.0+0 when ... == ... is true |
-| 226 | 0 != d+0 when ... == ... is false |
-| 226 | 0 == d+0 when ... == ... is true |
-| 226 | ... == ... != 0 when ... == ... is true |
-| 226 | ... == ... != 1 when ... == ... is false |
-| 226 | ... == ... == 0 when ... == ... is false |
-| 226 | ... == ... == 1 when ... == ... is true |
-| 226 | d != 0+0 when ... == ... is false |
-| 226 | d == 0+0 when ... == ... is true |
-| 229 | 0 != b+0 when ... == ... is false |
-| 229 | 0 == b+0 when ... == ... is true |
-| 229 | ... == ... != 0 when ... == ... is true |
-| 229 | ... == ... != 1 when ... == ... is false |
-| 229 | ... == ... == 0 when ... == ... is false |
-| 229 | ... == ... == 1 when ... == ... is true |
-| 229 | b != 0 when ... == ... is false |
-| 229 | b != 0+0 when ... == ... is false |
-| 229 | b == 0 when ... == ... is true |
-| 229 | b == 0+0 when ... == ... is true |
-| 232 | 0 != b+0 when ... == ... is false |
-| 232 | 0 == b+0 when ... == ... is true |
-| 232 | ... == ... != 0 when ... == ... is true |
-| 232 | ... == ... != 1 when ... == ... is false |
-| 232 | ... == ... == 0 when ... == ... is false |
-| 232 | ... == ... == 1 when ... == ... is true |
-| 232 | b != 0 when ... == ... is false |
-| 232 | b != 0+0 when ... == ... is false |
-| 232 | b == 0 when ... == ... is true |
-| 232 | b == 0+0 when ... == ... is true |
-| 235 | 0 != i+0 when ... == ... is false |
-| 235 | 0 == i+0 when ... == ... is true |
-| 235 | ... == ... != 0 when ... == ... is true |
-| 235 | ... == ... != 1 when ... == ... is false |
-| 235 | ... == ... == 0 when ... == ... is false |
-| 235 | ... == ... == 1 when ... == ... is true |
-| 235 | i != 0 when ... == ... is false |
-| 235 | i != 0+0 when ... == ... is false |
-| 235 | i == 0 when ... == ... is true |
-| 235 | i == 0+0 when ... == ... is true |
-| 238 | 0 != f+0 when ... == ... is false |
-| 238 | 0 == f+0 when ... == ... is true |
-| 238 | ... == ... != 0 when ... == ... is true |
-| 238 | ... == ... != 1 when ... == ... is false |
-| 238 | ... == ... == 0 when ... == ... is false |
-| 238 | ... == ... == 1 when ... == ... is true |
-| 238 | f != 0+0 when ... == ... is false |
-| 238 | f == 0+0 when ... == ... is true |
-| 241 | 0 != f+0 when ... == ... is false |
-| 241 | 0 != i+0 when ... == ... is false |
-| 241 | 0 == f+0 when ... && ... is true |
-| 241 | 0 == f+0 when ... == ... is true |
-| 241 | 0 == i+0 when ... && ... is true |
-| 241 | 0 == i+0 when ... == ... is true |
-| 241 | ... == ... != 0 when ... && ... is true |
-| 241 | ... == ... != 0 when ... == ... is true |
-| 241 | ... == ... != 1 when ... == ... is false |
-| 241 | ... == ... == 0 when ... == ... is false |
-| 241 | ... == ... == 1 when ... && ... is true |
-| 241 | ... == ... == 1 when ... == ... is true |
-| 241 | f != 0+0 when ... == ... is false |
-| 241 | f == 0+0 when ... && ... is true |
-| 241 | f == 0+0 when ... == ... is true |
-| 241 | i != 0 when ... == ... is false |
-| 241 | i != 0+0 when ... == ... is false |
-| 241 | i == 0 when ... && ... is true |
-| 241 | i == 0 when ... == ... is true |
-| 241 | i == 0+0 when ... && ... is true |
-| 241 | i == 0+0 when ... == ... is true |
+| test.c:7:9:7:13 | ... > ... | 0 < x+0 when ... > ... is true |
+| test.c:7:9:7:13 | ... > ... | 0 >= x+0 when ... > ... is false |
+| test.c:7:9:7:13 | ... > ... | ... > ... != 0 when ... > ... is true |
+| test.c:7:9:7:13 | ... > ... | ... > ... != 1 when ... > ... is false |
+| test.c:7:9:7:13 | ... > ... | ... > ... == 0 when ... > ... is false |
+| test.c:7:9:7:13 | ... > ... | ... > ... == 1 when ... > ... is true |
+| test.c:7:9:7:13 | ... > ... | x < 0+1 when ... > ... is false |
+| test.c:7:9:7:13 | ... > ... | x < 1 when ... > ... is false |
+| test.c:7:9:7:13 | ... > ... | x >= 0+1 when ... > ... is true |
+| test.c:7:9:7:13 | ... > ... | x >= 1 when ... > ... is true |
+| test.c:17:8:17:12 | ... < ... | 0 < x+1 when ... < ... is false |
+| test.c:17:8:17:12 | ... < ... | 0 >= x+1 when ... < ... is true |
+| test.c:17:8:17:12 | ... < ... | ... < ... != 0 when ... < ... is true |
+| test.c:17:8:17:12 | ... < ... | ... < ... != 1 when ... < ... is false |
+| test.c:17:8:17:12 | ... < ... | ... < ... == 0 when ... < ... is false |
+| test.c:17:8:17:12 | ... < ... | ... < ... == 1 when ... < ... is true |
+| test.c:17:8:17:12 | ... < ... | x < 0 when ... < ... is true |
+| test.c:17:8:17:12 | ... < ... | x < 0+0 when ... < ... is true |
+| test.c:17:8:17:12 | ... < ... | x >= 0 when ... < ... is false |
+| test.c:17:8:17:12 | ... < ... | x >= 0+0 when ... < ... is false |
+| test.c:17:8:17:21 | ... && ... | 0 >= x+1 when ... && ... is true |
+| test.c:17:8:17:21 | ... && ... | 1 < y+0 when ... && ... is true |
+| test.c:17:8:17:21 | ... && ... | ... < ... != 0 when ... && ... is true |
+| test.c:17:8:17:21 | ... && ... | ... < ... == 1 when ... && ... is true |
+| test.c:17:8:17:21 | ... && ... | ... > ... != 0 when ... && ... is true |
+| test.c:17:8:17:21 | ... && ... | ... > ... == 1 when ... && ... is true |
+| test.c:17:8:17:21 | ... && ... | x < 0 when ... && ... is true |
+| test.c:17:8:17:21 | ... && ... | x < 0+0 when ... && ... is true |
+| test.c:17:8:17:21 | ... && ... | y >= 1+1 when ... && ... is true |
+| test.c:17:8:17:21 | ... && ... | y >= 2 when ... && ... is true |
+| test.c:17:17:17:21 | ... > ... | 1 < y+0 when ... > ... is true |
+| test.c:17:17:17:21 | ... > ... | 1 >= y+0 when ... > ... is false |
+| test.c:17:17:17:21 | ... > ... | ... > ... != 0 when ... > ... is true |
+| test.c:17:17:17:21 | ... > ... | ... > ... != 1 when ... > ... is false |
+| test.c:17:17:17:21 | ... > ... | ... > ... == 0 when ... > ... is false |
+| test.c:17:17:17:21 | ... > ... | ... > ... == 1 when ... > ... is true |
+| test.c:17:17:17:21 | ... > ... | y < 1+1 when ... > ... is false |
+| test.c:17:17:17:21 | ... > ... | y < 2 when ... > ... is false |
+| test.c:17:17:17:21 | ... > ... | y >= 1+1 when ... > ... is true |
+| test.c:17:17:17:21 | ... > ... | y >= 2 when ... > ... is true |
+| test.c:26:11:26:15 | ... > ... | 0 < x+0 when ... > ... is true |
+| test.c:26:11:26:15 | ... > ... | 0 >= x+0 when ... > ... is false |
+| test.c:26:11:26:15 | ... > ... | ... > ... != 0 when ... > ... is true |
+| test.c:26:11:26:15 | ... > ... | ... > ... != 1 when ... > ... is false |
+| test.c:26:11:26:15 | ... > ... | ... > ... == 0 when ... > ... is false |
+| test.c:26:11:26:15 | ... > ... | ... > ... == 1 when ... > ... is true |
+| test.c:26:11:26:15 | ... > ... | x < 0+1 when ... > ... is false |
+| test.c:26:11:26:15 | ... > ... | x < 1 when ... > ... is false |
+| test.c:26:11:26:15 | ... > ... | x >= 0+1 when ... > ... is true |
+| test.c:26:11:26:15 | ... > ... | x >= 1 when ... > ... is true |
+| test.c:34:16:34:21 | ... < ... | 10 < j+1 when ... < ... is false |
+| test.c:34:16:34:21 | ... < ... | 10 >= j+1 when ... < ... is true |
+| test.c:34:16:34:21 | ... < ... | ... < ... != 0 when ... < ... is true |
+| test.c:34:16:34:21 | ... < ... | ... < ... != 1 when ... < ... is false |
+| test.c:34:16:34:21 | ... < ... | ... < ... == 0 when ... < ... is false |
+| test.c:34:16:34:21 | ... < ... | ... < ... == 1 when ... < ... is true |
+| test.c:34:16:34:21 | ... < ... | j < 10 when ... < ... is true |
+| test.c:34:16:34:21 | ... < ... | j < 10+0 when ... < ... is true |
+| test.c:34:16:34:21 | ... < ... | j >= 10 when ... < ... is false |
+| test.c:34:16:34:21 | ... < ... | j >= 10+0 when ... < ... is false |
+| test.c:42:16:42:21 | ... < ... | 10 < j+1 when ... < ... is false |
+| test.c:42:16:42:21 | ... < ... | 10 >= j+1 when ... < ... is true |
+| test.c:42:16:42:21 | ... < ... | ... < ... != 0 when ... < ... is true |
+| test.c:42:16:42:21 | ... < ... | ... < ... != 1 when ... < ... is false |
+| test.c:42:16:42:21 | ... < ... | ... < ... == 0 when ... < ... is false |
+| test.c:42:16:42:21 | ... < ... | ... < ... == 1 when ... < ... is true |
+| test.c:42:16:42:21 | ... < ... | j < 10 when ... < ... is true |
+| test.c:42:16:42:21 | ... < ... | j < 10+0 when ... < ... is true |
+| test.c:42:16:42:21 | ... < ... | j >= 10 when ... < ... is false |
+| test.c:42:16:42:21 | ... < ... | j >= 10+0 when ... < ... is false |
+| test.c:44:12:44:16 | ... > ... | 0 < z+0 when ... > ... is true |
+| test.c:44:12:44:16 | ... > ... | 0 >= z+0 when ... > ... is false |
+| test.c:44:12:44:16 | ... > ... | ... > ... != 0 when ... > ... is true |
+| test.c:44:12:44:16 | ... > ... | ... > ... != 1 when ... > ... is false |
+| test.c:44:12:44:16 | ... > ... | ... > ... == 0 when ... > ... is false |
+| test.c:44:12:44:16 | ... > ... | ... > ... == 1 when ... > ... is true |
+| test.c:44:12:44:16 | ... > ... | z < 0+1 when ... > ... is false |
+| test.c:44:12:44:16 | ... > ... | z < 1 when ... > ... is false |
+| test.c:44:12:44:16 | ... > ... | z >= 0+1 when ... > ... is true |
+| test.c:44:12:44:16 | ... > ... | z >= 1 when ... > ... is true |
+| test.c:45:16:45:20 | ... > ... | 0 < y+0 when ... > ... is true |
+| test.c:45:16:45:20 | ... > ... | 0 >= y+0 when ... > ... is false |
+| test.c:45:16:45:20 | ... > ... | ... > ... != 0 when ... > ... is true |
+| test.c:45:16:45:20 | ... > ... | ... > ... != 1 when ... > ... is false |
+| test.c:45:16:45:20 | ... > ... | ... > ... == 0 when ... > ... is false |
+| test.c:45:16:45:20 | ... > ... | ... > ... == 1 when ... > ... is true |
+| test.c:45:16:45:20 | ... > ... | y < 0+1 when ... > ... is false |
+| test.c:45:16:45:20 | ... > ... | y < 1 when ... > ... is false |
+| test.c:45:16:45:20 | ... > ... | y >= 0+1 when ... > ... is true |
+| test.c:45:16:45:20 | ... > ... | y >= 1 when ... > ... is true |
+| test.c:58:9:58:14 | ... == ... | 0 != x+0 when ... == ... is false |
+| test.c:58:9:58:14 | ... == ... | 0 == x+0 when ... == ... is true |
+| test.c:58:9:58:14 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.c:58:9:58:14 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.c:58:9:58:14 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.c:58:9:58:14 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.c:58:9:58:14 | ... == ... | x != 0 when ... == ... is false |
+| test.c:58:9:58:14 | ... == ... | x != 0+0 when ... == ... is false |
+| test.c:58:9:58:14 | ... == ... | x == 0 when ... == ... is true |
+| test.c:58:9:58:14 | ... == ... | x == 0+0 when ... == ... is true |
+| test.c:58:9:58:23 | ... \|\| ... | 0 != x+0 when ... \|\| ... is false |
+| test.c:58:9:58:23 | ... \|\| ... | 0 < y+1 when ... \|\| ... is false |
+| test.c:58:9:58:23 | ... \|\| ... | ... < ... != 1 when ... \|\| ... is false |
+| test.c:58:9:58:23 | ... \|\| ... | ... < ... == 0 when ... \|\| ... is false |
+| test.c:58:9:58:23 | ... \|\| ... | ... == ... != 1 when ... \|\| ... is false |
+| test.c:58:9:58:23 | ... \|\| ... | ... == ... == 0 when ... \|\| ... is false |
+| test.c:58:9:58:23 | ... \|\| ... | x != 0 when ... \|\| ... is false |
+| test.c:58:9:58:23 | ... \|\| ... | x != 0+0 when ... \|\| ... is false |
+| test.c:58:9:58:23 | ... \|\| ... | y >= 0 when ... \|\| ... is false |
+| test.c:58:9:58:23 | ... \|\| ... | y >= 0+0 when ... \|\| ... is false |
+| test.c:58:19:58:23 | ... < ... | 0 < y+1 when ... < ... is false |
+| test.c:58:19:58:23 | ... < ... | 0 >= y+1 when ... < ... is true |
+| test.c:58:19:58:23 | ... < ... | ... < ... != 0 when ... < ... is true |
+| test.c:58:19:58:23 | ... < ... | ... < ... != 1 when ... < ... is false |
+| test.c:58:19:58:23 | ... < ... | ... < ... == 0 when ... < ... is false |
+| test.c:58:19:58:23 | ... < ... | ... < ... == 1 when ... < ... is true |
+| test.c:58:19:58:23 | ... < ... | y < 0 when ... < ... is true |
+| test.c:58:19:58:23 | ... < ... | y < 0+0 when ... < ... is true |
+| test.c:58:19:58:23 | ... < ... | y >= 0 when ... < ... is false |
+| test.c:58:19:58:23 | ... < ... | y >= 0+0 when ... < ... is false |
+| test.c:75:9:75:14 | ... == ... | 0 != x+0 when ... == ... is false |
+| test.c:75:9:75:14 | ... == ... | 0 == x+0 when ... == ... is true |
+| test.c:75:9:75:14 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.c:75:9:75:14 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.c:75:9:75:14 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.c:75:9:75:14 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.c:75:9:75:14 | ... == ... | x != 0 when ... == ... is false |
+| test.c:75:9:75:14 | ... == ... | x != 0+0 when ... == ... is false |
+| test.c:75:9:75:14 | ... == ... | x == 0 when ... == ... is true |
+| test.c:75:9:75:14 | ... == ... | x == 0+0 when ... == ... is true |
+| test.c:85:8:85:13 | ... == ... | 0 != x+0 when ... == ... is false |
+| test.c:85:8:85:13 | ... == ... | 0 == x+0 when ... == ... is true |
+| test.c:85:8:85:13 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.c:85:8:85:13 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.c:85:8:85:13 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.c:85:8:85:13 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.c:85:8:85:13 | ... == ... | x != 0 when ... == ... is false |
+| test.c:85:8:85:13 | ... == ... | x != 0+0 when ... == ... is false |
+| test.c:85:8:85:13 | ... == ... | x == 0 when ... == ... is true |
+| test.c:85:8:85:13 | ... == ... | x == 0+0 when ... == ... is true |
+| test.c:85:8:85:23 | ... && ... | 0 != y+0 when ... && ... is true |
+| test.c:85:8:85:23 | ... && ... | 0 == x+0 when ... && ... is true |
+| test.c:85:8:85:23 | ... && ... | ... != ... != 0 when ... && ... is true |
+| test.c:85:8:85:23 | ... && ... | ... != ... == 1 when ... && ... is true |
+| test.c:85:8:85:23 | ... && ... | ... == ... != 0 when ... && ... is true |
+| test.c:85:8:85:23 | ... && ... | ... == ... == 1 when ... && ... is true |
+| test.c:85:8:85:23 | ... && ... | x == 0 when ... && ... is true |
+| test.c:85:8:85:23 | ... && ... | x == 0+0 when ... && ... is true |
+| test.c:85:8:85:23 | ... && ... | y != 0 when ... && ... is true |
+| test.c:85:8:85:23 | ... && ... | y != 0+0 when ... && ... is true |
+| test.c:85:18:85:23 | ... != ... | 0 != y+0 when ... != ... is true |
+| test.c:85:18:85:23 | ... != ... | 0 == y+0 when ... != ... is false |
+| test.c:85:18:85:23 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.c:85:18:85:23 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.c:85:18:85:23 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.c:85:18:85:23 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.c:85:18:85:23 | ... != ... | y != 0 when ... != ... is true |
+| test.c:85:18:85:23 | ... != ... | y != 0+0 when ... != ... is true |
+| test.c:85:18:85:23 | ... != ... | y == 0 when ... != ... is false |
+| test.c:85:18:85:23 | ... != ... | y == 0+0 when ... != ... is false |
+| test.c:94:11:94:16 | ... != ... | 0 != x+0 when ... != ... is true |
+| test.c:94:11:94:16 | ... != ... | 0 == x+0 when ... != ... is false |
+| test.c:94:11:94:16 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.c:94:11:94:16 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.c:94:11:94:16 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.c:94:11:94:16 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.c:94:11:94:16 | ... != ... | x != 0 when ... != ... is true |
+| test.c:94:11:94:16 | ... != ... | x != 0+0 when ... != ... is true |
+| test.c:94:11:94:16 | ... != ... | x == 0 when ... != ... is false |
+| test.c:94:11:94:16 | ... != ... | x == 0+0 when ... != ... is false |
+| test.c:102:16:102:21 | ... < ... | 10 < j+1 when ... < ... is false |
+| test.c:102:16:102:21 | ... < ... | 10 >= j+1 when ... < ... is true |
+| test.c:102:16:102:21 | ... < ... | ... < ... != 0 when ... < ... is true |
+| test.c:102:16:102:21 | ... < ... | ... < ... != 1 when ... < ... is false |
+| test.c:102:16:102:21 | ... < ... | ... < ... == 0 when ... < ... is false |
+| test.c:102:16:102:21 | ... < ... | ... < ... == 1 when ... < ... is true |
+| test.c:102:16:102:21 | ... < ... | j < 10 when ... < ... is true |
+| test.c:102:16:102:21 | ... < ... | j < 10+0 when ... < ... is true |
+| test.c:102:16:102:21 | ... < ... | j >= 10 when ... < ... is false |
+| test.c:102:16:102:21 | ... < ... | j >= 10+0 when ... < ... is false |
+| test.c:109:9:109:14 | ... == ... | 0 != x+0 when ... == ... is false |
+| test.c:109:9:109:14 | ... == ... | 0 == x+0 when ... == ... is true |
+| test.c:109:9:109:14 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.c:109:9:109:14 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.c:109:9:109:14 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.c:109:9:109:14 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.c:109:9:109:14 | ... == ... | x != 0 when ... == ... is false |
+| test.c:109:9:109:14 | ... == ... | x != 0+0 when ... == ... is false |
+| test.c:109:9:109:14 | ... == ... | x == 0 when ... == ... is true |
+| test.c:109:9:109:14 | ... == ... | x == 0+0 when ... == ... is true |
+| test.c:109:9:109:23 | ... \|\| ... | 0 != x+0 when ... \|\| ... is false |
+| test.c:109:9:109:23 | ... \|\| ... | 0 < y+1 when ... \|\| ... is false |
+| test.c:109:9:109:23 | ... \|\| ... | ... < ... != 1 when ... \|\| ... is false |
+| test.c:109:9:109:23 | ... \|\| ... | ... < ... == 0 when ... \|\| ... is false |
+| test.c:109:9:109:23 | ... \|\| ... | ... == ... != 1 when ... \|\| ... is false |
+| test.c:109:9:109:23 | ... \|\| ... | ... == ... == 0 when ... \|\| ... is false |
+| test.c:109:9:109:23 | ... \|\| ... | x != 0 when ... \|\| ... is false |
+| test.c:109:9:109:23 | ... \|\| ... | x != 0+0 when ... \|\| ... is false |
+| test.c:109:9:109:23 | ... \|\| ... | y >= 0 when ... \|\| ... is false |
+| test.c:109:9:109:23 | ... \|\| ... | y >= 0+0 when ... \|\| ... is false |
+| test.c:109:19:109:23 | ... < ... | 0 < y+1 when ... < ... is false |
+| test.c:109:19:109:23 | ... < ... | 0 >= y+1 when ... < ... is true |
+| test.c:109:19:109:23 | ... < ... | ... < ... != 0 when ... < ... is true |
+| test.c:109:19:109:23 | ... < ... | ... < ... != 1 when ... < ... is false |
+| test.c:109:19:109:23 | ... < ... | ... < ... == 0 when ... < ... is false |
+| test.c:109:19:109:23 | ... < ... | ... < ... == 1 when ... < ... is true |
+| test.c:109:19:109:23 | ... < ... | y < 0 when ... < ... is true |
+| test.c:109:19:109:23 | ... < ... | y < 0+0 when ... < ... is true |
+| test.c:109:19:109:23 | ... < ... | y >= 0 when ... < ... is false |
+| test.c:109:19:109:23 | ... < ... | y >= 0+0 when ... < ... is false |
+| test.c:126:7:126:7 | 1 | 1 != 0 when 1 is true |
+| test.c:126:7:126:7 | 1 | 1 != 1 when 1 is false |
+| test.c:126:7:126:7 | 1 | 1 == 0 when 1 is false |
+| test.c:126:7:126:7 | 1 | 1 == 1 when 1 is true |
+| test.c:126:7:126:28 | ... && ... | 1 != 0 when ... && ... is true |
+| test.c:126:7:126:28 | ... && ... | 1 == 1 when ... && ... is true |
+| test.c:126:7:126:28 | ... && ... | call to test3_condition != 0 when ... && ... is true |
+| test.c:126:7:126:28 | ... && ... | call to test3_condition == 1 when ... && ... is true |
+| test.c:126:12:126:26 | call to test3_condition | call to test3_condition != 0 when call to test3_condition is true |
+| test.c:126:12:126:26 | call to test3_condition | call to test3_condition != 1 when call to test3_condition is false |
+| test.c:126:12:126:26 | call to test3_condition | call to test3_condition == 0 when call to test3_condition is false |
+| test.c:126:12:126:26 | call to test3_condition | call to test3_condition == 1 when call to test3_condition is true |
+| test.c:131:7:131:7 | b | b != 0 when b is true |
+| test.c:131:7:131:7 | b | b != 1 when b is false |
+| test.c:131:7:131:7 | b | b == 0 when b is false |
+| test.c:131:7:131:7 | b | b == 1 when b is true |
+| test.c:137:7:137:7 | 0 | 0 != 0 when 0 is true |
+| test.c:137:7:137:7 | 0 | 0 != 1 when 0 is false |
+| test.c:137:7:137:7 | 0 | 0 == 0 when 0 is false |
+| test.c:137:7:137:7 | 0 | 0 == 1 when 0 is true |
+| test.c:146:7:146:8 | ! ... | ! ... != 0 when ! ... is true |
+| test.c:146:7:146:8 | ! ... | ! ... != 1 when ! ... is false |
+| test.c:146:7:146:8 | ! ... | ! ... == 0 when ! ... is false |
+| test.c:146:7:146:8 | ! ... | ! ... == 1 when ! ... is true |
+| test.c:146:7:146:8 | ! ... | x != 0 when ! ... is false |
+| test.c:146:7:146:8 | ! ... | x == 0 when ! ... is true |
+| test.c:146:8:146:8 | x | ! ... != 0 when x is false |
+| test.c:146:8:146:8 | x | ! ... != 1 when x is true |
+| test.c:146:8:146:8 | x | ! ... == 0 when x is true |
+| test.c:146:8:146:8 | x | ! ... == 1 when x is false |
+| test.c:146:8:146:8 | x | x != 0 when x is true |
+| test.c:146:8:146:8 | x | x == 0 when x is false |
+| test.c:152:8:152:8 | p | p != 0 when p is true |
+| test.c:152:8:152:8 | p | p != 1 when p is false |
+| test.c:152:8:152:8 | p | p == 0 when p is false |
+| test.c:152:8:152:8 | p | p == 1 when p is true |
+| test.c:158:8:158:9 | ! ... | ! ... != 0 when ! ... is true |
+| test.c:158:8:158:9 | ! ... | ! ... != 1 when ! ... is false |
+| test.c:158:8:158:9 | ! ... | ! ... == 0 when ! ... is false |
+| test.c:158:8:158:9 | ! ... | ! ... == 1 when ! ... is true |
+| test.c:158:8:158:9 | ! ... | p != 0 when ! ... is false |
+| test.c:158:8:158:9 | ! ... | p == 0 when ! ... is true |
+| test.c:158:9:158:9 | p | ! ... != 0 when p is false |
+| test.c:158:9:158:9 | p | ! ... != 1 when p is true |
+| test.c:158:9:158:9 | p | ! ... == 0 when p is true |
+| test.c:158:9:158:9 | p | ! ... == 1 when p is false |
+| test.c:158:9:158:9 | p | p != 0 when p is true |
+| test.c:158:9:158:9 | p | p == 0 when p is false |
+| test.c:164:8:164:8 | s | s != 0 when s is true |
+| test.c:164:8:164:8 | s | s != 1 when s is false |
+| test.c:164:8:164:8 | s | s == 0 when s is false |
+| test.c:164:8:164:8 | s | s == 1 when s is true |
+| test.c:170:8:170:9 | ! ... | ! ... != 0 when ! ... is true |
+| test.c:170:8:170:9 | ! ... | ! ... != 1 when ! ... is false |
+| test.c:170:8:170:9 | ! ... | ! ... == 0 when ! ... is false |
+| test.c:170:8:170:9 | ! ... | ! ... == 1 when ! ... is true |
+| test.c:170:8:170:9 | ! ... | s != 0 when ! ... is false |
+| test.c:170:8:170:9 | ! ... | s == 0 when ! ... is true |
+| test.c:170:9:170:9 | s | ! ... != 0 when s is false |
+| test.c:170:9:170:9 | s | ! ... != 1 when s is true |
+| test.c:170:9:170:9 | s | ! ... == 0 when s is true |
+| test.c:170:9:170:9 | s | ! ... == 1 when s is false |
+| test.c:170:9:170:9 | s | s != 0 when s is true |
+| test.c:170:9:170:9 | s | s == 0 when s is false |
+| test.c:176:8:176:15 | ! ... | ! ... != 0 when ! ... is true |
+| test.c:176:8:176:15 | ! ... | ! ... != 1 when ! ... is false |
+| test.c:176:8:176:15 | ! ... | ! ... == 0 when ! ... is false |
+| test.c:176:8:176:15 | ! ... | ! ... == 1 when ! ... is true |
+| test.c:176:8:176:15 | ! ... | ... < ... != 0 when ! ... is false |
+| test.c:176:8:176:15 | ! ... | ... < ... == 0 when ! ... is true |
+| test.c:176:8:176:15 | ! ... | a < b+0 when ! ... is false |
+| test.c:176:8:176:15 | ! ... | a >= b+0 when ! ... is true |
+| test.c:176:8:176:15 | ! ... | b < a+1 when ! ... is true |
+| test.c:176:8:176:15 | ! ... | b >= a+1 when ! ... is false |
+| test.c:176:10:176:14 | ... < ... | ! ... != 0 when ... < ... is false |
+| test.c:176:10:176:14 | ... < ... | ! ... != 1 when ... < ... is true |
+| test.c:176:10:176:14 | ... < ... | ! ... == 0 when ... < ... is true |
+| test.c:176:10:176:14 | ... < ... | ! ... == 1 when ... < ... is false |
+| test.c:176:10:176:14 | ... < ... | ... < ... != 0 when ... < ... is true |
+| test.c:176:10:176:14 | ... < ... | ... < ... == 0 when ... < ... is false |
+| test.c:176:10:176:14 | ... < ... | a < b+0 when ... < ... is true |
+| test.c:176:10:176:14 | ... < ... | a >= b+0 when ... < ... is false |
+| test.c:176:10:176:14 | ... < ... | b < a+1 when ... < ... is false |
+| test.c:176:10:176:14 | ... < ... | b >= a+1 when ... < ... is true |
+| test.c:182:8:182:34 | ! ... | ! ... != 0 when ! ... is true |
+| test.c:182:8:182:34 | ! ... | ! ... != 1 when ! ... is false |
+| test.c:182:8:182:34 | ! ... | ! ... == 0 when ! ... is false |
+| test.c:182:8:182:34 | ! ... | ! ... == 1 when ! ... is true |
+| test.c:182:8:182:34 | ! ... | ... && ... != 0 when ! ... is false |
+| test.c:182:8:182:34 | ! ... | ... && ... == 0 when ! ... is true |
+| test.c:182:10:182:20 | ... >= ... | 9.999999999999999547e-07 < foo+1 when ... >= ... is true |
+| test.c:182:10:182:20 | ... >= ... | 9.999999999999999547e-07 >= foo+1 when ... >= ... is false |
+| test.c:182:10:182:20 | ... >= ... | ... >= ... != 0 when ... >= ... is true |
+| test.c:182:10:182:20 | ... >= ... | ... >= ... != 1 when ... >= ... is false |
+| test.c:182:10:182:20 | ... >= ... | ... >= ... == 0 when ... >= ... is false |
+| test.c:182:10:182:20 | ... >= ... | ... >= ... == 1 when ... >= ... is true |
+| test.c:182:10:182:20 | ... >= ... | foo < 9.999999999999999547e-07+0 when ... >= ... is false |
+| test.c:182:10:182:20 | ... >= ... | foo >= 9.999999999999999547e-07+0 when ... >= ... is true |
+| test.c:182:10:182:33 | ... && ... | 1.0 >= foo+1 when ... && ... is true |
+| test.c:182:10:182:33 | ... && ... | 9.999999999999999547e-07 < foo+1 when ... && ... is true |
+| test.c:182:10:182:33 | ... && ... | ! ... != 0 when ... && ... is false |
+| test.c:182:10:182:33 | ... && ... | ! ... != 1 when ... && ... is true |
+| test.c:182:10:182:33 | ... && ... | ! ... == 0 when ... && ... is true |
+| test.c:182:10:182:33 | ... && ... | ! ... == 1 when ... && ... is false |
+| test.c:182:10:182:33 | ... && ... | ... && ... != 0 when ... && ... is true |
+| test.c:182:10:182:33 | ... && ... | ... && ... == 0 when ... && ... is false |
+| test.c:182:10:182:33 | ... && ... | ... < ... != 0 when ... && ... is true |
+| test.c:182:10:182:33 | ... && ... | ... < ... == 1 when ... && ... is true |
+| test.c:182:10:182:33 | ... && ... | ... >= ... != 0 when ... && ... is true |
+| test.c:182:10:182:33 | ... && ... | ... >= ... == 1 when ... && ... is true |
+| test.c:182:10:182:33 | ... && ... | foo < 1.0+0 when ... && ... is true |
+| test.c:182:10:182:33 | ... && ... | foo >= 9.999999999999999547e-07+0 when ... && ... is true |
+| test.c:182:25:182:33 | ... < ... | 1.0 < foo+1 when ... < ... is false |
+| test.c:182:25:182:33 | ... < ... | 1.0 >= foo+1 when ... < ... is true |
+| test.c:182:25:182:33 | ... < ... | ... < ... != 0 when ... < ... is true |
+| test.c:182:25:182:33 | ... < ... | ... < ... != 1 when ... < ... is false |
+| test.c:182:25:182:33 | ... < ... | ... < ... == 0 when ... < ... is false |
+| test.c:182:25:182:33 | ... < ... | ... < ... == 1 when ... < ... is true |
+| test.c:182:25:182:33 | ... < ... | foo < 1.0+0 when ... < ... is true |
+| test.c:182:25:182:33 | ... < ... | foo >= 1.0+0 when ... < ... is false |
+| test.c:190:7:190:8 | ! ... | ! ... != 0 when ! ... is true |
+| test.c:190:7:190:8 | ! ... | ! ... != 1 when ! ... is false |
+| test.c:190:7:190:8 | ! ... | ! ... == 0 when ! ... is false |
+| test.c:190:7:190:8 | ! ... | ! ... == 1 when ! ... is true |
+| test.c:190:7:190:8 | ! ... | a != b+0 when ! ... is false |
+| test.c:190:7:190:8 | ! ... | a == b+0 when ! ... is true |
+| test.c:190:7:190:8 | ! ... | b != a+0 when ! ... is false |
+| test.c:190:7:190:8 | ! ... | b == a+0 when ! ... is true |
+| test.c:190:7:190:8 | ! ... | c != 0 when ! ... is false |
+| test.c:190:7:190:8 | ! ... | c == 0 when ! ... is true |
+| test.c:190:8:190:8 | c | ! ... != 0 when c is false |
+| test.c:190:8:190:8 | c | ! ... != 1 when c is true |
+| test.c:190:8:190:8 | c | ! ... == 0 when c is true |
+| test.c:190:8:190:8 | c | ! ... == 1 when c is false |
+| test.c:190:8:190:8 | c | a != b+0 when c is true |
+| test.c:190:8:190:8 | c | a == b+0 when c is false |
+| test.c:190:8:190:8 | c | b != a+0 when c is true |
+| test.c:190:8:190:8 | c | b == a+0 when c is false |
+| test.c:190:8:190:8 | c | c != 0 when c is true |
+| test.c:190:8:190:8 | c | c == 0 when c is false |
+| test.c:198:7:198:8 | ! ... | 10 < a+0 when ! ... is false |
+| test.c:198:7:198:8 | ! ... | 10 >= a+0 when ! ... is true |
+| test.c:198:7:198:8 | ! ... | ! ... != 0 when ! ... is true |
+| test.c:198:7:198:8 | ! ... | ! ... != 1 when ! ... is false |
+| test.c:198:7:198:8 | ! ... | ! ... == 0 when ! ... is false |
+| test.c:198:7:198:8 | ! ... | ! ... == 1 when ! ... is true |
+| test.c:198:7:198:8 | ! ... | a < 10+1 when ! ... is true |
+| test.c:198:7:198:8 | ! ... | a < 11 when ! ... is true |
+| test.c:198:7:198:8 | ! ... | a >= 10+1 when ! ... is false |
+| test.c:198:7:198:8 | ! ... | a >= 11 when ! ... is false |
+| test.c:198:7:198:8 | ! ... | b != 0 when ! ... is false |
+| test.c:198:7:198:8 | ! ... | b == 0 when ! ... is true |
+| test.c:198:8:198:8 | b | 10 < a+0 when b is true |
+| test.c:198:8:198:8 | b | 10 >= a+0 when b is false |
+| test.c:198:8:198:8 | b | ! ... != 0 when b is false |
+| test.c:198:8:198:8 | b | ! ... != 1 when b is true |
+| test.c:198:8:198:8 | b | ! ... == 0 when b is true |
+| test.c:198:8:198:8 | b | ! ... == 1 when b is false |
+| test.c:198:8:198:8 | b | a < 10+1 when b is false |
+| test.c:198:8:198:8 | b | a < 11 when b is false |
+| test.c:198:8:198:8 | b | a >= 10+1 when b is true |
+| test.c:198:8:198:8 | b | a >= 11 when b is true |
+| test.c:198:8:198:8 | b | b != 0 when b is true |
+| test.c:198:8:198:8 | b | b == 0 when b is false |
+| test.c:206:7:206:8 | ! ... | ! ... != 0 when ! ... is true |
+| test.c:206:7:206:8 | ! ... | ! ... != 1 when ! ... is false |
+| test.c:206:7:206:8 | ! ... | ! ... == 0 when ! ... is false |
+| test.c:206:7:206:8 | ! ... | ! ... == 1 when ! ... is true |
+| test.c:206:7:206:8 | ! ... | a < b+1 when ! ... is true |
+| test.c:206:7:206:8 | ! ... | a >= b+1 when ! ... is false |
+| test.c:206:7:206:8 | ! ... | b < a+0 when ! ... is false |
+| test.c:206:7:206:8 | ! ... | b >= a+0 when ! ... is true |
+| test.c:206:7:206:8 | ! ... | c != 0 when ! ... is false |
+| test.c:206:7:206:8 | ! ... | c == 0 when ! ... is true |
+| test.c:206:8:206:8 | c | ! ... != 0 when c is false |
+| test.c:206:8:206:8 | c | ! ... != 1 when c is true |
+| test.c:206:8:206:8 | c | ! ... == 0 when c is true |
+| test.c:206:8:206:8 | c | ! ... == 1 when c is false |
+| test.c:206:8:206:8 | c | a < b+1 when c is false |
+| test.c:206:8:206:8 | c | a >= b+1 when c is true |
+| test.c:206:8:206:8 | c | b < a+0 when c is true |
+| test.c:206:8:206:8 | c | b >= a+0 when c is false |
+| test.c:206:8:206:8 | c | c != 0 when c is true |
+| test.c:206:8:206:8 | c | c == 0 when c is false |
+| test.c:215:6:215:18 | call to __builtin_expect | ... > ... != 0 when call to __builtin_expect is true |
+| test.c:215:6:215:18 | call to __builtin_expect | ... > ... == 0 when call to __builtin_expect is false |
+| test.c:215:6:215:18 | call to __builtin_expect | a < b+1 when call to __builtin_expect is false |
+| test.c:215:6:215:18 | call to __builtin_expect | a >= b+1 when call to __builtin_expect is true |
+| test.c:215:6:215:18 | call to __builtin_expect | b < a+0 when call to __builtin_expect is true |
+| test.c:215:6:215:18 | call to __builtin_expect | b >= a+0 when call to __builtin_expect is false |
+| test.c:215:6:215:18 | call to __builtin_expect | call to __builtin_expect != 0 when call to __builtin_expect is true |
+| test.c:215:6:215:18 | call to __builtin_expect | call to __builtin_expect != 1 when call to __builtin_expect is false |
+| test.c:215:6:215:18 | call to __builtin_expect | call to __builtin_expect == 0 when call to __builtin_expect is false |
+| test.c:215:6:215:18 | call to __builtin_expect | call to __builtin_expect == 1 when call to __builtin_expect is true |
+| test.c:219:9:219:22 | call to __builtin_expect | 42 < a+0 when call to __builtin_expect is true |
+| test.c:219:9:219:22 | call to __builtin_expect | 42 >= a+0 when call to __builtin_expect is false |
+| test.c:219:9:219:22 | call to __builtin_expect | ... > ... != 0 when call to __builtin_expect is true |
+| test.c:219:9:219:22 | call to __builtin_expect | ... > ... == 0 when call to __builtin_expect is false |
+| test.c:219:9:219:22 | call to __builtin_expect | a < 42+1 when call to __builtin_expect is false |
+| test.c:219:9:219:22 | call to __builtin_expect | a < 43 when call to __builtin_expect is false |
+| test.c:219:9:219:22 | call to __builtin_expect | a >= 42+1 when call to __builtin_expect is true |
+| test.c:219:9:219:22 | call to __builtin_expect | a >= 43 when call to __builtin_expect is true |
+| test.c:219:9:219:22 | call to __builtin_expect | call to __builtin_expect != 0 when call to __builtin_expect is true |
+| test.c:219:9:219:22 | call to __builtin_expect | call to __builtin_expect != 1 when call to __builtin_expect is false |
+| test.c:219:9:219:22 | call to __builtin_expect | call to __builtin_expect == 0 when call to __builtin_expect is false |
+| test.c:219:9:219:22 | call to __builtin_expect | call to __builtin_expect == 1 when call to __builtin_expect is true |
+| test.cpp:18:8:18:10 | call to get | call to get != 0 when call to get is true |
+| test.cpp:18:8:18:10 | call to get | call to get != 1 when call to get is false |
+| test.cpp:18:8:18:10 | call to get | call to get == 0 when call to get is false |
+| test.cpp:18:8:18:10 | call to get | call to get == 1 when call to get is true |
+| test.cpp:31:7:31:13 | ... == ... | - ... != x+0 when ... == ... is false |
+| test.cpp:31:7:31:13 | ... == ... | - ... == x+0 when ... == ... is true |
+| test.cpp:31:7:31:13 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:31:7:31:13 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:31:7:31:13 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:31:7:31:13 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:31:7:31:13 | ... == ... | x != -1 when ... == ... is false |
+| test.cpp:31:7:31:13 | ... == ... | x != - ...+0 when ... == ... is false |
+| test.cpp:31:7:31:13 | ... == ... | x == -1 when ... == ... is true |
+| test.cpp:31:7:31:13 | ... == ... | x == - ...+0 when ... == ... is true |
+| test.cpp:42:13:42:20 | call to getABool | call to getABool != 0 when call to getABool is true |
+| test.cpp:42:13:42:20 | call to getABool | call to getABool != 1 when call to getABool is false |
+| test.cpp:42:13:42:20 | call to getABool | call to getABool == 0 when call to getABool is false |
+| test.cpp:42:13:42:20 | call to getABool | call to getABool == 1 when call to getABool is true |
+| test.cpp:61:10:61:10 | i | i == 0 when i is Case[0] |
+| test.cpp:61:10:61:10 | i | i == 1 when i is Case[1] |
+| test.cpp:61:10:61:10 | i | i == 2 when i is Case[2] |
+| test.cpp:74:10:74:10 | i | i < 11 when i is Case[0..10] |
+| test.cpp:74:10:74:10 | i | i < 21 when i is Case[11..20] |
+| test.cpp:74:10:74:10 | i | i >= 0 when i is Case[0..10] |
+| test.cpp:74:10:74:10 | i | i >= 11 when i is Case[11..20] |
+| test.cpp:93:6:93:6 | c | c != 0 when c is true |
+| test.cpp:93:6:93:6 | c | c != 1 when c is false |
+| test.cpp:93:6:93:6 | c | c == 0 when c is false |
+| test.cpp:93:6:93:6 | c | c == 1 when c is true |
+| test.cpp:99:6:99:6 | f | f != 0 when f is true |
+| test.cpp:99:6:99:6 | f | f != 1 when f is false |
+| test.cpp:99:6:99:6 | f | f == 0 when f is false |
+| test.cpp:99:6:99:6 | f | f == 1 when f is true |
+| test.cpp:105:6:105:14 | ... != ... | 0.0 != f+0 when ... != ... is true |
+| test.cpp:105:6:105:14 | ... != ... | 0.0 == f+0 when ... != ... is false |
+| test.cpp:105:6:105:14 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.cpp:105:6:105:14 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.cpp:105:6:105:14 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.cpp:105:6:105:14 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.cpp:105:6:105:14 | ... != ... | f != 0.0+0 when ... != ... is true |
+| test.cpp:105:6:105:14 | ... != ... | f == 0.0+0 when ... != ... is false |
+| test.cpp:111:6:111:14 | ... != ... | 0.0 != i+0 when ... != ... is true |
+| test.cpp:111:6:111:14 | ... != ... | 0.0 == i+0 when ... != ... is false |
+| test.cpp:111:6:111:14 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.cpp:111:6:111:14 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.cpp:111:6:111:14 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.cpp:111:6:111:14 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.cpp:111:6:111:14 | ... != ... | i != 0.0+0 when ... != ... is true |
+| test.cpp:111:6:111:14 | ... != ... | i == 0.0+0 when ... != ... is false |
+| test.cpp:122:9:122:9 | b | b != 0 when b is true |
+| test.cpp:122:9:122:9 | b | b != 1 when b is false |
+| test.cpp:122:9:122:9 | b | b == 0 when b is false |
+| test.cpp:122:9:122:9 | b | b == 1 when b is true |
+| test.cpp:125:13:125:20 | ! ... | ! ... != 0 when ! ... is true |
+| test.cpp:125:13:125:20 | ! ... | ! ... != 1 when ! ... is false |
+| test.cpp:125:13:125:20 | ! ... | ! ... == 0 when ! ... is false |
+| test.cpp:125:13:125:20 | ! ... | ! ... == 1 when ! ... is true |
+| test.cpp:125:13:125:20 | ! ... | call to safe != 0 when ! ... is false |
+| test.cpp:125:13:125:20 | ! ... | call to safe != 1 when ! ... is true |
+| test.cpp:125:13:125:20 | ! ... | call to safe == 0 when ! ... is true |
+| test.cpp:125:13:125:20 | ! ... | call to safe == 1 when ! ... is false |
+| test.cpp:125:14:125:17 | call to safe | ! ... != 0 when call to safe is false |
+| test.cpp:125:14:125:17 | call to safe | ! ... != 1 when call to safe is true |
+| test.cpp:125:14:125:17 | call to safe | ! ... == 0 when call to safe is true |
+| test.cpp:125:14:125:17 | call to safe | ! ... == 1 when call to safe is false |
+| test.cpp:125:14:125:17 | call to safe | call to safe != 0 when call to safe is true |
+| test.cpp:125:14:125:17 | call to safe | call to safe != 1 when call to safe is false |
+| test.cpp:125:14:125:17 | call to safe | call to safe == 0 when call to safe is false |
+| test.cpp:125:14:125:17 | call to safe | call to safe == 1 when call to safe is true |
+| test.cpp:131:6:131:21 | call to __builtin_expect | ... + ... != a+0 when call to __builtin_expect is false |
+| test.cpp:131:6:131:21 | call to __builtin_expect | ... + ... == a+0 when call to __builtin_expect is true |
+| test.cpp:131:6:131:21 | call to __builtin_expect | a != ... + ...+0 when call to __builtin_expect is false |
+| test.cpp:131:6:131:21 | call to __builtin_expect | a != b+42 when call to __builtin_expect is false |
+| test.cpp:131:6:131:21 | call to __builtin_expect | a == ... + ...+0 when call to __builtin_expect is true |
+| test.cpp:131:6:131:21 | call to __builtin_expect | a == b+42 when call to __builtin_expect is true |
+| test.cpp:131:6:131:21 | call to __builtin_expect | b != a+-42 when call to __builtin_expect is false |
+| test.cpp:131:6:131:21 | call to __builtin_expect | b == a+-42 when call to __builtin_expect is true |
+| test.cpp:131:6:131:21 | call to __builtin_expect | call to __builtin_expect != 0 when call to __builtin_expect is true |
+| test.cpp:131:6:131:21 | call to __builtin_expect | call to __builtin_expect != 1 when call to __builtin_expect is false |
+| test.cpp:131:6:131:21 | call to __builtin_expect | call to __builtin_expect == 0 when call to __builtin_expect is false |
+| test.cpp:131:6:131:21 | call to __builtin_expect | call to __builtin_expect == 1 when call to __builtin_expect is true |
+| test.cpp:135:6:135:21 | call to __builtin_expect | ... + ... != a+0 when call to __builtin_expect is true |
+| test.cpp:135:6:135:21 | call to __builtin_expect | ... + ... == a+0 when call to __builtin_expect is false |
+| test.cpp:135:6:135:21 | call to __builtin_expect | a != ... + ...+0 when call to __builtin_expect is true |
+| test.cpp:135:6:135:21 | call to __builtin_expect | a != b+42 when call to __builtin_expect is true |
+| test.cpp:135:6:135:21 | call to __builtin_expect | a == ... + ...+0 when call to __builtin_expect is false |
+| test.cpp:135:6:135:21 | call to __builtin_expect | a == b+42 when call to __builtin_expect is false |
+| test.cpp:135:6:135:21 | call to __builtin_expect | b != a+-42 when call to __builtin_expect is true |
+| test.cpp:135:6:135:21 | call to __builtin_expect | b == a+-42 when call to __builtin_expect is false |
+| test.cpp:135:6:135:21 | call to __builtin_expect | call to __builtin_expect != 0 when call to __builtin_expect is true |
+| test.cpp:135:6:135:21 | call to __builtin_expect | call to __builtin_expect != 1 when call to __builtin_expect is false |
+| test.cpp:135:6:135:21 | call to __builtin_expect | call to __builtin_expect == 0 when call to __builtin_expect is false |
+| test.cpp:135:6:135:21 | call to __builtin_expect | call to __builtin_expect == 1 when call to __builtin_expect is true |
+| test.cpp:141:6:141:21 | call to __builtin_expect | 42 != a+0 when call to __builtin_expect is false |
+| test.cpp:141:6:141:21 | call to __builtin_expect | 42 == a+0 when call to __builtin_expect is true |
+| test.cpp:141:6:141:21 | call to __builtin_expect | a != 42 when call to __builtin_expect is false |
+| test.cpp:141:6:141:21 | call to __builtin_expect | a != 42+0 when call to __builtin_expect is false |
+| test.cpp:141:6:141:21 | call to __builtin_expect | a == 42 when call to __builtin_expect is true |
+| test.cpp:141:6:141:21 | call to __builtin_expect | a == 42+0 when call to __builtin_expect is true |
+| test.cpp:141:6:141:21 | call to __builtin_expect | call to __builtin_expect != 0 when call to __builtin_expect is true |
+| test.cpp:141:6:141:21 | call to __builtin_expect | call to __builtin_expect != 1 when call to __builtin_expect is false |
+| test.cpp:141:6:141:21 | call to __builtin_expect | call to __builtin_expect == 0 when call to __builtin_expect is false |
+| test.cpp:141:6:141:21 | call to __builtin_expect | call to __builtin_expect == 1 when call to __builtin_expect is true |
+| test.cpp:145:6:145:21 | call to __builtin_expect | 42 != a+0 when call to __builtin_expect is true |
+| test.cpp:145:6:145:21 | call to __builtin_expect | 42 == a+0 when call to __builtin_expect is false |
+| test.cpp:145:6:145:21 | call to __builtin_expect | a != 42 when call to __builtin_expect is true |
+| test.cpp:145:6:145:21 | call to __builtin_expect | a != 42+0 when call to __builtin_expect is true |
+| test.cpp:145:6:145:21 | call to __builtin_expect | a == 42 when call to __builtin_expect is false |
+| test.cpp:145:6:145:21 | call to __builtin_expect | a == 42+0 when call to __builtin_expect is false |
+| test.cpp:145:6:145:21 | call to __builtin_expect | call to __builtin_expect != 0 when call to __builtin_expect is true |
+| test.cpp:145:6:145:21 | call to __builtin_expect | call to __builtin_expect != 1 when call to __builtin_expect is false |
+| test.cpp:145:6:145:21 | call to __builtin_expect | call to __builtin_expect == 0 when call to __builtin_expect is false |
+| test.cpp:145:6:145:21 | call to __builtin_expect | call to __builtin_expect == 1 when call to __builtin_expect is true |
+| test.cpp:152:7:152:8 | ! ... | 10 < a+1 when ! ... is true |
+| test.cpp:152:7:152:8 | ! ... | 10 >= a+1 when ! ... is false |
+| test.cpp:152:7:152:8 | ! ... | ! ... != 0 when ! ... is true |
+| test.cpp:152:7:152:8 | ! ... | ! ... != 1 when ! ... is false |
+| test.cpp:152:7:152:8 | ! ... | ! ... == 0 when ! ... is false |
+| test.cpp:152:7:152:8 | ! ... | ! ... == 1 when ! ... is true |
+| test.cpp:152:7:152:8 | ! ... | ... < ... != 0 when ! ... is false |
+| test.cpp:152:7:152:8 | ! ... | ... < ... != 1 when ! ... is true |
+| test.cpp:152:7:152:8 | ! ... | ... < ... == 0 when ! ... is true |
+| test.cpp:152:7:152:8 | ! ... | ... < ... == 1 when ! ... is false |
+| test.cpp:152:7:152:8 | ! ... | a < 10 when ! ... is false |
+| test.cpp:152:7:152:8 | ! ... | a < 10+0 when ! ... is false |
+| test.cpp:152:7:152:8 | ! ... | a >= 10 when ! ... is true |
+| test.cpp:152:7:152:8 | ! ... | a >= 10+0 when ! ... is true |
+| test.cpp:152:7:152:8 | ! ... | b != 0 when ! ... is false |
+| test.cpp:152:7:152:8 | ! ... | b != 1 when ! ... is true |
+| test.cpp:152:7:152:8 | ! ... | b == 0 when ! ... is true |
+| test.cpp:152:7:152:8 | ! ... | b == 1 when ! ... is false |
+| test.cpp:152:8:152:8 | b | 10 < a+1 when b is false |
+| test.cpp:152:8:152:8 | b | 10 >= a+1 when b is true |
+| test.cpp:152:8:152:8 | b | ! ... != 0 when b is false |
+| test.cpp:152:8:152:8 | b | ! ... != 1 when b is true |
+| test.cpp:152:8:152:8 | b | ! ... == 0 when b is true |
+| test.cpp:152:8:152:8 | b | ! ... == 1 when b is false |
+| test.cpp:152:8:152:8 | b | ... < ... != 0 when b is true |
+| test.cpp:152:8:152:8 | b | ... < ... != 1 when b is false |
+| test.cpp:152:8:152:8 | b | ... < ... == 0 when b is false |
+| test.cpp:152:8:152:8 | b | ... < ... == 1 when b is true |
+| test.cpp:152:8:152:8 | b | a < 10 when b is true |
+| test.cpp:152:8:152:8 | b | a < 10+0 when b is true |
+| test.cpp:152:8:152:8 | b | a >= 10 when b is false |
+| test.cpp:152:8:152:8 | b | a >= 10+0 when b is false |
+| test.cpp:152:8:152:8 | b | b != 0 when b is true |
+| test.cpp:152:8:152:8 | b | b != 1 when b is false |
+| test.cpp:152:8:152:8 | b | b == 0 when b is false |
+| test.cpp:152:8:152:8 | b | b == 1 when b is true |
+| test.cpp:160:7:160:8 | ! ... | ! ... != 0 when ! ... is true |
+| test.cpp:160:7:160:8 | ! ... | ! ... != 1 when ! ... is false |
+| test.cpp:160:7:160:8 | ! ... | ! ... == 0 when ! ... is false |
+| test.cpp:160:7:160:8 | ! ... | ! ... == 1 when ! ... is true |
+| test.cpp:160:7:160:8 | ! ... | ... != ... != 0 when ! ... is false |
+| test.cpp:160:7:160:8 | ! ... | ... != ... != 1 when ! ... is true |
+| test.cpp:160:7:160:8 | ! ... | ... != ... == 0 when ! ... is true |
+| test.cpp:160:7:160:8 | ! ... | ... != ... == 1 when ! ... is false |
+| test.cpp:160:7:160:8 | ! ... | a != b+0 when ! ... is false |
+| test.cpp:160:7:160:8 | ! ... | a == b+0 when ! ... is true |
+| test.cpp:160:7:160:8 | ! ... | b != a+0 when ! ... is false |
+| test.cpp:160:7:160:8 | ! ... | b == a+0 when ! ... is true |
+| test.cpp:160:7:160:8 | ! ... | c != 0 when ! ... is false |
+| test.cpp:160:7:160:8 | ! ... | c != 1 when ! ... is true |
+| test.cpp:160:7:160:8 | ! ... | c == 0 when ! ... is true |
+| test.cpp:160:7:160:8 | ! ... | c == 1 when ! ... is false |
+| test.cpp:160:8:160:8 | c | ! ... != 0 when c is false |
+| test.cpp:160:8:160:8 | c | ! ... != 1 when c is true |
+| test.cpp:160:8:160:8 | c | ! ... == 0 when c is true |
+| test.cpp:160:8:160:8 | c | ! ... == 1 when c is false |
+| test.cpp:160:8:160:8 | c | ... != ... != 0 when c is true |
+| test.cpp:160:8:160:8 | c | ... != ... != 1 when c is false |
+| test.cpp:160:8:160:8 | c | ... != ... == 0 when c is false |
+| test.cpp:160:8:160:8 | c | ... != ... == 1 when c is true |
+| test.cpp:160:8:160:8 | c | a != b+0 when c is true |
+| test.cpp:160:8:160:8 | c | a == b+0 when c is false |
+| test.cpp:160:8:160:8 | c | b != a+0 when c is true |
+| test.cpp:160:8:160:8 | c | b == a+0 when c is false |
+| test.cpp:160:8:160:8 | c | c != 0 when c is true |
+| test.cpp:160:8:160:8 | c | c != 1 when c is false |
+| test.cpp:160:8:160:8 | c | c == 0 when c is false |
+| test.cpp:160:8:160:8 | c | c == 1 when c is true |
+| test.cpp:168:7:168:8 | ! ... | 10 < a+0 when ! ... is false |
+| test.cpp:168:7:168:8 | ! ... | 10 >= a+0 when ! ... is true |
+| test.cpp:168:7:168:8 | ! ... | ! ... != 0 when ! ... is true |
+| test.cpp:168:7:168:8 | ! ... | ! ... != 1 when ! ... is false |
+| test.cpp:168:7:168:8 | ! ... | ! ... == 0 when ! ... is false |
+| test.cpp:168:7:168:8 | ! ... | ! ... == 1 when ! ... is true |
+| test.cpp:168:7:168:8 | ! ... | ... > ... != 0 when ! ... is false |
+| test.cpp:168:7:168:8 | ! ... | ... > ... != 1 when ! ... is true |
+| test.cpp:168:7:168:8 | ! ... | ... > ... == 0 when ! ... is true |
+| test.cpp:168:7:168:8 | ! ... | ... > ... == 1 when ! ... is false |
+| test.cpp:168:7:168:8 | ! ... | a < 10+1 when ! ... is true |
+| test.cpp:168:7:168:8 | ! ... | a < 11 when ! ... is true |
+| test.cpp:168:7:168:8 | ! ... | a >= 10+1 when ! ... is false |
+| test.cpp:168:7:168:8 | ! ... | a >= 11 when ! ... is false |
+| test.cpp:168:7:168:8 | ! ... | b != 0 when ! ... is false |
+| test.cpp:168:7:168:8 | ! ... | b != 1 when ! ... is true |
+| test.cpp:168:7:168:8 | ! ... | b == 0 when ! ... is true |
+| test.cpp:168:7:168:8 | ! ... | b == 1 when ! ... is false |
+| test.cpp:168:8:168:8 | b | 10 < a+0 when b is true |
+| test.cpp:168:8:168:8 | b | 10 >= a+0 when b is false |
+| test.cpp:168:8:168:8 | b | ! ... != 0 when b is false |
+| test.cpp:168:8:168:8 | b | ! ... != 1 when b is true |
+| test.cpp:168:8:168:8 | b | ! ... == 0 when b is true |
+| test.cpp:168:8:168:8 | b | ! ... == 1 when b is false |
+| test.cpp:168:8:168:8 | b | ... > ... != 0 when b is true |
+| test.cpp:168:8:168:8 | b | ... > ... != 1 when b is false |
+| test.cpp:168:8:168:8 | b | ... > ... == 0 when b is false |
+| test.cpp:168:8:168:8 | b | ... > ... == 1 when b is true |
+| test.cpp:168:8:168:8 | b | a < 10+1 when b is false |
+| test.cpp:168:8:168:8 | b | a < 11 when b is false |
+| test.cpp:168:8:168:8 | b | a >= 10+1 when b is true |
+| test.cpp:168:8:168:8 | b | a >= 11 when b is true |
+| test.cpp:168:8:168:8 | b | b != 0 when b is true |
+| test.cpp:168:8:168:8 | b | b != 1 when b is false |
+| test.cpp:168:8:168:8 | b | b == 0 when b is false |
+| test.cpp:168:8:168:8 | b | b == 1 when b is true |
+| test.cpp:176:7:176:8 | ! ... | ! ... != 0 when ! ... is true |
+| test.cpp:176:7:176:8 | ! ... | ! ... != 1 when ! ... is false |
+| test.cpp:176:7:176:8 | ! ... | ! ... == 0 when ! ... is false |
+| test.cpp:176:7:176:8 | ! ... | ! ... == 1 when ! ... is true |
+| test.cpp:176:7:176:8 | ! ... | ... > ... != 0 when ! ... is false |
+| test.cpp:176:7:176:8 | ! ... | ... > ... != 1 when ! ... is true |
+| test.cpp:176:7:176:8 | ! ... | ... > ... == 0 when ! ... is true |
+| test.cpp:176:7:176:8 | ! ... | ... > ... == 1 when ! ... is false |
+| test.cpp:176:7:176:8 | ! ... | a < b+1 when ! ... is true |
+| test.cpp:176:7:176:8 | ! ... | a >= b+1 when ! ... is false |
+| test.cpp:176:7:176:8 | ! ... | b < a+0 when ! ... is false |
+| test.cpp:176:7:176:8 | ! ... | b >= a+0 when ! ... is true |
+| test.cpp:176:7:176:8 | ! ... | c != 0 when ! ... is false |
+| test.cpp:176:7:176:8 | ! ... | c != 1 when ! ... is true |
+| test.cpp:176:7:176:8 | ! ... | c == 0 when ! ... is true |
+| test.cpp:176:7:176:8 | ! ... | c == 1 when ! ... is false |
+| test.cpp:176:8:176:8 | c | ! ... != 0 when c is false |
+| test.cpp:176:8:176:8 | c | ! ... != 1 when c is true |
+| test.cpp:176:8:176:8 | c | ! ... == 0 when c is true |
+| test.cpp:176:8:176:8 | c | ! ... == 1 when c is false |
+| test.cpp:176:8:176:8 | c | ... > ... != 0 when c is true |
+| test.cpp:176:8:176:8 | c | ... > ... != 1 when c is false |
+| test.cpp:176:8:176:8 | c | ... > ... == 0 when c is false |
+| test.cpp:176:8:176:8 | c | ... > ... == 1 when c is true |
+| test.cpp:176:8:176:8 | c | a < b+1 when c is false |
+| test.cpp:176:8:176:8 | c | a >= b+1 when c is true |
+| test.cpp:176:8:176:8 | c | b < a+0 when c is true |
+| test.cpp:176:8:176:8 | c | b >= a+0 when c is false |
+| test.cpp:176:8:176:8 | c | c != 0 when c is true |
+| test.cpp:176:8:176:8 | c | c != 1 when c is false |
+| test.cpp:176:8:176:8 | c | c == 0 when c is false |
+| test.cpp:176:8:176:8 | c | c == 1 when c is true |
+| test.cpp:182:6:182:16 | ! ... | ! ... != 0 when ! ... is true |
+| test.cpp:182:6:182:16 | ! ... | ! ... != 1 when ! ... is false |
+| test.cpp:182:6:182:16 | ! ... | ! ... == 0 when ! ... is false |
+| test.cpp:182:6:182:16 | ! ... | ! ... == 1 when ! ... is true |
+| test.cpp:182:6:182:16 | ! ... | ... && ... != 0 when ! ... is false |
+| test.cpp:182:6:182:16 | ! ... | ... && ... != 1 when ! ... is true |
+| test.cpp:182:6:182:16 | ! ... | ... && ... == 0 when ! ... is true |
+| test.cpp:182:6:182:16 | ! ... | ... && ... == 1 when ! ... is false |
+| test.cpp:182:6:182:16 | ! ... | b1 != 0 when ! ... is false |
+| test.cpp:182:6:182:16 | ! ... | b1 == 1 when ! ... is false |
+| test.cpp:182:6:182:16 | ! ... | b2 != 0 when ! ... is false |
+| test.cpp:182:6:182:16 | ! ... | b2 == 1 when ! ... is false |
+| test.cpp:182:8:182:9 | b1 | b1 != 0 when b1 is true |
+| test.cpp:182:8:182:9 | b1 | b1 != 1 when b1 is false |
+| test.cpp:182:8:182:9 | b1 | b1 == 0 when b1 is false |
+| test.cpp:182:8:182:9 | b1 | b1 == 1 when b1 is true |
+| test.cpp:182:8:182:15 | ... && ... | ! ... != 0 when ... && ... is false |
+| test.cpp:182:8:182:15 | ... && ... | ! ... != 1 when ... && ... is true |
+| test.cpp:182:8:182:15 | ... && ... | ! ... == 0 when ... && ... is true |
+| test.cpp:182:8:182:15 | ... && ... | ! ... == 1 when ... && ... is false |
+| test.cpp:182:8:182:15 | ... && ... | ... && ... != 0 when ... && ... is true |
+| test.cpp:182:8:182:15 | ... && ... | ... && ... != 1 when ... && ... is false |
+| test.cpp:182:8:182:15 | ... && ... | ... && ... == 0 when ... && ... is false |
+| test.cpp:182:8:182:15 | ... && ... | ... && ... == 1 when ... && ... is true |
+| test.cpp:182:8:182:15 | ... && ... | b1 != 0 when ... && ... is true |
+| test.cpp:182:8:182:15 | ... && ... | b1 == 1 when ... && ... is true |
+| test.cpp:182:8:182:15 | ... && ... | b2 != 0 when ... && ... is true |
+| test.cpp:182:8:182:15 | ... && ... | b2 == 1 when ... && ... is true |
+| test.cpp:182:14:182:15 | b2 | b2 != 0 when b2 is true |
+| test.cpp:182:14:182:15 | b2 | b2 != 1 when b2 is false |
+| test.cpp:182:14:182:15 | b2 | b2 == 0 when b2 is false |
+| test.cpp:182:14:182:15 | b2 | b2 == 1 when b2 is true |
+| test.cpp:193:6:193:16 | ! ... | ! ... != 0 when ! ... is true |
+| test.cpp:193:6:193:16 | ! ... | ! ... != 1 when ! ... is false |
+| test.cpp:193:6:193:16 | ! ... | ! ... == 0 when ! ... is false |
+| test.cpp:193:6:193:16 | ! ... | ! ... == 1 when ! ... is true |
+| test.cpp:193:6:193:16 | ! ... | ... \|\| ... != 0 when ! ... is false |
+| test.cpp:193:6:193:16 | ! ... | ... \|\| ... != 1 when ! ... is true |
+| test.cpp:193:6:193:16 | ! ... | ... \|\| ... == 0 when ! ... is true |
+| test.cpp:193:6:193:16 | ! ... | ... \|\| ... == 1 when ! ... is false |
+| test.cpp:193:6:193:16 | ! ... | b1 != 1 when ! ... is true |
+| test.cpp:193:6:193:16 | ! ... | b1 == 0 when ! ... is true |
+| test.cpp:193:6:193:16 | ! ... | b2 != 1 when ! ... is true |
+| test.cpp:193:6:193:16 | ! ... | b2 == 0 when ! ... is true |
+| test.cpp:193:8:193:9 | b1 | b1 != 0 when b1 is true |
+| test.cpp:193:8:193:9 | b1 | b1 != 1 when b1 is false |
+| test.cpp:193:8:193:9 | b1 | b1 == 0 when b1 is false |
+| test.cpp:193:8:193:9 | b1 | b1 == 1 when b1 is true |
+| test.cpp:193:8:193:15 | ... \|\| ... | ! ... != 0 when ... \|\| ... is false |
+| test.cpp:193:8:193:15 | ... \|\| ... | ! ... != 1 when ... \|\| ... is true |
+| test.cpp:193:8:193:15 | ... \|\| ... | ! ... == 0 when ... \|\| ... is true |
+| test.cpp:193:8:193:15 | ... \|\| ... | ! ... == 1 when ... \|\| ... is false |
+| test.cpp:193:8:193:15 | ... \|\| ... | ... \|\| ... != 0 when ... \|\| ... is true |
+| test.cpp:193:8:193:15 | ... \|\| ... | ... \|\| ... != 1 when ... \|\| ... is false |
+| test.cpp:193:8:193:15 | ... \|\| ... | ... \|\| ... == 0 when ... \|\| ... is false |
+| test.cpp:193:8:193:15 | ... \|\| ... | ... \|\| ... == 1 when ... \|\| ... is true |
+| test.cpp:193:8:193:15 | ... \|\| ... | b1 != 1 when ... \|\| ... is false |
+| test.cpp:193:8:193:15 | ... \|\| ... | b1 == 0 when ... \|\| ... is false |
+| test.cpp:193:8:193:15 | ... \|\| ... | b2 != 1 when ... \|\| ... is false |
+| test.cpp:193:8:193:15 | ... \|\| ... | b2 == 0 when ... \|\| ... is false |
+| test.cpp:193:14:193:15 | b2 | b2 != 0 when b2 is true |
+| test.cpp:193:14:193:15 | b2 | b2 != 1 when b2 is false |
+| test.cpp:193:14:193:15 | b2 | b2 == 0 when b2 is false |
+| test.cpp:193:14:193:15 | b2 | b2 == 1 when b2 is true |
+| test.cpp:211:9:211:15 | ... == ... | 0 != sc+0 when ... == ... is false |
+| test.cpp:211:9:211:15 | ... == ... | 0 == sc+0 when ... == ... is true |
+| test.cpp:211:9:211:15 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:211:9:211:15 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:211:9:211:15 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:211:9:211:15 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:211:9:211:15 | ... == ... | sc != 0 when ... == ... is false |
+| test.cpp:211:9:211:15 | ... == ... | sc != 0+0 when ... == ... is false |
+| test.cpp:211:9:211:15 | ... == ... | sc == 0 when ... == ... is true |
+| test.cpp:211:9:211:15 | ... == ... | sc == 0+0 when ... == ... is true |
+| test.cpp:214:9:214:17 | ... == ... | 0 != sc+0 when ... == ... is false |
+| test.cpp:214:9:214:17 | ... == ... | 0 == sc+0 when ... == ... is true |
+| test.cpp:214:9:214:17 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:214:9:214:17 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:214:9:214:17 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:214:9:214:17 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:214:9:214:17 | ... == ... | sc != 0 when ... == ... is false |
+| test.cpp:214:9:214:17 | ... == ... | sc != 0+0 when ... == ... is false |
+| test.cpp:214:9:214:17 | ... == ... | sc == 0 when ... == ... is true |
+| test.cpp:214:9:214:17 | ... == ... | sc == 0+0 when ... == ... is true |
+| test.cpp:217:9:217:15 | ... == ... | 0 != ul+0 when ... == ... is false |
+| test.cpp:217:9:217:15 | ... == ... | 0 == ul+0 when ... == ... is true |
+| test.cpp:217:9:217:15 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:217:9:217:15 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:217:9:217:15 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:217:9:217:15 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:217:9:217:15 | ... == ... | ul != 0 when ... == ... is false |
+| test.cpp:217:9:217:15 | ... == ... | ul != 0+0 when ... == ... is false |
+| test.cpp:217:9:217:15 | ... == ... | ul == 0 when ... == ... is true |
+| test.cpp:217:9:217:15 | ... == ... | ul == 0+0 when ... == ... is true |
+| test.cpp:220:9:220:14 | ... == ... | 0 != f+0 when ... == ... is false |
+| test.cpp:220:9:220:14 | ... == ... | 0 == f+0 when ... == ... is true |
+| test.cpp:220:9:220:14 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:220:9:220:14 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:220:9:220:14 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:220:9:220:14 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:220:9:220:14 | ... == ... | f != 0+0 when ... == ... is false |
+| test.cpp:220:9:220:14 | ... == ... | f == 0+0 when ... == ... is true |
+| test.cpp:223:9:223:16 | ... == ... | 0.0 != f+0 when ... == ... is false |
+| test.cpp:223:9:223:16 | ... == ... | 0.0 == f+0 when ... == ... is true |
+| test.cpp:223:9:223:16 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:223:9:223:16 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:223:9:223:16 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:223:9:223:16 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:223:9:223:16 | ... == ... | f != 0.0+0 when ... == ... is false |
+| test.cpp:223:9:223:16 | ... == ... | f == 0.0+0 when ... == ... is true |
+| test.cpp:226:9:226:14 | ... == ... | 0 != d+0 when ... == ... is false |
+| test.cpp:226:9:226:14 | ... == ... | 0 == d+0 when ... == ... is true |
+| test.cpp:226:9:226:14 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:226:9:226:14 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:226:9:226:14 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:226:9:226:14 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:226:9:226:14 | ... == ... | d != 0+0 when ... == ... is false |
+| test.cpp:226:9:226:14 | ... == ... | d == 0+0 when ... == ... is true |
+| test.cpp:229:9:229:14 | ... == ... | 0 != b+0 when ... == ... is false |
+| test.cpp:229:9:229:14 | ... == ... | 0 == b+0 when ... == ... is true |
+| test.cpp:229:9:229:14 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:229:9:229:14 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:229:9:229:14 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:229:9:229:14 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:229:9:229:14 | ... == ... | b != 0 when ... == ... is false |
+| test.cpp:229:9:229:14 | ... == ... | b != 0+0 when ... == ... is false |
+| test.cpp:229:9:229:14 | ... == ... | b == 0 when ... == ... is true |
+| test.cpp:229:9:229:14 | ... == ... | b == 0+0 when ... == ... is true |
+| test.cpp:232:9:232:18 | ... == ... | 0 != b+0 when ... == ... is false |
+| test.cpp:232:9:232:18 | ... == ... | 0 == b+0 when ... == ... is true |
+| test.cpp:232:9:232:18 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:232:9:232:18 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:232:9:232:18 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:232:9:232:18 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:232:9:232:18 | ... == ... | b != 0 when ... == ... is false |
+| test.cpp:232:9:232:18 | ... == ... | b != 0+0 when ... == ... is false |
+| test.cpp:232:9:232:18 | ... == ... | b == 0 when ... == ... is true |
+| test.cpp:232:9:232:18 | ... == ... | b == 0+0 when ... == ... is true |
+| test.cpp:235:9:235:17 | ... == ... | 0 != i+0 when ... == ... is false |
+| test.cpp:235:9:235:17 | ... == ... | 0 == i+0 when ... == ... is true |
+| test.cpp:235:9:235:17 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:235:9:235:17 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:235:9:235:17 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:235:9:235:17 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:235:9:235:17 | ... == ... | i != 0 when ... == ... is false |
+| test.cpp:235:9:235:17 | ... == ... | i != 0+0 when ... == ... is false |
+| test.cpp:235:9:235:17 | ... == ... | i == 0 when ... == ... is true |
+| test.cpp:235:9:235:17 | ... == ... | i == 0+0 when ... == ... is true |
+| test.cpp:238:9:238:17 | ... == ... | 0 != f+0 when ... == ... is false |
+| test.cpp:238:9:238:17 | ... == ... | 0 == f+0 when ... == ... is true |
+| test.cpp:238:9:238:17 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:238:9:238:17 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:238:9:238:17 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:238:9:238:17 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:238:9:238:17 | ... == ... | f != 0+0 when ... == ... is false |
+| test.cpp:238:9:238:17 | ... == ... | f == 0+0 when ... == ... is true |
+| test.cpp:241:9:241:17 | ... == ... | 0 != i+0 when ... == ... is false |
+| test.cpp:241:9:241:17 | ... == ... | 0 == i+0 when ... == ... is true |
+| test.cpp:241:9:241:17 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:241:9:241:17 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:241:9:241:17 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:241:9:241:17 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:241:9:241:17 | ... == ... | i != 0 when ... == ... is false |
+| test.cpp:241:9:241:17 | ... == ... | i != 0+0 when ... == ... is false |
+| test.cpp:241:9:241:17 | ... == ... | i == 0 when ... == ... is true |
+| test.cpp:241:9:241:17 | ... == ... | i == 0+0 when ... == ... is true |
+| test.cpp:241:9:241:30 | ... && ... | 0 == f+0 when ... && ... is true |
+| test.cpp:241:9:241:30 | ... && ... | 0 == i+0 when ... && ... is true |
+| test.cpp:241:9:241:30 | ... && ... | ... == ... != 0 when ... && ... is true |
+| test.cpp:241:9:241:30 | ... && ... | ... == ... == 1 when ... && ... is true |
+| test.cpp:241:9:241:30 | ... && ... | f == 0+0 when ... && ... is true |
+| test.cpp:241:9:241:30 | ... && ... | i == 0 when ... && ... is true |
+| test.cpp:241:9:241:30 | ... && ... | i == 0+0 when ... && ... is true |
+| test.cpp:241:9:241:43 | ... && ... | 0 == f+0 when ... && ... is true |
+| test.cpp:241:9:241:43 | ... && ... | 0 == i+0 when ... && ... is true |
+| test.cpp:241:9:241:43 | ... && ... | ... == ... != 0 when ... && ... is true |
+| test.cpp:241:9:241:43 | ... && ... | ... == ... == 1 when ... && ... is true |
+| test.cpp:241:9:241:43 | ... && ... | f == 0+0 when ... && ... is true |
+| test.cpp:241:9:241:43 | ... && ... | i == 0 when ... && ... is true |
+| test.cpp:241:9:241:43 | ... && ... | i == 0+0 when ... && ... is true |
+| test.cpp:241:22:241:30 | ... == ... | 0 != f+0 when ... == ... is false |
+| test.cpp:241:22:241:30 | ... == ... | 0 == f+0 when ... == ... is true |
+| test.cpp:241:22:241:30 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:241:22:241:30 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:241:22:241:30 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:241:22:241:30 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:241:22:241:30 | ... == ... | f != 0+0 when ... == ... is false |
+| test.cpp:241:22:241:30 | ... == ... | f == 0+0 when ... == ... is true |
+| test.cpp:241:35:241:43 | ... == ... | 0 != i+0 when ... == ... is false |
+| test.cpp:241:35:241:43 | ... == ... | 0 == i+0 when ... == ... is true |
+| test.cpp:241:35:241:43 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:241:35:241:43 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:241:35:241:43 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:241:35:241:43 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:241:35:241:43 | ... == ... | i != 0 when ... == ... is false |
+| test.cpp:241:35:241:43 | ... == ... | i != 0+0 when ... == ... is false |
+| test.cpp:241:35:241:43 | ... == ... | i == 0 when ... == ... is true |
+| test.cpp:241:35:241:43 | ... == ... | i == 0+0 when ... == ... is true |
+| test.cpp:247:6:247:18 | ... == ... | 0 != ... == ...+0 when ... == ... is false |
+| test.cpp:247:6:247:18 | ... == ... | 0 == ... == ...+0 when ... == ... is true |
+| test.cpp:247:6:247:18 | ... == ... | ... == ... != 0 when ... == ... is false |
+| test.cpp:247:6:247:18 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:247:6:247:18 | ... == ... | ... == ... != 0+0 when ... == ... is false |
+| test.cpp:247:6:247:18 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:247:6:247:18 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:247:6:247:18 | ... == ... | ... == ... == 0 when ... == ... is true |
+| test.cpp:247:6:247:18 | ... == ... | ... == ... == 0+0 when ... == ... is true |
+| test.cpp:247:6:247:18 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:247:6:247:18 | ... == ... | a != b+0 when ... == ... is true |
+| test.cpp:247:6:247:18 | ... == ... | a == b+0 when ... == ... is false |
+| test.cpp:247:6:247:18 | ... == ... | b != a+0 when ... == ... is true |
+| test.cpp:247:6:247:18 | ... == ... | b == a+0 when ... == ... is false |
+| test.cpp:253:6:253:18 | ... != ... | 0 != ... == ...+0 when ... != ... is true |
+| test.cpp:253:6:253:18 | ... != ... | 0 == ... == ...+0 when ... != ... is false |
+| test.cpp:253:6:253:18 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.cpp:253:6:253:18 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.cpp:253:6:253:18 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.cpp:253:6:253:18 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.cpp:253:6:253:18 | ... != ... | ... == ... != 0 when ... != ... is true |
+| test.cpp:253:6:253:18 | ... != ... | ... == ... != 0+0 when ... != ... is true |
+| test.cpp:253:6:253:18 | ... != ... | ... == ... == 0 when ... != ... is false |
+| test.cpp:253:6:253:18 | ... != ... | ... == ... == 0+0 when ... != ... is false |
+| test.cpp:253:6:253:18 | ... != ... | a != b+0 when ... != ... is false |
+| test.cpp:253:6:253:18 | ... != ... | a == b+0 when ... != ... is true |
+| test.cpp:253:6:253:18 | ... != ... | b != a+0 when ... != ... is false |
+| test.cpp:253:6:253:18 | ... != ... | b == a+0 when ... != ... is true |
+| test.cpp:260:6:260:18 | ... == ... | 0 != ... != ...+0 when ... == ... is false |
+| test.cpp:260:6:260:18 | ... == ... | 0 == ... != ...+0 when ... == ... is true |
+| test.cpp:260:6:260:18 | ... == ... | ... != ... != 0 when ... == ... is false |
+| test.cpp:260:6:260:18 | ... == ... | ... != ... != 0+0 when ... == ... is false |
+| test.cpp:260:6:260:18 | ... == ... | ... != ... == 0 when ... == ... is true |
+| test.cpp:260:6:260:18 | ... == ... | ... != ... == 0+0 when ... == ... is true |
+| test.cpp:260:6:260:18 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:260:6:260:18 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:260:6:260:18 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:260:6:260:18 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:260:6:260:18 | ... == ... | a != b+0 when ... == ... is false |
+| test.cpp:260:6:260:18 | ... == ... | a == b+0 when ... == ... is true |
+| test.cpp:260:6:260:18 | ... == ... | b != a+0 when ... == ... is false |
+| test.cpp:260:6:260:18 | ... == ... | b == a+0 when ... == ... is true |
+| test.cpp:266:6:266:18 | ... != ... | 0 != ... != ...+0 when ... != ... is true |
+| test.cpp:266:6:266:18 | ... != ... | 0 == ... != ...+0 when ... != ... is false |
+| test.cpp:266:6:266:18 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.cpp:266:6:266:18 | ... != ... | ... != ... != 0+0 when ... != ... is true |
+| test.cpp:266:6:266:18 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.cpp:266:6:266:18 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.cpp:266:6:266:18 | ... != ... | ... != ... == 0+0 when ... != ... is false |
+| test.cpp:266:6:266:18 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.cpp:266:6:266:18 | ... != ... | a != b+0 when ... != ... is true |
+| test.cpp:266:6:266:18 | ... != ... | a == b+0 when ... != ... is false |
+| test.cpp:266:6:266:18 | ... != ... | b != a+0 when ... != ... is true |
+| test.cpp:266:6:266:18 | ... != ... | b == a+0 when ... != ... is false |
+| test.cpp:273:6:273:17 | ... == ... | 0 != ... < ...+0 when ... == ... is false |
+| test.cpp:273:6:273:17 | ... == ... | 0 == ... < ...+0 when ... == ... is true |
+| test.cpp:273:6:273:17 | ... == ... | ... < ... != 0 when ... == ... is false |
+| test.cpp:273:6:273:17 | ... == ... | ... < ... != 0+0 when ... == ... is false |
+| test.cpp:273:6:273:17 | ... == ... | ... < ... == 0 when ... == ... is true |
+| test.cpp:273:6:273:17 | ... == ... | ... < ... == 0+0 when ... == ... is true |
+| test.cpp:273:6:273:17 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:273:6:273:17 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:273:6:273:17 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:273:6:273:17 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:273:6:273:17 | ... == ... | a < b+0 when ... == ... is false |
+| test.cpp:273:6:273:17 | ... == ... | a >= b+0 when ... == ... is true |
+| test.cpp:273:6:273:17 | ... == ... | b < a+1 when ... == ... is true |
+| test.cpp:273:6:273:17 | ... == ... | b >= a+1 when ... == ... is false |
+| test.cpp:279:6:279:17 | ... != ... | 0 != ... < ...+0 when ... != ... is true |
+| test.cpp:279:6:279:17 | ... != ... | 0 == ... < ...+0 when ... != ... is false |
+| test.cpp:279:6:279:17 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.cpp:279:6:279:17 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.cpp:279:6:279:17 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.cpp:279:6:279:17 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.cpp:279:6:279:17 | ... != ... | ... < ... != 0 when ... != ... is true |
+| test.cpp:279:6:279:17 | ... != ... | ... < ... != 0+0 when ... != ... is true |
+| test.cpp:279:6:279:17 | ... != ... | ... < ... == 0 when ... != ... is false |
+| test.cpp:279:6:279:17 | ... != ... | ... < ... == 0+0 when ... != ... is false |
+| test.cpp:279:6:279:17 | ... != ... | a < b+0 when ... != ... is true |
+| test.cpp:279:6:279:17 | ... != ... | a >= b+0 when ... != ... is false |
+| test.cpp:279:6:279:17 | ... != ... | b < a+1 when ... != ... is false |
+| test.cpp:279:6:279:17 | ... != ... | b >= a+1 when ... != ... is true |
+| test.cpp:287:6:287:19 | ... == ... | 0 != ... == ...+0 when ... == ... is false |
+| test.cpp:287:6:287:19 | ... == ... | 0 == ... == ...+0 when ... == ... is true |
+| test.cpp:287:6:287:19 | ... == ... | 42 != a+0 when ... == ... is true |
+| test.cpp:287:6:287:19 | ... == ... | 42 == a+0 when ... == ... is false |
+| test.cpp:287:6:287:19 | ... == ... | ... == ... != 0 when ... == ... is false |
+| test.cpp:287:6:287:19 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:287:6:287:19 | ... == ... | ... == ... != 0+0 when ... == ... is false |
+| test.cpp:287:6:287:19 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:287:6:287:19 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:287:6:287:19 | ... == ... | ... == ... == 0 when ... == ... is true |
+| test.cpp:287:6:287:19 | ... == ... | ... == ... == 0+0 when ... == ... is true |
+| test.cpp:287:6:287:19 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:287:6:287:19 | ... == ... | a != 42 when ... == ... is true |
+| test.cpp:287:6:287:19 | ... == ... | a != 42+0 when ... == ... is true |
+| test.cpp:287:6:287:19 | ... == ... | a == 42 when ... == ... is false |
+| test.cpp:287:6:287:19 | ... == ... | a == 42+0 when ... == ... is false |
+| test.cpp:293:6:293:19 | ... != ... | 0 != ... == ...+0 when ... != ... is true |
+| test.cpp:293:6:293:19 | ... != ... | 0 == ... == ...+0 when ... != ... is false |
+| test.cpp:293:6:293:19 | ... != ... | 42 != a+0 when ... != ... is false |
+| test.cpp:293:6:293:19 | ... != ... | 42 == a+0 when ... != ... is true |
+| test.cpp:293:6:293:19 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.cpp:293:6:293:19 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.cpp:293:6:293:19 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.cpp:293:6:293:19 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.cpp:293:6:293:19 | ... != ... | ... == ... != 0 when ... != ... is true |
+| test.cpp:293:6:293:19 | ... != ... | ... == ... != 0+0 when ... != ... is true |
+| test.cpp:293:6:293:19 | ... != ... | ... == ... == 0 when ... != ... is false |
+| test.cpp:293:6:293:19 | ... != ... | ... == ... == 0+0 when ... != ... is false |
+| test.cpp:293:6:293:19 | ... != ... | a != 42 when ... != ... is false |
+| test.cpp:293:6:293:19 | ... != ... | a != 42+0 when ... != ... is false |
+| test.cpp:293:6:293:19 | ... != ... | a == 42 when ... != ... is true |
+| test.cpp:293:6:293:19 | ... != ... | a == 42+0 when ... != ... is true |
+| test.cpp:300:6:300:19 | ... == ... | 0 != ... != ...+0 when ... == ... is false |
+| test.cpp:300:6:300:19 | ... == ... | 0 == ... != ...+0 when ... == ... is true |
+| test.cpp:300:6:300:19 | ... == ... | 42 != a+0 when ... == ... is false |
+| test.cpp:300:6:300:19 | ... == ... | 42 == a+0 when ... == ... is true |
+| test.cpp:300:6:300:19 | ... == ... | ... != ... != 0 when ... == ... is false |
+| test.cpp:300:6:300:19 | ... == ... | ... != ... != 0+0 when ... == ... is false |
+| test.cpp:300:6:300:19 | ... == ... | ... != ... == 0 when ... == ... is true |
+| test.cpp:300:6:300:19 | ... == ... | ... != ... == 0+0 when ... == ... is true |
+| test.cpp:300:6:300:19 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:300:6:300:19 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:300:6:300:19 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:300:6:300:19 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:300:6:300:19 | ... == ... | a != 42 when ... == ... is false |
+| test.cpp:300:6:300:19 | ... == ... | a != 42+0 when ... == ... is false |
+| test.cpp:300:6:300:19 | ... == ... | a == 42 when ... == ... is true |
+| test.cpp:300:6:300:19 | ... == ... | a == 42+0 when ... == ... is true |
+| test.cpp:306:6:306:19 | ... != ... | 0 != ... != ...+0 when ... != ... is true |
+| test.cpp:306:6:306:19 | ... != ... | 0 == ... != ...+0 when ... != ... is false |
+| test.cpp:306:6:306:19 | ... != ... | 42 != a+0 when ... != ... is true |
+| test.cpp:306:6:306:19 | ... != ... | 42 == a+0 when ... != ... is false |
+| test.cpp:306:6:306:19 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.cpp:306:6:306:19 | ... != ... | ... != ... != 0+0 when ... != ... is true |
+| test.cpp:306:6:306:19 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.cpp:306:6:306:19 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.cpp:306:6:306:19 | ... != ... | ... != ... == 0+0 when ... != ... is false |
+| test.cpp:306:6:306:19 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.cpp:306:6:306:19 | ... != ... | a != 42 when ... != ... is true |
+| test.cpp:306:6:306:19 | ... != ... | a != 42+0 when ... != ... is true |
+| test.cpp:306:6:306:19 | ... != ... | a == 42 when ... != ... is false |
+| test.cpp:306:6:306:19 | ... != ... | a == 42+0 when ... != ... is false |
+| test.cpp:312:6:312:18 | ... == ... | 0 != ... < ...+0 when ... == ... is false |
+| test.cpp:312:6:312:18 | ... == ... | 0 == ... < ...+0 when ... == ... is true |
+| test.cpp:312:6:312:18 | ... == ... | 42 < a+1 when ... == ... is true |
+| test.cpp:312:6:312:18 | ... == ... | 42 >= a+1 when ... == ... is false |
+| test.cpp:312:6:312:18 | ... == ... | ... < ... != 0 when ... == ... is false |
+| test.cpp:312:6:312:18 | ... == ... | ... < ... != 0+0 when ... == ... is false |
+| test.cpp:312:6:312:18 | ... == ... | ... < ... == 0 when ... == ... is true |
+| test.cpp:312:6:312:18 | ... == ... | ... < ... == 0+0 when ... == ... is true |
+| test.cpp:312:6:312:18 | ... == ... | ... == ... != 0 when ... == ... is true |
+| test.cpp:312:6:312:18 | ... == ... | ... == ... != 1 when ... == ... is false |
+| test.cpp:312:6:312:18 | ... == ... | ... == ... == 0 when ... == ... is false |
+| test.cpp:312:6:312:18 | ... == ... | ... == ... == 1 when ... == ... is true |
+| test.cpp:312:6:312:18 | ... == ... | a < 42 when ... == ... is false |
+| test.cpp:312:6:312:18 | ... == ... | a < 42+0 when ... == ... is false |
+| test.cpp:312:6:312:18 | ... == ... | a >= 42 when ... == ... is true |
+| test.cpp:312:6:312:18 | ... == ... | a >= 42+0 when ... == ... is true |
+| test.cpp:318:6:318:18 | ... != ... | 0 != ... < ...+0 when ... != ... is true |
+| test.cpp:318:6:318:18 | ... != ... | 0 == ... < ...+0 when ... != ... is false |
+| test.cpp:318:6:318:18 | ... != ... | 42 < a+1 when ... != ... is false |
+| test.cpp:318:6:318:18 | ... != ... | 42 >= a+1 when ... != ... is true |
+| test.cpp:318:6:318:18 | ... != ... | ... != ... != 0 when ... != ... is true |
+| test.cpp:318:6:318:18 | ... != ... | ... != ... != 1 when ... != ... is false |
+| test.cpp:318:6:318:18 | ... != ... | ... != ... == 0 when ... != ... is false |
+| test.cpp:318:6:318:18 | ... != ... | ... != ... == 1 when ... != ... is true |
+| test.cpp:318:6:318:18 | ... != ... | ... < ... != 0 when ... != ... is true |
+| test.cpp:318:6:318:18 | ... != ... | ... < ... != 0+0 when ... != ... is true |
+| test.cpp:318:6:318:18 | ... != ... | ... < ... == 0 when ... != ... is false |
+| test.cpp:318:6:318:18 | ... != ... | ... < ... == 0+0 when ... != ... is false |
+| test.cpp:318:6:318:18 | ... != ... | a < 42 when ... != ... is true |
+| test.cpp:318:6:318:18 | ... != ... | a < 42+0 when ... != ... is true |
+| test.cpp:318:6:318:18 | ... != ... | a >= 42 when ... != ... is false |
+| test.cpp:318:6:318:18 | ... != ... | a >= 42+0 when ... != ... is false |
