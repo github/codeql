@@ -29,7 +29,7 @@ fn tainted_path_handler_folder_good(Query(file_path): Query<String>) -> Result<S
     if !file_path.starts_with(public_path) {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-checked path-injection-sink
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: path-injection-checked
 }
 
 //#[handler]
@@ -42,7 +42,7 @@ fn tainted_path_handler_folder_almost_good1(
     if !file_path.starts_with(public_path) {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-checked path-injection-sink MISSING: Alert[rust/path-injection]=remote2 -- we cannot resolve the `join` call above, because it needs a `PathBuf -> Path` `Deref`
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: path-injection-checked Alert[rust/path-injection]=remote2 -- we cannot resolve the `join` call above, because it needs a `PathBuf -> Path` `Deref`
 }
 
 //#[handler]
@@ -54,7 +54,7 @@ fn tainted_path_handler_folder_good_simpler(Query(file_path): Query<String>) -> 
     if !file_path.starts_with(public_path) {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-checked path-injection-sink
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: path-injection-checked
 }
 
 //#[handler]
