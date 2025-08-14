@@ -276,7 +276,7 @@ public class B {
     int[] a = null;
     if (iters > 0) a = new int[iters];
     for (int i = 0; i < iters; ++i)
-      a[i] = 0; // NPE - false positive
+      a[i] = 0; // OK
 
     if (iters > 0) {
       String last = null;
@@ -289,7 +289,7 @@ public class B {
       throw new RuntimeException();
     }
     for (int i = 0; i < iters; ++i) {
-      b[i] = 0; // NPE - false positive
+      b[i] = 0; // OK
     }
   }
 
@@ -331,7 +331,7 @@ public class B {
       x = new Object();
     }
     if(y instanceof String) {
-      x.hashCode(); // OK
+      x.hashCode(); // Spurious NPE - false positive
     }
   }
 
@@ -341,7 +341,7 @@ public class B {
       x = new Object();
     }
     if(!(y instanceof String)) {
-      x.hashCode(); // OK
+      x.hashCode(); // Spurious NPE - false positive
     }
   }
 
@@ -351,7 +351,7 @@ public class B {
       x = new Object();
     }
     if(y == z) {
-      x.hashCode(); // OK
+      x.hashCode(); // Spurious NPE - false positive
     }
 
     Object x2 = null;
@@ -359,7 +359,7 @@ public class B {
       x2 = new Object();
     }
     if(y != z) {
-      x2.hashCode(); // OK
+      x2.hashCode(); // Spurious NPE - false positive
     }
 
     Object x3 = null;
@@ -367,7 +367,7 @@ public class B {
       x3 = new Object();
     }
     if(!(y == z)) {
-      x3.hashCode(); // OK
+      x3.hashCode(); // Spurious NPE - false positive
     }
   }
 
@@ -417,7 +417,7 @@ public class B {
         x = null;
       }
       if (!b) {
-        x.hashCode(); // NPE - false negative
+        x.hashCode(); // NPE
       }
       // flow can loop around from one iteration to the next
     }
@@ -445,7 +445,7 @@ public class B {
       if (!ready) {
         x = null;
       } else {
-        x.hashCode(); // Spurious NPE - false positive
+        x.hashCode(); // OK
       }
       if ((a[i] & 1) != 0) {
         ready = (a[i] & 2) != 0;
@@ -547,14 +547,14 @@ public class B {
     if (n > 21) return;
     if (maybe) {}
     for (int i = 0; i < n; ++i) {
-      xs[i]++; // Spurious NPE - false positive
+      xs[i]++; // OK
     }
   }
 
   public void rangetest(int n) {
     String s = null;
     if (n < 0 || n > 10) s = "A";
-    if (n > 100) s.hashCode(); // Spurious NPE - false positive
-    if (n == 42) s.hashCode(); // Spurious NPE - false positive
+    if (n > 100) s.hashCode(); // OK
+    if (n == 42) s.hashCode(); // OK
   }
 }
