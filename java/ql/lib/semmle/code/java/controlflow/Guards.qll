@@ -490,12 +490,6 @@ module Guards_v2 = GuardsImpl::Logic<LogicInput_v2>;
 /** INTERNAL: Don't use. */
 module Guards_v3 = GuardsImpl::Logic<LogicInput_v3>;
 
-/** INTERNAL: Don't use. */
-predicate implies_v3(Guard g1, boolean b1, Guard g2, boolean b2) {
-  Guards_v3::boolImplies(g1, any(GuardValue v | v.asBooleanValue() = b1), g2,
-    any(GuardValue v | v.asBooleanValue() = b2))
-}
-
 /**
  * A guard. This may be any expression whose value determines subsequent
  * control flow. It may also be a switch case, which as a guard is considered
