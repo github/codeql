@@ -109,35 +109,3 @@ nodes
 | main.rs:123:9:123:50 | ...::_eprint | semmle.label | ...::_eprint |
 | main.rs:123:19:123:49 | MacroExpr | semmle.label | MacroExpr |
 subpaths
-testFailures
-| main.rs:9:75:9:97 | //... | Missing result: Source=commandargs |
-| main.rs:11:23:11:44 | ...::get | Unexpected result: Source |
-| main.rs:12:64:12:81 | //... | Missing result: Source=remote |
-| main.rs:15:40:15:69 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:16:5:16:45 | ...::log | Unexpected result: Alert=environment |
-| main.rs:16:48:16:77 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:18:41:18:70 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:19:5:19:40 | ...::log | Unexpected result: Alert=environment |
-| main.rs:19:43:19:72 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:23:33:23:62 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:27:30:27:59 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:55:31:55:60 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:62:45:62:74 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:70:39:70:68 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:85:46:85:75 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:90:41:90:70 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:96:49:96:78 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:108:9:108:36 | ...::log | Unexpected result: Alert=commandargs |
-| main.rs:108:39:108:68 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:109:9:109:39 | ...::log | Unexpected result: Alert=commandargs |
-| main.rs:109:42:109:71 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:110:9:110:38 | ...::log | Unexpected result: Alert=commandargs |
-| main.rs:110:41:110:70 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:111:9:111:38 | ...::log | Unexpected result: Alert=commandargs |
-| main.rs:111:41:111:70 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:112:9:112:38 | ...::log | Unexpected result: Alert=commandargs |
-| main.rs:112:41:112:70 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:115:9:115:76 | ...::log | Unexpected result: Alert=commandargs |
-| main.rs:115:79:115:108 | //... | Missing result: Alert[rust/log-injection] |
-| main.rs:122:9:122:39 | ...::_print | Unexpected result: Alert=environment |
-| main.rs:123:9:123:50 | ...::_eprint | Unexpected result: Alert=environment |
