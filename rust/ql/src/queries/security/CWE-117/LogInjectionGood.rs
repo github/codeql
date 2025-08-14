@@ -1,5 +1,5 @@
 use std::env;
-use log::{info, error};
+use log::info;
 
 fn sanitize_for_logging(input: &str) -> String {
     // Remove newlines and carriage returns to prevent log injection
@@ -16,13 +16,4 @@ fn main() {
     // GOOD: log message constructed with sanitized user input
     let sanitized_username = sanitize_for_logging(username);
     info!("User login attempt: {}", sanitized_username);
-    
-    // GOOD: another example with error logging
-    if username.is_empty() {
-        error!("Login failed for user: {}", sanitized_username);
-    }
-    
-    // GOOD: formatted string with sanitized user input
-    let message = format!("Processing request for user: {}", sanitized_username);
-    info!("{}", message);
 }

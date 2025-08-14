@@ -43,6 +43,5 @@ potentially forging a legitimate admin login entry.
 
 <references>
 <li>OWASP: <a href="https://owasp.org/www-community/attacks/Log_Injection">Log Injection</a>.</li>
-<li>CWE-117: <a href="https://cwe.mitre.org/data/definitions/117.html">Improper Output Neutralization for Logs</a>.</li>
 </references>
 </qhelp>

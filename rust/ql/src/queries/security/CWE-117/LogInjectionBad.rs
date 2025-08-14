@@ -1,5 +1,5 @@
 use std::env;
-use log::{info, error};
+use log::info;
 
 fn main() {
     env_logger::init();
@@ -10,13 +10,4 @@ fn main() {
     
     // BAD: log message constructed with unsanitized user input
     info!("User login attempt: {}", username);
-    
-    // BAD: another example with error logging
-    if username.is_empty() {
-        error!("Login failed for user: {}", username);
-    }
-    
-    // BAD: formatted string with user input
-    let message = format!("Processing request for user: {}", username);
-    info!("{}", message);
 }
