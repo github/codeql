@@ -188,6 +188,7 @@ abstract class ItemNode extends Locatable {
     crateDefEdge(this, name, result, kind)
     or
     crateDependencyEdge(this, name, result) and
+    not declaresDirectly(this, TTypeNamespace(), name) and
     kind.isInternal()
     or
     externCrateEdge(this, name, result) and
@@ -291,6 +292,7 @@ abstract class ItemNode extends Locatable {
   }
 
   /** Gets an _external_ successor named `name`, if any. */
+  pragma[nomagic]
   ItemNode getASuccessor(string name) {
     exists(SuccessorKind kind |
       result = this.getASuccessor(name, kind) and
@@ -609,7 +611,7 @@ abstract class ImplOrTraitItemNode extends ItemNode {
 
 pragma[nomagic]
 private TypeParamItemNode resolveTypeParamPathTypeRepr(PathTypeRepr ptr) {
-  result = resolvePath(ptr.getPath())
+  result = resolvePathImpl(ptr.getPath())
 }
 
 class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
@@ -617,9 +619,9 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   Path getTraitPath() { result = super.getTrait().(PathTypeRepr).getPath() }
 
-  TypeItemNode resolveSelfTy() { result = resolvePath(this.getSelfPath()) }
+  TypeItemNode resolveSelfTy() { result = resolvePathImpl(this.getSelfPath()) }
 
-  TraitItemNode resolveTraitTy() { result = resolvePath(this.getTraitPath()) }
+  TraitItemNode resolveTraitTy() { result = resolvePathImpl(this.getTraitPath()) }
 
   override AssocItemNode getAnAssocItem() { result = this.getADescendant() }
 
@@ -713,7 +715,7 @@ private class ImplTraitTypeReprItemNode extends TypeItemNode instanceof ImplTrai
   }
 
   pragma[nomagic]
-  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+  ItemNode resolveABound() { result = resolvePathImpl(this.getABoundPath()) }
 
   override string getName() { result = "(impl trait)" }
 
@@ -810,7 +812,7 @@ class TraitItemNode extends ImplOrTraitItemNode, TypeItemNode instanceof Trait {
   Path getABoundPath() { result = super.getATypeBound().getTypeRepr().(PathTypeRepr).getPath() }
 
   pragma[nomagic]
-  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+  ItemNode resolveABound() { result = resolvePathImpl(this.getABoundPath()) }
 
   override AssocItemNode getAnAssocItem() { result = this.getADescendant() }
 
@@ -862,7 +864,7 @@ class TraitItemNode extends ImplOrTraitItemNode, TypeItemNode instanceof Trait {
 
 class TypeAliasItemNode extends TypeItemNode, AssocItemNode instanceof TypeAlias {
   pragma[nomagic]
-  ItemNode resolveAlias() { result = resolvePath(super.getTypeRepr().(PathTypeRepr).getPath()) }
+  ItemNode resolveAlias() { result = resolvePathImpl(super.getTypeRepr().(PathTypeRepr).getPath()) }
 
   override string getName() { result = TypeAlias.super.getName().getText() }
 
@@ -951,7 +953,7 @@ class TypeParamItemNode extends TypeItemNode instanceof TypeParam {
   Path getABoundPath() { result = super.getATypeBound().getTypeRepr().(PathTypeRepr).getPath() }
 
   pragma[nomagic]
-  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+  ItemNode resolveABound() { result = resolvePathImpl(this.getABoundPath()) }
 
   /**
    * Holds if this type parameter has a trait bound. Examples:
@@ -1153,6 +1155,11 @@ private class BuiltinSourceFile extends SourceFileItemNode {
 pragma[nomagic]
 private predicate crateDependencyEdge(SourceFileItemNode file, string name, CrateItemNode dep) {
   exists(CrateItemNode c | dep = c.(Crate).getDependency(name) | file = c.getASourceFile())
+  or
+  // All files _should_ belong to a crate, but for those where we cannot identify the crate,
+  // we give access to all crates as a fallback.
+  not file = any(Crate c).getASourceFile() and
+  name = dep.getName()
 }
 
 private predicate useTreeDeclares(UseTree tree, string name) {
@@ -1174,15 +1181,24 @@ private predicate useTreeDeclares(UseTree tree, string name) {
 
 /**
  * Holds if `item` explicitly declares a sub item named `name` in the
+ * namespace `ns`. This excludes items declared by `use` statements.
+ */
+pragma[nomagic]
+private predicate declaresDirectly(ItemNode item, Namespace ns, string name) {
+  exists(ItemNode child, SuccessorKind kind | child = getAChildSuccessor(item, name, kind) |
+    child.getNamespace() = ns and
+    kind.isInternalOrBoth()
+  )
+}
+
+/**
+ * Holds if `item` explicitly declares a sub item named `name` in the
  * namespace `ns`. This includes items declared by `use` statements,
  * except for glob imports.
  */
 pragma[nomagic]
 private predicate declares(ItemNode item, Namespace ns, string name) {
-  exists(ItemNode child, SuccessorKind kind | child = getAChildSuccessor(item, name, kind) |
-    child.getNamespace() = ns and
-    kind.isInternalOrBoth()
-  )
+  declaresDirectly(item, ns, name)
   or
   exists(ItemNode child |
     child.getImmediateParent() = item and
@@ -1306,9 +1322,9 @@ pragma[nomagic]
 private predicate isUnqualifiedSelfPath(RelevantPath path) { path.isUnqualified("Self") }
 
 pragma[nomagic]
-private ItemNode resolvePath0(RelevantPath path, Namespace ns, SuccessorKind kind) {
+private ItemNode resolvePathImpl0(RelevantPath path, Namespace ns) {
   exists(ItemNode res |
-    res = unqualifiedPathLookup(path, ns, kind) and
+    res = unqualifiedPathLookup(path, ns, _) and
     if
       not any(RelevantPath parent).getQualifier() = path and
       isUnqualifiedSelfPath(path) and
@@ -1317,13 +1333,13 @@ private ItemNode resolvePath0(RelevantPath path, Namespace ns, SuccessorKind kin
     else result = res
   )
   or
-  exists(ItemNode q, string name |
-    q = resolvePathQualifier(path, name) and
+  exists(ItemNode q, string name, SuccessorKind kind |
+    q = resolvePathImplQualifier(path, name) and
     result = getASuccessor(q, name, ns, kind) and
     kind.isExternalOrBoth()
   )
   or
-  result = resolveUseTreeListItem(_, _, path, kind) and
+  result = resolveUseTreeListItem(_, _, path, _) and
   ns = result.getNamespace()
 }
 
@@ -1357,11 +1373,10 @@ private predicate pathUsesNamespace(Path p, Namespace n) {
   )
 }
 
-/** Gets the item that `path` resolves to, if any. */
-cached
-ItemNode resolvePath(RelevantPath path) {
+pragma[nomagic]
+private ItemNode resolvePathImpl(RelevantPath path) {
   exists(Namespace ns |
-    result = resolvePath0(path, ns, _) and
+    result = resolvePathImpl0(path, ns) and
     if path = any(ImplItemNode i).getSelfPath()
     then
       result instanceof TypeItemNode and
@@ -1369,7 +1384,10 @@ ItemNode resolvePath(RelevantPath path) {
     else
       if path = any(ImplItemNode i).getTraitPath()
       then result instanceof TraitItemNode
-      else any()
+      else
+        if path = any(PathTypeRepr p).getPath()
+        then result instanceof TypeItemNode
+        else any()
   |
     pathUsesNamespace(path, ns)
     or
@@ -1379,9 +1397,34 @@ ItemNode resolvePath(RelevantPath path) {
 }
 
 pragma[nomagic]
-private ItemNode resolvePathQualifier(RelevantPath path, string name) {
-  result = resolvePath(path.getQualifier()) and
+private ItemNode resolvePathImplQualifier(RelevantPath path, string name) {
+  result = resolvePathImpl(path.getQualifier()) and
   name = path.getText()
+}
+
+/** Gets the item that `path` resolves to, if any. */
+cached
+ItemNode resolvePath(RelevantPath path) {
+  result = resolvePathImpl(path) and
+  // if `path` is the qualifier of a resolvable parent, then we should
+  // resolve `path` to something consistent with what the parent resolves to
+  (
+    not path = any(Path parent | exists(resolvePathImpl(parent))).getQualifier()
+    or
+    exists(ItemNode i, string name |
+      i = resolvePathParent(path, name) and
+      result.getASuccessor(name) = i
+    )
+  )
+}
+
+pragma[nomagic]
+private ItemNode resolvePathParent(RelevantPath path, string name) {
+  exists(RelevantPath parent |
+    result = resolvePath(parent) and
+    path = parent.getQualifier() and
+    name = parent.getText()
+  )
 }
 
 private predicate isUseTreeSubPath(UseTree tree, RelevantPath path) {
@@ -1429,7 +1472,7 @@ private ItemNode resolveUseTreeListItemQualifier(
 pragma[nomagic]
 private ItemNode resolveUseTreeListItem(Use use, UseTree tree) {
   tree = use.getUseTree() and
-  result = resolvePath(tree.getPath())
+  result = resolvePathImpl(tree.getPath())
   or
   result = resolveUseTreeListItem(use, tree, tree.getPath(), _)
 }
@@ -1482,21 +1525,13 @@ private predicate externCrateEdge(ExternCrateItemNode ec, string name, CrateItem
 
 pragma[nomagic]
 private predicate preludeItem(string name, ItemNode i) {
-  exists(
-    Crate stdOrCore, string stdOrCoreName, ModuleLikeNode mod, ModuleItemNode prelude,
-    ModuleItemNode rust
-  |
-    stdOrCore.getName() = stdOrCoreName and
-    stdOrCoreName = ["std", "core"] and
+  exists(Crate stdOrCore, ModuleLikeNode mod, ModuleItemNode prelude, ModuleItemNode rust |
+    stdOrCore.getName() = ["std", "core"] and
     mod = stdOrCore.getSourceFile() and
     prelude = mod.getASuccessor("prelude") and
-    rust = prelude.getASuccessor(["rust_2015", "rust_2018", "rust_2021", "rust_2024"])
-  |
+    rust = prelude.getASuccessor(["rust_2015", "rust_2018", "rust_2021", "rust_2024"]) and
     i = rust.getASuccessor(name) and
     not name = ["super", "self"]
-    or
-    name = stdOrCoreName and
-    i = stdOrCore
   )
 }
 
@@ -1513,7 +1548,7 @@ private predicate preludeItem(string name, ItemNode i) {
 pragma[nomagic]
 private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
   preludeItem(name, i) and
-  not declares(f, _, name)
+  not declares(f, i.getNamespace(), name)
 }
 
 pragma[nomagic]
