@@ -9,12 +9,13 @@ import rust
 
 pragma[nomagic]
 private predicate resolvesAsItem(Resolvable r, Item i) {
-  r.getResolvedPath() = i.getExtendedCanonicalPath() and
-  (
-    r.getResolvedCrateOrigin() = i.getCrateOrigin()
-    or
-    not r.hasResolvedCrateOrigin() and not i.hasCrateOrigin()
-  )
+  none()
+  // r.getResolvedPath() = i.getExtendedCanonicalPath() and
+  // (
+  //   r.getResolvedCrateOrigin() = i.getCrateOrigin()
+  //   or
+  //   not r.hasResolvedCrateOrigin() and not i.hasCrateOrigin()
+  // )
 }
 
 private signature module ResolvableSig {
@@ -102,7 +103,10 @@ private module PathResolution implements ResolvableSig {
 }
 
 private module RustAnalyzerPathResolution implements CompareSig<PathResolution> {
-  predicate isResolvable(PathResolution::Source s) { s.hasResolvedPath() }
+  predicate isResolvable(PathResolution::Source s) {
+    none()
+    //s.hasResolvedPath()
+  }
 
   Item resolve(PathResolution::Source s) { resolvesAsItem(s, result) }
 }
@@ -157,6 +161,7 @@ private module QlCallGraph implements CompareSig<CallGraph> {
 module CallGraphCompare = Compare<CallGraph, RustAnalyzerCallGraph, QlCallGraph>;
 
 predicate qlMissingCanonicalPath(Addressable a, string path) {
-  path = a.getExtendedCanonicalPath() and
-  not exists(a.getCanonicalPath(_))
+  none()
+  // path = a.getExtendedCanonicalPath() and
+  // not exists(a.getCanonicalPath(_))
 }
