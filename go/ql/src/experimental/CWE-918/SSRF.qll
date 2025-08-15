@@ -30,6 +30,14 @@ module ServerSideRequestForgery {
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
     predicate isBarrierOut(DataFlow::Node node) { node instanceof SanitizerEdge }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
+
+    Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.(Sink).getARequest().getLocation()
+    }
   }
 
   /** Tracks taint flow for reasoning about request forgery vulnerabilities. */
