@@ -1,0 +1,3 @@
+multipleCallTargets
+| main.rs:9:43:9:63 | ...::from(...) |
+| main.rs:44:19:44:32 | username.len() |
