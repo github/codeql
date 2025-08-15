@@ -4,6 +4,26 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
 import EVPPKeyCtxInitializer
 
 /**
+ * A base class for all final cipher operation steps.
+ */
+abstract class FinalCipherOperationStep extends OperationStep {
+  override OperationStepType getStepType() { result = FinalStep() }
+}
+
+/**
+ * A base configuration for all EVP cipher operations.
+ */
+abstract class EvpCipherOperationFinalStep extends FinalCipherOperationStep {
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
+}
+
+/**
  * A base class for all EVP cipher operations.
  */
 abstract class EvpCipherInitializer extends OperationStep {
@@ -156,21 +176,6 @@ class EvpCipherUpdateCall extends OperationStep {
 }
 
 /**
- * A base configuration for all EVP cipher operations.
- */
-abstract class EvpCipherOperationFinalStep extends OperationStep {
-  override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
-  }
-
-  override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
-  }
-
-  override OperationStepType getStepType() { result = FinalStep() }
-}
-
-/**
  * A Call to EVP_Cipher.
  */
 class EvpCipherCall extends EvpCipherOperationFinalStep {
@@ -216,7 +221,14 @@ class EvpCipherFinalCall extends EvpCipherOperationFinalStep {
  */
 class EvpPKeyCipherOperation extends EvpCipherOperationFinalStep {
   EvpPKeyCipherOperation() {
-    this.getTarget().getName() in ["EVP_PKEY_encrypt", "EVP_PKEY_decrypt"]
+    this.getTarget().getName() in ["EVP_PKEY_encrypt", "EVP_PKEY_decrypt"] and
+    // TODO: for now ignore this operation entirely if it is setting the cipher text to null
+    // this needs to be re-evalauted if this scenario sets other values worth tracking
+    (
+      exists(this.(Call).getArgument(1).getValue())
+      implies
+      this.(Call).getArgument(1).getValue().toInt() != 0
+    )
   }
 
   override DataFlow::Node getInput(IOType type) {
@@ -228,8 +240,23 @@ class EvpPKeyCipherOperation extends EvpCipherOperationFinalStep {
   override DataFlow::Node getOutput(IOType type) {
     super.getOutput(type) = result
     or
-    result.asExpr() = this.getArgument(1) and type = CiphertextIO()
+    result.asExpr() = this.getArgument(1) and
+    type = CiphertextIO() and
+    this.getStepType() = FinalStep()
     // TODO: could indicate text lengths here, as well
+  }
+
+  override OperationStepType getStepType() {
+    // When the output buffer is null, the step is not a final step
+    // it is used to get the buffer size, if 0 consider it an initialization step
+    // NOTE/TODO: not tracing 0 to the arg, just looking for 0 directly in param
+    // the assumption is this is the common case, but we may want to make this more
+    // robust and support a dataflow.
+    result = FinalStep() and
+    (exists(super.getArgument(1).getValue()) implies super.getArgument(1).getValue().toInt() != 0)
+    or
+    result = InitializerStep() and
+    super.getArgument(1).getValue().toInt() = 0
   }
 }
 
@@ -237,7 +264,7 @@ class EvpPKeyCipherOperation extends EvpCipherOperationFinalStep {
  * An EVP cipher operation instance.
  * Any operation step that is a final operation step for EVP cipher operation steps.
  */
-class EvpCipherOperationInstance extends Crypto::KeyOperationInstance instanceof EvpCipherOperationFinalStep
+class OpenSslCipherOperationInstance extends Crypto::KeyOperationInstance instanceof FinalCipherOperationStep
 {
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     super.getPrimaryAlgorithmValueConsumer() = result
