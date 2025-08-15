@@ -619,7 +619,7 @@ module PatternTrees {
       (
         StandardPatTree.super.succ(pred, succ, c)
         or
-        pred = this and first(this.getFirstChildNode(), succ) and completionIsValidFor(c, this)
+        pred = this and first(this.getFirstChildTree(), succ) and completionIsValidFor(c, this)
       )
     }
 
