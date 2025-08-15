@@ -64,6 +64,15 @@ abstract class AttrRef extends Node {
 abstract class AttrWrite extends AttrRef {
   /** Gets the data flow node corresponding to the value that is written to the attribute. */
   abstract Node getValue();
+
+  /**
+   * Holds if this attribute write writes the attribute named `attrName` on object `object` with
+   * value `value`.
+   */
+  predicate writes(Node object, string attrName, Node value) {
+    this.accesses(object, attrName) and
+    this.getValue() = value
+  }
 }
 
 /**
@@ -225,7 +234,10 @@ private class ClassDefinitionAsAttrWrite extends AttrWrite, CfgNode {
  * - Dynamic attribute reads using `getattr`: `getattr(object, attr)`
  * - Qualified imports: `from module import attr as name`
  */
-abstract class AttrRead extends AttrRef, Node, LocalSourceNode { }
+abstract class AttrRead extends AttrRef, Node, LocalSourceNode {
+  /** Holds if this attribute read reads the attribute named `attrName` on the object `object`. */
+  predicate reads(Node object, string attrName) { this.accesses(object, attrName) }
+}
 
 /** A simple attribute read, e.g. `object.attr` */
 private class AttributeReadAsAttrRead extends AttrRead, CfgNode {

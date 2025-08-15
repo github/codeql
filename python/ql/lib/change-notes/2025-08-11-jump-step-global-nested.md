@@ -1,0 +1,4 @@
+---
+category: minorAnalysis
+---
+* Data flow tracking through global variables now supports nested field access patterns such as `global_var.obj.field`. This improves the precision of taint tracking analysis when data flows through complex global variable structures.
