@@ -6,14 +6,14 @@ int descriptive_name; // GOOD: sufficient
 
 static int z; // GOOD: not a global
 
-int v1;
-int v2;
+int v1; // BAD: too short
+int v2; // BAD: too short
 template <typename T>
-T v3;
+T v3; // BAD: too short
 template <typename T>
-T v4;
+T v4; // BAD: too short
 template <typename T>
-T v5;
+T v5; // BAD: too short
 
 void use_some_fs() {
     v2 = 100;
