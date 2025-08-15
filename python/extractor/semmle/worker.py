@@ -162,6 +162,10 @@ class ExtractorPool(object):
             self.module_queue.put(None)
         for p in self.procs:
             p.join()
+        if 'CODEQL_EXTRACTOR_PYTHON_OVERLAY_BASE_METADATA_OUT' in os.environ:
+            with open(os.environ['CODEQL_EXTRACTOR_PYTHON_OVERLAY_BASE_METADATA_OUT'], 'w', encoding='utf-8') as f:
+                metadata = {}
+                json.dump(metadata, f)
         self.logger.info("Processed %d modules in %0.2fs", len(self.import_graph.done), time.time() - self.start_time)
 
     def stop(self, timeout=2.0):
