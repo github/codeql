@@ -21,13 +21,13 @@ class Base(object):
 
 class Derived(Base):
 
-    def meth1(self, spam):
+    def meth1(self, spam): # $Alert[py/inheritance/signature-mismatch] # Has 1 more arg, base called in Base.foo
         pass
 
-    def meth2(self):
+    def meth2(self): # $Alert[py/inheritance/signature-mismatch] # Has 1 fewer arg, base called in Base.foo
         pass
 
-    def meth3(self, eggs): #Incorrectly overridden and not called. 
+    def meth3(self, eggs): # $Alert[py/inheritance/signature-mismatch] # Has 1 more arg. Method is not called.
         pass
 
     def bar(self):
@@ -66,12 +66,12 @@ class BlameBase(object):
 
 class Correct1(BlameBase):
 
-    def meth(self, arg):
+    def meth(self, arg): # $Alert[py/inheritance/signature-mismatch] # Has 1 more arg. The incorrect-overriden-method query would alert for the base method in this case.
         pass
 
 class Correct2(BlameBase):
 
-    def meth(self, arg):
+    def meth(self, arg): # $Alert[py/inheritance/signature-mismatch] # Has 1 more arg
         pass
 
 c = Correct2()

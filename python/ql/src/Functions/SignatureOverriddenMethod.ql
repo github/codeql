@@ -29,21 +29,63 @@ string plural(int num, string str) {
   num != 1 and result = num.toString() + " " + str + "s"
 }
 
+string describeMin(Function func) {
+  exists(string descr | descr = plural(func.getMinPositionalArguments(), "positional argument") |
+    if func.getMinPositionalArguments() = func.getMaxPositionalArguments()
+    then result = descr
+    else result = "at least " + descr
+  )
+}
+
+string describeMax(Function func) {
+  if func.hasVarArg()
+  then result = "arbitrarily many positional arguments"
+  else
+    exists(string descr | descr = plural(func.getMaxPositionalArguments(), "positional argument") |
+      if func.getMinPositionalArguments() = func.getMaxPositionalArguments()
+      then result = descr
+      else result = "at most " + descr
+    )
+}
+
+string describeMinShort(Function func) {
+  exists(string descr | descr = func.getMinPositionalArguments().toString() |
+    if func.getMinPositionalArguments() = func.getMaxPositionalArguments()
+    then result = descr
+    else result = "at least " + descr
+  )
+}
+
+string describeMaxShort(Function func) {
+  if func.hasVarArg()
+  then result = "arbitrarily many"
+  else
+    exists(string descr | descr = func.getMaxPositionalArguments().toString() |
+      if func.getMinPositionalArguments() = func.getMaxPositionalArguments()
+      then result = descr
+      else result = "at most " + descr
+    )
+}
+
+string describeMaxBound(Function func) {
+  if func.hasVarArg()
+  then result = "arbitrarily many"
+  else result = func.getMaxPositionalArguments().toString()
+}
+
 /** Holds if no way to call `base` would be valid for `sub`. The `msg` applies to the `sub method. */
 predicate strongSignatureMismatch(Function base, Function sub, string msg) {
   overrides(base, sub) and
   (
     sub.getMinPositionalArguments() > base.getMaxPositionalArguments() and
     msg =
-      "requires " +
-        plural(sub.getMinPositionalArguments() - base.getMaxPositionalArguments(),
-          "more positional argument") + " than overridden $@ allows."
+      "requires " + describeMin(sub) + ", whereas overridden $@ requires " + describeMaxShort(base) +
+        "."
     or
     sub.getMaxPositionalArguments() < base.getMinPositionalArguments() and
     msg =
-      "requires " +
-        plural(base.getMinPositionalArguments() - sub.getMaxPositionalArguments(),
-          "fewer positional argument") + " than overridden $@ allows."
+      "requires " + describeMax(sub) + ", whereas overridden $@ requires " + describeMinShort(base) +
+        "."
   )
 }
 
@@ -53,15 +95,13 @@ predicate weakSignatureMismatch(Function base, Function sub, string msg) {
   (
     sub.getMinPositionalArguments() > base.getMinPositionalArguments() and
     msg =
-      "requires " +
-        plural(sub.getMinPositionalArguments() - base.getMinPositionalArguments(),
-          "more positional argument") + " than some possible calls to overridden $@."
+      "requires " + describeMin(sub) + ", whereas overridden $@ may be called with " +
+        base.getMinPositionalArguments().toString() + "."
     or
     sub.getMaxPositionalArguments() < base.getMaxPositionalArguments() and
     msg =
-      "requires " +
-        plural(base.getMaxPositionalArguments() - sub.getMaxPositionalArguments(),
-          "fewer positional argument") + " than some possible calls to overridden $@."
+      "requires " + describeMax(sub) + ", whereas overridden $@ may be called with " +
+        describeMaxBound(base) + "."
     or
     sub.getMinPositionalArguments() <= base.getMinPositionalArguments() and
     sub.getMaxPositionalArguments() >= base.getMaxPositionalArguments() and
@@ -83,7 +123,9 @@ predicate weakSignatureMismatch(Function base, Function sub, string msg) {
 predicate ignore(Function f) {
   isClassmethod(f)
   or
-  exists(Function g |
+  exists(
+    Function g // other functions with the same name, e.g. @property getters/setters.
+  |
     g.getScope() = f.getScope() and
     g.getName() = f.getName() and
     g != f
@@ -96,7 +138,7 @@ Function resolveCall(Call call) {
   )
 }
 
-predicate callViableForEither(Function base, Function sub, Call call) {
+predicate callViableForEitherOverride(Function base, Function sub, Call call) {
   overrides(base, sub) and
   base = resolveCall(call) and
   sub = resolveCall(call)
@@ -132,7 +174,7 @@ predicate callMatchesSignature(Function func, Call call) {
 }
 
 Call getASignatureMismatchWitness(Function base, Function sub) {
-  callViableForEither(base, sub, result) and
+  callViableForEitherOverride(base, sub, result) and
   callMatchesSignature(base, result) and
   not callMatchesSignature(sub, result)
 }
@@ -195,6 +237,7 @@ where
     )
     or
     not exists(getASignatureMismatchWitness(base, sub)) and
+    call.isNone() and
     strongSignatureMismatch(base, sub, msg) and
     extraMsg = ""
   )
