@@ -7,7 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
-import codeql.rust.elements.GenericParamList
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.TypeRepr
@@ -32,19 +32,19 @@ module Generated {
     override string getAPrimaryQlClass() { result = "WherePred" }
 
     /**
-     * Gets the generic parameter list of this where pred, if it exists.
+     * Gets the for binder of this where pred, if it exists.
      */
-    GenericParamList getGenericParamList() {
+    ForBinder getForBinder() {
       result =
-        Synth::convertGenericParamListFromRaw(Synth::convertWherePredToRaw(this)
+        Synth::convertForBinderFromRaw(Synth::convertWherePredToRaw(this)
               .(Raw::WherePred)
-              .getGenericParamList())
+              .getForBinder())
     }
 
     /**
-     * Holds if `getGenericParamList()` exists.
+     * Holds if `getForBinder()` exists.
      */
-    final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
+    final predicate hasForBinder() { exists(this.getForBinder()) }
 
     /**
      * Gets the lifetime of this where pred, if it exists.

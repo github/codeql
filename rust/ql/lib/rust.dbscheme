@@ -177,10 +177,10 @@ named_crates(
 | @assoc_item_list
 | @attr
 | @callable
-| @closure_binder
 | @expr
 | @extern_item_list
 | @field_list
+| @for_binder
 | @format_args_arg
 | @generic_arg
 | @generic_arg_list
@@ -403,16 +403,6 @@ callable_attrs(
   int attr: @attr ref
 );
 
-closure_binders(
-  unique int id: @closure_binder
-);
-
-#keyset[id]
-closure_binder_generic_param_lists(
-  int id: @closure_binder ref,
-  int generic_param_list: @generic_param_list ref
-);
-
 @expr =
   @array_expr_internal
 | @asm_expr
@@ -471,6 +461,16 @@ extern_item_list_extern_items(
   @struct_field_list
 | @tuple_field_list
 ;
+
+for_binders(
+  unique int id: @for_binder
+);
+
+#keyset[id]
+for_binder_generic_param_lists(
+  int id: @for_binder ref,
+  int generic_param_list: @generic_param_list ref
+);
 
 format_args_args(
   unique int id: @format_args_arg
@@ -1045,6 +1045,12 @@ type_bounds(
 );
 
 #keyset[id]
+type_bound_for_binders(
+  int id: @type_bound ref,
+  int for_binder: @for_binder ref
+);
+
+#keyset[id]
 type_bound_is_async(
   int id: @type_bound ref
 );
@@ -1191,9 +1197,9 @@ where_preds(
 );
 
 #keyset[id]
-where_pred_generic_param_lists(
+where_pred_for_binders(
   int id: @where_pred ref,
-  int generic_param_list: @generic_param_list ref
+  int for_binder: @for_binder ref
 );
 
 #keyset[id]
@@ -1270,31 +1276,6 @@ asm_const_exprs(
 #keyset[id]
 asm_const_is_const(
   int id: @asm_const ref
-);
-
-asm_exprs(
-  unique int id: @asm_expr
-);
-
-#keyset[id, index]
-asm_expr_asm_pieces(
-  int id: @asm_expr ref,
-  int index: int ref,
-  int asm_piece: @asm_piece ref
-);
-
-#keyset[id, index]
-asm_expr_attrs(
-  int id: @asm_expr ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id, index]
-asm_expr_templates(
-  int id: @asm_expr ref,
-  int index: int ref,
-  int template: @expr ref
 );
 
 asm_labels(
@@ -1566,9 +1547,9 @@ closure_expr_bodies(
 );
 
 #keyset[id]
-closure_expr_closure_binders(
+closure_expr_for_binders(
   int id: @closure_expr ref,
-  int closure_binder: @closure_binder ref
+  int for_binder: @for_binder ref
 );
 
 #keyset[id]
@@ -1769,9 +1750,9 @@ for_type_reprs(
 );
 
 #keyset[id]
-for_type_repr_generic_param_lists(
+for_type_repr_for_binders(
   int id: @for_type_repr ref,
-  int generic_param_list: @generic_param_list ref
+  int for_binder: @for_binder ref
 );
 
 #keyset[id]
@@ -1905,6 +1886,7 @@ infer_type_reprs(
 
 @item =
   @adt
+| @asm_expr
 | @assoc_item
 | @extern_block
 | @extern_crate
@@ -2707,6 +2689,31 @@ adt_derive_macro_expansions(
   int id: @adt ref,
   int index: int ref,
   int derive_macro_expansion: @macro_items ref
+);
+
+asm_exprs(
+  unique int id: @asm_expr
+);
+
+#keyset[id, index]
+asm_expr_asm_pieces(
+  int id: @asm_expr ref,
+  int index: int ref,
+  int asm_piece: @asm_piece ref
+);
+
+#keyset[id, index]
+asm_expr_attrs(
+  int id: @asm_expr ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id, index]
+asm_expr_templates(
+  int id: @asm_expr ref,
+  int index: int ref,
+  int template: @expr ref
 );
 
 @assoc_item =

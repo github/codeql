@@ -5,14 +5,14 @@ edges
 | main.rs:5:14:5:14 | s | main.rs:5:14:5:20 | ...: ... | match |
 | main.rs:5:14:5:20 | ...: ... | main.rs:7:5:7:22 | ExprStmt |  |
 | main.rs:6:1:8:1 | { ... } | main.rs:5:1:8:1 | exit fn print_str (normal) |  |
-| main.rs:7:5:7:21 | ...::_print | main.rs:7:14:7:17 | "{}\\n" |  |
+| main.rs:7:5:7:12 | ...::_print | main.rs:7:14:7:17 | "{}\\n" |  |
 | main.rs:7:5:7:21 | MacroExpr | main.rs:6:1:8:1 | { ... } |  |
 | main.rs:7:5:7:21 | println!... | main.rs:7:5:7:21 | MacroExpr |  |
 | main.rs:7:5:7:22 | ExprStmt | main.rs:7:14:7:20 | ExprStmt |  |
 | main.rs:7:14:7:17 | "{}\\n" | main.rs:7:20:7:20 | s |  |
 | main.rs:7:14:7:20 | ...::_print(...) | main.rs:7:14:7:20 | { ... } |  |
 | main.rs:7:14:7:20 | ...::format_args_nl!... | main.rs:7:14:7:20 | MacroExpr |  |
-| main.rs:7:14:7:20 | ExprStmt | main.rs:7:5:7:21 | ...::_print |  |
+| main.rs:7:14:7:20 | ExprStmt | main.rs:7:5:7:12 | ...::_print |  |
 | main.rs:7:14:7:20 | FormatArgsExpr | main.rs:7:14:7:20 | ...::format_args_nl!... |  |
 | main.rs:7:14:7:20 | MacroBlockExpr | main.rs:7:5:7:21 | println!... |  |
 | main.rs:7:14:7:20 | MacroExpr | main.rs:7:14:7:20 | ...::_print(...) |  |
@@ -24,14 +24,14 @@ edges
 | main.rs:10:14:10:14 | i | main.rs:10:14:10:19 | ...: i64 | match |
 | main.rs:10:14:10:19 | ...: i64 | main.rs:12:5:12:22 | ExprStmt |  |
 | main.rs:11:1:13:1 | { ... } | main.rs:10:1:13:1 | exit fn print_i64 (normal) |  |
-| main.rs:12:5:12:21 | ...::_print | main.rs:12:14:12:17 | "{}\\n" |  |
+| main.rs:12:5:12:12 | ...::_print | main.rs:12:14:12:17 | "{}\\n" |  |
 | main.rs:12:5:12:21 | MacroExpr | main.rs:11:1:13:1 | { ... } |  |
 | main.rs:12:5:12:21 | println!... | main.rs:12:5:12:21 | MacroExpr |  |
 | main.rs:12:5:12:22 | ExprStmt | main.rs:12:14:12:20 | ExprStmt |  |
 | main.rs:12:14:12:17 | "{}\\n" | main.rs:12:20:12:20 | i |  |
 | main.rs:12:14:12:20 | ...::_print(...) | main.rs:12:14:12:20 | { ... } |  |
 | main.rs:12:14:12:20 | ...::format_args_nl!... | main.rs:12:14:12:20 | MacroExpr |  |
-| main.rs:12:14:12:20 | ExprStmt | main.rs:12:5:12:21 | ...::_print |  |
+| main.rs:12:14:12:20 | ExprStmt | main.rs:12:5:12:12 | ...::_print |  |
 | main.rs:12:14:12:20 | FormatArgsExpr | main.rs:12:14:12:20 | ...::format_args_nl!... |  |
 | main.rs:12:14:12:20 | MacroBlockExpr | main.rs:12:5:12:21 | println!... |  |
 | main.rs:12:14:12:20 | MacroExpr | main.rs:12:14:12:20 | ...::_print(...) |  |
@@ -250,14 +250,14 @@ edges
 | main.rs:102:13:102:13 | x | main.rs:104:9:104:30 | ExprStmt | match |
 | main.rs:103:13:103:13 | x | main.rs:102:13:102:13 | x |  |
 | main.rs:104:9:104:17 | print_str | main.rs:104:19:104:19 | x |  |
-| main.rs:104:9:104:29 | print_str(...) | main.rs:105:9:105:15 | ...::panic |  |
+| main.rs:104:9:104:29 | print_str(...) | main.rs:105:9:105:13 | ...::panic |  |
 | main.rs:104:9:104:30 | ExprStmt | main.rs:104:9:104:17 | print_str |  |
 | main.rs:104:19:104:19 | x | main.rs:104:19:104:28 | x.unwrap() |  |
 | main.rs:104:19:104:28 | x.unwrap() | main.rs:104:9:104:29 | print_str(...) |  |
-| main.rs:105:9:105:15 | "not yet implemented" | main.rs:105:9:105:15 | ...::panic(...) |  |
-| main.rs:105:9:105:15 | ...::panic | main.rs:105:9:105:15 | "not yet implemented" |  |
-| main.rs:105:9:105:15 | ...::panic(...) | main.rs:105:9:105:15 | MacroBlockExpr |  |
-| main.rs:105:9:105:15 | MacroBlockExpr | main.rs:105:9:105:15 | todo!... |  |
+| main.rs:105:9:105:13 | "not yet implemented" | main.rs:105:9:105:13 | ...::panic(...) |  |
+| main.rs:105:9:105:13 | ...::panic | main.rs:105:9:105:13 | "not yet implemented" |  |
+| main.rs:105:9:105:13 | ...::panic(...) | main.rs:105:9:105:13 | MacroBlockExpr |  |
+| main.rs:105:9:105:13 | MacroBlockExpr | main.rs:105:9:105:15 | todo!... |  |
 | main.rs:105:9:105:15 | MacroExpr | main.rs:101:10:106:5 | { ... } |  |
 | main.rs:105:9:105:15 | todo!... | main.rs:105:9:105:15 | MacroExpr |  |
 | main.rs:107:5:107:13 | print_str | main.rs:107:15:107:15 | x |  |
@@ -435,13 +435,13 @@ edges
 | main.rs:189:35:189:36 | 12 | main.rs:190:22:190:51 | ExprStmt | match |
 | main.rs:189:35:189:36 | 12 | main.rs:192:9:192:29 | ...::Hello {...} | no-match |
 | main.rs:189:43:191:9 | { ... } | main.rs:184:5:197:5 | match msg { ... } |  |
-| main.rs:190:13:190:52 | ...::_print | main.rs:190:22:190:51 | "Found an id in another range\\... |  |
+| main.rs:190:13:190:20 | ...::_print | main.rs:190:22:190:51 | "Found an id in another range\\... |  |
 | main.rs:190:13:190:52 | MacroExpr | main.rs:189:43:191:9 | { ... } |  |
 | main.rs:190:13:190:52 | println!... | main.rs:190:13:190:52 | MacroExpr |  |
 | main.rs:190:22:190:51 | "Found an id in another range\\... | main.rs:190:22:190:51 | FormatArgsExpr |  |
 | main.rs:190:22:190:51 | ...::_print(...) | main.rs:190:22:190:51 | { ... } |  |
 | main.rs:190:22:190:51 | ...::format_args_nl!... | main.rs:190:22:190:51 | MacroExpr |  |
-| main.rs:190:22:190:51 | ExprStmt | main.rs:190:13:190:52 | ...::_print |  |
+| main.rs:190:22:190:51 | ExprStmt | main.rs:190:13:190:20 | ...::_print |  |
 | main.rs:190:22:190:51 | FormatArgsExpr | main.rs:190:22:190:51 | ...::format_args_nl!... |  |
 | main.rs:190:22:190:51 | MacroBlockExpr | main.rs:190:13:190:52 | println!... |  |
 | main.rs:190:22:190:51 | MacroExpr | main.rs:190:22:190:51 | ...::_print(...) |  |
@@ -1662,12 +1662,12 @@ edges
 | main.rs:704:5:705:26 | let ... = ... | main.rs:705:23:705:24 | let ... = 37 |  |
 | main.rs:704:9:704:22 | var_from_macro | main.rs:704:9:704:22 | var_from_macro |  |
 | main.rs:704:9:704:22 | var_from_macro | main.rs:706:5:706:30 | ExprStmt | match |
+| main.rs:705:9:705:21 | var_in_macro | main.rs:705:9:705:21 | var_in_macro |  |
+| main.rs:705:9:705:21 | var_in_macro | main.rs:705:9:705:21 | var_in_macro | match |
+| main.rs:705:9:705:21 | var_in_macro | main.rs:705:23:705:24 | { ... } |  |
 | main.rs:705:9:705:25 | MacroExpr | main.rs:704:9:704:22 | var_from_macro |  |
 | main.rs:705:9:705:25 | let_in_macro!... | main.rs:705:9:705:25 | MacroExpr |  |
-| main.rs:705:9:705:25 | var_in_macro | main.rs:705:9:705:25 | var_in_macro |  |
-| main.rs:705:9:705:25 | var_in_macro | main.rs:705:9:705:25 | var_in_macro | match |
-| main.rs:705:9:705:25 | var_in_macro | main.rs:705:23:705:24 | { ... } |  |
-| main.rs:705:23:705:24 | 37 | main.rs:705:9:705:25 | var_in_macro |  |
+| main.rs:705:23:705:24 | 37 | main.rs:705:9:705:21 | var_in_macro |  |
 | main.rs:705:23:705:24 | let ... = 37 | main.rs:705:23:705:24 | 37 |  |
 | main.rs:705:23:705:24 | { ... } | main.rs:705:9:705:25 | let_in_macro!... |  |
 | main.rs:706:5:706:13 | print_i64 | main.rs:706:15:706:28 | var_from_macro |  |
@@ -1678,15 +1678,15 @@ edges
 | main.rs:707:9:707:20 | var_in_macro | main.rs:707:9:707:20 | var_in_macro |  |
 | main.rs:707:9:707:20 | var_in_macro | main.rs:712:5:712:44 | ExprStmt | match |
 | main.rs:707:24:707:25 | 33 | main.rs:707:9:707:20 | var_in_macro |  |
-| main.rs:712:5:712:13 | print_i64 | main.rs:712:15:712:42 | let ... = 0 |  |
+| main.rs:712:5:712:13 | print_i64 | main.rs:712:15:712:28 | let ... = 0 |  |
 | main.rs:712:5:712:43 | print_i64(...) | main.rs:713:5:713:28 | ExprStmt |  |
 | main.rs:712:5:712:44 | ExprStmt | main.rs:712:5:712:13 | print_i64 |  |
-| main.rs:712:15:712:42 | 0 | main.rs:712:15:712:42 | var_in_macro |  |
+| main.rs:712:15:712:28 | 0 | main.rs:712:15:712:28 | var_in_macro |  |
+| main.rs:712:15:712:28 | let ... = 0 | main.rs:712:15:712:28 | 0 |  |
+| main.rs:712:15:712:28 | var_in_macro | main.rs:712:15:712:28 | var_in_macro |  |
+| main.rs:712:15:712:28 | var_in_macro | main.rs:712:30:712:41 | var_in_macro | match |
 | main.rs:712:15:712:42 | MacroExpr | main.rs:712:5:712:43 | print_i64(...) |  |
-| main.rs:712:15:712:42 | let ... = 0 | main.rs:712:15:712:42 | 0 |  |
 | main.rs:712:15:712:42 | let_in_macro2!... | main.rs:712:15:712:42 | MacroExpr |  |
-| main.rs:712:15:712:42 | var_in_macro | main.rs:712:15:712:42 | var_in_macro |  |
-| main.rs:712:15:712:42 | var_in_macro | main.rs:712:30:712:41 | var_in_macro | match |
 | main.rs:712:30:712:41 | var_in_macro | main.rs:712:30:712:41 | { ... } |  |
 | main.rs:712:30:712:41 | { ... } | main.rs:712:15:712:42 | let_in_macro2!... |  |
 | main.rs:713:5:713:13 | print_i64 | main.rs:713:15:713:26 | var_in_macro |  |

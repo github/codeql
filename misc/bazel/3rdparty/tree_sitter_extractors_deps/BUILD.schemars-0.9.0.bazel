@@ -93,6 +93,6 @@ rust_library(
         "@vendor_ts__dyn-clone-1.0.19//:dyn_clone",
         "@vendor_ts__ref-cast-1.0.24//:ref_cast",
         "@vendor_ts__serde-1.0.219//:serde",
-        "@vendor_ts__serde_json-1.0.140//:serde_json",
+        "@vendor_ts__serde_json-1.0.142//:serde_json",
     ],
 )

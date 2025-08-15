@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.GenericParamList
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.internal.TypeReprImpl::Impl as TypeReprImpl
 
@@ -35,19 +35,19 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ForTypeRepr" }
 
     /**
-     * Gets the generic parameter list of this for type representation, if it exists.
+     * Gets the for binder of this for type representation, if it exists.
      */
-    GenericParamList getGenericParamList() {
+    ForBinder getForBinder() {
       result =
-        Synth::convertGenericParamListFromRaw(Synth::convertForTypeReprToRaw(this)
+        Synth::convertForBinderFromRaw(Synth::convertForTypeReprToRaw(this)
               .(Raw::ForTypeRepr)
-              .getGenericParamList())
+              .getForBinder())
     }
 
     /**
-     * Holds if `getGenericParamList()` exists.
+     * Holds if `getForBinder()` exists.
      */
-    final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
+    final predicate hasForBinder() { exists(this.getForBinder()) }
 
     /**
      * Gets the type representation of this for type representation, if it exists.

@@ -1,5 +1,8 @@
 instances
 | gen_asm_expr.rs:6:9:7:59 | AsmExpr |
+getExtendedCanonicalPath
+getCrateOrigin
+getAttributeMacroExpansion
 getAsmPiece
 | gen_asm_expr.rs:6:9:7:59 | AsmExpr | 0 | gen_asm_expr.rs:7:39:7:47 | AsmOperandNamed |
 | gen_asm_expr.rs:6:9:7:59 | AsmExpr | 1 | gen_asm_expr.rs:7:50:7:58 | AsmOperandNamed |

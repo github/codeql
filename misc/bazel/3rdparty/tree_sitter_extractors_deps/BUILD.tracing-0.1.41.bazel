@@ -43,7 +43,7 @@ rust_library(
     crate_root = "src/lib.rs",
     edition = "2018",
     proc_macro_deps = [
-        "@vendor_ts__tracing-attributes-0.1.28//:tracing_attributes",
+        "@vendor_ts__tracing-attributes-0.1.30//:tracing_attributes",
     ],
     rustc_env_files = [
         ":cargo_toml_env_vars",
@@ -100,6 +100,6 @@ rust_library(
     version = "0.1.41",
     deps = [
         "@vendor_ts__pin-project-lite-0.2.16//:pin_project_lite",
-        "@vendor_ts__tracing-core-0.1.33//:tracing_core",
+        "@vendor_ts__tracing-core-0.1.34//:tracing_core",
     ],
 )

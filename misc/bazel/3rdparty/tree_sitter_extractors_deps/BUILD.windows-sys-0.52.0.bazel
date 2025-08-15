@@ -34,6 +34,12 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "Win32",
+        "Win32_System",
+        "Win32_System_Threading",
+        "default",
+    ],
     crate_root = "src/lib.rs",
     edition = "2021",
     rustc_env_files = [

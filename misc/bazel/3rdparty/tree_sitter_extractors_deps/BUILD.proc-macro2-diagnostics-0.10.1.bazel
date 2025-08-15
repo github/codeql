@@ -99,10 +99,10 @@ rust_library(
     }),
     version = "0.10.1",
     deps = [
-        "@vendor_ts__proc-macro2-1.0.95//:proc_macro2",
+        "@vendor_ts__proc-macro2-1.0.97//:proc_macro2",
         "@vendor_ts__proc-macro2-diagnostics-0.10.1//:build_script_build",
         "@vendor_ts__quote-1.0.40//:quote",
-        "@vendor_ts__syn-2.0.103//:syn",
+        "@vendor_ts__syn-2.0.104//:syn",
         "@vendor_ts__yansi-1.0.1//:yansi",
     ],
 )

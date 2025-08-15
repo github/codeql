@@ -7,6 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.UseBoundGenericArgs
@@ -29,6 +30,21 @@ module Generated {
    */
   class TypeBound extends Synth::TTypeBound, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "TypeBound" }
+
+    /**
+     * Gets the for binder of this type bound, if it exists.
+     */
+    ForBinder getForBinder() {
+      result =
+        Synth::convertForBinderFromRaw(Synth::convertTypeBoundToRaw(this)
+              .(Raw::TypeBound)
+              .getForBinder())
+    }
+
+    /**
+     * Holds if `getForBinder()` exists.
+     */
+    final predicate hasForBinder() { exists(this.getForBinder()) }
 
     /**
      * Holds if this type bound is async.
