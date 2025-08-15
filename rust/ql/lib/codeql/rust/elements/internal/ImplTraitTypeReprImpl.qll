@@ -23,14 +23,18 @@ module Impl {
    * ```
    */
   class ImplTraitTypeRepr extends Generated::ImplTraitTypeRepr {
-    /** Gets the function for which this impl trait type occurs, if any. */
-    Function getFunction() {
-      this.getParentNode*() = [result.getRetType().getTypeRepr(), result.getAParam().getTypeRepr()]
+    pragma[nomagic]
+    private TypeRepr getFunctionTypeRepr(Function f) {
+      this.getParentNode*() = result and
+      result = [f.getRetType().getTypeRepr(), f.getAParam().getTypeRepr()]
     }
+
+    /** Gets the function for which this impl trait type occurs, if any. */
+    Function getFunction() { exists(this.getFunctionTypeRepr(result)) }
 
     /** Holds if this impl trait type occurs in the return type of a function. */
     predicate isInReturnPos() {
-      this.getParentNode*() = this.getFunction().getRetType().getTypeRepr()
+      exists(Function f | f.getRetType().getTypeRepr() = this.getFunctionTypeRepr(f))
     }
   }
 }
