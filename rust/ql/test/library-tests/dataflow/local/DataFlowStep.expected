@@ -880,8 +880,8 @@ localStep
 | main.rs:537:10:537:10 | b | main.rs:537:10:537:10 | receiver for b |
 | main.rs:537:10:537:10 | b | main.rs:538:20:538:20 | b |
 | main.rs:565:13:565:33 | result_questionmark(...) | main.rs:565:9:565:9 | _ |
-| main.rs:577:36:577:41 | ...::new(...) | main.rs:577:36:577:41 | MacroExpr |
-| main.rs:577:36:577:41 | [post] MacroExpr | main.rs:577:36:577:41 | [post] ...::new(...) |
+| main.rs:577:36:577:39 | ...::new(...) | main.rs:577:36:577:41 | MacroExpr |
+| main.rs:577:36:577:41 | [post] MacroExpr | main.rs:577:36:577:39 | [post] ...::new(...) |
 readStep
 | main.rs:36:9:36:15 | Some(...) | {EXTERNAL LOCATION} | Some | main.rs:36:14:36:14 | _ |
 | main.rs:90:11:90:11 | [post] receiver for i | file://:0:0:0:0 | &ref | main.rs:90:11:90:11 | [post] i |

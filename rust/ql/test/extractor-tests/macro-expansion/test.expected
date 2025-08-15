@@ -32,18 +32,18 @@ macro_calls
 | macro_expansion.rs:33:9:33:15 | hello!... | macro_expansion.rs:31:5:31:16 | MacroBlockExpr |
 | macro_expansion.rs:33:9:33:15 | hello!... | macro_expansion.rs:31:5:31:16 | MacroBlockExpr |
 | macro_expansion.rs:33:9:33:15 | hello!... | macro_expansion.rs:31:5:31:16 | MacroBlockExpr |
-| macro_expansion.rs:44:5:44:13 | def_x!... | macro_expansion.rs:44:5:44:13 | MacroItems |
+| macro_expansion.rs:44:5:44:13 | def_x!... | macro_expansion.rs:44:5:44:10 | MacroItems |
 | macro_expansion.rs:53:9:53:25 | concat!... | macro_expansion.rs:53:17:53:24 | "xy" |
 | macro_expansion.rs:55:9:58:5 | my_macro!... | macro_expansion.rs:56:9:57:13 | MacroExpr |
 | macro_expansion.rs:56:9:57:13 | ...::format_args!... | macro_expansion.rs:56:9:57:13 | FormatArgsExpr |
 | macro_expansion.rs:56:9:57:13 | format!... | macro_expansion.rs:56:9:57:13 | ...::must_use(...) |
 | macro_expansion.rs:61:1:61:33 | concat!... | macro_expansion.rs:61:1:61:33 | "Hello world!" |
 | macro_expansion.rs:61:1:61:33 | include!... | macro_expansion.rs:61:1:61:33 | MacroItems |
-| macro_expansion.rs:70:16:70:24 | my_int!... | macro_expansion.rs:70:16:70:24 | i32 |
-| macro_expansion.rs:71:12:71:20 | my_int!... | macro_expansion.rs:71:12:71:20 | i32 |
-| macro_expansion.rs:72:10:72:18 | my_int!... | macro_expansion.rs:72:10:72:18 | i32 |
-| macro_expansion.rs:76:14:76:22 | my_int!... | macro_expansion.rs:76:14:76:22 | i32 |
-| macro_expansion.rs:79:12:79:20 | my_int!... | macro_expansion.rs:79:12:79:20 | i32 |
+| macro_expansion.rs:70:16:70:24 | my_int!... | macro_expansion.rs:70:16:70:22 | i32 |
+| macro_expansion.rs:71:12:71:20 | my_int!... | macro_expansion.rs:71:12:71:18 | i32 |
+| macro_expansion.rs:72:10:72:18 | my_int!... | macro_expansion.rs:72:10:72:16 | i32 |
+| macro_expansion.rs:76:14:76:22 | my_int!... | macro_expansion.rs:76:14:76:20 | i32 |
+| macro_expansion.rs:79:12:79:20 | my_int!... | macro_expansion.rs:79:12:79:18 | i32 |
 unexpanded_macro_calls
 | included/included.rs:2:9:2:39 | concat!... |
 | macro_expansion.rs:5:9:5:35 | concat!... |

@@ -161,9 +161,9 @@ definition
 | main.rs:587:13:587:13 | a | main.rs:587:13:587:13 | a |
 | main.rs:588:5:588:5 | a | main.rs:587:13:587:13 | a |
 | main.rs:608:9:608:22 | var_from_macro | main.rs:608:9:608:22 | var_from_macro |
-| main.rs:609:9:609:25 | var_in_macro | main.rs:609:9:609:25 | var_in_macro |
+| main.rs:609:9:609:21 | var_in_macro | main.rs:609:9:609:21 | var_in_macro |
 | main.rs:611:9:611:20 | var_in_macro | main.rs:611:9:611:20 | var_in_macro |
-| main.rs:615:15:615:42 | var_in_macro | main.rs:615:15:615:42 | var_in_macro |
+| main.rs:615:15:615:28 | var_in_macro | main.rs:615:15:615:28 | var_in_macro |
 | main.rs:621:5:621:5 | x | main.rs:620:9:620:9 | x |
 | main.rs:626:13:626:13 | x | main.rs:626:13:626:13 | x |
 | main.rs:627:13:627:15 | cap | main.rs:627:13:627:15 | cap |
@@ -338,9 +338,9 @@ read
 | main.rs:587:13:587:13 | a | main.rs:587:13:587:13 | a | main.rs:588:5:588:5 | a |
 | main.rs:588:5:588:5 | a | main.rs:587:13:587:13 | a | main.rs:590:15:590:15 | a |
 | main.rs:608:9:608:22 | var_from_macro | main.rs:608:9:608:22 | var_from_macro | main.rs:610:15:610:28 | var_from_macro |
-| main.rs:609:9:609:25 | var_in_macro | main.rs:609:9:609:25 | var_in_macro | main.rs:609:9:609:25 | var_in_macro |
+| main.rs:609:9:609:21 | var_in_macro | main.rs:609:9:609:21 | var_in_macro | main.rs:609:9:609:21 | var_in_macro |
 | main.rs:611:9:611:20 | var_in_macro | main.rs:611:9:611:20 | var_in_macro | main.rs:616:15:616:26 | var_in_macro |
-| main.rs:615:15:615:42 | var_in_macro | main.rs:615:15:615:42 | var_in_macro | main.rs:615:30:615:41 | var_in_macro |
+| main.rs:615:15:615:28 | var_in_macro | main.rs:615:15:615:28 | var_in_macro | main.rs:615:30:615:41 | var_in_macro |
 | main.rs:621:5:621:5 | x | main.rs:620:9:620:9 | x | main.rs:622:15:622:15 | x |
 | main.rs:627:13:627:15 | cap | main.rs:627:13:627:15 | cap | main.rs:633:5:633:7 | cap |
 | main.rs:627:20:627:20 | b | main.rs:627:20:627:20 | b | main.rs:629:20:629:20 | b |
@@ -480,9 +480,9 @@ firstRead
 | main.rs:587:13:587:13 | a | main.rs:587:13:587:13 | a | main.rs:588:5:588:5 | a |
 | main.rs:588:5:588:5 | a | main.rs:587:13:587:13 | a | main.rs:590:15:590:15 | a |
 | main.rs:608:9:608:22 | var_from_macro | main.rs:608:9:608:22 | var_from_macro | main.rs:610:15:610:28 | var_from_macro |
-| main.rs:609:9:609:25 | var_in_macro | main.rs:609:9:609:25 | var_in_macro | main.rs:609:9:609:25 | var_in_macro |
+| main.rs:609:9:609:21 | var_in_macro | main.rs:609:9:609:21 | var_in_macro | main.rs:609:9:609:21 | var_in_macro |
 | main.rs:611:9:611:20 | var_in_macro | main.rs:611:9:611:20 | var_in_macro | main.rs:616:15:616:26 | var_in_macro |
-| main.rs:615:15:615:42 | var_in_macro | main.rs:615:15:615:42 | var_in_macro | main.rs:615:30:615:41 | var_in_macro |
+| main.rs:615:15:615:28 | var_in_macro | main.rs:615:15:615:28 | var_in_macro | main.rs:615:30:615:41 | var_in_macro |
 | main.rs:621:5:621:5 | x | main.rs:620:9:620:9 | x | main.rs:622:15:622:15 | x |
 | main.rs:627:13:627:15 | cap | main.rs:627:13:627:15 | cap | main.rs:633:5:633:7 | cap |
 | main.rs:627:20:627:20 | b | main.rs:627:20:627:20 | b | main.rs:629:20:629:20 | b |
@@ -659,9 +659,9 @@ assigns
 | main.rs:572:9:572:9 | z | main.rs:572:13:572:14 | 17 |
 | main.rs:587:13:587:13 | a | main.rs:587:17:587:35 | MyStruct {...} |
 | main.rs:608:9:608:22 | var_from_macro | main.rs:609:9:609:25 | MacroExpr |
-| main.rs:609:9:609:25 | var_in_macro | main.rs:609:23:609:24 | 37 |
+| main.rs:609:9:609:21 | var_in_macro | main.rs:609:23:609:24 | 37 |
 | main.rs:611:9:611:20 | var_in_macro | main.rs:611:24:611:25 | 33 |
-| main.rs:615:15:615:42 | var_in_macro | main.rs:615:15:615:42 | 0 |
+| main.rs:615:15:615:28 | var_in_macro | main.rs:615:15:615:28 | 0 |
 | main.rs:621:5:621:5 | x | main.rs:621:9:621:9 | 1 |
 | main.rs:626:13:626:13 | x | main.rs:626:17:626:19 | 100 |
 | main.rs:627:13:627:15 | cap | main.rs:627:19:632:5 | \|...\| ... |
