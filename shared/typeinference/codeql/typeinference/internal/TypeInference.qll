@@ -731,20 +731,24 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         IsInstantiationOfInputSig<TypeMentionTypeTree>
       {
         pragma[nomagic]
-        private predicate typeCondition(Type type, TypeAbstraction abs, TypeMentionTypeTree lhs) {
-          conditionSatisfiesConstraint(abs, lhs, _) and type = resolveTypeMentionRoot(lhs)
+        private predicate typeCondition(
+          Type type, TypeAbstraction abs, TypeMentionTypeTree condition
+        ) {
+          conditionSatisfiesConstraint(abs, condition, _) and
+          type = resolveTypeMentionRoot(condition)
         }
 
         pragma[nomagic]
-        private predicate typeConstraint(Type type, TypeMentionTypeTree rhs) {
-          conditionSatisfiesConstraint(_, _, rhs) and type = resolveTypeMentionRoot(rhs)
+        private predicate typeConstraint(Type type, TypeMentionTypeTree constraint) {
+          conditionSatisfiesConstraint(_, _, constraint) and
+          type = resolveTypeMentionRoot(constraint)
         }
 
         predicate potentialInstantiationOf(
-          TypeMentionTypeTree condition, TypeAbstraction abs, TypeMention constraint
+          TypeMentionTypeTree constraint, TypeAbstraction abs, TypeMention condition
         ) {
           exists(Type type |
-            typeConstraint(type, condition) and typeCondition(type, abs, constraint)
+            typeConstraint(type, constraint) and typeCondition(type, abs, condition)
           )
         }
       }
@@ -761,20 +765,20 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         constraint.resolveTypeAt(path) = t
         or
         // recursive case
-        exists(TypeAbstraction midAbs, TypeMention midSup, TypeMention midSub |
-          conditionSatisfiesConstraint(abs, condition, midSup) and
-          // NOTE: `midAbs` describe the free type variables in `midSub`, hence
+        exists(TypeAbstraction midAbs, TypeMention midConstraint, TypeMention midCondition |
+          conditionSatisfiesConstraint(abs, condition, midConstraint) and
+          // NOTE: `midAbs` describe the free type variables in `midCondition`, hence
           // we use that for instantiation check.
-          IsInstantiationOf<TypeMentionTypeTree, IsInstantiationOfInput>::isInstantiationOf(midSup,
-            midAbs, midSub)
+          IsInstantiationOf<TypeMentionTypeTree, IsInstantiationOfInput>::isInstantiationOf(midConstraint,
+            midAbs, midCondition)
         |
-          conditionSatisfiesConstraintTypeAt(midAbs, midSub, constraint, path, t) and
+          conditionSatisfiesConstraintTypeAt(midAbs, midCondition, constraint, path, t) and
           not t = midAbs.getATypeParameter()
           or
           exists(TypePath prefix, TypePath suffix, TypeParameter tp |
             tp = midAbs.getATypeParameter() and
-            conditionSatisfiesConstraintTypeAt(midAbs, midSub, constraint, prefix, tp) and
-            instantiatesWith(midSup, midSub, tp, suffix, t) and
+            conditionSatisfiesConstraintTypeAt(midAbs, midCondition, constraint, prefix, tp) and
+            instantiatesWith(midConstraint, midCondition, tp, suffix, t) and
             path = prefix.append(suffix)
           )
         )
@@ -949,23 +953,24 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       pragma[nomagic]
       private predicate hasConstraintMention(
-        HasTypeTree tt, TypeAbstraction abs, TypeMention sub, Type constraint,
+        HasTypeTree tt, TypeAbstraction abs, TypeMention condition, Type constraint,
         TypeMention constraintMention
       ) {
         exists(Type type | hasTypeConstraint(tt, type, constraint) |
           not exists(countConstraintImplementations(type, constraint)) and
-          conditionSatisfiesConstraintTypeAt(abs, sub, constraintMention, _, _) and
-          resolveTypeMentionRoot(sub) = abs.getATypeParameter() and
+          conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
+          resolveTypeMentionRoot(condition) = abs.getATypeParameter() and
           constraint = resolveTypeMentionRoot(constraintMention)
           or
           countConstraintImplementations(type, constraint) > 0 and
-          rootTypesSatisfaction(type, constraint, abs, sub, constraintMention) and
+          rootTypesSatisfaction(type, constraint, abs, condition, constraintMention) and
           // When there are multiple ways the type could implement the
           // constraint we need to find the right implementation, which is the
           // one where the type instantiates the precondition.
           if multipleConstraintImplementations(type, constraint)
           then
-            IsInstantiationOf<HasTypeTree, IsInstantiationOfInput>::isInstantiationOf(tt, abs, sub)
+            IsInstantiationOf<HasTypeTree, IsInstantiationOfInput>::isInstantiationOf(tt, abs,
+              condition)
           else any()
         )
       }
