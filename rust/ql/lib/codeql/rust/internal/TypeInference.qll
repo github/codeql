@@ -328,6 +328,11 @@ private module CertainTypeInference {
         let.getInitializer() = n2
       )
       or
+      exists(LetExpr let |
+        let.getPat() = n1 and
+        let.getScrutinee() = n2
+      )
+      or
       n1 = n2.(ParenExpr).getExpr()
     )
     or
@@ -465,11 +470,6 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     n1 = n2.(IfExpr).getABranch()
     or
     n1 = n2.(MatchExpr).getAnArm().getExpr()
-    or
-    exists(LetExpr let |
-      n1 = let.getScrutinee() and
-      n2 = let.getPat()
-    )
     or
     exists(MatchExpr me |
       n1 = me.getScrutinee() and

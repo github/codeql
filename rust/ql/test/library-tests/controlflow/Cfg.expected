@@ -194,20 +194,21 @@ edges
 | test.rs:97:5:104:5 | exit fn test_while_let (normal) | test.rs:97:5:104:5 | exit fn test_while_let |  |
 | test.rs:97:25:104:5 | { ... } | test.rs:97:5:104:5 | exit fn test_while_let (normal) |  |
 | test.rs:98:9:98:29 | let ... = ... | test.rs:98:24:98:24 | 1 |  |
-| test.rs:98:13:98:20 | mut iter | test.rs:99:15:99:39 | let ... = ... | match |
+| test.rs:98:13:98:20 | mut iter | test.rs:99:29:99:32 | iter | match |
 | test.rs:98:17:98:20 | iter | test.rs:98:13:98:20 | mut iter |  |
 | test.rs:98:24:98:24 | 1 | test.rs:98:27:98:28 | 10 |  |
 | test.rs:98:24:98:28 | 1..10 | test.rs:98:17:98:20 | iter |  |
 | test.rs:98:27:98:28 | 10 | test.rs:98:24:98:28 | 1..10 |  |
 | test.rs:99:9:103:9 | while ... { ... } | test.rs:97:25:104:5 | { ... } |  |
-| test.rs:99:15:99:39 | let ... = ... | test.rs:99:29:99:32 | iter |  |
-| test.rs:99:19:99:25 | Some(...) | test.rs:99:9:103:9 | while ... { ... } | no-match |
+| test.rs:99:15:99:39 | [boolean(false)] let ... = ... | test.rs:99:9:103:9 | while ... { ... } | false |
+| test.rs:99:15:99:39 | [boolean(true)] let ... = ... | test.rs:100:17:100:17 | x | true |
+| test.rs:99:19:99:25 | Some(...) | test.rs:99:15:99:39 | [boolean(false)] let ... = ... | no-match |
 | test.rs:99:19:99:25 | Some(...) | test.rs:99:24:99:24 | x | match |
+| test.rs:99:24:99:24 | x | test.rs:99:15:99:39 | [boolean(true)] let ... = ... | match |
 | test.rs:99:24:99:24 | x | test.rs:99:24:99:24 | x |  |
-| test.rs:99:24:99:24 | x | test.rs:100:17:100:17 | x | match |
 | test.rs:99:29:99:32 | iter | test.rs:99:29:99:39 | iter.next() |  |
 | test.rs:99:29:99:39 | iter.next() | test.rs:99:19:99:25 | Some(...) |  |
-| test.rs:99:41:103:9 | { ... } | test.rs:99:15:99:39 | let ... = ... |  |
+| test.rs:99:41:103:9 | { ... } | test.rs:99:29:99:32 | iter |  |
 | test.rs:100:13:102:13 | if ... {...} | test.rs:99:41:103:9 | { ... } |  |
 | test.rs:100:17:100:17 | x | test.rs:100:22:100:22 | 5 |  |
 | test.rs:100:17:100:22 | ... == ... | test.rs:100:13:102:13 | if ... {...} | false |
@@ -308,14 +309,15 @@ edges
 | test.rs:145:5:151:5 | exit fn test_if_let_else (normal) | test.rs:145:5:151:5 | exit fn test_if_let_else |  |
 | test.rs:145:25:145:25 | a | test.rs:145:25:145:25 | a |  |
 | test.rs:145:25:145:25 | a | test.rs:145:25:145:38 | ...: Option::<...> | match |
-| test.rs:145:25:145:38 | ...: Option::<...> | test.rs:146:12:146:26 | let ... = a |  |
+| test.rs:145:25:145:38 | ...: Option::<...> | test.rs:146:26:146:26 | a |  |
 | test.rs:145:48:151:5 | { ... } | test.rs:145:5:151:5 | exit fn test_if_let_else (normal) |  |
 | test.rs:146:9:150:9 | if ... {...} else {...} | test.rs:145:48:151:5 | { ... } |  |
-| test.rs:146:12:146:26 | let ... = a | test.rs:146:26:146:26 | a |  |
+| test.rs:146:12:146:26 | [boolean(false)] let ... = a | test.rs:149:13:149:13 | 0 | false |
+| test.rs:146:12:146:26 | [boolean(true)] let ... = a | test.rs:147:13:147:13 | n | true |
+| test.rs:146:16:146:22 | Some(...) | test.rs:146:12:146:26 | [boolean(false)] let ... = a | no-match |
 | test.rs:146:16:146:22 | Some(...) | test.rs:146:21:146:21 | n | match |
-| test.rs:146:16:146:22 | Some(...) | test.rs:149:13:149:13 | 0 | no-match |
+| test.rs:146:21:146:21 | n | test.rs:146:12:146:26 | [boolean(true)] let ... = a | match |
 | test.rs:146:21:146:21 | n | test.rs:146:21:146:21 | n |  |
-| test.rs:146:21:146:21 | n | test.rs:147:13:147:13 | n | match |
 | test.rs:146:26:146:26 | a | test.rs:146:16:146:22 | Some(...) |  |
 | test.rs:146:28:148:9 | { ... } | test.rs:146:9:150:9 | if ... {...} else {...} |  |
 | test.rs:147:13:147:13 | n | test.rs:146:28:148:9 | { ... } |  |
@@ -327,13 +329,14 @@ edges
 | test.rs:153:20:153:20 | a | test.rs:153:20:153:33 | ...: Option::<...> | match |
 | test.rs:153:20:153:33 | ...: Option::<...> | test.rs:154:9:156:9 | ExprStmt |  |
 | test.rs:153:43:158:5 | { ... } | test.rs:153:5:158:5 | exit fn test_if_let (normal) |  |
-| test.rs:154:9:156:9 | ExprStmt | test.rs:154:12:154:26 | let ... = a |  |
+| test.rs:154:9:156:9 | ExprStmt | test.rs:154:26:154:26 | a |  |
 | test.rs:154:9:156:9 | if ... {...} | test.rs:157:9:157:9 | 0 |  |
-| test.rs:154:12:154:26 | let ... = a | test.rs:154:26:154:26 | a |  |
-| test.rs:154:16:154:22 | Some(...) | test.rs:154:9:156:9 | if ... {...} | no-match |
+| test.rs:154:12:154:26 | [boolean(false)] let ... = a | test.rs:154:9:156:9 | if ... {...} | false |
+| test.rs:154:12:154:26 | [boolean(true)] let ... = a | test.rs:155:13:155:21 | ExprStmt | true |
+| test.rs:154:16:154:22 | Some(...) | test.rs:154:12:154:26 | [boolean(false)] let ... = a | no-match |
 | test.rs:154:16:154:22 | Some(...) | test.rs:154:21:154:21 | n | match |
+| test.rs:154:21:154:21 | n | test.rs:154:12:154:26 | [boolean(true)] let ... = a | match |
 | test.rs:154:21:154:21 | n | test.rs:154:21:154:21 | n |  |
-| test.rs:154:21:154:21 | n | test.rs:155:13:155:21 | ExprStmt | match |
 | test.rs:154:26:154:26 | a | test.rs:154:16:154:22 | Some(...) |  |
 | test.rs:155:13:155:20 | return n | test.rs:153:5:158:5 | exit fn test_if_let (normal) | return |
 | test.rs:155:13:155:21 | ExprStmt | test.rs:155:20:155:20 | n |  |
