@@ -31,6 +31,14 @@ module RequestForgery {
         w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
       )
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
+
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.getLocation()
+      or
+      result = sink.(Sink).getARequest().getLocation()
+    }
   }
 
   /** Tracks taint flow from untrusted data to request forgery attack vectors. */

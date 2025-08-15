@@ -440,6 +440,12 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
     state2 = node2.(FlowStateTransformer).transform(state1) and
     DataFlow::simpleLocalFlowStep(node1, node2, _)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getASuccessor().getLocation()
+  }
 }
 
 /**
