@@ -1,6 +1,16 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["jakarta.servlet", "ServletRequest", False, "getInputStream", "()", "", "ReturnValue", "remote", "manual"]
+      - ["jakarta.servlet", "ServletRequest", False, "getParameter", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["jakarta.servlet", "ServletRequest", False, "getParameterMap", "()", "", "ReturnValue", "remote", "manual"]
+      - ["jakarta.servlet", "ServletRequest", False, "getParameterNames", "()", "", "ReturnValue", "remote", "manual"]
+      - ["jakarta.servlet", "ServletRequest", False, "getParameterValues", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["jakarta.servlet", "ServletRequest", False, "getReader", "()", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
       extensible: sinkModel
     data:
       - ["jakarta.servlet", "ServletContext", True, "getRequestDispatcher", "(String)", "", "Argument[0]", "url-forward", "manual"]
