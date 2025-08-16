@@ -17,6 +17,10 @@ query predicate illFormedTypeMention(TypeMention tm) {
   tm.fromSource()
 }
 
+query predicate nonUniqueCertainType(AstNode n, TypePath path) {
+  Consistency::nonUniqueCertainType(n, path, _)
+}
+
 int getTypeInferenceInconsistencyCounts(string type) {
   type = "Missing type parameter ID" and
   result = count(TypeParameter tp | missingTypeParameterId(tp) | tp)

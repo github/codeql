@@ -1,4 +1,0 @@
-nonUniqueCertainType
-| test_logging.rs:17:8:19:12 | { ... } | E |
-| test_logging.rs:29:8:31:12 | { ... } | E |
-| test_storage.rs:177:8:179:9 | { ... } | E |

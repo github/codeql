@@ -224,8 +224,9 @@ private import M2
 module Consistency {
   import M2::Consistency
 
-  query predicate nonUniqueCertainType(AstNode n, TypePath path) {
-    strictcount(CertainTypeInference::inferCertainType(n, path)) > 1
+  predicate nonUniqueCertainType(AstNode n, TypePath path, Type t) {
+    strictcount(CertainTypeInference::inferCertainType(n, path)) > 1 and
+    t = CertainTypeInference::inferCertainType(n, path)
   }
 }
 
@@ -2513,7 +2514,6 @@ private module Debug {
 
   Type debugInferCertainNonUniqueType(AstNode n, TypePath path) {
     n = getRelevantLocatable() and
-    Consistency::nonUniqueCertainType(n, path) and
-    result = CertainTypeInference::inferCertainType(n, path)
+    Consistency::nonUniqueCertainType(n, path, result)
   }
 }

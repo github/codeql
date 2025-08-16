@@ -1,18 +1,3 @@
 multipleCallTargets
-| main.rs:218:14:218:30 | ...::malloc(...) |
-| main.rs:219:13:219:27 | ...::malloc(...) |
-| main.rs:220:13:220:37 | ...::aligned_alloc(...) |
-| main.rs:221:13:221:37 | ...::aligned_alloc(...) |
-| main.rs:222:13:222:31 | ...::calloc(...) |
-| main.rs:223:13:223:55 | ...::calloc(...) |
-| main.rs:224:13:224:32 | ...::realloc(...) |
 | main.rs:229:13:229:40 | ...::with_capacity(...) |
 | main.rs:233:18:233:47 | ...::with_capacity(...) |
-multiplePathResolutions
-| main.rs:218:14:218:17 | libc |
-| main.rs:219:13:219:16 | libc |
-| main.rs:220:13:220:16 | libc |
-| main.rs:221:13:221:16 | libc |
-| main.rs:222:13:222:16 | libc |
-| main.rs:223:13:223:16 | libc |
-| main.rs:224:13:224:16 | libc |
