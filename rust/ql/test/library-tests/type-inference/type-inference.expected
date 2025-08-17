@@ -4908,12 +4908,12 @@ inferType
 | main.rs:2227:25:2229:5 | { ... } |  | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2228:9:2228:10 | S1 |  | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2231:41:2233:5 | { ... } |  | main.rs:2231:16:2231:39 | impl ... |
-| main.rs:2232:9:2232:20 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:2232:9:2232:20 | { ... } | Output | main.rs:2221:5:2221:14 | S1 |
+| main.rs:2232:9:2232:20 | { ... } |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:2232:9:2232:20 | { ... } | dyn(Output) | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2232:17:2232:18 | S1 |  | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2235:41:2237:5 | { ... } |  | main.rs:2235:16:2235:39 | impl ... |
-| main.rs:2236:9:2236:16 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:2236:9:2236:16 | { ... } | Output | {EXTERNAL LOCATION} | () |
+| main.rs:2236:9:2236:16 | { ... } |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:2236:9:2236:16 | { ... } | dyn(Output) | {EXTERNAL LOCATION} | () |
 | main.rs:2245:13:2245:42 | SelfParam |  | {EXTERNAL LOCATION} | Pin |
 | main.rs:2245:13:2245:42 | SelfParam | Ptr | {EXTERNAL LOCATION} | & |
 | main.rs:2245:13:2245:42 | SelfParam | Ptr.TRef | main.rs:2239:5:2239:14 | S2 |
@@ -4928,8 +4928,8 @@ inferType
 | main.rs:2253:9:2253:10 | S2 |  | main.rs:2239:5:2239:14 | S2 |
 | main.rs:2253:9:2253:10 | S2 |  | main.rs:2252:16:2252:39 | impl ... |
 | main.rs:2256:22:2264:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2257:9:2257:12 | f1(...) |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:2257:9:2257:12 | f1(...) | Output | main.rs:2221:5:2221:14 | S1 |
+| main.rs:2257:9:2257:12 | f1(...) |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:2257:9:2257:12 | f1(...) | dyn(Output) | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2257:9:2257:18 | await ... |  | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2257:9:2257:22 | ... .f() |  | {EXTERNAL LOCATION} | () |
 | main.rs:2258:9:2258:12 | f2(...) |  | main.rs:2231:16:2231:39 | impl ... |
@@ -4943,13 +4943,13 @@ inferType
 | main.rs:2261:9:2261:10 | S2 |  | main.rs:2239:5:2239:14 | S2 |
 | main.rs:2261:9:2261:16 | await S2 |  | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2261:9:2261:20 | ... .f() |  | {EXTERNAL LOCATION} | () |
-| main.rs:2262:13:2262:13 | b |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:2262:13:2262:13 | b | Output | main.rs:2221:5:2221:14 | S1 |
-| main.rs:2262:17:2262:28 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:2262:17:2262:28 | { ... } | Output | main.rs:2221:5:2221:14 | S1 |
+| main.rs:2262:13:2262:13 | b |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:2262:13:2262:13 | b | dyn(Output) | main.rs:2221:5:2221:14 | S1 |
+| main.rs:2262:17:2262:28 | { ... } |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:2262:17:2262:28 | { ... } | dyn(Output) | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2262:25:2262:26 | S1 |  | main.rs:2221:5:2221:14 | S1 |
-| main.rs:2263:9:2263:9 | b |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:2263:9:2263:9 | b | Output | main.rs:2221:5:2221:14 | S1 |
+| main.rs:2263:9:2263:9 | b |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:2263:9:2263:9 | b | dyn(Output) | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2263:9:2263:15 | await b |  | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2263:9:2263:19 | ... .f() |  | {EXTERNAL LOCATION} | () |
 | main.rs:2274:15:2274:19 | SelfParam |  | {EXTERNAL LOCATION} | & |
@@ -6550,8 +6550,8 @@ inferType
 | main.rs:3061:5:3061:24 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
 | main.rs:3062:5:3062:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
 | main.rs:3063:5:3063:18 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:3064:5:3064:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:3064:5:3064:15 | ...::f(...) | Output | {EXTERNAL LOCATION} | () |
+| main.rs:3064:5:3064:15 | ...::f(...) |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:3064:5:3064:15 | ...::f(...) | dyn(Output) | {EXTERNAL LOCATION} | () |
 | main.rs:3065:5:3065:19 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
 | main.rs:3066:5:3066:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
 | main.rs:3067:5:3067:14 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
