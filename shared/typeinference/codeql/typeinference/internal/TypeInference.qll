@@ -1007,9 +1007,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           tt.getTypeAt(pathToTypeParamInSub.appendInverse(suffix)) = t and
           path = prefix0.append(suffix)
         )
-        or
-        hasTypeConstraint(tt, constraint, constraint) and
-        t = tt.getTypeAt(path)
       }
     }
 

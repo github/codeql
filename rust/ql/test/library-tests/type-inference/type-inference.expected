@@ -3728,9 +3728,8 @@ inferType
 | main.rs:1915:25:1917:5 | { ... } |  | main.rs:1909:5:1909:14 | S1 |
 | main.rs:1916:9:1916:10 | S1 |  | main.rs:1909:5:1909:14 | S1 |
 | main.rs:1919:41:1921:5 | { ... } |  | main.rs:1919:16:1919:39 | ImplTraitTypeRepr |
-| main.rs:1920:9:1920:20 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1920:9:1920:20 | { ... } |  | main.rs:1919:16:1919:39 | ImplTraitTypeRepr |
-| main.rs:1920:9:1920:20 | { ... } | Output | main.rs:1909:5:1909:14 | S1 |
+| main.rs:1920:9:1920:20 | { ... } |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:1920:9:1920:20 | { ... } | dyn(Output) | main.rs:1909:5:1909:14 | S1 |
 | main.rs:1920:17:1920:18 | S1 |  | main.rs:1909:5:1909:14 | S1 |
 | main.rs:1929:13:1929:42 | SelfParam |  | {EXTERNAL LOCATION} | Pin |
 | main.rs:1929:13:1929:42 | SelfParam | Ptr | file://:0:0:0:0 | & |
@@ -3745,8 +3744,8 @@ inferType
 | main.rs:1936:41:1938:5 | { ... } |  | main.rs:1936:16:1936:39 | ImplTraitTypeRepr |
 | main.rs:1937:9:1937:10 | S2 |  | main.rs:1923:5:1923:14 | S2 |
 | main.rs:1937:9:1937:10 | S2 |  | main.rs:1936:16:1936:39 | ImplTraitTypeRepr |
-| main.rs:1941:9:1941:12 | f1(...) |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1941:9:1941:12 | f1(...) | Output | main.rs:1909:5:1909:14 | S1 |
+| main.rs:1941:9:1941:12 | f1(...) |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:1941:9:1941:12 | f1(...) | dyn(Output) | main.rs:1909:5:1909:14 | S1 |
 | main.rs:1941:9:1941:18 | await ... |  | main.rs:1909:5:1909:14 | S1 |
 | main.rs:1942:9:1942:12 | f2(...) |  | main.rs:1919:16:1919:39 | ImplTraitTypeRepr |
 | main.rs:1942:9:1942:18 | await ... |  | main.rs:1909:5:1909:14 | S1 |
@@ -3754,13 +3753,13 @@ inferType
 | main.rs:1943:9:1943:18 | await ... |  | main.rs:1909:5:1909:14 | S1 |
 | main.rs:1944:9:1944:10 | S2 |  | main.rs:1923:5:1923:14 | S2 |
 | main.rs:1944:9:1944:16 | await S2 |  | main.rs:1909:5:1909:14 | S1 |
-| main.rs:1945:13:1945:13 | b |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1945:13:1945:13 | b | Output | main.rs:1909:5:1909:14 | S1 |
-| main.rs:1945:17:1945:28 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1945:17:1945:28 | { ... } | Output | main.rs:1909:5:1909:14 | S1 |
+| main.rs:1945:13:1945:13 | b |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:1945:13:1945:13 | b | dyn(Output) | main.rs:1909:5:1909:14 | S1 |
+| main.rs:1945:17:1945:28 | { ... } |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:1945:17:1945:28 | { ... } | dyn(Output) | main.rs:1909:5:1909:14 | S1 |
 | main.rs:1945:25:1945:26 | S1 |  | main.rs:1909:5:1909:14 | S1 |
-| main.rs:1946:9:1946:9 | b |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1946:9:1946:9 | b | Output | main.rs:1909:5:1909:14 | S1 |
+| main.rs:1946:9:1946:9 | b |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:1946:9:1946:9 | b | dyn(Output) | main.rs:1909:5:1909:14 | S1 |
 | main.rs:1946:9:1946:15 | await b |  | main.rs:1909:5:1909:14 | S1 |
 | main.rs:1957:15:1957:19 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1957:15:1957:19 | SelfParam | &T | main.rs:1956:5:1958:5 | Self [trait Trait1] |
@@ -4992,7 +4991,7 @@ inferType
 | main.rs:2613:5:2613:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
 | main.rs:2613:20:2613:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
 | main.rs:2613:41:2613:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2629:5:2629:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:2629:5:2629:15 | ...::f(...) |  | {EXTERNAL LOCATION} | dyn Future |
 | pattern_matching.rs:13:26:133:1 | { ... } |  | {EXTERNAL LOCATION} | Option |
 | pattern_matching.rs:13:26:133:1 | { ... } | T | file://:0:0:0:0 | () |
 | pattern_matching.rs:14:9:14:13 | value |  | {EXTERNAL LOCATION} | Option |
