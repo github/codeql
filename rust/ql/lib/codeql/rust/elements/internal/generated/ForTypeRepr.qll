@@ -16,17 +16,13 @@ import codeql.rust.elements.internal.TypeReprImpl::Impl as TypeReprImpl
  */
 module Generated {
   /**
-   * A higher-ranked trait bound.
+   * A type with a higher-ranked `for` modifier. This is currently not valid Rust syntax (`for<...>` can
+   * only be applied to traits to form a `TypeBound`).
    *
    * For example:
    * ```rust
-   * fn foo<T>(value: T)
-   * where
-   *     T: for<'a> Fn(&'a str) -> &'a str
-   * //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   * {
-   *     // ...
-   * }
+   * fn foo(value: for<'a> usize) {}  // DOESN'T COMPILE
+   * //            ^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::ForTypeRepr` class directly.
    * Use the subclass `ForTypeRepr`, where the following predicates are available.

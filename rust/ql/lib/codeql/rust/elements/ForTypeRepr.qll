@@ -8,17 +8,13 @@ import codeql.rust.elements.ForBinder
 import codeql.rust.elements.TypeRepr
 
 /**
- * A higher-ranked trait bound.
+ * A type with a higher-ranked `for` modifier. This is currently not valid Rust syntax (`for<...>` can
+ * only be applied to traits to form a `TypeBound`).
  *
  * For example:
  * ```rust
- * fn foo<T>(value: T)
- * where
- *     T: for<'a> Fn(&'a str) -> &'a str
- * //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- * {
- *     // ...
- * }
+ * fn foo(value: for<'a> usize) {}  // DOESN'T COMPILE
+ * //            ^^^^^^^^^^^^^
  * ```
  */
 final class ForTypeRepr = Impl::ForTypeRepr;

@@ -17,6 +17,8 @@ import codeql.rust.elements.TypeRepr
  * ```rust
  * fn foo<T, U>(t: T, u: U) where T: Debug, U: Clone {}
  * //                             ^^^^^^^^  ^^^^^^^^
+ * fn bar<T>(value: T) where for<'a> T: From<&'a str> {}
+ * //                        ^^^^^^^^^^^^^^^^^^^^^^^^
  * ```
  */
 final class WherePred = Impl::WherePred;

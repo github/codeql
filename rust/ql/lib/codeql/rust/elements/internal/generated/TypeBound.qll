@@ -24,6 +24,8 @@ module Generated {
    * ```rust
    * fn foo<T: Debug>(t: T) {}
    * //        ^^^^^
+   * fn bar(value: impl for<'a> From<&'a str>) {}
+   * //                 ^^^^^^^^^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::TypeBound` class directly.
    * Use the subclass `TypeBound`, where the following predicates are available.

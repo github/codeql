@@ -24,6 +24,8 @@ module Generated {
    * ```rust
    * fn foo<T, U>(t: T, u: U) where T: Debug, U: Clone {}
    * //                             ^^^^^^^^  ^^^^^^^^
+   * fn bar<T>(value: T) where for<'a> T: From<&'a str> {}
+   * //                        ^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::WherePred` class directly.
    * Use the subclass `WherePred`, where the following predicates are available.

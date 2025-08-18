@@ -274,7 +274,6 @@
 /lib/codeql/rust/elements/internal/FnPtrTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/FnPtrTypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ForBinderConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/ForBinderImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ForExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ForTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ForTypeReprImpl.qll linguist-generated

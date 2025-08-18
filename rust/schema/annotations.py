@@ -1158,20 +1158,15 @@ class _:
 @annotate(ForTypeRepr)
 class _:
     """
-    A higher-ranked trait bound.
+    A type with a higher-ranked `for` modifier. This is currently not valid Rust syntax (`for<...>` can
+    only be applied to traits to form a `TypeBound`).
 
     For example:
     ```rust
-    fn foo<T>(value: T)
-    where
-        T: for<'a> Fn(&'a str) -> &'a str
-    //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    {
-        // ...
-    }
+    fn foo(value: for<'a> usize) {}  // DOESN'T COMPILE
+    //            ^^^^^^^^^^^^^
     ```
     """
-
 
 @annotate(FormatArgsArg, cfg=True)
 @qltest.test_with(FormatArgsExpr)
@@ -1987,6 +1982,8 @@ class _:
     ```rust
     fn foo<T: Debug>(t: T) {}
     //        ^^^^^
+    fn bar(value: impl for<'a> From<&'a str>) {}
+    //                 ^^^^^^^^^^^^^^^^^^^^^
     ```
     """
 
@@ -2126,6 +2123,8 @@ class _:
     ```rust
     fn foo<T, U>(t: T, u: U) where T: Debug, U: Clone {}
     //                             ^^^^^^^^  ^^^^^^^^
+    fn bar<T>(value: T) where for<'a> T: From<&'a str> {}
+    //                        ^^^^^^^^^^^^^^^^^^^^^^^^
     ```
     """
 

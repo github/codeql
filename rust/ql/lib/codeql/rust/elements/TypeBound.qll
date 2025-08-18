@@ -17,6 +17,8 @@ import codeql.rust.elements.UseBoundGenericArgs
  * ```rust
  * fn foo<T: Debug>(t: T) {}
  * //        ^^^^^
+ * fn bar(value: impl for<'a> From<&'a str>) {}
+ * //                 ^^^^^^^^^^^^^^^^^^^^^
  * ```
  */
 final class TypeBound = Impl::TypeBound;
