@@ -42,7 +42,7 @@ fn test_stream_cipher(
 
 fn test_block_cipher(
     key: &[u8], key128: &[u8;16], key192: &[u8;24], key256: &[u8;32],
-    data: &mut [u8], input: &[u8], block128: &mut [u8;16]
+    data: &mut [u8], input: &[u8], block128: &mut [u8;16], des_key : &cipher::Key<Des>
 ) {
     // aes
     let aes_cipher1 = Aes128::new(key128.into());
@@ -56,6 +56,10 @@ fn test_block_cipher(
     aes_cipher3.decrypt_block(block128.into());
 
     // des (broken)
+    let des_cipher0 : Des = Des::new(des_key); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    des_cipher0.encrypt_block(data.into());
+    des_cipher0.decrypt_block(data.into());
+
     let des_cipher1 = Des::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
     des_cipher1.encrypt_block(data.into());
     des_cipher1.decrypt_block(data.into());
