@@ -909,19 +909,19 @@ mod generic_enum {
 }
 
 mod method_supertraits {
-    #[derive(Debug)]
+    #[derive(Debug, Clone, Copy)]
     struct MyThing<A> {
         a: A,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, Copy)]
     struct MyThing2<A> {
         a: A,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, Copy)]
     struct S1;
-    #[derive(Debug)]
+    #[derive(Debug, Clone, Copy)]
     struct S2;
 
     trait MyTrait1<Tr1> {
@@ -929,16 +929,16 @@ mod method_supertraits {
         fn m1(self) -> Tr1;
     }
 
-    trait MyTrait2<Tr2>: MyTrait1<Tr2> {
+    trait MyTrait2<Tr2>: MyTrait1<Tr2> + Copy {
         #[rustfmt::skip]
-        fn m2(self) -> Tr2
+        fn m2(&self) -> Tr2
         where
             Self: Sized,
         {
             if 3 > 2 { // $ target=gt
                 self.m1() // $ target=MyTrait1::m1
             } else {
-                Self::m1(self) // $ target=MyTrait1::m1
+                Self::m1(*self) // $ target=deref target=MyTrait1::m1
             }
         }
     }
@@ -952,7 +952,7 @@ mod method_supertraits {
             if 3 > 2 { // $ target=gt
                 self.m2().a // $ target=m2 $ fieldof=MyThing
             } else {
-                Self::m2(self).a // $ target=m2 fieldof=MyThing
+                Self::m2(&self).a // $ target=m2 fieldof=MyThing
             }
         }
     }
@@ -964,7 +964,7 @@ mod method_supertraits {
         }
     }
 
-    impl<T> MyTrait2<T> for MyThing<T> {}
+    impl<T: Copy> MyTrait2<T> for MyThing<T> {}
 
     impl<T> MyTrait1<MyThing<T>> for MyThing2<T> {
         // MyThing2::m1
@@ -973,9 +973,9 @@ mod method_supertraits {
         }
     }
 
-    impl<T> MyTrait2<MyThing<T>> for MyThing2<T> {}
+    impl<T: Copy> MyTrait2<MyThing<T>> for MyThing2<T> {}
 
-    impl<T> MyTrait3<T> for MyThing2<T> {}
+    impl<T: Copy> MyTrait3<T> for MyThing2<T> {}
 
     fn call_trait_m1<T1, T2: MyTrait1<T1>>(x: T2) -> T1 {
         x.m1() // $ target=MyTrait1::m1
@@ -1770,6 +1770,11 @@ mod overloadable_operators {
             self.x >= other.x && self.y >= other.y // $ fieldof=Vec2 target=ge
         }
     }
+
+    fn param_add<T: Add>(a: T, b: T) -> T::Output {
+        a + b // $ target=add
+    }
+
     pub fn f() {
         // Test for all overloadable operators on `i64`
 
@@ -1787,6 +1792,7 @@ mod overloadable_operators {
         let i64_mul = 17i64 * 18i64; // $ type=i64_mul:i64 target=mul
         let i64_div = 19i64 / 20i64; // $ type=i64_div:i64 target=div
         let i64_rem = 21i64 % 22i64; // $ type=i64_rem:i64 target=rem
+        let i64_param_add = param_add(1i64, 2i64); // $ target=param_add $ MISSING: type=i64_param_add:i64
 
         // Arithmetic assignment operators
         let mut i64_add_assign = 23i64;
@@ -2034,7 +2040,7 @@ mod impl_trait {
 mod indexers {
     use std::ops::Index;
 
-    #[derive(Debug)]
+    #[derive(Debug, Copy, Clone)]
     struct S;
 
     impl S {
@@ -2071,6 +2077,13 @@ mod indexers {
         let x = slice[0].foo(); // $ target=foo type=x:S target=index
     }
 
+    fn param_index<T: Index<usize>>(a: T, b: usize) -> T::Output
+    where
+        <T as Index<usize>>::Output: Sized + Copy,
+    {
+        a[b] // $ target=index
+    }
+
     pub fn f() {
         let mut vec = MyVec::new(); // $ type=vec:T.S target=new
         vec.push(S); // $ target=push
@@ -2078,6 +2091,8 @@ mod indexers {
 
         let xs: [S; 1] = [S];
         let x = xs[0].foo(); // $ target=foo type=x:S target=index
+
+        let y = param_index(vec, 0); // $ target=param_index $ MISSING: type=y:S
 
         analyze_slice(&xs); // $ target=analyze_slice
     }
