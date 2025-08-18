@@ -1,3 +1,7 @@
+## 4.0.13
+
+No user-facing changes.
+
 ## 4.0.12
 
 ### Minor Analysis Improvements
