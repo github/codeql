@@ -1,8 +1,10 @@
 multipleCallTargets
-| dereference.rs:61:15:61:24 | e1.deref() |
-| main.rs:2357:13:2357:31 | ...::from(...) |
-| main.rs:2358:13:2358:31 | ...::from(...) |
-| main.rs:2359:13:2359:31 | ...::from(...) |
-| main.rs:2365:13:2365:31 | ...::from(...) |
-| main.rs:2366:13:2366:31 | ...::from(...) |
-| main.rs:2367:13:2367:31 | ...::from(...) |
+| dereference.rs:69:15:69:24 | e1.deref() |
+| dereference.rs:186:17:186:25 | S.bar(...) |
+| dereference.rs:187:17:187:29 | S.bar(...) |
+| main.rs:2372:13:2372:31 | ...::from(...) |
+| main.rs:2373:13:2373:31 | ...::from(...) |
+| main.rs:2374:13:2374:31 | ...::from(...) |
+| main.rs:2380:13:2380:31 | ...::from(...) |
+| main.rs:2381:13:2381:31 | ...::from(...) |
+| main.rs:2382:13:2382:31 | ...::from(...) |
