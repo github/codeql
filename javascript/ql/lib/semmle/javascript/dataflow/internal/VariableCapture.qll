@@ -108,8 +108,18 @@ module VariableCaptureConfig implements InputSig<js::Location> {
 
   class ControlFlowNode = js::ControlFlowNode;
 
-  class BasicBlock extends js::BasicBlock {
+  final private class JsBasicBlock = js::BasicBlock;
+
+  class BasicBlock extends JsBasicBlock {
     Callable getEnclosingCallable() { result = this.getContainer().getFunctionBoundary() }
+
+    BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+    BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+    predicate inDominanceFrontier(BasicBlock df) {
+      df.(js::ReachableJoinBlock).inDominanceFrontierOf(this)
+    }
   }
 
   class Callable extends js::StmtContainer {
@@ -234,10 +244,6 @@ module VariableCaptureConfig implements InputSig<js::Location> {
       bb.(js::EntryBasicBlock).getContainer() = variable.asThisContainer() and i = -1
     }
   }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
 
   predicate entryBlock(BasicBlock bb) { bb instanceof js::EntryBasicBlock }
 }

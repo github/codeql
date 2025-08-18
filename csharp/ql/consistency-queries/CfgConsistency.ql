@@ -45,8 +45,8 @@ predicate bbIntraSuccInconsistency(ControlFlowElement pred, ControlFlowElement s
     bb.getASuccessor().getFirstElement() = succ
   ) and
   not exists(PreBasicBlock bb, int i |
-    bb.getElement(i) = pred and
-    bb.getElement(i + 1) = succ
+    bb.getNode(i) = pred and
+    bb.getNode(i + 1) = succ
   )
 }
 

@@ -13,10 +13,6 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   class ControlFlowNode = ControlFlow::Node;
 
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
   class SourceVariable = Ssa::SourceVariable;
 
   /**

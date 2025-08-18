@@ -14,7 +14,7 @@ module PreSsa {
   private predicate definitionAt(
     AssignableDefinition def, SsaInput::BasicBlock bb, int i, SsaInput::SourceVariable v
   ) {
-    bb.getElement(i) = def.getExpr() and
+    bb.getNode(i) = def.getExpr() and
     v = def.getTarget() and
     // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
     not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second | first = def |
@@ -80,15 +80,9 @@ module PreSsa {
   }
 
   module SsaInput implements SsaImplCommon::InputSig<Location> {
-    class BasicBlock extends PreBasicBlocks::PreBasicBlock {
-      ControlFlowNode getNode(int i) { result = this.getElement(i) }
-    }
+    class BasicBlock = PreBasicBlocks::PreBasicBlock;
 
     class ControlFlowNode = ControlFlowElement;
-
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
-
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
     private class ExitBasicBlock extends BasicBlock {
       ExitBasicBlock() { scopeLast(_, this.getLastElement(), _) }
@@ -142,7 +136,7 @@ module PreSsa {
 
     predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
       exists(AssignableRead read |
-        read = bb.getElement(i) and
+        read = bb.getNode(i) and
         read.getTarget() = v and
         certain = true
       )
@@ -163,7 +157,7 @@ module PreSsa {
     final AssignableRead getARead() {
       exists(SsaInput::BasicBlock bb, int i |
         SsaImpl::ssaDefReachesRead(_, this, bb, i) and
-        result = bb.getElement(i)
+        result = bb.getNode(i)
       )
     }
 
@@ -177,7 +171,7 @@ module PreSsa {
     final AssignableRead getAFirstRead() {
       exists(SsaInput::BasicBlock bb, int i |
         SsaImpl::firstUse(this, bb, i, true) and
-        result = bb.getElement(i)
+        result = bb.getNode(i)
       )
     }
 
@@ -214,9 +208,9 @@ module PreSsa {
 
   predicate adjacentReadPairSameVar(AssignableRead read1, AssignableRead read2) {
     exists(SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2 |
-      read1 = bb1.getElement(i1) and
+      read1 = bb1.getNode(i1) and
       SsaImpl::adjacentUseUse(bb1, i1, bb2, i2, _, true) and
-      read2 = bb2.getElement(i2)
+      read2 = bb2.getNode(i2)
     )
   }
 }
