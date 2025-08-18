@@ -66,6 +66,10 @@ query predicate new_for_type_repr_for_binders(Element id, NewElement binder) {
   binder = Fresh::map(TForTypeForBinder(id, _))
 }
 
+query predicate new_for_type_repr_type_reprs(Element id, Element type) {
+  for_type_repr_type_reprs(id, type) and not id instanceof ForTypeInTypeBound
+}
+
 // we attach a ForTypeInTypeBound id as a ForBinder one to its TypeBound
 query predicate new_type_bound_for_binders(Element id, NewElement binder) {
   id = binder.(ForTypeInTypeBound).getBound()
