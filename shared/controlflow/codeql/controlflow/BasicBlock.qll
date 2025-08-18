@@ -164,6 +164,9 @@ signature module CfgSig<LocationSig Location> {
    * means that the edge `(bb1, bb2)` dominates `bb3`.
    */
   predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2);
+
+  /** Holds if `bb` is an entry basic block. */
+  predicate entryBlock(BasicBlock bb);
 }
 
 /**
@@ -398,6 +401,9 @@ module Make<LocationSig Location, InputSig<Location> Input> implements CfgSig<Lo
     forall(BasicBlock pred | pred = bb2.getAPredecessor() and pred != bb1 | bb2.dominates(pred))
   }
 
+  /** Holds if `bb` is an entry basic block. */
+  predicate entryBlock(BasicBlock bb) { nodeIsDominanceEntry(bb.getFirstNode()) }
+
   cached
   private module Cached {
     private Node nodeGetAPredecessor(Node node, SuccessorType s) {
@@ -466,9 +472,6 @@ module Make<LocationSig Location, InputSig<Location> Input> implements CfgSig<Lo
     cached
     Node getNode(BasicBlock bb, int pos) { bbIndex(bb.getFirstNode(), result, pos) }
 
-    /** Holds if `bb` is an entry basic block. */
-    private predicate entryBB(BasicBlock bb) { nodeIsDominanceEntry(bb.getFirstNode()) }
-
     cached
     predicate bbSuccessor(BasicBlock bb1, BasicBlock bb2, SuccessorType t) {
       bb2.getFirstNode() = nodeGetASuccessor(bb1.getLastNode(), t)
@@ -483,7 +486,7 @@ module Make<LocationSig Location, InputSig<Location> Input> implements CfgSig<Lo
     /** Holds if `dom` is an immediate dominator of `bb`. */
     cached
     predicate bbIDominates(BasicBlock dom, BasicBlock bb) =
-      idominance(entryBB/1, succBB/2)(_, dom, bb)
+      idominance(entryBlock/1, succBB/2)(_, dom, bb)
 
     /** Holds if `pred` is a basic block predecessor of `succ`. */
     private predicate predBB(BasicBlock succ, BasicBlock pred) { succBB(pred, succ) }

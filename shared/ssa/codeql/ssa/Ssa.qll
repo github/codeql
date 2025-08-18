@@ -5,44 +5,14 @@
 overlay[local?]
 module;
 
+private import codeql.controlflow.BasicBlock as BB
 private import codeql.util.Location
 private import codeql.util.Unit
 
+signature class BasicBlockSig;
+
 /** Provides the input specification of the SSA implementation. */
-signature module InputSig<LocationSig Location> {
-  /**
-   * A basic block, that is, a maximal straight-line sequence of control flow nodes
-   * without branches or joins.
-   */
-  class BasicBlock {
-    /** Gets a textual representation of this basic block. */
-    string toString();
-
-    /** Gets the `i`th node in this basic block. */
-    ControlFlowNode getNode(int i);
-
-    /** Gets the length of this basic block. */
-    int length();
-
-    /** Gets the location of this basic block. */
-    Location getLocation();
-
-    BasicBlock getASuccessor();
-
-    BasicBlock getImmediateDominator();
-
-    predicate inDominanceFrontier(BasicBlock df);
-  }
-
-  /** A control flow node. */
-  class ControlFlowNode {
-    /** Gets a textual representation of this control flow node. */
-    string toString();
-
-    /** Gets the location of this control flow node. */
-    Location getLocation();
-  }
-
+signature module InputSig<LocationSig Location, BasicBlockSig BasicBlock> {
   /** A variable that can be SSA converted. */
   class SourceVariable {
     /** Gets a textual representation of this variable. */
@@ -89,7 +59,10 @@ signature module InputSig<LocationSig Location> {
  * NB: If this predicate is exposed, it should be cached.
  * ```
  */
-module Make<LocationSig Location, InputSig<Location> Input> {
+module Make<
+  LocationSig Location, BB::CfgSig<Location> Cfg, InputSig<Location, Cfg::BasicBlock> Input>
+{
+  private import Cfg
   private import Input
 
   private BasicBlock getABasicBlockPredecessor(BasicBlock bb) { result.getASuccessor() = bb }
