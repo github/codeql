@@ -99,12 +99,32 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
  * For example, if we have
  *
  * ```rust
- * mod m1 {
- *     mod m2 { }
+ * pub mod m1 {
+ *     pub mod m2 { }
  * }
  * ```
  *
- * then there is an edge `m1 --m2,both--> m1::m2`.
+ * then there is an edge `mod m1 --m2,both--> mod m2`.
+ *
+ * Associated items are example of externally visible items (inside the
+ * declaring item they must be `Self` prefixed), while type parameters are
+ * examples of internally visible items. For example, for
+ *
+ * ```rust
+ * mod m {
+ *     pub trait<T> Trait {
+ *         fn foo(&self) -> T;
+ *     }
+ * }
+ * ```
+ *
+ * we have the following edges
+ *
+ * ```
+ * mod m       --Trait,both-->    trait Trait
+ * trait Trait --foo,external --> fn foo
+ * trait Trait --T,internal -->   T
+ * ```
  *
  * Source files are also considered nodes in the item graph, and for
  * each source file `f` there is an edge `f --name,both--> item` when `f`
@@ -119,13 +139,13 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
  * }
  * ```
  *
- * we first generate an edge `m1::m2 --name,kind--> f::item`, where `item` is
+ * we first generate an edge `mod m2 --name,kind--> f::item`, where `item` is
  * any item (named `name`) inside the imported source file `f`, and `kind` is
  * either `external` or `both`. Using this edge, `m2::foo` can resolve to
- * `f::foo`, which results in the edge `m1::use m2 --foo,internal--> f::foo`
+ * `f::foo`, which results in the edge `use m2 --foo,internal--> f::foo`
  * (would have been `external` if it was `pub use m2::foo`). Lastly, all edges
  * out of `use` nodes are lifted to predecessors in the graph, so we get
- * an edge `m1 --foo,internal--> f::foo`.
+ * an edge `mod m1 --foo,internal--> f::foo`.
  *
  *
  * References:
