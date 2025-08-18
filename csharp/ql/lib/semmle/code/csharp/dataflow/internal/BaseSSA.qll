@@ -49,12 +49,6 @@ module BaseSsa {
 
     class ControlFlowNode = ControlFlow::Node;
 
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-      result = bb.getImmediateDominator()
-    }
-
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
     class SourceVariable = PreSsa::SimpleLocalScopeVariable;
 
     predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {

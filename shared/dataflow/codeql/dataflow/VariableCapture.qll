@@ -30,6 +30,12 @@ signature module InputSig<LocationSig Location> {
 
     /** Gets the location of this basic block. */
     Location getLocation();
+
+    BasicBlock getASuccessor();
+
+    BasicBlock getImmediateDominator();
+
+    predicate inDominanceFrontier(BasicBlock df);
   }
 
   /** A control flow node. */
@@ -41,33 +47,8 @@ signature module InputSig<LocationSig Location> {
     Location getLocation();
   }
 
-  /**
-   * Gets the basic block that immediately dominates basic block `bb`, if any.
-   *
-   * That is, all paths reaching `bb` from some entry point basic block must go
-   * through the result.
-   *
-   * Example:
-   *
-   * ```csharp
-   * int M(string s) {
-   *   if (s == null)
-   *     throw new ArgumentNullException(nameof(s));
-   *   return s.Length;
-   * }
-   * ```
-   *
-   * The basic block starting on line 2 is an immediate dominator of
-   * the basic block on line 4 (all paths from the entry point of `M`
-   * to `return s.Length;` must go through the null check.
-   */
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb);
-
-  /** Gets an immediate successor of basic block `bb`, if any. */
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb);
-
   /** Holds if `bb` is a control-flow entry point. */
-  default predicate entryBlock(BasicBlock bb) { not exists(getImmediateBasicBlockDominator(bb)) }
+  default predicate entryBlock(BasicBlock bb) { not exists(bb.getImmediateDominator()) }
 
   /** A variable that is captured in a closure. */
   class CapturedVariable {
@@ -332,17 +313,17 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
 
     query predicate uniqueDominator(RelevantBasicBlock bb, string msg) {
       msg = "BasicBlock has multiple immediate dominators" and
-      2 <= strictcount(getImmediateBasicBlockDominator(bb))
+      2 <= strictcount(bb.getImmediateDominator())
     }
 
     query predicate localDominator(RelevantBasicBlock bb, string msg) {
       msg = "BasicBlock has non-local dominator" and
-      bb.getEnclosingCallable() != getImmediateBasicBlockDominator(bb).getEnclosingCallable()
+      bb.getEnclosingCallable() != bb.getImmediateDominator().getEnclosingCallable()
     }
 
     query predicate localSuccessor(RelevantBasicBlock bb, string msg) {
       msg = "BasicBlock has non-local successor" and
-      bb.getEnclosingCallable() != getABasicBlockSuccessor(bb).getEnclosingCallable()
+      bb.getEnclosingCallable() != bb.getASuccessor().getEnclosingCallable()
     }
 
     query predicate uniqueDefiningScope(CapturedVariable v, string msg) {
@@ -689,14 +670,6 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
     final class BasicBlock = Input::BasicBlock;
 
     final class ControlFlowNode = Input::ControlFlowNode;
-
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-      result = Input::getImmediateBasicBlockDominator(bb)
-    }
-
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) {
-      result = Input::getABasicBlockSuccessor(bb)
-    }
 
     class SourceVariable = CaptureContainer;
 

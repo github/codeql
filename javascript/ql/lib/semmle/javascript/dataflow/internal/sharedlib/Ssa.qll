@@ -12,7 +12,17 @@ private import semmle.javascript.dataflow.internal.VariableOrThis
 module SsaConfig implements InputSig<js::DbLocation> {
   class ControlFlowNode = js::ControlFlowNode;
 
-  class BasicBlock = js::BasicBlock;
+  final private class JsBasicBlock = js::BasicBlock;
+
+  class BasicBlock extends JsBasicBlock {
+    BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+    BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+    predicate inDominanceFrontier(BasicBlock df) {
+      df.(js::ReachableJoinBlock).inDominanceFrontierOf(this)
+    }
+  }
 
   class SourceVariable extends LocalVariableOrThis {
     SourceVariable() { not this.isCaptured() }
@@ -40,11 +50,6 @@ module SsaConfig implements InputSig<js::DbLocation> {
     certain = true and
     bb.getNode(i).(ThisUse).getBindingContainer() = v.asThisContainer()
   }
-
-  predicate getImmediateBasicBlockDominator = BasicBlockInternal::immediateDominator/1;
-
-  pragma[inline]
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 }
 
 import Make<js::DbLocation, SsaConfig>
@@ -55,7 +60,7 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
   class Expr extends js::ControlFlowNode {
     Expr() { this = any(SsaConfig::SourceVariable v).getAUse() }
 
-    predicate hasCfgNode(js::BasicBlock bb, int i) { this = bb.getNode(i) }
+    predicate hasCfgNode(SsaConfig::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
   predicate ssaDefHasSource(WriteDefinition def) {
@@ -82,7 +87,9 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
      * Holds if the evaluation of this guard to `branch` corresponds to the edge
      * from `bb1` to `bb2`.
      */
-    predicate hasValueBranchEdge(js::BasicBlock bb1, js::BasicBlock bb2, GuardValue branch) {
+    predicate hasValueBranchEdge(
+      SsaConfig::BasicBlock bb1, SsaConfig::BasicBlock bb2, GuardValue branch
+    ) {
       exists(js::ConditionGuardNode g |
         g.getTest() = this and
         bb1 = this.getBasicBlock() and
@@ -96,13 +103,15 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
      * branch edge from `bb1` to `bb2`. That is, following the edge from
      * `bb1` to `bb2` implies that this guard evaluated to `branch`.
      */
-    predicate valueControlsBranchEdge(js::BasicBlock bb1, js::BasicBlock bb2, GuardValue branch) {
+    predicate valueControlsBranchEdge(
+      SsaConfig::BasicBlock bb1, SsaConfig::BasicBlock bb2, GuardValue branch
+    ) {
       this.hasValueBranchEdge(bb1, bb2, branch)
     }
   }
 
   pragma[inline]
-  predicate guardDirectlyControlsBlock(Guard guard, js::BasicBlock bb, GuardValue branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, SsaConfig::BasicBlock bb, GuardValue branch) {
     exists(js::ConditionGuardNode g |
       g.getTest() = guard and
       g.dominates(bb) and

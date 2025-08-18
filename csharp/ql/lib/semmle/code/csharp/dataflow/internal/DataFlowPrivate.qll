@@ -283,15 +283,15 @@ module VariableCapture {
 
     class BasicBlock extends BasicBlocks::BasicBlock {
       Callable getEnclosingCallable() { result = super.getCallable() }
+
+      BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+      BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+      predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
     }
 
     class ControlFlowNode = Cfg::ControlFlow::Node;
-
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-      result = bb.getImmediateDominator()
-    }
-
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
     private predicate thisAccess(ControlFlow::Node cfn, InstanceCallable c) {
       ThisFlow::thisAccessExpr(cfn.getAstNode()) and

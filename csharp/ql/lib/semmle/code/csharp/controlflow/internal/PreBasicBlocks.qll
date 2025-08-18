@@ -63,15 +63,19 @@ class PreBasicBlock extends ControlFlowElement {
 
   PreBasicBlock getAPredecessor() { result.getASuccessor() = this }
 
-  ControlFlowElement getElement(int pos) { bbIndex(this, result, pos) }
+  ControlFlowElement getNode(int pos) { bbIndex(this, result, pos) }
 
-  ControlFlowElement getAnElement() { result = this.getElement(_) }
+  deprecated ControlFlowElement getElement(int pos) { result = this.getNode(pos) }
+
+  ControlFlowElement getAnElement() { result = this.getNode(_) }
 
   ControlFlowElement getFirstElement() { result = this }
 
-  ControlFlowElement getLastElement() { result = this.getElement(this.length() - 1) }
+  ControlFlowElement getLastElement() { result = this.getNode(this.length() - 1) }
 
   int length() { result = strictcount(this.getAnElement()) }
+
+  PreBasicBlock getImmediateDominator() { bbIDominates(result, this) }
 
   predicate immediatelyDominates(PreBasicBlock bb) { bbIDominates(this, bb) }
 
@@ -83,6 +87,15 @@ class PreBasicBlock extends ControlFlowElement {
     bb = this
     or
     this.strictlyDominates(bb)
+  }
+
+  predicate inDominanceFrontier(PreBasicBlock df) {
+    this = df.getAPredecessor() and not bbIDominates(this, df)
+    or
+    exists(PreBasicBlock prev | prev.inDominanceFrontier(df) |
+      bbIDominates(this, prev) and
+      not bbIDominates(this, df)
+    )
   }
 }
 

@@ -98,6 +98,12 @@ class BasicBlock extends BbImpl::BasicBlock {
   /** Gets an immediate successor of this basic block of a given type, if any. */
   BasicBlock getASuccessor(Input::SuccessorType t) { result = super.getASuccessor(t) }
 
+  BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+  BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+  predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
+
   /**
    * DEPRECATED: Use `getASuccessor` instead.
    *

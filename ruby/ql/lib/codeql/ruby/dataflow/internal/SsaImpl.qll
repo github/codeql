@@ -17,10 +17,6 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   class ControlFlowNode = Cfg::CfgNode;
 
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
   class SourceVariable = LocalVariable;
 
   /**

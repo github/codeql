@@ -15,12 +15,6 @@ module Ssa {
 
     class ControlFlowNode = Cfg::ControlFlowNode;
 
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-      result = bb.getImmediateDominator()
-    }
-
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
     private newtype TSourceVariable =
       TNormalSourceVariable(VarDecl v) or
       TKeyPathSourceVariable(EntryNode entry) { entry.getScope() instanceof KeyPathExpr }

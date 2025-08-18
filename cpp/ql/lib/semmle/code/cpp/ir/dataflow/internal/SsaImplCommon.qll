@@ -778,11 +778,13 @@ module InputSigCommon {
     ControlFlowNode getNode(int i) { result = this.getInstruction(i) }
 
     int length() { result = this.getInstructionCount() }
+
+    BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+    BasicBlock getImmediateDominator() { result.immediatelyDominates(this) }
+
+    predicate inDominanceFrontier(BasicBlock df) { super.dominanceFrontier() = df }
   }
 
   class ControlFlowNode = Instruction;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 }

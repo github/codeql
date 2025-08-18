@@ -82,15 +82,15 @@ private module CaptureInput implements VariableCapture::InputSig<Location> {
     Callable getEnclosingCallable() { result = super.getEnclosingCallable() }
 
     Location getLocation() { result = super.getLocation() }
+
+    BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+    BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+    predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
   }
 
   class ControlFlowNode = J::ControlFlowNode;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-    result.(J::BasicBlock).immediatelyDominates(bb)
-  }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.(J::BasicBlock).getASuccessor() }
 
   //TODO: support capture of `this` in lambdas
   class CapturedVariable instanceof LocalScopeVariable {

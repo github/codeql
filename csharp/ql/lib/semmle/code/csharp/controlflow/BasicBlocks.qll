@@ -58,6 +58,8 @@ final class BasicBlock extends BasicBlocksImpl::BasicBlock {
     result.getFirstNode() = this.getLastNode().getAFalseSuccessor()
   }
 
+  BasicBlock getASuccessor() { result = super.getASuccessor() }
+
   /** Gets the control flow node at a specific (zero-indexed) position in this basic block. */
   ControlFlow::Node getNode(int pos) { result = super.getNode(pos) }
 

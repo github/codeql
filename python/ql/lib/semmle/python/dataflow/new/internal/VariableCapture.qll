@@ -23,7 +23,9 @@ private module CaptureInput implements Shared::InputSig<Location> {
     predicate isConstructor() { none() }
   }
 
-  class BasicBlock extends PY::BasicBlock {
+  final private class PyBasicBlock = PY::BasicBlock;
+
+  class BasicBlock extends PyBasicBlock {
     int length() { result = count(int i | exists(this.getNode(i))) }
 
     Callable getEnclosingCallable() { result = this.getScope() }
@@ -34,13 +36,15 @@ private module CaptureInput implements Shared::InputSig<Location> {
     // and we just need a way to identify the basic block
     // during debugging, so this will be serviceable.
     Location getLocation() { result = super.getNode(0).getLocation() }
+
+    BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+    BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+    predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
   }
 
   class ControlFlowNode = PY::ControlFlowNode;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
   class CapturedVariable extends LocalVariable {
     Function f;

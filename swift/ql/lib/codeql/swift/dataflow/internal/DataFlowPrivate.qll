@@ -897,15 +897,15 @@ private module CaptureInput implements VariableCapture::InputSig<Location> {
     Callable getEnclosingCallable() { result = super.getScope() }
 
     Location getLocation() { result = super.getLocation() }
+
+    BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+    BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+    predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
   }
 
   class ControlFlowNode = Cfg::ControlFlowNode;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-    result.(B::BasicBlock).immediatelyDominates(bb)
-  }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.(B::BasicBlock).getASuccessor() }
 
   class CapturedVariable instanceof S::VarDecl {
     CapturedVariable() {

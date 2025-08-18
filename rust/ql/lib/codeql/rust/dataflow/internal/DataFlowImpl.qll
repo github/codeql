@@ -862,15 +862,15 @@ module VariableCapture {
 
     class BasicBlock extends BasicBlocks::BasicBlock {
       Callable getEnclosingCallable() { result = this.getScope() }
+
+      BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+      BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+      predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
     }
 
     class ControlFlowNode = CfgNode;
-
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-      result = bb.getImmediateDominator()
-    }
-
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
     class CapturedVariable extends Variable {
       CapturedVariable() { this.isCaptured() }
