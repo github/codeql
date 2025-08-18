@@ -2519,7 +2519,7 @@ pub mod pattern_matching_experimental {
 }
 
 pub mod exec {
-    // a *greatly* simplified model of `MySqlConnection.execute` in SQLX
+    // a highly simplified model of `MySqlConnection.execute` in SQLx
 
     trait Connection {}
 
@@ -2555,6 +2555,54 @@ pub mod exec {
     }
 }
 
+pub mod path_buf {
+    // a highly simplified model of `PathBuf::canonicalize`
+
+    pub struct Path {
+    }
+
+    impl Path {
+        pub const fn new() -> Path {
+            Path { }
+        }
+
+        pub fn canonicalize(&self) -> Result<PathBuf, ()> {
+            Ok(PathBuf::new()) // $ target=new
+        }
+    }
+
+    pub struct PathBuf {
+    }
+
+    impl PathBuf {
+        pub const fn new() -> PathBuf {
+            PathBuf { }
+        }
+    }
+
+    // `PathBuf` provides `canonicalize` via `Deref`:
+    impl std::ops::Deref for PathBuf {
+        type Target = Path;
+
+        #[inline]
+        fn deref(&self) -> &Path {
+            // (very much not a real implementation)
+            static path : Path = Path::new(); // $ target=new
+            &path
+        }
+    }
+
+    pub fn f() {
+        let path1 = Path::new(); // $ target=new type=path1:Path
+        let path2 = path1.canonicalize(); // $ target=canonicalize
+        let path3 = path2.unwrap(); // $ target=unwrap type=path3:PathBuf
+
+        let pathbuf1 = PathBuf::new(); // $ target=new type=pathbuf1:PathBuf
+        let pathbuf2 = pathbuf1.canonicalize(); // $ MISSING: target=canonicalize
+        let pathbuf3 = pathbuf2.unwrap(); // $ MISSING: target=unwrap type=pathbuf3:PathBuf
+    }
+}
+
 mod closure;
 mod dereference;
 mod dyn_type;
@@ -2587,6 +2635,7 @@ fn main() {
     method_determined_by_argument_type::f(); // $ target=f
     tuples::f(); // $ target=f
     exec::f(); // $ target=f
+    path_buf::f(); // $ target=f
     dereference::test(); // $ target=test
     pattern_matching::test_all_patterns(); // $ target=test_all_patterns
     pattern_matching_experimental::box_patterns(); // $ target=box_patterns
