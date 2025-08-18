@@ -840,6 +840,6 @@ int f7(void)
 {
   FILE* fp = (FILE*)indirect_source();
   fprintf(fp, "");
-	indirect_sink(fp); // $ MISSING: ast,ir
+	indirect_sink(fp); // $ ir MISSING: ast
   return 0;
 }
