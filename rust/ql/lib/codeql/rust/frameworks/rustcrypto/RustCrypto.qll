@@ -5,8 +5,8 @@
 private import rust
 private import codeql.rust.Concepts
 private import codeql.rust.dataflow.DataFlow
-import codeql.rust.internal.TypeInference
-import codeql.rust.internal.Type
+private import codeql.rust.internal.TypeInference
+private import codeql.rust.internal.Type
 
 bindingset[algorithmName]
 private string simplifyAlgorithmName(string algorithmName) {
