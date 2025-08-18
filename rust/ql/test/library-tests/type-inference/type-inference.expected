@@ -294,16 +294,15 @@ inferType
 | dereference.rs:63:17:63:18 | c3 | T | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:68:9:68:10 | e1 |  | file://:0:0:0:0 | & |
 | dereference.rs:68:9:68:10 | e1 | &T | {EXTERNAL LOCATION} | char |
-| dereference.rs:68:9:68:10 | e1 | &T | file://:0:0:0:0 | & |
 | dereference.rs:68:14:68:17 | &'a' |  | file://:0:0:0:0 | & |
 | dereference.rs:68:14:68:17 | &'a' | &T | {EXTERNAL LOCATION} | char |
-| dereference.rs:68:14:68:17 | &'a' | &T | file://:0:0:0:0 | & |
 | dereference.rs:68:15:68:17 | 'a' |  | {EXTERNAL LOCATION} | char |
 | dereference.rs:69:9:69:11 | _f1 |  | file://:0:0:0:0 | & |
+| dereference.rs:69:9:69:11 | _f1 | &T | {EXTERNAL LOCATION} | char |
 | dereference.rs:69:15:69:16 | e1 |  | file://:0:0:0:0 | & |
 | dereference.rs:69:15:69:16 | e1 | &T | {EXTERNAL LOCATION} | char |
-| dereference.rs:69:15:69:16 | e1 | &T | file://:0:0:0:0 | & |
 | dereference.rs:69:15:69:24 | e1.deref() |  | file://:0:0:0:0 | & |
+| dereference.rs:69:15:69:24 | e1.deref() | &T | {EXTERNAL LOCATION} | char |
 | dereference.rs:72:9:72:10 | e2 |  | file://:0:0:0:0 | & |
 | dereference.rs:72:9:72:10 | e2 | &T | {EXTERNAL LOCATION} | char |
 | dereference.rs:72:14:72:17 | &'a' |  | file://:0:0:0:0 | & |
@@ -485,14 +484,26 @@ inferType
 | dereference.rs:176:42:178:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:177:13:177:14 | 42 |  | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:177:13:177:14 | 42 |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:182:13:182:13 | x |  | dereference.rs:147:5:147:13 | S |
+| dereference.rs:182:13:182:13 | x |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:182:17:182:20 | (...) |  | file://:0:0:0:0 | & |
 | dereference.rs:182:17:182:20 | (...) | &T | dereference.rs:147:5:147:13 | S |
+| dereference.rs:182:17:182:26 | ... .foo() |  | dereference.rs:147:5:147:13 | S |
+| dereference.rs:182:17:182:26 | ... .foo() |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:182:18:182:19 | &S |  | file://:0:0:0:0 | & |
 | dereference.rs:182:18:182:19 | &S | &T | dereference.rs:147:5:147:13 | S |
 | dereference.rs:182:19:182:19 | S |  | dereference.rs:147:5:147:13 | S |
+| dereference.rs:183:13:183:13 | y |  | dereference.rs:147:5:147:13 | S |
+| dereference.rs:183:13:183:13 | y |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:183:17:183:17 | S |  | dereference.rs:147:5:147:13 | S |
+| dereference.rs:183:17:183:23 | S.foo() |  | dereference.rs:147:5:147:13 | S |
+| dereference.rs:183:17:183:23 | S.foo() |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:184:13:184:13 | z |  | dereference.rs:147:5:147:13 | S |
+| dereference.rs:184:13:184:13 | z |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:184:17:184:24 | (...) |  | file://:0:0:0:0 | & |
 | dereference.rs:184:17:184:24 | (...) | &T | dereference.rs:147:5:147:13 | S |
+| dereference.rs:184:17:184:30 | ... .foo() |  | dereference.rs:147:5:147:13 | S |
+| dereference.rs:184:17:184:30 | ... .foo() |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:184:18:184:23 | &mut S |  | file://:0:0:0:0 | & |
 | dereference.rs:184:18:184:23 | &mut S | &T | dereference.rs:147:5:147:13 | S |
 | dereference.rs:184:23:184:23 | S |  | dereference.rs:147:5:147:13 | S |
@@ -2540,21 +2551,17 @@ inferType
 | main.rs:1279:33:1279:36 | SelfParam |  | main.rs:1277:5:1280:5 | Self [trait ATrait] |
 | main.rs:1285:29:1285:33 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1285:29:1285:33 | SelfParam | &T | file://:0:0:0:0 | & |
-| main.rs:1285:29:1285:33 | SelfParam | &T | main.rs:1258:5:1261:5 | MyInt |
 | main.rs:1285:29:1285:33 | SelfParam | &T.&T | main.rs:1258:5:1261:5 | MyInt |
 | main.rs:1285:43:1287:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1286:13:1286:22 | (...) |  | main.rs:1258:5:1261:5 | MyInt |
 | main.rs:1286:13:1286:24 | ... .a |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1286:14:1286:21 | * ... |  | main.rs:1258:5:1261:5 | MyInt |
 | main.rs:1286:15:1286:21 | (...) |  | file://:0:0:0:0 | & |
-| main.rs:1286:15:1286:21 | (...) |  | main.rs:1258:5:1261:5 | MyInt |
 | main.rs:1286:15:1286:21 | (...) | &T | main.rs:1258:5:1261:5 | MyInt |
 | main.rs:1286:16:1286:20 | * ... |  | file://:0:0:0:0 | & |
-| main.rs:1286:16:1286:20 | * ... |  | main.rs:1258:5:1261:5 | MyInt |
 | main.rs:1286:16:1286:20 | * ... | &T | main.rs:1258:5:1261:5 | MyInt |
 | main.rs:1286:17:1286:20 | self |  | file://:0:0:0:0 | & |
 | main.rs:1286:17:1286:20 | self | &T | file://:0:0:0:0 | & |
-| main.rs:1286:17:1286:20 | self | &T | main.rs:1258:5:1261:5 | MyInt |
 | main.rs:1286:17:1286:20 | self | &T.&T | main.rs:1258:5:1261:5 | MyInt |
 | main.rs:1290:33:1290:36 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1290:33:1290:36 | SelfParam | &T | main.rs:1258:5:1261:5 | MyInt |
@@ -2736,12 +2743,15 @@ inferType
 | main.rs:1336:25:1336:39 | MyInt {...} |  | main.rs:1258:5:1261:5 | MyInt |
 | main.rs:1336:36:1336:37 | 37 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1336:36:1336:37 | 37 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1338:13:1338:13 | a |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1338:17:1338:24 | my_thing |  | file://:0:0:0:0 | & |
 | main.rs:1338:17:1338:24 | my_thing | &T | main.rs:1258:5:1261:5 | MyInt |
+| main.rs:1338:17:1338:43 | my_thing.method_on_borrow() |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1339:18:1339:23 | "{:?}\\n" |  | file://:0:0:0:0 | & |
 | main.rs:1339:18:1339:23 | "{:?}\\n" | &T | {EXTERNAL LOCATION} | str |
 | main.rs:1339:18:1339:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1339:18:1339:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1339:26:1339:26 | a |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1342:13:1342:20 | my_thing |  | file://:0:0:0:0 | & |
 | main.rs:1342:13:1342:20 | my_thing | &T | main.rs:1258:5:1261:5 | MyInt |
 | main.rs:1342:24:1342:39 | &... |  | file://:0:0:0:0 | & |
@@ -2749,12 +2759,15 @@ inferType
 | main.rs:1342:25:1342:39 | MyInt {...} |  | main.rs:1258:5:1261:5 | MyInt |
 | main.rs:1342:36:1342:37 | 38 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1342:36:1342:37 | 38 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1343:13:1343:13 | a |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1343:17:1343:24 | my_thing |  | file://:0:0:0:0 | & |
 | main.rs:1343:17:1343:24 | my_thing | &T | main.rs:1258:5:1261:5 | MyInt |
+| main.rs:1343:17:1343:47 | my_thing.method_not_on_borrow() |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1344:18:1344:23 | "{:?}\\n" |  | file://:0:0:0:0 | & |
 | main.rs:1344:18:1344:23 | "{:?}\\n" | &T | {EXTERNAL LOCATION} | str |
 | main.rs:1344:18:1344:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1344:18:1344:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1344:26:1344:26 | a |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1351:16:1351:20 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1351:16:1351:20 | SelfParam | &T | main.rs:1349:5:1357:5 | Self [trait MyTrait] |
 | main.rs:1354:16:1354:20 | SelfParam |  | file://:0:0:0:0 | & |
@@ -2883,11 +2896,9 @@ inferType
 | main.rs:1427:16:1427:16 | x |  | main.rs:1403:5:1403:13 | S |
 | main.rs:1429:13:1429:13 | n |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1429:17:1429:24 | * ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1429:18:1429:24 | * ... |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1429:18:1429:24 | * ... |  | file://:0:0:0:0 | & |
 | main.rs:1429:18:1429:24 | * ... | &T | {EXTERNAL LOCATION} | bool |
 | main.rs:1429:19:1429:24 | &... |  | file://:0:0:0:0 | & |
-| main.rs:1429:19:1429:24 | &... | &T | {EXTERNAL LOCATION} | bool |
 | main.rs:1429:19:1429:24 | &... | &T | file://:0:0:0:0 | & |
 | main.rs:1429:19:1429:24 | &... | &T.&T | {EXTERNAL LOCATION} | bool |
 | main.rs:1429:20:1429:24 | &true |  | file://:0:0:0:0 | & |
@@ -5575,24 +5586,19 @@ inferType
 | pattern_matching.rs:270:11:270:26 | &mut ref_mut_val | &T | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:270:16:270:26 | ref_mut_val |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:271:17:271:17 | x |  | file://:0:0:0:0 | & |
-| pattern_matching.rs:271:17:271:17 | x | &T | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:271:17:271:17 | x | &T | file://:0:0:0:0 | & |
 | pattern_matching.rs:271:17:271:17 | x | &T.&T | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:272:17:272:29 | ref_mut_bound |  | file://:0:0:0:0 | & |
-| pattern_matching.rs:272:17:272:29 | ref_mut_bound | &T | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:272:17:272:29 | ref_mut_bound | &T | file://:0:0:0:0 | & |
 | pattern_matching.rs:272:17:272:29 | ref_mut_bound | &T.&T | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:272:33:272:33 | x |  | file://:0:0:0:0 | & |
-| pattern_matching.rs:272:33:272:33 | x | &T | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:272:33:272:33 | x | &T | file://:0:0:0:0 | & |
 | pattern_matching.rs:272:33:272:33 | x | &T.&T | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:273:13:273:27 | * ... |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:273:13:273:32 | ... += ... |  | file://:0:0:0:0 | () |
-| pattern_matching.rs:273:14:273:27 | * ... |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:273:14:273:27 | * ... |  | file://:0:0:0:0 | & |
 | pattern_matching.rs:273:14:273:27 | * ... | &T | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:273:15:273:27 | ref_mut_bound |  | file://:0:0:0:0 | & |
-| pattern_matching.rs:273:15:273:27 | ref_mut_bound | &T | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:273:15:273:27 | ref_mut_bound | &T | file://:0:0:0:0 | & |
 | pattern_matching.rs:273:15:273:27 | ref_mut_bound | &T.&T | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:273:32:273:32 | 1 |  | {EXTERNAL LOCATION} | i32 |

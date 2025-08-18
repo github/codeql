@@ -1335,12 +1335,12 @@ mod method_call_type_conversion {
 
         let my_thing = &MyInt { a: 37 };
         // implicit borrow of a `&`
-        let a = my_thing.method_on_borrow(); // $ MISSING: target=MyInt::method_on_borrow
+        let a = my_thing.method_on_borrow(); // $ target=MyInt::method_on_borrow
         println!("{:?}", a);
 
         // no implicit borrow
         let my_thing = &MyInt { a: 38 };
-        let a = my_thing.method_not_on_borrow(); // $ MISSING: target=MyInt::method_not_on_borrow
+        let a = my_thing.method_not_on_borrow(); // $ target=MyInt::method_not_on_borrow
         println!("{:?}", a);
     }
 }

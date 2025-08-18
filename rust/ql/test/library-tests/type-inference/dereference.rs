@@ -66,7 +66,7 @@ fn explicit_polymorphic_dereference() {
 fn explicit_ref_dereference() {
     // Explicit dereference with type parameter
     let e1 = &'a';
-    let _f1 = e1.deref(); // $ target=deref MISSING: type=_f1:&T.char
+    let _f1 = e1.deref(); // $ target=deref type=_f1:&T.char
 
     // Explicit dereference with type parameter
     let e2 = &'a';
@@ -179,9 +179,9 @@ mod ref_vs_mut_ref {
     }
 
     pub fn test() {
-        let x = (&S).foo(); // $ MISSING: target=MyTrait1::foo1 type=x:S
-        let y = S.foo(); // $ MISSING: target=MyTrait1::foo1 type=y:S
-        let z = (&mut S).foo(); // $ MISSING: target=MyTrait1::foo2 type=z:i64
+        let x = (&S).foo(); // $ target=MyTrait1::foo1 type=x:S $ SPURIOUS: target=MyTrait1::foo2
+        let y = S.foo(); // $ target=MyTrait1::foo1 type=y:S $ SPURIOUS: target=MyTrait1::foo2
+        let z = (&mut S).foo(); // $ target=MyTrait1::foo2 type=z:i64 $ SPURIOUS: target=MyTrait1::foo1
 
         let x = S.bar(&S); // $ target=MyTrait2::bar1 type=x:S $ SPURIOUS: target=MyTrait2::bar2
         let y = S.bar(&mut S); // $ target=MyTrait2::bar2 type=y:i64 $ SPURIOUS: target=MyTrait2::bar1
