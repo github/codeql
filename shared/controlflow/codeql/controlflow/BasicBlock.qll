@@ -12,7 +12,11 @@ private import codeql.util.Location
 
 /** Provides the language-specific input specification. */
 signature module InputSig<LocationSig Location> {
-  class SuccessorType;
+  /** The type of a control flow successor. */
+  class SuccessorType {
+    /** Gets a textual representation of this successor type. */
+    string toString();
+  }
 
   /** Hold if `t` represents a conditional successor type. */
   predicate successorTypeIsCondition(SuccessorType t);
@@ -47,11 +51,130 @@ signature module InputSig<LocationSig Location> {
   predicate nodeIsPostDominanceExit(Node node);
 }
 
+signature module CfgSig<LocationSig Location> {
+  /** A control flow node. */
+  class ControlFlowNode {
+    /** Gets a textual representation of this control flow node. */
+    string toString();
+
+    /** Gets the location of this control flow node. */
+    Location getLocation();
+  }
+
+  /** The type of a control flow successor. */
+  class SuccessorType {
+    /** Gets a textual representation of this successor type. */
+    string toString();
+  }
+
+  /**
+   * A basic block, that is, a maximal straight-line sequence of control flow nodes
+   * without branches or joins.
+   */
+  class BasicBlock {
+    /** Gets a textual representation of this basic block. */
+    string toString();
+
+    /** Gets the location of this basic block. */
+    Location getLocation();
+
+    /** Gets the control flow node at a specific (zero-indexed) position in this basic block. */
+    ControlFlowNode getNode(int pos);
+
+    /** Gets the last control flow node in this basic block. */
+    ControlFlowNode getLastNode();
+
+    /** Gets the length of this basic block. */
+    int length();
+
+    /** Gets an immediate successor of this basic block, if any. */
+    BasicBlock getASuccessor();
+
+    /** Gets an immediate successor of this basic block of a given type, if any. */
+    BasicBlock getASuccessor(SuccessorType t);
+
+    /**
+     * Holds if this basic block strictly dominates basic block `bb`.
+     *
+     * That is, all paths reaching `bb` from the entry point basic block must
+     * go through this basic block and this basic block is different from `bb`.
+     */
+    predicate strictlyDominates(BasicBlock bb);
+
+    /**
+     * Holds if this basic block dominates basic block `bb`.
+     *
+     * That is, all paths reaching `bb` from the entry point basic block must
+     * go through this basic block.
+     */
+    predicate dominates(BasicBlock bb);
+
+    /**
+     * Holds if `df` is in the dominance frontier of this basic block. That is,
+     * this basic block dominates a predecessor of `df`, but does not dominate
+     * `df` itself. I.e., it is equivaluent to:
+     * ```
+     * this.dominates(df.getAPredecessor()) and not this.strictlyDominates(df)
+     * ```
+     */
+    predicate inDominanceFrontier(BasicBlock df);
+
+    /**
+     * Gets the basic block that immediately dominates this basic block, if any.
+     *
+     * That is, the result is the unique basic block satisfying:
+     * 1. The result strictly dominates this basic block.
+     * 2. There exists no other basic block that is strictly dominated by the
+     *    result and which strictly dominates this basic block.
+     *
+     * All basic blocks, except entry basic blocks, have a unique immediate
+     * dominator.
+     */
+    BasicBlock getImmediateDominator();
+
+    /**
+     * Holds if this basic block strictly post-dominates basic block `bb`.
+     *
+     * That is, all paths reaching a normal exit point basic block from basic
+     * block `bb` must go through this basic block and this basic block is
+     * different from `bb`.
+     */
+    predicate strictlyPostDominates(BasicBlock bb);
+
+    /**
+     * Holds if this basic block post-dominates basic block `bb`.
+     *
+     * That is, all paths reaching a normal exit point basic block from basic
+     * block `bb` must go through this basic block.
+     */
+    predicate postDominates(BasicBlock bb);
+  }
+
+  /**
+   * Holds if `bb1` has `bb2` as a direct successor and the edge between `bb1`
+   * and `bb2` is a dominating edge.
+   *
+   * An edge `(bb1, bb2)` is dominating if there exists a basic block that can
+   * only be reached from the entry block by going through `(bb1, bb2)`. This
+   * implies that `(bb1, bb2)` dominates its endpoint `bb2`. I.e., `bb2` can
+   * only be reached from the entry block by going via `(bb1, bb2)`.
+   *
+   * This is a necessary and sufficient condition for an edge to dominate some
+   * block, and therefore `dominatingEdge(bb1, bb2) and bb2.dominates(bb3)`
+   * means that the edge `(bb1, bb2)` dominates `bb3`.
+   */
+  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2);
+}
+
 /**
  * Provides a basic block construction on top of a control flow graph.
  */
-module Make<LocationSig Location, InputSig<Location> Input> {
+module Make<LocationSig Location, InputSig<Location> Input> implements CfgSig<Location> {
   private import Input
+
+  class ControlFlowNode = Input::Node;
+
+  class SuccessorType = Input::SuccessorType;
 
   /**
    * A basic block, that is, a maximal straight-line sequence of control flow nodes
