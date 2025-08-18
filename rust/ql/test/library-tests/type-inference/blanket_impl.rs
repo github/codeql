@@ -1,8 +1,21 @@
 // Tests for method resolution targeting blanket trait implementations
 
 mod basic_blanket_impl {
+    use std::ops::Deref;
+
     #[derive(Debug, Copy, Clone)]
     struct S1;
+
+    #[derive(Debug, Copy, Clone)]
+    struct S2;
+
+    impl Deref for S2 {
+        type Target = S1;
+
+        fn deref(&self) -> &Self::Target {
+            &S1
+        }
+    }
 
     trait Clone1 {
         fn clone1(&self) -> Self;
@@ -21,7 +34,7 @@ mod basic_blanket_impl {
         }
     }
 
-    // Blanket implementation for all types that implement Display and Clone
+    // Blanket implementation for all types that implement Clone1
     impl<T: Clone1> Duplicatable for T {
         // Clone1duplicate
         fn duplicate(&self) -> Self {
@@ -30,10 +43,58 @@ mod basic_blanket_impl {
     }
 
     pub fn test_basic_blanket() {
-        let x = S1.clone1(); // $ target=S1::clone1
-        println!("{x:?}");
-        let y = S1.duplicate(); // $ target=Clone1duplicate
-        println!("{y:?}");
+        let x1 = S1.clone1(); // $ target=S1::clone1
+        println!("{x1:?}");
+        let x2 = (&S1).clone1(); // $ target=S1::clone1
+        println!("{x2:?}");
+        let x3 = S1.duplicate(); // $ target=Clone1duplicate
+        println!("{x3:?}");
+        let x4 = (&S1).duplicate(); // $ target=Clone1duplicate
+        println!("{x4:?}");
+        let x5 = S1::duplicate(&S1); // $ MISSING: target=Clone1duplicate
+        println!("{x5:?}");
+        let x6 = S2.duplicate(); // $ MISSING: target=Clone1duplicate
+        println!("{x6:?}");
+        let x7 = (&S2).duplicate(); // $ MISSING: target=Clone1duplicate
+        println!("{x7:?}");
+    }
+}
+
+mod assoc_blanket_impl {
+    #[derive(Debug, Copy, Clone)]
+    struct S1;
+
+    trait Trait1 {
+        fn assoc_func1(x: i64, y: Self) -> Self;
+    }
+
+    trait Trait2 {
+        fn assoc_func2(x: i64, y: Self) -> Self;
+    }
+
+    impl Trait1 for S1 {
+        // S1::assoc_func1
+        fn assoc_func1(x: i64, y: Self) -> Self {
+            y
+        }
+    }
+
+    impl<T: Trait1> Trait2 for T {
+        // Blanket_assoc_func2
+        fn assoc_func2(x: i64, y: Self) -> Self {
+            T::assoc_func1(x, y) // $ target=assoc_func1
+        }
+    }
+
+    pub fn test_assoc_blanket() {
+        let x1 = S1::assoc_func1(1, S1); // $ target=S1::assoc_func1
+        println!("{x1:?}");
+        let x2 = Trait1::assoc_func1(1, S1); // $ target=S1::assoc_func1
+        println!("{x2:?}");
+        let x3 = S1::assoc_func2(1, S1); // $ MISSING: target=Blanket_assoc_func2
+        println!("{x3:?}");
+        let x4 = Trait2::assoc_func2(1, S1); // $ target=Blanket_assoc_func2
+        println!("{x4:?}");
     }
 }
 
