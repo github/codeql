@@ -3,5 +3,6 @@ version: 2.0.6-dev
 groups: shared
 library: true
 dependencies:
+  codeql/controlflow: ${workspace}
   codeql/util: ${workspace}
 warnOnImplicitThis: true
