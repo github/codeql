@@ -873,77 +873,85 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     private signature predicate baseGuardValueSig(Guard guard, GuardValue v);
 
-    /**
-     * Calculates the transitive closure of all the guard implication steps
-     * starting from a given set of base cases.
-     */
     cached
-    private module ImpliesTC<baseGuardValueSig/2 baseGuardValue> {
+    private module Cached {
       /**
-       * Holds if `tgtGuard` evaluating to `tgtVal` implies that `guard`
-       * evaluates to `v`.
+       * Calculates the transitive closure of all the guard implication steps
+       * starting from a given set of base cases.
        */
-      pragma[nomagic]
       cached
-      predicate guardControls(Guard guard, GuardValue v, Guard tgtGuard, GuardValue tgtVal) {
-        baseGuardValue(tgtGuard, tgtVal) and
-        guard = tgtGuard and
-        v = tgtVal
-        or
-        exists(Guard g0, GuardValue v0 |
-          guardControls(g0, v0, tgtGuard, tgtVal) and
-          impliesStep2(g0, v0, guard, v)
-        )
-        or
-        exists(Guard g0, GuardValue v0 |
-          guardControls(g0, v0, tgtGuard, tgtVal) and
-          unboundImpliesStep(g0, v0, guard, v)
-        )
-        or
-        exists(SsaDefinition def0, GuardValue v0 |
-          ssaControls(def0, v0, tgtGuard, tgtVal) and
-          impliesStepSsaGuard(def0, v0, guard, v)
-        )
-        or
-        exists(Guard g0, GuardValue v0 |
-          guardControls(g0, v0, tgtGuard, tgtVal) and
-          WrapperGuard::wrapperImpliesStep(g0, v0, guard, v)
-        )
-        or
-        exists(Guard g0, GuardValue v0 |
-          guardControls(g0, v0, tgtGuard, tgtVal) and
-          additionalImpliesStep(g0, v0, guard, v)
-        )
+      module ImpliesTC<baseGuardValueSig/2 baseGuardValue> {
+        /**
+         * Holds if `tgtGuard` evaluating to `tgtVal` implies that `guard`
+         * evaluates to `v`.
+         */
+        pragma[nomagic]
+        cached
+        predicate guardControls(Guard guard, GuardValue v, Guard tgtGuard, GuardValue tgtVal) {
+          baseGuardValue(tgtGuard, tgtVal) and
+          guard = tgtGuard and
+          v = tgtVal
+          or
+          exists(Guard g0, GuardValue v0 |
+            guardControls(g0, v0, tgtGuard, tgtVal) and
+            impliesStep2(g0, v0, guard, v)
+          )
+          or
+          exists(Guard g0, GuardValue v0 |
+            guardControls(g0, v0, tgtGuard, tgtVal) and
+            unboundImpliesStep(g0, v0, guard, v)
+          )
+          or
+          exists(SsaDefinition def0, GuardValue v0 |
+            ssaControls(def0, v0, tgtGuard, tgtVal) and
+            impliesStepSsaGuard(def0, v0, guard, v)
+          )
+          or
+          exists(Guard g0, GuardValue v0 |
+            guardControls(g0, v0, tgtGuard, tgtVal) and
+            WrapperGuard::wrapperImpliesStep(g0, v0, guard, v)
+          )
+          or
+          exists(Guard g0, GuardValue v0 |
+            guardControls(g0, v0, tgtGuard, tgtVal) and
+            additionalImpliesStep(g0, v0, guard, v)
+          )
+        }
+
+        /**
+         * Holds if `tgtGuard` evaluating to `tgtVal` implies that `def`
+         * evaluates to `v`.
+         */
+        pragma[nomagic]
+        cached
+        predicate ssaControls(SsaDefinition def, GuardValue v, Guard tgtGuard, GuardValue tgtVal) {
+          exists(Guard g0 |
+            guardControls(g0, v, tgtGuard, tgtVal) and
+            guardReadsSsaVar(g0, def)
+          )
+          or
+          exists(SsaDefinition def0 |
+            ssaControls(def0, v, tgtGuard, tgtVal) and
+            impliesStepSsa(def0, v, def)
+          )
+        }
       }
 
       /**
-       * Holds if `tgtGuard` evaluating to `tgtVal` implies that `def`
-       * evaluates to `v`.
+       * Holds if `guard` evaluating to `v` implies that `e` is guaranteed to be
+       * null if `isNull` is true, and non-null if `isNull` is false.
        */
-      pragma[nomagic]
       cached
-      predicate ssaControls(SsaDefinition def, GuardValue v, Guard tgtGuard, GuardValue tgtVal) {
-        exists(Guard g0 |
-          guardControls(g0, v, tgtGuard, tgtVal) and
-          guardReadsSsaVar(g0, def)
-        )
-        or
-        exists(SsaDefinition def0 |
-          ssaControls(def0, v, tgtGuard, tgtVal) and
-          impliesStepSsa(def0, v, def)
-        )
+      predicate nullGuard(Guard guard, GuardValue v, Expr e, boolean isNull) {
+        impliesStep2(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
+        WrapperGuard::wrapperImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
+        additionalImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull)))
       }
     }
 
-    /**
-     * Holds if `guard` evaluating to `v` implies that `e` is guaranteed to be
-     * null if `isNull` is true, and non-null if `isNull` is false.
-     */
-    predicate nullGuard(Guard guard, GuardValue v, Expr e, boolean isNull) {
-      impliesStep2(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
-      WrapperGuard::wrapperImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
-      additionalImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull)))
-    }
+    private import Cached
+
+    predicate nullGuard = Cached::nullGuard/4;
 
     private predicate hasAValueBranchEdge(Guard guard, GuardValue v) {
       guard.hasValueBranchEdge(_, _, v)
