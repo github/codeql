@@ -146,6 +146,8 @@ private module GuardsInput implements SharedGuards::InputSig<Location> {
 
   class ControlFlowNode = J::ControlFlowNode;
 
+  class NormalExitNode = ControlFlow::NormalExitNode;
+
   class BasicBlock = J::BasicBlock;
 
   predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) { J::dominatingEdge(bb1, bb2) }
@@ -322,6 +324,55 @@ private module GuardsInput implements SharedGuards::InputSig<Location> {
 
     Expr getElse() { result = super.getFalseExpr() }
   }
+
+  class Parameter = J::Parameter;
+
+  private int parameterPosition() { result in [-1, any(Parameter p).getPosition()] }
+
+  /** A parameter position represented by an integer. */
+  class ParameterPosition extends int {
+    ParameterPosition() { this = parameterPosition() }
+  }
+
+  /** An argument position represented by an integer. */
+  class ArgumentPosition extends int {
+    ArgumentPosition() { this = parameterPosition() }
+  }
+
+  /** Holds if arguments at position `apos` match parameters at position `ppos`. */
+  overlay[caller?]
+  pragma[inline]
+  predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+
+  final private class FinalMethod = Method;
+
+  class NonOverridableMethod extends FinalMethod {
+    NonOverridableMethod() { not super.isOverridable() }
+
+    Parameter getParameter(ParameterPosition ppos) {
+      super.getParameter(ppos) = result and
+      not result.isVarargs()
+    }
+
+    GuardsInput::Expr getAReturnExpr() {
+      exists(ReturnStmt ret |
+        this = ret.getEnclosingCallable() and
+        ret.getResult() = result
+      )
+    }
+  }
+
+  private predicate nonOverridableMethodCall(MethodCall call, NonOverridableMethod m) {
+    call.getMethod().getSourceDeclaration() = m
+  }
+
+  class NonOverridableMethodCall extends GuardsInput::Expr instanceof MethodCall {
+    NonOverridableMethodCall() { nonOverridableMethodCall(this, _) }
+
+    NonOverridableMethod getMethod() { nonOverridableMethodCall(this, result) }
+
+    GuardsInput::Expr getArgument(ArgumentPosition apos) { result = super.getArgument(apos) }
+  }
 }
 
 private module GuardsImpl = SharedGuards::Make<Location, GuardsInput>;
@@ -338,6 +389,17 @@ private module LogicInputCommon {
       call = guard and
       call.getAnArgument() = e and
       NullGuards::nullCheckMethod(call.getMethod(), val.asBooleanValue(), isNull)
+    )
+  }
+
+  predicate additionalImpliesStep(
+    GuardsImpl::PreGuard g1, GuardValue v1, GuardsImpl::PreGuard g2, GuardValue v2
+  ) {
+    exists(MethodCall check, int argIndex |
+      g1 = check and
+      v1.getDualValue().isThrowsException() and
+      conditionCheckArgument(check, argIndex, v2.asBooleanValue()) and
+      g2 = check.getArgument(argIndex)
     )
   }
 }
@@ -364,18 +426,13 @@ private module LogicInput_v1 implements GuardsImpl::LogicInputSig {
     }
   }
 
+  predicate parameterDefinition(Parameter p, SsaDefinition def) {
+    def.(BaseSsaImplicitInit).isParameterDefinition(p)
+  }
+
   predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
 
-  predicate additionalImpliesStep(
-    GuardsImpl::PreGuard g1, GuardValue v1, GuardsImpl::PreGuard g2, GuardValue v2
-  ) {
-    exists(MethodCall check, int argIndex |
-      g1 = check and
-      v1.getDualValue().isThrowsException() and
-      conditionCheckArgument(check, argIndex, v2.asBooleanValue()) and
-      g2 = check.getArgument(argIndex)
-    )
-  }
+  predicate additionalImpliesStep = LogicInputCommon::additionalImpliesStep/4;
 }
 
 private module LogicInput_v2 implements GuardsImpl::LogicInputSig {
@@ -400,15 +457,13 @@ private module LogicInput_v2 implements GuardsImpl::LogicInputSig {
     }
   }
 
+  predicate parameterDefinition(Parameter p, SsaDefinition def) {
+    def.(SSA::SsaImplicitInit).isParameterDefinition(p)
+  }
+
   predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
 
-  predicate additionalImpliesStep(
-    GuardsImpl::PreGuard g1, GuardValue v1, GuardsImpl::PreGuard g2, GuardValue v2
-  ) {
-    LogicInput_v1::additionalImpliesStep(g1, v1, g2, v2)
-    or
-    CustomGuard::additionalImpliesStep(g1, v1, g2, v2)
-  }
+  predicate additionalImpliesStep = LogicInputCommon::additionalImpliesStep/4;
 }
 
 private module LogicInput_v3 implements GuardsImpl::LogicInputSig {
@@ -421,69 +476,10 @@ private module LogicInput_v3 implements GuardsImpl::LogicInputSig {
 
   predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
 
-  predicate additionalImpliesStep = LogicInput_v2::additionalImpliesStep/4;
-}
-
-private module CustomGuardInput implements Guards_v2::CustomGuardInputSig {
-  private import semmle.code.java.dataflow.SSA
-
-  private int parameterPosition() { result in [-1, any(Parameter p).getPosition()] }
-
-  /** A parameter position represented by an integer. */
-  class ParameterPosition extends int {
-    ParameterPosition() { this = parameterPosition() }
-  }
-
-  /** An argument position represented by an integer. */
-  class ArgumentPosition extends int {
-    ArgumentPosition() { this = parameterPosition() }
-  }
-
-  /** Holds if arguments at position `apos` match parameters at position `ppos`. */
-  overlay[caller?]
-  pragma[inline]
-  predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
-
-  final private class FinalMethod = Method;
-
-  class BooleanMethod extends FinalMethod {
-    BooleanMethod() {
-      super.getReturnType().(PrimitiveType).hasName("boolean") and
-      not super.isOverridable()
-    }
-
-    LogicInput_v2::SsaDefinition getParameter(ParameterPosition ppos) {
-      exists(Parameter p |
-        super.getParameter(ppos) = p and
-        not p.isVarargs() and
-        result.(SsaImplicitInit).isParameterDefinition(p)
-      )
-    }
-
-    GuardsInput::Expr getAReturnExpr() {
-      exists(ReturnStmt ret |
-        this = ret.getEnclosingCallable() and
-        ret.getResult() = result
-      )
-    }
-  }
-
-  private predicate booleanMethodCall(MethodCall call, BooleanMethod m) {
-    call.getMethod().getSourceDeclaration() = m
-  }
-
-  class BooleanMethodCall extends GuardsInput::Expr instanceof MethodCall {
-    BooleanMethodCall() { booleanMethodCall(this, _) }
-
-    BooleanMethod getMethod() { booleanMethodCall(this, result) }
-
-    GuardsInput::Expr getArgument(ArgumentPosition apos) { result = super.getArgument(apos) }
-  }
+  predicate additionalImpliesStep = LogicInputCommon::additionalImpliesStep/4;
 }
 
 class GuardValue = GuardsImpl::GuardValue;
-
-private module CustomGuard = Guards_v2::CustomGuard<CustomGuardInput>;
 
 /** INTERNAL: Don't use. */
 module Guards_v1 = GuardsImpl::Logic<LogicInput_v1>;

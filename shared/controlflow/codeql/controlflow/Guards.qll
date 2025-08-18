@@ -52,6 +52,7 @@ module;
 
 private import codeql.util.Boolean
 private import codeql.util.Location
+private import codeql.util.Unit
 
 signature module InputSig<LocationSig Location> {
   class SuccessorType {
@@ -78,6 +79,9 @@ signature module InputSig<LocationSig Location> {
     /** Gets the location of this control flow node. */
     Location getLocation();
   }
+
+  /** A control flow node indicating normal termination of a callable. */
+  class NormalExitNode extends ControlFlowNode;
 
   /**
    * A basic block, that is, a maximal straight-line sequence of control flow nodes
@@ -206,6 +210,46 @@ signature module InputSig<LocationSig Location> {
 
     /** Gets the false branch of this expression. */
     Expr getElse();
+  }
+
+  class Parameter {
+    /** Gets a textual representation of this parameter. */
+    string toString();
+
+    /** Gets the location of this parameter. */
+    Location getLocation();
+  }
+
+  class ParameterPosition {
+    /** Gets a textual representation of this element. */
+    bindingset[this]
+    string toString();
+  }
+
+  class ArgumentPosition {
+    /** Gets a textual representation of this element. */
+    bindingset[this]
+    string toString();
+  }
+
+  /**
+   * Holds if the parameter position `ppos` matches the argument position
+   * `apos`.
+   */
+  predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
+
+  /** A non-overridable method. */
+  class NonOverridableMethod {
+    Parameter getParameter(ParameterPosition ppos);
+
+    /** Gets an expression being returned by this method. */
+    Expr getAReturnExpr();
+  }
+
+  class NonOverridableMethodCall extends Expr {
+    NonOverridableMethod getMethod();
+
+    Expr getArgument(ArgumentPosition apos);
   }
 }
 
@@ -480,6 +524,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     )
   }
 
+  private predicate normalExitBlock(BasicBlock bb) { bb.getNode(_) instanceof NormalExitNode }
+
   signature module LogicInputSig {
     class SsaDefinition {
       /** Gets the basic block to which this SSA definition belongs. */
@@ -503,6 +549,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb);
     }
 
+    predicate parameterDefinition(Parameter p, SsaDefinition def);
+
     /**
      * Holds if `guard` evaluating to `val` ensures that:
      * `e <= k` when `upper = true`
@@ -525,8 +573,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Holds if the assumption that `g1` has been evaluated to `v1` implies that
      * `g2` has been evaluated to `v2`, that is, the evaluation of `g2` to `v2`
      * dominates the evaluation of `g1` to `v1`.
-     *
-     * This predicate can be instantiated with `CustomGuard<..>::additionalImpliesStep`.
      */
     default predicate additionalImpliesStep(PreGuard g1, GuardValue v1, PreGuard g2, GuardValue v2) {
       none()
@@ -861,6 +907,11 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         or
         exists(Guard g0, GuardValue v0 |
           guardControls(g0, v0, tgtGuard, tgtVal) and
+          WrapperGuard::wrapperImpliesStep(g0, v0, guard, v)
+        )
+        or
+        exists(Guard g0, GuardValue v0 |
+          guardControls(g0, v0, tgtGuard, tgtVal) and
           additionalImpliesStep(g0, v0, guard, v)
         )
       }
@@ -902,6 +953,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     predicate nullGuard(Guard guard, GuardValue v, Expr e, boolean isNull) {
       impliesStep2(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
+      WrapperGuard::wrapperImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
       additionalImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull)))
     }
 
@@ -944,61 +996,45 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     }
 
-    signature module CustomGuardInputSig {
-      class ParameterPosition {
-        /** Gets a textual representation of this element. */
-        bindingset[this]
-        string toString();
-      }
-
-      class ArgumentPosition {
-        /** Gets a textual representation of this element. */
-        bindingset[this]
-        string toString();
-      }
-
-      /**
-       * Holds if the parameter position `ppos` matches the argument position
-       * `apos`.
-       */
-      predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
-
-      /** A non-overridable method with a boolean return value. */
-      class BooleanMethod {
-        SsaDefinition getParameter(ParameterPosition ppos);
-
-        Expr getAReturnExpr();
-      }
-
-      class BooleanMethodCall extends Expr {
-        BooleanMethod getMethod();
-
-        Expr getArgument(ArgumentPosition apos);
-      }
-    }
-
     /**
-     * Provides an implementation of guard implication logic for custom
-     * wrappers. This can be used to instantiate the `additionalImpliesStep`
-     * predicate.
+     * Provides an implementation of guard implication logic for guard
+     * wrappers.
      */
-    module CustomGuard<CustomGuardInputSig CustomGuardInput> {
-      private import CustomGuardInput
-
+    private module WrapperGuard {
       final private class FinalExpr = Expr;
 
-      private class ReturnExpr extends FinalExpr {
-        ReturnExpr() { any(BooleanMethod m).getAReturnExpr() = this }
+      class ReturnExpr extends FinalExpr {
+        ReturnExpr() { any(NonOverridableMethod m).getAReturnExpr() = this }
+
+        NonOverridableMethod getMethod() { result.getAReturnExpr() = this }
 
         pragma[nomagic]
         BasicBlock getBasicBlock() { result = super.getBasicBlock() }
       }
 
-      private predicate booleanReturnGuard(Guard guard, GuardValue val) {
-        guard instanceof ReturnExpr and exists(val.asBooleanValue())
+      private predicate relevantCallValue(NonOverridableMethodCall call, GuardValue val) {
+        BranchImplies::guardControls(call, val, _, _) or
+        ReturnImplies::guardControls(call, val, _, _)
       }
 
-      private module ReturnImplies = ImpliesTC<booleanReturnGuard/2>;
+      predicate relevantReturnValue(NonOverridableMethod m, GuardValue val) {
+        exists(NonOverridableMethodCall call |
+          relevantCallValue(call, val) and
+          call.getMethod() = m and
+          not val instanceof TException
+        )
+      }
+
+      private predicate returnGuard(Guard guard, GuardValue val) {
+        relevantReturnValue(guard.(ReturnExpr).getMethod(), val)
+      }
+
+      module ReturnImplies = ImpliesTC<returnGuard/2>;
+
+      pragma[nomagic]
+      private predicate directlyControlsReturn(Guard guard, GuardValue val, ReturnExpr ret) {
+        guard.directlyValueControls(ret.getBasicBlock(), val)
+      }
 
       /**
        * Holds if `ret` is a return expression in a non-overridable method that
@@ -1006,34 +1042,52 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * parameter has the value `val`.
        */
       private predicate validReturnInCustomGuard(
-        ReturnExpr ret, ParameterPosition ppos, boolean retval, GuardValue val
+        ReturnExpr ret, ParameterPosition ppos, GuardValue retval, GuardValue val
       ) {
-        exists(BooleanMethod m, SsaDefinition param |
+        exists(NonOverridableMethod m, SsaDefinition param |
           m.getAReturnExpr() = ret and
-          m.getParameter(ppos) = param
+          parameterDefinition(m.getParameter(ppos), param)
         |
           exists(Guard g0, GuardValue v0 |
-            g0.directlyValueControls(ret.getBasicBlock(), v0) and
+            directlyControlsReturn(g0, v0, ret) and
             BranchImplies::ssaControls(param, val, g0, v0) and
-            retval = [true, false]
+            relevantReturnValue(m, retval)
           )
           or
-          ReturnImplies::ssaControls(param, val, ret,
-            any(GuardValue r | r.asBooleanValue() = retval))
+          ReturnImplies::ssaControls(param, val, ret, retval)
+        )
+      }
+
+      private predicate guardDirectlyControlsExit(Guard guard, GuardValue val) {
+        exists(BasicBlock bb |
+          guard.directlyValueControls(bb, val) and
+          normalExitBlock(bb)
         )
       }
 
       /**
-       * Gets a non-overridable method with a boolean return value that performs a check
-       * on the `ppos`th parameter. A return value equal to `retval` allows us to conclude
+       * Gets a non-overridable method that performs a check on the `ppos`th
+       * parameter. A return value equal to `retval` allows us to conclude
        * that the argument has the value `val`.
        */
-      private BooleanMethod customGuard(ParameterPosition ppos, boolean retval, GuardValue val) {
+      private NonOverridableMethod wrapperGuard(
+        ParameterPosition ppos, GuardValue retval, GuardValue val
+      ) {
         forex(ReturnExpr ret |
           result.getAReturnExpr() = ret and
-          not ret.(ConstantExpr).asBooleanValue() = retval.booleanNot()
+          not exists(GuardValue notRetval |
+            exprHasValue(ret, notRetval) and
+            disjointValues(notRetval, retval)
+          )
         |
           validReturnInCustomGuard(ret, ppos, retval, val)
+        )
+        or
+        exists(SsaDefinition param, Guard g0, GuardValue v0 |
+          parameterDefinition(result.getParameter(ppos), param) and
+          guardDirectlyControlsExit(g0, v0) and
+          retval = TException(false) and
+          BranchImplies::ssaControls(param, val, g0, v0)
         )
       }
 
@@ -1043,13 +1097,111 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * dominates the evaluation of `g1` to `v1`.
        *
        * This predicate covers the implication steps that arise from calls to
-       * custom guard wrappers.
+       * guard wrappers.
        */
-      predicate additionalImpliesStep(PreGuard g1, GuardValue v1, PreGuard g2, GuardValue v2) {
-        exists(BooleanMethodCall call, ParameterPosition ppos, ArgumentPosition apos |
+      predicate wrapperImpliesStep(PreGuard g1, GuardValue v1, PreGuard g2, GuardValue v2) {
+        exists(NonOverridableMethodCall call, ParameterPosition ppos, ArgumentPosition apos |
           g1 = call and
-          call.getMethod() = customGuard(ppos, v1.asBooleanValue(), v2) and
+          call.getMethod() = wrapperGuard(ppos, v1, v2) and
           call.getArgument(apos) = g2 and
+          parameterMatch(pragma[only_bind_out](ppos), pragma[only_bind_out](apos)) and
+          not exprHasValue(g2, v2) // disregard trivial guard
+        )
+      }
+    }
+
+    signature predicate guardChecksSig(Guard g, Expr e, boolean branch);
+
+    bindingset[this]
+    signature class StateSig;
+
+    private module WithState<StateSig State> {
+      signature predicate guardChecksSig(Guard g, Expr e, boolean branch, State state);
+    }
+
+    /**
+     * Extends a `BarrierGuard` input predicate with wrapped invocations.
+     */
+    module ValidationWrapper<guardChecksSig/3 guardChecks0> {
+      private predicate guardChecksWithState(Guard g, Expr e, boolean branch, Unit state) {
+        guardChecks0(g, e, branch) and exists(state)
+      }
+
+      private module StatefulWrapper = ValidationWrapperWithState<Unit, guardChecksWithState/4>;
+
+      /**
+       * Holds if the guard `g` validates the expression `e` upon evaluating to `val`.
+       */
+      predicate guardChecks(Guard g, Expr e, GuardValue val) {
+        StatefulWrapper::guardChecks(g, e, val, _)
+      }
+    }
+
+    /**
+     * Extends a `BarrierGuard` input predicate with wrapped invocations.
+     */
+    module ValidationWrapperWithState<
+      StateSig State, WithState<State>::guardChecksSig/4 guardChecks0>
+    {
+      private import WrapperGuard
+
+      /**
+       * Holds if `ret` is a return expression in a non-overridable method that
+       * on a return value of `retval` allows the conclusion that the `ppos`th
+       * parameter has been validated by the given guard.
+       */
+      private predicate validReturnInValidationWrapper(
+        ReturnExpr ret, ParameterPosition ppos, GuardValue retval, State state
+      ) {
+        exists(NonOverridableMethod m, SsaDefinition param, Guard guard, GuardValue val |
+          m.getAReturnExpr() = ret and
+          parameterDefinition(m.getParameter(ppos), param) and
+          guardChecks(guard, param.getARead(), val, state)
+        |
+          guard.valueControls(ret.getBasicBlock(), val) and
+          relevantReturnValue(m, retval)
+          or
+          ReturnImplies::guardControls(guard, val, ret, retval)
+        )
+      }
+
+      /**
+       * Gets a non-overridable method that performs a check on the `ppos`th
+       * parameter. A return value equal to `retval` allows us to conclude
+       * that the argument has been validated by the given guard.
+       */
+      private NonOverridableMethod validationWrapper(
+        ParameterPosition ppos, GuardValue retval, State state
+      ) {
+        forex(ReturnExpr ret |
+          result.getAReturnExpr() = ret and
+          not exists(GuardValue notRetval |
+            exprHasValue(ret, notRetval) and
+            disjointValues(notRetval, retval)
+          )
+        |
+          validReturnInValidationWrapper(ret, ppos, retval, state)
+        )
+        or
+        exists(SsaDefinition param, BasicBlock bb, Guard guard, GuardValue val |
+          parameterDefinition(result.getParameter(ppos), param) and
+          guardChecks(guard, param.getARead(), val, state) and
+          guard.valueControls(bb, val) and
+          normalExitBlock(bb) and
+          retval = TException(false)
+        )
+      }
+
+      /**
+       * Holds if the guard `g` validates the expression `e` upon evaluating to `val`.
+       */
+      predicate guardChecks(Guard g, Expr e, GuardValue val, State state) {
+        guardChecks0(g, e, val.asBooleanValue(), state)
+        or
+        exists(NonOverridableMethodCall call, ParameterPosition ppos, ArgumentPosition apos |
+          g = call and
+          call.getMethod() = validationWrapper(ppos, val, state) and
+          call.getArgument(apos) = e and
           parameterMatch(pragma[only_bind_out](ppos), pragma[only_bind_out](apos))
         )
       }

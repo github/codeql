@@ -1057,6 +1057,20 @@ void test30() {
 	strncpy(us.buffer2, "", sizeof(us) - 1); // BAD
 }
 
+struct S_Size16 {
+	unsigned short uint16;
+	unsigned char uint8;
+	unsigned char raw[13];
+};
+
+void test31() {
+	S_Size16 e;
+
+	[&e](void* data){
+		memcpy(&e, data, sizeof(e)); // GOOD
+	};
+}
+
 int tests_main(int argc, char *argv[])
 {
 	long long arr17[19];
