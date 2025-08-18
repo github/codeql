@@ -1,3 +1,9 @@
+## 0.1.14
+
+### New Queries
+
+* Added a new query, `rust/cleartext-storage-database`, for detecting cases where sensitive information is stored non-encrypted in a database.
+
 ## 0.1.13
 
 ### New Queries
