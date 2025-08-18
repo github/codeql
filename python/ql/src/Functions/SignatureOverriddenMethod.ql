@@ -108,6 +108,7 @@ predicate weakSignatureMismatch(Function base, Function sub, string msg) {
     exists(string arg |
       // TODO: positional-only args not considered
       // e.g. `def foo(x, y, /, z):` has x,y as positional only args, should not be considered as possible kw args
+      // However, this likely does not create FPs, as we require a 'witness' call to generate an alert.
       arg = base.getAnArg().getName() and
       not arg = sub.getAnArg().getName() and
       not exists(sub.getKwarg()) and
@@ -159,6 +160,9 @@ int extraSelfArg(Function func) { if isStaticmethod(func) then result = 0 else r
 
 predicate callMatchesSignature(Function func, Call call) {
   (
+    // TODO: This is not fully precise.
+    // For example, it does not detect that a method `def foo(self,x,y)` is matched by a call `obj.foo(1,y=2)`
+    // since y is passed in the call as a keyword argument, but still counts toward a positional argument of the method.
     call.getPositionalArgumentCount() + extraSelfArg(func) >= func.getMinPositionalArguments()
     or
     exists(call.getStarArg())
