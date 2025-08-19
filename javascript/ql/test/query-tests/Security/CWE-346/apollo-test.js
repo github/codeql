@@ -5,10 +5,10 @@ var https = require('https'),
 var server = https.createServer(function () { });
 
 server.on('request', function (req, res) {
-    let user_origin = url.parse(req.url, true).query.origin; // $ MISSING: Source
+    let user_origin = url.parse(req.url, true).query.origin; // $ Source
     // BAD: CORS too permissive
     const server_1 = new ApolloServer({
-        cors: { origin: true } // $ MISSING: Alert
+        cors: { origin: true } // $ Alert
     });
 
     // GOOD: restrictive CORS 
@@ -18,11 +18,11 @@ server.on('request', function (req, res) {
 
     // BAD: CORS too permissive 
     const server_3 = new ApolloServer({
-        cors: { origin: null } // $ MISSING: Alert
+        cors: { origin: null } // $ Alert
     });
 
     // BAD: CORS is controlled by user
     const server_4 = new ApolloServer({
-        cors: { origin: user_origin } // $ MISSING: Alert
+        cors: { origin: user_origin } // $ Alert
     });
 });

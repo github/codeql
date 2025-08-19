@@ -1,14 +1,15 @@
 /**
  * Provides default sources, sinks and sanitizers for reasoning about
- * CORS misconfiguration for credentials transfer, as well as
- * extension points for adding your own.
+ * CORS misconfiguration for credentials transfer and overly permissive CORS configurations,
+ * as well as extension points for adding your own.
  */
 
 import javascript
+private import semmle.javascript.frameworks.Cors
 
 module CorsMisconfigurationForCredentials {
   /**
-   * A data flow source for CORS misconfiguration for credentials transfer.
+   * A data flow source for CORS misconfiguration for credentials transfer and overly permissive CORS configurations.
    */
   abstract class Source extends DataFlow::Node { }
 
@@ -74,5 +75,59 @@ module CorsMisconfigurationForCredentials {
       this.asExpr() instanceof NullLiteral or
       this.asExpr().mayHaveStringValue("null")
     }
+  }
+
+  /** An overly permissive value for `origin` (Apollo) */
+  class TrueNullValue extends Source {
+    TrueNullValue() { this.mayHaveBooleanValue(true) or this.asExpr() instanceof NullLiteral }
+  }
+
+  /** An overly permissive value for `origin` (Express) */
+  class WildcardValue extends Source {
+    WildcardValue() { this.mayHaveStringValue("*") }
+  }
+
+  /**
+   * The value of cors origin when initializing the application.
+   */
+  class CorsApolloServer extends Sink, DataFlow::ValueNode {
+    CorsApolloServer() {
+      exists(API::NewNode agql |
+        agql = ModelOutput::getATypeNode("ApolloServer").getAnInstantiation() and
+        this =
+          agql.getOptionArgument(0, "cors").getALocalSource().getAPropertyWrite("origin").getRhs()
+      )
+    }
+
+    override Http::HeaderDefinition getCredentialsHeader() { none() }
+  }
+
+  /**
+   * The value of cors origin when initializing the application.
+   */
+  class ExpressCors extends Sink, DataFlow::ValueNode {
+    ExpressCors() {
+      exists(CorsConfiguration config | this = config.getCorsConfiguration().getOrigin())
+    }
+
+    override Http::HeaderDefinition getCredentialsHeader() { none() }
+  }
+
+  /**
+   * An express route setup configured with the `cors` package.
+   */
+  class CorsConfiguration extends DataFlow::MethodCallNode {
+    Cors::Cors corsConfig;
+
+    CorsConfiguration() {
+      exists(Express::RouteSetup setup | this = setup |
+        if setup.isUseCall()
+        then corsConfig = setup.getArgument(0)
+        else corsConfig = setup.getArgument(any(int i | i > 0))
+      )
+    }
+
+    /** Gets the expression that configures `cors` on this route setup. */
+    Cors::Cors getCorsConfiguration() { result = corsConfig }
   }
 }
