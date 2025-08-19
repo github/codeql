@@ -7767,6 +7767,10 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | taint.cpp:830:20:830:34 | call to indirect_source | taint.cpp:832:23:832:24 | in |  |
 | taint.cpp:831:15:831:17 | out | taint.cpp:832:18:832:20 | out |  |
 | taint.cpp:831:15:831:17 | out | taint.cpp:833:8:833:10 | out |  |
+| taint.cpp:841:21:841:35 | call to indirect_source | taint.cpp:842:11:842:12 | fp |  |
+| taint.cpp:841:21:841:35 | call to indirect_source | taint.cpp:843:16:843:17 | fp |  |
+| taint.cpp:842:11:842:12 | ref arg fp | taint.cpp:843:16:843:17 | fp |  |
+| taint.cpp:842:15:842:16 |  | taint.cpp:842:11:842:12 | ref arg fp | TAINT |
 | thread.cpp:10:27:10:27 | s | thread.cpp:10:27:10:27 | s |  |
 | thread.cpp:10:27:10:27 | s | thread.cpp:11:8:11:8 | s |  |
 | thread.cpp:14:26:14:26 | s | thread.cpp:15:8:15:8 | s |  |
