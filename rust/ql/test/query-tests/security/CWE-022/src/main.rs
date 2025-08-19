@@ -124,7 +124,15 @@ fn sinks(path1: &Path, path2: &Path) {
     let _ = std::fs::File::open(path1); // $ path-injection-sink
     let _ = std::fs::File::open_buffered(path1); // $ path-injection-sink
     let _ = std::fs::OpenOptions::new().open(path1); // $ MISSING: path-injection-sink
+
+    let _ = tokio::fs::read(path1); // $ MISSING: path-injection-sink
+    let _ = tokio::fs::read_to_string(path1); // $ MISSING: path-injection-sink
+    let _ = tokio::fs::remove_file(path1); // $ MISSING: path-injection-sink
     let _ = tokio::fs::OpenOptions::new().open(path1); // $ MISSING: path-injection-sink
+
+    let _ = async_std::fs::read(path1); // $ MISSING: path-injection-sink
+    let _ = async_std::fs::read_to_string(path1); // $ MISSING: path-injection-sink
+    let _ = async_std::fs::remove_file(path1); // $ MISSING: path-injection-sink
     let _ = async_std::fs::OpenOptions::new().open(path1); // $ MISSING: path-injection-sink
 }
 

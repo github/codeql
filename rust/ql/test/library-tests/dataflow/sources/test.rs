@@ -625,6 +625,16 @@ async fn test_tokio_file() -> std::io::Result<()> {
 use async_std::io::ReadExt;
 
 async fn test_async_std_file() -> std::io::Result<()> {
+    // --- file ---
+
+    let mut file = async_std::fs::File::open("file.txt").await?; // $ MISSING: Alert[rust/summary/taint-sources]
+
+    {
+        let mut buffer = [0u8; 100];
+        let _bytes = file.read(&mut buffer).await?;
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt"
+    }
+
     // --- OpenOptions ---
 
     {
