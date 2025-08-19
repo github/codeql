@@ -52,10 +52,10 @@ Top *readGlobalBottom() {
 }
 
 void DispatchThroughGlobal() {
-  sink(globalBottom->isSource1()); // $ MISSING: ast,ir
+  sink(globalBottom->isSource1()); // $ ir MISSING: ast
   sink(globalMiddle->isSource1()); // no flow
 
-  sink(readGlobalBottom()->isSource1()); // $ MISSING: ast,ir
+  sink(readGlobalBottom()->isSource1()); // $ ir MISSING: ast
 
   globalBottom = new Bottom();
   globalMiddle = new Middle();

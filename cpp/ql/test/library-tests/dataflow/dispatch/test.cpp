@@ -109,7 +109,7 @@ void set_global_to_derived() {
 }
 
 void read_global() {
-  global_derived->virtual_f(); // $ SPURIOUS: target=3 MISSING: target=8
+  global_derived->virtual_f(); // $ target=8
 }
 
 Base* global_base_or_derived;
@@ -123,5 +123,5 @@ void set_global_base_or_derived_2() {
 }
 
 void read_global_base_or_derived() {
-  global_base_or_derived->virtual_f(); // $ target=3 MISSING: target=8
+  global_base_or_derived->virtual_f(); // $ target=3 target=8
 }
