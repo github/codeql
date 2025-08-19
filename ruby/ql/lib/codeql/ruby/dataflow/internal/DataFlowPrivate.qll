@@ -280,6 +280,7 @@ predicate isNonConstantExpr(CfgNodes::ExprCfgNode n) {
 /** Provides logic related to captured variables. */
 module VariableCapture {
   private import codeql.dataflow.VariableCapture as Shared
+  private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
 
   private predicate closureFlowStep(CfgNodes::ExprCfgNode e1, CfgNodes::ExprCfgNode e2) {
     e1 = getALastEvalNode(e2)
@@ -290,22 +291,13 @@ module VariableCapture {
     )
   }
 
-  private module CaptureInput implements Shared::InputSig<Location> {
+  private module CaptureInput implements Shared::InputSig<Location, BasicBlocks::Cfg::BasicBlock> {
     private import codeql.ruby.controlflow.ControlFlowGraph as Cfg
-    private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
     private import TaintTrackingPrivate as TaintTrackingPrivate
 
-    class BasicBlock extends BasicBlocks::BasicBlock {
-      Callable getEnclosingCallable() { result = this.getScope() }
-
-      BasicBlock getASuccessor() { result = super.getASuccessor() }
-
-      BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
-
-      predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
+    Callable basicBlockGetEnclosingCallable(BasicBlocks::Cfg::BasicBlock bb) {
+      result = bb.getScope()
     }
-
-    class ControlFlowNode = Cfg::CfgNode;
 
     class CapturedVariable extends LocalVariable {
       CapturedVariable() {
@@ -377,7 +369,7 @@ module VariableCapture {
 
   class ClosureExpr = CaptureInput::ClosureExpr;
 
-  module Flow = Shared::Flow<Location, CaptureInput>;
+  module Flow = Shared::Flow<Location, BasicBlocks::Cfg, CaptureInput>;
 
   private Flow::ClosureNode asClosureNode(Node n) {
     result = n.(CaptureNode).getSynthesizedCaptureNode()

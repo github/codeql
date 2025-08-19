@@ -4,7 +4,7 @@ private import semmle.javascript.dataflow.internal.VariableOrThis
 private import codeql.dataflow.VariableCapture
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
 
-module VariableCaptureConfig implements InputSig<js::Location> {
+module VariableCaptureConfig implements InputSig<js::Location, js::Cfg::BasicBlock> {
   private js::Function getLambdaFromVariable(js::LocalVariable variable) {
     result.getVariable() = variable
     or
@@ -106,20 +106,8 @@ module VariableCaptureConfig implements InputSig<js::Location> {
     )
   }
 
-  class ControlFlowNode = js::ControlFlowNode;
-
-  final private class JsBasicBlock = js::BasicBlock;
-
-  class BasicBlock extends JsBasicBlock {
-    Callable getEnclosingCallable() { result = this.getContainer().getFunctionBoundary() }
-
-    BasicBlock getASuccessor() { result = super.getASuccessor() }
-
-    BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
-
-    predicate inDominanceFrontier(BasicBlock df) {
-      df.(js::ReachableJoinBlock).inDominanceFrontierOf(this)
-    }
+  Callable basicBlockGetEnclosingCallable(js::Cfg::BasicBlock bb) {
+    result = bb.getContainer().getFunctionBoundary()
   }
 
   class Callable extends js::StmtContainer {
@@ -135,7 +123,7 @@ module VariableCaptureConfig implements InputSig<js::Location> {
 
   class Expr extends js::AST::ValueNode {
     /** Holds if the `i`th node of basic block `bb` evaluates this expression. */
-    predicate hasCfgNode(BasicBlock bb, int i) {
+    predicate hasCfgNode(js::Cfg::BasicBlock bb, int i) {
       // Note: this is overridden for FunctionDeclStmt
       bb.getNode(i) = this
     }
@@ -180,7 +168,7 @@ module VariableCaptureConfig implements InputSig<js::Location> {
 
     js::Location getLocation() { none() } // Overridden in subclass
 
-    predicate hasCfgNode(BasicBlock bb, int i) { none() } // Overridden in subclass
+    predicate hasCfgNode(js::Cfg::BasicBlock bb, int i) { none() } // Overridden in subclass
 
     // note: langauge-specific
     js::DataFlow::Node getSource() { none() } // Overridden in subclass
@@ -217,7 +205,7 @@ module VariableCaptureConfig implements InputSig<js::Location> {
     }
 
     /** Holds if the `i`th node of basic block `bb` evaluates this expression. */
-    override predicate hasCfgNode(BasicBlock bb, int i) {
+    override predicate hasCfgNode(js::Cfg::BasicBlock bb, int i) {
       bb.getNode(i) = this.getCfgNodeOverride()
       or
       not exists(this.getCfgNodeOverride()) and
@@ -236,7 +224,7 @@ module VariableCaptureConfig implements InputSig<js::Location> {
 
     override CapturedVariable getVariable() { result = variable }
 
-    override predicate hasCfgNode(BasicBlock bb, int i) {
+    override predicate hasCfgNode(js::Cfg::BasicBlock bb, int i) {
       // 'i' would normally be bound to 0, but we lower it to -1 so FunctionDeclStmts can be evaluated
       // at index 0.
       any(js::SsaImplicitInit def).definesAt(bb, _, variable.asLocalVariable()) and i = -1
@@ -244,11 +232,9 @@ module VariableCaptureConfig implements InputSig<js::Location> {
       bb.(js::EntryBasicBlock).getContainer() = variable.asThisContainer() and i = -1
     }
   }
-
-  predicate entryBlock(BasicBlock bb) { bb instanceof js::EntryBasicBlock }
 }
 
-module VariableCaptureOutput = Flow<js::Location, VariableCaptureConfig>;
+module VariableCaptureOutput = Flow<js::Location, js::Cfg, VariableCaptureConfig>;
 
 js::DataFlow::Node getNodeFromClosureNode(VariableCaptureOutput::ClosureNode node) {
   result = TValueNode(node.(VariableCaptureOutput::ExprNode).getExpr())
@@ -294,9 +280,9 @@ private module Debug {
     relevantContainer(node1.getContainer())
   }
 
-  predicate readBB(VariableRead read, BasicBlock bb, int i) { read.hasCfgNode(bb, i) }
+  predicate readBB(VariableRead read, js::Cfg::BasicBlock bb, int i) { read.hasCfgNode(bb, i) }
 
-  predicate writeBB(VariableWrite write, BasicBlock bb, int i) { write.hasCfgNode(bb, i) }
+  predicate writeBB(VariableWrite write, js::Cfg::BasicBlock bb, int i) { write.hasCfgNode(bb, i) }
 
   int captureDegree(js::Function fun) {
     result = strictcount(CapturedVariable v | captures(fun, v))

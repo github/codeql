@@ -1609,7 +1609,7 @@ module MakeWithSplitting<
 
     private module BasicBlockImpl = BB::Make<Location, BasicBlockInputSig>;
 
-    final class BasicBlock = BasicBlockImpl::BasicBlock;
+    class BasicBlock = BasicBlockImpl::BasicBlock;
 
     predicate dominatingEdge = BasicBlockImpl::dominatingEdge/2;
 
