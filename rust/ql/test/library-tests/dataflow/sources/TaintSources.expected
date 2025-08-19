@@ -76,6 +76,7 @@
 | test.rs:637:21:637:41 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:638:21:638:41 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:646:21:646:41 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:660:20:660:44 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:688:26:688:53 | ...::connect | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:707:26:707:61 | ...::connect_timeout | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:759:28:759:57 | ...::connect | Flow source 'RemoteSource' of type remote (DEFAULT). |

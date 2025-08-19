@@ -110,7 +110,7 @@ async fn more_simple_cases() {
     let _ = tokio::fs::File::open(path3); // $ MISSING: path-injection-sink Alert[rust/path-injection]=arg1
 
     let path4 = async_std::fs::canonicalize(path1.clone()).await.unwrap();
-    let _ = async_std::fs::File::open(path4); // $ MISSING: path-injection-sink Alert[rust/path-injection]=arg1
+    let _ = async_std::fs::File::open(path4); // $ path-injection-sink Alert[rust/path-injection]=arg1
 
     let path5 = std::path::Path::new(&path1);
     let _ = std::fs::File::open(path5); // $ path-injection-sink MISSING: Alert[rust/path-injection]=arg1
@@ -153,11 +153,11 @@ fn sinks(path1: &Path, path2: &Path) {
     let _ = tokio::fs::DirBuilder::new().recursive(true).create(path1); // $ MISSING: path-injection-sink
     let _ = tokio::fs::OpenOptions::new().open(path1); // $ MISSING: path-injection-sink
 
-    let _ = async_std::fs::read(path1); // $ MISSING: path-injection-sink
-    let _ = async_std::fs::read_to_string(path1); // $ MISSING: path-injection-sink
-    let _ = async_std::fs::remove_file(path1); // $ MISSING: path-injection-sink
-    let _ = async_std::fs::DirBuilder::new().create(path1); // $ MISSING: path-injection-sink
-    let _ = async_std::fs::DirBuilder::new().recursive(true).create(path1); // $ MISSING: path-injection-sink
+    let _ = async_std::fs::read(path1); // $ path-injection-sink
+    let _ = async_std::fs::read_to_string(path1); // $ path-injection-sink
+    let _ = async_std::fs::remove_file(path1); // $ path-injection-sink
+    let _ = async_std::fs::DirBuilder::new().create(path1); // $ path-injection-sink
+    let _ = async_std::fs::DirBuilder::new().recursive(true).create(path1); // $ path-injection-sink
     let _ = async_std::fs::OpenOptions::new().open(path1); // $ MISSING: path-injection-sink
 }
 

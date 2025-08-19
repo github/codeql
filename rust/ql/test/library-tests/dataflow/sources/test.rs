@@ -657,7 +657,7 @@ use async_std::io::ReadExt;
 async fn test_async_std_file() -> std::io::Result<()> {
     // --- file ---
 
-    let mut file = async_std::fs::File::open("file.txt").await?; // $ MISSING: Alert[rust/summary/taint-sources]
+    let mut file = async_std::fs::File::open("file.txt").await?; // $ Alert[rust/summary/taint-sources]
 
     {
         let mut buffer = [0u8; 100];
