@@ -14,7 +14,7 @@ local_path_override(
 
 # see https://registry.bazel.build/ for a list of available packages
 
-bazel_dep(name = "platforms", version = "0.0.11")
+bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "rules_go", version = "0.56.1")
 bazel_dep(name = "rules_pkg", version = "1.0.1")
 bazel_dep(name = "rules_nodejs", version = "6.2.0-codeql.1")
