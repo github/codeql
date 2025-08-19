@@ -1,6 +1,6 @@
 instances
-| gen_for_type_repr.rs:8:19:8:31 | ForTypeRepr |
+| gen_for_type_repr.rs:7:21:7:46 | ForTypeRepr |
 getForBinder
-| gen_for_type_repr.rs:8:19:8:31 | ForTypeRepr | gen_for_type_repr.rs:8:19:8:25 | for<...> |
+| gen_for_type_repr.rs:7:21:7:46 | ForTypeRepr | gen_for_type_repr.rs:7:21:7:27 | for<...> |
 getTypeRepr
-| gen_for_type_repr.rs:8:19:8:31 | ForTypeRepr | gen_for_type_repr.rs:8:27:8:31 | usize |
+| gen_for_type_repr.rs:7:21:7:46 | ForTypeRepr | gen_for_type_repr.rs:7:29:7:46 | FnPtrTypeRepr |

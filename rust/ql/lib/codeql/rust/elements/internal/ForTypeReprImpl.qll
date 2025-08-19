@@ -13,13 +13,12 @@ private import codeql.rust.elements.internal.generated.ForTypeRepr
  */
 module Impl {
   /**
-   * A type with a higher-ranked `for` modifier. This is currently not valid Rust syntax (`for<...>` can
-   * only be applied to traits to form a `TypeBound`).
+   * A function pointer type with a `for` modifier.
    *
    * For example:
    * ```rust
-   * fn foo(value: for<'a> usize) {}  // DOESN'T COMPILE
-   * //            ^^^^^^^^^^^^^
+   * type RefOp<X> = for<'a> fn(&'a X) -> &'a X;
+   * //              ^^^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class ForTypeRepr extends Generated::ForTypeRepr { }
