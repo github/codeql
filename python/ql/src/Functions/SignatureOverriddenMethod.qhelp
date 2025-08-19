@@ -7,7 +7,7 @@
 <overview>
 <p> When the signature of a method of a base class and a method of a subclass that overrides it don't match, a call to the base class method 
 may not be a valid call to the subclass method, and thus raise an exception if an instance of the subclass is passed instead. 
-If following the Liskov Substitution Principle, in which an instance of a subclass should be usable in every context as though it were a an 
+If following the Liskov Substitution Principle, in which an instance of a subclass should be usable in every context as though it were an 
 instance of the base class, this behavior breaks the principle.
 </p>
 
