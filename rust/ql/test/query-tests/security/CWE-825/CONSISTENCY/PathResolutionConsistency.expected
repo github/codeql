@@ -1,6 +1,4 @@
 multipleCallTargets
-| deallocation.rs:106:16:106:32 | ...::malloc(...) |
-| deallocation.rs:112:3:112:41 | ...::free(...) |
 | deallocation.rs:260:11:260:29 | ...::from(...) |
 | deallocation.rs:261:11:261:29 | ...::from(...) |
 | lifetime.rs:610:13:610:31 | ...::from(...) |
@@ -9,7 +7,3 @@ multipleCallTargets
 | lifetime.rs:612:41:612:52 | bar.as_str() |
 | lifetime.rs:628:13:628:31 | ...::from(...) |
 | lifetime.rs:629:32:629:43 | baz.as_str() |
-multiplePathResolutions
-| deallocation.rs:106:16:106:19 | libc |
-| deallocation.rs:112:3:112:6 | libc |
-| deallocation.rs:112:29:112:32 | libc |
