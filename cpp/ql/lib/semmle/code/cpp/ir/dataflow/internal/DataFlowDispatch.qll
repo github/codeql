@@ -281,6 +281,47 @@ private module TrackVirtualDispatch<methodDispatchSig/1 lambdaDispatch0> {
   }
 }
 
+private DataFlowPrivate::DataFlowCallable noDisp(DataFlowPrivate::DataFlowCall call) { none() }
+
+pragma[nomagic]
+private DataFlowPrivate::DataFlowCallable d1(DataFlowPrivate::DataFlowCall call) {
+  result = TrackVirtualDispatch<noDisp/1>::lambdaDispatch(call)
+}
+
+pragma[nomagic]
+private DataFlowPrivate::DataFlowCallable d2(DataFlowPrivate::DataFlowCall call) {
+  result = TrackVirtualDispatch<d1/1>::lambdaDispatch(call)
+}
+
+pragma[nomagic]
+private DataFlowPrivate::DataFlowCallable d3(DataFlowPrivate::DataFlowCall call) {
+  result = TrackVirtualDispatch<d2/1>::lambdaDispatch(call)
+}
+
+pragma[nomagic]
+private DataFlowPrivate::DataFlowCallable d4(DataFlowPrivate::DataFlowCall call) {
+  result = TrackVirtualDispatch<d3/1>::lambdaDispatch(call)
+}
+
+pragma[nomagic]
+private DataFlowPrivate::DataFlowCallable d5(DataFlowPrivate::DataFlowCall call) {
+  result = TrackVirtualDispatch<d4/1>::lambdaDispatch(call)
+}
+
+pragma[nomagic]
+private DataFlowPrivate::DataFlowCallable d6(DataFlowPrivate::DataFlowCall call) {
+  result = TrackVirtualDispatch<d5/1>::lambdaDispatch(call)
+}
+
+/** Gets a function that might be called by `call`. */
+cached
+DataFlowPrivate::DataFlowCallable viableCallable(DataFlowPrivate::DataFlowCall call) {
+  not exists(d6(call)) and
+  result = nonVirtualDispatch(call)
+  or
+  result = d6(call)
+}
+
 /**
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context.
