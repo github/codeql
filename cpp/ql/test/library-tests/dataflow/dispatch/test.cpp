@@ -19,11 +19,11 @@ void test_simple() {
 
   Base* b_ptr = &d;
   b_ptr->f(); // $ target=2
-  b_ptr->virtual_f(); // $ target=8 SPURIOUS: target=3
+  b_ptr->virtual_f(); // $ target=8
 
   Base& b_ref = d;
   b_ref.f(); // $ target=2
-  b_ref.virtual_f(); // $ target=8 SPURIOUS: target=3
+  b_ref.virtual_f(); // $ target=8
 
   Base* b_null = nullptr;
   b_null->f(); // $ target=2
@@ -31,7 +31,7 @@ void test_simple() {
 
   Base* base_is_derived = new Derived();
   base_is_derived->f(); // $ target=2
-  base_is_derived->virtual_f(); // $ target=8 SPURIOUS: target=3
+  base_is_derived->virtual_f(); // $ target=8
 
   Base* base_is_base = new Base();
   base_is_base->f(); // $ target=2
@@ -59,12 +59,12 @@ void test_fields() {
   s.b2 = new Derived();
 
   s.b1->virtual_f(); // $ target=3
-  s.b2->virtual_f(); // $ SPURIOUS: target=3 MISSING: target=8
+  s.b2->virtual_f(); // $ target=8
 
   s.b1 = new Derived();
   s.b2 = new Base();
-  s.b1->virtual_f(); // $ MISSING: target=8 SPURIOUS: target=3 // type-tracking has no 'clearsContent' feature and C/C++ doesn't have field-based SSA
-  s.b2->virtual_f(); // $ target=3 // type-tracking has no 'clearsContent' feature and C/C++ doesn't have field-based SSA
+  s.b1->virtual_f(); // $ target=8 SPURIOUS: target=3 // type-tracking has no 'clearsContent' feature and C/C++ doesn't have field-based SSA
+  s.b2->virtual_f(); // $ target=3 SPURIOUS: target=8 // type-tracking has no 'clearsContent' feature and C/C++ doesn't have field-based SSA
 }
 
 Base* getDerived() {
@@ -73,7 +73,7 @@ Base* getDerived() {
 
 void test_getDerived() {
   Base* b = getDerived();
-  b->virtual_f(); // $ target=8 SPURIOUS: target=3
+  b->virtual_f(); // $ target=8
 
   Derived d = *(Derived*)getDerived();
   d.virtual_f(); // $ target=8
@@ -98,7 +98,7 @@ void test_write_to_arg() {
   {
     Base* b;
     write_to_arg_2(&b);
-    b->virtual_f(); // $ target=8 SPURIOUS: target=3
+    b->virtual_f(); // $ target=8
   }
 }
 
@@ -109,7 +109,7 @@ void set_global_to_derived() {
 }
 
 void read_global() {
-  global_derived->virtual_f(); // $ target=8 SPURIOUS: target=3
+  global_derived->virtual_f(); // $ SPURIOUS: target=3 MISSING: target=8
 }
 
 Base* global_base_or_derived;
@@ -123,5 +123,5 @@ void set_global_base_or_derived_2() {
 }
 
 void read_global_base_or_derived() {
-  global_base_or_derived->virtual_f(); // $ target=3 target=8
+  global_base_or_derived->virtual_f(); // $ target=3 MISSING: target=8
 }
