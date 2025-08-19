@@ -37,6 +37,7 @@ extensions:
       - ["com.opensymphony.xwork2.util", "TextParseUtil", true, "translateVariablesCollection", "(char[],String,ValueStack,boolean,TextParseUtil$ParsedValueEvaluator,int)", "", "Argument[1]", "ognl-injection", "manual"]
       - ["com.opensymphony.xwork2", "ActionSupport", true, "getFormatted", "(String,String)", "", "Argument[0]", "ognl-injection", "manual"]
       - ["com.opensymphony.xwork2", "ActionSupport", true, "getFormatted", "(String,String)", "", "Argument[1]", "ognl-injection", "manual"]
+      - ["com.opensymphony.xwork2", "ActionSupport", false, "getText", "(String)", "", "Argument[0]", "ognl-injection", "manual"]
       - ["com.opensymphony.xwork2", "TextProvider", true, "getText", "(String)", "", "Argument[0]", "ognl-injection", "manual"]
       - ["com.opensymphony.xwork2", "TextProvider", true, "getText", "(String,List)", "", "Argument[0]", "ognl-injection", "manual"]
       - ["com.opensymphony.xwork2", "TextProvider", true, "getText", "(String,String)", "", "Argument[0]", "ognl-injection", "manual"]
