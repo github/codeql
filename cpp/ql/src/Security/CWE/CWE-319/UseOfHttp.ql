@@ -87,6 +87,14 @@ module HttpStringToUrlOpenConfig implements DataFlow::ConfigSig {
       sink.asIndirectExpr() = fc.getArgument(3)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    result = source.asIndirectExpr().getLocation()
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
 }
 
 module HttpStringToUrlOpen = TaintTracking::Global<HttpStringToUrlOpenConfig>;

@@ -51,7 +51,7 @@ impl<'a> RustAnalyzer<'a> {
         config: &CargoConfig,
         load_config: &LoadCargoConfig,
     ) -> Option<(RootDatabase, Vfs)> {
-        let progress = |t| (trace!("progress: {}", t));
+        let progress = |t| trace!("progress: {t}");
         let manifest = project.manifest_path();
         match load_workspace_at(manifest.as_ref(), config, load_config, &progress) {
             Ok((db, vfs, _macro_server)) => Some((db, vfs)),
@@ -67,7 +67,7 @@ impl<'a> RustAnalyzer<'a> {
     fn get_file_data(
         &self,
         path: &Path,
-    ) -> Result<(&Semantics<RootDatabase>, EditionedFileId, FileText), &str> {
+    ) -> Result<(&Semantics<'_, RootDatabase>, EditionedFileId, FileText), &str> {
         match self {
             RustAnalyzer::WithoutSemantics { reason } => Err(reason),
             RustAnalyzer::WithSemantics { vfs, semantics } => {
@@ -82,7 +82,7 @@ impl<'a> RustAnalyzer<'a> {
         }
     }
 
-    pub fn parse(&self, path: &Path) -> ParseResult {
+    pub fn parse(&self, path: &Path) -> ParseResult<'_> {
         match self.get_file_data(path) {
             Ok((semantics, file_id, input)) => {
                 let source_file = semantics.parse(file_id);

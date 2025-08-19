@@ -4,6 +4,7 @@ import codeql.actions.DataFlow
 import codeql.actions.dataflow.FlowSources
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.UntrustedCheckoutQuery
+import codeql.actions.security.ControlChecks
 
 string unzipRegexp() { result = "(unzip|tar)\\s+.*" }
 
@@ -293,6 +294,16 @@ class ArtifactPoisoningSink extends DataFlow::Node {
 }
 
 /**
+ * Gets the event that is relevant for the given node in the context of artifact poisoning.
+ *
+ * This is used to highlight the event in the query results when an alert is raised.
+ */
+Event getRelevantEventInPrivilegedContext(DataFlow::Node node) {
+  inPrivilegedContext(node.asExpr(), result) and
+  not exists(ControlCheck check | check.protects(node.asExpr(), result, "artifact-poisoning"))
+}
+
+/**
  * A taint-tracking configuration for unsafe artifacts
  * that is used may lead to artifact poisoning
  */
@@ -317,6 +328,16 @@ private module ArtifactPoisoningConfig implements DataFlow::ConfigSig {
       succ.asExpr() = run.getScript() and
       exists(run.getScript().getAFileReadCommand())
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    result = getRelevantEventInPrivilegedContext(sink).getLocation()
   }
 }
 
