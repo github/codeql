@@ -1492,7 +1492,14 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */
-predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) {
+  preservesValue = false and
+  exists(ContentSet cs | cs.isSingleton(any(UnionContent uc)) |
+    storeStep(nodeFrom, cs, nodeTo)
+    or
+    readStep(nodeFrom, cs, nodeTo)
+  )
+}
 
 predicate knownSourceModel(Node source, string model) { External::sourceNode(source, _, model) }
 

@@ -93,7 +93,7 @@ void callIdentityFunctions(Top *top, Bottom *bottom) { // $ ast-def=bottom ast-d
 using SinkFunctionType = void (*)(int);
 
 void callSink(int x) {
-  sink(x); // $ ir MISSING: ast,ir=107:17 ast,ir=140:8 ast,ir=144:8
+  sink(x); // $ ir=107:17 ir=140:8 ir=144:8 MISSING: ast=107:17 ast=140:8 ast=144:8
 }
 
 SinkFunctionType returnCallSink() {
