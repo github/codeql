@@ -5,6 +5,39 @@ private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
 
 /**
+ * Holds if `f` has name `qualifiedName` and `nparams` parameter count. This is
+ * an approximation of its signature for the purpose of matching functions that
+ * might be the same across link targets.
+ */
+private predicate functionSignature(Function f, string qualifiedName, int nparams) {
+  qualifiedName = f.getQualifiedName() and
+  nparams = f.getNumberOfParameters() and
+  not f.isStatic()
+}
+
+/**
+ * Holds if `f` is a function with a body that has name `qualifiedName` and
+ * `nparams` parameter count. See `functionSignature`.
+ */
+private predicate functionSignatureWithBody(string qualifiedName, int nparams, Function f) {
+  functionSignature(f, qualifiedName, nparams) and
+  exists(f.getBlock())
+}
+
+/**
+ * Holds if the target of `call` is a function _with no definition_ that has
+ * name `qualifiedName` and `nparams` parameter count. See `functionSignature`.
+ */
+pragma[noinline]
+private predicate callSignatureWithoutBody(string qualifiedName, int nparams, CallInstruction call) {
+  exists(Function target |
+    target = call.getStaticCallTarget() and
+    not exists(target.getBlock()) and
+    functionSignature(target, qualifiedName, nparams)
+  )
+}
+
+/**
  * Gets a function that might be called by `call`.
  *
  * This predicate does not take additional call targets
@@ -217,39 +250,6 @@ private module VirtualDispatch {
       )
     }
   }
-}
-
-/**
- * Holds if `f` is a function with a body that has name `qualifiedName` and
- * `nparams` parameter count. See `functionSignature`.
- */
-private predicate functionSignatureWithBody(string qualifiedName, int nparams, Function f) {
-  functionSignature(f, qualifiedName, nparams) and
-  exists(f.getBlock())
-}
-
-/**
- * Holds if the target of `call` is a function _with no definition_ that has
- * name `qualifiedName` and `nparams` parameter count. See `functionSignature`.
- */
-pragma[noinline]
-private predicate callSignatureWithoutBody(string qualifiedName, int nparams, CallInstruction call) {
-  exists(Function target |
-    target = call.getStaticCallTarget() and
-    not exists(target.getBlock()) and
-    functionSignature(target, qualifiedName, nparams)
-  )
-}
-
-/**
- * Holds if `f` has name `qualifiedName` and `nparams` parameter count. This is
- * an approximation of its signature for the purpose of matching functions that
- * might be the same across link targets.
- */
-private predicate functionSignature(Function f, string qualifiedName, int nparams) {
-  qualifiedName = f.getQualifiedName() and
-  nparams = f.getNumberOfParameters() and
-  not f.isStatic()
 }
 
 /**
