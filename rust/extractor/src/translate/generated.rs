@@ -1600,24 +1600,6 @@ impl Translator<'_> {
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
-    pub(crate) fn emit_macro_stmts(
-        &mut self,
-        node: &ast::MacroStmts,
-    ) -> Option<Label<generated::MacroBlockExpr>> {
-        let tail_expr = node.expr().and_then(|x| self.emit_expr(&x));
-        let statements = node
-            .statements()
-            .filter_map(|x| self.emit_stmt(&x))
-            .collect();
-        let label = self.trap.emit(generated::MacroBlockExpr {
-            id: TrapId::Star,
-            tail_expr,
-            statements,
-        });
-        self.emit_location(label, node);
-        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
-        Some(label)
-    }
     pub(crate) fn emit_macro_type(
         &mut self,
         node: &ast::MacroType,

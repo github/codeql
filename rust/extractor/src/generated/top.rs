@@ -6148,8 +6148,8 @@ impl From<trap::Label<LiteralPat>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct MacroBlockExpr {
     pub id: trap::TrapId<MacroBlockExpr>,
-    pub tail_expr: Option<trap::Label<Expr>>,
     pub statements: Vec<trap::Label<Stmt>>,
+    pub tail_expr: Option<trap::Label<Expr>>,
 }
 
 impl trap::TrapEntry for MacroBlockExpr {
@@ -6159,11 +6159,11 @@ impl trap::TrapEntry for MacroBlockExpr {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("macro_block_exprs", vec![id.into()]);
-        if let Some(v) = self.tail_expr {
-            out.add_tuple("macro_block_expr_tail_exprs", vec![id.into(), v.into()]);
-        }
         for (i, v) in self.statements.into_iter().enumerate() {
             out.add_tuple("macro_block_expr_statements", vec![id.into(), i.into(), v.into()]);
+        }
+        if let Some(v) = self.tail_expr {
+            out.add_tuple("macro_block_expr_tail_exprs", vec![id.into(), v.into()]);
         }
     }
 }

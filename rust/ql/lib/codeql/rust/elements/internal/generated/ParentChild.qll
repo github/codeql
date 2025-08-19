@@ -1489,17 +1489,17 @@ private module Impl {
   private Element getImmediateChildOfMacroBlockExpr(
     MacroBlockExpr e, int index, string partialPredicateCall
   ) {
-    exists(int n, int nTailExpr, int nStatement |
+    exists(int n, int nStatement, int nTailExpr |
       n = 0 and
-      nTailExpr = n + 1 and
-      nStatement = nTailExpr + 1 + max(int i | i = -1 or exists(e.getStatement(i)) | i) and
+      nStatement = n + 1 + max(int i | i = -1 or exists(e.getStatement(i)) | i) and
+      nTailExpr = nStatement + 1 and
       (
         none()
         or
-        index = n and result = e.getTailExpr() and partialPredicateCall = "TailExpr()"
+        result = e.getStatement(index - n) and
+        partialPredicateCall = "Statement(" + (index - n).toString() + ")"
         or
-        result = e.getStatement(index - nTailExpr) and
-        partialPredicateCall = "Statement(" + (index - nTailExpr).toString() + ")"
+        index = nStatement and result = e.getTailExpr() and partialPredicateCall = "TailExpr()"
       )
     )
   }

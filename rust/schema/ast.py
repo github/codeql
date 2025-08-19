@@ -399,10 +399,6 @@ class MacroRules(Item, ):
     token_tree: optional["TokenTree"] | child
     visibility: optional["Visibility"] | child
 
-class MacroBlockExpr(AstNode, ):
-    tail_expr: optional["Expr"] | child
-    statements: list["Stmt"] | child
-
 class MacroTypeRepr(TypeRepr, ):
     macro_call: optional["MacroCall"] | child
 

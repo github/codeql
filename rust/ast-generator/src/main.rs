@@ -82,6 +82,7 @@ fn should_enum_be_skipped(name: &str) -> bool {
 
 fn should_node_be_skipped(name: &str) -> bool {
     name == "TypeAnchor" // we flatten TypeAnchor into PathSegment in the extractor
+    || name == "MacroStmts" // we workaround a getter bug in the extractor
 }
 
 fn should_node_be_skipped_in_extractor(name: &str) -> bool {
