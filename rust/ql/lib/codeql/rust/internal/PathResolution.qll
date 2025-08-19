@@ -615,7 +615,7 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
       if this.hasCanonicalPath(c2)
       then c1 = c2
       else (
-        c2 = c1.getADependency() or c1 = c2.getADependency()
+        c2 = c1.getADependency+() or c1 = c2.getADependency+()
       )
     )
   }
