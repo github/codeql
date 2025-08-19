@@ -330,6 +330,12 @@ predicate mayBenefitFromCallContext(DataFlowPrivate::DataFlowCall call) {
   mayBenefitFromCallContext(call, _, _)
 }
 
+private predicate localLambdaFlowStep(Node nodeFrom, Node nodeTo) {
+  localFlowStep(nodeFrom, nodeTo)
+  or
+  DataFlowPrivate::additionalLambdaFlowStep(nodeFrom, nodeTo, _)
+}
+
 /**
  * Holds if `call` is a call through a function pointer, and the pointer
  * value is given as the `arg`'th argument to `f`.
@@ -339,9 +345,13 @@ private predicate mayBenefitFromCallContext(
 ) {
   f = pragma[only_bind_out](call).getEnclosingCallable() and
   exists(InitializeParameterInstruction init |
-    not exists(call.getStaticCallTarget()) and
+    not exists(call.getStaticCallTarget())
+    or
+    exists(call.getStaticCallSourceTarget().(VirtualFunction).getAnOverridingFunction())
+  |
     init.getEnclosingFunction() = f.getUnderlyingCallable() and
-    call.flowsFrom(instructionNode(init), _) and
+    localLambdaFlowStep+(instructionNode(init),
+      operandNode(call.asCallInstruction().getCallTargetOperand())) and
     init.getParameter().getIndex() = arg
   )
 }
