@@ -3,7 +3,7 @@
 | main.rs:10:36:10:39 | Self | main.rs:7:9:7:21 | struct S | path |
 | main.rs:11:17:11:17 | S | main.rs:7:9:7:21 | struct S | path |
 | main.rs:16:22:16:22 | T | main.rs:16:19:16:19 | T | path |
-| main.rs:18:13:18:17 | S2::<...> | main.rs:16:5:16:24 | struct S2 | path |
+| main.rs:18:13:18:14 | S2 | main.rs:16:5:16:24 | struct S2 | path |
 | main.rs:18:16:18:16 | T | main.rs:18:10:18:10 | T | path |
 | main.rs:19:23:19:23 | T | main.rs:18:10:18:10 | T | path |
 | main.rs:19:29:19:32 | Self | main.rs:16:5:16:24 | struct S2 | path |
@@ -34,7 +34,7 @@
 | main.rs:38:5:38:5 | s | main.rs:37:9:37:9 | s | local variable |
 | main.rs:38:7:38:12 | method | main.rs:10:13:12:13 | fn method | method |
 | main.rs:39:5:39:6 | M1 | main.rs:5:1:23:1 | mod M1 | path |
-| main.rs:39:9:39:15 | S2::<...> | main.rs:16:5:16:24 | struct S2 | path |
+| main.rs:39:9:39:10 | S2 | main.rs:16:5:16:24 | struct S2 | path |
 | main.rs:39:14:39:14 | S | main.rs:1:1:1:9 | struct S | path |
 | main.rs:39:18:39:20 | new | main.rs:19:9:21:9 | fn new | path |
 | main.rs:39:22:39:22 | S | main.rs:1:1:1:9 | struct S | path |
