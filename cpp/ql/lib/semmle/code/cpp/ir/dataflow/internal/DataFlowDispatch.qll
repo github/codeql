@@ -11,7 +11,15 @@ private import DataFlowImplCommon as DataFlowImplCommon
  * from `AdditionalCallTarget` into account.
  */
 cached
-DataFlowCallable defaultViableCallable(DataFlowCall call) {
+DataFlowPrivate::DataFlowCallable defaultViableCallable(DataFlowPrivate::DataFlowCall call) {
+  result = defaultViableCallableWithoutLambda(call)
+  or
+  result = DataFlowImplCommon::viableCallableLambda(call, _)
+}
+
+private DataFlowPrivate::DataFlowCallable defaultViableCallableWithoutLambda(
+  DataFlowPrivate::DataFlowCall call
+) {
   DataFlowImplCommon::forceCachingInSameStage() and
   result = call.getStaticCallTarget()
   or
@@ -26,17 +34,13 @@ DataFlowCallable defaultViableCallable(DataFlowCall call) {
     functionSignatureWithBody(qualifiedName, nparams, result.getUnderlyingCallable()) and
     strictcount(Function other | functionSignatureWithBody(qualifiedName, nparams, other)) = 1
   )
-  or
-  // Virtual dispatch
-  result.asSourceCallable() = call.(VirtualDispatch::DataSensitiveCall).resolve()
 }
 
 /**
  * Gets a function that might be called by `call`.
  */
-cached
-DataFlowCallable viableCallable(DataFlowCall call) {
-  result = defaultViableCallable(call)
+private DataFlowPrivate::DataFlowCallable nonVirtualDispatch(DataFlowPrivate::DataFlowCall call) {
+  result = defaultViableCallableWithoutLambda(call)
   or
   // Additional call targets
   result.getUnderlyingCallable() =
