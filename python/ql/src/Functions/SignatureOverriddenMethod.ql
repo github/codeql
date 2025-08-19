@@ -202,7 +202,7 @@ Call chooseASignatureMismatchWitness(Function base, Function sub) {
       c = getASignatureMismatchWitness(base, sub) and
       c.getLocation().getFile() = base.getLocation().getFile()
     ) and
-    result = chooseASignatureMismatchWitnessInFile(base, sub, base.getLocation().getFile())
+    result = chooseASignatureMismatchWitnessInFile(base, sub, sub.getLocation().getFile())
     or
     not exists(Call c |
       c = getASignatureMismatchWitness(base, sub) and
