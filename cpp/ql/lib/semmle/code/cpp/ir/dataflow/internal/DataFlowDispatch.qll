@@ -1,6 +1,6 @@
 private import cpp
 private import semmle.code.cpp.ir.IR
-private import DataFlowPrivate
+private import DataFlowPrivate as DataFlowPrivate
 private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
 
@@ -256,14 +256,16 @@ private module VirtualDispatch {
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context.
  */
-predicate mayBenefitFromCallContext(DataFlowCall call) { mayBenefitFromCallContext(call, _, _) }
+predicate mayBenefitFromCallContext(DataFlowPrivate::DataFlowCall call) {
+  mayBenefitFromCallContext(call, _, _)
+}
 
 /**
  * Holds if `call` is a call through a function pointer, and the pointer
  * value is given as the `arg`'th argument to `f`.
  */
 private predicate mayBenefitFromCallContext(
-  VirtualDispatch::DataSensitiveCall call, DataFlowCallable f, int arg
+  DataFlowPrivate::DataFlowCall call, DataFlowPrivate::DataFlowCallable f, int arg
 ) {
   f = pragma[only_bind_out](call).getEnclosingCallable() and
   exists(InitializeParameterInstruction init |
@@ -278,9 +280,11 @@ private predicate mayBenefitFromCallContext(
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
  * restricted to those `call`s for which a context might make a difference.
  */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+DataFlowPrivate::DataFlowCallable viableImplInCallContext(
+  DataFlowPrivate::DataFlowCall call, DataFlowPrivate::DataFlowCall ctx
+) {
   result = viableCallable(call) and
-  exists(int i, DataFlowCallable f |
+  exists(int i, DataFlowPrivate::DataFlowCallable f |
     mayBenefitFromCallContext(pragma[only_bind_into](call), f, i) and
     f = ctx.getStaticCallTarget() and
     result.asSourceCallable() =
@@ -290,4 +294,8 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[inline]
-predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+predicate parameterMatch(
+  DataFlowPrivate::ParameterPosition ppos, DataFlowPrivate::ArgumentPosition apos
+) {
+  ppos = apos
+}
