@@ -198,7 +198,9 @@ edges
 | lifetime.rs:730:6:730:7 | r1 | lifetime.rs:734:12:734:13 | r1 | provenance |  |
 | lifetime.rs:730:11:730:25 | e1.test_match() | lifetime.rs:730:6:730:7 | r1 | provenance |  |
 | lifetime.rs:766:2:766:11 | &val | lifetime.rs:766:2:766:11 | ptr | provenance |  |
-| lifetime.rs:766:2:766:11 | ptr | lifetime.rs:767:2:767:11 | ptr | provenance |  |
+| lifetime.rs:766:2:766:11 | ptr | lifetime.rs:766:2:766:11 | ptr | provenance |  |
+| lifetime.rs:767:2:767:11 | &val | lifetime.rs:767:2:767:11 | ptr | provenance |  |
+| lifetime.rs:767:2:767:11 | ptr | lifetime.rs:767:2:767:11 | ptr | provenance |  |
 | lifetime.rs:769:6:769:8 | ptr | lifetime.rs:771:12:771:14 | ptr | provenance |  |
 | lifetime.rs:769:12:769:21 | &val | lifetime.rs:769:12:769:21 | ptr | provenance |  |
 | lifetime.rs:769:12:769:21 | ptr | lifetime.rs:769:6:769:8 | ptr | provenance |  |
@@ -420,6 +422,9 @@ nodes
 | lifetime.rs:734:12:734:13 | r1 | semmle.label | r1 |
 | lifetime.rs:766:2:766:11 | &val | semmle.label | &val |
 | lifetime.rs:766:2:766:11 | ptr | semmle.label | ptr |
+| lifetime.rs:766:2:766:11 | ptr | semmle.label | ptr |
+| lifetime.rs:767:2:767:11 | &val | semmle.label | &val |
+| lifetime.rs:767:2:767:11 | ptr | semmle.label | ptr |
 | lifetime.rs:767:2:767:11 | ptr | semmle.label | ptr |
 | lifetime.rs:769:6:769:8 | ptr | semmle.label | ptr |
 | lifetime.rs:769:12:769:21 | &val | semmle.label | &val |
