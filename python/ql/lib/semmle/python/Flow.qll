@@ -1,6 +1,7 @@
 import python
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.internal.CachedStages
+private import codeql.controlflow.BasicBlock as BB
 
 /*
  * Note about matching parent and child nodes and CFG splitting:
@@ -1251,4 +1252,55 @@ private predicate end_bb_likely_reachable(BasicBlock b) {
     s = b.getNode(_) and
     not p = b.getLastNode()
   )
+}
+
+private class ControlFlowNodeAlias = ControlFlowNode;
+
+final private class FinalBasicBlock = BasicBlock;
+
+module Cfg implements BB::CfgSig<Location> {
+  class ControlFlowNode = ControlFlowNodeAlias;
+
+  class SuccessorType = Unit;
+
+  class BasicBlock extends FinalBasicBlock {
+    // Note `PY:BasicBlock` does not have a `getLocation`.
+    // (Instead it has a complicated location info logic.)
+    // Using the location of the first node is simple
+    // and we just need a way to identify the basic block
+    // during debugging, so this will be serviceable.
+    Location getLocation() { result = super.getNode(0).getLocation() }
+
+    int length() { result = count(int i | exists(this.getNode(i))) }
+
+    BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+    BasicBlock getASuccessor(SuccessorType t) { result = super.getASuccessor() and exists(t) }
+
+    predicate strictlyDominates(BasicBlock bb) { super.strictlyDominates(bb) }
+
+    predicate dominates(BasicBlock bb) { super.dominates(bb) }
+
+    predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
+
+    BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+    /** Unsupported. Do not use. */
+    predicate strictlyPostDominates(BasicBlock bb) { none() }
+
+    /** Unsupported. Do not use. */
+    predicate postDominates(BasicBlock bb) {
+      this.strictlyPostDominates(bb) or
+      this = bb
+    }
+  }
+
+  pragma[nomagic]
+  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
+    bb1.getASuccessor() = bb2 and
+    bb1 = bb2.getImmediateDominator() and
+    forall(BasicBlock pred | pred = bb2.getAPredecessor() and pred != bb1 | bb2.dominates(pred))
+  }
+
+  predicate entryBlock(BasicBlock bb) { bb.getNode(0).isEntryNode() }
 }

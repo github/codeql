@@ -9,21 +9,7 @@ private import codeql.ssa.Ssa
 private import semmle.javascript.internal.BasicBlockInternal as BasicBlockInternal
 private import semmle.javascript.dataflow.internal.VariableOrThis
 
-module SsaConfig implements InputSig<js::DbLocation> {
-  class ControlFlowNode = js::ControlFlowNode;
-
-  final private class JsBasicBlock = js::BasicBlock;
-
-  class BasicBlock extends JsBasicBlock {
-    BasicBlock getASuccessor() { result = super.getASuccessor() }
-
-    BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
-
-    predicate inDominanceFrontier(BasicBlock df) {
-      df.(js::ReachableJoinBlock).inDominanceFrontierOf(this)
-    }
-  }
-
+module SsaConfig implements InputSig<js::DbLocation, js::Cfg::BasicBlock> {
   class SourceVariable extends LocalVariableOrThis {
     SourceVariable() { not this.isCaptured() }
   }
@@ -33,7 +19,7 @@ module SsaConfig implements InputSig<js::DbLocation> {
     result.getContainer() = container
   }
 
-  predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+  predicate variableWrite(js::Cfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
     certain = true and
     (
       bb.defAt(i, v.asLocalVariable(), _)
@@ -44,7 +30,7 @@ module SsaConfig implements InputSig<js::DbLocation> {
     )
   }
 
-  predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+  predicate variableRead(js::Cfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
     bb.useAt(i, v.asLocalVariable(), _) and certain = true
     or
     certain = true and
@@ -52,7 +38,7 @@ module SsaConfig implements InputSig<js::DbLocation> {
   }
 }
 
-import Make<js::DbLocation, SsaConfig>
+import Make<js::DbLocation, js::Cfg, SsaConfig>
 
 module SsaDataflowInput implements DataFlowIntegrationInputSig {
   private import codeql.util.Boolean
@@ -60,7 +46,7 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
   class Expr extends js::ControlFlowNode {
     Expr() { this = any(SsaConfig::SourceVariable v).getAUse() }
 
-    predicate hasCfgNode(SsaConfig::BasicBlock bb, int i) { this = bb.getNode(i) }
+    predicate hasCfgNode(js::Cfg::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
   predicate ssaDefHasSource(WriteDefinition def) {
@@ -87,9 +73,7 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
      * Holds if the evaluation of this guard to `branch` corresponds to the edge
      * from `bb1` to `bb2`.
      */
-    predicate hasValueBranchEdge(
-      SsaConfig::BasicBlock bb1, SsaConfig::BasicBlock bb2, GuardValue branch
-    ) {
+    predicate hasValueBranchEdge(js::Cfg::BasicBlock bb1, js::Cfg::BasicBlock bb2, GuardValue branch) {
       exists(js::ConditionGuardNode g |
         g.getTest() = this and
         bb1 = this.getBasicBlock() and
@@ -104,14 +88,14 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
      * `bb1` to `bb2` implies that this guard evaluated to `branch`.
      */
     predicate valueControlsBranchEdge(
-      SsaConfig::BasicBlock bb1, SsaConfig::BasicBlock bb2, GuardValue branch
+      js::Cfg::BasicBlock bb1, js::Cfg::BasicBlock bb2, GuardValue branch
     ) {
       this.hasValueBranchEdge(bb1, bb2, branch)
     }
   }
 
   pragma[inline]
-  predicate guardDirectlyControlsBlock(Guard guard, SsaConfig::BasicBlock bb, GuardValue branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, js::Cfg::BasicBlock bb, GuardValue branch) {
     exists(js::ConditionGuardNode g |
       g.getTest() = guard and
       g.dominates(bb) and

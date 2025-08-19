@@ -69,28 +69,10 @@ private predicate closureFlowStep(Expr e1, Expr e2) {
   )
 }
 
-private module CaptureInput implements VariableCapture::InputSig<Location> {
+private module CaptureInput implements VariableCapture::InputSig<Location, BasicBlock> {
   private import java as J
 
-  class BasicBlock instanceof J::BasicBlock {
-    string toString() { result = super.toString() }
-
-    ControlFlowNode getNode(int i) { result = super.getNode(i) }
-
-    int length() { result = super.length() }
-
-    Callable getEnclosingCallable() { result = super.getEnclosingCallable() }
-
-    Location getLocation() { result = super.getLocation() }
-
-    BasicBlock getASuccessor() { result = super.getASuccessor() }
-
-    BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
-
-    predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
-  }
-
-  class ControlFlowNode = J::ControlFlowNode;
+  Callable basicBlockGetEnclosingCallable(BasicBlock bb) { result = bb.getEnclosingCallable() }
 
   //TODO: support capture of `this` in lambdas
   class CapturedVariable instanceof LocalScopeVariable {
@@ -165,7 +147,7 @@ class CapturedVariable = CaptureInput::CapturedVariable;
 
 class CapturedParameter = CaptureInput::CapturedParameter;
 
-module CaptureFlow = VariableCapture::Flow<Location, CaptureInput>;
+module CaptureFlow = VariableCapture::Flow<Location, Cfg, CaptureInput>;
 
 private CaptureFlow::ClosureNode asClosureNode(Node n) {
   result = n.(CaptureNode).getSynthesizedCaptureNode()

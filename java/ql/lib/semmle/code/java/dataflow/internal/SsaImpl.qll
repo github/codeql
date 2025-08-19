@@ -166,13 +166,7 @@ private predicate uncertainVariableUpdate(TrackedVar v, ControlFlowNode n, Basic
   uncertainVariableUpdate(v.getQualifier(), n, b, i)
 }
 
-private module SsaInput implements SsaImplCommon::InputSig<Location> {
-  private import java as J
-
-  class BasicBlock = J::BasicBlock;
-
-  class ControlFlowNode = J::ControlFlowNode;
-
+private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
   class SourceVariable = SsaSourceVariable;
 
   /**
@@ -214,7 +208,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
   }
 }
 
-import SsaImplCommon::Make<Location, SsaInput> as Impl
+import SsaImplCommon::Make<Location, Cfg, SsaInput> as Impl
 
 final class Definition = Impl::Definition;
 

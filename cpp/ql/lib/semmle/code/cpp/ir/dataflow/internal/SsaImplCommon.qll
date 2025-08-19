@@ -768,23 +768,3 @@ private module Cached {
 }
 
 import Cached
-
-/**
- * Inputs to the shared SSA library's parameterized module that is shared
- * between the SSA pruning stage, and the final SSA stage.
- */
-module InputSigCommon {
-  class BasicBlock extends IRBlock {
-    ControlFlowNode getNode(int i) { result = this.getInstruction(i) }
-
-    int length() { result = this.getInstructionCount() }
-
-    BasicBlock getASuccessor() { result = super.getASuccessor() }
-
-    BasicBlock getImmediateDominator() { result.immediatelyDominates(this) }
-
-    predicate inDominanceFrontier(BasicBlock df) { super.dominanceFrontier() = df }
-  }
-
-  class ControlFlowNode = Instruction;
-}
