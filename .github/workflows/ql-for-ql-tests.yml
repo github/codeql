@@ -60,7 +60,7 @@ jobs:
   other-os:
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-latest, windows-2025]
     needs: [qltest]
     runs-on: ${{ matrix.os }}
     steps:
