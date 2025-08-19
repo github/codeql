@@ -756,9 +756,9 @@ private predicate modeledFlowBarrier(Node n) {
     partialFlowFunc = call.getStaticCallTarget() and
     not partialFlowFunc.isPartialWrite(output)
   |
-    call.getStaticCallTarget().(DataFlow::DataFlowFunction).hasDataFlow(_, output)
+    partialFlowFunc.(DataFlow::DataFlowFunction).hasDataFlow(_, output)
     or
-    call.getStaticCallTarget().(Taint::TaintFunction).hasTaintFlow(_, output)
+    partialFlowFunc.(Taint::TaintFunction).hasTaintFlow(_, output)
   )
   or
   exists(Operand operand, Instruction instr, Node n0, int indirectionIndex |
