@@ -66,3 +66,6 @@ private class CImpl1 extends AstNode { }
 final class CPublic1 = CImpl1;
 
 private class CImpl2 extends AstNode { }
+
+overlay[discard_entity]
+private predicate discard(@foo x) { any() }

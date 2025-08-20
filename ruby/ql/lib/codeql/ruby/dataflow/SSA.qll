@@ -1,6 +1,8 @@
 /**
  * Provides the module `Ssa` for working with static single assignment (SSA) form.
  */
+overlay[local]
+module;
 
 /**
  * Provides classes for working with static single assignment (SSA) form.

@@ -1,3 +1,13 @@
+## 5.2.1
+
+No user-facing changes.
+
+## 5.2.0
+
+### New Features
+
+* Added a new predicate, `getASuperType()`, to get a direct supertype of this type.
+
 ## 5.1.9
 
 No user-facing changes.

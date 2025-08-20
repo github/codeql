@@ -38,3 +38,20 @@ void test_aggregate_literal() {
   int xs[] = {1, 2, 3}; // $ asExpr=1 asExpr=2 asExpr=3 asExpr={...}
   const int ys[] = {[0] = 4, [1] = 5, [0] = 6}; // $ asExpr=4 asExpr=5 asExpr=6 asExpr={...}
 }
+
+void test_postfix_crement(int *p, int q) {
+  p++; // $ asExpr="... ++" asIndirectExpr="... ++" asExpr=p asIndirectExpr=p
+  q++; // $ asExpr="... ++" asExpr=q
+  (p++); // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  (q++); // $ asExpr="... ++" asExpr="q(... ++)"
+  (void)(p++); // $ asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  (void)(q++); // $ asExpr="q(... ++)"
+  (void)p++; // $ asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  (void)q++; // $ asExpr="q(... ++)"
+  int *p1 = p++; // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  int q1 = q++; // $ asExpr="... ++" asExpr="q(... ++)"
+  (int*)(p++); // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  (int)(q++); // $ asExpr="... ++" asExpr="q(... ++)"
+  int *p2 = (int*)(p++); // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  int q2 = (int)(q++); // $ asExpr="... ++" asExpr="q(... ++)"
+}

@@ -1,3 +1,19 @@
+## 4.3.1
+
+No user-facing changes.
+
+## 4.3.0
+
+### Deprecated APIs
+
+* The class `BuiltinType` is now deprecated. Use the new replacement `BuiltinTypeEntity` instead.
+* The class `DeclaredType` is now deprecated. Use the new replacement `DeclaredTypeEntity` instead.
+
+### Minor Analysis Improvements
+
+* Added models for the `Head` function and the `Client.Head` method, from the `net/http` package, to the `Http::ClientRequest` class. This means that they will be recognized as sinks for the query `go/request-forgery` and the experimental query `go/ssrf`.
+* Previously, `DefinedType.getBaseType` gave the underlying type. It now gives the right hand side of the type declaration, as the documentation indicated that it should.
+
 ## 4.2.8
 
 No user-facing changes.

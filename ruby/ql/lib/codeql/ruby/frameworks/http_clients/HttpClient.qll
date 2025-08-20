@@ -14,7 +14,7 @@ private import codeql.ruby.DataFlow
  * HTTPClient.get_content("http://example.com")
  * ```
  */
-class HttpClientRequest extends Http::Client::Request::Range, DataFlow::CallNode {
+class HttpClientRequest extends Http::Client::Request::Range instanceof DataFlow::CallNode {
   API::Node requestNode;
   API::Node connectionNode;
   string method;
@@ -34,7 +34,7 @@ class HttpClientRequest extends Http::Client::Request::Range, DataFlow::CallNode
       ]
   }
 
-  override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = super.getArgument(0) }
 
   override DataFlow::Node getResponseBody() {
     // The `get_content` and `post_content` methods return the response body as

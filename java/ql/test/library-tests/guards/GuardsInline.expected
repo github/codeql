@@ -89,3 +89,28 @@
 | Guards.java:139:9:139:13 | chk(...) | found:true |
 | Guards.java:143:7:143:11 | chk(...) | 'i < a.length:false' |
 | Guards.java:143:7:143:11 | chk(...) | found:true |
+| Guards.java:173:7:173:11 | chk(...) | 's:not null' |
+| Guards.java:173:7:173:11 | chk(...) | testNotNull1(...):true |
+| Guards.java:175:7:175:11 | chk(...) | testNotNull1(...):false |
+| Guards.java:179:7:179:11 | chk(...) | 's:not null' |
+| Guards.java:179:7:179:11 | chk(...) | testNotNull2(...):true |
+| Guards.java:181:7:181:11 | chk(...) | testNotNull2(...):false |
+| Guards.java:185:7:185:11 | chk(...) | '0 == getNumOrDefault(...):true' |
+| Guards.java:185:7:185:11 | chk(...) | 'getNumOrDefault(...):0' |
+| Guards.java:187:7:187:11 | chk(...) | '0 == getNumOrDefault(...):false' |
+| Guards.java:187:7:187:11 | chk(...) | 'getNumOrDefault(...):not 0' |
+| Guards.java:187:7:187:11 | chk(...) | 'i:not 0' |
+| Guards.java:187:7:187:11 | chk(...) | 'i:not null' |
+| Guards.java:191:7:191:11 | chk(...) | 'concatNonNull(...):null' |
+| Guards.java:191:7:191:11 | chk(...) | 'null == concatNonNull(...):true' |
+| Guards.java:193:7:193:11 | chk(...) | 'concatNonNull(...):not null' |
+| Guards.java:193:7:193:11 | chk(...) | 'null == concatNonNull(...):false' |
+| Guards.java:193:7:193:11 | chk(...) | 's:not null' |
+| Guards.java:198:9:198:13 | chk(...) | 'testEnumWrapper(...):SUCCESS' |
+| Guards.java:198:9:198:13 | chk(...) | 'testEnumWrapper(...):match SUCCESS' |
+| Guards.java:198:9:198:13 | chk(...) | g(1):true |
+| Guards.java:201:9:201:13 | chk(...) | 'testEnumWrapper(...):FAILURE' |
+| Guards.java:201:9:201:13 | chk(...) | 'testEnumWrapper(...):match FAILURE' |
+| Guards.java:201:9:201:13 | chk(...) | g(1):false |
+| Guards.java:213:5:213:9 | chk(...) | 'ensureNotNull(...):no exception' |
+| Guards.java:213:5:213:9 | chk(...) | 's:not null' |

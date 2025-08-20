@@ -1,3 +1,13 @@
+## 1.4.2
+
+No user-facing changes.
+
+## 1.4.1
+
+### Minor Analysis Improvements
+
+* `filepath.IsLocal` is now recognized as a sanitizer against path-traversal and related vulnerabilities.
+
 ## 1.4.0
 
 ### Query Metadata Changes

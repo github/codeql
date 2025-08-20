@@ -207,3 +207,16 @@ void test14(int a, int b) {
 
   }
 }
+
+# define likely(x) __builtin_expect(!!(x), 1)
+
+void test15(int a, int b)
+{
+	if (likely(a > b)) {
+
+    }
+
+    if (likely(a > 42)) {
+
+    }
+}

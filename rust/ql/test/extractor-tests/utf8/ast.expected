@@ -1,6 +1,7 @@
-| lib.rs:1:1:1:21 | SourceFile |
-| lib.rs:1:1:1:21 | mod utf8_identifiers |
-| lib.rs:1:5:1:20 | utf8_identifiers |
+| lib.rs:1:1:1:3 | Visibility |
+| lib.rs:1:1:1:25 | SourceFile |
+| lib.rs:1:1:1:25 | mod utf8_identifiers |
+| lib.rs:1:9:1:24 | utf8_identifiers |
 | utf8_identifiers.rs:1:1:4:6 | fn foo |
 | utf8_identifiers.rs:1:1:12:2 | SourceFile |
 | utf8_identifiers.rs:1:4:1:6 | foo |

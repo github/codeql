@@ -57,12 +57,12 @@ func test() {
 
 	// x net websocket dial bad
 	http.HandleFunc("/ex2", func(w http.ResponseWriter, r *http.Request) {
-		untrustedInput := r.Referer()
+		untrustedInput := r.Referer() // $ Source
 
 		origin := "http://localhost/"
 
 		// bad as input is directly passed to dial function
-		ws, _ := websocket.Dial(untrustedInput, "", origin)
+		ws, _ := websocket.Dial(untrustedInput, "", origin) // $ Alert
 		var msg = make([]byte, 512)
 		var n int
 		n, _ = ws.Read(msg)
@@ -71,12 +71,12 @@ func test() {
 
 	// x net websocket dialConfig bad
 	http.HandleFunc("/ex3", func(w http.ResponseWriter, r *http.Request) {
-		untrustedInput := r.Referer()
+		untrustedInput := r.Referer() // $ Source
 
 		origin := "http://localhost/"
 		// bad as input is directly used
-		config, _ := websocket.NewConfig(untrustedInput, origin) // good
-		ws2, _ := websocket.DialConfig(config)
+		config, _ := websocket.NewConfig(untrustedInput, origin) // $ Sink
+		ws2, _ := websocket.DialConfig(config)                   // $ Alert
 		var msg = make([]byte, 512)
 		var n int
 		n, _ = ws2.Read(msg)
@@ -85,10 +85,10 @@ func test() {
 
 	// nhooyr websocket dial bad
 	http.HandleFunc("/ex4", func(w http.ResponseWriter, r *http.Request) {
-		untrustedInput := r.Referer()
+		untrustedInput := r.Referer() // $ Source
 
 		// bad as input is used directly
-		nhooyr.Dial(context.TODO(), untrustedInput, nil)
+		nhooyr.Dial(context.TODO(), untrustedInput, nil) // $ Alert
 		w.WriteHeader(500)
 	})
 
@@ -104,10 +104,10 @@ func test() {
 
 	// gorilla websocket Dialer.Dial bad
 	http.HandleFunc("/ex6", func(w http.ResponseWriter, r *http.Request) {
-		untrustedInput := r.Referer()
+		untrustedInput := r.Referer() // $ Source
 
 		dialer := gorilla.Dialer{}
-		dialer.Dial(untrustedInput, r.Header)
+		dialer.Dial(untrustedInput, r.Header) // $ Alert
 	})
 
 	// gorilla websocket Dialer.Dial good
@@ -123,10 +123,10 @@ func test() {
 
 	// gorilla websocket Dialer.DialContext bad
 	http.HandleFunc("/ex8", func(w http.ResponseWriter, r *http.Request) {
-		untrustedInput := r.Referer()
+		untrustedInput := r.Referer() // $ Source
 
 		dialer := gorilla.Dialer{}
-		dialer.DialContext(context.TODO(), untrustedInput, r.Header)
+		dialer.DialContext(context.TODO(), untrustedInput, r.Header) // $ Alert
 	})
 
 	// gorilla websocket Dialer.DialContext good
@@ -151,22 +151,22 @@ func test() {
 
 	// gobwas websocket Dial bad
 	http.HandleFunc("/ex11", func(w http.ResponseWriter, r *http.Request) {
-		untrustedInput := r.Referer()
-		gobwas.Dial(context.TODO(), untrustedInput)
+		untrustedInput := r.Referer()               // $ Source
+		gobwas.Dial(context.TODO(), untrustedInput) // $ Alert
 	})
 
 	// gobwas websocket Dialer.Dial bad
 	http.HandleFunc("/ex12", func(w http.ResponseWriter, r *http.Request) {
-		untrustedInput := r.Referer()
+		untrustedInput := r.Referer() // $ Source
 		dialer := gobwas.Dialer{}
-		dialer.Dial(context.TODO(), untrustedInput)
+		dialer.Dial(context.TODO(), untrustedInput) // $ Alert
 	})
 
 	// gobwas websocket Dialer.Dial good
 	http.HandleFunc("/ex12", func(w http.ResponseWriter, r *http.Request) {
 		untrustedInput := r.Referer()
 
-		if "localhost" == untrustedInput {
+		if untrustedInput == "localhost" {
 			dialer := gobwas.Dialer{}
 			dialer.Dial(context.TODO(), untrustedInput)
 		}
@@ -176,8 +176,8 @@ func test() {
 	http.HandleFunc("/ex13", func(w http.ResponseWriter, r *http.Request) {
 		untrustedInput := r.Referer()
 
-		if "localhost" == untrustedInput {
-			sac.New(untrustedInput)
+		if untrustedInput == "localhost" {
+			_ = sac.New(untrustedInput)
 		}
 	})
 
@@ -185,23 +185,23 @@ func test() {
 	http.HandleFunc("/ex14", func(w http.ResponseWriter, r *http.Request) {
 		untrustedInput := r.Referer()
 
-		if "localhost" == untrustedInput {
-			sac.BuildProxy(untrustedInput)
+		if untrustedInput == "localhost" {
+			_ = sac.BuildProxy(untrustedInput)
 		}
 	})
 
 	// sac007 websocket BuildProxy bad
 	http.HandleFunc("/ex15", func(w http.ResponseWriter, r *http.Request) {
-		untrustedInput := r.Referer()
+		untrustedInput := r.Referer() // $ Source
 
-		sac.BuildProxy(untrustedInput)
+		_ = sac.BuildProxy(untrustedInput) // $ Alert
 	})
 
 	// sac007 websocket New bad
 	http.HandleFunc("/ex16", func(w http.ResponseWriter, r *http.Request) {
-		untrustedInput := r.Referer()
+		untrustedInput := r.Referer() // $ Source
 
-		sac.New(untrustedInput)
+		_ = sac.New(untrustedInput) // $ Alert
 	})
 
 	log.Println(http.ListenAndServe(":80", nil))

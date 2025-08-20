@@ -90,13 +90,13 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     error!(value2:?; "message"); // $ MISSING: Alert[rust/cleartext-logging]
 
     // pre-formatted
-    let m1 = &password; // $ Source=m1
+    let m1 = &password; // $ Source[rust/cleartext-logging]=m1
     info!("message = {}", m1); // $ Alert[rust/cleartext-logging]=m1
 
-    let m2 = "message = ".to_string() + &password; // $ Source=m2
+    let m2 = "message = ".to_string() + &password; // $ Source[rust/cleartext-logging]=m2
     info!("{}", m2); // $ Alert[rust/cleartext-logging]=m2
 
-    let m3 = format!("message = {}", password); // $ Source=m3
+    let m3 = format!("message = {}", password); // $ Source[rust/cleartext-logging]=m3
     info!("{}", m3); // $  Alert[rust/cleartext-logging]=m3
 
     let mut m4 = String::new();
@@ -126,7 +126,7 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     trace!("message = {}", &str2);
 
     // logging from a tuple
-    let t1 = (harmless, password); // $ Source=t1
+    let t1 = (harmless, password); // $ Source[rust/cleartext-logging]=t1
     trace!("message = {}", t1.0);
     trace!("message = {}", t1.1); // $ Alert[rust/cleartext-logging]=t1
     trace!("message = {:?}", t1); // $ MISSING: Alert[rust/cleartext-logging]=t1
@@ -180,11 +180,11 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     let _ = err_result.log_expect(&format!("Failed with password: {}", password2)); // $ Alert[rust/cleartext-logging]
 
     // test `log_expect` with sensitive `Result.Err`
-    let err_result2: Result<String, String> = Err(password2.clone()); // $ Source=s3
+    let err_result2: Result<String, String> = Err(password2.clone()); // $ Source[rust/cleartext-logging]=s3
     let _ = err_result2.log_expect(""); // $ Alert[rust/cleartext-logging]=s3
 
     // test `log_unwrap` with sensitive `Result.Err`
-    let err_result3: Result<String, String> = Err(password2); // $ Source=err_result3
+    let err_result3: Result<String, String> = Err(password2); // $ Source[rust/cleartext-logging]=err_result3
     let _ = err_result3.log_unwrap(); // $ Alert[rust/cleartext-logging]=err_result3
 }
 
@@ -226,7 +226,7 @@ fn test_std(password: String, i: i32, opt_i: Option<i32>) {
             debug_assert_ne!(1, 1, "message = {}", password); // $ Alert[rust/cleartext-logging]
         }
         11 => {
-            _ = opt_i.expect(format!("message = {}", password).as_str()); // $ MISSING: Alert[rust/cleartext-logging] (https://github.com/github/codeql/pull/19658)
+            _ = opt_i.expect(format!("message = {}", password).as_str()); // $ Alert[rust/cleartext-logging]
         }
         _ => {}
     }
@@ -239,16 +239,16 @@ fn test_std(password: String, i: i32, opt_i: Option<i32>) {
         .write_fmt(format_args!("message = {}\n", password)); // $ MISSING: Alert[rust/cleartext-logging]
     std::io::stdout()
         .lock()
-        .write(format!("message = {}\n", password).as_bytes()); // $ MISSING: Alert[rust/cleartext-logging] (https://github.com/github/codeql/pull/19658)
+        .write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
     std::io::stdout()
         .lock()
-        .write_all(format!("message = {}\n", password).as_bytes()); // $ MISSING: Alert[rust/cleartext-logging] (https://github.com/github/codeql/pull/19658)
+        .write_all(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
 
     let mut out = std::io::stdout().lock();
-    out.write(format!("message = {}\n", password).as_bytes()); // $ MISSING: Alert[rust/cleartext-logging] (https://github.com/github/codeql/pull/19658)
+    out.write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
 
     let mut err = std::io::stderr().lock();
-    err.write(format!("message = {}\n", password).as_bytes()); // $ MISSING: Alert[rust/cleartext-logging] (https://github.com/github/codeql/pull/19658)
+    err.write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
 }
 
 fn main() {

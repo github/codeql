@@ -8,3 +8,8 @@
 | test.cpp:29:10:29:11 | y3 | test-sink |
 | test.cpp:33:10:33:11 | z2 | test-sink |
 | test.cpp:36:10:36:11 | z3 | test-sink |
+| test.cpp:48:16:48:16 | x | test-sink |
+| test.cpp:69:11:69:11 | y | test-sink |
+| test.cpp:75:11:75:11 | y | test-sink |
+| test.cpp:83:11:83:11 | y | test-sink |
+| test.cpp:89:11:89:11 | y | test-sink |

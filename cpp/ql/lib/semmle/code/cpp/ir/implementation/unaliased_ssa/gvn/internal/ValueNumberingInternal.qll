@@ -44,6 +44,23 @@ newtype TValueNumber =
   TUniqueValueNumber(IRFunction irFunc, Instruction instr) { uniqueValueNumber(instr, irFunc) }
 
 /**
+ * A `ConvertInstruction` which converts data of type `T` to data of type `U`
+ * where `T` and `U` only differ in specifiers. For example, if `T` is `int`
+ * and `U` is `const T` this is a conversion from a non-const integer to a
+ * const integer.
+ *
+ * Generally, the value number of a converted value is different from the value
+ * number of an unconverted value, but conversions which only modify specifiers
+ * leave the resulting value bitwise identical to the old value.
+ */
+class TypePreservingConvertInstruction extends ConvertInstruction {
+  TypePreservingConvertInstruction() {
+    pragma[only_bind_out](this.getResultType().getUnspecifiedType()) =
+      pragma[only_bind_out](this.getUnary().getResultType().getUnspecifiedType())
+  }
+}
+
+/**
  * A `CopyInstruction` whose source operand's value is congruent to the definition of that source
  * operand.
  * For example:
@@ -216,6 +233,7 @@ private predicate unaryValueNumber(
   not instr instanceof InheritanceConversionInstruction and
   not instr instanceof CopyInstruction and
   not instr instanceof FieldAddressInstruction and
+  not instr instanceof TypePreservingConvertInstruction and
   instr.getOpcode() = opcode and
   tvalueNumber(instr.getUnary()) = operand
 }
@@ -351,6 +369,10 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
       or
       // The value number of a copy is just the value number of its source value.
       result = tvalueNumber(instr.(CongruentCopyInstruction).getSourceValue())
+      or
+      // The value number of a type-preserving conversion is just the value
+      // number of the unconverted value.
+      result = tvalueNumber(instr.(TypePreservingConvertInstruction).getUnary())
     )
   )
 }

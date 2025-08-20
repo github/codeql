@@ -80,7 +80,7 @@ async fn test_reqwest() -> Result<(), reqwest::Error> {
     let mut request1 = reqwest::get("example.com").await?; // $ Alert[rust/summary/taint-sources]
     sink(request1.chunk().await?.unwrap()); // $ hasTaintFlow="example.com"
     while let Some(chunk) = request1.chunk().await? {
-        sink(chunk); // $ MISSING: hasTaintFlow="example.com"
+        sink(chunk); // $ hasTaintFlow="example.com"
     }
 
     Ok(())
@@ -98,7 +98,8 @@ async fn test_hyper_http(case: i64) -> Result<(), Box<dyn std::error::Error>> {
     println!("connecting to {}...", address);
     let stream = tokio::net::TcpStream::connect(address).await?; // $ Alert[rust/summary/taint-sources]
     let io = hyper_util::rt::TokioIo::new(stream);
-    let (mut sender, conn) = hyper::client::conn::http1::handshake(io).await?;
+    let (sender, conn) = hyper::client::conn::http1::handshake(io).await?;
+    let mut sender: hyper::client::conn::http1::SendRequest<String> = sender;
 
     // drive the HTTP connection
     tokio::task::spawn(async move {
@@ -214,7 +215,7 @@ fn test_io_stdin() -> std::io::Result<()> {
     {
         let mut buffer = Vec::<u8>::new();
         let _bytes = std::io::stdin().read_to_end(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
     }
 
     {
@@ -272,7 +273,7 @@ fn test_io_stdin() -> std::io::Result<()> {
         let mut reader_split = std::io::BufReader::new(std::io::stdin()).split(b','); // $ Alert[rust/summary/taint-sources]
         sink(reader_split.next().unwrap().unwrap()); // $ hasTaintFlow
         while let Some(chunk) = reader_split.next() {
-            sink(chunk.unwrap()); // $ MISSING: hasTaintFlow
+            sink(chunk.unwrap()); // $ hasTaintFlow
         }
     }
 

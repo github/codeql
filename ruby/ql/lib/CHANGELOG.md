@@ -1,3 +1,15 @@
+## 5.0.1
+
+### Minor Analysis Improvements
+
+* The regular expressions in `SensitiveDataHeuristics.qll` have been extended to find more instances of sensitive data such as secrets used in authentication, finance and health information, and device data. The heuristics have also been refined to find fewer false positive matches. This will improve results for queries related to sensitive information.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Most classes and predicates in the AST, SSA, and control-flow-graph libraries are now annotated with `overlay[local]`, in preparation for incremental analysis. This could result in compiler errors for custom queries if they extend these classes. To mitigate such errors, look for ways to restructure custom QL code so it doesn't depend on changing the behavior of standard-library classes.
+
 ## 4.1.9
 
 No user-facing changes.

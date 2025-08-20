@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import codeql.ruby.controlflow.ControlFlowGraph
 private import internal.AST
@@ -40,18 +43,22 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
    * Holds if this method is public.
    * Methods are public by default.
    */
+  overlay[global]
   predicate isPublic() { this.getVisibility() = "public" }
 
   /** Holds if this method is private. */
+  overlay[global]
   predicate isPrivate() { this.getVisibility() = "private" }
 
   /** Holds if this method is protected. */
+  overlay[global]
   predicate isProtected() { this.getVisibility() = "protected" }
 
   /**
    * Gets a string describing the visibility of this method.
    * This is either 'public', 'private' or 'protected'.
    */
+  overlay[global]
   string getVisibility() {
     result = getVisibilityModifier(this).getVisibility()
     or
@@ -73,6 +80,7 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
  * end
  * ```
  */
+overlay[global]
 private VisibilityModifier getExplicitVisibilityModifier(Method m) {
   result.getMethodArgument() = m
   or
@@ -86,6 +94,7 @@ private VisibilityModifier getExplicitVisibilityModifier(Method m) {
  * Gets the visibility modifier that defines the visibility of method `m`, if
  * any.
  */
+overlay[global]
 private VisibilityModifier getVisibilityModifier(MethodBase mb) {
   mb =
     any(Method m |
@@ -202,6 +211,7 @@ class Method extends MethodBase, TMethod {
    * end
    * ```
    */
+  overlay[global]
   override predicate isPrivate() { super.isPrivate() }
 
   final override Parameter getParameter(int n) {
@@ -210,6 +220,7 @@ class Method extends MethodBase, TMethod {
 
   final override string toString() { result = this.getName() }
 
+  overlay[global]
   override string getVisibility() {
     result = getVisibilityModifier(this).getVisibility()
     or
@@ -223,6 +234,7 @@ class Method extends MethodBase, TMethod {
   }
 }
 
+overlay[global]
 pragma[nomagic]
 private predicate modifiesIn(VisibilityModifier vm, ModuleBase n, string name) {
   n = vm.getEnclosingModule() and
@@ -299,6 +311,7 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
    * end
    * ```
    */
+  overlay[global]
   override predicate isPrivate() { super.isPrivate() }
 }
 

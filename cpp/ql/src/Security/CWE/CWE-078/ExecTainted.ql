@@ -150,6 +150,17 @@ module ExecTaintConfig implements DataFlow::StateConfigSig {
   predicate isBarrierOut(DataFlow::Node node) {
     isSink(node, _) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(DataFlow::Node concatResult, Expr command, ExecState state |
+      result = [concatResult.getLocation(), command.getLocation()] and
+      isSink(sink, state) and
+      isSinkImpl(sink, command, _) and
+      concatResult = state.getOutgoingNode()
+    )
+  }
 }
 
 module ExecTaint = TaintTracking::GlobalWithState<ExecTaintConfig>;

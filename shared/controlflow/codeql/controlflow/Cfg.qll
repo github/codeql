@@ -261,32 +261,44 @@ module MakeWithSplitting<
     /** Gets the `i`th child element, in order of evaluation. */
     abstract AstNode getChildNode(int i);
 
-    private AstNode getChildNodeRanked(int i) {
-      result = rank[i + 1](AstNode child, int j | child = this.getChildNode(j) | child order by j)
+    private ControlFlowTree getChildTreeRanked(int i) {
+      result =
+        rank[i + 1](ControlFlowTree child, int j | child = this.getChildNode(j) | child order by j)
     }
 
     /** Gets the first child node of this element. */
-    final AstNode getFirstChildNode() { result = this.getChildNodeRanked(0) }
+    deprecated final AstNode getFirstChildNode() { result = this.getChildTreeRanked(0) }
+
+    /** Gets the first child node of this element. */
+    final ControlFlowTree getFirstChildTree() { result = this.getChildTreeRanked(0) }
 
     /** Gets the last child node of this node. */
-    final AstNode getLastChildElement() {
+    deprecated final AstNode getLastChildElement() {
       exists(int last |
-        result = this.getChildNodeRanked(last) and
-        not exists(this.getChildNodeRanked(last + 1))
+        result = this.getChildTreeRanked(last) and
+        not exists(this.getChildTreeRanked(last + 1))
+      )
+    }
+
+    /** Gets the last child node of this node. */
+    final ControlFlowTree getLastChildTree() {
+      exists(int last |
+        result = this.getChildTreeRanked(last) and
+        not exists(this.getChildTreeRanked(last + 1))
       )
     }
 
     /** Holds if this element has no children. */
-    predicate isLeafElement() { not exists(this.getFirstChildNode()) }
+    predicate isLeafElement() { not exists(this.getFirstChildTree()) }
 
     override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
 
     pragma[nomagic]
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
       exists(int i |
-        last(this.getChildNodeRanked(i), pred, c) and
+        last(this.getChildTreeRanked(i), pred, c) and
         completionIsNormal(c) and
-        first(this.getChildNodeRanked(i + 1), succ)
+        first(this.getChildTreeRanked(i + 1), succ)
       )
     }
   }
@@ -294,7 +306,7 @@ module MakeWithSplitting<
   /** A standard element that is executed in pre-order. */
   abstract class StandardPreOrderTree extends StandardTree, PreOrderTree {
     override predicate last(AstNode last, Completion c) {
-      last(this.getLastChildElement(), last, c)
+      last(this.getLastChildTree(), last, c)
       or
       this.isLeafElement() and
       completionIsValidFor(c, this) and
@@ -305,7 +317,7 @@ module MakeWithSplitting<
       StandardTree.super.succ(pred, succ, c)
       or
       pred = this and
-      first(this.getFirstChildNode(), succ) and
+      first(this.getFirstChildTree(), succ) and
       completionIsSimple(c)
     }
   }
@@ -313,16 +325,16 @@ module MakeWithSplitting<
   /** A standard element that is executed in post-order. */
   abstract class StandardPostOrderTree extends StandardTree, PostOrderTree {
     override predicate first(AstNode first) {
-      first(this.getFirstChildNode(), first)
+      first(this.getFirstChildTree(), first)
       or
-      not exists(this.getFirstChildNode()) and
+      not exists(this.getFirstChildTree()) and
       first = this
     }
 
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
       StandardTree.super.succ(pred, succ, c)
       or
-      last(this.getLastChildElement(), pred, c) and
+      last(this.getLastChildTree(), pred, c) and
       succ = this and
       completionIsNormal(c)
     }

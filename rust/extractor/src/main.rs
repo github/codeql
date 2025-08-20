@@ -293,6 +293,11 @@ fn main() -> anyhow::Result<()> {
     } else {
         (SourceKind::Library, ResolvePaths::No)
     };
+    let (source_mode, source_resolve_paths) = if cfg.force_library_mode {
+        (library_mode, library_resolve_paths)
+    } else {
+        (SourceKind::Source, resolve_paths)
+    };
     let mut processed_files: HashSet<PathBuf, RandomState> =
         HashSet::from_iter(files.iter().cloned());
     for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
@@ -311,12 +316,10 @@ fn main() -> anyhow::Result<()> {
                         file,
                         &semantics,
                         vfs,
-                        resolve_paths,
-                        SourceKind::Source,
+                        source_resolve_paths,
+                        source_mode,
                     ),
-                    Err(reason) => {
-                        extractor.extract_without_semantics(file, SourceKind::Source, &reason)
-                    }
+                    Err(reason) => extractor.extract_without_semantics(file, source_mode, &reason),
                 };
             }
             for (file_id, file) in vfs.iter() {

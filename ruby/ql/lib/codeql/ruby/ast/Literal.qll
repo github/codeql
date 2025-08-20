@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import codeql.ruby.Regexp as RE
 private import internal.AST
@@ -41,6 +44,7 @@ class IntegerLiteral extends NumericLiteral instanceof IntegerLiteralImpl {
   /** Gets the numerical value of this integer literal. */
   final int getValue() { result = super.getValue() }
 
+  overlay[global]
   final override ConstantValue::ConstantIntegerValue getConstantValue() {
     result = NumericLiteral.super.getConstantValue()
   }
@@ -57,6 +61,7 @@ class IntegerLiteral extends NumericLiteral instanceof IntegerLiteralImpl {
  * ```
  */
 class FloatLiteral extends NumericLiteral instanceof FloatLiteralImpl {
+  overlay[global]
   final override ConstantValue::ConstantFloatValue getConstantValue() {
     result = NumericLiteral.super.getConstantValue()
   }
@@ -72,6 +77,7 @@ class FloatLiteral extends NumericLiteral instanceof FloatLiteralImpl {
  * ```
  */
 class RationalLiteral extends NumericLiteral instanceof RationalLiteralImpl {
+  overlay[global]
   final override ConstantValue::ConstantRationalValue getConstantValue() {
     result = NumericLiteral.super.getConstantValue()
   }
@@ -87,6 +93,7 @@ class RationalLiteral extends NumericLiteral instanceof RationalLiteralImpl {
  * ```
  */
 class ComplexLiteral extends NumericLiteral instanceof ComplexLiteralImpl {
+  overlay[global]
   final override ConstantValue::ConstantComplexValue getConstantValue() {
     result = NumericLiteral.super.getConstantValue()
   }
@@ -96,6 +103,7 @@ class ComplexLiteral extends NumericLiteral instanceof ComplexLiteralImpl {
 
 /** A `nil` literal. */
 class NilLiteral extends Literal instanceof NilLiteralImpl {
+  overlay[global]
   final override ConstantValue::ConstantNilValue getConstantValue() { result = TNil() }
 
   final override string getAPrimaryQlClass() { result = "NilLiteral" }
@@ -122,6 +130,7 @@ class BooleanLiteral extends Literal instanceof BooleanLiteralImpl {
   /** Gets the value of this Boolean literal. */
   boolean getValue() { result = super.getValue() }
 
+  overlay[global]
   final override ConstantValue::ConstantBooleanValue getConstantValue() {
     result = Literal.super.getConstantValue()
   }
@@ -133,6 +142,7 @@ class BooleanLiteral extends Literal instanceof BooleanLiteralImpl {
 class EncodingLiteral extends Literal instanceof EncodingLiteralImpl {
   final override string getAPrimaryQlClass() { result = "EncodingLiteral" }
 
+  overlay[global]
   final override ConstantValue::ConstantStringValue getConstantValue() {
     result = Literal.super.getConstantValue()
   }
@@ -144,6 +154,7 @@ class EncodingLiteral extends Literal instanceof EncodingLiteralImpl {
 class LineLiteral extends Literal instanceof LineLiteralImpl {
   final override string getAPrimaryQlClass() { result = "LineLiteral" }
 
+  overlay[global]
   final override ConstantValue::ConstantIntegerValue getConstantValue() {
     result = Literal.super.getConstantValue()
   }
@@ -155,6 +166,7 @@ class LineLiteral extends Literal instanceof LineLiteralImpl {
 class FileLiteral extends Literal instanceof FileLiteralImpl {
   final override string getAPrimaryQlClass() { result = "FileLiteral" }
 
+  overlay[global]
   final override ConstantValue::ConstantStringValue getConstantValue() {
     result = Literal.super.getConstantValue()
   }
@@ -166,6 +178,7 @@ class FileLiteral extends Literal instanceof FileLiteralImpl {
  */
 class StringComponent extends AstNode instanceof StringComponentImpl {
   /** Gets the constant value of this string component, if any. */
+  overlay[global]
   ConstantValue::ConstantStringValue getConstantValue() { result = TString(super.getValue()) }
 }
 
@@ -210,6 +223,7 @@ class StringInterpolationComponent extends StringComponent, StmtSequence instanc
 
   final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
 
+  overlay[global]
   final override ConstantValue::ConstantStringValue getConstantValue() {
     result = StmtSequence.super.getConstantValue()
   }
@@ -257,6 +271,7 @@ class RegExpInterpolationComponent extends RegExpComponent, StmtSequence instanc
 
   final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
 
+  overlay[global]
   final override ConstantValue::ConstantStringValue getConstantValue() {
     result = StmtSequence.super.getConstantValue()
   }
@@ -387,6 +402,7 @@ class RegExpLiteral extends StringlikeLiteral instanceof RegExpLiteralImpl {
   final predicate hasFreeSpacingFlag() { this.getFlagString().charAt(_) = "x" }
 
   /** Returns the root node of the parse tree of this regular expression. */
+  overlay[global]
   final RE::RegExpTerm getParsed() { result = RE::getParsedRegExp(this) }
 }
 
@@ -404,6 +420,7 @@ class SymbolLiteral extends StringlikeLiteral instanceof SymbolLiteralImpl {
     not this instanceof MethodName and result = "SymbolLiteral"
   }
 
+  overlay[global]
   final override ConstantValue::ConstantSymbolValue getConstantValue() {
     result = StringlikeLiteral.super.getConstantValue()
   }
@@ -436,6 +453,7 @@ class SubshellLiteral extends StringlikeLiteral instanceof SubshellLiteralImpl {
 class CharacterLiteral extends Literal instanceof CharacterLiteralImpl {
   final override string getAPrimaryQlClass() { result = "CharacterLiteral" }
 
+  overlay[global]
   final override ConstantValue::ConstantStringValue getConstantValue() {
     result = Literal.super.getConstantValue()
   }

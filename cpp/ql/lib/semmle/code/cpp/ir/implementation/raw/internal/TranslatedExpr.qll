@@ -216,7 +216,8 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
     not hasTranslatedLoad(expr) and
     not hasTranslatedSyntheticTemporaryObject(expr) and
     // If there's a result copy, then this expression's result is the copy.
-    not exprNeedsCopyIfNotLoaded(expr)
+    not exprNeedsCopyIfNotLoaded(expr) and
+    not hasTranslatedSyntheticBoolToIntConversion(expr)
   }
 }
 
@@ -358,11 +359,12 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
 }
 
 /**
- * The IR translation of a node synthesized to adjust the value category of its operand.
+ * The IR translation of a node synthesized to adjust the value category or type of its operand.
  * One of:
  * - `TranslatedLoad` - Convert from glvalue to prvalue by loading from the location.
  * - `TranslatedSyntheticTemporaryObject` - Convert from prvalue to glvalue by storing to a
  *   temporary variable.
+ * - `TranslatedSyntheticBoolToIntConversion` - Convert a prvalue Boolean to a prvalue integer.
  */
 abstract class TranslatedValueCategoryAdjustment extends TranslatedExpr {
   final override Instruction getFirstInstruction(EdgeKind kind) {
@@ -510,6 +512,45 @@ class TranslatedSyntheticTemporaryObject extends TranslatedValueCategoryAdjustme
   final override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = InitializerVariableAddressTag() and
     result = getIRTempVariable(expr, TempObjectTempVar())
+  }
+}
+
+class TranslatedSyntheticBoolToIntConversion extends TranslatedValueCategoryAdjustment,
+  TTranslatedSyntheticBoolToIntConversion
+{
+  TranslatedSyntheticBoolToIntConversion() { this = TTranslatedSyntheticBoolToIntConversion(expr) }
+
+  override string toString() { result = "Bool-to-int conversion of " + expr.toString() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    opcode instanceof Opcode::Convert and
+    tag = BoolToIntConversionTag() and
+    resultType = getIntType()
+  }
+
+  override predicate isResultGLValue() { none() }
+
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = BoolToIntConversionTag() and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(BoolToIntConversionTag())
+  }
+
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    child = this.getOperand() and
+    result = this.getInstruction(BoolToIntConversionTag()) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getResult() { result = this.getInstruction(BoolToIntConversionTag()) }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = BoolToIntConversionTag() and
+    operandTag instanceof UnaryOperandTag and
+    result = this.getOperand().getResult()
   }
 }
 
@@ -1794,18 +1835,9 @@ private Opcode binaryArithmeticOpcode(BinaryArithmeticOperation expr) {
   expr instanceof PointerDiffExpr and result instanceof Opcode::PointerDiff
 }
 
-private Opcode comparisonOpcode(ComparisonOperation expr) {
-  expr instanceof EQExpr and result instanceof Opcode::CompareEQ
-  or
-  expr instanceof NEExpr and result instanceof Opcode::CompareNE
-  or
-  expr instanceof LTExpr and result instanceof Opcode::CompareLT
-  or
-  expr instanceof GTExpr and result instanceof Opcode::CompareGT
-  or
-  expr instanceof LEExpr and result instanceof Opcode::CompareLE
-  or
-  expr instanceof GEExpr and result instanceof Opcode::CompareGE
+private Opcode spaceShipOpcode(SpaceshipExpr expr) {
+  exists(expr) and
+  result instanceof Opcode::Spaceship
 }
 
 /**
@@ -1867,7 +1899,8 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
   override Opcode getOpcode() {
     result = binaryArithmeticOpcode(expr) or
     result = binaryBitwiseOpcode(expr) or
-    result = comparisonOpcode(expr)
+    result = comparisonOpcode(expr) or
+    result = spaceShipOpcode(expr)
   }
 
   override Type getExprType() {
@@ -4146,7 +4179,8 @@ predicate exprNeedsCopyIfNotLoaded(Expr expr) {
 private predicate exprImmediatelyDiscarded(Expr expr) {
   exists(ExprStmt s |
     s = expr.getParent() and
-    not exists(StmtExpr se | s = se.getStmt().(BlockStmt).getLastStmt())
+    not exists(StmtExpr se | s = se.getStmt().(BlockStmt).getLastStmt()) and
+    not exists(expr.getConversion())
   )
   or
   exists(CommaExpr c | c.getLeftOperand() = expr)
@@ -4182,5 +4216,54 @@ class TranslatedAssumeExpr extends TranslatedSingleInstructionExpr {
 
   final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     none()
+  }
+}
+
+class TranslatedTypeidExpr extends TranslatedSingleInstructionExpr {
+  override TypeidOperator expr;
+
+  final override Opcode getOpcode() {
+    exists(this.getOperand()) and
+    result instanceof Opcode::TypeidExpr
+    or
+    not exists(this.getOperand()) and
+    result instanceof Opcode::TypeidType
+  }
+
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getOperand().getFirstInstruction(kind)
+    or
+    not exists(this.getOperand()) and
+    result = this.getInstruction(OnlyInstructionTag()) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(OnlyInstructionTag())
+  }
+
+  final override TranslatedElement getChildInternal(int id) {
+    id = 0 and result = this.getOperand()
+  }
+
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    child = this.getOperand() and
+    result = this.getInstruction(OnlyInstructionTag()) and
+    kind instanceof GotoEdge
+  }
+
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    result = this.getOperand().getResult() and
+    operandTag instanceof UnaryOperandTag
+  }
+
+  private TranslatedExpr getOperand() {
+    result = getTranslatedExpr(expr.getExpr().getFullyConverted())
   }
 }

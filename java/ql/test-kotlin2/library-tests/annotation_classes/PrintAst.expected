@@ -169,7 +169,18 @@ def.kt:
 #   33|         0: [SuperConstructorInvocationStmt] super(...)
 #   33|         1: [BlockStmt] { ... }
 #   34|   5: [Class] Y
-#   34|     2: [Constructor] Y
+#    0|     2: [Method] getEntries
+#    0|       3: [TypeAccess] EnumEntries<Y>
+#    0|         0: [TypeAccess] Y
+#    0|     3: [Method] valueOf
+#    0|       3: [TypeAccess] Y
+#-----|       4: (Parameters)
+#   34|         0: [Parameter] value
+#   34|           0: [TypeAccess] String
+#    0|     4: [Method] values
+#    0|       3: [TypeAccess] Y[]
+#    0|         0: [TypeAccess] Y
+#   34|     5: [Constructor] Y
 #   34|       5: [BlockStmt] { ... }
 #   34|         0: [ExprStmt] <Expr>;
 #   34|           0: [ClassInstanceExpr] new Enum<Y>(...)
@@ -178,17 +189,6 @@ def.kt:
 #   34|             0: [NullLiteral] null
 #   34|             1: [IntegerLiteral] 0
 #   34|         1: [BlockStmt] { ... }
-#   34|     3: [Method] getEntries
-#   34|       3: [TypeAccess] EnumEntries<Y>
-#   34|         0: [TypeAccess] Y
-#   34|     4: [Method] valueOf
-#   34|       3: [TypeAccess] Y
-#-----|       4: (Parameters)
-#   34|         0: [Parameter] value
-#   34|           0: [TypeAccess] String
-#   34|     5: [Method] values
-#   34|       3: [TypeAccess] Y[]
-#   34|         0: [TypeAccess] Y
 #   35|     6: [FieldDeclaration] Y A;
 #   35|       -1: [TypeAccess] Y
 #   35|       0: [ClassInstanceExpr] new Y(...)
