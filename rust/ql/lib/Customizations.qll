@@ -5,8 +5,7 @@
  * apply to all queries.
  *
  * Typical examples of customizations include adding new subclasses of abstract classes such as
- * the `RemoteFlowSource` class
- * to model frameworks that are not covered by the standard library.
+ * the `RemoteFlowSource` class to model frameworks that are not covered by the standard library.
  */
 
 import rust
