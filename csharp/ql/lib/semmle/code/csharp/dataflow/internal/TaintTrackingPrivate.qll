@@ -31,8 +31,7 @@ predicate defaultTaintSanitizer(DataFlow::Node node) {
  */
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
-  node instanceof ArgumentNode and
-  Collections::isCollectionType(node.getType()) and
+  exists(node) and
   c.isElement()
 }
 
