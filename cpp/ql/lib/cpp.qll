@@ -13,6 +13,7 @@
  *     https://github.com/cplusplus/draft/raw/master/papers/n4140.pdf
  */
 
+import Customizations
 import semmle.code.cpp.File
 import semmle.code.cpp.Linkage
 import semmle.code.cpp.Location
