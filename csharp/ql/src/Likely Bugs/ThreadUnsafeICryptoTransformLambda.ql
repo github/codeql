@@ -24,6 +24,8 @@ module NotThreadSafeCryptoUsageIntoParallelInvokeConfig implements DataFlow::Con
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ParallelSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module NotThreadSafeCryptoUsageIntoParallelInvoke =

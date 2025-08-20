@@ -47,6 +47,12 @@ module ToBufferConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(SensitiveBufferWrite w | result = w.getLocation() | isSinkImpl(sink, w))
+  }
 }
 
 module ToBufferFlow = TaintTracking::Global<ToBufferConfig>;

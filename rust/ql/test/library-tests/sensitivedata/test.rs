@@ -23,7 +23,7 @@ impl MyStruct {
 fn get_password() -> String { get_string() }
 
 fn test_passwords(
-	password: &str, pass_word: &str, passwd: &str, my_password: &str, password_str: &str,
+	password: &str, pass_word: &str, passwd: &str, my_password: &str, password_str: &str, password_confirmation: &str,
 	pass_phrase: &str, passphrase: &str, passPhrase: &str, backup_code: &str,
 	auth_key: &str, authkey: &str, authKey: &str, authentication_key: &str, authenticationkey: &str, authenticationKey: &str, oauth: &str,
 	one_time_code: &str,
@@ -37,6 +37,7 @@ fn test_passwords(
 	sink(passwd); // $ sensitive=password
 	sink(my_password); // $ sensitive=password
 	sink(password_str); // $ sensitive=password
+	sink(password_confirmation); // $ sensitive=password
 	sink(pass_phrase); // $ sensitive=password
 	sink(passphrase); // $ sensitive=password
 	sink(passPhrase); // $ sensitive=password
@@ -48,12 +49,12 @@ fn test_passwords(
 	sink(authentication_key); // $ sensitive=password
 	sink(authenticationkey); // $ sensitive=password
 	sink(authenticationKey); // $ sensitive=password
-	sink(oauth); // $ MISSING: sensitive=password
+	sink(oauth); // $ sensitive=password
 	sink(one_time_code); // $ MISSING: sensitive=password
 
 	sink(ms); // $ MISSING: sensitive=password
 	sink(ms.password.as_str()); // $ sensitive=password
-	sink(ms.mfa.as_str()); // $ MISSING: sensitive=password
+	sink(ms.mfa.as_str()); // $ sensitive=password
 
 	sink(get_password()); // $ sensitive=password
 	let password2 = get_string();
@@ -67,10 +68,10 @@ fn test_passwords(
 	sink(harmless);
 	sink(encrypted_password);
 	sink(password_hash);
-	sink(passwordFile); // $ SPURIOUS: sensitive=password
+	sink(passwordFile);
 
 	sink(ms.harmless.as_str());
-	sink(ms.password_file_path.as_str()); // $ SPURIOUS: sensitive=password
+	sink(ms.password_file_path.as_str());
 	sink(ms.password_enabled.as_str()); // $ SPURIOUS: sensitive=password
 	sink(ms.numfailed.as_str());
 
@@ -88,7 +89,7 @@ fn get_next_token() -> String { get_string() }
 
 fn test_credentials(
 	account_key: &str, accnt_key: &str, license_key: &str, secret_key: &str, is_secret: bool, num_accounts: i64,
-	username: String, user_name: String, userid: i64, user_id: i64, my_user_id_64: i64, unique_id: i64, uid: i64,
+	username: String, user_name: String, userid: i64, user_id: i64, my_user_id_64: i64, id: i64, uid: i64, uuid: i64, guid: i64, unique_id: i64,
 	sessionkey: &[u64; 4], session_key: &[u64; 4], hashkey: &[u64; 4], hash_key: &[u64; 4], sessionkeypath: &[u64; 4], account_key_path: &[u64; 4],
 	ms: &MyStruct
 ) {
@@ -119,15 +120,19 @@ fn test_credentials(
 
 	sink(is_secret);
 	sink(num_accounts); // $ SPURIOUS: sensitive=id
-	sink(unique_id);
+	sink(id);
 	sink(uid); // $ SPURIOUS: sensitive=id
+	sink(uuid); // $ SPURIOUS: sensitive=id
+	sink(guid);
+	sink(unique_id);
+
 	sink(hashkey);
 	sink(hash_key);
-	sink(sessionkeypath); // $ SPURIOUS: sensitive=id
-	sink(account_key_path); // $ SPURIOUS: sensitive=id
+	sink(sessionkeypath);
+	sink(account_key_path);
 
-	sink(ms.get_certificate_url()); // $ SPURIOUS: sensitive=certificate
-	sink(ms.get_certificate_file()); // $ SPURIOUS: sensitive=certificate
+	sink(ms.get_certificate_url());
+	sink(ms.get_certificate_file());
 
 	sink(get_public_key());
 	sink(get_next_token());
@@ -156,16 +161,19 @@ impl DeviceInfo {
 	fn test_device_info(&self, other: &DeviceInfo) {
 		// private device info
 
-		sink(&self.api_key); // $ MISSING: sensitive=id
-		sink(&other.api_key); // $ MISSING: sensitive=id
-		sink(&self.deviceApiToken); // $ MISSING: sensitive=id
-		sink(&self.finger_print); // $ MISSING: sensitive=id
-		sink(&self.ip_address); // $ MISSING: sensitive=id
-		sink(self.macaddr12); // $ MISSING: sensitive=id
-		sink(&self.mac_addr); // $ MISSING: sensitive=id
-		sink(self.mac_addr.values); // $ MISSING: sensitive=id
-		sink(self.mac_addr.values[0]); // $ MISSING: sensitive=id
-		sink(&self.networkMacAddress); // $ MISSING: sensitive=id
+		sink(&self.api_key); // $ sensitive=password
+		sink(&other.api_key); // $ sensitive=password
+		sink(&self.deviceApiToken); // $ sensitive=password
+		sink(self.macaddr12); // $ sensitive=private
+		sink(&self.mac_addr); // $ sensitive=private
+		sink(self.mac_addr.values); // $ sensitive=private
+		sink(self.mac_addr.values[0]); // $ sensitive=private
+		sink(&self.networkMacAddress); // $ sensitive=private
+
+		// dubious (may or may not be private device info, depending on context)
+
+		sink(&self.finger_print);
+		sink(&self.ip_address);
 
 		// not private device info
 
@@ -263,26 +271,26 @@ fn test_private_info(
 	sink(info.emergency_contact.as_str()); // $ sensitive=private
 	sink(info.name_of_employer.as_str()); // $ sensitive=private
 
-	sink(&info.gender); // $ MISSING: sensitive=private
-	sink(info.genderString.as_str()); // $ MISSING: sensitive=private
+	sink(&info.gender); // $ sensitive=private
+	sink(info.genderString.as_str()); // $ sensitive=private
 	let sex = "Male";
 	let gender = Gender::Female;
 	let a = Gender::Female;
-	sink(sex); // $ MISSING: sensitive=private
-	sink(gender); // $ MISSING: sensitive=private
+	sink(sex); // $ sensitive=private
+	sink(gender); // $ sensitive=private
 	sink(a); // $ MISSING: sensitive=private
 
-	sink(info.patient_id); // $ MISSING: sensitive=private
-	sink(info.linkedPatientId); // $ MISSING: sensitive=private
-	sink(info.patient_record.as_str()); // $ MISSING: sensitive=private
-	sink(info.patient_record.trim()); // $ MISSING: sensitive=private
+	sink(info.patient_id); // $ sensitive=private
+	sink(info.linkedPatientId); // $ sensitive=private
+	sink(info.patient_record.as_str()); // $ sensitive=private
+	sink(info.patient_record.trim()); // $ sensitive=private
 	sink(&info.medical_notes); // $ sensitive=private
 	sink(info.medical_notes[0].as_str()); // $ sensitive=private
 	for n in info.medical_notes.iter() {
 		sink(n.as_str()); // $ MISSING: sensitive=private
 	}
-	sink(info.confidentialMessage.as_str()); // $ MISSING: sensitive=private
-	sink(info.confidentialMessage.to_lowercase()); // $ MISSING: sensitive=private
+	sink(info.confidentialMessage.as_str()); // $ sensitive=secret
+	sink(info.confidentialMessage.to_lowercase()); // $ sensitive=secret
 
 	sink(info.latitude); // $ sensitive=private
 	let x = info.longitude.unwrap();
@@ -292,12 +300,12 @@ fn test_private_info(
 	sink(info.financials.credit_card_no.as_str()); // $ sensitive=private
 	sink(info.financials.credit_rating); // $ sensitive=private
 	sink(info.financials.user_ccn.as_str()); // $ sensitive=private
-	sink(info.financials.cvv.as_str()); // $ MISSING: sensitive=private
-	sink(info.financials.beneficiary.as_str()); // $ MISSING: sensitive=private
-	sink(info.financials.routing_number); // $ MISSING: sensitive=private
-	sink(info.financials.routingNumberText.as_str()); // $ MISSING: sensitive=private
-	sink(info.financials.iban.as_str()); // $ MISSING: sensitive=private
-	sink(info.financials.iBAN.as_str()); // $ MISSING: sensitive=private
+	sink(info.financials.cvv.as_str()); // $ sensitive=private
+	sink(info.financials.beneficiary.as_str()); // $ sensitive=private
+	sink(info.financials.routing_number); // $ sensitive=private
+	sink(info.financials.routingNumberText.as_str()); // $ sensitive=private
+	sink(info.financials.iban.as_str()); // $ sensitive=private
+	sink(info.financials.iBAN.as_str()); // $ sensitive=private
 
 	sink(ContactDetails::HomePhoneNumber("123".to_string())); // $ sensitive=private
 	sink(ContactDetails::MobileNumber("123".to_string())); // $ sensitive=private
@@ -339,9 +347,24 @@ fn test_private_info(
 	sink(info.financials.harmless.as_str());
 	sink(info.financials.num_accounts); // $ SPURIOUS: sensitive=id
 	sink(info.financials.total_accounts); // $ SPURIOUS: sensitive=id
-	sink(info.financials.accounting); // $ SPURIOUS: sensitive=id
-	sink(info.financials.unaccounted); // $ SPURIOUS: sensitive=id
+	sink(info.financials.accounting);
+	sink(info.financials.unaccounted);
 	sink(info.financials.multiband);
 
 	sink(ContactDetails::FavouriteColor("blue".to_string()));
+}
+
+struct MyArray {
+	data: [i32; 10],
+}
+
+impl MyArray {
+	fn from_trusted_iterator(iter: impl Iterator<Item = i32>) -> Self {
+		MyArray { data: [0; 10] }
+	}
+}
+
+fn test_iterator() {
+	let iter = std::iter::repeat(1).take(10);
+	sink(MyArray::from_trusted_iterator(iter));
 }

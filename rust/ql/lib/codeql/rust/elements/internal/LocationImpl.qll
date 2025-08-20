@@ -133,7 +133,8 @@ module LocationImpl {
      * Holds if this location contains location `that`, meaning that it starts
      * before and ends after it.
      */
-    pragma[inline]
+    bindingset[this, that]
+    pragma[inline_late]
     predicate contains(Location that) { this.startsBefore(that) and this.endsAfter(that) }
 
     /**

@@ -53,6 +53,7 @@ private predicate letElsePanic(BlockExpr be) {
  */
 query predicate deadEnd(CfgImpl::Node node) {
   Consistency::deadEnd(node) and
+  successfullyExtractedFile(node.getLocation().getFile()) and
   not letElsePanic(node.getAstNode())
 }
 

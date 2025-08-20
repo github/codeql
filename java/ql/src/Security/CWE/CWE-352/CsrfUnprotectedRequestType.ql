@@ -15,7 +15,7 @@
 import java
 import semmle.code.java.security.CsrfUnprotectedRequestTypeQuery
 
-query predicate edges(CallPathNode pred, CallPathNode succ) { CallGraph::edges(pred, succ) }
+query predicate edges(CallPathNode pred, CallPathNode succ) { relevantEdge(pred, succ) }
 
 from CallPathNode source, CallPathNode sink
 where unprotectedStateChange(source, sink)

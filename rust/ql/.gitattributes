@@ -258,7 +258,6 @@
 /lib/codeql/rust/elements/internal/ContinueExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CrateConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/DynTraitTypeReprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/DynTraitTypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/EnumConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ExprStmtConstructor.qll linguist-generated
@@ -291,7 +290,6 @@
 /lib/codeql/rust/elements/internal/IfExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ImplConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ImplTraitTypeReprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/ImplTraitTypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/IndexExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/InferTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ItemImpl.qll linguist-generated
@@ -373,6 +371,7 @@
 /lib/codeql/rust/elements/internal/RefTypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RenameConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RenameImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/ResolvableImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RestPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RetTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RetTypeReprImpl.qll linguist-generated
@@ -418,7 +417,6 @@
 /lib/codeql/rust/elements/internal/TupleFieldListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TupleFieldListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TuplePatConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/TuplePatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TupleStructPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TupleTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TupleTypeReprImpl.qll linguist-generated

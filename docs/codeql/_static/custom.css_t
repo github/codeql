@@ -1,7 +1,7 @@
 /*
  * This Sphinx stylesheet adds some customizations to the default Alabaster theme.
- * 
- * The source for the default stylesheet can be found at 
+ *
+ * The source for the default stylesheet can be found at
  * https://github.com/bitprophet/alabaster/blob/master/alabaster/static/alabaster.css_t
  *
  * For the classes provided by the primer, see https://unpkg.com/@primer/css/dist/primer.css
@@ -45,7 +45,7 @@ article ul, article ol {
 }
 
 .SideNav li {
-    margin: 10px 0 10px 0px; 
+    margin: 10px 0 10px 0px;
 }
 
 .SideNav ul, .SideNav ol, .SideNav li {
@@ -80,20 +80,20 @@ a.reference {
 }
 
 a.reference:hover {
-    text-decoration: none; 
+    text-decoration: none;
 }
 
 /* -- ADMONITIONS ---------------------------------------------------------------------------- */
 
-/* 
- * Override default styling for "admonitions". 
+/*
+ * Override default styling for "admonitions".
  * This includes: note, tip, important, and caution.
  *
  */
- 
-div.admonition p.admonition-title { 
+
+div.admonition p.admonition-title {
     /* Make title same size and font as body, but bold. */
-    font-family: Lato, sans-serif; 
+    font-family: Lato, sans-serif;
     font-size: 14px;
     font-weight: bold;
 }
@@ -102,7 +102,7 @@ p.admonition-title:after {
     content: ""; /* Don't insert a colon after the title */
 }
 
-/* 
+/*
  * Don't use yellow for footnote background.
  *
  */
@@ -111,7 +111,7 @@ p.admonition-title:after {
     background-color: unset;
 }
 
-/* 
+/*
  * Add a border with rounded corners around code blocks
  * (as in the QL language spec).
  *
@@ -198,7 +198,7 @@ blockquote.pull-quote {
     background-color: #EEE;
     border: #CCC;
     border-radius: 5px;
-} 
+}
 
 blockquote.pull-quote:first-line {
     font-weight: bold;
@@ -230,6 +230,11 @@ blockquote.pull-quote > :last-child {
     font-family: "monospace";
 }
 
+/* Fixes a bug in "Supported languages and frameworks" where footnotes were incorrectly indented */
+aside .label {
+    border: 0;
+}
+
 /* -- PRINT VIEW ----------------------------------------------------------------------------*/
 
 @media print {
@@ -252,14 +257,14 @@ blockquote.pull-quote > :last-child {
 
 /* -- SMALL SCREEN ------------------------------------------------------------------------------- */
 
-@media screen and (max-width: 875px) { 
+@media screen and (max-width: 875px) {
 
     /* Overrides strange behaviour caused by default styles */
 
     body {
         padding: 0;
-    } 
-    
+    }
+
     div.footer {
         display: block;
     }

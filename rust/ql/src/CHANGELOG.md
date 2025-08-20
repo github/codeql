@@ -1,3 +1,22 @@
+## 0.1.13
+
+### New Queries
+
+* Added a new query, `rust/hard-coded-cryptographic-value`, for detecting use of hardcoded keys, passwords, salts and initialization vectors.
+
+### Minor Analysis Improvements
+
+* Type inference now supports closures, calls to closures, and trait bounds
+  using the `FnOnce` trait.
+* Type inference now supports trait objects, i.e., `dyn Trait` types.
+* Type inference now supports tuple types.
+
+## 0.1.12
+
+### New Queries
+
+* Added a new query, `rust/access-after-lifetime-ended`, for detecting pointer dereferences after the lifetime of the pointed-to object has ended.
+
 ## 0.1.11
 
 ### New Queries

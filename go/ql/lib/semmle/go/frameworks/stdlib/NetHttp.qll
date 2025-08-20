@@ -179,12 +179,11 @@ module NetHttp {
   private class RequestCall extends Http::ClientRequest::Range, DataFlow::CallNode {
     RequestCall() {
       exists(string functionName |
-        (
-          this.getTarget().hasQualifiedName("net/http", functionName)
-          or
-          this.getTarget().(Method).hasQualifiedName("net/http", "Client", functionName)
-        ) and
-        (functionName = "Get" or functionName = "Post" or functionName = "PostForm")
+        this.getTarget().hasQualifiedName("net/http", functionName)
+        or
+        this.getTarget().(Method).hasQualifiedName("net/http", "Client", functionName)
+      |
+        functionName = ["Get", "Head", "Post", "PostForm"]
       )
     }
 

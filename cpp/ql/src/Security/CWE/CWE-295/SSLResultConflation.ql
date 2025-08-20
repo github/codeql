@@ -31,6 +31,14 @@ module VerifyResultConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(GuardCondition guard | guard.getAChild*() = sink.asExpr())
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(GuardCondition guard | result = guard.getLocation() |
+      guard.comparesEq(sink.asExpr(), _, 0, false, _)
+    )
+  }
 }
 
 module VerifyResult = DataFlow::Global<VerifyResultConfig>;

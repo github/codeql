@@ -335,3 +335,242 @@ void mapViewOfFile(HANDLE hMapFile) {
     sink(*buffer); // $ ir
   }
 }
+
+typedef struct _SECURITY_ATTRIBUTES
+{
+  DWORD nLength;
+  LPVOID lpSecurityDescriptor;
+  BOOL bInheritHandle;
+} SECURITY_ATTRIBUTES, *PSECURITY_ATTRIBUTES, *LPSECURITY_ATTRIBUTES;
+
+typedef DWORD (*LPTHREAD_START_ROUTINE)(
+    LPVOID lpThreadParameter);
+
+HANDLE CreateThread(
+    LPSECURITY_ATTRIBUTES lpThreadAttributes,
+    SIZE_T dwStackSize,
+    LPTHREAD_START_ROUTINE lpStartAddress,
+    LPVOID lpParameter,
+    DWORD dwCreationFlags,
+    LPDWORD lpThreadId);
+
+HANDLE CreateRemoteThread(
+  HANDLE                 hProcess,
+  LPSECURITY_ATTRIBUTES  lpThreadAttributes,
+  SIZE_T                 dwStackSize,
+  LPTHREAD_START_ROUTINE lpStartAddress,
+  LPVOID                 lpParameter,
+  DWORD                  dwCreationFlags,
+  LPDWORD                lpThreadId
+);
+
+typedef ULONG_PTR DWORD_PTR;
+
+typedef struct _PROC_THREAD_ATTRIBUTE_ENTRY
+{
+    DWORD_PTR   Attribute;
+    SIZE_T      cbSize;
+    PVOID       lpValue;
+} PROC_THREAD_ATTRIBUTE_ENTRY, *LPPROC_THREAD_ATTRIBUTE_ENTRY;
+ 
+// This structure contains a list of attributes that have been added using UpdateProcThreadAttribute
+typedef struct _PROC_THREAD_ATTRIBUTE_LIST
+{
+    DWORD                          dwFlags;
+    ULONG                          Size;
+    ULONG                          Count;
+    ULONG                          Reserved;  
+    PULONG                         Unknown;
+    PROC_THREAD_ATTRIBUTE_ENTRY    Entries[1];
+} PROC_THREAD_ATTRIBUTE_LIST, *LPPROC_THREAD_ATTRIBUTE_LIST;
+
+HANDLE CreateRemoteThreadEx(
+  HANDLE                       hProcess,
+  LPSECURITY_ATTRIBUTES        lpThreadAttributes,
+  SIZE_T                       dwStackSize,
+  LPTHREAD_START_ROUTINE       lpStartAddress,
+  LPVOID                       lpParameter,
+  DWORD                        dwCreationFlags,
+  LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList,
+  LPDWORD                      lpThreadId
+);
+
+struct S
+{
+  int x;
+};
+
+DWORD ThreadProc1(LPVOID lpParameter)
+{
+  S *s = (S *)lpParameter;
+  sink(s->x); // $ ir
+  return 0;
+}
+
+DWORD ThreadProc2(LPVOID lpParameter)
+{
+  S *s = (S *)lpParameter;
+  sink(s->x); // $ ir
+  return 0;
+}
+
+DWORD ThreadProc3(LPVOID lpParameter)
+{
+  S *s = (S *)lpParameter;
+  sink(s->x); // $ ir
+  return 0;
+}
+
+int source();
+
+void test_create_thread()
+{
+  SECURITY_ATTRIBUTES sa;
+
+  S s;
+  s.x = source();
+
+  {
+  DWORD threadId;
+  HANDLE threadHandle = CreateThread(
+      &sa,
+      0,
+      ThreadProc1,
+      &s,
+      0,
+      &threadId);
+  }
+
+  {
+  DWORD threadId;
+  HANDLE threadHandle = CreateRemoteThread(
+      nullptr,
+      &sa,
+      0,
+      ThreadProc2,
+      &s,
+      0,
+      &threadId);
+  }
+
+  {
+  DWORD threadId;
+  PROC_THREAD_ATTRIBUTE_LIST attrList;
+  HANDLE threadHandle = CreateRemoteThreadEx(
+      nullptr,
+      &sa,
+      0,
+      ThreadProc3,
+      &s,
+      0,
+      &attrList,
+      &threadId);
+  }
+}
+
+using size_t = decltype(sizeof(0));
+
+volatile void * RtlCopyVolatileMemory(
+  volatile void       *Destination,
+  volatile const void *Source,
+  size_t              Length
+);
+
+volatile void * RtlCopyDeviceMemory(
+  volatile void       *Destination,
+  volatile const void *Source,
+  size_t              Length
+);
+
+void RtlCopyMemory(
+   void*       Destination,
+   const void* Source,
+   size_t      Length
+);
+
+using VOID = void;
+
+VOID RtlCopyMemoryNonTemporal(
+  VOID       *Destination,
+  const VOID *Source,
+  SIZE_T     Length
+);
+
+using USHORT = unsigned short;
+using PWSTR = wchar_t*;
+using PCWSTR = const wchar_t*;
+using PCUNICODE_STRING = const struct _UNICODE_STRING*;
+
+typedef struct _UNICODE_STRING {
+  USHORT Length;
+  USHORT MaximumLength;
+  PWSTR  Buffer;
+} UNICODE_STRING, *PUNICODE_STRING;
+
+VOID RtlCopyUnicodeString(
+  PUNICODE_STRING  DestinationString,
+  PCUNICODE_STRING SourceString
+);
+
+void RtlMoveMemory(
+   void*       Destination,
+   const void* Source,
+   size_t      Length
+);
+
+volatile void * RtlMoveVolatileMemory(
+  volatile void       *Destination,
+  volatile const void *Source,
+  size_t              Length
+);
+
+void RtlInitUnicodeString(
+  PUNICODE_STRING DestinationString,
+  PCWSTR          SourceString
+);
+
+void test_copy_and_move_memory() {
+  int x = source();
+
+  {
+    char dest_buffer[1024];
+    RtlCopyVolatileMemory(dest_buffer, &x, sizeof(x));
+    sink(dest_buffer[0]); // $ ir
+  }
+  {
+    char dest_buffer[1024];
+    RtlCopyDeviceMemory(dest_buffer, &x, sizeof(x));
+    sink(dest_buffer[0]); // $ ir
+  }
+  {
+    char dest_buffer[1024];
+    RtlCopyMemory(dest_buffer, &x, sizeof(x));
+    sink(dest_buffer[0]); // $ ir
+  }
+  {
+    char dest_buffer[1024];
+    RtlCopyMemoryNonTemporal(dest_buffer, &x, sizeof(x));
+    sink(dest_buffer[0]); // $ ir
+  }
+  {
+    UNICODE_STRING dest_string;
+    UNICODE_STRING src_string;
+    wchar_t buffer[1024];
+    buffer[0] = source();
+    
+    RtlInitUnicodeString(&src_string, buffer);
+    sink(src_string.Buffer[0]); // $ ir
+    RtlCopyUnicodeString(&dest_string, &src_string);
+    sink(dest_string.Buffer[0]); // $ ir
+  }
+  {
+    char dest_buffer[1024];
+    RtlMoveMemory(dest_buffer, &x, sizeof(x));
+    sink(dest_buffer[0]); // $ ir
+  }
+  {
+    volatile char dest_buffer[1024];
+    RtlMoveVolatileMemory(dest_buffer, &x, sizeof(x));
+    sink(dest_buffer[0]); // $ ir
+  }
+}

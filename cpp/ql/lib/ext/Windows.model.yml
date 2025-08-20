@@ -33,3 +33,17 @@ extensions:
       - ["", "", False, "CommandLineToArgvW", "", "", "Argument[*0]", "ReturnValue[**]", "taint", "manual"]
       # fileapi.h
       - ["", "", False, "ReadFileEx", "", "", "Argument[*3].Field[@hEvent]", "Argument[4].Parameter[*2].Field[@hEvent]", "value", "manual"]
+      # processthreadsapi.h
+      - ["", "", False, "CreateThread", "", "", "Argument[@3]", "Argument[2].Parameter[@0]", "value", "manual"]
+      - ["", "", False, "CreateRemoteThread", "", "", "Argument[@4]", "Argument[3].Parameter[@0]", "value", "manual"]
+      - ["", "", False, "CreateRemoteThreadEx", "", "", "Argument[@4]", "Argument[3].Parameter[@0]", "value", "manual"]
+      # wdm.h
+      - ["", "", False, "RtlCopyVolatileMemory", "", "", "Argument[*@1]", "Argument[*@0]", "value", "manual"]
+      - ["", "", False, "RtlCopyDeviceMemory", "", "", "Argument[*@1]", "Argument[*@0]", "value", "manual"]
+      - ["", "", False, "RtlCopyMemory", "", "", "Argument[*@1]", "Argument[*@0]", "value", "manual"]
+      - ["", "", False, "RtlCopyMemoryNonTemporal", "", "", "Argument[*@1]", "Argument[*@0]", "value", "manual"]
+      - ["", "", False, "RtlCopyUnicodeString", "", "", "Argument[*1].Field[*Buffer]", "Argument[*0].Field[*Buffer]", "value", "manual"]
+      - ["", "", False, "RtlMoveMemory", "", "", "Argument[*@1]", "Argument[*@0]", "value", "manual"]
+      - ["", "", False, "RtlMoveVolatileMemory", "", "", "Argument[*@1]", "Argument[*@0]", "value", "manual"]
+      # winternl.h
+      - ["", "", False, "RtlInitUnicodeString", "", "", "Argument[*1]", "Argument[*0].Field[*Buffer]", "value", "manual"]

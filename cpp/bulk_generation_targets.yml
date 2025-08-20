@@ -2,6 +2,9 @@ language: cpp
 strategy: dca
 destination: cpp/ql/lib/ext/generated
 targets:
+- name: glibc
+  with-sinks: false
+  with-sources: false
 - name: zlib
   with-sinks: false
   with-sources: false

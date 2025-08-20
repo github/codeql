@@ -725,6 +725,20 @@ class UninitializedInstruction extends VariableInstruction {
    * Gets the variable that is uninitialized.
    */
   final Language::Variable getLocalVariable() { result = var.(IRUserVariable).getVariable() }
+
+  /**
+   * Gets the operand that provides the address of the location to which the
+   * uninitialized value will be stored.
+   */
+  final AddressOperand getDestinationAddressOperand() { result = this.getAnOperand() }
+
+  /**
+   * Gets the instruction whose result provides the address of the location to
+   * which the value will be stored, if an exact definition is available.
+   */
+  final Instruction getDestinationAddress() {
+    result = this.getDestinationAddressOperand().getDef()
+  }
 }
 
 /**
@@ -1591,6 +1605,13 @@ class CompareGEInstruction extends RelationalInstruction {
 }
 
 /**
+ * An instruction that represents a three-way comparison operator.
+ */
+class SpaceshipInstruction extends BinaryInstruction {
+  SpaceshipInstruction() { this.getOpcode() instanceof Opcode::Spaceship }
+}
+
+/**
  * An instruction that branches to one of multiple successor instructions based on the value of an
  * integer operand.
  *
@@ -2278,4 +2299,27 @@ class NextVarArgInstruction extends UnaryInstruction {
  */
 class NewObjInstruction extends Instruction {
   NewObjInstruction() { this.getOpcode() instanceof Opcode::NewObj }
+}
+
+/**
+ * An instruction that returns the type info for its operand.
+ */
+class TypeidInstruction extends Instruction {
+  TypeidInstruction() { this.getOpcode() instanceof Opcode::Typeid }
+}
+
+/**
+ * An instruction that returns the type info for its operand, where the
+ * operand occurs as an expression in the AST.
+ */
+class TypeidExprInstruction extends TypeidInstruction, UnaryInstruction {
+  TypeidExprInstruction() { this.getOpcode() instanceof Opcode::TypeidExpr }
+}
+
+/**
+ * An instruction that returns the type info for its operand, where the
+ * operand occurs as a type in the AST.
+ */
+class TypeidTypeInstruction extends TypeidInstruction {
+  TypeidTypeInstruction() { this.getOpcode() instanceof Opcode::TypeidType }
 }

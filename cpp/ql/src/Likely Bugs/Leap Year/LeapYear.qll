@@ -215,6 +215,10 @@ private module LeapYearCheckConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(ChecksForLeapYearFunctionCall fc | sink.asExpr() = fc.getAnArgument())
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively in UncheckedLeapYearAfterYearModification.ql
+  }
 }
 
 module LeapYearCheckFlow = DataFlow::Global<LeapYearCheckConfig>;
@@ -285,6 +289,14 @@ private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::C
       aexpr.getLValue() = fa
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    result = source.asExpr().getLocation()
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) { result = sink.asExpr().getLocation() }
 }
 
 module PossibleYearArithmeticOperationCheckFlow =

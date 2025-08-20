@@ -1,6 +1,9 @@
+package unsafedeserialization;
+
 import java.io.*;
 import java.net.Socket;
 import java.beans.XMLDecoder;
+import com.example.MyObjectInput;
 import com.thoughtworks.xstream.XStream;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
@@ -10,13 +13,23 @@ import org.yaml.snakeyaml.Yaml;
 import org.nibblesec.tools.SerialKiller;
 
 public class A {
-  public Object deserialize1(Socket sock) throws java.io.IOException, ClassNotFoundException {
+  public Object deserialize1a(Socket sock) throws java.io.IOException, ClassNotFoundException {
     InputStream inputStream = sock.getInputStream(); // $ Source
     ObjectInputStream in = new ObjectInputStream(inputStream);
     return in.readObject(); // $ Alert
   }
 
-  public Object deserialize2(Socket sock) throws java.io.IOException, ClassNotFoundException {
+  public Object deserialize2() throws java.io.IOException, ClassNotFoundException {
+    ObjectInput objectInput = A.getTaintedObjectInput(); // $ Source
+    return objectInput.readObject(); // $ Alert
+  }
+
+  public Object deserialize3() throws java.io.IOException, ClassNotFoundException {
+    MyObjectInput objectInput = A.getTaintedMyObjectInput(); // $ Source
+    return objectInput.readObject(); // $ Alert
+  }
+
+  public Object deserialize4(Socket sock) throws java.io.IOException, ClassNotFoundException {
     InputStream inputStream = sock.getInputStream(); // $ Source
     ObjectInputStream in = new ObjectInputStream(inputStream);
     return in.readUnshared(); // $ Alert
@@ -28,20 +41,20 @@ public class A {
     return in.readUnshared(); // OK
   }
 
-  public Object deserialize3(Socket sock) throws java.io.IOException {
+  public Object deserialize5(Socket sock) throws java.io.IOException {
     InputStream inputStream = sock.getInputStream(); // $ Source
     XMLDecoder d = new XMLDecoder(inputStream);
     return d.readObject(); // $ Alert
   }
 
-  public Object deserialize4(Socket sock) throws java.io.IOException {
+  public Object deserialize6(Socket sock) throws java.io.IOException {
     XStream xs = new XStream();
     InputStream inputStream = sock.getInputStream(); // $ Source
     Reader reader = new InputStreamReader(inputStream);
     return xs.fromXML(reader); // $ Alert
   }
 
-  public void deserialize5(Socket sock) throws java.io.IOException {
+  public void deserialize7(Socket sock) throws java.io.IOException {
     Kryo kryo = new Kryo();
     Input input = new Input(sock.getInputStream()); // $ Source
     A a1 = kryo.readObject(input, A.class); // $ Alert
@@ -56,7 +69,7 @@ public class A {
     return kryo;
   }
 
-  public void deserialize6(Socket sock) throws java.io.IOException {
+  public void deserialize8(Socket sock) throws java.io.IOException {
     Kryo kryo = getSafeKryo();
     Input input = new Input(sock.getInputStream());
     Object o = kryo.readClassAndObject(input); // OK
@@ -101,4 +114,8 @@ public class A {
     A o4 = yaml.loadAs(input, A.class); // $ Alert
     A o5 = yaml.loadAs(new InputStreamReader(input), A.class); // $ Alert
   }
+
+  static ObjectInput getTaintedObjectInput() { return null; }
+
+  static MyObjectInput getTaintedMyObjectInput() { return null; }
 }
