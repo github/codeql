@@ -956,7 +956,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           not exists(countConstraintImplementations(type, constraint)) and
           conditionSatisfiesConstraintTypeAt(abs, sub, constraintMention, _, _) and
           resolveTypeMentionRoot(sub) = abs.getATypeParameter() and
-          constraint = resolveTypeMentionRoot(constraintMention)
+          constraint = resolveTypeMentionRoot(constraintMention) and
+          none()
           or
           countConstraintImplementations(type, constraint) > 0 and
           rootTypesSatisfaction(type, constraint, abs, sub, constraintMention) and
