@@ -421,10 +421,40 @@ fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
 
     for entry in fs::read_dir("directory")? {
         let e = entry?;
+
+        let path = e.path(); // $ Alert[rust/summary/taint-sources]
+        sink(path.clone()); // $ hasTaintFlow
+        sink(path.clone().as_path()); // $ hasTaintFlow
+        sink(path.clone().into_os_string()); // $ MISSING: hasTaintFlow
+        sink(std::path::PathBuf::from(path.clone().into_boxed_path())); // $ MISSING: hasTaintFlow
+        sink(path.clone().as_os_str()); // $ MISSING: hasTaintFlow
+        sink(path.clone().as_mut_os_str()); // $ MISSING: hasTaintFlow
+        sink(path.to_str()); // $ MISSING: hasTaintFlow
+        sink(path.to_path_buf()); // $ MISSING: hasTaintFlow
+        sink(path.file_name().unwrap()); // $ MISSING: hasTaintFlow
+        sink(path.extension().unwrap()); // $ MISSING: hasTaintFlow
+        sink(path.canonicalize().unwrap()); // $ MISSING: hasTaintFlow
+        sink(path); // $ hasTaintFlow
+
+        let file_name = e.file_name(); // $ Alert[rust/summary/taint-sources]
+        sink(file_name.clone()); // $ hasTaintFlow
+        sink(file_name.clone().into_string().unwrap()); // $ MISSING: hasTaintFlow
+        sink(file_name.to_str().unwrap()); // $ MISSING: hasTaintFlow
+        sink(file_name.to_string_lossy().to_mut()); // $ MISSING: hasTaintFlow
+        sink(file_name.clone().as_encoded_bytes()); // $ MISSING: hasTaintFlow
+        sink(file_name); // $ hasTaintFlow
+    }
+    for entry in std::path::Path::new("directory").read_dir()? {
+        let e = entry?;
+
         let path = e.path(); // $ Alert[rust/summary/taint-sources]
         let file_name = e.file_name(); // $ Alert[rust/summary/taint-sources]
-        sink(path); // $ hasTaintFlow
-        sink(file_name); // $ hasTaintFlow
+    }
+    for entry in std::path::PathBuf::from("directory").read_dir()? {
+        let e = entry?;
+
+        let path = e.path(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let file_name = e.file_name(); // $ MISSING: Alert[rust/summary/taint-sources]
     }
 
     {
