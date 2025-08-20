@@ -99,6 +99,26 @@ fn tainted_path_handler_folder_almost_good3(
     fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: Alert[rust/path-injection]=remote5
 }
 
+async fn more_simple_cases() {
+    let path1 = std::env::args().nth(1).unwrap(); // $ Source=arg1
+    let _ = std::fs::File::open(path1.clone()); // $ path-injection-sink Alert[rust/path-injection]=arg1
+
+    let path2 = std::fs::canonicalize(path1.clone()).unwrap();
+    let _ = std::fs::File::open(path2); // $ path-injection-sink MISSING: Alert[rust/path-injection]=arg1
+
+    let path3 = tokio::fs::canonicalize(path1.clone()).await.unwrap();
+    let _ = tokio::fs::File::open(path3); // $ MISSING: path-injection-sink Alert[rust/path-injection]=arg1
+
+    let path4 = async_std::fs::canonicalize(path1.clone()).await.unwrap();
+    let _ = async_std::fs::File::open(path4); // $ MISSING: path-injection-sink Alert[rust/path-injection]=arg1
+
+    let path5 = std::path::Path::new(&path1);
+    let _ = std::fs::File::open(path5); // $ path-injection-sink MISSING: Alert[rust/path-injection]=arg1
+
+    let path6 = path5.canonicalize().unwrap();
+    let _ = std::fs::File::open(path6); // $ path-injection-sink MISSING: Alert[rust/path-injection]=arg1
+}
+
 fn sinks(path1: &Path, path2: &Path) {
     let _ = std::fs::copy(path1, path2); // $ path-injection-sink
     let _ = std::fs::create_dir(path1); // $ path-injection-sink

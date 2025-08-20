@@ -1,15 +1,28 @@
 #select
 | src/main.rs:11:5:11:22 | ...::read_to_string | src/main.rs:7:11:7:19 | file_name | src/main.rs:11:5:11:22 | ...::read_to_string | This path depends on a $@. | src/main.rs:7:11:7:19 | file_name | user-provided value |
+| src/main.rs:104:13:104:31 | ...::open | src/main.rs:103:17:103:30 | ...::args | src/main.rs:104:13:104:31 | ...::open | This path depends on a $@. | src/main.rs:103:17:103:30 | ...::args | user-provided value |
 edges
 | src/main.rs:7:11:7:19 | file_name | src/main.rs:9:35:9:43 | file_name | provenance |  |
 | src/main.rs:9:9:9:17 | file_path | src/main.rs:11:24:11:32 | file_path | provenance |  |
 | src/main.rs:9:21:9:44 | ...::from(...) | src/main.rs:9:9:9:17 | file_path | provenance |  |
-| src/main.rs:9:35:9:43 | file_name | src/main.rs:9:21:9:44 | ...::from(...) | provenance | MaD:2 |
-| src/main.rs:9:35:9:43 | file_name | src/main.rs:9:21:9:44 | ...::from(...) | provenance | MaD:2 |
-| src/main.rs:11:24:11:32 | file_path | src/main.rs:11:5:11:22 | ...::read_to_string | provenance | MaD:1 Sink:MaD:1 |
+| src/main.rs:9:35:9:43 | file_name | src/main.rs:9:21:9:44 | ...::from(...) | provenance | MaD:7 |
+| src/main.rs:9:35:9:43 | file_name | src/main.rs:9:21:9:44 | ...::from(...) | provenance | MaD:7 |
+| src/main.rs:11:24:11:32 | file_path | src/main.rs:11:5:11:22 | ...::read_to_string | provenance | MaD:2 Sink:MaD:2 |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:104:33:104:37 | path1 | provenance |  |
+| src/main.rs:103:17:103:30 | ...::args | src/main.rs:103:17:103:32 | ...::args(...) [element] | provenance | Src:MaD:3  |
+| src/main.rs:103:17:103:32 | ...::args(...) [element] | src/main.rs:103:17:103:39 | ... .nth(...) [Some] | provenance | MaD:5 |
+| src/main.rs:103:17:103:39 | ... .nth(...) [Some] | src/main.rs:103:17:103:48 | ... .unwrap() | provenance | MaD:6 |
+| src/main.rs:103:17:103:48 | ... .unwrap() | src/main.rs:103:9:103:13 | path1 | provenance |  |
+| src/main.rs:104:33:104:37 | path1 | src/main.rs:104:33:104:45 | path1.clone() | provenance | MaD:4 |
+| src/main.rs:104:33:104:45 | path1.clone() | src/main.rs:104:13:104:31 | ...::open | provenance | MaD:1 Sink:MaD:1 |
 models
-| 1 | Sink: std::fs::read_to_string; Argument[0]; path-injection |
-| 2 | Summary: <std::path::PathBuf as core::convert::From>::from; Argument[0]; ReturnValue; taint |
+| 1 | Sink: <std::fs::File>::open; Argument[0]; path-injection |
+| 2 | Sink: std::fs::read_to_string; Argument[0]; path-injection |
+| 3 | Source: std::env::args; ReturnValue.Element; commandargs |
+| 4 | Summary: <_ as core::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 5 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 6 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
+| 7 | Summary: <std::path::PathBuf as core::convert::From>::from; Argument[0]; ReturnValue; taint |
 nodes
 | src/main.rs:7:11:7:19 | file_name | semmle.label | file_name |
 | src/main.rs:9:9:9:17 | file_path | semmle.label | file_path |
@@ -17,4 +30,12 @@ nodes
 | src/main.rs:9:35:9:43 | file_name | semmle.label | file_name |
 | src/main.rs:11:5:11:22 | ...::read_to_string | semmle.label | ...::read_to_string |
 | src/main.rs:11:24:11:32 | file_path | semmle.label | file_path |
+| src/main.rs:103:9:103:13 | path1 | semmle.label | path1 |
+| src/main.rs:103:17:103:30 | ...::args | semmle.label | ...::args |
+| src/main.rs:103:17:103:32 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| src/main.rs:103:17:103:39 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| src/main.rs:103:17:103:48 | ... .unwrap() | semmle.label | ... .unwrap() |
+| src/main.rs:104:13:104:31 | ...::open | semmle.label | ...::open |
+| src/main.rs:104:33:104:37 | path1 | semmle.label | path1 |
+| src/main.rs:104:33:104:45 | path1.clone() | semmle.label | path1.clone() |
 subpaths
