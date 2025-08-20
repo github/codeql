@@ -6,7 +6,6 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.GCMParameterSpec;
 import java.security.*;
 import java.util.Base64;
-import java.util.random.*;
 import java.util.Properties;
 import java.util.Random;
 import java.io.FileInputStream;
