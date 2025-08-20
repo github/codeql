@@ -105,7 +105,7 @@ private predicate ignoreConstructor(Expr e) {
  * constructs an object containing at least one virtual function.
  * - a node which represents a derived-to-base instruction that converts from `c`.
  */
-private predicate lambdaSourceImpl(RelevantNode n, Class c) {
+private predicate qualifierSourceImpl(RelevantNode n, Class c) {
   // Object construction
   exists(CallInstruction call, ThisArgumentOperand qualifier, Call e |
     qualifier = call.getThisArgumentOperand() and
@@ -131,14 +131,14 @@ private predicate lambdaSourceImpl(RelevantNode n, Class c) {
   )
 }
 
-private module TrackVirtualDispatch<methodDispatchSig/1 lambdaDispatch0> {
+private module TrackVirtualDispatch<methodDispatchSig/1 virtualDispatch0> {
   /**
    * Gets a possible runtime target of `c` using both static call-target
-   * information, and call-target resolution from `lambdaDispatch0`.
+   * information, and call-target resolution from `virtualDispatch0`.
    */
   private DataFlowPrivate::DataFlowCallable dispatch(DataFlowPrivate::DataFlowCall c) {
     result = nonVirtualDispatch(c) or
-    result = lambdaDispatch0(c)
+    result = virtualDispatch0(c)
   }
 
   private module TtInput implements TypeTrackingInput<Location> {
@@ -156,7 +156,7 @@ private module TrackVirtualDispatch<methodDispatchSig/1 lambdaDispatch0> {
         or
         DataFlowPrivate::jumpStep(_, this)
         or
-        lambdaSourceImpl(this, _)
+        qualifierSourceImpl(this, _)
       }
     }
 
@@ -220,21 +220,23 @@ private module TrackVirtualDispatch<methodDispatchSig/1 lambdaDispatch0> {
     predicate hasFeatureBacktrackStoreTarget() { none() }
   }
 
-  private predicate lambdaSource(RelevantNode n) { lambdaSourceImpl(n, _) }
+  private predicate qualifierSource(RelevantNode n) { qualifierSourceImpl(n, _) }
 
   /**
    * Holds if `n` is the qualifier of `call` which targets the virtual member
    * function `mf`.
    */
-  private predicate lambdaSinkImpl(RelevantNode n, CallInstruction call, MemberFunction mf) {
+  private predicate qualifierOfVirtualCallImpl(
+    RelevantNode n, CallInstruction call, MemberFunction mf
+  ) {
     n.asOperand() = call.getThisArgumentOperand() and
     call.getStaticCallTarget() = mf and
     mf.isVirtual()
   }
 
-  private predicate lambdaSink(RelevantNode n) { lambdaSinkImpl(n, _, _) }
+  private predicate qualifierOfVirtualCall(RelevantNode n) { qualifierOfVirtualCallImpl(n, _, _) }
 
-  private import TypeTracking<Location, TtInput>::TypeTrack<lambdaSource/1>::Graph<lambdaSink/1>
+  private import TypeTracking<Location, TtInput>::TypeTrack<qualifierSource/1>::Graph<qualifierOfVirtualCall/1>
 
   private predicate edgePlus(PathNode n1, PathNode n2) = fastTC(edges/2)(n1, n2)
 
@@ -243,7 +245,7 @@ private module TrackVirtualDispatch<methodDispatchSig/1 lambdaDispatch0> {
    * qualifier has runtime type `c`.
    */
   private MemberFunction mostSpecific(MemberFunction mf, Class c) {
-    lambdaSinkImpl(_, _, mf) and
+    qualifierOfVirtualCallImpl(_, _, mf) and
     mf.getAnOverridingFunction*() = result and
     (
       result.getDeclaringType() = c
@@ -267,8 +269,8 @@ private module TrackVirtualDispatch<methodDispatchSig/1 lambdaDispatch0> {
     DataFlowPrivate::DataFlowCall call
   ) {
     exists(Class derived, MemberFunction mf |
-      lambdaSourceImpl(p1.getNode(), derived) and
-      lambdaSinkImpl(p2.getNode(), call.asCallInstruction(), mf) and
+      qualifierSourceImpl(p1.getNode(), derived) and
+      qualifierOfVirtualCallImpl(p2.getNode(), call.asCallInstruction(), mf) and
       p1.isSource() and
       p2.isSink() and
       callable.asSourceCallable() = mostSpecific(mf, derived)
@@ -276,7 +278,7 @@ private module TrackVirtualDispatch<methodDispatchSig/1 lambdaDispatch0> {
   }
 
   /** Gets a possible run-time target of `call`. */
-  DataFlowPrivate::DataFlowCallable lambdaDispatch(DataFlowPrivate::DataFlowCall call) {
+  DataFlowPrivate::DataFlowCallable virtualDispatch(DataFlowPrivate::DataFlowCall call) {
     exists(PathNode p1, PathNode p2 | p1 = p2 or edgePlus(p1, p2) | pairCand(p1, p2, result, call))
   }
 }
@@ -285,32 +287,32 @@ private DataFlowPrivate::DataFlowCallable noDisp(DataFlowPrivate::DataFlowCall c
 
 pragma[nomagic]
 private DataFlowPrivate::DataFlowCallable d1(DataFlowPrivate::DataFlowCall call) {
-  result = TrackVirtualDispatch<noDisp/1>::lambdaDispatch(call)
+  result = TrackVirtualDispatch<noDisp/1>::virtualDispatch(call)
 }
 
 pragma[nomagic]
 private DataFlowPrivate::DataFlowCallable d2(DataFlowPrivate::DataFlowCall call) {
-  result = TrackVirtualDispatch<d1/1>::lambdaDispatch(call)
+  result = TrackVirtualDispatch<d1/1>::virtualDispatch(call)
 }
 
 pragma[nomagic]
 private DataFlowPrivate::DataFlowCallable d3(DataFlowPrivate::DataFlowCall call) {
-  result = TrackVirtualDispatch<d2/1>::lambdaDispatch(call)
+  result = TrackVirtualDispatch<d2/1>::virtualDispatch(call)
 }
 
 pragma[nomagic]
 private DataFlowPrivate::DataFlowCallable d4(DataFlowPrivate::DataFlowCall call) {
-  result = TrackVirtualDispatch<d3/1>::lambdaDispatch(call)
+  result = TrackVirtualDispatch<d3/1>::virtualDispatch(call)
 }
 
 pragma[nomagic]
 private DataFlowPrivate::DataFlowCallable d5(DataFlowPrivate::DataFlowCall call) {
-  result = TrackVirtualDispatch<d4/1>::lambdaDispatch(call)
+  result = TrackVirtualDispatch<d4/1>::virtualDispatch(call)
 }
 
 pragma[nomagic]
 private DataFlowPrivate::DataFlowCallable d6(DataFlowPrivate::DataFlowCall call) {
-  result = TrackVirtualDispatch<d5/1>::lambdaDispatch(call)
+  result = TrackVirtualDispatch<d5/1>::virtualDispatch(call)
 }
 
 /** Gets a function that might be called by `call`. */
