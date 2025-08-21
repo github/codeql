@@ -795,7 +795,7 @@ class FinalGlobalValue extends Node, TFinalGlobalValue {
   override DataFlowType getType() {
     exists(int indirectionIndex |
       indirectionIndex = globalUse.getIndirectionIndex() and
-      result = getTypeImpl(globalUse.getUnderlyingType(), indirectionIndex - 1)
+      result = getTypeImpl(globalUse.getUnderlyingType(), indirectionIndex)
     )
   }
 
