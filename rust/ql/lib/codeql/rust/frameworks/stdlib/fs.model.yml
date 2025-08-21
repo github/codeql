@@ -14,12 +14,10 @@ extensions:
       pack: codeql/rust-all
       extensible: sinkModel
     data:
-      - ["std::fs::copy", "Argument[0]", "path-injection", "manual"]
-      - ["std::fs::copy", "Argument[1]", "path-injection", "manual"]
+      - ["std::fs::copy", "Argument[0,1]", "path-injection", "manual"]
       - ["std::fs::create_dir", "Argument[0]", "path-injection", "manual"]
       - ["std::fs::create_dir_all", "Argument[0]", "path-injection", "manual"]
-      - ["std::fs::hard_link", "Argument[0]", "path-injection", "manual"]
-      - ["std::fs::hard_link", "Argument[1]", "path-injection", "manual"]
+      - ["std::fs::hard_link", "Argument[0,1]", "path-injection", "manual"]
       - ["std::fs::metadata", "Argument[0]", "path-injection", "manual"]
       - ["std::fs::read", "Argument[0]", "path-injection", "manual"]
       - ["std::fs::read_dir", "Argument[0]", "path-injection", "manual"]
@@ -28,11 +26,9 @@ extensions:
       - ["std::fs::remove_dir", "Argument[0]", "path-injection", "manual"]
       - ["std::fs::remove_dir_all", "Argument[0]", "path-injection", "manual"]
       - ["std::fs::remove_file", "Argument[0]", "path-injection", "manual"]
-      - ["std::fs::rename", "Argument[0]", "path-injection", "manual"]
-      - ["std::fs::rename", "Argument[1]", "path-injection", "manual"]
+      - ["std::fs::rename", "Argument[0,1]", "path-injection", "manual"]
       - ["std::fs::set_permissions", "Argument[0]", "path-injection", "manual"]
-      - ["std::fs::soft_link", "Argument[0]", "path-injection", "manual"]
-      - ["std::fs::soft_link", "Argument[1]", "path-injection", "manual"]
+      - ["std::fs::soft_link", "Argument[0,1]", "path-injection", "manual"]
       - ["std::fs::symlink_metadata", "Argument[0]", "path-injection", "manual"]
       - ["std::fs::write", "Argument[0]", "path-injection", "manual"]
       - ["<std::fs::DirBuilder>::create", "Argument[0]", "path-injection", "manual"]
