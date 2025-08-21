@@ -40,3 +40,6 @@ Test.java:
 #   22|             -1: [TypeAccess] IO
 #   22|             0: [StringLiteral] "Static access test"
 #   25|     11: [Class] NotCompact
+#   27|       2: [Method] methodNotCompact
+#   27|         3: [TypeAccess] void
+#   27|         5: [BlockStmt] { ... }

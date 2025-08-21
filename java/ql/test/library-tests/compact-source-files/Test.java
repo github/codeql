@@ -24,4 +24,6 @@ static void testStaticAccess() {
 
 class NotCompact {
 //Test explict class
+    void methodNotCompact() {
+    }
 }
