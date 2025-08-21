@@ -9,6 +9,7 @@ extensions:
       - ["<tokio::fs::read_dir::DirEntry>::path", "ReturnValue", "file", "manual"]
       - ["<tokio::fs::read_dir::DirEntry>::file_name", "ReturnValue", "file", "manual"]
       - ["<tokio::fs::file::File>::open", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
+      - ["<tokio::fs::open_options::OpenOptions>::open", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sinkModel
@@ -37,6 +38,7 @@ extensions:
       - ["<tokio::fs::file::File>::create", "Argument[0]", "path-injection", "manual"]
       - ["<tokio::fs::file::File>::create_new", "Argument[0]", "path-injection", "manual"]
       - ["<tokio::fs::file::File>::open", "Argument[0]", "path-injection", "manual"]
+      - ["<tokio::fs::open_options::OpenOptions>::open", "Argument[0]", "path-injection", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: summaryModel

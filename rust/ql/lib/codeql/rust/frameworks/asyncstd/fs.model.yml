@@ -9,6 +9,7 @@ extensions:
       - ["<async_std::fs::dir_entry::DirEntry>::path", "ReturnValue", "file", "manual"]
       - ["<async_std::fs::dir_entry::DirEntry>::file_name", "ReturnValue", "file", "manual"]
       - ["<async_std::fs::file::File>::open", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
+      - ["<async_std::fs::open_options::OpenOptions>::open", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sinkModel
@@ -32,6 +33,7 @@ extensions:
       - ["<async_std::fs::dir_builder::DirBuilder>::create", "Argument[0]", "path-injection", "manual"]
       - ["<async_std::fs::file::File>::create", "Argument[0]", "path-injection", "manual"]
       - ["<async_std::fs::file::File>::open", "Argument[0]", "path-injection", "manual"]
+      - ["<async_std::fs::open_options::OpenOptions>::open", "Argument[0]", "path-injection", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: summaryModel
