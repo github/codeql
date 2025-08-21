@@ -5,7 +5,6 @@
  */
 
 import javascript
-private import semmle.javascript.frameworks.Cors
 
 module CorsMisconfigurationForCredentials {
   /**
@@ -88,46 +87,11 @@ module CorsMisconfigurationForCredentials {
   }
 
   /**
-   * The value of cors origin when initializing the application.
+   * The value of cors origin configuration.
    */
-  class CorsApolloServer extends Sink, DataFlow::ValueNode {
-    CorsApolloServer() {
-      exists(API::NewNode agql |
-        agql = ModelOutput::getATypeNode("ApolloServer").getAnInstantiation() and
-        this =
-          agql.getOptionArgument(0, "cors").getALocalSource().getAPropertyWrite("origin").getRhs()
-      )
-    }
+  class CorsOriginSink extends Sink, DataFlow::ValueNode {
+    CorsOriginSink() { this = ModelOutput::getASinkNode("cors-misconfiguration").asSink() }
 
     override Http::HeaderDefinition getCredentialsHeader() { none() }
-  }
-
-  /**
-   * The value of cors origin when initializing the application.
-   */
-  class ExpressCors extends Sink, DataFlow::ValueNode {
-    ExpressCors() {
-      exists(CorsConfiguration config | this = config.getCorsConfiguration().getOrigin())
-    }
-
-    override Http::HeaderDefinition getCredentialsHeader() { none() }
-  }
-
-  /**
-   * An express route setup configured with the `cors` package.
-   */
-  class CorsConfiguration extends DataFlow::MethodCallNode {
-    Cors::Cors corsConfig;
-
-    CorsConfiguration() {
-      exists(Express::RouteSetup setup | this = setup |
-        if setup.isUseCall()
-        then corsConfig = setup.getArgument(0)
-        else corsConfig = setup.getArgument(any(int i | i > 0))
-      )
-    }
-
-    /** Gets the expression that configures `cors` on this route setup. */
-    Cors::Cors getCorsConfiguration() { result = corsConfig }
   }
 }
