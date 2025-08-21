@@ -24,6 +24,8 @@ module CommandInjection {
     }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /**
@@ -80,6 +82,8 @@ module CommandInjection {
       node instanceof Sanitizer or
       node = any(ArgumentArrayWithDoubleDash array).getASanitizedElement()
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /**

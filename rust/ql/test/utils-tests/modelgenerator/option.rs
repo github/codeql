@@ -160,7 +160,7 @@ impl<T> MyOption<T> {
     }
 
     // summary=<test::option::MyOption>::inspect;Argument[self];ReturnValue;value;dfc-generated
-    // MISSING: Due to `ref` pattern.
+    // summary=<test::option::MyOption>::inspect;Argument[self].Field[test::option::MyOption::MySome(0)];Argument[0].Parameter[0].Reference;value;dfc-generated
     pub fn inspect<F: FnOnce(&T)>(self, f: F) -> Self {
         if let MySome(ref x) = self {
             f(x);
@@ -253,7 +253,8 @@ impl<T> MyOption<T> {
         }
     }
 
-    // MISSING: Reference passed to predicate
+    // summary=<test::option::MyOption>::filter;Argument[self].Field[test::option::MyOption::MySome(0)];Argument[0].Parameter[0].Reference;value;dfc-generated
+    // summary=<test::option::MyOption>::filter;Argument[self].Field[test::option::MyOption::MySome(0)];ReturnValue.Field[test::option::MyOption::MySome(0)];value;dfc-generated
     pub fn filter<P>(self, predicate: P) -> Self
     where
         P: FnOnce(&T) -> bool,

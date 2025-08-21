@@ -408,4 +408,32 @@ public class B {
       x.hashCode(); // NPE
     }
   }
+
+  public void corrCondLoop1(boolean a[]) {
+    Object x = new Object();
+    for (int i = 0; i < a.length; i++) {
+      boolean b = a[i];
+      if (b) {
+        x = null;
+      }
+      if (!b) {
+        x.hashCode(); // NPE - false negative
+      }
+      // flow can loop around from one iteration to the next
+    }
+  }
+
+  public void corrCondLoop2(boolean a[]) {
+    for (int i = 0; i < a.length; i++) {
+      // x is local to the loop iteration and thus cannot loop around and reach the sink
+      Object x = new Object();
+      boolean b = a[i];
+      if (b) {
+        x = null;
+      }
+      if (!b) {
+        x.hashCode(); // OK
+      }
+    }
+  }
 }

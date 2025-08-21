@@ -7,8 +7,7 @@ private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.internal.CachedStages
 
 private predicate isPostOrder(AstNode n) {
-  n instanceof Expr and
-  not n instanceof LetExpr
+  n instanceof Expr
   or
   n instanceof OrPat
   or

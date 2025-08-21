@@ -22,6 +22,14 @@ module ReflectedXss {
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
+
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.getLocation()
+      or
+      result = sink.(SharedXss::Sink).getAssociatedLoc().getLocation()
+    }
   }
 
   /** Tracks taint flow from untrusted data to XSS attack vectors. */

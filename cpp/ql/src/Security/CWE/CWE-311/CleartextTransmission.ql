@@ -245,6 +245,14 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
     // sources to not get path duplication.
     isSource(node)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(NetworkSendRecv networkSendRecv | result = networkSendRecv.getLocation() |
+      isSinkSendRecv(sink, networkSendRecv)
+    )
+  }
 }
 
 module FromSensitiveFlow = TaintTracking::Global<FromSensitiveConfig>;
@@ -266,6 +274,10 @@ module ToEncryptionConfig implements DataFlow::ConfigSig {
     // sources to not get path duplication.
     isSource(node)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively
+  }
 }
 
 module ToEncryptionFlow = TaintTracking::Global<ToEncryptionConfig>;
@@ -280,6 +292,10 @@ module FromEncryptionConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively
   }
 }
 

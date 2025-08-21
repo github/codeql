@@ -22,26 +22,15 @@ import codeql.actions.security.ControlChecks
 from EnvVarInjectionFlow::PathNode source, EnvVarInjectionFlow::PathNode sink, Event event
 where
   EnvVarInjectionFlow::flowPath(source, sink) and
-  inPrivilegedContext(sink.getNode().asExpr(), event) and
   // exclude paths to file read sinks from non-artifact sources
   (
     // source is text
     not source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
-    not exists(ControlCheck check |
-      check.protects(sink.getNode().asExpr(), event, ["envvar-injection", "code-injection"])
-    )
+    event = getRelevantNonArtifactEventInPrivilegedContext(sink.getNode())
     or
     // source is an artifact or a file from an untrusted checkout
     source.getNode().(RemoteFlowSource).getSourceType() = "artifact" and
-    not exists(ControlCheck check |
-      check
-          .protects(sink.getNode().asExpr(), event,
-            ["envvar-injection", "untrusted-checkout", "artifact-poisoning"])
-    ) and
-    (
-      sink.getNode() instanceof EnvVarInjectionFromFileReadSink or
-      madSink(sink.getNode(), "envvar-injection")
-    )
+    event = getRelevantArtifactEventInPrivilegedContext(sink.getNode())
   )
 select sink.getNode(), source, sink,
   "Potential environment variable injection in $@, which may be controlled by an external user ($@).",
