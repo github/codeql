@@ -104,7 +104,7 @@ async fn more_simple_cases() {
     let _ = std::fs::File::open(path1.clone()); // $ path-injection-sink Alert[rust/path-injection]=arg1
 
     let path2 = std::fs::canonicalize(path1.clone()).unwrap();
-    let _ = std::fs::File::open(path2); // $ path-injection-sink MISSING: Alert[rust/path-injection]=arg1
+    let _ = std::fs::File::open(path2); // $ path-injection-sink Alert[rust/path-injection]=arg1
 
     let path3 = tokio::fs::canonicalize(path1.clone()).await.unwrap();
     let _ = tokio::fs::File::open(path3); // $ MISSING: path-injection-sink Alert[rust/path-injection]=arg1

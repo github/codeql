@@ -45,6 +45,7 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
+      - ["std::fs::canonicalize", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<std::path::PathBuf as core::convert::From>::from", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["<std::path::Path>::join", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["<std::path::Path>::join", "Argument[0]", "ReturnValue", "taint", "manual"]
