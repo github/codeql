@@ -60,7 +60,7 @@ fn tainted_path_handler_folder_good_simpler(Query(file_path): Query<String>) -> 
 
 //#[handler]
 fn tainted_path_handler_folder_almost_good1_simpler(
-    Query(file_path): Query<String>, // $ MISSING: Source=remote3
+    Query(file_path): Query<String>, // $ Source=remote3
 ) -> Result<String> {
     let public_path = "/var/www/public_html";
     let file_path = Path::new(&file_path);
@@ -68,7 +68,7 @@ fn tainted_path_handler_folder_almost_good1_simpler(
     if !file_path.starts_with(public_path) {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-checked path-injection-sink MISSING: Alert[rust/path-injection]=remote3
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-checked path-injection-sink Alert[rust/path-injection]=remote3
 }
 
 //#[handler]
@@ -113,7 +113,7 @@ async fn more_simple_cases() {
     let _ = async_std::fs::File::open(path4); // $ path-injection-sink Alert[rust/path-injection]=arg1
 
     let path5 = std::path::Path::new(&path1);
-    let _ = std::fs::File::open(path5); // $ path-injection-sink MISSING: Alert[rust/path-injection]=arg1
+    let _ = std::fs::File::open(path5); // $ path-injection-sink Alert[rust/path-injection]=arg1
 
     let path6 = path5.canonicalize().unwrap();
     let _ = std::fs::File::open(path6); // $ path-injection-sink MISSING: Alert[rust/path-injection]=arg1
@@ -170,11 +170,11 @@ use std::fs::File;
 fn my_function(path_str: &str) -> Result<(), std::io::Error> {
     // somewhat realistic example
     let path = Path::new(path_str);
-    if path.exists() { // $ path-injection-sink
+    if path.exists() { // $ path-injection-sink Alert[rust/path-injection]=arg2
         let mut file1 = File::open(path_str)?; // $ path-injection-sink Alert[rust/path-injection]=arg2
         // ...
 
-        let mut file2 = File::open(path)?; // $ path-injection-sink MISSING: Alert[rust/path-injection]=arg2
+        let mut file2 = File::open(path)?; // $ path-injection-sink Alert[rust/path-injection]=arg2
         // ...
     }
 
