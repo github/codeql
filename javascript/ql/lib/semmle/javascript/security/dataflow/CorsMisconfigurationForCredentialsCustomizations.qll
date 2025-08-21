@@ -68,22 +68,15 @@ module CorsMisconfigurationForCredentials {
   /**
    * A value that is or coerces to the string "null".
    * This is considered a source because the "null" origin is easy to obtain for an attacker.
+   * An overly permissive value for `origin`
    */
-  class NullToStringValue extends Source {
-    NullToStringValue() {
+  class PermissiveCorsOriginValue extends Source {
+    PermissiveCorsOriginValue() {
+      this.mayHaveStringValue("*") or
+      this.mayHaveBooleanValue(true) or
       this.asExpr() instanceof NullLiteral or
-      this.asExpr().mayHaveStringValue("null")
+      this.asExpr().getStringValue() = "null"
     }
-  }
-
-  /** An overly permissive value for `origin` (Apollo) */
-  class TrueNullValue extends Source {
-    TrueNullValue() { this.mayHaveBooleanValue(true) or this.asExpr() instanceof NullLiteral }
-  }
-
-  /** An overly permissive value for `origin` (Express) */
-  class WildcardValue extends Source {
-    WildcardValue() { this.mayHaveStringValue("*") }
   }
 
   /**
