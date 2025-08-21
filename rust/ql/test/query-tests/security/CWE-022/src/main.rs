@@ -117,6 +117,10 @@ async fn more_simple_cases() {
 
     let path6 = path5.canonicalize().unwrap();
     let _ = std::fs::File::open(path6); // $ path-injection-sink MISSING: Alert[rust/path-injection]=arg1
+
+    let harmless = "";
+    let _ = std::fs::copy(path1.clone(), harmless); // $ path-injection-sink Alert[rust/path-injection]=arg1
+    let _ = std::fs::copy(harmless, path1.clone()); // $ path-injection-sink Alert[rust/path-injection]=arg1
 }
 
 fn sinks(path1: &Path, path2: &Path) {
