@@ -44,7 +44,7 @@ class ExitOrHaltMethodCall extends MethodCall {
 
 /**
  * An intentional `MethodCall` to a system or runtime "exit" method, such as for
- * functions which exist for the purpose of exiting the program. Assumes that a an exit method
+ * functions which exist for the purpose of exiting the program. Assumes that an exit method
  * call within a method is intentional if the exit code is passed from a parameter of the
  * enclosing method.
  */
