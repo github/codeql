@@ -33,5 +33,13 @@ class CompilationUnit extends Element, File {
    */
   Module getModule() { cumodule(this, result) }
 
+  /**
+   * Holds if this compilation unit represents a compact source file.
+   * A compact source file contains an implicitly declared top-level class.
+   */
+  predicate isCompactSourceFile() {
+    exists(Class c | c.getCompilationUnit() = this and c.isImplicit())
+  }
+
   override string getAPrimaryQlClass() { result = "CompilationUnit" }
 }
