@@ -189,13 +189,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
           // If we are in global evaluation with an overlay present, restrict
           // sources to those visible in the overlay or
           isOverlayNode(source)
-          or
-          // those from files in the diff. The diff is a subset of the overlay
-          // in the common case, but this is not guaranteed. Including the diff here
-          // ensures that we re-evaluate flow that passes from a file in the
-          // diff (but in the base), through a file in the overlay with
-          // possibly important changes, back to the base.
-          isDiffFileNode(source)
         )
       }
 
@@ -215,8 +208,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
           not isEvaluatingInOverlay()
           or
           isOverlayNode(sink)
-          or
-          isDiffFileNode(sink)
         )
       }
 
