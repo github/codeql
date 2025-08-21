@@ -63,7 +63,15 @@ class SourceMethodNotMainOrTest extends Method {
     this.fromSource() and
     not this instanceof MainMethod and
     not this instanceof LikelyTestMethod and
-    not this.getEnclosingCallable() instanceof LikelyTestMethod
+    not (
+      this.getEnclosingCallable*() instanceof LikelyTestMethod
+      or
+      this.getDeclaringType()
+          .getEnclosingType*()
+          .(LocalClassOrInterface)
+          .getLocalTypeDeclStmt()
+          .getEnclosingCallable() instanceof LikelyTestMethod
+    )
   }
 }
 

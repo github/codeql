@@ -4,8 +4,8 @@ public class LocalClassInTestMethod {
             void func() {
                 class NestedLocalClass {
                     void nestedMethod() {
-                        System.exit(4); // $ SPURIOUS: Alert
-                        Runtime.getRuntime().halt(5); // $ SPURIOUS: Alert
+                        System.exit(4);
+                        Runtime.getRuntime().halt(5);
                     }
                 }
             }
@@ -17,8 +17,8 @@ public class LocalClassInTestMethod {
         class OuterLocalClass {
             class NestedLocalClass {
                 void nestedMethod() {
-                    System.exit(4); // $ SPURIOUS: Alert
-                    Runtime.getRuntime().halt(5); // $ SPURIOUS: Alert
+                    System.exit(4);
+                    Runtime.getRuntime().halt(5);
                 }
             }
         }

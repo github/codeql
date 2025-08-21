@@ -4,7 +4,3 @@
 | ExampleRuntimeHalt.java:21:17:21:44 | halt(...) | Avoid calls to Runtime.halt() as this prevents runtime cleanup and makes code harder to reuse. |
 | ExampleSystemExit.java:22:17:22:30 | exit(...) | Avoid calls to System.exit() as this prevents runtime cleanup and makes code harder to reuse. |
 | ExampleSystemExit.java:25:17:25:30 | exit(...) | Avoid calls to System.exit() as this prevents runtime cleanup and makes code harder to reuse. |
-| LocalClassInTestMethod.java:7:25:7:38 | exit(...) | Avoid calls to System.exit() as this prevents runtime cleanup and makes code harder to reuse. |
-| LocalClassInTestMethod.java:8:25:8:52 | halt(...) | Avoid calls to Runtime.halt() as this prevents runtime cleanup and makes code harder to reuse. |
-| LocalClassInTestMethod.java:20:21:20:34 | exit(...) | Avoid calls to System.exit() as this prevents runtime cleanup and makes code harder to reuse. |
-| LocalClassInTestMethod.java:21:21:21:48 | halt(...) | Avoid calls to Runtime.halt() as this prevents runtime cleanup and makes code harder to reuse. |
