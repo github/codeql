@@ -936,6 +936,7 @@ abstract class RegexString extends StringLiteral {
 }
 
 /** A string literal used as a regular expression */
+overlay[local]
 class Regex extends RegexString {
   boolean matches_full_string;
 

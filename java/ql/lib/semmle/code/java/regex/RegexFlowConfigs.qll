@@ -170,11 +170,14 @@ private module RegexFlow = DataFlow::Global<RegexFlowConfig>;
  * As an optimisation, only regexes containing an infinite repitition quatifier (`+`, `*`, or `{x,}`)
  * and therefore may be relevant for ReDoS queries are considered.
  */
-predicate usedAsRegex(StringLiteral regex, string mode, boolean match_full_string) {
+predicate usedAsRegexG(StringLiteral regex, string mode, boolean match_full_string) {
   RegexFlow::flow(DataFlow::exprNode(regex), _) and
-  mode = "None" and // TODO: proper mode detection
+  mode = "None" and // TODO: proper mode  detection
   (if matchesFullString(regex) then match_full_string = true else match_full_string = false)
 }
+
+overlay[local]
+predicate usedAsRegex(StringLiteral regex, string mode, boolean match_full_string) = forceLocal(usedAsRegexG/3)(regex, mode, match_full_string)
 
 /**
  * Holds if `regex` is used as a regular expression that is matched against a full string,
