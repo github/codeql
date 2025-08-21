@@ -11,7 +11,7 @@ private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmI
 /**
  * A base class for final signature operations.
  * The operation must be known to always be a signature operation,
- * and not a MAC operation.
+ * and not a MAC operation. Used for both verification and signing.
  * NOTE: even an operation that may be a mac or signature but is known to take in
  * only signature configurations should extend `SignatureOrMacFinalOperation`.
  */
@@ -22,6 +22,7 @@ abstract class SignatureFinalOperation extends OperationStep {
 /**
  * A base class for final signature or MAC operations.
  * The operation must be known to always be a signature or MAC operation.
+ * Used for both verification or signing.
  */
 abstract class SignatureOrMacFinalOperation extends OperationStep {
   override OperationStepType getStepType() { result = FinalStep() }
@@ -227,8 +228,6 @@ class EvpPkeySignFinal extends SignatureFinalOperation {
     or
     result.asExpr() = this.getArgument(1) and type = SignatureIO()
   }
-
-  override OperationStepType getStepType() { result = FinalStep() }
 }
 
 /**
@@ -346,6 +345,161 @@ class EvpDigestVerify extends SignatureFinalOperation {
 }
 
 /**
+ * A call to `EVP_PKEY_verify_init`, `EVP_PKEY_verify_init_ex`,
+ * `EVP_PKEY_verify_init_ex2`, or `EVP_PKEY_verify_message_init`
+ * https://docs.openssl.org/master/man3/EVP_PKEY_verify/#synopsis
+ */
+class EvpVerifyInit extends OperationStep {
+  EvpVerifyInit() {
+    this.getTarget().getName() in [
+        "EVP_PKEY_verify_init", "EVP_PKEY_verify_init_ex", "EVP_PKEY_verify_init_ex2",
+        "EVP_PKEY_verify_message_init"
+      ]
+  }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    or
+    this.getTarget().getName() = "EVP_PKEY_verify_init_ex" and
+    result.asExpr() = this.getArgument(1) and
+    type = OsslParamIO()
+    or
+    this.getTarget().getName() in ["EVP_PKEY_verify_init_ex2", "EVP_PKEY_verify_message_init"] and
+    result.asExpr() = this.getArgument(1) and
+    type = PrimaryAlgorithmIO()
+    or
+    this.getTarget().getName() in ["EVP_PKEY_verify_init_ex2", "EVP_PKEY_verify_message_init"] and
+    result.asExpr() = this.getArgument(2) and
+    type = OsslParamIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
+
+  override OperationStepType getStepType() { result = InitializerStep() }
+}
+
+/**
+ * A call to `EVP_PKEY_CTX_set_signature`
+ * https://docs.openssl.org/master/man3/EVP_PKEY_verify/
+ */
+class EvpCtxSetSignatureInitializer extends OperationStep {
+  EvpCtxSetSignatureInitializer() { this.getTarget().getName() = "EVP_PKEY_CTX_set_signature" }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    or
+    result.asExpr() = this.getArgument(1) and type = SignatureIO()
+    or
+    result.asExpr() = this.getArgument(2) and type = SignatureSizeIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
+
+  override OperationStepType getStepType() { result = InitializerStep() }
+}
+
+/**
+ * A call to `EVP_PKEY_verify_message_update`.
+ */
+class EvpVerifyMessageUpdate extends OperationStep {
+  EvpVerifyMessageUpdate() { this.getTarget().getName() = "EVP_PKEY_verify_message_update" }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    or
+    result.asExpr() = this.getArgument(1) and type = PlaintextIO()
+    or
+    result.asExpr() = this.getArgument(2) and type = PlaintextSizeIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
+
+  override OperationStepType getStepType() { result = UpdateStep() }
+}
+
+/**
+ * A call to `EVP_PKEY_verify_message_final`.
+ */
+class EvpVerifyMessageFinal extends SignatureFinalOperation {
+  EvpVerifyMessageFinal() { this.getTarget().getName() = "EVP_PKEY_verify_message_final" }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
+}
+
+/**
+ * A call to `EVP_PKEY_verify`
+ */
+class EvpVerify extends SignatureFinalOperation {
+  EvpVerify() { this.getTarget().getName() = "EVP_PKEY_verify" }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    or
+    result.asExpr() = this.getArgument(1) and type = SignatureIO()
+    or
+    result.asExpr() = this.getArgument(2) and type = SignatureSizeIO()
+    or
+    result.asExpr() = this.getArgument(3) and type = PlaintextIO()
+    or
+    result.asExpr() = this.getArgument(4) and type = PlaintextSizeIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+  }
+}
+
+/**
+ * A call to `RSA_sign` or `RSA_verify`.
+ * https://docs.openssl.org/3.0/man3/RSA_sign/
+ */
+class RsaSign extends SignatureFinalOperation {
+  RsaSign() { this.getTarget().getName() in ["RSA_sign", "RSA_verify"] }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = HashAlgorithmIO()
+    or
+    result.asExpr() = this.getArgument(1) and type = PlaintextIO()
+    or
+    result.asExpr() = this.getArgument(2) and type = PlaintextSizeIO()
+    or
+    this.getTarget().getName() = "RSA_verify" and
+    result.asExpr() = this.getArgument(3) and
+    type = SignatureIO()
+    or
+    this.getTarget().getName() = "RSA_verify" and
+    result.asExpr() = this.getArgument(4) and
+    type = SignatureSizeIO()
+    or
+    result.asExpr() = this.getArgument(5) and type = KeyIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    or
+    this.getTarget().getName() = "RSA_sign" and
+    result.asDefiningArgument() = this.getArgument(3) and
+    type = SignatureIO()
+    or
+    this.getTarget().getName() = "RSA_sign" and
+    type = SignatureSizeIO() and
+    result.asDefiningArgument() = this.getArgument(4)
+  }
+}
+
+/**
  * An instance of a signature operation.
  * This is an OpenSSL specific class that extends the base SignatureOperationInstance.
  */
@@ -393,6 +547,17 @@ class OpenSslSignatureOperationInstance extends Crypto::SignatureOperationInstan
     super
         .getDominatingInitializersToStep(HashAlgorithmIO())
         .getAlgorithmValueConsumerForInput(HashAlgorithmIO()) = result
+    or
+    // Handle cases where the hash is set through the primary algorithm
+    // RSA-SHA256 for example
+    // NOTE: assuming the hash would not be overridden, or if it is it is undefined
+    // i.e., if the above dominating initializer exists and the primary algorithm
+    // specifies a hash, consider both valid hash AVCs.
+    // TODO: can this behavior be build into the get dominating initializers?
+    super.getPrimaryAlgorithmValueConsumer() = result and
+    exists(OpenSslAlgorithmInstance i |
+      i.getAvc() = result and i instanceof Crypto::HashAlgorithmInstance
+    )
   }
 
   override predicate hasHashAlgorithmConsumer() {
@@ -438,6 +603,17 @@ class OpenSslSignatureOrMacOperationInstance extends Crypto::SignatureOrMacOpera
     super
         .getDominatingInitializersToStep(HashAlgorithmIO())
         .getAlgorithmValueConsumerForInput(HashAlgorithmIO()) = result
+    or
+    // Handle cases where the hash is set through the primary algorithm
+    // RSA-SHA256 for example
+    // NOTE: assuming the hash would not be overridden, or if it is it is undefined
+    // i.e., if the above dominating initializer exists and the primary algorithm
+    // specifies a hash, consider both valid hash AVCs.
+    // TODO: can this behavior be build into the get dominating initializers?
+    super.getPrimaryAlgorithmValueConsumer() = result and
+    exists(OpenSslAlgorithmInstance i |
+      i.getAvc() = result and i instanceof Crypto::HashAlgorithmInstance
+    )
   }
 
   override predicate hasHashAlgorithmConsumer() {

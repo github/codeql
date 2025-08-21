@@ -75,11 +75,13 @@ newtype TIOType =
   PaddingAlgorithmIO() or
   // Plaintext also includes a message for digest, signature, verification, and mac generation
   PlaintextIO() or
+  PlaintextSizeIO() or
   PrimaryAlgorithmIO() or
   RandomSourceIO() or
   SaltLengthIO() or
   SeedIO() or
-  SignatureIO()
+  SignatureIO() or
+  SignatureSizeIO()
 
 private string ioTypeToString(TIOType t) {
   t = CiphertextIO() and result = "CiphertextIO"
@@ -108,6 +110,8 @@ private string ioTypeToString(TIOType t) {
   or
   t = PlaintextIO() and result = "PlaintextIO"
   or
+  t = PlaintextSizeIO() and result = "PlaintextSizeIO"
+  or
   t = PrimaryAlgorithmIO() and result = "PrimaryAlgorithmIO"
   or
   t = RandomSourceIO() and result = "RandomSourceIO"
@@ -117,6 +121,8 @@ private string ioTypeToString(TIOType t) {
   t = SeedIO() and result = "SeedIO"
   or
   t = SignatureIO() and result = "SignatureIO"
+  or
+  t = SignatureSizeIO() and result = "SignatureSizeIO"
 }
 
 class IOType extends TIOType {
@@ -131,8 +137,9 @@ class IOType extends TIOType {
  * The type of step in an `OperationStep`.
  * - `ContextCreationStep`: the creation of a context from an algorithm or key.
  *                       for example `EVP_MD_CTX_create(EVP_sha256())` or `EVP_PKEY_CTX_new(pkey, NULL)`
- * - `InitializerStep`: the initialization of an operation through some sort of shared/accumulated context
- *                       for example `EVP_DigestInit_ex(ctx, EVP_sha256(), NULL)`
+ * - `InitializerStep`: the initialization of an operation or state through some sort of shared/accumulated context
+ *                       for example `EVP_DigestInit_ex(ctx, EVP_sha256(), NULL)`, may also be used for pass through
+ *                       configuration, for example `EVP_PKEY_get1_RSA(key)` where a pkey is input into an RSA key return.
  * - `UpdateStep`: any operation that has and update/final paradigm, the update represents an intermediate step in an operation,
  *                       such as `EVP_DigestUpdate(ctx, data, len)`
  * - `FinalStep`: an ultimate operation step. This may be an explicit 'final' in an update/final paradigm, but not necessarily.
@@ -249,8 +256,9 @@ abstract class OperationStep extends Call {
   /**
    * Gets an AVC for the primary algorithm for this operation.
    * A primary algorithm is an AVC that either:
+   * 0) `this` is an AVC (consider direct algorithm consumers like RSA_sign (algorithm is implicit) or EVP_PKEY_new_mac_key (NID is first arg) )
    * 1) flows to a ctx input directly or
-   * 2) flows to a primary algorithm input directly
+   * 2) flows to a primary algorithm input directly or
    * 3) flows to a key input directly (algorithm held in a key will be considered primary)
    * See `AvcContextCreationStep` for details about resetting scenarios.
    * Gets the first OperationStep an AVC flows to. If a context input,
@@ -259,6 +267,8 @@ abstract class OperationStep extends Call {
    * operation step (dominating operation step, see `getDominatingInitializersToStep`).
    */
   Crypto::AlgorithmValueConsumer getPrimaryAlgorithmValueConsumer() {
+    this instanceof Crypto::AlgorithmValueConsumer and result = this
+    or
     exists(DataFlow::Node src, DataFlow::Node sink, IOType t, OperationStep avcConsumingPred |
       (t = PrimaryAlgorithmIO() or t = ContextIO() or t = KeyIO()) and
       avcConsumingPred.flowsToOperationStep(this) and

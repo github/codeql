@@ -1,5 +1,10 @@
 /**
  * Initializers for EVP PKey
+ * These are used to create a Pkey context or set properties on a Pkey context
+ * e.g., key size, hash algorithms, curves, padding schemes, etc.
+ * Meant to capture more general purpose initializers that aren't necessarily
+ * tied to a specific operation. If tied to an operation (i.e., in the docs)
+ * we recommend defining defining all together in the same operation definition qll.
  * including:
  *  https://docs.openssl.org/3.0/man3/EVP_PKEY_CTX_ctrl/
  *  https://docs.openssl.org/3.0/man3/EVP_EncryptInit/#synopsis
@@ -193,5 +198,28 @@ class EvpCtxSetSaltLengthInitializer extends OperationStep {
     result.asExpr() = this.getArgument(0) and type = ContextIO()
   }
 
+  override OperationStepType getStepType() { result = InitializerStep() }
+}
+
+/**
+ * A call to `EVP_PKEY_get1_RSA` or `EVP_PKEY_get1_DSA`
+ *  - RSA *EVP_PKEY_get1_RSA(EVP_PKEY *pkey);
+ *  - DSA *EVP_PKEY_get1_DSA(EVP_PKEY *pkey);
+ */
+class EvpPkeyGet1RsaOrDsa extends OperationStep {
+  EvpPkeyGet1RsaOrDsa() { this.getTarget().getName() = ["EVP_PKEY_get1_RSA", "EVP_PKEY_get1_DSA"] }
+
+  override DataFlow::Node getOutput(IOType type) { result.asExpr() = this and type = KeyIO() }
+
+  override DataFlow::Node getInput(IOType type) {
+    // Key being loaded or created from another location
+    result.asExpr() = this.getArgument(0) and type = KeyIO()
+  }
+
+  /**
+   * Consider this to be an intialization step. A key is accepted and a different key is produced.
+   * It doesn't create a new context or new key. It isn't quite an initialiation for an operaiton
+   * either.
+   */
   override OperationStepType getStepType() { result = InitializerStep() }
 }

@@ -149,20 +149,15 @@ class EvpNewMacKey extends KeyGenFinalOperationStep {
   EvpNewMacKey() { this.getTarget().getName() = "EVP_PKEY_new_mac_key" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
-    or
     // the raw key that is configured into the output key
     result.asExpr() = this.getArgument(2) and type = KeyIO()
     or
     result.asExpr() = this.getArgument(3) and type = KeySizeIO()
   }
 
-  override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this and type = KeyIO()
-    or
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
-  }
+  override DataFlow::Node getOutput(IOType type) { result.asExpr() = this and type = KeyIO() }
 }
+
 
 /// TODO: https://docs.openssl.org/3.0/man3/EVP_PKEY_new/#synopsis
 /**

@@ -87,3 +87,20 @@ class EvpDigestAlgorithmValueConsumer extends HashAlgorithmValueConsumer {
     exists(OpenSslAlgorithmInstance i | i.getAvc() = this and result = i)
   }
 }
+
+class RsaSignOrVerifyHashAlgorithmValueConsumer extends HashAlgorithmValueConsumer {
+  DataFlow::Node valueArgNode;
+
+  RsaSignOrVerifyHashAlgorithmValueConsumer() {
+    this.(Call).getTarget().getName() in ["RSA_sign", "RSA_verify"] and
+    valueArgNode.asExpr() = this.(Call).getArgument(0)
+  }
+
+  override DataFlow::Node getResultNode() { none() }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { result = valueArgNode }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
+    exists(OpenSslAlgorithmInstance i | i.getAvc() = this and result = i)
+  }
+}
