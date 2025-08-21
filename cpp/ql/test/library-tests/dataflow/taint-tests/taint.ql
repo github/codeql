@@ -117,6 +117,11 @@ module IRTest {
         call.getTarget().getName() = "sink" and
         [sink.asExpr(), sink.asIndirectExpr()] = call.getAnArgument()
       )
+      or
+      exists(FunctionCall call |
+        call.getTarget().getName() = "indirect_sink" and
+        sink.asIndirectExpr() = call.getAnArgument()
+      )
     }
 
     predicate isBarrier(DataFlow::Node barrier) {
