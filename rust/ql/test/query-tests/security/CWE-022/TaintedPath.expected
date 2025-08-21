@@ -6,6 +6,7 @@
 | src/main.rs:113:13:113:37 | ...::open | src/main.rs:103:17:103:30 | ...::args | src/main.rs:113:13:113:37 | ...::open | This path depends on a $@. | src/main.rs:103:17:103:30 | ...::args | user-provided value |
 | src/main.rs:122:13:122:25 | ...::copy | src/main.rs:103:17:103:30 | ...::args | src/main.rs:122:13:122:25 | ...::copy | This path depends on a $@. | src/main.rs:103:17:103:30 | ...::args | user-provided value |
 | src/main.rs:123:13:123:25 | ...::copy | src/main.rs:103:17:103:30 | ...::args | src/main.rs:123:13:123:25 | ...::copy | This path depends on a $@. | src/main.rs:103:17:103:30 | ...::args | user-provided value |
+| src/main.rs:174:25:174:34 | ...::open | src/main.rs:185:17:185:30 | ...::args | src/main.rs:174:25:174:34 | ...::open | This path depends on a $@. | src/main.rs:185:17:185:30 | ...::args | user-provided value |
 edges
 | src/main.rs:7:11:7:19 | file_name | src/main.rs:9:35:9:43 | file_name | provenance |  |
 | src/main.rs:9:9:9:17 | file_path | src/main.rs:11:24:11:32 | file_path | provenance |  |
@@ -49,6 +50,15 @@ edges
 | src/main.rs:122:27:122:39 | path1.clone() | src/main.rs:122:13:122:25 | ...::copy | provenance | MaD:4 Sink:MaD:4 |
 | src/main.rs:123:37:123:41 | path1 | src/main.rs:123:37:123:49 | path1.clone() | provenance | MaD:7 |
 | src/main.rs:123:37:123:49 | path1.clone() | src/main.rs:123:13:123:25 | ...::copy | provenance | MaD:4 Sink:MaD:4 |
+| src/main.rs:170:16:170:29 | ...: ... [&ref] | src/main.rs:174:36:174:43 | path_str [&ref] | provenance |  |
+| src/main.rs:174:36:174:43 | path_str [&ref] | src/main.rs:174:25:174:34 | ...::open | provenance | MaD:2 Sink:MaD:2 |
+| src/main.rs:185:9:185:13 | path1 | src/main.rs:186:18:186:22 | path1 | provenance |  |
+| src/main.rs:185:17:185:30 | ...::args | src/main.rs:185:17:185:32 | ...::args(...) [element] | provenance | Src:MaD:6  |
+| src/main.rs:185:17:185:32 | ...::args(...) [element] | src/main.rs:185:17:185:39 | ... .nth(...) [Some] | provenance | MaD:8 |
+| src/main.rs:185:17:185:39 | ... .nth(...) [Some] | src/main.rs:185:17:185:48 | ... .unwrap() | provenance | MaD:9 |
+| src/main.rs:185:17:185:48 | ... .unwrap() | src/main.rs:185:9:185:13 | path1 | provenance |  |
+| src/main.rs:186:17:186:22 | &path1 [&ref] | src/main.rs:170:16:170:29 | ...: ... [&ref] | provenance |  |
+| src/main.rs:186:18:186:22 | path1 | src/main.rs:186:17:186:22 | &path1 [&ref] | provenance |  |
 models
 | 1 | Sink: <async_std::fs::file::File>::open; Argument[0]; path-injection |
 | 2 | Sink: <std::fs::File>::open; Argument[0]; path-injection |
@@ -108,4 +118,14 @@ nodes
 | src/main.rs:123:13:123:25 | ...::copy | semmle.label | ...::copy |
 | src/main.rs:123:37:123:41 | path1 | semmle.label | path1 |
 | src/main.rs:123:37:123:49 | path1.clone() | semmle.label | path1.clone() |
+| src/main.rs:170:16:170:29 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
+| src/main.rs:174:25:174:34 | ...::open | semmle.label | ...::open |
+| src/main.rs:174:36:174:43 | path_str [&ref] | semmle.label | path_str [&ref] |
+| src/main.rs:185:9:185:13 | path1 | semmle.label | path1 |
+| src/main.rs:185:17:185:30 | ...::args | semmle.label | ...::args |
+| src/main.rs:185:17:185:32 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| src/main.rs:185:17:185:39 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| src/main.rs:185:17:185:48 | ... .unwrap() | semmle.label | ... .unwrap() |
+| src/main.rs:186:17:186:22 | &path1 [&ref] | semmle.label | &path1 [&ref] |
+| src/main.rs:186:18:186:22 | path1 | semmle.label | path1 |
 subpaths

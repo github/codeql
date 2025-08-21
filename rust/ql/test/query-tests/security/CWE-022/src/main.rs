@@ -165,4 +165,23 @@ fn sinks(path1: &Path, path2: &Path) {
     let _ = async_std::fs::OpenOptions::new().open(path1); // $ path-injection-sink
 }
 
-fn main() {}
+use std::fs::File;
+
+fn my_function(path_str: &str) -> Result<(), std::io::Error> {
+    // somewhat realistic example
+    let path = Path::new(path_str);
+    if path.exists() { // $ path-injection-sink
+        let mut file1 = File::open(path_str)?; // $ path-injection-sink Alert[rust/path-injection]=arg2
+        // ...
+
+        let mut file2 = File::open(path)?; // $ path-injection-sink MISSING: Alert[rust/path-injection]=arg2
+        // ...
+    }
+
+    Ok(())
+}
+
+fn main() {
+    let path1 = std::env::args().nth(1).unwrap(); // $ Source=arg2
+    my_function(&path1);
+}
