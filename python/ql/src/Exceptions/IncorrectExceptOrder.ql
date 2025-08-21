@@ -15,21 +15,89 @@
 
 import python
 import semmle.python.dataflow.new.internal.DataFlowDispatch
+import semmle.python.ApiGraphs
+import semmle.python.frameworks.data.internal.ApiGraphModels
 
-predicate incorrectExceptOrder(ExceptStmt ex1, Class cls1, ExceptStmt ex2, Class cls2) {
+predicate builtinException(string name) {
+  typeModel("builtins.BaseException~Subclass", "builtins." + name, "")
+}
+
+predicate builtinExceptionSubclass(string base, string sub) {
+  typeModel("builtins." + base + "~Subclass", sub, "")
+}
+
+newtype TExceptType =
+  TClass(Class c) or
+  TBuiltin(string name) { builtinException(name) }
+
+class ExceptType extends TExceptType {
+  Class asClass() { this = TClass(result) }
+
+  string asBuiltinName() { this = TBuiltin(result) }
+
+  predicate isBuiltin() { this = TBuiltin(_) }
+
+  string getName() {
+    result = this.asClass().getName()
+    or
+    result = this.asBuiltinName()
+  }
+
+  string toString() { result = this.getName() }
+
+  DataFlow::Node getAUse() {
+    result = classTracker(this.asClass())
+    or
+    result = API::builtin(this.asBuiltinName()).asSource()
+  }
+
+  ExceptType getADirectSuperclass() {
+    result.asClass() = getADirectSuperclass(this.asClass())
+    or
+    result.isBuiltin() and
+    result.getAUse().asExpr() = this.asClass().getABase()
+    or
+    builtinExceptionSubclass(result.asBuiltinName(), this.asBuiltinName()) and
+    this != result
+  }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startColumn` of line `startLine` to
+   * column `endColumn` of line `endLine` in file `filepath`.
+   * For more information, see
+   * [Providing locations in CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  predicate hasLocationInfo(
+    string filePath, int startLine, int startColumn, int endLine, int endColumn
+  ) {
+    this.asClass()
+        .getLocation()
+        .hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
+    or
+    this.isBuiltin() and
+    filePath = "" and
+    startLine = 0 and
+    startColumn = 0 and
+    endLine = 0 and
+    endColumn = 0
+  }
+}
+
+predicate incorrectExceptOrder(ExceptStmt ex1, ExceptType cls1, ExceptStmt ex2, ExceptType cls2) {
   exists(int i, int j, Try t |
     ex1 = t.getHandler(i) and
     ex2 = t.getHandler(j) and
     i < j and
     cls1 = exceptClass(ex1) and
     cls2 = exceptClass(ex2) and
-    cls1 = getADirectSuperclass*(cls2)
+    cls1 = cls2.getADirectSuperclass*()
   )
 }
 
-Class exceptClass(ExceptStmt ex) { ex.getType() = classTracker(result).asExpr() }
+ExceptType exceptClass(ExceptStmt ex) { ex.getType() = result.getAUse().asExpr() }
 
-from ExceptStmt ex1, Class cls1, ExceptStmt ex2, Class cls2, string msg
+from ExceptStmt ex1, ExceptType cls1, ExceptStmt ex2, ExceptType cls2, string msg
 where
   incorrectExceptOrder(ex1, cls1, ex2, cls2) and
   if cls1 = cls2
