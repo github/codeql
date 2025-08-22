@@ -269,7 +269,9 @@ module IRCfg implements BB::CfgSig<Language::Location> {
 
   class SuccessorType = EdgeKind;
 
-  class BasicBlock extends IRBlock {
+  final private class FinalIRBlock = IRBlock;
+
+  class BasicBlock extends FinalIRBlock {
     ControlFlowNode getNode(int i) { result = this.getInstruction(i) }
 
     ControlFlowNode getLastNode() { result = super.getLastInstruction() }
