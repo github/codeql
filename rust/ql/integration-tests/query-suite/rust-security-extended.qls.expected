@@ -11,6 +11,7 @@ ql/rust/ql/src/queries/diagnostics/UnresolvedMacroCalls.ql
 ql/rust/ql/src/queries/security/CWE-020/RegexInjection.ql
 ql/rust/ql/src/queries/security/CWE-022/TaintedPath.ql
 ql/rust/ql/src/queries/security/CWE-089/SqlInjection.ql
+ql/rust/ql/src/queries/security/CWE-117/LogInjection.ql
 ql/rust/ql/src/queries/security/CWE-311/CleartextTransmission.ql
 ql/rust/ql/src/queries/security/CWE-312/CleartextLogging.ql
 ql/rust/ql/src/queries/security/CWE-312/CleartextStorageDatabase.ql
