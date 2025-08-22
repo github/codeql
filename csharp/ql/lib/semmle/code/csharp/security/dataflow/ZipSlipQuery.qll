@@ -205,6 +205,32 @@ private module SanitizedGuardTaintTrackingConfiguration implements DataFlow::Con
 }
 
 /**
+ * A Callable that successfully validates a path will resolve under a given directory,
+ * and if it does not, throws an exception.
+ */
+private class ValidatingCallableThrowing extends Callable{
+  Parameter paramFilename;
+  ValidatingCallableThrowing(){
+    paramFilename = this.getAParameter() and
+    // It passes the guard, contraining the function argument to the Guard argument.
+    exists(ZipSlipGuard g, DataFlow::ParameterNode source, DataFlow::Node sink |
+      g.getEnclosingCallable() = this and
+      source = DataFlow::parameterNode(paramFilename) and
+      sink = DataFlow::exprNode(g.getFilePathArgument()) and
+      SanitizedGuardTT::flow(source, sink) and
+      exists(AbstractValues::BooleanValue bv, ThrowStmt throw |
+        throw.getEnclosingCallable() = this and
+        forall(TryStmt try | try.getEnclosingCallable() = this | not throw.getParent+() = try) and
+        // If there exists a control block that guards against misuse
+        bv.getValue() = false and
+        g.controlsNode(throw.getAControlFlowNode(), bv)
+      )
+    )
+  }
+  Parameter paramFilePath() { result = paramFilename }
+}
+
+/**
  * An AbstractWrapperSanitizerMethod is a Method that
  *  is a suitable sanitizer for a ZipSlip path that may not have been canonicalized prior.
  *
@@ -359,6 +385,17 @@ abstract private class Sanitizer extends DataFlow::ExprNode { }
 class WrapperCheckSanitizer extends Sanitizer {
   // A Wrapped RootSanitizer that is an explicit subset of RootSanitizer
   WrapperCheckSanitizer() { this = DataFlow::BarrierGuard<wrapperCheckGuard/3>::getABarrierNode() }
+}
+
+/**
+ * A Call to `ValidatingCallableThrowing` which acts as a barrier in a DataFlow
+ */
+class ValidatingCallableThrowingSanitizer extends Sanitizer {
+  ValidatingCallableThrowingSanitizer(){
+    exists(ValidatingCallableThrowing validator, Call validatorCall | validatorCall = validator.getACall() |
+      this = DataFlow::exprNode(validatorCall.getAnArgument())
+    )
+  }
 }
 
 /**
