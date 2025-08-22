@@ -31,4 +31,8 @@ public class SourcePackage extends Annotated {
         };
         lambda.run();
     }
+    String myField1 = Annotated.m1; // $ Alert
+    public String myField2 = Annotated.m1; // $ Alert
+    private String myField3 = Annotated.m1; // $ Alert
+    protected String myField4 = Annotated.m1; // $ Alert
 }
