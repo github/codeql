@@ -103,28 +103,4 @@ private class ConstantDataSource extends Crypto::GenericConstantSourceInstance i
   override string getAdditionalDescription() { result = this.toString() }
 }
 
-module ArtifactUniversalFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source = any(Crypto::ArtifactInstance artifact).getOutputNode()
-  }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink = any(Crypto::FlowAwareElement other).getInputNode()
-  }
-
-  predicate isBarrierOut(DataFlow::Node node) {
-    node = any(Crypto::FlowAwareElement element).getInputNode()
-  }
-
-  predicate isBarrierIn(DataFlow::Node node) {
-    node = any(Crypto::FlowAwareElement element).getOutputNode()
-  }
-
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    node1.(AdditionalFlowInputStep).getOutput() = node2
-  }
-}
-
-module ArtifactUniversalFlow = DataFlow::Global<ArtifactUniversalFlowConfig>;
-
 import OpenSSL.OpenSSL
