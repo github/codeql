@@ -24,7 +24,7 @@ predicate isWithinType(Callable c, RefType t) {
 }
 
 /**
- * Holds if a `Callable` is within same package as the `RefType`
+ * Holds if `e` is within the same package as `t`
  */
 predicate isWithinPackage(Expr e, RefType t) {
   e.getCompilationUnit().getPackage() = t.getPackage()
@@ -44,49 +44,49 @@ where
   annotated.getAnAnnotation().getType().hasName("VisibleForTesting") and
   (
     // field access
-    exists(FieldAccess v |
-      v = e and
-      v.getField() = annotated and
-      // depending on the visibility of the field, using the annotation to abuse the visibility may/may not be occurring
-      (
-        // if its package protected report when its used outside its class bc it should have been private (class only permitted)
-        v.getField().isPackageProtected() and
-        not isWithinType(v.getEnclosingCallable(), v.getField().getDeclaringType())
-        or
-        // if public or protected report when its used outside its package because package protected should have been enough (package only permitted)
-        (v.getField().isPublic() or v.getField().isProtected()) and
-        not isWithinPackage(v, v.getField().getDeclaringType())
+    e =
+      any(FieldAccess v |
+        v.getField() = annotated and
+        // depending on the visibility of the field, using the annotation to abuse the visibility may/may not be occurring
+        (
+          // if its package protected report when its used outside its class because it should have been private (class only permitted)
+          v.getField().isPackageProtected() and
+          not isWithinType(v.getEnclosingCallable(), v.getField().getDeclaringType())
+          or
+          // if public or protected report when its used outside its package because package protected should have been enough (package only permitted)
+          (v.getField().isPublic() or v.getField().isProtected()) and
+          not isWithinPackage(v, v.getField().getDeclaringType())
+        )
       )
-    )
     or
     // method access
-    exists(MethodCall c |
-      c = e and
-      c.getMethod() = annotated and
-      // depending on the visibility of the method, using the annotation to abuse the visibility may/may not be occurring
-      (
-        // if its package protected report when its used outside its class bc it should have been private (class only permitted)
-        c.getMethod().isPackageProtected() and
-        not isWithinType(c.getEnclosingCallable(), c.getMethod().getDeclaringType())
-        or
-        // if public or protected report when its used outside its package because package protected should have been enough (package only permitted)
-        (c.getMethod().isPublic() or c.getMethod().isProtected()) and
-        not isWithinPackage(c, c.getMethod().getDeclaringType())
+    e =
+      any(MethodCall c |
+        c.getMethod() = annotated and
+        // depending on the visibility of the method, using the annotation to abuse the visibility may/may not be occurring
+        (
+          // if its package protected report when its used outside its class because it should have been private (class only permitted)
+          c.getMethod().isPackageProtected() and
+          not isWithinType(c.getEnclosingCallable(), c.getMethod().getDeclaringType())
+          or
+          // if public or protected report when its used outside its package because package protected should have been enough (package only permitted)
+          (c.getMethod().isPublic() or c.getMethod().isProtected()) and
+          not isWithinPackage(c, c.getMethod().getDeclaringType())
+        )
       )
-    )
     or
     // Class instantiation - report if used outside appropriate scope
-    exists(ClassInstanceExpr c |
-      c = e and
-      c.getConstructedType() = annotated and
-      (
-        c.getConstructedType().isPublic() and not isWithinPackage(c, c.getConstructedType())
-        or
-        c.getConstructedType().hasNoModifier() and
-        c.getConstructedType() instanceof NestedClass and
-        not isWithinType(c.getEnclosingCallable(), c.getConstructedType())
+    e =
+      any(ClassInstanceExpr c |
+        c.getConstructedType() = annotated and
+        (
+          c.getConstructedType().isPublic() and not isWithinPackage(c, c.getConstructedType())
+          or
+          c.getConstructedType().hasNoModifier() and
+          c.getConstructedType() instanceof NestedClass and
+          not isWithinType(c.getEnclosingCallable(), c.getConstructedType())
+        )
       )
-    )
   ) and
   // not in a test where use is appropriate
   not e.getEnclosingCallable() instanceof LikelyTestMethod and
