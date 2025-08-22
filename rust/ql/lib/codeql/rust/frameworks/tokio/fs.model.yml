@@ -43,4 +43,5 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["tokio::fs::canonicalize::canonicalize", "Argument[0]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["tokio::fs::canonicalize::canonicalize", "Argument[0].OptionalStep[normalize-path]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["tokio::fs::canonicalize::canonicalize", "Argument[0].OptionalBarrier[normalize-path]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]

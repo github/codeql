@@ -47,7 +47,7 @@ fn tainted_path_handler_folder_almost_good1(
 }
 
 //#[handler]
-fn tainted_path_handler_folder_good_simpler(Query(file_path): Query<String>) -> Result<String> {
+fn tainted_path_handler_folder_good_simpler(Query(file_path): Query<String>) -> Result<String> { // $ Source=remote6
     let public_path = "/var/www/public_html";
     let file_path = Path::new(&file_path);
     let file_path = file_path.canonicalize().unwrap();
@@ -55,7 +55,7 @@ fn tainted_path_handler_folder_good_simpler(Query(file_path): Query<String>) -> 
     if !file_path.starts_with(public_path) {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: path-injection-checked
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: path-injection-checked SPURIOUS: Alert[rust/path-injection]=remote6
 }
 
 //#[handler]
@@ -87,7 +87,7 @@ fn tainted_path_handler_folder_almost_good2(
 
 //#[handler]
 fn tainted_path_handler_folder_almost_good3(
-    Query(file_path): Query<String>, // $ MISSING: Source=remote5
+    Query(file_path): Query<String>, // $ Source=remote5
 ) -> Result<String> {
     let public_path = "/var/www/public_html";
     let file_path = Path::new(&file_path);
@@ -96,7 +96,7 @@ fn tainted_path_handler_folder_almost_good3(
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
     let file_path = file_path.canonicalize().unwrap(); // $ path-injection-checked
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: Alert[rust/path-injection]=remote5
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink Alert[rust/path-injection]=remote5
 }
 
 async fn more_simple_cases() {
@@ -116,7 +116,7 @@ async fn more_simple_cases() {
     let _ = std::fs::File::open(path5); // $ path-injection-sink Alert[rust/path-injection]=arg1
 
     let path6 = path5.canonicalize().unwrap();
-    let _ = std::fs::File::open(path6); // $ path-injection-sink MISSING: Alert[rust/path-injection]=arg1
+    let _ = std::fs::File::open(path6); // $ path-injection-sink Alert[rust/path-injection]=arg1
 
     let harmless = "";
     let _ = std::fs::copy(path1.clone(), harmless); // $ path-injection-sink Alert[rust/path-injection]=arg1

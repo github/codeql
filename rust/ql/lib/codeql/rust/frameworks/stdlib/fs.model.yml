@@ -43,7 +43,8 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["std::fs::canonicalize", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["std::fs::canonicalize", "Argument[0].OptionalStep[normalize-path]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["std::fs::canonicalize", "Argument[0].OptionalBarrier[normalize-path]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<std::path::PathBuf as core::convert::From>::from", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["<std::path::PathBuf>::as_path", "Argument[Self]", "ReturnValue.Reference", "value", "manual"]
       - ["<std::path::PathBuf>::as_mut_os_string", "Argument[Self].Reference", "ReturnValue.Reference", "value", "manual"]
@@ -54,8 +55,8 @@ extensions:
       - ["<std::path::Path>::join", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["<std::path::Path>::as_os_string", "Argument[Self].Reference", "ReturnValue.Reference", "value", "manual"]
       - ["<std::path::Path>::as_mut_os_string", "Argument[Self].Reference", "ReturnValue.Reference", "value", "manual"]
-      - ["<std::path::Path>::canonicalize", "Argument[self].OptionalStep[normalize-path]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-      - ["<std::path::Path>::canonicalize", "Argument[self].OptionalBarrier[normalize-path]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["<std::path::Path>::canonicalize", "Argument[self].Reference.OptionalStep[normalize-path]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["<std::path::Path>::canonicalize", "Argument[self].Reference.OptionalBarrier[normalize-path]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<std::path::Path>::extension", "Argument[Self].Reference", "ReturnValue.Field[core::option::Option::Some(0)].Reference", "taint", "manual"]
       - ["<std::path::Path>::file_name", "Argument[Self].Reference", "ReturnValue.Field[core::option::Option::Some(0)].Reference", "taint", "manual"]
       - ["<std::path::Path>::file_prefix", "Argument[Self].Reference", "ReturnValue.Field[core::option::Option::Some(0)].Reference", "taint", "manual"]
