@@ -135,10 +135,10 @@ private class PositionalFormatArgumentUse extends Use instanceof PositionalForma
   override string getUseType() { result = "format argument" }
 }
 
-private class PathUse extends Use instanceof PathSegment {
+private class PathUse extends Use instanceof NameRef {
   private Path path;
 
-  PathUse() { this = path.getSegment() }
+  PathUse() { this = path.getSegment().getIdentifier() }
 
   private CallExpr getCall() { result.getFunction().(PathExpr).getPath() = path }
 

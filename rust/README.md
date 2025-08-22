@@ -1,8 +1,5 @@
 # Rust on CodeQL
 
-> [!WARNING]
-> Rust support for CodeQL is experimental. No support is offered. QL and database interfaces will change and break without notice or deprecation periods.
-
 ## Development
 
 ### Dependencies
