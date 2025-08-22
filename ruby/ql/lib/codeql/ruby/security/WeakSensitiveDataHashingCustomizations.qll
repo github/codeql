@@ -69,7 +69,7 @@ private module SensitiveDataSources {
    */
   class SensitiveHashValueAccess extends SensitiveDataSource::Range instanceof SensitiveNode {
     SensitiveHashValueAccess() {
-      this.asExpr() instanceof Cfg::CfgNodes::ExprNodes::ElementReferenceCfgNode
+      this.asExpr() instanceof CfgNodes::ExprNodes::ElementReferenceCfgNode
     }
 
     override SensitiveDataClassification getClassification() {
