@@ -51,13 +51,26 @@ private module GetFullPathToQualifierTaintTrackingConfiguration implements DataF
   }
 }
 
+class ZipArchiveEntryClass extends Class{
+  ZipArchiveEntryClass(){
+    this.hasFullyQualifiedName("System.IO.Compression", "ZipArchiveEntry")
+  }
+}
+
+/**
+ * The `FullName` property of `System.IO.Compression.ZipArchiveEntry`.
+ */
+class ZipArchiveEntryFullNameAccess extends Property{
+  ZipArchiveEntryFullNameAccess(){
+      this.getDeclaringType() instanceof ZipArchiveEntryClass and
+      this.getName() = "FullName"
+  }
+}
+
 /** An access to the `FullName` property of a `ZipArchiveEntry`. */
 class ArchiveFullNameSource extends Source {
   ArchiveFullNameSource() {
-    exists(PropertyAccess pa | this.asExpr() = pa |
-      pa.getTarget().getDeclaringType().hasFullyQualifiedName("System.IO.Compression", "ZipArchiveEntry") and
-      pa.getTarget().getName() = "FullName"
-    )
+    exists(ZipArchiveEntryFullNameAccess pa | pa.getAnAccess() = this.asExpr())
   }
 }
 
@@ -125,10 +138,12 @@ private predicate safeCombineGetFullPathSequence(MethodCallGetFullPath mcGetFull
 class RootSanitizerMethodCall extends SanitizerMethodCall {
   RootSanitizerMethodCall() {
     exists(MethodSystemStringStartsWith sm | this.getTarget() = sm) and
-    exists(Expr q, AbstractValue v |
+    exists(Expr q, MethodCallGetFullPath mcGetFullPath |
       this.getQualifier() = q and
-      v.(AbstractValues::BooleanValue).getValue() = true and
-      exists(MethodCallGetFullPath mcGetFullPath | safeCombineGetFullPathSequence(mcGetFullPath, q))
+      // JB1: Try and detect existentials with non-interelated variables
+      // , AbstractValue v
+      // v.(AbstractValues::BooleanValue).getValue() = true and
+      safeCombineGetFullPathSequence(mcGetFullPath, q)
     )
   }
 
@@ -179,9 +194,12 @@ private module SanitizedGuardTaintTrackingConfiguration implements DataFlow::Con
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(RootSanitizerMethodCall smc |
-      smc.getAnArgument() = sink.asExpr() or
-      smc.getQualifier() = sink.asExpr()
+    exists(RootSanitizerMethodCall smc, Expr e |
+      e = sink.asExpr() and
+      e = [
+        smc.getAnArgument(),
+        smc.getQualifier()
+      ]
     )
   }
 }
@@ -199,18 +217,11 @@ abstract private class AbstractWrapperSanitizerMethod extends AbstractSanitizerM
 
   AbstractWrapperSanitizerMethod() {
     this.getReturnType() instanceof BoolType and
-    this.getAParameter() = paramFilename
+    paramFilename = this.getAParameter()
   }
 
   Parameter paramFilePath() { result = paramFilename }
 }
-
-/* predicate aaaa(ZipSlipGuard g, DataFlow::ParameterNode source){
-      exists(DataFlow::Node sink |
-        sink = DataFlow::exprNode(g.getFilePathArgument()) and
-        SanitizedGuardTT::flow(source, sink) and
-      )
-} */
 
 /**
  * A DirectWrapperSantizierMethod is a Method where
